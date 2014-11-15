@@ -1,0 +1,209 @@
+﻿div#CurrentAnnotation{
+    display: none;
+}
+
+div.Annotation{
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #4E443C;
+    border-radius: 2px;
+    padding: 0;
+    width: 300px;
+    text-align: left;
+}
+
+div.AnnTitleBar{
+
+}
+
+div.PopupCloser{
+/* Floating right causes the containing element to stretch to its max-width. :-( */
+    float: right;
+    width: 1em;
+    margin-right: 0;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #bfac85 #F5EAD4 #F5EAD4 #bfac85;
+    font-variant: small-caps;
+    font-stretch: extra-expanded;
+    cursor: pointer;
+    height: 17px;
+    line-height: 17px;
+    font-size: 17px;
+    color: #F5EAD4;
+}
+
+div.Annotation img{
+max-width: 100px;
+max-height: 100px;
+float: left;
+margin: 5px;
+}
+
+div.AnnText{
+    border-top: 2px solid #4E443C;
+    font-size: 16px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+/*
+#buttons{
+	position: absolute;
+	left: 1100px;}
+
+#AnnMenuContainer{
+    position: relative;
+	left: 600px;
+    padding: 0.2em;
+    width: 400px;
+	height: 800px;
+    border: 2px solid #d0d0f0;
+    background-color: #bbbbdd;
+    color: #000000;
+    max-width: 33%;
+}
+*/
+#AnnMenuTitle, div.Annotation div.AnnTitlebar{
+	height: 20px;
+    background-color: #bbbbdd;
+    color: #000000;
+    cursor: move;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+.AnnTitle{
+    width: 100%;
+    height: 100%;
+    background-color: #4E443C;
+    /*background-color: #F5EAD4;*/
+}
+/*
+#AnnMenu{
+    margin: 0;
+    padding: 0;
+    font-family: "trebuchet ms", verdana, sans-serif;
+	border: 1px solid green;
+    list-style-type: none;
+    background-color: #ffffff;
+    color: #000000;
+    overflow: auto;
+	position: relative;
+	top: -790px;
+}
+
+.CategoryTitleClosed{
+    cursor: pointer;
+    font-weight: bold;
+}
+*/
+
+#AnnMenu>li{
+    padding: 0.25em;
+    margin: 0.2em;
+    /*cursor: pointer;*/
+}
+
+.AnnSubmenu{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/*.AnnSubmenu>li{
+    margin-left: 0.5em;
+}*/
+
+.AnnMenuItem{
+    /*cursor: pointer;*/
+    color: #000000;
+    background-color: #ffffff;
+    /*margin:1px 0px;*/
+    border:1px solid #fff;
+}
+
+.HighlightedAnnMenuItem{
+    cursor: pointer;
+    background-color: rgba(230,206,160,0.8); /*d5b17d e4c89b*/
+	/*opacity: 0.8;
+	filter:alpha(opacity=80);  For IE8 and earlier */
+	border: 1px solid #b99562;
+    color: #000000;
+}
+
+.SelectedAnnMenuItem{
+    cursor: pointer;
+	background-color: rgba(213,177,125,0.9);
+	/*opacity: 0.9;
+	filter:alpha(opacity=90);  For IE8 and earlier */
+	border: 1px solid #b99562;
+    color: #000000;
+}
+/* CDP provvisorio */
+.HighlightedAnnMenuItem div.facs-right, .HighlightedAnnMenuItem div.facs-center, .HighlightedAnnMenuItem div.dipl-right, .HighlightedAnnMenuItem div.dipl-center,
+.SelectedAnnMenuItem div.facs-right, .SelectedAnnMenuItem div.facs-center, .SelectedAnnMenuItem div.dipl-right, .SelectedAnnMenuItem div.dipl-center{
+    background-color: transparent;
+}
+
+div.AreaHS{
+    border: 1px solid #4c2f2f;
+    background-color: #c67261;
+   	opacity: 0.4;
+	filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+
+div.SelectedArea,
+div.SelectedAreaHS{
+    border: 1px solid #4c2f2f;
+	background-color: #9c4837;
+	opacity: 0.5;
+	filter:alpha(opacity=50); /* For IE8 and earlier */
+}
+
+div.HighlightedArea, 
+div.HighlightedAreaHS{
+    border: 1px solid #4c2f2f;
+	background-color: #c67261;
+	opacity: 0.4;
+	filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+
+/*p{
+    margin: 0.25em;
+}
+
+div.Para{
+    margin: 0.25em;
+}
+
+div.Stanza{
+    margin: 0.5em;
+}
+
+div.BlockCit{
+    margin: 1em;
+}
+
+div.BlockCitBibl{
+    text-align: right;
+}
+
+
+div#Zoom{
+    display: none;
+    overflow: hidden;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-style: outset;
+    border-width: 3px;
+    border-color: #ffffff;
+}   
+
+div#Zoom img{
+    position: relative;
+}
+*/
