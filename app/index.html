@@ -264,9 +264,15 @@
 
     <!-- build:js({.tmp,app}) scripts/evtviewer.js -->
     <script src="tmpl/templates.js"></script>
+    <script src="/src/evtviewer.js"></script>
 
     <!-- injector:js -->
-    <script src="/src/evtviewer.js"></script>
+    <script src="/src/Core/Core.js"></script>
+    <script src="/src/Core/Utils.service.js"></script>
+    <script src="/src/Core/Config.factory.js"></script>
+    <script src="/src/Core/BaseComponent.factory.js"></script>
+    <script src="/src/Core/EventDispatcher.service.js"></script>
+    <script src="/src/Core/EVTVIEWERDEFAULTCONF.constant.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

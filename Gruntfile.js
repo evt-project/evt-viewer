@@ -404,11 +404,15 @@ module.exports = function (grunt) {
 
     injector: {
       options: {
-        ignorePath: 'app/'
+        template: null,
+        ignorePath: 'app/',
+        sort: function (a, b) {
+          return a.match(/./g).length > b.match(/./g).length;
+        }
       },
       local_dependencies: {
         files: {
-          '<%= yeoman.app %>/index.html': ['<%= yeoman.app %>/src/{,*/}*.js'],
+          '<%= yeoman.app %>/index.html': ['<%= yeoman.app %>/src/*/*.js'],
         }
       }
     }
