@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name evtviewerApp
+ * @name evtviewer
  * @description
- * # evtviewerApp
+ * # evtviewer
  *
  * Main module of the application.
  */
 angular
-  .module('evtviewerApp', [
+  .module('evtviewer', [
     'ngAnimate',
     'ngCookies',
     'ngMessages',
