@@ -2,7 +2,7 @@ angular.module('evtviewer.core')
     .constant('BASECOMPONENTDEFAULTS', {
         debug: false
     })
-    .factory('BaseComponent', function($window, $log, Config, Utils, BASECOMPONENTDEFAULTS) {
+    .factory('BaseComponent', function ($window, $log, Config, Utils, BASECOMPONENTDEFAULTS) {
 
         var BaseComponent = function (name, options) {
             this.name = name;

@@ -19,5 +19,6 @@ angular
     'templates-main',
     'evtviewer.core',
     'evtviewer.communication',
-    'evtviewer.dataModel'
+    'evtviewer.dataModel',
+    'evtviewer.interface'
   ]);

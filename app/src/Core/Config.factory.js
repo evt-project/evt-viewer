@@ -1,5 +1,5 @@
 angular.module('evtviewer.core')
-.factory('Config', function($window, Utils, EVTVIEWERDEFAULTCONF) {
+.factory('Config', function ($window, Utils, EVTVIEWERDEFAULTCONF) {
     var Config = {};
     
     Utils.deepExtend(Config, EVTVIEWERDEFAULTCONF);
