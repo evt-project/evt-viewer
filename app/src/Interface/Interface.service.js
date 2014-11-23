@@ -13,11 +13,12 @@ angular.module('evtviewer.interface')
     active: true
 })
 
-.service('Interface', function (BaseComponent, INTERFACEDEFAULTS) {
+.service('Interface', function (BaseComponent, Communication, Config, INTERFACEDEFAULTS) {
     var mainInterface = new BaseComponent('Interface', INTERFACEDEFAULTS);
     
     mainInterface.boot = function () {
-        // boom! 
+        console.log(Config.dataUrl);
+        Communication.getData(Config.dataUrl);
     };
 
     return mainInterface;

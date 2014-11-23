@@ -18,8 +18,29 @@ angular.module('evtviewer.core')
      * }
      * </pre>
      */
-    test : {
+    test: {
         active: false
-    }
+    },
+
+    /**
+     * @module evtviewerConfig
+     * @ngdoc object
+     * @name debugAllModules
+     * @description
+     * `boolean`
+     * Active debug log for all modules.
+     *
+     * Default:
+     * <pre> debugAllModules: false </pre>
+     */
+    debugAllModules: true,
+
+    modules: {
+        Interface: {
+            active: true
+        }
+    },
+
+    dataUrl: 'https://dl.dropboxusercontent.com/u/5505916/evt/data/DOTR_rev2013.xml'
 
 });

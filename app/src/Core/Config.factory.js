@@ -8,6 +8,11 @@ angular.module('evtviewer.core')
     if (typeof($window.evtviewerConfig) !== 'undefined' && angular.isObject($window.evtviewerConfig)) {
         Utils.deepExtend(Config, $window.evtviewerConfig);
     }
+
+    Config.isValid = function() {
+        // TODO: set the rules for checking
+        return true;
+    };
     
     Config.isModuleActive = function (moduleName) {
         return angular.isObject(Config.modules[moduleName]) && Config.modules[moduleName].active === true;
