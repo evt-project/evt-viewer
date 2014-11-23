@@ -1,5 +1,7 @@
-angular.module('evtviewer.Core')
-.service('Utils', function() {
+/*jshint -W059 */
+
+angular.module('evtviewer.core')
+.service('Utils', function($window) {
     var Utils = {};
     
     Utils.deepExtend = function(destination, source) {

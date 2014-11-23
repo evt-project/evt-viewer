@@ -16,5 +16,6 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'templates-main'
+    'templates-main',
+    'evtviewer.core'
   ]);

@@ -1,3 +1,4 @@
+/*jshint camelcase: false */
 'use strict';
 
 // # Globbing

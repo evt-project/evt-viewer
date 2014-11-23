@@ -1,4 +1,4 @@
-angular.module('evtviewer.Core')
+angular.module('evtviewer.core')
 .constant('EVTVIEWERDEFAULTCONF', {
 
     // TODO: select doc system 

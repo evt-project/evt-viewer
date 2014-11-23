@@ -1,4 +1,6 @@
-angular.module('evtviewer.Core')
+/*jshint -W030 */
+
+angular.module('evtviewer.core')
 .service('EventDispatcher', function ($q) {
 
     var eventDispatcher = {},
@@ -64,9 +66,9 @@ angular.module('evtviewer.Core')
 
         events[name] && angular.forEach(events[name], 
             function (f, index) {
-                if (f == callback) {
+                if (f === callback) {
                     events[name].splice(index, 1);
-                    if(events[name].length == 0){
+                    if(events[name].length === 0){
                         delete events[name];
                         return;
                     }
