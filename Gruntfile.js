@@ -408,7 +408,7 @@ module.exports = function (grunt) {
         template: null,
         ignorePath: 'app/',
         sort: function (a, b) {
-          return a.match(/./g).length > b.match(/./g).length;
+          return a.match(/\./g).length - b.match(/\./g).length;
         }
       },
       local_dependencies: {
