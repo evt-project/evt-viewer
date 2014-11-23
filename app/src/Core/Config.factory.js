@@ -9,7 +9,7 @@ angular.module('evtviewer.core')
         Utils.deepExtend(Config, $window.evtviewerConfig);
     }
     
-    Config.isModuleActive = function(moduleName) {
+    Config.isModuleActive = function (moduleName) {
         return angular.isObject(Config.modules[moduleName]) && Config.modules[moduleName].active === true;
     };
 

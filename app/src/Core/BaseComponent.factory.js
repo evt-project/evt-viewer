@@ -4,7 +4,7 @@ angular.module('evtviewer.core')
     })
     .factory('BaseComponent', function($window, $log, Config, Utils, BASECOMPONENTDEFAULTS) {
 
-        var BaseComponent = function(name, options) {
+        var BaseComponent = function (name, options) {
             this.name = name;
             this.options = angular.copy(BASECOMPONENTDEFAULTS);
 
@@ -33,8 +33,8 @@ angular.module('evtviewer.core')
             Config.modules[this.name] = this.options;
         };
 
-        BaseComponent.prototype.err = function() {
-            var fileErr = function() {
+        BaseComponent.prototype.err = function () {
+            var fileErr = function () {
                 try {
                     throw Error('');
                 } catch (err) {
@@ -50,7 +50,7 @@ angular.module('evtviewer.core')
             $log.error.apply(null, args);
         };
 
-        BaseComponent.prototype.log = function() {
+        BaseComponent.prototype.log = function () {
             if (Config.debugAllModules === true || this.options.debug === true) {
                 var args = Array.prototype.slice.call(arguments);
                 args.unshift('#' + this.name + '#');

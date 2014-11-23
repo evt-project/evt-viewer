@@ -17,5 +17,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'templates-main',
-    'evtviewer.core'
+    'evtviewer.core',
+    'evtviewer.communication',
+    'evtviewer.dataModel'
   ]);
