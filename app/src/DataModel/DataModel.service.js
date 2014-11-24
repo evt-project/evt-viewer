@@ -4,24 +4,34 @@ angular.module('evtviewer.dataModel')
 .service('DataModel', function (BaseComponent) {
     var dataModel = new BaseComponent('DataModel'),
         state = {
-            XMLData: []
+            XMLDocuments: [],
+            XMLStrings: []
         };
 
-    dataModel.addXMLString = function (xmlString) {
+    var xmlToDOM = function (xmlString) {
         var parseData = DOMParser ? (new DOMParser()).parseFromString(xmlString, 'text/xml') : ((new ActiveXObject('Microsoft.XMLDOM')).loadXML(xmlString));
         if (parseData.documentElement.nodeName !== 'parsererror' && parseData.documentElement.nodeName !== 'html') {
-            dataModel.addXMLData(parseData);
-            dataModel.log('XML string data parsed');
+            dataModel.addXMLDocument(parseData);
+            dataModel.log('XML data parsed and stored');
         }
-    }; 
-
-    dataModel.addXMLData = function (data) {
-        state.XMLData.push(data);
-        dataModel.log('Add XML data', state.XMLData);
     };
 
-    dataModel.getXMLData = function () {
-        return state.XMLData;
+    dataModel.addXMLString = function (xmlString) {
+        state.XMLStrings.push(xmlString);
+        xmlToDOM(xmlString);
+    }; 
+
+    dataModel.addXMLDocument = function (doc) {
+        state.XMLDocuments.push(doc);
+        dataModel.log('Add XML document', state.XMLDocuments);
+    };
+
+    dataModel.getXMLDocuments = function () {
+        return state.XMLDocuments;
+    };
+
+    dataModel.getXMLStrings = function () {
+        return state.XMLStrings;
     };
 
     return dataModel;
