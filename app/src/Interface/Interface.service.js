@@ -17,7 +17,6 @@ angular.module('evtviewer.interface')
     var mainInterface = new BaseComponent('Interface', INTERFACEDEFAULTS);
     
     mainInterface.boot = function () {
-        console.log(Config.dataUrl);
         Communication.getData(Config.dataUrl);
     };
 
