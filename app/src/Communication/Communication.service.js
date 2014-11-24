@@ -4,20 +4,20 @@ angular.module('evtviewer.communication')
     mode: 'xml'
 })
 
-.service('Communication', function ($http, BaseComponent, DataModel, COMMUNICATIONDEFAULTS) {
+.service('Communication', function($http, BaseComponent, DataModel, COMMUNICATIONDEFAULTS) {
     var communication = new BaseComponent('Communication', COMMUNICATIONDEFAULTS);
 
-    communication.getData = function (url) {
+    communication.getData = function(url) {
         $http.get(url)
-            .success(function(data){
-                if (typeof(data) ==='string') {
+            .success(function(data) {
+                if (typeof(data) === 'string') {
                     DataModel.addXMLString(data);
                     communication.log('XML Data received');
                 } else {
                     // TODO: JSON? 
                 }
             })
-            .error(function (){
+            .error(function() {
                 communication.err('Something wrong during loading');
             });
     };
