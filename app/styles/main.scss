@@ -1,4 +1,104 @@
 // $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // // bower:scss
- // @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
- // endbower
+// @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+@import "susy/sass/_susy.scss";
+@include border-box-sizing;
+
+$large:(
+	columns: 12,
+	container-position: center,
+	global-box-sizing: content-box,
+	gutters:0
+	);
+
+@include layout($large);
+/* Variables */
+
+$fontsize: 30px;
+$darkColor: rgb(54, 45, 40);
+$lightColor: rgb(245, 234, 212);
+$mainBackgroundImage: url("../images/bg-darker.jpg");
+$mainMinHeight: 600px;
+/* == END Variables */
+
+/* Mixins */
+@mixin colors($color, $background){
+	color: $color;
+	background: $background;
+}
+@mixin frame(){
+	@include span(5 of 12);	
+	@include colors($darkColor, $lightColor);
+	padding:20px;
+	border: 2px solid $darkColor;
+	overflow: hidden;
+	font-size: 18px;
+}
+@mixin mainNavArrow(){
+	span{
+		height: 59px;
+		top: 50%;
+		position: relative;
+	    transform: translateY(-50%);
+		opacity:0.5;
+	}
+    span:hover{
+    	opacity:1;
+    	cursor:pointer;
+    }
+}
+/* == END Mixins */
+
+body{
+	background: $mainBackgroundImage;
+	margin:0;
+	padding:0;
+}
+.container {
+  @include container();
+  min-height: $mainMinHeight;
+  overflow:hidden;
+  position:absolute;
+  font-size: $fontsize;
+  height:100%;
+  width:100%;
+}
+
+header, footer, section{
+	@include span(12 of 12);
+}
+header, footer{
+	height:7%;
+	padding: 10px;
+	@include colors($lightColor, $darkColor);
+}
+
+section{
+	height:86%;
+	padding:30px 0px;
+	text-align:center;
+}
+section div{
+	height:100%;
+	display: table-cell;
+  	vertical-align: middle;
+}
+
+#left-nav{
+	@include span(1 of 12);	
+	@include mainNavArrow();
+}
+#left-container{
+	@include frame();
+	border-right-width: 0.5px;
+}
+#right-container{
+	@include frame();
+	border-left-width: 0.5px;
+}
+#right-nav{
+	@include span(1 omega);	
+	@include mainNavArrow();
+}
