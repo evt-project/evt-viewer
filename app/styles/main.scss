@@ -7,10 +7,11 @@
 @include border-box-sizing;
 
 $large:(
-	columns: 12,
+	columns: 20,
 	container-position: center,
 	global-box-sizing: content-box,
-	gutters:0
+	gutters:0,
+	debug:(image:hide)
 	);
 
 @include layout($large);
@@ -29,7 +30,7 @@ $mainMinHeight: 600px;
 	background: $background;
 }
 @mixin frame(){
-	@include span(5 of 12);	
+	@include span(9 of 20);	
 	@include colors($darkColor, $lightColor);
 	padding:20px;
 	border: 2px solid $darkColor;
@@ -67,7 +68,7 @@ body{
 }
 
 header, footer, section{
-	@include span(12 of 12);
+	@include span(20 of 20);
 }
 header, footer{
 	height:7%;
@@ -87,15 +88,17 @@ section div{
 }
 
 #left-nav{
-	@include span(1 of 12);	
+	@include span(1 of 20);	
 	@include mainNavArrow();
 }
 #left-container{
 	@include frame();
+	box-shadow: 0px 2px 5px -3px rgba(0, 0, 0, 0.8);
 	border-right-width: 0.5px;
 }
 #right-container{
 	@include frame();
+	box-shadow: 0px 2px 5px -3px rgba(0, 0, 0, 0.8);
 	border-left-width: 0.5px;
 }
 #right-nav{
