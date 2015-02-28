@@ -1,0 +1,15 @@
+/* *************************** */
+/* FUNCTIONS */
+@function setFrameHeight($footer-display){
+	@if($footer-display == "without-footer"){
+		@return 100% - $base__header-height;
+	}
+	@else if($footer-display == "with-footer"){
+		@return 100% - ($base__header-height*2);	
+	}
+	@else {
+		@return 100%;	
+	}
+	
+}
+/* =========================== */

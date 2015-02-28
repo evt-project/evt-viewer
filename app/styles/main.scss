@@ -4,6 +4,9 @@
 // endbower
 
 @import "susy/sass/_susy.scss";
+@import "variables.scss";
+@import "functions.scss";
+
 @include border-box-sizing;
 
 $large:(
@@ -15,56 +18,89 @@ $large:(
 	);
 
 @include layout($large);
-/* Variables */
 
-$fontsize: 30px;
-$darkColor: rgb(54, 45, 40);
-$lightColor: rgb(245, 234, 212);
-$mainBackgroundImage: url("../images/bg-darker.jpg");
-$mainMinHeight: 600px;
-/* == END Variables */
+/* *************************** */
+/* FONTS */
+@font-face {
+    font-family: 'Junicode';
+    src: url('../fonts/Junicode.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Junicode-bold';
+    src: url('../fonts/Junicode-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Junicode-italic';
+    src: url('../fonts/Junicode-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+/* == END Fonts */
+/* =========================== */
 
+/* *************************** */
 /* Mixins */
 @mixin colors($color, $background){
 	color: $color;
 	background: $background;
 }
-@mixin frame(){
-	@include span(9 of 20);	
-	@include colors($darkColor, $lightColor);
-	padding:20px;
-	border: 2px solid $darkColor;
+@mixin box-shadow($shadow-options){
+	-moz-box-shadow:$shadow-options;
+	-webkit-box-shadow:$shadow-options;
+	-o-box-shadow:$shadow-options;
+	-khtml-box-shadow:$shadow-options;
+	-ms-box-shadow:$shadow-options;
+	box-shadow:$shadow-options;
+}
+
+@mixin main-frame(){
+	@include span(18 of 20);	
+	height: 100%;
+	border: 2px solid $base__color--dark;
 	overflow: hidden;
+	padding: 0px;
 	font-size: 18px;
 }
+@mixin frame(){
+	@include span(9 of 18);	
+	padding:20px;
+}
 @mixin mainNavArrow(){
-	span{
+	@include span(1 of 20);	
+	span {
 		height: 59px;
 		top: 50%;
 		position: relative;
 	    transform: translateY(-50%);
 		opacity:0.5;
 	}
-    span:hover{
+    span:hover {
     	opacity:1;
     	cursor:pointer;
     }
 }
+
+
 /* == END Mixins */
+/* =========================== */
+
 
 body{
-	background: $mainBackgroundImage;
+	@include container();
+	font-family: Junicode, Times, serif;
+	background: $base__backgroundImage;
 	margin:0;
 	padding:0;
-}
-.container {
-  @include container();
-  min-height: $mainMinHeight;
-  overflow:hidden;
-  position:absolute;
-  font-size: $fontsize;
-  height:100%;
-  width:100%;
+	min-height: $base__minHeight;
+	overflow:hidden;
+	position:absolute;
+	font-size: $base__fontSize;
+	height:100%;
+	width:100%;
 }
 
 header, footer, section{
@@ -73,11 +109,15 @@ header, footer, section{
 header, footer{
 	height:7%;
 	padding: 10px;
-	@include colors($lightColor, $darkColor);
+	@include colors($base__color--light, $base__color--dark);
 }
 
-section{
-	height:86%;
+footer{
+	display: none;
+}
+
+#global-container{
+	height:setFrameHeight("without-footer");
 	padding:30px 0px;
 	text-align:center;
 }
@@ -88,20 +128,22 @@ section div{
 }
 
 #left-nav{
-	@include span(1 of 20);	
 	@include mainNavArrow();
 }
-#left-container{
+#main-container{
+	@include main-frame();
+	@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+}
+#main-container__left{
 	@include frame();
-	box-shadow: 0px 2px 5px -3px rgba(0, 0, 0, 0.8);
+	@include colors($base__color--light, #000);
 	border-right-width: 0.5px;
 }
-#right-container{
+#main-container__right{
 	@include frame();
-	box-shadow: 0px 2px 5px -3px rgba(0, 0, 0, 0.8);
+	@include colors($base__color--dark, $base__color--light);
 	border-left-width: 0.5px;
 }
 #right-nav{
-	@include span(1 omega);	
 	@include mainNavArrow();
 }

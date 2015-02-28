@@ -35,20 +35,21 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container">
+    
 
-        <header>Header</header>
+    <header>Header</header>
 
-        <section>
-            <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div>
-            <div id="left-container">Left</div>
-            <div id="right-container">Right</div>
-            <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div>
+    <section id="global-container">
+        <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div>
+        <section id="main-container">
+            <div id="main-container__left">Left</div>
+            <div id="main-container__right">Right</div>
         </section>
+        <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div>
+    </section>
 
-        <footer>Footer</footer>
+    <footer>Footer</footer>
 
-    </div>
 
     <!-- TODO: change route system -->
     <div ng-view=""></div>
