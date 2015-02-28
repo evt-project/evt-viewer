@@ -48,23 +48,48 @@ $large:(
 	color: $color;
 	background: $background;
 }
-@mixin box-shadow($shadow-options){
+
+@mixin calc($property, $expression) { 
+  #{$property}: -moz-calc(#{$expression}); 
+  #{$property}: -o-calc(#{$expression}); 
+  #{$property}: -webkit-calc(#{$expression}); 
+  #{$property}: calc(#{$expression}); 
+} 
+
+@mixin set($property, $value) { 
+  -moz-#{$property}: #{$value}; 
+  -o-#{$property}: #{$value}; 
+  -webkit-#{$property}: #{$value};
+  -khtml-#{$property}: #{$value}; 
+  -ms-#{$property}: #{$value};
+  #{$property}: #{$value}; 
+} 
+
+/*@mixin box-shadow($shadow-options){
 	-moz-box-shadow:$shadow-options;
 	-webkit-box-shadow:$shadow-options;
 	-o-box-shadow:$shadow-options;
 	-khtml-box-shadow:$shadow-options;
 	-ms-box-shadow:$shadow-options;
 	box-shadow:$shadow-options;
-}
+}*/
 
 @mixin main-frame(){
 	@include span(18 of 20);	
-	height: 100%;
+	@include calc(height, #{setInsideFrameHeight()});
 	border: 2px solid $base__color--dark;
 	overflow: hidden;
 	padding: 0px;
 	font-size: 18px;
 }
+
+@mixin inside-header(){
+	@include span(9 of 18);
+	@include colors($base__color--light, $base__color--dark);
+	font-size: 16px;
+	padding:10px;
+}
+
 @mixin frame(){
 	@include span(9 of 18);	
 	padding:20px;
@@ -101,23 +126,28 @@ body{
 	font-size: $base__fontSize;
 	height:100%;
 	width:100%;
+
+	> header, 
+	> footer, 
+	>section {
+		@include span(20 of 20);
+	}
+
+	> header, 
+	> footer{
+		height:7%;
+		padding: 10px;
+		@include colors($base__color--light, $base__color--dark);
+	}
 }
 
-header, footer, section{
-	@include span(20 of 20);
-}
-header, footer{
-	height:7%;
-	padding: 10px;
-	@include colors($base__color--light, $base__color--dark);
-}
 
 footer{
-	display: none;
+	display: setVisibility($base__footer);
 }
 
 #global-container{
-	height:setFrameHeight("without-footer");
+	height:setGlobalFrameHeight();
 	padding:30px 0px;
 	text-align:center;
 }
@@ -132,8 +162,31 @@ section div{
 }
 #main-container{
 	@include main-frame();
-	@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+	//@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+	@include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8))
 }
+#main-container__menu-top{
+	@include span(18 of 20);
+	display: setVisibility($mainContainer__top-menu);
+}
+#main-container__menu-top__left{
+	@include inside-header();
+}
+#main-container__menu-top__right{
+	@include inside-header();
+}
+
+#main-container__menu-bottom{
+	@include span(18 of 20);	
+	display: setVisibility($mainContainer__bottom-menu);
+}
+#main-container__menu-bottom__left{
+	@include inside-header();
+}
+#main-container__menu-bottom__right{
+	@include inside-header();
+}
+
 #main-container__left{
 	@include frame();
 	@include colors($base__color--light, #000);

@@ -1,15 +1,36 @@
 /* *************************** */
 /* FUNCTIONS */
-@function setFrameHeight($footer-display){
-	@if($footer-display == "without-footer"){
+@function setGlobalFrameHeight(){
+	@if($base__footer == false){
 		@return 100% - $base__header-height;
 	}
-	@else if($footer-display == "with-footer"){
+	@else if($base__footer == true){
 		@return 100% - ($base__header-height*2);	
 	}
 	@else {
 		@return 100%;	
 	}
 	
+}
+
+@function setInsideFrameHeight(){
+	@if($mainContainer__top-menu == true and $mainContainer__bottom-menu == true){
+		@return "100% -  #{$mainContainer__menu-height*2}";
+	}
+	@else if($mainContainer__top-menu == true or $mainContainer__bottom-menu == true){
+		@return "100% -  #{$mainContainer__menu-height}";
+	} 
+	@else {
+		@return 100%;	
+	}
+	
+}
+
+@function setVisibility($visible){
+	@if($visible == true){
+		@return block;
+	} @else {
+		@return none;
+	}
 }
 /* =========================== */
