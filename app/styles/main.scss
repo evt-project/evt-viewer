@@ -76,8 +76,8 @@ $large:(
 
 @mixin main-frame(){
 	@include span(18 of 20);	
-	@include calc(height, #{setInsideFrameHeight()});
-	border: 2px solid $base__color--dark;
+	height: 100%;
+	border: $mainContainer__border-width solid $base__color--dark;
 	overflow: hidden;
 	padding: 0px;
 	font-size: 18px;
@@ -91,11 +91,14 @@ $large:(
 }
 
 @mixin frame(){
-	@include span(9 of 18);	
-	padding:20px;
+	@include span(9 of 18);
+	@include calc(height, #{setInsideFrameHeight()});	
+	padding:4% 4%;
 }
 @mixin mainNavArrow(){
 	@include span(1 of 20);	
+	text-align: center;
+
 	span {
 		height: 59px;
 		top: 50%;
@@ -129,14 +132,14 @@ body{
 
 	> header, 
 	> footer, 
-	>section {
+	> section {
 		@include span(20 of 20);
 	}
 
 	> header, 
 	> footer{
 		height:7%;
-		padding: 10px;
+		padding: 10px 30px;
 		@include colors($base__color--light, $base__color--dark);
 	}
 }
@@ -149,11 +152,10 @@ footer{
 #global-container{
 	height:setGlobalFrameHeight();
 	padding:30px 0px;
-	text-align:center;
 }
 section div{
 	height:100%;
-	display: table-cell;
+	display: block;
   	vertical-align: middle;
 }
 
@@ -166,7 +168,7 @@ section div{
 	@include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8))
 }
 #main-container__menu-top{
-	@include span(18 of 20);
+	@include span(18 of 18);
 	display: setVisibility($mainContainer__top-menu);
 }
 #main-container__menu-top__left{
@@ -177,7 +179,8 @@ section div{
 }
 
 #main-container__menu-bottom{
-	@include span(18 of 20);	
+	@include span(18 of 18);
+	float: left;	
 	display: setVisibility($mainContainer__bottom-menu);
 }
 #main-container__menu-bottom__left{
@@ -194,9 +197,16 @@ section div{
 }
 #main-container__right{
 	@include frame();
-	@include colors($base__color--dark, $base__color--light);
+	@include colors($base__color--dark, #fff);
 	border-left-width: 0.5px;
+	overflow-y: scroll;
 }
+
+#text_cont{
+	height: auto;
+	margin-bottom: 30px;
+}
+
 #right-nav{
 	@include mainNavArrow();
 }
