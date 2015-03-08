@@ -14,7 +14,7 @@ $large:(
 	container-position: center,
 	global-box-sizing: content-box,
 	gutters:0,
-	debug:(image:hide)
+	debug:(image:show)
 	);
 
 @include layout($large);
@@ -84,17 +84,24 @@ $large:(
 }
 
 @mixin inside-header(){
-	@include span(9 of 18);
+	@include span(9 of 9);	
 	@include colors($base__color--light, $base__color--dark);
 	font-size: 16px;
 	padding:10px;
+	display: block;
+	float: none;
 }
 
 @mixin frame(){
 	@include span(9 of 18);
-	@include calc(height, #{setInsideFrameHeight()});	
-	padding:4% 4%;
+	height:100%;
 }
+
+@mixin frameBody(){	
+	padding:4% 4%;
+	@include calc(height, #{setInsideFrameHeight()});
+}
+
 @mixin mainNavArrow(){
 	@include span(1 of 20);	
 	text-align: center;
@@ -165,41 +172,47 @@ section div{
 #main-container{
 	@include main-frame();
 	//@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
-	@include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8))
-}
-#main-container__menu-top{
-	@include span(18 of 18);
-	display: setVisibility($mainContainer__top-menu);
-}
-#main-container__menu-top__left{
-	@include inside-header();
-}
-#main-container__menu-top__right{
-	@include inside-header();
-}
-
-#main-container__menu-bottom{
-	@include span(18 of 18);
-	float: left;	
-	display: setVisibility($mainContainer__bottom-menu);
-}
-#main-container__menu-bottom__left{
-	@include inside-header();
-}
-#main-container__menu-bottom__right{
-	@include inside-header();
+	@include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
 }
 
 #main-container__left{
 	@include frame();
 	@include colors($base__color--light, #000);
 	border-right-width: 0.5px;
+
+	#main-container__left__menu-top{
+		@include inside-header();
+		display: setVisibility($mainContainer__top-menu);
+	}
+
+	#main-container__left__body{
+		@include frameBody();
+	}
+
+	#main-container__left__menu-bottom{
+		@include inside-header();	
+		display: setVisibility($mainContainer__bottom-menu);
+	}
 }
 #main-container__right{
 	@include frame();
 	@include colors($base__color--dark, #fff);
 	border-left-width: 0.5px;
-	overflow-y: scroll;
+
+	#main-container__right__menu-top{
+		@include inside-header();
+		display: setVisibility($mainContainer__top-menu);
+	}
+
+	#main-container__right__body{
+		@include frameBody();
+		overflow-y: scroll;
+	}
+
+	#main-container__right__menu-bottom{
+		@include inside-header();	
+		display: setVisibility($mainContainer__bottom-menu);
+	}
 }
 
 #text_cont{
@@ -210,3 +223,5 @@ section div{
 #right-nav{
 	@include mainNavArrow();
 }
+
+@import "selector.scss";
