@@ -1,6 +1,8 @@
-angular.module('evtviewer.selector')
-.constant('SELECTORDEFAULTS', { 
-	/**
+angular.module('evtviewer.Selector')
+
+// TODO: add default expanded, add default width, etc.
+.constant('SELECTORDEFAULTS', {
+    /**
      * @module punditConfig
      * @ngdoc property
      * @name modules#Dashboard.containerHeight
@@ -15,26 +17,42 @@ angular.module('evtviewer.selector')
      */
     containerMaxHeight: 170
 })
-.service('selector', function($rootScope, BaseComponent, SELECTORDEFAULTS) {
-	var selector = new BaseComponent('Selector', SELECTORDEFAULTS);
 
-	var focusedName = '';
+.service('Selector', function($rootScope, BaseComponent, SELECTORDEFAULTS) {
+    var selector = new BaseComponent('Selector', SELECTORDEFAULTS);
 
-	/*** OPTION CONTAINER ***/
-	// Toggle option container
-	selector.setFocused = function(name){
-		if (focusedName === name) {
-			focusedName = '';
-		} else {
-			focusedName = name;
-		}
-	};
+    var state = {
+        selectors: []
+    };
 
-	selector.getFocusedName = function(){
-		return focusedName;
-	};
+    var focusedName = '';
 
-	selector.log('Service running');
+    /*** OPTION CONTAINER ***/
+    // Toggle option container
+    selector.setFocused = function(name) {
+        if (focusedName === name) {
+            focusedName = '';
+        } else {
+            focusedName = name;
+        }
+    };
 
-	return selector;
+    selector.getFocusedName = function() {
+        return focusedName;
+    };
+
+    selector.addReference = function(scope) {
+        var currentTitle = scope.title;
+
+        if (typeof(state.selectors[currentTitle]) === 'undefined') {
+            state.selectors[currentTitle] = {
+                title: currentTitle
+                    // expanded, width, optionSelected, options
+            };
+        }
+    };
+
+    selector.log('Service running');
+
+    return selector;
 });
