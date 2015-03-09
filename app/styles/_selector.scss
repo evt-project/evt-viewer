@@ -1,0 +1,84 @@
+.evtviewer-selector{
+	position: relative;
+    left: 0px;
+	font-size: 1em;
+	display: inline-block;
+	background:$base__color--light;
+	color: $base__color--dark;
+	text-align: left;
+	height: 28px;
+	overflow: visible;
+	min-width: 80px;
+	@include set(box-shadow, 0px 2px 4px rgba(0, 0, 0, 0.4));
+	@include set(border-radius, 2px);
+
+	.label_selected{
+		margin: 0px 4px;
+	    top: 3.5px;
+	   	position: relative;	
+	}
+
+	.open_options{
+		width: 24px;
+		text-align: center;
+		position: absolute;
+		right: 0px;
+		top: 0px;
+		height: 28px;
+		border-left: 1px solid #d9d7d7;
+		cursor: pointer;
+		background:#ccc4ba;
+		opacity: 0.5;
+		border-radius: 0 2px 2px 0;
+
+		:hover{
+			opacity: 1;
+		}
+
+		.fa{
+			text-shadow:none !important;
+		}
+	}
+
+	.option_container{
+		position: absolute;
+		overflow-y:auto;
+		background:$base__color--light;
+		width: auto;
+		left: 0px;
+		top: 5px;
+		max-height: 170px;
+		z-index: 400;
+		top:30px;
+		@include set(box-shadow, 0px 2px 5px rgba(0, 0, 0, 0.7));
+
+		.option{
+			background: $base__color--light;
+			color: $base__color--dark;
+			position: relative;
+			padding: 5px;
+			width: 100%;
+			color: $base__color--dark;
+			left: 0px;
+			border-bottom: solid 1px $base__color--dark;
+			cursor: pointer;
+			height:100%;
+
+			:hover{
+				background: rgb(126,108,95);
+				color:#fff;
+			}
+		}
+
+		.option.selected{
+			background: $base__color--dark;
+			color: $base__color--light;
+			cursor: default;
+
+			:hover{
+				background: $base__color--dark;
+				color: $base__color--light;
+			}
+		}
+	}
+}

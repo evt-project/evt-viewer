@@ -21,5 +21,6 @@ angular
     'evtviewer.core',
     'evtviewer.communication',
     'evtviewer.dataModel',
-    'evtviewer.interface'
+    'evtviewer.interface',
+    'evtviewer.selector'
   ]);

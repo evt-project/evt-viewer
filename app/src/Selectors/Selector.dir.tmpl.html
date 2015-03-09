@@ -1,0 +1,13 @@
+<div class="evtviewer-selector">
+   <span class="label_selected" data-value="{{optionSelected.value}}">
+         {{optionSelected.label}}
+   </span>
+   <div class="open_options" ng-click="toggleOptionContainer()">
+      <i class="fa fa-sort-asc"></i>
+   </div>
+   <div class="option_container" ng-show="optionContainerOpened">
+      <div ng-repeat="option in optionList" class="option" title="{{option.title}}" data-value="{{option.value}}" ng-click="selectOption(option)" ng-class="{'selected': option.value==optionSelected.value}">
+         {{option.label}}
+      </div>
+   </div>
+</div>
