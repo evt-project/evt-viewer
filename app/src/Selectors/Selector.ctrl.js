@@ -6,46 +6,15 @@ angular.module('evtviewer.selector')
 
     Selector.addReference($scope);
 
-    $scope.optionSelected = {
-        label: 'Select...',
-        value: 'selecting'
-    };
-
-    $scope.containerWidth = 0;
-    $scope.optionContainerOpened = false;
-    $scope.optionList = [];
-
-    /* OPTION LIST */
-    var populateSelector = function() {
-        var pre = $scope.title;
-        $scope.addOption(pre + '-Prova', pre + '-prova', pre + '-Titolo Prova');
-    };
-
-    $scope.addOption = function(option) {
-        $scope.optionList.push(option);
-    };
-
-    $scope.addOption = function(optLabel, optValue, optTitle) {
-        var option = {
-            label: optLabel,
-            value: optValue,
-            title: optTitle
-        };
-        $scope.optionList.push(option);
+    $scope.selector = Selector.getReference($scope.title);
+    
+    $scope.toggleExpand = function() {
+        Selector.log('Controller - Toggle expand for ' + $scope.title);
+        Selector.toggleExpand($scope.title);
     };
 
     $scope.selectOption = function(option) {
-        Selector.log('Selecting option with value= ' + option.value);
-        $scope.toggleOptionContainer();
-        $scope.optionSelected = option;
-    };
-
-    /* OPTION CONTAINER */
-
-    $scope.toggleOptionContainer = function() {
-        Selector.log('Toggle Option Container of ' + $scope.title);
-        $scope.optionContainerOpened = !$scope.optionContainerOpened;
-        Selector.setFocused($scope.title);
+        Selector.selectOption($scope.title, option);
     };
 
     /*$scope.isSelectorFocused = function(){
@@ -56,18 +25,6 @@ angular.module('evtviewer.selector')
     		return $scope.title === selectorOpened;	
     	}
     };*/
-    $scope.$watch(function() {
-        return Selector.getFocusedName();
-    }, function(selectorOpened) {
-        if (selectorOpened === '') {
-            $scope.optionContainerOpened = false;
-        } else {
-            $scope.optionContainerOpened = ($scope.title === selectorOpened);
-        }
-    });
-
-    populateSelector();
 
     Selector.log($scope.title);
-    Selector.log($scope.optionContainerOpened);
 });

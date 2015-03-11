@@ -1,24 +1,24 @@
 <div class="evtviewer-selector">
    <span 
       class="label_selected" 
-      data-value="{{optionSelected.value}}">
-         {{optionSelected.label}}
+      data-value="{{selector.optionSelected.value}}">
+         {{selector.optionSelected.label}}
    </span>
    <div 
       class="open_options" 
-      ng-click="toggleOptionContainer()">
+      ng-click="toggleExpand()">
       <i class="fa fa-sort-asc"></i>
    </div>
    <div 
       class="option_container" 
-      ng-show="optionContainerOpened">
+      ng-show="selector.expanded">
       <div 
          class="option" 
          title="{{option.title}}" 
-         ng-repeat="option in optionList" 
          data-value="{{option.value}}" 
+         ng-repeat="option in selector.optionList" 
          ng-click="selectOption(option)" 
-         ng-class="{'selected': option.value==optionSelected.value}">
+         ng-class="{'selected': option.value==selector.optionSelected.value}">
          {{option.label}}
       </div>
    </div>
