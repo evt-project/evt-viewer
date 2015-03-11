@@ -4,7 +4,7 @@ angular.module('evtviewer.selector')
     return {
         restrict: 'E',
         scope: {
-            title: '@title'
+            id: '@'
         },
         templateUrl: 'src/Selectors/Selector.dir.tmpl.html',
         controller: 'SelectorCtrl'

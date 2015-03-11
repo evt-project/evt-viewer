@@ -2,29 +2,20 @@ angular.module('evtviewer.selector')
 
 .controller('SelectorCtrl', function($document, $window, $rootScope, $scope, Selector) {
     //var currentSelector = angular.element.find('.evtviewer-selector');
-    Selector.log('Controller Running for ' + $scope.title);
+    Selector.log('Controller Running for ' + $scope.id);
 
     Selector.addReference($scope);
 
-    $scope.selector = Selector.getReference($scope.title);
+    $scope.selector = Selector.getReference($scope.id);
     
     $scope.toggleExpand = function() {
-        Selector.log('Controller - Toggle expand for ' + $scope.title);
-        Selector.toggleExpand($scope.title);
+        Selector.log('Controller - Toggle expand for ' + $scope.id);
+        Selector.toggleExpand($scope.id);
     };
 
     $scope.selectOption = function(option) {
-        Selector.selectOption($scope.title, option);
+        Selector.selectOption($scope.id, option);
     };
 
-    /*$scope.isSelectorFocused = function(){
-    	var selectorOpened = selector.getFocusedName();
-    	if(selectorOpened === ''){
-    		return false;
-    	} else {
-    		return $scope.title === selectorOpened;	
-    	}
-    };*/
-
-    Selector.log($scope.title);
+    Selector.log($scope.id);
 });
