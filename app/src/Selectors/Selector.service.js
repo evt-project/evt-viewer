@@ -2,7 +2,7 @@ angular.module('evtviewer.selector')
 
 // TODO: add default expanded, add default width, etc.
 .constant('SELECTORDEFAULTS', {
-    
+
     defaultExpanded: false,
 
     defaultWidth: 150,
@@ -20,7 +20,7 @@ angular.module('evtviewer.selector')
     var selector = new BaseComponent('Selector', SELECTORDEFAULTS);
 
     var state = {
-        selectors: []
+        selectors: {}
     };
 
 
@@ -45,70 +45,65 @@ angular.module('evtviewer.selector')
         }
     };
 
-    selector.addOption = function(currentId, option){
+    selector.addOption = function(currentId, option) {
         if (state.selectors[currentId] !== 'undefined') {
             state.selectors[currentId].optionList.push(option);
         }
     };
 
     /* GET MOCK DATA*/
-    selector.populate = function(currentId){
+    selector.populate = function(currentId) {
         var i = 0;
         var option = {};
 
         if (currentId === 'Pages') {
-            for(i=1; i<=6; i++){
+            for (i = 1; i <= 6; i++) {
                 option = {
-                            label: 'Page '+i,
-                            value: 'page'+i,
-                            title: 'Page '+i
-                        };
+                    label: 'Page ' + i,
+                    value: 'page' + i,
+                    title: 'Page ' + i
+                };
                 selector.addOption(currentId, option);
             }
         } else if (currentId === 'Documents') {
-            for(i=1; i<=5; i++){
+            for (i = 1; i <= 5; i++) {
                 option = {
-                            label: 'Doc '+i,
-                            value: 'doc'+i,
-                            title: 'Doc '+i
-                        };
+                    label: 'Doc ' + i,
+                    value: 'doc' + i,
+                    title: 'Doc ' + i
+                };
                 selector.addOption(currentId, option);
             }
         } else if (currentId === 'EditionLevels') {
-            for(i=1; i<=2; i++){
+            for (i = 1; i <= 2; i++) {
                 option = {
-                            label: 'Level '+i,
-                            value: 'level'+i,
-                            title: 'Level '+i
-                        };
+                    label: 'Level ' + i,
+                    value: 'level' + i,
+                    title: 'Level ' + i
+                };
                 selector.addOption(currentId, option);
             }
         }
     };
 
-    selector.closeAll = function() {
-        for (var sel in state.selectors) {
-            state.selectors[sel].expanded = false;
-        }
-    };
+    // TODO: java way? :) do we really need it? 
+    // selector.closeAll = function() {
+    //     for (var sel in state.selectors) {
+    //         state.selectors[sel].expanded = false;
+    //     }
+    // };
 
-    selector.closeAll = function(currentId) {
-        for (var sel in state.selectors) {
-            if(sel !== currentId){
-                state.selectors[sel].expanded = false;
+    selector.closeAll = function(skipId) {
+        angular.forEach(state.selectors, function(currentSelector, currentId) {
+            if (currentId !== skipId) {
+                currentSelector.expanded = false;
             }
-        }
+        });
     };
 
     selector.toggleExpand = function(currentId) {
         if (state.selectors[currentId] !== 'undefined') {
-
             selector.closeAll(currentId);
-            
-            // angular.forEach(state.selectors, function(item) {
-            //    item.expanded = false;
-            // });
-
             state.selectors[currentId].expanded = !state.selectors[currentId].expanded;
         }
     };
