@@ -174,6 +174,11 @@ module.exports = function (grunt) {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
+      },
+      // TODO: temp mobile
+      mobile: {
+        src: ['<%= yeoman.app %>/mobile.html'],
+        ignorePath:  /\.\.\//
       }
       // TODO: overwrite bootstrap style in EVT css
       // sass: {
