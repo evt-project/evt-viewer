@@ -53,9 +53,12 @@ module.exports = function (grunt) {
       // },
       html: {
         files: [
-            '<%= yeoman.app %>/**/*.tmpl.html'
+            '<%= yeoman.app %>/src/**/*.tmpl.html'
         ],
-        tasks: ['html2js']
+        tasks: ['html2js'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
       },
       livereload: {
         options: {
