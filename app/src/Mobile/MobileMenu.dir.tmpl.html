@@ -1,0 +1,51 @@
+<header role="banner" >
+    <nav 
+        id="main_nav" 
+        role="navigation">
+        <ul>
+            <li 
+                id="{{item.id}}" 
+                class="nav_link" 
+                ng-repeat="item in menu">
+
+                <i class="{{item.icon}}"></i> {{item.description}}
+            </li>
+
+            <li 
+                id="settings" 
+                class="nav_link"
+                ng-class="{'active': set}" 
+                ng-click="setToggle()">
+            
+                <i class="fa fa-wrench"></i>
+            </li>
+
+            <li 
+                id="view" 
+                class="nav_link" 
+                ng-class="{'active': view_subItems}" 
+                ng-click="viewToggle()">
+                
+                <i class="fa fa-eye"></i>
+                <ul 
+                    class="submenu" 
+                    ng-show="view_subItems">
+            
+                    <li 
+                        id="{{subItem.id}}" 
+                        ng-repeat="subItem in view">
+
+                        <div class="sub_icon">
+                            <i class="{{subItem.icon1}}"></i>
+                            <i class="{{subItem.icon2}}"></i>
+                        </div>
+                        <div class="sub_cont">
+                            <p>{{subItem.content}}</p>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
