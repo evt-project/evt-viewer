@@ -4,60 +4,63 @@ angular.module('evtviewer.mobile')
 
     $scope.menu = [{
         id: "DVB",
-        link: "#dvb",
+        template: "dvb",
         description: "The Digital Vercelli Book",
     }, {
         id: "thumb",
-        link: "#thumb",
+        template: "thumbnails",
         icon: "fa fa-th",
-        subItems: [],
     }, {
         id: "search",
-        link: "#search",
+        template: "search",
         icon: "fa fa-search",
     }, ];
 
     $scope.view = [{
         id: "view_image",
-        link: "#image",
         icon1: "fa fa-picture-o",
-        content: "Image",
+        template: "image",
     }, {
         id: "view_text",
-        link: "#text",
         icon1: "fa fa-align-left",
-        content: "Text",
+        template: "text",
     }, {
         id: "view_image_image",
-        link: "#image_image",
         icon1: "fa fa-file-image-o",
         icon2: "fa fa-file-image-o",
-        content: "Image+Image",
+        template: "imageimage",
     }, {
         id: "view_image_text",
-        link: "#image_text",
         icon1: "fa fa-file-image-o",
         icon2: "fa fa-file-text-o",
-        content: "Image+Text",
+        template: "imagetext",
     }, {
         id: "view_text_text",
-        link: "#text_text",
         icon1: "fa fa-file-text-o",
         icon2: "fa fa-file-text-o",
-        content: "Text+Text",
+        template: "texttext",
     }, ];
 
 
-    $scope.set = false;
-    $scope.setToggle = function() {
-        // $scope.set = !$scope.set;
-        if (Mobile.getCurrentView() === 'texttext'){
-            Mobile.switchView('textimg');
-        } else {
-            Mobile.switchView('texttext');
-        }
-        
+    
+    // $scope.DVB = function() {
+    //     if (Mobile.getCurrentView() ==='texttext'){
+    //         Mobile.switchView('DVB');
+    //     } else {
+    //         Mobile.switchView('texttext');
+    //     }
+    // };
+
+  
+
+    $scope.showTemplate = function(currentTemplate){
+        console.log('template corrente ' + currentTemplate);
+        Mobile.switchView(currentTemplate);
     };
+
+    
+   
+
 
     $scope.view_subItems = false;
     $scope.viewToggle = function() {

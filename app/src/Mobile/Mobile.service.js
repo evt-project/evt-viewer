@@ -17,6 +17,7 @@ angular.module('evtviewer.mobile')
 
     mobile.switchView = function(view) {
         state.currentView = view;
+        mobile.log('Switch of current view in: ' + view);
     };
 
     return mobile;

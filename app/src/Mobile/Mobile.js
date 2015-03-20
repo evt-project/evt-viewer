@@ -1,7 +1,7 @@
 /**
  * @ngdoc module
- * @name evtviewer.Selector
- * @module evtviewer.Selector
+ * @name evtviewer.Mobile
+ * @module evtviewer.Mobile
  * @description ...
 **/
 angular.module('evtviewer.mobile', []);
