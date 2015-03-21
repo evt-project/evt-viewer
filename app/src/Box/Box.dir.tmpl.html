@@ -1,0 +1,12 @@
+<section class="box box-{{boxtitle}}" data-position="left">
+    <div class="box-menu" data-position="top">
+        <selector ng-repeat="selector in box.header.selectors" data-id="{{selector.id}}"></selector>
+        <!--<selector data-id="Pages" ng-if="boxtitle==='image'"></selector>
+        <selector data-id="Documents" ng-if="boxtitle==='text'"></selector>
+        <selector data-id="EditionLevels" ng-if="boxtitle==='text'"></selector>-->
+    </div>
+    <div class="box-body">
+        {{box.content}}
+    </div>
+    <div class="box-menu" data-position="bottom"></div>
+</section>

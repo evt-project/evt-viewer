@@ -22,5 +22,6 @@ angular
     'evtviewer.communication',
     'evtviewer.dataModel',
     'evtviewer.interface',
+    'evtviewer.box',
     'evtviewer.selector'
   ]);

@@ -86,8 +86,9 @@ $large:(
 @mixin inside-header(){
 	@include span(9 of 9);	
 	@include colors($base__color--light, $base__color--dark);
+    height: $mainContainer__menu-height;
 	font-size: 16px;
-	padding:10px;
+	padding: 6px;
 	display: block;
 	float: none;
 }
@@ -225,3 +226,4 @@ section div{
 }
 
 @import "selector.scss";
+@import "box.scss";

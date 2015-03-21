@@ -1,0 +1,35 @@
+.box {
+    @include frame();
+    @include colors($base__color--dark, $base__color--light);
+    
+    &[data-position='left'] {
+        border-right-width: 0.5px;
+    }
+
+    &[data-position='right'] {
+        border-left-width: 0.5px;
+    }
+}
+.box-image {
+    @include colors($base__color--light, #000);
+    border-right-width: 0.5px;
+}
+
+.box-text {
+    @include colors($base__color--dark, #fff);
+    border-left-width: 0.5px;
+
+    .box-body {
+        overflow-y: scroll;
+    }
+
+}
+
+.box-menu {
+    @include inside-header();
+    display: setVisibility($mainContainer__top-menu);
+}
+
+.box-body {
+    @include frameBody();
+}
