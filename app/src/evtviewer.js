@@ -16,6 +16,7 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
+    'ngTouch',
     'templates-main',
     'xml',
     'evtviewer.core',
@@ -23,5 +24,6 @@ angular
     'evtviewer.dataModel',
     'evtviewer.interface',
     'evtviewer.box',
-    'evtviewer.selector'
+    'evtviewer.selector',
+    'evtviewer.mobile'
   ]);

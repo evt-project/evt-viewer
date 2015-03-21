@@ -1,0 +1,320 @@
+/* ALL MOBILE DEVICES ====================================== */ 
+
+@media screen  {
+    
+    
+    /* Normalize ------------------------------------------- */
+    html {
+        overflow: hidden;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    
+    body { min-height: 0; !important}
+    
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        border: 0;
+        display: block;
+        min-height: 0; !important
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;      
+    }
+    
+    span {display: inline-block;};
+    
+
+    /* Typography ------------------------------------------- */
+    
+    @font-face {
+        font-family: 'Junicode';
+        src: url('../fonts/Junicode.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Junicode-bold';
+        src: url('../fonts/Junicode-Bold.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Junicode-italic';
+        src: url('../fonts/Junicode-Italic.woff') format('woff');
+        font-weight: normal;
+        font-style: italic;
+    }
+            
+    html, body {
+        font-family: Junicode, Times, serif;
+        background: #000;
+        color: #FFF;
+    }
+    
+    
+    
+    
+    
+    
+    
+    /* Menu ----------------------------------------------- */
+    #main_nav{
+        width: 100%;
+        height:auto;
+        margin: 0;
+        display: block;
+        z-index: 10;
+    }
+    
+    #main_nav ul{
+        width: 100%;
+        height: 100%;
+        list-style: none;
+        float: left;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row; 
+    }
+    
+    .nav_link {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        width:100%;
+        top: 0;
+        left: 0;
+        height: auto;
+        text-align: center;
+        list-style-type: none;
+        text-decoration: none;
+        float: left;
+        cursor: pointer;
+        color:#CCC;
+        background: #666; 
+        line-height: 1.5em;
+        font-size: 1.7em;
+        text-shadow: 2px 2px 3px #333;
+        -moz-box-shadow: 0 5px 5px -5px #000;
+        -webkit-box-shadow: 0 5px 5px -5px #000;
+        box-shadow: 0 5px 5px -5px #000;
+    }
+
+
+    a {
+        color: #CCC;
+        text-decoration: none;
+        text-shadow: 2px 2px 3px #333;
+    }
+
+    
+    
+    .fa{
+        color: #CCC;
+        text-decoration: none;
+        text-shadow: 2px 2px 3px #333;
+    }
+    
+       
+    /*.active .fa {
+        text-shadow:none;
+        color: #CCC;
+    }*/
+    
+    
+
+    /* Submenu: View ------------------------------------------- */
+    .submenu{
+        z-index: 8;
+        width: 100%;
+        height:auto;
+        -moz-box-shadow: 0 5px 5px -5px black;
+        -webkit-box-shadow: 0 5px 5px -5px black;
+        box-shadow: 0 5px 5px -5px black;
+
+    }
+    
+    .submenu li{
+        color: #CCC;
+        width: 100%;
+        height: 100%;
+        line-height: 1.2em;
+        border-top: #333 1px solid;
+    }
+
+    .submenu li+li {border:none;}
+
+    #view .sub_cont {display: none;}
+
+    #view .sub_icon {
+        margin: 0.3em 0 0.3em 0;
+    }
+        
+    .view_icon {
+        width: 100%;
+        font-size: 0.8em;
+    }
+
+
+    /* Template: -------------------------- */
+        
+    .template{
+        width: 100%;
+        height: 100%;
+        position:absolute;
+        z-index: -2;
+        padding-top: 3.5em;
+    }
+
+    .temp_grey{
+        background:#333;
+    }
+    
+    .temp_black{
+        background:#000;
+    }
+
+    .temp_grey p {
+        padding: 2.5em;
+        color: #FFF;
+    } 
+
+
+    /* Template: DVB -------------------- */
+    #dvb_list {
+        width:100%;
+        padding:1em 2.5em 1em 2.5em;
+        background: #666;
+    }
+
+    #dvb_list a {
+        color: #CCC;
+        text-decoration: none;
+
+    }
+
+    /* Template: Image, Text, ImageImage, ImageText, TextText -- */
+
+    
+
+
+    /* Section: Settings ----------------------------------------- */
+    
+    #settings_open{
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        overflow: hidden;
+        z-index: 5;
+        -moz-box-shadow: 5px 5px 5px 7px #000;
+        -webkit-box-shadow:5px 5px 5px 7px #000;
+        box-shadow: 5px 5px 5px 7px #000;
+    }
+
+    
+    .tool{
+        padding: 0.2em 0;
+        text-decoration: none;
+        margin: 0 auto;
+        list-style: none;
+        text-align:center;
+        font-size: 1.1em;
+        background: #666;
+        float: left;
+        color: #CCC;
+        text-shadow: 2px 2px 3px #000;
+    }
+
+    .tool_large {width:50%}
+    .tool_small {width:25%}
+
+    .active_tool {
+        background: #333;
+        text-shadow: none;
+    }
+
+
+
+    /* SMARTPHONE ================================================ */ 
+@media screen and (max-width: 479px) {
+
+    /* Menu -------------------------------------------------- */ 
+    #DVB{
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 1.5em;
+    }
+    
+    #thumb, #search, #settings, #view {width: 25%; font-size: 1.5em;}
+
+    #view_image_image, #view_image_text, #view_text_text {display: none;}
+
+
+    /* Partial: View Text ------------------------------------------- */
+    .text_slide {
+        width: 100%;
+        padding-left: 0;
+        background: #FFF;
+    }
+
+    #central_wrapper{
+        width:100%;
+        height: auto;
+    }
+
+    #text_frame {
+        color:#000;
+        max-width: 100%;
+        font-size: 1em;
+        padding-left:0;
+    }
+    
+
+} 
+
+/* TABLET PORTRAIT ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+    /* Menu -------------------------------------------------- */ 
+    
+    #DVB{
+        width: 100%;
+        height: auto;
+        float: left;
+    }
+    
+    #thumb, #search, #settings, #view{width: 25%;}
+    
+}
+
+/* TABLET LANDSCAPE ============================================ */
+@media screen and (min-width: 801px) {
+ 
+    /* Menu -------------------------------------------------- */ 
+    
+    #DVB{
+        width: 50%;
+        height: auto;
+        float: left;
+    }
+    
+    #thumb, #search, #settings, #view{width: 12.5%;}
+    
+}

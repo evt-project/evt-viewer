@@ -23,10 +23,11 @@
     <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link>
     <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link>
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/mobile.css"></link>
     <!-- endbuild -->
     
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <!-- <link rel="stylesheet" href="styles/main.css"> -->
     <!-- endbuild -->
   </head>
   <body ng-app="evtviewer">
@@ -34,14 +35,8 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    
-
-    <span>Mobile here</span>
-
-
-    <!-- TODO: change route system -->
-    <div ng-view=""></div>
+    <!-- Add your site or application content here -->   
+    <main-mobile></main-mobile> 
     
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--
@@ -74,6 +69,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-xml/angular-xml.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -107,7 +103,13 @@
 
     <!-- add js mobile -->
 
-    <!-- here -->
+    <script src="/src/Mobile/Mobile.js"></script>
+    <script src="/src/Mobile/Mobile.service.js"></script>
+    <script src="/src/Mobile/Mobile.dir.js"></script>
+    <script src="/src/Mobile/MobileMenu.ctrl.js"></script>
+    <script src="/src/Mobile/MobileMenu.dir.js"></script>
+    <script src="/src/Mobile/MobileView.ctrl.js"></script>
+    <script src="/src/Mobile/MobileView.dir.js"></script>
 
     <!-- end js mobile -->
 
