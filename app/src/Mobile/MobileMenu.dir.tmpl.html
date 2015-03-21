@@ -6,11 +6,11 @@
             <li 
                 id="{{item.id}}" 
                 class="nav_link"
-                  
                 ng-repeat="item in menu">
                 <a 
+                    href="" 
                     ng-click="showTemplate(item.template)" 
-                    alt="{{item.template}}">
+                    alt="{{item.description}} {{item.template}}">
 
                     <i class="{{item.icon}}"></i>
                     <span>{{item.description}}</span>

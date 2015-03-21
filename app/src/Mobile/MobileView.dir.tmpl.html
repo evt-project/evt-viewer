@@ -1,5 +1,6 @@
 <!-- Template: Digital Vercelli Book -->
 <section 
+    id="temp_dvb"
     class="template temp_grey"
     ng-if="view.currentView === 'dvb'" >
                         
@@ -24,6 +25,7 @@
 
 <!-- Template: Thumbnails -->
 <section 
+    id="temp_thumb"
     class="template temp_grey"
     ng-if="view.currentView === 'thumbnails'" >
 
@@ -35,6 +37,7 @@
 
 <!-- Template: Search -->
 <section 
+    id="temp_search"
     class="template temp_grey"
     ng-if="view.currentView === 'search'" >
 
@@ -44,20 +47,23 @@
 
 </section>
 
+ 
 
 <!-- Template: Image -->
 <section 
+    id="temp_image"
     class="template temp_black"
     ng-if="view.currentView === 'image'" >
 
-    <p style="color: white">
-        Mode {{view.currentView}}
-    </p>
+    
+    Mode {{view.currentView}}
+
 
 </section>
 
 <!-- Template: Text -->
 <section 
+    id="temp_text"
     class="template temp_black"
     ng-if="view.currentView === 'text'" >
 
@@ -66,11 +72,11 @@
     </p>
 
 
-
 </section>
 
 <!-- Template: Image Image -->
 <section 
+    id="temp_imageimage"
     class="template temp_black"
     ng-if="view.currentView === 'imageimage'" >
 
@@ -82,6 +88,7 @@
 
 <!-- Template: Image Text -->
 <section 
+    id="temp_imagetext"
     class="template temp_black"
     ng-if="view.currentView === 'imagetext'" >
 
@@ -92,6 +99,7 @@
 
 <!-- Template: Text Text -->
 <section 
+    id="temp_texttext"
     class="template temp_black"
     ng-if="view.currentView === 'texttext'" >
 
@@ -100,3 +108,27 @@
     </p>
 
 </section>
+
+<div class="slide" ng-if="view.currentView === 'image' || view.currentView === 'imagetext'" >
+    <figure>
+       <!-- enumerate all images -->
+        <img 
+            ng-repeat="img in single_images"
+            ng-swipe-right="showPrev()"
+            ng-swipe-left="showNext()"
+            ng-show="isActive($index)"
+            ng-src="{{img.src}}"
+            alt="{{img.description}}" />
+    </figure>
+    <!-- prev / next controls -->
+    <a 
+        class="arrow prev"
+        href=""
+        ng-click="showPrev()">
+    </a>
+    <a 
+        class="arrow next"
+        href=""
+        ng-click="showNext()">
+    </a>
+</div>

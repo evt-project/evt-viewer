@@ -4,4 +4,4 @@
  * @module evtviewer.Mobile
  * @description ...
 **/
-angular.module('evtviewer.mobile', []);
+angular.module('evtviewer.mobile', ['ngRoute','ngAnimate','ngTouch']);

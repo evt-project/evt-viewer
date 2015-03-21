@@ -59,7 +59,10 @@ angular.module('evtviewer.mobile')
     };
 
     
-   
+   $scope.set = false;
+    $scope.setToggle = function() {
+        $scope.set = !$scope.set;
+    };
 
 
     $scope.view_subItems = false;

@@ -4,7 +4,7 @@ angular.module('evtviewer.mobile')
     var mobile = new BaseComponent('Mobile');
 
     var state = {
-        currentView: 'texttext'
+        currentView: 'image'
     };
 
     mobile.getState = function() {
