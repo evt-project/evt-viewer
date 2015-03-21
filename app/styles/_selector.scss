@@ -1,36 +1,44 @@
 .evtviewer-selector{
+	height: 28px;
+	min-width: 80px;
+	
+	margin: 0px 4px;
 	position: relative;
     left: 0px;
-	font-size: 1em;
 	display: inline-block;
+	
 	background:$base__color--light;
 	color: $base__color--dark;
+	font-size: 1em;
 	text-align: left;
-	height: 28px;
+	
 	overflow: visible;
-	min-width: 80px;
-	margin-right: 7px;
+	
 	@include set(box-shadow, 0px 2px 4px rgba(0, 0, 0, 0.4));
 	@include set(border-radius, 2px);
 
 	.label_selected{
-		margin: 0px 4px;
+		position: relative;	
 	    top: 3.5px;
-	   	position: relative;	
+	    margin: 0px 4px;
 	}
 
 	.open_options{
+		height: 28px;
 		width: 24px;
-		text-align: center;
+		
 		position: absolute;
 		right: 0px;
 		top: 0px;
-		height: 28px;
-		border-left: 1px solid #d9d7d7;
-		cursor: pointer;
+		
 		background:#ccc4ba;
-		opacity: 0.5;
+		text-align: center;
+
+		border-left: 1px solid #d9d7d7;
 		border-radius: 0 2px 2px 0;
+
+		cursor: pointer;
+		opacity: 0.5;
 
 		&:hover{
 			opacity: 1;
@@ -42,29 +50,34 @@
 	}
 
 	.option_container{
+		height:auto;
+		max-height: 170px;
+		width: 100%;
+
 		position: absolute;
+		left: 0px;
+		top:30px;
+
 		overflow-y:auto;
 		background:$base__color--light;
-		width: 100%;
-		height:auto;
-		left: 0px;
-		top: 5px;
-		max-height: 170px;
+
 		z-index: 400;
-		top:30px;
+		
 		@include set(box-shadow, 0px 2px 5px rgba(0, 0, 0, 0.7));
 
 		.option{
+			height:100%;
+			width: 100%;
+			padding: 5px;
+			
+			position: relative;
+			left: 0px;
+			
 			background: $base__color--light;
 			color: $base__color--dark;
-			position: relative;
-			padding: 5px;
-			width: 100%;
-			color: $base__color--dark;
-			left: 0px;
+			
 			border-bottom: solid 1px $base__color--dark;
 			cursor: pointer;
-			height:100%;
 
 			&:hover{
 				background: rgb(126,108,95);
