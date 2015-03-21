@@ -16,12 +16,13 @@ angular.module('evtviewer.box')
         if (typeof(state.boxes[currentTitle]) === 'undefined') {
             state.boxes[currentTitle] = {
                 id: currentTitle,
-                header: {
-                    selectors: box.setHeaderElements(currentTitle)
+                header: { 
+                    selectors: [],
+                    buttonSwitches: []
                 },
                 content: box.setContent(currentTitle)
             };            
-
+            box.setHeaderElements(currentTitle);
         }
     };
 
@@ -38,15 +39,20 @@ angular.module('evtviewer.box')
     };
 
     box.setHeaderElements = function(currentTitle){
-        var selectors = [];
+        var currentSelectors = [];
+        var currentButtonSwitches = [];
+
         if (currentTitle === 'image') {
-            selectors.push({ id:'Pages' });
+            currentSelectors.push({ id:'Pages' });
+            currentButtonSwitches.push({ title:'Thumbnails', label: 'Thumbs' });
         } 
         else if (currentTitle === 'text') {
-            selectors.push({ id:'Documents' });
-            selectors.push({ id:'EditionLevels'});            
+            currentSelectors.push({ id:'Documents' });
+            currentSelectors.push({ id:'EditionLevels'});            
         }
-        return selectors;
+        
+        state.boxes[currentTitle].header.selectors = currentSelectors;
+        state.boxes[currentTitle].header.buttonSwitches = currentButtonSwitches;
     };
     /* END MOCK*/
 

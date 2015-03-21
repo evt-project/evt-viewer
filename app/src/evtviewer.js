@@ -25,5 +25,6 @@ angular
     'evtviewer.interface',
     'evtviewer.box',
     'evtviewer.selector',
+    'evtviewer.buttonSwitch',
     'evtviewer.mobile'
   ]);
