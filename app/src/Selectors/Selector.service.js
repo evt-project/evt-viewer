@@ -96,6 +96,7 @@ angular.module('evtviewer.selector')
                     // expanded, width, optionSelected, options
             };
             selector.populate(currentId);
+            selector.setCallbackFunction(currentId);
         }
     };
 
@@ -112,6 +113,32 @@ angular.module('evtviewer.selector')
     };
 
     /* GET MOCK DATA*/
+     var selectPage = function(option){
+        selector.log('Seleziono pagina '+option.label);
+    };
+
+    var selectDocument = function(option){
+        selector.log('Seleziono documento '+option.label);
+    };
+
+    var selectEditionLevel = function(option){
+        selector.log('Seleziono livello edizione '+option.label);
+    };
+
+    selector.setCallbackFunction = function(currentId){
+        var callbackFunction;
+
+        if (currentId === 'Pages') {
+            callbackFunction = selectPage;
+        } else if (currentId === 'Documents') {
+            callbackFunction = selectDocument;
+        } else if(currentId === 'EditionLevels') {
+            callbackFunction = selectEditionLevel;
+            
+        }
+        state.selectors[currentId].callback = callbackFunction;
+    };
+
     selector.populate = function(currentId) {
         var i = 0;
         var option = {};
@@ -174,6 +201,8 @@ angular.module('evtviewer.selector')
             if (state.selectors[currentId].expanded === true) {
                 selector.toggleExpand(currentId);
             }
+            state.selectors[currentId].callback(option);
+
         }
     };
 
