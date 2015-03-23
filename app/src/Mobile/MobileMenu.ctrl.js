@@ -42,14 +42,7 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
-    
-    // $scope.DVB = function() {
-    //     if (Mobile.getCurrentView() ==='texttext'){
-    //         Mobile.switchView('DVB');
-    //     } else {
-    //         Mobile.switchView('texttext');
-    //     }
-    // };
+   
 
   
 

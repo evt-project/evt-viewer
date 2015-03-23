@@ -1,4 +1,4 @@
-<!-- Template: Digital Vercelli Book -->
+
 <section 
     id="temp_dvb"
     class="template temp_grey"
@@ -23,7 +23,7 @@
 
 </section>
 
-<!-- Template: Thumbnails -->
+
 <section 
     id="temp_thumb"
     class="template temp_grey"
@@ -35,7 +35,7 @@
 
 </section>
 
-<!-- Template: Search -->
+
 <section 
     id="temp_search"
     class="template temp_grey"
@@ -48,87 +48,150 @@
 </section>
 
  
-
-<!-- Template: Image -->
 <section 
     id="temp_image"
     class="template temp_black"
     ng-if="view.currentView === 'image'" >
 
-    
-    Mode {{view.currentView}}
-
+    <ng-include src="'single_images'"></ng-include>
+    <ng-include src="'singlePrevNext'"></ng-include>
 
 </section>
 
-<!-- Template: Text -->
+
 <section 
     id="temp_text"
     class="template temp_black"
     ng-if="view.currentView === 'text'" >
 
-    <p style="color: white">
-        Mode {{view.currentView}}
-    </p>
+    <ng-include src="'diplomatic'"></ng-include>
+    <ng-include src="'singlePrevNext'"></ng-include>
 
 
 </section>
 
-<!-- Template: Image Image -->
+
 <section 
     id="temp_imageimage"
     class="template temp_black"
     ng-if="view.currentView === 'imageimage'" >
 
-    <p style="color: white">
-        Mode {{view.currentView}}
-    </p>
+    <ng-include src="'double_images'"></ng-include>
+    <ng-include src="'doublePrevNext'"></ng-include>
 
 </section>
 
-<!-- Template: Image Text -->
+
 <section 
     id="temp_imagetext"
     class="template temp_black"
     ng-if="view.currentView === 'imagetext'" >
+ 
+    <ng-include src="'single_images'"></ng-include>
+    <ng-include src="'diplomatic'"></ng-include>
+    <ng-include src="'singlePrevNext'"></ng-include>
 
-    <p style="color: white">
-        Mode {{view.currentView}}  
-    </p>
 </section>
 
-<!-- Template: Text Text -->
+
 <section 
     id="temp_texttext"
     class="template temp_black"
     ng-if="view.currentView === 'texttext'" >
 
-    <p style="color: white">
-        Mode {{view.currentView}}
-    </p>
+    <ng-include src="'diplomatic'"></ng-include>
+    <ng-include src="'diplomatic'"></ng-include>
+    <ng-include src="'singlePrevNext'"></ng-include>
 
 </section>
 
-<div class="slide" ng-if="view.currentView === 'image' || view.currentView === 'imagetext'" >
+
+
+<script type="text/ng-template" id="single_images">
+
+    <!-- include data_input: single folio-->
     <figure>
-       <!-- enumerate all images -->
         <img 
-            ng-repeat="img in single_images"
-            ng-swipe-right="showPrev()"
-            ng-swipe-left="showNext()"
+            class="slide"
+            ng-repeat="img in single_data"
+            ng-swipe-right="singlePrev()"
+            ng-swipe-left="singleNext()"
             ng-show="isActive($index)"
             ng-src="{{img.src}}"
-            alt="{{img.description}}" />
+            alt="{{img.title}} {{img.page}}" />
     </figure>
-    <!-- prev / next controls -->
+</script>
+
+<script type="text/ng-template" id="diplomatic">
+
+    <!-- include data_output: diplomatic edition -->
+
+    <div
+        class="slide"
+        ng-repeat="text in single_data">
+
+            <!-- page information -->
+            <ul 
+                class="information"
+                ng-show="isActive($index)">
+
+                <li class="info_title">{{text.title}}</li>
+                <li class="info_page">{{text.page}}</li>
+                
+            </ul>
+
+        <div
+            class="text_slide"
+            ng-swipe-right="singlePrev()"
+            ng-swipe-left="singleNext()"
+            ng-show="isActive($index)"
+            ng-include src="text.d_url">
+        </div>
+
+
+</script>
+
+<script type="text/ng-template" id="double_images">
+
+    <!-- include data_input: double folio-->
+    <figure>
+        <img 
+            class="slide"
+            ng-repeat="img in double_data"
+            ng-swipe-right="doublePrev()"
+            ng-swipe-left="doubleNext()"
+            ng-show="isActive($index)"
+            ng-src="{{img.src}}"
+            alt="{{img.title}} {{img.page}}" />
+    </figure>
+</script>
+
+
+
+<script type="text/ng-template" id="singlePrevNext">
+     <!-- prev / next controls -->
     <a 
         class="arrow prev"
         href=""
-        ng-click="showPrev()">
+        ng-click="singlePrev()">
     </a>
     <a 
         class="arrow next"
         href=""
-        ng-click="showNext()">
+        ng-click="singleNext()">
     </a>
-</div>
+</script>
+
+<script type="text/ng-template" id="doublePrevNext">
+     <!-- prev / next controls -->
+    <a 
+        class="arrow prev"
+        href=""
+        ng-click="doublePrev()">
+    </a>
+    <a 
+        class="arrow next"
+        href=""
+        ng-click="doubleNext()">
+    </a>
+</script>
