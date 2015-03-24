@@ -1,0 +1,156 @@
+/* ALL MOBILE DEVICES ====================================== */ 
+
+@media screen  {
+    
+        
+    /* Menu ----------------------------------------------- */
+    .mainNav{
+        width: 100%;
+        height:auto;
+        margin: 0;
+        display: block;
+        z-index: 10;
+    }
+    
+    .mainNav ul{
+        width: 100%;
+        height: 100%;
+        list-style: none;
+        float: left;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row; 
+    }
+    
+    .navLink {
+        width:100%;
+        top: 0;
+        left: 0;
+        height: auto;
+        text-align: center;
+        list-style-type: none;
+        text-decoration: none;
+        float: left;
+        cursor: pointer;
+        color:#CCC;
+        background: #666; 
+        line-height: 1.5em;
+        font-size: 1.7em;
+        text-shadow: 2px 2px 3px #333;
+        -moz-box-shadow: 0 5px 5px -5px #000;
+        -webkit-box-shadow: 0 5px 5px -5px #000;
+        box-shadow: 0 5px 5px -5px #000;
+    }
+
+
+    a {
+        color: #CCC;
+        text-decoration: none;
+        text-shadow: 2px 2px 3px #333;
+    }
+    
+    .fa{
+        color: #CCC;
+        text-decoration: none;
+        text-shadow: 2px 2px 3px #333;
+    }
+    
+       
+    .mainNav a:focus, .mainNav a:focus .fa, .mainNav .active .fa {
+        text-shadow:none;
+        color: #CCC;
+    }
+    
+    
+
+    /* Submenu: View ------------------------------------------- */
+    .submenu{
+        z-index: 8;
+        width: 100%;
+        height:auto;
+        -moz-box-shadow: 0 5px 5px -5px black;
+        -webkit-box-shadow: 0 5px 5px -5px black;
+        box-shadow: 0 5px 5px -5px black;
+
+    }
+    
+    .submenu li{
+        color: #CCC;
+        width: 100%;
+        height: 100%;
+        line-height: 1.2em;
+        border-top: #333 1px solid;
+    }
+
+    .submenu li+li {border:none;}
+
+    .subIcon {
+        margin: 0.3em 0 0.3em 0;
+    }
+        
+    
+
+}
+
+ /* SMARTPHONE ================================================ */ 
+@media screen and (max-width: 479px) {
+
+    .mainNav li {
+        width: 25%;
+        font-size: 1.5em;
+    }
+
+    .mainNav li:first-child {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 1.5em;
+    }
+
+    .submenu li, .submenu li:first-child {
+        width: 100%;
+        font-size: 1em;
+    }
+
+        
+    .imageimage, .imagetext, .texttext {display: none;}
+
+
+} 
+
+/* TABLET PORTRAIT ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+    
+    .mainNav li {
+        width: 25%;
+    }
+
+    .mainNav li:first-child, .submenu li {
+        width: 100%;
+        height: auto;
+        float: left;
+    }
+        
+}
+
+/* TABLET LANDSCAPE ============================================ */
+@media screen and (min-width: 801px) {
+ 
+    .mainNav li {
+        width: 12.5%;
+    }
+
+    .mainNav li:first-child {
+        width: 50%;
+        height: auto;
+        float: left;
+    }
+
+    .submenu li, .submenu li:first-child {
+        width: 100%;
+        font-size: 1em;
+    }
+    
+}

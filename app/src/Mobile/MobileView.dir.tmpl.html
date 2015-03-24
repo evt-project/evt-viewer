@@ -1,7 +1,6 @@
 
 <section 
-    id="temp_dvb"
-    class="template temp_grey"
+    class="template tempDvb"
     ng-if="view.currentView === 'dvb'" >
                         
     <p>
@@ -14,9 +13,18 @@
         parallel transcription method. When using this method, information about the scan and possibly the coordinates
         of sensible areas are separated from the transcription and aligned with it thanks to linking attributes.
     </p>
-    <ul id="dvb_list" ng-repeat="item in dvb_links">
+    <ul 
+        class="dvbList"
+        ng-repeat="item in dvb">
         <li>
-            <a href="{{item.url}}" target="_blank" title="{{item.title}}">{{item.description}} <i class="fa fa-external-link"></i></a>
+            <a 
+                href="{{item.url}}"
+                target="_blank"
+                title="{{item.title}}">
+
+                <span> {{item.description}} <i class="fa fa-external-link"></i> </span>
+
+            </a>
         </li>               
     </ul>
 
@@ -25,43 +33,39 @@
 
 
 <section 
-    id="temp_thumb"
-    class="template temp_grey"
+    class="template tempThumbnails"
     ng-if="view.currentView === 'thumbnails'" >
 
-    <p style="color: white">
+    
         {{view.currentView}}
-    </p>
+    
 
 </section>
 
 
 <section 
-    id="temp_search"
-    class="template temp_grey"
+    class="template tempSearch"
     ng-if="view.currentView === 'search'" >
 
-    <p style="color: white">
+    
         {{view.currentView}}
-    </p>
+    
 
 </section>
 
  
 <section 
-    id="temp_image"
-    class="template temp_black"
+    class="template tempImage"
     ng-if="view.currentView === 'image'" >
 
-    <ng-include src="'single_images'"></ng-include>
+    <ng-include src="'singleImage'"></ng-include>
     <ng-include src="'singlePrevNext'"></ng-include>
 
 </section>
 
 
 <section 
-    id="temp_text"
-    class="template temp_black"
+    class="template tempText"
     ng-if="view.currentView === 'text'" >
 
     <ng-include src="'diplomatic'"></ng-include>
@@ -72,22 +76,20 @@
 
 
 <section 
-    id="temp_imageimage"
-    class="template temp_black"
+    class="template tempImageImage"
     ng-if="view.currentView === 'imageimage'" >
 
-    <ng-include src="'double_images'"></ng-include>
+    <ng-include src="'doubleImage'"></ng-include>
     <ng-include src="'doublePrevNext'"></ng-include>
 
 </section>
 
 
 <section 
-    id="temp_imagetext"
-    class="template temp_black"
+    class="template tempImageText"
     ng-if="view.currentView === 'imagetext'" >
  
-    <ng-include src="'single_images'"></ng-include>
+    <ng-include src="'singleImage'"></ng-include>
     <ng-include src="'diplomatic'"></ng-include>
     <ng-include src="'singlePrevNext'"></ng-include>
 
@@ -95,8 +97,7 @@
 
 
 <section 
-    id="temp_texttext"
-    class="template temp_black"
+    class="template tempTextText"
     ng-if="view.currentView === 'texttext'" >
 
     <ng-include src="'diplomatic'"></ng-include>
@@ -107,7 +108,7 @@
 
 
 
-<script type="text/ng-template" id="single_images">
+<script type="text/ng-template" id="singleImage">
 
     <!-- include data_input: single folio-->
     <figure>
@@ -135,8 +136,8 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <li class="info_title">{{text.title}}</li>
-                <li class="info_page">{{text.page}}</li>
+                <li class="infoTitle">{{text.title}}</li>
+                <li class="infoPage">{{text.page}}</li>
                 
             </ul>
 
@@ -151,9 +152,9 @@
 
 </script>
 
-<script type="text/ng-template" id="double_images">
+<script type="text/ng-template" id="doubleImage">
 
-    <!-- include data_input: double folio-->
+    <!-- include data_input: double image-->
     <figure>
         <img 
             class="slide"

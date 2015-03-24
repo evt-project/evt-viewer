@@ -1,11 +1,10 @@
 <header role="banner" >
     <nav 
-        id="main_nav" 
+        class="mainNav" 
         role="navigation">
         <ul>
-            <li 
-                id="{{item.id}}" 
-                class="nav_link"
+            <li  
+                class="navLink"
                 ng-repeat="item in menu">
                 <a 
                     href="" 
@@ -19,31 +18,29 @@
             </li>
 
             <li 
-                id="settings"
+                class="navLink"
                 ng-class="{'active': set}"
-                class="nav_link"
                 ng-click="setToggle()">
                 <i class="fa fa-wrench"></i>
             </li>
 
             <li 
-                id="view" 
-                class="nav_link" 
-                ng-class="{'active': view_subItems}" 
+                class="navLink" 
+                ng-class="{'active': showSubItems}" 
                 ng-click="viewToggle()">
                 
                 <i class="fa fa-eye"></i>
                 <ul 
                     class="submenu" 
-                    ng-show="view_subItems">
+                    ng-show="showSubItems">
             
                     <li 
-                        id="{{subItem.id}}" 
+                        class="{{subItem.template}}" 
                         ng-repeat="subItem in view">
                         <a 
                             ng-click="showTemplate(subItem.template)" 
                             alt="{{subItem.template}}">
-                            <div class="sub_icon">
+                            <div class="subIcon">
                                 <i class="{{subItem.icon1}}"></i>
                                 <i class="{{subItem.icon2}}"></i>
                             </div>
