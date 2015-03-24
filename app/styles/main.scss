@@ -68,7 +68,7 @@ $large:(
 @mixin main-frame(){
 	@include span(18 of 20);	
 	height: 100%;
-	border: $mainContainer__border-width solid $base__color--dark;
+	border: $mainContainer-border-width solid $base-color-dark;
 	overflow: hidden;
 	padding: 0px;
 	font-size: 18px;
@@ -76,8 +76,8 @@ $large:(
 
 @mixin inside-header(){
 	@include span(9 of 9);	
-	@include colors($base__color--light, $base__color--dark);
-    height: $mainContainer__menu-height;
+	@include colors($base-color-light, $base-color-dark);
+    height: $mainContainer-menu-height;
 	font-size: 16px;
 	padding: 6px;
 	display: block;
@@ -119,13 +119,13 @@ $large:(
 body{
 	@include container();
 	font-family: Junicode, Times, serif;
-	background: $base__backgroundImage;
+	background: $base-backgroundImage;
 	margin:0;
 	padding:0;
-	min-height: $base__minHeight;
+	min-height: $base-minHeight;
 	overflow:hidden;
 	position:absolute;
-	font-size: $base__fontSize;
+	font-size: $base-fontSize;
 	height:100%;
 	width:100%;
 
@@ -139,12 +139,12 @@ body{
 	> footer{
 		height:7%;
 		padding: 10px 30px;
-		@include colors($base__color--light, $base__color--dark);
+		@include colors($base-color-light, $base-color-dark);
 	}
 }
 
 footer{
-	display: setVisibility($base__footer);
+	display: setVisibility($base-footer);
 }
 
 #global-container{

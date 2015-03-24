@@ -1,3 +1,13 @@
+/* *************************** */
+/* BUTTON SWITCH               */
+/* *************************** */
+
+$buttonSwitch-background-color: $base-color-light;
+$buttonSwitch-color: $base-color-dark;
+$buttonSwitch-shadow-color: rgba(0, 0, 0, 0.4);
+
+$buttonSwitch-active-background-color: #E3C89C;
+
 .buttonSwitch {
     height: 28px;
     min-width: 80px;
@@ -7,22 +17,22 @@
     overflow: visible;
     left: 0px;
 
-    background: $base__color--light;
-    color: $base__color--dark;
+    background: $buttonSwitch-background-color;
+    color: $buttonSwitch-color;
     font-size: 1em;
     text-align: left;
     
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 2px 4px $buttonSwitch-shadow-color;
     border-radius: 2px;
 
     &:hover{
-        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7) inset;
+        box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
         text-shadow: none !important;
         cursor: pointer;
     }
 
     &-active{
-        background: #E3C89C;
+        background: $buttonSwitch-active-background-color;
     }
 
     &-label {

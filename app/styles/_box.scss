@@ -1,6 +1,10 @@
+/* *************************** */
+/* BOX                         */
+/* *************************** */
+
 .box {
     @include frame();
-    @include colors($base__color--dark, $base__color--light);
+    @include colors($base-color-dark, $base-color-light);
     
     &[data-position='left'] {
         border-right-width: 0.5px;
@@ -11,12 +15,12 @@
     }
 }
 .box-image {
-    @include colors($base__color--light, #000);
+    @include colors($base-color-light, #000);
     border-right-width: 0.5px;
 }
 
 .box-text {
-    @include colors($base__color--dark, #fff);
+    @include colors($base-color-dark, #fff);
     border-left-width: 0.5px;
 
     .box-body {
@@ -27,7 +31,7 @@
 
 .box-menu {
     @include inside-header();
-    display: setVisibility($mainContainer__top-menu);
+    display: setVisibility($mainContainer-top-menu);
 }
 
 .box-body {

@@ -113,7 +113,7 @@ angular.module('evtviewer.selector')
     };
 
     /* GET MOCK DATA*/
-     var selectPage = function(option){
+    var selectPage = function(option){
         selector.log('Seleziono pagina '+option.label);
     };
 

@@ -1,26 +1,43 @@
-.evtviewer-selector{
+/* *************************** */
+/* SELECTOR  				   */
+/* *************************** */
+
+$selector-background-color: $base-color-light;
+$selector-color: $base-color-dark;
+$selector-shadow-color: rgba(0, 0, 0, 0.4);
+
+$selector-open-option-border-color: #d9d7d7;
+$selector-open-option-background: #ccc4ba;
+
+$selector-option-background-color: $selector-background-color;
+$selector-option-color: $selector-color;
+$selector-option-background-color-hover: rgb(126,108,95);
+
+
+.selector{
 	height: 28px;
 	min-width: 80px;
 	
-	margin: 0px 4px;
+	margin: 0 4px;
 	position: relative;
-    left: 0px;
+    left: 0;
+
 	display: inline-block;
 	
-	background:$base__color--light;
-	color: $base__color--dark;
+	background:$selector-background-color;
+	color: $selector-color;
 	font-size: 1em;
 	text-align: left;
 	
 	overflow: visible;
 	
-	@include set(box-shadow, 0px 2px 4px rgba(0, 0, 0, 0.4));
+	@include set(box-shadow, 0px 2px 4px $selector-shadow-color);
 	@include set(border-radius, 2px);
 
 	.label_selected{
 		position: relative;	
 	    top: 3.5px;
-	    margin: 0px 4px;
+	    margin: 0 4px;
 	}
 
 	.open_options{
@@ -28,17 +45,19 @@
 		width: 24px;
 		
 		position: absolute;
-		right: 0px;
-		top: 0px;
+		right: 0;
+		top: 0;
 		
-		background:#ccc4ba;
-		text-align: center;
+		opacity: 0.5;
 
-		border-left: 1px solid #d9d7d7;
+		border-left: 1px solid $selector-open-option-border-color;
 		border-radius: 0 2px 2px 0;
 
+		background:$selector-open-option-background;
+		text-align: center;
+
 		cursor: pointer;
-		opacity: 0.5;
+		
 
 		&:hover{
 			opacity: 1;
@@ -55,15 +74,15 @@
 		width: 100%;
 
 		position: absolute;
-		left: 0px;
+		left: 0;
 		top:30px;
 
 		overflow-y:auto;
-		background:$base__color--light;
+		background:$selector-background-color;
 
 		z-index: 400;
 		
-		@include set(box-shadow, 0px 2px 5px rgba(0, 0, 0, 0.7));
+		@include set(box-shadow, 0 2px 5px $selector-shadow-color);
 
 		.option{
 			height:100%;
@@ -71,28 +90,29 @@
 			padding: 5px;
 			
 			position: relative;
-			left: 0px;
+			left: 0;
 			
-			background: $base__color--light;
-			color: $base__color--dark;
+			border-bottom: solid 1px $base-color-dark;
+
+			background: $selector-option-background-color;
+			color: $selector-option-color;
 			
-			border-bottom: solid 1px $base__color--dark;
 			cursor: pointer;
 
 			&:hover{
-				background: rgb(126,108,95);
-				color:#fff;
+				background: $selector-option-background-color-hover;
+				color: $selector-option-background-color;
 			}
 		}
 
 		.option.selected{
-			background: $base__color--dark;
-			color: $base__color--light;
+			background: $selector-option-color;
+			color: $selector-option-background-color;
 			cursor: default;
 
 			&:hover{
-				background: $base__color--dark;
-				color: $base__color--light;
+				background: $selector-option-color;
+				color: $selector-option-background-color;
 			}
 		}
 	}
