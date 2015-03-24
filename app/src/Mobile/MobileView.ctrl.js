@@ -5,7 +5,7 @@ angular.module('evtviewer.mobile')
     $scope.view = Mobile.getState();
 
     // Template: DVB.html
-    $scope.dvb_links = [{
+    $scope.dvb = [{
         url: 'http://vbd.humnet.unipi.it/',
         title: 'Digital Vercelli Book project',
         description: 'Digital Vercelli Book project',
@@ -51,10 +51,12 @@ angular.module('evtviewer.mobile')
     // Partial: double_images.html (in ImageImage mode)
     $scope.double_data = [{
         src: './data/input_data/images/double/VB_fol_104v-VB_fol_105r.jpg',
-        description: 'Vercelli Book folio 104v and folio 105r'
+        title: 'The Dream of the Rood',
+        page: '- 104v - 105r -',
     }, {
         src: './data/input_data/images/double/VB_fol_105v-VB_fol_106r.jpg',
-        description: 'Vercelli Book folio 105v and folio 106r'
+        title: 'The Dream of the Rood',
+        page: '- 105v - 106r -',
     }, ];
 
 
@@ -72,20 +74,36 @@ angular.module('evtviewer.mobile')
 
     // Partial: singlePrevNext.html (in Image mode, Text mode and ImageText mode)
     $scope.singlePrev = function () {
-        $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.single_data.length - 1;
+        if ($scope._Index > 0) {
+            $scope._Index = (--$scope._Index);
+        } else {
+            $scope._Index = ($scope.single_data.length - 1);
+        }
     };
 
     $scope.singleNext = function () {
-        $scope._Index = ($scope._Index < $scope.single_data.length - 1) ? ++$scope._Index : 0;
+        if ($scope._Index < $scope.single_data.length - 1) {
+            $scope._Index = (++$scope._Index);
+        } else {
+            $scope._Index = 0;
+        }
     };
 
     // Partial doublePrevNext.html (in ImageImage mode and TextText mode)
     $scope.doublePrev = function () {
-        $scope._Index = ($scope._Index > 0) ? --$scope._Index : $scope.double_data.length - 1;
+        if ($scope._Index > 0) {
+            $scope._Index = (--$scope._Index);
+        } else {
+            $scope._Index = ($scope.double_data.length - 1);
+        }
     };
 
     $scope.doubleNext = function () {
-        $scope._Index = ($scope._Index < $scope.double_data.length - 1) ? ++$scope._Index : 0;
+        if ($scope._Index < $scope.double_data.length - 1) {
+            $scope._Index = (++$scope._Index);
+        } else {
+            $scope._Index = 0;
+        }
     };
 
     
