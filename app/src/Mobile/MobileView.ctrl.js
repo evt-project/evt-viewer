@@ -27,21 +27,25 @@ angular.module('evtviewer.mobile')
     $scope.single_data = [{
         src: './data/input_data/images/single/VB_fol_104v.jpg',
         d_url: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
+        i_url: './data/output_data/interpretative/page_VB_fol_104v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 104v -',
     }, {
         src: './data/input_data/images/single/VB_fol_105r.jpg',
         d_url: './data/output_data/diplomatic/page_VB_fol_105r_diplomatic.html',
+        i_url: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105r -',
     }, {
         src: './data/input_data/images/single/VB_fol_105v.jpg',
-        d_url: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
+        d_url: './data/output_data/diplomatic/page_VB_fol_105v_diplomatic.html',
+        i_url: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105v -',
     }, {
         src: './data/input_data/images/single/VB_fol_106r.jpg',
-        d_url: './data/output_data/diplomatic/page_VB_fol_105r_diplomatic.html',
+        d_url: './data/output_data/diplomatic/page_VB_fol_106r_diplomatic.html',
+        i_url: './data/output_data/interpretative/page_VB_fol_106r_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 106r -',
     }, ];
@@ -106,9 +110,5 @@ angular.module('evtviewer.mobile')
         }
     };
 
-    
-
-
-
-   
+       
 });

@@ -68,6 +68,7 @@
     class="template tempText"
     ng-if="view.currentView === 'text'" >
 
+   
     <ng-include src="'diplomatic'"></ng-include>
     <ng-include src="'singlePrevNext'"></ng-include>
 
@@ -108,7 +109,10 @@
 
 
 
-<script type="text/ng-template" id="singleImage">
+<script
+    type="text/ng-template"
+    id="singleImage"
+    ng-if="view.currentView === 'image' || view.currentView === 'imagetext' || view.currentView === 'imageimage'">
 
     <!-- include data_input: single folio-->
     <figure>
@@ -123,7 +127,10 @@
     </figure>
 </script>
 
-<script type="text/ng-template" id="diplomatic">
+<script
+    type="text/ng-template"
+    id="diplomatic"
+    ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
 
     <!-- include data_output: diplomatic edition -->
 
@@ -136,23 +143,52 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <li class="infoTitle">{{text.title}}</li>
-                <li class="infoPage">{{text.page}}</li>
-                
+                <li>{{text.page}}</li>
+                <li>{{text.title}}</li>
+
             </ul>
 
         <div
-            class="text_slide"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)"
             ng-include src="text.d_url">
         </div>
 
+</script>
+
+<script
+    type="text/ng-template"
+    id="interpretative"
+    ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
+
+    <!-- include data_output: interpretative edition -->
+
+    <div
+        class="slide"
+        ng-repeat="text in single_data">
+
+            <!-- page information -->
+            <ul 
+                class="information"
+                ng-show="isActive($index)">
+
+                <li>{{text.page}}</li>
+                <li>{{text.title}}</li>
+
+            </ul>
+
+        <div
+            ng-swipe-right="singlePrev()"
+            ng-swipe-left="singleNext()"
+            ng-show="isActive($index)"
+            ng-include src="text.i_url">
+        </div>
 
 </script>
 
-<script type="text/ng-template" id="doubleImage">
+
+<script type="text/ng-template" id="doubleImage" ng-if="view.currentView === 'imageimage'">
 
     <!-- include data_input: double image-->
     <figure>
@@ -196,3 +232,6 @@
         ng-click="doubleNext()">
     </a>
 </script>
+
+
+
