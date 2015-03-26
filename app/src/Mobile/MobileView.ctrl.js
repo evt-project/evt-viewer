@@ -23,6 +23,46 @@ angular.module('evtviewer.mobile')
         description: 'Contact',
     }, ];
 
+
+    $scope.thumb = [{
+        id: '104v',
+        url: 'https://www.dropbox.com/s/mp3ouhbjp2oi7lh/VB_fol_104v_small.jpg?dl=0',
+    }, {
+        id: '105r',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105r_small.jpg?dl=0',
+    }, {
+        id: '105v',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105v_small.jpg?dl=0',
+    }, {
+        id: '106r',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_106r_small.jpg?dl=0',
+    }, {
+        id: '104v',
+        url: 'https://www.dropbox.com/s/mp3ouhbjp2oi7lh/VB_fol_104v_small.jpg?dl=0',
+    }, {
+        id: '105r',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105r_small.jpg?dl=0',
+    }, {
+        id: '105v',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105v_small.jpg?dl=0',
+    }, {
+        id: '106r',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_106r_small.jpg?dl=0',
+    }, {
+        id: '104v',
+        url: 'https://www.dropbox.com/s/mp3ouhbjp2oi7lh/VB_fol_104v_small.jpg?dl=0',
+    }, {
+        id: '105r',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105r_small.jpg?dl=0',
+    }, {
+        id: '105v',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105v_small.jpg?dl=0',
+    }, {
+        id: '106r',
+        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_106r_small.jpg?dl=0',
+    }, ];
+
+   
     // Partial: single_data.html, diplomatic.html, interpretative.html (all templates except ImageImage mode)
     $scope.single_data = [{
         src: './data/input_data/images/single/VB_fol_104v.jpg',

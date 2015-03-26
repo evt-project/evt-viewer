@@ -1,0 +1,30 @@
+/* ALL MOBILE DEVICES ====================================== */ 
+
+
+@import "../bower_components/susy/sass/_susy.scss";
+
+
+@media screen  {
+
+    
+    @include border-box-sizing;
+
+       
+
+    .ag1 {
+      @include span(2 of 10);
+    }
+
+    
+}
+
+ /* SMARTPHONE ================================================ */ 
+@media screen and (max-width: 479px) {
+} 
+
+/* TABLET PORTRAIT ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+}
+/* TABLET LANDSCAPE ============================================ */
+@media screen and (min-width: 801px) {
+}

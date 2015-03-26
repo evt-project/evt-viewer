@@ -1,0 +1,16 @@
+/* ALL MOBILE DEVICES ====================================== */
+@media screen {
+  *, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
+
+  .ag1 {
+    width: 18.36735%;
+    float: left;
+    margin-right: 2.04082%; } }
+/* SMARTPHONE ================================================ */
+/* TABLET PORTRAIT ============================================ */
+/* TABLET LANDSCAPE ============================================ */
+
+/*# sourceMappingURL=mobileThumb.css.map */
