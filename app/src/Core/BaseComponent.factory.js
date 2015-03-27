@@ -7,6 +7,9 @@ angular.module('evtviewer.core')
 .factory('BaseComponent', function($window, $log, Config, Utils, BASECOMPONENTDEFAULTS) {
 
     var BaseComponent = function(name, options) {
+        // this.name = name;
+        // this.options = options;
+
         this.name = name;
         this.options = angular.copy(BASECOMPONENTDEFAULTS);
 

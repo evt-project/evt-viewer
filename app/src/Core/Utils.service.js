@@ -2,10 +2,9 @@
 
 angular.module('evtviewer.core')
 
-.service('Utils', function($window) {
-    var Utils = {};
+.provider('Utils', function() {
 
-    Utils.deepExtend = function(destination, source) {
+    this.deepExtend = function(destination, source) {
         for (var property in source) {
             if (source[property] && source[property].constructor && source[property].constructor === Object) {
                 destination[property] = destination[property] || {};
@@ -17,14 +16,10 @@ angular.module('evtviewer.core')
         return destination;
     };
 
-    Utils.getCurrentUserLanguage = function() {
-        // use the $window service to get the languages of the user's browser (works in Chrome >= 32 and Firefox >= 32)
-        var languages = $window.navigator.languages;
-        if (typeof(languages) !== 'undefined') {
-            var firstLanguage = languages[0];
-            return firstLanguage;
-        }
+    this.$get = function() {
+        return {
+            deepExtend: this.deepExtend
+        };
     };
 
-    return Utils;
 });
