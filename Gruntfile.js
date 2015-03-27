@@ -436,7 +436,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'injector',
+      // 'injector',
       'html2js:main',
       'wiredep',
       'concurrent:server',
@@ -461,7 +461,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'injector',
+    // 'injector',
     'html2js:main',
     'wiredep',
     'useminPrepare',
