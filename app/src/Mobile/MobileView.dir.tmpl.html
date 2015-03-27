@@ -33,21 +33,28 @@
 
 
 <section 
-    class="template tempThumbnails"
+    class="template tempThumb"
     ng-if="view.currentView === 'thumbnails'" >
 
-    <div class="container">
-        <h1>The 10 column complex nested grid AG test</h1>
-
-        <div class="ag ag1">
-          <h2>AG 1</h2>
-        </div>
-        <div class="ag ag1">
-          <h2>AG 2</h2>
-        </div>
-</div>
     
-    {{view.currentView}}
+    <div class="thumbContainer">
+        <figure 
+            class="thumb"
+            ng-class= "{'activeThumb':isActive($index)}"
+            ng-repeat="thumb in thumbnails">
+                <img 
+                    src="{{thumb.url}}"
+                    id="{{thumb.id}}"
+                    alt="{{thumb.id}}"
+                    title="{{thumb.id}}"
+                    ng-click="showFolio($index);"/>
+
+            <figcaption>{{thumb.id}}</figcaption>
+
+        </figure>
+      
+    </div>
+
 
 </section>
 
@@ -127,7 +134,7 @@
     <figure>
         <img 
             class="slide"
-            ng-repeat="img in single_data"
+            ng-repeat="img in singleData"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)"
@@ -145,7 +152,7 @@
 
     <div
         class="slide"
-        ng-repeat="text in single_data">
+        ng-repeat="text in singleData">
 
             <!-- page information -->
             <ul 
@@ -161,7 +168,7 @@
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)"
-            ng-include src="text.d_url">
+            ng-include src="text.urlDip">
         </div>
 
 </script>
@@ -175,7 +182,7 @@
 
     <div
         class="slide"
-        ng-repeat="text in single_data">
+        ng-repeat="text in singleData">
 
             <!-- page information -->
             <ul 
@@ -191,7 +198,7 @@
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)"
-            ng-include src="text.i_url">
+            ng-include src="text.urlInt">
         </div>
 
 </script>
@@ -203,7 +210,7 @@
     <figure>
         <img 
             class="slide"
-            ng-repeat="img in double_data"
+            ng-repeat="img in doubleData"
             ng-swipe-right="doublePrev()"
             ng-swipe-left="doubleNext()"
             ng-show="isActive($index)"

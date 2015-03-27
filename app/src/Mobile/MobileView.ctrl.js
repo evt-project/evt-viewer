@@ -24,68 +24,71 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
-    $scope.thumb = [{
+    $scope.thumbnails = [{
         id: '104v',
-        url: 'https://www.dropbox.com/s/mp3ouhbjp2oi7lh/VB_fol_104v_small.jpg?dl=0',
+        url: 'http://i62.tinypic.com/f20hts.jpg',
     }, {
         id: '105r',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105r_small.jpg?dl=0',
+        url: 'http://i57.tinypic.com/312i5c9.jpg',
     }, {
         id: '105v',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105v_small.jpg?dl=0',
+        url: 'http://i58.tinypic.com/6jkie1.jpg',
     }, {
         id: '106r',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_106r_small.jpg?dl=0',
+        url: 'http://i58.tinypic.com/29zvtyt.jpg',
     }, {
-        id: '104v',
-        url: 'https://www.dropbox.com/s/mp3ouhbjp2oi7lh/VB_fol_104v_small.jpg?dl=0',
+        id: '133v',
+        url: 'http://i62.tinypic.com/f20hts.jpg',
     }, {
-        id: '105r',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105r_small.jpg?dl=0',
+        id: '134r',
+        url: 'http://i57.tinypic.com/312i5c9.jpg',
     }, {
-        id: '105v',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105v_small.jpg?dl=0',
+        id: '134v',
+        url: 'http://i58.tinypic.com/6jkie1.jpg',
     }, {
-        id: '106r',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_106r_small.jpg?dl=0',
+        id: '135r',
+        url: 'http://i58.tinypic.com/29zvtyt.jpg',
     }, {
-        id: '104v',
-        url: 'https://www.dropbox.com/s/mp3ouhbjp2oi7lh/VB_fol_104v_small.jpg?dl=0',
+        id: '135v',
+        url: 'http://i62.tinypic.com/f20hts.jpg',
     }, {
-        id: '105r',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105r_small.jpg?dl=0',
+        id: '136r',
+        url: 'http://i57.tinypic.com/312i5c9.jpg',
     }, {
-        id: '105v',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_105v_small.jpg?dl=0',
+        id: '136v',
+        url: 'http://i58.tinypic.com/6jkie1.jpg',
     }, {
-        id: '106r',
-        url: 'https://www.dropbox.com/s/oqemkgl33kko1xf/VB_fol_106r_small.jpg?dl=0',
+        id: '137r',
+        url: 'http://i58.tinypic.com/29zvtyt.jpg',
     }, ];
+
+
+
 
    
     // Partial: single_data.html, diplomatic.html, interpretative.html (all templates except ImageImage mode)
-    $scope.single_data = [{
+    $scope.singleData = [{
         src: './data/input_data/images/single/VB_fol_104v.jpg',
-        d_url: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
-        i_url: './data/output_data/interpretative/page_VB_fol_104v_interpretative.html',
+        urlDip: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
+        urlInt: './data/output_data/interpretative/page_VB_fol_104v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 104v -',
     }, {
         src: './data/input_data/images/single/VB_fol_105r.jpg',
-        d_url: './data/output_data/diplomatic/page_VB_fol_105r_diplomatic.html',
-        i_url: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
+        urlDip: './data/output_data/diplomatic/page_VB_fol_105r_diplomatic.html',
+        urlInt: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105r -',
     }, {
         src: './data/input_data/images/single/VB_fol_105v.jpg',
-        d_url: './data/output_data/diplomatic/page_VB_fol_105v_diplomatic.html',
-        i_url: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
+        urlDip: './data/output_data/diplomatic/page_VB_fol_105v_diplomatic.html',
+        urlInt: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105v -',
     }, {
         src: './data/input_data/images/single/VB_fol_106r.jpg',
-        d_url: './data/output_data/diplomatic/page_VB_fol_106r_diplomatic.html',
-        i_url: './data/output_data/interpretative/page_VB_fol_106r_interpretative.html',
+        urlDip: './data/output_data/diplomatic/page_VB_fol_106r_diplomatic.html',
+        urlInt: './data/output_data/interpretative/page_VB_fol_106r_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 106r -',
     }, ];
@@ -93,7 +96,7 @@ angular.module('evtviewer.mobile')
 
 
     // Partial: double_images.html (in ImageImage mode)
-    $scope.double_data = [{
+    $scope.doubleData = [{
         src: './data/input_data/images/double/VB_fol_104v-VB_fol_105r.jpg',
         title: 'The Dream of the Rood',
         page: '- 104v - 105r -',
@@ -107,48 +110,51 @@ angular.module('evtviewer.mobile')
     // Partial controls
 
     // initial image index
-    $scope._Index = 0;
+    $scope.Index = 0;
 
     // if a current image is the same as requested image
     $scope.isActive = function (index) {
-        return $scope._Index === index;
+        return $scope.Index === index;
     };
 
     
 
     // Partial: singlePrevNext.html (in Image mode, Text mode and ImageText mode)
     $scope.singlePrev = function () {
-        if ($scope._Index > 0) {
-            $scope._Index = (--$scope._Index);
+        if ($scope.Index > 0) {
+            $scope.Index = (--$scope.Index);
         } else {
-            $scope._Index = ($scope.single_data.length - 1);
+            $scope.Index = ($scope.singleData.length - 1);
         }
     };
 
     $scope.singleNext = function () {
-        if ($scope._Index < $scope.single_data.length - 1) {
-            $scope._Index = (++$scope._Index);
+        if ($scope.Index < $scope.singleData.length - 1) {
+            $scope.Index = (++$scope.Index);
         } else {
-            $scope._Index = 0;
+            $scope.Index = 0;
         }
     };
 
     // Partial doublePrevNext.html (in ImageImage mode and TextText mode)
     $scope.doublePrev = function () {
-        if ($scope._Index > 0) {
-            $scope._Index = (--$scope._Index);
+        if ($scope.Index > 0) {
+            $scope.Index = (--$scope.Index);
         } else {
-            $scope._Index = ($scope.double_data.length - 1);
+            $scope.Index = ($scope.doubleData.length - 1);
         }
     };
 
     $scope.doubleNext = function () {
-        if ($scope._Index < $scope.double_data.length - 1) {
-            $scope._Index = (++$scope._Index);
+        if ($scope.Index < $scope.doubleData.length - 1) {
+            $scope.Index = (++$scope.Index);
         } else {
-            $scope._Index = 0;
+            $scope.Index = 0;
         }
     };
 
-       
+    
+    
+   
+
 });
