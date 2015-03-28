@@ -1,10 +1,10 @@
 <section class="box box-{{boxtitle}}" data-position="left">
     <div class="box-menu" data-position="top">
-        <selector 
+        <evt-select 
             data-id="{{selector.id}}"
             data-type="{{selector.type}}"
             ng-repeat="selector in box.header.selectors">
-        </selector>
+        </evt-select>
         <!--<selector data-id="Pages" ng-if="boxtitle==='image'"></selector>
         <selector data-id="Documents" ng-if="boxtitle==='text'"></selector>
         <selector data-id="EditionLevels" ng-if="boxtitle==='text'"></selector>-->

@@ -1,17 +1,17 @@
-angular.module('evtviewer.selector')
+angular.module('evtviewer.select')
 
-.directive('selector', function(select) {
+.directive('evtSelect', function(evtSelect) {
     return {
         restrict: 'E',
         scope: {
             id: '@',
             type: '@'
         },
-        templateUrl: 'src/Selectors/Selector.dir.tmpl.html',
+        templateUrl: 'src/select/select.dir.tmpl.html',
         link: function(scope) {
 
             // Initialize select
-            var currentSelector = scope.vm = select.build(scope);
+            var currentSelector = scope.vm = evtSelect.build(scope);
 
             // Garbage collection
             scope.$on('$destroy', function() {

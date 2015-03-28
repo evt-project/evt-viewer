@@ -24,7 +24,7 @@ angular
     'evtviewer.dataModel',
     'evtviewer.interface',
     'evtviewer.box',
-    'evtviewer.selector',
+    'evtviewer.select',
     'evtviewer.buttonSwitch',
     'evtviewer.mobile'
   ]);

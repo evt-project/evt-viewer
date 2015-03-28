@@ -1,6 +1,6 @@
-angular.module('evtviewer.selector')
+angular.module('evtviewer.select')
 
-.provider('select', function() {
+.provider('evtSelect', function() {
 
     var defaults = this.defaults;
 
