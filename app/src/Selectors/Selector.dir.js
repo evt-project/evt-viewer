@@ -4,13 +4,17 @@ angular.module('evtviewer.selector')
     return {
         restrict: 'E',
         scope: {
-            id: '@'
+            id: '@',
+            type: '@'
         },
         templateUrl: 'src/Selectors/Selector.dir.tmpl.html',
-        controller: 'SelectorCtrl',
         link: function(scope) {
+
             // Initialize select
-            var currentSelect = select.new(scope);
+            var currentSelector = select.build(scope);
+            
+
+            console.log(scope);
 
             // Garbage collection
             scope.$on('$destroy', function() {

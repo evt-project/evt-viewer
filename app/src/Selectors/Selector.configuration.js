@@ -6,7 +6,7 @@ angular.module('evtviewer.selector')
     /**
      * @module evtviewerSelector
      * @ngdoc property
-     * @name defaultExpanded
+     * @name expanded
      * @description
      * `property`
      *
@@ -14,15 +14,15 @@ angular.module('evtviewer.selector')
      *
      * Default:
      * <pre>
-     * defaultExpanded: false
+     * expanded: false
      * </pre>
      */
-    defaultExpanded: false,
+    expanded: false,
 
     /**
      * @module evtviewerSelector
      * @ngdoc property
-     * @name defaultWidth
+     * @name elementWidth
      * @description
      * `property`
      *
@@ -30,10 +30,10 @@ angular.module('evtviewer.selector')
      *
      * Default:
      * <pre>
-     * defaultWidth: 150
+     * elementWidth: 150
      * </pre>
      */
-    defaultWidth: 150,
+    elementWidth: 150,
 
     /**
      * @module evtviewerSelector
@@ -77,5 +77,5 @@ angular.module('evtviewer.selector')
 })
 
 .config(function(selectProvider, ConfigProvider, SELECTORDEFAULTS) {
-    selectProvider.options = ConfigProvider.makeDefaults('select', SELECTORDEFAULTS);
+    selectProvider.setOptions(ConfigProvider.makeDefaults('select', SELECTORDEFAULTS));
 });

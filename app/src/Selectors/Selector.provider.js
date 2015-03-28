@@ -1,24 +1,76 @@
 angular.module('evtviewer.selector')
 
-.provider('select', function(){
+.provider('select', function() {
 
-    var options = this.defaults;
+    var options = this.options;
 
-    this.$get = function($log, SelectFactory){
-        var select = {};
+    this.setOptions = function(defaults) {
+        options = defaults;
+    };
 
-        select.new = function(scope) {
-            var zele = new SelectFactory()
-            var self = angular.extend(scope, zele);
+    this.$get = function($log, PageData) {
+        var select = {},
+            collection = {},
+            list = [];
 
-            console.log(self);
-            
-            self.toggle = function() {
-                console.log('toggolo');
-            };
+
+        function toggleExpand() {
+            var self = this;
+            // Selector.log('Controller - Toggle expand for ' + $scope.id);
+            self.expanded = !self.expanded;
         };
 
-        // var select = new BaseComponent('select', options);
+        function selectOption(option) {
+            var self = this.$parent;
+            self.optionSelected = option;
+            if (self.expanded) {
+                self.toggleExpand();
+            }
+        };
+
+        select.build = function(scope) {
+            var currentId = scope.id || scope.$id,
+                currentType = scope.type || 'default',
+                optionList,
+                optionSelected;
+
+            var scopeHelper = {};
+
+            switch (currentType) {
+                case 'page':
+                    optionList = PageData.getPages();
+                    optionSelected = optionList[0];
+                    break;
+                case 'edition':
+                    console.log('ed');
+                    break;
+            };
+
+            scopeHelper = {
+                options: angular.copy(options),
+                optionList: optionList,
+                optionSelected: optionSelected,
+                toggleExpand: toggleExpand,
+                selectOption: selectOption
+            };
+
+            collection[currentId] = angular.extend(scope, scopeHelper);
+            list.push({
+                id: currentId,
+                type: currentType
+            });
+
+            return collection[currentId];
+        };
+
+        select.closeAll = function(skipId) {
+            angular.forEach(collection, function(currentSelector, currentId) {
+                if (currentId !== skipId) {
+                    currentSelector.toggleExpand();
+                }
+            });
+        };
+
         return select;
     };
 

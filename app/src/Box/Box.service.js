@@ -43,12 +43,12 @@ angular.module('evtviewer.box')
         var currentButtonSwitches = [];
 
         if (currentTitle === 'image') {
-            currentSelectors.push({ id:'Pages' });
+            currentSelectors.push({ id:'Pages', type: 'page' });
             currentButtonSwitches.push({ title:'Thumbnails', label: 'Thumbs' });
         } 
         else if (currentTitle === 'text') {
-            currentSelectors.push({ id:'Documents' });
-            currentSelectors.push({ id:'EditionLevels'});            
+            currentSelectors.push({ id:'Documents', type: 'documents' });
+            currentSelectors.push({ id:'EditionLevels', type: 'edition'});            
         }
         
         state.boxes[currentTitle].header.selectors = currentSelectors;

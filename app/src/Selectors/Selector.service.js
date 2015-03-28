@@ -72,7 +72,7 @@ angular.module('evtviewer.selector')
                 option = {
                     label: 'Page ' + i,
                     value: 'page' + i,
-                    title: 'Page ' + i
+                    title: 'Pagesdsadsa ' + i
                 };
                 selector.addOption(currentId, option);
             }
