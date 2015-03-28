@@ -1,0 +1,21 @@
+<section class="box box-{{boxtitle}}" data-position="left">
+    <div class="box-menu" data-position="top">
+        <evt-select 
+            data-id="{{selector.id}}"
+            data-type="{{selector.type}}"
+            ng-repeat="selector in box.header.selectors">
+        </evt-select>
+        <!--<selector data-id="Pages" ng-if="boxtitle==='image'"></selector>
+        <selector data-id="Documents" ng-if="boxtitle==='text'"></selector>
+        <selector data-id="EditionLevels" ng-if="boxtitle==='text'"></selector>-->
+        <button-switch 
+            title="{{buttonSwitch.title}}"
+            data-label="{{buttonSwitch.label}}"
+            ng-repeat="buttonSwitch in box.header.buttonSwitches">
+        </button-switch>
+    </div>
+    <div class="box-body">
+        {{box.content}}
+    </div>
+    <div class="box-menu" data-position="bottom"></div>
+</section>
