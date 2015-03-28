@@ -3,6 +3,8 @@ angular.module('evtviewer.dataModel')
 .service('parsedData', function() {
     var parsedData = {};
 
+    // TODO manage unique value for pages, documents and editions
+
     var mockPages = [{
         value: 'page1',
         label: 'page1 label',
@@ -39,9 +41,9 @@ angular.module('evtviewer.dataModel')
 
     parsedData.addPages = function() {
         var mock = {
-            value: 'document3',
-            label: 'document3 label',
-            title: 'document3 title'
+            value: 'pages3',
+            label: 'pages3 label',
+            title: 'pages3 title'
         };
         mockPages.push(mock);
     };
