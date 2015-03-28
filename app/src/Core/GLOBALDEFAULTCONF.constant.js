@@ -36,6 +36,13 @@ angular.module('evtviewer.core')
      */
     debugAllModules: true,
 
+    debugConf: {
+        log: true,
+        info: true,
+        warn: true,
+        debug: true
+    },
+
     modules: {
         Interface: {
             active: true

@@ -13,18 +13,24 @@ angular.module('evtviewer.selector')
             collection = {},
             list = [];
 
+        var _console = $log.getInstance('select');
+        _console.log('ciaolog');
+        _console.debug('ciao');
+
 
         function toggleExpand() {
-            var self = this;
+            var vm = this;
+            select.closeAll(vm.uid);
+            vm.expanded = !vm.expanded;
+
             // Selector.log('Controller - Toggle expand for ' + $scope.id);
-            self.expanded = !self.expanded;
         };
 
         function selectOption(option) {
-            var self = this;
-            self.optionSelected = option;
-            if (self.expanded) {
-                self.toggleExpand();
+            var vm = this;
+            vm.optionSelected = option;
+            if (vm.expanded) {
+                vm.toggleExpand();
             }
         };
 
@@ -36,17 +42,23 @@ angular.module('evtviewer.selector')
 
             var scopeHelper = {};
 
+            if (typeof(collection[currentId]) !== 'undefined') {
+                return;
+            }
+
             switch (currentType) {
                 case 'page':
                     optionList = PageData.getPages();
                     optionSelected = optionList[0];
                     break;
                 case 'edition':
-                    console.log('ed');
+                    optionList = PageData.getPages();
+                    optionSelected = optionList[0];
                     break;
             };
 
             scopeHelper = {
+                uid: currentId,
                 options: angular.copy(options),
                 optionList: optionList,
                 optionSelected: optionSelected,
@@ -66,7 +78,7 @@ angular.module('evtviewer.selector')
         select.closeAll = function(skipId) {
             angular.forEach(collection, function(currentSelector, currentId) {
                 if (currentId !== skipId) {
-                    currentSelector.toggleExpand();
+                    currentSelector.expanded = false;
                 }
             });
         };

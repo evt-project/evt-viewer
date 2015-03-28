@@ -6,10 +6,10 @@ angular.module('evtviewer.core')
     $log.enabledContexts = [];
     $log.getInstance = function(context) {
         return {
-            log: enhanceLog($log.log, context),
-            info: enhanceLog($log.info, context),
-            warn: enhanceLog($log.warn, context),
-            debug: enhanceLog($log.debug, context),
+            log: enhanceLog($log.log, 'log', context),
+            info: enhanceLog($log.info, 'info', context),
+            warn: enhanceLog($log.warn, 'warn', context),
+            debug: enhanceLog($log.debug, 'debug', context),
             error: enhanceErr($log.error, context),
             enableLogging: function(enable) {
                 $log.enabledContexts[context] = enable;
@@ -17,9 +17,13 @@ angular.module('evtviewer.core')
         };
     };
 
-    function enhanceLog(loggingFunc, context) {
+    function enhanceLog(logFunc, logName, context) {
         return function() {
             var contextEnabled;
+
+            if (Config.debugConf[logName] === false) {
+                return;
+            }
 
             if (typeof($log.enabledContexts[context]) !== 'undefined') {
                 contextEnabled = $log.enabledContexts[context];
@@ -30,12 +34,12 @@ angular.module('evtviewer.core')
             if (Config.debugAllModules === true || contextEnabled === true) {
                 var args = Array.prototype.slice.call(arguments);
                 args.unshift('#' + context + '#');
-                loggingFunc.apply(null, args);
+                logFunc.apply(null, args);
             }
         };
     }
 
-    function enhanceErr(loggingFunc, context) {
+    function enhanceErr(logFunc, context) {
         return function() {
             var fileErr = function() {
                 try {
@@ -50,7 +54,7 @@ angular.module('evtviewer.core')
             var args = Array.prototype.slice.call(arguments);
             args.unshift('#EVTViewer ' + context + '#');
             args.push(callerLine);
-            loggingFunc.apply(null, args);
+            logFunc.apply(null, args);
         };
     }
 });
