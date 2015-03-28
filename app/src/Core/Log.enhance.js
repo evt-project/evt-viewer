@@ -30,7 +30,7 @@ angular.module('evtviewer.core')
             if (Config.debugAllModules === true || contextEnabled === true) {
                 var args = Array.prototype.slice.call(arguments);
                 args.unshift('#' + context + '#');
-                $log.log.apply(null, args);
+                loggingFunc.apply(null, args);
             }
         };
     }
@@ -45,12 +45,12 @@ angular.module('evtviewer.core')
                 }
             };
             var currentErr = fileErr();
-            var callerLine = currentErr.stack.split('\n')[5];
+            var callerLine = currentErr.stack.split('\n')[4];
 
             var args = Array.prototype.slice.call(arguments);
             args.unshift('#EVTViewer ' + context + '#');
             args.push(callerLine);
-            $log.error.apply(null, args);
+            loggingFunc.apply(null, args);
         };
     };
 });
