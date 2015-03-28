@@ -1,6 +1,6 @@
 angular.module('evtviewer.selector')
 
-.service('Selector', function($rootScope, BaseComponent, SELECTORDEFAULTS) {
+.service('Selector', function($rootScope, BaseComponent, SELECTORDEFAULTS, select) {
     var selector = new BaseComponent('Selector', SELECTORDEFAULTS);
 
     var state = {

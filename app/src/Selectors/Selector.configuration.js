@@ -58,7 +58,7 @@ angular.module('evtviewer.selector')
         value: '--',
         title: 'Select...'
     },
-    
+
     /**
      * @module evtviewerSelector
      * @ngdoc property
@@ -77,5 +77,5 @@ angular.module('evtviewer.selector')
 })
 
 .config(function(selectProvider, ConfigProvider, SELECTORDEFAULTS) {
-    selectProvider.defaults = ConfigProvider.makeDefaults('select', SELECTORDEFAULTS);
+    selectProvider.options = ConfigProvider.makeDefaults('select', SELECTORDEFAULTS);
 });

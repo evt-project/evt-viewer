@@ -52,5 +52,5 @@ angular.module('evtviewer.core')
             args.push(callerLine);
             loggingFunc.apply(null, args);
         };
-    };
+    }
 });
