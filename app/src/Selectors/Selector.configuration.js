@@ -1,6 +1,5 @@
 angular.module('evtviewer.selector')
 
-// TODO: add default expanded, add default width, etc.
 .constant('SELECTORDEFAULTS', {
 
     /**
@@ -37,30 +36,6 @@ angular.module('evtviewer.selector')
 
     /**
      * @module evtviewerSelector
-     * @ngdoc object
-     * @name defaultWidth
-     * @description
-     * `object`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * defaultOptionSelected: {
-     *   label: 'Select...',
-     *   value: '--',
-     *   title: 'Select...'
-     * }
-     * </pre>
-     */
-    defaultOptionSelected: {
-        label: 'Select...',
-        value: '--',
-        title: 'Select...'
-    },
-
-    /**
-     * @module evtviewerSelector
      * @ngdoc property
      * @name containerMaxHeight
      * @description
@@ -77,5 +52,6 @@ angular.module('evtviewer.selector')
 })
 
 .config(function(selectProvider, ConfigProvider, SELECTORDEFAULTS) {
-    selectProvider.setOptions(ConfigProvider.makeDefaults('select', SELECTORDEFAULTS));
+    var defaults = ConfigProvider.makeDefaults('select', SELECTORDEFAULTS);
+    selectProvider.setDefaults(defaults);
 });

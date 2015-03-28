@@ -1,6 +1,6 @@
 angular.module('evtviewer.buttonSwitch')
 
-.controller('ButtonSwitchCtrl', function($document, $window, $rootScope, $scope, Selector) {
+.controller('ButtonSwitchCtrl', function($document, $window, $rootScope, $scope) {
     $scope.active = false;
     $scope.setIcon = function() {
         var icon = '';
@@ -17,6 +17,6 @@ angular.module('evtviewer.buttonSwitch')
     
     $scope.doCallback = function() {
         $scope.active = !$scope.active;
-        Selector.closeAll('');
+        // Selector.closeAll('');
     };
 });

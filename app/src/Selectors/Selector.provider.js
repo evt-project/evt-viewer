@@ -2,10 +2,10 @@ angular.module('evtviewer.selector')
 
 .provider('select', function() {
 
-    var options = this.options;
+    var defaults = this.defaults;
 
-    this.setOptions = function(defaults) {
-        options = defaults;
+    this.setDefaults = function(_defaults) {
+        defaults = _defaults;
     };
 
     this.$get = function($log, PageData) {
@@ -14,16 +14,18 @@ angular.module('evtviewer.selector')
             list = [];
 
         var _console = $log.getInstance('select');
-        _console.log('ciaolog');
-        _console.debug('ciao');
 
+
+        // 
+        // Control function
+        // 
 
         function toggleExpand() {
             var vm = this;
             select.closeAll(vm.uid);
             vm.expanded = !vm.expanded;
 
-            // Selector.log('Controller - Toggle expand for ' + $scope.id);
+            _console.log('vm - toggleExpand for ' + vm.uid);
         };
 
         function selectOption(option) {
@@ -32,13 +34,30 @@ angular.module('evtviewer.selector')
             if (vm.expanded) {
                 vm.toggleExpand();
             }
+            vm.callback.call(undefined, option);
+
+            _console.log('vm - selectOption ', option);
         };
+
+        function destroy() {
+            var tempId = this.uid;
+            // TODO: remove from list and collection
+            this.$destroy();
+
+            _console.log('vm - destroy ' + tempId);
+        }
+
+
+        // 
+        // Select builder
+        // 
 
         select.build = function(scope) {
             var currentId = scope.id || scope.$id,
                 currentType = scope.type || 'default',
                 optionList,
-                optionSelected;
+                optionSelected,
+                callback;
 
             var scopeHelper = {};
 
@@ -50,20 +69,40 @@ angular.module('evtviewer.selector')
                 case 'page':
                     optionList = PageData.getPages();
                     optionSelected = optionList[0];
+                    callback = function(option){
+                        _console.log('page select callback'+option.label);
+                    }
+                    break;
+                case 'document':
+                    optionList = PageData.getPages();
+                    optionSelected = optionList[0];
+                    callback = function(option){
+                        _console.log('document select callback'+option.label);
+                    }
                     break;
                 case 'edition':
                     optionList = PageData.getPages();
                     optionSelected = optionList[0];
+                    callback = function(option){
+                        _console.log('edition select callback'+option.label);
+                    }
                     break;
             };
 
             scopeHelper = {
+                // expansion
                 uid: currentId,
-                options: angular.copy(options),
+                defaults: angular.copy(defaults),
+                callback: callback,
+
+                // model
                 optionList: optionList,
                 optionSelected: optionSelected,
+
+                // function
                 toggleExpand: toggleExpand,
-                selectOption: selectOption
+                selectOption: selectOption,
+                destroy: destroy
             };
 
             collection[currentId] = angular.extend(scope, scopeHelper);
@@ -75,12 +114,35 @@ angular.module('evtviewer.selector')
             return collection[currentId];
         };
 
+
+        //
+        // Service function
+        // 
+
         select.closeAll = function(skipId) {
-            angular.forEach(collection, function(currentSelector, currentId) {
+            angular.forEach(collection, function(currentSelect, currentId) {
                 if (currentId !== skipId) {
-                    currentSelector.expanded = false;
+                    currentSelect.expanded = false;
                 }
             });
+        };
+
+        select.addOption = function(currentId, option) {
+            if (collection[currentId] !== 'undefined') {
+                collection[currentId].optionList.push(option);
+            }
+        };
+
+        select.setCallback = function(currentId, callback) {
+            if (collection[currentId] !== 'undefined') {
+                collection[currentId].callback = callback;
+            }
+        }
+
+        select.getOptionSelected = function(currentId) {
+            if (collection[currentId] !== 'undefined') {
+                return collection[currentId].optionSelected;
+            }
         };
 
         return select;

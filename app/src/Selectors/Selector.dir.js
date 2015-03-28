@@ -15,7 +15,9 @@ angular.module('evtviewer.selector')
 
             // Garbage collection
             scope.$on('$destroy', function() {
-                // if (currentSelect) currentSelect.destroy();
+                if (currentSelect){
+                    currentSelect.destroy();
+                }     
             });
         }
     };
