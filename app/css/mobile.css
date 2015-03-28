@@ -1,67 +1,89 @@
-/* ALL MOBILE DEVICES ====================================== */ 
+/* ALL MOBILE DEVICES ====================================== */
+/* Normalize ---------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  border: 0;
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch; }
 
-@media screen  {
+/* END Normalize ------------------------------------------- */
+/* Fonts --------------------------------------------------- */
+@font-face {
+  font-family: 'Junicode';
+  src: url("../fonts/Junicode.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'Junicode-bold';
+  src: url("../fonts/Junicode-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal; }
+@font-face {
+  font-family: 'Junicode-italic';
+  src: url("../fonts/Junicode-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic; }
+/* END Fonts --------------------------------------------- */
+body {
+  min-height: 0;
+  font-family: Junicode, Times, serif;
+  background: #000;
+  color: #FFF; }
 
-    html, body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed,
-    figure, figcaption, footer, header, hgroup,
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
-        margin: 0;
-        padding: 0;
-        font-size: 100%;
-        vertical-align: baseline;
-        border: 0;
-        display: block;
-        min-height: 0; !important
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;      
-    }
+span {
+  display: inline-block; }
 
-    html {
-        overflow: auto;
-        -webkit-overflow-scrolling: touch; 
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-    }
+/* THUMBNAILS ====================================== */
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
 
-    body { min-height: 0; !important}
+.tempThumb {
+  width: 66.10169%;
+  float: left;
+  margin-right: 1.69492%;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: -1.69492%;
+  padding: 1.69492%;
+  margin: 0 auto;
+  padding-bottom: 0;
+  background: #333; }
 
-    span {display: inline-block};
+.thumbContainer .thumb {
+  padding: 2.5641%;
+  padding-bottom: 0;
+  margin: 1.5em auto;
+  display: inline-block;
+  margin-bottom: 2.5641%; }
+  .thumbContainer .thumb img {
+    max-width: 100%;
+    margin: 0 auto; }
+  .thumbContainer .thumb figcaption {
+    margin: 0.5em 0;
+    font-size: 18px;
+    color: #FFF;
+    text-align: center; }
 
+/* END THUMBNAILS ====================================== */
 
-    /* Typography ------------------------------------------- */
-
-    @font-face {
-        font-family: 'Junicode';
-        src: url('../fonts/Junicode.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Junicode-bold';
-        src: url('../fonts/Junicode-Bold.woff') format('woff');
-        font-weight: bold;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Junicode-italic';
-        src: url('../fonts/Junicode-Italic.woff') format('woff');
-        font-weight: normal;
-        font-style: italic;
-    }
-            
-    html, body {
-        font-family: Junicode, Times, serif;
-        background: #000;
-        color: #FFF;
-    }
-}
+/*# sourceMappingURL=mobile.css.map */
