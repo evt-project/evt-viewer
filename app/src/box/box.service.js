@@ -4,8 +4,10 @@ angular.module('evtviewer.box')
 
 })
 
-.service('Box', function($rootScope, BaseComponent, BOXDEFAULTS) {
-    var box = new BaseComponent('Box', BOXDEFAULTS);
+.service('Box', function($rootScope, $log, BaseComponent, BOXDEFAULTS) {
+    var box = {};
+
+    var _console = $log.getInstance('box');
 
     var state = {
         boxes: {}
@@ -63,7 +65,7 @@ angular.module('evtviewer.box')
         }
     };
 
-    box.log('Service running');
+    _console.log('service running');
 
     return box;
 });
