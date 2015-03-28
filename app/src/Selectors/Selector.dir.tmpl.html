@@ -7,7 +7,7 @@
    </span>
    <div 
       class="open_options" 
-      ng-click="toggleExpand()">
+      ng-click="vm.toggleExpand()">
       <i class="fa fa-sort-desc"></i>
    </div>
    <div 
@@ -18,7 +18,7 @@
          title="{{option.title}}" 
          data-value="{{option.value}}" 
          ng-repeat="option in optionList" 
-         ng-click="selectOption(option)" 
+         ng-click="vm.selectOption(option)" 
          ng-class="{'selected': option.value==optionSelected.value}">
          {{option.label}}
       </div>

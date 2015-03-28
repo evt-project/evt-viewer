@@ -21,7 +21,7 @@ angular.module('evtviewer.selector')
         };
 
         function selectOption(option) {
-            var self = this.$parent;
+            var self = this;
             self.optionSelected = option;
             if (self.expanded) {
                 self.toggleExpand();

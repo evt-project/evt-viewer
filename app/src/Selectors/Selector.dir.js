@@ -11,10 +11,7 @@ angular.module('evtviewer.selector')
         link: function(scope) {
 
             // Initialize select
-            var currentSelector = select.build(scope);
-            
-
-            console.log(scope);
+            var currentSelector = scope.vm = select.build(scope);
 
             // Garbage collection
             scope.$on('$destroy', function() {
