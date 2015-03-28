@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, PageData) {
+    this.$get = function($log, parsedData) {
         var select = {},
             collection = {},
             list = [];
@@ -26,7 +26,7 @@ angular.module('evtviewer.select')
             vm.expanded = !vm.expanded;
 
             _console.log('vm - toggleExpand for ' + vm.uid);
-        };
+        }
 
         function selectOption(option) {
             var vm = this;
@@ -37,7 +37,7 @@ angular.module('evtviewer.select')
             vm.callback.call(undefined, option);
 
             _console.log('vm - selectOption ', option);
-        };
+        }
 
         function destroy() {
             var tempId = this.uid;
@@ -67,27 +67,27 @@ angular.module('evtviewer.select')
 
             switch (currentType) {
                 case 'page':
-                    optionList = PageData.getPages();
+                    optionList = parsedData.getPages();
                     optionSelected = optionList[0];
                     callback = function(option){
                         _console.log('page select callback'+option.label);
-                    }
+                    };
                     break;
                 case 'document':
-                    optionList = PageData.getPages();
+                    optionList = parsedData.getDocuments();
                     optionSelected = optionList[0];
                     callback = function(option){
                         _console.log('document select callback'+option.label);
-                    }
+                    };
                     break;
                 case 'edition':
-                    optionList = PageData.getPages();
+                    optionList = parsedData.getEditions();
                     optionSelected = optionList[0];
                     callback = function(option){
                         _console.log('edition select callback'+option.label);
-                    }
+                    };
                     break;
-            };
+            }
 
             scopeHelper = {
                 // expansion
@@ -137,7 +137,7 @@ angular.module('evtviewer.select')
             if (collection[currentId] !== 'undefined') {
                 collection[currentId].callback = callback;
             }
-        }
+        };
 
         select.getOptionSelected = function(currentId) {
             if (collection[currentId] !== 'undefined') {
