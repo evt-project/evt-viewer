@@ -38,12 +38,12 @@ angular.module('evtviewer.dataModel')
     };
 
     parsedData.addPages = function() {
-        var pageMock = {
+        var mock = {
             value: 'document3',
             label: 'document3 label',
             title: 'document3 title'
         };
-        mock.push(pageMock);
+        mockPages.push(mock);
     };
 
     parsedData.getDocuments = function() {
@@ -51,12 +51,12 @@ angular.module('evtviewer.dataModel')
     };
 
     parsedData.addDocuments = function() {
-        var pageMock = {
+        var mock = {
             value: 'document3',
             label: 'document3 label',
             title: 'document3 title'
         };
-        mock.push(pageMock);
+        mockDocuments.push(mock);
     };
 
     parsedData.getEditions = function() {
@@ -64,12 +64,12 @@ angular.module('evtviewer.dataModel')
     };
 
     parsedData.addEditions = function() {
-        var pageMock = {
+        var mock = {
             value: 'edition3',
             label: 'edition3 label',
             title: 'edition3 title'
         };
-        mock.push(pageMock);
+        mockEditions.push(mock);
     };
 
     return parsedData;
