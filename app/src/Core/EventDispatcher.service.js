@@ -71,7 +71,6 @@ angular.module('evtviewer.core')
                     events[name].splice(index, 1);
                     if (events[name].length === 0) {
                         delete events[name];
-                        return;
                     }
                 }
             }
