@@ -1,6 +1,6 @@
 angular.module('evtviewer.core')
 
-.constant('EVTVIEWERDEFAULTCONF', {
+.constant('GLOBALDEFAULTCONF', {
 
     // TODO: select doc system 
     /**

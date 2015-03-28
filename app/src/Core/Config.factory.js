@@ -4,10 +4,10 @@ angular.module('evtviewer.core')
     debug: false
 })
 
-.provider('Config', function(UtilsProvider, EVTVIEWERDEFAULTCONF, BASECONFIG) {
+.provider('Config', function(UtilsProvider, GLOBALDEFAULTCONF, BASECONFIG) {
     var config = this;
 
-    UtilsProvider.deepExtend(config, EVTVIEWERDEFAULTCONF);
+    UtilsProvider.deepExtend(config, GLOBALDEFAULTCONF);
 
     // Read 'evtviewerConfig' from the global scope and use those settings
     if (typeof(window.evtviewerConfig) !== 'undefined' && angular.isObject(window.evtviewerConfig)) {
