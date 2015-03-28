@@ -19,16 +19,20 @@ angular.module('evtviewer.core')
 
     function enhanceLog(logFunc, logName, context) {
         return function() {
-            var contextEnabled;
+            var contextEnabled,
+                manualConfContext = $log.enabledContexts[context],
+                configContext = Config.modules[context];
 
             if (Config.debugConf[logName] === false) {
                 return;
             }
 
-            if (typeof($log.enabledContexts[context]) !== 'undefined') {
-                contextEnabled = $log.enabledContexts[context];
+            if (typeof(manualConfContext) !== 'undefined') {
+                contextEnabled = manualConfContext;
+            } else if (typeof(configContext) !== 'undefined' && typeof(configContext.debug) !== 'undefined') {
+                contextEnabled = configContext.debug;
             } else {
-                contextEnabled = Config.modules[context].debug;
+                contextEnabled = false;
             }
 
             if (Config.debugAllModules === true || contextEnabled === true) {
