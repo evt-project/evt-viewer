@@ -7,11 +7,11 @@ angular.module('evtviewer.select')
             id: '@',
             type: '@'
         },
-        templateUrl: 'src/select/select.dir.tmpl.html',
+        templateUrl: 'src/select/select.directive.tmpl.html',
         link: function(scope) {
 
             // Initialize select
-            var currentSelector = scope.vm = evtSelect.build(scope);
+            var currentSelect = scope.vm = evtSelect.build(scope);
 
             // Garbage collection
             scope.$on('$destroy', function() {
