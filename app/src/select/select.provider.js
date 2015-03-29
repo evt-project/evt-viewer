@@ -20,9 +20,21 @@ angular.module('evtviewer.select')
         // Control function
         // 
 
-        function toggleExpand() {
+        function expand() {
             var vm = this;
-            select.closeAll(vm.uid);
+            vm.expanded = true;
+        }
+
+        function collapse() {
+            var vm = this;
+            vm.expanded = false;
+        }
+
+        function toggleExpand(closeSiblings) {
+            var vm = this;
+            if (!closeSiblings) {
+                select.closeAll(vm.uid);
+            }
             vm.expanded = !vm.expanded;
 
             _console.log('vm - toggleExpand for ' + vm.uid);
@@ -36,7 +48,7 @@ angular.module('evtviewer.select')
             }
             vm.callback.call(undefined, option);
 
-            _console.log('vm - selectOption ', option);
+            _console.log('vm - selectOption ' + option.value);
         }
 
         function destroy() {
@@ -69,22 +81,22 @@ angular.module('evtviewer.select')
                 case 'page':
                     optionList = parsedData.getPages();
                     optionSelected = optionList[0];
-                    callback = function(option){
-                        _console.log('page select callback'+option.label);
+                    callback = function(option) {
+                        _console.log('page select callback' + option.label);
                     };
                     break;
                 case 'document':
                     optionList = parsedData.getDocuments();
                     optionSelected = optionList[0];
-                    callback = function(option){
-                        _console.log('document select callback'+option.label);
+                    callback = function(option) {
+                        _console.log('document select callback' + option.label);
                     };
                     break;
                 case 'edition':
                     optionList = parsedData.getEditions();
                     optionSelected = optionList[0];
-                    callback = function(option){
-                        _console.log('edition select callback'+option.label);
+                    callback = function(option) {
+                        _console.log('edition select callback' + option.label);
                     };
                     break;
             }
@@ -100,6 +112,8 @@ angular.module('evtviewer.select')
                 optionSelected: optionSelected,
 
                 // function
+                expand: expand,
+                collapse: collapse,
                 toggleExpand: toggleExpand,
                 selectOption: selectOption,
                 destroy: destroy
@@ -119,10 +133,19 @@ angular.module('evtviewer.select')
         // Service function
         // 
 
+        select.expandById = function(currentId, closeSiblings){
+            if (collection[currentId] !== 'undefined') {
+                collection[currentId].expand();
+                if (closeSiblings) {
+                    select.closeAll();
+                }
+            }
+        };
+
         select.closeAll = function(skipId) {
             angular.forEach(collection, function(currentSelect, currentId) {
                 if (currentId !== skipId) {
-                    currentSelect.expanded = false;
+                    currentSelect.collapse();
                 }
             });
         };
