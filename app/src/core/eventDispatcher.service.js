@@ -2,7 +2,7 @@
 
 angular.module('evtviewer.core')
 
-.service('EventDispatcher', function($q) {
+.service('eventDispatcher', function($q) {
 
     var eventDispatcher = {},
         events = {};
