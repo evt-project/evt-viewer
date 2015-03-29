@@ -10,8 +10,14 @@ angular.module('evtviewer.select')
         templateUrl: 'src/select/select.directive.tmpl.html',
         link: function(scope) {
 
+            // Add property in vm
+            scope.vm = {
+                id: scope.id,
+                type: scope.type
+            }
+
             // Initialize select
-            var currentSelect = scope.vm = evtSelect.build(scope);
+            var currentSelect = evtSelect.build(scope.vm);
 
             // Garbage collection
             scope.$on('$destroy', function() {

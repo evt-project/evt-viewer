@@ -11,7 +11,8 @@ angular.module('evtviewer.select')
     this.$get = function($log, parsedData) {
         var select = {},
             collection = {},
-            list = [];
+            list = [],
+            idx = 0;
 
         var _console = $log.getInstance('select');
 
@@ -69,9 +70,9 @@ angular.module('evtviewer.select')
         // Select builder
         // 
 
-        select.build = function(scope) {
-            var currentId = scope.id || scope.$id,
-                currentType = scope.type || 'default',
+        select.build = function(vm) {
+            var currentId = vm.id || idx++,
+                currentType = vm.type || 'default',
                 optionList,
                 optionSelected,
                 callback;
@@ -125,7 +126,7 @@ angular.module('evtviewer.select')
                 destroy: destroy
             };
 
-            collection[currentId] = angular.extend(scope, scopeHelper);
+            collection[currentId] = angular.extend(vm, scopeHelper);
             list.push({
                 id: currentId,
                 type: currentType
