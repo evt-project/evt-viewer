@@ -1,10 +1,6 @@
 angular.module('evtviewer.box')
 
-.constant('BOXDEFAULTS', {
-
-})
-
-.service('box', function($rootScope, $log, BOXDEFAULTS) {
+.service('box', function($rootScope, $log) {
     var box = {};
 
     var _console = $log.getInstance('box');

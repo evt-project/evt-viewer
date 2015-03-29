@@ -1,7 +1,8 @@
 angular.module('evtviewer.mobile')
 
-.service('Mobile', function(BaseComponent) {
-    var mobile = new BaseComponent('Mobile');
+.service('Mobile', function($log) {
+    var mobile = {};
+    var _console = $log.getInstance('mobile');
 
     var state = {
         currentView: 'image'
@@ -17,7 +18,7 @@ angular.module('evtviewer.mobile')
 
     mobile.switchView = function(view) {
         state.currentView = view;
-        mobile.log('Switch of current view in: ' + view);
+        _console.log('Switch of current view in: ' + view);
     };
 
     return mobile;

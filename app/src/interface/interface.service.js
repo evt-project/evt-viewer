@@ -9,11 +9,7 @@ angular.module('evtviewer.interface')
     }
 })
 
-.constant('INTERFACEDEFAULTS', {
-    active: true
-})
-
-.service('evtInterface', function(evtCommunication, Config, INTERFACEDEFAULTS) {
+.service('evtInterface', function(evtCommunication, Config) {
     var mainInterface = {};
 
     mainInterface.boot = function() {

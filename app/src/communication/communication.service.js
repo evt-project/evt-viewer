@@ -4,7 +4,7 @@ angular.module('evtviewer.communication')
     mode: 'xml'
 })
 
-.service('evtCommunication', function($http, $log, baseData, COMMUNICATIONDEFAULTS) {
+.service('evtCommunication', function($http, $log, baseData) {
     var communication = {};
     var _console = $log.getInstance('communication');
 
