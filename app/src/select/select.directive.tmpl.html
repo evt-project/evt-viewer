@@ -1,9 +1,9 @@
 <div class="selector">
    <span 
       class="label_selected" 
-      title="{{optionSelected.title}}"
-      data-value="{{optionSelected.value}}">
-      {{optionSelected.label}}
+      title="{{vm.optionSelected.title}}"
+      data-value="{{vm.optionSelected.value}}">
+      {{vm.optionSelected.label}}
    </span>
    <div 
       class="open_options" 
@@ -12,14 +12,14 @@
    </div>
    <div 
       class="option_container" 
-      ng-show="expanded">
+      ng-show="vm.expanded">
       <div 
          class="option" 
          title="{{option.title}}" 
          data-value="{{option.value}}" 
-         ng-repeat="option in optionList" 
+         ng-repeat="option in vm.optionList" 
          ng-click="vm.selectOption(option)" 
-         ng-class="{'selected': option.value==optionSelected.value}">
+         ng-class="{'selected': vm.isOptionSelected(option)}">
          {{option.label}}
       </div>
    </div>

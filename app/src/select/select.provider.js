@@ -51,6 +51,11 @@ angular.module('evtviewer.select')
             _console.log('vm - selectOption ' + option.value);
         }
 
+        function isOptionSelected(option) {
+            var vm = this;
+            return vm.optionSelected.value === option.value;
+        }
+
         function destroy() {
             var tempId = this.uid;
             // TODO: remove from list and collection
@@ -116,6 +121,7 @@ angular.module('evtviewer.select')
                 collapse: collapse,
                 toggleExpand: toggleExpand,
                 selectOption: selectOption,
+                isOptionSelected: isOptionSelected,
                 destroy: destroy
             };
 
@@ -133,7 +139,17 @@ angular.module('evtviewer.select')
         // Service function
         // 
 
-        select.expandById = function(currentId, closeSiblings){
+        select.getById = function(currentId) {
+            if (collection[currentId] !== 'undefined') {
+                return collection[currentId];
+            }
+        };
+
+        select.getList = function() {
+            return list;
+        };
+
+        select.expandById = function(currentId, closeSiblings) {
             if (collection[currentId] !== 'undefined') {
                 collection[currentId].expand();
                 if (closeSiblings) {
@@ -159,12 +175,6 @@ angular.module('evtviewer.select')
         select.setCallback = function(currentId, callback) {
             if (collection[currentId] !== 'undefined') {
                 collection[currentId].callback = callback;
-            }
-        };
-
-        select.getOptionSelected = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
-                return collection[currentId].optionSelected;
             }
         };
 
