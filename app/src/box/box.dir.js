@@ -6,7 +6,7 @@ angular.module('evtviewer.box')
         scope: {
             boxtitle: '@'
         },
-        templateUrl: 'src/Box/Box.dir.tmpl.html',
+        templateUrl: 'src/box/box.dir.tmpl.html',
         controller: 'BoxCtrl'
     };
 });

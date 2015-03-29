@@ -4,15 +4,16 @@ angular.module('evtviewer.communication')
     mode: 'xml'
 })
 
-.service('Communication', function($http, BaseComponent, BaseData, COMMUNICATIONDEFAULTS) {
-    var communication = new BaseComponent('Communication', COMMUNICATIONDEFAULTS);
+.service('evtCommunication', function($http, $log, baseData, COMMUNICATIONDEFAULTS) {
+    var communication = {};
+    var _console = $log.getInstance('communication');
 
     communication.getData = function(url) {
         $http.get(url)
             .success(function(data) {
                 if (typeof(data) === 'string') {
-                    BaseData.addXMLString(data);
-                    communication.log('XML Data received');
+                    baseData.addXMLString(data);
+                    _console.log('XML Data received');
                 } else {
                     // TODO: JSON? 
                 }

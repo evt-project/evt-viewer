@@ -44,7 +44,7 @@ angular.module('evtviewer.core')
     },
 
     modules: {
-        Interface: {
+        interface: {
             active: true
         }
     },

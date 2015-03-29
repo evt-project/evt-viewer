@@ -1,12 +1,12 @@
 angular.module('evtviewer.box')
 
-.controller('BoxCtrl', function($document, $window, $rootScope, $scope, $log, Box) {
+.controller('BoxCtrl', function($document, $window, $rootScope, $scope, $log, box) {
 
     var _console = $log.getInstance('box');
     
-    Box.addReference($scope);
+    box.addReference($scope);
 
-    $scope.box = Box.getReference($scope.boxtitle);
+    $scope.box = box.getReference($scope.boxtitle);
         
     _console.log($scope.boxtitle);
 });

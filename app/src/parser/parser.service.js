@@ -1,7 +1,7 @@
 angular.module('evtviewer.parser')
 
-.service('Parser', function(BaseComponent) {
-    var parser = new BaseComponent('Parser');
+.service('evtParser', function() {
+    var parser = {};
 
     return parser;
 });

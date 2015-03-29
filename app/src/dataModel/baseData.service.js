@@ -1,19 +1,21 @@
 angular.module('evtviewer.dataModel')
 
-.service('BaseData', function(BaseComponent, xmlParser) {
-    var baseData = new BaseComponent('BaseData'),
+.service('baseData', function($log, xmlParser) {
+    var baseData = {},
         state = {
             XMLDocuments: [],
             XMLStrings: []
         };
 
+    var _console = $log.getInstance('baseData');
+
     var addXMLDocument = function(doc) {
         var docElements = xmlParser.parse(doc);
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLDocuments.push(docElements);
-            baseData.log('XML TEI parsed and stored in XMLDocuments ', state.XMLDocuments);
+            _console.log('XML TEI parsed and stored in XMLDocuments ', state.XMLDocuments);
         } else {
-            baseData.err('Something wrong with the XML');
+            _console.error('Something wrong with the XML');
         }
     };
 

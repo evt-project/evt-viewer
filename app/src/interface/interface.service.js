@@ -2,8 +2,8 @@ angular.module('evtviewer.interface')
 
 .run(function($injector, Config) {
     if (Config.isValid()) {
-        if (Config.isModuleActive('Interface')) {
-            var mainInterface = $injector.get('Interface');
+        if (Config.isModuleActive('interface')) {
+            var mainInterface = $injector.get('evtInterface');
             mainInterface.boot();
         }
     }
@@ -13,11 +13,11 @@ angular.module('evtviewer.interface')
     active: true
 })
 
-.service('Interface', function(BaseComponent, Communication, Config, INTERFACEDEFAULTS) {
-    var mainInterface = new BaseComponent('Interface', INTERFACEDEFAULTS);
+.service('evtInterface', function(evtCommunication, Config, INTERFACEDEFAULTS) {
+    var mainInterface = {};
 
     mainInterface.boot = function() {
-        Communication.getData(Config.dataUrl);
+        evtCommunication.getData(Config.dataUrl);
     };
 
     return mainInterface;
