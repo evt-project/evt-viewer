@@ -4,7 +4,7 @@ angular.module('evtviewer.core')
     debug: false
 })
 
-.provider('Config', function(UtilsProvider, GLOBALDEFAULTCONF, BASECONFIG) {
+.provider('config', function(UtilsProvider, GLOBALDEFAULTCONF, BASECONFIG) {
     var config = this;
 
     UtilsProvider.deepExtend(config, GLOBALDEFAULTCONF);

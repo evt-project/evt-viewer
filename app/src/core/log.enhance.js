@@ -2,7 +2,7 @@
 
 angular.module('evtviewer.core')
 
-.run(function($log, Config) {
+.run(function($log, config) {
     $log.enabledContexts = [];
     $log.getInstance = function(context) {
         return {
@@ -21,9 +21,9 @@ angular.module('evtviewer.core')
         return function() {
             var contextEnabled,
                 manualConfContext = $log.enabledContexts[context],
-                configContext = Config.modules[context];
+                configContext = config.modules[context];
 
-            if (Config.debugConf[logName] === false) {
+            if (config.debugConf[logName] === false) {
                 return;
             }
 
@@ -35,7 +35,7 @@ angular.module('evtviewer.core')
                 contextEnabled = false;
             }
 
-            if (Config.debugAllModules === true || contextEnabled === true) {
+            if (config.debugAllModules === true || contextEnabled === true) {
                 var args = Array.prototype.slice.call(arguments);
                 args.unshift('#' + context + '#');
                 logFunc.apply(null, args);
