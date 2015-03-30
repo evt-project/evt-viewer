@@ -6,7 +6,7 @@ angular.module('evtviewer.mobile')
         scope: {
             id: '@'
         },
-        templateUrl: 'src/Mobile/MobileMenu.dir.tmpl.html',
+        templateUrl: 'src/mobile/mobileMenu.dir.tmpl.html',
         controller: 'MobileMenuCtrl'
     };
 });
