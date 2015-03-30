@@ -10,11 +10,11 @@ angular.module('evtviewer.select')
         templateUrl: 'src/select/select.directive.tmpl.html',
         link: function(scope) {
 
-            // Add property in vm
+            // Add attributes in vm
             scope.vm = {
                 id: scope.id,
                 type: scope.type
-            }
+            };
 
             // Initialize select
             var currentSelect = evtSelect.build(scope.vm);
