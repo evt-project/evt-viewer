@@ -5,19 +5,17 @@ angular.module('evtviewer.core')
 })
 
 .provider('config', function(UtilsProvider, GLOBALDEFAULTCONF, BASECONFIG) {
-    var config = this;
+    var config = {};
 
     UtilsProvider.deepExtend(config, GLOBALDEFAULTCONF);
 
-    // Read 'evtviewerConfig' from the global scope and use those settings
-    if (typeof(window.evtviewerConfig) !== 'undefined' && angular.isObject(window.evtviewerConfig)) {
-        UtilsProvider.deepExtend(config, window.evtviewerConfig);
+    // Read 'globalConfig' from the global scope and use those settings
+    if (typeof(window.globalConfig) !== 'undefined' && angular.isObject(window.globalConfig)) {
+        UtilsProvider.deepExtend(config, window.globalConfig);
     }
 
-    if (typeof(window.EVTVIEWER) === 'undefined') {
-        window.EVTVIEWER = {
-            config: config
-        };
+    if (typeof(window.GLOBALCONFIG) === 'undefined') {
+        window.GLOBALCONFIG = config;
     }
 
     this.makeDefaults = function(name, options) {
@@ -46,13 +44,13 @@ angular.module('evtviewer.core')
         return true;
     };
 
+    this.isModuleActive = function(moduleName) {
+        return angular.isObject(config.modules[moduleName]) && config.modules[moduleName].active === true;
+    };
+
     this.$get = function() {
         config.isValid = this.isValid;
-
-        config.isModuleActive = function(moduleName) {
-            return angular.isObject(config.modules[moduleName]) && config.modules[moduleName].active === true;
-        };
-
+        config.isModuleActive = this.isModuleActive;
         return config;
     };
 
