@@ -15,13 +15,23 @@ menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   margin: 0;
   padding: 0;
-  font-size: 100%;
+  min-height: 0;
   vertical-align: baseline;
   border: 0;
   display: block;
-  min-height: 0;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch; }
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  font-size: 100%; }
+
+a:link {
+  cursor: pointer;
+  text-decoration: none; }
+
+p {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  font-size: 1em; }
 
 /* END Normalize ------------------------------------------- */
 /* Fonts --------------------------------------------------- */
@@ -85,5 +95,194 @@ span {
     text-align: center; }
 
 /* END THUMBNAILS ====================================== */
+/* MENU' ====================================== */
+.mainNav .fa, .mainNav a, .navLink {
+  text-shadow: 2px 2px 3px #333; }
+
+.mainNav a, .navLink, .submenu {
+  -moz-box-shadow: 0 5px 5px -5px #000;
+  -webkit-box-shadow: 0 5px 5px -5px #000;
+  box-shadow: 0 5px 5px -5px #000; }
+
+.mainNav {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  z-index: 20; }
+  .mainNav ul {
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    float: left;
+    display: block; }
+  .mainNav .fa {
+    color: #CCC;
+    text-decoration: none; }
+  .mainNav .active .fa {
+    color: #CCC;
+    text-shadow: none; }
+  .mainNav a {
+    color: #CCC; }
+    .mainNav a:focus {
+      text-shadow: none;
+      color: #CCC; }
+      .mainNav a:focus .fa {
+        text-shadow: none;
+        color: #CCC; }
+
+.navLink {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  float: left;
+  display: block;
+  overflow: hidden;
+  color: #CCC;
+  background: #666;
+  font-size: 1.7em;
+  line-height: 1.5em;
+  text-align: center;
+  list-style-type: none;
+  text-decoration: none; }
+
+.submenu {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  z-index: 20; }
+  .submenu li {
+    width: 100%;
+    height: 100%;
+    line-height: 1.2em;
+    color: #CCC;
+    border-top: #333 1px solid; }
+  .submenu li + li {
+    border: none; }
+  .submenu .subIcon {
+    margin: 0.1em 0; }
+
+/* Smartphone ================================================ */
+@media screen and (max-width: 479px) {
+  .mainNav li {
+    width: 25%;
+    font-size: 1.5em; }
+    .mainNav li:first-child {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 1.5em; }
+
+  .submenu li, .submenu li:first-child {
+    width: 100%;
+    font-size: 1em; }
+
+  .imageimage, .imagetext, .texttext {
+    display: none; } }
+/* end Smartphone ============================================= */
+/* Tablet portrait ============================================ */
+@media screen and (min-width: 480px) and (max-width: 800px) {
+  .mainNav li {
+    width: 25%; }
+
+  .mainNav li:first-child, .submenu li {
+    width: 100%;
+    height: auto;
+    float: left; } }
+/* end Tablet portrait ========================================= */
+/* Tablet landscape ============================================ */
+@media screen and (min-width: 801px) {
+  .mainNav li {
+    width: 12.5%; }
+    .mainNav li:first-child {
+      width: 50%;
+      float: left; }
+
+  .submenu li, .submenu li:first-child {
+    width: 100%;
+    font-size: 1em; } }
+/* end Tablet landscape ============================================ */
+/* END MENU ====================================== */
+/* VIEW ====================================== */
+/* Normalize: page-include ---------------------------- */
+#central_wrapper {
+  width: 100%;
+  height: auto; }
+
+#text_frame {
+  background: #FFF none repeat scroll 0% 0%;
+  max-width: 95%;
+  width: 90%;
+  height: auto;
+  padding: 4em 0.5em 2em 1em;
+  margin: 0 auto;
+  text-align: justify;
+  font-size: 17px;
+  line-height: 25px; }
+
+span.facs-choice_popup span.facs-orig {
+  color: #666; }
+
+span.facs-choice_popup:hover span.facs-orig,
+span.facs-choice_popup.hover span.facs-orig {
+  color: #666;
+  text-decoration: underline; }
+
+span.facs-reg {
+  font-size: 90%;
+  position: absolute;
+  line-height: 25px;
+  display: none;
+  background: #666 none repeat scroll 0% 0%;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px #000;
+  padding: 0.5%;
+  margin-top: 30px;
+  color: #FFF; }
+
+span.facs-reg:before {
+  content: "\f0de";
+  font-family: FontAwesome;
+  font-size: 2em;
+  font-style: normal;
+  font-weight: normal;
+  color: #666;
+  left: 15%;
+  position: absolute;
+  top: -8px; }
+
+/* Template: -------------------------- */
+.template {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  position: absolute;
+  z-index: -20;
+  top: 0;
+  padding-top: 4.5em;
+  color: #FFF; }
+
+/* Template: DVB -------------------- */
+.tempDvb {
+  background: #333;
+  z-index: -20; }
+
+.tempDvb p {
+  padding: 2.5em; }
+
+.dvbList {
+  width: 100%;
+  padding: 1em 2.5em 1em 2.5em;
+  background: #666; }
+
+.dvbList a {
+  color: #CCC;
+  text-decoration: none; }
+
+/* END VIEW ====================================== */
 
 /*# sourceMappingURL=mobile.css.map */

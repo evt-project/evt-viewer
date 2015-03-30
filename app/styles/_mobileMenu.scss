@@ -1,0 +1,167 @@
+/* MENU' ====================================== */ 
+
+%text-shadow {
+    text-shadow: 2px 2px 3px #333;
+}
+
+%box-shadow {
+    -moz-box-shadow: 0 5px 5px -5px #000;
+    -webkit-box-shadow: 0 5px 5px -5px #000;
+    box-shadow: 0 5px 5px -5px #000;
+}
+
+.mainNav{
+        width: 100%;
+        height:100%;
+        min-height:0;
+        top:0;
+        margin: 0;
+        padding:0;
+        display: block;
+        z-index: 20;
+
+        
+    ul{
+        width: 100%;
+        height: 100%;
+        list-style: none;
+        float: left;
+        display: block;
+    }
+
+    .fa{
+        color: #CCC;
+        text-decoration: none;
+        @extend %text-shadow;
+    }
+
+    .active .fa{
+        color: #CCC;
+        text-shadow:none;
+    }
+
+    a{
+        color: #CCC;
+        @extend %text-shadow;
+        @extend %box-shadow;
+
+        &:focus{
+            text-shadow:none;
+            color: #CCC;
+
+            .fa{
+                text-shadow:none;
+                color: #CCC;
+            }
+        }
+    }
+}
+    
+.navLink{
+    width:100%;
+    height: 100%;
+    min-height: 0;
+    float: left;
+    display: block;
+    overflow: hidden;
+    color:#CCC;
+    background: #666; 
+    font-size: 1.7em;
+    line-height: 1.5em;
+    text-align: center;
+    list-style-type: none;
+    text-decoration: none;    
+    @extend %box-shadow;
+    @extend %text-shadow;
+    
+}
+
+.submenu{
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    z-index: 20;
+    @extend %box-shadow;
+
+    li{
+        width: 100%;
+        height: 100%;
+        line-height: 1.2em;
+        color: #CCC;
+        border-top: #333 1px solid;
+    }
+
+    li+li {
+        border:none;
+    }
+
+    .subIcon {
+        margin: 0.1em 0;
+    }   
+} 
+    
+       
+/* Smartphone ================================================ */ 
+@media screen and (max-width: 479px) {
+
+    .mainNav li {
+        width: 25%;
+        font-size: 1.5em;
+
+        &:first-child {
+            width: 100%;
+            height: auto;
+            float: left;
+            font-size: 1.5em;
+        }
+    }
+
+    .submenu li, .submenu li:first-child {
+        width: 100%;
+        font-size: 1em;
+    }
+
+        
+    .imageimage, .imagetext, .texttext {display: none;}
+
+} 
+/* end Smartphone ============================================= */
+
+/* Tablet portrait ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+    
+    .mainNav li {
+        width: 25%;
+    }
+
+    .mainNav li:first-child, .submenu li {
+        width: 100%;
+        height: auto;
+        float: left;
+    }
+        
+}
+/* end Tablet portrait ========================================= */ 
+
+/* Tablet landscape ============================================ */
+@media screen and (min-width: 801px) {
+ 
+    .mainNav li {
+        width: 12.5%;
+
+        &:first-child {
+            width: 50%;
+            float: left;
+        }
+    }
+
+    .submenu li, .submenu li:first-child {
+        width: 100%;
+        font-size: 1em;
+    }
+    
+}
+/* end Tablet landscape ============================================ */
+
+
+/* END MENU ====================================== */ 

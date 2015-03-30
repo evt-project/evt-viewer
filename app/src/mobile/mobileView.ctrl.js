@@ -68,25 +68,25 @@ angular.module('evtviewer.mobile')
    
     // Partial: single_data.html, diplomatic.html, interpretative.html (all templates except ImageImage mode)
     $scope.singleData = [{
-        src: './data/input_data/images/single/VB_fol_104v.jpg',
+        src: 'http://i57.tinypic.com/k3b1mq.jpg',
         urlDip: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
         urlInt: './data/output_data/interpretative/page_VB_fol_104v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 104v -',
     }, {
-        src: './data/input_data/images/single/VB_fol_105r.jpg',
+        src: 'http://i61.tinypic.com/w1v6ag.jpg',
         urlDip: './data/output_data/diplomatic/page_VB_fol_105r_diplomatic.html',
         urlInt: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105r -',
     }, {
-        src: './data/input_data/images/single/VB_fol_105v.jpg',
+        src: 'http://i58.tinypic.com/k4wc41.jpg',
         urlDip: './data/output_data/diplomatic/page_VB_fol_105v_diplomatic.html',
         urlInt: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105v -',
     }, {
-        src: './data/input_data/images/single/VB_fol_106r.jpg',
+        src: 'http://i57.tinypic.com/1zna0k1.jpg',
         urlDip: './data/output_data/diplomatic/page_VB_fol_106r_diplomatic.html',
         urlInt: './data/output_data/interpretative/page_VB_fol_106r_interpretative.html',
         title: 'The Dream of the Rood',
