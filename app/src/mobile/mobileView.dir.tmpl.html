@@ -1,6 +1,6 @@
 
 <section 
-    class="template tempDvb"
+    class="tempDvb"
     ng-if="view.currentView === 'dvb'" >
                         
     <p>
@@ -33,7 +33,7 @@
 
 
 <section 
-    class="template tempThumb"
+    class="tempThumb"
     ng-if="view.currentView === 'thumbnails'" >
 
     
@@ -60,7 +60,7 @@
 
 
 <section 
-    class="template tempSearch"
+    class="tempSearch"
     ng-if="view.currentView === 'search'" >
 
     
@@ -71,7 +71,7 @@
 
  
 <section 
-    class="template tempImage"
+    class="tempImage"
     ng-if="view.currentView === 'image'" >
 
     <ng-include src="'singleImage'"></ng-include>
@@ -81,7 +81,7 @@
 
 
 <section 
-    class="template tempText"
+    class="tempText"
     ng-if="view.currentView === 'text'" >
 
    
@@ -93,7 +93,7 @@
 
 
 <section 
-    class="template tempImageImage"
+    class="tempImageImage"
     ng-if="view.currentView === 'imageimage'" >
 
     <ng-include src="'doubleImage'"></ng-include>
@@ -103,7 +103,7 @@
 
 
 <section 
-    class="template tempImageText"
+    class="tempImageText"
     ng-if="view.currentView === 'imagetext'" >
  
     <ng-include src="'singleImage'"></ng-include>
@@ -114,7 +114,7 @@
 
 
 <section 
-    class="template tempTextText"
+    class="tempTextText"
     ng-if="view.currentView === 'texttext'" >
 
     <ng-include src="'diplomatic'"></ng-include>
@@ -224,12 +224,12 @@
 <script type="text/ng-template" id="singlePrevNext">
      <!-- prev / next controls -->
     <a 
-        class="arrow prev"
+        class="prev"
         href=""
         ng-click="singlePrev()">
     </a>
     <a 
-        class="arrow next"
+        class="next"
         href=""
         ng-click="singleNext()">
     </a>
@@ -238,12 +238,12 @@
 <script type="text/ng-template" id="doublePrevNext">
      <!-- prev / next controls -->
     <a 
-        class="arrow prev"
+        class="prev"
         href=""
         ng-click="doublePrev()">
     </a>
     <a 
-        class="arrow next"
+        class="next"
         href=""
         ng-click="doubleNext()">
     </a>

@@ -26,8 +26,6 @@ time, mark, audio, video {
 a {
   cursor: pointer;
   text-decoration: none; }
-  a:focus {
-    text-shadow: none; }
 
 p {
   margin: 0;
@@ -115,6 +113,8 @@ span {
     background: #666; }
   .nav a {
     color: #CCC; }
+  .nav a:focus, .nav .active .fa {
+    text-shadow: none; }
 
 .navItem {
   float: left;
@@ -131,9 +131,6 @@ span {
     border-top: #333 1px solid; }
   .submenu li + li {
     border: none; }
-
-.active .fa {
-  text-shadow: none; }
 
 /* Smartphone ================================================ */
 @media screen and (max-width: 479px) {
@@ -226,33 +223,83 @@ span.facs-reg:before {
   position: absolute;
   top: -8px; }
 
-/* Template: -------------------------- */
-.template {
+/* Template -------------------------- */
+.tempDvb, .tempThumb, .tempSearch {
   width: 100%;
   height: auto;
-  min-height: 0;
-  position: absolute;
-  z-index: -20;
   top: 0;
   padding-top: 4.5em;
-  color: #FFF; }
+  position: absolute;
+  z-index: -20;
+  color: #FFF;
+  background: #333; }
+
+.tempImage, .tempText, .tempImageImage, .tempImageText, .tempTextText {
+  width: 100%;
+  height: auto;
+  top: 0;
+  padding-top: 4.5em;
+  position: absolute;
+  z-index: -20;
+  color: #FFF;
+  background: #000; }
 
 /* Template: DVB -------------------- */
-.tempDvb {
-  background: #333;
-  z-index: -20; }
-
 .tempDvb p {
   padding: 2.5em; }
 
 .dvbList {
   width: 100%;
-  padding: 1em 2.5em 1em 2.5em;
+  padding: 1em 0 1em 2.5em;
   background: #666; }
+  .dvbList a {
+    color: #CCC; }
 
-.dvbList a {
-  color: #CCC;
-  text-decoration: none; }
+/* Template: Image, Text, ImageImage, ImageText, TextText  */
+.slide {
+  max-width: 100%; }
+
+.tempImageText .slide, .tempTextText .slide {
+  width: 50%;
+  float: left; }
+
+.tempText #text_frame {
+  width: 60%;
+  padding-left: 2.5em; }
+
+.prev {
+  display: block;
+  position: fixed;
+  top: 50%;
+  z-index: 5;
+  opacity: 0.7;
+  color: #999;
+  outline: medium none;
+  font-family: FontAwesome;
+  font-size: 4em;
+  font-style: normal;
+  font-weight: normal;
+  text-shadow: 2px 2px 3px #333;
+  left: 0.3em; }
+  .prev::before {
+    content: "\f104"; }
+
+.next {
+  display: block;
+  position: fixed;
+  top: 50%;
+  z-index: 5;
+  opacity: 0.7;
+  color: #999;
+  outline: medium none;
+  font-family: FontAwesome;
+  font-size: 4em;
+  font-style: normal;
+  font-weight: normal;
+  text-shadow: 2px 2px 3px #333;
+  right: 0.3em; }
+  .next::before {
+    content: "\f105"; }
 
 /* END VIEW ====================================== */
 

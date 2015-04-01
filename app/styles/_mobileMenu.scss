@@ -21,6 +21,10 @@
     a{
         color:#CCC;
     }
+
+    a:focus, .active .fa {
+        text-shadow: none;
+    }
 }
        
 .navItem {
@@ -45,9 +49,7 @@
     } 
 } 
 
-.active .fa {
-    text-shadow: none;
-}
+
     
        
 /* Smartphone ================================================ */ 

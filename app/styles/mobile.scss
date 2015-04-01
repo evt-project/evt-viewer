@@ -31,10 +31,6 @@ time, mark, audio, video {
 a {
     cursor:pointer;
     text-decoration: none;
-
-    &:focus {
-        text-shadow: none;
-    }
 }
 
 p {
@@ -79,8 +75,6 @@ body {
 span {
     display: inline-block;
 };
-
-
 
 
 @import "mobileThumb.scss";
