@@ -1,124 +1,73 @@
 /* MENU' ====================================== */ 
 
-%text-shadow {
+.nav{
+    width: 100%;
+    height: 100%;
+    top:0;
+    margin: 0;
+    padding:0;
+    display: block;
+    z-index: 20;
+    cursor: pointer;
+    color:#CCC;
+    text-align: center;
+    font-size: 1.7em;
     text-shadow: 2px 2px 3px #333;
-}
 
-%box-shadow {
-    -moz-box-shadow: 0 5px 5px -5px #000;
-    -webkit-box-shadow: 0 5px 5px -5px #000;
-    box-shadow: 0 5px 5px -5px #000;
-}
-
-.mainNav{
-        width: 100%;
-        height:100%;
-        min-height:0;
-        top:0;
-        margin: 0;
-        padding:0;
-        display: block;
-        z-index: 20;
-
-        
-    ul{
-        width: 100%;
-        height: 100%;
-        list-style: none;
-        float: left;
-        display: block;
-    }
-
-    .fa{
-        color: #CCC;
-        text-decoration: none;
-        @extend %text-shadow;
-    }
-
-    .active .fa{
-        color: #CCC;
-        text-shadow:none;
+    ul {
+        background: #666;
     }
 
     a{
-        color: #CCC;
-        @extend %text-shadow;
-        @extend %box-shadow;
-
-        &:focus{
-            text-shadow:none;
-            color: #CCC;
-
-            .fa{
-                text-shadow:none;
-                color: #CCC;
-            }
-        }
+        color:#CCC;
     }
 }
-    
-.navLink{
-    width:100%;
-    height: 100%;
-    min-height: 0;
-    float: left;
-    display: block;
+       
+.navItem {
+    float:left;
+    height: 40px;
     overflow: hidden;
-    color:#CCC;
-    background: #666; 
-    font-size: 1.7em;
-    line-height: 1.5em;
-    text-align: center;
-    list-style-type: none;
-    text-decoration: none;    
-    @extend %box-shadow;
-    @extend %text-shadow;
-    
+    padding-top:0.2em;            
 }
 
 .submenu{
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    z-index: 20;
-    @extend %box-shadow;
+    float:right;
 
     li{
         width: 100%;
         height: 100%;
-        line-height: 1.2em;
-        color: #CCC;
+        padding: 0.2em 0;
         border-top: #333 1px solid;
     }
 
     li+li {
         border:none;
-    }
-
-    .subIcon {
-        margin: 0.1em 0;
-    }   
+    } 
 } 
+
+.active .fa {
+    text-shadow: none;
+}
     
        
 /* Smartphone ================================================ */ 
 @media screen and (max-width: 479px) {
 
-    .mainNav li {
+    .nav li, .submenu {
         width: 25%;
-        font-size: 1.5em;
+        font-size: 1em;
+    }
 
-        &:first-child {
-            width: 100%;
-            height: auto;
-            float: left;
-            font-size: 1.5em;
-        }
+    .nav li:first-child {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 1em;
     }
 
     .submenu li, .submenu li:first-child {
         width: 100%;
-        font-size: 1em;
+        padding-top: 0.5em;
     }
 
         
@@ -130,11 +79,11 @@
 /* Tablet portrait ============================================ */ 
 @media screen and (min-width: 480px) and (max-width: 800px) {
     
-    .mainNav li {
+    .nav li, .submenu  {
         width: 25%;
     }
 
-    .mainNav li:first-child, .submenu li {
+    .nav li:first-child, .submenu li {
         width: 100%;
         height: auto;
         float: left;
@@ -146,19 +95,19 @@
 /* Tablet landscape ============================================ */
 @media screen and (min-width: 801px) {
  
-    .mainNav li {
+    .nav li, .submenu {
         width: 12.5%;
-
-        &:first-child {
-            width: 50%;
-            float: left;
-        }
+    }
+    
+    .nav li:first-child {
+        width: 50%;
+        float: left;
     }
 
     .submenu li, .submenu li:first-child {
         width: 100%;
-        font-size: 1em;
     }
+    
     
 }
 /* end Tablet landscape ============================================ */

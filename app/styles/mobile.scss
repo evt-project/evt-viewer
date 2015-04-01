@@ -28,9 +28,13 @@ time, mark, audio, video {
       
 }
 
-a:link {
+a {
     cursor:pointer;
     text-decoration: none;
+
+    &:focus {
+        text-shadow: none;
+    }
 }
 
 p {

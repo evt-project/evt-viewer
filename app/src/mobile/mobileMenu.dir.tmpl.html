@@ -1,10 +1,10 @@
 <header role="banner" >
     <nav 
-        class="mainNav" 
+        class="nav" 
         role="navigation">
         <ul>
             <li  
-                class="navLink"
+                class="navItem"
                 ng-repeat="item in menu">
                 <a 
                     href="" 
@@ -16,39 +16,42 @@
                     
                 </a>
             </li>
-
+          
             <li 
-                class="navLink"
+                class="navItem"
                 ng-class="{'active': set}"
                 ng-click="setToggle()">
                 <i class="fa fa-wrench"></i>
             </li>
 
             <li 
-                class="navLink" 
+                class="navItem" 
                 ng-class="{'active': showSubItems}" 
                 ng-click="viewToggle()">
                 
                 <i class="fa fa-eye"></i>
-                <ul 
-                    class="submenu" 
-                    ng-show="showSubItems">
-            
-                    <li 
-                        class="{{subItem.template}}" 
-                        ng-repeat="subItem in view">
-                        <a 
-                            ng-click="showTemplate(subItem.template)" 
-                            alt="{{subItem.template}}">
-                            <div class="subIcon">
-                                <i class="{{subItem.icon1}}"></i>
-                                <i class="{{subItem.icon2}}"></i>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+                
+            </li>
+        </ul>
+        <ul 
+            class="submenu" 
+            ng-show="showSubItems">
+    
+            <li 
+                class="{{subItem.template}}" 
+                ng-repeat="subItem in view">
+                <a 
+                    href=""
+                    ng-click="showTemplate(subItem.template)"
+                    alt="{{subItem.template}}">
+
+                    <i class="{{subItem.icon1}}"></i>
+                    <i class="{{subItem.icon2}}"></i>
+                    
+                </a>
             </li>
         </ul>
     </nav>
 </header>
+
 
