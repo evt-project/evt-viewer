@@ -1,6 +1,6 @@
 angular.module('evtviewer.mobile')
 
-.controller('MobileMenuCtrl', function($scope, Mobile) {
+.controller('MobileMenuCtrl', function($scope, mobile) {
 
     $scope.menu = [{
         template: 'dvb',
@@ -36,7 +36,7 @@ angular.module('evtviewer.mobile')
 
     $scope.showTemplate = function(currentTemplate){
         console.log('template corrente ' + currentTemplate);
-        Mobile.switchView(currentTemplate);
+        mobile.switchView(currentTemplate);
     };
 
     

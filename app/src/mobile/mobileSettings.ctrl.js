@@ -1,6 +1,6 @@
 angular.module('evtviewer.mobile')
 
-.controller('MobileSettingsCtrl', function($scope, Mobile) {
+.controller('MobileSettingsCtrl', function($scope, mobile) {
 
  
 

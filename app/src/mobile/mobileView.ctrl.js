@@ -1,8 +1,8 @@
 angular.module('evtviewer.mobile')
 
-.controller('MobileViewCtrl', function($scope, Mobile) {
+.controller('MobileViewCtrl', function($scope, mobile) {
 
-    $scope.view = Mobile.getState();
+    $scope.view = mobile.getState();
 
     // Template: DVB.html
     $scope.dvb = [{

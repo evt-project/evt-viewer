@@ -1,37 +1,13 @@
-// evtMobile = angular.module('evtviewer.mobile')
-
-// evtMobile.provider('helloWorld', function() {
-
-//     this.name = 'Default';
-
-//     this.$get = function() {
-//         var name = this.name;
-//         return {
-//             sayHello: function() {
-//                 return "Hello, " + name + "!"
-//             }
-//         }
-//     };
-
-//     this.setName = function(name) {
-//         this.name = name;
-//     };
-// });
-
-          
-// evtMobile.config(function(helloWorldProvider){
-//     helloWorldProvider.setName('World');
-// });
-        
-
-
 angular.module('evtviewer.mobile')
 
-.provider ('Mobile', function(){
+.provider('mobile', function() {
+    var defaults = this.defaults;
 
-    var viewMode = this.viewMode;
+    this.setDefaults = function(_defaults) {
+        defaults = _defaults;
+    };
 
-    this.$get = function($log){
+    this.$get = function($log) {
 
         var mobile = {};
         var _console = $log.getInstance('mobile');
@@ -56,14 +32,4 @@ angular.module('evtviewer.mobile')
         return mobile;
     };
 
-    this.setView = function(_viewMode) {
-        this.viewMode = _viewMode;
-    };
-
 });
-
-
-.config (function(MobileProvider){
-    MobileProvider.setView(viewMode);
-});
-
