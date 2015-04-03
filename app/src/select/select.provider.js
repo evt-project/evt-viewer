@@ -60,7 +60,7 @@ angular.module('evtviewer.select')
         function destroy() {
             var tempId = this.uid;
             // TODO: remove from list and collection
-            this.$destroy();
+            // this.$destroy();
 
             _console.log('vm - destroy ' + tempId);
         }
