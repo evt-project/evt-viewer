@@ -1,6 +1,6 @@
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function(evtSelect, parsedData) {
+.directive('evtSelect', function(evtSelect) {
     return {
         restrict: 'E',
         scope: {
