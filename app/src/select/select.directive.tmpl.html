@@ -1,9 +1,9 @@
 <div class="selector">
    <span 
       class="label_selected" 
-      title="{{vm.optionSelected.title}}"
-      data-value="{{vm.optionSelected.value}}">
-      {{vm.optionSelected.label}}
+      title="{{vm.optionSelected.title || vm.optionList[0].title}}"
+      data-value="{{vm.optionSelected.value || vm.optionList[0].value}}">
+      {{vm.optionSelected.label || vm.optionList[0].label}}
    </span>
    <div 
       class="open_options" 

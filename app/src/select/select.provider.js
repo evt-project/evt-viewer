@@ -54,6 +54,9 @@ angular.module('evtviewer.select')
 
         function isOptionSelected(option) {
             var vm = this;
+            if (typeof(vm.optionSelected) === 'undefined') {
+                return;
+            }
             return vm.optionSelected.value === option.value;
         }
 
@@ -86,7 +89,8 @@ angular.module('evtviewer.select')
             switch (currentType) {
                 case 'page':
                     optionList = parsedData.getPages();
-                    optionSelected = optionList[0];
+                    // TODO: add a general service for the current page in the application
+                    // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(option) {
                         _console.log('page select callback' + option.label);
                     };
