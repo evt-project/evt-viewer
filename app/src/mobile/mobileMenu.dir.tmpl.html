@@ -11,8 +11,8 @@
                     ng-click="showTemplate(item.template)" 
                     alt="{{item.description}} {{item.template}}">
 
-                    <i class="{{item.icon}}"></i>
-                    {{item.description}}
+                    <span><i class="{{item.icon}}"></i></span>
+                    <span>{{item.description}}</span>
                     
                 </a>
             </li>
@@ -21,7 +21,7 @@
                 class="navItem"
                 ng-class="{'active': set}"
                 ng-click="setToggle()">
-                <i class="fa fa-wrench"></i>
+                <span><i class="fa fa-wrench"></i></span>
             </li>
 
             <li 
@@ -29,7 +29,7 @@
                 ng-class="{'active': showSubItems}" 
                 ng-click="viewToggle()">
                 
-                <i class="fa fa-eye"></i>
+                <span><i class="fa fa-eye"></i></span>
                 
             </li>
         </ul>
@@ -45,8 +45,8 @@
                     ng-click="showTemplate(subItem.template)"
                     alt="{{subItem.template}}">
 
-                    <i class="{{subItem.icon1}}"></i>
-                    <i class="{{subItem.icon2}}"></i>
+                    <span><i class="{{subItem.icon1}}"></i></span>
+                    <span><i class="{{subItem.icon2}}"></i></span>
                     
                 </a>
             </li>

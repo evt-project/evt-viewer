@@ -83,8 +83,15 @@ span.facs-reg:before {
 
     .dvbList {
         width:100%;
-        padding:1em 0 1em 2.5em;
+        height:100%;
+        padding: 1em 0 1em 2.5em;
         background: #666;
+
+        li.span {
+            float:left;
+            display: inline-block;
+
+        }
 
         a{
             color: #CCC;

@@ -1,18 +1,15 @@
 /* THUMBNAILS ====================================== */ 
 
-
 @import "../../bower_components/susy/sass/_susy.scss";
 
 @include border-box-sizing;
 
 .tempThumb {
     @include span(8 of 12);
-    @include bleed(gutter(12));
-    margin: 0 auto;
+    display: table;
     padding-bottom: 0;
     background: #333;
 }
-
 
 @mixin widthContainer($width){
     padding: gutter(8);
@@ -21,28 +18,30 @@
     display: inline-block;
 }
 
-
 .thumbContainer{
+    display:table-cell;
+    text-align:center;
+}
 
-    .thumb {
+.thumb {
 
-        @include widthContainer(2 of 8);
-        margin-bottom: gutter(8);
-        
-        img {
-            max-width: 100%;
-            margin: 0 auto;
-        }
+    @include widthContainer(2 of 8);
+    margin-bottom: gutter(8);
+    
+    img {
+        max-width: 100%;
+        margin: 0 auto;
+        -moz-box-shadow: 0 7px 7px -5px #000;
+        -webkit-box-shadow: 0 7px 7px -5px #000;
+        box-shadow: 0 7px 7px -5px #000;
+    }
 
-        figcaption {
-            margin: 0.5em 0;
-            font-size: 18px;
-            color: #FFF;
-            text-align: center;
-        }
+    figcaption {
+        margin: 0.5em 0;
+        color: #FFF;
+        font-size: 18px;
     }
 }
-    
 
 
 /* END THUMBNAILS ====================================== */ 

@@ -4,7 +4,11 @@ angular.module('evtviewer.mobile')
 
     $scope.view = mobile.getState();
 
-    // Template: DVB.html
+    /**
+     * Refer to this by {@link MobileViewCtrl."dvb"}.
+     * @namespace
+     */
+    
     $scope.dvb = [{
         url: 'http://vbd.humnet.unipi.it/',
         title: 'Digital Vercelli Book project',
@@ -24,6 +28,10 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
+    /**
+     * Refer to this by {@link MobileViewCtrl."thumbnails"}.
+     * @namespace
+     */     
     $scope.thumbnails = [{
         id: '104v',
         url: 'http://i62.tinypic.com/f20hts.jpg',
@@ -62,11 +70,10 @@ angular.module('evtviewer.mobile')
         url: 'http://i58.tinypic.com/29zvtyt.jpg',
     }, ];
 
-
-
-
-   
-    // Partial: single_data.html, diplomatic.html, interpretative.html (all templates except ImageImage mode)
+    /**
+     * Refer to this by {@link MobileViewCtrl."singleData"}.
+     * @namespace
+     */   
     $scope.singleData = [{
         src: 'http://i57.tinypic.com/k3b1mq.jpg',
         urlDip: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
@@ -94,8 +101,10 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
-
-    // Partial: double_images.html (in ImageImage mode)
+    /**
+     * Refer to this by {@link MobileViewCtrl."doubleData"}.
+     * @namespace
+     */ 
     $scope.doubleData = [{
         src: './data/input_data/images/double/VB_fol_104v-VB_fol_105r.jpg',
         title: 'The Dream of the Rood',
@@ -107,54 +116,64 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
-    // Partial controls
+    /** Partial controls */
+    
+    $scope.index = 0;
 
-    // initial image index
-    $scope.Index = 0;
-
-    // if a current image is the same as requested image
+    /**
+     * Represents the current item.
+     * @constructor
+     */
     $scope.isActive = function (index) {
-        return $scope.Index === index;
+        return $scope.index === index; // if a current item is the same as requested item
     };
 
-    
-
-    // Partial: singlePrevNext.html (in Image mode, Text mode and ImageText mode)
+    /**
+     * Show the prev single item.
+     * @constructor
+     */
     $scope.singlePrev = function () {
-        if ($scope.Index > 0) {
-            $scope.Index = (--$scope.Index);
+        if ($scope.index > 0) {
+            $scope.index = (--$scope.index);
         } else {
-            $scope.Index = ($scope.singleData.length - 1);
+            $scope.index = ($scope.singleData.length - 1);
         }
     };
 
+    /**
+     * Show the next single item.
+     * @constructor
+     */
     $scope.singleNext = function () {
-        if ($scope.Index < $scope.singleData.length - 1) {
-            $scope.Index = (++$scope.Index);
+        if ($scope.index < $scope.singleData.length - 1) {
+            $scope.index = (++$scope.index);
         } else {
-            $scope.Index = 0;
+            $scope.index = 0;
         }
     };
 
-    // Partial doublePrevNext.html (in ImageImage mode and TextText mode)
+    /**
+     * Show the prev double item.
+     * @constructor
+     */
     $scope.doublePrev = function () {
-        if ($scope.Index > 0) {
-            $scope.Index = (--$scope.Index);
+        if ($scope.index > 0) {
+            $scope.index = (--$scope.index);
         } else {
-            $scope.Index = ($scope.doubleData.length - 1);
+            $scope.index = ($scope.doubleData.length - 1);
         }
     };
 
+    /**
+     * Show the next double item.
+     * @constructor
+     */
     $scope.doubleNext = function () {
-        if ($scope.Index < $scope.doubleData.length - 1) {
-            $scope.Index = (++$scope.Index);
+        if ($scope.index < $scope.doubleData.length - 1) {
+            $scope.index = (++$scope.index);
         } else {
-            $scope.Index = 0;
+            $scope.index = 0;
         }
     };
-
-    
-    
-   
 
 });
