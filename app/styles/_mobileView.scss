@@ -1,61 +1,4 @@
 /* VIEW ====================================== */ 
-
-/* Normalize: page-include ---------------------------- */
-   
-#central_wrapper{
-    width: 100%;
-    height:auto;
-}
-
-#text_frame {
-    background: #FFF none repeat scroll 0% 0%;
-    max-width: 95%;
-    width:90%;
-    height: auto;
-    padding: 4em 0.5em 2em 1em;
-    margin: 0 auto;
-    text-align: justify;
-    font-size: 17px;
-    line-height: 25px;
-}
-
-span.facs-choice_popup span.facs-orig {
-    color: #666;
-}
-
-span.facs-choice_popup:hover span.facs-orig,
-span.facs-choice_popup.hover span.facs-orig {
-    color: #666;
-    text-decoration: underline; 
-}
-
-span.facs-reg {
-    font-size: 90%;
-    position: absolute;
-    line-height: 25px;
-    display: none;
-    background: #666 none repeat scroll 0% 0%;
-    border: none;
-    border-radius: 3px;
-    box-shadow: 2px 2px 2px #000;
-    padding: 0.5%;
-    margin-top: 30px;
-    color:#FFF;
-}
-
-span.facs-reg:before {
-    content: "\f0de";  
-    font-family: FontAwesome;
-    font-size: 2em;
-    font-style: normal;
-    font-weight: normal;
-    color:#666;
-    left: 15%;
-    position: absolute;
-    top: -8px; 
-}
-
-/* Template -------------------------- */
     
 @mixin baseTemplate($bgColor){
     width: 100%;
@@ -105,14 +48,21 @@ span.facs-reg:before {
     }
 
     .tempImageText .slide, .tempTextText .slide {
-        width: 50%;
+        max-width: 50%;
         float:left;
     }
 
-    .tempText #text_frame {
-        width:60%;
-        padding-left: 2.5em;
+    .textContent, .information{
+        width: 98%;
+        background: #FFF;
+        color: #000;
+        
     }
+
+    // .tempText #text_frame {
+    //     width:60%;
+    //     padding-left: 2.5em;
+    // }
 
     
 

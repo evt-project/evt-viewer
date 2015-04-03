@@ -1,6 +1,6 @@
 angular.module('evtviewer.mobile')
 
-.controller('MobileViewCtrl', function($scope, mobile) {
+.controller('MobileViewCtrl', function($scope, mobile, parsedData) {
 
     $scope.view = mobile.getState();
 
@@ -76,26 +76,18 @@ angular.module('evtviewer.mobile')
      */   
     $scope.singleData = [{
         src: 'http://i57.tinypic.com/k3b1mq.jpg',
-        urlDip: './data/output_data/diplomatic/page_VB_fol_104v_diplomatic.html',
-        urlInt: './data/output_data/interpretative/page_VB_fol_104v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 104v -',
     }, {
         src: 'http://i61.tinypic.com/w1v6ag.jpg',
-        urlDip: './data/output_data/diplomatic/page_VB_fol_105r_diplomatic.html',
-        urlInt: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105r -',
     }, {
         src: 'http://i58.tinypic.com/k4wc41.jpg',
-        urlDip: './data/output_data/diplomatic/page_VB_fol_105v_diplomatic.html',
-        urlInt: './data/output_data/interpretative/page_VB_fol_105v_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 105v -',
     }, {
         src: 'http://i57.tinypic.com/1zna0k1.jpg',
-        urlDip: './data/output_data/diplomatic/page_VB_fol_106r_diplomatic.html',
-        urlInt: './data/output_data/interpretative/page_VB_fol_106r_interpretative.html',
         title: 'The Dream of the Rood',
         page:'- 106r -',
     }, ];
@@ -106,14 +98,21 @@ angular.module('evtviewer.mobile')
      * @namespace
      */ 
     $scope.doubleData = [{
-        src: './data/input_data/images/double/VB_fol_104v-VB_fol_105r.jpg',
+        src: 'http://i59.tinypic.com/ajur7b.jpg',
         title: 'The Dream of the Rood',
         page: '- 104v - 105r -',
     }, {
-        src: './data/input_data/images/double/VB_fol_105v-VB_fol_106r.jpg',
+        src: 'http://i62.tinypic.com/6ft8g2.jpg',
         title: 'The Dream of the Rood',
         page: '- 105v - 106r -',
     }, ];
+
+
+    /**
+     * Refer to this by {@link MobileViewCtrl."mockText"}.
+     * @namespace
+     */ 
+    $scope.mockText = parsedData.getText();
 
 
     /** Partial controls */

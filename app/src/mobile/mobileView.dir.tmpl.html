@@ -166,12 +166,13 @@
             </ul>
 
         <div
+            class="textContent"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
-            ng-show="isActive($index)"
-            ng-include src="text.urlDip">
+            ng-show="isActive($index)">
+            <p>{{mockText}}</p>
         </div>
-
+    </div>
 </script>
 
 <script
@@ -196,12 +197,13 @@
             </ul>
 
         <div
+            class="textContent"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)"
-            ng-include src="text.urlInt">
+            ng-include src="{{mockText}}">
         </div>
-
+    </div>
 </script>
 
 
