@@ -106,7 +106,7 @@
 <section 
     class="tempImageText"
     ng-if="view.currentView === 'imagetext'" >
- 
+
     <ng-include src="'singleImage'"></ng-include>
     <ng-include src="'diplomatic'"></ng-include>
     <ng-include src="'singlePrevNext'"></ng-include>
@@ -170,7 +170,9 @@
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)">
+
             <p>{{mockText}}</p>
+
         </div>
     </div>
 </script>
@@ -200,8 +202,10 @@
             class="textContent"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
-            ng-show="isActive($index)"
-            ng-include src="{{mockText}}">
+            ng-show="isActive($index)">
+
+            <p>{{mockText}}</p> // if include url: <ng-include src="'mockText.url'"></ng-include>
+
         </div>
     </div>
 </script>
