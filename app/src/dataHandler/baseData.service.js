@@ -1,6 +1,6 @@
-angular.module('evtviewer.dataModel')
+angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, xmlParser) {
+.service('baseData', function($log, xmlParser, evtParser) {
     var baseData = {},
         state = {
             XMLDocuments: [],
@@ -12,15 +12,16 @@ angular.module('evtviewer.dataModel')
     var addXMLDocument = function(doc) {
         var docElements = xmlParser.parse(doc);
         if (docElements.documentElement.nodeName === 'TEI') {
+            state.XMLStrings.push(doc);
             state.XMLDocuments.push(docElements);
-            _console.log('XML TEI parsed and stored in XMLDocuments ', state.XMLDocuments);
+            evtParser.parsePages(docElements);
+            _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {
             _console.error('Something wrong with the XML');
         }
     };
 
     baseData.addXMLString = function(xmlString) {
-        state.XMLStrings.push(xmlString);
         addXMLDocument(xmlString);
     };
 

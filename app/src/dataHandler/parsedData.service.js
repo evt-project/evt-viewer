@@ -1,19 +1,12 @@
-angular.module('evtviewer.dataModel')
+angular.module('evtviewer.dataHandler')
 
-.service('parsedData', function() {
+.service('parsedData', function($log) {
     var parsedData = {};
+    var _console = $log.getInstance('dataHandler');
 
     // TODO manage unique value for pages, documents and editions
 
-    var mockPages = [{
-        value: 'page1',
-        label: 'page1 label',
-        title: 'page1 title'
-    }, {
-        value: 'page2',
-        label: 'page2 label',
-        title: 'page2 title'
-    }];
+    var pagesCollection = []; // {value: 'page', label: 'page label', title: 'page title'}
 
     var mockDocuments = [{
         value: 'documents1',
@@ -42,16 +35,17 @@ angular.module('evtviewer.dataModel')
     };
 
     parsedData.getPages = function() {
-        return mockPages;
+        return pagesCollection;
     };
 
-    parsedData.addPages = function() {
-        var mock = {
-            value: 'pages3',
-            label: 'pages3 label',
-            title: 'pages3 title'
-        };
-        mockPages.push(mock);
+    // TODO: add attribute for the original xml reference
+    parsedData.addPage = function(value, label, title) {
+        pagesCollection.push({
+            value: value,
+            label: label,
+            title: title
+        });
+        _console.log('parsedData - addPage ' + value);
     };
 
     parsedData.getDocuments = function() {

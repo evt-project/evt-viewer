@@ -21,7 +21,7 @@ angular
     'xml',
     'evtviewer.core',
     'evtviewer.communication',
-    'evtviewer.dataModel',
+    'evtviewer.dataHandler',
     'evtviewer.interface',
     'evtviewer.box',
     'evtviewer.select',
