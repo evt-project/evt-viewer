@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtParser', function($parsedData) {
+.service('evtParser', function(parsedData) {
     var parser = {};
 
     // TODO: create module provider and add default configuration
