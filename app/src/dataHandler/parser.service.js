@@ -1,9 +1,9 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtParser', function($log, parsedData) {
+.service('evtParser', function($parsedData) {
     var parser = {};
-    var _console = $log.getInstance('dataHandler');
 
+    // TODO: create module provider and add default configuration
     var defAttributes = ['xml:id', 'n', 'n'];
     var defPageElement = 'pb';
 
