@@ -32,6 +32,8 @@ angular.module('evtviewer.mobile')
      * Refer to this by {@link MobileViewCtrl."thumbnails"}.
      * @namespace
      */     
+
+    
     $scope.thumbnails = [{
         id: '104v',
         url: 'http://i62.tinypic.com/f20hts.jpg',

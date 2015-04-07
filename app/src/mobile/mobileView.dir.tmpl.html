@@ -41,20 +41,19 @@
     <div class="thumbContainer">
         <figure 
             class="thumb"
-            ng-class= "{'activeThumb':isActive($index)}"
-            ng-repeat="thumb in thumbnails">
-                <img 
-                    src="{{thumb.url}}"
-                    id="{{thumb.id}}"
-                    alt="{{thumb.id}}"
-                    title="{{thumb.id}}"
-                    ng-click="showFolio($index);"/>
+            ng-repeat="img in thumbnails">
+            
+            <img 
+                ng-src="{{img.url}}"
+                alt="{{img.id}}">
 
-            <figcaption>{{thumb.id}}</figcaption>
+            <figcaption>{{img.id}}</figcaption>
 
         </figure>
       
     </div>
+
+    
 
 
 </section>
