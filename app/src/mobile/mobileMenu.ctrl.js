@@ -2,6 +2,11 @@ angular.module('evtviewer.mobile')
 
 .controller('MobileMenuCtrl', function($scope, mobile) {
 
+    var activeSection = false,
+        currentMode = mobile.getCurrentView(),
+        currentSection;
+
+
     $scope.menu = [{
         template: 'dvb',
         description: 'The Digital Vercelli Book',
@@ -34,13 +39,26 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
-    $scope.showTemplate = function(currentTemplate){
-        console.log('template corrente ' + currentTemplate);
+    $scope.showMode = function(currentTemplate) {
+        currentMode = currentTemplate;
         mobile.switchView(currentTemplate);
+        // TODO: use $log for _console
+        console.log('Switch mode ' + currentTemplate);
     };
 
-    
-   $scope.set = false;
+    $scope.showSection = function(currentTemplate) {
+        if (activeSection && (currentTemplate === currentSection)) {
+            mobile.switchView(currentMode);
+            activeSection = false;
+        } else {
+            mobile.switchView(currentTemplate);
+            currentSection = currentTemplate;
+            activeSection = true;
+        }
+        console.log('Switch section ' + currentTemplate);
+    };
+
+    $scope.set = false;
     $scope.setToggle = function() {
         $scope.set = !$scope.set;
     };

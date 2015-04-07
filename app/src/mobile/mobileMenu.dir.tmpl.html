@@ -7,8 +7,8 @@
                 class="navItem"
                 ng-repeat="item in menu">
                 <a 
-                    href="" 
-                    ng-click="showTemplate(item.template)" 
+                    href="javascript:void(0)" 
+                    ng-click="showSection(item.template)" 
                     alt="{{item.description}} {{item.template}}">
 
                     <span><i class="{{item.icon}}"></i></span>
@@ -41,8 +41,8 @@
                 class="{{subItem.template}}" 
                 ng-repeat="subItem in view">
                 <a 
-                    href=""
-                    ng-click="showTemplate(subItem.template)"
+                    href="javascript:void(0)"
+                    ng-click="showMode(subItem.template)"
                     alt="{{subItem.template}}">
 
                     <span><i class="{{subItem.icon1}}"></i></span>
