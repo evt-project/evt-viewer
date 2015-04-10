@@ -26,7 +26,7 @@
         color:#CCC;
     }
 
-    a:focus, .active .fa {
+    .active a, .active .fa {
         text-shadow: none;
     }
 }

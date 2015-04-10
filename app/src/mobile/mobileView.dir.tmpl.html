@@ -1,6 +1,6 @@
 
 <section 
-    class="tempDvb"
+    class="greyTemplate"
     ng-if="view.currentView === 'dvb'" >
                         
     <p>
@@ -34,10 +34,9 @@
 
 
 <section 
-    class="tempThumb"
+    class="greyTemplate"
     ng-if="view.currentView === 'thumbnails'" >
 
-    
     <div class="thumbContainer">
         <figure 
             class="thumb"
@@ -53,14 +52,11 @@
       
     </div>
 
-    
-
-
 </section>
 
 
 <section 
-    class="tempSearch"
+    class="greyTemplate"
     ng-if="view.currentView === 'search'" >
 
     
@@ -71,7 +67,7 @@
 
  
 <section 
-    class="tempImage"
+    class="blackTemplate"
     ng-if="view.currentView === 'image'" >
 
     <ng-include src="'singleImage'"></ng-include>
@@ -81,7 +77,7 @@
 
 
 <section 
-    class="tempText"
+    class="blackTemplate"
     ng-if="view.currentView === 'text'" >
 
    
@@ -93,7 +89,7 @@
 
 
 <section 
-    class="tempImageImage"
+    class="blackTemplate"
     ng-if="view.currentView === 'imageimage'" >
 
     <ng-include src="'doubleImage'"></ng-include>
@@ -103,7 +99,7 @@
 
 
 <section 
-    class="tempImageText"
+    class="blackTemplate"
     ng-if="view.currentView === 'imagetext'" >
 
     <ng-include src="'singleImage'"></ng-include>
@@ -114,7 +110,7 @@
 
 
 <section 
-    class="tempTextText"
+    class="blackTemplate"
     ng-if="view.currentView === 'texttext'" >
 
     <ng-include src="'diplomatic'"></ng-include>

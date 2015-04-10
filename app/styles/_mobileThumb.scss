@@ -4,11 +4,9 @@
 
 @include border-box-sizing;
 
-.tempThumb {
-    @include span(8 of 12);
-    display: table;
-    padding-bottom: 0;
-    background: #333;
+.thumbContainer{
+    display:table-cell;
+    text-align:center;
 }
 
 @mixin widthContainer($width){
@@ -16,11 +14,6 @@
     padding-bottom: 0;
     margin: 1.5em auto;
     display: inline-block;
-}
-
-.thumbContainer{
-    display:table-cell;
-    text-align:center;
 }
 
 .thumb {

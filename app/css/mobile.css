@@ -66,14 +66,6 @@ span {
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 
-.tempThumb {
-  width: 66.10169%;
-  float: left;
-  margin-right: 1.69492%;
-  display: table;
-  padding-bottom: 0;
-  background: #333; }
-
 .thumbContainer {
   display: table-cell;
   text-align: center; }
@@ -118,7 +110,7 @@ span {
     box-shadow: 0 6px 6px -5px #000; }
   .nav a {
     color: #CCC; }
-  .nav a:focus, .nav .active .fa {
+  .nav .active a, .nav .active .fa {
     text-shadow: none; }
 
 .navItem {
@@ -183,7 +175,7 @@ span {
 /* end Tablet landscape ============================================ */
 /* END MENU ====================================== */
 /* VIEW ====================================== */
-.tempDvb, .tempThumb, .tempSearch {
+.greyTemplate {
   width: 100%;
   height: auto;
   top: 0;
@@ -193,7 +185,7 @@ span {
   color: #FFF;
   background: #333; }
 
-.tempImage, .tempText, .tempImageImage, .tempImageText, .tempTextText {
+.blackTemplate {
   width: 100%;
   height: auto;
   top: 0;
@@ -204,7 +196,7 @@ span {
   background: #000; }
 
 /* Template: DVB -------------------- */
-.tempDvb p {
+.greyTemplate p {
   padding: 2.5em; }
 
 .dvbList {

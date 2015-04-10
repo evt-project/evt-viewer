@@ -11,16 +11,16 @@
     background: $bgColor;
 }
 
-.tempDvb, .tempThumb, .tempSearch {
+.greyTemplate {
     @include baseTemplate(#333);
 }
 
-.tempImage, .tempText, .tempImageImage, .tempImageText, .tempTextText{
+.blackTemplate{
     @include baseTemplate(#000);
 }
 
 /* Template: DVB -------------------- */
-    .tempDvb p{
+    .greyTemplate p{
         padding: 2.5em;
     }
 

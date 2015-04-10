@@ -34,6 +34,48 @@ angular.module('evtviewer.dataHandler')
         return mockText1;
     };
 
+    var mockThumb1 = [{
+        id: '104v',
+        url: 'http://i62.tinypic.com/f20hts.jpg',
+    }, {
+        id: '105r',
+        url: 'http://i57.tinypic.com/312i5c9.jpg',
+    }, {
+        id: '105v',
+        url: 'http://i58.tinypic.com/6jkie1.jpg',
+    }, {
+        id: '106r',
+        url: 'http://i58.tinypic.com/29zvtyt.jpg',
+    }, {
+        id: '133v',
+        url: 'http://i62.tinypic.com/f20hts.jpg',
+    }, {
+        id: '134r',
+        url: 'http://i57.tinypic.com/312i5c9.jpg',
+    }, {
+        id: '134v',
+        url: 'http://i58.tinypic.com/6jkie1.jpg',
+    }, {
+        id: '135r',
+        url: 'http://i58.tinypic.com/29zvtyt.jpg',
+    }, {
+        id: '135v',
+        url: 'http://i62.tinypic.com/f20hts.jpg',
+    }, {
+        id: '136r',
+        url: 'http://i57.tinypic.com/312i5c9.jpg',
+    }, {
+        id: '136v',
+        url: 'http://i58.tinypic.com/6jkie1.jpg',
+    }, {
+        id: '137r',
+        url: 'http://i58.tinypic.com/29zvtyt.jpg',
+    }, ];
+
+    parsedData.getThumb = function (){
+        return mockThumb1;
+    };
+
     parsedData.getPages = function() {
         return pagesCollection;
     };
