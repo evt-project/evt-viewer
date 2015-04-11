@@ -110,7 +110,7 @@ span {
     box-shadow: 0 6px 6px -5px #000; }
   .nav a {
     color: #CCC; }
-  .nav .active a, .nav .active .fa {
+  .nav .active, .nav .active .fa {
     text-shadow: none; }
 
 .navItem {
@@ -120,21 +120,21 @@ span {
   padding-top: 0.2em;
   overflow: hidden; }
 
-.submenu {
+.dropdown {
   float: right;
   margin-top: -0.2em; }
-  .submenu li {
+  .dropdown li {
     width: 100%;
     height: 50px;
     padding-top: 0.2em;
     border-top: #333 1px solid;
     overflow: hidden; }
-  .submenu li + li {
+  .dropdown li + li {
     border: none; }
 
 /* Smartphone ================================================ */
 @media screen and (max-width: 479px) {
-  .nav li, .submenu {
+  .nav li, .dropdown {
     width: 25%;
     font-size: 1em; }
 
@@ -144,7 +144,7 @@ span {
     float: left;
     font-size: 1em; }
 
-  .submenu li, .submenu li:first-child {
+  .dropdown li, .dropdown li:first-child {
     width: 100%;
     padding-top: 0.5em; }
 
@@ -153,24 +153,24 @@ span {
 /* end Smartphone ============================================= */
 /* Tablet portrait ============================================ */
 @media screen and (min-width: 480px) and (max-width: 800px) {
-  .nav li, .submenu {
+  .nav li, .dropdown {
     width: 25%; }
 
-  .nav li:first-child, .submenu li {
+  .nav li:first-child, .dropdown li {
     width: 100%;
     height: auto;
     float: left; } }
 /* end Tablet portrait ========================================= */
 /* Tablet landscape ============================================ */
 @media screen and (min-width: 801px) {
-  .nav li, .submenu {
+  .nav li, .dropdown {
     width: 12.5%; }
 
   .nav li:first-child {
     width: 50%;
     float: left; }
 
-  .submenu li, .submenu li:first-child {
+  .dropdown li, .dropdown li:first-child {
     width: 100%; } }
 /* end Tablet landscape ============================================ */
 /* END MENU ====================================== */

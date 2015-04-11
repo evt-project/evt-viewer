@@ -8,7 +8,8 @@
                 ng-repeat="item in menu">
                 <a 
                     href="javascript:void(0)" 
-                    ng-click="showSection(item.template)" 
+                    ng-class="{'active': isActiveButton(item.template)}"
+                    ng-click="showSection(item.template); onClickButton(item)" 
                     alt="{{item.description}} {{item.template}}">
 
                     <span><i class="{{item.icon}}"></i></span>
@@ -26,7 +27,7 @@
 
             <li 
                 class="navItem" 
-                ng-class="{'active': showSubItems}" 
+                ng-class="{'active': showItems}" 
                 ng-click="viewToggle()">
                 
                 <span><i class="fa fa-eye"></i></span>
@@ -34,19 +35,20 @@
             </li>
         </ul>
         <ul 
-            class="submenu" 
-            ng-show="showSubItems">
+            class="dropdown" 
+            ng-show="showItems">
     
             <li 
-                class="{{subItem.template}}" 
-                ng-repeat="subItem in view">
+                class="{{item.template}}" 
+                ng-repeat="item in view">
                 <a 
                     href="javascript:void(0)"
-                    ng-click="showMode(subItem.template)"
-                    alt="{{subItem.template}}">
+                    ng-class="{'active': isActiveButton(item.template)}"
+                    ng-click="showMode(item.template); onClickButton(item)"
+                    alt="{{item.template}}">
 
-                    <span><i class="{{subItem.icon1}}"></i></span>
-                    <span><i class="{{subItem.icon2}}"></i></span>
+                    <span><i class="{{item.icon1}}"></i></span>
+                    <span><i class="{{item.icon2}}"></i></span>
                     
                 </a>
             </li>

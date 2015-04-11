@@ -26,7 +26,7 @@
         color:#CCC;
     }
 
-    .active a, .active .fa {
+    .active, .active .fa {
         text-shadow: none;
     }
 }
@@ -39,7 +39,7 @@
     overflow: hidden;
 }
 
-.submenu{
+.dropdown{
     float:right;
     margin-top: -0.2em;
 
@@ -62,7 +62,7 @@
 /* Smartphone ================================================ */ 
 @media screen and (max-width: 479px) {
 
-    .nav li, .submenu {
+    .nav li, .dropdown {
         width: 25%;
         font-size: 1em;
     }
@@ -74,7 +74,7 @@
         font-size: 1em;
     }
 
-    .submenu li, .submenu li:first-child {
+    .dropdown li, .dropdown li:first-child {
         width: 100%;
         padding-top: 0.5em;
     }
@@ -88,11 +88,11 @@
 /* Tablet portrait ============================================ */ 
 @media screen and (min-width: 480px) and (max-width: 800px) {
     
-    .nav li, .submenu  {
+    .nav li, .dropdown  {
         width: 25%;
     }
 
-    .nav li:first-child, .submenu li {
+    .nav li:first-child, .dropdown li {
         width: 100%;
         height: auto;
         float: left;
@@ -104,7 +104,7 @@
 /* Tablet landscape ============================================ */
 @media screen and (min-width: 801px) {
  
-    .nav li, .submenu {
+    .nav li, .dropdown {
         width: 12.5%;
     }
     
@@ -113,7 +113,7 @@
         float: left;
     }
 
-    .submenu li, .submenu li:first-child {
+    .dropdown li, .dropdown li:first-child {
         width: 100%;
     }
     
