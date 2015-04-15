@@ -15,6 +15,7 @@ angular.module('evtviewer.dataHandler')
             state.XMLStrings.push(doc);
             state.XMLDocuments.push(docElements);
             evtParser.parsePages(docElements);
+            evtParser.parseDocuments(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {
             _console.error('Something wrong with the XML');

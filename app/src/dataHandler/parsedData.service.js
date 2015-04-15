@@ -7,7 +7,8 @@ angular.module('evtviewer.dataHandler')
     // TODO manage unique value for pages, documents and editions
 
     var pagesCollection = []; // {value: 'page', label: 'page label', title: 'page title'}
-
+    var documentsCollection = []; // {value: 'document', label: 'document label', title: 'document title'}
+    
     var mockDocuments = [{
         value: 'documents1',
         label: 'documents1 label',
@@ -91,16 +92,16 @@ angular.module('evtviewer.dataHandler')
     };
 
     parsedData.getDocuments = function() {
-        return mockDocuments;
+        return documentsCollection;
     };
 
-    parsedData.addDocuments = function() {
-        var mock = {
-            value: 'document3',
-            label: 'document3 label',
-            title: 'document3 title'
-        };
-        mockDocuments.push(mock);
+    parsedData.addDocuments = function(value, label, title) {
+        documentsCollection.push({
+            value: value,
+            label: label,
+            title: title
+        });
+        _console.log('parsedData - addDocument ' + value);
     };
 
     parsedData.getEditions = function() {
