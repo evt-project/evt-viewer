@@ -212,7 +212,8 @@ span {
 
 /* Template: Image, Text, ImageImage, ImageText, TextText  */
 .slide {
-  max-width: 100%; }
+  max-width: 100%;
+  margin: 0 auto; }
 
 .tempImageText .slide, .tempTextText .slide {
   max-width: 50%;
