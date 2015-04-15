@@ -7,6 +7,7 @@ angular.module('evtviewer.mobile')
         currentMode = mobile.getCurrentView(),
         currentSection;
 
+    $scope.currentButton = 'image';
 
     $scope.menu = [{
         template: 'dvb',
@@ -40,7 +41,7 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
-    $scope.showMode = function(currentTemplate) {
+    $scope.showView = function(currentTemplate) {
         currentMode = currentTemplate;
         mobile.switchView(currentTemplate);
         // TODO: use $log for _console
@@ -58,10 +59,17 @@ angular.module('evtviewer.mobile')
         }
         console.log('Switch section ' + currentTemplate);
     };
+   
+    $scope.buttonSection = function (currentTemplate) {
+        if ($scope.currentButton == currentTemplate.template){
+            $scope.currentButton =! $scope.currentButton;
+        } else {
+            $scope.currentButton = currentTemplate.template;
+        }
+        console.log('Current button ' + $scope.currentButton);
+    }
 
-    $scope.currentButton = 'image';
-
-    $scope.onClickButton = function (currentTemplate) {
+    $scope.buttonView = function (currentTemplate) {
         $scope.currentButton = currentTemplate.template;
     }
     
@@ -76,7 +84,7 @@ angular.module('evtviewer.mobile')
 
 
     $scope.showItems = false;
-    $scope.viewToggle = function() {
+    $scope.toggleView = function() {
         $scope.showItems = !$scope.showItems;
     };
 

@@ -9,7 +9,7 @@
                 <a 
                     href="javascript:void(0)" 
                     ng-class="{'active': isActiveButton(item.template)}"
-                    ng-click="showSection(item.template); onClickButton(item)" 
+                    ng-click="showSection(item.template); buttonSection(item)" 
                     alt="{{item.description}} {{item.template}}">
 
                     <span><i class="{{item.icon}}"></i></span>
@@ -28,7 +28,7 @@
             <li 
                 class="navItem" 
                 ng-class="{'active': showItems}" 
-                ng-click="viewToggle()">
+                ng-click="toggleView()">
                 
                 <span><i class="fa fa-eye"></i></span>
                 
@@ -44,7 +44,7 @@
                 <a 
                     href="javascript:void(0)"
                     ng-class="{'active': isActiveButton(item.template)}"
-                    ng-click="showMode(item.template); onClickButton(item)"
+                    ng-click="showView(item.template); buttonView(item)"
                     alt="{{item.template}}">
 
                     <span><i class="{{item.icon1}}"></i></span>
