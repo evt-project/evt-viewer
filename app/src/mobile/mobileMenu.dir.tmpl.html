@@ -12,8 +12,8 @@
                     ng-click="showSection(item.template); buttonSection(item)" 
                     alt="{{item.description}} {{item.template}}">
 
-                    <span><i class="{{item.icon}}"></i></span>
-                    <span>{{item.description}}</span>
+                    <span><h1><i class="{{item.icon}}"></i></h1></span>
+                    <span><h1>{{item.description}}</h1></span>
                     
                 </a>
             </li>
@@ -22,7 +22,7 @@
                 class="navItem"
                 ng-class="{'active': set}"
                 ng-click="setToggle()">
-                <span><i class="fa fa-wrench"></i></span>
+                <span><h1><i class="fa fa-wrench"></i></h1></span>
             </li>
 
             <li 
@@ -30,7 +30,7 @@
                 ng-class="{'active': showItems}" 
                 ng-click="toggleView()">
                 
-                <span><i class="fa fa-eye"></i></span>
+                <span><h1><i class="fa fa-eye"></i></h1></span>
                 
             </li>
         </ul>
@@ -47,8 +47,8 @@
                     ng-click="showView(item.template); buttonView(item)"
                     alt="{{item.template}}">
 
-                    <span><i class="{{item.icon1}}"></i></span>
-                    <span><i class="{{item.icon2}}"></i></span>
+                    <span><h1><i class="{{item.icon1}}"></i></h1></span>
+                    <span><h1><i class="{{item.icon2}}"></i></h1></span>
                     
                 </a>
             </li>

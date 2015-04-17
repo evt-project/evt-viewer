@@ -61,21 +61,20 @@ angular.module('evtviewer.mobile')
     };
    
     $scope.buttonSection = function (currentTemplate) {
-        if ($scope.currentButton == currentTemplate.template){
+        if ($scope.currentButton === currentTemplate.template){
             $scope.currentButton =! $scope.currentButton;
         } else {
             $scope.currentButton = currentTemplate.template;
         }
-        console.log('Current button ' + $scope.currentButton);
-    }
+    };
 
     $scope.buttonView = function (currentTemplate) {
         $scope.currentButton = currentTemplate.template;
-    }
+    };
     
     $scope.isActiveButton = function(buttonTemplate) {
-        return buttonTemplate == $scope.currentButton;
-    }
+        return buttonTemplate === $scope.currentButton;
+    };
     
     $scope.set = false;
     $scope.setToggle = function() {
