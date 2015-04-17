@@ -1,0 +1,236 @@
+/* SEARCH  ====================================== */ 
+
+@include border-box-sizing;
+
+/* Toolbar Search ------------------------- */ 
+
+@mixin buttonSearch($width){
+    width: $width;
+    height: 1.6em;
+    float:left;
+    display: inline-block;
+    cursor: pointer;
+    border:none;
+    overflow: hidden;
+    text-align: center;
+    font-size: 1.4em;
+    text-shadow: 2px 2px 2px #333;
+    .fa {
+        font-size: 0.9em;
+        line-height: 1.3em;
+        height: 1.3em;
+        overflow: hidden;
+    }
+}
+
+.boxOptions {
+    width:30%;
+    float:left;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.boxSearch{
+    width: 70%;
+    height: 2.5em;
+    float:left;
+    display: inline-block;
+    overflow: hidden;
+    background: #FFF;
+
+    input {
+        width: 90%;
+        height: 2.8em;
+        padding-left:0.5em;
+        float:left;
+        display: inline-block;
+        border:none;
+        font-size: 11pt;
+    }
+}
+
+.buttonOption {
+    @include buttonSearch(42%);
+    margin: 1%;
+    color: #CCC;
+    background: #666;
+    -webkit-box-shadow: 1px 1px 5px 0px #000;
+    -moz-box-shadow: 1px 1px 5px 0px #000;
+    box-shadow: 1px 1px 5px 0px #000;
+    .fa {
+        color:#CCC;
+    }
+}
+
+.buttonSearch {
+    @include buttonSearch(10%);
+    color: #666;
+    background: none;
+    display: block;
+    .fa {
+        color:#666;
+    }
+}
+
+.activeOption {
+    text-shadow: none;
+    box-shadow: none;
+}
+
+/* end Toolbar Search ------------------------- */ 
+/* Toolbar Options---------------------------------- */ 
+
+@mixin widthContainerOptions($width){
+    padding: gutter(15);
+    display: inline-block;
+}
+
+.toolbarOptions{
+    text-align:center;
+    background: #262626;
+    -webkit-box-shadow: inset 0px 0px 5px 6px rgba(0,0,0,0.71);
+    -moz-box-shadow: inset 0px 0px 5px 6px rgba(0,0,0,0.71);
+    box-shadow: inset 0px 0px 5px 6px rgba(0,0,0,0.71);
+}
+
+.listOption {
+    @include widthContainer(2 of 15);
+    margin-bottom: gutter(15);
+    display:table-cell;
+}
+
+.letters {
+    width: 3em;
+    height: 3em;
+    margin: 0.5em;
+    overflow: hidden;
+    background: #333;
+    border: 1px solid #666;
+    text-align: center;
+    line-height: 3em;
+    font-size: 14pt;    
+}
+
+.filters {
+    margin: 1em;
+    overflow: hidden;
+    text-align: center;
+    font-size: 12pt; 
+}
+
+input[type=checkbox] { 
+    display:none; 
+} 
+
+input[type=checkbox] + label:before {
+    content: "\f096";
+    font-family: FontAwesome;
+    letter-spacing: 5px;
+    cursor: pointer;
+}
+
+input[type=checkbox]:checked + label:before {
+    content: "\f046";
+    font-family: FontAwesome;
+    cursor: pointer;
+}
+
+/* end Toolbar Options------------------------------- */ 
+/* List Reasults------------------------------------- */ 
+
+.listResults{
+    padding:0 0.5em;
+    display:inline-block;
+    text-align:left;
+    
+    h3 {
+        margin: 0.5em 0;
+    } 
+
+    li {
+        height: 5em;
+        margin: 0.1em;
+        margin-bottom: 0.4em;  
+        background:#CCC; 
+        overflow: hidden;  
+    }
+}
+
+.resultInfo {
+    span {
+        color: #333;
+    }
+
+}
+
+.resultText {
+
+    p{
+        margin: -2.5em -2em 0 -2em;
+        color: #666;        
+    }
+    
+}
+/* end List Reasults------------------------------------- */ 
+    
+
+
+
+
+/* Smartphone ================================================ */ 
+@media screen and (max-width: 479px) {
+
+    .toolbarSearch {
+        width:100%;
+        height:100%;
+        margin: 1em auto;
+        margin-bottom: 0;
+    } 
+
+    .boxOptions {
+        width:100%;
+        margin-top: 3em;
+    }
+
+    .boxSearch {
+        width:100%;
+        margin-top: -5.5em;
+    }
+
+    .buttonOption {
+        @include buttonSearch(48%);
+        margin: 1%;
+    }
+    
+
+} 
+/* end Smartphone ============================================= */
+/* Tablet portrait ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+    .toolbarSearch {
+        width:98%;
+        height:100%;
+        margin: 3em auto;
+        margin-bottom: 0;
+    } 
+  
+        
+}
+/* end Tablet portrait ========================================= */ 
+
+/* Tablet landscape ============================================ */
+@media screen and (min-width: 801px) {
+    
+    .toolbarSearch {
+        width:60%;
+        height:100%;
+        margin: 1em auto;
+        margin-bottom: 0;
+    } 
+
+    
+}
+/* end Tablet landscape ============================================ */
+
+
+/* END SEARCH ====================================== */

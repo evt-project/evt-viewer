@@ -34,7 +34,56 @@ angular.module('evtviewer.mobile')
      */     
 
     $scope.thumbnails = parsedData.getThumb();
+
+
+    /**
+     * Refer to this by {@link MobileViewCtrl."search"}.
+     * @namespace
+     */
+
+    $scope.Search = ['Search...'];
+
+    $scope.removeText = function() {
+        $scope.Search = null;
+    };
+
+    $scope.buttonsOption = [{
+        description: '&#198;',
+        tab:'tabLetters',
+    }, {
+        icon:'fa fa-cogs',
+        tab:'tabFilters',
+    }];
+    
+    $scope.showTabOptions = function (currentTab) {
+        if ($scope.currentOption === currentTab.tab){
+            $scope.currentOption =! $scope.currentOption;
+        } else {
+            $scope.currentOption = currentTab.tab;
+        }
+    };
    
+    $scope.isActiveTab = function(activeTab) {
+        return activeTab === $scope.currentOption;
+    };
+
+    $scope.listResults = true;
+    $scope.showResults = function() {
+        $scope.listResults = !$scope.listResults;
+    };
+
+   /**
+     * Refer to this by {@link MobileViewCtrl."mockSearchLetters"}.
+     * @namespace
+     */ 
+    $scope.mockSearchLetters = parsedData.getSearchLetters();
+
+    /**
+     * Refer to this by {@link MobileViewCtrl."mockSearchFilters"}.
+     * @namespace
+     */ 
+    $scope.mockSearchFilters = parsedData.getSearchFilters();
+
 
     /**
      * Refer to this by {@link MobileViewCtrl."singleData"}.
@@ -80,6 +129,7 @@ angular.module('evtviewer.mobile')
      */ 
     $scope.mockText = parsedData.getText();
 
+    $scope.mockText2 = parsedData.getText2();
 
     /** Partial controls */
     
@@ -140,5 +190,7 @@ angular.module('evtviewer.mobile')
             $scope.index = 0;
         }
     };
+
+
 
 });
