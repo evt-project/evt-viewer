@@ -84,52 +84,26 @@ angular.module('evtviewer.mobile')
      */ 
     $scope.mockSearchFilters = parsedData.getSearchFilters();
 
-
-    /**
-     * Refer to this by {@link MobileViewCtrl."singleData"}.
-     * @namespace
-     */   
-    $scope.singleData = [{
-        src: 'http://i57.tinypic.com/k3b1mq.jpg',
-        title: 'The Dream of the Rood',
-        page:'- 104v -',
-    }, {
-        src: 'http://i61.tinypic.com/w1v6ag.jpg',
-        title: 'The Dream of the Rood',
-        page:'- 105r -',
-    }, {
-        src: 'http://i58.tinypic.com/k4wc41.jpg',
-        title: 'The Dream of the Rood',
-        page:'- 105v -',
-    }, {
-        src: 'http://i57.tinypic.com/1zna0k1.jpg',
-        title: 'The Dream of the Rood',
-        page:'- 106r -',
-    }, ];
-
-
-    /**
-     * Refer to this by {@link MobileViewCtrl."doubleData"}.
-     * @namespace
-     */ 
-    $scope.doubleData = [{
-        src: 'http://i59.tinypic.com/ajur7b.jpg',
-        title: 'The Dream of the Rood',
-        page: '- 104v - 105r -',
-    }, {
-        src: 'http://i62.tinypic.com/6ft8g2.jpg',
-        title: 'The Dream of the Rood',
-        page: '- 105v - 106r -',
-    }, ];
-
-
     /**
      * Refer to this by {@link MobileViewCtrl."mockText"}.
      * @namespace
      */ 
+    
     $scope.mockText = parsedData.getText();
 
-    $scope.mockText2 = parsedData.getText2();
+    /**
+     * Refer to this by {@link MobileViewCtrl."mockImage"}.
+     * @namespace
+     */ 
+    
+    $scope.mockImage = parsedData.getImage();
+
+    /**
+     * Refer to this by {@link MobileViewCtrl."mockBook"}.
+     * @namespace
+     */ 
+    
+    $scope.mockBook = parsedData.getBook();
 
     /** Partial controls */
     
@@ -144,23 +118,23 @@ angular.module('evtviewer.mobile')
     };
 
     /**
-     * Show the prev single item.
+     * Show the prev item.
      * @constructor
      */
-    $scope.singlePrev = function () {
+    $scope.prevItem = function () {
         if ($scope.index > 0) {
             $scope.index = (--$scope.index);
         } else {
-            $scope.index = ($scope.singleData.length - 1);
+            $scope.index = ($scope.mockImage.length - 1);
         }
     };
 
     /**
-     * Show the next single item.
+     * Show the next item.
      * @constructor
      */
-    $scope.singleNext = function () {
-        if ($scope.index < $scope.singleData.length - 1) {
+    $scope.nextItem = function () {
+        if ($scope.index < $scope.mockImage.length - 1) {
             $scope.index = (++$scope.index);
         } else {
             $scope.index = 0;
@@ -168,23 +142,23 @@ angular.module('evtviewer.mobile')
     };
 
     /**
-     * Show the prev double item.
+     * Show the prev book item.
      * @constructor
      */
-    $scope.doublePrev = function () {
+    $scope.prevBook = function () {
         if ($scope.index > 0) {
             $scope.index = (--$scope.index);
         } else {
-            $scope.index = ($scope.doubleData.length - 1);
+            $scope.index = ($scope.mockBook.length - 1);
         }
     };
 
     /**
-     * Show the next double item.
+     * Show the next book item.
      * @constructor
      */
-    $scope.doubleNext = function () {
-        if ($scope.index < $scope.doubleData.length - 1) {
+    $scope.nextBook = function () {
+        if ($scope.index < $scope.mockBook.length - 1) {
             $scope.index = (++$scope.index);
         } else {
             $scope.index = 0;

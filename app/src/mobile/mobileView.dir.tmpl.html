@@ -115,13 +115,13 @@
         <h3>Results for {{Search}}</h3>
 
         <ul>
-            <li ng-repeat="text in mockText2">
+            <li ng-repeat="text in mockText">
                 <div class="resultInfo">
                     <span>{{text.title}}</span>
                     <span>{{text.page}}</span>
                 </div>
                 <div class="resultText">
-                    <p>{{text.content}}</p>
+                    <p>{{text.diplomatic}}</p>
                 </div>
                 
             </li>
@@ -135,8 +135,8 @@
     class="blackTemplate"
     ng-if="view.currentView === 'image'" >
 
-    <ng-include src="'singleImage'"></ng-include>
-    <ng-include src="'singlePrevNext'"></ng-include>
+    <ng-include src="'image'"></ng-include>
+    <ng-include src="'arrowItem'"></ng-include>
 
 </section>
 
@@ -147,7 +147,7 @@
 
    
     <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'singlePrevNext'"></ng-include>
+    <ng-include src="'arrowItem'"></ng-include>
 
 
 </section>
@@ -157,8 +157,8 @@
     class="blackTemplate"
     ng-if="view.currentView === 'imageimage'" >
 
-    <ng-include src="'doubleImage'"></ng-include>
-    <ng-include src="'doublePrevNext'"></ng-include>
+    <ng-include src="'book'"></ng-include>
+    <ng-include src="'arrowBook'"></ng-include>
 
 </section>
 
@@ -167,9 +167,9 @@
     class="blackTemplate"
     ng-if="view.currentView === 'imagetext'" >
 
-    <ng-include src="'singleImage'"></ng-include>
+    <ng-include src="'image'"></ng-include>
     <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'singlePrevNext'"></ng-include>
+    <ng-include src="'arrowItem'"></ng-include>
 
 </section>
 
@@ -180,7 +180,7 @@
 
     <ng-include src="'diplomatic'"></ng-include>
     <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'singlePrevNext'"></ng-include>
+    <ng-include src="'arrowItem'"></ng-include>
 
 </section>
 
@@ -188,20 +188,42 @@
 
 <script
     type="text/ng-template"
-    id="singleImage"
+    id="image"
     ng-if="view.currentView === 'image' || view.currentView === 'imagetext' || view.currentView === 'imageimage'">
 
-    <!-- include data_input: single folio-->
-    <figure>
+    <picture
+
+        ng-repeat="img in mockImage"
+        ng-swipe-right="prevItem()"
+        ng-swipe-left="nextItem()"
+        ng-show="isActive($index)" >
+
+        <img
+            class="slide"
+            ng-src="{{img.url}}"
+            alt="{{img.title}} {{img.page}}" >
+
+    </picture>
+
+</script>
+
+<script 
+    type="text/ng-template"
+    id="book"
+    ng-if="view.currentView === 'imageimage'">
+
+    <picture
+        ng-repeat="img in mockBook"
+        ng-swipe-right="doublePrev()"
+        ng-swipe-left="doubleNext()"
+        ng-show="isActive($index)">
+
         <img 
             class="slide"
-            ng-repeat="img in singleData"
-            ng-swipe-right="singlePrev()"
-            ng-swipe-left="singleNext()"
-            ng-show="isActive($index)"
-            ng-src="{{img.src}}"
+            ng-src="{{img.url}}"
             alt="{{img.title}} {{img.page}}" />
-    </figure>
+
+    </picture>
 </script>
 
 <script
@@ -209,11 +231,11 @@
     id="diplomatic"
     ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
 
-    <!-- include data_output: diplomatic edition -->
+    <!-- Diplomatic Edition -->
 
     <div
         class="slide"
-        ng-repeat="text in singleData">
+        ng-repeat="text in mockText">
 
             <!-- page information -->
             <ul 
@@ -231,10 +253,14 @@
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)">
 
-            <p>{{mockText}}</p>
+            <p>{{text.diplomatic}}</p>
 
         </div>
+
+
     </div>
+
+    
 </script>
 
 <script
@@ -242,11 +268,11 @@
     id="interpretative"
     ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
 
-    <!-- include data_output: interpretative edition -->
+    <!-- Interpretative Edition -->
 
     <div
         class="slide"
-        ng-repeat="text in singleData">
+        ng-repeat="text in mockText">
 
             <!-- page information -->
             <ul 
@@ -263,55 +289,43 @@
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)">
-                <p>{{mockText}}</p>
+            
+            <p>{{text.interpretative}}</p>
+
         </div>
     </div>
 </script>
 
+<script type="text/ng-template" id="arrowItem">
 
-<script type="text/ng-template" id="doubleImage" ng-if="view.currentView === 'imageimage'">
+     <!-- prev / next controls -->
 
-    <!-- include data_input: double image-->
-    <figure>
-        <img 
-            class="slide"
-            ng-repeat="img in doubleData"
-            ng-swipe-right="doublePrev()"
-            ng-swipe-left="doubleNext()"
-            ng-show="isActive($index)"
-            ng-src="{{img.src}}"
-            alt="{{img.title}} {{img.page}}" />
-    </figure>
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
 </script>
 
+<script type="text/ng-template" id="arrowBook">
 
-
-<script type="text/ng-template" id="singlePrevNext">
      <!-- prev / next controls -->
-    <a 
-        class="prev"
-        href=""
-        ng-click="singlePrev()">
-    </a>
-    <a 
-        class="next"
-        href=""
-        ng-click="singleNext()">
-    </a>
-</script>
 
-<script type="text/ng-template" id="doublePrevNext">
-     <!-- prev / next controls -->
-    <a 
+    <span 
         class="prev"
-        href=""
-        ng-click="doublePrev()">
-    </a>
-    <a 
+        ng-click="prevBook()">
+    </span>
+
+    <span 
         class="next"
-        href=""
-        ng-click="doubleNext()">
-    </a>
+        ng-click="nextBook()">
+    </span>
+
 </script>
 
 
