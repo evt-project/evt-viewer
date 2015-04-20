@@ -89,21 +89,21 @@ angular.module('evtviewer.mobile')
      * @namespace
      */ 
     
-    $scope.mockText = parsedData.getText();
+    $scope.mockText = parsedData.getText1();
 
     /**
      * Refer to this by {@link MobileViewCtrl."mockImage"}.
      * @namespace
      */ 
     
-    $scope.mockImage = parsedData.getImage();
+    $scope.mockImage = parsedData.getImage1();
 
     /**
      * Refer to this by {@link MobileViewCtrl."mockBook"}.
      * @namespace
      */ 
     
-    $scope.mockBook = parsedData.getBook();
+    $scope.mockBook = parsedData.getBook1();
 
     /** Partial controls */
     
