@@ -9,15 +9,15 @@ angular.module('evtviewer.dataHandler')
     var pagesCollection = []; // {value: 'page', label: 'page label', title: 'page title'}
     var documentsCollection = []; // {value: 'document', label: 'document label', title: 'document title'}
     
-    var mockDocuments = [{
-        value: 'documents1',
-        label: 'documents1 label',
-        title: 'documents1 title'
-    }, {
-        value: 'documents2',
-        label: 'documents2 label',
-        title: 'documents2 title'
-    }];
+    // var mockDocuments = [{
+    //     value: 'documents1',
+    //     label: 'documents1 label',
+    //     title: 'documents1 title'
+    // }, {
+    //     value: 'documents2',
+    //     label: 'documents2 label',
+    //     title: 'documents2 title'
+    // }];
 
     var mockEditions = [{
         value: 'edition1',
@@ -45,6 +45,7 @@ angular.module('evtviewer.dataHandler')
         content: 'Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles. Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues. It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.',
     }];
 
+    var mockImage = 'http://i57.tinypic.com/k3b1mq.jpg';
     var mockThumb1 = [{
         id: '104v',
         url: 'http://i62.tinypic.com/f20hts.jpg',
@@ -105,24 +106,27 @@ angular.module('evtviewer.dataHandler')
         content:'Option 6',
     }];
 
-    parsedData.getText = function (){
+    parsedData.getText = function() {
         return mockText1;
     };
 
-    parsedData.getText2 = function (){
+    parsedData.getText2 = function() {
         return mockText2;
     };
 
+    parsedData.getImage = function() {
+        return mockImage;
+    };
 
-    parsedData.getThumb = function (){
+    parsedData.getThumb = function() {
         return mockThumb1;
     };
 
-    parsedData.getSearchLetters = function (){
+    parsedData.getSearchLetters = function() {
         return mockSearchLetters;
     };
 
-    parsedData.getSearchFilters = function (){
+    parsedData.getSearchFilters = function() {
         return mockSearchFilters;
     };
 

@@ -1,21 +1,21 @@
-<section class="box box-{{boxtitle}}" data-position="left">
+<section class="box box-{{vm.type}}" data-position="left">
     <div class="box-menu" data-position="top">
         <evt-select 
             data-id="{{selector.id}}"
             data-type="{{selector.type}}"
-            ng-repeat="selector in box.header.selectors">
+            ng-repeat="selector in vm.topMenuList.selectors">
         </evt-select>
         <!--<selector data-id="Pages" ng-if="boxtitle==='image'"></selector>
         <selector data-id="Documents" ng-if="boxtitle==='text'"></selector>
         <selector data-id="EditionLevels" ng-if="boxtitle==='text'"></selector>-->
         <button-switch 
-            title="{{buttonSwitch.title}}"
-            data-label="{{buttonSwitch.label}}"
-            ng-repeat="buttonSwitch in box.header.buttonSwitches">
+            title="{{button.title}}"
+            data-label="{{button.label}}"
+            ng-repeat="button in vm.topMenuList.buttons">
         </button-switch>
     </div>
     <div class="box-body">
-        {{box.content}}
+        {{vm.content}}
     </div>
     <div class="box-menu" data-position="bottom"></div>
 </section>
