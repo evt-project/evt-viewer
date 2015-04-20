@@ -89,6 +89,7 @@ span {
 .navItem {
   float: left;
   height: 40px;
+  overflow: hidden;
   padding-top: 0.2em;
   overflow: hidden; }
 
@@ -461,5 +462,3 @@ input[type=checkbox]:checked + label:before {
     content: "\f105"; }
 
 /* END VIEW ====================================== */
-
-/*# sourceMappingURL=mobile.css.map */
