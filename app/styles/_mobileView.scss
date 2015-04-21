@@ -4,7 +4,6 @@
     width: 100%;
     height: auto;
     top:0;
-    padding-top:4.5em;
     position:absolute;
     z-index: -20;        
     color: #FFF;
@@ -41,64 +40,104 @@
         }
     }
 
- /* Template: Image, Text, ImageImage, ImageText, TextText  */
+/* Template: View ------------------- */
 
-    .slide  {
-        max-width: 100%;
-        margin: 0 auto;
+@mixin baseArrow (){
+    display: block;
+    position: fixed;
+    top: 50%;
+    z-index: 20;
+    opacity: 0.8;
+    color:#666;
+    outline: medium none;
+    font-family: FontAwesome;
+    font-size: 4em;
+    font-style: normal;
+    font-weight: normal;
+    text-shadow: 3px 3px 2px #000; 
+}
+
+.fullscreen {
+    width:100%;
+    margin: 0 auto;
+}
+
+.halfscreen {
+    width: 50%;
+    padding: 0 0.5em;
+    float:left;    
+}
+
+.slide  {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.boxText {
+    max-width: 100%;
+    background: #FFF;
+    color: #000;
+}
+
+.contentText, .information {
+    width: 95%;
+    margin: 1em auto;        
+}
+
+.textTitle, .textPage {
+    float: right;
+    color: #666;
+    padding: 0 0.5em;
+}
+
+.prev { 
+    @include baseArrow();
+    left:2%;
+
+    &::before {
+        content: "\f104";
     }
+}
 
-    .tempImageText .slide, .tempTextText .slide {
-        max-width: 50%;
-        float:left;
+.next {
+    @include baseArrow();
+    right: 2%;
+
+    &::before {
+        content: "\f105"; 
     }
+}
+  
 
-    .textContent, .information{
-        width: 98%;
-        background: #FFF;
-        color: #000;
-        
+/* Smartphone ================================================ */ 
+@media screen and (max-width: 479px) {
+
+    .greyTemplate, .blackTemplate{
+        padding-top:4.5em;
     }
-
-    // .tempText #text_frame {
-    //     width:60%;
-    //     padding-left: 2.5em;
-    // }
-
     
 
-    @mixin baseArrow (){
-        display: block;
-        position: fixed;
-        top: 50%;
-        z-index: 5;
-        opacity: 0.7;
-        color:#999;
-        outline: medium none;
-        font-family: FontAwesome;
-        font-size: 4em;
-        font-style: normal;
-        font-weight: normal;
-        text-shadow: 2px 2px 3px #333; 
+} 
+/* end Smartphone ============================================= */
+
+/* Tablet portrait ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+    
+    .greyTemplate, .blackTemplate{
+        padding-top:5em;
     }
+        
+}
+/* end Tablet portrait ========================================= */ 
 
-    .prev { 
-        @include baseArrow();
-        left:0.3em;
-
-        &::before {
-            content: "\f104";
-        }
-    }
-
-    .next {
-        @include baseArrow();
-        right: 0.3em;
-
-        &::before {
-            content: "\f105"; 
-        }
-    }
-  
+/* Tablet landscape ============================================ */
+@media screen and (min-width: 801px) {
+ 
+    .greyTemplate, .blackTemplate{
+        padding-top:2em;
+    }    
+    
+}
+/* end Tablet landscape ============================================ */
 
 /* END VIEW ====================================== */ 

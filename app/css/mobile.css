@@ -382,7 +382,6 @@ input[type=checkbox]:checked + label:before {
   width: 100%;
   height: auto;
   top: 0;
-  padding-top: 4.5em;
   position: absolute;
   z-index: -20;
   color: #FFF;
@@ -392,7 +391,6 @@ input[type=checkbox]:checked + label:before {
   width: 100%;
   height: auto;
   top: 0;
-  padding-top: 4.5em;
   position: absolute;
   z-index: -20;
   color: #FFF;
@@ -413,34 +411,48 @@ input[type=checkbox]:checked + label:before {
   .dvbList a {
     color: #CCC; }
 
-/* Template: Image, Text, ImageImage, ImageText, TextText  */
+/* Template: View ------------------- */
+.fullscreen {
+  width: 100%;
+  margin: 0 auto; }
+
+.halfscreen {
+  width: 50%;
+  padding: 0 0.5em;
+  float: left; }
+
 .slide {
   max-width: 100%;
   margin: 0 auto; }
 
-.tempImageText .slide, .tempTextText .slide {
-  max-width: 50%;
-  float: left; }
-
-.textContent, .information {
-  width: 98%;
+.boxText {
+  max-width: 100%;
   background: #FFF;
   color: #000; }
+
+.contentText, .information {
+  width: 95%;
+  margin: 1em auto; }
+
+.textTitle, .textPage {
+  float: right;
+  color: #666;
+  padding: 0 0.5em; }
 
 .prev {
   display: block;
   position: fixed;
   top: 50%;
-  z-index: 5;
-  opacity: 0.7;
-  color: #999;
+  z-index: 20;
+  opacity: 0.8;
+  color: #666;
   outline: medium none;
   font-family: FontAwesome;
   font-size: 4em;
   font-style: normal;
   font-weight: normal;
-  text-shadow: 2px 2px 3px #333;
-  left: 0.3em; }
+  text-shadow: 3px 3px 2px #000;
+  left: 2%; }
   .prev::before {
     content: "\f104"; }
 
@@ -448,17 +460,32 @@ input[type=checkbox]:checked + label:before {
   display: block;
   position: fixed;
   top: 50%;
-  z-index: 5;
-  opacity: 0.7;
-  color: #999;
+  z-index: 20;
+  opacity: 0.8;
+  color: #666;
   outline: medium none;
   font-family: FontAwesome;
   font-size: 4em;
   font-style: normal;
   font-weight: normal;
-  text-shadow: 2px 2px 3px #333;
-  right: 0.3em; }
+  text-shadow: 3px 3px 2px #000;
+  right: 2%; }
   .next::before {
     content: "\f105"; }
 
+/* Smartphone ================================================ */
+@media screen and (max-width: 479px) {
+  .greyTemplate, .blackTemplate {
+    padding-top: 4.5em; } }
+/* end Smartphone ============================================= */
+/* Tablet portrait ============================================ */
+@media screen and (min-width: 480px) and (max-width: 800px) {
+  .greyTemplate, .blackTemplate {
+    padding-top: 5em; } }
+/* end Tablet portrait ========================================= */
+/* Tablet landscape ============================================ */
+@media screen and (min-width: 801px) {
+  .greyTemplate, .blackTemplate {
+    padding-top: 2em; } }
+/* end Tablet landscape ============================================ */
 /* END VIEW ====================================== */

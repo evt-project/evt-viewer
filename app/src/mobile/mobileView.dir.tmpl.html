@@ -135,8 +135,12 @@
     class="blackTemplate"
     ng-if="view.currentView === 'image'" >
 
-    <ng-include src="'image'"></ng-include>
-    <ng-include src="'arrowItem'"></ng-include>
+    <div 
+        class="fullscreen"
+        ng-include src="'image'">
+    </div>
+
+    <div ng-include src="'arrowItem'"></div>
 
 </section>
 
@@ -145,10 +149,12 @@
     class="blackTemplate"
     ng-if="view.currentView === 'text'" >
 
-   
-    <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'arrowItem'"></ng-include>
-
+    <div 
+        class="fullscreen"
+        ng-include src="'diplomatic'">
+    </div>   
+    
+    <div ng-include src="'arrowItem'"></div>
 
 </section>
 
@@ -157,8 +163,12 @@
     class="blackTemplate"
     ng-if="view.currentView === 'imageimage'" >
 
-    <ng-include src="'book'"></ng-include>
-    <ng-include src="'arrowBook'"></ng-include>
+    <div 
+        class="fullscreen"
+        ng-include src="'book'">
+    </div>
+
+    <div ng-include src="'arrowBook'"></div>
 
 </section>
 
@@ -167,9 +177,16 @@
     class="blackTemplate"
     ng-if="view.currentView === 'imagetext'" >
 
-    <ng-include src="'image'"></ng-include>
-    <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'arrowItem'"></ng-include>
+    <div 
+        class="halfscreen"
+        ng-include src="'image'">
+    </div>
+    <div 
+        class="halfscreen"
+        ng-include src="'diplomatic'">
+    </div>
+    
+    <div ng-include src="'arrowItem'"></div>
 
 </section>
 
@@ -178,9 +195,16 @@
     class="blackTemplate"
     ng-if="view.currentView === 'texttext'" >
 
-    <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'diplomatic'"></ng-include>
-    <ng-include src="'arrowItem'"></ng-include>
+    <div 
+        class="halfscreen"
+        ng-include src="'diplomatic'">
+    </div>
+    <div 
+        class="halfscreen"
+        ng-include src="'diplomatic'">
+    </div>
+    
+    <div ng-include src="'arrowItem'"></div>
 
 </section>
 
@@ -192,7 +216,6 @@
     ng-if="view.currentView === 'image' || view.currentView === 'imagetext' || view.currentView === 'imageimage'">
 
     <picture
-
         ng-repeat="img in mockImage"
         ng-swipe-right="prevItem()"
         ng-swipe-left="nextItem()"
@@ -234,21 +257,20 @@
     <!-- Diplomatic Edition -->
 
     <div
-        class="slide"
+        class="boxText"
         ng-repeat="text in mockText">
 
-            <!-- page information -->
-            <ul 
-                class="information"
-                ng-show="isActive($index)">
+        <div
+            class="information"
+            ng-show="isActive($index)">
 
-                <li>{{text.page}}</li>
-                <li>{{text.title}}</li>
-
-            </ul>
+            <span class="textPage">{{text.page}}</span>
+            <span class="textTitle">{{text.title}}</span>
+                          
+        </div>
 
         <div
-            class="textContent"
+            class="contentText"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)">
@@ -271,21 +293,20 @@
     <!-- Interpretative Edition -->
 
     <div
-        class="slide"
+        class="boxText"
         ng-repeat="text in mockText">
 
-            <!-- page information -->
-            <ul 
-                class="information"
-                ng-show="isActive($index)">
+        <div
+            class="information"
+            ng-show="isActive($index)">
 
-                <li>{{text.page}}</li>
-                <li>{{text.title}}</li>
-
-            </ul>
+            <span class="textPage">{{text.page}}</span>
+            <span class="textTitle">{{text.title}}</span>
+                          
+        </div>
 
         <div
-            class="textContent"
+            class="contentText"
             ng-swipe-right="singlePrev()"
             ng-swipe-left="singleNext()"
             ng-show="isActive($index)">
