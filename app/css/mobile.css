@@ -68,8 +68,8 @@ span {
   top: 0;
   margin: 0;
   padding: 0;
+  position: fixed;
   display: block;
-  z-index: 20;
   cursor: pointer;
   color: #CCC;
   text-align: center;
@@ -81,8 +81,6 @@ span {
     -moz-box-shadow: 0 6px 6px -5px #000;
     -webkit-box-shadow: 0 6px 6px -5px #000;
     box-shadow: 0 6px 6px -5px #000; }
-  .nav a {
-    color: #CCC; }
   .nav .active, .nav .active .fa {
     text-shadow: none; }
 
@@ -382,8 +380,6 @@ input[type=checkbox]:checked + label:before {
   width: 100%;
   height: auto;
   top: 0;
-  position: absolute;
-  z-index: -20;
   color: #FFF;
   background: #333; }
 
@@ -391,8 +387,6 @@ input[type=checkbox]:checked + label:before {
   width: 100%;
   height: auto;
   top: 0;
-  position: absolute;
-  z-index: -20;
   color: #FFF;
   background: #000; }
 
@@ -443,10 +437,9 @@ input[type=checkbox]:checked + label:before {
   display: block;
   position: fixed;
   top: 50%;
-  z-index: 20;
   opacity: 0.8;
   color: #666;
-  outline: medium none;
+  cursor: pointer;
   font-family: FontAwesome;
   font-size: 4em;
   font-style: normal;
@@ -460,10 +453,9 @@ input[type=checkbox]:checked + label:before {
   display: block;
   position: fixed;
   top: 50%;
-  z-index: 20;
   opacity: 0.8;
   color: #666;
-  outline: medium none;
+  cursor: pointer;
   font-family: FontAwesome;
   font-size: 4em;
   font-style: normal;

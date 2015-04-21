@@ -5,24 +5,20 @@
         <ul>
             <li  
                 class="navItem"
+                ng-class="{'active': isActiveButton(item.template)}"
+                ng-click="showSection(item.template); buttonSection(item)" 
                 ng-repeat="item in menu">
-                <a 
-                    href="javascript:void(0)" 
-                    ng-class="{'active': isActiveButton(item.template)}"
-                    ng-click="showSection(item.template); buttonSection(item)" 
-                    alt="{{item.description}} {{item.template}}">
-
-                    <span><h1><i class="{{item.icon}}"></i></h1></span>
-                    <span><h1>{{item.description}}</h1></span>
-                    
-                </a>
+                
+                <span><i class="{{item.icon}}"></i></span>
+                <span><h1>{{item.description}}</h1></span>   
+                
             </li>
           
             <li 
                 class="navItem"
                 ng-class="{'active': set}"
                 ng-click="setToggle()">
-                <span><h1><i class="fa fa-wrench"></i></h1></span>
+                <span><i class="fa fa-wrench"></i></span>
             </li>
 
             <li 
@@ -30,7 +26,7 @@
                 ng-class="{'active': showItems}" 
                 ng-click="toggleView()">
                 
-                <span><h1><i class="fa fa-eye"></i></h1></span>
+                <span><i class="fa fa-eye"></i></span>
                 
             </li>
         </ul>
@@ -39,18 +35,14 @@
             ng-show="showItems">
     
             <li 
-                class="{{item.template}}" 
+                class="{{item.template}}"
+                ng-class="{'active': isActiveButton(item.template)}"
+                ng-click="showView(item.template); buttonView(item)"
                 ng-repeat="item in view">
-                <a 
-                    href="javascript:void(0)"
-                    ng-class="{'active': isActiveButton(item.template)}"
-                    ng-click="showView(item.template); buttonView(item)"
-                    alt="{{item.template}}">
 
-                    <span><h1><i class="{{item.icon1}}"></i></h1></span>
-                    <span><h1><i class="{{item.icon2}}"></i></h1></span>
-                    
-                </a>
+                <span><i class="{{item.icon1}}"></i></span>
+                <span><i class="{{item.icon2}}"></i></span>
+                
             </li>
         </ul>
     </nav>

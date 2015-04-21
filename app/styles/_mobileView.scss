@@ -4,8 +4,6 @@
     width: 100%;
     height: auto;
     top:0;
-    position:absolute;
-    z-index: -20;        
     color: #FFF;
     background: $bgColor;
 }
@@ -46,10 +44,9 @@
     display: block;
     position: fixed;
     top: 50%;
-    z-index: 20;
     opacity: 0.8;
     color:#666;
-    outline: medium none;
+    cursor: pointer;
     font-family: FontAwesome;
     font-size: 4em;
     font-style: normal;

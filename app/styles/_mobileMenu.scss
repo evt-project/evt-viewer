@@ -6,8 +6,8 @@
     top:0;
     margin: 0;
     padding:0;
+    position:fixed;
     display: block;
-    z-index: 20;
     cursor: pointer;
     color:#CCC;
     text-align: center;
@@ -20,10 +20,6 @@
         -moz-box-shadow: 0 6px 6px -5px #000;
         -webkit-box-shadow: 0 6px 6px -5px #000;
         box-shadow: 0 6px 6px -5px #000;
-    }
-
-    a{
-        color:#CCC;
     }
 
     .active, .active .fa {
