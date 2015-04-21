@@ -9,7 +9,7 @@ angular.module('evtviewer.communication')
     var _console = $log.getInstance('communication');
 
     communication.getData = function(url) {
-        $http.get(url)
+        return $http.get(url)
             .success(function(data) {
                 if (typeof(data) === 'string') {
                     baseData.addXMLString(data);

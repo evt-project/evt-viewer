@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData) {
+    this.$get = function($log, $location, parsedData) {
         var select = {},
             collection = {},
             list = [],
@@ -47,7 +47,8 @@ angular.module('evtviewer.select')
             if (vm.expanded) {
                 vm.toggleExpand();
             }
-            vm.callback.call(undefined, option);
+            vm.changeRoute.call(undefined, option);
+            // vm.callback.call(undefined, option);
 
             _console.log('vm - selectOption ' + option.value);
         }
@@ -78,7 +79,8 @@ angular.module('evtviewer.select')
                 currentType = vm.type || 'default',
                 optionList,
                 optionSelected,
-                callback;
+                callback,
+                changeRoute;
 
             var scopeHelper = {};
 
@@ -92,21 +94,34 @@ angular.module('evtviewer.select')
                     // TODO: add a general service for the current page in the application
                     // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(option) {
-                        _console.log('page select callback' + option.label);
+                        optionSelected = option;
+                        _console.log('page select callback ' + option.label);
+                    };
+                    changeRoute = function(option) {
+                        _console.log('page select changeRoute ' + option.label);  
+
+                        var url = '/resolveNavigation/'+option.value;
+                        $location.path( url );
                     };
                     break;
                 case 'document':
                     optionList = parsedData.getDocuments();
                     optionSelected = optionList[0];
                     callback = function(option) {
-                        _console.log('document select callback' + option.label);
+                        _console.log('document select callback ' + option.label);
+                    };
+                    changeRoute = function(option) {
+                        _console.log('document select changeRoute ' + option.label);  
                     };
                     break;
                 case 'edition':
                     optionList = parsedData.getEditions();
                     optionSelected = optionList[0];
                     callback = function(option) {
-                        _console.log('edition select callback' + option.label);
+                        _console.log('edition select callback ' + option.label);
+                    };
+                    changeRoute = function(option) {
+                        _console.log('edition select changeRoute ' + option.label);  
                     };
                     break;
             }
@@ -116,6 +131,7 @@ angular.module('evtviewer.select')
                 uid: currentId,
                 defaults: angular.copy(defaults),
                 callback: callback,
+                changeRoute: changeRoute,
 
                 // model
                 optionList: optionList,

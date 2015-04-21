@@ -4,13 +4,14 @@ angular.module('evtviewer.interface')
     $routeProvider
         .when('/resolveNavigation/:pageId', {
             template: 'index.html',
-            controller: 'InterfaceCtrl',
-            resolve: {
-                resolvedNav: function($route) {
-                    console.log($route.current.params);
-                    return 'Call to the service for the page';
-                }
-            }
+            controller: 'InterfaceCtrl'
+            // ,
+            // resolve: {
+            //     resolvedNav: function($route) {
+            //         console.log($route.current.params);
+            //         return 'Call to the service for the page';
+            //     }
+            // }
         });
 })
 

@@ -14,8 +14,7 @@
             ng-repeat="button in vm.topMenuList.buttons">
         </button-switch>
     </div>
-    <div class="box-body">
-        {{vm.content}}
+    <div class="box-body" ng-bind-html="vm.content">
     </div>
     <div class="box-menu" data-position="bottom"></div>
 </section>

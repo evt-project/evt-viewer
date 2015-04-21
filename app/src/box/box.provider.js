@@ -20,6 +20,12 @@ angular.module('evtviewer.box')
         // 
         // Control function
         // 
+        function updateContent(newContent) {
+            var vm = this;
+            vm.content = newContent;
+            
+            _console.log('vm - updating content ' + vm.id);
+        }
 
         function destroy() {
             var tempId = this.uid;
@@ -52,17 +58,19 @@ angular.module('evtviewer.box')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
+            
+            _console.log('vm - building box for ' + currentId);
 
             switch (currentType) {
                 case 'image':
                     topMenuList.selectors.push({ id:'page', type: 'page' });
                     topMenuList.buttons.push({ title:'Thumbnails', label: 'Thumbs' });
-                    content = parsedData.getImage();
+                    content = '<img src="'+parsedData.getImage()+'" />';
                     break;
                 case 'text':
                     topMenuList.selectors.push({ id:'document', type: 'document' });
                     topMenuList.selectors.push({ id:'editionLevel', type: 'edition'});
-                    content = parsedData.getText();
+                    content = parsedData.getText1()[0].diplomatic;
                     break;
             }
 
@@ -77,6 +85,7 @@ angular.module('evtviewer.box')
                 content: content,
 
                 // function
+                updateContent: updateContent,
                 destroy: destroy
             };
 
@@ -102,12 +111,6 @@ angular.module('evtviewer.box')
 
         box.getList = function() {
             return list;
-        };
-
-        box.changeContent = function(currentId, content) {
-            if (collection[currentId] !== 'undefined') {
-                collection[currentId].content = content;
-            }
         };
 
         return box;

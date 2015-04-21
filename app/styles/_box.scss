@@ -17,6 +17,16 @@
 .box-image {
     @include colors($base-color-light, #000);
     border-right-width: 0.5px;
+    
+    .box-body {
+        overflow: hidden;
+        text-align: center;
+        
+        img {
+            height: 100%;
+        }
+    }
+
 }
 
 .box-text {
