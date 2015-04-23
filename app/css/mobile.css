@@ -79,18 +79,25 @@ span {
   .nav ul {
     background: #666;
     margin-bottom: 0.2em;
-    -moz-box-shadow: 0 6px 6px -5px #000;
-    -webkit-box-shadow: 0 6px 6px -5px #000;
-    box-shadow: 0 6px 6px -5px #000; }
+    -moz-box-shadow: 0 5px 5px -5px #000;
+    -webkit-box-shadow: 0 5px 5px -5px #000;
+    box-shadow: 0 5px 5px -5px #000; }
   .nav .active, .nav .active .fa {
     text-shadow: none; }
 
 .navItem {
   float: left;
   height: 40px;
-  overflow: hidden;
   padding-top: 0.2em;
   overflow: hidden; }
+
+.nav li, .dropdown {
+  width: 15%; }
+
+.nav li:first-child {
+  width: 70%;
+  float: left;
+  text-align: left; }
 
 .dropdown {
   float: right;
@@ -100,51 +107,39 @@ span {
     height: 50px;
     padding-top: 0.2em;
     border-top: #333 1px solid;
-    overflow: hidden; }
+    overflow: hidden;
+    text-align: center; }
+  .dropdown li:first-child {
+    width: 100%;
+    text-align: center; }
   .dropdown li + li {
     border: none; }
 
 /* Smartphone ================================================ */
 @media screen and (max-width: 479px) {
   .nav li, .dropdown {
-    width: 25%;
-    font-size: 1em; }
+    width: 20%;
+    font-size: 0.8em; }
 
   .nav li:first-child {
-    width: 100%;
-    height: auto;
-    float: left;
-    font-size: 1em; }
+    width: 60%;
+    font-size: 0.65em;
+    line-height: 30px; }
+
+  .navItem {
+    height: 35px; }
+
+  .dropdown {
+    margin-top: -0.3em; }
 
   .dropdown li, .dropdown li:first-child {
     width: 100%;
-    padding-top: 0.5em; }
+    padding-top: 0.5em;
+    font-size: 0.9em; }
 
   .imageimage, .imagetext, .texttext {
     display: none; } }
 /* end Smartphone ============================================= */
-/* Tablet portrait ============================================ */
-@media screen and (min-width: 480px) and (max-width: 800px) {
-  .nav li, .dropdown {
-    width: 25%; }
-
-  .nav li:first-child, .dropdown li {
-    width: 100%;
-    height: auto;
-    float: left; } }
-/* end Tablet portrait ========================================= */
-/* Tablet landscape ============================================ */
-@media screen and (min-width: 801px) {
-  .nav li, .dropdown {
-    width: 12.5%; }
-
-  .nav li:first-child {
-    width: 50%;
-    float: left; }
-
-  .dropdown li, .dropdown li:first-child {
-    width: 100%; } }
-/* end Tablet landscape ============================================ */
 /* END MENU ====================================== */
 /* THUMBNAILS ====================================== */
 *, *:before, *:after {
@@ -174,6 +169,23 @@ span {
     font-size: 18px; }
 
 /* END THUMBNAILS ====================================== */
+/* SETTINGS ====================================== */
+.settings {
+  width: auto;
+  height: auto;
+  bottom: 0;
+  padding: 2%;
+  position: fixed;
+  z-index: 20;
+  overflow: hidden;
+  opacity: 0.8;
+  text-shadow: 1px 1px 1px #333; }
+  .settings .fa {
+    color: #666;
+    font-size: 1.5em;
+    line-height: 1.5em; }
+
+/* END SETTINGS ====================================== */
 /* SEARCH  ====================================== */
 *, *:before, *:after {
   -moz-box-sizing: border-box;
@@ -264,9 +276,7 @@ span {
   box-shadow: inset 0px 0px 5px 6px rgba(0, 0, 0, 0.71); }
 
 .listOption {
-  padding: 2.5641%;
-  padding-bottom: 0;
-  margin: 1.5em auto;
+  padding: 1.35135%;
   display: inline-block;
   margin-bottom: 1.35135%;
   display: table-cell; }
@@ -380,14 +390,14 @@ input[type=checkbox]:checked + label:before {
 .greyTemplate {
   width: 100%;
   height: auto;
-  top: 0;
+  padding-top: 2em;
   color: #FFF;
   background: #333; }
 
 .blackTemplate {
   width: 100%;
   height: auto;
-  top: 0;
+  padding-top: 2em;
   color: #FFF;
   background: #000; }
 
@@ -466,19 +476,4 @@ input[type=checkbox]:checked + label:before {
   .next::before {
     content: "\f105"; }
 
-/* Smartphone ================================================ */
-@media screen and (max-width: 479px) {
-  .greyTemplate, .blackTemplate {
-    padding-top: 4.5em; } }
-/* end Smartphone ============================================= */
-/* Tablet portrait ============================================ */
-@media screen and (min-width: 480px) and (max-width: 800px) {
-  .greyTemplate, .blackTemplate {
-    padding-top: 5em; } }
-/* end Tablet portrait ========================================= */
-/* Tablet landscape ============================================ */
-@media screen and (min-width: 801px) {
-  .greyTemplate, .blackTemplate {
-    padding-top: 2em; } }
-/* end Tablet landscape ============================================ */
 /* END VIEW ====================================== */

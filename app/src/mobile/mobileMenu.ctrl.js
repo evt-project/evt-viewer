@@ -13,12 +13,9 @@ angular.module('evtviewer.mobile')
         template: 'dvb',
         description: 'The Digital Vercelli Book',
     }, {
-        template: 'thumbnails',
-        icon: 'fa fa-th',
-    }, {
         template: 'search',
         icon: 'fa fa-search',
-    }, ];
+    }];
 
     $scope.view = [{
         template: 'image',

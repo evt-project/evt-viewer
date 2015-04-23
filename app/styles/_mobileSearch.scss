@@ -94,7 +94,7 @@
 }
 
 .listOption {
-    @include widthContainer(2 of 15);
+    @include widthContainerOptions(2 of 15);
     margin-bottom: gutter(15);
     display:table-cell;
 }
