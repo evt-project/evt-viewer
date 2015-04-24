@@ -1,14 +1,94 @@
 /* SETTINGS ====================================== */ 
 
+@mixin baseButtonSettings {
+    margin:0;
+    display: inline-block;
+
+
+    span{
+        width: 2.5em;
+        height: 2.5em;
+        margin-top: 100%;
+        background: #333;
+        opacity: 0.9;
+        overflow: hidden;
+        text-align:center;
+    }
+
+    .fa {
+        cursor: pointer;
+        color: #CCC;
+        font-size: 1.5em;
+        line-height: 1.6em;
+    }
+    
+}
+
+@mixin floatSetOptions ($float){
+    width: 10em; 
+    height: 5em; 
+    float: $float;
+    background: #666;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #333;
+
+    li {
+        width: 90%;
+        margin:0.5em auto;
+        overflow: hidden;
+        background: #333;
+        line-height: 1.3em;
+        -webkit-box-shadow: 1px 1px 3px 0px #000;
+        -moz-box-shadow: 1px 1px 3px 0px #000;
+        box-shadow: 1px 1px 3px 0px #000;
+    }
+
+}
+
 .settings {
     width: 100%;
-    position: fixed;
+    height: auto;
     bottom: 0;
-    overflow: hidden;
-    z-index: 5;
-    -moz-box-shadow: 5px 5px 5px 7px #000;
-    -webkit-box-shadow:5px 5px 5px 7px #000;
-    box-shadow: 5px 5px 5px 7px #000;
+    position: fixed;
+    z-index: 20;    
+    overflow: hidden; 
+
+    .active .fa {
+        color: #FFF;            
+        text-shadow: none;        
+    }
 }
+
+.leftSettings{
+    width: 40%;
+    float:left;
+}
+.rightSettings {
+    width: 40%;
+    float:right;
+}
+
+.leftButtonSettings{
+    @include baseButtonSettings;
+}
+
+.rightButtonSettings{
+    @include baseButtonSettings;
+    float:right;
+}
+
+.leftSetOptions {
+    @include floatSetOptions (left);
+    border-right: 5px solid #333;
+}
+
+.rightSetOptions {
+    @include floatSetOptions (right);
+    border-left: 5px solid #333;
+}
+
+
+
 
 /* END SETTINGS ====================================== */
