@@ -1,40 +1,48 @@
 /* VIEW ====================================== */ 
     
-@mixin baseTemplate($bgColor){
+.baseTemplate{
     width: 100%;
     height: auto;
-    padding-top:2em;
+    padding-top:2.5em;
     color: #FFF;
-    background: $bgColor;
-}
-
-.greyTemplate {
-    @include baseTemplate(#333);
-}
-
-.blackTemplate{
-    @include baseTemplate(#000);
 }
 
 /* Template: DVB -------------------- */
-    .greyTemplate p{
+    .dvbText{
         padding: 2.5em;
+        background: #333;
     }
 
     .dvbList {
         width:100%;
         height:100%;
-        padding: 1em 0 1em 2.5em;
+        margin: 0 auto;
+        padding: 1em 2.5em;
         background: #666;
-
-        li.span {
-            float:left;
+        border-top:3px solid #222;
+        text-align: center;
+        
+        li {
+            width: 100%;
+            height:  auto;
+            margin: 0 auto;
+            padding: 0.5em 1em;
             display: inline-block;
-
+            background: #333;
+            -webkit-box-shadow: 1px 1px 3px 0px #000;
+            -moz-box-shadow: 1px 1px 3px 0px #000;
+            box-shadow: 1px 1px 3px 0px #000;
         }
 
+        span {
+            width: 100%;
+        }
+        .fa {
+            font-size: 0.8em;
+        }
+        
         a{
-            color: #CCC;
+            color: #FFF;
         }
     }
 

@@ -12,15 +12,24 @@
     cursor: pointer;
     border:none;
     overflow: hidden;
+    line-height: 1.5em;
     text-align: center;
     font-size: 1.4em;
-    text-shadow: 2px 2px 2px #333;
+    text-shadow: 2px 1px 1px #333;
     .fa {
         font-size: 0.9em;
-        line-height: 1.3em;
+        line-height: 1.5em;
         height: 1.3em;
         overflow: hidden;
     }
+}
+
+.toolbarSearch{
+    width:100%;
+    height:100%;
+    margin: 0 auto;
+    padding: 1em 0.5em;
+    background: #333;
 }
 
 .boxOptions {
@@ -39,7 +48,7 @@
     background: #FFF;
 
     input {
-        width: 90%;
+        width: 85%;
         height: 2.8em;
         padding-left:0.5em;
         float:left;
@@ -54,20 +63,22 @@
     margin: 1%;
     color: #CCC;
     background: #666;
-    -webkit-box-shadow: 1px 1px 5px 0px #000;
-    -moz-box-shadow: 1px 1px 5px 0px #000;
-    box-shadow: 1px 1px 5px 0px #000;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000;
     .fa {
         color:#CCC;
     }
 }
 
 .buttonSearch {
-    @include buttonSearch(10%);
+    @include buttonSearch(15%);
     color: #666;
     background: none;
-    display: block;
+    display: inline-block;
+    text-align: right;
     .fa {
+        width: 100%;
         color:#666;
     }
 }
@@ -87,10 +98,10 @@
 
 .toolbarOptions{
     text-align:center;
-    background: #262626;
-    -webkit-box-shadow: inset 0px 0px 5px 6px rgba(0,0,0,0.71);
-    -moz-box-shadow: inset 0px 0px 5px 6px rgba(0,0,0,0.71);
-    box-shadow: inset 0px 0px 5px 6px rgba(0,0,0,0.71);
+    background: #666;
+    -webkit-box-shadow: inset 0px 0px 0px 1px #222;
+    -moz-box-shadow: inset 0px 0px 0px 1px #222;
+    box-shadow: inset 0px 0px 0px 1px #222;
 }
 
 .listOption {
@@ -100,20 +111,25 @@
 }
 
 .letters {
-    width: 3em;
-    height: 3em;
-    margin: 0.5em;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0.3em;
     overflow: hidden;
-    background: #333;
-    border: 1px solid #666;
+    color: #333;
+    background: #CCC;
+    border-radius: 10%;
     text-align: center;
-    line-height: 3em;
-    font-size: 14pt;    
+    line-height: 2.5em;
+    font-size: 14pt;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000;    
 }
 
 .filters {
     margin: 1em;
     overflow: hidden;
+    color: #FFF;
     text-align: center;
     font-size: 12pt; 
 }
@@ -142,6 +158,7 @@ input[type=checkbox]:checked + label:before {
     padding:0 0.5em;
     display:inline-block;
     text-align:left;
+    background: #333;
     
     h3 {
         margin: 0.5em 0;
@@ -151,8 +168,12 @@ input[type=checkbox]:checked + label:before {
         height: 5em;
         margin: 0.1em;
         margin-bottom: 0.4em;  
-        background:#CCC; 
-        overflow: hidden;  
+        background:#FFF; 
+        overflow: hidden;
+        border: 1px solid #222;
+        -webkit-box-shadow: 1px 1px 3px 0px #000;
+        -moz-box-shadow: 1px 1px 3px 0px #000;
+        box-shadow: 1px 1px 3px 0px #000;   
     }
 }
 
@@ -180,13 +201,7 @@ input[type=checkbox]:checked + label:before {
 /* Smartphone ================================================ */ 
 @media screen and (max-width: 479px) {
 
-    .toolbarSearch {
-        width:100%;
-        height:100%;
-        margin: 1em auto;
-        margin-bottom: 0;
-    } 
-
+    
     .boxOptions {
         width:100%;
         margin-top: 3em;
@@ -207,12 +222,8 @@ input[type=checkbox]:checked + label:before {
 /* end Smartphone ============================================= */
 /* Tablet portrait ============================================ */ 
 @media screen and (min-width: 480px) and (max-width: 800px) {
-    .toolbarSearch {
-        width:98%;
-        height:100%;
-        margin: 3em auto;
-        margin-bottom: 0;
-    } 
+    
+
   
         
 }
@@ -221,12 +232,7 @@ input[type=checkbox]:checked + label:before {
 /* Tablet landscape ============================================ */
 @media screen and (min-width: 801px) {
     
-    .toolbarSearch {
-        width:60%;
-        height:100%;
-        margin: 1em auto;
-        margin-bottom: 0;
-    } 
+
 
     
 }

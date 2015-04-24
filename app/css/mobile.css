@@ -74,16 +74,16 @@ span {
   cursor: pointer;
   color: #CCC;
   text-align: center;
-  font-size: 1.7em;
-  text-shadow: 2px 2px 3px #333; }
+  font-size: 1.6em; }
   .nav ul {
-    background: #666;
+    background: #333;
     margin-bottom: 0.2em;
+    border-bottom: 1px solid #222;
     -moz-box-shadow: 0 5px 5px -5px #000;
     -webkit-box-shadow: 0 5px 5px -5px #000;
     box-shadow: 0 5px 5px -5px #000; }
   .nav .active, .nav .active .fa {
-    text-shadow: none; }
+    color: #FFF; }
 
 .navItem {
   float: left;
@@ -101,12 +101,12 @@ span {
 
 .dropdown {
   float: right;
-  margin-top: -0.2em; }
+  margin-top: -0.2em;
+  border: 1px solid #222; }
   .dropdown li {
     width: 100%;
     height: 50px;
     padding-top: 0.2em;
-    border-top: #333 1px solid;
     overflow: hidden;
     text-align: center; }
   .dropdown li:first-child {
@@ -119,18 +119,15 @@ span {
 @media screen and (max-width: 479px) {
   .nav li, .dropdown {
     width: 20%;
-    font-size: 0.8em; }
+    font-size: 0.9em; }
 
   .nav li:first-child {
     width: 60%;
-    font-size: 0.65em;
-    line-height: 30px; }
-
-  .navItem {
-    height: 35px; }
+    font-size: 0.7em;
+    line-height: 35px; }
 
   .dropdown {
-    margin-top: -0.3em; }
+    margin-top: -0.25em; }
 
   .dropdown li, .dropdown li:first-child {
     width: 100%;
@@ -171,19 +168,96 @@ span {
 /* END THUMBNAILS ====================================== */
 /* SETTINGS ====================================== */
 .settings {
-  width: auto;
+  width: 100%;
   height: auto;
   bottom: 0;
-  padding: 2%;
   position: fixed;
   z-index: 20;
-  overflow: hidden;
-  opacity: 0.8;
-  text-shadow: 1px 1px 1px #333; }
-  .settings .fa {
-    color: #666;
+  overflow: hidden; }
+  .settings .active .fa {
+    color: #FFF;
+    text-shadow: none; }
+
+.leftSettings {
+  width: 40%;
+  float: left; }
+
+.rightSettings {
+  width: 40%;
+  float: right; }
+
+.leftButtonSettings {
+  margin: 0;
+  display: inline-block; }
+  .leftButtonSettings span {
+    width: 2.5em;
+    height: 2.5em;
+    margin-top: 100%;
+    background: #333;
+    opacity: 0.9;
+    overflow: hidden;
+    text-align: center; }
+  .leftButtonSettings .fa {
+    cursor: pointer;
+    color: #CCC;
     font-size: 1.5em;
-    line-height: 1.5em; }
+    line-height: 1.6em; }
+
+.rightButtonSettings {
+  margin: 0;
+  display: inline-block;
+  float: right; }
+  .rightButtonSettings span {
+    width: 2.5em;
+    height: 2.5em;
+    margin-top: 100%;
+    background: #333;
+    opacity: 0.9;
+    overflow: hidden;
+    text-align: center; }
+  .rightButtonSettings .fa {
+    cursor: pointer;
+    color: #CCC;
+    font-size: 1.5em;
+    line-height: 1.6em; }
+
+.leftSetOptions {
+  width: 10em;
+  height: 5em;
+  float: left;
+  background: #666;
+  overflow: hidden;
+  text-align: center;
+  border: 1px solid #333;
+  border-right: 5px solid #333; }
+  .leftSetOptions li {
+    width: 90%;
+    margin: 0.5em auto;
+    overflow: hidden;
+    background: #333;
+    line-height: 1.3em;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
+
+.rightSetOptions {
+  width: 10em;
+  height: 5em;
+  float: right;
+  background: #666;
+  overflow: hidden;
+  text-align: center;
+  border: 1px solid #333;
+  border-left: 5px solid #333; }
+  .rightSetOptions li {
+    width: 90%;
+    margin: 0.5em auto;
+    overflow: hidden;
+    background: #333;
+    line-height: 1.3em;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
 
 /* END SETTINGS ====================================== */
 /* SEARCH  ====================================== */
@@ -193,6 +267,13 @@ span {
   box-sizing: border-box; }
 
 /* Toolbar Search ------------------------- */
+.toolbarSearch {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 1em 0.5em;
+  background: #333; }
+
 .boxOptions {
   width: 30%;
   float: left;
@@ -207,7 +288,7 @@ span {
   overflow: hidden;
   background: #FFF; }
   .boxSearch input {
-    width: 90%;
+    width: 85%;
     height: 2.8em;
     padding-left: 0.5em;
     float: left;
@@ -223,43 +304,47 @@ span {
   cursor: pointer;
   border: none;
   overflow: hidden;
+  line-height: 1.5em;
   text-align: center;
   font-size: 1.4em;
-  text-shadow: 2px 2px 2px #333;
+  text-shadow: 2px 1px 1px #333;
   margin: 1%;
   color: #CCC;
   background: #666;
-  -webkit-box-shadow: 1px 1px 5px 0px #000;
-  -moz-box-shadow: 1px 1px 5px 0px #000;
-  box-shadow: 1px 1px 5px 0px #000; }
+  -webkit-box-shadow: 1px 1px 3px 0px #000;
+  -moz-box-shadow: 1px 1px 3px 0px #000;
+  box-shadow: 1px 1px 3px 0px #000; }
   .buttonOption .fa {
     font-size: 0.9em;
-    line-height: 1.3em;
+    line-height: 1.5em;
     height: 1.3em;
     overflow: hidden; }
   .buttonOption .fa {
     color: #CCC; }
 
 .buttonSearch {
-  width: 10%;
+  width: 15%;
   height: 1.6em;
   float: left;
   display: inline-block;
   cursor: pointer;
   border: none;
   overflow: hidden;
+  line-height: 1.5em;
   text-align: center;
   font-size: 1.4em;
-  text-shadow: 2px 2px 2px #333;
+  text-shadow: 2px 1px 1px #333;
   color: #666;
   background: none;
-  display: block; }
+  display: inline-block;
+  text-align: right; }
   .buttonSearch .fa {
     font-size: 0.9em;
-    line-height: 1.3em;
+    line-height: 1.5em;
     height: 1.3em;
     overflow: hidden; }
   .buttonSearch .fa {
+    width: 100%;
     color: #666; }
 
 .activeOption {
@@ -270,10 +355,10 @@ span {
 /* Toolbar Options---------------------------------- */
 .toolbarOptions {
   text-align: center;
-  background: #262626;
-  -webkit-box-shadow: inset 0px 0px 5px 6px rgba(0, 0, 0, 0.71);
-  -moz-box-shadow: inset 0px 0px 5px 6px rgba(0, 0, 0, 0.71);
-  box-shadow: inset 0px 0px 5px 6px rgba(0, 0, 0, 0.71); }
+  background: #666;
+  -webkit-box-shadow: inset 0px 0px 0px 1px #222;
+  -moz-box-shadow: inset 0px 0px 0px 1px #222;
+  box-shadow: inset 0px 0px 0px 1px #222; }
 
 .listOption {
   padding: 1.35135%;
@@ -282,19 +367,24 @@ span {
   display: table-cell; }
 
 .letters {
-  width: 3em;
-  height: 3em;
-  margin: 0.5em;
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0.3em;
   overflow: hidden;
-  background: #333;
-  border: 1px solid #666;
+  color: #333;
+  background: #CCC;
+  border-radius: 10%;
   text-align: center;
-  line-height: 3em;
-  font-size: 14pt; }
+  line-height: 2.5em;
+  font-size: 14pt;
+  -webkit-box-shadow: 1px 1px 3px 0px #000;
+  -moz-box-shadow: 1px 1px 3px 0px #000;
+  box-shadow: 1px 1px 3px 0px #000; }
 
 .filters {
   margin: 1em;
   overflow: hidden;
+  color: #FFF;
   text-align: center;
   font-size: 12pt; }
 
@@ -317,15 +407,20 @@ input[type=checkbox]:checked + label:before {
 .listResults {
   padding: 0 0.5em;
   display: inline-block;
-  text-align: left; }
+  text-align: left;
+  background: #333; }
   .listResults h3 {
     margin: 0.5em 0; }
   .listResults li {
     height: 5em;
     margin: 0.1em;
     margin-bottom: 0.4em;
-    background: #CCC;
-    overflow: hidden; }
+    background: #FFF;
+    overflow: hidden;
+    border: 1px solid #222;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
 
 .resultInfo span {
   color: #333; }
@@ -337,12 +432,6 @@ input[type=checkbox]:checked + label:before {
 /* end List Reasults------------------------------------- */
 /* Smartphone ================================================ */
 @media screen and (max-width: 479px) {
-  .toolbarSearch {
-    width: 100%;
-    height: 100%;
-    margin: 1em auto;
-    margin-bottom: 0; }
-
   .boxOptions {
     width: 100%;
     margin-top: 3em; }
@@ -359,62 +448,58 @@ input[type=checkbox]:checked + label:before {
     cursor: pointer;
     border: none;
     overflow: hidden;
+    line-height: 1.5em;
     text-align: center;
     font-size: 1.4em;
-    text-shadow: 2px 2px 2px #333;
+    text-shadow: 2px 1px 1px #333;
     margin: 1%; }
     .buttonOption .fa {
       font-size: 0.9em;
-      line-height: 1.3em;
+      line-height: 1.5em;
       height: 1.3em;
       overflow: hidden; } }
 /* end Smartphone ============================================= */
 /* Tablet portrait ============================================ */
-@media screen and (min-width: 480px) and (max-width: 800px) {
-  .toolbarSearch {
-    width: 98%;
-    height: 100%;
-    margin: 3em auto;
-    margin-bottom: 0; } }
 /* end Tablet portrait ========================================= */
 /* Tablet landscape ============================================ */
-@media screen and (min-width: 801px) {
-  .toolbarSearch {
-    width: 60%;
-    height: 100%;
-    margin: 1em auto;
-    margin-bottom: 0; } }
 /* end Tablet landscape ============================================ */
 /* END SEARCH ====================================== */
 /* VIEW ====================================== */
-.greyTemplate {
+.baseTemplate {
   width: 100%;
   height: auto;
-  padding-top: 2em;
-  color: #FFF;
-  background: #333; }
-
-.blackTemplate {
-  width: 100%;
-  height: auto;
-  padding-top: 2em;
-  color: #FFF;
-  background: #000; }
+  padding-top: 2.5em;
+  color: #FFF; }
 
 /* Template: DVB -------------------- */
-.greyTemplate p {
-  padding: 2.5em; }
+.dvbText {
+  padding: 2.5em;
+  background: #333; }
 
 .dvbList {
   width: 100%;
   height: 100%;
-  padding: 1em 0 1em 2.5em;
-  background: #666; }
-  .dvbList li.span {
-    float: left;
-    display: inline-block; }
+  margin: 0 auto;
+  padding: 1em 2.5em;
+  background: #666;
+  border-top: 3px solid #222;
+  text-align: center; }
+  .dvbList li {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0.5em 1em;
+    display: inline-block;
+    background: #333;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
+  .dvbList span {
+    width: 100%; }
+  .dvbList .fa {
+    font-size: 0.8em; }
   .dvbList a {
-    color: #CCC; }
+    color: #FFF; }
 
 /* Template: View ------------------- */
 .fullscreen {

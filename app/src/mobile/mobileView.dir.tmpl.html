@@ -1,9 +1,9 @@
 
 <section 
-    class="greyTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'dvb'" >
                         
-    <p>
+    <p class="dvbText">
         When the transcription of the Vercelli Book manuscript (Codex CXVII, Archivio e Biblioteca Capitolare di Vercelli) passed the 50% landmark, 
         researchers working on the project started to think about the best way to visualize the edition.
         Thanks to the openness and support of the Biblioteca Capitolare, it was decided to abandon the original plan of a CD/DVD publication,
@@ -13,17 +13,19 @@
         parallel transcription method. When using this method, information about the scan and possibly the coordinates
         of sensible areas are separated from the transcription and aligned with it thanks to linking attributes.
     </p>
-    <ul 
-        class="dvbList"
-        ng-repeat="item in dvb">
-        <li>
+    <ul class="dvbList">
+        <li ng-repeat="item in dvb">
             <a 
                 href="{{item.url}}"
                 target="_blank"
                 title="{{item.title}}">
 
-                <span> {{item.description}} </span>
-                <span><i class="fa fa-external-link"></i></span>
+                <span> 
+
+                    {{item.description}}
+                    <i class="fa fa-external-link"></i>
+                    
+                </span>
 
             </a>
         </li>               
@@ -34,7 +36,7 @@
 
 
 <section 
-    class="greyTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'thumbnails'" >
 
     <div class="thumbContainer">
@@ -56,7 +58,7 @@
 
 
 <section 
-    class="greyTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'search'" >
 
     <div class="toolbarSearch">
@@ -132,7 +134,7 @@
 
  
 <section 
-    class="blackTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'image'" >
 
     <div 
@@ -146,7 +148,7 @@
 
 
 <section 
-    class="blackTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'text'" >
 
     <div 
@@ -160,7 +162,7 @@
 
 
 <section 
-    class="blackTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'imageimage'" >
 
     <div 
@@ -174,7 +176,7 @@
 
 
 <section 
-    class="blackTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'imagetext'" >
 
     <div 
@@ -192,7 +194,7 @@
 
 
 <section 
-    class="blackTemplate"
+    class="baseTemplate"
     ng-if="view.currentView === 'texttext'" >
 
     <div 
