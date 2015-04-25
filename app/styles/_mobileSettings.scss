@@ -1,57 +1,10 @@
 /* SETTINGS ====================================== */ 
 
-@mixin baseButtonSettings {
-    margin:0;
-    display: inline-block;
-
-
-    span{
-        width: 2.5em;
-        height: 2.5em;
-        margin-top: 100%;
-        background: #333;
-        opacity: 0.9;
-        overflow: hidden;
-        text-align:center;
-    }
-
-    .fa {
-        cursor: pointer;
-        color: #CCC;
-        font-size: 1.5em;
-        line-height: 1.6em;
-    }
-    
-}
-
-@mixin floatSetOptions ($float){
-    width: 10em; 
-    height: 5em; 
-    float: $float;
-    background: #666;
-    overflow: hidden;
-    text-align: center;
-    border: 1px solid #333;
-
-    li {
-        width: 90%;
-        margin:0.5em auto;
-        overflow: hidden;
-        background: #333;
-        line-height: 1.3em;
-        -webkit-box-shadow: 1px 1px 3px 0px #000;
-        -moz-box-shadow: 1px 1px 3px 0px #000;
-        box-shadow: 1px 1px 3px 0px #000;
-    }
-
-}
-
-.settings {
-    width: 100%;
+@mixin floatSettings ($float){
+    width: 40%;
     height: auto;
-    bottom: 0;
-    position: fixed;
-    z-index: 20;    
+    display:inline-block;  
+    float: $float;      
     overflow: hidden; 
 
     .active .fa {
@@ -60,22 +13,72 @@
     }
 }
 
+@mixin floatButtonSettings ($float){
+    width: 20%;
+    height: 1.8em;
+    margin-top: 1.65em;
+    padding-top: 0.4em;
+    float: $float;
+    overflow: hidden;
+    display:inline-block;
+    background: #333;
+    opacity: 0.9;
+    font-size: 1.5em;    
+}
+
+@mixin floatSetOptions ($float){
+    width: 80%;
+    height: 100%;
+    display:inline-block;
+    float: $float;
+    background: #666;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+
+    li {
+        width: 90%;
+        margin: 0.5em auto;
+        padding-top: 0.2em;
+        overflow: hidden;
+        background: #333;
+        -webkit-box-shadow: 1px 1px 3px 0px #000;
+        -moz-box-shadow: 1px 1px 3px 0px #000;
+        box-shadow: 1px 1px 3px 0px #000;
+    }
+}
+
+.settings {
+    width: 100%;
+    position: fixed;
+    display:inline-block;
+    z-index: 20;  
+    bottom: 0;
+}
+
 .leftSettings{
-    width: 40%;
-    float:left;
+    @include floatSettings (left);
 }
 .rightSettings {
-    width: 40%;
-    float:right;
+    @include floatSettings (right);    
+}
+
+.contentSettings {
+    width: auto;
+    height: 100%;
+    text-align: center;
+
+    .fa {
+        cursor: pointer;
+        color: #999;
+    }
 }
 
 .leftButtonSettings{
-    @include baseButtonSettings;
+    @include floatButtonSettings (left);
 }
 
 .rightButtonSettings{
-    @include baseButtonSettings;
-    float:right;
+    @include floatButtonSettings (right);
 }
 
 .leftSetOptions {

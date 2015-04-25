@@ -1,157 +1,106 @@
-<section 
-    class="settings"
-    ng-if="view.currentView === 'text'">
+<section class="settings">
+    <section 
+        class="leftSettings"
+        ng-if="view.currentView === 'text' || view.currentView === 'texttext'">
 
-    <div class="leftSettings">
-        <div
-            class="leftButtonSettings"
-            ng-class="{'active': textOptions}"
-            ng-click="showTextSettings()">
+        <div class="contentSettings">
+            <div 
+                class ="leftSetOptions"
+                ng-show="leftTextOptions">
+                
+                <ul class="optionText">
+                    <li>
+                        <span> Diplomatic </span>
+                    </li>
+                    <li>
+                        <span> Interpretative </span>
+                    </li>
+                </ul>
 
-            <span>
-                <i class="fa fa-cogs"></i>
-            </span>
+            </div>
+            <div
+                class="leftButtonSettings"
+                ng-class="{'active': leftTextOptions}"
+                ng-click="leftTextSettings()">
 
-        </div>
-        <div 
-            class ="leftSetOptions"
-            ng-show="textOptions">
+                <span>
+                    <i class="fa fa-cogs"></i>
+                </span>
+
+            </div>
             
-            <ul class="optionText">
-                <li>
-                    <span> Diplomatic </span>
-                </li>
-                <li>
-                    <span> Interpretative </span>
-                </li>
-            </ul>
-
         </div>
-    </div>
+
+    </section>
+
+    <section 
+        class="leftSettings"
+        ng-if="view.currentView === 'imagetext'">
+
+        <div class="contentSettings">
+            <div 
+                class ="leftSetOptions"
+                ng-show="imageOptions">
+                
+                <ul class="optionText">
+                    <li>
+                        <span> Hotspot </span>
+                    </li>
+                    <li>
+                        <span> TextLink </span>
+                    </li>
+                </ul>
+
+            </div>
+            <div
+                class="leftButtonSettings"
+                ng-class="{'active': textOptions}"
+                ng-click="showImageSettings()">
+
+                <span>
+                    <i class="fa fa-cogs"></i>
+                </span>
+
+            </div>
+            
+        </div>
+
+    </section>
+
+
+    <section 
+        class="rightSettings"
+        ng-if="view.currentView === 'imagetext'">
+
+        <div class="contentSettings">
+            <div 
+                class ="rightSetOptions"
+                ng-show="rightTextOptions">
+                
+                <ul class="optionText">
+                    <li>
+                        <span> Diplomatic </span>
+                    </li>
+                    <li>
+                        <span> Interpretative </span>
+                    </li>
+                </ul>
+
+            </div>
+            <div
+                class="rightButtonSettings"
+                ng-class="{'active': righTextOptions}"
+                ng-click="rightTextSettings()">
+
+                <span>
+                    <i class="fa fa-cogs"></i>
+                </span>
+
+            </div>
+            
+        </div>
+
+    </section>
+
 
 </section>
-
-<section 
-    class="settings"
-    ng-if="view.currentView === 'imagetext'">
-
-    <div class="leftSettings">
-        <div
-            class="leftButtonSettings"
-            ng-class="{'active': imageOptions}"
-            ng-click="showImageSettings()">
-
-            <span>
-                <i class="fa fa-cogs"></i>
-            </span>
-
-        </div>
-
-        <div 
-            class ="leftSetOptions"
-            ng-show="imageOptions">
-            
-            <ul class="optionText">
-                <li>
-                    <span> HotSpot </span>
-                </li>
-                <li>
-                    <span> TextLink </span>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-
-    <div class="rightSettings">
-        <div 
-            class ="rightSetOptions"
-            ng-show="textOptions">
-            
-            <ul class="optionText">
-                <li>
-                    <span> Diplomatic </span>
-                </li>
-                <li>
-                    <span> Interpretative </span>
-                </li>
-            </ul>
-
-        </div>
-        <div
-            class="rightButtonSettings"
-            ng-class="{'active': textOptions}"
-            ng-click="showTextSettings()">
-
-            <span>
-                <i class="fa fa-cogs"></i>
-            </span>
-
-        </div>
-    </div>
-   
-</section>
-
-
-<section 
-    class="settings"
-    ng-if="view.currentView === 'texttext'">
-
-    <div class="leftSettings">
-        <div
-            class="leftButtonSettings"
-            ng-class="{'active': textOptions}"
-            ng-click="showTextSettings()">
-
-            <span>
-                <i class="fa fa-cogs"></i>
-            </span>
-
-        </div>
-        <div 
-            class ="leftSetOptions"
-            ng-show="textOptions">
-            
-            <ul class="optionText">
-                <li>
-                    <span> Diplomatic </span>
-                </li>
-                <li>
-                    <span> Interpretative </span>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-
-    <div class="rightSettings">
-        <div 
-            class ="rightSetOptions"
-            ng-show="textOptions">
-            
-            <ul class="optionText">
-                <li>
-                    <span> Diplomatic </span>
-                </li>
-                <li>
-                    <span> Interpretative </span>
-                </li>
-            </ul>
-
-        </div>
-        <div
-            class="rightButtonSettings"
-            ng-class="{'active': textOptions}"
-            ng-click="showTextSettings()">
-
-            <span>
-                <i class="fa fa-cogs"></i>
-            </span>
-
-        </div>
-    </div>
-
-</section>
-
-
-

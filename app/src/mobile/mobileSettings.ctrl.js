@@ -4,11 +4,16 @@ angular.module('evtviewer.mobile')
 
     $scope.view = mobile.getState();
 
-    $scope.textOptions = false;
+    $scope.leftTextOptions = false;
+    $scope.rightTextOptions = false;
     $scope.imageOptions = false;
 
-    $scope.showTextSettings = function() {
-        $scope.textOptions = !$scope.textOptions;
+    $scope.leftTextSettings = function() {
+        $scope.leftTextOptions = !$scope.leftTextOptions;
+    };
+
+    $scope.rightTextSettings = function() {
+        $scope.rightTextOptions = !$scope.rightTextOptions;
     };
 
     $scope.showImageSettings = function() {
