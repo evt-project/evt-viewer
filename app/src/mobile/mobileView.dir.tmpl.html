@@ -1,42 +1,6 @@
 
 <section 
     class="baseTemplate"
-    ng-if="view.currentView === 'dvb'" >
-                        
-    <p class="dvbText">
-        When the transcription of the Vercelli Book manuscript (Codex CXVII, Archivio e Biblioteca Capitolare di Vercelli) passed the 50% landmark, 
-        researchers working on the project started to think about the best way to visualize the edition.
-        Thanks to the openness and support of the Biblioteca Capitolare, it was decided to abandon the original plan of a CD/DVD publication,
-        largely inspired by digital editions such as the Electronic Beowulf, in favor of a web-based publication.
-        While this decision was critical in that it allowed us to select the most supported and widely-used medium, we soon discovered that it did not make choices any simpler. <br>
-        Since it was originally born as part of the Digital Vercelli Book project, EVT (Edition Visualization Technology) was developed to deal with the XML encoding of texts which had been prepared for that project, namely making use of the XML TEI P5
-        parallel transcription method. When using this method, information about the scan and possibly the coordinates
-        of sensible areas are separated from the transcription and aligned with it thanks to linking attributes.
-    </p>
-    <ul class="dvbList">
-        <li ng-repeat="item in dvb">
-            <a 
-                href="{{item.url}}"
-                target="_blank"
-                title="{{item.title}}">
-
-                <span> 
-
-                    {{item.description}}
-                    <i class="fa fa-external-link"></i>
-                    
-                </span>
-
-            </a>
-        </li>               
-    </ul>
-
-
-</section>
-
-
-<section 
-    class="baseTemplate"
     ng-if="view.currentView === 'thumbnails'" >
 
     <div class="thumbContainer">
@@ -56,272 +20,29 @@
 
 </section>
 
-
-<section 
-    class="baseTemplate"
-    ng-if="view.currentView === 'search'" >
-
-    <div class="toolbarSearch">
-        <div class= "boxOptions">
-            <button
-                class="buttonOption"
-                ng-repeat="button in buttonsOption"
-                ng-class='{"activeOption": isActiveTab(button.tab)}'
-                ng-click="showTabOptions(button)">
-
-                <span><h2><i class="{{button.icon}}"></i></h2></span>
-                <span><h2 ng-bind-html="button.description"></h2></span>
-
-            </button>
-        </div>
-        <div class="boxSearch">
-            <input 
-                type="text"
-                ng-model="Search"
-                ng-click="removeText()">
-
-            <button 
-                class="buttonSearch"
-                ng-click="showResults()">
-                <h2><i class="fa fa-search"></i></h2>
-            </button>
-        </div>
-       
-    </div>
-    
-    <div class="toolbarOptions" ng-switch on="currentOption">
-          
-        <div ng-switch-when="tabLetters">
-            <div class="listOptions">
-                <span 
-                    class="letters"
-                    ng-repeat="letter in mockSearchLetters"
-                    ng-bind-html="letter">
-                </span>
-            </div>
-        </div>
-
-        <div ng-switch-when="tabFilters">
-            <div class="listOptions">
-                <span 
-                    class="filters"
-                    ng-repeat="filter in mockSearchFilters">
-                    <input type="checkbox" id="{{filter.id}}">
-                    <label for="{{filter.id}}">{{filter.content}}</label>                    
-                </span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="listResults" ng-hide="listResults">
-        <h3>Results for {{Search}}</h3>
-
-        <ul>
-            <li ng-repeat="text in mockText">
-                <div class="resultInfo">
-                    <span>{{text.title}}</span>
-                    <span>{{text.page}}</span>
-                </div>
-                <div class="resultText">
-                    <p>{{text.diplomatic}}</p>
-                </div>
-                
-            </li>
-        </ul>
-    </div> 
-
-</section>
-
  
 <section 
     class="baseTemplate"
     ng-if="view.currentView === 'image'" >
 
-    <div 
-        class="fullscreen"
-        ng-include src="'image'">
-    </div>
+    <div class="fullscreen">
 
-    <div ng-include src="'arrowItem'"></div>
+        <picture
+            ng-repeat="img in mockImage"
+            ng-swipe-right="prevItem()"
+            ng-swipe-left="nextItem()"
+            ng-show="isActive($index)" >
 
-</section>
+            <img
+                class="slide"
+                ng-src="{{img.url}}"
+                alt="{{img.title}} {{img.page}}" >
 
-
-<section 
-    class="baseTemplate"
-    ng-if="view.currentView === 'text'" >
-
-    <div 
-        class="fullscreen"
-        ng-include src="'diplomatic'">
-    </div>   
-    
-    <div ng-include src="'arrowItem'"></div>
-
-</section>
-
-
-<section 
-    class="baseTemplate"
-    ng-if="view.currentView === 'imageimage'" >
-
-    <div 
-        class="fullscreen"
-        ng-include src="'book'">
-    </div>
-
-    <div ng-include src="'arrowBook'"></div>
-
-</section>
-
-
-<section 
-    class="baseTemplate"
-    ng-if="view.currentView === 'imagetext'" >
-
-    <div 
-        class="halfscreen"
-        ng-include src="'image'">
-    </div>
-    <div 
-        class="halfscreen"
-        ng-include src="'diplomatic'">
-    </div>
-    
-    <div ng-include src="'arrowItem'"></div>
-
-</section>
-
-
-<section 
-    class="baseTemplate"
-    ng-if="view.currentView === 'texttext'" >
-
-    <div 
-        class="halfscreen"
-        ng-include src="'diplomatic'">
-    </div>
-    <div 
-        class="halfscreen"
-        ng-include src="'diplomatic'">
-    </div>
-    
-    <div ng-include src="'arrowItem'"></div>
-
-</section>
-
-
-
-<script
-    type="text/ng-template"
-    id="image"
-    ng-if="view.currentView === 'image' || view.currentView === 'imagetext' || view.currentView === 'imageimage'">
-
-    <picture
-        ng-repeat="img in mockImage"
-        ng-swipe-right="prevItem()"
-        ng-swipe-left="nextItem()"
-        ng-show="isActive($index)" >
-
-        <img
-            class="slide"
-            ng-src="{{img.url}}"
-            alt="{{img.title}} {{img.page}}" >
-
-    </picture>
-
-</script>
-
-<script 
-    type="text/ng-template"
-    id="book"
-    ng-if="view.currentView === 'imageimage'">
-
-    <picture
-        ng-repeat="img in mockBook"
-        ng-swipe-right="doublePrev()"
-        ng-swipe-left="doubleNext()"
-        ng-show="isActive($index)">
-
-        <img 
-            class="slide"
-            ng-src="{{img.url}}"
-            alt="{{img.title}} {{img.page}}" />
-
-    </picture>
-</script>
-
-<script
-    type="text/ng-template"
-    id="diplomatic"
-    ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
-
-    <!-- Diplomatic Edition -->
-
-    <div
-        class="boxText"
-        ng-repeat="text in mockText">
-
-        <div
-            class="information"
-            ng-show="isActive($index)">
-
-            <span class="textPage">{{text.page}}</span>
-            <span class="textTitle">{{text.title}}</span>
-                          
-        </div>
-
-        <div
-            class="contentText"
-            ng-swipe-right="singlePrev()"
-            ng-swipe-left="singleNext()"
-            ng-show="isActive($index)">
-
-            <p>{{text.diplomatic}}</p>
-
-        </div>
-
+        </picture>
 
     </div>
 
-    
-</script>
-
-<script
-    type="text/ng-template"
-    id="interpretative"
-    ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
-
-    <!-- Interpretative Edition -->
-
-    <div
-        class="boxText"
-        ng-repeat="text in mockText">
-
-        <div
-            class="information"
-            ng-show="isActive($index)">
-
-            <span class="textPage">{{text.page}}</span>
-            <span class="textTitle">{{text.title}}</span>
-                          
-        </div>
-
-        <div
-            class="contentText"
-            ng-swipe-right="singlePrev()"
-            ng-swipe-left="singleNext()"
-            ng-show="isActive($index)">
-            
-            <p>{{text.interpretative}}</p>
-
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="arrowItem">
-
-     <!-- prev / next controls -->
+    <!-- prev / next controls -->
 
     <span 
         class="prev"
@@ -333,23 +54,231 @@
         ng-click="nextItem()">
     </span>
 
-</script>
+</section>
 
-<script type="text/ng-template" id="arrowBook">
 
-     <!-- prev / next controls -->
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'text'" >
+
+    <div class="fullscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)">
+
+                <p>{{text.diplomatic}}</p>
+
+            </div>
+
+
+        </div>
+
+    </div>   
+    
+    <!-- prev / next controls -->
 
     <span 
         class="prev"
-        ng-click="prevBook()">
+        ng-click="prevItem()">
     </span>
 
     <span 
         class="next"
-        ng-click="nextBook()">
+        ng-click="nextItem()">
     </span>
 
-</script>
+</section>
 
 
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'imageimage'" >
 
+    <div class="fullscreen">
+
+        <picture
+            ng-repeat="img in mockBook"
+            ng-swipe-right="prevImageImage()"
+            ng-swipe-left="nextImageImage()"
+            ng-show="isActive($index)">
+
+            <img 
+                class="slide"
+                ng-src="{{img.url}}"
+                alt="{{img.title}} {{img.page}}" />
+
+        </picture>
+
+    </div>
+
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevImageImage()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextImageImage()">
+    </span>
+
+</section>
+
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'imagetext'" >
+
+    <div class="halfscreen">
+
+        <picture
+            ng-repeat="img in mockImage"
+            ng-swipe-right="prevItem()"
+            ng-swipe-left="nextItem()"
+            ng-show="isActive($index)" >
+
+            <img
+                class="slide"
+                ng-src="{{img.url}}"
+                alt="{{img.title}} {{img.page}}" >
+
+        </picture>
+
+    </div>
+    <div class="halfscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)">
+
+                <p>{{text.diplomatic}}</p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
+</section>
+
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'texttext'" >
+
+    <div class="halfscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)">
+
+                <p>{{text.diplomatic}}</p>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    <div class="halfscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)">
+
+                <p>{{text.diplomatic}}</p>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
+</section>
