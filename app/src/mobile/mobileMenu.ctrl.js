@@ -10,7 +10,7 @@ angular.module('evtviewer.mobile')
     $scope.currentButton = 'image';
 
     $scope.menu = [{
-        template: 'dvb',
+        template: 'info',
         description: 'The Digital Vercelli Book',
     }, {
         template: 'search',

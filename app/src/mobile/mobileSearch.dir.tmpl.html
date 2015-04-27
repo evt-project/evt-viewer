@@ -1,0 +1,74 @@
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'search'" >
+
+    <div class="toolbarSearch">
+        <div class= "boxOptions">
+            <button
+                class="buttonOption"
+                ng-repeat="button in buttonsOption"
+                ng-class='{"activeOption": isActiveTab(button.tab)}'
+                ng-click="showTabOptions(button)">
+
+                <span><h2><i class="{{button.icon}}"></i></h2></span>
+                <span><h2 ng-bind-html="button.description"></h2></span>
+
+            </button>
+        </div>
+        <div class="boxSearch">
+            <input 
+                type="text"
+                ng-model="Search"
+                ng-click="removeText()">
+
+            <button 
+                class="buttonSearch"
+                ng-click="showResults()">
+                <h2><i class="fa fa-search"></i></h2>
+            </button>
+        </div>
+       
+    </div>
+    
+    <div class="toolbarOptions" ng-switch on="currentOption">
+          
+        <div ng-switch-when="tabLetters">
+            <div class="listOptions">
+                <span 
+                    class="letters"
+                    ng-repeat="letter in mockSearchLetters"
+                    ng-bind-html="letter">
+                </span>
+            </div>
+        </div>
+
+        <div ng-switch-when="tabFilters">
+            <div class="listOptions">
+                <span 
+                    class="filters"
+                    ng-repeat="filter in mockSearchFilters">
+                    <input type="checkbox" id="{{filter.id}}">
+                    <label for="{{filter.id}}">{{filter.content}}</label>                    
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="listResults" ng-hide="listResults">
+        <h3>Results for {{Search}}</h3>
+
+        <ul>
+            <li ng-repeat="text in mockText">
+                <div class="resultInfo">
+                    <span>{{text.title}}</span>
+                    <span>{{text.page}}</span>
+                </div>
+                <div class="resultText">
+                    <p>{{text.diplomatic}}</p>
+                </div>
+                
+            </li>
+        </ul>
+    </div> 
+
+</section>

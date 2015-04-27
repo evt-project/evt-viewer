@@ -1,0 +1,34 @@
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'info'" >
+                        
+    <p class="dvbText">
+        When the transcription of the Vercelli Book manuscript (Codex CXVII, Archivio e Biblioteca Capitolare di Vercelli) passed the 50% landmark, 
+        researchers working on the project started to think about the best way to visualize the edition.
+        Thanks to the openness and support of the Biblioteca Capitolare, it was decided to abandon the original plan of a CD/DVD publication,
+        largely inspired by digital editions such as the Electronic Beowulf, in favor of a web-based publication.
+        While this decision was critical in that it allowed us to select the most supported and widely-used medium, we soon discovered that it did not make choices any simpler. <br>
+        Since it was originally born as part of the Digital Vercelli Book project, EVT (Edition Visualization Technology) was developed to deal with the XML encoding of texts which had been prepared for that project, namely making use of the XML TEI P5
+        parallel transcription method. When using this method, information about the scan and possibly the coordinates
+        of sensible areas are separated from the transcription and aligned with it thanks to linking attributes.
+    </p>
+    <ul class="dvbList">
+        <li ng-repeat="item in dvb">
+            <a 
+                href="{{item.url}}"
+                target="_blank"
+                title="{{item.title}}">
+
+                <span> 
+
+                    {{item.description}}
+                    <i class="fa fa-external-link"></i>
+                    
+                </span>
+
+            </a>
+        </li>               
+    </ul>
+
+
+</section>
