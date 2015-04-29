@@ -2,7 +2,7 @@
 
 @include border-box-sizing;
 
-/* Toolbar Search ------------------------- */ 
+/* Search ------------------------- */ 
 
 @mixin buttonSearch($width){
     width: $width;
@@ -88,8 +88,8 @@
     box-shadow: none;
 }
 
-/* end Toolbar Search ------------------------- */ 
-/* Toolbar Options---------------------------------- */ 
+/* end Search ------------------------- */ 
+/* Options---------------------------------- */ 
 
 @mixin widthContainerOptions($width){
     padding: gutter(15);
@@ -151,7 +151,7 @@ input[type=checkbox]:checked + label:before {
     cursor: pointer;
 }
 
-/* end Toolbar Options------------------------------- */ 
+/* end Options------------------------------- */ 
 /* List Reasults------------------------------------- */ 
 
 .listResults{
@@ -200,7 +200,6 @@ input[type=checkbox]:checked + label:before {
 
 /* Smartphone ================================================ */ 
 @media screen and (max-width: 479px) {
-
     
     .boxOptions {
         width:100%;
@@ -216,27 +215,8 @@ input[type=checkbox]:checked + label:before {
         @include buttonSearch(48%);
         margin: 1%;
     }
-    
-
+   
 } 
 /* end Smartphone ============================================= */
-/* Tablet portrait ============================================ */ 
-@media screen and (min-width: 480px) and (max-width: 800px) {
-    
-
-  
-        
-}
-/* end Tablet portrait ========================================= */ 
-
-/* Tablet landscape ============================================ */
-@media screen and (min-width: 801px) {
-    
-
-
-    
-}
-/* end Tablet landscape ============================================ */
-
 
 /* END SEARCH ====================================== */

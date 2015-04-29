@@ -70,15 +70,14 @@ body {
     font-family: Junicode, Times, serif;
     background: #000;
     color: #FFF;
-    overflow: hidden;
 }
 
 span {
     display: inline-block;
 };
 
+@import "mobileInfo.scss";
 @import "mobileMenu.scss";
-@import "mobileThumb.scss";
-@import "mobileSettings.scss";
 @import "mobileSearch.scss";
+@import "mobileToolbar.scss";
 @import "mobileView.scss";

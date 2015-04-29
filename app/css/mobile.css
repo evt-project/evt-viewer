@@ -55,12 +55,42 @@ body {
   min-height: 0;
   font-family: Junicode, Times, serif;
   background: #000;
-  color: #FFF;
-  overflow: hidden; }
+  color: #FFF; }
 
 span {
   display: inline-block; }
 
+/* INFO ------------------------------------------------- */
+.dvbText {
+  padding: 2.5em;
+  background: #333; }
+
+.dvbList {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 1em 2.5em;
+  background: #666;
+  border-top: 3px solid #222;
+  text-align: center; }
+  .dvbList li {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0.5em 1em;
+    display: inline-block;
+    background: #333;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
+  .dvbList span {
+    width: 100%; }
+  .dvbList .fa {
+    font-size: 0.8em; }
+  .dvbList a {
+    color: #FFF; }
+
+/* END INFO ------------------------------------------------- */
 /* MENU' ====================================== */
 .nav {
   width: 100%;
@@ -138,140 +168,13 @@ span {
     display: none; } }
 /* end Smartphone ============================================= */
 /* END MENU ====================================== */
-/* THUMBNAILS ====================================== */
-*, *:before, *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box; }
-
-.thumbContainer {
-  display: table-cell;
-  text-align: center; }
-
-.thumb {
-  padding: 2.5641%;
-  padding-bottom: 0;
-  margin: 1.5em auto;
-  display: inline-block;
-  margin-bottom: 2.5641%; }
-  .thumb img {
-    max-width: 100%;
-    margin: 0 auto;
-    -moz-box-shadow: 0 7px 7px -5px #000;
-    -webkit-box-shadow: 0 7px 7px -5px #000;
-    box-shadow: 0 7px 7px -5px #000; }
-  .thumb figcaption {
-    margin: 0.5em 0;
-    color: #FFF;
-    font-size: 18px; }
-
-/* END THUMBNAILS ====================================== */
-/* SETTINGS ====================================== */
-.settings {
-  width: 100%;
-  position: fixed;
-  display: inline-block;
-  z-index: 20;
-  bottom: 0; }
-
-.leftSettings {
-  width: 40%;
-  height: auto;
-  display: inline-block;
-  float: left;
-  overflow: hidden; }
-  .leftSettings .active .fa {
-    color: #FFF;
-    text-shadow: none; }
-
-.rightSettings {
-  width: 40%;
-  height: auto;
-  display: inline-block;
-  float: right;
-  overflow: hidden; }
-  .rightSettings .active .fa {
-    color: #FFF;
-    text-shadow: none; }
-
-.contentSettings {
-  width: auto;
-  height: 100%;
-  text-align: center; }
-  .contentSettings .fa {
-    cursor: pointer;
-    color: #999; }
-
-.leftButtonSettings {
-  width: 20%;
-  height: 1.8em;
-  margin-top: 1.65em;
-  padding-top: 0.4em;
-  float: left;
-  overflow: hidden;
-  display: inline-block;
-  background: #333;
-  opacity: 0.9;
-  font-size: 1.5em; }
-
-.rightButtonSettings {
-  width: 20%;
-  height: 1.8em;
-  margin-top: 1.65em;
-  padding-top: 0.4em;
-  float: right;
-  overflow: hidden;
-  display: inline-block;
-  background: #333;
-  opacity: 0.9;
-  font-size: 1.5em; }
-
-.leftSetOptions {
-  width: 80%;
-  height: 100%;
-  display: inline-block;
-  float: left;
-  background: #666;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
-  border-right: 5px solid #333; }
-  .leftSetOptions li {
-    width: 90%;
-    margin: 0.5em auto;
-    padding-top: 0.2em;
-    overflow: hidden;
-    background: #333;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
-    box-shadow: 1px 1px 3px 0px #000; }
-
-.rightSetOptions {
-  width: 80%;
-  height: 100%;
-  display: inline-block;
-  float: right;
-  background: #666;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
-  border-left: 5px solid #333; }
-  .rightSetOptions li {
-    width: 90%;
-    margin: 0.5em auto;
-    padding-top: 0.2em;
-    overflow: hidden;
-    background: #333;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
-    box-shadow: 1px 1px 3px 0px #000; }
-
-/* END SETTINGS ====================================== */
 /* SEARCH  ====================================== */
 *, *:before, *:after {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 
-/* Toolbar Search ------------------------- */
+/* Search ------------------------- */
 .toolbarSearch {
   width: 100%;
   height: 100%;
@@ -356,8 +259,8 @@ span {
   text-shadow: none;
   box-shadow: none; }
 
-/* end Toolbar Search ------------------------- */
-/* Toolbar Options---------------------------------- */
+/* end Search ------------------------- */
+/* Options---------------------------------- */
 .toolbarOptions {
   text-align: center;
   background: #666;
@@ -407,7 +310,7 @@ input[type=checkbox]:checked + label:before {
   font-family: FontAwesome;
   cursor: pointer; }
 
-/* end Toolbar Options------------------------------- */
+/* end Options------------------------------- */
 /* List Reasults------------------------------------- */
 .listResults {
   padding: 0 0.5em;
@@ -464,11 +367,210 @@ input[type=checkbox]:checked + label:before {
       height: 1.3em;
       overflow: hidden; } }
 /* end Smartphone ============================================= */
-/* Tablet portrait ============================================ */
-/* end Tablet portrait ========================================= */
-/* Tablet landscape ============================================ */
-/* end Tablet landscape ============================================ */
 /* END SEARCH ====================================== */
+/* TOOLBAR ====================================== */
+.toolbar {
+  width: 100%;
+  height: auto;
+  position: fixed;
+  display: block;
+  z-index: 20;
+  bottom: 0; }
+
+/* Settings ====================================== */
+.leftSettings {
+  width: 40%;
+  height: auto;
+  display: inline-block;
+  float: left;
+  overflow: hidden; }
+  .leftSettings .active .fa {
+    color: #FFF;
+    text-shadow: none; }
+
+.rightSettings {
+  width: 40%;
+  height: auto;
+  display: inline-block;
+  float: right;
+  overflow: hidden; }
+  .rightSettings .active .fa {
+    color: #FFF;
+    text-shadow: none; }
+
+.contentSettings {
+  width: auto;
+  height: 100%;
+  text-align: center; }
+  .contentSettings .fa {
+    cursor: pointer;
+    color: #999; }
+
+.leftButtonSettings {
+  width: 1.6em;
+  height: 1.6em;
+  margin-top: 1.80em;
+  padding-top: 0.3em;
+  float: left;
+  overflow: hidden;
+  display: inline-block;
+  background: #333;
+  opacity: 0.9;
+  font-size: 1.5em;
+  text-align: center;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px; }
+
+.rightButtonSettings {
+  width: 1.6em;
+  height: 1.6em;
+  margin-top: 1.80em;
+  padding-top: 0.3em;
+  float: right;
+  overflow: hidden;
+  display: inline-block;
+  background: #333;
+  opacity: 0.9;
+  font-size: 1.5em;
+  text-align: center;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px; }
+
+.leftSetOptions {
+  width: 70%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+  background: #666;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  border-right: 5px solid #333; }
+  .leftSetOptions li {
+    width: 90%;
+    margin: 0.5em auto;
+    padding-top: 0.2em;
+    overflow: hidden;
+    cursor: pointer;
+    background: #333;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
+
+.rightSetOptions {
+  width: 70%;
+  height: 100%;
+  display: inline-block;
+  float: right;
+  background: #666;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  border-left: 5px solid #333; }
+  .rightSetOptions li {
+    width: 90%;
+    margin: 0.5em auto;
+    padding-top: 0.2em;
+    overflow: hidden;
+    cursor: pointer;
+    background: #333;
+    -webkit-box-shadow: 1px 1px 3px 0px #000;
+    -moz-box-shadow: 1px 1px 3px 0px #000;
+    box-shadow: 1px 1px 3px 0px #000; }
+
+.interpretative {
+  color: red; }
+
+/* end Settings ====================================== */
+/* Thumbnails ====================================== */
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.thumbText {
+  width: 100%;
+  display: block;
+  margin-top: -1.6em;
+  text-align: center; }
+
+.thumbImage {
+  width: 100%;
+  display: block;
+  margin-top: 0;
+  text-align: center; }
+
+.buttonThumb {
+  width: 1.7em;
+  height: 1em;
+  margin: 0 auto;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  color: #999;
+  background: #333;
+  opacity: 0.9;
+  font-size: 2em;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px; }
+  .buttonThumb .fa {
+    margin-top: 0.1em; }
+  .buttonThumb .active .fa {
+    color: #FFF;
+    text-shadow: none; }
+
+.navThumb {
+  height: 8em;
+  padding: 0.4em;
+  background: #333;
+  opacity: 0.9;
+  font-size: 0.9em;
+  overflow-y: hidden; }
+  .navThumb .active {
+    border: 1px solid #666;
+    background: #222;
+    -webkit-box-shadow: inset 0px 0px 6px 5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: inset 0px 0px 6px 5px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 0px 0px 6px 5px rgba(0, 0, 0, 0.75); }
+  .navThumb figure {
+    margin: 0.2em;
+    padding: 0.2em 0;
+    float: left;
+    display: inline-block; }
+  .navThumb img {
+    max-width: 60%;
+    margin: 0 auto;
+    cursor: pointer; }
+  .navThumb figcaption {
+    margin: 0 auto; }
+
+/* Smartphone ================================================ */
+@media screen and (max-width: 479px) {
+  .navThumb {
+    width: 390%; } }
+/* end Smartphone ============================================= */
+/* Tablet Portrait ============================================ */
+@media screen and (min-width: 480px) and (max-width: 800px) {
+  .navThumb {
+    width: 250%; } }
+/* end Tablet Portrait ======================================== */
+/* Tablet Landscape =========================================== */
+@media screen and (min-width: 801px) {
+  .navThumb {
+    width: 160%; } }
+/* end Tablet Landscape ======================================= */
+/* end Thumbnails ====================================== */
+/* END TOOLBAR ====================================== */
 /* VIEW ====================================== */
 .baseTemplate {
   width: 100%;
@@ -476,37 +578,6 @@ input[type=checkbox]:checked + label:before {
   padding-top: 2.5em;
   color: #FFF; }
 
-/* Template: DVB -------------------- */
-.dvbText {
-  padding: 2.5em;
-  background: #333; }
-
-.dvbList {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  padding: 1em 2.5em;
-  background: #666;
-  border-top: 3px solid #222;
-  text-align: center; }
-  .dvbList li {
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    padding: 0.5em 1em;
-    display: inline-block;
-    background: #333;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
-    box-shadow: 1px 1px 3px 0px #000; }
-  .dvbList span {
-    width: 100%; }
-  .dvbList .fa {
-    font-size: 0.8em; }
-  .dvbList a {
-    color: #FFF; }
-
-/* Template: View ------------------- */
 .fullscreen {
   width: 100%;
   margin: 0 auto; }
