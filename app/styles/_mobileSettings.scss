@@ -1,4 +1,4 @@
-/* SETTINGS ====================================== */ 
+/* Settings ====================================== */ 
 
 @mixin floatSettings ($float){
     width: 40%;
@@ -14,20 +14,21 @@
 }
 
 @mixin floatButtonSettings ($float){
-    width: 20%;
-    height: 1.8em;
-    margin-top: 1.65em;
-    padding-top: 0.4em;
+    width: 1.6em;
+    height: 1.6em;
+    margin-top: 1.80em;
+    padding-top: 0.3em;
     float: $float;
     overflow: hidden;
     display:inline-block;
     background: #333;
     opacity: 0.9;
-    font-size: 1.5em;    
+    font-size: 1.5em;
+    text-align: center;  
 }
 
 @mixin floatSetOptions ($float){
-    width: 80%;
+    width: 70%;
     height: 100%;
     display:inline-block;
     float: $float;
@@ -40,19 +41,12 @@
         margin: 0.5em auto;
         padding-top: 0.2em;
         overflow: hidden;
+        cursor: pointer;
         background: #333;
         -webkit-box-shadow: 1px 1px 3px 0px #000;
         -moz-box-shadow: 1px 1px 3px 0px #000;
         box-shadow: 1px 1px 3px 0px #000;
     }
-}
-
-.settings {
-    width: 100%;
-    position: fixed;
-    display:inline-block;
-    z-index: 20;  
-    bottom: 0;
 }
 
 .leftSettings{
@@ -75,10 +69,22 @@
 
 .leftButtonSettings{
     @include floatButtonSettings (left);
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .rightButtonSettings{
     @include floatButtonSettings (right);
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .leftSetOptions {
@@ -91,7 +97,9 @@
     border-left: 5px solid #333;
 }
 
+.interpretative {
+    color: red;
+}
 
 
-
-/* END SETTINGS ====================================== */
+/* end Settings ====================================== */

@@ -1,26 +1,4 @@
-
-<section 
-    class="baseTemplate"
-    ng-if="view.currentView === 'thumbnails'" >
-
-    <div class="thumbContainer">
-        <figure 
-            class="thumb"
-            ng-repeat="img in thumbnails">
-            
-            <img 
-                ng-src="{{img.url}}"
-                alt="{{img.id}}">
-
-            <figcaption>{{img.id}}</figcaption>
-
-        </figure>
-      
-    </div>
-
-</section>
-
- 
+<!--  View  -->
 <section 
     class="baseTemplate"
     ng-if="view.currentView === 'image'" >
@@ -282,3 +260,190 @@
     </span>
 
 </section>
+
+<!--  end View  -->
+
+<!--  Toolbar  -->
+
+<section class="toolbar">
+
+    <section class="settings">
+        <section 
+            class="leftSettings"
+            ng-if="view.currentView === 'text' || view.currentView === 'texttext'">
+
+            <div class="contentSettings">
+                <div 
+                    class ="leftSetOptions"
+                    ng-show="leftTextOptions">
+                    
+                    <ul class="optionText">
+                        <li>
+                            <span> Diplomatic </span>
+                        </li>
+                        <li>
+                            <span> Interpretative </span>
+                        </li>
+                    </ul>
+
+                </div>
+                <div
+                    class="leftButtonSettings"
+                    ng-class="{'active': leftTextOptions}"
+                    ng-click="leftTextSettings()">
+
+                    <span>
+                        <i class="fa fa-cogs"></i>
+                    </span>
+
+                </div>
+                
+            </div>
+
+        </section>
+
+        <section 
+            class="leftSettings"
+            ng-if="view.currentView === 'imagetext'">
+
+            <div class="contentSettings">
+                <div 
+                    class ="leftSetOptions"
+                    ng-show="imageOptions">
+                    
+                    <ul class="optionText">
+                        <li>
+                            <span> Hotspot </span>
+                        </li>
+                        <li>
+                            <span> TextLink </span>
+                        </li>
+                    </ul>
+
+                </div>
+                <div
+                    class="leftButtonSettings"
+                    ng-class="{'active': textOptions}"
+                    ng-click="showImageSettings()">
+
+                    <span>
+                        <i class="fa fa-cogs"></i>
+                    </span>
+
+                </div>
+                
+            </div>
+
+        </section>
+
+
+        <section 
+            class="rightSettings"
+            ng-if="view.currentView === 'imagetext' || view.currentView === 'texttext'">
+
+            <div class="contentSettings">
+                <div 
+                    class ="rightSetOptions"
+                    ng-show="rightTextOptions">
+                    
+                    <ul class="optionText">
+                        <li>
+                            <span> Diplomatic </span>
+                        </li>
+                        <li>
+                            <span> Interpretative </span>
+                        </li>
+                    </ul>
+
+                </div>
+                <div
+                    class="rightButtonSettings"
+                    ng-class="{'active': rightTextOptions}"
+                    ng-click="rightTextSettings()">
+
+                    <span>
+                        <i class="fa fa-cogs"></i>
+                    </span>
+
+                </div>
+                
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <section
+        class="thumbImage"
+        ng-if="view.currentView === 'image' || view.currentView === 'imageimage'">
+
+        <div
+            class="buttonThumb"
+            ng-class="{'active': navThumb}"
+            ng-click="showThumb()">
+
+            <span>
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+
+        </div>
+        <div 
+            class="navThumb"
+            ng-show="navThumb">
+
+           <figure 
+                ng-class="{'active': isActive($index)}"
+                ng-click="showImage($index)"
+                ng-repeat="img in thumbnails">
+                
+                <img 
+                    ng-src="{{img.url}}"
+                    alt="{{img.id}}">
+
+                <figcaption>{{img.id}}</figcaption>
+
+            </figure> 
+          
+        </div>
+
+    </section>
+
+    <section
+        class="thumbText"
+        ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
+
+        <div
+            class="buttonThumb"
+            ng-class="{'active': navThumb}"
+            ng-click="showThumb()">
+
+            <span>
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+
+        </div>
+        <div 
+            class="navThumb"
+            ng-show="navThumb">
+
+           <figure 
+                ng-class="{'active': isActive($index)}"
+                ng-click="showImage($index)"
+                ng-repeat="img in thumbnails">
+                
+                <img 
+                    ng-src="{{img.url}}"
+                    alt="{{img.id}}">
+
+                <figcaption>{{img.id}}</figcaption>
+
+            </figure> 
+          
+        </div>
+
+    </section>
+
+</section>
+
+<!--  end Toolbar  -->
