@@ -39,6 +39,12 @@ angular.module('evtviewer.mobile')
      */     
     $scope.thumbnails = parsedData.getThumb();
 
+    /**
+     * Refer to this by {@link MobileViewCtrl."thumbBook"}.
+     * @namespace
+     */     
+    $scope.thumbBook = parsedData.getThumbBook();
+
 
     /** Partial controls */
     

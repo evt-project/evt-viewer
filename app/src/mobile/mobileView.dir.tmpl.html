@@ -14,7 +14,7 @@
             <img
                 class="slide"
                 ng-src="{{img.url}}"
-                alt="{{img.title}} {{img.page}}" >
+                alt="{{img.title}} {{img.page2}}" >
 
         </picture>
 
@@ -49,7 +49,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page}}</span>
+                <span class="textPage">{{text.page2}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -99,7 +99,7 @@
             <img 
                 class="slide"
                 ng-src="{{img.url}}"
-                alt="{{img.title}} {{img.page}}" />
+                alt="{{img.title}} {{img.page2}}" />
 
         </picture>
 
@@ -135,7 +135,7 @@
             <img
                 class="slide"
                 ng-src="{{img.url}}"
-                alt="{{img.title}} {{img.page}}" >
+                alt="{{img.title}} {{img.page2}}" >
 
         </picture>
 
@@ -150,7 +150,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page}}</span>
+                <span class="textPage">{{text.page2}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -199,7 +199,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page}}</span>
+                <span class="textPage">{{text.page2}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -228,7 +228,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page}}</span>
+                <span class="textPage">{{text.page2}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -376,7 +376,7 @@
 
     <section
         class="thumbImage"
-        ng-if="view.currentView === 'image' || view.currentView === 'imageimage'">
+        ng-if="view.currentView === 'image'">
 
         <div
             class="buttonThumb"
@@ -399,9 +399,44 @@
                 
                 <img 
                     ng-src="{{img.url}}"
-                    alt="{{img.id}}">
+                    alt="{{img.page}}">
 
-                <figcaption>{{img.id}}</figcaption>
+                <figcaption>{{img.page}}</figcaption>
+
+            </figure> 
+          
+        </div>
+
+    </section>
+
+    <section
+        class="thumbImage"
+        ng-if="view.currentView === 'imageimage'">
+
+        <div
+            class="buttonThumb"
+            ng-class="{'active': navThumb}"
+            ng-click="showThumb()">
+
+            <span>
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+
+        </div>
+        <div 
+            class="navThumb"
+            ng-show="navThumb">
+
+           <figure 
+                ng-class="{'active': isActive($index)}"
+                ng-click="showImage($index)"
+                ng-repeat="img in thumbBook">
+                
+                <img 
+                    ng-src="{{img.url}}"
+                    alt="{{img.page}}">
+
+                <figcaption>{{img.page}}</figcaption>
 
             </figure> 
           
@@ -434,9 +469,9 @@
                 
                 <img 
                     ng-src="{{img.url}}"
-                    alt="{{img.id}}">
+                    alt="{{img.page}}">
 
-                <figcaption>{{img.id}}</figcaption>
+                <figcaption>{{img.page}}</figcaption>
 
             </figure> 
           
