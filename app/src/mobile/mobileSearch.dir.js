@@ -1,3 +1,7 @@
+/**
+ * @name evtviewer.mobile
+ */
+ 
 angular.module('evtviewer.mobile')
 
 .directive('searchMobile', function() {

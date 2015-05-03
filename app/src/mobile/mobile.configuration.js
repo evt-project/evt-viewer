@@ -1,5 +1,14 @@
+/**
+ * @name evtviewer.mobile
+ */
+
 angular.module('evtviewer.mobile')
 
+/**
+ * @name evtviewer.MOBILEDEFAULTS
+ * @extends evtviewer.mobile
+ */
+ 
 .constant('MOBILEDEFAULTS', {
     /**
      * @module evtviewerMobile

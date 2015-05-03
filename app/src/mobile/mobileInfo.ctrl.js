@@ -1,14 +1,20 @@
+/**
+ * @name evtviewer.mobile
+ */
+
 angular.module('evtviewer.mobile')
+
+/**
+ * @name evtviewer.MobileInfoCtrl
+ * @extends evtviewer.mobile
+ * @property {string} view
+ * @property {string} dvb
+ */
 
 .controller('MobileInfoCtrl', function($scope, mobile) {
 
     $scope.view = mobile.getState();
 
-    /**
-     * Refer to this by {@link MobileViewCtrl."info"}.
-     * @namespace
-     */
-    
     $scope.dvb = [{
         url: 'http://vbd.humnet.unipi.it/',
         title: 'Digital Vercelli Book project',

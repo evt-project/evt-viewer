@@ -1,13 +1,30 @@
+/**
+ * @name evtviewer.mobile
+ */
+
 angular.module('evtviewer.mobile')
+
+/**
+ * @name evtviewer.MobileMenuCtrl
+ * @extends evtviewer.mobile
+ * @property {boolean} activeSection
+ * @property {string} currentMode
+ * @property {string} currentSection
+ * @property {string} currentButton
+ * @property {boolean} showItems
+ * @property {string} menu
+ * @property {string} view
+ */
 
 .controller('MobileMenuCtrl', function($scope, mobile) {
 
-    
     var activeSection = false,
         currentMode = mobile.getCurrentView(),
         currentSection;
 
     $scope.currentButton = 'image';
+
+    $scope.showItems = false;
 
     $scope.menu = [{
         template: 'info',
@@ -38,12 +55,25 @@ angular.module('evtviewer.mobile')
     }, ];
 
 
+    /**
+     * Show the view template.
+     * @constructor
+     * @param currentTemplate The actual template.
+     */
+
     $scope.showView = function(currentTemplate) {
         currentMode = currentTemplate;
         mobile.switchView(currentTemplate);
         // TODO: use $log for _console
         console.log('Switch mode ' + currentTemplate);
     };
+
+
+    /**
+     * Show or hide the section template.
+     * @constructor
+     * @param currentTemplate The actual template.
+     */
 
     $scope.showSection = function(currentTemplate) {
         if (activeSection && (currentTemplate === currentSection)) {
@@ -54,9 +84,18 @@ angular.module('evtviewer.mobile')
             currentSection = currentTemplate;
             activeSection = true;
         }
+
+        // TODO: use $log for _console
         console.log('Switch section ' + currentTemplate);
     };
    
+
+    /**
+     * Active the button of the current section.
+     * @constructor
+     * @param currentTemplate The actual template.
+     */
+
     $scope.buttonSection = function (currentTemplate) {
         if ($scope.currentButton === currentTemplate.template){
             $scope.currentButton =! $scope.currentButton;
@@ -65,21 +104,34 @@ angular.module('evtviewer.mobile')
         }
     };
 
+
+    /**
+     * Active the button of the current view.
+     * @constructor
+     * @param currentTemplate The actual template.
+     */
+
     $scope.buttonView = function (currentTemplate) {
         $scope.currentButton = currentTemplate.template;
     };
     
+
+    /**
+     * Active the class of the current button.
+     * @constructor
+     * @param buttonTemplate The active button.
+     */
+
     $scope.isActiveButton = function(buttonTemplate) {
         return buttonTemplate === $scope.currentButton;
     };
     
-    $scope.set = false;
-    $scope.setToggle = function() {
-        $scope.set = !$scope.set;
-    };
 
+    /**
+     * Show or hide the view dropdown menu.
+     * @constructor
+     */
 
-    $scope.showItems = false;
     $scope.toggleView = function() {
         $scope.showItems = !$scope.showItems;
     };

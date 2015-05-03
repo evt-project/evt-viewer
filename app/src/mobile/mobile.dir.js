@@ -1,3 +1,7 @@
+/**
+ * @name evtviewer.mobile
+ */
+
 angular.module('evtviewer.mobile')
 
 .directive('mainMobile', function() {
@@ -7,6 +11,5 @@ angular.module('evtviewer.mobile')
             id: '@'
         },
         templateUrl: 'src/mobile/mobile.dir.tmpl.html'
-        // controller: 'MobileCtrl'
     };
 });

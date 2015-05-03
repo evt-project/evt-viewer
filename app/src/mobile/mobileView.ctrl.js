@@ -1,68 +1,67 @@
+/**
+ * @name evtviewer.mobile
+ */
+
 angular.module('evtviewer.mobile')
+
+
+/**
+ * @name evtviewer.MobileViewCtrl
+ * @extends evtviewer.mobile
+ * @property {boolean} leftTextOptions
+ * @property {boolean} rightTextOptions
+ * @property {boolean} imageOptions
+ * @property {boolean} navThumb
+ * @property {string} view
+ * @property {string} mockText
+ * @property {string} mockImage
+ * @property {string} mockBook
+ * @property {string} thumbnails
+ * @property {string} thumbBook
+ * @property {number} currentIndex
+ */
 
 .controller('MobileViewCtrl', function($scope, mobile, parsedData) {
 
-    /** @define {boolean} */
     $scope.leftTextOptions = false;
+
     $scope.rightTextOptions = false;
+
     $scope.imageOptions = false;
+
     $scope.navThumb = false;
 
-    /**
-     * Refer to this by {@link MobileViewCtrl."view"}.
-     * @namespace
-     */  
     $scope.view = mobile.getState();
 
-    
-    /**
-     * Refer to this by {@link MobileViewCtrl."mockText"}.
-     * @namespace
-     */ 
     $scope.mockText = parsedData.getText1();
-
-    /**
-     * Refer to this by {@link MobileViewCtrl."mockImage"}.
-     * @namespace
-     */ 
+ 
     $scope.mockImage = parsedData.getImage1();
 
-    /**
-     * Refer to this by {@link MobileViewCtrl."mockBook"}.
-     * @namespace
-     */ 
     $scope.mockBook = parsedData.getBook1();
-
-    /**
-     * Refer to this by {@link MobileViewCtrl."thumbnails"}.
-     * @namespace
-     */     
+    
     $scope.thumbnails = parsedData.getThumb();
-
-    /**
-     * Refer to this by {@link MobileViewCtrl."thumbBook"}.
-     * @namespace
-     */     
+    
     $scope.thumbBook = parsedData.getThumbBook();
 
-
-    /** Partial controls */
-    
-    /** @const {number} */
     $scope.currentIndex = 0;
+        
 
     /**
-     * Represents the current item.
+     * Represents the active item.
      * @constructor
+     * @param index The chosen index.
      */
+
     $scope.isActive = function (index) {
         return $scope.currentIndex === index;
     };
+
 
     /**
      * Show the prev item.
      * @constructor
      */
+
     $scope.prevItem = function () {
         if ($scope.currentIndex > 0) {
             $scope.currentIndex = (--$scope.currentIndex);
@@ -71,10 +70,12 @@ angular.module('evtviewer.mobile')
         }
     };
 
+
     /**
      * Show the next item.
      * @constructor
      */
+
     $scope.nextItem = function () {
         if ($scope.currentIndex < $scope.mockImage.length - 1) {
             $scope.currentIndex = (++$scope.currentIndex);
@@ -83,10 +84,12 @@ angular.module('evtviewer.mobile')
         }
     };
 
+
     /**
-     * Show the prev book item.
+     * Show the prev item for book view.
      * @constructor
      */
+
     $scope.prevImageImage = function () {
         if ($scope.currentIndex > 0) {
             $scope.currentIndex = (--$scope.currentIndex);
@@ -95,10 +98,12 @@ angular.module('evtviewer.mobile')
         }
     };
 
+
     /**
-     * Show the next book item.
+     * Show the next item for book view.
      * @constructor
      */
+
     $scope.nextImageImage = function () {
         if ($scope.currentIndex < $scope.mockBook.length - 1) {
             $scope.currentIndex = (++$scope.currentIndex);
@@ -110,45 +115,57 @@ angular.module('evtviewer.mobile')
     
     /** Settings controls */
 
+
     /**
-     * Show/Hide text settings left
+     * Show or hide text settings left
      * @constructor
      */
+
     $scope.leftTextSettings = function() {
         $scope.leftTextOptions = !$scope.leftTextOptions;
     };
 
+
     /**
-     * Show/Hide text settings right
+     * Show or hide text settings right
      * @constructor
      */
+
     $scope.rightTextSettings = function() {
         $scope.rightTextOptions = !$scope.rightTextOptions;
     };
 
+
     /**
-     * Show/Hide image settings
+     * Show or hide image settings
      * @constructor
      */
+
     $scope.showImageSettings = function() {
         $scope.imageOptions = !$scope.imageOptions;
     };
 
 
+
     /** Thumbnails controls */
 
+
     /**
-     * Show/Hide thumbnails
+     * Show or hide the thumbnails
      * @constructor
      */
+
     $scope.showThumb = function() {
         $scope.navThumb = !$scope.navThumb;
     };
 
+
     /**
      * Show the chosen item.
      * @constructor
+     * @param index The chosen index.
      */
+
     $scope.showImage = function (index) {
       $scope.currentIndex = index;
     };

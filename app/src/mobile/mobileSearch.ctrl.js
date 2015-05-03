@@ -1,29 +1,36 @@
+/**
+ * @name evtviewer.mobile
+ */
+
 angular.module('evtviewer.mobile')
+
+/**
+ * @name evtviewer.MobileSearchCtrl
+ * @extends evtviewer.mobile
+ * @property {string} view
+ * @property {string} mockSearchLetters
+ * @property {string} mockSearchFilters
+ * @property {string} mockText
+ * @property {boolean} listReasults
+ * @property {string} Search
+ * @property {string} buttonsOption
+ */
 
 .controller('MobileSearchCtrl', function($scope, mobile, parsedData) {
 
-    /**
-     * Refer to this by {@link MobileSearchCtrl."view"}.
-     * @namespace
-     */ 
+    
     $scope.view = mobile.getState();
 
-    /**
-     * Refer to this by {@link MobileSearchCtrl."search"}.
-     * @namespace
-     */
-    $scope.Search = ['Search...'];
+    $scope.mockSearchLetters = parsedData.getSearchLetters();
 
-    /**
-     * Refer to this by {@link MobileSearchCtrl."listResults"}.
-     * @namespace
-     */
+    $scope.mockSearchFilters = parsedData.getSearchFilters();
+
+    $scope.mockText = parsedData.getText1();
+
     $scope.listResults = true;
 
-    /**
-     * Refer to this by {@link MobileSearchCtrl."buttonSOptions"}.
-     * @namespace
-     */
+    $scope.Search = ['Search...'];
+    
     $scope.buttonsOption = [{
         description: '&#198;',
         tab:'tabLetters',
@@ -32,39 +39,23 @@ angular.module('evtviewer.mobile')
         tab:'tabFilters',
     }];
 
-    /**
-     * Refer to this by {@link MobileSearchCtrl."mockSearchLetters"}.
-     * @namespace
-     */ 
-    $scope.mockSearchLetters = parsedData.getSearchLetters();
-
-    /**
-     * Refer to this by {@link MobileSearchCtrl."mockSearchFilters"}.
-     * @namespace
-     */ 
-    $scope.mockSearchFilters = parsedData.getSearchFilters();
-
-    /**
-     * Refer to this by {@link MobileViewCtrl."mockText"}.
-     * @namespace
-     */ 
     
-    $scope.mockText = parsedData.getText1();
-
-
     /**
      * Remove the current text.
      * @constructor
      */
+
     $scope.removeText = function() {
         $scope.Search = null;
     };
 
 
     /**
-     * Show the current tab.
+     * Show or hide the chosen option.
      * @constructor
+     * @param currentTab The current option.
      */
+
     $scope.showTabOptions = function (currentTab) {
         if ($scope.currentOption === currentTab.tab){
             $scope.currentOption =! $scope.currentOption;
@@ -73,18 +64,23 @@ angular.module('evtviewer.mobile')
         }
     };
    
+
     /**
      * Active the class of current button
      * @constructor
+     * @param activeTab The active option.
      */
+
     $scope.isActiveTab = function(activeTab) {
         return activeTab === $scope.currentOption;
     };
+
 
     /**
      * Show or hide the list of results
      * @constructor
      */
+
     $scope.showResults = function() {
         $scope.listResults = !$scope.listResults;
     };
