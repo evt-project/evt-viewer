@@ -63,8 +63,6 @@
     margin: 1%;
     color: #CCC;
     background: #666;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
     box-shadow: 1px 1px 3px 0px #000;
     .fa {
         color:#CCC;
@@ -99,8 +97,6 @@
 .toolbarOptions{
     text-align:center;
     background: #666;
-    -webkit-box-shadow: inset 0px 0px 0px 1px #222;
-    -moz-box-shadow: inset 0px 0px 0px 1px #222;
     box-shadow: inset 0px 0px 0px 1px #222;
 }
 
@@ -121,8 +117,6 @@
     text-align: center;
     line-height: 2.5em;
     font-size: 14pt;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
     box-shadow: 1px 1px 3px 0px #000;    
 }
 
@@ -171,8 +165,6 @@ input[type=checkbox]:checked + label:before {
         background:#FFF; 
         overflow: hidden;
         border: 1px solid #222;
-        -webkit-box-shadow: 1px 1px 3px 0px #000;
-        -moz-box-shadow: 1px 1px 3px 0px #000;
         box-shadow: 1px 1px 3px 0px #000;   
     }
 }

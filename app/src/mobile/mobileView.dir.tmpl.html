@@ -5,7 +5,7 @@
 
     <div class="fullscreen">
 
-        <picture
+        <figure
             ng-repeat="img in mockImage"
             ng-swipe-right="prevItem()"
             ng-swipe-left="nextItem()"
@@ -16,7 +16,7 @@
                 ng-src="{{img.url}}"
                 alt="{{img.title}} {{img.page2}}" >
 
-        </picture>
+        </figure>
 
     </div>
 
@@ -90,7 +90,7 @@
 
     <div class="fullscreen">
 
-        <picture
+        <figure
             ng-repeat="img in mockBook"
             ng-swipe-right="prevImageImage()"
             ng-swipe-left="nextImageImage()"
@@ -101,7 +101,7 @@
                 ng-src="{{img.url}}"
                 alt="{{img.title}} {{img.page2}}" />
 
-        </picture>
+        </figure>
 
     </div>
 
@@ -126,7 +126,7 @@
 
     <div class="halfscreen">
 
-        <picture
+        <figure
             ng-repeat="img in mockImage"
             ng-swipe-right="prevItem()"
             ng-swipe-left="nextItem()"
@@ -137,7 +137,7 @@
                 ng-src="{{img.url}}"
                 alt="{{img.title}} {{img.page2}}" >
 
-        </picture>
+        </figure>
 
     </div>
     <div class="halfscreen">

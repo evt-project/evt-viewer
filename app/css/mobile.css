@@ -80,8 +80,6 @@ span {
     padding: 0.5em 1em;
     display: inline-block;
     background: #333;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
     box-shadow: 1px 1px 3px 0px #000; }
   .dvbList span {
     width: 100%; }
@@ -109,8 +107,6 @@ span {
     background: #333;
     margin-bottom: 0.2em;
     border-bottom: 1px solid #222;
-    -moz-box-shadow: 0 5px 5px -5px #000;
-    -webkit-box-shadow: 0 5px 5px -5px #000;
     box-shadow: 0 5px 5px -5px #000; }
   .nav .active, .nav .active .fa {
     color: #FFF; }
@@ -219,8 +215,6 @@ span {
   margin: 1%;
   color: #CCC;
   background: #666;
-  -webkit-box-shadow: 1px 1px 3px 0px #000;
-  -moz-box-shadow: 1px 1px 3px 0px #000;
   box-shadow: 1px 1px 3px 0px #000; }
   .buttonOption .fa {
     font-size: 0.9em;
@@ -264,8 +258,6 @@ span {
 .toolbarOptions {
   text-align: center;
   background: #666;
-  -webkit-box-shadow: inset 0px 0px 0px 1px #222;
-  -moz-box-shadow: inset 0px 0px 0px 1px #222;
   box-shadow: inset 0px 0px 0px 1px #222; }
 
 .listOption {
@@ -285,8 +277,6 @@ span {
   text-align: center;
   line-height: 2.5em;
   font-size: 14pt;
-  -webkit-box-shadow: 1px 1px 3px 0px #000;
-  -moz-box-shadow: 1px 1px 3px 0px #000;
   box-shadow: 1px 1px 3px 0px #000; }
 
 .filters {
@@ -326,8 +316,6 @@ input[type=checkbox]:checked + label:before {
     background: #FFF;
     overflow: hidden;
     border: 1px solid #222;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
     box-shadow: 1px 1px 3px 0px #000; }
 
 .resultInfo span {
@@ -418,10 +406,6 @@ input[type=checkbox]:checked + label:before {
   opacity: 0.9;
   font-size: 1.5em;
   text-align: center;
-  -webkit-border-top-right-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  -moz-border-radius-topright: 5px;
-  -moz-border-radius-bottomright: 5px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px; }
 
@@ -437,10 +421,6 @@ input[type=checkbox]:checked + label:before {
   opacity: 0.9;
   font-size: 1.5em;
   text-align: center;
-  -webkit-border-top-left-radius: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  -moz-border-radius-topleft: 5px;
-  -moz-border-radius-bottomleft: 5px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px; }
 
@@ -460,8 +440,6 @@ input[type=checkbox]:checked + label:before {
     overflow: hidden;
     cursor: pointer;
     background: #333;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
     box-shadow: 1px 1px 3px 0px #000; }
 
 .rightSetOptions {
@@ -480,8 +458,6 @@ input[type=checkbox]:checked + label:before {
     overflow: hidden;
     cursor: pointer;
     background: #333;
-    -webkit-box-shadow: 1px 1px 3px 0px #000;
-    -moz-box-shadow: 1px 1px 3px 0px #000;
     box-shadow: 1px 1px 3px 0px #000; }
 
 .interpretative {
@@ -517,10 +493,6 @@ input[type=checkbox]:checked + label:before {
   background: #333;
   opacity: 0.9;
   font-size: 2em;
-  -webkit-border-top-left-radius: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -moz-border-radius-topleft: 5px;
-  -moz-border-radius-topright: 5px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px; }
   .buttonThumb .fa {
@@ -539,8 +511,6 @@ input[type=checkbox]:checked + label:before {
   .navThumb .active {
     border: 1px solid #666;
     background: #222;
-    -webkit-box-shadow: inset 0px 0px 6px 5px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: inset 0px 0px 6px 5px rgba(0, 0, 0, 0.75);
     box-shadow: inset 0px 0px 6px 5px rgba(0, 0, 0, 0.75); }
   .navThumb figure {
     margin: 0.2em;

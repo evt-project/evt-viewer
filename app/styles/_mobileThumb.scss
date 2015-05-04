@@ -28,10 +28,6 @@
     background: #333;
     opacity: 0.9;
     font-size: 2em; 
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 
@@ -56,8 +52,6 @@
     .active {
         border: 1px solid #666;
         background: #222;
-        -webkit-box-shadow: inset 0px 0px 6px 5px rgba(0,0,0,0.75);
-        -moz-box-shadow: inset 0px 0px 6px 5px rgba(0,0,0,0.75);
         box-shadow: inset 0px 0px 6px 5px rgba(0,0,0,0.75);
     }
 
