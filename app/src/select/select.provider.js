@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $location, parsedData) {
+    this.$get = function($log, $location, $routeParams, parsedData) {
         var select = {},
             collection = {},
             list = [],
@@ -100,7 +100,10 @@ angular.module('evtviewer.select')
                     changeRoute = function(option) {
                         _console.log('page select changeRoute ' + option.label);  
 
-                        var url = '/resolveNavigation/'+option.value;
+                        var url = '/'+option.value;
+                        if ( $routeParams.textId !== undefined ) {
+                            url +='/'+$routeParams.textId;
+                        }
                         $location.path( url );
                     };
                     break;
@@ -112,6 +115,8 @@ angular.module('evtviewer.select')
                     };
                     changeRoute = function(option) {
                         _console.log('document select changeRoute ' + option.label);  
+                        var url = '/'+$routeParams.pageId+'/'+option.value;
+                        $location.path( url );
                     };
                     break;
                 case 'edition':

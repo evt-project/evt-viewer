@@ -23,7 +23,7 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.updateCurrentPage = function(pageId) {
-            console.log('#evtInterface#', 'updating current page');
+            console.log('#evtInterface#', 'updating current page setting it to ' + pageId);
             var option = { },
                 pageSelector = { },
                 mainTextBox = { },
@@ -58,8 +58,22 @@ angular.module('evtviewer.interface')
             } else {
                 mainImageBox.updateContent('Si è verificato un errore.');
             }
+        };
 
-    };
+        mainInterface.updateCurrentText = function(textId) {
+            console.log('#evtInterface#', 'updating current text setting it to '+textId);
+        };
 
+        mainInterface.updateParams = function(pageId, textId) {
+            console.log('#evtInterface#', 'updating params [Page: ' + pageId + ' | Text: ' + textId+']');
+            
+            if ( pageId !== undefined ) {
+                mainInterface.updateCurrentPage(pageId);
+            }
+
+            if ( textId !== undefined ) {
+                mainInterface.updateCurrentText(textId);
+            }
+        };
     return mainInterface;
 });

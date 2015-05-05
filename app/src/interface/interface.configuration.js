@@ -2,7 +2,7 @@ angular.module('evtviewer.interface')
 
 .config(function($routeProvider) {
     $routeProvider
-        .when('/resolveNavigation/:pageId', {
+        .when('/:pageId', {
             template: 'index.html',
             controller: 'InterfaceCtrl'
             // ,
@@ -12,6 +12,10 @@ angular.module('evtviewer.interface')
             //         return 'Call to the service for the page';
             //     }
             // }
+        })
+        .when('/:pageId/:textId', {
+            template: 'index.html',
+            controller: 'InterfaceCtrl'
         });
 })
 
