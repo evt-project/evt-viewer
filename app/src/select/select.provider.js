@@ -18,65 +18,12 @@ angular.module('evtviewer.select')
 
 
         // 
-        // Control function
-        // 
-
-        function expand() {
-            var vm = this;
-            vm.expanded = true;
-        }
-
-        function collapse() {
-            var vm = this;
-            vm.expanded = false;
-        }
-
-        function toggleExpand(closeSiblings) {
-            var vm = this;
-            if (!closeSiblings) {
-                select.closeAll(vm.uid);
-            }
-            vm.expanded = !vm.expanded;
-
-            _console.log('vm - toggleExpand for ' + vm.uid);
-        }
-
-        function selectOption(option) {
-            var vm = this;
-            vm.optionSelected = option;
-            if (vm.expanded) {
-                vm.toggleExpand();
-            }
-            vm.changeRoute.call(undefined, option);
-            // vm.callback.call(undefined, option);
-
-            _console.log('vm - selectOption ' + option.value);
-        }
-
-        function isOptionSelected(option) {
-            var vm = this;
-            if (typeof(vm.optionSelected) === 'undefined') {
-                return;
-            }
-            return vm.optionSelected.value === option.value;
-        }
-
-        function destroy() {
-            var tempId = this.uid;
-            // TODO: remove from list and collection
-            // this.$destroy();
-
-            _console.log('vm - destroy ' + tempId);
-        }
-
-
-        // 
         // Select builder
         // 
 
-        select.build = function(vm) {
-            var currentId = vm.id || idx++,
-                currentType = vm.type || 'default',
+        select.build = function(id, type, vm) {
+            var currentId = id || idx++,
+                currentType = type || 'default',
                 optionList,
                 optionSelected,
                 callback,
@@ -141,14 +88,6 @@ angular.module('evtviewer.select')
                 // model
                 optionList: optionList,
                 optionSelected: optionSelected,
-
-                // function
-                expand: expand,
-                collapse: collapse,
-                toggleExpand: toggleExpand,
-                selectOption: selectOption,
-                isOptionSelected: isOptionSelected,
-                destroy: destroy
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

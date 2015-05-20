@@ -36,6 +36,7 @@ angular.module('evtviewer.interface')
             if ( option !== undefined ) {
                 // Updating page Selected
                 pageSelector = evtSelect.getById('page');
+                // TODO check defined
                 pageSelector.optionSelected = option;
                 pageSelector.callback(option);
             }

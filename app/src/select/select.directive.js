@@ -8,16 +8,12 @@ angular.module('evtviewer.select')
             type: '@'
         },
         templateUrl: 'src/select/select.directive.tmpl.html',
+        controllerAs: 'vm',
+        controller: 'SelectCtrl',
         link: function(scope) {
 
-            // Add attributes in vm
-            scope.vm = {
-                id: scope.id,
-                type: scope.type
-            };
-
             // Initialize select
-            var currentSelect = evtSelect.build(scope.vm);
+            var currentSelect = evtSelect.build(scope.id, scope.type, scope.vm);
 
             // Garbage collection
             scope.$on('$destroy', function() {
