@@ -1,0 +1,7 @@
+<span class="popover">
+   <span class="popover_trigger" ng-click="vm.toggleExpand(); vm.resizeTooltip($event)" ng-transclude>
+   </span>
+   <span class="popover_tooltip" ng-class="{'expanded':vm.expanded}">
+      {{vm.tooltip}}
+   </span>
+</span>

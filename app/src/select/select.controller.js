@@ -11,11 +11,11 @@ angular.module('evtviewer.select')
 
     this.expand = function() {
         vm.expanded = true;
-    }
+    };
 
     this.collapse = function() {
         vm.expanded = false;
-    }
+    };
 
     this.toggleExpand = function(closeSiblings) {
         if (!closeSiblings) {
@@ -24,7 +24,7 @@ angular.module('evtviewer.select')
         vm.expanded = !vm.expanded;
 
         _console.log('vm - toggleExpand for ' + vm.uid);
-    }
+    };
 
     this.selectOption = function(option) {
         vm.optionSelected = option;
@@ -35,21 +35,21 @@ angular.module('evtviewer.select')
         // vm.callback.call(undefined, option);
 
         _console.log('vm - selectOption ' + option.value);
-    }
+    };
 
     this.isOptionSelected = function(option) {
         if (typeof(vm.optionSelected) === 'undefined') {
             return;
         }
         return vm.optionSelected.value === option.value;
-    }
+    };
 
     this.destroy = function() {
         var tempId = vm.uid;
         // TODO: remove from list and collection
         // this.$destroy();
         _console.log('vm - destroy ' + tempId);
-    }
+    };
 
     _console.log('SelectCtrl running');
 });

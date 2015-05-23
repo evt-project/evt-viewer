@@ -1,0 +1,64 @@
+/* *************************** */
+/* POPOVER                     */
+/* *************************** */
+
+$popover-background-color: $base-color-dark;
+$popover-color: $base-color-light;
+$popover-shadow-color: #7e7067;
+
+.popover {
+    display:inline-block;
+}
+
+.popover_trigger{
+    color: $popover-color;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration:underline;
+        
+        .popup_tooltip{
+            text-decoration: none;
+        }
+    }
+}
+
+.popover_tooltip{
+    display: none;
+    margin: 0 10px;
+    width:200px;
+    position: relative;
+    padding: 5px;
+    z-index:99;
+
+    background: $popover-background-color;
+    color: $popover-color;
+    font-size: 100%;
+    line-height: 16px;
+    text-align: center;
+    
+    @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
+    border: 2.5px solid black;
+    border-radius: 3px;
+    
+    cursor: text !important;
+
+    span {
+        background: transparent;
+    }
+
+    &.expanded {
+        display: block;
+    }
+    &.hidden {
+        opacity:0;
+    }
+    /*&::before {
+        background: url("../images/popup_before.png") repeat scroll 0% 0% transparent;
+        left: 5%;
+        position: absolute;
+        top: -13px;
+        width: 17px;
+        height: 15px;
+        }*/
+}
