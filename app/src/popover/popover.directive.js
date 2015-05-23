@@ -12,18 +12,18 @@ angular.module('evtviewer.popover')
         controllerAs: 'vm',
         controller: 'PopoverCtrl',
         link: function(scope, element) {
-            scope.vm.resizeTooltip = function(e){
+            scope.vm.resizeTooltip = function(e, settings){
                 var trigger, tooltip;
                 trigger = element;
-                tooltip = element.parent().find('.popover_tooltip').first();
+                tooltip = element.find('.popover_tooltip').first();
 
                 // var before;
                 // before = tooltip.find('> .before');
 
                 // Recuperare x e y del click del mouse
                 var x = e.clientX;
-                // var y = e.clientY;
-                
+                var y = e.clientY;
+
                 // Rimuovere gli stili inline del tooltip in quanto la posizione va ricalcolata ogni volta
                 // Mettere magari nella funzione di chiusura?
                 // Recupero gli elementi 
@@ -32,11 +32,13 @@ angular.module('evtviewer.popover')
                 // Prendere altezza, larghezza e offset superiore e sinistro del trigger 
                 // [NB: vanno gestiti trigger spezzati su piu righe]
                 var triggerHeight, triggerTop, triggerLeft, triggerWidth;
+                var triggerHeightSingleLine;
                 triggerHeight = trigger.height();
+                triggerHeightSingleLine = trigger.css('font-size').substr(0,2)*1+1;
                 triggerWidth = trigger.width();
-                triggerTop = trigger.offset().top;
+                triggerTop = trigger.position().top;
                 triggerLeft = trigger.position().left;
-
+                
                 // Prendere larghezza, altezza e offset superiore e sinistro del tooltip
                 // Mi servono la larghezza e l'altezza reali, quindi devo mettere il tooltip in posizione relativa
                 // L'offset superiore 
@@ -47,13 +49,14 @@ angular.module('evtviewer.popover')
                 // Confrontare la larghezza reale del tooltip con un valore massimo di default (qui 200px)
                 // Se maggiore, impostarla uguale a tale larghezza
                 // poi rimettere il tooltip in posizione assoluta
-                if ( tooltipRealWidth > 200 ) {
+                if ( tooltipRealWidth > settings.tooltipMaxWidth ) {
                     tooltip
                         .css({
-                            'width' : '200px',
-                            'max-width' : '200px'
+                            'width' : settings.tooltipMaxWidth+'px',
+                            'max-width' : settings.tooltipMaxWidth+'px'
                         });
                 } 
+                
                 tooltip
                     .css({
                         'position' : 'absolute'
@@ -67,35 +70,35 @@ angular.module('evtviewer.popover')
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
                 var boxContainerWidth, boxOffsetLeft;
-                boxOffsetLeft = element.parents('.box').offset().left;
-                boxContainerWidth = boxOffsetLeft + element.parents('.box').width();
+                boxOffsetLeft = element.parents('.box').position().left;
+                boxContainerWidth = element.parents('.box').width();
                 
-                var tooltipNewLeft;
-                tooltipNewLeft = x - (tooltipRealWidth/2);
+                var tooltipNewLeft, diff;                
+                tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2);
                 tooltip
-                    .offset({
-                        left : tooltipNewLeft
+                    .css({
+                        'left' : tooltipNewLeft+'px'
                     });
 
                 // Se il tooltip supera a destra il margine destro del contenitore
                 // ricalcolo il suo offset sinistro in base a quanto "sporge" a destra
 
                 if ( (tooltipNewLeft + tooltipRealWidth) > boxContainerWidth ) {
-                    var diff = (tooltipNewLeft + tooltipRealWidth) - boxContainerWidth;
-                    tooltipNewLeft = tooltipNewLeft - diff - 10; // 10px margin right
+                    diff = (tooltipNewLeft + tooltipRealWidth) - boxContainerWidth;
+                    tooltipNewLeft = tooltipNewLeft - diff - 20; // 10px margin right
 
                     tooltip
-                        .offset({
-                            left : tooltipNewLeft
+                        .css({
+                            'left' : tooltipNewLeft+'px'
                         });
                 }
 
                 // Se supera a sinistra il margine sinistro del contenitore
-                // ricalcolo il suo offset sinistro in base a quanto sporge a sinistra
-                if ( tooltipNewLeft < boxOffsetLeft ) {
+                // imposto a 0 l'offset sinistro
+                if ( tooltipNewLeft < 0 ) {
                     tooltip
-                        .offset({
-                            'left' : boxOffsetLeft+10 // 10px margin left
+                        .css({
+                            'left' : '0px'
                         });
                 }
 
@@ -115,42 +118,43 @@ angular.module('evtviewer.popover')
 
                 // Se il tooltip supera il margine inferiore del contenitore
                 // lo apro al di sopra del trigger
-                // reimpostandone l'offset superiore in base a 
-                // sua altezza + altezza del trigger + altezza del before + pixel di scarto
-                var tooltipOffsetBottom, tooltipOffsetTop;
-                var boxContainerOffsetTop, boxContainerHeight;
+                // impostando il margine superiore negativo sulla base di
+                // sua altezza + altezza del trigger (+ altezza del before) + pixel di scarto
 
-                tooltipOffsetTop = tooltip.offset().top;
-                tooltipOffsetBottom = triggerTop + triggerHeight + 10 + tooltipRealHeight;
+                var boxContainerHeight = element.parents('.box-body').outerHeight();
+                var tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight;
+                var tooltipNewMarginTop, diffClientYTriggerTop ;
 
-                boxContainerOffsetTop = element.parents('.box').offset().top;
-                boxContainerHeight =  boxContainerOffsetTop + element.parents('.box').height(); // TODO: Add menu height
-
-                if ( tooltipOffsetBottom > boxContainerHeight ){
-                    var tooltipNewTop = triggerTop - 10 - tooltipRealHeight;
-                    tooltip
-                        .css({
-                            'top': tooltipNewTop+'px'
-                        });
+                if ( tooltipOffsetBottom > boxContainerHeight ) {
+                    tooltipNewMarginTop = tooltipRealHeight+triggerHeight+10
                     
-                    // TODO: Handle ::before position
-                    // var beforeNewTop = tooltip.height() + 8;
-                    // before
-                    //     .offset({
-                    //         left: beforeNewLeft-10
-                    //     })
-                    //     .css({
-                    //         "top": beforeNewTop+"px",
-                    //         "transform": "rotate(180deg)"
-                    //     });
+                    // Riposiziono il tooltip se il testo del trigger si spezza su più linee
+                    // In base alla posizione y del mouse
+                    if ( triggerHeight > triggerHeightSingleLine ) {
+                        diffClientYTriggerTop = y - trigger.offset().top;
+                        tooltipNewMarginTop = tooltipNewMarginTop - diffClientYTriggerTop + 10;
+                    }
+                    tooltip.css({
+                        'margin-top' : (-tooltipNewMarginTop)+'px'
+                    });
+                } else {
+                    // Riposiziono il tooltip se il testo del trigger si spezza su più linee
+                    // In base alla posizione y del mouse
+                    if ( triggerHeight > triggerHeightSingleLine ) {
+                        diffClientYTriggerTop = y - trigger.offset().top;
+                        diff = (triggerHeight - triggerHeightSingleLine) - diffClientYTriggerTop;
+                        tooltip.css({
+                            'margin-top' : -diff+'px'
+                        });
+                    }
                 }
 
                 // Ultimo controllo finale per la larghezza del tooltip
                 tooltipRealWidth = tooltip.width();
-                if( tooltipRealWidth > 200 ){
+                if( tooltipRealWidth > settings.tooltipMaxWidth ){
                     tooltip.css({
-                        'width': '200px',
-                        'max-width': '200px'
+                        'width': settings.tooltipMaxWidth+'px',
+                        'max-width': settings.tooltipMaxWidth+'px'
                     });
                 }
             };

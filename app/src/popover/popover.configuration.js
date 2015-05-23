@@ -37,6 +37,22 @@ angular.module('evtviewer.popover')
     /**
      * @module evtviewerPopover
      * @ngdoc property
+     * @name tooltipMaxWidth
+     * @description
+     * `property`
+     *
+     * Some info
+     *
+     * Default:
+     * <pre>
+     * tooltipMaxWidth: 200
+     * </pre>
+     */
+    tooltipMaxWidth: 200,
+
+    /**
+     * @module evtviewerPopover
+     * @ngdoc property
      * @name openOnHover
      * @description
      * `property`

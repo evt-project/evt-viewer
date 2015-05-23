@@ -2,39 +2,41 @@
 /* POPOVER                     */
 /* *************************** */
 
-$popover-background-color: $base-color-dark;
-$popover-color: $base-color-light;
+$popover-background-color: $base-color-light;
+$popover-color: $base-color-dark;
 $popover-shadow-color: #7e7067;
 
 .popover {
-    display:inline-block;
+    display:inline;
 }
 
-.popover_trigger{
+.popover_trigger {
     color: $popover-color;
     cursor: pointer;
 
+    &.expanded {
+        text-decoration:underline;
+    }
+    
     &:hover {
         text-decoration:underline;
         
-        .popup_tooltip{
+        .popup_tooltip {
             text-decoration: none;
         }
     }
 }
 
-.popover_tooltip{
+.popover_tooltip {
     display: none;
     margin: 0 10px;
-    width:200px;
     position: relative;
     padding: 5px;
     z-index:99;
 
     background: $popover-background-color;
     color: $popover-color;
-    font-size: 100%;
-    line-height: 16px;
+    font-size: 90%;
     text-align: center;
     
     @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
