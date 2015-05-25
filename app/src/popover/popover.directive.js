@@ -12,10 +12,21 @@ angular.module('evtviewer.popover')
         controllerAs: 'vm',
         controller: 'PopoverCtrl',
         link: function(scope, element) {
+
+            scope.vm.toggleMouseHover = function(e){
+                e.stopPropagation();
+                scope.vm.toggleOver();
+            };
+
             scope.vm.resizeTooltip = function(e, settings){
+                e.stopPropagation();
+                var parentRef = scope.vm.parentRef;
+
                 var trigger, tooltip;
                 trigger = element;
-                tooltip = element.find('.popover_tooltip').first();
+                tooltip = angular.element(element).find('span.popover_tooltip').last();
+                // tooltip = angular.element(tooltips.get(0));
+                console.log(tooltip.text());
 
                 // var before;
                 // before = tooltip.find('> .before');
@@ -70,8 +81,8 @@ angular.module('evtviewer.popover')
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
                 var boxContainerWidth, boxOffsetLeft;
-                boxOffsetLeft = element.parents('.box').position().left;
-                boxContainerWidth = element.parents('.box').width();
+                boxOffsetLeft = element.parents(parentRef).position().left;
+                boxContainerWidth = element.parents(parentRef).innerWidth();
                 
                 var tooltipNewLeft, diff;                
                 tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2);
@@ -121,12 +132,12 @@ angular.module('evtviewer.popover')
                 // impostando il margine superiore negativo sulla base di
                 // sua altezza + altezza del trigger (+ altezza del before) + pixel di scarto
 
-                var boxContainerHeight = element.parents('.box-body').outerHeight();
+                var boxContainerHeight = element.parents(parentRef).outerHeight();
                 var tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight;
                 var tooltipNewMarginTop, diffClientYTriggerTop ;
 
                 if ( tooltipOffsetBottom > boxContainerHeight ) {
-                    tooltipNewMarginTop = tooltipRealHeight+triggerHeight+10
+                    tooltipNewMarginTop = tooltipRealHeight+triggerHeight+10;
                     
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
                     // In base alla posizione y del mouse

@@ -78,6 +78,14 @@ angular.module('evtviewer.popover')
             });
         };
 
+        popover.mouseOutAll = function(skipId) {
+            angular.forEach(collection, function(currentPopover, currentId) {
+                if (currentId !== skipId.toString()) {
+                    currentPopover.mouseOut();
+                }
+            });
+        };
+
         return popover;
     };
 

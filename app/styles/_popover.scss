@@ -18,7 +18,7 @@ $popover-shadow-color: #7e7067;
         text-decoration:underline;
     }
     
-    &:hover {
+    &.active:hover {
         text-decoration:underline;
         
         .popup_tooltip {

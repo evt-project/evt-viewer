@@ -2,6 +2,7 @@ angular.module('evtviewer.popover')
 
 .controller('PopoverCtrl', function($log, $scope, evtPopover) {
     var vm = this;
+    vm.parentRef = '.box-body';
     
     var _console = $log.getInstance('popover');
 
@@ -17,11 +18,27 @@ angular.module('evtviewer.popover')
         vm.expanded = false;
     };
 
+    this.mouseOver = function() {
+        vm.over = true;
+    };
+    
+    this.mouseOut = function() {
+        vm.over = false;
+    };
+
     this.toggleExpand = function(closeSiblings) {
         if (!closeSiblings) {
             evtPopover.closeAll(vm.uid);
         }
         vm.expanded = !vm.expanded;
+        _console.log('vm - toggleExpand for ' + vm.uid);
+    };
+
+    this.toggleOver = function(closeSiblings) {
+        if (!closeSiblings) {
+            evtPopover.mouseOutAll(vm.uid);
+        }
+        vm.over = !vm.over;
         _console.log('vm - toggleExpand for ' + vm.uid);
     };
 
