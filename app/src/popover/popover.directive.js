@@ -13,9 +13,20 @@ angular.module('evtviewer.popover')
         controller: 'PopoverCtrl',
         link: function(scope, element) {
 
-            scope.vm.toggleMouseHover = function(e){
+            scope.vm.toggleMouseHover = function(e, vm){
                 e.stopPropagation();
-                scope.vm.toggleOver();
+
+                if ( vm.trigger === 'over' && !vm.over && !vm.expanded) {
+                    scope.vm.resizeTooltip(e, vm.defaults);
+                }
+                vm.toggleOver();
+            };
+
+            scope.vm.triggerClick = function(e, vm) {
+                vm.toggleExpand();     
+                if ( vm.trigger !== 'over' ) {
+                    vm.resizeTooltip(e, vm.defaults);
+                }
             };
 
             scope.vm.resizeTooltip = function(e, settings){
@@ -25,11 +36,8 @@ angular.module('evtviewer.popover')
                 var trigger, tooltip;
                 trigger = element;
                 tooltip = angular.element(element).find('span.popover_tooltip').last();
-                // tooltip = angular.element(tooltips.get(0));
-                console.log(tooltip.text());
 
-                // var before;
-                // before = tooltip.find('> .before');
+                var before = angular.element(tooltip).find('.popover__tooltip__before');
 
                 // Recuperare x e y del click del mouse
                 var x = e.clientX;
@@ -107,25 +115,12 @@ angular.module('evtviewer.popover')
                 // Se supera a sinistra il margine sinistro del contenitore
                 // imposto a 0 l'offset sinistro
                 if ( tooltipNewLeft < 0 ) {
+                    tooltipNewLeft = 0;
                     tooltip
                         .css({
-                            'left' : '0px'
+                            'left' : tooltipNewLeft+'px'
                         });
                 }
-
-                // // Riposiziono orizzontalmente l'elemento .before in base al click del mouse
-                // // [Valutare se utilizzarlo]
-                // var beforeWidth, beforeNewLeft;
-                // var beforeMarginRight, tooltipMarginRight;
-                // beforeNewLeft = x;
-                // beforeWidth = before.width();
-                // beforeMarginRight = x+beforeWidth;
-                // tooltipMarginRight = tooltip.offset().left + tooltip.width();
-                // if ( beforeMarginRight > tooltipMarginRight){
-                //     var diff = (beforeMarginRight - tooltipMarginRight );
-                //     beforeNewLeft = x - diff;
-                // }
-                // before.offset({ left: beforeNewLeft-5});
 
                 // Se il tooltip supera il margine inferiore del contenitore
                 // lo apro al di sopra del trigger
@@ -136,30 +131,60 @@ angular.module('evtviewer.popover')
                 var tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight;
                 var tooltipNewMarginTop, diffClientYTriggerTop ;
 
-                if ( tooltipOffsetBottom > boxContainerHeight ) {
+                if ( tooltipOffsetBottom > boxContainerHeight ) { // OPEN UP
                     tooltipNewMarginTop = tooltipRealHeight+triggerHeight+10;
                     
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
                     // In base alla posizione y del mouse
                     if ( triggerHeight > triggerHeightSingleLine ) {
+                        console.log('triggerHeight > triggerHeightSingleLine');
                         diffClientYTriggerTop = y - trigger.offset().top;
                         tooltipNewMarginTop = tooltipNewMarginTop - diffClientYTriggerTop + 10;
                     }
                     tooltip.css({
                         'margin-top' : (-tooltipNewMarginTop)+'px'
                     });
+                    tooltip.addClass('open-up');
+                    before.css({
+                        top: (tooltip.outerHeight()+2)+'px'
+                    });
                 } else {
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
                     // In base alla posizione y del mouse
+                    tooltip.removeClass('open-up');
                     if ( triggerHeight > triggerHeightSingleLine ) {
                         diffClientYTriggerTop = y - trigger.offset().top;
                         diff = (triggerHeight - triggerHeightSingleLine) - diffClientYTriggerTop;
                         tooltip.css({
                             'margin-top' : -diff+'px'
                         });
+                    } else {
+                       tooltip.css({
+                            'margin-top' : '5px'
+                        }); 
                     }
+                    
                 }
 
+                // Riposiziono orizzontalmente l'elemento .before in base al click del mouse
+                // [Valutare se utilizzarlo]
+                // var beforeWidth; 
+                var beforeNewLeft;
+                // var beforeMarginRight, tooltipMarginRight;
+                beforeNewLeft = x - tooltipNewLeft - boxOffsetLeft-20;
+                
+                // beforeWidth = 20;
+                // beforeMarginRight = x+beforeWidth;
+                // tooltipMarginRight = tooltip.offset().left + tooltip.width();
+                // if ( beforeMarginRight > tooltipMarginRight){
+                //     beforeNewLeft = (beforeMarginRight - tooltipMarginRight );
+                //     console.log(tooltipMarginRight);
+                // }
+                
+                before.css({ 
+                    'left': beforeNewLeft+'px'
+                });
+                
                 // Ultimo controllo finale per la larghezza del tooltip
                 tooltipRealWidth = tooltip.width();
                 if( tooltipRealWidth > settings.tooltipMaxWidth ){

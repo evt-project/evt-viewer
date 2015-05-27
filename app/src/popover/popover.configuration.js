@@ -53,7 +53,7 @@ angular.module('evtviewer.popover')
     /**
      * @module evtviewerPopover
      * @ngdoc property
-     * @name openOnHover
+     * @name openTriggerEvent
      * @description
      * `property`
      *
@@ -61,10 +61,10 @@ angular.module('evtviewer.popover')
      *
      * Default:
      * <pre>
-     * openOnHover: false
+     * openTriggerEvent: 'click'
      * </pre>
      */
-    openOnHover: false
+    openTriggerEvent: 'click'
 })
 
 .config(function(evtPopoverProvider, configProvider, POPOVERDEFAULTS) {

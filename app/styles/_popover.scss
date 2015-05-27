@@ -6,6 +6,15 @@ $popover-background-color: $base-color-light;
 $popover-color: $base-color-dark;
 $popover-shadow-color: #7e7067;
 
+@mixin tooltipBeforeAfter(){
+    position: absolute;
+    
+    font-family: FontAwesome;
+    font-size: 2em;
+
+    color:$popover-background-color;
+}
+
 .popover {
     display:inline;
 }
@@ -16,6 +25,7 @@ $popover-shadow-color: #7e7067;
 
     &.expanded {
         text-decoration:underline;
+        text-shadow: 0px 0px 0.3px rgba(0, 0, 0, 0.8);
     }
     
     &.active:hover {
@@ -55,12 +65,21 @@ $popover-shadow-color: #7e7067;
     &.hidden {
         opacity:0;
     }
-    /*&::before {
-        background: url("../images/popup_before.png") repeat scroll 0% 0% transparent;
-        left: 5%;
-        position: absolute;
-        top: -13px;
-        width: 17px;
-        height: 15px;
-        }*/
+    .popover__tooltip__before{
+        position:absolute;
+        top:0px;
+
+        &::before {
+            @include tooltipBeforeAfter();
+            top: -20px;
+            content:"\f0d8";
+            text-shadow: 0px -3px 0px #000;
+        }
+    }
+    &.open-up {
+        .popover__tooltip__before::before {
+            content:"\f0d7";
+            text-shadow: 0px 3px 0px #000;
+        }
+    }
 }

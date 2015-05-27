@@ -39,7 +39,6 @@ angular.module('evtviewer.popover')
             evtPopover.mouseOutAll(vm.uid);
         }
         vm.over = !vm.over;
-        _console.log('vm - toggleExpand for ' + vm.uid);
     };
 
     this.destroy = function() {
