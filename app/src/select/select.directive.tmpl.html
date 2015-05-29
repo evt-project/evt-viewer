@@ -11,8 +11,8 @@
       <i class="fa fa-sort-desc"></i>
    </div>
    <div 
-      class="option_container" 
-      ng-show="vm.expanded">
+      class="option_container"
+      ng-class="{'expanded':vm.expanded}" >
       <div 
          class="option" 
          title="{{option.title}}" 

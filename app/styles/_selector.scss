@@ -69,6 +69,7 @@ $selector-option-background-color-hover: rgb(126,108,95);
 	}
 
 	.option_container{
+		display: none;
 		height:auto;
 		max-height: 170px;
 		width: 100%;
@@ -84,6 +85,9 @@ $selector-option-background-color-hover: rgb(126,108,95);
 		
 		@include set(box-shadow, 0 2px 5px $selector-shadow-color);
 
+		&.expanded{
+			display: block;
+		}
 		.option{
 			height:100%;
 			width: 100%;
