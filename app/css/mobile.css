@@ -142,7 +142,7 @@ span {
     border: none; }
 
 /* Smartphone ================================================ */
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 599px) {
   .nav li, .dropdown {
     width: 20%;
     font-size: 0.9em; }
