@@ -18,9 +18,11 @@ angular.module('evtviewer.mobile')
 
 .controller('MobileMenuCtrl', function($scope, mobile) {
 
-    var activeSection = false,
-        currentMode = mobile.getCurrentView(),
-        currentSection;
+    var activeSection = false;
+
+    var currentMode = mobile.getCurrentView();
+
+    var currentSection;
 
     $scope.currentButton = 'image';
 

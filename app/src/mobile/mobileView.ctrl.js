@@ -8,20 +8,47 @@ angular.module('evtviewer.mobile')
 /**
  * @name evtviewer.MobileViewCtrl
  * @extends evtviewer.mobile
- * @property {boolean} leftTextOptions
- * @property {boolean} rightTextOptions
- * @property {boolean} imageOptions
- * @property {boolean} navThumb
+ * @extends evtviewer.parsedData
  * @property {string} view
  * @property {string} mockText
  * @property {string} mockImage
  * @property {string} mockBook
+ * @property {string} editionDipl
+ * @property {string} editionInt
+ * @property {string} currentTextModeDipl
+ * @property {string} currentTextModeInt
+ * @property {string} currentButtonDipl
+ * @property {string} currentButtonInt
+ * @property {boolean} leftTextOptions
+ * @property {boolean} rightTextOptions
+ * @property {boolean} imageOptions
+ * @property {boolean} navThumb
  * @property {string} thumbnails
  * @property {string} thumbBook
  * @property {number} currentIndex
  */
 
 .controller('MobileViewCtrl', function($scope, mobile, parsedData) {
+
+    $scope.view = mobile.getState();
+
+    $scope.mockText = parsedData.getText2();
+ 
+    $scope.mockImage = parsedData.getImage1();
+
+    $scope.mockBook = parsedData.getBook1();
+
+    var currentTextModeDipl = mobile.getCurrentEditionDipl();
+
+    var currentTextModeInt = mobile.getCurrentEditionInt();
+    
+    $scope.editionDipl = mobile.getStateEditionDipl();
+
+    $scope.editionInt = mobile.getStateEditionInt();
+
+    $scope.currentButtonDipl = 'diplomatic';
+
+    $scope.currentButtonInt = 'interpretative';
 
     $scope.leftTextOptions = false;
 
@@ -30,22 +57,14 @@ angular.module('evtviewer.mobile')
     $scope.imageOptions = false;
 
     $scope.navThumb = false;
-
-    $scope.view = mobile.getState();
-
-    $scope.mockText = parsedData.getText1();
- 
-    $scope.mockImage = parsedData.getImage1();
-
-    $scope.mockBook = parsedData.getBook1();
     
     $scope.thumbnails = parsedData.getThumb();
     
     $scope.thumbBook = parsedData.getThumbBook();
 
     $scope.currentIndex = 0;
-        
-
+    
+    
     /**
      * Represents the active item.
      * @constructor
@@ -114,6 +133,87 @@ angular.module('evtviewer.mobile')
 
     
     /** Settings controls */
+
+    /**
+     * Represents the list of editions.
+     * @constructor
+     * @property {string} textEdition.
+     */
+
+    $scope.textEdition = [{
+        template: 'diplomatic',
+        description: 'Diplomatic',
+    }, {
+        template: 'interpretative',
+        description: 'Interpretative',
+    }];
+
+    /**
+     * Show the diplomatic edition template.
+     * @constructor
+     * @param currentEditionTemplate.
+     */
+
+    $scope.showEditionDipl = function(currentEditionTemplate) {
+        currentTextModeDipl = currentEditionTemplate;
+        mobile.switchEditionDipl(currentEditionTemplate);
+        // TODO: use $log for _console
+        console.log('Switch edition ' + currentEditionTemplate);
+    };
+
+
+    /**
+     * Show the interpretative edition template.
+     * @constructor
+     * @param currentEditionTemplate.
+     */
+
+    $scope.showEditionInt = function(currentEditionTemplate) {
+        currentTextModeInt = currentEditionTemplate;
+        mobile.switchEditionInt(currentEditionTemplate);
+        // TODO: use $log for _console
+        console.log('Switch edition ' + currentEditionTemplate);
+    };
+
+    /**
+     * Active the button of the current edition.
+     * @constructor
+     * @param currentEditionTemplate.
+     */
+
+    $scope.buttonEditionDipl = function (currentEditionTemplate) {
+        $scope.currentButtonDipl = currentEditionTemplate.template;
+    };
+    
+    /**
+     * Active the button of the current edition.
+     * @constructor
+     * @param currentEditionTemplate.
+     */
+
+    $scope.buttonEditionInt = function (currentEditionTemplate) {
+        $scope.currentButtonInt = currentEditionTemplate.template;
+    };
+
+    /**
+     * Active the class of the current button.
+     * @constructor
+     * @param buttonTemplate.
+     */
+
+    $scope.isActiveButtonDipl = function(buttonTemplate) {
+        return buttonTemplate === $scope.currentButtonDipl;
+    };
+
+    /**
+     * Active the class of the current button.
+     * @constructor
+     * @param buttonTemplate.
+     */
+
+    $scope.isActiveButtonInt = function(buttonTemplate) {
+        return buttonTemplate === $scope.currentButtonInt;
+    };
 
 
     /**

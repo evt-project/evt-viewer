@@ -1,4 +1,5 @@
 <!--  View  -->
+
 <section 
     class="baseTemplate"
     ng-if="view.currentView === 'image'" >
@@ -45,11 +46,12 @@
             class="boxText"
             ng-repeat="text in mockText">
 
+           
             <div
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page2}}</span>
+                <span class="textPage">{{text.page}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -58,12 +60,23 @@
                 class="contentText"
                 ng-swipe-right="singlePrev()"
                 ng-swipe-left="singleNext()"
-                ng-show="isActive($index)">
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'diplomatic'">
 
-                <p>{{text.diplomatic}}</p>
+                <p ng-include="text.diplomatic"></p>
 
             </div>
 
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div>        
 
         </div>
 
@@ -130,7 +143,7 @@
             ng-repeat="img in mockImage"
             ng-swipe-right="prevItem()"
             ng-swipe-left="nextItem()"
-            ng-show="isActive($index)" >
+            ng-show="isActive($index)">
 
             <img
                 class="slide"
@@ -150,7 +163,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page2}}</span>
+                <span class="textPage">{{text.page}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -159,11 +172,23 @@
                 class="contentText"
                 ng-swipe-right="singlePrev()"
                 ng-swipe-left="singleNext()"
-                ng-show="isActive($index)">
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'diplomatic'">
 
-                <p>{{text.diplomatic}}</p>
+                <p ng-include="text.diplomatic"></p>
 
             </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div> 
 
 
         </div>
@@ -199,7 +224,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page2}}</span>
+                <span class="textPage">{{text.page}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -208,11 +233,23 @@
                 class="contentText"
                 ng-swipe-right="singlePrev()"
                 ng-swipe-left="singleNext()"
-                ng-show="isActive($index)">
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'diplomatic'">
 
-                <p>{{text.diplomatic}}</p>
+                <p ng-include="text.diplomatic"></p>
 
             </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div> 
 
         </div>
 
@@ -228,7 +265,7 @@
                 class="information"
                 ng-show="isActive($index)">
 
-                <span class="textPage">{{text.page2}}</span>
+                <span class="textPage">{{text.page}}</span>
                 <span class="textTitle">{{text.title}}</span>
                               
             </div>
@@ -237,11 +274,23 @@
                 class="contentText"
                 ng-swipe-right="singlePrev()"
                 ng-swipe-left="singleNext()"
-                ng-show="isActive($index)">
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'diplomatic'">
 
-                <p>{{text.diplomatic}}</p>
+                <p ng-include="text.diplomatic"></p>
 
             </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div> 
 
         </div>
 
@@ -278,12 +327,15 @@
                     ng-show="leftTextOptions">
                     
                     <ul class="optionText">
-                        <li>
-                            <span> Diplomatic </span>
+                        <li 
+                            class="{{option.template}}"
+                            ng-class="{'active': isActiveButtonDipl(option.template)}"
+                            ng-repeat="option in textEdition"
+                            ng-click="showEditionDipl(option.template); buttonEditionDipl(option)">
+
+                            <span> {{option.description}}</span>
                         </li>
-                        <li>
-                            <span> Interpretative </span>
-                        </li>
+                        
                     </ul>
 
                 </div>
@@ -303,41 +355,6 @@
         </section>
 
         <section 
-            class="leftSettings"
-            ng-if="view.currentView === 'imagetext'">
-
-            <div class="contentSettings">
-                <div 
-                    class ="leftSetOptions"
-                    ng-show="imageOptions">
-                    
-                    <ul class="optionText">
-                        <li>
-                            <span> Hotspot </span>
-                        </li>
-                        <li>
-                            <span> TextLink </span>
-                        </li>
-                    </ul>
-
-                </div>
-                <div
-                    class="leftButtonSettings"
-                    ng-class="{'active': textOptions}"
-                    ng-click="showImageSettings()">
-
-                    <span>
-                        <i class="fa fa-cogs"></i>
-                    </span>
-
-                </div>
-                
-            </div>
-
-        </section>
-
-
-        <section 
             class="rightSettings"
             ng-if="view.currentView === 'imagetext' || view.currentView === 'texttext'">
 
@@ -346,14 +363,14 @@
                     class ="rightSetOptions"
                     ng-show="rightTextOptions">
                     
-                    <ul class="optionText">
-                        <li>
-                            <span> Diplomatic </span>
-                        </li>
-                        <li>
-                            <span> Interpretative </span>
-                        </li>
-                    </ul>
+                    <li 
+                        class="{{option.template}}"
+                        ng-class="{'active': isActiveButtonInt(option.template)}"
+                        ng-repeat="option in textEdition"
+                        ng-click="showEditionInt(option.template); buttonEditionInt(option)">
+
+                        <span> {{option.description}}</span>
+                    </li>
 
                 </div>
                 <div
@@ -481,4 +498,4 @@
 
 </section>
 
-<!--  end Toolbar  -->
+<!--  end Toolbar -->
