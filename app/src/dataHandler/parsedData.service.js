@@ -35,23 +35,37 @@ angular.module('evtviewer.dataHandler')
     var mockImage1 = [{
         title: 'The Dream of the Rood',
         page: 'VB_fol_104v',
-        page2: '104v',
         url:'http://i57.tinypic.com/k3b1mq.jpg',
     }, {
         title: 'The Dream of the Rood',
         page: 'VB_fol_105r',
-        page2: '105r',
         url:'http://i61.tinypic.com/w1v6ag.jpg',
     }, {
         title: 'The Dream of the Rood',
         page: 'VB_fol_105v',
-        page2: '105v',
         url:'http://i58.tinypic.com/k4wc41.jpg',
     }, {
         title: 'The Dream of the Rood',
         page: 'VB_fol_106r',
-        page2: '106r',
         url:'http://i62.tinypic.com/99nbds.jpg',
+    }];
+
+    var mockImage2 = [{
+        title: 'The Dream of the Rood',
+        page: '104v',
+        url:'./data/input_data/images/single/VB_fol_104v.jpg',
+    }, {
+        title: 'The Dream of the Rood',
+        page: '105r',
+        url:'./data/input_data/images/single/VB_fol_105r.jpg',
+    }, {
+        title: 'The Dream of the Rood',
+        page: '105v',
+        url:'./data/input_data/images/single/VB_fol_105v.jpg',
+    }, {
+        title: 'The Dream of the Rood',
+        page: '106r',
+        url:'./data/input_data/images/single/VB_fol_106r.jpg',
     }];
 
     var mockBook1 = [{
@@ -62,6 +76,16 @@ angular.module('evtviewer.dataHandler')
         title: 'The Dream of the Rood',
         page: 'VB_fol_105v - VB_fol_106r',
         url:'http://i62.tinypic.com/6ft8g2.jpg',
+    }];
+
+    var mockBook2 = [{
+        title: 'The Dream of the Rood',
+        page: '104v - 105r',
+        url:'./data/input_data/images/double/VB_fol_104v-VB_fol_105r.jpg',
+    }, {
+        title: 'The Dream of the Rood',
+        page: 'VB_fol_105v - VB_fol_106r',
+        url:'./data/input_data/images/double/VB_fol_105v-VB_fol_106r.jpg',
     }];
 
     var mockText1 = [{
@@ -130,6 +154,20 @@ angular.module('evtviewer.dataHandler')
         url: 'http://i58.tinypic.com/29zvtyt.jpg',
     }];
 
+    var mockThumb2 = [{
+        page: '104v',
+        url: './data/input_data/images/single/VB_fol_104v_small.jpg',
+    }, {
+        page: '105r',
+        url: './data/input_data/images/single/VB_fol_105r_small.jpg',
+    }, {
+        page: '105v',
+        url: './data/input_data/images/single/VB_fol_105v_small.jpg',
+    }, {
+        page: '106r',
+        url: './data/input_data/images/single/VB_fol_106r_small.jpg',
+    }];
+
     var mockThumbBook1 = [{
         id: 'VB_fol_104v - VB_fol_105r',
         page: '104v - 105r',
@@ -138,6 +176,14 @@ angular.module('evtviewer.dataHandler')
         id: 'VB_fol_105v - VB_fol_106r',
         page: '105v - 106r',
         url: 'http://i60.tinypic.com/b97tx1.jpg',
+    }];
+
+    var mockThumbBook2 = [{
+        page: '104v - 105r',
+        url: './data/input_data/images/double/VB_fol_104v-VB_fol_105r_small.jpg',
+    }, {
+        page: '105v - 106r',
+        url: './data/input_data/images/double/VB_fol_105v-VB_fol_106r_small.jpg',
     }];
 
     var mockSearchLetters = ['á','ā','Ā','æ','Æ','ǣ','ǽ','ƀ','đ','ð','Đ','é','ē','ę','ḡ','Ḡ','ħ','í','ł','ó','õ','þ','Þ','ƿ','ꞅ','ú','ý','ẏ'];
@@ -170,8 +216,16 @@ angular.module('evtviewer.dataHandler')
         return mockImage1;
     };
 
+    parsedData.getImage2 = function (){
+        return mockImage2;
+    };
+
     parsedData.getBook1 = function (){
         return mockBook1;
+    };
+
+    parsedData.getBook2 = function (){
+        return mockBook2;
     };
 
     parsedData.getText1 = function() {
@@ -186,8 +240,16 @@ angular.module('evtviewer.dataHandler')
         return mockThumb1;
     };
 
+    parsedData.getThumb2 = function() {
+        return mockThumb2;
+    };
+
     parsedData.getThumbBook = function() {
         return mockThumbBook1;
+    };
+
+    parsedData.getThumbBook2 = function() {
+        return mockThumbBook2;
     };
 
     parsedData.getSearchLetters = function() {

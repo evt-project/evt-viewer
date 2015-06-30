@@ -34,9 +34,9 @@ angular.module('evtviewer.mobile')
 
     $scope.mockText = parsedData.getText2();
  
-    $scope.mockImage = parsedData.getImage1();
+    $scope.mockImage = parsedData.getImage2();
 
-    $scope.mockBook = parsedData.getBook1();
+    $scope.mockBook = parsedData.getBook2();
 
     var currentTextModeDipl = mobile.getCurrentEditionDipl();
 
@@ -58,9 +58,9 @@ angular.module('evtviewer.mobile')
 
     $scope.navThumb = false;
     
-    $scope.thumbnails = parsedData.getThumb();
+    $scope.thumbnails = parsedData.getThumb2();
     
-    $scope.thumbBook = parsedData.getThumbBook();
+    $scope.thumbBook = parsedData.getThumbBook2();
 
     $scope.currentIndex = 0;
     
