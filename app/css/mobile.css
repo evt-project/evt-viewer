@@ -102,7 +102,7 @@ span {
   cursor: pointer;
   color: #CCC;
   text-align: center;
-  font-size: 1.6em; }
+  font-size: 1.7em; }
   .nav ul {
     background: #333;
     margin-bottom: 0.2em;
@@ -113,8 +113,8 @@ span {
 
 .navItem {
   float: left;
-  height: 40px;
-  padding-top: 0.2em;
+  height: 50px;
+  padding-top: 0.3em;
   overflow: hidden; }
 
 .nav li, .dropdown {
@@ -131,8 +131,8 @@ span {
   border: 1px solid #222; }
   .dropdown li {
     width: 100%;
-    height: 50px;
-    padding-top: 0.2em;
+    height: 55px;
+    padding-top: 0.4em;
     overflow: hidden;
     text-align: center; }
   .dropdown li:first-child {
@@ -395,31 +395,31 @@ input[type=checkbox]:checked + label:before {
     color: #999; }
 
 .leftButtonSettings {
-  width: 1.6em;
-  height: 1.6em;
-  margin-top: 1.80em;
-  padding-top: 0.3em;
+  width: 1.8em;
+  height: 1.8em;
+  margin-top: 2.4em;
+  padding-top: 0.4em;
   float: left;
   overflow: hidden;
   display: inline-block;
   background: #333;
   opacity: 0.9;
-  font-size: 1.5em;
+  font-size: 1.6em;
   text-align: center;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px; }
 
 .rightButtonSettings {
-  width: 1.6em;
-  height: 1.6em;
-  margin-top: 1.80em;
-  padding-top: 0.3em;
+  width: 1.8em;
+  height: 1.8em;
+  margin-top: 2.4em;
+  padding-top: 0.4em;
   float: right;
   overflow: hidden;
   display: inline-block;
   background: #333;
   opacity: 0.9;
-  font-size: 1.5em;
+  font-size: 1.6em;
   text-align: center;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px; }
@@ -435,8 +435,9 @@ input[type=checkbox]:checked + label:before {
   border-right: 5px solid #333; }
   .leftSetOptions li {
     width: 90%;
-    margin: 0.5em auto;
-    padding-top: 0.2em;
+    margin: 0.7em auto;
+    padding-top: 0.4em;
+    line-height: 1.5em;
     overflow: hidden;
     cursor: pointer;
     background: #333;
@@ -453,8 +454,9 @@ input[type=checkbox]:checked + label:before {
   border-left: 5px solid #333; }
   .rightSetOptions li {
     width: 90%;
-    margin: 0.5em auto;
-    padding-top: 0.2em;
+    margin: 0.7em auto;
+    padding-top: 0.4em;
+    line-height: 1.5em;
     overflow: hidden;
     cursor: pointer;
     background: #333;
@@ -477,16 +479,22 @@ input[type=checkbox]:checked + label:before {
   display: block;
   margin-top: -1.6em;
   text-align: center; }
+  .thumbText .active .fa {
+    color: #FFF;
+    text-shadow: none; }
 
 .thumbImage {
   width: 100%;
   display: block;
   margin-top: 0;
   text-align: center; }
+  .thumbImage .active .fa {
+    color: #FFF;
+    text-shadow: none; }
 
 .buttonThumb {
-  width: 1.7em;
-  height: 1em;
+  width: 1.8em;
+  height: 1.2em;
   margin: 0 auto;
   display: block;
   overflow: hidden;
@@ -498,10 +506,7 @@ input[type=checkbox]:checked + label:before {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px; }
   .buttonThumb .fa {
-    margin-top: 0.1em; }
-  .buttonThumb .active .fa {
-    color: #FFF;
-    text-shadow: none; }
+    padding-top: 0.2em; }
 
 .navThumb {
   height: 8em;

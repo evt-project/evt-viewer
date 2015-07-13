@@ -14,16 +14,16 @@
 }
 
 @mixin floatButtonSettings ($float){
-    width: 1.6em;
-    height: 1.6em;
-    margin-top: 1.80em;
-    padding-top: 0.3em;
+    width: 1.8em;
+    height: 1.8em;
+    margin-top: 2.4em;
+    padding-top: 0.4em;
     float: $float;
     overflow: hidden;
     display:inline-block;
     background: #333;
     opacity: 0.9;
-    font-size: 1.5em;
+    font-size: 1.6em;
     text-align: center;  
 }
 
@@ -38,8 +38,9 @@
 
     li {
         width: 90%;
-        margin: 0.5em auto;
-        padding-top: 0.2em;
+        margin: 0.7em auto;
+        padding-top: 0.4em;
+        line-height: 1.5em;
         overflow: hidden;
         cursor: pointer;
         background: #333;

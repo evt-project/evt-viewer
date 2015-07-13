@@ -7,6 +7,11 @@
     display: block;
     margin-top: $margin;
     text-align: center;
+
+    .active .fa {
+        color: #FFF;            
+        text-shadow: none;        
+    }
 }
 
 .thumbText {
@@ -18,8 +23,8 @@
 }
 
 .buttonThumb {
-    width: 1.7em;
-    height: 1em;
+    width: 1.8em;
+    height: 1.2em;
     margin: 0 auto;
     display: block;
     overflow: hidden;
@@ -32,13 +37,9 @@
     border-top-right-radius: 5px;
 
     .fa {
-        margin-top: 0.1em;
+        padding-top: 0.2em;
     }
 
-    .active .fa {
-        color: #FFF;            
-        text-shadow: none;        
-    }
 }
 
 .navThumb{
