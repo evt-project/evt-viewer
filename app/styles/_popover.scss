@@ -24,13 +24,12 @@ $popover-shadow-color: #7e7067;
     cursor: pointer;
 
     &.expanded {
-        text-decoration:underline;
-        text-shadow: 0px 0px 0.3px rgba(0, 0, 0, 0.8);
+        text-decoration: underline;
     }
     
     &.active:hover {
         text-decoration:underline;
-        
+        text-shadow: 0px 0px 0.3px rgba(0, 0, 0, 0.9);
         .popup_tooltip {
             text-decoration: none;
         }
@@ -74,6 +73,7 @@ $popover-shadow-color: #7e7067;
             top: -20px;
             content:"\f0d8";
             text-shadow: 0px -3px 0px #000;
+            height:0px;
         }
     }
     &.open-up {

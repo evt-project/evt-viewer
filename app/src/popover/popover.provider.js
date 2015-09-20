@@ -35,6 +35,7 @@ angular.module('evtviewer.popover')
                 trigger: currentTriggerText,
                 tooltip: currentTooltipText,
                 expanded: angular.copy(defaults.expanded),
+                tooltipOver: angular.copy(defaults.tooltipOver),
                 defaults: angular.copy(defaults),
             };
 
@@ -50,7 +51,6 @@ angular.module('evtviewer.popover')
         //
         // Service function
         // 
-
         popover.getById = function(currentId) {
             if (collection[currentId] !== 'undefined') {
                 return collection[currentId];
@@ -84,6 +84,16 @@ angular.module('evtviewer.popover')
                     currentPopover.mouseOut();
                 }
             });
+        };
+
+        popover.getIdTooltipOvered = function(){
+            var tuid = -1;
+            angular.forEach(collection, function(currentPopover) {
+                if (currentPopover.tooltipOver) {
+                    tuid = currentPopover.uid;
+                }
+            });
+            return tuid;
         };
 
         return popover;

@@ -12,20 +12,30 @@ angular.module('evtviewer.popover')
         controllerAs: 'vm',
         controller: 'PopoverCtrl',
         link: function(scope, element) {
-
+            scope.vm.toggleTooltipHover = function(e, vm) {
+                e.stopPropagation();
+                vm.toggleTooltipOver();
+            };
+            
             scope.vm.toggleMouseHover = function(e, vm){
                 e.stopPropagation();
-
                 if ( vm.trigger === 'over' && !vm.over && !vm.expanded) {
                     scope.vm.resizeTooltip(e, vm.defaults);
                 }
-                vm.toggleOver();
+                var tuid = evtPopover.getIdTooltipOvered();
+                if ( tuid < 0 || tuid === vm.uid) {
+                    vm.toggleOver();
+                }
             };
 
             scope.vm.triggerClick = function(e, vm) {
-                vm.toggleExpand();     
-                if ( vm.trigger !== 'over' ) {
+                e.stopPropagation();
+                if ( vm.trigger !== 'over' && !vm.expanded) {
                     vm.resizeTooltip(e, vm.defaults);
+                }
+                var tuid = evtPopover.getIdTooltipOvered();
+                if ( tuid < 0 || tuid === vm.uid) {
+                    vm.toggleExpand();
                 }
             };
 
@@ -105,7 +115,6 @@ angular.module('evtviewer.popover')
                 if ( (tooltipNewLeft + tooltipRealWidth) > boxContainerWidth ) {
                     diff = (tooltipNewLeft + tooltipRealWidth) - boxContainerWidth;
                     tooltipNewLeft = tooltipNewLeft - diff - 20; // 10px margin right
-
                     tooltip
                         .css({
                             'left' : tooltipNewLeft+'px'
@@ -137,7 +146,6 @@ angular.module('evtviewer.popover')
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
                     // In base alla posizione y del mouse
                     if ( triggerHeight > triggerHeightSingleLine ) {
-                        console.log('triggerHeight > triggerHeightSingleLine');
                         diffClientYTriggerTop = y - trigger.offset().top;
                         tooltipNewMarginTop = tooltipNewMarginTop - diffClientYTriggerTop + 10;
                     }
@@ -195,10 +203,8 @@ angular.module('evtviewer.popover')
                 }
             };
             
-            
             // Initialize select
             var currentPopover = evtPopover.build(scope.trigger, scope.tooltip, scope.vm);
-
 
             // Garbage collection
             scope.$on('$destroy', function() {

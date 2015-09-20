@@ -26,6 +26,14 @@ angular.module('evtviewer.popover')
         vm.over = false;
     };
 
+    this.tooltipMouseOver = function() {
+        vm.tooltipOver = true;
+    };
+    
+    this.tooltipMouseOut = function() {
+        vm.tooltipOver = false;
+    };
+
     this.toggleExpand = function(closeSiblings) {
         if (!closeSiblings) {
             evtPopover.closeAll(vm.uid);
@@ -39,6 +47,10 @@ angular.module('evtviewer.popover')
             evtPopover.mouseOutAll(vm.uid);
         }
         vm.over = !vm.over;
+    };
+
+    this.toggleTooltipOver = function() {
+        vm.tooltipOver = !vm.tooltipOver;
     };
 
     this.destroy = function() {

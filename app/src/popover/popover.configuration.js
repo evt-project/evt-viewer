@@ -21,6 +21,22 @@ angular.module('evtviewer.popover')
     /**
      * @module evtviewerPopover
      * @ngdoc property
+     * @name tooltipOver
+     * @description
+     * `property`
+     *
+     * Some info
+     *
+     * Default:
+     * <pre>
+     * tooltipOver: false
+     * </pre>
+     */
+    tooltipOver: false,
+    
+    /**
+     * @module evtviewerPopover
+     * @ngdoc property
      * @name tooltipMaxHeight
      * @description
      * `property`
