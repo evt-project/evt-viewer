@@ -77,7 +77,7 @@ angular.module('evtviewer.select')
                     };
                     break;
                 case 'witness':
-                    optionList = parsedData.getWitnesses();
+                    optionList = parsedData.getWitnessesList();
                     
                     callback = function(option) {
                         _console.log('witness select callback ' + option.label);
