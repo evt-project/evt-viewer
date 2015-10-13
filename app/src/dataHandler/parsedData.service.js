@@ -10,6 +10,13 @@ angular.module('evtviewer.dataHandler')
     var documentsCollection = []; // {value: 'document', label: 'document label', title: 'document title'}
     
     var pagesCollectionTexts = []; 
+    
+    var witnessesCollection = {
+        list: {}
+    };
+
+    var witnessesGroupCollection = {};
+
     // var mockDocuments = [{
     //     value: 'documents1',
     //     label: 'documents1 label',
@@ -329,6 +336,48 @@ angular.module('evtviewer.dataHandler')
             title: 'edition3 title'
         };
         mockEditions.push(mock);
+    };
+
+    /* WITNESSES */
+    parsedData.addWitness = function(witness) {
+        var witId = witness.value;
+        if ( witnessesCollection.length === undefined ) {
+            witnessesCollection.length = 0;
+        }
+        if ( witnessesCollection.list[witId] === undefined ) {
+            witnessesCollection[witnessesCollection.length] = witId;
+            witnessesCollection.list[witId] = witness;
+            witnessesCollection.length++;
+            // _console.log('parsedData - addWitness ', witnessesCollection);
+        }
+    };
+    parsedData.addWitnessGroup = function(group) {
+        var grpId = group.id;
+        if ( witnessesGroupCollection.length === undefined ) {
+            witnessesGroupCollection.length = 0;
+        }
+        if ( witnessesGroupCollection[grpId] === undefined ) {
+            witnessesGroupCollection[witnessesGroupCollection.length] = grpId;
+            witnessesGroupCollection[grpId] = group;
+            witnessesGroupCollection.length++;
+            // _console.log('parsedData - addWitnessGroup ', witnessesGroupCollection);
+        }
+    };
+
+    parsedData.getWitnesses = function() {
+        return witnessesCollection.list;
+    };
+
+    parsedData.getWitness = function(witId) {
+        return witnessesCollection[witId];
+    };
+
+    parsedData.getWitnessesGroups = function() {
+        return witnessesGroupCollection;
+    };
+
+    parsedData.getGroup = function(grpId) {
+        return witnessesGroupCollection[grpId];
     };
 
     return parsedData;

@@ -49,6 +49,6 @@ angular.module('evtviewer.core')
         }
     },
 
-    dataUrl: 'https://dl.dropboxusercontent.com/u/5505916/evt/data/DOTR_rev2013.xml'
+    dataUrl: '../../data/pseudo-edition-test-file.xml'
 
 });

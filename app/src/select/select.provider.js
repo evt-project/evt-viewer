@@ -24,7 +24,7 @@ angular.module('evtviewer.select')
         select.build = function(id, type, vm) {
             var currentId = id || idx++,
                 currentType = type || 'default',
-                optionList,
+                optionList = [],
                 optionSelected,
                 callback,
                 changeRoute;
@@ -74,6 +74,16 @@ angular.module('evtviewer.select')
                     };
                     changeRoute = function(option) {
                         _console.log('edition select changeRoute ' + option.label);  
+                    };
+                    break;
+                case 'witness':
+                    optionList = parsedData.getWitnesses();
+                    
+                    callback = function(option) {
+                        _console.log('witness select callback ' + option.label);
+                    };
+                    changeRoute = function(option) {
+                        _console.log('witness select changeRoute ' + option.label);  
                     };
                     break;
             }

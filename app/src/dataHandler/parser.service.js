@@ -4,7 +4,7 @@ angular.module('evtviewer.dataHandler')
     var parser = {};
 
     // TODO: create module provider and add default configuration
-    var defAttributes = ['xml:id', 'n', 'n'];
+    var defAttributes = ['n', 'n', 'n'];
     var defPageElement = 'pb';
     var defDocElement = 'div[subtype="edition_text"]';
 
@@ -31,6 +31,28 @@ angular.module('evtviewer.dataHandler')
                 }
                 parsedData.addDocuments(attributes[0], attributes[1], attributes[2]);
                 attributes = [];
+        });
+    };
+
+    parser.parseWitnesses = function(doc) {
+        var currentDocument = angular.element(doc);
+        angular.forEach(currentDocument.find('witness'), 
+            function(element) {
+                var witness = {};
+                var group = {};
+                if (element.parentNode.tagName === 'listWit' && element.parentNode.getAttribute('xml:id') !== null){
+                    group = {
+                        id:  element.parentNode.getAttribute('xml:id')
+                    };
+                    parsedData.addWitnessGroup(group);
+                }
+                witness = {
+                    value : element.getAttribute('xml:id'),
+                    label : element.getAttribute('xml:id'),
+                    title : element.textContent || element.getAttribute('xml:id'),
+                    group : group.id || ''
+                };
+                parsedData.addWitness(witness);
         });
     };
 
