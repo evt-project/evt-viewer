@@ -57,58 +57,66 @@ angular.module('evtviewer.dataHandler')
         });
         console.log('## Witnesses ##', parsedData.getWitnesses());
     };
+    var parseAppEntry = function(app) {
+        var entry = { 
+            __elemTypes : {},
+            lemma       : {},
+            readings    : { length : 0 },
+            note        : ''
+        };
+        entry.id = app.getAttribute('xml:id')  || Math.random().toString(36).substr(2, 9);
+        
+        for (var i = 0; i < app.attributes.length; i++) {
+            var attrib = app.attributes[i];
+            if (attrib.specified) {
+                entry[attrib.name] = attrib.value;
+            }
+        }
+        angular.forEach(app.children, function(child){
+            if (child.tagName === 'lem') {
+                entry.lemma.content = child.innerHTML;
+                for (i = 0; i < child.attributes.length; i++) {
+                    var lemmaAttrib = child.attributes[i];
+                    if (lemmaAttrib.specified) {
+                        entry.lemma[lemmaAttrib.name] = lemmaAttrib.value;
+                    }
+                }
+            } if (child.tagName === 'note') {
+                entry.note = child.innerHTML;
+            } else {
+                var id = child.getAttribute('xml:id')  || Math.random().toString(36).substr(2, 9);
+                var rdg = {};
+                for (var j = 0; j < child.attributes.length; j++) {
+                    var rdgAttrib = child.attributes[j];
+                    if (rdgAttrib.specified) {
+                        rdg[rdgAttrib.name] = rdgAttrib.value;
+                    }
+                }
+                
+                if (child.tagName === 'rdg') {
+                    rdg.content = child.innerHTML;
+                } else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
+                    rdg.content = parseAppEntry(child);
+                }
 
+                entry.readings[entry.readings.length] = id;
+                entry.readings[id] = rdg;
+                entry.__elemTypes[id] = child.tagName;
+                entry.readings.length++;
+            }
+        });
+        return entry;
+    };
     parser.parseCriticalEntries = function(doc) {
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find('app'), 
             function(element) {
-                var entry = {};
-                
-                for (var i = 0; i < element.attributes.length; i++) {
-                    var attrib = element.attributes[i];
-                    if (attrib.specified) {
-                        entry[attrib.name] = attrib.value;
-                    }
-                } 
-                var entryId = element.getAttribute('xml:id')  || Math.random().toString(36).substr(2, 9);
-
-                entry.lemma = {};
-                var lemmaElem = element.getElementsByTagName('lem')[0];
-                if (lemmaElem !== undefined) {
-                    entry.lemma.content = lemmaElem.textContent;
-                    for (i = 0; i < lemmaElem.attributes.length; i++) {
-                        var lemmaAttrib = lemmaElem.attributes[i];
-                        if (lemmaAttrib.specified) {
-                            entry.lemma[lemmaAttrib.name] = lemmaAttrib.value;
-                        }
-                    }
-                }
-                
-                var readings = element.getElementsByTagName('rdg');
-                if ( readings !== undefined ) {
-                    entry.readings = { length: 0 };
-
-                    for (i = 0; i < readings.length; i++) {
-                        var r = readings[i];
-                        var rdg = {};
-                        rdg.content = r.textContent;
-                        for (var j = 0; j < r.attributes.length; j++) {
-                            var rdgAttrib = r.attributes[j];
-                            if (rdgAttrib.specified) {
-                                rdg[rdgAttrib.name] = rdgAttrib.value;
-                            }
-                        }
-                        var id = r.getAttribute('xml:id')  || Math.random().toString(36).substr(2, 9);
-                        entry.readings[entry.readings.length] = id;
-                        entry.readings[id] = rdg;
-                        entry.readings.length++;
-                    }
-                }
-
-                parsedData.addCriticalEntry(entry, entryId);
+                var entry = parseAppEntry(element);
+                parsedData.addCriticalEntry(entry, entry.id);
         });
-
+        
         console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
+        // console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
     
     return parser;
