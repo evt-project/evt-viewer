@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, config, $routeParams, evtSelect, evtBox, parsedData) {
+.service('evtInterface', function(evtCommunication, config, $routeParams, xmlParser, evtSelect, evtBox, evtParser, parsedData) {
     var mainInterface = {};
 
         mainInterface.boot = function() {        
@@ -19,7 +19,10 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.getCurrentDocument = function() {
-            // return state.currentDocument;
+            var pageSelector = evtSelect.getById('page');
+            if ( pageSelector !== 'undefined' ){
+                return pageSelector.optionSelected.value;
+            }
         };
 
         mainInterface.updateCurrentPage = function(pageId) {
@@ -63,6 +66,17 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentText = function(textId) {
             console.log('#evtInterface#', 'updating current text setting it to '+textId);
+            var text = xmlParser.parse(parsedData.getDocument(textId).content);
+            console.log('text', text);
+            var sigla = 'B'; 
+            var content = evtParser.parseWitnessText(text, sigla);
+            console.log('content', content);
+            var mainTextBox = evtBox.getById('mainText');
+            if ( text !== undefined ) {
+                mainTextBox.updateContent(content.innerHTML);
+            } else {
+                mainTextBox.updateContent('Testo non disponibile.');
+            }
         };
 
         mainInterface.updateParams = function(pageId, textId) {

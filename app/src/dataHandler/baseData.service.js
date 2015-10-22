@@ -18,7 +18,7 @@ angular.module('evtviewer.dataHandler')
             evtParser.parseDocuments(docElements);
             evtParser.parseWitnesses(docElements);
             evtParser.parseCriticalEntries(docElements);
-            
+            // evtParser.parseWitnessText(docElements, 'A');
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {
             _console.error('Something wrong with the XML');

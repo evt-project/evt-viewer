@@ -37,7 +37,7 @@ angular.module('evtviewer.select')
 
             switch (currentType) {
                 case 'page':
-                    optionList = parsedData.getPages();
+                    // optionList = parsedData.getPages();
                     // TODO: add a general service for the current page in the application
                     // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(option) {
@@ -55,8 +55,8 @@ angular.module('evtviewer.select')
                     };
                     break;
                 case 'document':
-                    optionList = parsedData.getDocuments();
-                    optionSelected = optionList[0];
+                    optionList = parsedData.getDocumentsList();
+                    
                     callback = function(option) {
                         _console.log('document select callback ' + option.label);
                     };
@@ -67,7 +67,7 @@ angular.module('evtviewer.select')
                     };
                     break;
                 case 'edition':
-                    optionList = parsedData.getEditions();
+                    // optionList = parsedData.getEditions();
                     optionSelected = optionList[0];
                     callback = function(option) {
                         _console.log('edition select callback ' + option.label);

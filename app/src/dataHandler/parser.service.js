@@ -6,7 +6,19 @@ angular.module('evtviewer.dataHandler')
     // TODO: create module provider and add default configuration
     var defAttributes = ['n', 'n', 'n'];
     var defPageElement = 'pb';
-    var defDocElement = 'div[subtype="edition_text"]';
+    
+    var xpath = function(el) {
+        if (typeof el === 'string') {
+            // document.evaluate(xpathExpression, contextNode, namespaceResolver, resultType, result );
+            return document.evaluate(el, document, null, 0, null);
+        }
+        if (!el || el.nodeType !== 1) {
+            return '';
+        }
+
+        var sames = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
+        return xpath(el.parentNode) + '-' + el.tagName.toLowerCase() + (sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '');
+    };
 
     parser.parsePages = function(doc) {
         var currentDocument = angular.element(doc);
@@ -25,14 +37,28 @@ angular.module('evtviewer.dataHandler')
     parser.parseDocuments = function(doc) {
         var currentDocument = angular.element(doc);
         var attributes = [];
+        var defDocElement;
+        if ( currentDocument.find('text').length > 0 ) {
+            defDocElement = 'text';
+        } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
+            defDocElement = 'div[subtype="edition_text"]';
+        }
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
-                for (var i in defAttributes){
-                    attributes.push(element.getAttribute(defAttributes[i]));
+                var doc = { };
+                doc.value = element.getAttribute('xml:id')  || xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1);
+                doc.label = element.getAttribute('n') || 'Doc '+(parsedData.getDocuments().length+1);
+                doc.title = element.getAttribute('n') || 'Document '+(parsedData.getDocuments().length+1); 
+                for (var i = 0; i < element.attributes.length; i++) {
+                    var attrib = element.attributes[i];
+                    if (attrib.specified) {
+                        doc[attrib.name] = attrib.value;
+                    }
                 }
-                parsedData.addDocuments(attributes[0], attributes[1], attributes[2]);
-                attributes = [];
+                doc.content = '<text>'+element.innerHTML+'</text>';
+                parsedData.addDocument(doc);
         });
+        console.log('## Documents ##', parsedData.getDocuments());
     };
 
     parser.parseWitnesses = function(doc) {
@@ -57,6 +83,7 @@ angular.module('evtviewer.dataHandler')
         });
         console.log('## Witnesses ##', parsedData.getWitnesses());
     };
+
     var parseAppEntry = function(app) {
         var entry = { 
             __elemTypes : {},
@@ -64,7 +91,7 @@ angular.module('evtviewer.dataHandler')
             readings    : { length : 0 },
             note        : ''
         };
-        entry.id = app.getAttribute('xml:id')  || Math.random().toString(36).substr(2, 9);
+        entry.id = app.getAttribute('xml:id')  || xpath(app);
         
         for (var i = 0; i < app.attributes.length; i++) {
             var attrib = app.attributes[i];
@@ -84,7 +111,7 @@ angular.module('evtviewer.dataHandler')
             } if (child.tagName === 'note') {
                 entry.note = child.innerHTML;
             } else {
-                var id = child.getAttribute('xml:id')  || Math.random().toString(36).substr(2, 9);
+                var id = child.getAttribute('xml:id')  || xpath(child);
                 var rdg = {};
                 for (var j = 0; j < child.attributes.length; j++) {
                     var rdgAttrib = child.attributes[j];
@@ -115,9 +142,104 @@ angular.module('evtviewer.dataHandler')
                 parsedData.addCriticalEntry(entry, entry.id);
         });
         
-        console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
-        // console.log('## Critical entries ##', parsedData.getCriticalEntries());
+        // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
+        console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
+
+    var isNestedApp = function(appNode) {
+        if (appNode.parentNode.tagName === 'text' ) {
+            return false;
+        } else if (appNode.parentNode.tagName === 'app') {
+            return true;
+        } else {
+            return isNestedApp(appNode.parentNode);
+        }
+    };
+    var parseWitnessApp = function(app, wit, appObj) {
+        for (var k = 0; k < app.attributes.length; k++) {
+            var attrib = app.attributes[k];
+            if (attrib.specified) {
+                if (attrib.name !== 'xml:id') {
+                    if ( appObj.attributes[attrib.name] === undefined ) {
+                        appObj.attributes[appObj.attributes.length] = attrib.name;
+                        appObj.attributes[attrib.name] = attrib.value;
+                        appObj.attributes.length++;
+                    } 
+                }
+            }
+        }
+
+        if ( app.innerHTML.indexOf('#'+wit) >= 0 ) {
+            var children = app.childNodes;
+            for (var i = 0; i < children.length; i++) {
+                var childNode = children[i];
+                if (childNode.nodeType === 3 ) { // Text
+                    appObj.content += childNode.nodeValue;
+                } else {
+                    if (childNode.tagName === 'lem' || childNode.tagName === 'rdg') {
+                        if ( childNode.getElementsByTagName('app').length > 0 ) {
+                            parseWitnessApp(childNode, wit, appObj);
+                        } else {
+                            if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
+                                appObj.content += childNode.innerHTML;
+                            }
+                        }
+                    } else if (childNode.tagName === 'rdgGrp' || childNode.tagName === 'app') {
+                        if (childNode.innerHTML.indexOf('#'+wit) >= 0) {
+                            parseWitnessApp(childNode, wit, appObj);
+                        }
+                    } else {
+                        appObj.content += childNode.outerHTML;
+                    }   
+                }
+            }
+        } else {
+            if ( app.getElementsByTagName('lem').length > 0) {
+                var lem = app.getElementsByTagName('lem')[0];
+                appObj.content += lem.outerHTML;
+            }
+        }
+    };
+
+    parser.parseWitnessText = function(doc, wit) {
+        if ( doc !== undefined ) {
+            var docDOM = doc.documentElement;
+            var apps = docDOM.getElementsByTagName('app');
+            for (var j = 0; j < apps.length; j++) {
+                var appNode = apps[j];
+                if (!isNestedApp(appNode)) {
+                    var appObject = {
+                        id: appNode.getAttribute('xml:id') || xpath(appNode).substr(1),
+                        attributes: {
+                            length: 0
+                        },
+                        content: ''
+                    };
+
+                    parseWitnessApp(appNode, wit, appObject);
+
+                    var spanElement = document.createElement('span');
+                    spanElement.setAttribute('data-app-entry-id', appObject.id);
+                    for (var a = 0; a < appObject.attributes.length; a++) {
+                        var attrName = appObject.attributes[a],
+                            attrValue = appObject.attributes[appObject.attributes[a]];
+                        spanElement.setAttribute('data-'+attrName, attrValue);
+                    }
+                    spanElement.style.color = '#f00';
+                    spanElement.style.border = '1px solid #000';
+                    spanElement.innerHTML = appObject.content;
+                    appNode.innerHTML = '';
+                    appNode.appendChild(spanElement);
+                    // doc.getElementById('app'+j).parentNode.replaceChild(spanElement, doc.getElementById('app'+j));
+                }
+            }
+            return docDOM;
+        } else {
+            return 'Testo non disponibile.';
+        }
+    };
+
+
     
     return parser;
 });
