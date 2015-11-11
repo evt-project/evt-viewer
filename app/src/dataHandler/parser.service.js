@@ -4,7 +4,7 @@ angular.module('evtviewer.dataHandler')
     var parser = {};
 
     // TODO: create module provider and add default configuration
-    var defAttributes = ['n', 'n', 'n'];
+    // var defAttributes = ['n', 'n', 'n'];
     var defPageElement = 'pb';
     
     var xpath = function(el) {
@@ -44,7 +44,7 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseDocuments = function(doc) {
         var currentDocument = angular.element(doc);
-        var attributes = [];
+        // var attributes = [];
         var defDocElement;
         if ( currentDocument.find('text').length > 0 ) {
             defDocElement = 'text';
@@ -235,11 +235,7 @@ angular.module('evtviewer.dataHandler')
                             attrValue = appObject.attributes[appObject.attributes[a]];
                         spanElement.setAttribute('data-'+attrName, attrValue);
                     }
-                    spanElement.style.color = '#f00';
-                    spanElement.style.border = '1px solid #000';
                     spanElement.innerHTML = appObject.content;
-                    // appNode.innerHTML = '';
-                    // appNode.appendChild(spanElement);
                     appNode.parentNode.replaceChild(spanElement, appNode);
                 }
             }
@@ -253,10 +249,21 @@ angular.module('evtviewer.dataHandler')
                     k++;
                 }
             }
+
+            var notes = docDOM.getElementsByTagName('note');
+            var n = 0;
+            while (n < notes.length) {
+                var noteNode = notes[n],
+                    popoverElem = document.createElement('evt-popover');
+                popoverElem.setAttribute('data-trigger', 'click');
+                popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
+                popoverElem.innerHTML = '[•]';
+                noteNode.parentNode.replaceChild(popoverElem, noteNode);
+            }
             parsedData.addWitnessText(wit, docDOM);
             return docDOM;
         } else {
-            return 'Testo non disponibile.';
+            return '<span>Testo non disponibile.</span>';
         }
     };
 

@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
             type: '@'
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
-        link: function(scope) {
+        link: function(scope, element, attr) {
 
             // Add attributes in vm
             scope.vm = {
@@ -16,7 +16,7 @@ angular.module('evtviewer.box')
                 type: scope.type
             };
 
-            // Initialize select
+            // Initialize box
             var currentBox = evtBox.build(scope.vm);
 
             // Garbage collection

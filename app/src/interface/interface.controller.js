@@ -8,7 +8,6 @@ angular.module('evtviewer.interface')
     _console.log('InterfaceCtrl running');
 
     $scope.$on('$routeChangeSuccess', function() {
-        _console.log('ROUTE CHANGING!!');
         var currentPage, currentText, currentWitnesses;
         currentPage = $route.current.params.pageId;
         // if( $route.current.params.pageId !== undefined ) {

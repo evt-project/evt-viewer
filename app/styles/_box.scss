@@ -29,7 +29,7 @@
 
 }
 
-.box-text {
+.box-text, .box-witness {
     @include colors($base-color-dark, #fff);
     border-left-width: 0.5px;
 
