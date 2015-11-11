@@ -137,7 +137,7 @@ angular.module('evtviewer.interface')
             } 
             sigla = sigla.replace(/#/g, '');
             if ( witness !== undefined ) {
-                content = parsedData.getWitness(sigla).content;
+                content = witness.content;
             }
             if (content === undefined) {
                 currentDoc = mainInterface.getCurrentDocument();
