@@ -118,25 +118,27 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateWitness = function(sigla, boxId) {
             console.log('#evtInterface#', 'updating current witness setting it to '+sigla);
-            var option = { },
+            var witness = { },
                 witSelector = { },
                 textBox = { },
                 currentDoc,
-                content = '';
+                content;
 
-            option = parsedData.getWitness(sigla);
+            witness = parsedData.getWitness(sigla);
             
-            if ( option !== undefined ) {
+            if ( witness !== undefined ) {
                 // Updating page Selected
                 witSelector = evtSelect.getById('witnesses');
                 // TODO check defined
                 if ( witSelector !== undefined ) {
-                    witSelector.optionSelected = option;
-                    witSelector.callback(option);
+                    witSelector.optionSelected = witness;
+                    witSelector.callback(witness);
                 }
             } 
             sigla = sigla.replace(/#/g, '');
-            content = parsedData.getWitness(sigla).content;
+            if ( witness !== undefined ) {
+                content = parsedData.getWitness(sigla).content;
+            }
             if (content === undefined) {
                 currentDoc = mainInterface.getCurrentDocument();
                 if (currentDoc !== undefined) {
