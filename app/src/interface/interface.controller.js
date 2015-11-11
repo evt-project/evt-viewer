@@ -8,7 +8,8 @@ angular.module('evtviewer.interface')
     _console.log('InterfaceCtrl running');
 
     $scope.$on('$routeChangeSuccess', function() {
-        var currentPage, currentText;
+        _console.log('ROUTE CHANGING!!');
+        var currentPage, currentText, currentWitnesses;
         currentPage = $route.current.params.pageId;
         // if( $route.current.params.pageId !== undefined ) {
         //     currentPage = $route.current.params.pageId;
@@ -16,13 +17,15 @@ angular.module('evtviewer.interface')
         //     console.log('#ROUTE CHANGE SUCCESS#', currentPage);
         // }
         
-        currentText = $route.current.params.textId;
-        // if ( $route.current.params.textId !== undefined ) {
-        //     currentText = $route.current.params.textId;
+        currentText = $route.current.params.docId;
+        // if ( $route.current.params.docId !== undefined ) {
+        //     currentText = $route.current.params.docId;
         //     evtInterface.updateCurrentText(currentText);
         // }        
 
-        evtInterface.updateParams(currentPage, currentText);
+        currentWitnesses = $route.current.params.witIds;
+
+        evtInterface.updateParams(currentPage, currentText, currentWitnesses);
     });
 
 });

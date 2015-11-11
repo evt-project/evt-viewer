@@ -14,7 +14,7 @@ angular.module('evtviewer.dataHandler')
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
             state.XMLDocuments.push(docElements);
-            evtParser.parsePages(docElements);
+            // evtParser.parsePages(docElements);
             evtParser.parseDocuments(docElements);
             evtParser.parseWitnesses(docElements);
             evtParser.parseCriticalEntries(docElements);

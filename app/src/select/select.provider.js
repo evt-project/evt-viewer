@@ -37,7 +37,7 @@ angular.module('evtviewer.select')
 
             switch (currentType) {
                 case 'page':
-                    // optionList = parsedData.getPages();
+                    optionList = parsedData.getPagesList();
                     // TODO: add a general service for the current page in the application
                     // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(option) {
@@ -46,18 +46,17 @@ angular.module('evtviewer.select')
                     };
                     changeRoute = function(option) {
                         _console.log('page select changeRoute ' + option.label);  
-
                         var url = '/'+option.value;
-                        if ( $routeParams.textId !== undefined ) {
-                            url +='/'+$routeParams.textId;
+                        if ( $routeParams.docId !== undefined ) {
+                            url +='/'+$routeParams.docId;
                         }
                         $location.path( url );
                     };
                     break;
                 case 'document':
                     optionList = parsedData.getDocumentsList();
-                    
                     callback = function(option) {
+                        optionSelected = option;
                         _console.log('document select callback ' + option.label);
                     };
                     changeRoute = function(option) {
@@ -78,12 +77,22 @@ angular.module('evtviewer.select')
                     break;
                 case 'witness':
                     optionList = parsedData.getWitnessesList();
-                    
                     callback = function(option) {
+                        optionSelected = option;
                         _console.log('witness select callback ' + option.label);
                     };
                     changeRoute = function(option) {
                         _console.log('witness select changeRoute ' + option.label);  
+                        //TODO: dovrò avere un parametro "multiplo" che mi salva tutti i testimoni visualizzati, 
+                        //eventualmente nell'esatto ordine in cui sono visualizzati
+                        // var witnesses = $routeParams.witIds || '#';
+                        // if (witnesses.indexOf('#'+option.value+'#') < 0) { //add sigla
+                        //     witnesses += option.value+'#';
+                        // } else { //remove sigla
+                        //     witnesses.replace('#'+option.value+'#', '#');
+                        // }
+                        var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+option.value;
+                        $location.path( url );
                     };
                     break;
             }

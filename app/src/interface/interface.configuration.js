@@ -13,7 +13,11 @@ angular.module('evtviewer.interface')
             //     }
             // }
         })
-        .when('/:pageId/:textId', {
+        .when('/:pageId/:docId', {
+            template: 'index.html',
+            controller: 'InterfaceCtrl'
+        })
+        .when('/:pageId/:docId/:witIds', {
             template: 'index.html',
             controller: 'InterfaceCtrl'
         });

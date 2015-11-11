@@ -5,23 +5,51 @@ angular.module('evtviewer.interface')
 
         mainInterface.boot = function() {        
             evtCommunication.getData(config.dataUrl).then(function () {
-                if ( $routeParams.pageId !== undefined ) {
-                    mainInterface.updateCurrentPage($routeParams.pageId);
+                //if I have params to read in the route, I update on them
+                if ( $routeParams.pageId !== undefined || $routeParams.docId !== undefined || $routeParams.witIds !== undefined) {
+                    if ( $routeParams.pageId !== undefined ) {
+                        mainInterface.updateCurrentPage($routeParams.pageId);
+                    } 
+                    if ( $routeParams.docId !== undefined ) {
+                        mainInterface.updateCurrentDocument($routeParams.docId);
+                    }
+                    if ( $routeParams.witIds !== undefined ) {
+                        mainInterface.updateWitness($routeParams.witIds, 'witnessText');
+                    }
+                } 
+                //else I set the first page and the first document in the collection
+                else {
+                    var pages = parsedData.getPages(),
+                        documents = parsedData.getDocuments(),
+                        firstPage,
+                        firstDoc;
+                    if (pages.length > 0) {
+                        firstPage = pages.list[pages[0]].value || undefined;
+                    }
+                    if (documents.length > 0) {
+                        firstDoc = documents.list[documents[0]].value || undefined;
+                    }
+                    mainInterface.updateParams(firstPage, firstDoc);
                 }
-              });
+            });
         };
 
         mainInterface.getCurrentPage = function(){
             var pageSelector = evtSelect.getById('page');
-            if ( pageSelector !== 'undefined' ){
-                return pageSelector.optionSelected.value;
+            if ( pageSelector !== undefined ){
+                return pageSelector.optionSelected;
             }
         };
 
         mainInterface.getCurrentDocument = function() {
-            var pageSelector = evtSelect.getById('page');
-            if ( pageSelector !== 'undefined' ){
-                return pageSelector.optionSelected.value;
+            var docSelector = evtSelect.getById('document');
+            if ( docSelector !== undefined ){
+                return docSelector.optionSelected;
+            } else {
+                var documents = parsedData.getDocuments();
+                if (documents.length > 0) {
+                    return documents.list[documents[0]];
+                }
             }
         };
 
@@ -34,14 +62,16 @@ angular.module('evtviewer.interface')
                 text,
                 img;
                 
-            option = parsedData.findPage(pageId);
+            option = parsedData.getPage(pageId);
             
             if ( option !== undefined ) {
                 // Updating page Selected
                 pageSelector = evtSelect.getById('page');
                 // TODO check defined
-                pageSelector.optionSelected = option;
-                pageSelector.callback(option);
+                if ( pageSelector !== undefined ) {
+                    pageSelector.optionSelected = option;
+                    pageSelector.callback(option);
+                }
             }
             
             text = parsedData.getPageText(pageId);
@@ -49,45 +79,94 @@ angular.module('evtviewer.interface')
 
             // Updating mainText Box content
             mainTextBox = evtBox.getById('mainText');
-            if ( text !== undefined ) {
-                mainTextBox.updateContent(text.diplomatic);
-            } else {
-                mainTextBox.updateContent('Testo non disponibile.');
+            if ( mainTextBox !== undefined ) {
+                if ( text !== undefined ) {
+                    mainTextBox.updateContent(text.diplomatic);
+                } else {
+                    mainTextBox.updateContent('Testo non disponibile.');
+                }
             }
             
             // Updating mainImage Box content
             mainImageBox = evtBox.getById('mainImage');
-            if ( img !== undefined ) {
-                mainImageBox.updateContent('<img src="'+img.url+'" />');
-            } else {
-                mainImageBox.updateContent('Si è verificato un errore.');
+            if ( mainImageBox !== undefined ) {
+                if ( img !== undefined ) {
+                    mainImageBox.updateContent('<img src="'+img.url+'" />');
+                } else {
+                    mainImageBox.updateContent('Si è verificato un errore.');
+                }
             }
         };
 
-        mainInterface.updateCurrentText = function(textId) {
-            console.log('#evtInterface#', 'updating current text setting it to '+textId);
-            var text = xmlParser.parse(parsedData.getDocument(textId).content);
-            console.log('text', text);
-            var sigla = 'B'; 
-            var content = evtParser.parseWitnessText(text, sigla);
-            console.log('content', content);
-            var mainTextBox = evtBox.getById('mainText');
-            if ( text !== undefined ) {
-                mainTextBox.updateContent(content.innerHTML);
+        mainInterface.updateCurrentDocument = function(docId) {
+            console.log('#evtInterface#', 'updating current text setting it to '+docId);
+            var option = { },
+                docSelector = { };
+
+            option = parsedData.getDocument(docId);
+            
+            if ( option !== undefined ) {
+                // Updating page Selected
+                docSelector = evtSelect.getById('document');
+                // TODO check defined
+                if ( docSelector !== undefined ) {
+                    docSelector.optionSelected = option;
+                    docSelector.callback(option);
+                }
+            }    
+        };
+
+        mainInterface.updateWitness = function(sigla, boxId) {
+            console.log('#evtInterface#', 'updating current witness setting it to '+sigla);
+            var option = { },
+                witSelector = { },
+                textBox = { },
+                currentDoc,
+                content = '';
+
+            option = parsedData.getWitness(sigla);
+            
+            if ( option !== undefined ) {
+                // Updating page Selected
+                witSelector = evtSelect.getById('witnesses');
+                // TODO check defined
+                if ( witSelector !== undefined ) {
+                    witSelector.optionSelected = option;
+                    witSelector.callback(option);
+                }
+            } 
+            sigla = sigla.replace(/#/g, '');
+            content = parsedData.getWitness(sigla).content;
+            if (content === undefined) {
+                currentDoc = mainInterface.getCurrentDocument();
+                if (currentDoc !== undefined) {
+                    content = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
+                }    
+            }
+            textBox = evtBox.getById(boxId);
+            if ( content !== undefined ) {
+                textBox.updateContent(content.innerHTML);
             } else {
-                mainTextBox.updateContent('Testo non disponibile.');
+                textBox.updateContent('Testo non disponibile.');
             }
         };
 
-        mainInterface.updateParams = function(pageId, textId) {
-            console.log('#evtInterface#', 'updating params [Page: ' + pageId + ' | Text: ' + textId+']');
+        mainInterface.updateParams = function(pageId, docId, witIds) {
+            console.log('#evtInterface#', 'updating params [Page: ' + pageId + ' | Text: ' + docId+' | Witnesses: '+witIds+']');
             
             if ( pageId !== undefined ) {
                 mainInterface.updateCurrentPage(pageId);
             }
 
-            if ( textId !== undefined ) {
-                mainInterface.updateCurrentText(textId);
+            if ( docId !== undefined ) {
+                mainInterface.updateCurrentDocument(docId);
+            }
+
+            if (witIds !== undefined) {
+                var witnesses = witIds.split('#').filter(function(el) {return el.length !== 0;});
+                // for (var i = 0; i < witnesses.length; i++) {
+                    mainInterface.updateWitness(witnesses[witnesses.length-1], 'witnessText');
+                // }
             }
         };
     return mainInterface;

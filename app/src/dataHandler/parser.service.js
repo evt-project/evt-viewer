@@ -20,15 +20,23 @@ angular.module('evtviewer.dataHandler')
         return xpath(el.parentNode) + '-' + el.tagName.toLowerCase() + (sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '');
     };
 
-    parser.parsePages = function(doc) {
+    parser.parsePages = function(doc, docId) {
         var currentDocument = angular.element(doc);
         var attributes = [];
         angular.forEach(currentDocument.find(defPageElement), 
             function(element) {
-                for (var i in defAttributes){
-                    attributes.push(element.getAttribute(defAttributes[i]));
+                var newPage = {};
+                newPage.value = element.getAttribute('xml:id')  || 'page_'+(parsedData.getPages().length+1);
+                newPage.label = element.getAttribute('n') || 'Page '+(parsedData.getPages().length+1);
+                newPage.title = element.getAttribute('n') || 'Page '+(parsedData.getPages().length+1); 
+                for (var i = 0; i < element.attributes.length; i++) {
+                    var attrib = element.attributes[i];
+                    if (attrib.specified) {
+                        newPage[attrib.name] = attrib.value;
+                    }
                 }
-                parsedData.addPage(attributes[0], attributes[1], attributes[2]);
+                newPage.doc = docId;
+                parsedData.addPage(newPage);
                 attributes = [];
         });
         console.log('## Pages ##', parsedData.getPages());
@@ -45,18 +53,19 @@ angular.module('evtviewer.dataHandler')
         }
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
-                var doc = { };
-                doc.value = element.getAttribute('xml:id')  || xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1);
-                doc.label = element.getAttribute('n') || 'Doc '+(parsedData.getDocuments().length+1);
-                doc.title = element.getAttribute('n') || 'Document '+(parsedData.getDocuments().length+1); 
+                var newDoc = { };
+                newDoc.value = element.getAttribute('xml:id')  || xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1);
+                newDoc.label = element.getAttribute('n') || 'Doc '+(parsedData.getDocuments().length+1);
+                newDoc.title = element.getAttribute('n') || 'Document '+(parsedData.getDocuments().length+1); 
                 for (var i = 0; i < element.attributes.length; i++) {
                     var attrib = element.attributes[i];
                     if (attrib.specified) {
-                        doc[attrib.name] = attrib.value;
+                        newDoc[attrib.name] = attrib.value;
                     }
                 }
-                doc.content = '<text>'+element.innerHTML+'</text>';
-                parsedData.addDocument(doc);
+                newDoc.content = '<text>'+element.innerHTML+'</text>';
+                parsedData.addDocument(newDoc);
+                parser.parsePages(element, newDoc.value);
         });
         console.log('## Documents ##', parsedData.getDocuments());
     };
@@ -203,9 +212,10 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseWitnessText = function(doc, wit) {
         if ( doc !== undefined ) {
-            var docDOM = doc.documentElement;
+            var docDOM = doc.documentElement.getElementsByTagName('body')[0];
             var apps = docDOM.getElementsByTagName('app');
-            for (var j = 0; j < apps.length; j++) {
+            var j = 0;
+            while(j < apps.length) {
                 var appNode = apps[j];
                 if (!isNestedApp(appNode)) {
                     var appObject = {
@@ -218,7 +228,7 @@ angular.module('evtviewer.dataHandler')
 
                     parseWitnessApp(appNode, wit, appObject);
 
-                    var spanElement = document.createElement('span');
+                    var spanElement = document.createElement('reading');
                     spanElement.setAttribute('data-app-entry-id', appObject.id);
                     for (var a = 0; a < appObject.attributes.length; a++) {
                         var attrName = appObject.attributes[a],
@@ -228,11 +238,22 @@ angular.module('evtviewer.dataHandler')
                     spanElement.style.color = '#f00';
                     spanElement.style.border = '1px solid #000';
                     spanElement.innerHTML = appObject.content;
-                    appNode.innerHTML = '';
-                    appNode.appendChild(spanElement);
-                    // doc.getElementById('app'+j).parentNode.replaceChild(spanElement, doc.getElementById('app'+j));
+                    // appNode.innerHTML = '';
+                    // appNode.appendChild(spanElement);
+                    appNode.parentNode.replaceChild(spanElement, appNode);
                 }
             }
+            var pbs = docDOM.getElementsByTagName('pb');
+            var k = 0;
+            while ( k < pbs.length) {
+                var pbNode = pbs[k];
+                if (pbNode.getAttribute('ed') !== '#'+wit) {
+                    pbNode.parentNode.removeChild(pbNode); 
+                } else {
+                    k++;
+                }
+            }
+            parsedData.addWitnessText(wit, docDOM);
             return docDOM;
         } else {
             return 'Testo non disponibile.';

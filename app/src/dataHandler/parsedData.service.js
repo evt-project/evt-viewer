@@ -6,7 +6,10 @@ angular.module('evtviewer.dataHandler')
 
     // TODO manage unique value for pages, documents and editions
 
-    var pagesCollection = []; // {value: 'page', label: 'page label', title: 'page title'}
+    var pagesCollection = {
+        length: 0,
+        list: {}
+    };
     var documentsCollection = {
         length: 0,
         list: {}
@@ -15,6 +18,7 @@ angular.module('evtviewer.dataHandler')
     var pagesCollectionTexts = []; 
     
     var witnessesCollection = {
+        length: 0,
         list: {}
     };
 
@@ -22,26 +26,33 @@ angular.module('evtviewer.dataHandler')
 
     var criticalAppCollection = {};
    
+    // TODO: add attribute for the original xml reference
+    parsedData.addPage = function(page) {
+        var pageId = page.value;
+        if ( pagesCollection.length === undefined ) {
+            pagesCollection.length = 0;
+        }
+        
+        if ( page.value == '' ) {
+            pageId = page.value = 'page_'+(pagesCollection.length+1);
+        }
+        if ( pagesCollection.list[pageId] === undefined ) {
+            pagesCollection[pagesCollection.length] = pageId;
+            pagesCollection.list[pageId] = page;
+            pagesCollection.length++;
+            _console.log('parsedData - addPage ', page);
+        }
+    };
     parsedData.getPages = function() {
         return pagesCollection;
     };
 
-    // TODO: add attribute for the original xml reference
-    parsedData.addPage = function(value, label, title) {
-        pagesCollection.push({
-            value: value,
-            label: label,
-            title: title
-        });
-        pagesCollectionTexts[value] = parsedData.getPageText(value);
-        // _console.log('parsedData - addPage ' + value);
+    parsedData.getPagesList = function() {
+        return pagesCollection.list;
     };
-    parsedData.findPage = function(value) {
-        var i = 0;
-        while ( i < pagesCollection.length && pagesCollection[i].value !== value) {
-            i++;
-        }
-        return pagesCollection[i];
+    
+    parsedData.getPage = function(pageId) {
+        return pagesCollection.list[pageId];
     };
 
 
@@ -90,13 +101,12 @@ angular.module('evtviewer.dataHandler')
     };
 
     parsedData.getDocumentsList = function() {
-        _console.log('parsedData - getDocumentsList ', documentsCollection.list);
         return documentsCollection.list;
     };
 
     parsedData.getDocument = function(docId) {
         return documentsCollection.list[docId];
-    }
+    };
     parsedData.getEditions = function() {
         // return mockEditions;
     };
@@ -134,6 +144,12 @@ angular.module('evtviewer.dataHandler')
             witnessesGroupCollection.length++;
             // _console.log('parsedData - addWitnessGroup ', witnessesGroupCollection);
         }
+    };
+    parsedData.addWitnessText = function(witId, content) {
+        if ( witnessesCollection.list[witId] === undefined ) {
+            parsedData.addWitness(witId);
+        } 
+        witnessesCollection.list[witId].content = content;
     };
 
     parsedData.getWitnesses = function() {
