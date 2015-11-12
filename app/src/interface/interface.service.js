@@ -13,9 +13,9 @@ angular.module('evtviewer.interface')
                     if ( $routeParams.docId !== undefined ) {
                         mainInterface.updateCurrentDocument($routeParams.docId);
                     }
-                    if ( $routeParams.witIds !== undefined ) {
-                        mainInterface.updateWitness($routeParams.witIds, 'witnessText');
-                    }
+                    // if ( $routeParams.witIds !== undefined ) {
+                    //     mainInterface.updateWitness($routeParams.witIds, 'witnessText');
+                    // }
                 } 
                 //else I set the first page and the first document in the collection
                 else {
@@ -85,8 +85,8 @@ angular.module('evtviewer.interface')
                 } else {
                     mainTextBox.updateContent('Testo non disponibile.');
                 }
+                mainTextBox.updateState('currentPage', pageId);
             }
-            
             // Updating mainImage Box content
             mainImageBox = evtBox.getById('mainImage');
             if ( mainImageBox !== undefined ) {
@@ -95,6 +95,7 @@ angular.module('evtviewer.interface')
                 } else {
                     mainImageBox.updateContent('Si è verificato un errore.');
                 }
+                mainImageBox.updateState('currentPage', pageId);
             }
         };
 
@@ -116,40 +117,40 @@ angular.module('evtviewer.interface')
             }    
         };
 
+        //TODO: Valutare se e' meglio aggiornare il testo del testimone dall'interfaccia o direttamente dal box
+        //Nel primo caso, cancellare la funzione seguente
         mainInterface.updateWitness = function(sigla, boxId) {
             console.log('#evtInterface#', 'updating current witness setting it to '+sigla);
             var witness = { },
-                witSelector = { },
                 textBox = { },
                 currentDoc,
+                currentWit,
                 content;
 
             witness = parsedData.getWitness(sigla);
             
-            if ( witness !== undefined ) {
-                // Updating page Selected
-                witSelector = evtSelect.getById('witnesses');
-                // TODO check defined
-                if ( witSelector !== undefined ) {
-                    witSelector.optionSelected = witness;
-                    witSelector.callback(witness);
-                }
-            } 
             sigla = sigla.replace(/#/g, '');
-            if ( witness !== undefined ) {
-                content = witness.content;
-            }
-            if (content === undefined) {
-                currentDoc = mainInterface.getCurrentDocument();
-                if (currentDoc !== undefined) {
-                    content = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
-                }    
-            }
             textBox = evtBox.getById(boxId);
-            if ( content !== undefined ) {
-                textBox.updateContent(content.innerHTML);
-            } else {
-                textBox.updateContent('Testo non disponibile.');
+            if (textBox !== undefined) {
+                currentWit = textBox.getState('witness');
+                if (currentWit === undefined || currentWit !== sigla) {
+                    if ( witness !== undefined ) {
+                        content = witness.content;
+                    }
+                    if (content === undefined) {
+                        currentDoc = mainInterface.getCurrentDocument();
+                        if (currentDoc !== undefined) {
+                            content = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
+                        }    
+                    }
+                    
+                    if ( content !== undefined ) {
+                        textBox.updateContent(content.innerHTML);
+                    } else {
+                        textBox.updateContent('Testo non disponibile.');
+                    }
+                    textBox.updateState('witness', sigla);
+                }
             }
         };
 
@@ -164,12 +165,12 @@ angular.module('evtviewer.interface')
                 mainInterface.updateCurrentDocument(docId);
             }
 
-            if (witIds !== undefined) {
-                var witnesses = witIds.split('#').filter(function(el) {return el.length !== 0;});
-                // for (var i = 0; i < witnesses.length; i++) {
-                    mainInterface.updateWitness(witnesses[witnesses.length-1], 'witnessText');
-                // }
-            }
+            // if (witIds !== undefined) {
+            //     var witnesses = witIds.split('#').filter(function(el) {return el.length !== 0;});
+            //     // for (var i = 0; i < witnesses.length; i++) {
+            //         mainInterface.updateWitness(witnesses[witnesses.length-1], 'witnessText');
+            //     // }
+            // }
         };
     return mainInterface;
 });

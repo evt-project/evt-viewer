@@ -39,7 +39,7 @@ angular.module('evtviewer.dataHandler')
                 parsedData.addPage(newPage);
                 attributes = [];
         });
-        console.log('## Pages ##', parsedData.getPages());
+        // console.log('## Pages ##', parsedData.getPages());
     };
 
     parser.parseDocuments = function(doc) {
@@ -67,7 +67,7 @@ angular.module('evtviewer.dataHandler')
                 parsedData.addDocument(newDoc);
                 parser.parsePages(element, newDoc.value);
         });
-        console.log('## Documents ##', parsedData.getDocuments());
+        // console.log('## Documents ##', parsedData.getDocuments());
     };
 
     parser.parseWitnesses = function(doc) {
@@ -90,7 +90,7 @@ angular.module('evtviewer.dataHandler')
                 };
                 parsedData.addWitness(witness);
         });
-        console.log('## Witnesses ##', parsedData.getWitnesses());
+        // console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
     var parseAppEntry = function(app) {
@@ -152,7 +152,7 @@ angular.module('evtviewer.dataHandler')
         });
         
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
-        console.log('## Critical entries ##', parsedData.getCriticalEntries());
+        // console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
 
     var isNestedApp = function(appNode) {

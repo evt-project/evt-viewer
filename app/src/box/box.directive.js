@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function(evtBox) {
+.directive('box', function(evtBox, evtParser, xmlParser, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -8,12 +8,13 @@ angular.module('evtviewer.box')
             type: '@'
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
-        link: function(scope, element, attr) {
+        link: function(scope) {
 
             // Add attributes in vm
             scope.vm = {
                 id: scope.id,
-                type: scope.type
+                type: scope.type,
+                state: {}
             };
 
             // Initialize box
@@ -24,6 +25,33 @@ angular.module('evtviewer.box')
                 if (currentBox){
                     currentBox.destroy();
                 }     
+            });
+
+            scope.$on('UPDATE_WITNESS', function(event, sigla){
+                if ( sigla !== undefined && sigla !== currentBox.getState('witness') ) {
+                    var newContent = '';
+                    var witness = parsedData.getWitness(sigla) || undefined;
+                    if ( witness !== undefined ) {
+                        newContent = witness.content;
+                        if (newContent === undefined) {
+                            var documents = parsedData.getDocuments()
+                                currentDoc = '';
+                            if (documents.length > 0) {
+                                currentDoc = documents.list[documents[0]];
+                            }
+                            if (currentDoc !== undefined) {
+                                newContent = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
+                            }    
+                        }
+                    }
+                    
+                    if ( newContent !== undefined ) {
+                        currentBox.updateContent(newContent.innerHTML);
+                    } else {
+                        currentBox.updateContent('Testo non disponibile.');
+                    }
+                    currentBox.updateState('witness', sigla); 
+                }
             });
         }
     };

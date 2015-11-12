@@ -16,7 +16,12 @@ angular.module('evtviewer.select')
 
         var _console = $log.getInstance('select');
 
-
+        function getOptionSelectedValue(){
+            var vm = this;
+            if (vm.optionSelected !== undefined) {
+                return vm.optionSelected.value;
+            }
+        }
         // 
         // Select builder
         // 
@@ -82,7 +87,6 @@ angular.module('evtviewer.select')
                         _console.log('witness select callback ' + option.label);
                     };
                     changeRoute = function(option) {
-                        _console.log('witness select changeRoute ' + option.label);  
                         //TODO: dovrò avere un parametro "multiplo" che mi salva tutti i testimoni visualizzati, 
                         //eventualmente nell'esatto ordine in cui sono visualizzati
                         // var witnesses = $routeParams.witIds || '#';
@@ -91,8 +95,9 @@ angular.module('evtviewer.select')
                         // } else { //remove sigla
                         //     witnesses.replace('#'+option.value+'#', '#');
                         // }
-                        var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+option.value;
-                        $location.path( url );
+                        
+                        // var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+option.value;
+                        // $location.path( url );
                     };
                     break;
             }
@@ -103,7 +108,7 @@ angular.module('evtviewer.select')
                 defaults: angular.copy(defaults),
                 callback: callback,
                 changeRoute: changeRoute,
-
+                getOptionSelectedValue: getOptionSelectedValue,
                 // model
                 optionList: optionList,
                 optionSelected: optionSelected,

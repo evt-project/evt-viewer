@@ -21,6 +21,16 @@ angular.module('evtviewer.select')
                     currentSelect.destroy();
                 }     
             });
+
+            scope.$watch(function() {
+                if (currentSelect !== undefined) {
+                    return currentSelect.getOptionSelectedValue();
+                }
+            }, function(newItems, oldItems) {
+                if (newItems !== oldItems) {
+                    scope.$emit("UPDATE_WITNESS", newItems);
+                }
+            }, true);
         }
     };
 });

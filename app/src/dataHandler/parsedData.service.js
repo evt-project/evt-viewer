@@ -4,8 +4,8 @@ angular.module('evtviewer.dataHandler')
     var parsedData = {};
     var _console = $log.getInstance('dataHandler');
 
+    _console.log('parsedData running');
     // TODO manage unique value for pages, documents and editions
-
     var pagesCollection = {
         length: 0,
         list: {}
@@ -15,7 +15,7 @@ angular.module('evtviewer.dataHandler')
         list: {}
     }; 
     
-    var pagesCollectionTexts = []; 
+    // var pagesCollectionTexts = []; 
     
     var witnessesCollection = {
         length: 0,
@@ -33,14 +33,14 @@ angular.module('evtviewer.dataHandler')
             pagesCollection.length = 0;
         }
         
-        if ( page.value == '' ) {
+        if ( page.value === '' ) {
             pageId = page.value = 'page_'+(pagesCollection.length+1);
         }
         if ( pagesCollection.list[pageId] === undefined ) {
             pagesCollection[pagesCollection.length] = pageId;
             pagesCollection.list[pageId] = page;
             pagesCollection.length++;
-            _console.log('parsedData - addPage ', page);
+            // _console.log('parsedData - addPage ', page);
         }
     };
     parsedData.getPages = function() {
@@ -57,23 +57,23 @@ angular.module('evtviewer.dataHandler')
 
 
     parsedData.getPageText = function(pageId) {
-        // var texts = mockText1;
+        var texts = [];
 
-        // var i = 0;
-        // while ( i < texts.length && texts[i].page !== pageId) {
-        //     i++;
-        // }
+        var i = 0;
+        while ( i < texts.length && texts[i].page !== pageId) {
+            i++;
+        }
         // return texts[i];
         return {};
     };
 
     parsedData.getPageImage = function(pageId) {
-        // var images = mockImage1;
+        var images = [];
 
-        // var i = 0;
-        // while ( i < images.length && images[i].page !== pageId) {
-        //     i++;
-        // }
+        var i = 0;
+        while ( i < images.length && images[i].page !== pageId) {
+            i++;
+        }
         // return images[i];
         return {};
     };
@@ -85,14 +85,14 @@ angular.module('evtviewer.dataHandler')
             documentsCollection.length = 0;
         }
         
-        if ( doc.value == '' ) {
+        if ( doc.value === '' ) {
             docId = doc.value = 'doc_'+(documentsCollection.length+1);
         }
         if ( documentsCollection.list[docId] === undefined ) {
             documentsCollection[documentsCollection.length] = docId;
             documentsCollection.list[docId] = doc;
             documentsCollection.length++;
-            _console.log('parsedData - addDocument ', doc);
+            // _console.log('parsedData - addDocument ', doc);
         }
     };
 

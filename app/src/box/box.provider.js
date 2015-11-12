@@ -27,6 +27,17 @@ angular.module('evtviewer.box')
             _console.log('vm - updating content ' + vm.id);
         }
 
+        function updateState(key, value) {
+            _console.log('vm - updating state '+key+': '+value);
+            var vm = this;
+            vm.state[key] = value;
+        }
+
+        function getState(key) {
+            var vm = this;
+            return vm.state[key];
+        }
+
         function destroy() {
             var tempId = this.uid;
             // TODO: remove from list and collection
@@ -34,7 +45,6 @@ angular.module('evtviewer.box')
 
             _console.log('vm - destroy ' + tempId);
         }
-
 
         // 
         // Box builder
@@ -51,7 +61,8 @@ angular.module('evtviewer.box')
                     selectors: [],
                     buttonSwitches: []
                 },
-                content;
+                content,
+                state = {};
 
             var scopeHelper = {};
 
@@ -76,8 +87,7 @@ angular.module('evtviewer.box')
                     // content = '<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong> adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, <evt-popover data-trigger="click" data-tooltip="Prova tooltip">fringilla vel</evt-popover>, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.</evt-popover> Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc</evt-popover>.<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong>.';
                     break;
                 case 'witness':
-                    topMenuList.selectors.push({ id:'witnesses', type: 'witness'});
-                    
+                    topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
                     break;
             }
 
@@ -90,9 +100,12 @@ angular.module('evtviewer.box')
                 topMenuList: topMenuList,
                 bottomMenuList: bottomMenuList,
                 content: content,
+                state: state,
 
                 // function
                 updateContent: updateContent,
+                updateState: updateState,
+                getState: getState,
                 destroy: destroy
             };
 
