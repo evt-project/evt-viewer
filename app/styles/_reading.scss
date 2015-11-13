@@ -2,7 +2,12 @@
 /* READING                     */
 /* *************************** */
 
-reading {
+.reading {
     background: #ffccbc;
     padding: 0 3px;
+    cursor: pointer;
+    
+    &.active{
+        background: #ff8a65;
+    }
 }

@@ -27,5 +27,6 @@ angular
     'evtviewer.select',
     'evtviewer.buttonSwitch',
     'evtviewer.popover',
-    'evtviewer.mobile'
+    'evtviewer.mobile',
+    'evtviewer.reading'
   ]);

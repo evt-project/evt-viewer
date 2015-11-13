@@ -214,21 +214,22 @@ angular.module('evtviewer.dataHandler')
         if ( doc !== undefined ) {
             var docDOM = doc.documentElement.getElementsByTagName('body')[0];
             var apps = docDOM.getElementsByTagName('app');
-            var j = 0;
+            var j = 0, count = 0;
             while(j < apps.length) {
                 var appNode = apps[j];
                 if (!isNestedApp(appNode)) {
                     var appObject = {
-                        id: appNode.getAttribute('xml:id') || xpath(appNode).substr(1),
+                        // id: appNode.getAttribute('xml:id') || xpath(appNode).substr(1),
+                        id: appNode.getAttribute('xml:id') || 'app-'+count,
                         attributes: {
                             length: 0
                         },
                         content: ''
                     };
-
+                    count++;
                     parseWitnessApp(appNode, wit, appObject);
 
-                    var spanElement = document.createElement('reading');
+                    var spanElement = document.createElement('evt-reading');
                     spanElement.setAttribute('data-app-entry-id', appObject.id);
                     for (var a = 0; a < appObject.attributes.length; a++) {
                         var attrName = appObject.attributes[a],

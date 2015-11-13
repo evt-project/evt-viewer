@@ -203,7 +203,7 @@ angular.module('evtviewer.popover')
                 }
             };
             
-            // Initialize select
+            // Initialize popover
             var currentPopover = evtPopover.build(scope.trigger, scope.tooltip, scope.vm);
 
             // Garbage collection
