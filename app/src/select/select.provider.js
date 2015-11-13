@@ -82,6 +82,7 @@ angular.module('evtviewer.select')
                     break;
                 case 'witness':
                     optionList = parsedData.getWitnessesList();
+                    optionSelected = optionList[0] || {};
                     callback = function(option) {
                         optionSelected = option;
                         _console.log('witness select callback ' + option.label);
@@ -89,15 +90,17 @@ angular.module('evtviewer.select')
                     changeRoute = function(option) {
                         //TODO: dovrò avere un parametro "multiplo" che mi salva tutti i testimoni visualizzati, 
                         //eventualmente nell'esatto ordine in cui sono visualizzati
-                        // var witnesses = $routeParams.witIds || '#';
-                        // if (witnesses.indexOf('#'+option.value+'#') < 0) { //add sigla
-                        //     witnesses += option.value+'#';
-                        // } else { //remove sigla
-                        //     witnesses.replace('#'+option.value+'#', '#');
-                        // }
-                        
-                        // var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+option.value;
-                        // $location.path( url );
+                        var selectors = select.getList(),
+                            witIds = '#';
+                        angular.forEach(selectors, function(currentSelect) {
+                            if (currentSelect.type === 'witness') {
+                                var witSelect = select.getById(currentSelect.id);
+                                witIds += witSelect.optionSelected.value+'#';
+                            }
+                        });
+
+                        var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+witIds;
+                        $location.path( url );
                     };
                     break;
             }
@@ -129,7 +132,7 @@ angular.module('evtviewer.select')
         // 
 
         select.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };

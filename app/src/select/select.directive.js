@@ -28,7 +28,7 @@ angular.module('evtviewer.select')
                 }
             }, function(newItems, oldItems) {
                 if (newItems !== oldItems) {
-                    scope.$emit("UPDATE_WITNESS", newItems);
+                    scope.$emit('UPDATE_WITNESS', newItems);
                 }
             }, true);
         }

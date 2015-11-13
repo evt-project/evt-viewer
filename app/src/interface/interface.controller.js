@@ -22,6 +22,8 @@ angular.module('evtviewer.interface')
         //     evtInterface.updateCurrentText(currentText);
         // }        
 
-        evtInterface.updateParams(currentPage, currentText);
+        currentWitnesses = $route.current.params.witIds;
+        
+        evtInterface.updateParams(currentPage, currentText, currentWitnesses);
     });
 });

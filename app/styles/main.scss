@@ -68,7 +68,6 @@ $large:(
 @mixin main-frame(){
 	// @include span(18 of 20);	
 	height: 100%;
-	border: $mainContainer-border-width solid $base-color-dark;
 	overflow: hidden;
 	padding: 0px;
 	font-size: 18px;
@@ -86,7 +85,7 @@ $large:(
 
 @mixin frame(){
 	@include span(9 of 18);
-	height:100%;
+    height:100%;
 }
 
 @mixin frameBody(){	

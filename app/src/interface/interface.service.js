@@ -3,7 +3,7 @@ angular.module('evtviewer.interface')
 .service('evtInterface', function(evtCommunication, config, $routeParams, xmlParser, evtSelect, evtBox, evtParser, parsedData) {
     var mainInterface = {};
 
-        mainInterface.boot = function() {        
+        mainInterface.boot = function() {    
             evtCommunication.getData(config.dataUrl).then(function () {
                 //if I have params to read in the route, I update on them
                 if ( $routeParams.pageId !== undefined || $routeParams.docId !== undefined || $routeParams.witIds !== undefined) {
@@ -13,9 +13,9 @@ angular.module('evtviewer.interface')
                     if ( $routeParams.docId !== undefined ) {
                         mainInterface.updateCurrentDocument($routeParams.docId);
                     }
-                    // if ( $routeParams.witIds !== undefined ) {
-                    //     mainInterface.updateWitness($routeParams.witIds, 'witnessText');
-                    // }
+                    if ( $routeParams.witIds !== undefined ) {
+                        mainInterface.updateCurrentWitnesses($routeParams.witIds);
+                    }
                 } 
                 //else I set the first page and the first document in the collection
                 else {
@@ -23,12 +23,14 @@ angular.module('evtviewer.interface')
                         documents = parsedData.getDocuments(),
                         firstPage,
                         firstDoc;
+                
                     if (pages.length > 0) {
                         firstPage = pages.list[pages[0]].value || undefined;
                     }
                     if (documents.length > 0) {
                         firstDoc = documents.list[documents[0]].value || undefined;
                     }
+                    
                     mainInterface.updateParams(firstPage, firstDoc);
                 }
             });
@@ -117,6 +119,39 @@ angular.module('evtviewer.interface')
             }    
         };
 
+        mainInterface.updateCurrentWitnesses = function(witIds) {
+            console.log('#evtInterface#', 'updating current witnesses setting it to '+witIds);
+            var witnesses = parsedData.getWitnesses(),
+                selectors = evtSelect.getList();
+            if ( witIds === undefined ) {
+                if (witnesses.length > 0) {
+                    var i = 0;    
+                    angular.forEach(selectors, function(currentSelect) {
+                        if (currentSelect.type === 'witness') {
+                            var witness = witnesses.list[witnesses[i]] || undefined;
+                            if ( witness !== undefined ) {
+                                var witSelect = evtSelect.getById(currentSelect.id);
+                                witSelect.selectOption(witness);
+                                i++
+                            }
+                        }
+                    });
+                }
+            } else {
+                var siglas = witIds.split('#').filter(function(el) {return el.length !== 0;}),
+                    i = 0;
+                angular.forEach(selectors, function(currentSelect) {
+                    if (currentSelect.type === 'witness') {
+                        var witness = witnesses.list[siglas[i]] || undefined;
+                        if ( witness !== undefined ) {
+                            var witSelect = evtSelect.getById(currentSelect.id);
+                            witSelect.selectOption(witness);
+                            i++
+                        }
+                    }
+                });
+            }
+        };
         //TODO: Valutare se e' meglio aggiornare il testo del testimone dall'interfaccia o direttamente dal box
         //Nel primo caso, cancellare la funzione seguente
         mainInterface.updateWitness = function(sigla, boxId) {
@@ -165,6 +200,7 @@ angular.module('evtviewer.interface')
                 mainInterface.updateCurrentDocument(docId);
             }
 
+            mainInterface.updateCurrentWitnesses(witIds);
             // if (witIds !== undefined) {
             //     var witnesses = witIds.split('#').filter(function(el) {return el.length !== 0;});
             //     // for (var i = 0; i < witnesses.length; i++) {

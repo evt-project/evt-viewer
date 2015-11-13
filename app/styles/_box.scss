@@ -7,16 +7,17 @@
     height:100%;
     white-space: normal;
     position: relative;
+    border: $mainContainer-border-width solid $base-color-dark;
     display: inline-block;
     @include colors($base-color-dark, $base-color-light);
     
-    &[data-position='left'] {
-        border-right-width: 0.5px;
-    }
+    // &[data-position='left'] {
+    //     border-right-width: 0.5px;
+    // }
 
-    &[data-position='right'] {
-        border-left-width: 0.5px;
-    }
+    // &[data-position='right'] {
+    //     border-left-width: 0.5px;
+    // }
 }
 .box-image {
     @include colors($base-color-light, #000);
@@ -35,7 +36,7 @@
 
 .box-text, .box-witness {
     @include colors($base-color-dark, #fff);
-    border-left-width: 0.5px;
+    // border-left-width: 0.5px;
 
     .box-body {
         position: relative;

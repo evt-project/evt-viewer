@@ -30,7 +30,6 @@ angular.module('evtviewer.reading')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-            console.log(reading.getCurrentAppEntry());
             scopeHelper = {
                 // expansion
                 uid: currentId,
@@ -96,7 +95,6 @@ angular.module('evtviewer.reading')
         reading.selectById = function(appEntryId) {
             angular.forEach(collection, function(currentReading) {
                 if (currentReading.appEntryId === appEntryId) {
-                    console.log(currentReading.appEntryId);
                     currentReading.setSelected();
                 } else {
                     currentReading.unselect();

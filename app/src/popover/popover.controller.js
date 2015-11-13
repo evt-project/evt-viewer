@@ -39,7 +39,7 @@ angular.module('evtviewer.popover')
             evtPopover.closeAll(vm.uid);
         }
         vm.expanded = !vm.expanded;
-        _console.log('vm - toggleExpand for ' + vm.uid);
+        // _console.log('vm - toggleExpand for ' + vm.uid);
     };
 
     this.toggleOver = function(closeSiblings) {
@@ -60,5 +60,5 @@ angular.module('evtviewer.popover')
         _console.log('vm - destroy ' + tempId);
     };
 
-    _console.log('PopoverCtrl running');
+    // _console.log('PopoverCtrl running');
 });

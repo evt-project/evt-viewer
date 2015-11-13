@@ -99,7 +99,7 @@ angular.module('evtviewer.popover')
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
                 var boxContainerWidth, boxOffsetLeft;
-                boxOffsetLeft = element.parents(parentRef).position().left;
+                boxOffsetLeft = element.parents(parentRef).offset().left;
                 boxContainerWidth = element.parents(parentRef).innerWidth();
                 
                 var tooltipNewLeft, diff;                

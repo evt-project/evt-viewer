@@ -48,5 +48,5 @@ angular.module('evtviewer.reading')
         _console.log('vm - destroy ' + tempId);
     };
 
-    _console.log('ReadingCtrl running');
+    // _console.log('ReadingCtrl running');
 });
