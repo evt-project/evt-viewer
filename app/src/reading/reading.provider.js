@@ -35,7 +35,8 @@ angular.module('evtviewer.reading')
                 // expansion
                 uid: currentId,
                 appEntryId: entryId,
-                over: entryId === reading.getCurrentAppEntry(),
+                over: false,
+                active: entryId === reading.getCurrentAppEntry(),
                 openTriggerEvent: angular.copy(defaults.openTriggerEvent),
                 defaults: angular.copy(defaults)
             };
@@ -63,7 +64,6 @@ angular.module('evtviewer.reading')
         };
 
         reading.setCurrentAppEntry = function(appEntryId) {
-            console.log('setCurrentAppEntry '+appEntryId);
             currentAppEntry = appEntryId;
         };
 
@@ -83,6 +83,23 @@ angular.module('evtviewer.reading')
                     currentReading.mouseOver();
                 } else {
                     currentReading.mouseOut();
+                }
+            });  
+        };
+
+        reading.unselectAll = function() {
+            angular.forEach(collection, function(currentReading) {
+                currentReading.unselect();
+            });
+        };
+
+        reading.selectById = function(appEntryId) {
+            angular.forEach(collection, function(currentReading) {
+                if (currentReading.appEntryId === appEntryId) {
+                    console.log(currentReading.appEntryId);
+                    currentReading.setSelected();
+                } else {
+                    currentReading.unselect();
                 }
             });  
             reading.setCurrentAppEntry(appEntryId);

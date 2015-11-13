@@ -6,8 +6,8 @@
     background: #ffccbc;
     padding: 0 3px;
     cursor: pointer;
-    
-    &.active{
+
+    &.active, &.over {
         background: #ff8a65;
     }
 }

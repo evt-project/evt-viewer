@@ -17,11 +17,27 @@ angular.module('evtviewer.reading')
         vm.over = false;
     };
 
-    this.toggleAppEntries = function() {
+    this.setSelected = function() {
+        vm.active = true;
+    };
+
+    this.unselect = function() {
+        vm.active = false;
+    };
+
+    this.toggleOverAppEntries = function() {
         if (vm.over === false) {
             evtReading.mouseOverById(vm.appEntryId);
         } else {
             evtReading.mouseOutAll();
+        }
+    };
+
+    this.toggleSelectAppEntries = function() {
+        if (vm.active === false) {
+            evtReading.selectById(vm.appEntryId);
+        } else {
+            evtReading.unselectAll();
         }
     };
 
