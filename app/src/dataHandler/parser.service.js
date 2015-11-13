@@ -90,7 +90,7 @@ angular.module('evtviewer.dataHandler')
                 };
                 parsedData.addWitness(witness);
         });
-        // console.log('## Witnesses ##', parsedData.getWitnesses());
+        console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
     var parseAppEntry = function(app) {
@@ -226,11 +226,10 @@ angular.module('evtviewer.dataHandler')
                         },
                         content: ''
                     };
-                    count++;
                     parseWitnessApp(appNode, wit, appObject);
 
                     var spanElement = document.createElement('evt-reading');
-                    spanElement.setAttribute('data-app-entry-id', appObject.id);
+                    spanElement.setAttribute('data-app-entry', count);
                     for (var a = 0; a < appObject.attributes.length; a++) {
                         var attrName = appObject.attributes[a],
                             attrValue = appObject.attributes[appObject.attributes[a]];
@@ -238,6 +237,7 @@ angular.module('evtviewer.dataHandler')
                     }
                     spanElement.innerHTML = appObject.content;
                     appNode.parentNode.replaceChild(spanElement, appNode);
+                    count++;
                 }
             }
             var pbs = docDOM.getElementsByTagName('pb');

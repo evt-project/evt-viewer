@@ -4,7 +4,7 @@ angular.module('evtviewer.reading')
     return {
         restrict: 'E',
         scope: {
-            appEntryId: '@'
+            appEntry: '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',
@@ -12,7 +12,7 @@ angular.module('evtviewer.reading')
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){
             // Initialize reading
-            var currentReading = evtReading.build(scope.appEntryId, scope.vm);
+            var currentReading = evtReading.build(scope.appEntry, scope.vm);
 
             // Garbage collection
             scope.$on('$destroy', function() {

@@ -1,6 +1,6 @@
 <span 
     class="reading" 
-    ng-click="vm.toggleSelectAppEntries()"
+    ng-click="vm.toggleSelectAppEntries(); vm.openApparatus()"
     ng-mouseover="vm.toggleOverAppEntries()"
     ng-mouseout="vm.toggleOverAppEntries()"
     ng-class="{'active': vm.active, 'over': vm.over }">

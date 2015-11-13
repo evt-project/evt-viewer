@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading) {
+.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -27,7 +27,7 @@ angular.module('evtviewer.reading')
 
     this.toggleOverAppEntries = function() {
         if (vm.over === false) {
-            evtReading.mouseOverById(vm.appEntryId);
+            evtReading.mouseOverById(vm.appEntry);
         } else {
             evtReading.mouseOutAll();
         }
@@ -35,10 +35,16 @@ angular.module('evtviewer.reading')
 
     this.toggleSelectAppEntries = function() {
         if (vm.active === false) {
-            evtReading.selectById(vm.appEntryId);
+            evtReading.selectById(vm.appEntry);
         } else {
             evtReading.unselectAll();
         }
+    };
+
+    this.openApparatus = function(){
+        var criticalEntry = parsedData.getCriticalEntryByPos(vm.appEntry);
+        //TODO: create evt-popover with info about critical apparatus.
+        console.log(criticalEntry);
     };
 
     this.destroy = function() {
