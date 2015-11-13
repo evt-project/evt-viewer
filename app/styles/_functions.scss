@@ -3,10 +3,10 @@
 
 @function setGlobalFrameHeight(){
 	@if($base-footer == false){
-		@return 100% - $base-header-height;
+		@return "100% -  #{$base-header-height + 2}";
 	}
-	@else if($base-footer == true){
-		@return 100% - ($base-header-height*2);	
+	@else if($base-footer == true){	
+		@return "100% -  #{$base-header-height*2 + 2}";
 	}
 	@else {
 		@return 100%;	

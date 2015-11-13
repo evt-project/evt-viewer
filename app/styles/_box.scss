@@ -3,7 +3,11 @@
 /* *************************** */
 
 .box {
-    @include frame();
+    width: span(9 of 18);
+    height:100%;
+    white-space: normal;
+    position: relative;
+    display: inline-block;
     @include colors($base-color-dark, $base-color-light);
     
     &[data-position='left'] {
