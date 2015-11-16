@@ -1,8 +1,8 @@
 <span 
     class="reading" 
-    ng-click="vm.toggleSelectAppEntries(); vm.openApparatus()"
-    ng-mouseover="vm.toggleOverAppEntries()"
-    ng-mouseout="vm.toggleOverAppEntries()"
+    ng-click="vm.toggleSelectAppEntries($event); vm.openApparatus($event)"
+    ng-mouseover="vm.toggleOverAppEntries($event)"
+    ng-mouseout="vm.toggleOverAppEntries($event)"
     ng-class="{'active': vm.active, 'over': vm.over }">
 
     <span ng-transclude></span>

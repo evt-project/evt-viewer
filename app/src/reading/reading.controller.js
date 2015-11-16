@@ -25,24 +25,27 @@ angular.module('evtviewer.reading')
         vm.active = false;
     };
 
-    this.toggleOverAppEntries = function() {
+    this.toggleOverAppEntries = function($event) {
+        $event.stopPropagation();
         if (vm.over === false) {
-            evtReading.mouseOverById(vm.appEntry);
+            evtReading.mouseOverById(vm.appId);
         } else {
             evtReading.mouseOutAll();
         }
     };
 
-    this.toggleSelectAppEntries = function() {
+    this.toggleSelectAppEntries = function($event) {
+        $event.stopPropagation();
         if (vm.active === false) {
-            evtReading.selectById(vm.appEntry);
+            evtReading.selectById(vm.appId);
         } else {
             evtReading.unselectAll();
         }
     };
 
-    this.openApparatus = function(){
-        var criticalEntry = parsedData.getCriticalEntryByPos(vm.appEntry);
+    this.openApparatus = function($event){
+        $event.stopPropagation();
+        var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
         //TODO: create evt-popover with info about critical apparatus.
         console.log(criticalEntry);
     };

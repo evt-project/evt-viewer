@@ -193,7 +193,7 @@ angular.module('evtviewer.dataHandler')
 
     parsedData.getCriticalEntryByPos = function(entryPos) {
         // _console.log('parsedData - getCriticalEntryByPos ', entryPos);
-        return criticalAppCollection[criticalAppCollection[entryPos]];
+        return criticalAppCollection[entryPos];
     };
     return parsedData;
 });
