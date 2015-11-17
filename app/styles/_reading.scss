@@ -12,4 +12,51 @@
     &.active .reading, &.over .reading{
         background: #ff8a65;
     }
+    .reading__apparatus {
+        display: none;
+        margin: 0 10px;
+        position: relative;
+        padding: 5px;
+        z-index:99;
+
+        background: $popover-background-color;
+        color: $popover-color;
+        font-size: 90%;
+        text-align: center;
+        
+        @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
+        border: 2.5px solid black;
+        border-radius: 3px;
+        
+        cursor: text !important;
+
+        span {
+            background: transparent;
+        }
+
+        &.active {
+            display: block;
+        }
+        &.hidden {
+            opacity:0;
+        }
+        .reading__apparatus__before{
+            position:absolute;
+            top:0px;
+
+            &::before {
+                @include tooltipBeforeAfter();
+                top: -20px;
+                content:"\f0d8";
+                text-shadow: 0px -3px 0px #000;
+                height:0px;
+            }
+        }
+        &.open-up {
+            .reading__apparatus__before::before {
+                content:"\f0d7";
+                text-shadow: 0px 3px 0px #000;
+            }
+        }
+    }
 }

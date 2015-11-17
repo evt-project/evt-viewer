@@ -139,21 +139,33 @@ angular.module('evtviewer.dataHandler')
                 // Il contenuto varia a seconda di come è strutturato l'elemento
                 // Se contiene sotto apparati o raggruppamenti
                 if (child.getElementsByTagName('rdgGrp').length > 0 || child.getElementsByTagName('app').length > 0) {
-                    angular.forEach(child.children, function(subChild) {
+                    angular.forEach(child.childNodes, function(subChild) {
                         if (subChild.tagName === 'rdgGrp' || subChild.tagName === 'app') { 
                             var subApp = parseAppEntry(subChild)
                             parsedData.addCriticalEntry(subApp, subApp.id);
                             reading.content.push(subApp);
                         } else if (subChild.tagName === 'note') {
-                            reading.note = subChild.innerHTML;
+                            reading.note = subChild.innerHTML.trim();
                         } else {
-                            reading.content.push(subChild.innerHTML);
+                            if (subChild.nodeType === 3) {
+                                if (subChild.textContent.trim() !== '') {
+                                    reading.content.push(subChild.textContent.trim());
+                                }
+                            } else {
+                                reading.content.push(subChild.innerHTML.trim());
+                            }
                         }
                     });
                 } 
                 // Altrimenti
                 else {
-                    reading.content.push(child.innerHTML);
+                    if (child.nodeType === 3) {
+                        if (child.textContent.trim() !== '') {
+                            reading.content.push(child.textContent.trim());
+                        }
+                    } else {
+                        reading.content.push(child.innerHTML.trim());
+                    }
                 }
                 entry.readings[entry.readings.length] = reading.id;
                 entry.readings[reading.id] = reading;
@@ -225,7 +237,6 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-
         if ( app.innerHTML.indexOf('#'+wit) >= 0 ) {
             var children = app.childNodes;
             for (var i = 0; i < children.length; i++) {
@@ -235,7 +246,9 @@ angular.module('evtviewer.dataHandler')
                 } else {
                     if (childNode.tagName === 'lem' || childNode.tagName === 'rdg') {
                         if ( childNode.getElementsByTagName('app').length > 0 ) {
-                            parseWitnessApp(childNode, wit, evtReadingElement);
+                            if ( childNode.innerHTML.indexOf('#'+wit) >= 0 ) {
+                                parseWitnessApp(childNode, wit, evtReadingElement);
+                            }
                         } else {
                             if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
                                 // evtReadingElement.appendChild(childNode.cloneNode(true));

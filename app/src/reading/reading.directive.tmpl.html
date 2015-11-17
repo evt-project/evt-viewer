@@ -1,9 +1,22 @@
 <span 
     class="reading" 
-    ng-click="vm.toggleSelectAppEntries($event); vm.openApparatus($event)"
-    ng-mouseover="vm.toggleOverAppEntries($event)"
+    ng-click="vm.toggleSelectAppEntries($event); vm.toggleApparatus($event);"
+    ng-mouseover="vm.toggleOverAppEntries($event);"
     ng-mouseout="vm.toggleOverAppEntries($event)"
-    ng-class="{'active': vm.active, 'over': vm.over }">
+    ng-class="{'active': (vm.active || vm.tooltipOver), 'over': vm.over }">
 
     <span ng-transclude></span>
+    <span 
+        class="reading__apparatus" 
+        ng-class="{'active':vm.apparatusOpened }"
+        ng-mouseover="vm.toggleTooltipHover($event, vm)"
+        ng-mouseout="vm.toggleTooltipHover($event, vm)">
+        <span 
+            class="reading__apparatus__before"
+            ng-mouseover="vm.toggleTooltipHover($event, vm)"
+            ng-mouseout="vm.toggleTooltipHover($event, vm)"></span>
+      <span compile="vm.apparatusContent"
+            ng-mouseover="vm.toggleTooltipHover($event, vm)"
+            ng-mouseout="vm.toggleTooltipHover($event, vm)"></span>
+   </span>
 </span>

@@ -35,6 +35,9 @@ angular.module('evtviewer.reading')
                 uid: currentId,
                 appId: entryId,
                 over: false,
+                tooltipOver: false,
+                apparatusOpened: false,
+                apparatusContent : '',
                 active: entryId === reading.getCurrentAppEntry(),
                 openTriggerEvent: angular.copy(defaults.openTriggerEvent),
                 defaults: angular.copy(defaults)
@@ -92,6 +95,13 @@ angular.module('evtviewer.reading')
             });
         };
 
+        reading.closeAllApparatus = function(skipId) {
+            angular.forEach(collection, function(currentReading) {
+                if (currentReading.uid !== skipId) {
+                    currentReading.closeApparatus();
+                }
+            });
+        };
         reading.selectById = function(appId) {
             angular.forEach(collection, function(currentReading) {
                 if (currentReading.appId === appId) {
