@@ -21,8 +21,7 @@ angular.module('evtviewer.reading')
 
             scope.vm.resizeTooltip = function(e, settings){
                 e.stopPropagation();
-                var parentRef = scope.vm.parentRef;
-
+                
                 var trigger, tooltip;
                 trigger = element;
                 console.log(element);
@@ -37,6 +36,7 @@ angular.module('evtviewer.reading')
                 // Rimuovere gli stili inline del tooltip in quanto la posizione va ricalcolata ogni volta
                 // Mettere magari nella funzione di chiusura?
                 // Recupero gli elementi 
+                
                 tooltip.removeAttr('style');
 
                 // Prendere altezza, larghezza e offset superiore e sinistro del trigger 
@@ -80,8 +80,8 @@ angular.module('evtviewer.reading')
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
                 var boxContainerWidth, boxOffsetLeft;
-                boxOffsetLeft = element.parents(parentRef).offset().left;
-                boxContainerWidth = element.parents(parentRef).innerWidth();
+                boxOffsetLeft = element.parents('.box-body').offset().left;
+                boxContainerWidth = element.parents('.box-body').innerWidth();
                 
                 var tooltipNewLeft, diff;                
                 tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2);
@@ -95,7 +95,7 @@ angular.module('evtviewer.reading')
 
                 if ( (tooltipNewLeft + tooltipRealWidth) > boxContainerWidth ) {
                     diff = (tooltipNewLeft + tooltipRealWidth) - boxContainerWidth;
-                    tooltipNewLeft = tooltipNewLeft - diff ; // 10px margin right
+                    tooltipNewLeft = tooltipNewLeft - diff - 20; // 10px margin right
                     tooltip
                         .css({
                             'left' : tooltipNewLeft+'px'
@@ -117,7 +117,7 @@ angular.module('evtviewer.reading')
                 // impostando il margine superiore negativo sulla base di
                 // sua altezza + altezza del trigger (+ altezza del before) + pixel di scarto
 
-                var boxContainerHeight = element.parents(parentRef).outerHeight();
+                var boxContainerHeight = element.parents('.box-body').outerHeight();
                 var tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight;
                 var tooltipNewMarginTop, diffClientYTriggerTop ;
 
@@ -160,8 +160,11 @@ angular.module('evtviewer.reading')
                 // var beforeWidth; 
                 var beforeNewLeft;
                 // var beforeMarginRight, tooltipMarginRight;
-                beforeNewLeft = x - tooltipNewLeft - boxOffsetLeft;
-                
+                beforeNewLeft = x - tooltipNewLeft - boxOffsetLeft - 10;
+                console.log('x:' +x);
+                console.log('tooltipNewLeft: '+tooltipNewLeft);
+                console.log('boxOffsetLeft: '+boxOffsetLeft);
+                if (beforeNewLeft < 0) { beforeNewLeft = 1; }
                 // beforeWidth = 20;
                 // beforeMarginRight = x+beforeWidth;
                 // tooltipMarginRight = tooltip.offset().left + tooltip.width();
