@@ -60,6 +60,15 @@ angular.module('evtviewer.box')
               // $('.box-body').scrollTop($(this).scrollTop());
             });
 
+            scope.$watch(function() {
+                if (scope.vm.state.filters !== undefined) {
+                    return scope.vm.state.filters;
+                }
+            }, function(newItems, oldItems) {
+                if (newItems !== oldItems) {
+                    scope.$broadcast('UPDATE_APP_FILTERS', newItems);
+                }
+            }, true);
         }
     };
 });

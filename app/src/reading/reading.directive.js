@@ -189,6 +189,24 @@ angular.module('evtviewer.reading')
                     currentReading.destroy();
                 }     
             });
+
+            scope.$on('UPDATE_APP_FILTERS', function(event, filters){
+                for(filter in filters){
+                    if (filters[filter].length > 0) {
+                        if (element.attr('data-'+filter) !== undefined){
+                            if ( filters[filter].indexOf(element.attr('data-'+filter)) >= 0 ){
+                                scope.vm.filtered = false;
+                            } else {
+                                scope.vm.filtered = true;
+                            }
+                        } else {
+                            scope.vm.filtered = true;
+                        }
+                    } else {
+                        scope.vm.filtered = false;
+                    }
+                }
+            });
         }
     };
 });

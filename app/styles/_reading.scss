@@ -3,100 +3,112 @@
 /* *************************** */
 
 .reading {
-    background: #ffccbc;
-    border:1px solid black;
-    padding: 0 3px;
-    cursor: pointer;
+    &:not(.filtered) {
+        background: #ffccbc;
+        border:1px solid black;
+        padding: 0 3px;
+        cursor: pointer;
 
-    &.active, &.over,
-    &.active .reading, &.over .reading{
-        background: #ff8a65;
-    }
-    .reading__apparatus {
-        display: none;
-        margin: 0 10px;
-        position: relative;
-        padding: 5px;
-        z-index:99;
+        &.active, &.over,
+        &.active .reading, &.over .reading{
+            background: #ff8a65;
+        }
+        .reading__apparatus {
+            display: none;
+            margin: 0 10px;
+            position: relative;
+            padding: 5px;
+            z-index:99;
 
-        background: $popover-background-color;
-        color: $popover-color;
-        font-size: 90%;
-        text-align: center;
-        
-        @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
-        border: 2.5px solid black;
-        border-radius: 3px;
-        
-        cursor: text !important;
+            background: $popover-background-color;
+            color: $popover-color;
+            font-size: 90%;
+            text-align: center;
+            
+            @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
+            border: 2.5px solid black;
+            border-radius: 3px;
+            
+            cursor: text !important;
 
-        span {
-            background: transparent;
-        }
-
-        &.active {
-            display: block;
-        }
-        &.hidden {
-            opacity:0;
-        }
-        .reading__apparatus__before{
-            position:absolute;
-            top:0px;
-
-            &::before {
-                @include tooltipBeforeAfter();
-                top: -20px;
-                content:"\f0d8";
-                text-shadow: 0px -3px 0px #000;
-                height:0px;
-            }
-        }
-        &.open-up {
-            .reading__apparatus__before::before {
-                content:"\f0d7";
-                text-shadow: 0px 3px 0px #000;
-            }
-        }
-        .witnesses {
-            &::before {
-                content: " ";
-            }
-            .wit {
-                font-weight: bold;
-                cursor: pointer;
-                &:hover {
-                    text-decoration: underline;
-                }
-                &::after {
-                    content:" ";
-                    text-decoration: none !important;
-                }
-                &:last-child {
-                    &::after {
-                        content:"";
-                    }
-                }
-            }
-        }
-        .attributes {
-            &::before {
-                content: "[";
-            }
-            &::after {
-                content: "]";
-            }
             span {
-                font-style: italic;
-                &::after {
-                    content:", ";
+                background: transparent;
+            }
+
+            &.active {
+                display: block;
+            }
+            &.hidden {
+                opacity:0;
+            }
+            .reading__apparatus__before{
+                position:absolute;
+                top:0px;
+
+                &::before {
+                    @include tooltipBeforeAfter();
+                    top: -20px;
+                    content:"\f0d8";
+                    text-shadow: 0px -3px 0px #000;
+                    height:0px;
                 }
-                &:last-child {
+            }
+            &.open-up {
+                .reading__apparatus__before::before {
+                    content:"\f0d7";
+                    text-shadow: 0px 3px 0px #000;
+                }
+            }
+            .witnesses {
+                &::before {
+                    content: " ";
+                }
+                .wit {
+                    font-weight: bold;
+                    cursor: pointer;
+                    &:hover {
+                        text-decoration: underline;
+                    }
                     &::after {
-                        content:"";
+                        content:" ";
+                        text-decoration: none !important;
+                    }
+                    &:last-child {
+                        &::after {
+                            content:"";
+                        }
                     }
                 }
             }
+            .attributes {
+                &::before {
+                    content: " [";
+                }
+                &::after {
+                    content: "]";
+                }
+                span {
+                    font-style: italic;
+                    &::after {
+                        content:", ";
+                    }
+                    &:last-child {
+                        &::after {
+                            content:"";
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.filtered {
+        background: transparent;
+        border: none;
+        cursor: default;
+
+        .reading__apparatus {
+            display: none !important
         }
     }
 }

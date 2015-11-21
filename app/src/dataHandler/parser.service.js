@@ -206,17 +206,18 @@ angular.module('evtviewer.dataHandler')
         }
     };
     var parseXMLElement = function(element){
-        var newElement;
         if (element.nodeType === 3 ) { // Text
             return element;
         } else {
+            var newElement;
             newElement = document.createElement('span');
             newElement.className = element.tagName;
             for (var i = 0; i < element.attributes.length; i++) {
                 var attrib = element.attributes[i];
                 if (attrib.specified) {
                     if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                        element.setAttribute(attrib.name, attrib.value);
+                        newElement.setAttribute('data-'+attrib.name, attrib.value);
+                        parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                     }
                 }
             }
@@ -231,7 +232,8 @@ angular.module('evtviewer.dataHandler')
             var attrib = app.attributes[k];
             if (attrib.specified) {
                 if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                    evtReadingElement.setAttribute(attrib.name, attrib.value);
+                    evtReadingElement.setAttribute('data-'+attrib.name, attrib.value);
+                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                 }
             }
         }
@@ -243,7 +245,8 @@ angular.module('evtviewer.dataHandler')
                     evtReadingElement.appendChild(childNode.cloneNode(true));
                 } else {
                     if (childNode.tagName === 'lem' || childNode.tagName === 'rdg') {
-                        if ( childNode.getElementsByTagName('app').length > 0 ) {
+                        if ( childNode.getElementsByTagName('app').length > 0 || 
+                             childNode.getElementsByTagName('rdgGrp').length > 0 ) {
                             if ( childNode.innerHTML.indexOf('#'+wit) >= 0 ) {
                                 parseWitnessApp(childNode, wit, evtReadingElement);
                             }
@@ -251,6 +254,15 @@ angular.module('evtviewer.dataHandler')
                             if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
                                 // evtReadingElement.appendChild(childNode.cloneNode(true));
                                 evtReadingElement.appendChild(parseXMLElement(childNode));
+                            }
+                        }
+                        for (var j = 0; j < childNode.attributes.length; j++) {
+                            var attrib = childNode.attributes[j];
+                            if (attrib.specified) {
+                                if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                                    evtReadingElement.setAttribute('data-'+attrib.name, attrib.value);
+                                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                                }
                             }
                         }
                     } else if (childNode.tagName === 'rdgGrp') {

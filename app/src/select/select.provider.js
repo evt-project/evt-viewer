@@ -169,7 +169,6 @@ angular.module('evtviewer.select')
                 collection[currentId].callback = callback;
             }
         };
-
         return select;
     };
 

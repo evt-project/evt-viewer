@@ -46,21 +46,25 @@ angular.module('evtviewer.reading')
     this.toggleOverAppEntries = function($event) {
         // _console.log('# toggleOverAppEntries #');
         $event.stopPropagation();
-        if (vm.over === false) {
-            evtReading.mouseOverById(vm.appId);
-        } else {
-            evtReading.mouseOutAll();
+        if ( !vm.filtered ) {
+            if (vm.over === false) {
+                evtReading.mouseOverById(vm.appId);
+            } else {
+                evtReading.mouseOutAll();
+            }
         }
     };
 
     this.toggleSelectAppEntries = function($event) {
         // _console.log('# toggleSelectAppEntries #');
         $event.stopPropagation();
-        if (!vm.tooltipOver) {
-            if (vm.active === false) {
-                evtReading.selectById(vm.appId);
-            } else {
-                evtReading.unselectAll();
+        if ( !vm.filtered ) {
+            if (!vm.tooltipOver) {
+                if (vm.active === false) {
+                    evtReading.selectById(vm.appId);
+                } else {
+                    evtReading.unselectAll();
+                }
             }
         }
     };
@@ -123,21 +127,23 @@ angular.module('evtviewer.reading')
     this.toggleApparatus = function($event){
         // _console.log('# toggleApparatus #');
         $event.stopPropagation();
-        if (!vm.tooltipOver) {
-            if ( vm.apparatusContent === '') {
-                var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
-                if (criticalEntry !== undefined) {
-                    vm.apparatusContent = parseCriticalEntry(criticalEntry);
-                }
-            } 
+        if ( !vm.filtered ) {
             if (!vm.tooltipOver) {
-                if ( vm.apparatusOpened ) {
-                    vm.closeApparatus();
-                } else {
-                    evtReading.closeAllApparatus(vm.uid);
-                    vm.apparatusOpened = !vm.apparatusOpened;
-                    if (vm.apparatusOpened === true) {
-                        vm.resizeTooltip($event, vm.defaults);
+                if ( vm.apparatusContent === '') {
+                    var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
+                    if (criticalEntry !== undefined) {
+                        vm.apparatusContent = parseCriticalEntry(criticalEntry);
+                    }
+                } 
+                if (!vm.tooltipOver) {
+                    if ( vm.apparatusOpened ) {
+                        vm.closeApparatus();
+                    } else {
+                        evtReading.closeAllApparatus(vm.uid);
+                        vm.apparatusOpened = !vm.apparatusOpened;
+                        if (vm.apparatusOpened === true) {
+                            vm.resizeTooltip($event, vm.defaults);
+                        }
                     }
                 }
             }

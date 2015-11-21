@@ -46,6 +46,21 @@ angular.module('evtviewer.box')
             _console.log('vm - destroy ' + tempId);
         }
 
+        // Critical edition control
+        function toggleCriticalAppFilter(filter, value){
+            var vm = this;
+            if (vm.state.filters[filter] === undefined) {
+                vm.state.filters[filter] = [];
+            }
+            var index = vm.state.filters[filter].indexOf(value)
+            if (index < 0) {
+                vm.state.filters[filter].push(value);
+            } else {
+                vm.state.filters[filter].splice(index, 1);
+            }
+            _console.log('# toggleCriticalAppFilter ', vm.state.filters);
+        }
+
         // 
         // Box builder
         // 
@@ -62,7 +77,8 @@ angular.module('evtviewer.box')
                     buttonSwitches: []
                 },
                 content,
-                state = {};
+                state = {},
+                appFilters = [];
 
             var scopeHelper = {};
 
@@ -88,6 +104,9 @@ angular.module('evtviewer.box')
                     break;
                 case 'witness':
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
+                    console.log(parsedData.getCriticalEntriesFilters());
+                    appFilters = parsedData.getCriticalEntriesFilters();
+                    state.filters = {};
                     break;
             }
 
@@ -101,12 +120,14 @@ angular.module('evtviewer.box')
                 bottomMenuList: bottomMenuList,
                 content: content,
                 state: state,
+                appFilters: appFilters,
 
                 // function
                 updateContent: updateContent,
                 updateState: updateState,
                 getState: getState,
-                destroy: destroy
+                destroy: destroy,
+                toggleCriticalAppFilter: toggleCriticalAppFilter
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

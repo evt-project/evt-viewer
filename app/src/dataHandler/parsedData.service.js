@@ -24,7 +24,10 @@ angular.module('evtviewer.dataHandler')
 
     var witnessesGroupCollection = {};
 
-    var criticalAppCollection = {};
+    var criticalAppCollection = {
+        length: 0,
+        filters: { }
+    };
    
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
@@ -172,7 +175,7 @@ angular.module('evtviewer.dataHandler')
         return witnessesGroupCollection[grpId];
     };
 
-    /* CRITICAL APPARATUS */
+    /* CRITICAL ENTRIES */
     parsedData.addCriticalEntry = function(entry, entryId) {
         // var entryId = entry.id;
         if ( criticalAppCollection.length === undefined ) {
@@ -195,5 +198,28 @@ angular.module('evtviewer.dataHandler')
         // _console.log('parsedData - getCriticalEntryByPos ', entryPos);
         return criticalAppCollection[entryPos];
     };
+
+    /* CRITICAL ENTRIES FILTERS */
+    parsedData.addCriticalEntryFilter = function(name, value) {
+        if ( criticalAppCollection.filters[name] === undefined ) {
+            criticalAppCollection.filters[name] = {
+                name: name,
+                values: [value]
+            };
+        } else {
+            if ( criticalAppCollection.filters[name].values.indexOf(value) < 0 ) {
+                criticalAppCollection.filters[name].values.push(value);
+            }
+        }
+        // _console.log(criticalAppCollection.filters);
+    }
+
+    parsedData.getCriticalEntriesFilters = function() {
+        return criticalAppCollection.filters;
+    }
+
+    parsedData.getCriticalEntriesFilterValues = function(filter) {
+        return criticalAppCollection.filters[filter];
+    }
     return parsedData;
 });

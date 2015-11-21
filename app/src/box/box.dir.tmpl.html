@@ -15,6 +15,27 @@
         </button-switch>
     </div>
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
+    <div 
+        class="box-bottom-box filters"
+        ng-if="vm.type=='witness'">
+        <div ng-repeat="filter in vm.appFilters">
+            <div class="filters-section-title">{{filter.name}}</div>
+            <div ng-repeat="value in filter.values">
+                <input 
+                    type="checkbox" 
+                    value="{{value}}" 
+                    name="{{value}}" 
+                    ng-click="vm.toggleCriticalAppFilter(filter.name, value);"
+                    />
+                <label for="{{value}}"> {{value}}</label>
+            </div>
+        </div>
+    </div>
     <div class="box-menu" data-position="bottom">
+        <button-switch 
+            title="Filters"
+            data-label="Filters"
+            ng-if="vm.type=='witness'">
+        </button-switch>
     </div>
 </section>
