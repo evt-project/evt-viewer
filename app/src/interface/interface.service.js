@@ -132,60 +132,24 @@ angular.module('evtviewer.interface')
                             if ( witness !== undefined ) {
                                 var witSelect = evtSelect.getById(currentSelect.id);
                                 witSelect.selectOption(witness);
-                                i++
+                                i++;
                             }
                         }
                     });
                 }
             } else {
                 var siglas = witIds.split('#').filter(function(el) {return el.length !== 0;}),
-                    i = 0;
+                    j = 0;
                 angular.forEach(selectors, function(currentSelect) {
                     if (currentSelect.type === 'witness') {
-                        var witness = witnesses.list[siglas[i]] || undefined;
+                        var witness = witnesses.list[siglas[j]] || undefined;
                         if ( witness !== undefined ) {
                             var witSelect = evtSelect.getById(currentSelect.id);
                             witSelect.selectOption(witness);
-                            i++
+                            j++;
                         }
                     }
                 });
-            }
-        };
-        //TODO: Valutare se e' meglio aggiornare il testo del testimone dall'interfaccia o direttamente dal box
-        //Nel primo caso, cancellare la funzione seguente
-        mainInterface.updateWitness = function(sigla, boxId) {
-            console.log('#evtInterface#', 'updating current witness setting it to '+sigla);
-            var witness = { },
-                textBox = { },
-                currentDoc,
-                currentWit,
-                content;
-
-            witness = parsedData.getWitness(sigla);
-            
-            sigla = sigla.replace(/#/g, '');
-            textBox = evtBox.getById(boxId);
-            if (textBox !== undefined) {
-                currentWit = textBox.getState('witness');
-                if (currentWit === undefined || currentWit !== sigla) {
-                    if ( witness !== undefined ) {
-                        content = witness.content;
-                    }
-                    if (content === undefined) {
-                        currentDoc = mainInterface.getCurrentDocument();
-                        if (currentDoc !== undefined) {
-                            content = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
-                        }    
-                    }
-                    
-                    if ( content !== undefined ) {
-                        textBox.updateContent(content.innerHTML);
-                    } else {
-                        textBox.updateContent('Testo non disponibile.');
-                    }
-                    textBox.updateState('witness', sigla);
-                }
             }
         };
 

@@ -24,7 +24,6 @@ angular.module('evtviewer.reading')
                 
                 var trigger, tooltip;
                 trigger = element;
-                console.log(element);
                 tooltip = angular.element(element).find('span.reading__apparatus').last();
 
                 var before = angular.element(tooltip).find('.reading__apparatus__before');
@@ -135,7 +134,7 @@ angular.module('evtviewer.reading')
                     });
                     tooltip.addClass('open-up');
                     before.css({
-                        top: (tooltip.outerHeight()+2)+'px'
+                        top: (tooltip.outerHeight()+4)+'px'
                     });
                 } else {
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
@@ -149,7 +148,7 @@ angular.module('evtviewer.reading')
                         });
                     } else {
                        tooltip.css({
-                            'margin-top' : '5px'
+                            'margin-top' : '7px'
                         }); 
                     }
                     
@@ -160,10 +159,8 @@ angular.module('evtviewer.reading')
                 // var beforeWidth; 
                 var beforeNewLeft;
                 // var beforeMarginRight, tooltipMarginRight;
-                beforeNewLeft = x - tooltipNewLeft - boxOffsetLeft - 10;
-                console.log('x:' +x);
-                console.log('tooltipNewLeft: '+tooltipNewLeft);
-                console.log('boxOffsetLeft: '+boxOffsetLeft);
+                
+                beforeNewLeft = x - boxOffsetLeft - tooltipNewLeft - 20;
                 if (beforeNewLeft < 0) { beforeNewLeft = 1; }
                 // beforeWidth = 20;
                 // beforeMarginRight = x+beforeWidth;

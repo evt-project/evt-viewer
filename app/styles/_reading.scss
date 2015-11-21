@@ -58,5 +58,45 @@
                 text-shadow: 0px 3px 0px #000;
             }
         }
+        .witnesses {
+            &::before {
+                content: " ";
+            }
+            .wit {
+                font-weight: bold;
+                cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                }
+                &::after {
+                    content:" ";
+                    text-decoration: none !important;
+                }
+                &:last-child {
+                    &::after {
+                        content:"";
+                    }
+                }
+            }
+        }
+        .attributes {
+            &::before {
+                content: "[";
+            }
+            &::after {
+                content: "]";
+            }
+            span {
+                font-style: italic;
+                &::after {
+                    content:", ";
+                }
+                &:last-child {
+                    &::after {
+                        content:"";
+                    }
+                }
+            }
+        }
     }
 }

@@ -18,27 +18,33 @@ angular.module('evtviewer.reading')
     };
 
     this.setSelected = function() {
+        // _console.log('# setSelected #');
         vm.active = true;
     };
 
     this.unselect = function() {
+        // _console.log('# unselect #');
         vm.active = false;
     };
 
     this.closeApparatus = function() {
+        // _console.log('# closeApparatus #');
         vm.apparatusOpened = false;
     };
 
     this.openApparatus = function() {
+        // _console.log('# openApparatus #');
         vm.apparatusOpened = true;
     };
 
     
     this.toggleTooltipOver = function() {
+        // _console.log('# toggleTooltipOver #');
         vm.tooltipOver = !vm.tooltipOver;
     };
 
     this.toggleOverAppEntries = function($event) {
+        // _console.log('# toggleOverAppEntries #');
         $event.stopPropagation();
         if (vm.over === false) {
             evtReading.mouseOverById(vm.appId);
@@ -48,76 +54,98 @@ angular.module('evtviewer.reading')
     };
 
     this.toggleSelectAppEntries = function($event) {
+        // _console.log('# toggleSelectAppEntries #');
         $event.stopPropagation();
-        if (vm.active === false) {
-            evtReading.selectById(vm.appId);
-        } else {
-            evtReading.unselectAll();
+        if (!vm.tooltipOver) {
+            if (vm.active === false) {
+                evtReading.selectById(vm.appId);
+            } else {
+                evtReading.unselectAll();
+            }
         }
     };
 
     var parseCriticalEntry = function(entry) {
-        var appText = '';
-        var readings = entry.readings;
+        var appText = '',
+            readings = entry.readings,
+            content = '',
+            i = 0;
+        // se entry e' un raggruppamento di letture (<app> o <rdgGrp>), avra' delle letture
         if (readings !== undefined) {
-            for (var i = 0; i < readings.length; i++) {
+            // ciclo le letture per ottenere la stampa del testo con sigla testimone
+            for (i = 0; i < readings.length; i++) {
                 var reading = readings[readings[i]],
-                    text = '';
-                if (reading.readings !== undefined) { //rdgGrp
-                    for (var k = 0; k < reading.readings.length; k++) {
-                        text += parseCriticalEntry(reading.readings[k]);
-                    }
-                } else {
-                    var content = reading.content || [];
+                    text = '',
+                    witnesses = '',
+                    attributes = '';
+                if (readings.__elemTypes[readings[i]] === 'lem' || readings.__elemTypes[readings[i]] === 'rdg') { //lem o rdg
+                    // recupero il contenuto
+                    content = reading.content || [];
                     for (var j = 0; j < content.length; j++) {
-                        if (typeof content[j] === 'object') {
+                        if (typeof content[j] === 'object') { //annidamento
                             text += '{'+parseCriticalEntry(content[j])+'} ';
                         } else {
                             text += content[j];
                         }
                     }
+                } else if (readings.__elemTypes[readings[i]] === 'rdgGrp' || readings.__elemTypes[readings[i]] === 'app') { //rdgGrp o app
+                    text += '{'+parseCriticalEntry(reading)+'} ';
                 }
                 if (text === '') {
                     text = '<i>omit.</i>';
                 }
-                appText += text;
-                if (reading.attributes !== undefined && reading.attributes.wit !== undefined) {
-                    appText += ' <strong>'+reading.attributes.wit.replace(/#/gi, ' ')+'</strong>';
+                // recupero i testimoni e gli altri attributi
+                if (reading.attributes !== undefined) {
+                    for (var key in reading.attributes) {
+                        if (key === 'wit') {
+                            var wits = reading.attributes[key].split('#').filter(function(el) {return el.length !== 0;});
+                            for(var s = 0; s < wits.length; s++ ){
+                                witnesses += '<span class="wit" onclick="console.log(\'openWit '+wits[s]+'\');">'+wits[s]+'</span>';
+                            }
+                        } else {
+                            attributes += '<span class="'+key+'">'+reading.attributes[key]+'</span>';
+                        }
+                    }
                 }
+                if (attributes !== '') {
+                    attributes = '<span class="attributes">'+attributes+'</span>';
+                }
+                if (witnesses !== '') {
+                    witnesses = '<span class="witnesses">'+witnesses+'</span>';
+                }
+                appText += text + witnesses + attributes;
                 appText += ', ';
             }
-        } else if (entry.content !== undefined) { //rdgGrp
-            var content = entry.content || [];
-            for (var j = 0; j < content.length; j++) {
-                if (typeof content[j] === 'object') {
-                    appText += '{'+parseCriticalEntry(content[j])+'} ';
-                } else {
-                    appText += content[j];
-                }
-            }
-        }
+        } 
         return appText.trim().slice(0, -1);
     };
 
     this.toggleApparatus = function($event){
+        // _console.log('# toggleApparatus #');
         $event.stopPropagation();
-        if ( vm.apparatusContent === '') {
-            var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
-            if (criticalEntry !== undefined) {
-                vm.apparatusContent = parseCriticalEntry(criticalEntry);
-            }
-        } 
         if (!vm.tooltipOver) {
-            evtReading.closeAllApparatus(vm.uid);
-            vm.apparatusOpened = !vm.apparatusOpened;
-            if (vm.apparatusOpened === true) {
-                vm.resizeTooltip($event, vm.defaults);
+            if ( vm.apparatusContent === '') {
+                var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
+                if (criticalEntry !== undefined) {
+                    vm.apparatusContent = parseCriticalEntry(criticalEntry);
+                }
+            } 
+            if (!vm.tooltipOver) {
+                if ( vm.apparatusOpened ) {
+                    vm.closeApparatus();
+                } else {
+                    evtReading.closeAllApparatus(vm.uid);
+                    vm.apparatusOpened = !vm.apparatusOpened;
+                    if (vm.apparatusOpened === true) {
+                        vm.resizeTooltip($event, vm.defaults);
+                    }
+                }
             }
         }
-        //TODO: create evt-popover with info about critical apparatus.
     };
 
     this.destroy = function() {
+        // _console.log('# destroy #');
         var tempId = vm.uid;
         // TODO: remove from list and collection
         // this.$destroy();

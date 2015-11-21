@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
             type: '@'
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
 
             // Add attributes in vm
             scope.vm = {
@@ -34,7 +34,7 @@ angular.module('evtviewer.box')
                     if ( witness !== undefined ) {
                         newContent = witness.content;
                         if (newContent === undefined) {
-                            var documents = parsedData.getDocuments()
+                            var documents = parsedData.getDocuments(),
                                 currentDoc = '';
                             if (documents.length > 0) {
                                 currentDoc = documents.list[documents[0]];
@@ -53,6 +53,13 @@ angular.module('evtviewer.box')
                     currentBox.updateState('witness', sigla); 
                 }
             });
+            var raw = element[0];
+            var boxBody = angular.element(element).find('.box-body')[0];
+            angular.element(boxBody).bind("scroll", function() {
+              console.log('scroll');
+              // $('.box-body').scrollTop($(this).scrollTop());
+            });
+
         }
     };
 });
