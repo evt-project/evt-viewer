@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData) {
+.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -151,6 +151,8 @@ angular.module('evtviewer.reading')
                 }
             }
         }
+
+        evtPopover.closeAll();
     };
 
     this.destroy = function() {

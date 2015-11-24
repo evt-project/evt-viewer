@@ -97,7 +97,9 @@ angular.module('evtviewer.reading')
 
         reading.closeAllApparatus = function(skipId) {
             angular.forEach(collection, function(currentReading) {
-                if (currentReading.uid !== skipId) {
+                if (skipId === undefined) {
+                    currentReading.closeApparatus();
+                } else if (currentReading.uid !== skipId) {
                     currentReading.closeApparatus();
                 }
             });

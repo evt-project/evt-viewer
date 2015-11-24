@@ -65,14 +65,16 @@ angular.module('evtviewer.popover')
             if (collection[currentId] !== 'undefined') {
                 collection[currentId].expand();
                 if (closeSiblings) {
-                    popover.closeAll();
+                    popover.closeAll(currentId);
                 }
             }
         };
 
         popover.closeAll = function(skipId) {
             angular.forEach(collection, function(currentPopover, currentId) {
-                if (currentId !== skipId.toString()) {
+                if (skipId === undefined) {
+                    currentPopover.collapse();
+                } else if (currentId !== skipId.toString()) {
                     currentPopover.collapse();
                 }
             });

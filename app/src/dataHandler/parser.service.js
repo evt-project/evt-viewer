@@ -375,7 +375,6 @@ angular.module('evtviewer.dataHandler')
         while (n < notes.length) {
             var noteNode = notes[n],
                 popoverElem = document.createElement('evt-popover');
-            console.log(noteNode.parentNode.tagName);
             if (noteNode.parentNode.tagName !== 'app' &&
                 noteNode.parentNode.tagName !== 'evt-reading' ) {
                 popoverElem.setAttribute('data-trigger', 'click');
@@ -443,8 +442,6 @@ angular.module('evtviewer.dataHandler')
             
             parser.parseNote(docDOM);
             parsedData.addCriticalText(docDOM, '');
-            console.log('parseCriticalText');
-            console.log(docDOM);
         } else {
             return '<span>Testo non disponibile.</span>';
         }
