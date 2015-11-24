@@ -23,5 +23,9 @@ angular.module('evtviewer.communication')
             });
     };
 
+    communication.err = function(msg) {
+        _console.log('# ERROR # ' + msg);
+    };
+
     return communication;
 });

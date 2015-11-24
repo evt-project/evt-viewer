@@ -291,6 +291,103 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+    var parseCriticalTextApp = function(app, lemElement){
+        for (var k = 0; k < app.attributes.length; k++) {
+            var attrib = app.attributes[k];
+            if (attrib.specified) {
+                if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                    lemElement.setAttribute('data-'+attrib.name, attrib.value);
+                }
+            }
+        }
+        if ( app.getElementsByTagName('lem').length > 0 ) {
+            var children = app.childNodes;
+            for (var i = 0; i < children.length; i++) {
+                var childNode = children[i];
+                if (childNode.nodeType === 3 ) { // Text
+                    lemElement.appendChild(childNode.cloneNode(true));
+                } else {
+                    if (childNode.tagName === 'lem') {
+                        if ( childNode.getElementsByTagName('app').length > 0 ) {
+                            if ( childNode.getElementsByTagName('lem').length > 0 ) {
+                                parseCriticalTextApp(childNode, lemElement);
+                            }
+                        } else {
+                            // lemElement.appendChild(childNode.cloneNode(true));
+                            lemElement.appendChild(parseXMLElement(childNode));
+                        }
+                        for (var j = 0; j < childNode.attributes.length; j++) {
+                            var attrib = childNode.attributes[j];
+                            if (attrib.specified) {
+                                if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                                    lemElement.setAttribute('data-'+attrib.name, attrib.value);
+                                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                                }
+                            }
+                        }
+                    } else if (childNode.tagName === 'app') {
+                        if ( childNode.getElementsByTagName('lem').length > 0 ) {
+                            var newElement = document.createElement('evt-reading');
+                            var id = childNode.getAttribute('xml:id') || xpath(childNode).substr(1);
+                            newElement.setAttribute('data-entry-id', xpath(childNode.parentNode).substr(1));
+                            newElement.setAttribute('data-app-id', id);
+                            parseCriticalTextApp(childNode, newElement);
+                            lemElement.appendChild(newElement);
+                        }
+                    } else if (childNode.tagName !== 'rdg' && childNode.tagName !== 'rdgGrp') {
+                        lemElement.appendChild(childNode.cloneNode(true));
+                    }   
+                }
+            }
+        } else {
+            // There are no <lem> elements
+            var rdgs = app.getElementsByTagName('rdg');
+
+            if ( rdgs.length > 0) {
+                var lemText = '{';
+                for (var k = 0; k < rdgs.length; k++) {
+                    var rdgNode = rdgs[k];
+                    lemText += rdgNode.textContent+', ';
+                }
+                lemText = lemText.slice(0, -2)+'}';
+                var lemElem = document.createElement('span');
+                lemElem.textContent = lemText;
+                lemElement.appendChild(lemElem);
+            }
+        }
+    };
+    parser.parseWintessPageBreaks = function(docDOM, wit) {
+        var pbs = docDOM.getElementsByTagName('pb');
+        var k = 0;
+        while ( k < pbs.length) {
+            var pbNode = pbs[k];
+            if (pbNode.getAttribute('ed') !== '#'+wit) {
+                pbNode.parentNode.removeChild(pbNode); 
+            } else {
+                k++;
+            }
+        }
+    };
+
+    parser.parseNote = function(docDOM) {
+        var notes = docDOM.getElementsByTagName('note');
+        var n = 0;
+        while (n < notes.length) {
+            var noteNode = notes[n],
+                popoverElem = document.createElement('evt-popover');
+            console.log(noteNode.parentNode.tagName);
+            if (noteNode.parentNode.tagName !== 'app' &&
+                noteNode.parentNode.tagName !== 'evt-reading' ) {
+                popoverElem.setAttribute('data-trigger', 'click');
+                popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
+                popoverElem.innerHTML = '[•]';
+                noteNode.parentNode.replaceChild(popoverElem, noteNode);
+            } else {
+                noteNode.parentNode.removeChild(noteNode);
+            }
+        }
+    };
+
     parser.parseWitnessText = function(doc, wit) {
         if ( doc !== undefined ) {
             var docDOM = doc.documentElement.getElementsByTagName('body')[0];
@@ -311,27 +408,11 @@ angular.module('evtviewer.dataHandler')
                 }
                 j--;
             }
-            var pbs = docDOM.getElementsByTagName('pb');
-            var k = 0;
-            while ( k < pbs.length) {
-                var pbNode = pbs[k];
-                if (pbNode.getAttribute('ed') !== '#'+wit) {
-                    pbNode.parentNode.removeChild(pbNode); 
-                } else {
-                    k++;
-                }
-            }
+            
+            parser.parseWintessPageBreaks(docDOM, wit);
 
-            var notes = docDOM.getElementsByTagName('note');
-            var n = 0;
-            while (n < notes.length) {
-                var noteNode = notes[n],
-                    popoverElem = document.createElement('evt-popover');
-                popoverElem.setAttribute('data-trigger', 'click');
-                popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
-                popoverElem.innerHTML = '[•]';
-                noteNode.parentNode.replaceChild(popoverElem, noteNode);
-            }
+            parser.parseNote(docDOM);
+            
             parsedData.addWitnessText(wit, docDOM);
             return docDOM;
         } else {
@@ -339,7 +420,35 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-
+    parser.parseCriticalText = function(doc) {
+        if ( doc !== undefined ) {
+            var docDOM = doc.documentElement.getElementsByTagName('body')[0];
+            var apps = docDOM.getElementsByTagName('app');
+            var j = apps.length-1, 
+                count = 0;
+            
+            while(j < apps.length && j >= 0) {
+                var appNode = apps[j];
+                if (!isNestedApp(appNode)) {
+                    // var id: appNode.getAttribute('xml:id') || xpath(appNode).substr(1),
+                    var spanElement = document.createElement('evt-reading');
+                    var id = appNode.getAttribute('xml:id') || xpath(appNode).substr(1); //'app-'+count;
+                    spanElement.setAttribute('data-app-id', id);
+                    parseCriticalTextApp(appNode, spanElement);
+                    appNode.parentNode.replaceChild(spanElement, appNode);
+                    count++;
+                }
+                j--;
+            }
+            
+            parser.parseNote(docDOM);
+            parsedData.addCriticalText(docDOM, '');
+            console.log('parseCriticalText');
+            console.log(docDOM);
+        } else {
+            return '<span>Testo non disponibile.</span>';
+        }
+    };
     
     return parser;
 });

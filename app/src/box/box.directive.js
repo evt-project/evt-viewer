@@ -5,7 +5,8 @@ angular.module('evtviewer.box')
         restrict: 'E',
         scope: {
             id: '@',
-            type: '@'
+            type: '@',
+            subtype: '@'
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
         link: function(scope, element, attrs) {
@@ -14,6 +15,7 @@ angular.module('evtviewer.box')
             scope.vm = {
                 id: scope.id,
                 type: scope.type,
+                subtype: scope.subtype,
                 state: {}
             };
 
@@ -27,6 +29,16 @@ angular.module('evtviewer.box')
                 }     
             });
 
+            scope.$on('UPDATE_DOCUMENT', function(event, boxId){
+                if (currentBox.subtype === 'critical') {
+                    var newContent = parsedData.getCriticalText(boxId)[0];
+                    if ( newContent !== undefined && newContent !== '') {
+                        currentBox.updateContent(newContent.innerHTML);
+                    } else {
+                        currentBox.updateContent('Testo non disponibile.');
+                    }
+                }
+            });
             scope.$on('UPDATE_WITNESS', function(event, sigla){
                 if ( sigla !== undefined && sigla !== currentBox.getState('witness') ) {
                     var newContent = '';
@@ -45,7 +57,7 @@ angular.module('evtviewer.box')
                         }
                     }
                     
-                    if ( newContent !== undefined ) {
+                    if ( newContent !== undefined && newContent !== '') {
                         currentBox.updateContent(newContent.innerHTML);
                     } else {
                         currentBox.updateContent('Testo non disponibile.');
@@ -53,9 +65,10 @@ angular.module('evtviewer.box')
                     currentBox.updateState('witness', sigla); 
                 }
             });
+
             var raw = element[0];
             var boxBody = angular.element(element).find('.box-body')[0];
-            angular.element(boxBody).bind("scroll", function() {
+            angular.element(boxBody).bind('scroll', function() {
               console.log('scroll');
               // $('.box-body').scrollTop($(this).scrollTop());
             });

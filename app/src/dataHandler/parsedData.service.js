@@ -28,6 +28,8 @@ angular.module('evtviewer.dataHandler')
         length: 0,
         filters: { }
     };
+
+    var criticalText_mock = [];
    
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
@@ -176,6 +178,13 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* CRITICAL ENTRIES */
+    parsedData.addCriticalText = function(text, docId) {
+        criticalText_mock.push(text);
+    };
+    parsedData.getCriticalText = function(docId) {
+        return criticalText_mock;
+    };
+
     parsedData.addCriticalEntry = function(entry, entryId) {
         // var entryId = entry.id;
         if ( criticalAppCollection.length === undefined ) {

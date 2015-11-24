@@ -55,7 +55,7 @@ angular.module('evtviewer.select')
                         if ( $routeParams.docId !== undefined ) {
                             url +='/'+$routeParams.docId;
                         }
-                        $location.path( url );
+                        // $location.path( url );
                     };
                     break;
                 case 'document':
@@ -67,7 +67,7 @@ angular.module('evtviewer.select')
                     changeRoute = function(option) {
                         _console.log('document select changeRoute ' + option.label);  
                         var url = '/'+$routeParams.pageId+'/'+option.value;
-                        $location.path( url );
+                        // $location.path( url );
                     };
                     break;
                 case 'edition':
@@ -100,7 +100,7 @@ angular.module('evtviewer.select')
                         });
 
                         var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+witIds;
-                        $location.path( url );
+                        // $location.path( url );
                     };
                     break;
             }

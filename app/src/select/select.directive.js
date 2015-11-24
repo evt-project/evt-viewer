@@ -28,7 +28,11 @@ angular.module('evtviewer.select')
                 }
             }, function(newItems, oldItems) {
                 if (newItems !== oldItems) {
-                    scope.$emit('UPDATE_WITNESS', newItems);
+                    if (scope.type === 'witness') {
+                        scope.$emit('UPDATE_WITNESS', newItems);
+                    } else if (scope.type === 'document') {
+                        scope.$emit('UPDATE_DOCUMENT', newItems);
+                    }
                 }
             }, true);
         }

@@ -50,5 +50,6 @@ angular.module('evtviewer.core')
     },
 
     dataUrl: '../../data/pseudo-edition-test-file.xml'
+    // dataUrl: '../../data/v-machine/prophecy_of_merlin.xml'
 
 });

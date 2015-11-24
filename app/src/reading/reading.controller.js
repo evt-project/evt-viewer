@@ -134,6 +134,9 @@ angular.module('evtviewer.reading')
                     if (criticalEntry !== undefined) {
                         vm.apparatusContent = parseCriticalEntry(criticalEntry);
                     }
+                    if (criticalEntry.note !== '') {
+                        vm.apparatusContent += '<br /><p>'+criticalEntry.note+'</p>';
+                    }
                 } 
                 if (!vm.tooltipOver) {
                     if ( vm.apparatusOpened ) {
