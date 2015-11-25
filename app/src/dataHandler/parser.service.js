@@ -211,9 +211,11 @@ angular.module('evtviewer.dataHandler')
             for (var i = 0; i < element.attributes.length; i++) {
                 var attrib = element.attributes[i];
                 if (attrib.specified) {
-                    if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                    if (attrib.name !== 'xml:id') {
                         newElement.setAttribute('data-'+attrib.name, attrib.value);
-                        parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                        if (attrib.name !== 'wit') {
+                            parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                        }
                     }
                 }
             }
@@ -290,7 +292,7 @@ angular.module('evtviewer.dataHandler')
         for (var k = 0; k < app.attributes.length; k++) {
             var attrib = app.attributes[k];
             if (attrib.specified) {
-                if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                if (attrib.name !== 'xml:id') {
                     lemElement.setAttribute('data-'+attrib.name, attrib.value);
                 }
             }
@@ -314,9 +316,11 @@ angular.module('evtviewer.dataHandler')
                         for (var j = 0; j < childNode.attributes.length; j++) {
                             var attrib = childNode.attributes[j];
                             if (attrib.specified) {
-                                if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                                if (attrib.name !== 'xml:id') {
                                     lemElement.setAttribute('data-'+attrib.name, attrib.value);
-                                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                                    if (attrib.name !== 'wit') {
+                                        parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                                    }
                                 }
                             }
                         }
@@ -336,19 +340,22 @@ angular.module('evtviewer.dataHandler')
             }
         } else {
             // There are no <lem> elements
-            var rdgs = app.getElementsByTagName('rdg');
+            var rdgs = app.getElementsByTagName('rdg'),
+                wits = '';
 
             if ( rdgs.length > 0) {
                 var lemElem = document.createElement('span'),
                     lemText = '{';
                 for (var k = 0; k < rdgs.length; k++) {
                     var rdgNode = rdgs[k];
-                    lemText    += rdgNode.textContent+', ';
+                    lemText    += rdgNode.textContent+', ',
+                    wits       += rdgNode.getAttribute('wit');
                 }
                 lemText = lemText.slice(0, -2)+'}';
                 
                 lemElem.textContent = lemText;
                 lemElement.appendChild(lemElem);
+                lemElement.setAttribute('data-wit', wits);
             }
         }
     };

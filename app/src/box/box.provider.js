@@ -61,7 +61,7 @@ angular.module('evtviewer.box')
             if (vm.state.filters[filter].length === 0) {
                 delete vm.state.filters[filter];
             }
-            _console.log('# toggleCriticalAppFilter ', vm.state.filters);
+            // _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
 
         // 
@@ -69,7 +69,7 @@ angular.module('evtviewer.box')
         // 
 
         box.build = function(vm) {
-            var currentId = vm.id || idx++,
+            var currentId   = vm.id || idx++,
                 currentType = vm.type || 'default',
                 topMenuList = { 
                     selectors : [],
@@ -104,11 +104,17 @@ angular.module('evtviewer.box')
                     // content = evtParser.parseWitnessText(parsedData.getDocumentsList()[0], parsedData.getWitnessesList()[0]);
                     // content = parsedData.getDocument()[0].diplomatic;
                     // content = '<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong> adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, <evt-popover data-trigger="click" data-tooltip="Prova tooltip">fringilla vel</evt-popover>, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.</evt-popover> Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc</evt-popover>.<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong>.';
+                    if (vm.subtype !== undefined && vm.subtype === 'critical') {
+                        appFilters    = parsedData.getWitnessesList();
+                        _console.log('appFilters: ', appFilters);
+                        state.filters = {};
+                    }
                     break;
                 case 'witness':
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
                     console.log(parsedData.getCriticalEntriesFilters());
                     appFilters    = parsedData.getCriticalEntriesFilters();
+                    _console.log('appFilters: ', appFilters);
                     state.filters = {};
                     break;
             }

@@ -17,8 +17,23 @@
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
     <div 
         class="box-bottom-box filters"
-        ng-if="vm.type=='witness'">
-        <div ng-repeat="filter in vm.appFilters">
+        ng-if="vm.type=='witness' || vm.subtype=='critical'">
+        <div class="filters__witnesses"
+             ng-if="vm.subtype=='critical'">
+            <div ng-repeat="filter in vm.appFilters">
+                <input 
+                    type="checkbox" 
+                    value="{{filter.value}}" 
+                    name="{{filter.value}}" 
+                    ng-click="vm.toggleCriticalAppFilter('wit', filter.value);"
+                    />
+                <label for="{{filter.value}}"> {{filter.label}} - {{filter.title }}</label>
+            </div>
+        </div>
+
+        <div class="filters__reading"
+             ng-if="vm.type=='witness'"
+             ng-repeat="filter in vm.appFilters">
             <div class="filters-section-title">{{filter.name}}</div>
             <div ng-repeat="value in filter.values">
                 <input 
