@@ -16,22 +16,22 @@ angular.module('evtviewer.dataHandler')
             return '';
         }
 
-        var sames = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
+        var sames      = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
         var countIndex = sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '';
-        countIndex = countIndex > 1 ? countIndex : '';
-        var tagName = el.tagName.toLowerCase() !== 'tei' ? '.'+el.tagName.toLowerCase() : '';
+        countIndex     = countIndex > 1 ? countIndex : '';
+        var tagName    = el.tagName.toLowerCase() !== 'tei' ? '.'+el.tagName.toLowerCase() : '';
         return xpath(el.parentNode) + tagName + countIndex;
     };
 
     parser.parsePages = function(doc, docId) {
         var currentDocument = angular.element(doc);
-        var attributes = [];
         angular.forEach(currentDocument.find(defPageElement), 
             function(element) {
-                var newPage = {};
-                newPage.value = element.getAttribute('xml:id')  || 'page_'+(parsedData.getPages().length+1);
-                newPage.label = element.getAttribute('n') || 'Page '+(parsedData.getPages().length+1);
-                newPage.title = element.getAttribute('n') || 'Page '+(parsedData.getPages().length+1); 
+                var newPage    = {},
+                    attributes = [];
+                newPage.value  = element.getAttribute('xml:id') || 'page_'+(parsedData.getPages().length+1);
+                newPage.label  = element.getAttribute('n')      || 'Page '+(parsedData.getPages().length+1);
+                newPage.title  = element.getAttribute('n')      || 'Page '+(parsedData.getPages().length+1); 
                 for (var i = 0; i < element.attributes.length; i++) {
                     var attrib = element.attributes[i];
                     if (attrib.specified) {
@@ -40,15 +40,13 @@ angular.module('evtviewer.dataHandler')
                 }
                 newPage.doc = docId;
                 parsedData.addPage(newPage);
-                attributes = [];
         });
         // console.log('## Pages ##', parsedData.getPages());
     };
 
     parser.parseDocuments = function(doc) {
-        var currentDocument = angular.element(doc);
-        // var attributes = [];
-        var defDocElement;
+        var currentDocument = angular.element(doc),
+            defDocElement;
         if ( currentDocument.find('text').length > 0 ) {
             defDocElement = 'text';
         } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
@@ -56,10 +54,10 @@ angular.module('evtviewer.dataHandler')
         }
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
-                var newDoc = { };
+                var newDoc   = { };
                 newDoc.value = element.getAttribute('xml:id')  || xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1);
-                newDoc.label = element.getAttribute('n') || 'Doc '+(parsedData.getDocuments().length+1);
-                newDoc.title = element.getAttribute('n') || 'Document '+(parsedData.getDocuments().length+1); 
+                newDoc.label = element.getAttribute('n')       || 'Doc '+(parsedData.getDocuments().length+1);
+                newDoc.title = element.getAttribute('n')       || 'Document '+(parsedData.getDocuments().length+1); 
                 for (var i = 0; i < element.attributes.length; i++) {
                     var attrib = element.attributes[i];
                     if (attrib.specified) {
@@ -77,8 +75,8 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find('witness'), 
             function(element) {
-                var witness = {};
-                var group = {};
+                var witness = {},
+                    group   = {};
                 if (element.parentNode.tagName === 'listWit' && element.parentNode.getAttribute('xml:id') !== null){
                     group = {
                         id:  element.parentNode.getAttribute('xml:id')
@@ -103,7 +101,7 @@ angular.module('evtviewer.dataHandler')
             content      : [ ],
             note         : '',
             __xmlElem    : elem.tagName,
-            // __xmlContent : elem.innerHTML
+            __xmlContent : elem.innerHTML
         };
         // Recupero tutti gli attributi dell'elemento
         for (var i = 0; i < elem.attributes.length; i++) {
@@ -122,8 +120,7 @@ angular.module('evtviewer.dataHandler')
                     reading.content.push(child.textContent.trim());
                 }
             } else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
-                var entryObj = parseAppEntry(child);
-                reading.content.push(entryObj);
+                reading.content.push(parseAppEntry(child));
             } else if (child.tagName === 'note') {
                 reading.note = child.innerHTML;
             } else {
@@ -164,16 +161,16 @@ angular.module('evtviewer.dataHandler')
                     entry.lemma = reading.id;
                 }
                 entry.readings.__elemTypes[reading.id] = child.tagName;
-                entry.readings[entry.readings.length] = reading.id;
-                entry.readings[reading.id] = reading;
+                entry.readings[entry.readings.length]  = reading.id;
+                entry.readings[reading.id]             = reading;
                 entry.readings.length++;
             } 
             // se <rdgGrp> o <app> (annidamento)
             else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
                 var entryObj = parseAppEntry(child);
                 entry.readings.__elemTypes[entryObj.id] = child.tagName;
-                entry.readings[entry.readings.length] = entryObj.id;
-                entry.readings[entryObj.id] = entryObj;
+                entry.readings[entry.readings.length]   = entryObj.id;
+                entry.readings[entryObj.id]             = entryObj;
                 entry.readings.length++;
             } else if ( child.tagName === 'note' ) {
                 entry.note = child.innerHTML;
@@ -187,7 +184,6 @@ angular.module('evtviewer.dataHandler')
             function(element) {
                 // if (!isNestedApp(element)) {
                     var entry = parseAppEntry(element);
-                    // entry.id = element.getAttribute('xml:id')  || 'app-'+count; // || xpath(app);
                     parsedData.addCriticalEntry(entry, entry.id);
                 // }
         });
@@ -210,7 +206,7 @@ angular.module('evtviewer.dataHandler')
             return element;
         } else {
             var newElement;
-            newElement = document.createElement('span');
+            newElement           = document.createElement('span');
             newElement.className = element.tagName;
             for (var i = 0; i < element.attributes.length; i++) {
                 var attrib = element.attributes[i];
@@ -252,7 +248,6 @@ angular.module('evtviewer.dataHandler')
                             }
                         } else {
                             if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
-                                // evtReadingElement.appendChild(childNode.cloneNode(true));
                                 evtReadingElement.appendChild(parseXMLElement(childNode));
                             }
                         }
@@ -271,8 +266,8 @@ angular.module('evtviewer.dataHandler')
                         }
                     } else if (childNode.tagName === 'app') {
                         if (childNode.innerHTML.indexOf('#'+wit) >= 0) {
-                            var newElement = document.createElement('evt-reading');
-                            var id = childNode.getAttribute('xml:id') || xpath(childNode).substr(1);
+                            var id         = childNode.getAttribute('xml:id') || xpath(childNode).substr(1),
+                                newElement = document.createElement('evt-reading');
                             newElement.setAttribute('data-entry-id', xpath(childNode.parentNode).substr(1));
                             newElement.setAttribute('data-app-id', id);
                             parseWitnessApp(childNode, wit, newElement);
@@ -327,8 +322,8 @@ angular.module('evtviewer.dataHandler')
                         }
                     } else if (childNode.tagName === 'app') {
                         if ( childNode.getElementsByTagName('lem').length > 0 ) {
-                            var newElement = document.createElement('evt-reading');
-                            var id = childNode.getAttribute('xml:id') || xpath(childNode).substr(1);
+                            var id         = childNode.getAttribute('xml:id') || xpath(childNode).substr(1),
+                                newElement = document.createElement('evt-reading');
                             newElement.setAttribute('data-entry-id', xpath(childNode.parentNode).substr(1));
                             newElement.setAttribute('data-app-id', id);
                             parseCriticalTextApp(childNode, newElement);
@@ -344,21 +339,22 @@ angular.module('evtviewer.dataHandler')
             var rdgs = app.getElementsByTagName('rdg');
 
             if ( rdgs.length > 0) {
-                var lemText = '{';
+                var lemElem = document.createElement('span'),
+                    lemText = '{';
                 for (var k = 0; k < rdgs.length; k++) {
                     var rdgNode = rdgs[k];
-                    lemText += rdgNode.textContent+', ';
+                    lemText    += rdgNode.textContent+', ';
                 }
                 lemText = lemText.slice(0, -2)+'}';
-                var lemElem = document.createElement('span');
+                
                 lemElem.textContent = lemText;
                 lemElement.appendChild(lemElem);
             }
         }
     };
     parser.parseWintessPageBreaks = function(docDOM, wit) {
-        var pbs = docDOM.getElementsByTagName('pb');
-        var k = 0;
+        var pbs = docDOM.getElementsByTagName('pb'),
+            k   = 0;
         while ( k < pbs.length) {
             var pbNode = pbs[k];
             if (pbNode.getAttribute('ed') !== '#'+wit) {
@@ -373,7 +369,7 @@ angular.module('evtviewer.dataHandler')
         var notes = docDOM.getElementsByTagName('note');
         var n = 0;
         while (n < notes.length) {
-            var noteNode = notes[n],
+            var noteNode    = notes[n],
                 popoverElem = document.createElement('evt-popover');
             if (noteNode.parentNode.tagName !== 'app' &&
                 noteNode.parentNode.tagName !== 'evt-reading' ) {
@@ -388,18 +384,19 @@ angular.module('evtviewer.dataHandler')
     };
 
     parser.parseWitnessText = function(doc, wit) {
+        var witnessText;
         if ( doc !== undefined ) {
-            var docDOM = doc.documentElement.getElementsByTagName('body')[0];
-            var apps = docDOM.getElementsByTagName('app');
-            var j = apps.length-1, 
-                count = 0;
+            var docDOM = doc.documentElement.getElementsByTagName('body')[0],
+                apps   = docDOM.getElementsByTagName('app'),
+                j      = apps.length-1, 
+                count  = 0;
             
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!isNestedApp(appNode)) {
                     // var id: appNode.getAttribute('xml:id') || xpath(appNode).substr(1),
-                    var spanElement = document.createElement('evt-reading');
-                    var id = appNode.getAttribute('xml:id') || xpath(appNode).substr(1); //'app-'+count;
+                    var id          = appNode.getAttribute('xml:id') || xpath(appNode).substr(1), //'app-'+count,
+                        spanElement = document.createElement('evt-reading');
                     spanElement.setAttribute('data-app-id', id);
                     parseWitnessApp(appNode, wit, spanElement);
                     appNode.parentNode.replaceChild(spanElement, appNode);
@@ -407,31 +404,33 @@ angular.module('evtviewer.dataHandler')
                 }
                 j--;
             }
-            
+            //parse <pb>
             parser.parseWintessPageBreaks(docDOM, wit);
-
+            //parse <note>
             parser.parseNote(docDOM);
-            
-            parsedData.addWitnessText(wit, docDOM);
-            return docDOM;
+            witnessText = docDOM;
         } else {
-            return '<span>Testo non disponibile.</span>';
+            witnessText = '<span>Testo non disponibile.</span>';
         }
+        //save witness text
+        parsedData.addWitnessText(wit, witnessText);
+        return witnessText;
     };
 
     parser.parseCriticalText = function(doc) {
+        var criticalText;
         if ( doc !== undefined ) {
-            var docDOM = doc.documentElement.getElementsByTagName('body')[0];
-            var apps = docDOM.getElementsByTagName('app');
-            var j = apps.length-1, 
-                count = 0;
+            var docDOM = doc.documentElement.getElementsByTagName('body')[0],
+                apps   = docDOM.getElementsByTagName('app'),
+                j      = apps.length-1, 
+                count  = 0;
             
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!isNestedApp(appNode)) {
                     // var id: appNode.getAttribute('xml:id') || xpath(appNode).substr(1),
-                    var spanElement = document.createElement('evt-reading');
-                    var id = appNode.getAttribute('xml:id') || xpath(appNode).substr(1); //'app-'+count;
+                    var id          = appNode.getAttribute('xml:id') || xpath(appNode).substr(1), //'app-'+count,
+                        spanElement = document.createElement('evt-reading');
                     spanElement.setAttribute('data-app-id', id);
                     parseCriticalTextApp(appNode, spanElement);
                     appNode.parentNode.replaceChild(spanElement, appNode);
@@ -441,10 +440,11 @@ angular.module('evtviewer.dataHandler')
             }
             
             parser.parseNote(docDOM);
-            parsedData.addCriticalText(docDOM, '');
+            criticalText = docDOM;
         } else {
-            return '<span>Testo non disponibile.</span>';
+            criticalText = '<span>Testo non disponibile.</span>';
         }
+        parsedData.addCriticalText(criticalText, '');
     };
     
     return parser;

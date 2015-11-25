@@ -9,10 +9,10 @@ angular.module('evtviewer.box')
     };
 
     this.$get = function($log, parsedData, evtParser) {
-        var box = {},
+        var box        = {},
             collection = {},
-            list = [],
-            idx = 0;
+            list       = [],
+            idx        = 0;
 
         var _console = $log.getInstance('box');
 
@@ -21,7 +21,7 @@ angular.module('evtviewer.box')
         // Control function
         // 
         function updateContent(newContent) {
-            var vm = this;
+            var vm     = this;
             vm.content = newContent;
             
             _console.log('vm - updating content ' + vm.id);
@@ -29,7 +29,7 @@ angular.module('evtviewer.box')
 
         function updateState(key, value) {
             _console.log('vm - updating state '+key+': '+value);
-            var vm = this;
+            var vm        = this;
             vm.state[key] = value;
         }
 
@@ -58,6 +58,9 @@ angular.module('evtviewer.box')
             } else {
                 vm.state.filters[filter].splice(index, 1);
             }
+            if (vm.state.filters[filter].length === 0) {
+                delete vm.state.filters[filter];
+            }
             _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
 
@@ -69,15 +72,15 @@ angular.module('evtviewer.box')
             var currentId = vm.id || idx++,
                 currentType = vm.type || 'default',
                 topMenuList = { 
-                    selectors: [],
-                    buttons: []
+                    selectors : [],
+                    buttons   : []
                 },
                 bottomMenuList = { 
-                    selectors: [],
-                    buttonSwitches: []
+                    selectors      : [],
+                    buttonSwitches : []
                 },
                 content,
-                state = {},
+                state      = {},
                 appFilters = [];
 
             var scopeHelper = {};
@@ -105,35 +108,35 @@ angular.module('evtviewer.box')
                 case 'witness':
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
                     console.log(parsedData.getCriticalEntriesFilters());
-                    appFilters = parsedData.getCriticalEntriesFilters();
+                    appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
                     break;
             }
 
             scopeHelper = {
                 // expansion
-                uid: currentId,
-                defaults: angular.copy(defaults),
+                uid                    : currentId,
+                defaults               : angular.copy(defaults),
 
                 // model
-                topMenuList: topMenuList,
-                bottomMenuList: bottomMenuList,
-                content: content,
-                state: state,
-                appFilters: appFilters,
+                topMenuList            : topMenuList,
+                bottomMenuList         : bottomMenuList,
+                content                : content,
+                state                  : state,
+                appFilters             : appFilters,
 
                 // function
-                updateContent: updateContent,
-                updateState: updateState,
-                getState: getState,
-                destroy: destroy,
+                updateContent          : updateContent,
+                updateState            : updateState,
+                getState               : getState,
+                destroy                : destroy,
                 toggleCriticalAppFilter: toggleCriticalAppFilter
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);
             list.push({
-                id: currentId,
-                type: currentType
+                id   : currentId,
+                type : currentType
             });
 
             return collection[currentId];

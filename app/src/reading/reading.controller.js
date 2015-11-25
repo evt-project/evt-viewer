@@ -46,7 +46,7 @@ angular.module('evtviewer.reading')
     this.toggleOverAppEntries = function($event) {
         // _console.log('# toggleOverAppEntries #');
         $event.stopPropagation();
-        if ( !vm.filtered ) {
+        if ( !vm.hidden ) {
             if (vm.over === false) {
                 evtReading.mouseOverById(vm.appId);
             } else {
@@ -58,7 +58,7 @@ angular.module('evtviewer.reading')
     this.toggleSelectAppEntries = function($event) {
         // _console.log('# toggleSelectAppEntries #');
         $event.stopPropagation();
-        if ( !vm.filtered ) {
+        if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
                 if (vm.active === false) {
                     evtReading.selectById(vm.appId);
@@ -70,17 +70,17 @@ angular.module('evtviewer.reading')
     };
 
     var parseCriticalEntry = function(entry) {
-        var appText = '',
+        var appText  = '',
             readings = entry.readings,
-            content = '',
-            i = 0;
+            content  = '',
+            i        = 0;
         // se entry e' un raggruppamento di letture (<app> o <rdgGrp>), avra' delle letture
         if (readings !== undefined) {
             // ciclo le letture per ottenere la stampa del testo con sigla testimone
             for (i = 0; i < readings.length; i++) {
-                var reading = readings[readings[i]],
-                    text = '',
-                    witnesses = '',
+                var reading    = readings[readings[i]],
+                    text       = '',
+                    witnesses  = '',
                     attributes = '';
                 if (readings.__elemTypes[readings[i]] === 'lem' || readings.__elemTypes[readings[i]] === 'rdg') { //lem o rdg
                     // recupero il contenuto
@@ -127,7 +127,7 @@ angular.module('evtviewer.reading')
     this.toggleApparatus = function($event){
         // _console.log('# toggleApparatus #');
         $event.stopPropagation();
-        if ( !vm.filtered ) {
+        if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
                 if ( vm.apparatusContent === '') {
                     var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);

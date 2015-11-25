@@ -11,10 +11,10 @@ angular.module('evtviewer.reading')
     var currentAppEntry = '';
 
     this.$get = function() {
-        var reading = {},
+        var reading    = {},
             collection = {},
-            list = [],
-            idx = 0;
+            list       = [],
+            idx        = 0;
         
 
         // 
@@ -32,15 +32,15 @@ angular.module('evtviewer.reading')
             }
             scopeHelper = {
                 // expansion
-                uid: currentId,
-                appId: entryId,
-                over: false,
-                tooltipOver: false,
-                apparatusOpened: false,
+                uid              : currentId,
+                appId            : entryId,
+                over             : false,
+                tooltipOver      : false,
+                apparatusOpened  : false,
                 apparatusContent : '',
-                active: entryId === reading.getCurrentAppEntry(),
-                openTriggerEvent: angular.copy(defaults.openTriggerEvent),
-                defaults: angular.copy(defaults)
+                active           : entryId === reading.getCurrentAppEntry(),
+                openTriggerEvent : angular.copy(defaults.openTriggerEvent),
+                defaults         : angular.copy(defaults)
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

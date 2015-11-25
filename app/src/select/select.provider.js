@@ -9,10 +9,10 @@ angular.module('evtviewer.select')
     };
 
     this.$get = function($log, $location, $routeParams, parsedData) {
-        var select = {},
+        var select     = {},
             collection = {},
-            list = [],
-            idx = 0;
+            list       = [],
+            idx        = 0;
 
         var _console = $log.getInstance('select');
 
@@ -27,9 +27,9 @@ angular.module('evtviewer.select')
         // 
 
         select.build = function(id, type, vm) {
-            var currentId = id || idx++,
+            var currentId   = id   || idx++,
                 currentType = type || 'default',
-                optionList = [],
+                optionList  = [],
                 optionSelected,
                 callback,
                 changeRoute;
@@ -51,9 +51,9 @@ angular.module('evtviewer.select')
                     };
                     changeRoute = function(option) {
                         _console.log('page select changeRoute ' + option.label);  
-                        var url = '/'+option.value;
+                        var url = '/' + option.value;
                         if ( $routeParams.docId !== undefined ) {
-                            url +='/'+$routeParams.docId;
+                            url += '/' + $routeParams.docId;
                         }
                         // $location.path( url );
                     };
@@ -66,7 +66,7 @@ angular.module('evtviewer.select')
                     };
                     changeRoute = function(option) {
                         _console.log('document select changeRoute ' + option.label);  
-                        var url = '/'+$routeParams.pageId+'/'+option.value;
+                        var url = '/' + $routeParams.pageId + '/' + option.value;
                         // $location.path( url );
                     };
                     break;
@@ -81,7 +81,7 @@ angular.module('evtviewer.select')
                     };
                     break;
                 case 'witness':
-                    optionList = parsedData.getWitnessesList();
+                    optionList     = parsedData.getWitnessesList();
                     optionSelected = optionList[0] || {};
                     callback = function(option) {
                         optionSelected = option;
@@ -91,15 +91,16 @@ angular.module('evtviewer.select')
                         //TODO: dovrò avere un parametro "multiplo" che mi salva tutti i testimoni visualizzati, 
                         //eventualmente nell'esatto ordine in cui sono visualizzati
                         var selectors = select.getList(),
-                            witIds = '#';
+                            witIds = '#',
+                            witSelect;
                         angular.forEach(selectors, function(currentSelect) {
                             if (currentSelect.type === 'witness') {
-                                var witSelect = select.getById(currentSelect.id);
+                                witSelect = select.getById(currentSelect.id);
                                 witIds += witSelect.optionSelected.value+'#';
                             }
                         });
 
-                        var url = '/'+$routeParams.pageId+'/'+$routeParams.docId+'/'+witIds;
+                        var url = '/' + $routeParams.pageId + '/' + $routeParams.docId + '/' + witIds;
                         // $location.path( url );
                     };
                     break;
@@ -107,20 +108,20 @@ angular.module('evtviewer.select')
 
             scopeHelper = {
                 // expansion
-                uid: currentId,
-                defaults: angular.copy(defaults),
-                callback: callback,
-                changeRoute: changeRoute,
-                getOptionSelectedValue: getOptionSelectedValue,
+                uid                    : currentId,
+                defaults               : angular.copy(defaults),
+                callback               : callback,
+                changeRoute            : changeRoute,
+                getOptionSelectedValue : getOptionSelectedValue,
                 // model
-                optionList: optionList,
-                optionSelected: optionSelected,
+                optionList             : optionList,
+                optionSelected         : optionSelected,
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);
             list.push({
-                id: currentId,
-                type: currentType
+                id   : currentId,
+                type : currentType
             });
 
             return collection[currentId];

@@ -3,7 +3,7 @@
 /* *************************** */
 
 .reading {
-    &:not(.filtered) {
+    &:not(.hidden) {
         background: #ffccbc;
         border:1px solid black;
         padding: 0 3px;
@@ -102,7 +102,7 @@
         }
     }
 
-    &.filtered {
+    &.hidden {
         background: transparent;
         border: none;
         cursor: default;

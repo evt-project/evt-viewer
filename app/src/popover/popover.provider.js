@@ -19,7 +19,7 @@ angular.module('evtviewer.popover')
         // 
 
         popover.build = function(triggerText, tooltipText, vm) {
-            var currentId = idx++,
+            var currentId          = idx++,
                 currentTriggerText = triggerText || '',
                 currentTooltipText = tooltipText || '';
 
@@ -31,12 +31,12 @@ angular.module('evtviewer.popover')
 
             scopeHelper = {
                 // expansion
-                uid: currentId,
-                trigger: currentTriggerText,
-                tooltip: currentTooltipText,
-                expanded: angular.copy(defaults.expanded),
-                tooltipOver: angular.copy(defaults.tooltipOver),
-                defaults: angular.copy(defaults),
+                uid         : currentId,
+                trigger     : currentTriggerText,
+                tooltip     : currentTooltipText,
+                expanded    : angular.copy(defaults.expanded),
+                tooltipOver : angular.copy(defaults.tooltipOver),
+                defaults    : angular.copy(defaults),
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

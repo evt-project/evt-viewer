@@ -22,15 +22,13 @@ angular.module('evtviewer.reading')
             scope.vm.resizeTooltip = function(e, settings){
                 e.stopPropagation();
                 
-                var trigger, tooltip;
-                trigger = element;
-                tooltip = angular.element(element).find('span.reading__apparatus').last();
-
-                var before = angular.element(tooltip).find('.reading__apparatus__before');
+                var trigger = element,
+                    tooltip = angular.element(element).find('span.reading__apparatus').last(),
+                    before  = angular.element(tooltip).find('.reading__apparatus__before');
 
                 // Recuperare x e y del click del mouse
-                var x = e.clientX;
-                var y = e.clientY;
+                var x = e.clientX,
+                    y = e.clientY;
 
                 // Rimuovere gli stili inline del tooltip in quanto la posizione va ricalcolata ogni volta
                 // Mettere magari nella funzione di chiusura?
@@ -40,20 +38,18 @@ angular.module('evtviewer.reading')
 
                 // Prendere altezza, larghezza e offset superiore e sinistro del trigger 
                 // [NB: vanno gestiti trigger spezzati su piu righe]
-                var triggerHeight, triggerTop, triggerLeft, triggerWidth;
-                var triggerHeightSingleLine;
-                triggerHeight = trigger.height();
-                triggerHeightSingleLine = trigger.css('font-size').substr(0,2)*1+1;
-                triggerWidth = trigger.width();
-                triggerTop = trigger.position().top;
-                triggerLeft = trigger.position().left;
+                var triggerHeight           = trigger.height(),
+                    triggerHeightSingleLine = trigger.css('font-size').substr(0,2)*1+1,
+                    triggerWidth            = trigger.width(),
+                    triggerTop              = trigger.position().top,
+                    triggerLeft             = trigger.position().left;
                 
                 // Prendere larghezza, altezza e offset superiore e sinistro del tooltip
                 // Mi servono la larghezza e l'altezza reali, quindi devo mettere il tooltip in posizione relativa
                 // L'offset superiore 
-                var tooltipTop, tooltipRealWidth, tooltipRealHeight;
-                tooltipTop = tooltip.offset().top;
-                tooltipRealWidth = tooltip.outerWidth();
+                var tooltipTop        = tooltip.offset().top,
+                    tooltipRealWidth  = tooltip.outerWidth(),
+                    tooltipRealHeight = tooltip.outerHeight();
 
                 // Confrontare la larghezza reale del tooltip con un valore massimo di default (qui 200px)
                 // Se maggiore, impostarla uguale a tale larghezza
@@ -61,7 +57,7 @@ angular.module('evtviewer.reading')
                 if ( tooltipRealWidth > settings.tooltipMaxWidth ) {
                     tooltip
                         .css({
-                            'width' : settings.tooltipMaxWidth+'px',
+                            'width'     : settings.tooltipMaxWidth+'px',
                             'max-width' : settings.tooltipMaxWidth+'px'
                         });
                 } 
@@ -72,18 +68,18 @@ angular.module('evtviewer.reading')
                     });
 
                 // Quindi prendere nuovamente le dimensioni del tooltip
-                tooltipRealWidth = tooltip.outerWidth();
+                tooltipRealWidth  = tooltip.outerWidth();
                 tooltipRealHeight = tooltip.outerHeight();
 
                 // Spostare il tooltip, prima allineando la metà al punto in cui si è verificato il click
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
-                var boxContainerWidth, boxOffsetLeft;
-                boxOffsetLeft = element.parents('.box-body').offset().left;
-                boxContainerWidth = element.parents('.box-body').innerWidth();
+                var boxOffsetLeft     = element.parents('.box-body').offset().left,
+                    boxContainerWidth = element.parents('.box-body').innerWidth();
                 
-                var tooltipNewLeft, diff;                
-                tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2);
+                var tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2),
+                    diff;
+                
                 tooltip
                     .css({
                         'left' : tooltipNewLeft+'px'
@@ -91,9 +87,8 @@ angular.module('evtviewer.reading')
 
                 // Se il tooltip supera a destra il margine destro del contenitore
                 // ricalcolo il suo offset sinistro in base a quanto "sporge" a destra
-
                 if ( (tooltipNewLeft + tooltipRealWidth) > boxContainerWidth ) {
-                    diff = (tooltipNewLeft + tooltipRealWidth) - boxContainerWidth;
+                    diff           = (tooltipNewLeft + tooltipRealWidth) - boxContainerWidth;
                     tooltipNewLeft = tooltipNewLeft - diff - 20; // 10px margin right
                     tooltip
                         .css({
@@ -116,23 +111,25 @@ angular.module('evtviewer.reading')
                 // impostando il margine superiore negativo sulla base di
                 // sua altezza + altezza del trigger (+ altezza del before) + pixel di scarto
 
-                var boxContainerHeight = element.parents('.box-body').outerHeight();
-                var tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight;
-                var tooltipNewMarginTop, diffClientYTriggerTop ;
+                var boxContainerHeight  = element.parents('.box-body').outerHeight(),
+                    tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight,
+                    tooltipNewMarginTop, 
+                    diffClientYTriggerTop;
 
                 if ( tooltipOffsetBottom > boxContainerHeight ) { // OPEN UP
-                    tooltipNewMarginTop = tooltipRealHeight+triggerHeight+10;
+                    tooltipNewMarginTop = tooltipRealHeight + triggerHeight + 10;
                     
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
                     // In base alla posizione y del mouse
                     if ( triggerHeight > triggerHeightSingleLine ) {
                         diffClientYTriggerTop = y - trigger.offset().top;
-                        tooltipNewMarginTop = tooltipNewMarginTop - diffClientYTriggerTop + 10;
+                        tooltipNewMarginTop   = tooltipNewMarginTop - diffClientYTriggerTop + 10;
                     }
-                    tooltip.css({
-                        'margin-top' : (-tooltipNewMarginTop)+'px'
-                    });
-                    tooltip.addClass('open-up');
+                    tooltip
+                        .css({
+                            'margin-top' : (-tooltipNewMarginTop)+'px'
+                        })
+                        .addClass('open-up');
                     before.css({
                         top: (tooltip.outerHeight()+4)+'px'
                     });
@@ -142,7 +139,7 @@ angular.module('evtviewer.reading')
                     tooltip.removeClass('open-up');
                     if ( triggerHeight > triggerHeightSingleLine ) {
                         diffClientYTriggerTop = y - trigger.offset().top;
-                        diff = (triggerHeight - triggerHeightSingleLine) - diffClientYTriggerTop;
+                        diff                  = (triggerHeight - triggerHeightSingleLine) - diffClientYTriggerTop;
                         tooltip.css({
                             'margin-top' : -diff+'px'
                         });
@@ -151,16 +148,11 @@ angular.module('evtviewer.reading')
                             'margin-top' : '7px'
                         }); 
                     }
-                    
                 }
 
                 // Riposiziono orizzontalmente l'elemento .before in base al click del mouse
                 // [Valutare se utilizzarlo]
-                // var beforeWidth; 
-                var beforeNewLeft;
-                // var beforeMarginRight, tooltipMarginRight;
-                
-                beforeNewLeft = x - boxOffsetLeft - tooltipNewLeft - 20;
+                var beforeNewLeft = x - boxOffsetLeft - tooltipNewLeft - 20;
                 if (beforeNewLeft < 0) { beforeNewLeft = 1; }
                 // beforeWidth = 20;
                 // beforeMarginRight = x+beforeWidth;
@@ -178,8 +170,8 @@ angular.module('evtviewer.reading')
                 tooltipRealWidth = tooltip.width();
                 if( tooltipRealWidth > settings.tooltipMaxWidth ){
                     tooltip.css({
-                        'width': settings.tooltipMaxWidth+'px',
-                        'max-width': settings.tooltipMaxWidth+'px'
+                        'width'     : settings.tooltipMaxWidth+'px',
+                        'max-width' : settings.tooltipMaxWidth+'px'
                     });
                 }
             };
@@ -191,20 +183,43 @@ angular.module('evtviewer.reading')
             });
 
             scope.$on('UPDATE_APP_FILTERS', function(event, filters){
-                for(filter in filters){
-                    if (filters[filter].length > 0) {
-                        if (element.attr('data-'+filter) !== undefined){
-                            if ( filters[filter].indexOf(element.attr('data-'+filter)) >= 0 ){
-                                scope.vm.filtered = false;
-                            } else {
-                                scope.vm.filtered = true;
+                var condizione = 'AND', //TODO: Decidere come gestire
+                    match,
+                    filter,
+                    i,
+                    value;
+                if (condizione === 'OR') {
+                    // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
+                    match = false;
+                    for (filter in filters) {
+                        if (filters[filter].length > 0) {
+                            if ( element.attr('data-'+filter) !== undefined ) {
+                                i = 0;
+                                while ( i < filters[filter].length && !match) {
+                                    value = filters[filter][i];
+                                    match = match || (element.attr('data-'+filter).indexOf(value) >= 0);
+                                    i++;
+                                }
                             }
-                        } else {
-                            scope.vm.filtered = true;
                         }
-                    } else {
-                        scope.vm.filtered = false;
+                        if (match) { break; }
                     }
+                    scope.vm.hidden = !match;
+                } else { //default
+                    var visible = true;
+                    for (filter in filters) {
+                        if (filters[filter].length > 0) {
+                            match = false; 
+                            if ( element.attr('data-'+filter) !== undefined ) {
+                                for ( i = 0; i < filters[filter].length; i++ ) {
+                                    value = filters[filter][i];
+                                    match = match || (element.attr('data-'+filter).indexOf(value) >= 0);
+                                }
+                            }
+                            visible = visible && match;
+                        }
+                    }
+                    scope.vm.hidden = !visible;
                 }
             });
         }

@@ -41,12 +41,12 @@ angular.module('evtviewer.box')
             });
             scope.$on('UPDATE_WITNESS', function(event, sigla){
                 if ( sigla !== undefined && sigla !== currentBox.getState('witness') ) {
-                    var newContent = '';
-                    var witness = parsedData.getWitness(sigla) || undefined;
+                    var newContent = '',
+                        witness    = parsedData.getWitness(sigla) || undefined;
                     if ( witness !== undefined ) {
                         newContent = witness.content;
                         if (newContent === undefined) {
-                            var documents = parsedData.getDocuments(),
+                            var documents  = parsedData.getDocuments(),
                                 currentDoc = '';
                             if (documents.length > 0) {
                                 currentDoc = documents.list[documents[0]];
@@ -79,7 +79,7 @@ angular.module('evtviewer.box')
                 }
             }, function(newItems, oldItems) {
                 if (newItems !== oldItems) {
-                    scope.$broadcast('UPDATE_APP_FILTERS', newItems);
+                    scope.$broadcast('UPDATE_APP_FILTERS', scope.vm.state.filters);
                 }
             }, true);
         }
