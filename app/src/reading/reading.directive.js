@@ -4,7 +4,7 @@ angular.module('evtviewer.reading')
     return {
         restrict: 'E',
         scope: {
-            appId: '@'
+            appId: '@'            
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',

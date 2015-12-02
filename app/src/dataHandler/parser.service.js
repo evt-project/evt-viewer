@@ -403,10 +403,12 @@ angular.module('evtviewer.dataHandler')
                              childNode.getElementsByTagName('rdgGrp').length > 0 ) {
                             if ( childNode.innerHTML.indexOf('#'+wit) >= 0 ) {
                                 parseWitnessApp(childNode, wit, evtReadingElement);
+                                evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
                             }
                         } else {
                             if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
                                 evtReadingElement.appendChild(parseXMLElement(childNode));
+                                evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
                                 for (var j = 0; j < childNode.attributes.length; j++) {
                                     attrib = childNode.attributes[j];
                                     if (attrib.specified) {

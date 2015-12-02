@@ -4,14 +4,14 @@
 
 .reading {
     &:not(.hidden) {
-        background: #ffccbc;
+        background: rgba(255, 204, 188, 1);
         border:1px solid black;
         padding: 0 3px;
         cursor: pointer;
 
         &.active, &.over,
         &.active .reading, &.over .reading{
-            background: #ff8a65;
+            background: #ff8a65 !important;
         }
         .reading__apparatus {
             display: none;
@@ -112,3 +112,7 @@
         }
     }
 }
+
+// [data-reading-type='lem'] > .reading:not(.hidden) {
+//     background: rgba(255, 138, 101, .7);
+// }
