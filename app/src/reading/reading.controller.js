@@ -127,6 +127,7 @@ angular.module('evtviewer.reading')
     this.toggleApparatus = function($event){
         // _console.log('# toggleApparatus #');
         $event.stopPropagation();
+        evtPopover.closeAll();
         if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
                 if ( vm.apparatusContent === '') {
@@ -151,8 +152,6 @@ angular.module('evtviewer.reading')
                 }
             }
         }
-
-        evtPopover.closeAll();
     };
 
     this.destroy = function() {

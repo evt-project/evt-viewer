@@ -180,3 +180,16 @@ section > div{
 @import "box.scss";
 @import "popover.scss";
 @import "reading.scss";
+
+// TEI Elements
+.pb {
+    display: block;
+    text-align: center;
+    font-size:80%;
+    &::before{
+        content:'– ';
+    }
+    &::after {
+        content:' –';
+    }
+}

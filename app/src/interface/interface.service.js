@@ -25,10 +25,10 @@ angular.module('evtviewer.interface')
                         firstDoc;
                 
                     if (pages.length > 0) {
-                        firstPage = pages.list[pages[0]].value || undefined;
+                        firstPage = pages[pages[0]].value || undefined;
                     }
                     if (documents.length > 0) {
-                        firstDoc = documents.list[documents[0]].value || undefined;
+                        firstDoc = documents[documents[0]].value || undefined;
                     }
                     
                     mainInterface.updateParams(firstPage, firstDoc);
@@ -50,16 +50,16 @@ angular.module('evtviewer.interface')
             } else {
                 var documents = parsedData.getDocuments();
                 if (documents.length > 0) {
-                    return documents.list[documents[0]];
+                    return documents[documents[0]];
                 }
             }
         };
 
         mainInterface.updateCurrentPage = function(pageId) {
             console.log('#evtInterface#', 'updating current page setting it to ' + pageId);
-            var option       = { },
+            var option = { },
                 pageSelector = { },
-                mainTextBox  = { },
+                mainTextBox = { },
                 mainImageBox = { },
                 text,
                 img;
@@ -76,10 +76,8 @@ angular.module('evtviewer.interface')
                 }
             }
             
-            text = parsedData.getPageText(pageId);
-            img = parsedData.getPageImage(pageId);
-
             // Updating mainText Box content
+            text = parsedData.getPageText(pageId);
             mainTextBox = evtBox.getById('mainText');
             if ( mainTextBox !== undefined ) {
                 if ( text !== undefined ) {
@@ -89,7 +87,9 @@ angular.module('evtviewer.interface')
                 }
                 mainTextBox.updateState('currentPage', pageId);
             }
+
             // Updating mainImage Box content
+            img = parsedData.getPageImage(pageId);
             mainImageBox = evtBox.getById('mainImage');
             if ( mainImageBox !== undefined ) {
                 if ( img !== undefined ) {
@@ -103,7 +103,7 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentDocument = function(docId) {
             console.log('#evtInterface#', 'updating current text setting it to '+docId);
-            var option      = { },
+            var option = { },
                 docSelector = { };
 
             option = parsedData.getDocument(docId);
@@ -128,7 +128,7 @@ angular.module('evtviewer.interface')
                     var i = 0;    
                     angular.forEach(selectors, function(currentSelect) {
                         if (currentSelect.type === 'witness') {
-                            var witness = witnesses.list[witnesses[i]] || undefined;
+                            var witness = witnesses[witnesses[i]] || undefined;
                             if ( witness !== undefined ) {
                                 var witSelect = evtSelect.getById(currentSelect.id);
                                 witSelect.selectOption(witness);
@@ -139,10 +139,10 @@ angular.module('evtviewer.interface')
                 }
             } else {
                 var siglas = witIds.split('#').filter(function(el) {return el.length !== 0;}),
-                    j      = 0;
+                    j = 0;
                 angular.forEach(selectors, function(currentSelect) {
                     if (currentSelect.type === 'witness') {
-                        var witness = witnesses.list[siglas[j]] || undefined;
+                        var witness = witnesses[siglas[j]] || undefined;
                         if ( witness !== undefined ) {
                             var witSelect = evtSelect.getById(currentSelect.id);
                             witSelect.selectOption(witness);
@@ -164,7 +164,9 @@ angular.module('evtviewer.interface')
                 mainInterface.updateCurrentDocument(docId);
             }
 
-            mainInterface.updateCurrentWitnesses(witIds);
+            if ( witIds !== undefined) {
+                mainInterface.updateCurrentWitnesses(witIds);
+            }
             // if (witIds !== undefined) {
             //     var witnesses = witIds.split('#').filter(function(el) {return el.length !== 0;});
             //     // for (var i = 0; i < witnesses.length; i++) {

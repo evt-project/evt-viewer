@@ -24,11 +24,11 @@ angular.module('evtviewer.box')
             var vm     = this;
             vm.content = newContent;
             
-            _console.log('vm - updating content ' + vm.id);
+            // _console.log('vm - updating content ' + vm.id);
         }
 
         function updateState(key, value) {
-            _console.log('vm - updating state '+key+': '+value);
+            // _console.log('vm - updating state '+key+': '+value);
             var vm        = this;
             vm.state[key] = value;
         }
@@ -61,7 +61,7 @@ angular.module('evtviewer.box')
             if (vm.state.filters[filter].length === 0) {
                 delete vm.state.filters[filter];
             }
-            // _console.log('# toggleCriticalAppFilter ', vm.state.filters);
+            _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
 
         // 
@@ -89,7 +89,7 @@ angular.module('evtviewer.box')
                 return;
             }
             
-            _console.log('vm - building box for ' + currentId);
+            // _console.log('vm - building box for ' + currentId);
 
             switch (currentType) {
                 case 'image':
@@ -104,38 +104,36 @@ angular.module('evtviewer.box')
                     // content = parsedData.getDocument()[0].diplomatic;
                     // content = '<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong> adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, <evt-popover data-trigger="click" data-tooltip="Prova tooltip">fringilla vel</evt-popover>, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.</evt-popover> Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc</evt-popover>.<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong>.';
                     if (vm.subtype !== undefined && vm.subtype === 'critical') {
-                        appFilters    = parsedData.getWitnessesList();
-                        _console.log('appFilters: ', appFilters);
+                        appFilters    = parsedData.getWitnesses();
                         state.filters = {};
+                        console.log('appFilters: ', appFilters);
                     }
                     break;
                 case 'witness':
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
-                    console.log(parsedData.getCriticalEntriesFilters());
                     appFilters    = parsedData.getCriticalEntriesFilters();
-                    _console.log('appFilters: ', appFilters);
                     state.filters = {};
                     break;
             }
 
             scopeHelper = {
                 // expansion
-                uid                    : currentId,
-                defaults               : angular.copy(defaults),
+                uid                     : currentId,
+                defaults                : angular.copy(defaults),
 
                 // model
-                topMenuList            : topMenuList,
-                bottomMenuList         : bottomMenuList,
-                content                : content,
-                state                  : state,
-                appFilters             : appFilters,
+                topMenuList             : topMenuList,
+                bottomMenuList          : bottomMenuList,
+                content                 : content,
+                state                   : state,
+                appFilters              : appFilters,
 
                 // function
-                updateContent          : updateContent,
-                updateState            : updateState,
-                getState               : getState,
-                destroy                : destroy,
-                toggleCriticalAppFilter: toggleCriticalAppFilter
+                updateContent           : updateContent,
+                updateState             : updateState,
+                getState                : getState,
+                destroy                 : destroy,
+                toggleCriticalAppFilter : toggleCriticalAppFilter
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

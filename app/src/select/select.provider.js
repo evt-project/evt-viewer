@@ -30,9 +30,11 @@ angular.module('evtviewer.select')
             var currentId   = id   || idx++,
                 currentType = type || 'default',
                 optionList  = [],
+                dataSource  = '',
                 optionSelected,
                 callback,
-                changeRoute;
+                changeRoute,
+                formatOptionList;
 
             var scopeHelper = {};
 
@@ -42,7 +44,8 @@ angular.module('evtviewer.select')
 
             switch (currentType) {
                 case 'page':
-                    optionList = parsedData.getPagesList();
+                    optionList = parsedData.getPages();
+                    dataSource = parsedData.getPages();
                     // TODO: add a general service for the current page in the application
                     // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(option) {
@@ -57,9 +60,17 @@ angular.module('evtviewer.select')
                         }
                         // $location.path( url );
                     };
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++ ) {
+                            formattedList.push(optionList[optionList[i]]);
+                        }
+                        return formattedList;
+                    };
                     break;
                 case 'document':
-                    optionList = parsedData.getDocumentsList();
+                    optionList = parsedData.getDocuments();
+                    dataSource = parsedData.getDocuments();
                     callback = function(option) {
                         optionSelected = option;
                         _console.log('document select callback ' + option.label);
@@ -68,6 +79,13 @@ angular.module('evtviewer.select')
                         _console.log('document select changeRoute ' + option.label);  
                         var url = '/' + $routeParams.pageId + '/' + option.value;
                         // $location.path( url );
+                    };
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++ ) {
+                            formattedList.push(optionList[optionList[i]]);
+                        }
+                        return formattedList;
                     };
                     break;
                 case 'edition':
@@ -79,10 +97,13 @@ angular.module('evtviewer.select')
                     changeRoute = function(option) {
                         _console.log('edition select changeRoute ' + option.label);  
                     };
+                    formatOptionList = function(optionList) {
+                        return optionList;
+                    };
                     break;
                 case 'witness':
-                    optionList     = parsedData.getWitnessesList();
-                    optionSelected = optionList[0] || {};
+                    optionList     = [];
+                    dataSource     = parsedData.getWitnesses();
                     callback = function(option) {
                         optionSelected = option;
                         _console.log('witness select callback ' + option.label);
@@ -96,12 +117,40 @@ angular.module('evtviewer.select')
                         angular.forEach(selectors, function(currentSelect) {
                             if (currentSelect.type === 'witness') {
                                 witSelect = select.getById(currentSelect.id);
-                                witIds += witSelect.optionSelected.value+'#';
+                                if (witSelect.optionSelected !== undefined) {
+                                    witIds += witSelect.optionSelected.value+'#';
+                                }
                             }
                         });
 
                         var url = '/' + $routeParams.pageId + '/' + $routeParams.docId + '/' + witIds;
                         // $location.path( url );
+                    };
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++ ) {
+                            var option,
+                                currentOption = optionList[optionList[i]];
+                            if ( currentOption.type === 'witness' ) {
+                                option = {
+                                    value : currentOption.id,
+                                    label : currentOption.id,
+                                    title : currentOption.name,
+                                }
+                                formattedList.push(option);
+                            } else {
+                                for (var j = 0; j < currentOption.content.length; j++ ) {
+                                    var currentSubOpt = currentOption.content[currentOption.content[j]];
+                                    option = {
+                                        value : currentSubOpt.id,
+                                        label : currentSubOpt.id,
+                                        title : currentSubOpt.name,
+                                    }
+                                    formattedList.push(option);
+                                }
+                            }
+                        }
+                        return formattedList;
                     };
                     break;
             }
@@ -115,7 +164,9 @@ angular.module('evtviewer.select')
                 getOptionSelectedValue : getOptionSelectedValue,
                 // model
                 optionList             : optionList,
+                dataSource             : dataSource,
                 optionSelected         : optionSelected,
+                formatOptionList       : formatOptionList
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

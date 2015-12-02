@@ -22,16 +22,21 @@ angular.module('evtviewer.select')
                 }     
             });
 
-            scope.$watch(function() {
-                if (currentSelect !== undefined) {
-                    return currentSelect.getOptionSelectedValue();
-                }
-            }, function(newItems, oldItems) {
+            scope.$watch('vm.optionSelected.value', function(newItems, oldItems) {                
                 if (newItems !== oldItems) {
                     if (scope.type === 'witness') {
                         scope.$emit('UPDATE_WITNESS', newItems);
                     } else if (scope.type === 'document') {
                         scope.$emit('UPDATE_DOCUMENT', newItems);
+                    }
+                }
+            }, true);
+
+            scope.$watch('vm.dataSource' , function(newItems, oldItems) {
+                if (newItems !== oldItems) {
+                    scope.vm.optionList = scope.vm.formatOptionList(newItems);
+                    if (scope.vm.optionSelected === undefined) {
+                        scope.vm.selectOption(scope.vm.optionList[0]);
                     }
                 }
             }, true);

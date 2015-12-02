@@ -29,42 +29,40 @@ angular.module('evtviewer.box')
                 }     
             });
 
-            scope.$on('UPDATE_DOCUMENT', function(event, boxId){
-                if (currentBox.subtype === 'critical') {
+            if (currentBox.subtype === 'critical') {
+                scope.$on('UPDATE_DOCUMENT', function(event, boxId){
                     var newContent = parsedData.getCriticalText(boxId)[0];
                     if ( newContent !== undefined && newContent !== '') {
                         currentBox.updateContent(newContent.innerHTML);
                     } else {
                         currentBox.updateContent('Testo non disponibile.');
                     }
-                }
-            });
-            scope.$on('UPDATE_WITNESS', function(event, sigla){
-                if ( sigla !== undefined && sigla !== currentBox.getState('witness') ) {
-                    var newContent = '',
-                        witness    = parsedData.getWitness(sigla) || undefined;
-                    if ( witness !== undefined ) {
-                        newContent = witness.content;
-                        if (newContent === undefined) {
+                });
+            }
+            if (currentBox.type === 'witness') {
+                scope.$on('UPDATE_WITNESS', function(event, sigla){
+                    if ( sigla !== undefined && sigla !== currentBox.getState('witness') ) {
+                        var newContent = parsedData.getWitnessText(sigla) || undefined;
+                        if ( newContent === undefined ) {
                             var documents  = parsedData.getDocuments(),
                                 currentDoc = '';
                             if (documents.length > 0) {
-                                currentDoc = documents.list[documents[0]];
+                                currentDoc = documents[documents[0]];
                             }
                             if (currentDoc !== undefined) {
                                 newContent = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
-                            }    
+                            }
                         }
+                        
+                        if ( newContent !== undefined && newContent !== '') {
+                            currentBox.updateContent(newContent);
+                        } else {
+                            currentBox.updateContent('Testo non disponibile.');
+                        }
+                        currentBox.updateState('witness', sigla); 
                     }
-                    
-                    if ( newContent !== undefined && newContent !== '') {
-                        currentBox.updateContent(newContent.innerHTML);
-                    } else {
-                        currentBox.updateContent('Testo non disponibile.');
-                    }
-                    currentBox.updateState('witness', sigla); 
-                }
-            });
+                });
+            }
 
             var raw = element[0];
             var boxBody = angular.element(element).find('.box-body')[0];
@@ -78,6 +76,7 @@ angular.module('evtviewer.box')
                     return scope.vm.state.filters;
                 }
             }, function(newItems, oldItems) {
+                console.log('update filters', scope.vm.state.filters);
                 if (newItems !== oldItems) {
                     scope.$broadcast('UPDATE_APP_FILTERS', scope.vm.state.filters);
                 }

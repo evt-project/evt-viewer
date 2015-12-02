@@ -1,29 +1,25 @@
 angular.module('evtviewer.dataHandler')
 
-.service('parsedData', function($log) {
+.service('parsedData', function($log, xmlParser) {
     var parsedData = {};
     var _console = $log.getInstance('dataHandler');
 
     _console.log('parsedData running');
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
-        length: 0,
-        list: {}
+        length: 0
     };
     var documentsCollection = {
-        length: 0,
-        list: {}
+        length: 0
     }; 
     
     // var pagesCollectionTexts = []; 
     
     var witnessesCollection = {
-        length: 0,
-        list: {}
+        length: 0
     };
 
-    var witnessesGroupCollection = {};
-
+    var witnessesTextsCollection = {};
     var criticalAppCollection = {
         length: 0,
         filters: { }
@@ -41,9 +37,9 @@ angular.module('evtviewer.dataHandler')
         if ( page.value === '' ) {
             pageId = page.value = 'page_'+(pagesCollection.length+1);
         }
-        if ( pagesCollection.list[pageId] === undefined ) {
+        if ( pagesCollection[pageId] === undefined ) {
             pagesCollection[pagesCollection.length] = pageId;
-            pagesCollection.list[pageId] = page;
+            pagesCollection[pageId] = page;
             pagesCollection.length++;
             // _console.log('parsedData - addPage ', page);
         }
@@ -51,13 +47,9 @@ angular.module('evtviewer.dataHandler')
     parsedData.getPages = function() {
         return pagesCollection;
     };
-
-    parsedData.getPagesList = function() {
-        return pagesCollection.list;
-    };
     
     parsedData.getPage = function(pageId) {
-        return pagesCollection.list[pageId];
+        return pagesCollection[pageId];
     };
 
 
@@ -93,9 +85,9 @@ angular.module('evtviewer.dataHandler')
         if ( doc.value === '' ) {
             docId = doc.value = 'doc_'+(documentsCollection.length+1);
         }
-        if ( documentsCollection.list[docId] === undefined ) {
+        if ( documentsCollection[docId] === undefined ) {
             documentsCollection[documentsCollection.length] = docId;
-            documentsCollection.list[docId] = doc;
+            documentsCollection[docId] = doc;
             documentsCollection.length++;
             // _console.log('parsedData - addDocument ', doc);
         }
@@ -105,12 +97,8 @@ angular.module('evtviewer.dataHandler')
         return documentsCollection;
     };
 
-    parsedData.getDocumentsList = function() {
-        return documentsCollection.list;
-    };
-
     parsedData.getDocument = function(docId) {
-        return documentsCollection.list[docId];
+        return documentsCollection[docId];
     };
     parsedData.getEditions = function() {
         // return mockEditions;
@@ -126,55 +114,36 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* WITNESSES */
-    parsedData.addWitness = function(witness) {
-        var witId = witness.value;
+    parsedData.addWitness = function(element) {
         if ( witnessesCollection.length === undefined ) {
             witnessesCollection.length = 0;
         }
-        if ( witnessesCollection.list[witId] === undefined ) {
-            witnessesCollection[witnessesCollection.length] = witId;
-            witnessesCollection.list[witId] = witness;
+        if ( witnessesCollection[element.id] === undefined ) {
+            witnessesCollection[witnessesCollection.length] = element.id;
+            witnessesCollection[element.id] = element;
             witnessesCollection.length++;
             // _console.log('parsedData - addWitness ', witnessesCollection);
         }
     };
-    parsedData.addWitnessGroup = function(group) {
-        var grpId = group.id;
-        if ( witnessesGroupCollection.length === undefined ) {
-            witnessesGroupCollection.length = 0;
-        }
-        if ( witnessesGroupCollection[grpId] === undefined ) {
-            witnessesGroupCollection[witnessesGroupCollection.length] = grpId;
-            witnessesGroupCollection[grpId] = group;
-            witnessesGroupCollection.length++;
-            // _console.log('parsedData - addWitnessGroup ', witnessesGroupCollection);
-        }
-    };
+    
     parsedData.addWitnessText = function(witId, content) {
-        if ( witnessesCollection.list[witId] === undefined ) {
-            parsedData.addWitness(witId);
+        if ( witnessesTextsCollection[witId] === undefined ) {
+            witnessesTextsCollection[witId] = '<text>'+content+'</text>';
         } 
-        witnessesCollection.list[witId].content = content;
+    };
+
+    parsedData.getWitnessText = function(witId) {
+        if ( witnessesTextsCollection[witId] !== undefined ) {
+            return witnessesTextsCollection[witId];
+        } 
     };
 
     parsedData.getWitnesses = function() {
         return witnessesCollection;
     };
 
-    parsedData.getWitnessesList = function() {
-        return witnessesCollection.list;
-    };
-
-    parsedData.getWitness = function(witId) {
-        return witnessesCollection.list[witId];
-    };
-
-    parsedData.getWitnessesGroups = function() {
-        return witnessesGroupCollection;
-    };
-
-    parsedData.getGroup = function(grpId) {
-        return witnessesGroupCollection[grpId];
+    parsedData.getWitnessById = function(witId) {
+        return witnessesCollection[witId];
     };
 
     /* CRITICAL ENTRIES */
@@ -186,7 +155,6 @@ angular.module('evtviewer.dataHandler')
     };
 
     parsedData.addCriticalEntry = function(entry, entryId) {
-        // var entryId = entry.id;
         if ( criticalAppCollection.length === undefined ) {
             criticalAppCollection.length = 0;
         }
@@ -194,17 +162,14 @@ angular.module('evtviewer.dataHandler')
             criticalAppCollection[criticalAppCollection.length] = entryId;
             criticalAppCollection[entryId] = entry;
             criticalAppCollection.length++;
-            // _console.log('parsedData - addCriticalEntry ', criticalAppCollection);
         }
     };
 
     parsedData.getCriticalEntries = function() {
-        // _console.log('parsedData - getCriticalEntries ', criticalAppCollection);
         return criticalAppCollection;
     };
 
     parsedData.getCriticalEntryByPos = function(entryPos) {
-        // _console.log('parsedData - getCriticalEntryByPos ', entryPos);
         return criticalAppCollection[entryPos];
     };
 
@@ -220,7 +185,6 @@ angular.module('evtviewer.dataHandler')
                 criticalAppCollection.filters[name].values.push(value);
             }
         }
-        // _console.log(criticalAppCollection.filters);
     }
 
     parsedData.getCriticalEntriesFilters = function() {

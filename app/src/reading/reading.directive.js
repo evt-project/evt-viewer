@@ -183,6 +183,7 @@ angular.module('evtviewer.reading')
             });
 
             scope.$on('UPDATE_APP_FILTERS', function(event, filters){
+                console.log('UPDATE_APP_FILTERS');
                 var condizione = 'AND', //TODO: Decidere come gestire
                     match,
                     filter,

@@ -107,7 +107,7 @@
         border: none;
         cursor: default;
 
-        .reading__apparatus {
+        > .reading__apparatus {
             display: none !important
         }
     }

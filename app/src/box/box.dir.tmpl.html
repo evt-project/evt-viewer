@@ -18,16 +18,44 @@
     <div 
         class="box-bottom-box filters"
         ng-if="vm.type=='witness' || vm.subtype=='critical'">
+        
         <div class="filters__witnesses"
              ng-if="vm.subtype=='critical'">
-            <div ng-repeat="filter in vm.appFilters">
-                <input 
-                    type="checkbox" 
-                    value="{{filter.value}}" 
-                    name="{{filter.value}}" 
-                    ng-click="vm.toggleCriticalAppFilter('wit', filter.value);"
-                    />
-                <label for="{{filter.value}}"> {{filter.label}} - {{filter.title }}</label>
+            <div ng-repeat="witness in vm.appFilters">
+                <div ng-if="vm.appFilters[witness].type=='witness'">
+                    <input 
+                        type="checkbox" 
+                        value="{{vm.appFilters[witness].id}}" 
+                        name="{{vm.appFilters[witness].id}}" 
+                        ng-click="vm.toggleCriticalAppFilter('wit', vm.appFilters[witness].id);" 
+                        data-type="vm.appFilters[witness].type"/>
+                    <label for="{{vm.appFilters[witness].id}}"> 
+                        {{vm.appFilters[witness].id}} - {{vm.appFilters[witness].name }}
+                    </label>
+                </div>
+                <div ng-if="vm.appFilters[witness].type=='group'">
+                    <input 
+                        type="checkbox" 
+                        value="{{vm.appFilters[witness].id}}" 
+                        name="{{vm.appFilters[witness].id}}" 
+                        ng-click="vm.toggleCriticalAppFilter('wit', vm.appFilters[witness].id);"
+                        data-type="vm.appFilters[witness].type"/>
+                    <label for="{{vm.appFilters[witness].id}}"> 
+                        {{vm.appFilters[witness].id}} - {{vm.appFilters[witness].name }}
+                    </label>
+                    <div ng-repeat="subWitness in vm.appFilters[witness].content" style="margin-left:20px;">
+                        <input 
+                            type="checkbox" 
+                            value="{{vm.appFilters[witness].content[subWitness].id}}" 
+                            name="{{vm.appFilters[witness].content[subWitness].id}}" 
+                            ng-click="vm.toggleCriticalAppFilter('wit', vm.appFilters[witness].content[subWitness].id);" 
+                            data-type="vm.appFilters[witness].content[subWitness].type"
+                            data-group="witness"/>
+                        <label for="{{vm.appFilters[witness].content[subWitness].id}}"> 
+                            {{vm.appFilters[witness].content[subWitness].id}} - {{vm.appFilters[witness].content[subWitness].name }}
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
 
