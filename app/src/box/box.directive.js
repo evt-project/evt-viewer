@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function(evtBox, evtParser, xmlParser, parsedData) {
+.directive('box', function(evtBox, evtParser, evtCriticalParser, xmlParser, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -50,7 +50,7 @@ angular.module('evtviewer.box')
                                 currentDoc = documents[documents[0]];
                             }
                             if (currentDoc !== undefined) {
-                                newContent = evtParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
+                                newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
                             }
                         }
                         
@@ -76,7 +76,6 @@ angular.module('evtviewer.box')
                     return scope.vm.state.filters;
                 }
             }, function(newItems, oldItems) {
-                console.log('update filters', scope.vm.state.filters);
                 if (newItems !== oldItems) {
                     scope.$broadcast('UPDATE_APP_FILTERS', scope.vm.state.filters);
                 }

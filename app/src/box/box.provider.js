@@ -61,7 +61,7 @@ angular.module('evtviewer.box')
             if (vm.state.filters[filter].length === 0) {
                 delete vm.state.filters[filter];
             }
-            _console.log('# toggleCriticalAppFilter ', vm.state.filters);
+            // _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
 
         function toggleFilterBox() {
