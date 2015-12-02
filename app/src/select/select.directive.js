@@ -30,6 +30,9 @@ angular.module('evtviewer.select')
                         scope.$emit('UPDATE_DOCUMENT', newItems);
                     }
                 }
+                if (scope.type === 'edition') {
+                    scope.$emit('UPDATE_EDITION', newItems);
+                }
             }, true);
 
             scope.$watch('vm.dataSource' , function(newItems, oldItems) {

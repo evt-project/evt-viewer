@@ -47,7 +47,14 @@
 
 .box-menu {
     @include inside-header();
-    display: setVisibility($mainContainer-top-menu);
+    
+    &[data-position='top']{
+        display: setVisibility($mainContainer-top-menu);
+    }
+
+    &[data-position='bottom']{
+        display: setVisibility($mainContainer-bottom-menu);
+    }
 }
 
 .box-body {

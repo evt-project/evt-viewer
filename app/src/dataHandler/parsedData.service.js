@@ -26,7 +26,24 @@ angular.module('evtviewer.dataHandler')
     };
 
     var criticalText_mock = [];
-   
+    
+    var mockEditions = [
+        {
+            value: 'critical',
+            label: 'Critical',
+            title: 'Critical edition'
+        },
+        {
+            value: 'interpretative',
+            label: 'Interpretative',
+            title: 'Interpretative edition'
+        }, 
+        {
+            value: 'diplomatic',
+            label: 'Diplomatic',
+            title: 'Diplomatic edition'
+        }
+    ]; 
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
         var pageId = page.value;
@@ -101,7 +118,7 @@ angular.module('evtviewer.dataHandler')
         return documentsCollection[docId];
     };
     parsedData.getEditions = function() {
-        // return mockEditions;
+        return mockEditions;
     };
 
     parsedData.addEditions = function() {
@@ -151,7 +168,7 @@ angular.module('evtviewer.dataHandler')
         criticalText_mock.push(text);
     };
     parsedData.getCriticalText = function(docId) {
-        return criticalText_mock;
+        return criticalText_mock[0];
     };
 
     parsedData.addCriticalEntry = function(entry, entryId) {

@@ -89,7 +89,7 @@ angular.module('evtviewer.select')
                     };
                     break;
                 case 'edition':
-                    // optionList = parsedData.getEditions();
+                    optionList = parsedData.getEditions();
                     optionSelected = optionList[0];
                     callback = function(option) {
                         _console.log('edition select callback ' + option.label);

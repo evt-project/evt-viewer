@@ -29,13 +29,42 @@ angular.module('evtviewer.box')
                 }     
             });
 
-            if (currentBox.subtype === 'critical') {
-                scope.$on('UPDATE_DOCUMENT', function(event, boxId){
-                    var newContent = parsedData.getCriticalText(boxId)[0];
-                    if ( newContent !== undefined && newContent !== '') {
-                        currentBox.updateContent(newContent.innerHTML);
-                    } else {
-                        currentBox.updateContent('Testo non disponibile.');
+            if (currentBox.type === 'text') {
+                scope.$on('UPDATE_EDITION', function(event, edition){
+                    console.log('UPDATE_EDITION');
+                    if ( scope.vm.state.edition !== edition ) {
+                        var newContent;
+                        scope.vm.state.edition = edition;
+                        if (edition === 'critical') {
+                            scope.vm.appFilters    = parsedData.getWitnesses();
+
+                            if ( scope.vm.state.docId !== undefined ) {
+                                newContent = parsedData.getCriticalText(scope.vm.state.docId);
+                            }
+                        }
+                        scope.vm.state.filters = {};
+                        scope.vm.state.filterBox = false;
+
+                        if ( newContent !== undefined && newContent !== '') {
+                            currentBox.updateContent(newContent.innerHTML);
+                        } else {
+                            currentBox.updateContent('Testo non disponibile.');
+                        }
+                    }
+                });
+                scope.$on('UPDATE_DOCUMENT', function(event, docId){
+                    console.log('UPDATE_DOCUMENT');
+                    if (scope.vm.state.docId !== docId) {
+                        var newContent;
+                        scope.vm.state.docId = docId;
+                        if ( scope.vm.state.edition !== undefined && scope.vm.state.edition === 'critical') {
+                            newContent = parsedData.getCriticalText(docId);   
+                        }
+                        if ( newContent !== undefined && newContent !== '') {
+                            currentBox.updateContent(newContent.innerHTML);
+                        } else {
+                            currentBox.updateContent('Testo non disponibile.');
+                        }
                     }
                 });
             }

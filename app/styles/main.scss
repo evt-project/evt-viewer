@@ -77,6 +77,7 @@ $large:(
 	@include span(9 of 9);	
 	@include colors($base-color-light, $base-color-dark);
     height: $mainContainer-menu-height;
+    min-height: $mainContainer-menu-height;
 	font-size: 16px;
 	padding: 6px;
 	display: block;

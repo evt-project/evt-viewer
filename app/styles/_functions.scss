@@ -29,7 +29,7 @@
 
 @function setVisibility($visible){
 	@if($visible == true){
-		@return block;
+		@return inline-block;
 	} @else {
 		@return none;
 	}

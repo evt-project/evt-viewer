@@ -18,13 +18,13 @@ angular.module('evtviewer.dataHandler')
     /* @parentTagName tagName of the element that does not be a parent of @element */
     /* @return boolean                                                             */
     /* *************************************************************************** */
-    var isNestedInElem = function(element, parentTagName) {
+    parser.isNestedInElem = function(element, parentTagName) {
         if (element.parentNode.tagName === 'text' ) {
             return false;
         } else if (element.parentNode.tagName === parentTagName) {
             return true;
         } else {
-            return isNestedInElem(element.parentNode, parentTagName);
+            return parser.isNestedInElem(element.parentNode, parentTagName);
         }
     };
     
@@ -38,7 +38,7 @@ angular.module('evtviewer.dataHandler')
     // It will transform a generic XML element into an <span> element
     // with a data-* attribute for each @attribute of the XML element
     // It will also transform its children
-    var parseXMLElement = function(element){
+    parser.parseXMLElement = function(element){
         if (element.nodeType === 3 ) { // Text
             return element;
         } else {
@@ -57,7 +57,7 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             for (var j = 0; j < element.childNodes.length; j++) {
-                newElement.appendChild(parseXMLElement(element.childNodes[j]));
+                newElement.appendChild(parser.parseXMLElement(element.childNodes[j]));
             }
             return newElement;
         }
@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
     /* **************************************************************************** */
     // It will look for every element representing a note
     // and replace it with a new evt-popover element
-    var parseNote = function(docDOM) {
+    parser.parseNote = function(docDOM) {
         var notes = docDOM.getElementsByTagName('note');
         var n = 0;
         while (n < notes.length) {
@@ -90,7 +90,7 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    var xpath = function(el) {
+    parser.xpath = function(el) {
         if (typeof el === 'string') {
             // document.evaluate(xpathExpression, contextNode, namespaceResolver, resultType, result );
             return document.evaluate(el, document, null, 0, null);
@@ -103,7 +103,7 @@ angular.module('evtviewer.dataHandler')
         var countIndex = sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '';
         countIndex     = countIndex > 1 ? countIndex : '';
         var tagName    = el.tagName.toLowerCase() !== 'tei' ? '.'+el.tagName.toLowerCase() : '';
-        return xpath(el.parentNode) + tagName + countIndex;
+        return parser.xpath(el.parentNode) + tagName + countIndex;
     };
 
     parser.parsePages = function(doc, docId) {
@@ -137,7 +137,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
                 var newDoc   = { 
-                    value   : element.getAttribute('xml:id')  || xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1),
+                    value   : element.getAttribute('xml:id')  || parser.xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1),
                     label   : element.getAttribute('n')       || 'Doc '+(parsedData.getDocuments().length+1),
                     title   : element.getAttribute('n')       || 'Document '+(parsedData.getDocuments().length+1),
                     content : '<text>'+element.innerHTML+'</text>'
@@ -154,9 +154,5 @@ angular.module('evtviewer.dataHandler')
         // console.log('## Documents ##', parsedData.getDocuments());
     };
 
-    parser.xpath = xpath;
-    parser.isNestedInElem = isNestedInElem;
-    parser.parseXMLElement = parseXMLElement;
-    parser.parseNote = parseNote;
     return parser;
 });

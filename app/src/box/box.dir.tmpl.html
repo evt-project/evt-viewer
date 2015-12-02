@@ -17,11 +17,11 @@
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
     <div 
         class="box-bottom-box filters"
-        ng-if="vm.type=='witness' || vm.subtype=='critical'"
+        ng-if="vm.type=='witness' || vm.state.edition=='critical'"
         ng-class="{'open': vm.state.filterBox}">
         
         <div class="filters__witnesses"
-             ng-if="vm.subtype=='critical'">
+             ng-if="vm.state.edition=='critical'">
             <div ng-repeat="witness in vm.appFilters">
                 <div ng-if="vm.appFilters[witness].type=='witness'">
                     <input 
@@ -75,11 +75,13 @@
             </div>
         </div>
     </div>
-    <div class="box-menu" data-position="bottom">
+    <div 
+        class="box-menu" 
+        data-position="bottom" >
         <button-switch 
             title="Filters"
             data-label="Filters"
-            ng-if="vm.type=='witness' || vm.subtype=='critical'"
+            ng-if="vm.type=='witness' || vm.state.edition=='critical'"
             ng-click="vm.toggleFilterBox()">
         </button-switch>
     </div>
