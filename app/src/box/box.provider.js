@@ -64,6 +64,12 @@ angular.module('evtviewer.box')
             _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
 
+        function toggleFilterBox() {
+            var vm = this;
+            if (vm.state.filterBox !== undefined) {
+                vm.state.filterBox = !vm.state.filterBox;
+            }
+        }
         // 
         // Box builder
         // 
@@ -106,6 +112,7 @@ angular.module('evtviewer.box')
                     if (vm.subtype !== undefined && vm.subtype === 'critical') {
                         appFilters    = parsedData.getWitnesses();
                         state.filters = {};
+                        state.filterBox = false;
                         console.log('appFilters: ', appFilters);
                     }
                     break;
@@ -113,6 +120,7 @@ angular.module('evtviewer.box')
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
+                    state.filterBox = false;
                     break;
             }
 
@@ -133,7 +141,8 @@ angular.module('evtviewer.box')
                 updateState             : updateState,
                 getState                : getState,
                 destroy                 : destroy,
-                toggleCriticalAppFilter : toggleCriticalAppFilter
+                toggleCriticalAppFilter : toggleCriticalAppFilter,
+                toggleFilterBox         : toggleFilterBox
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

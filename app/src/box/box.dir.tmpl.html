@@ -17,7 +17,8 @@
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
     <div 
         class="box-bottom-box filters"
-        ng-if="vm.type=='witness' || vm.subtype=='critical'">
+        ng-if="vm.type=='witness' || vm.subtype=='critical'"
+        ng-class="{'open': vm.state.filterBox}">
         
         <div class="filters__witnesses"
              ng-if="vm.subtype=='critical'">
@@ -75,10 +76,11 @@
         </div>
     </div>
     <div class="box-menu" data-position="bottom">
-        <!-- <button-switch 
+        <button-switch 
             title="Filters"
             data-label="Filters"
-            ng-if="vm.type=='witness'">
-        </button-switch> -->
+            ng-if="vm.type=='witness' || vm.subtype=='critical'"
+            ng-click="vm.toggleFilterBox()">
+        </button-switch>
     </div>
 </section>
