@@ -13,7 +13,8 @@ $large:(
 	columns: 20,
 	container-position: center,
 	global-box-sizing: content-box,
-	gutters:0,
+	gutter-position: inside,
+    gutters:0.1,
 	debug:(image:show)
 	);
 
@@ -165,7 +166,7 @@ section > div{
 #main-container{
 	@include main-frame();
 	//@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
-	@include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+	// @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
     overflow-x: scroll;
 }
 #main-container > div {
@@ -193,4 +194,15 @@ section > div{
     &::after {
         content:' –';
     }
+}
+// Temporary
+.compareWits_box {
+    // width: span(11 of 18);
+    @include span(isolate 11 of 18);
+    overflow-x: scroll;
+    overflow-y: hidden; 
+    height:100%;
+    white-space: normal;
+    position: relative;
+    display: inline-block;
 }

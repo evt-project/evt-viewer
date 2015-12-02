@@ -3,12 +3,14 @@
 /* *************************** */
 
 .box {
-    width: span(9 of 18);
+    // width: span(8 of 18);
+    @include span(7 of 18);
     height:100%;
     white-space: normal;
     position: relative;
     border: $mainContainer-border-width solid $base-color-dark;
     display: inline-block;
+    padding: 0;
     @include colors($base-color-dark, $base-color-light);
     
     // &[data-position='left'] {
@@ -33,7 +35,12 @@
     }
 
 }
-
+.box-witness {
+    width: span(5 of 11);
+    // @include layout(auto 5 .25 inside fluid isolate);
+    float: none;
+    // @include span(5 of 10);
+}
 .box-text, .box-witness {
     @include colors($base-color-dark, #fff);
     // border-left-width: 0.5px;
