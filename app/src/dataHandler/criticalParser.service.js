@@ -260,7 +260,8 @@ angular.module('evtviewer.dataHandler')
                             }
                         } else {
                             if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
-                                evtReadingElement.appendChild(evtParser.parseXMLElement(childNode));
+                                // evtReadingElement.appendChild(evtParser.parseXMLElement(childNode));
+                                evtReadingElement.appendChild(childNode.cloneNode(true));
                                 evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
                                 for (var j = 0; j < childNode.attributes.length; j++) {
                                     attrib = childNode.attributes[j];
@@ -367,6 +368,8 @@ angular.module('evtviewer.dataHandler')
             }
             //parse <pb>
             parser.parseWintessPageBreaks(docDOM, wit);
+            //parse lines
+            evtParser.parseLines(docDOM);
             //parse <note>
             evtParser.parseNote(docDOM);
             witnessText = docDOM.innerHTML;
@@ -521,6 +524,9 @@ angular.module('evtviewer.dataHandler')
                 var pbNode = pbs[k];
                     pbNode.parentNode.removeChild(pbNode);
             }
+            //parse lines
+            evtParser.parseLines(docDOM);
+            
             evtParser.parseNote(docDOM);
             criticalText = docDOM;
         } else {

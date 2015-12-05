@@ -187,16 +187,18 @@ angular.module('evtviewer.reading')
                     match,
                     filter,
                     i,
+                    values,
                     value;
                 if (condizione === 'OR') {
                     // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
                     match = false;
                     for (filter in filters) {
-                        if (filters[filter].length > 0) {
+                        if (filters[filter].totActive > 0) {
                             if ( element.attr('data-'+filter) !== undefined ) {
                                 i = 0;
-                                while ( i < filters[filter].length && !match) {
-                                    value = filters[filter][i];
+                                values = filters[filter].values;
+                                while ( i < values.length && !match) {
+                                    value = values[values[i]].name;
                                     match = match || (element.attr('data-'+filter).indexOf(value) >= 0);
                                     i++;
                                 }
@@ -208,11 +210,12 @@ angular.module('evtviewer.reading')
                 } else { //default
                     var visible = true;
                     for (filter in filters) {
-                        if (filters[filter].length > 0) {
+                        if (filters[filter].totActive > 0) {
                             match = false; 
                             if ( element.attr('data-'+filter) !== undefined ) {
-                                for ( i = 0; i < filters[filter].length; i++ ) {
-                                    value = filters[filter][i];
+                                values = filters[filter].values;
+                                for ( i = 0; i < values.length; i++ ) {
+                                    value = values[values[i]].name;
                                     match = match || (element.attr('data-'+filter).indexOf(value) >= 0);
                                 }
                             }

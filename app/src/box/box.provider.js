@@ -48,21 +48,51 @@ angular.module('evtviewer.box')
 
         // Critical edition control
         function toggleCriticalAppFilter(filter, value){
-            var vm = this;
-            if (vm.state.filters[filter] === undefined) {
-                vm.state.filters[filter] = [];
+            var vm      = this,
+                filters = vm.state.filters;
+            if (filters[filter] === undefined ) {
+                filters[filter] = {
+                    any        : true,
+                    totActive  : 0,
+                    values     : {
+                                    length : 0
+                                }
+                };
             }
-            var index = vm.state.filters[filter].indexOf(value);
-            if (index < 0) {
-                vm.state.filters[filter].push(value);
+            if ( filters[filter].totActive === undefined ) {
+                filters[filter].totActive = 0;
+            }
+
+            var values = filters[filter].values;
+            if (values[value] === undefined) {
+                values[values.length] = value;
+                values[value] = { 
+                                    name   : value,
+                                    active : true 
+                                };
+                values.length++;
             } else {
-                vm.state.filters[filter].splice(index, 1);
+                values[value].active = !values[value].active;
             }
-            if (vm.state.filters[filter].length === 0) {
-                delete vm.state.filters[filter];
+            
+            if (values[value].active) {
+                filters[filter].totActive++;
+            } else {
+                filters[filter].totActive--;
             }
+            
+            filters[filter].any = (filters[filter].totActive === 0);
+            
             // _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
+
+        function clearFilter(filter){
+            var vm = this;
+            vm.state.filters[filter].values    = { length: 0 };
+            vm.state.filters[filter].totActive = 0;
+            // _console.log('# toggleCriticalAppFilter ', filter);
+        }
+
 
         function toggleFilterBox() {
             var vm = this;
@@ -139,7 +169,8 @@ angular.module('evtviewer.box')
                 getState                : getState,
                 destroy                 : destroy,
                 toggleCriticalAppFilter : toggleCriticalAppFilter,
-                toggleFilterBox         : toggleFilterBox
+                toggleFilterBox         : toggleFilterBox,
+                clearFilter             : clearFilter
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

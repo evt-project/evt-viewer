@@ -22,6 +22,15 @@
         
         <div class="filters__witnesses"
              ng-if="vm.state.edition=='critical'">
+            <div>
+                <input 
+                    type="checkbox" 
+                    value="" 
+                    name="witness_any"
+                    checked="checked"
+                    ng-click="vm.toggleCriticalAppFilter('wit', '');"/>
+                <label for="witness_any"> any</label>
+            </div>
             <div ng-repeat="witness in vm.appFilters">
                 <div ng-if="vm.appFilters[witness].type=='witness'">
                     <input 
@@ -64,11 +73,23 @@
              ng-if="vm.type=='witness'"
              ng-repeat="filter in vm.appFilters">
             <div class="filters-section-title">{{filter.name}}</div>
+            <div>
+                <input 
+                    type="checkbox" 
+                    value="" 
+                    name="{{filter.name}}_any"
+                    ng-checked="vm.state.filters[filter.name] === undefined || vm.state.filters[filter.name].any" 
+                    ng-model="vm.state.filters[filter.name].any"
+                    ng-click="vm.clearFilter(filter.name);"
+                    />
+                <label for="{{filter.name}}_any"> any {{ vm.state.filters[filter.name].active }}</label>
+            </div>
             <div ng-repeat="value in filter.values">
                 <input 
                     type="checkbox" 
                     value="{{value}}" 
-                    name="{{value}}" 
+                    name="{{value}}"
+                    ng-checked="vm.state.filters[filter.name].values[value].active !== undefined && vm.state.filters[filter.name].values[value].active"
                     ng-click="vm.toggleCriticalAppFilter(filter.name, value);"
                     />
                 <label for="{{value}}"> {{value}}</label>

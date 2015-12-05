@@ -151,7 +151,7 @@ footer{
 #global-container{
 	@include calc(height, #{setGlobalFrameHeight()});
 	padding:1px;
-    overflow-x:scroll;
+    overflow:hidden;
     width:100%;
 }
 section > div{
@@ -167,7 +167,6 @@ section > div{
 	@include main-frame();
 	//@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
 	// @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
-    overflow-x: scroll;
 }
 #main-container > div {
     white-space: nowrap;
@@ -194,6 +193,10 @@ section > div{
     &::after {
         content:' –';
     }
+}
+
+.l {
+    display: block;
 }
 // Temporary
 .compareWits_box {
