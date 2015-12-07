@@ -29,6 +29,36 @@ angular.module('evtviewer.box')
                 }     
             });
 
+            // Scrolling evt
+            var raw = element[0];
+            var boxElem = angular.element(element).find('.box')[0],
+                boxBody = angular.element(element).find('.box-body')[0];
+            angular.element(boxBody).bind('scroll', function() {
+                var i       = 0,
+                    visible = false,
+                    id      = '',
+                    pbElems = angular.element(element).find('.pb');
+                while ( i < pbElems.length && !visible ) {
+                    var docViewTop = boxElem.scrollTop + 42,
+                        docViewBottom = docViewTop + angular.element(boxElem).height(),
+                        id = pbElems[i].getAttribute('data-id'),
+                        elemTop =  $("span.pb[data-id='"+id+"']").offset().top;
+                    if ((elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
+                        visible = true;
+                    } else {
+                        i++;
+                    }
+                }
+                if (visible) {
+                    scope.$broadcast('UPDATE_WITNESS_PAGE', id);
+                }
+                
+              // console.log('scroll');
+              // $('.box-body').scrollTop($(this).scrollTop());
+            });
+
+
+            // Watchers
             if (currentBox.type === 'text') {
                 scope.$on('UPDATE_EDITION', function(event, edition){
                     console.log('UPDATE_EDITION');
@@ -92,15 +122,19 @@ angular.module('evtviewer.box')
                         scope.$broadcast('UPDATE_WITNESS', sigla);
                     }
                 });
+                scope.$on('CHANGE_WITNESS_PAGE', function(event, option) {
+                    if (option !== undefined) {
+                        var docViewTop = boxElem.scrollTop + 42,
+                            docViewBottom = docViewTop + angular.element(boxElem).height(),
+                            elemTop =  $("span.pb[data-id='"+option.value+"']").offset().top;
+                        if ((elemTop >= docViewBottom) || (elemTop <= docViewTop)) {
+                            var boxBody = angular.element(element).find('.box-body')[0];
+                            boxBody.scrollTop = $("span.pb[data-id='"+option.value+"']").position().top;
+                        }
+                    }
+                });
             }
-
-            var raw = element[0];
-            var boxBody = angular.element(element).find('.box-body')[0];
-            angular.element(boxBody).bind('scroll', function() {
-              console.log('scroll');
-              // $('.box-body').scrollTop($(this).scrollTop());
-            });
-
+            
             scope.$watch(function() {
                 if (scope.vm.state.filters !== undefined) {
                     return scope.vm.state.filters;

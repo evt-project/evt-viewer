@@ -27,14 +27,21 @@ angular.module('evtviewer.select')
     };
 
     this.selectOption = function(option) {
+        // _console.log('vm - selectOption ', option);
         vm.optionSelected = option;
         if (vm.expanded) {
             vm.toggleExpand();
         }
         vm.changeRoute.call(undefined, option);
         // vm.callback.call(undefined, option);
+    };
 
-        _console.log('vm - selectOption ', option);
+    this.selectOptionByValue = function(optionValue) {
+        // _console.log('vm - selectOptionByValue ', optionValue);
+        var option = vm.dataSource[optionValue];
+        if (option !== undefined) {    
+            vm.selectOption(option);
+        }
     };
 
     this.isOptionSelected = function(option) {

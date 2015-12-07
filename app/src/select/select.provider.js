@@ -78,7 +78,7 @@ angular.module('evtviewer.select')
                     };
                     changeRoute = function(option) {
                         _console.log('document select changeRoute ' + option.label);  
-                        var url = '/' + $routeParams.pageId + '/' + option.value;
+                        // var url = '/' + $routeParams.pageId + '/' + option.value;
                         // $location.path( url );
                     };
                     formatOptionList = function(optionList) {
@@ -122,9 +122,10 @@ angular.module('evtviewer.select')
                                     witIds += witSelect.optionSelected.value+'#';
                                 }
                             }
-                        });
+                        }); 
+                        _console.log('witness select changeRoute ' + option.value);
 
-                        var url = '/' + $routeParams.pageId + '/' + $routeParams.docId + '/' + witIds;
+                        // var url = '/' + $routeParams.pageId + '/' + $routeParams.docId + '/' + witIds;
                         // $location.path( url );
                     };
                     formatOptionList = function(optionList) {
@@ -136,8 +137,8 @@ angular.module('evtviewer.select')
                                 option = {
                                     value : currentOption.id,
                                     label : currentOption.id,
-                                    title : currentOption.name,
-                                }
+                                    title : currentOption.name
+                                };
                                 formattedList.push(option);
                             } else {
                                 for (var j = 0; j < currentOption.content.length; j++ ) {
@@ -145,8 +146,8 @@ angular.module('evtviewer.select')
                                     option = {
                                         value : currentSubOpt.id,
                                         label : currentSubOpt.id,
-                                        title : currentSubOpt.name,
-                                    }
+                                        title : currentSubOpt.name
+                                    };
                                     formattedList.push(option);
                                 }
                             }
@@ -161,10 +162,10 @@ angular.module('evtviewer.select')
                     // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(option) {
                         optionSelected = option;
-                        _console.log('witness page select callback ', option);
+                        // _console.log('witness page select callback ', option);
                     };
                     changeRoute = function(option) {
-                        _console.log('witness page select changeRoute ', option);  
+                        _console.log('witness page select changeRoute ', option.value);  
                     };
                     formatOptionList = function(optionList) {
                         var formattedList = [];

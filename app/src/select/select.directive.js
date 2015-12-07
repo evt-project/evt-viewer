@@ -37,8 +37,17 @@ angular.module('evtviewer.select')
 
             if (scope.type === 'witness-page') {
                 scope.$on('UPDATE_WITNESS', function(event, wit){
-                    console.log('UPDATE_WITNESS page', wit);
                     scope.vm.dataSource = parsedData.getWitnessPages(wit);
+                });
+                scope.$watch('vm.optionSelected', function(newOpt, oldOpt){
+                    if (newOpt !== oldOpt) {
+                        scope.$emit('CHANGE_WITNESS_PAGE', newOpt);
+                    }
+                });
+                scope.$on('UPDATE_WITNESS_PAGE', function(event, pageId){
+                    if (pageId !== scope.vm.optionSelected.value) {
+                        scope.vm.selectOptionByValue(pageId);
+                    }
                 });
             }
 

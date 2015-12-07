@@ -318,10 +318,16 @@ angular.module('evtviewer.dataHandler')
             if (pbNode.getAttribute('ed') !== '#'+wit) {
                 pbNode.parentNode.removeChild(pbNode); 
             } else {
-                var newPbElem = document.createElement('span');
+                var newPbElem = document.createElement('span'),
+                    id;
+                if (pbNode.getAttribute('ed')) {
+                    id  = pbNode.getAttribute('xml:id') || pbNode.getAttribute('ed').replace('#', '')+'-'+pbNode.getAttribute('n') || 'page_'+k;
+                } else {
+                    id  = pbNode.getAttribute('xml:id') || 'page_'+k;
+                }
                 newPbElem.className = 'pb';
                 newPbElem.setAttribute('data-wit', pbNode.getAttribute('ed'));
-                newPbElem.setAttribute('data-id', pbNode.getAttribute('@xml:id'));
+                newPbElem.setAttribute('data-id', id);
                 newPbElem.textContent = pbNode.getAttribute('n');
                 pbNode.parentNode.replaceChild(newPbElem, pbNode);
                 k++;

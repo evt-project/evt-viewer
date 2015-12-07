@@ -133,7 +133,11 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(defPageElement), 
             function(element) {
                 var newPage    = {};
-                newPage.value  = element.getAttribute('xml:id') || 'page_'+(parsedData.getPages().length+1);
+                if (element.getAttribute('ed')) {
+                    newPage.value  = element.getAttribute('xml:id') || element.getAttribute('ed').replace('#', '')+'-'+element.getAttribute('n') || 'page_'+(parsedData.getPages().length+1);
+                } else {
+                    newPage.value  = element.getAttribute('xml:id') || 'page_'+(parsedData.getPages().length+1);
+                }
                 newPage.label  = element.getAttribute('n')      || 'Page '+(parsedData.getPages().length+1);
                 newPage.title  = element.getAttribute('n')      || 'Page '+(parsedData.getPages().length+1); 
                 for (var i = 0; i < element.attributes.length; i++) {
