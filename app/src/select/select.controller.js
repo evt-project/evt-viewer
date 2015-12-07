@@ -34,7 +34,7 @@ angular.module('evtviewer.select')
         vm.changeRoute.call(undefined, option);
         // vm.callback.call(undefined, option);
 
-        _console.log('vm - selectOption ' + option.value);
+        _console.log('vm - selectOption ', option);
     };
 
     this.isOptionSelected = function(option) {

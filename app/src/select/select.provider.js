@@ -22,6 +22,7 @@ angular.module('evtviewer.select')
                 return vm.optionSelected.value;
             }
         }
+
         // 
         // Select builder
         // 
@@ -149,6 +150,26 @@ angular.module('evtviewer.select')
                                     formattedList.push(option);
                                 }
                             }
+                        }
+                        return formattedList;
+                    };
+                    break;                
+                case 'witness-page':
+                    optionList = [];
+                    dataSource = [];
+                    // TODO: add a general service for the current page in the application
+                    // optionSelected = optionList[0]; how to take the reference to a undefined element?
+                    callback = function(option) {
+                        optionSelected = option;
+                        _console.log('witness page select callback ', option);
+                    };
+                    changeRoute = function(option) {
+                        _console.log('witness page select changeRoute ', option);  
+                    };
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++ ) {
+                            formattedList.push(optionList[optionList[i]]);
                         }
                         return formattedList;
                     };

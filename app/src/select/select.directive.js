@@ -1,6 +1,6 @@
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function(evtSelect) {
+.directive('evtSelect', function(evtSelect, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -35,11 +35,20 @@ angular.module('evtviewer.select')
                 }
             }, true);
 
+            if (scope.type === 'witness-page') {
+                scope.$on('UPDATE_WITNESS', function(event, wit){
+                    console.log('UPDATE_WITNESS page', wit);
+                    scope.vm.dataSource = parsedData.getWitnessPages(wit);
+                });
+            }
+
             scope.$watch('vm.dataSource' , function(newItems, oldItems) {
                 if (newItems !== oldItems) {
                     scope.vm.optionList = scope.vm.formatOptionList(newItems);
-                    if (scope.vm.optionSelected === undefined) {
+                    if (scope.vm.optionList !== undefined) {
                         scope.vm.selectOption(scope.vm.optionList[0]);
+                    } else {
+                        scope.vm.selectOption = {};
                     }
                 }
             }, true);

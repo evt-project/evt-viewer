@@ -16,7 +16,8 @@
       <div 
          class="option" 
          title="{{option.title}}" 
-         data-value="{{option.value}}" 
+         data-value="{{option.value}}"
+         data-wit="{{option.ed}}"
          ng-repeat="option in vm.optionList" 
          ng-click="vm.selectOption(option)" 
          ng-class="{'selected': vm.isOptionSelected(option)}">

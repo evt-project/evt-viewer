@@ -145,7 +145,7 @@ angular.module('evtviewer.dataHandler')
                 newPage.doc = docId;
                 parsedData.addPage(newPage);
         });
-        // console.log('## Pages ##', parsedData.getPages());
+        console.log('## Pages ##', parsedData.getPages());
     };
 
     parser.parseDocuments = function(doc) {

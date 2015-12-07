@@ -378,6 +378,7 @@ angular.module('evtviewer.dataHandler')
         }
         //save witness text
         parsedData.addWitnessText(wit, witnessText);
+        // console.log('## Witnesses Texts ##', parsedData.getWitnessesTextsCollection());
         return witnessText;
     };
 

@@ -145,6 +145,7 @@ angular.module('evtviewer.box')
                     break;
                 case 'witness':
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
+                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page'});
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
                     state.filterBox = false;

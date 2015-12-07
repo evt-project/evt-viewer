@@ -89,6 +89,7 @@ angular.module('evtviewer.box')
                             currentBox.updateContent('Testo non disponibile.');
                         }
                         currentBox.updateState('witness', sigla); 
+                        scope.$broadcast('UPDATE_WITNESS', sigla);
                     }
                 });
             }

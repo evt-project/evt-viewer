@@ -20,6 +20,7 @@ angular.module('evtviewer.dataHandler')
     };
 
     var witnessesTextsCollection = {};
+    var witnessesPagesCollection = {};
     var criticalAppCollection = {
         length: 0,
         filters: { }
@@ -142,7 +143,7 @@ angular.module('evtviewer.dataHandler')
             // _console.log('parsedData - addWitness ', witnessesCollection);
         }
     };
-    
+
     parsedData.addWitnessText = function(witId, content) {
         if ( witnessesTextsCollection[witId] === undefined ) {
             witnessesTextsCollection[witId] = '<text>'+content+'</text>';
@@ -155,6 +156,10 @@ angular.module('evtviewer.dataHandler')
         } 
     };
 
+    parsedData.getWitnessesTextsCollection = function() {
+        return witnessesTextsCollection;
+    };
+
     parsedData.getWitnesses = function() {
         return witnessesCollection;
     };
@@ -163,10 +168,30 @@ angular.module('evtviewer.dataHandler')
         return witnessesCollection[witId];
     };
 
+    parsedData.getWitnessPages = function(witId) {
+        if ( witnessesPagesCollection[witId] !== undefined ) {
+            return witnessesPagesCollection[witId];
+        } else {
+            var pages = { length: 0 };
+            for ( var i = 0; i < pagesCollection.length; i++ ) {
+                var page = pagesCollection[pagesCollection[i]];
+                if ( page.ed === '#'+witId ) {
+                    pages[pages.length] = pagesCollection[i];
+                    pages[pagesCollection[i]] = page;
+                    pages.length++;
+                }
+            }
+            witnessesPagesCollection[witId] = pages;
+        }
+        _console.log(witnessesPagesCollection[witId]);
+        return witnessesPagesCollection[witId];
+    };
+
     /* CRITICAL ENTRIES */
     parsedData.addCriticalText = function(text, docId) {
         criticalText_mock.push(text);
     };
+
     parsedData.getCriticalText = function(docId) {
         return criticalText_mock[0];
     };
@@ -202,14 +227,15 @@ angular.module('evtviewer.dataHandler')
                 criticalAppCollection.filters[name].values.push(value);
             }
         }
-    }
+    };
 
     parsedData.getCriticalEntriesFilters = function() {
         return criticalAppCollection.filters;
-    }
+    };
 
     parsedData.getCriticalEntriesFilterValues = function(filter) {
         return criticalAppCollection.filters[filter];
-    }
+    };
+
     return parsedData;
 });
