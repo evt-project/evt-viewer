@@ -21,7 +21,7 @@ angular.module('evtviewer.reading')
         // Popover builder
         // 
 
-        reading.build = function(id, vm) {
+        reading.build = function(id, scope) {
             var currentId = idx++,
                 entryId = id || undefined;
 
@@ -34,6 +34,9 @@ angular.module('evtviewer.reading')
                 // expansion
                 uid              : currentId,
                 appId            : entryId,
+                readingType      : scope.readingType,
+                variance         : scope.variance,
+
                 over             : false,
                 tooltipOver      : false,
                 apparatusOpened  : false,
@@ -43,7 +46,7 @@ angular.module('evtviewer.reading')
                 defaults         : angular.copy(defaults)
             };
 
-            collection[currentId] = angular.extend(vm, scopeHelper);
+            collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({
                 id: currentId
             });

@@ -69,7 +69,7 @@ angular.module('evtviewer.reading')
         }
     };
 
-    var parseCriticalEntry = function(entry) {
+    var formatCriticalEntry = function(entry) {
         var appText  = '',
             readings = entry.readings,
             content  = '',
@@ -87,13 +87,13 @@ angular.module('evtviewer.reading')
                     content = reading.content || [];
                     for (var j = 0; j < content.length; j++) {
                         if (typeof content[j] === 'object') { //annidamento
-                            text += '{'+parseCriticalEntry(content[j])+'} ';
+                            text += '{'+formatCriticalEntry(content[j])+'} ';
                         } else {
                             text += content[j];
                         }
                     }
                 } else if (readings.__elemTypes[readings[i]] === 'rdgGrp' || readings.__elemTypes[readings[i]] === 'app') { //rdgGrp o app
-                    text += '{'+parseCriticalEntry(reading)+'} ';
+                    text += '{'+formatCriticalEntry(reading)+'} ';
                 }
                 if (text === '') {
                     text = '<i>omit.</i>';
@@ -133,7 +133,7 @@ angular.module('evtviewer.reading')
                 if ( vm.apparatusContent === '') {
                     var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
                     if (criticalEntry !== undefined) {
-                        vm.apparatusContent = parseCriticalEntry(criticalEntry);
+                        vm.apparatusContent = formatCriticalEntry(criticalEntry);
                     }
                     if (criticalEntry.note !== '') {
                         vm.apparatusContent += '<br /><p>'+criticalEntry.note+'</p>';

@@ -422,6 +422,7 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
+        var variance = 0;
         if ( app.getElementsByTagName('lem').length > 0 ) {
             var children = app.childNodes;
             for (var i = 0; i < children.length; i++) {
@@ -451,6 +452,7 @@ angular.module('evtviewer.dataHandler')
                         lemElement.appendChild(childNode.cloneNode(true));
                     }   
                     if (childNode.tagName === 'lem' || childNode.tagName === 'rdg' || childNode.tagName === 'rdgGrp' || childNode.tagName === 'app') {
+                        variance++;
                         for (var j = 0; j < childNode.attributes.length; j++) {
                             attrib = childNode.attributes[j];
                             if (attrib.specified) {
@@ -486,7 +488,9 @@ angular.module('evtviewer.dataHandler')
                 lemElement.appendChild(lemElem);
                 lemElement.setAttribute('data-wit', wits);
             }
+            variance += rdgs.length;
         }
+        lemElement.setAttribute('data-variance', variance);
     };
 
     /* ************************** */

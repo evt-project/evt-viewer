@@ -1,10 +1,12 @@
 angular.module('evtviewer.reading')
 
-.directive('evtReading', function(evtReading) {
+.directive('evtReading', function(evtReading, parsedData) {
     return {
         restrict: 'E',
         scope: {
-            appId: '@'            
+            appId       : '@',
+            readingType : '@',
+            variance    : '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',
@@ -12,7 +14,14 @@ angular.module('evtviewer.reading')
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){
             // Initialize reading
-            var currentReading = evtReading.build(scope.appId, scope.vm);
+            var currentReading = evtReading.build(scope.appId, scope);
+
+            if (scope.vm.variance !== undefined) {
+                var readingElem = angular.element(element).find('.reading')[0];
+                var totWits = parsedData.getWitnesses().length,
+                    opacity = scope.vm.variance/totWits;
+                angular.element(readingElem).css('background', 'rgba(255, 138, 101, '+opacity+')');
+            }
 
             scope.vm.toggleTooltipHover = function(e, vm) {
                 e.stopPropagation();
