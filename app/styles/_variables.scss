@@ -6,10 +6,16 @@ $base-footer: false;
 $mainContainer-top-menu: true;
 $mainContainer-bottom-menu: true;
 
-$base-color-dark: rgb(54, 45, 40);
-$base-color-light: rgb(245, 234, 212);
+/* BROWN */
+// $base-color-dark: rgb(54, 45, 40);
+// $base-color-light: rgb(245, 234, 212);
 
-$base-backgroundImage: url("../images/bg-darker.jpg");
+/* BLUE-GREY*/
+$base-color-dark: #263238;
+$base-color-middle: #37474f;
+$base-color-light: #ECEFF1;
+
+$base-backgroundImage: '';
 $base-minHeight: 600px;
 $base-fontSize: 30px;
 $base-header-height: 54px;
