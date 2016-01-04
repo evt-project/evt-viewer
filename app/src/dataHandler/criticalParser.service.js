@@ -354,9 +354,59 @@ angular.module('evtviewer.dataHandler')
     /* @wit -> witness specified          */
     /* ********************************** */
     parser.parseWintessLacunas = function(docDOM, witObj) {
-        var match = "<lacunaStart.*wit=.*#"+witObj.id+".*/>(.|[\r\n])*?<lacunaEnd.*wit=.*#"+witObj.id+".*/>";
-        var sRegExInput = new RegExp(match, "ig"); 
-        docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, '<span class="lacuna"><i>[LACUNA]</i></span>'));
+        // Lacunas of witness
+        var match = '<lacunaStart.*wit=.*#'+witObj.id+'.*/>(.|[\r\n])*?<lacunaEnd.*wit=.*#'+witObj.id+'.*/>';
+        var sRegExInput = new RegExp(match, 'ig'); 
+        docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, '<span class="lacuna">[LACUNA]</span>'));
+        //'<evt-popover data-trigger="click" data-tooltip="Lacuna">[...]</evt-popover>'
+
+        // Lacunas of other witnesses
+        var startLacunas = docDOM.getElementsByTagName('lacunaStart'),
+            endLacunas = docDOM.getElementsByTagName('lacunaEnd');
+        var n = 0,
+            lacunaNode,
+            tooltip,
+            newElement;
+        while (n < startLacunas.length) {
+            lacunaNode = startLacunas[n];
+            tooltip    = 'Beginning of a lacuna';
+            if (lacunaNode.getAttribute('wit')) {
+                tooltip += ' in <strong>'+lacunaNode.getAttribute('wit').replace('#', '')+'</strong>';
+            }
+            if (lacunaNode.parentNode.tagName !== 'app' &&
+                lacunaNode.parentNode.tagName !== 'evt-reading' ) {
+                newElement = document.createElement('evt-popover');
+                newElement.setAttribute('data-trigger', 'click');
+                newElement.setAttribute('data-tooltip', tooltip);
+                newElement.innerHTML = '[•]';
+            } else {
+                newElement = document.createElement('span');
+                newElement.className += 'inset-lacuna';
+                newElement.innerHTML = '[<i>'+tooltip+'</i>]';
+            }
+            lacunaNode.parentNode.replaceChild(newElement, lacunaNode);
+        }
+
+        n = 0;
+        while (n < endLacunas.length) {
+            var lacunaNode = endLacunas[n];
+            var tooltip    = 'End of a lacuna';
+            if (lacunaNode.getAttribute('wit')) {
+                tooltip += ' in <strong>'+lacunaNode.getAttribute('wit').replace('#', '')+'</strong>';
+            }
+            if (lacunaNode.parentNode.tagName !== 'app' &&
+                lacunaNode.parentNode.tagName !== 'evt-reading' ) {
+                newElement = document.createElement('evt-popover');
+                newElement.setAttribute('data-trigger', 'click');
+                newElement.setAttribute('data-tooltip', tooltip);
+                newElement.innerHTML = '[•]';
+            } else {
+                newElement = document.createElement('span');
+                newElement.className += 'inset-lacuna';
+                newElement.innerHTML = '[<i>'+tooltip+'</i>]';
+            }
+            lacunaNode.parentNode.replaceChild(newElement, lacunaNode);
+        }
     };
 
 
