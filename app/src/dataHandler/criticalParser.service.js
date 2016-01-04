@@ -378,7 +378,7 @@ angular.module('evtviewer.dataHandler')
                 newElement = document.createElement('evt-popover');
                 newElement.setAttribute('data-trigger', 'click');
                 newElement.setAttribute('data-tooltip', tooltip);
-                newElement.innerHTML = '[•]';
+                newElement.innerHTML = '&bull;';
             } else {
                 newElement = document.createElement('span');
                 newElement.className += 'inset-lacuna';
@@ -399,7 +399,7 @@ angular.module('evtviewer.dataHandler')
                 newElement = document.createElement('evt-popover');
                 newElement.setAttribute('data-trigger', 'click');
                 newElement.setAttribute('data-tooltip', tooltip);
-                newElement.innerHTML = '[•]';
+                newElement.innerHTML = '&bull;';
             } else {
                 newElement = document.createElement('span');
                 newElement.className += 'inset-lacuna';

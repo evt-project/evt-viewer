@@ -128,7 +128,7 @@ angular.module('evtviewer.dataHandler')
                 noteNode.parentNode.tagName !== 'evt-reading' ) {
                 popoverElem.setAttribute('data-trigger', 'click');
                 popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
-                popoverElem.innerHTML = '[•]';
+                popoverElem.innerHTML = '&bull;';
                 noteNode.parentNode.replaceChild(popoverElem, noteNode);
             } else {
                 noteNode.parentNode.removeChild(noteNode);

@@ -21,14 +21,19 @@ $popover-shadow-color: #7e7067;
 
 .popover_trigger {
     color: $popover-color;
+    opacity: .7;
     cursor: pointer;
+    font-size: 110%;
+    vertical-align: top;
 
     &.expanded {
-        text-decoration: underline;
+        // text-decoration: underline;
+        opacity: 1;
     }
     
     &.active:hover {
-        text-decoration:underline;
+        // text-decoration:underline;
+        opacity: 1;
         text-shadow: 0px 0px 0.3px rgba(0, 0, 0, 0.9);
         .popup_tooltip {
             text-decoration: none;
