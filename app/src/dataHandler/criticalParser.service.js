@@ -33,7 +33,8 @@ angular.module('evtviewer.dataHandler')
                 var witness = {
                     id          : child.getAttribute('xml:id'),
                     type        : 'witness',
-                    name        : child.innerHTML
+                    name        : child.innerHTML,
+                    group       : list.id
                 };
                 list.content[list.content.length] = witness.id;
                 list.content[witness.id] = witness;
@@ -75,7 +76,7 @@ angular.module('evtviewer.dataHandler')
                     });
                 }
         });
-        // console.log('## Witnesses ##', parsedData.getWitnesses());
+        console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
     /* ********************* */
@@ -212,6 +213,11 @@ angular.module('evtviewer.dataHandler')
     /* ******* */
     /* WITNESS */
     /* ******* */
+    var containsWitnessReading = function(elem, witObj) {
+        return (witObj.group !== undefined && elem.indexOf('#'+witObj.group) >= 0) || 
+                (elem.indexOf('#') >= 0 && elem.indexOf('#'+witObj.id) >= 0) || 
+                elem.indexOf(witObj.id) >= 0 ;
+    }
 
     /* ******************************************** */
     /* parseWitnessApp(app, wit, evtReadingElement) */
@@ -234,6 +240,8 @@ angular.module('evtviewer.dataHandler')
     // – nested group of readings or sub-apparatus
     // The parsed content will be appended to the evtReadingElement
     var parseWitnessApp = function(app, wit, evtReadingElement) {
+        var witObj = parsedData.getWitnessById(wit);
+
         var attrib;
         for (var k = 0; k < app.attributes.length; k++) {
             attrib = app.attributes[k];
@@ -244,7 +252,8 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-        if ( app.innerHTML.indexOf('#'+wit) >= 0 ) {
+
+        if ( containsWitnessReading(app.innerHTML, witObj) ) {
             var children = app.childNodes;
             for (var i = 0; i < children.length; i++) {
                 var childNode = children[i];
@@ -254,32 +263,35 @@ angular.module('evtviewer.dataHandler')
                     if (childNode.tagName === 'lem' || childNode.tagName === 'rdg') {
                         if ( childNode.getElementsByTagName('app').length > 0 || 
                              childNode.getElementsByTagName('rdgGrp').length > 0 ) {
-                            if ( childNode.innerHTML.indexOf('#'+wit) >= 0 ) {
+                            if ( childNode.innerHTML.indexOf('#'+wit) >= 0 || 
+                                (witObj.group !== undefined && childNode.innerHTML.indexOf('#'+witObj.group) >= 0)) {
                                 parseWitnessApp(childNode, wit, evtReadingElement);
                                 evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
                             }
                         } else {
-                            if ( childNode.getAttribute('wit') !== null && childNode.getAttribute('wit').indexOf('#'+wit) >= 0 ) {
-                                // evtReadingElement.appendChild(evtParser.parseXMLElement(childNode));
-                                evtReadingElement.appendChild(childNode.cloneNode(true));
-                                evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
-                                for (var j = 0; j < childNode.attributes.length; j++) {
-                                    attrib = childNode.attributes[j];
-                                    if (attrib.specified) {
-                                        if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                                            evtReadingElement.setAttribute('data-'+attrib.name, attrib.value);
-                                            parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                            if ( childNode.getAttribute('wit') !== null ) {
+                                if (containsWitnessReading(childNode.getAttribute('wit'), witObj)) {
+                                    // evtReadingElement.appendChild(evtParser.parseXMLElement(childNode));
+                                    evtReadingElement.appendChild(childNode.cloneNode(true));
+                                    evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
+                                    for (var j = 0; j < childNode.attributes.length; j++) {
+                                        attrib = childNode.attributes[j];
+                                        if (attrib.specified) {
+                                            if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
+                                                evtReadingElement.setAttribute('data-'+attrib.name, attrib.value);
+                                                parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     } else if (childNode.tagName === 'rdgGrp') {
-                        if (childNode.innerHTML.indexOf('#'+wit) >= 0) {
+                        if (containsWitnessReading(childNode.innerHTML, witObj)) {
                             parseWitnessApp(childNode, wit, evtReadingElement);
                         }
                     } else if (childNode.tagName === 'app') {
-                        if (childNode.innerHTML.indexOf('#'+wit) >= 0) {
+                        if (containsWitnessReading(childNode.innerHTML, witObj)) {
                             var id         = childNode.getAttribute('xml:id') || evtParser.xpath(childNode).substr(1),
                                 newElement = document.createElement('evt-reading');
                             newElement.setAttribute('data-entry-id', evtParser.xpath(childNode.parentNode).substr(1));

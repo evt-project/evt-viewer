@@ -104,7 +104,19 @@ angular.module('evtviewer.reading')
                         if (key === 'wit') {
                             var wits = reading.attributes[key].split('#').filter(function(el) {return el.length !== 0;});
                             for(var s = 0; s < wits.length; s++ ){
-                                witnesses += '<span class="wit" onclick="console.log(\'openWit '+wits[s]+'\');">'+wits[s]+'</span>';
+                                var sigla = wits[s].replace(' ', '');
+                                if (parsedData.isWitnessesGroup(sigla)) {
+                                    witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
+                                    if (witnessesInGroup.length > 0) {
+                                        for(var w = 0; w < witnessesInGroup.length; w++ ){
+                                            witnesses += '<span class="wit" onclick="console.log(\'openWit '+witnessesInGroup[w]+'\');">'+witnessesInGroup[w]+'</span>';    
+                                        }
+                                    } else {
+                                        witnesses += '<span class="wit" onclick="console.log(\'openWit '+sigla+'\');">'+sigla+'</span>';    
+                                    }
+                                } else {
+                                    witnesses += '<span class="wit" onclick="console.log(\'openWit '+sigla+'\');">'+sigla+'</span>';
+                                }
                             }
                         } else {
                             attributes += '<span class="'+key+'">'+reading.attributes[key]+'</span>';

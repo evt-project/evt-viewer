@@ -16,7 +16,8 @@ angular.module('evtviewer.dataHandler')
     // var pagesCollectionTexts = []; 
     
     var witnessesCollection = {
-        length: 0
+        length : 0,
+        _groups : []
     };
 
     var witnessesTextsCollection = {};
@@ -140,6 +141,9 @@ angular.module('evtviewer.dataHandler')
             witnessesCollection[witnessesCollection.length] = element.id;
             witnessesCollection[element.id] = element;
             witnessesCollection.length++;
+            if (element.type === 'group') {
+                witnessesCollection._groups.push(element.id);
+            }
             // _console.log('parsedData - addWitness ', witnessesCollection);
         }
     };
@@ -165,7 +169,24 @@ angular.module('evtviewer.dataHandler')
     };
 
     parsedData.getWitnessById = function(witId) {
-        return witnessesCollection[witId];
+        if ( witnessesCollection[witId] !== undefined ) {
+            return witnessesCollection[witId];    
+        } else {
+            // altrimenti cerco all'interno di ogni grouppo finché non lo trovo
+            var groups = witnessesCollection._groups;
+            var i = 0,
+                found = false,
+                witness;
+            while ( i < groups.length && !found) {
+                if (witnessesCollection[groups[i]].content[witId] !== undefined) {
+                    witness = witnessesCollection[groups[i]].content[witId];
+                    found = true;
+                }
+                i++;
+            }
+            return witness;
+        }
+        
     };
 
     parsedData.getWitnessPages = function(witId) {
@@ -185,6 +206,18 @@ angular.module('evtviewer.dataHandler')
         }
         _console.log(witnessesPagesCollection[witId]);
         return witnessesPagesCollection[witId];
+    };
+
+    parsedData.isWitnessesGroup = function(sigla) {
+        return witnessesCollection[sigla] !== undefined && witnessesCollection[sigla].type === 'group';
+    };
+
+    parsedData.getWitnessesInGroup = function(groupId) {
+        var wits = [];
+        if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId].type === 'group') {
+            wits = witnessesCollection[groupId].content;
+        }
+        return wits;
     };
 
     /* CRITICAL ENTRIES */
