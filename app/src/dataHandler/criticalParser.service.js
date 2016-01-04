@@ -76,7 +76,7 @@ angular.module('evtviewer.dataHandler')
                     });
                 }
         });
-        console.log('## Witnesses ##', parsedData.getWitnesses());
+        // console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
     /* ********************* */
@@ -216,8 +216,8 @@ angular.module('evtviewer.dataHandler')
     var containsWitnessReading = function(elem, witObj) {
         return (witObj.group !== undefined && elem.indexOf('#'+witObj.group) >= 0) || 
                 (elem.indexOf('#') >= 0 && elem.indexOf('#'+witObj.id) >= 0) || 
-                elem.indexOf(witObj.id) >= 0 ;
-    }
+                elem.indexOf(witObj.id) >= 0;
+    };
 
     /* ******************************************** */
     /* parseWitnessApp(app, wit, evtReadingElement) */
@@ -239,9 +239,8 @@ angular.module('evtviewer.dataHandler')
     // – lemma/reading for the specified witness
     // – nested group of readings or sub-apparatus
     // The parsed content will be appended to the evtReadingElement
-    var parseWitnessApp = function(app, wit, evtReadingElement) {
-        var witObj = parsedData.getWitnessById(wit);
-
+    var parseWitnessApp = function(app, witObj, evtReadingElement) {
+        var wit = witObj.id;
         var attrib;
         for (var k = 0; k < app.attributes.length; k++) {
             attrib = app.attributes[k];
@@ -265,7 +264,7 @@ angular.module('evtviewer.dataHandler')
                              childNode.getElementsByTagName('rdgGrp').length > 0 ) {
                             if ( childNode.innerHTML.indexOf('#'+wit) >= 0 || 
                                 (witObj.group !== undefined && childNode.innerHTML.indexOf('#'+witObj.group) >= 0)) {
-                                parseWitnessApp(childNode, wit, evtReadingElement);
+                                parseWitnessApp(childNode, witObj, evtReadingElement);
                                 evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
                             }
                         } else {
@@ -288,7 +287,7 @@ angular.module('evtviewer.dataHandler')
                         }
                     } else if (childNode.tagName === 'rdgGrp') {
                         if (containsWitnessReading(childNode.innerHTML, witObj)) {
-                            parseWitnessApp(childNode, wit, evtReadingElement);
+                            parseWitnessApp(childNode, witObj, evtReadingElement);
                         }
                     } else if (childNode.tagName === 'app') {
                         if (containsWitnessReading(childNode.innerHTML, witObj)) {
@@ -296,7 +295,7 @@ angular.module('evtviewer.dataHandler')
                                 newElement = document.createElement('evt-reading');
                             newElement.setAttribute('data-entry-id', evtParser.xpath(childNode.parentNode).substr(1));
                             newElement.setAttribute('data-app-id', id);
-                            parseWitnessApp(childNode, wit, newElement);
+                            parseWitnessApp(childNode, witObj, newElement);
                             evtReadingElement.appendChild(newElement);
                         }
                     } else {
@@ -322,14 +321,12 @@ angular.module('evtviewer.dataHandler')
     // It will look for XML element representing a page break (<pb> in XML-TEI P5)
     // – if they belong the the specified witness they will be replaced with a <span> element
     // - otherwise they will be removed
-    parser.parseWintessPageBreaks = function(docDOM, wit) {
+    parser.parseWintessPageBreaks = function(docDOM, witObj) {
         var pbs = docDOM.getElementsByTagName('pb'),
             k   = 0;
         while ( k < pbs.length) {
             var pbNode = pbs[k];
-            if (pbNode.getAttribute('ed') !== '#'+wit) {
-                pbNode.parentNode.removeChild(pbNode); 
-            } else {
+            if (containsWitnessReading(pbNode.getAttribute('ed'), witObj)){
                 var newPbElem = document.createElement('span'),
                     id;
                 if (pbNode.getAttribute('ed')) {
@@ -342,10 +339,26 @@ angular.module('evtviewer.dataHandler')
                 newPbElem.setAttribute('data-id', id);
                 newPbElem.textContent = pbNode.getAttribute('n');
                 pbNode.parentNode.replaceChild(newPbElem, pbNode);
-                k++;
+            } else {
+                console.log('parseWintessPageBreaks', pbNode);
+                pbNode.parentNode.removeChild(pbNode); 
             }
         }
     };
+
+    /* ******************* */
+    /* parseWintessLacunas(docDOM, wit) */
+    /* ******************* */
+    /* Function to parse lacuna start/end */
+    /* @docDOM -> XML to be parsed        */
+    /* @wit -> witness specified          */
+    /* ********************************** */
+    parser.parseWintessLacunas = function(docDOM, witObj) {
+        var match = "<lacunaStart.*wit=.*#"+witObj.id+".*/>(.|[\r\n])*?<lacunaEnd.*wit=.*#"+witObj.id+".*/>";
+        var sRegExInput = new RegExp(match, "ig"); 
+        docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, '<span class="lacuna"><i>[LACUNA]</i></span>'));
+    };
+
 
     /* ************************** */
     /* parseWitnessText(doc, wit) */
@@ -369,7 +382,8 @@ angular.module('evtviewer.dataHandler')
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
                 apps   = docDOM.getElementsByTagName('app'),
                 j      = apps.length-1, 
-                count  = 0;
+                count  = 0,
+                witObj = parsedData.getWitnessById(wit);
             
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
@@ -378,14 +392,16 @@ angular.module('evtviewer.dataHandler')
                     var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
                         spanElement = document.createElement('evt-reading');
                     spanElement.setAttribute('data-app-id', id);
-                    parseWitnessApp(appNode, wit, spanElement);
+                    parseWitnessApp(appNode, witObj, spanElement);
                     appNode.parentNode.replaceChild(spanElement, appNode);
                     count++;
                 }
                 j--;
             }
             //parse <pb>
-            parser.parseWintessPageBreaks(docDOM, wit);
+            parser.parseWintessPageBreaks(docDOM, witObj);
+            //parse lacunas
+            parser.parseWintessLacunas(docDOM, witObj);
             //parse lines
             evtParser.parseLines(docDOM);
             //parse <note>

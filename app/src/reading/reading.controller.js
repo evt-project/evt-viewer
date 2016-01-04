@@ -70,6 +70,7 @@ angular.module('evtviewer.reading')
     };
 
     var formatCriticalEntry = function(entry) {
+        // console.log('formatCriticalEntry', entry);
         var appText  = '',
             readings = entry.readings,
             content  = '',
@@ -98,6 +99,9 @@ angular.module('evtviewer.reading')
                 if (text === '') {
                     text = '<i>omit.</i>';
                 }
+                text = text.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna </i>in');
+                text = text.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna </i>in');
+                
                 // recupero i testimoni e gli altri attributi
                 if (reading.attributes !== undefined) {
                     for (var key in reading.attributes) {

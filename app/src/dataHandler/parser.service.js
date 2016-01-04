@@ -67,6 +67,48 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+    /* ********************* */
+    /* balanceXML(XHTMLstring) */
+    /* ********************* */ 
+    // balance takes an excerpted or truncated XHTML string and returns a well-balanced XHTML string
+    parser.balanceXHTML = function(XHTMLstring) {
+      // Check for broken tags, e.g. <stro
+      // Check for a < after the last >, indicating a broken tag
+      if (XHTMLstring.lastIndexOf('<') > XHTMLstring.lastIndexOf('>')) {
+        // Truncate broken tag
+        XHTMLstring = XHTMLstring.substring(0,XHTMLstring.lastIndexOf('<'));
+      }
+
+      // Check for broken elements, e.g. <strong>Hello, w
+      // Get an array of all tags (start, end, and self-closing)
+      var tags = XHTMLstring.match(/<[^>]+>/g);
+      var stack = [];
+      for (var tag in tags) {
+        if (tags[tag].search('/') <= 0) {
+          // start tag -- push onto the stack
+          stack.push(tags[tag]);
+        } else if (tags[tag].search('/') === 1) {
+          // end tag -- pop off of the stack
+          stack.pop();
+        } else {
+          // self-closing tag -- do nothing
+        }
+      }
+
+      // stack should now contain only the start tags of the broken elements, most deeply-nested at the top
+      while (stack.length > 0) {
+        // pop the unmatched tag off the stack
+        var endTag = stack.pop();
+        // get just the tag name
+        endTag = endTag.substring(1,endTag.search(/[ >]/));
+        // append the end tag
+        XHTMLstring += '</' + endTag + '>';
+      }
+
+      // Return the well-balanced XHTML string
+      return(XHTMLstring);
+    };
+
     /* ************************ */
     /* parseNote(docDOM) */
     /* **************************************************************************** */
