@@ -50,7 +50,7 @@ angular.module('evtviewer.box')
                     }
                 }
                 if (visible) {
-                    scope.$broadcast('UPDATE_WITNESS_PAGE', id);
+                    // scope.$broadcast('UPDATE_WITNESS_PAGE', id);
                 }
                 
               // console.log('scroll');

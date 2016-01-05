@@ -340,72 +340,56 @@ angular.module('evtviewer.dataHandler')
                 newPbElem.textContent = pbNode.getAttribute('n');
                 pbNode.parentNode.replaceChild(newPbElem, pbNode);
             } else {
-                console.log('parseWintessPageBreaks', pbNode);
                 pbNode.parentNode.removeChild(pbNode); 
             }
         }
     };
 
-    /* ******************* */
+    /* ******************************** */
     /* parseWintessLacunas(docDOM, wit) */
-    /* ******************* */
+    /* ******************************** */
     /* Function to parse lacuna start/end */
     /* @docDOM -> XML to be parsed        */
     /* @wit -> witness specified          */
     /* ********************************** */
     parser.parseWintessLacunas = function(docDOM, witObj) {
-        // Lacunas of witness
-        var match = '<lacunaStart.*wit=.*#'+witObj.id+'.*/>(.|[\r\n])*?<lacunaEnd.*wit=.*#'+witObj.id+'.*/>';
-        var sRegExInput = new RegExp(match, 'ig'); 
-        docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, '<span class="lacuna">[LACUNA]</span>'));
-        //'<evt-popover data-trigger="click" data-tooltip="Lacuna">[...]</evt-popover>'
-
-        // Lacunas of other witnesses
         var startLacunas = docDOM.getElementsByTagName('lacunaStart'),
-            endLacunas = docDOM.getElementsByTagName('lacunaEnd');
-        var n = 0,
-            lacunaNode,
-            tooltip,
-            newElement;
-        while (n < startLacunas.length) {
-            lacunaNode = startLacunas[n];
-            tooltip    = 'Beginning of a lacuna';
-            if (lacunaNode.getAttribute('wit')) {
-                tooltip += ' in <strong>'+lacunaNode.getAttribute('wit').replace('#', '')+'</strong>';
+            endLacunas   = docDOM.getElementsByTagName('lacunaEnd'),
+            startLacunasWit = [],
+            endLacunasWit   = [];
+        for (var i = 0; i < startLacunas.length; i++) {
+            if (startLacunas[i].getAttribute('wit') !== null &&
+                containsWitnessReading(startLacunas[i].getAttribute('wit'), witObj)) {
+                    startLacunasWit.push(startLacunas[i]);
+            } else if ( startLacunas[i].parentNode.getAttribute('wit') !== null &&
+                        containsWitnessReading(startLacunas[i].parentNode.getAttribute('wit'), witObj)){
+                startLacunasWit.push(startLacunas[i]);
             }
-            if (lacunaNode.parentNode.tagName !== 'app' &&
-                lacunaNode.parentNode.tagName !== 'evt-reading' ) {
-                newElement = document.createElement('evt-popover');
-                newElement.setAttribute('data-trigger', 'click');
-                newElement.setAttribute('data-tooltip', tooltip);
-                newElement.innerHTML = '&bull;';
-            } else {
-                newElement = document.createElement('span');
-                newElement.className += 'inset-lacuna';
-                newElement.innerHTML = '[<i>'+tooltip+'</i>]';
-            }
-            lacunaNode.parentNode.replaceChild(newElement, lacunaNode);
         }
+        for (var j = 0; j < endLacunas.length; j++) {
+            if (endLacunas[j].getAttribute('wit') !== null &&
+                containsWitnessReading(endLacunas[j].getAttribute('wit'), witObj)) {
+                    endLacunasWit.push(endLacunas[j]);
+            } else if ( endLacunas[j].parentNode.getAttribute('wit') !== null &&
+                        containsWitnessReading(endLacunas[j].parentNode.getAttribute('wit'), witObj)){
+                endLacunasWit.push(endLacunas[j]);
+            }
+        }
+        for(var k = startLacunasWit.length-1; k >= 0; k--) {
+            var appStart = startLacunasWit[k].parentNode.parentNode;
+            var appEnd   = endLacunasWit[k].parentNode.parentNode;
 
-        n = 0;
-        while (n < endLacunas.length) {
-            var lacunaNode = endLacunas[n];
-            var tooltip    = 'End of a lacuna';
-            if (lacunaNode.getAttribute('wit')) {
-                tooltip += ' in <strong>'+lacunaNode.getAttribute('wit').replace('#', '')+'</strong>';
-            }
-            if (lacunaNode.parentNode.tagName !== 'app' &&
-                lacunaNode.parentNode.tagName !== 'evt-reading' ) {
-                newElement = document.createElement('evt-popover');
-                newElement.setAttribute('data-trigger', 'click');
-                newElement.setAttribute('data-tooltip', tooltip);
-                newElement.innerHTML = '&bull;';
-            } else {
-                newElement = document.createElement('span');
-                newElement.className += 'inset-lacuna';
-                newElement.innerHTML = '[<i>'+tooltip+'</i>]';
-            }
-            lacunaNode.parentNode.replaceChild(newElement, lacunaNode);
+            var newElement = document.createElement('span');
+            newElement.setAttribute('data-wit', witObj.id);
+
+            newElement.className = 'lacunaStart';
+            startLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), startLacunasWit[k]);
+            newElement.className = 'lacunaEnd';
+            endLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), endLacunasWit[k]);
+            
+            var match = '<evt-reading.*data-app-id.*'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
+            var sRegExInput = new RegExp(match, 'ig'); 
+            docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, appStart.outerHTML+'<span class="lacuna">[LACUNA] </span>'+appEnd.outerHTML));
         }
     };
 
@@ -430,11 +414,12 @@ angular.module('evtviewer.dataHandler')
         var witnessText;
         if ( doc !== undefined ) {
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
+                witObj = parsedData.getWitnessById(wit),
                 apps   = docDOM.getElementsByTagName('app'),
                 j      = apps.length-1, 
-                count  = 0,
-                witObj = parsedData.getWitnessById(wit);
-            
+                count  = 0;
+            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
+
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!evtParser.isNestedInElem(appNode, 'app')) {
@@ -448,6 +433,7 @@ angular.module('evtviewer.dataHandler')
                 }
                 j--;
             }
+            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
             //parse <pb>
             parser.parseWintessPageBreaks(docDOM, witObj);
             //parse lacunas
@@ -460,6 +446,7 @@ angular.module('evtviewer.dataHandler')
         } else {
             witnessText = '<span>Testo non disponibile.</span>';
         }
+        witnessText = evtParser.balanceXHTML(witnessText);
         //save witness text
         parsedData.addWitnessText(wit, witnessText);
         // console.log('## Witnesses Texts ##', parsedData.getWitnessesTextsCollection());

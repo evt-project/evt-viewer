@@ -6,7 +6,7 @@
     &:not(.hidden) {
         background: rgba(255, 204, 188, 1);
         // border:1px solid black;
-        padding: 0 0 0 3px;
+        padding: 0 3px;
         cursor: pointer;
 
         &.active, &.over,

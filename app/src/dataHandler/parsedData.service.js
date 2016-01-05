@@ -204,7 +204,7 @@ angular.module('evtviewer.dataHandler')
             }
             witnessesPagesCollection[witId] = pages;
         }
-        _console.log(witnessesPagesCollection[witId]);
+        // _console.log(witnessesPagesCollection[witId]);
         return witnessesPagesCollection[witId];
     };
 
