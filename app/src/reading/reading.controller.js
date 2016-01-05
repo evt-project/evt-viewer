@@ -110,7 +110,7 @@ angular.module('evtviewer.reading')
                             for(var s = 0; s < wits.length; s++ ){
                                 var sigla = wits[s].replace(' ', '');
                                 if (parsedData.isWitnessesGroup(sigla)) {
-                                    witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
+                                    var witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
                                     if (witnessesInGroup.length > 0) {
                                         for(var w = 0; w < witnessesInGroup.length; w++ ){
                                             witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+witnessesInGroup[w]+'\');">'+witnessesInGroup[w]+'</span>';    
