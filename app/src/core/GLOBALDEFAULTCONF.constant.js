@@ -49,8 +49,6 @@ angular.module('evtviewer.core')
         }
     },
 
-    dataUrl: '../../data/pseudo-edition-test-file.xml'
-    // dataUrl: '../../data/esample.xml'
-    // dataUrl: '../../data/v-machine/xray.xml'
+    dataUrl: '../../data/pseudo-edition-test-file_mod.xml'
 
 });

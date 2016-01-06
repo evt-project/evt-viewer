@@ -14,6 +14,7 @@ angular.module('evtviewer.reading')
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){
             // Initialize reading
+            
             var currentReading = evtReading.build(scope.appId, scope);
 
             if (scope.vm.variance !== undefined) {
@@ -21,6 +22,17 @@ angular.module('evtviewer.reading')
                 var totWits = parsedData.getWitnesses().length,
                     opacity = scope.vm.variance/totWits;
                 angular.element(readingElem).css('background', 'rgba(255, 138, 101, '+opacity+')');
+            }
+
+            // Add entr attributes to scope
+            scope.vm.entryAttr = {};
+            for(var i = 0; i < element.context.attributes.length; i++){
+                var name  = element.context.attributes[i].nodeName,
+                    value = element.context.attributes[i].nodeValue;
+                if (name.indexOf('data-entry-attr-') >= 0) {
+                    name = name.replace('data-entry-attr-', '');
+                    scope.vm.entryAttr[name] = value;
+                }
             }
 
             scope.vm.toggleTooltipHover = function(e, vm) {
@@ -189,50 +201,6 @@ angular.module('evtviewer.reading')
                 if (currentReading){
                     currentReading.destroy();
                 }     
-            });
-
-            scope.$on('UPDATE_APP_FILTERS', function(event, filters){
-                var condizione = 'AND', //TODO: Decidere come gestire
-                    match,
-                    filter,
-                    i,
-                    values,
-                    value;
-                if (condizione === 'OR') {
-                    // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
-                    match = false;
-                    for (filter in filters) {
-                        if (filters[filter].totActive > 0) {
-                            if ( element.attr('data-'+filter) !== undefined ) {
-                                i = 0;
-                                values = filters[filter].values;
-                                while ( i < values.length && !match) {
-                                    value = values[values[i]].name;
-                                    match = match || (element.attr('data-'+filter).indexOf(value) >= 0);
-                                    i++;
-                                }
-                            }
-                        }
-                        if (match) { break; }
-                    }
-                    scope.vm.hidden = !match;
-                } else { //default
-                    var visible = true;
-                    for (filter in filters) {
-                        if (filters[filter].totActive > 0) {
-                            match = false; 
-                            if ( element.attr('data-'+filter) !== undefined ) {
-                                values = filters[filter].values;
-                                for ( i = 0; i < values.length; i++ ) {
-                                    value = values[values[i]].name;
-                                    match = match || (element.attr('data-'+filter).indexOf(value) >= 0);
-                                }
-                            }
-                            visible = visible && match;
-                        }
-                    }
-                    scope.vm.hidden = !visible;
-                }
             });
         }
     };

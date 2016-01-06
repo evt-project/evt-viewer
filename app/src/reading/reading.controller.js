@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover) {
+.controller('ReadingCtrl', function($log, $scope, $rootScope, evtReading, parsedData, evtPopover) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -167,6 +167,52 @@ angular.module('evtviewer.reading')
                     }
                 }
             }
+        }
+    };
+
+    this.fitFilters = function(){
+        var condizione = 'AND', //TODO: Decidere come gestire
+            match,
+            filter,
+            i,
+            values,
+            value;
+        
+        var filters = $scope.$parent.vm.state.filters;
+        if (condizione === 'OR') {
+            // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
+            match = false;
+            for (filter in filters) {
+                if (filters[filter].totActive > 0) {
+                    if (vm.entryAttr !== undefined && vm.entryAttr[filter] !== undefined){
+                        i = 0;
+                        values = filters[filter].values;
+                        while ( i < values.length && !match) {
+                            value = values[values[i]].name;
+                            match = match || vm.entryAttr[filter] === value;
+                            i++;
+                        }
+                    }
+                }
+                if (match) { break; }
+            }
+            return match;
+        } else { //default
+            var visible = true;
+            for (filter in filters) {
+                if (filters[filter].totActive > 0) {
+                    match = false; 
+                    if (vm.entryAttr !== undefined && vm.entryAttr[filter] !== undefined){
+                        values = filters[filter].values;
+                        for ( i = 0; i < values.length; i++ ) {
+                            value = values[values[i]].name;
+                            match = match || vm.entryAttr[filter] === value;
+                        }
+                    }
+                    visible = visible && match;
+                }
+            }
+            return visible;
         }
     };
 

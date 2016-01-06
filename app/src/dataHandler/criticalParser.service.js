@@ -98,7 +98,7 @@ angular.module('evtviewer.dataHandler')
     var parseAppReading = function(elem){
         var reading = {
             id           : elem.getAttribute('xml:id') || evtParser.xpath(elem).substr(1),
-            attributes   : [ ],
+            attributes   : { },
             content      : [ ],
             note         : '',
             __xmlElem    : elem.tagName,
@@ -148,7 +148,7 @@ angular.module('evtviewer.dataHandler')
     var parseAppEntry = function(app) {
         var entry = { 
                 id         : app.getAttribute('xml:id')  || evtParser.xpath(app).substr(1),
-                attributes : [ ],
+                attributes : { },
                 lemma      : '',
                 readings   : { 
                     length      : 0,
@@ -277,7 +277,7 @@ angular.module('evtviewer.dataHandler')
                                         attrib = childNode.attributes[j];
                                         if (attrib.specified) {
                                             if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                                                evtReadingElement.setAttribute('data-'+attrib.name, attrib.value);
+                                                evtReadingElement.setAttribute('data-entry-attr-'+attrib.name, attrib.value);
                                                 parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                                             }
                                         }

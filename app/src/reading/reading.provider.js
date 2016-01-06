@@ -18,7 +18,7 @@ angular.module('evtviewer.reading')
         
 
         // 
-        // Popover builder
+        // Reading builder
         // 
 
         reading.build = function(id, scope) {
