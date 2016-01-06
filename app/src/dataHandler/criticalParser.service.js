@@ -246,7 +246,7 @@ angular.module('evtviewer.dataHandler')
             attrib = app.attributes[k];
             if (attrib.specified) {
                 if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                    evtReadingElement.setAttribute('data-'+attrib.name, attrib.value);
+                    evtReadingElement.setAttribute('data-entry-attr-'+attrib.name, attrib.value);
                     parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                 }
             }
@@ -262,10 +262,9 @@ angular.module('evtviewer.dataHandler')
                     if (childNode.tagName === 'lem' || childNode.tagName === 'rdg') {
                         if ( childNode.getElementsByTagName('app').length > 0 || 
                              childNode.getElementsByTagName('rdgGrp').length > 0 ) {
-                            if ( childNode.innerHTML.indexOf('#'+wit) >= 0 || 
-                                (witObj.group !== undefined && childNode.innerHTML.indexOf('#'+witObj.group) >= 0)) {
-                                parseWitnessApp(childNode, witObj, evtReadingElement);
+                            if (containsWitnessReading(childNode.innerHTML, witObj)) {
                                 evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
+                                parseWitnessApp(childNode, witObj, evtReadingElement);
                             }
                         } else {
                             if ( childNode.getAttribute('wit') !== null ) {

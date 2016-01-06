@@ -67,6 +67,7 @@ angular.module('evtviewer.reading')
                 }
             }
         }
+        console.log(parsedData.getCriticalEntryByPos(this.appId));
     };
 
     var formatCriticalEntry = function(entry) {
@@ -171,7 +172,9 @@ angular.module('evtviewer.reading')
     };
 
     this.fitFilters = function(){
-        var condizione = 'AND', //TODO: Decidere come gestire
+        var condizione = 'OR', //TODO: Decidere come gestire
+            fit        = false,
+            count      = 0,
             match,
             filter,
             i,
@@ -179,11 +182,13 @@ angular.module('evtviewer.reading')
             value;
         
         var filters = $scope.$parent.vm.state.filters;
+        
         if (condizione === 'OR') {
             // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
             match = false;
             for (filter in filters) {
                 if (filters[filter].totActive > 0) {
+                    count++;
                     if (vm.entryAttr !== undefined && vm.entryAttr[filter] !== undefined){
                         i = 0;
                         values = filters[filter].values;
@@ -196,11 +201,12 @@ angular.module('evtviewer.reading')
                 }
                 if (match) { break; }
             }
-            return match;
+            fit = match;
         } else { //default
             var visible = true;
             for (filter in filters) {
                 if (filters[filter].totActive > 0) {
+                    count++;
                     match = false; 
                     if (vm.entryAttr !== undefined && vm.entryAttr[filter] !== undefined){
                         values = filters[filter].values;
@@ -212,8 +218,12 @@ angular.module('evtviewer.reading')
                     visible = visible && match;
                 }
             }
-            return visible;
+            fit = visible;
         }
+        if (count === 0) {
+            fit = true;
+        }
+        return fit;
     };
 
     this.destroy = function() {
