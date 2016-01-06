@@ -165,7 +165,7 @@ angular.module('evtviewer.select')
                         // _console.log('witness page select callback ', option);
                     };
                     changeRoute = function(option) {
-                        _console.log('witness page select changeRoute ', option.value);  
+                        _console.log('witness page select changeRoute ', option);  
                     };
                     formatOptionList = function(optionList) {
                         var formattedList = [];

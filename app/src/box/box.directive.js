@@ -78,7 +78,7 @@ angular.module('evtviewer.box')
                         if ( newContent !== undefined && newContent !== '') {
                             currentBox.updateContent(newContent.innerHTML);
                         } else {
-                            currentBox.updateContent('Testo non disponibile.');
+                            currentBox.updateContent('Text not available.');
                         }
                     }
                 });
@@ -93,7 +93,7 @@ angular.module('evtviewer.box')
                         if ( newContent !== undefined && newContent !== '') {
                             currentBox.updateContent(newContent.innerHTML);
                         } else {
-                            currentBox.updateContent('Testo non disponibile.');
+                            currentBox.updateContent('Text not available.');
                         }
                     }
                 });
@@ -116,7 +116,7 @@ angular.module('evtviewer.box')
                         if ( newContent !== undefined && newContent !== '') {
                             currentBox.updateContent(newContent);
                         } else {
-                            currentBox.updateContent('Testo non disponibile.');
+                            currentBox.updateContent('Text not available.');
                         }
                         currentBox.updateState('witness', sigla); 
                         scope.$broadcast('UPDATE_WITNESS', sigla);

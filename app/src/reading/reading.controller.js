@@ -67,7 +67,6 @@ angular.module('evtviewer.reading')
                 }
             }
         }
-        console.log(parsedData.getCriticalEntryByPos(this.appId));
     };
 
     var formatCriticalEntry = function(entry) {
@@ -100,8 +99,8 @@ angular.module('evtviewer.reading')
                 if (text === '') {
                     text = '<i>omit.</i>';
                 }
-                text = text.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna </i>in');
-                text = text.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna </i>in');
+                text = text.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna in </i>');
+                text = text.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna in </i>');
                 
                 // recupero i testimoni e gli altri attributi
                 if (reading.attributes !== undefined) {
@@ -136,6 +135,37 @@ angular.module('evtviewer.reading')
                 }
                 appText += text + witnesses + attributes;
                 appText += ', ';
+            }
+            appText = appText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+            var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
+            if (fragmentsStarts !== null) {
+                for (var i = 0; i < fragmentsStarts.length; i++) {
+                    var matched = fragmentsStarts[i];
+                    var wit = matched.match(/"#.*"/g);
+                    if (wit !== null) {
+                        wit = ' of '+wit[0].replace(/["#]/g, '');
+                    } else {
+                        wit = '';
+                    }
+                    var sRegExInput = new RegExp(matched, 'ig'); 
+                    appText = appText.replace(sRegExInput, '<i> [beginning of fragment'+wit+'] </i>');
+                    // text = text.replace(fragmentsStarts[i], )
+                }
+            }
+
+            var fragmentsEnds = appText.match(/<witEnd(.|[\r\n])*?\/>/ig);
+            if (fragmentsEnds !== null) {
+                for (var i = 0; i < fragmentsEnds.length; i++) {
+                    var matched = fragmentsEnds[i];
+                    var wit = matched.match(/"#.*"/g);
+                    if (wit !== null) {
+                        wit = ' of '+wit[0].replace(/["#]/g, '');
+                    } else {
+                        wit = '';
+                    }
+                    var sRegExInput = new RegExp(matched, 'ig'); 
+                    appText = appText.replace(sRegExInput, '<i> [end of fragment'+wit+'] </i>');
+                }
             }
         } 
         return appText.trim().slice(0, -1);

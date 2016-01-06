@@ -83,7 +83,7 @@ angular.module('evtviewer.interface')
                 if ( text !== undefined ) {
                     mainTextBox.updateContent(text.diplomatic);
                 } else {
-                    mainTextBox.updateContent('Testo non disponibile.');
+                    mainTextBox.updateContent('Text not available.');
                 }
                 mainTextBox.updateState('currentPage', pageId);
             }

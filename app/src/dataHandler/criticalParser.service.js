@@ -346,7 +346,7 @@ angular.module('evtviewer.dataHandler')
 
     /* ******************************** */
     /* parseWintessLacunas(docDOM, wit) */
-    /* ******************************** */
+    /* ********************************** */
     /* Function to parse lacuna start/end */
     /* @docDOM -> XML to be parsed        */
     /* @wit -> witness specified          */
@@ -374,24 +374,93 @@ angular.module('evtviewer.dataHandler')
                 endLacunasWit.push(endLacunas[j]);
             }
         }
-        for(var k = startLacunasWit.length-1; k >= 0; k--) {
-            var appStart = startLacunasWit[k].parentNode.parentNode;
-            var appEnd   = endLacunasWit[k].parentNode.parentNode;
+        if (startLacunasWit.length === endLacunasWit.length) {
+            for(var k = startLacunasWit.length-1; k >= 0; k--) {
+                var appStart = startLacunasWit[k].parentNode.parentNode;
+                var appEnd   = endLacunasWit[k].parentNode.parentNode;
 
-            var newElement = document.createElement('span');
-            newElement.setAttribute('data-wit', witObj.id);
+                var newElement = document.createElement('span');
+                newElement.setAttribute('data-wit', witObj.id);
 
-            newElement.className = 'lacunaStart';
-            startLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), startLacunasWit[k]);
-            newElement.className = 'lacunaEnd';
-            endLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), endLacunasWit[k]);
-            
-            var match = '<evt-reading.*data-app-id.*'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
-            var sRegExInput = new RegExp(match, 'ig'); 
-            docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, appStart.outerHTML+'<span class="lacuna">[LACUNA] </span>'+appEnd.outerHTML));
+                newElement.className = 'lacunaStart';
+                startLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), startLacunasWit[k]);
+                newElement.className = 'lacunaEnd';
+                endLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), endLacunasWit[k]);
+                
+                var match = '<evt-reading.*data-app-id.*'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
+                var sRegExInput = new RegExp(match, 'ig'); 
+                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, appStart.outerHTML+'<span class="lacuna">[LACUNA] </span>'+appEnd.outerHTML));
+            }
+        }
+    };
+    /* ************************************ */
+    /* isFragmentaryWitness(docDOM, witObj) */
+    /* ********************************************************** */
+    /* Function to check if a witness is a fragmentary one or not */
+    /* ********************************************************** */
+    var isFragmentaryWitness = function(docDOM, witObj){
+        if (docDOM.querySelectorAll("rdg[wit*='#"+witObj.id+"'] witStart:not([wit]").length > 0 || 
+            docDOM.querySelectorAll("lem[wit*='#"+witObj.id+"'] witStart:not([wit]").length > 0 ||
+            docDOM.querySelectorAll("witStart[wit*='#"+witObj.id+"']").length > 0) {
+            return true;
+        } else {
+            return false;
         }
     };
 
+    /* ******************************************* */
+    /* parseFragmentaryWitnessText(docDOM, witObj) */
+    /* ********************************************* */
+    /* Function to parse text of fragmentary witness */
+    /* ********************************************* */
+    parser.parseFragmentaryWitnessText = function(docDOM, witObj) {
+        var starts = docDOM.getElementsByTagName('witStart'),
+            ends   = docDOM.getElementsByTagName('witEnd'),
+            startsWit = [],
+            endsWit   = [];
+        for (var i = 0; i < starts.length; i++) {
+            if (starts[i].getAttribute('wit') !== null &&
+                containsWitnessReading(starts[i].getAttribute('wit'), witObj)) {
+                    startsWit.push(starts[i]);
+            } else if ( starts[i].parentNode.getAttribute('wit') !== null &&
+                        containsWitnessReading(starts[i].parentNode.getAttribute('wit'), witObj)){
+                startsWit.push(starts[i]);
+            }
+        }
+        for (var j = 0; j < ends.length; j++) {
+            if (ends[j].getAttribute('wit') !== null &&
+                containsWitnessReading(ends[j].getAttribute('wit'), witObj)) {
+                    endsWit.push(ends[j]);
+            } else if ( ends[j].parentNode.getAttribute('wit') !== null &&
+                        containsWitnessReading(ends[j].parentNode.getAttribute('wit'), witObj)){
+                endsWit.push(ends[j]);
+            }
+        }
+        console.log(starts, ends);
+        var fragmentaryText = '';
+        if (starts.length === ends.length) {
+            for(var k = startsWit.length-1; k >= 0; k--) {
+                var appStart = startsWit[k].parentNode.parentNode,
+                    appEnd   = endsWit[k].parentNode.parentNode;
+
+                var newElement = document.createElement('span');
+                newElement.setAttribute('data-wit', witObj.id);
+                
+                newElement.className = 'fragmentaryWitStart';
+                startsWit[k].parentNode.replaceChild(newElement.cloneNode(true), startsWit[k]);
+                
+                newElement.className = 'fragmentaryWitEnd';
+                endsWit[k].parentNode.replaceChild(newElement.cloneNode(true), endsWit[k]);
+                
+                var match = '<evt-reading data-app-id="'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
+                var sRegExInput = new RegExp(match, 'ig'); 
+                fragmentaryText = '<br /><span class="lacuna">[FRAGMENT START] </span><br />'+(docDOM.innerHTML.match(sRegExInput))+'<br /><span class="lacuna">[FRAGMENT END] </span><br />'+fragmentaryText;
+            }
+            return fragmentaryText;
+        } else {
+            return '<span class="error">There was a problem in loading fragmentary witness.</span>';
+        }
+    };
 
     /* ************************** */
     /* parseWitnessText(doc, wit) */
@@ -413,37 +482,43 @@ angular.module('evtviewer.dataHandler')
         var witnessText;
         if ( doc !== undefined ) {
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
-                witObj = parsedData.getWitnessById(wit),
-                apps   = docDOM.getElementsByTagName('app'),
-                j      = apps.length-1, 
-                count  = 0;
-            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
+                witObj = parsedData.getWitnessById(wit);
 
+            var apps   = docDOM.getElementsByTagName('app'),
+                j      = apps.length-1;
+            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
+            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!evtParser.isNestedInElem(appNode, 'app')) {
-                    // var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-                    var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
+                    var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
                         spanElement = document.createElement('evt-reading');
                     spanElement.setAttribute('data-app-id', id);
                     parseWitnessApp(appNode, witObj, spanElement);
                     appNode.parentNode.replaceChild(spanElement, appNode);
-                    count++;
                 }
                 j--;
             }
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-            //parse <pb>
-            parser.parseWintessPageBreaks(docDOM, witObj);
             //parse lacunas
             parser.parseWintessLacunas(docDOM, witObj);
+            //parse <pb>
+            parser.parseWintessPageBreaks(docDOM, witObj);
             //parse lines
             evtParser.parseLines(docDOM);
             //parse <note>
             evtParser.parseNote(docDOM);
-            witnessText = docDOM.innerHTML;
+            
+            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
+            
+            if (isFragmentaryWitness(docDOM, witObj)) {
+                var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, witObj);
+                witnessText = evtParser.balanceXHTML(fragmentaryText);
+            } else {
+                witnessText = docDOM.innerHTML;
+            }
         } else {
-            witnessText = '<span>Testo non disponibile.</span>';
+            witnessText = '<span>Text not available.</span>';
         }
         witnessText = evtParser.balanceXHTML(witnessText);
         //save witness text
@@ -605,7 +680,7 @@ angular.module('evtviewer.dataHandler')
             evtParser.parseNote(docDOM);
             criticalText = docDOM;
         } else {
-            criticalText = '<span>Testo non disponibile.</span>';
+            criticalText = '<span>Text not available.</span>';
         }
         parsedData.addCriticalText(criticalText, '');
     };
