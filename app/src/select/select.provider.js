@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $location, $routeParams, parsedData) {
+    this.$get = function($log, $location, $routeParams, parsedData, $rootScope) {
         var select     = {},
             collection = {},
             list       = [],
@@ -243,6 +243,16 @@ angular.module('evtviewer.select')
                 collection[currentId].callback = callback;
             }
         };
+
+        //
+        // Events listener
+        // 
+
+        $rootScope.$on('$routeUpdate', function(event, current) { 
+            _console.log('event', event)
+            _console.log('current', current)
+        });
+
         return select;
     };
 
