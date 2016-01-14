@@ -83,6 +83,7 @@ angular.module('evtviewer.reading')
                     text       = '',
                     witnesses  = '',
                     attributes = '';
+
                 if (readings.__elemTypes[readings[i]] === 'lem' || readings.__elemTypes[readings[i]] === 'rdg') { //lem o rdg
                     // recupero il contenuto
                     content = reading.content || [];
@@ -101,7 +102,6 @@ angular.module('evtviewer.reading')
                 }
                 text = text.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna in </i>');
                 text = text.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna in </i>');
-                
                 // recupero i testimoni e gli altri attributi
                 if (reading.attributes !== undefined) {
                     for (var key in reading.attributes) {
@@ -131,10 +131,14 @@ angular.module('evtviewer.reading')
                     attributes = '<span class="attributes">'+attributes+'</span>';
                 }
                 if (witnesses !== '') {
-                    witnesses = '<span class="witnesses">'+witnesses+'</span>';
+                    witnesses = '<span class="witnesses witnesses-'+readings.__elemTypes[readings[i]]+'">'+witnesses+'</span>';
                 }
                 appText += text + witnesses + attributes;
-                appText += ', ';
+                if (readings.__elemTypes[readings[i]] === 'lem') {
+                    appText = '<span class="variance variance-lem">'+appText+' ]</span> ';        
+                } else {
+                    appText += '; ';
+                }
             }
             appText = appText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
             var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
