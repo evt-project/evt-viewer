@@ -1,35 +1,35 @@
 <!DOCTYPE html
   PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html class="no-js">
-  <head>
-    <!-- <meta charset="utf-8"> -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <title>EVT Viewer</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <head>
+        <!-- <meta charset="utf-8"> -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <title>EVT Viewer</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        
+        <!-- build:css(.) styles/vendor.css -->
+        <!-- bower:css -->
+        <!-- endbower -->
+        <!-- endbuild -->
 
-    <!-- TODO: temp -->
-    <!-- build:css(.) styles/evt-old.css -->
-    <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
-    <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
-    <!-- endbuild -->
-    
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="evtviewer">
+        <!-- TODO: temp -->
+        <!-- build:css(.) styles/evt-old.css -->
+        <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
+        <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
+        <!-- endbuild -->
+        
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+    </head>
+    <body ng-app="evtviewer" ng-controller="InterfaceCtrl">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -44,11 +44,14 @@
     <section id="global-container">
         <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
         <section id="main-container">
-            <box data-type="text" id="mainText"></box>
+            <box data-type="text"
+                 data-edition="critical"
+                 id="mainText"></box>
             <div class="compareWits_box">
-                <box data-type="witness"></box>
-                <box data-type="witness"></box>
-                <box data-type="witness"></box>
+                <box data-type="witness"
+                     data-witness="{{witness}}"
+                     ng-repeat="witness in state.currentWits" ></box>
+
             </div>
         </section>
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->

@@ -14,7 +14,9 @@ angular.module('evtviewer.dataHandler')
     }; 
     
     // var pagesCollectionTexts = []; 
-    
+    var witnessesList = {
+        length : 0
+    };
     var witnessesCollection = {
         length : 0,
         _groups : []
@@ -133,7 +135,7 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* WITNESSES */
-    parsedData.addWitness = function(element) {
+    parsedData.addWitnessInCollection = function(element) {
         if ( witnessesCollection.length === undefined ) {
             witnessesCollection.length = 0;
         }
@@ -144,7 +146,20 @@ angular.module('evtviewer.dataHandler')
             if (element.type === 'group') {
                 witnessesCollection._groups.push(element.id);
             }
-            // _console.log('parsedData - addWitness ', witnessesCollection);
+        }
+        if (element.type !== 'group') {
+            parsedData.addWitnessInList(element);
+        }
+    };
+
+    parsedData.addWitnessInList = function(element){
+        if ( witnessesList.length === undefined ) {
+            witnessesList.length = 0;
+        }
+        if (witnessesList[element.id] === undefined) {
+            witnessesList[witnessesList.length] = element.id;
+            witnessesList[element.id] = element;
+            witnessesList.length++;
         }
     };
 
@@ -164,6 +179,10 @@ angular.module('evtviewer.dataHandler')
         return witnessesTextsCollection;
     };
 
+    parsedData.getWitnessesList = function() {
+        return witnessesList;
+    };
+
     parsedData.getWitnesses = function() {
         return witnessesCollection;
     };
@@ -172,7 +191,7 @@ angular.module('evtviewer.dataHandler')
         if ( witnessesCollection[witId] !== undefined ) {
             return witnessesCollection[witId];    
         } else {
-            // altrimenti cerco all'interno di ogni grouppo finché non lo trovo
+            // altrimenti cerco all'interno di ogni gruppo finché non lo trovo
             var groups = witnessesCollection._groups;
             var i = 0,
                 found = false,
@@ -186,7 +205,6 @@ angular.module('evtviewer.dataHandler')
             }
             return witness;
         }
-        
     };
 
     parsedData.getWitnessPages = function(witId) {

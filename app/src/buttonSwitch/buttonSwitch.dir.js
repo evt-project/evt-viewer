@@ -4,8 +4,10 @@ angular.module('evtviewer.buttonSwitch')
     return {
         restrict: 'E',
         scope: {
-            title: '@',
-            label: '@'
+            title    : '@',
+            label    : '@',
+            icon     : '@',
+            type     : '@'
         },
         templateUrl: 'src/ButtonSwitch/ButtonSwitch.dir.tmpl.html',
         controller: 'ButtonSwitchCtrl'

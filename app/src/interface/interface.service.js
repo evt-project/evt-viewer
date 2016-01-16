@@ -1,178 +1,172 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, config, $routeParams, xmlParser, evtSelect, evtBox, evtParser, parsedData) {
+.service('evtInterface', function(evtCommunication, config, $routeParams, $location, xmlParser, evtParser, parsedData) {    
     var mainInterface = {};
+
+        var state = {
+            currentView      : {},
+            currentDoc       : undefined,
+            currentPage      : undefined,
+            currentWits      : {},
+            currentWitsPages : {},
+            currentEdition   : undefined
+        };
 
         mainInterface.boot = function() {    
             evtCommunication.getData(config.dataUrl).then(function () {
-                //if I have params to read in the route, I update on them
-                if ( $routeParams.pageId !== undefined || $routeParams.docId !== undefined || $routeParams.witIds !== undefined) {
-                    if ( $routeParams.pageId !== undefined ) {
-                        mainInterface.updateCurrentPage($routeParams.pageId);
-                    } 
-                    if ( $routeParams.docId !== undefined ) {
-                        mainInterface.updateCurrentDocument($routeParams.docId);
-                    }
-                    if ( $routeParams.witIds !== undefined ) {
-                        mainInterface.updateCurrentWitnesses($routeParams.witIds);
-                    }
-                } 
-                //else I set the first page and the first document in the collection
-                else {
-                    var pages = parsedData.getPages(),
-                        documents = parsedData.getDocuments(),
-                        firstPage,
-                        firstDoc;
-                
-                    if (pages.length > 0) {
-                        firstPage = pages[pages[0]].value || undefined;
-                    }
-                    if (documents.length > 0) {
-                        firstDoc = documents[documents[0]].value || undefined;
-                    }
-                    
-                    mainInterface.updateParams(firstPage, firstDoc);
-                }
+                mainInterface.updateParams($routeParams);
             });
         };
 
         mainInterface.getCurrentPage = function(){
-            var pageSelector = evtSelect.getById('page');
-            if ( pageSelector !== undefined ){
-                return pageSelector.optionSelected;
-            }
+            return state.currentPage;
         };
 
         mainInterface.getCurrentDocument = function() {
-            var docSelector = evtSelect.getById('document');
-            if ( docSelector !== undefined ){
-                return docSelector.optionSelected;
-            } else {
-                var documents = parsedData.getDocuments();
-                if (documents.length > 0) {
-                    return documents[documents[0]];
-                }
-            }
+            return state.currentDoc;
+        };
+
+        mainInterface.getCurrentEdition = function(){
+            return state.currentEdition;
+        };
+
+        mainInterface.getCurrentWitnesses = function(){
+            return state.currentWits;
         };
 
         mainInterface.updateCurrentPage = function(pageId) {
-            console.log('#evtInterface#', 'updating current page setting it to ' + pageId);
-            var option = { },
-                pageSelector = { },
-                mainTextBox = { },
-                mainImageBox = { },
-                text,
-                img;
-                
-            option = parsedData.getPage(pageId);
-            
-            if ( option !== undefined ) {
-                // Updating page Selected
-                pageSelector = evtSelect.getById('page');
-                // TODO check defined
-                if ( pageSelector !== undefined ) {
-                    pageSelector.optionSelected = option;
-                    pageSelector.callback(option);
-                }
-            }
-            
-            // Updating mainText Box content
-            text = parsedData.getPageText(pageId);
-            mainTextBox = evtBox.getById('mainText');
-            if ( mainTextBox !== undefined ) {
-                if ( text !== undefined ) {
-                    mainTextBox.updateContent(text.diplomatic);
-                } else {
-                    mainTextBox.updateContent('Text not available.');
-                }
-                mainTextBox.updateState('currentPage', pageId);
-            }
-
-            // Updating mainImage Box content
-            img = parsedData.getPageImage(pageId);
-            mainImageBox = evtBox.getById('mainImage');
-            if ( mainImageBox !== undefined ) {
-                if ( img !== undefined ) {
-                    mainImageBox.updateContent('<img src="'+img.url+'" />');
-                } else {
-                    mainImageBox.updateContent('Si è verificato un errore.');
-                }
-                mainImageBox.updateState('currentPage', pageId);
-            }
+            state.currentPage = pageId;
+            // $location.search({p: state.currentPage});
         };
 
         mainInterface.updateCurrentDocument = function(docId) {
-            console.log('#evtInterface#', 'updating current text setting it to '+docId);
-            var option = { },
-                docSelector = { };
+            state.currentDoc = docId;
+            // $location.search({d: state.currentDoc});
+        };
 
-            option = parsedData.getDocument(docId);
-            
-            if ( option !== undefined ) {
-                // Updating page Selected
-                docSelector = evtSelect.getById('document');
-                // TODO check defined
-                if ( docSelector !== undefined ) {
-                    docSelector.optionSelected = option;
-                    docSelector.callback(option);
-                }
-            }    
+        mainInterface.updateCurrentEdition = function(edition){
+            state.currentEdition = edition;
+            // $location.search({ed: state.currentEdition});
+        };
+
+        mainInterface.addWitness = function(newWit) {
+            state.currentWits.unshift(newWit);
+            $location.search({ws: state.currentWits.toString()});
+        };
+        
+        mainInterface.removeWitness = function(wit) {
+            console.log('removeWitness', wit);
+            var witIndex = state.currentWits.indexOf(wit);
+            console.log('removeWitness', witIndex);
+            if (witIndex >= 0) {
+                state.currentWits.splice(witIndex, 1);
+            }
+            console.log(state.currentWits);
+            $location.search({ws: state.currentWits.toString()});
+        };
+
+        mainInterface.switchWitnesses = function(oldWit, newWit) {
+            console.log('switchWitnesses', oldWit, newWit);
+            // se il testimone che sto selezionando è già visualizzato 
+            // lo scambio con il vecchio testimone
+            var newWitOldIndex = state.currentWits.indexOf(newWit),
+                oldWitOldIndex = state.currentWits.indexOf(oldWit);
+            if (newWitOldIndex >= 0) {
+                state.currentWits[newWitOldIndex] = oldWit;
+            }
+            state.currentWits[oldWitOldIndex] = newWit;
+            $location.search({ws: state.currentWits.toString()});
+        };
+        mainInterface.updateWitnessesPage = function(witness, pageId) {
+            console.log('updateWitnessesPage', witness, pageId);
         };
 
         mainInterface.updateCurrentWitnesses = function(witIds) {
-            console.log('#evtInterface#', 'updating current witnesses setting it to '+witIds);
-            var witnesses = parsedData.getWitnesses(),
-                selectors = evtSelect.getList();
-            if ( witIds === undefined ) {
-                if (witnesses.length > 0) {
-                    var i = 0;    
-                    angular.forEach(selectors, function(currentSelect) {
-                        if (currentSelect.type === 'witness') {
-                            var witness = witnesses[witnesses[i]] || undefined;
-                            if ( witness !== undefined ) {
-                                var witSelect = evtSelect.getById(currentSelect.id);
-                                witSelect.selectOption(witness);
-                                i++;
-                            }
-                        }
-                    });
-                }
-            } else {
-                var siglas = witIds.split('#').filter(function(el) {return el.length !== 0;}),
-                    j = 0;
-                angular.forEach(selectors, function(currentSelect) {
-                    if (currentSelect.type === 'witness') {
-                        var witness = witnesses[siglas[j]] || undefined;
-                        if ( witness !== undefined ) {
-                            var witSelect = evtSelect.getById(currentSelect.id);
-                            witSelect.selectOption(witness);
-                            j++;
-                        }
-                    }
-                });
-            }
+            state.currentWits = witIds;
+            $location.search({ws: state.currentWits.toString()});
         };
 
-        mainInterface.updateParams = function(pageId, docId, witIds) {
-            console.log('#evtInterface#', 'updating params [Page: ' + pageId + ' | Text: ' + docId+' | Witnesses: '+witIds+']');
-            
+        mainInterface.updateParams = function(params) {
+            var pageId,
+                docId,
+                witnesses,
+                edition,
+                witIds = [],
+                search = {};
+
+            // EDITION 
+            if (params.viewMode !== undefined) {
+                edition = params.viewMode;
+            }
+
+            // PAGE
+            if ( params.pageId !== undefined ) {
+                pageId = params.pageId;
+            } else {
+                var pages = parsedData.getPages();
+                if (pages.length > 0) {
+                    pageId = pages[pages[0]].value || undefined;
+                }
+            }
+
+            // DOCUMENT
+            if ( params.docId !== undefined ) {
+                docId  = params.docId;
+            } else {
+                var documents = parsedData.getDocuments();
+                if (documents.length > 0) {
+                    docId = documents[documents[0]].value || undefined;
+                }
+            }
+            // WITNESSES
+            if (params.ws !== undefined) {
+                witnesses = params.ws.split(',').filter(function(el) {return el.length !== 0;});
+                for (var w in witnesses) {
+                    if (parsedData.getWitnessById(witnesses[w]) !== undefined){
+                        witIds.push(witnesses[w]);
+                    }
+                }
+            } else {
+                witnesses = parsedData.getWitnesses();
+                if (Array.isArray(witnesses)) {
+                    witIds = witnesses;
+                } else {
+                    for (var i = 0; i < witnesses.length; i++ ) {
+                        var currentOption = witnesses[witnesses[i]];
+                        if (currentOption !== undefined) {
+                            if ( currentOption.type === 'witness' ) {
+                                witIds.push(currentOption.id);
+                            } else {
+                                for (var j = 0; j < currentOption.content.length; j++ ) {
+                                    var currentSubOpt = currentOption.content[currentOption.content[j]];
+                                    witIds.push(currentSubOpt.id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ( edition !== undefined ) {
+                mainInterface.updateCurrentEdition(edition);
+                // TODO: Change route param for viewMode
+            }
+
             if ( pageId !== undefined ) {
                 mainInterface.updateCurrentPage(pageId);
+                search.p = pageId;
             }
 
             if ( docId !== undefined ) {
                 mainInterface.updateCurrentDocument(docId);
+                search.d = docId;
             }
 
             if ( witIds !== undefined) {
                 mainInterface.updateCurrentWitnesses(witIds);
+                search.ws = witIds.toString();
             }
-            // if (witIds !== undefined) {
-            //     var witnesses = witIds.split('#').filter(function(el) {return el.length !== 0;});
-            //     // for (var i = 0; i < witnesses.length; i++) {
-            //         mainInterface.updateWitness(witnesses[witnesses.length-1], 'witnessText');
-            //     // }
-            // }
+            $location.search(search);
         };
     return mainInterface;
 });

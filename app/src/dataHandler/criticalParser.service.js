@@ -39,6 +39,7 @@ angular.module('evtviewer.dataHandler')
                 list.content[list.content.length] = witness.id;
                 list.content[witness.id] = witness;
                 list.content.length++;
+                parsedData.addWitnessInList(witness);
             }
         });
         return list;
@@ -64,14 +65,14 @@ angular.module('evtviewer.dataHandler')
                     angular.forEach(element.children, function(child){
                         if (child.tagName === 'listWit') {
                             var subList = parseListWit(child);
-                            parsedData.addWitness(subList);
+                            parsedData.addWitnessInCollection(subList);
                         } else {
                             var witness = {
                                 id          : child.getAttribute('xml:id'),
                                 type        : 'witness',
                                 name        : child.innerHTML
                             };
-                            parsedData.addWitness(witness);
+                            parsedData.addWitnessInCollection(witness);
                         }
                     });
                 }
@@ -436,7 +437,7 @@ angular.module('evtviewer.dataHandler')
                 endsWit.push(ends[j]);
             }
         }
-        console.log(starts, ends);
+        
         var fragmentaryText = '';
         if (starts.length === ends.length) {
             for(var k = startsWit.length-1; k >= 0; k--) {

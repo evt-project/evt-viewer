@@ -1,26 +1,30 @@
 angular.module('evtviewer.box')
 
-.directive('box', function(evtBox, evtParser, evtCriticalParser, xmlParser, parsedData) {
+.directive('box', function(evtBox, evtParser, evtCriticalParser, xmlParser, parsedData, evtInterface) {
+
     return {
         restrict: 'E',
         scope: {
-            id: '@',
-            type: '@',
-            subtype: '@'
+            id      : '@',
+            type    : '@',
+            subtype : '@',
+            witness : '@',
+            edition : '@'
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
         link: function(scope, element, attrs) {
-
+            console.log('scope.edition', scope.edition);
             // Add attributes in vm
             scope.vm = {
-                id: scope.id,
-                type: scope.type,
-                subtype: scope.subtype,
-                state: {}
+                id      : scope.id,
+                type    : scope.type,
+                subtype : scope.subtype,
+                witness : scope.witness,
+                edition : scope.edition
             };
 
             // Initialize box
-            var currentBox = evtBox.build(scope.vm);
+            var currentBox = evtBox.build(scope, scope.vm);
 
             // Garbage collection
             scope.$on('$destroy', function() {
@@ -60,68 +64,42 @@ angular.module('evtviewer.box')
 
             // Watchers
             if (currentBox.type === 'text') {
-                scope.$on('UPDATE_EDITION', function(event, edition){
-                    console.log('UPDATE_EDITION');
-                    if ( scope.vm.state.edition !== edition ) {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentDocument();
+                }, function(newItem, oldItem) {
+                    if (scope.vm.state.docId !== newItem) {
                         var newContent;
-                        scope.vm.state.edition = edition;
-                        if (edition === 'critical') {
-                            scope.vm.appFilters    = parsedData.getWitnesses();
-
-                            if ( scope.vm.state.docId !== undefined ) {
-                                newContent = parsedData.getCriticalText(scope.vm.state.docId);
-                            }
-                        }
-                        scope.vm.state.filters = {};
-                        scope.vm.state.filterBox = false;
-
-                        if ( newContent !== undefined && newContent !== '') {
-                            currentBox.updateContent(newContent.innerHTML);
-                        } else {
-                            currentBox.updateContent('Text not available.');
-                        }
-                    }
-                });
-                scope.$on('UPDATE_DOCUMENT', function(event, docId){
-                    console.log('UPDATE_DOCUMENT');
-                    if (scope.vm.state.docId !== docId) {
-                        var newContent;
-                        scope.vm.state.docId = docId;
-                        if ( scope.vm.state.edition !== undefined && scope.vm.state.edition === 'critical') {
-                            newContent = parsedData.getCriticalText(docId);   
+                        scope.vm.state.docId = newItem;
+                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
+                            newContent = parsedData.getCriticalText(scope.vm.state.docId);   
                         }
                         if ( newContent !== undefined && newContent !== '') {
                             currentBox.updateContent(newContent.innerHTML);
                         } else {
-                            currentBox.updateContent('Text not available.');
+                            currentBox.updateContent('Text not available.2');
                         }
                     }
-                });
+                }, true); 
+                
+                scope.$watch(function() {
+                    return evtInterface.getCurrentEdition();
+                }, function(newItem, oldItem) {
+                    if (scope.vm.edition !== newItem) {
+                        scope.vm.edition = newItem;
+                        
+                        var newContent;
+                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
+                            newContent = parsedData.getCriticalText(currentBox.getState('docId'));
+                        }
+                        if ( newContent !== undefined && newContent !== '') {
+                            currentBox.updateContent(newContent.innerHTML);
+                        } else {
+                            currentBox.updateContent('Text of '+scope.vm.edition+' edition not available.');
+                        }
+                    }
+                }, true);                
             }
             if (currentBox.type === 'witness') {
-                scope.$on('UPDATE_WITNESS', function(event, sigla){
-                    if ( sigla !== undefined && sigla !== currentBox.getState('witness') ) {
-                        var newContent = parsedData.getWitnessText(sigla) || undefined;
-                        if ( newContent === undefined ) {
-                            var documents  = parsedData.getDocuments(),
-                                currentDoc = '';
-                            if (documents.length > 0) {
-                                currentDoc = documents[documents[0]];
-                            }
-                            if (currentDoc !== undefined) {
-                                newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), sigla);
-                            }
-                        }
-                        
-                        if ( newContent !== undefined && newContent !== '') {
-                            currentBox.updateContent(newContent);
-                        } else {
-                            currentBox.updateContent('Text not available.');
-                        }
-                        currentBox.updateState('witness', sigla); 
-                        scope.$broadcast('UPDATE_WITNESS', sigla);
-                    }
-                });
                 scope.$on('CHANGE_WITNESS_PAGE', function(event, option) {
                     if (option !== undefined) {
                         var docViewTop = boxElem.scrollTop + 42,

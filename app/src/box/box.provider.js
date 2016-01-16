@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData) {
+    this.$get = function($log, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
         var box        = {},
             collection = {},
             list       = [],
@@ -31,6 +31,7 @@ angular.module('evtviewer.box')
             // _console.log('vm - updating state '+key+': '+value);
             var vm        = this;
             vm.state[key] = value;
+            return vm.state[key];            
         }
 
         function getState(key) {
@@ -104,7 +105,7 @@ angular.module('evtviewer.box')
         // Box builder
         // 
 
-        box.build = function(vm) {
+        box.build = function(scope, vm) {
             var currentId   = vm.id || idx++,
                 currentType = vm.type || 'default',
                 topMenuList = { 
@@ -130,25 +131,58 @@ angular.module('evtviewer.box')
             switch (currentType) {
                 case 'image':
                     topMenuList.selectors.push({ id:'page', type: 'page' });
-                    topMenuList.buttons.push({ title:'Thumbnails', label: 'Thumbs' });
-                    // content = '<img src="'+parsedData.getImage()+'" />';
+                    topMenuList.buttons.push({ title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
                     content = '<img src="" />';
                     break;
                 case 'text':
                     topMenuList.selectors.push({ id:'document', type: 'document' });
                     topMenuList.selectors.push({ id:'editionLevel', type: 'edition'});
-                    // content = parsedData.getDocument()[0].diplomatic;
-                    // content = '<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong> adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, <evt-popover data-trigger="click" data-tooltip="Prova tooltip">fringilla vel</evt-popover>, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.</evt-popover> Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. <evt-popover data-trigger="click" data-tooltip="Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.">Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc</evt-popover>.<evt-popover data-trigger="click" data-tooltip="Prova 2 testo in tooltip">Lorem ipsum dolor</evt-popover> sit amet, <strong>consectetuer</strong>.';
-                    vm.state.edition = '';
+                    topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
+                    state.docId   = evtInterface.getCurrentDocument();
+                    if (state.docId !== undefined) {
+                        var newContent;
+                        if ( vm.edition !== undefined && vm.edition === 'critical') {
+                            newContent = parsedData.getCriticalText(state.docId);   
+                        }
+                        _console.log('newContent: ',newContent);
+                        if ( newContent !== undefined && newContent !== '') {
+                            content = newContent.innerHTML;
+                        } else {
+                            content = 'Text of '+scope.vm.edition+' edition not available.';
+                        }    
+                    }
+
                     state.filters = {};
                     state.filterBox = false;
                     break;
                 case 'witness':
-                    topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness'});
-                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page'});
+                    topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', witness: vm.witness});
+                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page', witness: vm.witness});
+                    topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
                     state.filterBox = false;
+                     
+                    if ( vm.witness !== undefined ) {
+                        var newContent = parsedData.getWitnessText(vm.witness) || undefined;
+                        if ( newContent === undefined ) {
+                            var documents  = parsedData.getDocuments(),
+                                currentDoc = '';
+                            if (documents.length > 0) {
+                                currentDoc = documents[documents[0]];
+                            }
+                            if (currentDoc !== undefined) {
+                                newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
+                            }
+                        }
+                        
+                        if ( newContent !== undefined && newContent !== '') {
+                            content = newContent;
+                        } else {
+                            content = 'Testo non disponibile.';
+                        }
+                    }
+
                     break;
             }
 

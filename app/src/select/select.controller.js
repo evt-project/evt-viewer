@@ -1,6 +1,6 @@
 angular.module('evtviewer.select')
 
-.controller('SelectCtrl', function($log, $scope, evtSelect) {
+.controller('SelectCtrl', function($log, $scope, evtSelect, evtInterface, parsedData) {    
     var vm = this;
     
     var _console = $log.getInstance('select');
@@ -22,33 +22,36 @@ angular.module('evtviewer.select')
             evtSelect.closeAll(vm.uid);
         }
         vm.expanded = !vm.expanded;
+        // _console.log('vm - toggleExpand for ' + vm.uid);
+    };
 
-        _console.log('vm - toggleExpand for ' + vm.uid);
+    this.getOptionSelected = function() {
+        return vm.optionSelected;
     };
 
     this.selectOption = function(option) {
-        // _console.log('vm - selectOption ', option);
         vm.optionSelected = option;
+        vm.optionSelectedValue = option !== undefined ? option.value : undefined;
         if (vm.expanded) {
             vm.toggleExpand();
         }
-        vm.changeRoute.call(undefined, option);
-        // vm.callback.call(undefined, option);
     };
 
     this.selectOptionByValue = function(optionValue) {
-        // _console.log('vm - selectOptionByValue ', optionValue);
-        var option = vm.dataSource[optionValue];
+        var option = parsedData.getWitnessById(optionValue);
         if (option !== undefined) {    
-            vm.selectOption(option);
+            vm.selectOption(vm.formatOption(option));            
         }
     };
 
     this.isOptionSelected = function(option) {
-        if (typeof(vm.optionSelected) === 'undefined') {
-            return;
+        if (option !== undefined) {
+            if (typeof(vm.optionSelected) === 'undefined') {
+                return;
+            }
+            return vm.optionSelected.value === option.value;
         }
-        return vm.optionSelected.value === option.value;
+
     };
 
     this.destroy = function() {
