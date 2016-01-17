@@ -4,7 +4,7 @@
 
 .box {
     // width: span(8 of 18);
-    @include span(7 of 18);
+    @include span(6 of 18);
     height:100%;
     white-space: normal;
     position: relative;
@@ -20,77 +20,122 @@
     // &[data-position='right'] {
     //     border-left-width: 0.5px;
     // }
-}
-.box-image {
-    @include colors($base-color-light, #000);
-    border-right-width: 0.5px;
-    
-    .box-body {
-        overflow: hidden;
-        text-align: center;
+
+    /* BOX TYPES */
+    &.box-image {
+        @include colors($base-color-light, #000);
+        border-right-width: 0.5px;
         
-        img {
-            height: 100%;
+        .box-body {
+            overflow: hidden;
+            text-align: center;
+            
+            img {
+                height: 100%;
+            }
+        }
+    }
+    &.box-text {
+        &.span9of18 {
+            // width: span(9 of 18);
+            @include span(9 of 18);
         }
     }
 
-}
-.box-witness {
-    width: span(5 of 11);
-    // @include layout(auto 5 .25 inside fluid isolate);
-    float: none;
-    // @include span(5 of 10);
-}
-.box-text, .box-witness {
-    @include colors($base-color-dark, #fff);
-    // border-left-width: 0.5px;
+    &.box-witness {
+        // width: span(isolate 5 of 12);
+        @include span(isolate 5 of 12 no-gutters);
+        // @include layout(auto 5 .25 inside fluid isolate);
+        float: none;
+        // @include span(5 of 10);
+        // margin-right: 2px;
+        &.span6of12 {
+            // width: span(isolate 6 of 12);
+            @include span(isolate 6 of 12 no-gutters);
+        }
+        &.span9of9 {
+            // width: span(isolate 9 of 9);
+            @include span(isolate 9 of 9 no-gutters);
+        }
+    }
+    &.box-text, &.box-witness {
+        @include colors($base-color-dark, #fff);
+        // border-left-width: 0.5px;
 
-    .box-body {
-        position: relative;
-        overflow-y: scroll;
+        .box-body {
+            position: relative;
+            overflow-y: scroll;
+        }
     }
 
-}
+    /* BOX INTERNAL ELEMENTS */
+    .box-menu {
+            @include inside-header();
+            
+            &[data-position='top']{
+                display: setVisibility($mainContainer-top-menu);
+            }
 
-.box-menu {
-    @include inside-header();
-    
-    &[data-position='top']{
-        display: setVisibility($mainContainer-top-menu);
+            &[data-position='bottom']{
+                display: setVisibility($mainContainer-bottom-menu);
+            }
+        }
+        .box-body {
+        @include frameBody();
+    }
+    .box-bottom-box {
+        text-align: left;
+        font-size: 90%;
+        margin-top: 42px;
+        margin-bottom: 42px;
+        display: none;
+        position: absolute;
+        z-index: 10;
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+        overflow: hidden;
+        background: #fff;
+        height: auto;
+        border-top: 1px solid;
+        padding: 20px;
+        box-shadow: 0px 0px 4px rgba(0,0,0,.5);
+
+        &.open {
+            display: block;
+        }
     }
 
-    &[data-position='bottom']{
-        display: setVisibility($mainContainer-bottom-menu);
+    .filters-section-title {
+        text-transform: uppercase;
+        font-weight: bold;
     }
 }
 
-.box-body {
-    @include frameBody();
-}
-.box-bottom-box {
-    text-align: left;
-    font-size: 90%;
-    margin-top: 42px;
-    margin-bottom: 42px;
-    display: none;
-    position: absolute;
-    z-index: 10;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    overflow: hidden;
-    background: #fff;
-    height: auto;
-    border-top: 1px solid;
-    padding: 20px;
-    box-shadow: 0px 0px 4px rgba(0,0,0,.5);
-
-    &.open {
-        display: block;
+// Temporary
+.compareWits_box {
+    // width: span(11 of 18);
+    // width: span(isolate 12 of 18);
+    @include span(isolate 12 of 18);
+    overflow-x: scroll;
+    overflow-y: hidden; 
+    height:100%;
+    white-space: normal;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    &.span9of18 {
+        width: span(9 of 18);
+        overflow-x: hidden;
     }
-}
-
-.filters-section-title {
-    text-transform: uppercase;
-    font-weight: bold;
+    .box:last-child{
+        margin: 0;
+        // margin-left: 1.6px;
+    }
+    .compareWits_box--buttonAddWit {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 }

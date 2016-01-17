@@ -1,4 +1,8 @@
-<section class="box box-{{vm.type}}" data-position="left">
+<section class="box box-{{vm.type}}" 
+         data-position="left"
+         ng-class="{'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
+                    'span9of9': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
+                    'span9of18': vm.type === 'text' && vm.getTotElementsOfType('witness') <= 1}">
     <div class="box-menu" data-position="top">
         <evt-select 
             data-id="{{selector.id}}"

@@ -26,6 +26,10 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
 
+            scope.vm.getTotElementsOfType = function(type){
+                return evtBox.getListByType(type).length;
+            };
+
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentBox){

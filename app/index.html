@@ -47,11 +47,19 @@
             <box data-type="text"
                  data-edition="critical"
                  id="mainText"></box>
-            <div class="compareWits_box">
+            <div class="compareWits_box"
+                 ng-class="{'span9of18': state.currentWits.length <= 1}">
                 <box data-type="witness"
                      data-witness="{{witness}}"
                      ng-repeat="witness in state.currentWits" ></box>
-
+                <button-switch 
+                        title="Add Witness"
+                        data-label="Add Witness"
+                        data-icon="add"
+                        data-type="addWit"
+                        ng-if="state.currentWits.length === 0"
+                        class="compareWits_box--buttonAddWit">
+                </button-switch>
             </div>
         </section>
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->

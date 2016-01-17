@@ -43,7 +43,7 @@ angular.module('evtviewer.box')
             var tempId = this.uid;
             // TODO: remove from list and collection
             // this.$destroy();
-
+            delete collection[tempId];
             _console.log('vm - destroy ' + tempId);
         }
 
@@ -230,6 +230,16 @@ angular.module('evtviewer.box')
 
         box.getList = function() {
             return list;
+        };
+
+        box.getListByType = function(type) {
+            var listType = [];
+            for (var i in collection) {
+                if (collection[i].type === type) {
+                    listType.push(collection[i]);
+                }
+            }
+            return listType;
         };
 
         return box;

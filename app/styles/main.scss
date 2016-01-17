@@ -10,11 +10,11 @@
 @include border-box-sizing;
 
 $large:(
-	columns: 20,
+	columns: 18,
 	container-position: center,
 	global-box-sizing: content-box,
-	gutter-position: inside,
-    gutters:0.1,
+	gutter-position: after,
+    gutters:.03,
 	debug:(image:show)
 	);
 
@@ -182,6 +182,11 @@ section > div{
 @import "popover.scss";
 @import "reading.scss";
 
+// Generic style 
+.hidden {
+    display: none;
+}
+
 // TEI Elements
 .pb {
     display: block;
@@ -197,17 +202,6 @@ section > div{
 
 .l {
     display: block;
-}
-// Temporary
-.compareWits_box {
-    // width: span(11 of 18);
-    @include span(isolate 11 of 18);
-    overflow-x: scroll;
-    overflow-y: hidden; 
-    height:100%;
-    white-space: normal;
-    position: relative;
-    display: inline-block;
 }
 
 .lacuna {
