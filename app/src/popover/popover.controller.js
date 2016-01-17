@@ -60,7 +60,7 @@ angular.module('evtviewer.popover')
         // TODO: remove from list and collection
         // this.$destroy();
         evtPopover.destroy(tempId);
-        _console.log('vm - destroy ' + tempId);
+        // _console.log('vm - destroy ' + tempId);
     };
 
     // _console.log('PopoverCtrl running');

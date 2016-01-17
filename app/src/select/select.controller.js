@@ -59,7 +59,7 @@ angular.module('evtviewer.select')
         // TODO: remove from list and collection
         // this.$destroy();
         evtSelect.destroy(tempId);
-        _console.log('vm - destroy ' + tempId);
+        // _console.log('vm - destroy ' + tempId);
     }
     _console.log('SelectCtrl running');
 });

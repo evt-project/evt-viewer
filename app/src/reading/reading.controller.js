@@ -265,7 +265,7 @@ angular.module('evtviewer.reading')
         // TODO: remove from list and collection
         // this.$destroy();
         evtReading.destroy(tempId);
-        _console.log('vm - destroy ' + tempId);
+        // _console.log('vm - destroy ' + tempId);
     }
     // _console.log('ReadingCtrl running');
 });

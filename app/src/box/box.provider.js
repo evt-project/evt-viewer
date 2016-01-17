@@ -44,7 +44,7 @@ angular.module('evtviewer.box')
             // TODO: remove from list and collection
             // this.$destroy();
             delete collection[tempId];
-            _console.log('vm - destroy ' + tempId);
+            // _console.log('vm - destroy ' + tempId);
         }
 
         // Critical edition control
@@ -127,7 +127,7 @@ angular.module('evtviewer.box')
             }
             
             // _console.log('vm - building box for ' + currentId);
-
+            var newContent;
             switch (currentType) {
                 case 'image':
                     topMenuList.selectors.push({ id:'page', type: 'page' });
@@ -140,11 +140,9 @@ angular.module('evtviewer.box')
                     topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
                     state.docId   = evtInterface.getCurrentDocument();
                     if (state.docId !== undefined) {
-                        var newContent;
                         if ( vm.edition !== undefined && vm.edition === 'critical') {
                             newContent = parsedData.getCriticalText(state.docId);   
                         }
-                        _console.log('newContent: ',newContent);
                         if ( newContent !== undefined && newContent !== '') {
                             content = newContent.innerHTML;
                         } else {
@@ -164,7 +162,7 @@ angular.module('evtviewer.box')
                     state.filterBox = false;
                      
                     if ( vm.witness !== undefined ) {
-                        var newContent = parsedData.getWitnessText(vm.witness) || undefined;
+                        newContent = parsedData.getWitnessText(vm.witness) || undefined;
                         if ( newContent === undefined ) {
                             var documents  = parsedData.getDocuments(),
                                 currentDoc = '';

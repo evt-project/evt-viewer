@@ -66,7 +66,8 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;
-            window.history.pushState(null, null, '#/'+viewMode);
+            // window.history.pushState(null, null, '#/'+viewMode);
+            mainInterface.updateUrl();
         };
 
         mainInterface.updateCurrentPage = function(pageId) {
@@ -86,7 +87,8 @@ angular.module('evtviewer.interface')
 
         mainInterface.addWitness = function(newWit) {
             state.currentWits.unshift(newWit);
-            $location.search({ws: state.currentWits.toString()});
+            // $location.search({ws: state.currentWits.toString()});
+            mainInterface.updateUrl();
         };
         
         mainInterface.removeWitness = function(wit) {
@@ -94,7 +96,8 @@ angular.module('evtviewer.interface')
             if (witIndex >= 0) {
                 state.currentWits.splice(witIndex, 1);
             }
-            $location.search({ws: state.currentWits.toString()});
+            // $location.search({ws: state.currentWits.toString()});
+            mainInterface.updateUrl();
         };
 
         mainInterface.switchWitnesses = function(oldWit, newWit) {
@@ -106,7 +109,8 @@ angular.module('evtviewer.interface')
                 state.currentWits[newWitOldIndex] = oldWit;
             }
             state.currentWits[oldWitOldIndex] = newWit;
-            $location.search({ws: state.currentWits.toString()});
+            // $location.search({ws: state.currentWits.toString()});
+            mainInterface.updateUrl();
         };
         mainInterface.updateWitnessesPage = function(witness, pageId) {
             console.log('TODO updateWitnessesPage', witness, pageId);
@@ -114,7 +118,8 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentWitnesses = function(witIds) {
             state.currentWits = witIds;
-            $location.search({ws: state.currentWits.toString()});
+            // $location.search({ws: state.currentWits.toString()});
+            mainInterface.updateUrl();
         };
 
         mainInterface.updateParams = function(params) {
@@ -200,7 +205,23 @@ angular.module('evtviewer.interface')
                 search.ws = witIds.toString();
             }
 
-            $location.search(search);
+            // $location.search(search);
+            mainInterface.updateUrl();
+        };
+
+        mainInterface.updateUrl = function() {
+            var viewMode   = state.currentViewMode,
+                searchPath = '';
+
+                searchPath += state.currentDoc === undefined ? '' : (searchPath === '' ? '' : '&')+'d='+state.currentDoc;
+                searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
+                searchPath = state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
+                if (viewMode === 'critical') {
+                    searchPath += state.currentWits === undefined || state.currentWits.length === 0 ? '' : (searchPath === '' ? '' : '&')+'ws='+state.currentWits.toString();
+                }
+                //TODO: Witnesses pages
+
+            window.history.pushState(null, null, '#/'+viewMode+'?'+searchPath.substr(1));  
         };
     return mainInterface;
 });
