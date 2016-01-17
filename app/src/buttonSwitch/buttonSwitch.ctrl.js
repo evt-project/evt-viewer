@@ -22,6 +22,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'add':
                 icon = 'fa-plus';
                 break;
+            default:
+                icon = 'fa-toggle-off';
+                break;
         }
         return icon;
     };
@@ -30,6 +33,12 @@ angular.module('evtviewer.buttonSwitch')
         if (!$scope.disabled) {
             $scope.active = !$scope.active;
             switch($scope.type) {
+                case 'changeViewMode':
+                    console.log('changeViewMode', $scope.value);
+                    if ($scope.value !== undefined) {
+                        evtInterface.updateCurrentViewMode($scope.value);
+                    }
+                    break; 
                 case 'removeWit':
                     var wit = $scope.$parent.vm.witness;
                     evtInterface.removeWitness(wit);
@@ -51,12 +60,13 @@ angular.module('evtviewer.buttonSwitch')
                     }
                     $scope.active = false;
                     break;
+                default:
+                    break;
             }
         }
     };
 
     if ($scope.type === 'addWit') {
-        // Selector.closeAll('');
         $scope.$watch(function() {
             return evtInterface.getCurrentWitnesses();
         }, function(newItem, oldItem) {
@@ -66,6 +76,19 @@ angular.module('evtviewer.buttonSwitch')
             } else {
                 $scope.disabled = false;
                 $scope.title = 'Add witness';
+            }
+        }, true); 
+    }
+
+    // TODO:  RIFARE!
+    if ($scope.type === 'changeViewMode') {
+        $scope.$watch(function() {
+            return evtInterface.getCurrentViewMode();
+        }, function(newItem, oldItem) {
+            if (newItem === $scope.value) {
+                $scope.active = true;
+            } else {
+                $scope.active = false;
             }
         }, true); 
     }

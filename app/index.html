@@ -39,11 +39,23 @@
 
     <header>
         Header
+        <div class="globalMenu">
+            <button-switch 
+                    title="{{mode.label}}"
+                    data-label="{{mode.label}}"
+                    data-icon="{{mode.icon}}"
+                    data-value="{{mode.viewMode}}"
+                    data-type="changeViewMode"
+                    ng-repeat="mode in availableViewModes">
+            </button-switch>
+        </div>
     </header>
 
-    <section id="global-container">
+    <section id="global-container" ng-switch="state.currentViewMode">
         <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
-        <section id="main-container">
+        
+        <!-- CRITICAL -->
+        <section id="main-container" class="viewMode" ng-switch-when="critical">
             <box data-type="text"
                  data-edition="critical"
                  id="mainText"></box>
@@ -57,10 +69,34 @@
                         data-label="Add Witness"
                         data-icon="add"
                         data-type="addWit"
-                        ng-if="state.currentWits.length === 0"
+                        ng-if="state.currentWits.length == 0"
                         class="compareWits_box--buttonAddWit">
                 </button-switch>
             </div>
+        </section>       
+
+        <!-- TXT TXT -->
+        <section id="main-container" class="viewMode" ng-switch-when="txtTxt">
+            <box data-type="text"
+                 data-edition="interpretative"
+                 id="mainText1"></box>
+            <box data-type="text"
+                 data-edition="diplomatic"
+                 id="mainText2"></box>
+        </section>
+
+        <!-- IMG TXT -->
+        <section id="main-container" class="viewMode" ng-switch-when="imgTxt">
+            <box data-type="image"
+                 id="mainImage"></box>
+            <box data-type="text"
+                 data-edition="diplomatic"
+                 id="mainText"></box>
+        </section>
+
+        <!-- LOADING... -->
+        <section id="main-container" class="viewMode" ng-switch-default>
+            <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
         </section>
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
     </section>

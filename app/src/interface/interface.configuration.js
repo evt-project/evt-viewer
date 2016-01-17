@@ -8,7 +8,7 @@ angular.module('evtviewer.interface')
             reloadOnSearch: false
         })
         .otherwise({
-            redirectTo: '/critical',
+            redirectTo: '/',
             reloadOnSearch: false
         });
         // .when('/:pageId', {

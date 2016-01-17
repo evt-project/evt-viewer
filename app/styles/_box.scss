@@ -4,7 +4,7 @@
 
 .box {
     // width: span(8 of 18);
-    @include span(6 of 18);
+    @include span(9 of 18);
     height:100%;
     white-space: normal;
     position: relative;
@@ -24,21 +24,18 @@
     /* BOX TYPES */
     &.box-image {
         @include colors($base-color-light, #000);
-        border-right-width: 0.5px;
-        
         .box-body {
             overflow: hidden;
             text-align: center;
-            
             img {
                 height: 100%;
             }
         }
     }
     &.box-text {
-        &.span9of18 {
+        &.span6of18 {
             // width: span(9 of 18);
-            @include span(9 of 18);
+            @include span(6 of 18);
         }
     }
 
@@ -113,6 +110,10 @@
 }
 
 // Temporary
+.viewMode .box:last-child{
+    // margin: 0px 0px 0px 0.5px;
+}
+
 .compareWits_box {
     // width: span(11 of 18);
     // width: span(isolate 12 of 18);

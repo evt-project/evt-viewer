@@ -4,18 +4,25 @@ angular.module('evtviewer.interface')
     var _console = $log.getInstance('interface');
 
     $scope.state = { 
+        currentViewMode : evtInterface.getCurrentViewMode(),
         currentPage     : evtInterface.getCurrentPage(),
         currentDoc      : evtInterface.getCurrentDocument(),
         currentEdition  : evtInterface.getCurrentEdition(),
         currentWits     : evtInterface.getCurrentWitnesses()
     };
-    
+    $scope.availableViewModes = evtInterface.getAvailableViewModes();
     // =========================================== //
     // !! TODO                                  !! //
     // !! Questi watchers andrebbero tolti,     !! //
     // !! ma se li tolgo non funziona più nulla !! //
     // !! HELP                                  !! //
     // =========================================== //
+    $scope.$watch(function() {
+        return evtInterface.getCurrentViewMode();
+    }, function(newItem, oldItem) {
+        $scope.state.currentViewMode = newItem;
+    }, true); 
+
     $scope.$watch(function() {
         return evtInterface.getCurrentPage();
     }, function(newItem, oldItem) {

@@ -19,8 +19,9 @@ angular.module('evtviewer.select')
         // 
         // Select builder
         // 
-
+        
         select.build = function(scope, vm) {
+            _console.log('scope.type', scope.type);
             var currentId   = scope.id      || idx++,
                 currentType = scope.type    || 'default',
                 currentWit  = scope.witness || undefined,
@@ -87,6 +88,7 @@ angular.module('evtviewer.select')
                     break;
                 case 'edition':
                     optionList = parsedData.getEditions();
+                    console.log('editions', parsedData.getEditions());
                     optionList     = [];
                     dataSource     = parsedData.getEditions();
                     optionSelected = optionList[0];
@@ -246,6 +248,9 @@ angular.module('evtviewer.select')
             }
         };
 
+        select.destroy = function(tempId) {
+            delete collection[tempId];
+        }
         return select;
     };
 

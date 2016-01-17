@@ -261,12 +261,11 @@ angular.module('evtviewer.reading')
     };
 
     this.destroy = function() {
-        // _console.log('# destroy #');
-        var tempId = vm.uid;
+        var tempId = this.uid;
         // TODO: remove from list and collection
         // this.$destroy();
+        evtReading.destroy(tempId);
         _console.log('vm - destroy ' + tempId);
-    };
-
+    }
     // _console.log('ReadingCtrl running');
 });

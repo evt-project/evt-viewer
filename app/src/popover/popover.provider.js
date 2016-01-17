@@ -98,6 +98,9 @@ angular.module('evtviewer.popover')
             return tuid;
         };
 
+        popover.destroy = function(tempId){
+            delete collection[tempId];
+        };
         return popover;
     };
 

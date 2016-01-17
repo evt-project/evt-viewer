@@ -182,6 +182,43 @@ section > div{
 @import "popover.scss";
 @import "reading.scss";
 
+// Temporary
+.globalMenu {
+    width: auto;
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 54px;
+    padding: 10px;
+    font-size: 80%;
+    button-switch {
+        margin-right:5px;
+        .buttonSwitch {
+            height: auto;
+        }
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+}
+.viewMode {
+    .loading {
+        background: rgba(0,0,0,.1);
+        .loader {
+            font-size: 2.5em;
+            color: $base-color-dark;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+    box:last-child .box{
+        margin: 0;
+    }
+}
+
 // Generic style 
 .hidden {
     display: none;

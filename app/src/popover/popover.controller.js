@@ -59,6 +59,7 @@ angular.module('evtviewer.popover')
         var tempId = vm.uid;
         // TODO: remove from list and collection
         // this.$destroy();
+        evtPopover.destroy(tempId);
         _console.log('vm - destroy ' + tempId);
     };
 

@@ -60,6 +60,7 @@ angular.module('evtviewer.select')
             // }
 
             scope.$watch('vm.dataSource' , function(newItems, oldItems) {
+                console.log('vm.dataSource', scope.type, newItems);
                 scope.vm.optionList = scope.vm.formatOptionList(newItems);
                 if (scope.vm.optionList !== undefined) {
                     // scope.vm.selectOption(scope.vm.optionList[0]);

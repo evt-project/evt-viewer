@@ -20,7 +20,7 @@ angular.module('evtviewer.reading')
         // 
         // Reading builder
         // 
-
+        
         reading.build = function(id, scope) {
             var currentId = idx++,
                 entryId = id || undefined;
@@ -116,6 +116,10 @@ angular.module('evtviewer.reading')
                 }
             });  
             reading.setCurrentAppEntry(appId);
+        };
+
+        reading.destroy = function(tempId) {
+            delete collection[tempId];
         };
 
         return reading;

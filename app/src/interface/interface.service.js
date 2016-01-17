@@ -4,7 +4,7 @@ angular.module('evtviewer.interface')
     var mainInterface = {};
 
         var state = {
-            currentView      : {},
+            currentViewMode  : {},
             currentDoc       : undefined,
             currentPage      : undefined,
             currentWits      : {},
@@ -12,10 +12,40 @@ angular.module('evtviewer.interface')
             currentEdition   : undefined
         };
 
+        var availableViewModes = [
+            {
+                label    : 'Image Text',
+                value    : 'imgTxt',
+                viewMode : 'imgTxt'
+            },
+            {
+                label    : 'Text Text',
+                value    : 'txtTxt',
+                viewMode : 'txtTxt'
+            },
+            {
+                label    : 'Critical',
+                value    : 'critical',
+                viewMode : 'critical'
+            }];
+
         mainInterface.boot = function() {    
             evtCommunication.getData(config.dataUrl).then(function () {
+                if ($routeParams.viewMode !== undefined) {
+                    mainInterface.updateCurrentViewMode($routeParams.viewMode);
+                } else {
+                    mainInterface.updateCurrentViewMode('critical');
+                }
                 mainInterface.updateParams($routeParams);
             });
+        };
+
+        mainInterface.getAvailableViewModes = function() {
+            return availableViewModes;
+        };
+
+        mainInterface.getCurrentViewMode = function(){
+            return state.currentViewMode;
         };
 
         mainInterface.getCurrentPage = function(){
@@ -32,6 +62,11 @@ angular.module('evtviewer.interface')
 
         mainInterface.getCurrentWitnesses = function(){
             return state.currentWits;
+        };
+
+        mainInterface.updateCurrentViewMode = function(viewMode) {
+            state.currentViewMode = viewMode;
+            window.history.pushState(null, null, '#/'+viewMode);
         };
 
         mainInterface.updateCurrentPage = function(pageId) {
@@ -55,18 +90,14 @@ angular.module('evtviewer.interface')
         };
         
         mainInterface.removeWitness = function(wit) {
-            console.log('removeWitness', wit);
             var witIndex = state.currentWits.indexOf(wit);
-            console.log('removeWitness', witIndex);
             if (witIndex >= 0) {
                 state.currentWits.splice(witIndex, 1);
             }
-            console.log(state.currentWits);
             $location.search({ws: state.currentWits.toString()});
         };
 
         mainInterface.switchWitnesses = function(oldWit, newWit) {
-            console.log('switchWitnesses', oldWit, newWit);
             // se il testimone che sto selezionando è già visualizzato 
             // lo scambio con il vecchio testimone
             var newWitOldIndex = state.currentWits.indexOf(newWit),
@@ -78,7 +109,7 @@ angular.module('evtviewer.interface')
             $location.search({ws: state.currentWits.toString()});
         };
         mainInterface.updateWitnessesPage = function(witness, pageId) {
-            console.log('updateWitnessesPage', witness, pageId);
+            console.log('TODO updateWitnessesPage', witness, pageId);
         };
 
         mainInterface.updateCurrentWitnesses = function(witIds) {
@@ -95,8 +126,10 @@ angular.module('evtviewer.interface')
                 search = {};
 
             // EDITION 
-            if (params.viewMode !== undefined) {
+            if (params.viewMode !== undefined && params.viewMode === 'critical') {
                 edition = params.viewMode;
+            } else {
+                edition = 'diplomatic';
             }
 
             // PAGE
@@ -166,6 +199,7 @@ angular.module('evtviewer.interface')
                 mainInterface.updateCurrentWitnesses(witIds);
                 search.ws = witIds.toString();
             }
+
             $location.search(search);
         };
     return mainInterface;

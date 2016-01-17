@@ -13,7 +13,6 @@ angular.module('evtviewer.box')
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
         link: function(scope, element, attrs) {
-            console.log('scope.edition', scope.edition);
             // Add attributes in vm
             scope.vm = {
                 id      : scope.id,

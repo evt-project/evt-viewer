@@ -55,11 +55,11 @@ angular.module('evtviewer.select')
     };
 
     this.destroy = function() {
-        var tempId = vm.uid;
+        var tempId = this.uid;
         // TODO: remove from list and collection
         // this.$destroy();
+        evtSelect.destroy(tempId);
         _console.log('vm - destroy ' + tempId);
-    };
-
+    }
     _console.log('SelectCtrl running');
 });
