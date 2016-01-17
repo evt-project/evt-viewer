@@ -15,17 +15,17 @@ angular.module('evtviewer.interface')
         var availableViewModes = [
             {
                 label    : 'Image Text',
-                value    : 'imgTxt',
+                icon     : 'imgTxt',
                 viewMode : 'imgTxt'
             },
             {
                 label    : 'Text Text',
-                value    : 'txtTxt',
+                icon     : 'txtTxt',
                 viewMode : 'txtTxt'
             },
             {
                 label    : 'Critical',
-                value    : 'critical',
+                icon     : 'critical',
                 viewMode : 'critical'
             }];
 

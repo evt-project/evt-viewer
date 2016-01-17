@@ -13,6 +13,7 @@ angular.module('evtviewer.buttonSwitch')
             case 'thumbnails':
                 icon = 'fa-th';
                 break;
+            case 'filter':
             case 'filters':
                 icon = 'fa-filter';
                 break;
@@ -21,9 +22,6 @@ angular.module('evtviewer.buttonSwitch')
                 break;
             case 'add':
                 icon = 'fa-plus';
-                break;
-            default:
-                icon = 'fa-toggle-off';
                 break;
         }
         return icon;

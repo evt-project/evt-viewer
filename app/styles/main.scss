@@ -196,6 +196,11 @@ section > div{
         margin-right:5px;
         .buttonSwitch {
             height: auto;
+            &-label{
+                font-variant: small-caps;
+                font-size: 80%;
+                top: 0;
+            }
         }
         &:last-child{
             margin-right: 0;
