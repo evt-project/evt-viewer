@@ -226,6 +226,9 @@ angular.module('evtviewer.reading')
             scope.openWit = function(){
                 var newWit = scope.witness,
                     scopeWit = scope.scopeWit;
+                if (evtInterface.getCurrentView !== 'critical') {
+                    evtInterface.updateCurrentViewMode('critical');
+                }
                 if (newWit !== scopeWit) {
                     var witnesses = evtInterface.getCurrentWitnesses(),
                         scopeWitnessIndex = witnesses.indexOf(scopeWit);

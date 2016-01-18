@@ -97,13 +97,13 @@ angular.module('evtviewer.buttonSwitch')
         $scope.$watch(function() {
             return evtInterface.getCurrentViewMode();
         }, function(newItem, oldItem) {
-            if (newItem !== oldItem) {
+            // if (newItem !== oldItem) {
                 if (newItem === $scope.value) {
                     $scope.active = true;
                 } else {
                     $scope.active = false;
                 }
-            }
+            // }
         }, true); 
     }
     // _console.log('ButtonCtrl running');

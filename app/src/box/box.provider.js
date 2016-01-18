@@ -126,7 +126,10 @@ angular.module('evtviewer.box')
                     topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
                     topMenuList.buttons.push({ title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
                     updateContent = function(){
-                        scope.vm.content = '<img src="" alt="Image of page '+evtInterface.getCurrentPage()+' of '+evtInterface.getCurrentDocument()+'"/>';
+                        var currentPage = evtInterface.getCurrentPage(),
+                            pageFacs    = parsedData.getPage(evtInterface.getCurrentPage()).facs || '',
+                            folder      = 'data/images/';
+                        scope.vm.content = '<img src="'+folder+pageFacs+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'"/>';
                     };
                     break;
                 case 'text':

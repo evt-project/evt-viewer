@@ -180,8 +180,8 @@ angular.module('evtviewer.dataHandler')
                 } else {
                     newPage.value  = element.getAttribute('xml:id') || 'page_'+(parsedData.getPages().length+1);
                 }
-                newPage.label  = element.getAttribute('n')      || 'Page '+(parsedData.getPages().length+1);
-                newPage.title  = element.getAttribute('n')      || 'Page '+(parsedData.getPages().length+1); 
+                newPage.label  = element.getAttribute('n')    || 'Page '+(parsedData.getPages().length+1);
+                newPage.title  = element.getAttribute('n')    || 'Page '+(parsedData.getPages().length+1);
                 for (var i = 0; i < element.attributes.length; i++) {
                     var attrib = element.attributes[i];
                     if (attrib.specified) {
@@ -191,7 +191,7 @@ angular.module('evtviewer.dataHandler')
                 newPage.doc = docId;
                 parsedData.addPage(newPage);
         });
-        // console.log('## Pages ##', parsedData.getPages());
+        console.log('## Pages ##', parsedData.getPages());
     };
 
     parser.parseDocuments = function(doc) {

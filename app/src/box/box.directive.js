@@ -84,8 +84,18 @@ angular.module('evtviewer.box')
                         scope.vm.edition = newItem;
                         currentBox.updateContent();
                     }
-                }, true);   
+                }, true);
+            }
 
+            if (currentBox.type === 'image') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentPage();
+                }, function(newItem, oldItem) {
+                    if (scope.vm.state.docId !== newItem) {
+                        scope.vm.state.pageId = newItem;
+                        currentBox.updateContent();
+                    }
+                }, true); 
             }
 
             // if (currentBox.type === 'witness') {

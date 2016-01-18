@@ -157,7 +157,7 @@ angular.module('evtviewer.interface')
                         witIds.push(witnesses[w]);
                     }
                 }
-            } else {
+            } else if (viewMode === 'critical'){
                 witnesses = parsedData.getWitnesses();
                 if (Array.isArray(witnesses)) {
                     witIds = witnesses;
