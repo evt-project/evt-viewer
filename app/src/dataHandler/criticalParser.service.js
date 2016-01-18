@@ -483,7 +483,7 @@ angular.module('evtviewer.dataHandler')
         var witnessText;
         if ( doc !== undefined ) {
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
-                witObj = parsedData.getWitnessById(wit);
+                witObj = parsedData.getWitness(wit);
 
             var apps   = docDOM.getElementsByTagName('app'),
                 j      = apps.length-1;

@@ -1,6 +1,6 @@
 angular.module('evtviewer.select')
 
-.controller('SelectCtrl', function($log, $scope, evtSelect, evtInterface, parsedData) {    
+.controller('SelectCtrl', function($log, evtSelect, parsedData) {    
     var vm = this;
     
     var _console = $log.getInstance('select');
@@ -38,9 +38,35 @@ angular.module('evtviewer.select')
     };
 
     this.selectOptionByValue = function(optionValue) {
-        var option = parsedData.getWitnessById(optionValue);
+        var option;
+        if (optionValue !== undefined && optionValue !== '' ) {
+            switch(vm.currentType) {
+                case 'page':
+                    option = vm.formatOption(parsedData.getPage(optionValue));
+                    break;
+                case 'document':
+                    option = vm.formatOption(parsedData.getDocument(optionValue));
+                    break;
+                case 'edition': 
+                    option = vm.formatOption(parsedData.getEdition(optionValue));
+                    break;
+                case 'witness':
+                    option = vm.formatOption(parsedData.getWitness(optionValue));
+                    break;
+                case 'witness-page':
+                    //TODO
+                    option = vm.optionList[0];
+                    break;
+                default:
+                    option = vm.optionList[0];
+                    break;
+            }
+        } else {
+            option = vm.optionList[0];
+        } 
+
         if (option !== undefined) {    
-            vm.selectOption(vm.formatOption(option));            
+            vm.selectOption(option);            
         }
     };
 
@@ -56,10 +82,9 @@ angular.module('evtviewer.select')
 
     this.destroy = function() {
         var tempId = this.uid;
-        // TODO: remove from list and collection
         // this.$destroy();
         evtSelect.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);
-    }
-    _console.log('SelectCtrl running');
+    };
+    // _console.log('SelectCtrl running');
 });

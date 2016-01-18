@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $location, $routeParams, parsedData, $rootScope, evtInterface) {
+    this.$get = function($log, parsedData, evtInterface) {
         var select     = {},
             collection = {},
             list       = [],
@@ -21,12 +21,10 @@ angular.module('evtviewer.select')
         // 
         
         select.build = function(scope, vm) {
-            _console.log('scope.type', scope.type);
             var currentId   = scope.id      || idx++,
                 currentType = scope.type    || 'default',
-                currentWit  = scope.witness || undefined,
+                initValue   = scope.initValue || undefined,
                 optionList  = [],
-                dataSource  = '',
                 optionSelected,
                 optionSelectedValue,
                 callback,
@@ -41,16 +39,12 @@ angular.module('evtviewer.select')
 
             switch (currentType) {
                 case 'page':
-                    optionList = parsedData.getPages();
-                    dataSource = parsedData.getPages();
-                    // TODO: add a general service for the current page in the application
-                    // optionSelected = optionList[0]; how to take the reference to a undefined element?
                     callback = function(oldOption, newOption) {
-                        // optionSelected = option;
                         _console.log('page select callback ', newOption);
                         if (newOption !== undefined){
                             vm.selectOption(newOption);
                             evtInterface.updateCurrentPage(newOption.value);
+                            evtInterface.updateUrl();
                         }                        
                     };
                     formatOptionList = function(optionList) {
@@ -63,16 +57,15 @@ angular.module('evtviewer.select')
                     formatOption = function(option) {
                         return option;
                     };
-
+                    optionList = formatOptionList(parsedData.getPages());
                     break;
                 case 'document':
-                    optionList = parsedData.getDocuments();
-                    dataSource = parsedData.getDocuments();
                     callback = function(oldOption, newOption) {
                         _console.log('document select callback ', newOption);
                         if (newOption !== undefined){
                             vm.selectOption(newOption);
                             evtInterface.updateCurrentDocument(newOption.value);
+                            evtInterface.updateUrl();
                         }                        
                     };
                     formatOptionList = function(optionList) {
@@ -85,16 +78,14 @@ angular.module('evtviewer.select')
                     formatOption = function(option) {
                         return option;
                     };
+                    optionList = formatOptionList(parsedData.getDocuments());
                     break;
                 case 'edition':
-                    optionList = parsedData.getEditions();
-                    optionList     = [];
-                    dataSource     = parsedData.getEditions();
-                    optionSelected = optionList[0];
                     callback = function(oldOption, newOption) {
                         if (newOption !== undefined){
                             vm.selectOption(newOption);
                             evtInterface.updateCurrentEdition(newOption.value);
+                            evtInterface.updateUrl();
                         }
                     };
                     formatOptionList = function(optionList) {
@@ -102,20 +93,21 @@ angular.module('evtviewer.select')
                     };
                     formatOption = function(option) {
                         return option;
-                    };                    
+                    };
+                    optionList = formatOptionList(parsedData.getEditions());         
                     break;
                 case 'witness':
-                    optionList          = [];
-                    dataSource          = parsedData.getWitnesses();
-                    optionSelectedValue = currentWit;
+                    optionSelectedValue = initValue;
                     callback = function(oldOption, newOption) {
                         vm.collapse();
                         if (oldOption !== undefined) {
                             if (newOption !== undefined) {
                                 evtInterface.switchWitnesses(oldOption.value, newOption.value);
+                                evtInterface.updateUrl();
                             }
                         } else if (newOption !== undefined) {
                             evtInterface.addWitness(newOption.value);
+                            evtInterface.updateUrl();
                         }
                     };
                     formatOptionList = function(optionList) {
@@ -133,12 +125,14 @@ angular.module('evtviewer.select')
                             } else {
                                 for (var j = 0; j < currentOption.content.length; j++ ) {
                                     var currentSubOpt = currentOption.content[currentOption.content[j]];
-                                    option = {
-                                        value : currentSubOpt.id,
-                                        label : currentSubOpt.id,
-                                        title : currentSubOpt.name
-                                    };
-                                    formattedList.push(option);
+                                    if (currentSubOpt !== undefined) {
+                                        option = {
+                                            value : currentSubOpt.id,
+                                            label : currentSubOpt.id,
+                                            title : currentSubOpt.name
+                                        };
+                                        formattedList.push(option);
+                                    }
                                 }
                             }
                         }
@@ -152,17 +146,16 @@ angular.module('evtviewer.select')
                             title : option.name
                         };
                         return formattedOption;
-                    };                    
+                    };  
+                    optionList = formatOptionList(parsedData.getWitnesses());                  
                     break;                
                 case 'witness-page':
-                    optionList = [];
-                    dataSource = parsedData.getWitnessPages(currentWit);                    
-                    // TODO: add a general service for the current page in the application
-                    // optionSelected = optionList[0]; how to take the reference to a undefined element?
+                    var witness = scope.$parent.vm.witness;
                     callback = function(oldOption, newOption) {
                         if (newOption !== undefined) {
                             vm.selectOption(newOption);
-                            evtInterface.updateWitnessesPage(currentWit, newOption.value);
+                            evtInterface.updateWitnessesPage(witness, newOption.value);
+                            evtInterface.updateUrl();
                         }
                     };
                     formatOptionList = function(optionList) {
@@ -174,7 +167,8 @@ angular.module('evtviewer.select')
                     };
                     formatOption = function(option) {
                         return option;
-                    };                    
+                    };  
+                    optionList = formatOptionList(parsedData.getWitnessPages(witness));                  
                     break;
             }
 
@@ -183,11 +177,11 @@ angular.module('evtviewer.select')
                 uid                    : currentId,
                 defaults               : angular.copy(defaults),
                 callback               : callback,
-                currentWit             : currentWit,
+                initValue              : initValue,
+                currentType            : currentType,
 
                 // model
                 optionList             : optionList,
-                dataSource             : dataSource,
                 optionSelected         : optionSelected,
                 optionSelectedValue    : optionSelectedValue,
                 formatOptionList       : formatOptionList,

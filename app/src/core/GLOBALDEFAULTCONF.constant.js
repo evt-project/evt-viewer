@@ -49,6 +49,8 @@ angular.module('evtviewer.core')
         }
     },
 
-    dataUrl: '../../data/pseudo-edition-test-file_mod.xml'
+    dataUrl: '../../data/pseudo-edition-test-file_mod.xml',
+    defaultViewMode: 'critical',
+    defaultEdition: 'critical'
 
 });

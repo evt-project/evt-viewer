@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function(evtBox, evtParser, evtCriticalParser, xmlParser, parsedData, evtInterface) {
+.directive('box', function(evtBox, evtInterface) {
 
     return {
         restrict: 'E',
@@ -24,7 +24,8 @@ angular.module('evtviewer.box')
 
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
-
+            currentBox.updateContent();
+            
             scope.vm.getTotElementsOfType = function(type){
                 return evtBox.getListByType(type).length;
             };
@@ -71,50 +72,35 @@ angular.module('evtviewer.box')
                     return evtInterface.getCurrentDocument();
                 }, function(newItem, oldItem) {
                     if (scope.vm.state.docId !== newItem) {
-                        var newContent;
                         scope.vm.state.docId = newItem;
-                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
-                            newContent = parsedData.getCriticalText(scope.vm.state.docId);   
-                        }
-                        if ( newContent !== undefined && newContent !== '') {
-                            currentBox.updateContent(newContent.innerHTML);
-                        } else {
-                            currentBox.updateContent('Text not available.2');
-                        }
+                        currentBox.updateContent();
                     }
                 }, true); 
-                
+
                 scope.$watch(function() {
                     return evtInterface.getCurrentEdition();
                 }, function(newItem, oldItem) {
                     if (scope.vm.edition !== newItem) {
                         scope.vm.edition = newItem;
-                        
-                        var newContent;
-                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
-                            newContent = parsedData.getCriticalText(currentBox.getState('docId'));
-                        }
-                        if ( newContent !== undefined && newContent !== '') {
-                            currentBox.updateContent(newContent.innerHTML);
-                        } else {
-                            currentBox.updateContent('Text of '+scope.vm.edition+' edition not available.');
-                        }
+                        currentBox.updateContent();
                     }
-                }, true);                
+                }, true);   
+
             }
-            if (currentBox.type === 'witness') {
-                scope.$on('CHANGE_WITNESS_PAGE', function(event, option) {
-                    if (option !== undefined) {
-                        var docViewTop = boxElem.scrollTop + 42,
-                            docViewBottom = docViewTop + angular.element(boxElem).height(),
-                            elemTop =  $("span.pb[data-id='"+option.value+"']").offset().top;
-                        if ((elemTop >= docViewBottom) || (elemTop <= docViewTop)) {
-                            var boxBody = angular.element(element).find('.box-body')[0];
-                            boxBody.scrollTop = $("span.pb[data-id='"+option.value+"']").position().top;
-                        }
-                    }
-                });
-            }
+
+            // if (currentBox.type === 'witness') {
+            //     scope.$on('CHANGE_WITNESS_PAGE', function(event, option) {
+            //         if (option !== undefined) {
+            //             var docViewTop = boxElem.scrollTop + 42,
+            //                 docViewBottom = docViewTop + angular.element(boxElem).height(),
+            //                 elemTop =  $("span.pb[data-id='"+option.value+"']").offset().top;
+            //             if ((elemTop >= docViewBottom) || (elemTop <= docViewTop)) {
+            //                 var boxBody = angular.element(element).find('.box-body')[0];
+            //                 boxBody.scrollTop = $("span.pb[data-id='"+option.value+"']").position().top;
+            //             }
+            //         }
+            //     });
+            // }
         }
     };
 });

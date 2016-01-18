@@ -16,17 +16,9 @@ angular.module('evtviewer.box')
 
         var _console = $log.getInstance('box');
 
-
         // 
         // Control function
         // 
-        function updateContent(newContent) {
-            var vm     = this;
-            vm.content = newContent;
-            
-            // _console.log('vm - updating content ' + vm.id);
-        }
-
         function updateState(key, value) {
             // _console.log('vm - updating state '+key+': '+value);
             var vm        = this;
@@ -118,7 +110,8 @@ angular.module('evtviewer.box')
                 },
                 content,
                 state      = {},
-                appFilters = [];
+                appFilters = [],
+                updateContent;
 
             var scopeHelper = {};
 
@@ -130,57 +123,60 @@ angular.module('evtviewer.box')
             var newContent;
             switch (currentType) {
                 case 'image':
-                    topMenuList.selectors.push({ id:'page', type: 'page' });
+                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
                     topMenuList.buttons.push({ title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
-                    content = '<img src="" />';
+                    updateContent = function(){
+                        scope.vm.content = '<img src="" alt="Image of page '+evtInterface.getCurrentPage()+' of '+evtInterface.getCurrentDocument()+'"/>';
+                    };
                     break;
                 case 'text':
-                    topMenuList.selectors.push({ id:'document', type: 'document' });
-                    topMenuList.selectors.push({ id:'editionLevel', type: 'edition'});
-                    topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
+                    //TODO: Differentiate main text from second one
+                    topMenuList.selectors.push({ id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() });
+                    topMenuList.selectors.push({ id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition()});
+                    if (evtInterface.getCurrentViewMode() === 'critical') {
+                        topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
+                    }
                     state.docId   = evtInterface.getCurrentDocument();
-                    if (state.docId !== undefined) {
-                        if ( vm.edition !== undefined && vm.edition === 'critical') {
-                            newContent = parsedData.getCriticalText(state.docId);   
+                    updateContent = function(){
+                        var newContent; 
+                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
+                            newContent = parsedData.getCriticalText(scope.vm.state.docId);
                         }
                         if ( newContent !== undefined && newContent !== '') {
-                            content = newContent.innerHTML;
+                            scope.vm.content = newContent.innerHTML;
                         } else {
-                            content = 'Text of '+scope.vm.edition+' edition not available.';
-                        }    
-                    }
-
-                    state.filters = {};
-                    state.filterBox = false;
+                            scope.vm.content = 'Text is not available.';
+                        }
+                    };
                     break;
                 case 'witness':
-                    topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', witness: vm.witness});
-                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page', witness: vm.witness});
+                    topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness});
+                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page'});
                     topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
                     state.filterBox = false;
-                     
-                    if ( vm.witness !== undefined ) {
-                        newContent = parsedData.getWitnessText(vm.witness) || undefined;
-                        if ( newContent === undefined ) {
-                            var documents  = parsedData.getDocuments(),
-                                currentDoc = '';
-                            if (documents.length > 0) {
-                                currentDoc = documents[documents[0]];
+                    updateContent = function(){
+                        if ( vm.witness !== undefined ) {
+                            newContent = parsedData.getWitnessText(vm.witness) || undefined;
+                            if ( newContent === undefined ) {
+                                var documents  = parsedData.getDocuments(),
+                                    currentDoc = '';
+                                if (documents.length > 0) {
+                                    currentDoc = documents[documents[0]];
+                                }
+                                if (currentDoc !== undefined) {
+                                    newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
+                                }
                             }
-                            if (currentDoc !== undefined) {
-                                newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
+                            
+                            if ( newContent !== undefined && newContent !== '') {
+                                scope.vm.content = newContent;
+                            } else {
+                                scope.vm.content = 'Text of witness '+vm.witness+' is not available.';
                             }
                         }
-                        
-                        if ( newContent !== undefined && newContent !== '') {
-                            content = newContent;
-                        } else {
-                            content = 'Testo non disponibile.';
-                        }
-                    }
-
+                    };
                     break;
             }
 

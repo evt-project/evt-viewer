@@ -1,13 +1,13 @@
 <section class="box box-{{vm.type}}" 
          data-position="left"
          ng-class="{'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
-                    'span9of9': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
+                    'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
                     'span6of18': vm.type === 'text' && vm.getTotElementsOfType('witness') > 1}">
     <div class="box-menu" data-position="top">
         <evt-select 
             data-id="{{selector.id}}"
             data-type="{{selector.type}}"
-            data-witness="{{selector.witness}}"
+            data-init="{{selector.initValue}}"
             ng-repeat="selector in vm.topMenuList.selectors">
         </evt-select>
         <button-switch 
@@ -19,60 +19,12 @@
         </button-switch>
     </div>
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
+    <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div 
         class="box-bottom-box filters"
         ng-if="vm.type=='witness' || vm.state.edition=='critical'"
         ng-class="{'open': vm.state.filterBox}">
         
-        <div class="filters__witnesses"
-             ng-if="vm.state.edition=='critical'">
-            <div>
-                <input 
-                    type="checkbox" 
-                    value="" 
-                    name="witness_any"
-                    checked="checked"
-                    ng-click="vm.toggleCriticalAppFilter('wit', '');"/>
-                <label for="witness_any"> any</label>
-            </div>
-            <div ng-repeat="witness in vm.appFilters">
-                <div ng-if="vm.appFilters[witness].type=='witness'">
-                    <input 
-                        type="checkbox" 
-                        value="{{vm.appFilters[witness].id}}" 
-                        name="{{vm.appFilters[witness].id}}" 
-                        ng-click="vm.toggleCriticalAppFilter('wit', vm.appFilters[witness].id);" 
-                        data-type="vm.appFilters[witness].type"/>
-                    <label for="{{vm.appFilters[witness].id}}"> 
-                        {{vm.appFilters[witness].id}} - {{vm.appFilters[witness].name }}
-                    </label>
-                </div>
-                <div ng-if="vm.appFilters[witness].type=='group'">
-                    <input 
-                        type="checkbox" 
-                        value="{{vm.appFilters[witness].id}}" 
-                        name="{{vm.appFilters[witness].id}}" 
-                        ng-click="vm.toggleCriticalAppFilter('wit', vm.appFilters[witness].id);"
-                        data-type="vm.appFilters[witness].type"/>
-                    <label for="{{vm.appFilters[witness].id}}"> 
-                        {{vm.appFilters[witness].id}} - {{vm.appFilters[witness].name }}
-                    </label>
-                    <div ng-repeat="subWitness in vm.appFilters[witness].content" style="margin-left:20px;">
-                        <input 
-                            type="checkbox" 
-                            value="{{vm.appFilters[witness].content[subWitness].id}}" 
-                            name="{{vm.appFilters[witness].content[subWitness].id}}" 
-                            ng-click="vm.toggleCriticalAppFilter('wit', vm.appFilters[witness].content[subWitness].id);" 
-                            data-type="vm.appFilters[witness].content[subWitness].type"
-                            data-group="witness"/>
-                        <label for="{{vm.appFilters[witness].content[subWitness].id}}"> 
-                            {{vm.appFilters[witness].content[subWitness].id}} - {{vm.appFilters[witness].content[subWitness].name }}
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="filters__reading"
              ng-if="vm.type=='witness'"
              ng-repeat="filter in vm.appFilters">
@@ -108,7 +60,7 @@
             data-label="Filters"
             data-icon='filters'
             data-type="filterReading"
-            ng-if="vm.type=='witness' || vm.state.edition=='critical'"
+            ng-if="vm.type=='witness'"
             ng-click="vm.toggleFilterBox()">
         </button-switch>
     </div>

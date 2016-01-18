@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('parsedData', function($log, xmlParser) {
+.service('parsedData', function($log) {
     var parsedData = {};
     var _console = $log.getInstance('dataHandler');
 
@@ -29,7 +29,7 @@ angular.module('evtviewer.dataHandler')
         filters: { }
     };
 
-    var criticalText_mock = [];
+    var criticalTextMock = [];
     
     var mockEditions = [
         {
@@ -48,6 +48,8 @@ angular.module('evtviewer.dataHandler')
             title: 'Diplomatic edition'
         }
     ]; 
+    
+    /* PAGES */
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
         var pageId = page.value;
@@ -68,12 +70,9 @@ angular.module('evtviewer.dataHandler')
     parsedData.getPages = function() {
         return pagesCollection;
     };
-    
     parsedData.getPage = function(pageId) {
         return pagesCollection[pageId];
     };
-
-
     parsedData.getPageText = function(pageId) {
         var texts = [];
 
@@ -84,7 +83,6 @@ angular.module('evtviewer.dataHandler')
         // return texts[i];
         return {};
     };
-
     parsedData.getPageImage = function(pageId) {
         var images = [];
 
@@ -96,7 +94,7 @@ angular.module('evtviewer.dataHandler')
         return {};
     };
 
-
+    /* DOCUMENTS */
     parsedData.addDocument = function(doc) {
         var docId = doc.value;
         if ( documentsCollection.length === undefined ) {
@@ -113,18 +111,14 @@ angular.module('evtviewer.dataHandler')
             // _console.log('parsedData - addDocument ', doc);
         }
     };
-
     parsedData.getDocuments = function() {
         return documentsCollection;
     };
-
     parsedData.getDocument = function(docId) {
         return documentsCollection[docId];
     };
-    parsedData.getEditions = function() {
-        return mockEditions;
-    };
 
+    /* EDITION */
     parsedData.addEditions = function() {
         // var mock = {
         //     value: 'edition3',
@@ -132,6 +126,21 @@ angular.module('evtviewer.dataHandler')
         //     title: 'edition3 title'
         // };
         // mockEditions.push(mock);
+    };
+    parsedData.getEditions = function() {
+        return mockEditions;
+    };
+    parsedData.getEdition = function(editionId) {
+        //TODO: Rifare
+        var i = 0,
+            edition;
+        while (i < mockEditions.length && edition === undefined) {
+            if (mockEditions[i].value === editionId) {
+                edition = mockEditions[i];
+            }
+            i++;
+        }
+        return edition;
     };
 
     /* WITNESSES */
@@ -151,7 +160,6 @@ angular.module('evtviewer.dataHandler')
             parsedData.addWitnessInList(element);
         }
     };
-
     parsedData.addWitnessInList = function(element){
         if ( witnessesList.length === undefined ) {
             witnessesList.length = 0;
@@ -162,32 +170,26 @@ angular.module('evtviewer.dataHandler')
             witnessesList.length++;
         }
     };
-
     parsedData.addWitnessText = function(witId, content) {
         if ( witnessesTextsCollection[witId] === undefined ) {
             witnessesTextsCollection[witId] = '<text>'+content+'</text>';
         } 
     };
-
     parsedData.getWitnessText = function(witId) {
         if ( witnessesTextsCollection[witId] !== undefined ) {
             return witnessesTextsCollection[witId];
         } 
     };
-
     parsedData.getWitnessesTextsCollection = function() {
         return witnessesTextsCollection;
     };
-
     parsedData.getWitnessesList = function() {
         return witnessesList;
     };
-
     parsedData.getWitnesses = function() {
         return witnessesCollection;
     };
-
-    parsedData.getWitnessById = function(witId) {
+    parsedData.getWitness = function(witId) {
         if ( witnessesCollection[witId] !== undefined ) {
             return witnessesCollection[witId];    
         } else {
@@ -206,7 +208,6 @@ angular.module('evtviewer.dataHandler')
             return witness;
         }
     };
-
     parsedData.getWitnessPages = function(witId) {
         if ( witnessesPagesCollection[witId] !== undefined ) {
             return witnessesPagesCollection[witId];
@@ -225,11 +226,9 @@ angular.module('evtviewer.dataHandler')
         // _console.log(witnessesPagesCollection[witId]);
         return witnessesPagesCollection[witId];
     };
-
     parsedData.isWitnessesGroup = function(sigla) {
         return witnessesCollection[sigla] !== undefined && witnessesCollection[sigla].type === 'group';
     };
-
     parsedData.getWitnessesInGroup = function(groupId) {
         var wits = [];
         if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId].type === 'group') {
@@ -240,11 +239,11 @@ angular.module('evtviewer.dataHandler')
 
     /* CRITICAL ENTRIES */
     parsedData.addCriticalText = function(text, docId) {
-        criticalText_mock.push(text);
+        criticalTextMock.push(text);
     };
 
     parsedData.getCriticalText = function(docId) {
-        return criticalText_mock[0];
+        return criticalTextMock[0];
     };
 
     parsedData.addCriticalEntry = function(entry, entryId) {

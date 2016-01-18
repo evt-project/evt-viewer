@@ -1,9 +1,11 @@
 angular.module('evtviewer.buttonSwitch')
 
-.controller('ButtonSwitchCtrl', function($document, $window, $rootScope, $scope, evtInterface, parsedData) {
+.controller('ButtonSwitchCtrl', function($log, $scope, evtInterface, parsedData) {
     $scope.active   = false;
     $scope.disabled = false;
     
+    var _console = $log.getInstance('button');
+
     $scope.setIcon = function() {
         var icon = '';
         switch(angular.lowercase($scope.icon)) {
@@ -35,11 +37,13 @@ angular.module('evtviewer.buttonSwitch')
                     console.log('changeViewMode', $scope.value);
                     if ($scope.value !== undefined) {
                         evtInterface.updateCurrentViewMode($scope.value);
+                        evtInterface.updateUrl();
                     }
                     break; 
                 case 'removeWit':
                     var wit = $scope.$parent.vm.witness;
                     evtInterface.removeWitness(wit);
+                    evtInterface.updateUrl();
                     break;
                 case 'addWit':
                     var witnesses   = parsedData.getWitnessesList(), 
@@ -55,6 +59,7 @@ angular.module('evtviewer.buttonSwitch')
 
                     if (newWit !== undefined) {
                         evtInterface.addWitness(newWit);
+                        evtInterface.updateUrl();
                     }
                     $scope.active = false;
                     break;
@@ -68,14 +73,16 @@ angular.module('evtviewer.buttonSwitch')
         $scope.$watch(function() {
             return evtInterface.getCurrentWitnesses();
         }, function(newItem, oldItem) {
-            if (newItem.length === parsedData.getWitnessesList().length) {
-                $scope.disabled = true;
-                $scope.title = 'No more witnesses available';
-            } else {
-                $scope.disabled = false;
-                $scope.title = 'Add witness';
+            if (newItem !== oldItem) {
+                if (newItem.length === parsedData.getWitnessesList().length) {
+                    $scope.disabled = true;
+                    $scope.title = 'No more witnesses available';
+                } else {
+                    $scope.disabled = false;
+                    $scope.title = 'Add witness';
+                }
             }
-        }, true); 
+        }, true);
     }
 
     // TODO:  RIFARE!
@@ -83,11 +90,14 @@ angular.module('evtviewer.buttonSwitch')
         $scope.$watch(function() {
             return evtInterface.getCurrentViewMode();
         }, function(newItem, oldItem) {
-            if (newItem === $scope.value) {
-                $scope.active = true;
-            } else {
-                $scope.active = false;
+            if (newItem !== oldItem) {
+                if (newItem === $scope.value) {
+                    $scope.active = true;
+                } else {
+                    $scope.active = false;
+                }
             }
         }, true); 
     }
+    // _console.log('ButtonCtrl running');
 });
