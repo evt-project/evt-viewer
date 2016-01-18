@@ -9,11 +9,8 @@ angular.module('evtviewer.buttonSwitch')
     $scope.setIcon = function() {
         var icon = '';
         switch(angular.lowercase($scope.icon)) {
-            case 'thumb':
-            case 'thumbs':
-            case 'thumbnail':
-            case 'thumbnails':
-                icon = 'fa-th';
+            case 'add':
+                icon = 'fa-plus';
                 break;
             case 'filter':
             case 'filters':
@@ -22,9 +19,16 @@ angular.module('evtviewer.buttonSwitch')
             case 'remove':
                 icon = 'fa-times';
                 break;
-            case 'add':
-                icon = 'fa-plus';
+            case 'share':
+                icon = 'fa-share-alt';
                 break;
+            case 'thumb':
+            case 'thumbs':
+            case 'thumbnail':
+            case 'thumbnails':
+                icon = 'fa-th';
+                break;
+            
         }
         return icon;
     };
@@ -33,18 +37,6 @@ angular.module('evtviewer.buttonSwitch')
         if (!$scope.disabled) {
             $scope.active = !$scope.active;
             switch($scope.type) {
-                case 'changeViewMode':
-                    console.log('changeViewMode', $scope.value);
-                    if ($scope.value !== undefined) {
-                        evtInterface.updateCurrentViewMode($scope.value);
-                        evtInterface.updateUrl();
-                    }
-                    break; 
-                case 'removeWit':
-                    var wit = $scope.$parent.vm.witness;
-                    evtInterface.removeWitness(wit);
-                    evtInterface.updateUrl();
-                    break;
                 case 'addWit':
                     var witnesses   = parsedData.getWitnessesList(), 
                         currentWits = evtInterface.getCurrentWitnesses(),
@@ -62,6 +54,21 @@ angular.module('evtviewer.buttonSwitch')
                         evtInterface.updateUrl();
                     }
                     $scope.active = false;
+                    break;
+                case 'changeViewMode':
+                    console.log('changeViewMode', $scope.value);
+                    if ($scope.value !== undefined) {
+                        evtInterface.updateCurrentViewMode($scope.value);
+                        evtInterface.updateUrl();
+                    }
+                    break; 
+                case 'removeWit':
+                    var wit = $scope.$parent.vm.witness;
+                    evtInterface.removeWitness(wit);
+                    evtInterface.updateUrl();
+                    break;
+                case 'share':
+                    alert(window.location);
                     break;
                 default:
                     break;
