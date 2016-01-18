@@ -78,6 +78,10 @@ angular.module('evtviewer.interface')
         mainInterface.addWitness = function(newWit) {
             state.currentWits.unshift(newWit);
         };
+
+        mainInterface.addWitnessAtIndex = function(newWit, index) {
+            state.currentWits.splice(index, 0, newWit);
+        };
         
         mainInterface.removeWitness = function(wit) {
             var witIndex = state.currentWits.indexOf(wit);

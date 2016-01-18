@@ -113,13 +113,16 @@ angular.module('evtviewer.reading')
                                     var witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
                                     if (witnessesInGroup.length > 0) {
                                         for(var w = 0; w < witnessesInGroup.length; w++ ){
-                                            witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+witnessesInGroup[w]+'\');">'+witnessesInGroup[w]+'</span>';    
+                                            // witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+witnessesInGroup[w]+'\');">'+witnessesInGroup[w]+'</span>';    
+                                            witnesses += '<evt-witness-ref witness="'+witnessesInGroup[w]+'"/>';
                                         }
                                     } else {
-                                        witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+sigla+'\');">'+sigla+'</span>';    
+                                        // witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+sigla+'\');">'+sigla+'</span>';
+                                        witnesses += '<evt-witness-ref witness="'+sigla+'"/>';    
                                     }
                                 } else {
-                                    witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+sigla+'\');">'+sigla+'</span>';
+                                    // witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+sigla+'\');">'+sigla+'</span>';
+                                    witnesses += '<evt-witness-ref witness="'+sigla+'"/>';
                                 }
                             }
                         } else {
