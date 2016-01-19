@@ -16,11 +16,22 @@ angular.module('evtviewer.select')
             var currentSelect = evtSelect.build(scope, scope.vm);
 
             if (currentSelect !== undefined) {
-                if (scope.init !== undefined && scope.init != '') {
+                if (scope.init !== undefined && scope.init !== '') {
                     currentSelect.selectOptionByValue(scope.init);
                 } else {
                     currentSelect.callback(undefined, scope.vm.optionList[0]);
                 }
+            }
+
+            if (scope.type === 'witness-page') {
+                var witness = scope.$parent.vm.witness;
+                scope.$watch(function() {
+                    return evtInterface.getCurrentWitnessPage(witness);
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(witness+'-'+newItem);
+                    }
+                }, true); 
             }
 
             // Garbage collection

@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function(evtBox, evtInterface) {
+.directive('box', function($timeout, evtBox, evtInterface) {
 
     return {
         restrict: 'E',
@@ -38,37 +38,56 @@ angular.module('evtviewer.box')
                     currentBox.destroy();
                 }     
             });
-
-            // Scrolling evt
-            var raw = element[0];
+            
             var boxElem = angular.element(element).find('.box')[0],
                 boxBody = angular.element(element).find('.box-body')[0];
-            angular.element(boxBody).bind('scroll', function() {
-                var i       = 0,
-                    visible = false,
-                    id      = '',
-                    pbElems = angular.element(element).find('.pb');
-                while ( i < pbElems.length && !visible ) {
-                    var docViewTop = boxElem.scrollTop + 42,
-                        docViewBottom = docViewTop + angular.element(boxElem).height(),
-                        id = pbElems[i].getAttribute('data-id'),
-                        elemTop =  $("span.pb[data-id='"+id+"']").offset().top;
-                    if ((elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
-                        visible = true;
-                    } else {
-                        i++;
+
+            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+                scope.vm.scrollToPage = function(pageId) {
+                    var pbElem = $('#'+currentBox.uid).find('#pb_'+pageId);
+                    var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                    if (pbElem.length > 0 && pbElem[0] !== undefined) {
+                        boxBody.scrollTop = pbElem[0].offsetTop-padding;
                     }
-                }
-                if (visible) {
-                    // scope.$broadcast('UPDATE_WITNESS_PAGE', id);
-                }
-                
-              // console.log('scroll');
-              // $('.box-body').scrollTop($(this).scrollTop());
-            });
+                };
 
+                // Necessary for first load page alignment
+                $timeout(function(){
+                    var pageId;
+                    if ( currentBox.type === 'witness' ) {
+                        pageId = scope.vm.witness+'-'+evtInterface.getCurrentWitnessPage(scope.vm.witness);
+                    } else if ( currentBox.type === 'text' ) {
+                        pageId = evtInterface.getCurrentPage();
+                    }
+                    scope.vm.scrollToPage(pageId);
+                });
 
-            // Watchers
+                // Scrolling evt
+                angular.element(boxBody).bind('DOMMouseScroll', function(e) {
+                    var i       = 0,
+                        visible = false,
+                        id      = '',
+                        pbElems = angular.element(element).find('.pb');
+                    while ( i < pbElems.length && !visible ) {
+                        var docViewTop = boxElem.scrollTop + 42,
+                            docViewBottom = docViewTop + angular.element(boxElem).height(),
+                            id = pbElems[i].getAttribute('data-id'),
+                            elemTop =  $("span.pb[data-id='"+id+"']").offset().top;
+                        if ((elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
+                            visible = true;
+                        } else {
+                            i++;
+                        }
+                    }
+                    if (visible) {
+                        if (currentBox.type === 'witness'){
+                            evtInterface.updateWitnessesPage(scope.witness, id.split('-')[1]);
+                            evtInterface.updateUrl();
+                        }
+                    }
+                });
+            }
+
             if (currentBox.type === 'text') {
                 scope.$watch(function() {
                     return evtInterface.getCurrentDocument();
@@ -99,20 +118,6 @@ angular.module('evtviewer.box')
                     }
                 }, true); 
             }
-
-            // if (currentBox.type === 'witness') {
-            //     scope.$on('CHANGE_WITNESS_PAGE', function(event, option) {
-            //         if (option !== undefined) {
-            //             var docViewTop = boxElem.scrollTop + 42,
-            //                 docViewBottom = docViewTop + angular.element(boxElem).height(),
-            //                 elemTop =  $("span.pb[data-id='"+option.value+"']").offset().top;
-            //             if ((elemTop >= docViewBottom) || (elemTop <= docViewTop)) {
-            //                 var boxBody = angular.element(element).find('.box-body')[0];
-            //                 boxBody.scrollTop = $("span.pb[data-id='"+option.value+"']").position().top;
-            //             }
-            //         }
-            //     });
-            // }
         }
     };
 });

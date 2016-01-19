@@ -157,6 +157,7 @@ angular.module('evtviewer.select')
                             vm.selectOption(newOption);
                             evtInterface.updateWitnessesPage(witness, newOption.value.split('-')[1]);
                             evtInterface.updateUrl();
+                            scope.$parent.vm.scrollToPage(newOption.value);
                         }
                     };
                     formatOptionList = function(optionList) {

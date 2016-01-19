@@ -9,27 +9,26 @@ angular.module('evtviewer.select')
     // Control function
     // 
 
-    this.expand = function() {
+    vm.expand = function() {
         vm.expanded = true;
     };
 
-    this.collapse = function() {
+    vm.collapse = function() {
         vm.expanded = false;
     };
 
-    this.toggleExpand = function(closeSiblings) {
+    vm.toggleExpand = function(closeSiblings) {
         if (!closeSiblings) {
             evtSelect.closeAll(vm.uid);
         }
         vm.expanded = !vm.expanded;
-        // _console.log('vm - toggleExpand for ' + vm.uid);
     };
 
-    this.getOptionSelected = function() {
+    vm.getOptionSelected = function() {
         return vm.optionSelected;
     };
 
-    this.selectOption = function(option) {
+    vm.selectOption = function(option) {
         vm.optionSelected = option;
         vm.optionSelectedValue = option !== undefined ? option.value : undefined;
         if (vm.expanded) {
@@ -37,7 +36,7 @@ angular.module('evtviewer.select')
         }
     };
 
-    this.selectOptionByValue = function(optionValue) {
+    vm.selectOptionByValue = function(optionValue) {
         var option;
         if (optionValue !== undefined && optionValue !== '' ) {
             switch(vm.currentType) {
@@ -69,7 +68,7 @@ angular.module('evtviewer.select')
         }
     };
 
-    this.isOptionSelected = function(option) {
+    vm.isOptionSelected = function(option) {
         if (option !== undefined) {
             if (typeof(vm.optionSelected) === 'undefined') {
                 return;
@@ -79,8 +78,8 @@ angular.module('evtviewer.select')
 
     };
 
-    this.destroy = function() {
-        var tempId = this.uid;
+    vm.destroy = function() {
+        var tempId = vm.uid;
         // this.$destroy();
         evtSelect.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);

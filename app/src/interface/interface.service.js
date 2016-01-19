@@ -121,6 +121,7 @@ angular.module('evtviewer.interface')
                 state.currentWits[newWitOldIndex] = oldWit;
             }
             state.currentWits[oldWitOldIndex] = newWit;
+            //TODO: update box scroll to page on switching...
         };
         
         mainInterface.updateParams = function(params) {

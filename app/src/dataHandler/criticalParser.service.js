@@ -337,6 +337,7 @@ angular.module('evtviewer.dataHandler')
                 newPbElem.className = 'pb';
                 newPbElem.setAttribute('data-wit', pbNode.getAttribute('ed'));
                 newPbElem.setAttribute('data-id', id);
+                newPbElem.setAttribute('id', 'pb_'+id);
                 newPbElem.textContent = pbNode.getAttribute('n');
                 pbNode.parentNode.replaceChild(newPbElem, pbNode);
             } else {
