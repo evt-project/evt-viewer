@@ -35,6 +35,9 @@ angular.module('evtviewer.interface')
             });
         };
 
+        /* ********** */
+        /* PARAMS GET */
+        /* ********** */
         mainInterface.getAvailableViewModes = function() {
             return availableViewModes;
         };
@@ -59,6 +62,17 @@ angular.module('evtviewer.interface')
             return state.currentWits;
         };
 
+        mainInterface.getCurrentWitnessesPages = function(){
+            return state.currentWitsPages;
+        };
+
+        mainInterface.getCurrentWitnessPage = function(wit){
+            return state.currentWitsPages[wit];
+        };
+
+        /* ************** */
+        /* PARAMS UPDATES */
+        /* ************** */
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;
         };
@@ -75,21 +89,29 @@ angular.module('evtviewer.interface')
             state.currentEdition = edition;
         };
 
+        // WITNESS
+        mainInterface.updateWitnessesPage = function(witness, pageId) {
+            state.currentWitsPages[witness] = pageId;
+        };
+        mainInterface.updateCurrentWitnesses = function(witIds) {
+            state.currentWits = witIds;
+        };
+        mainInterface.updateCurrentWitnessesPages = function(witPages) {
+            state.currentWitsPages = witPages;
+        };
         mainInterface.addWitness = function(newWit) {
             state.currentWits.unshift(newWit);
         };
-
         mainInterface.addWitnessAtIndex = function(newWit, index) {
             state.currentWits.splice(index, 0, newWit);
         };
-        
         mainInterface.removeWitness = function(wit) {
             var witIndex = state.currentWits.indexOf(wit);
             if (witIndex >= 0) {
                 state.currentWits.splice(witIndex, 1);
+                delete state.currentWitsPages[wit];
             }
         };
-
         mainInterface.switchWitnesses = function(oldWit, newWit) {
             // se il testimone che sto selezionando è già visualizzato 
             // lo scambio con il vecchio testimone
@@ -100,21 +122,15 @@ angular.module('evtviewer.interface')
             }
             state.currentWits[oldWitOldIndex] = newWit;
         };
-        mainInterface.updateWitnessesPage = function(witness, pageId) {
-            console.log('TODO updateWitnessesPage', witness, pageId);
-        };
-
-        mainInterface.updateCurrentWitnesses = function(witIds) {
-            state.currentWits = witIds;
-        };
-
+        
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,
                 pageId,
                 docId,
                 witnesses,
-                witIds = [];
+                witIds = [],
+                witPageIds = {};
 
             // VIEW MODE 
             if (params.viewMode !== undefined) {
@@ -153,8 +169,13 @@ angular.module('evtviewer.interface')
             if (params.ws !== undefined) {
                 witnesses = params.ws.split(',').filter(function(el) {return el.length !== 0;});
                 for (var w in witnesses) {
-                    if (parsedData.getWitness(witnesses[w]) !== undefined){
-                        witIds.push(witnesses[w]);
+                    var wit     = witnesses[w].split('@')[0],
+                        witPage = witnesses[w].split('@')[1];
+                    if (parsedData.getWitness(wit) !== undefined){
+                        witIds.push(wit);
+                        if (witPage !== undefined && parsedData.getPage(wit+'-'+witPage) !== undefined){
+                            witPageIds[wit] = witPage;
+                        }
                     }
                 }
             } else if (viewMode === 'critical'){
@@ -198,6 +219,9 @@ angular.module('evtviewer.interface')
                 mainInterface.updateCurrentWitnesses(witIds);
             }
 
+            if ( witPageIds !== {}) {
+                mainInterface.updateCurrentWitnessesPages(witPageIds);
+            }
             mainInterface.updateUrl();
         };
 
@@ -209,7 +233,23 @@ angular.module('evtviewer.interface')
                 searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
                 searchPath = state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
                 if (viewMode === 'critical') {
-                    searchPath += state.currentWits === undefined || state.currentWits.length === 0 ? '' : (searchPath === '' ? '' : '&')+'ws='+state.currentWits.toString();
+                    if (state.currentWits !== undefined && state.currentWits.length > 0) {
+                        if (searchPath !== '') {
+                          searchPath += '&';  
+                        }
+                        searchPath += 'ws=';
+                        for (var w in state.currentWits){
+                            var wit = state.currentWits[w],
+                                currentPage = mainInterface.getCurrentWitnessPage(wit);
+                            searchPath += wit;
+                            if (currentPage !== undefined){
+                                searchPath += '@'+currentPage;
+                            }
+                            if (w < state.currentWits.length-1) {
+                                searchPath += ',';
+                            }
+                        }
+                    }
                 }
                 //TODO: Witnesses pages
             if (viewMode !== undefined) {

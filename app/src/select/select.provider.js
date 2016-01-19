@@ -21,9 +21,9 @@ angular.module('evtviewer.select')
         // 
         
         select.build = function(scope, vm) {
-            var currentId   = scope.id      || idx++,
-                currentType = scope.type    || 'default',
-                initValue   = scope.initValue || undefined,
+            var currentId   = scope.id   || idx++,
+                currentType = scope.type || 'default',
+                initValue   = scope.init || undefined,
                 optionList  = [],
                 optionSelected,
                 optionSelectedValue,
@@ -151,10 +151,11 @@ angular.module('evtviewer.select')
                     break;                
                 case 'witness-page':
                     var witness = scope.$parent.vm.witness;
+                    optionSelectedValue = initValue;
                     callback = function(oldOption, newOption) {
                         if (newOption !== undefined) {
                             vm.selectOption(newOption);
-                            evtInterface.updateWitnessesPage(witness, newOption.value);
+                            evtInterface.updateWitnessesPage(witness, newOption.value.split('-')[1]);
                             evtInterface.updateUrl();
                         }
                     };

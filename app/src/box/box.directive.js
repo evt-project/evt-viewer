@@ -9,6 +9,7 @@ angular.module('evtviewer.box')
             type    : '@',
             subtype : '@',
             witness : '@',
+            witpage : '@',
             edition : '@'
         },
         templateUrl: 'src/box/box.dir.tmpl.html',
@@ -19,6 +20,7 @@ angular.module('evtviewer.box')
                 type    : scope.type,
                 subtype : scope.subtype,
                 witness : scope.witness,
+                witPage : scope.witpage,
                 edition : scope.edition
             };
 

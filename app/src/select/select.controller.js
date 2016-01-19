@@ -54,8 +54,7 @@ angular.module('evtviewer.select')
                     option = vm.formatOption(parsedData.getWitness(optionValue));
                     break;
                 case 'witness-page':
-                    //TODO
-                    option = vm.optionList[0];
+                    option = vm.formatOption(parsedData.getPage(optionValue));
                     break;
                 default:
                     option = vm.optionList[0];

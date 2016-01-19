@@ -68,6 +68,7 @@
                  ng-class="{'span9of18': getCurrentWitnesses().length <= 1}">
                 <box data-type="witness"
                      data-witness="{{witness}}"
+                     data-witpage="{{getCurrentWitnessPage(witness)}}"
                      ng-repeat="witness in getCurrentWitnesses()" ></box>
                 <button-switch 
                         title="Add Witness"

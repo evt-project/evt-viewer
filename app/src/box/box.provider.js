@@ -155,8 +155,9 @@ angular.module('evtviewer.box')
                     };
                     break;
                 case 'witness':
+                    var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness+'-'+vm.witPage : '';
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness});
-                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page'});
+                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page', initValue: witPageId});
                     topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
                     bottomMenuList.buttons.push({ title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp'});
                     bottomMenuList.buttons.push({ title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit'});

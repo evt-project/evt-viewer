@@ -23,6 +23,10 @@ angular.module('evtviewer.interface')
         return evtInterface.getCurrentWitnesses();
     };
     
+    $scope.getCurrentWitnessPage = function(wit) {
+        return evtInterface.getCurrentWitnessPage(wit);
+    };
+
     $scope.getAvailableViewModes = function(){
         return evtInterface.getAvailableViewModes();
     };

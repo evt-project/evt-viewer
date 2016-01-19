@@ -1,6 +1,6 @@
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function(evtSelect) {
+.directive('evtSelect', function(evtSelect, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -16,10 +16,10 @@ angular.module('evtviewer.select')
             var currentSelect = evtSelect.build(scope, scope.vm);
 
             if (currentSelect !== undefined) {
-                if (scope.init !== undefined) {
+                if (scope.init !== undefined && scope.init != '') {
                     currentSelect.selectOptionByValue(scope.init);
                 } else {
-                    currentSelect.selectOption(scope.vm.optionList[0]);
+                    currentSelect.callback(undefined, scope.vm.optionList[0]);
                 }
             }
 
