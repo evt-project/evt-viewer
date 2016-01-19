@@ -8,6 +8,10 @@ $buttonSwitch-shadow-color: rgba(0, 0, 0, 0.4);
 
 $buttonSwitch-active-background-color: #E3C89C;
 
+button-switch {
+    margin-right: 5px;
+}
+
 .buttonSwitch {
     height: 28px;
     min-width: 30px;

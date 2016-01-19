@@ -56,12 +56,20 @@
         class="box-menu" 
         data-position="bottom" >
         <button-switch 
+            title="{{button.title}}"
+            data-label="{{button.label}}"
+            data-icon="{{button.icon}}"
+            data-type="{{button.type}}"
+            ng-repeat="button in vm.bottomMenuList.buttons">
+        </button-switch>
+
+        <!-- <button-switch 
             title="Filters"
             data-label="Filters"
             data-icon='filters'
             data-type="filterReading"
             ng-if="vm.type=='witness'"
-            ng-click="vm.toggleFilterBox()">
+            ng-click="vm.toggleFilterBox()"> -->
         </button-switch>
     </div>
 </section>

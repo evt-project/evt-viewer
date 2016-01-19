@@ -19,6 +19,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'remove':
                 icon = 'fa-times';
                 break;
+            case 'search':
+                icon = 'fa-search';
+                break;
             case 'share':
                 icon = 'fa-share-alt';
                 break;
@@ -67,8 +70,19 @@ angular.module('evtviewer.buttonSwitch')
                     evtInterface.removeWitness(wit);
                     evtInterface.updateUrl();
                     break;
+                case 'searchInEdition':
+                    var edition = $scope.$parent.vm.edition;
+                    alert('Search in edition level '+edition+'. Coming Soon...');
+                    break;
+                case 'searchInWit':
+                    var wit = $scope.$parent.vm.witness;
+                    alert('Search in witness '+wit+'. Coming Soon...');
+                    break;
                 case 'share':
                     alert(window.location);
+                    break;
+                case 'toggleFilterApp':
+                    $scope.$parent.vm.toggleFilterBox();
                     break;
                 default:
                     break;

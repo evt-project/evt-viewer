@@ -105,8 +105,8 @@ angular.module('evtviewer.box')
                     buttons   : []
                 },
                 bottomMenuList = { 
-                    selectors      : [],
-                    buttonSwitches : []
+                    selectors : [],
+                    buttons   : []
                 },
                 content,
                 state      = {},
@@ -136,6 +136,8 @@ angular.module('evtviewer.box')
                     //TODO: Differentiate main text from second one
                     topMenuList.selectors.push({ id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() });
                     topMenuList.selectors.push({ id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition()});
+                    bottomMenuList.buttons.push({ title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
+
                     if (evtInterface.getCurrentViewMode() === 'critical') {
                         topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
                     }
@@ -156,6 +158,9 @@ angular.module('evtviewer.box')
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness});
                     topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page'});
                     topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
+                    bottomMenuList.buttons.push({ title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp'});
+                    bottomMenuList.buttons.push({ title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit'});
+
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
                     state.filterBox = false;
