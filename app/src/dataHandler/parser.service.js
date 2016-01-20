@@ -42,11 +42,11 @@ angular.module('evtviewer.dataHandler')
     // It will transform a generic XML element into an <span> element
     // with a data-* attribute for each @attribute of the XML element
     // It will also transform its children
-    parser.parseXMLElement = function(element){
+    parser.parseXMLElement = function(element) {
+        var newElement;
         if (element.nodeType === 3 ) { // Text
-            return element;
+            newElement = element;
         } else {
-            var newElement;
             newElement           = document.createElement('span');
             newElement.className = element.tagName;
             for (var i = 0; i < element.attributes.length; i++) {
@@ -54,17 +54,19 @@ angular.module('evtviewer.dataHandler')
                 if (attrib.specified) {
                     if (attrib.name !== 'xml:id') {
                         newElement.setAttribute('data-'+attrib.name, attrib.value);
-                        if (attrib.name !== 'wit') {
-                            parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
-                        }
                     }
                 }
             }
-            for (var j = 0; j < element.childNodes.length; j++) {
-                newElement.appendChild(parser.parseXMLElement(element.childNodes[j]));
+            if ( element.children.length > 0) {
+                for (var j = 0; j < element.childNodes.length; j++) {
+                    var childElement = element.childNodes[j].cloneNode(true);
+                    newElement.appendChild(parser.parseXMLElement(childElement));
+                }
+            } else {
+                newElement.innerHTML = element.innerHTML;
             }
-            return newElement;
         }
+        return newElement;
     };
 
     /* ********************* */

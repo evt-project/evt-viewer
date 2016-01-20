@@ -86,6 +86,13 @@ angular.module('evtviewer.box')
         }
 
 
+        function toggleInfoBox() {
+            var vm = this;
+            if (vm.state.infoBoxOpened !== undefined) {
+                vm.state.infoBoxOpened = !vm.state.infoBoxOpened;
+            }
+        }
+
         function toggleFilterBox() {
             var vm = this;
             if (vm.state.filterBox !== undefined) {
@@ -108,7 +115,10 @@ angular.module('evtviewer.box')
                     buttons   : []
                 },
                 content,
-                state      = {},
+                infoContent = '<span class="alert-msg">No info available</span>',
+                state      = {
+                    infoBoxOpened : false
+                },
                 appFilters = [],
                 updateContent;
 
@@ -158,6 +168,8 @@ angular.module('evtviewer.box')
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness});
                     topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page', initValue: witPageId});
                     topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
+                    topMenuList.buttons.push({ title: 'Info', label: '', icon: 'info', type: 'toggleInfoBox'});
+                    
                     bottomMenuList.buttons.push({ title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp'});
                     bottomMenuList.buttons.push({ title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit'});
 
@@ -166,6 +178,7 @@ angular.module('evtviewer.box')
                     state.filterBox = false;
                     updateContent = function(){
                         if ( vm.witness !== undefined ) {
+                            // Main content
                             newContent = parsedData.getWitnessText(vm.witness) || undefined;
                             if ( newContent === undefined ) {
                                 var documents  = parsedData.getDocuments(),
@@ -178,7 +191,7 @@ angular.module('evtviewer.box')
                                         newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
                                     }
                                     catch(err) {
-                                        newContent = '<span class="alert-error-msg">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+                                        newContent = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
                                     }
                                 }
                             }
@@ -188,6 +201,11 @@ angular.module('evtviewer.box')
                             } else {
                                 scope.vm.content = 'Text of witness '+vm.witness+' is not available.';
                             }
+
+                            // Info content
+                            var newInfoContent = parsedData.getWitness(vm.witness).name || scope.vm.infoContent;
+                            scope.vm.infoContent = newInfoContent;
+                            console.log('newInfoContent', newInfoContent);
                         }
                     };
                     break;
@@ -202,6 +220,7 @@ angular.module('evtviewer.box')
                 topMenuList             : topMenuList,
                 bottomMenuList          : bottomMenuList,
                 content                 : content,
+                infoContent             : infoContent,
                 state                   : state,
                 appFilters              : appFilters,
 
@@ -212,6 +231,7 @@ angular.module('evtviewer.box')
                 destroy                 : destroy,
                 toggleCriticalAppFilter : toggleCriticalAppFilter,
                 toggleFilterBox         : toggleFilterBox,
+                toggleInfoBox           : toggleInfoBox,
                 clearFilter             : clearFilter
             };
 

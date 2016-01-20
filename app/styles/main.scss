@@ -183,12 +183,16 @@ section > div{
 @import "reading.scss";
 
 // Temporary
-.alert-error-msg {
+.alert-msg {
     background: rgba(0,0,0,.1);
     display: block;
     font-size: 90%;
     text-align: center;
     padding: 10px;
+    &-error{
+        background: rgba(255,0,0,.1);
+    }
+
 }
 
 .globalMenu {
@@ -243,6 +247,14 @@ section > div{
 }
 
 // TEI Elements
+.bibl {
+    .editor {
+        font-style: italic;
+    }
+    .title {
+        font-weight: bold; 
+    }
+}
 .pb {
     display: block;
     text-align: center;
@@ -268,11 +280,112 @@ section > div{
 .lacunaStart, .lacunaEnd {
     display: none;
 }
+.msDesc {
+    ::before {
+        font-weight: bold;
+    }
 
+    .msIdentifier {
+        display: block;
+        margin-bottom: 8px;
+        &::before {
+            content: 'Ms Identifier';
+            font-size: 110%;
+            display: block;
+            font-variant: small-caps;
+        }
+        .settlement {
+            display: block;
+            &::before {
+                content: 'Settlement: ';
+            }
+        }
+        .repository {
+            display: block;
+            &::before {
+                content: 'Repository: ';
+            }
+        }
+        .idno{
+            display: block;
+            &::before {
+                content: 'IDNO: ';
+            }
+        }
+        .altIdentifier .idno::before {
+            content: 'Alternative IDNO: ';
+        }
+    }
+
+    .msContents {
+        .msItem {
+            .author { 
+                display: block;
+                &::before {
+                    content: 'Author: ';
+                }
+            }
+            .title {
+                display: block;
+                &::before {
+                    content: 'Title: ';
+                }
+            }
+        }
+    }
+
+    .physDesc {
+        display: block;
+        margin-top:8px;
+        &::before {
+            content: 'Physical Description';
+            font-size: 110%;
+            display: block;
+            font-variant: small-caps;
+        }
+    }
+
+    .history {
+        display: block;
+        margin-top:8px;
+        &::before {
+            content: 'History';
+            font-size: 110%;
+            display: block;
+            font-variant: small-caps;
+        }
+    }
+    .p {
+        display: block;
+        margin-bottom:5px;
+    }
+
+    .quote {
+        font-style: italic;
+        &::before {
+            content:'«';
+            font-weight: normal;
+        }
+        &::after {
+            content:'»';
+        }
+    }
+}
 .witnesses-lem, .variance-lem {
     font-weight: bold;
 }
 
 .witnesses-rdg, .variance-rdg {
     font-style: italic;
+}
+
+//TEI generic rend
+[data-rend="italic"] {
+    font-style: italic !important;
+}
+[data-rend="bold"] {
+    font-weight: bold !important;
+}
+[data-rend="underline"] {
+    text-decoration: underline !important;
 }

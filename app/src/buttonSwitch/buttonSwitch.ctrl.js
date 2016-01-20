@@ -16,6 +16,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'filters':
                 icon = 'fa-filter';
                 break;
+            case 'info':
+                icon = 'fa-info-circle';
+                break;
             case 'remove':
                 icon = 'fa-times';
                 break;
@@ -80,6 +83,9 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'share':
                     alert(window.location);
+                    break;
+                case 'toggleInfoBox':
+                    $scope.$parent.vm.toggleInfoBox();
                     break;
                 case 'toggleFilterApp':
                     $scope.$parent.vm.toggleFilterBox();

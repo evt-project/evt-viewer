@@ -7,7 +7,8 @@
     <span ng-transclude></span>
     <span 
         class="reading__apparatus" 
-        ng-class="{'active':vm.apparatusOpened }"
+        ng-class="{'active':vm.apparatusOpened , 
+                   'hidden':$parent.vm.state.infoBoxOpened}"
         ng-mouseover="vm.toggleTooltipHover($event, vm)"
         ng-mouseout="vm.toggleTooltipHover($event, vm)">
         <span class="reading__apparatus__before"></span>

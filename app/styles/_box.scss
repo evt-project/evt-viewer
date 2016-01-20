@@ -80,7 +80,9 @@
         .box-body {
         @include frameBody();
     }
-    .box-bottom-box {
+    
+    .box-top-box, .box-bottom-box{
+        background: #fff;
         text-align: left;
         font-size: 90%;
         margin-top: 42px;
@@ -88,13 +90,7 @@
         display: none;
         position: absolute;
         z-index: 10;
-        bottom: 0px;
-        right: 0px;
-        left: 0px;
         overflow: hidden;
-        background: #fff;
-        height: auto;
-        border-top: 1px solid;
         padding: 20px;
         box-shadow: 0px 0px 4px rgba(0,0,0,.5);
 
@@ -102,10 +98,34 @@
             display: block;
         }
     }
-
+    .box-top-box { 
+        background: rgba(236, 239, 241, 0.8);
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        @include calc(height, #{setInsideFrameHeight()});
+    }
+    .box-bottom-box{
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+        height: auto;
+        border-top: 1px solid;
+    }
     .filters-section-title {
         text-transform: uppercase;
         font-weight: bold;
+    }
+
+    // BODY
+    &.infoBoxOpened {
+        .box-body {
+            color: transparent;
+            text-shadow: 0 0 5px #000;
+            * {
+                background: transparent !important;
+            }
+        }
     }
 }
 

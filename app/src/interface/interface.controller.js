@@ -32,4 +32,21 @@ angular.module('evtviewer.interface')
     };
     
     _console.log('InterfaceCtrl running');
-});
+})
+
+//TODO: Move this directive in a proper file
+.directive('ref', [function () {
+    return {
+        restrict: 'C',
+        scope: {
+            target : '@'
+        },
+        template: '<a href="{{target}}" ng-transclude></a>',
+        replace: true,
+        transclude: true,
+        link: function (scope, iElement, iAttrs) {
+            // scope.href = scope.target;
+            console.log(scope);
+        }
+    };
+}]);

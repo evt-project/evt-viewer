@@ -29,13 +29,14 @@ angular.module('evtviewer.dataHandler')
                 list.content[subList.id] = subList;
                 list.content.length++;
             } 
-            else {
+            else if (child.tagName === 'witness'){
                 var witness = {
                     id          : child.getAttribute('xml:id'),
                     type        : 'witness',
-                    name        : child.innerHTML,
+                    name        : evtParser.parseXMLElement(child),
                     group       : list.id
                 };
+                console.log(witness.name);
                 list.content[list.content.length] = witness.id;
                 list.content[witness.id] = witness;
                 list.content.length++;
@@ -70,14 +71,14 @@ angular.module('evtviewer.dataHandler')
                             var witness = {
                                 id          : child.getAttribute('xml:id'),
                                 type        : 'witness',
-                                name        : child.innerHTML
+                                name        : evtParser.parseXMLElement(child)
                             };
                             parsedData.addWitnessInCollection(witness);
                         }
                     });
                 }
         });
-        // console.log('## Witnesses ##', parsedData.getWitnesses());
+        console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
     /* ********************* */
