@@ -86,10 +86,10 @@ angular.module('evtviewer.box')
         }
 
 
-        function toggleInfoBox() {
+        function toggleTopBox() {
             var vm = this;
-            if (vm.state.infoBoxOpened !== undefined) {
-                vm.state.infoBoxOpened = !vm.state.infoBoxOpened;
+            if (vm.state.topBoxOpened !== undefined) {
+                vm.state.topBoxOpened = !vm.state.topBoxOpened;
             }
         }
 
@@ -98,6 +98,11 @@ angular.module('evtviewer.box')
             if (vm.state.filterBox !== undefined) {
                 vm.state.filterBox = !vm.state.filterBox;
             }
+        }
+
+        function updateTopBoxContent(newContent) {
+            var vm = this;
+            vm.topBoxContent = newContent;
         }
         // 
         // Box builder
@@ -115,9 +120,9 @@ angular.module('evtviewer.box')
                     buttons   : []
                 },
                 content,
-                infoContent = '<span class="alert-msg">No info available</span>',
+                topBoxContent = '<span class="alert-msg">No info available</span>',
                 state      = {
-                    infoBoxOpened : false
+                    topBoxOpened : false
                 },
                 appFilters = [],
                 updateContent;
@@ -145,6 +150,7 @@ angular.module('evtviewer.box')
                     //TODO: Differentiate main text from second one
                     topMenuList.selectors.push({ id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() });
                     topMenuList.selectors.push({ id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition()});
+                    
                     bottomMenuList.buttons.push({ title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
 
                     if (evtInterface.getCurrentViewMode() === 'critical') {
@@ -167,9 +173,10 @@ angular.module('evtviewer.box')
                     var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness+'-'+vm.witPage : '';
                     topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness});
                     topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page', initValue: witPageId});
-                    topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
-                    topMenuList.buttons.push({ title: 'Info', label: '', icon: 'info', type: 'toggleInfoBox'});
                     
+                    topMenuList.buttons.push({ title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit'});
+                    topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
+
                     bottomMenuList.buttons.push({ title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp'});
                     bottomMenuList.buttons.push({ title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit'});
 
@@ -203,9 +210,8 @@ angular.module('evtviewer.box')
                             }
 
                             // Info content
-                            var newInfoContent = parsedData.getWitness(vm.witness).name || scope.vm.infoContent;
-                            scope.vm.infoContent = newInfoContent;
-                            console.log('newInfoContent', newInfoContent);
+                            // var newTopBoxContent = parsedData.getWitness(vm.witness).name || scope.vm.topBoxContent;
+                            // scope.vm.topBoxContent = newTopBoxContent;
                         }
                     };
                     break;
@@ -220,18 +226,19 @@ angular.module('evtviewer.box')
                 topMenuList             : topMenuList,
                 bottomMenuList          : bottomMenuList,
                 content                 : content,
-                infoContent             : infoContent,
+                topBoxContent           : topBoxContent,
                 state                   : state,
                 appFilters              : appFilters,
 
                 // function
                 updateContent           : updateContent,
+                updateTopBoxContent     : updateTopBoxContent,
                 updateState             : updateState,
                 getState                : getState,
                 destroy                 : destroy,
                 toggleCriticalAppFilter : toggleCriticalAppFilter,
                 toggleFilterBox         : toggleFilterBox,
-                toggleInfoBox           : toggleInfoBox,
+                toggleTopBox            : toggleTopBox,
                 clearFilter             : clearFilter
             };
 

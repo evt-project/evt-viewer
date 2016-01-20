@@ -84,8 +84,11 @@ angular.module('evtviewer.buttonSwitch')
                 case 'share':
                     alert(window.location);
                     break;
-                case 'toggleInfoBox':
-                    $scope.$parent.vm.toggleInfoBox();
+                case 'toggleInfoWit':
+                    var witness = parsedData.getWitness($scope.$parent.vm.witness);
+                    var newTopBoxContent = witness.name || $scope.$parent.vm.topBoxContent;
+                    $scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+                    $scope.$parent.vm.toggleTopBox();
                     break;
                 case 'toggleFilterApp':
                     $scope.$parent.vm.toggleFilterBox();

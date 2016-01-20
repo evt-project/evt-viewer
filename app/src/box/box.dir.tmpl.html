@@ -4,7 +4,7 @@
          ng-class="{'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
                     'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
                     'span6of18': vm.type === 'text' && vm.getTotElementsOfType('witness') > 1,
-                    'infoBoxOpened': vm.state.infoBoxOpened}">
+                    'topBoxOpened': vm.state.topBoxOpened}">
     <div class="box-menu" data-position="top">
         <evt-select 
             data-id="{{selector.id}}"
@@ -22,8 +22,8 @@
     </div>
     <div 
         class="box-top-box"
-        ng-class="{'open': vm.state.infoBoxOpened}"
-        compile="vm.infoContent">
+        ng-class="{'open': vm.state.topBoxOpened}"
+        compile="vm.topBoxContent">
     </div>
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->

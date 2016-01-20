@@ -100,6 +100,7 @@
     }
     .box-top-box { 
         background: rgba(236, 239, 241, 0.8);
+        overflow: auto;
         top: 0px;
         right: 0px;
         left: 0px;
@@ -118,7 +119,7 @@
     }
 
     // BODY
-    &.infoBoxOpened {
+    &.topBoxOpened {
         .box-body {
             color: transparent;
             text-shadow: 0 0 5px #000;

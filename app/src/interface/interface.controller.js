@@ -46,7 +46,6 @@ angular.module('evtviewer.interface')
         transclude: true,
         link: function (scope, iElement, iAttrs) {
             // scope.href = scope.target;
-            console.log(scope);
         }
     };
 }]);
