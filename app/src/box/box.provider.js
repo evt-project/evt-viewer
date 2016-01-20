@@ -174,7 +174,12 @@ angular.module('evtviewer.box')
                                     currentDoc = documents[documents[0]];
                                 }
                                 if (currentDoc !== undefined) {
-                                    newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
+                                    try {
+                                        newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
+                                    }
+                                    catch(err) {
+                                        newContent = '<span class="alert-error-msg">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+                                    }
                                 }
                             }
                             

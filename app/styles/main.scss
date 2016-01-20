@@ -183,6 +183,14 @@ section > div{
 @import "reading.scss";
 
 // Temporary
+.alert-error-msg {
+    background: rgba(0,0,0,.1);
+    display: block;
+    font-size: 90%;
+    text-align: center;
+    padding: 10px;
+}
+
 .globalMenu {
     width: auto;
     display: inline-block;

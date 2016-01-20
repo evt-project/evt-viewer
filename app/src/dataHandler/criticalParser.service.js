@@ -378,20 +378,23 @@ angular.module('evtviewer.dataHandler')
         }
         if (startLacunasWit.length === endLacunasWit.length) {
             for(var k = startLacunasWit.length-1; k >= 0; k--) {
-                var appStart = startLacunasWit[k].parentNode.parentNode;
-                var appEnd   = endLacunasWit[k].parentNode.parentNode;
+                // if (startLacunasWit[k].parentNode !== null && endLacunasWit[k].parentNode !== null) {
+                    var appStart = startLacunasWit[k].parentNode.parentNode;
+                    var appEnd   = endLacunasWit[k].parentNode.parentNode;
 
-                var newElement = document.createElement('span');
-                newElement.setAttribute('data-wit', witObj.id);
+                    var newElement = document.createElement('span');
+                    newElement.setAttribute('data-wit', witObj.id);
 
-                newElement.className = 'lacunaStart';
-                startLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), startLacunasWit[k]);
-                newElement.className = 'lacunaEnd';
-                endLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), endLacunasWit[k]);
-                
-                var match = '<evt-reading.*data-app-id.*'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
-                var sRegExInput = new RegExp(match, 'ig'); 
-                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, appStart.outerHTML+'<span class="lacuna">[LACUNA] </span>'+appEnd.outerHTML));
+                    newElement.className = 'lacunaEnd';
+                    endLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), endLacunasWit[k]);
+
+                    newElement.className = 'lacunaStart';
+                    startLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), startLacunasWit[k]);
+                    
+                    var match = '<evt-reading.*data-app-id.*'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
+                    var sRegExInput = new RegExp(match, 'ig'); 
+                    docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, appStart.outerHTML+'<span class="lacuna">[LACUNA] </span>'+appEnd.outerHTML));
+                // }
             }
         }
     };
@@ -502,8 +505,10 @@ angular.module('evtviewer.dataHandler')
                 j--;
             }
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
+
             //parse lacunas
             parser.parseWintessLacunas(docDOM, witObj);
+
             //parse <pb>
             parser.parseWintessPageBreaks(docDOM, witObj);
             //parse lines
@@ -512,7 +517,6 @@ angular.module('evtviewer.dataHandler')
             evtParser.parseNote(docDOM);
             
             docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
-            
             if (isFragmentaryWitness(docDOM, witObj)) {
                 var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, witObj);
                 witnessText = evtParser.balanceXHTML(fragmentaryText);

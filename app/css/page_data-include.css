@@ -71,23 +71,23 @@ BLOCKQUOTE.sans {font-family: Verdana, sans-serif; margin-left: 1cm; text-align:
 BLOCKQUOTE.mono {font-family: "Courier New", sans-serif; margin-left: 1cm; text-align:
  justify}
 SUP {font-size: 80%}
-DIV.left {text-align: left}
-DIV.right {text-align: right}
-DIV.center {text-align: center}
+div.left {text-align: left}
+div.right {text-align: right}
+div.center {text-align: center}
 DT {margin-left: 0.5cm; margin-right: 0.5cm; text-indent: 0.5cm; text-align:
  left}
 DD {margin-left: 1.0cm; margin-right: 0.5cm; text-align: justify}
 UL {margin-left: 0.5cm}
 HR.fat {size: 5; width: 80%; align: center}
 TR {valign: top}*/
-/*SPAN.abbr {color: purple}*/
+/*span.abbr {color: purple}*/
 
 /**EDIZIONE DIPLOMATICA**/
-DIV.facs-zone{
+div.facs-zone{
     margin-bottom: 5px; 
 }
 
-DIV.facs-center, SPAN.facs-center {
+div.facs-center, span.facs-center {
 	/*margin-left: 0.5cm;
 	margin-right: 0.5cm;
 	text-indent: 0.5cm;
@@ -100,7 +100,7 @@ DIV.facs-center, SPAN.facs-center {
     background:#FFF;
 }
 
-DIV.facs-right, SPAN.facs-right {
+div.facs-right, span.facs-right {
 	/*margin-left: 0.5cm;
 	margin-right: 0.5cm;
 	text-indent: 0.5cm;
@@ -113,45 +113,45 @@ DIV.facs-right, SPAN.facs-right {
     background:#FFF;
 }
 
-DIV.facs-left{
+div.facs-left{
     width: 92%;
     display: inline-table;
 }
 
-DIV.facs-attachment{
+div.facs-attachment{
     border: 1px solid black;
     padding: 5px 0px 0px 10px;
 }
 
-SPAN.facs-lineN {
+span.facs-lineN {
 	color: grey;
 	font-size: 0.8em; 
 	}
 
-SPAN.facs-subst { 
+span.facs-subst { 
 	text-decoration: underline; 
 }
 
-SPAN.facs-del {
+span.facs-del {
 	background-color: red;
 	text-decoration: line-through; 
 }
 
-SPAN.facs-add { 
+span.facs-add { 
 	background-color: rgba(0,128,0, 0.8); 
 }
 
-SPAN.facs-orig SPAN.facs-sup {
+span.facs-orig span.facs-sup {
     line-height: 20px;
 	vertical-align: 20%; 
 }
 
-SPAN.facs-orig SPAN.facs-under {
+span.facs-orig span.facs-under {
     line-height: 20px;
 	vertical-align: -20%; 
 }
 
-SPAN.facs-damage { 
+span.facs-damage { 
 	background-color: rgba(193,193,193, 0.7); 
 }
 
@@ -190,7 +190,6 @@ span.facs-choice_popup.hover span.facs-reg {
 }
 
 span.facs-choice_popup span.facs-orig { 
-	#color: #999966;
 	color: #69513a; /*background-color: rgba(255,255,204,0.8);*/ 
 }
 
@@ -200,39 +199,39 @@ span.facs-choice_popup.hover span.facs-orig {
 	text-decoration: underline; 
 }
 
-/*SPAN.expan {font-style: italic}
-SPAN.n {color: gray}*/
-SPAN.facs-red { 
+/*span.expan {font-style: italic}
+span.n {color: gray}*/
+span.facs-red { 
 	color: red; 
 }
 
-SPAN.facs-hi-7init {
+span.facs-hi-7init {
 	font-size: 200%;
 	font-weight: bold; 
 }
 
-SPAN.facs-hi-init3_1 {
+span.facs-hi-init3_1 {
 	font-size: 180%;
 	font-weight: bold; 
 }
 
-SPAN.facs-hi-cap { 
+span.facs-hi-cap { 
 	text-transform: uppercase; 
 }
 
-SPAN.facs-hi-double { 
+span.facs-hi-double { 
 	font-size: 120%; 
 }
 
 
 /**EDIZIONE INTERPRETATIVA**/
 
-DIV.dipl-zone{
+div.dipl-zone{
     margin-bottom: 5px; 
 }
 
 
-DIV.dipl-center, SPAN.dipl-center {
+div.dipl-center, span.dipl-center {
 	/*margin-left: 0.5cm;
 	margin-right: 0.5cm;
 	text-indent: 0.5cm;
@@ -246,7 +245,7 @@ DIV.dipl-center, SPAN.dipl-center {
     background:#FFF;
 }
 
-DIV.dipl-right, SPAN.dipl-right {
+div.dipl-right, span.dipl-right {
 	/*margin-left: 0.5cm;
 	margin-right: 0.5cm;
 	text-indent: 0.5cm;
@@ -260,22 +259,22 @@ DIV.dipl-right, SPAN.dipl-right {
     background:#FFF; 
 }
 
-DIV.dipl-left, SPAN.dipl-left{
+div.dipl-left, span.dipl-left{
     width: 92%;
     display: inline-table;
 }
 
-DIV.dipl-attachment{
+div.dipl-attachment{
     border: 1px solid black;
     padding: 5px 0px 0px 10px;
 }
 
-SPAN.dipl-lineN {
-	color: grey;
+span.dipl-lineN {
+	color: #ccc;
 	font-size: 0.8em; 
 }
 
-SPAN.dipl-ex { 
+span.dipl-ex { 
 	font-style: italic; 
 }
 
@@ -349,41 +348,41 @@ span.dipl-choice_popup span.dipl-reg.hover, span.dipl-choice_popup_corr span.dip
 	color: #561c0a; /*background-color: rgba(255,255,204,0.8);*/ 
 }
 
-span.dipl-choice_popup SPAN.dipl-sup {
+span.dipl-choice_popup span.dipl-sup {
     line-height: 20px;
 	vertical-align: 20%; 
 }
 
-span.dipl-choice_popup SPAN.dipl-under {
+span.dipl-choice_popup span.dipl-under {
     line-height: 20px;
 	vertical-align: -20%; 
 }
 
-SPAN.dipl-corr-resp { 
+span.dipl-corr-resp { 
 	font-weight: bold; 
 }
 
-SPAN.dipl-red { 
+span.dipl-red { 
 	color: red; 
 }
 
-SPAN.dipl-hi-7init { f
-	ont-size: 140% 
+span.dipl-hi-7init { f
+	font-size: 140% 
 }
 
-SPAN.dipl-hi-init3_1 { 
+span.dipl-hi-init3_1 { 
 	font-size: 120%; /*font-weight: bold;*/ 
 }
 
-SPAN.dipl-hi-cap { 
+span.dipl-hi-cap { 
 	text-transform: uppercase; 
 }
 
-SPAN.dipl-hi-double { 
+span.dipl-hi-double { 
 	font-size: 120%; 
 }
 
-SPAN.dipl-ex { 
+span.dipl-ex { 
 	font-style: italic; 
 }
 

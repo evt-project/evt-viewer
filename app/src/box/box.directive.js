@@ -63,7 +63,7 @@ angular.module('evtviewer.box')
                 });
 
                 // Scrolling evt
-                angular.element(boxBody).bind('DOMMouseScroll', function(e) {
+                angular.element(boxBody).bind('DOMMouseScroll mousewheel', function(e) {
                     var i       = 0,
                         visible = false,
                         id      = '',
