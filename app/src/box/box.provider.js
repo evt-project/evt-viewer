@@ -74,15 +74,12 @@ angular.module('evtviewer.box')
             }
             
             filters[filter].any = (filters[filter].totActive === 0);
-            
-            // _console.log('# toggleCriticalAppFilter ', vm.state.filters);
         }
 
         function clearFilter(filter){
             var vm = this;
             vm.state.filters[filter].values    = { length: 0 };
             vm.state.filters[filter].totActive = 0;
-            // _console.log('# toggleCriticalAppFilter ', filter);
         }
 
 
@@ -104,10 +101,10 @@ angular.module('evtviewer.box')
             var vm = this;
             vm.topBoxContent = newContent;
         }
+        
         // 
         // Box builder
         // 
-
         box.build = function(scope, vm) {
             var currentId   = vm.id || idx++,
                 currentType = vm.type || 'default',

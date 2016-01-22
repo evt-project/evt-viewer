@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover) {
+.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalFormatter) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -18,33 +18,31 @@ angular.module('evtviewer.reading')
     };
 
     this.setSelected = function() {
-        // _console.log('# setSelected #');
         vm.active = true;
     };
 
     this.unselect = function() {
-        // _console.log('# unselect #');
         vm.active = false;
     };
 
+    this.isApparatusOpened = function() {
+        return (vm.apparatusOpened && !$scope.$parent.vm.state.topBoxOpened);
+    };
+
     this.closeApparatus = function() {
-        // _console.log('# closeApparatus #');
         vm.apparatusOpened = false;
     };
 
     this.openApparatus = function() {
-        // _console.log('# openApparatus #');
         vm.apparatusOpened = true;
     };
 
     
     this.toggleTooltipOver = function() {
-        // _console.log('# toggleTooltipOver #');
         vm.tooltipOver = !vm.tooltipOver;
     };
 
     this.toggleOverAppEntries = function($event) {
-        // _console.log('# toggleOverAppEntries #');
         $event.stopPropagation();
         if ( !vm.hidden ) {
             if (vm.over === false) {
@@ -56,7 +54,6 @@ angular.module('evtviewer.reading')
     };
 
     this.toggleSelectAppEntries = function($event) {
-        // _console.log('# toggleSelectAppEntries #');
         $event.stopPropagation();
         if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
@@ -69,117 +66,7 @@ angular.module('evtviewer.reading')
         }
     };
 
-    var formatCriticalEntry = function(entry) {
-        // console.log('formatCriticalEntry', entry);
-        var appText  = '',
-            readings = entry.readings,
-            content  = '',
-            i        = 0;
-        // se entry e' un raggruppamento di letture (<app> o <rdgGrp>), avra' delle letture
-        if (readings !== undefined) {
-            // ciclo le letture per ottenere la stampa del testo con sigla testimone
-            for (i = 0; i < readings.length; i++) {
-                var reading    = readings[readings[i]],
-                    text       = '',
-                    witnesses  = '',
-                    attributes = '';
-
-                if (readings.__elemTypes[readings[i]] === 'lem' || readings.__elemTypes[readings[i]] === 'rdg') { //lem o rdg
-                    // recupero il contenuto
-                    content = reading.content || [];
-                    for (var j = 0; j < content.length; j++) {
-                        if (typeof content[j] === 'object') { //annidamento
-                            text += '{'+formatCriticalEntry(content[j])+'} ';
-                        } else {
-                            text += content[j];
-                        }
-                    }
-                } else if (readings.__elemTypes[readings[i]] === 'rdgGrp' || readings.__elemTypes[readings[i]] === 'app') { //rdgGrp o app
-                    text += '{'+formatCriticalEntry(reading)+'} ';
-                }
-                if (text === '') {
-                    text = '<i>omit.</i>';
-                }
-                text = text.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna in </i>');
-                text = text.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna in </i>');
-                // recupero i testimoni e gli altri attributi
-                if (reading.attributes !== undefined) {
-                    for (var key in reading.attributes) {
-                        if (key === 'wit') {
-                            var wits = reading.attributes[key].split('#').filter(function(el) {return el.length !== 0;});
-                            for(var s = 0; s < wits.length; s++ ){
-                                var sigla = wits[s].replace(' ', '');
-                                if (parsedData.isWitnessesGroup(sigla)) {
-                                    var witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
-                                    if (witnessesInGroup.length > 0) {
-                                        for(var w = 0; w < witnessesInGroup.length; w++ ){
-                                            // witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+witnessesInGroup[w]+'\');">'+witnessesInGroup[w]+'</span>';    
-                                            witnesses += '<evt-witness-ref witness="'+witnessesInGroup[w]+'"/>';
-                                        }
-                                    } else {
-                                        // witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+sigla+'\');">'+sigla+'</span>';
-                                        witnesses += '<evt-witness-ref witness="'+sigla+'"/>';    
-                                    }
-                                } else {
-                                    // witnesses += '<span class="wit" onclick="console.log(\'TODO: openWit '+sigla+'\');">'+sigla+'</span>';
-                                    witnesses += '<evt-witness-ref witness="'+sigla+'"/>';
-                                }
-                            }
-                        } else {
-                            attributes += '<span class="'+key+'">'+reading.attributes[key]+'</span>';
-                        }
-                    }
-                }
-                if (attributes !== '') {
-                    attributes = '<span class="attributes">'+attributes+'</span>';
-                }
-                if (witnesses !== '') {
-                    witnesses = '<span class="witnesses witnesses-'+readings.__elemTypes[readings[i]]+'">'+witnesses+'</span>';
-                }
-                appText += text + witnesses + attributes;
-                if (readings.__elemTypes[readings[i]] === 'lem') {
-                    appText = '<span class="variance variance-lem">'+appText+' ]</span> ';        
-                } else {
-                    appText += '; ';
-                }
-            }
-            appText = appText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-            var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
-            if (fragmentsStarts !== null) {
-                for (var i = 0; i < fragmentsStarts.length; i++) {
-                    var matched = fragmentsStarts[i];
-                    var wit = matched.match(/"#.*"/g);
-                    if (wit !== null) {
-                        wit = ' of '+wit[0].replace(/["#]/g, '');
-                    } else {
-                        wit = '';
-                    }
-                    var sRegExInput = new RegExp(matched, 'ig'); 
-                    appText = appText.replace(sRegExInput, '<i> [beginning of fragment'+wit+'] </i>');
-                    // text = text.replace(fragmentsStarts[i], )
-                }
-            }
-
-            var fragmentsEnds = appText.match(/<witEnd(.|[\r\n])*?\/>/ig);
-            if (fragmentsEnds !== null) {
-                for (var i = 0; i < fragmentsEnds.length; i++) {
-                    var matched = fragmentsEnds[i];
-                    var wit = matched.match(/"#.*"/g);
-                    if (wit !== null) {
-                        wit = ' of '+wit[0].replace(/["#]/g, '');
-                    } else {
-                        wit = '';
-                    }
-                    var sRegExInput = new RegExp(matched, 'ig'); 
-                    appText = appText.replace(sRegExInput, '<i> [end of fragment'+wit+'] </i>');
-                }
-            }
-        } 
-        return appText.trim().slice(0, -1);
-    };
-
-    this.toggleApparatus = function($event){
-        // _console.log('# toggleApparatus #');
+    this.toggleApparatus = function($event) {
         $event.stopPropagation();
         evtPopover.closeAll();
         if ( !vm.hidden ) {
@@ -187,7 +74,7 @@ angular.module('evtviewer.reading')
                 if ( vm.apparatusContent === '') {
                     var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
                     if (criticalEntry !== undefined) {
-                        vm.apparatusContent = formatCriticalEntry(criticalEntry);
+                        vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry);
                     }
                     if (criticalEntry.note !== '') {
                         vm.apparatusContent += '<br /><p>'+criticalEntry.note+'</p>';

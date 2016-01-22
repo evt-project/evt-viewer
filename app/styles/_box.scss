@@ -121,7 +121,7 @@
     // BODY
     &.topBoxOpened {
         .box-body {
-            color: transparent;
+            color: transparent !important;
             text-shadow: 0 0 5px #000;
             * {
                 background: transparent !important;

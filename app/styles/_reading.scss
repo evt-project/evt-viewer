@@ -11,7 +11,7 @@
 
         &.active, &.over,
         &.active .reading, &.over .reading{
-            background: #FF6C3F;
+            background: #FF6C3F !important;
         }
         .reading__apparatus {
             display: none;
@@ -40,6 +40,7 @@
             }
             &.hidden {
                 opacity:0;
+                background: transparent !important;
             }
             .reading__apparatus__before{
                 position:absolute;
