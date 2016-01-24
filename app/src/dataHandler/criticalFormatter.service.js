@@ -23,13 +23,13 @@ angular.module('evtviewer.dataHandler')
                     content = reading.content || [];
                     for (var j = 0; j < content.length; j++) {
                         if (typeof content[j] === 'object') { //annidamento
-                            text += '{'+format.formatCriticalEntry(content[j])+'} ';
+                            text += '{'+formatter.formatCriticalEntry(content[j])+'} ';
                         } else {
                             text += content[j];
                         }
                     }
                 } else if (readings.__elemTypes[readings[i]] === 'rdgGrp' || readings.__elemTypes[readings[i]] === 'app') { //rdgGrp o app
-                    text += '{'+format.formatCriticalEntry(reading)+'} ';
+                    text += '{'+formatter.formatCriticalEntry(reading)+'} ';
                 }
                 if (text === '') {
                     text = '<i>omit.</i>';

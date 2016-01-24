@@ -100,6 +100,11 @@ angular.module('evtviewer.buttonSwitch')
     };
 
     if ($scope.type === 'addWit') {
+        if (evtInterface.getCurrentWitnesses().length === parsedData.getWitnessesList().length) {
+            $scope.disabled = true;
+            $scope.title = 'No more witnesses available';
+        }
+
         $scope.$watch(function() {
             return evtInterface.getCurrentWitnesses();
         }, function(newItem, oldItem) {

@@ -31,6 +31,10 @@ angular.module('evtviewer.interface')
         return evtInterface.getAvailableViewModes();
     };
     
+    $scope.existCriticalText = function(){
+        return evtInterface.existCriticalText();
+    }
+
     _console.log('InterfaceCtrl running');
 })
 

@@ -1,9 +1,10 @@
 <section class="box box-{{vm.type}}" 
          id="{{vm.uid}}"
          data-position="left"
-         ng-class="{'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
-                    'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
-                    'span6of18': vm.type === 'text' && vm.getTotElementsOfType('witness') > 1,
+         data-getTotElementsOfType="{{vm.getTotElementsOfType('witness')}}"
+         ng-class="{'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
+                    'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
+                    'span6of18': (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 3) || (vm.type === 'text' && vm.getTotElementsOfType('witness') > 1),
                     'topBoxOpened': vm.state.topBoxOpened}">
     <div class="box-menu" data-position="top">
         <evt-select 

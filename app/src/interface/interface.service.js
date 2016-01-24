@@ -2,7 +2,6 @@ angular.module('evtviewer.interface')
 
 .service('evtInterface', function(evtCommunication, config, $routeParams, parsedData) {    
     var mainInterface = {};
-        console.log('# INTERFACE #');
         var state = {
             currentViewMode  : undefined,
             currentDoc       : undefined,
@@ -70,6 +69,9 @@ angular.module('evtviewer.interface')
             return state.currentWitsPages[wit];
         };
 
+        mainInterface.existCriticalText = function(){
+            return parsedData.getCriticalText(state.currentDoc) !== undefined;
+        }
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */
@@ -100,7 +102,14 @@ angular.module('evtviewer.interface')
             state.currentWitsPages = witPages;
         };
         mainInterface.addWitness = function(newWit) {
-            state.currentWits.unshift(newWit);
+            //TODO: Decide where to add the new witness: either before or after the others
+            // if (mainInterface.existCriticalText()) {
+            //     state.currentWits.unshift(newWit);
+            // } else {
+                state.currentWits.push(newWit);
+            // }
+
+            //TODO: Add scroll to new box added
         };
         mainInterface.addWitnessAtIndex = function(newWit, index) {
             state.currentWits.splice(index, 0, newWit);

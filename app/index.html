@@ -63,22 +63,25 @@
         <section id="main-container" class="viewMode" ng-switch-when="critical">
             <box data-type="text"
                  data-edition="{{getCurrentEdition()}}"
-                 id="mainText"></box>
+                 id="mainText"
+                 ng-show="existCriticalText()"></box>
             <div class="compareWits_box"
-                 ng-class="{'span9of18': getCurrentWitnesses().length <= 1}">
+                 ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
+                            'span18of18': !existCriticalText()}">
                 <box data-type="witness"
                      data-witness="{{witness}}"
                      data-witpage="{{getCurrentWitnessPage(witness)}}"
                      ng-repeat="witness in getCurrentWitnesses()" ></box>
-                <button-switch 
-                        title="Add Witness"
-                        data-label="Add Witness"
-                        data-icon="add"
-                        data-type="addWit"
-                        ng-if="getCurrentWitnesses().length == 0"
-                        class="compareWits_box--buttonAddWit">
-                </button-switch>
             </div>
+            <button-switch 
+                    title="Add Witness"
+                    data-label="Add Witness"
+                    data-icon="add"
+                    data-type="addWit"
+                    class="compareWits_box--buttonAddWit inverted-color"
+                    ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0),
+                                'floatRight': (!existCriticalText() && getCurrentWitnesses().length > 1) || (existCriticalText() && getCurrentWitnesses().length > 0)}">
+            </button-switch>
         </section>       
 
         <!-- TXT TXT -->

@@ -657,35 +657,41 @@ angular.module('evtviewer.dataHandler')
         var criticalText;
         if ( doc !== undefined ) {
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
-                apps   = docDOM.getElementsByTagName('app'),
-                j      = apps.length-1, 
-                count  = 0;
+                lemmas = docDOM.getElementsByTagName('lem');
             
-            while(j < apps.length && j >= 0) {
-                var appNode = apps[j];
-                if (!evtParser.isNestedInElem(appNode, 'app')) {
-                    // var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-                    var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
-                        spanElement = document.createElement('evt-reading');
-                    spanElement.setAttribute('data-app-id', id);
-                    parseCriticalTextApp(appNode, spanElement);
-                    appNode.parentNode.replaceChild(spanElement, appNode);
-                    count++;
+            if (lemmas.length > 0) {
+                var apps   = docDOM.getElementsByTagName('app'),
+                    j      = apps.length-1, 
+                    count  = 0;
+            
+                while(j < apps.length && j >= 0) {
+                    var appNode = apps[j];
+                    if (!evtParser.isNestedInElem(appNode, 'app')) {
+                        // var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
+                        var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
+                            spanElement = document.createElement('evt-reading');
+                        spanElement.setAttribute('data-app-id', id);
+                        parseCriticalTextApp(appNode, spanElement);
+                        appNode.parentNode.replaceChild(spanElement, appNode);
+                        count++;
+                    }
+                    j--;
                 }
-                j--;
-            }
-            //remove <pb>
-            var pbs = docDOM.getElementsByTagName('pb'),
-                k   = 0;
-            while ( k < pbs.length) {
-                var pbNode = pbs[k];
-                    pbNode.parentNode.removeChild(pbNode);
-            }
-            //parse lines
-            evtParser.parseLines(docDOM);
-            
-            evtParser.parseNote(docDOM);
-            criticalText = docDOM;
+                //remove <pb>
+                var pbs = docDOM.getElementsByTagName('pb'),
+                    k   = 0;
+                while ( k < pbs.length) {
+                    var pbNode = pbs[k];
+                        pbNode.parentNode.removeChild(pbNode);
+                }
+                //parse lines
+                evtParser.parseLines(docDOM);
+                
+                evtParser.parseNote(docDOM);
+                criticalText = docDOM;
+            } else {
+                criticalText = undefined;
+            }   
         } else {
             criticalText = '<span>Text not available.</span>';
         }

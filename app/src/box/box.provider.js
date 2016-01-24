@@ -134,8 +134,10 @@ angular.module('evtviewer.box')
             var newContent;
             switch (currentType) {
                 case 'image':
-                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
-                    topMenuList.buttons.push({ title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
+                    topMenuList.selectors.push({id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
+                    
+                    topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
+
                     updateContent = function(){
                         var currentPage = evtInterface.getCurrentPage(),
                             pageFacs    = parsedData.getPage(evtInterface.getCurrentPage()).facs || '',
@@ -145,14 +147,14 @@ angular.module('evtviewer.box')
                     break;
                 case 'text':
                     //TODO: Differentiate main text from second one
-                    topMenuList.selectors.push({ id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() });
-                    topMenuList.selectors.push({ id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition()});
+                    topMenuList.selectors.push({id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() },
+                                               {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     
-                    bottomMenuList.buttons.push({ title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
+                    bottomMenuList.buttons.push({title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
 
-                    if (evtInterface.getCurrentViewMode() === 'critical') {
-                        topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
-                    }
+                    // if (evtInterface.getCurrentViewMode() === 'critical') {
+                    //     topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
+                    // }
                     state.docId   = evtInterface.getCurrentDocument();
                     updateContent = function(){
                         var newContent; 
@@ -168,14 +170,14 @@ angular.module('evtviewer.box')
                     break;
                 case 'witness':
                     var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness+'-'+vm.witPage : '';
-                    topMenuList.selectors.push({ id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness});
-                    topMenuList.selectors.push({ id:'page_'+currentId, type: 'witness-page', initValue: witPageId});
+                    topMenuList.selectors.push({id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness },
+                                               {id:'page_'+currentId, type: 'witness-page', initValue: witPageId });
                     
-                    topMenuList.buttons.push({ title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit'});
-                    topMenuList.buttons.push({ title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit'});
+                    topMenuList.buttons.push({title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit' },
+                                             {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
 
-                    bottomMenuList.buttons.push({ title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp'});
-                    bottomMenuList.buttons.push({ title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit'});
+                    bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp' },
+                                                {title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit' });
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {};
@@ -205,10 +207,6 @@ angular.module('evtviewer.box')
                             } else {
                                 scope.vm.content = 'Text of witness '+vm.witness+' is not available.';
                             }
-
-                            // Info content
-                            // var newTopBoxContent = parsedData.getWitness(vm.witness).name || scope.vm.topBoxContent;
-                            // scope.vm.topBoxContent = newTopBoxContent;
                         }
                     };
                     break;
@@ -252,7 +250,6 @@ angular.module('evtviewer.box')
         //
         // Service function
         // 
-
         box.getById = function(currentId) {
             if (collection[currentId] !== 'undefined') {
                 return collection[currentId];

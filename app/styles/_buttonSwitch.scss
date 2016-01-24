@@ -10,54 +10,62 @@ $buttonSwitch-active-background-color: #E3C89C;
 
 button-switch {
     margin-right: 5px;
-}
 
-.buttonSwitch {
-    height: 28px;
-    min-width: 30px;
-    width: auto;
+    .buttonSwitch {
+        height: 28px;
+        min-width: 30px;
+        width: auto;
 
-    position: relative;
-    display: inline-block;
-    overflow: visible;
-    left: 0px;
+        position: relative;
+        display: inline-block;
+        overflow: visible;
+        left: 0px;
 
-    background: $buttonSwitch-background-color;
-    color: $buttonSwitch-color;
-    font-size: 1em;
-    text-align: left;
-    
-    box-shadow: 0px 2px 4px $buttonSwitch-shadow-color;
-    border-radius: 2px;
+        font-size: 1em;
+        text-align: left;
+        
+        background: $buttonSwitch-background-color;
+        color: $buttonSwitch-color;
 
-    &:hover{
-        box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
-        text-shadow: none !important;
-        cursor: pointer;
-    }
+        box-shadow: 0px 2px 4px $buttonSwitch-shadow-color;
+        border-radius: 2px;
 
-    &-active{
-        background: $buttonSwitch-active-background-color;
-    }
-    &-disabled{
-        opacity: .5;
-        cursor: default !important;
         &:hover{
-            box-shadow: none !important;
+            box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
             text-shadow: none !important;
+            cursor: pointer;
+        }
+
+        &-active{
+            background: $buttonSwitch-active-background-color;
+        }
+        &-disabled{
+            opacity: .5;
+            cursor: default !important;
+            &:hover{
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+        }
+
+        &-label {
+            margin: 0px 4px;
+            top: 3.5px;
+            position: relative;
+        }
+
+        &-icon {
+            margin-right: 4px;
+            position: relative;
+            right: 0px;
+            top: 4px;
         }
     }
 
-    &-label {
-        margin: 0px 4px;
-        top: 3.5px;
-        position: relative;
-    }
-
-    &-icon {
-        margin-right: 4px;
-        position: relative;
-        right: 0px;
-        top: 4px;
+    &.inverted-color {
+        .buttonSwitch {
+            color: $buttonSwitch-background-color;
+            background: $buttonSwitch-color;
+        }
     }
 }

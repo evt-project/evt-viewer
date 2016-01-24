@@ -13,7 +13,7 @@ $large:(
 	columns: 18,
 	container-position: center,
 	global-box-sizing: content-box,
-	gutter-position: after,
+	gutter-position: inside,
     gutters:.03,
 	debug:(image:show)
 	);
@@ -129,7 +129,7 @@ body{
 	font-size: $base-fontSize;
 	height:100%;
 	width:100%;
-
+    min-width: 800px;
 	> header, 
 	> footer, 
 	> section {
@@ -149,8 +149,8 @@ footer{
 }
 
 #global-container{
-	@include calc(height, #{setGlobalFrameHeight()});
-	padding:1px;
+	@include calc(height, #{setGlobalFrameHeight()} + 1px);
+	padding:1px 0 0;
     overflow:hidden;
     width:100%;
 }

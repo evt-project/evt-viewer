@@ -3,28 +3,21 @@
 /* *************************** */
 
 .box {
-    // width: span(8 of 18);
     @include span(9 of 18);
     height:100%;
     white-space: normal;
     position: relative;
-    border: $mainContainer-border-width solid $base-color-dark;
     display: inline-block;
-    padding: 0;
     @include colors($base-color-dark, $base-color-light);
     
-    // &[data-position='left'] {
-    //     border-right-width: 0.5px;
-    // }
-
-    // &[data-position='right'] {
-    //     border-left-width: 0.5px;
-    // }
+    .box-body {
+        border: $mainContainer-border-width solid $base-color-dark;
+    }
 
     /* BOX TYPES */
     &.box-image {
-        @include colors($base-color-light, #000);
         .box-body {
+            @include colors($base-color-light, #000);
             overflow: hidden;
             text-align: center;
             img {
@@ -34,31 +27,24 @@
     }
     &.box-text {
         &.span6of18 {
-            // width: span(9 of 18);
-            @include span(6 of 18);
+            @include span(isolate 6 of 18);
         }
     }
 
     &.box-witness {
-        // width: span(isolate 5 of 12);
-        @include span(isolate 5 of 12 no-gutters);
-        // @include layout(auto 5 .25 inside fluid isolate);
+        @include span(isolate 5 of 12);
         float: none;
-        // @include span(5 of 10);
-        // margin-right: 2px;
+        
         &.span6of12 {
-            // width: span(isolate 6 of 12);
-            @include span(isolate 6 of 12 no-gutters);
+            @include span(isolate 6 of 12);
         }
         &.span9of9 {
-            // width: span(isolate 9 of 9);
-            @include span(isolate 9 of 9 no-gutters);
+            @include span(isolate 9 of 9);
         }
     }
     &.box-text, &.box-witness {
         @include colors($base-color-dark, #fff);
-        // border-left-width: 0.5px;
-
+        
         .box-body {
             position: relative;
             overflow-y: scroll;
@@ -90,9 +76,8 @@
         display: none;
         position: absolute;
         z-index: 10;
-        overflow: hidden;
         padding: 20px;
-        box-shadow: 0px 0px 4px rgba(0,0,0,.5);
+        // border: $mainContainer-border-width solid $base-color-dark;
 
         &.open {
             display: block;
@@ -100,18 +85,22 @@
     }
     .box-top-box { 
         background: rgba(236, 239, 241, 0.8);
-        overflow: auto;
-        top: 0px;
-        right: 0px;
-        left: 0px;
-        @include calc(height, #{setInsideFrameHeight()});
+        overflow-y: auto;
+        overflow-x: hidden;
+        top: $mainContainer-border-width;
+        right: $mainContainer-border-width+1;
+        left: $mainContainer-border-width+1;
+        @include calc(height, #{setInsideFrameHeight()} - ($mainContainer-border-width*2));
+        @include calc(width, #{calc(100% - $mainContainer-border-width)});
     }
     .box-bottom-box{
         bottom: 0px;
         right: 0px;
         left: 0px;
         height: auto;
+        overflow: hidden;
         border-top: 1px solid;
+        box-shadow: 0px 0px 4px rgba(0,0,0,.5);
     }
     .filters-section-title {
         text-transform: uppercase;
@@ -131,13 +120,11 @@
 }
 
 // Temporary
-.viewMode .box:last-child{
+// .viewMode .box:last-child{
     // margin: 0px 0px 0px 0.5px;
-}
+// }
 
 .compareWits_box {
-    // width: span(11 of 18);
-    // width: span(isolate 12 of 18);
     @include span(isolate 12 of 18);
     overflow-x: scroll;
     overflow-y: hidden; 
@@ -150,14 +137,60 @@
         width: span(9 of 18);
         overflow-x: hidden;
     }
-    .box:last-child{
-        margin: 0;
-        // margin-left: 1.6px;
+    &.span18of18 { //no Critical Text
+        width: span(18 of 18);
+        .box-witness {
+            @include span(isolate 5 of 18);
+            float: none;
+
+            &.span6of12,
+            &.span9of9 {
+                @include span(isolate 9 of 18);
+            }
+            &.span6of18 {
+                @include span(isolate 6 of 18);
+            }
+        }
     }
-    .compareWits_box--buttonAddWit {
+}
+
+.compareWits_box--buttonAddWit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    &.left75 {
+        left: 75%
+    }
+    &.floatRight {
         position: absolute;
+        left: 99%;
+        transform: translate(-100%, -50%);
         top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        
+        .buttonSwitch {
+            border-radius: 100px;
+            height: 40px;
+            width: 40px;
+            text-align: center;
+            opacity: .5;
+            
+            &:hover{
+                opacity: 1;
+            }
+
+            &.buttonSwitch-disabled{
+                display: none;
+            }
+        }
+        .buttonSwitch-label {
+            display: none;
+        }
+        .buttonSwitch-icon {
+            margin-left: 8px;
+            margin: 7px 0;
+            font-size: 1.2em;
+        }
     }
 }
