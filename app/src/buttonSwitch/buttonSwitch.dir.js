@@ -10,7 +10,8 @@ angular.module('evtviewer.buttonSwitch')
             type  : '@',
             value : '@'
         },
-        templateUrl: 'src/ButtonSwitch/ButtonSwitch.dir.tmpl.html',
+        templateUrl: 'src/buttonSwitch/buttonSwitch.dir.tmpl.html',
         controller: 'ButtonSwitchCtrl'
     };
+    
 });
