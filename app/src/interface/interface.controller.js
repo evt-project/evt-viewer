@@ -33,7 +33,7 @@ angular.module('evtviewer.interface')
     
     $scope.existCriticalText = function(){
         return evtInterface.existCriticalText();
-    }
+    };
 
     _console.log('InterfaceCtrl running');
 })

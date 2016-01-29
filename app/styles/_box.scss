@@ -95,8 +95,8 @@
     }
     .box-bottom-box{
         bottom: 0px;
-        right: 0px;
-        left: 0px;
+        right: $mainContainer-border-width+1;
+        left: $mainContainer-border-width+1;
         height: auto;
         overflow: hidden;
         border-top: 1px solid;
