@@ -1,8 +1,10 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function(parsedData, evtParser) {
+.service('evtCriticalParser', function(parsedData, evtParser, xmlParser) {
     var parser = {};
 
+    var listDef = 'listWit, listChange',
+        versionDef = 'witness, change';
     /* ******************** */
     /* parseListWit(listWit) */
     /* ********************************************************** */
@@ -19,28 +21,29 @@ angular.module('evtviewer.dataHandler')
             }
         };
         
-        angular.forEach(listWit.children, function(child){
-            if (child.tagName === 'head') {
-                list.name = child.innerHTML;
-            }
-            else if (child.tagName === 'listWit') {
-                var subList = parseListWit(child);
-                list.content[list.content.length] = subList.id;
-                list.content[subList.id] = subList;
-                list.content.length++;
-            } 
-            else if (child.tagName === 'witness'){
-                var witness = {
-                    id          : child.getAttribute('xml:id'),
-                    type        : 'witness',
-                    name        : evtParser.parseXMLElement(child),
-                    group       : list.id
-                };
-                console.log(witness.name);
-                list.content[list.content.length] = witness.id;
-                list.content[witness.id] = witness;
-                list.content.length++;
-                parsedData.addWitnessInList(witness);
+        angular.forEach(listWit.childNodes, function(child){
+            if (child.nodeType === 1) {
+                if (child.tagName === 'head') {
+                    list.name = child.innerHTML;
+                }
+                else if (listDef.indexOf(child.tagName) >= 0) {
+                    var subList = parseListWit(child);
+                    list.content[list.content.length] = subList.id;
+                    list.content[subList.id] = subList;
+                    list.content.length++;
+                } 
+                else if (versionDef.indexOf(child.tagName) >= 0){
+                    var witness = {
+                        id          : child.getAttribute('xml:id'),
+                        type        : 'witness',
+                        name        : evtParser.parseXMLElement(child),
+                        group       : list.id
+                    };
+                    list.content[list.content.length] = witness.id;
+                    list.content[witness.id] = witness;
+                    list.content.length++;
+                    parsedData.addWitnessInList(witness);
+                }
             }
         });
         return list;
@@ -60,24 +63,30 @@ angular.module('evtviewer.dataHandler')
     // to parsedData with the function parsedData.addWitness(json);
     parser.parseWitnesses = function(doc) {
         var currentDocument = angular.element(doc);
-        angular.forEach(currentDocument.find('listWit'), 
-            function(element) {
-                if ( !evtParser.isNestedInElem(element, 'listWit') ) {
-                    angular.forEach(element.children, function(child){
-                        if (child.tagName === 'listWit') {
-                            var subList = parseListWit(child);
-                            parsedData.addWitnessInCollection(subList);
-                        } else {
-                            var witness = {
-                                id          : child.getAttribute('xml:id'),
-                                type        : 'witness',
-                                name        : evtParser.parseXMLElement(child)
-                            };
-                            parsedData.addWitnessInCollection(witness);
-                        }
-                    });
-                }
-        });
+        if (currentDocument.find(listDef).length > 0) {
+            angular.forEach(currentDocument.find(listDef), 
+                function(element) {
+                    if ( !evtParser.isNestedInElem(element, element.tagName) ) {
+                        angular.forEach(element.childNodes, function(child){
+                            if (child.nodeType === 1) {
+                                if (listDef.indexOf(child.tagName) >= 0) {
+                                    var subList = parseListWit(child);
+                                    parsedData.addWitnessInCollection(subList);
+                                } else if (versionDef.indexOf(child.tagName) >= 0) {
+                                    var witness = {
+                                        id          : child.getAttribute('xml:id'),
+                                        type        : 'witness',
+                                        name        : evtParser.parseXMLElement(child)
+                                    };
+                                    parsedData.addWitnessInCollection(witness);
+                                }
+                            }
+                        });
+                    }
+            });
+        } else {
+            console.log('ERROR: <listWit> missing. Please add this element to make EVT work properly.');
+        }
         console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
@@ -98,8 +107,14 @@ angular.module('evtviewer.dataHandler')
     // – for any other kind of element 
     //   it will add its content in the "content" attribute of the reading object
     var parseAppReading = function(elem){
+        var id;
+        if (elem.getAttribute('xml:id')) {
+            id = 'rdg_'+elem.getAttribute('xml:id');
+        } else {
+            id = evtParser.xpath(elem).substr(1);
+        }
         var reading = {
-            id           : elem.getAttribute('xml:id') || evtParser.xpath(elem).substr(1),
+            id           : id,
             attributes   : { },
             content      : [ ],
             note         : '',
@@ -122,7 +137,9 @@ angular.module('evtviewer.dataHandler')
             } else if (child.tagName === 'note') {
                 reading.note = child.innerHTML;
             } else {
-                reading.content.push(child.outerHTML.trim());
+                if (child.outerHTML !== undefined) {
+                    reading.content.push(child.outerHTML.trim());
+                }
             }
         });
         
@@ -148,8 +165,13 @@ angular.module('evtviewer.dataHandler')
     // - for each element representing a note (<note> in XML-TEI P5) 
     //   it will save its content in the "note" attribute of the entry object
     var parseAppEntry = function(app) {
+        if (app.getAttribute('xml:id')) {
+            id = 'app_'+app.getAttribute('xml:id');
+        } else {
+            id = evtParser.xpath(app).substr(1);
+        }
         var entry = { 
-                id         : app.getAttribute('xml:id')  || evtParser.xpath(app).substr(1),
+                id         : id,
                 attributes : { },
                 lemma      : '',
                 readings   : { 
@@ -166,27 +188,29 @@ angular.module('evtviewer.dataHandler')
             }
         }
         
-        angular.forEach(app.children, function(child){
-            if (child.tagName === 'lem' || child.tagName === 'rdg') {
-                var reading  = parseAppReading(child);
-                
-                if (child.tagName === 'lem') {
-                    entry.lemma = reading.id;
-                }
-                entry.readings.__elemTypes[reading.id] = child.tagName;
-                entry.readings[entry.readings.length]  = reading.id;
-                entry.readings[reading.id]             = reading;
-                entry.readings.length++;
-            } 
-            else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
-                var entryObj = parseAppEntry(child);
-                entry.readings.__elemTypes[entryObj.id] = child.tagName;
-                entry.readings[entry.readings.length]   = entryObj.id;
-                entry.readings[entryObj.id]             = entryObj;
-                entry.readings.length++;
-            } else if ( child.tagName === 'note' ) {
-                entry.note = child.innerHTML;
-            } 
+        angular.forEach(app.childNodes, function(child){
+            if (child.nodeType === 1) {
+                if (child.tagName === 'lem' || child.tagName === 'rdg') {
+                    var reading  = parseAppReading(child);
+                    
+                    if (child.tagName === 'lem') {
+                        entry.lemma = reading.id;
+                    }
+                    entry.readings.__elemTypes[reading.id] = child.tagName;
+                    entry.readings[entry.readings.length]  = reading.id;
+                    entry.readings[reading.id]             = reading;
+                    entry.readings.length++;
+                } 
+                else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
+                    var entryObj = parseAppEntry(child);
+                    entry.readings.__elemTypes[entryObj.id] = child.tagName;
+                    entry.readings[entry.readings.length]   = entryObj.id;
+                    entry.readings[entryObj.id]             = entryObj;
+                    entry.readings.length++;
+                } else if ( child.tagName === 'note' ) {
+                    entry.note = child.innerHTML;
+                } 
+            }
         });
         return entry;
     };
@@ -216,9 +240,10 @@ angular.module('evtviewer.dataHandler')
     /* WITNESS */
     /* ******* */
     var containsWitnessReading = function(elem, witObj) {
-        return (witObj.group !== undefined && elem.indexOf('#'+witObj.group) >= 0) || 
-                (elem.indexOf('#') >= 0 && elem.indexOf('#'+witObj.id) >= 0) || 
-                elem.indexOf(witObj.id) >= 0;
+        if (elem === null) 
+            return false;
+        else
+            return (witObj.group !== undefined && elem.indexOf('#'+witObj.group) >= 0) || (elem.indexOf('#') >= 0 && elem.indexOf('#'+witObj.id) >= 0) || elem.indexOf(witObj.id) >= 0;
     };
 
     /* ******************************************** */
@@ -497,8 +522,14 @@ angular.module('evtviewer.dataHandler')
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!evtParser.isNestedInElem(appNode, 'app')) {
-                    var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-                        spanElement = document.createElement('evt-reading');
+                    var id;
+                    if (appNode.getAttribute('xml:id')) {
+                        id = 'app_'+appNode.getAttribute('xml:id');
+                    } else {
+                        id = evtParser.xpath(appNode).substr(1);
+                    }
+                    // var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
+                    var spanElement = document.createElement('evt-reading');
                     spanElement.setAttribute('data-app-id', id);
                     parseWitnessApp(appNode, witObj, spanElement);
                     appNode.parentNode.replaceChild(spanElement, appNode);
@@ -668,8 +699,14 @@ angular.module('evtviewer.dataHandler')
                     var appNode = apps[j];
                     if (!evtParser.isNestedInElem(appNode, 'app')) {
                         // var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-                        var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
-                            spanElement = document.createElement('evt-reading');
+                        var id;
+                        if (appNode.getAttribute('xml:id')) {
+                            id = 'app_'+appNode.getAttribute('xml:id');
+                        } else {
+                            id = evtParser.xpath(appNode).substr(1);
+                        }
+                        // var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
+                        var spanElement = document.createElement('evt-reading');
                         spanElement.setAttribute('data-app-id', id);
                         parseCriticalTextApp(appNode, spanElement);
                         appNode.parentNode.replaceChild(spanElement, appNode);

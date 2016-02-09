@@ -57,7 +57,7 @@ angular.module('evtviewer.dataHandler')
                     }
                 }
             }
-            if ( element.children.length > 0) {
+            if ( element.childNodes.length > 0) {
                 for (var j = 0; j < element.childNodes.length; j++) {
                     var childElement = element.childNodes[j].cloneNode(true);
                     newElement.appendChild(parser.parseXMLElement(childElement));

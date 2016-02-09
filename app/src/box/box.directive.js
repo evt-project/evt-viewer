@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser) {
 
     return {
         restrict: 'E',
@@ -27,6 +27,46 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
             currentBox.updateContent();
+            
+            /* ****************** */
+            /* XSL TRANSFORMATION */
+            /* ****************** */
+            function loadXMLDoc(filename) {
+                if (window.ActiveXObject) {
+                    xhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                } else {
+                    xhttp = new XMLHttpRequest();
+                }
+                xhttp.open("GET", filename, false);
+                try {
+                    xhttp.responseType = "msxml-document"
+                } catch (err) {} // Helping IE11
+                xhttp.send("");
+                return xhttp.responseXML;
+            }
+
+            function displayResult(sc, xsltUrl) {
+                if (xsltUrl != '') {
+                    var xml = xmlParser.parse(scope.vm.content),
+                        xsl = loadXMLDoc(xsltUrl);
+                    // code for IE
+                    if (window.ActiveXObject || xhttp.responseType == "msxml-document") {
+                        ex = xml.transformNode(xsl);
+                        scope.vm.content = ex;
+                    }
+                    // code for Chrome, Firefox, Opera, etc.
+                    else if (document.implementation && document.implementation.createDocument) {
+                        xsltProcessor = new XSLTProcessor();
+                        xsltProcessor.importStylesheet(xsl);
+                        resultDocument = xsltProcessor.transformToFragment(xml, document);
+                        scope.vm.content = resultDocument;
+                    }
+                }
+            }
+            displayResult(scope, scope.vm.defaults.xsltUrl);
+            /* ****************** */
+            /* XSL TRANSFORMATION */
+            /* ****************** */
             
             scope.vm.getTotElementsOfType = function(type){
                 return evtBox.getListByType(type).length;

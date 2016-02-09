@@ -15,7 +15,24 @@ angular.module('evtviewer.box')
      * menuClosed: false
      * </pre>
      */
-    menuClosed: false
+    menuClosed: false,
+
+    /**
+     * @module evtviewerBox
+     * @ngdoc property
+     * @name xsltUrl
+     * @description
+     * `property`
+     *
+     * Some info
+     *
+     * Default:
+     * <pre>
+     * xsltUrl: ''
+     * </pre>
+     */
+    // xsltUrl: "../../data/prova.xsl"
+    xsltUrl: ''
 })
 
 .config(function(evtBoxProvider, configProvider, BOXDEFAULTS) {
