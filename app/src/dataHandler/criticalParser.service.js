@@ -230,10 +230,16 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find('app'), 
             function(element) {
                 var entry = parseAppEntry(element);
+                if (element.querySelectorAll('rdg lacunaStart').length > 0 || element.querySelectorAll('rdg lacunaEnd').length > 0) {
+                    entry.__lacuna = true;
+                }
+                if (element.querySelectorAll('rdg witStart').length > 0 || element.querySelectorAll('rdg witEnd').length > 0) {
+                    entry.__fragment = true;
+                }
                 parsedData.addCriticalEntry(entry, entry.id);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
-        // console.log('## Critical entries ##', parsedData.getCriticalEntries());
+        console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
 
     /* ******* */
@@ -548,6 +554,7 @@ angular.module('evtviewer.dataHandler')
             //parse <note>
             evtParser.parseNote(docDOM);
             
+            // DA PROBLEMI [ma serve per parsare i frammenti]
             docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
             if (isFragmentaryWitness(docDOM, witObj)) {
                 var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, witObj);
