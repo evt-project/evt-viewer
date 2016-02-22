@@ -47,13 +47,13 @@ angular.module('evtviewer.dataHandler')
                                     var witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
                                     if (witnessesInGroup.length > 0) {
                                         for(var w = 0; w < witnessesInGroup.length; w++ ){
-                                            witnesses += '<evt-witness-ref witness="'+witnessesInGroup[w]+'"/>';
+                                            witnesses += '<evt-witness-ref witness="'+witnessesInGroup[w]+'"></evt-witness-ref>';
                                         }
                                     } else {
-                                        witnesses += '<evt-witness-ref witness="'+sigla+'"/>';    
+                                        witnesses += '<evt-witness-ref witness="'+sigla+'"></evt-witness-ref>';
                                     }
                                 } else {
-                                    witnesses += '<evt-witness-ref witness="'+sigla+'"/>';
+                                    witnesses += '<evt-witness-ref witness="'+sigla+'"></evt-witness-ref>';
                                 }
                             }
                         } else {
