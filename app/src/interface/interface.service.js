@@ -71,7 +71,7 @@ angular.module('evtviewer.interface')
 
         mainInterface.existCriticalText = function(){
             return parsedData.getCriticalText(state.currentDoc) !== undefined;
-        }
+        };
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */
@@ -261,7 +261,7 @@ angular.module('evtviewer.interface')
                         }
                     }
                 }
-                //TODO: Witnesses pages
+                
             if (viewMode !== undefined) {
                 // window.history.pushState(null, null, '#/'+viewMode+'?'+searchPath.substr(1));
                 window.location = '#/'+viewMode+'?'+searchPath.substr(1);

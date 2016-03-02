@@ -57,6 +57,7 @@ angular.module('evtviewer.dataHandler')
         text = formatter.formatCriticalEntryLacunaMilestones(text);
         
         // recupero i testimoni e gli altri attributi
+        // fatto insieme per evitare di fare troppi cicli sugli attributi
         var witsAndAttr = formatter.formatCriticalEntryAttributes(reading, elemType);
 
         return text + witsAndAttr;

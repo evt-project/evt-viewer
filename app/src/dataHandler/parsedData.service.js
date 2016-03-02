@@ -26,7 +26,10 @@ angular.module('evtviewer.dataHandler')
     var witnessesPagesCollection = {};
     var criticalAppCollection = {
         length: 0,
-        filters: { }
+        filters: { },
+        filtersColors: ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
+        filtersLength : 0,
+        __allLoaded: false 
     };
 
     var criticalTextMock = [];
@@ -265,17 +268,25 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection[entryPos];
     };
 
+    
     /* CRITICAL ENTRIES FILTERS */
     parsedData.addCriticalEntryFilter = function(name, value) {
+        var valueObj = {
+            name : value,
+            color : criticalAppCollection.filtersColors[criticalAppCollection.filtersLength]
+        }
         if ( criticalAppCollection.filters[name] === undefined ) {
             criticalAppCollection.filters[name] = {
-                name: name,
-                values: [value]
+                name   : name,
+                values : {}
             };
-        } else {
-            if ( criticalAppCollection.filters[name].values.indexOf(value) < 0 ) {
-                criticalAppCollection.filters[name].values.push(value);
-            }
+        }
+        // if ( criticalAppCollection.filters[name].values.indexOf(value) < 0 ) {
+        //     criticalAppCollection.filters[name].values.push(value);
+        // }
+        if ( criticalAppCollection.filters[name].values[value] === undefined) {
+            criticalAppCollection.filters[name].values[value] = valueObj;
+            criticalAppCollection.filtersLength++;
         }
     };
 

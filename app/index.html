@@ -38,7 +38,7 @@
     
 
     <header>
-        Header
+        EVT Critical Viewer
         <div class="globalMenu">
             <button-switch 
                     title="{{mode.label}}"
@@ -65,7 +65,7 @@
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"
                  ng-show="existCriticalText()"></box>
-            <div class="compareWits_box"
+            <div class="compareWits_box" id="compareWits_box"
                  ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
                             'span18of18': !existCriticalText()}">
                 <box data-type="witness"

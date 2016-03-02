@@ -1,17 +1,20 @@
 /* *************************** */
 /* READING                     */
 /* *************************** */
+$reading-background-default : rgba(255, 108, 63, .3);
+$reading-background-hover   : rgba(255, 108, 63, 1);
 
 .reading {
     &:not(.hidden) {
-        background: rgba(255, 204, 188, 1);
+        background: $reading-background-default;
         // border:1px solid black;
         padding: 0 3px;
         cursor: pointer;
 
         &.active, &.over,
         &.active .reading, &.over .reading{
-            background: #FF6C3F !important;
+            // background: #FF6C3F !important;
+            background: $reading-background-hover;
         }
         .reading__apparatus {
             display: none;
@@ -109,8 +112,8 @@
         }
     }
 
-    &.hidden {
-        background: transparent;
+    &.invisible {
+        background: transparent !important;
         border: none;
         cursor: default;
 
@@ -120,6 +123,13 @@
     }
 }
 
+.filters__reading__color {
+    min-width:10px; 
+    min-height:10px; 
+    width: 10px; 
+    height: 10px; 
+    display: inline-block; 
+}
 // [data-reading-type='lem'] > .reading:not(.hidden) {
 //     background: rgba(255, 138, 101, .7);
 // }

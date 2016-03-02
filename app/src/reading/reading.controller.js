@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalFormatter) {
+.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalFormatter, evtCriticalParser, baseData) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -75,6 +75,15 @@ angular.module('evtviewer.reading')
                     var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
                     if (criticalEntry !== undefined) {
                         vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry);
+                    } else {
+                        var XMLdocument = baseData.getXMLDocuments()[0];
+                        XMLdocument = XMLdocument.cloneNode(true);
+                        evtCriticalParser.findCriticalEntryById(XMLdocument, vm.appId);
+                        delete XMLdocument;
+                        var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
+                        if (criticalEntry !== undefined) {
+                            vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry);
+                        }
                     }
                     if (criticalEntry.note !== '') {
                         vm.apparatusContent += '<br /><p>'+criticalEntry.note+'</p>';
@@ -93,6 +102,38 @@ angular.module('evtviewer.reading')
                 }
             }
         }
+    };
+
+    this.colorFilters = function() {
+        var filterLabels = parsedData.getCriticalEntriesFilters();
+        var colors = '';
+        var opacity = vm.over || ((vm.active || vm.tooltipOver) && !$scope.$parent.vm.state.topBoxOpened) ? '1' : '.6';
+        for (var label in filterLabels) {
+            var filterLabel = filterLabels[label].name;
+            if (vm.entryAttr !== undefined && vm.entryAttr[filterLabel] !== undefined) {
+                for (var filter in filterLabels[label].values) {
+                    var filterColor = filterLabels[label].values[filter].color,
+                        filterValue = filterLabels[label].values[filter].name;
+                    if (vm.entryAttr[filterLabel] === filterValue){
+                        var color = filterColor.replace('rgb', 'rgba');
+                        colors += color.slice(0, -1)+','+opacity+'),';
+                    }
+                }
+            }
+        }
+        var background;
+        if (colors !== '' ) {
+            colors = colors.slice(0, -1);
+            if ( (colors.match('rgb', 'gi') && colors.match('rgb', 'gi').length > 1) || (colors.match('#', 'gi') && colors.match('#', 'gi').length > 1)) {
+                background  = 'background: -moz-linear-gradient(top,'+colors+');';
+                background += 'background: -webkit-linear-gradient(top,'+colors+');';
+                background += 'background: ms-linear-gradient(top,'+colors+');'
+                background += 'background: linear-gradient(top,'+colors+');';
+            } else {
+                background = 'background: '+colors;
+            }
+        }
+        return background;
     };
 
     this.fitFilters = function(){

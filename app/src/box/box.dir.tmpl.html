@@ -51,12 +51,13 @@
             <div ng-repeat="value in filter.values">
                 <input 
                     type="checkbox" 
-                    value="{{value}}" 
-                    name="{{value}}"
-                    ng-checked="vm.state.filters[filter.name].values[value].active !== undefined && vm.state.filters[filter.name].values[value].active"
-                    ng-click="vm.toggleCriticalAppFilter(filter.name, value);"
+                    value="{{value.name}}" 
+                    name="{{value.name}}"
+                    ng-checked="vm.state.filters[filter.name].values[value.name].active !== undefined && vm.state.filters[filter.name].values[value.name].active"
+                    ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);"
                     />
-                <label for="{{value}}"> {{value}}</label>
+                <label for="{{value.name}}"> {{value.name}}</label>
+                <span class="filters__reading__color" style="background:{{value.color}}"></span>
             </div>
         </div>
     </div>
