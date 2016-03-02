@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, xmlParser, evtParser, evtCriticalParser) {
+.service('baseData', function($log, GLOBALDEFAULTCONF, xmlParser, evtParser, evtCriticalParser) {
     var baseData = {},
         state = {
             XMLDocuments: [],
@@ -14,13 +14,19 @@ angular.module('evtviewer.dataHandler')
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
             state.XMLDocuments.push(docElements);
+            // Parse pages
             // evtParser.parsePages(docElements);
+            // Parse documents
             evtParser.parseDocuments(docElements);
-            
+            // Parse witnesses list
             evtCriticalParser.parseWitnesses(docElements);
-            evtCriticalParser.parseCriticalEntries(docElements);
+            // Parse critical entries
+            if (GLOBALDEFAULTCONF.loadCriticalEntriesImmediately){
+                evtCriticalParser.parseCriticalEntries(docElements);
+            }
+            // evtCriticalParser.findCriticalEntryById(docElements, 'TEI:eq(0)>text:eq(0)>body:eq(0)>div:eq(0)>div:eq(0)>p:eq(0)>app:eq(0)');
+            // Parse critical text
             evtCriticalParser.parseCriticalText(docElements);
-            
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {
             _console.error('Something wrong with the XML');

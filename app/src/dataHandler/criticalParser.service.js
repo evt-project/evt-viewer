@@ -1,10 +1,20 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function(parsedData, evtParser, xmlParser) {
+.service('evtCriticalParser', function(parsedData, evtParser, GLOBALDEFAULTCONF) {
     var parser = {};
 
     var listDef = 'listWit, listChange',
         versionDef = 'witness, change';
+
+    parser.findCriticalEntryById = function(doc, appId){
+        if ( doc !== undefined ) {
+            var appSelector = appId.replace(/\w-/g, '$&0>').replace(/[0-9]+/g, ":eq($&)").replace(/-:eq/g, ':eq');
+            var appElement = $(doc).find(appSelector);
+            handleAppEntry(appElement.get(0));
+        } else {
+            console.log('ERROR');
+        }
+    }
     /* ******************** */
     /* parseListWit(listWit) */
     /* ********************************************************** */
@@ -165,6 +175,7 @@ angular.module('evtviewer.dataHandler')
     // - for each element representing a note (<note> in XML-TEI P5) 
     //   it will save its content in the "note" attribute of the entry object
     var parseAppEntry = function(app) {
+        var id;
         if (app.getAttribute('xml:id')) {
             id = 'app_'+app.getAttribute('xml:id');
         } else {
@@ -215,6 +226,18 @@ angular.module('evtviewer.dataHandler')
         return entry;
     };
     
+    var handleAppEntry = function(app) {
+        if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
+            var entry = parseAppEntry(app);
+            if (app.querySelectorAll('rdg lacunaStart').length > 0 || app.querySelectorAll('rdg lacunaEnd').length > 0) {
+                entry.__lacuna = true;
+            }
+            if (app.querySelectorAll('rdg witStart').length > 0 || app.querySelectorAll('rdg witEnd').length > 0) {
+                entry.__fragment = true;
+            }
+            parsedData.addCriticalEntry(entry, entry.id);
+        }
+    };
     /* ************************* */
     /* parseCriticalEntries(doc) */
     /* ***************************************************************** */
@@ -229,16 +252,10 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find('app'), 
             function(element) {
-                var entry = parseAppEntry(element);
-                if (element.querySelectorAll('rdg lacunaStart').length > 0 || element.querySelectorAll('rdg lacunaEnd').length > 0) {
-                    entry.__lacuna = true;
-                }
-                if (element.querySelectorAll('rdg witStart').length > 0 || element.querySelectorAll('rdg witEnd').length > 0) {
-                    entry.__fragment = true;
-                }
-                parsedData.addCriticalEntry(entry, entry.id);
+                handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
+        parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately)
         console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
 
@@ -246,10 +263,11 @@ angular.module('evtviewer.dataHandler')
     /* WITNESS */
     /* ******* */
     var containsWitnessReading = function(elem, witObj) {
-        if (elem === null) 
+        if (elem === null) {
             return false;
-        else
+        } else {
             return (witObj.group !== undefined && elem.indexOf('#'+witObj.group) >= 0) || (elem.indexOf('#') >= 0 && elem.indexOf('#'+witObj.id) >= 0) || elem.indexOf(witObj.id) >= 0;
+        }
     };
 
     /* ******************************************** */
@@ -273,7 +291,7 @@ angular.module('evtviewer.dataHandler')
     // – nested group of readings or sub-apparatus
     // The parsed content will be appended to the evtReadingElement
     var parseWitnessApp = function(app, witObj, evtReadingElement) {
-        var wit = witObj.id;
+        // var wit = witObj.id;
         var attrib;
         for (var k = 0; k < app.attributes.length; k++) {
             attrib = app.attributes[k];
@@ -518,6 +536,7 @@ angular.module('evtviewer.dataHandler')
     parser.parseWitnessText = function(doc, wit) {
         var witnessText;
         if ( doc !== undefined ) {
+            doc = doc.cloneNode(true);
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
                 witObj = parsedData.getWitness(wit);
 
@@ -644,9 +663,7 @@ angular.module('evtviewer.dataHandler')
                                     if (childNode.tagName === 'lem') {    
                                         lemElement.setAttribute('data-'+attrib.name, attrib.value);
                                     }
-                                    if (attrib.name !== 'wit') {
-                                        parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
-                                    }
+                                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                                 }
                             }
                         }
@@ -694,6 +711,7 @@ angular.module('evtviewer.dataHandler')
     parser.parseCriticalText = function(doc) {
         var criticalText;
         if ( doc !== undefined ) {
+            doc = doc.cloneNode(true);
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
                 lemmas = docDOM.getElementsByTagName('lem');
             

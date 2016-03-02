@@ -167,7 +167,7 @@ angular.module('evtviewer.dataHandler')
 
         var sames      = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
         var countIndex = sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '';
-        countIndex     = countIndex > 1 ? countIndex : '';
+        countIndex     = countIndex > 1 ? countIndex-1 : '';
         var tagName    = el.tagName.toLowerCase() !== 'tei' ? '-'+el.tagName.toLowerCase() : '';
         return parser.xpath(el.parentNode) + tagName + countIndex;
     };
