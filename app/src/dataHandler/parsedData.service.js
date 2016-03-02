@@ -28,7 +28,8 @@ angular.module('evtviewer.dataHandler')
         length: 0,
         filters: { },
         filtersColors: ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
-        filtersLength : 0 
+        filtersLength : 0,
+        __allLoaded: false 
     };
 
     var criticalTextMock = [];
@@ -257,6 +258,10 @@ angular.module('evtviewer.dataHandler')
             criticalAppCollection[entryId] = entry;
             criticalAppCollection.length++;
         }
+    };
+
+    parsedData.setCriticalEntriesLoaded = function(status) {
+        criticalAppCollection.__allLoaded = status;
     };
 
     parsedData.getCriticalEntries = function() {
