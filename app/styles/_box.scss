@@ -8,53 +8,17 @@
     white-space: normal;
     position: relative;
     display: inline-block;
-    @include colors($base-color-dark, $base-color-light);
+    @include colors($box-text-color, $box-background-color);
     
     .box-body {
-        border: $mainContainer-border-width solid $base-color-dark;
-    }
-
-    /* BOX TYPES */
-    &.box-image {
-        .box-body {
-            @include colors($base-color-light, #000);
-            overflow: hidden;
-            text-align: center;
-            img {
-                height: 100%;
-            }
-        }
-    }
-    &.box-text {
-        &.span6of18 {
-            @include span(isolate 6 of 18);
-        }
-    }
-
-    &.box-witness {
-        @include span(isolate 5 of 12);
-        float: none;
-        
-        &.span6of12 {
-            @include span(isolate 6 of 12);
-        }
-        &.span9of9 {
-            @include span(isolate 9 of 9);
-        }
-    }
-    &.box-text, &.box-witness {
-        @include colors($base-color-dark, #fff);
-        
-        .box-body {
-            position: relative;
-            overflow-y: scroll;
-        }
+        border: $mainContainer-border-width solid $box-structure-color-dark;
     }
 
     /* BOX INTERNAL ELEMENTS */
     .box-menu {
             @include inside-header();
-            
+            @include colors($box-structure-color-light, $box-structure-color-dark);
+
             &[data-position='top']{
                 display: setVisibility($mainContainer-top-menu);
             }
@@ -66,7 +30,7 @@
         .box-body {
         @include frameBody();
     }
-    
+
     .box-top-box, .box-bottom-box{
         background: #fff;
         text-align: left;
@@ -84,7 +48,7 @@
         }
     }
     .box-top-box { 
-        background: rgba(236, 239, 241, 0.8);
+        background: $box-top-box-backgound-color;
         overflow-y: auto;
         overflow-x: hidden;
         top: $mainContainer-border-width;
@@ -106,6 +70,54 @@
         text-transform: uppercase;
         font-weight: bold;
     }
+
+    /* ********* */
+    /* BOX TYPES */
+
+    //IMAGE
+    &.box-image {
+        .box-body {
+            @include colors($box-structure-color-light, #000);
+            overflow: hidden;
+            text-align: center;
+            img {
+                height: 100%;
+            }
+        }
+    }
+    //TEXT
+    &.box-text {
+        &.span6of18 {
+            @include span(isolate 6 of 18);
+        }
+    }
+
+    //WITNESS
+    &.box-witness {
+        @include span(isolate 5 of 12);
+        float: none;
+        
+        &.span6of12 {
+            @include span(isolate 6 of 12);
+        }
+        &.span9of9 {
+            @include span(isolate 9 of 9);
+        }
+
+        .box-body {
+            border-color: $box-witness-structure-color-dark;
+        }
+        .box-menu {
+            @include colors($box-witness-structure-color-light, $box-witness-structure-color-dark);
+        }
+    }
+    &.box-text, &.box-witness {
+        .box-body {
+            position: relative;
+            overflow-y: scroll;
+        }
+    }
+
 
     // BODY
     &.topBoxOpened {

@@ -6,7 +6,7 @@ $buttonSwitch-background-color: $base-color-light;
 $buttonSwitch-color: $base-color-dark;
 $buttonSwitch-shadow-color: rgba(0, 0, 0, 0.4);
 
-$buttonSwitch-active-background-color: #E3C89C;
+$buttonSwitch-active-background-color: $base-color-active;
 
 button-switch {
     margin-right: 5px;
