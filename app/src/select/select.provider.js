@@ -111,30 +111,16 @@ angular.module('evtviewer.select')
                         }
                     };
                     formatOptionList = function(optionList) {
-                        var formattedList = [];
-                        for (var i = 0; i < optionList.length; i++ ) {
-                            var option,
-                                currentOption = optionList[optionList[i]];
-                            if ( currentOption.type === 'witness' ) {
-                                option = {
+                        var formattedList = [],
+                            witnesses     = optionList._indexes.witnesses;
+                        for (var i = 0; i < witnesses.length; i++ ) {
+                            var currentOption = optionList[witnesses[i]];
+                            var option = {
                                     value : currentOption.id,
                                     label : currentOption.id,
-                                    title : currentOption.name
+                                    title : currentOption.description
                                 };
-                                formattedList.push(option);
-                            } else {
-                                for (var j = 0; j < currentOption.content.length; j++ ) {
-                                    var currentSubOpt = currentOption.content[currentOption.content[j]];
-                                    if (currentSubOpt !== undefined) {
-                                        option = {
-                                            value : currentSubOpt.id,
-                                            label : currentSubOpt.id,
-                                            title : currentSubOpt.name
-                                        };
-                                        formattedList.push(option);
-                                    }
-                                }
-                            }
+                            formattedList.push(option);
                         }
                         return formattedList;
                     };
@@ -143,11 +129,11 @@ angular.module('evtviewer.select')
                         formattedOption = {
                             value : option.id,
                             label : option.id,
-                            title : option.name
+                            title : option.description
                         };
                         return formattedOption;
                     };  
-                    optionList = formatOptionList(parsedData.getWitnesses());                  
+                    optionList = formatOptionList(parsedData.getWitnesses());
                     break;                
                 case 'witness-page':
                     var witness = scope.$parent.vm.witness;

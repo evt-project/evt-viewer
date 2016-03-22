@@ -49,15 +49,17 @@ angular.module('evtviewer.dataHandler')
         } else {
             newElement           = document.createElement('span');
             newElement.className = element.tagName;
-            for (var i = 0; i < element.attributes.length; i++) {
-                var attrib = element.attributes[i];
-                if (attrib.specified) {
-                    if (attrib.name !== 'xml:id') {
-                        newElement.setAttribute('data-'+attrib.name, attrib.value);
+            if (element.attributes) {
+                for (var i = 0; i < element.attributes.length; i++) {
+                    var attrib = element.attributes[i];
+                    if (attrib.specified) {
+                        if (attrib.name !== 'xml:id') {
+                            newElement.setAttribute('data-'+attrib.name, attrib.value);
+                        }
                     }
                 }
             }
-            if ( element.childNodes.length > 0) {
+            if ( element.childNodes ) {
                 for (var j = 0; j < element.childNodes.length; j++) {
                     var childElement = element.childNodes[j].cloneNode(true);
                     newElement.appendChild(parser.parseXMLElement(childElement));

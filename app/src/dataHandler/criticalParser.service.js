@@ -14,7 +14,7 @@ angular.module('evtviewer.dataHandler')
         } else {
             console.log('ERROR');
         }
-    }
+    };
     /* ******************** */
     /* parseListWit(listWit) */
     /* ********************************************************** */
@@ -23,12 +23,11 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     var parseListWit = function(listWit) {
         var list = {
-            id          : listWit.getAttribute('xml:id'),
-            type        : 'group',
-            name        : '',
-            content     : {
-                length : 0
-            }
+            id      : listWit.getAttribute('xml:id'),
+            name    : '',
+            content : [],
+            _type   : 'group',
+            _group  : undefined
         };
         
         angular.forEach(listWit.childNodes, function(child){
@@ -36,23 +35,21 @@ angular.module('evtviewer.dataHandler')
                 if (child.tagName === 'head') {
                     list.name = child.innerHTML;
                 }
-                else if (listDef.indexOf(child.tagName) >= 0) {
+                else if (listDef.indexOf(child.tagName) >= 0) { //group
                     var subList = parseListWit(child);
-                    list.content[list.content.length] = subList.id;
-                    list.content[subList.id] = subList;
-                    list.content.length++;
+                    subList._group = list.id;
+                    parsedData.addElementInWitnessCollection(subList);
+                    list.content.push(subList.id);
                 } 
-                else if (versionDef.indexOf(child.tagName) >= 0){
-                    var witness = {
+                else if (versionDef.indexOf(child.tagName) >= 0){ //witness
+                    var witnessElem = {
                         id          : child.getAttribute('xml:id'),
-                        type        : 'witness',
-                        name        : evtParser.parseXMLElement(child),
-                        group       : list.id
+                        description : evtParser.parseXMLElement(child),
+                        _group      : list.id,
+                        _type       : 'witness'
                     };
-                    list.content[list.content.length] = witness.id;
-                    list.content[witness.id] = witness;
-                    list.content.length++;
-                    parsedData.addWitnessInList(witness);
+                    parsedData.addElementInWitnessCollection(witnessElem);
+                    list.content.push(witnessElem.id);
                 }
             }
         });
@@ -79,17 +76,21 @@ angular.module('evtviewer.dataHandler')
                     if ( !evtParser.isNestedInElem(element, element.tagName) ) {
                         angular.forEach(element.childNodes, function(child){
                             if (child.nodeType === 1) {
-                                if (listDef.indexOf(child.tagName) >= 0) {
-                                    var subList = parseListWit(child);
-                                    parsedData.addWitnessInCollection(subList);
-                                } else if (versionDef.indexOf(child.tagName) >= 0) {
-                                    var witness = {
+                                var element = {};
+                                
+                                if (listDef.indexOf(child.tagName) >= 0) { // group
+                                    element = parseListWit(child);
+                                } else if (versionDef.indexOf(child.tagName) >= 0) { // witness
+                                    var childElem = angular.element(child);
+                                    console.log(childElem.find('title'));
+                                    element = {
                                         id          : child.getAttribute('xml:id'),
-                                        type        : 'witness',
-                                        name        : evtParser.parseXMLElement(child)
+                                        description : evtParser.parseXMLElement(child),
+                                        _group      : undefined,
+                                        _type       : 'witness'
                                     };
-                                    parsedData.addWitnessInCollection(witness);
                                 }
+                                parsedData.addElementInWitnessCollection(element);
                             }
                         });
                     }
@@ -97,6 +98,7 @@ angular.module('evtviewer.dataHandler')
         } else {
             console.log('ERROR: <listWit> missing. Please add this element to make EVT work properly.');
         }
+        // console.log('## Witnesses ##', JSON.stringify(parsedData.getWitnesses()));
         console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
@@ -255,7 +257,7 @@ angular.module('evtviewer.dataHandler')
                 handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
-        parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately)
+        parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately);
         console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
 
@@ -587,7 +589,6 @@ angular.module('evtviewer.dataHandler')
         witnessText = evtParser.balanceXHTML(witnessText);
         //save witness text
         parsedData.addWitnessText(wit, witnessText);
-        // console.log('## Witnesses Texts ##', parsedData.getWitnessesTextsCollection());
         return witnessText;
     };
 

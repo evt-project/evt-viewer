@@ -18,7 +18,7 @@ angular.module('evtviewer.reading')
 
             if (scope.vm.variance !== undefined) {
                 var readingElem = angular.element(element).find('.reading')[0];
-                var totWits = parsedData.getWitnesses().length,
+                var totWits = parsedData.getWitnessesList().length,
                     opacity = scope.vm.variance/totWits;
                 angular.element(readingElem).css('background', 'rgba(255, 138, 101, '+opacity+')');
             }

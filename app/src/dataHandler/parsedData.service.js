@@ -14,16 +14,15 @@ angular.module('evtviewer.dataHandler')
     }; 
     
     // var pagesCollectionTexts = []; 
-    var witnessesList = {
-        length : 0
-    };
+    
     var witnessesCollection = {
-        length : 0,
-        _groups : []
+        _indexes : {
+            witnesses         : [],
+            groups            : [],
+            encodingStructure : []
+        }
     };
 
-    var witnessesTextsCollection = {};
-    var witnessesPagesCollection = {};
     var criticalAppCollection = {
         length: 0,
         filters: { },
@@ -147,94 +146,64 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* WITNESSES */
-    parsedData.addWitnessInCollection = function(element) {
-        if ( witnessesCollection.length === undefined ) {
-            witnessesCollection.length = 0;
-        }
-        if ( witnessesCollection[element.id] === undefined ) {
-            witnessesCollection[witnessesCollection.length] = element.id;
+    parsedData.addElementInWitnessCollection = function(element){
+        if (witnessesCollection[element.id] === undefined) {
             witnessesCollection[element.id] = element;
-            witnessesCollection.length++;
-            if (element.type === 'group') {
-                witnessesCollection._groups.push(element.id);
+            
+            if (element._type === 'group') {
+                witnessesCollection._indexes.groups.push(element.id);
+            } else {
+                witnessesCollection._indexes.witnesses.push(element.id);    
+            }
+            
+            if (element._group === undefined) {
+                witnessesCollection._indexes.encodingStructure.push(element.id);
             }
         }
-        if (element.type !== 'group') {
-            parsedData.addWitnessInList(element);
-        }
     };
-    parsedData.addWitnessInList = function(element){
-        if ( witnessesList.length === undefined ) {
-            witnessesList.length = 0;
-        }
-        if (witnessesList[element.id] === undefined) {
-            witnessesList[witnessesList.length] = element.id;
-            witnessesList[element.id] = element;
-            witnessesList.length++;
-        }
-    };
+
     parsedData.addWitnessText = function(witId, content) {
-        if ( witnessesTextsCollection[witId] === undefined ) {
-            witnessesTextsCollection[witId] = '<text>'+content+'</text>';
-        } 
+        if (witnessesCollection[witId] !== undefined) {
+            witnessesCollection[witId].text = '<text>'+content+'</text>';
+        }
     };
     parsedData.getWitnessText = function(witId) {
-        if ( witnessesTextsCollection[witId] !== undefined ) {
-            return witnessesTextsCollection[witId];
-        } 
-    };
-    parsedData.getWitnessesTextsCollection = function() {
-        return witnessesTextsCollection;
+        if (witnessesCollection[witId] !== undefined) {
+            return witnessesCollection[witId].text;
+        }
     };
     parsedData.getWitnessesList = function() {
-        return witnessesList;
+        return witnessesCollection._indexes.witnesses;
     };
     parsedData.getWitnesses = function() {
         return witnessesCollection;
     };
     parsedData.getWitness = function(witId) {
-        if ( witnessesCollection[witId] !== undefined ) {
-            return witnessesCollection[witId];    
-        } else {
-            // altrimenti cerco all'interno di ogni gruppo finché non lo trovo
-            var groups = witnessesCollection._groups;
-            var i = 0,
-                found = false,
-                witness;
-            while ( i < groups.length && !found) {
-                if (witnessesCollection[groups[i]].content[witId] !== undefined) {
-                    witness = witnessesCollection[groups[i]].content[witId];
-                    found = true;
-                }
-                i++;
-            }
-            return witness;
-        }
+        return witnessesCollection[witId];
     };
     parsedData.getWitnessPages = function(witId) {
-        if ( witnessesPagesCollection[witId] !== undefined ) {
-            return witnessesPagesCollection[witId];
-        } else {
-            var pages = { length: 0 };
-            for ( var i = 0; i < pagesCollection.length; i++ ) {
-                var page = pagesCollection[pagesCollection[i]];
-                if ( page.ed === '#'+witId ) {
-                    pages[pages.length] = pagesCollection[i];
-                    pages[pagesCollection[i]] = page;
-                    pages.length++;
+        if ( witnessesCollection[witId] !== undefined) {
+            if (witnessesCollection[witId].pages === undefined) {
+                var pages = { length: 0 };
+                for ( var i = 0; i < pagesCollection.length; i++ ) {
+                    var page = pagesCollection[pagesCollection[i]];
+                    if ( page.ed === '#'+witId ) {
+                        pages[pages.length] = pagesCollection[i];
+                        pages[pagesCollection[i]] = page;
+                        pages.length++;
+                    }
                 }
+                witnessesCollection[witId].pages = pages;
             }
-            witnessesPagesCollection[witId] = pages;
+            return witnessesCollection[witId].pages;
         }
-        // _console.log(witnessesPagesCollection[witId]);
-        return witnessesPagesCollection[witId];
     };
     parsedData.isWitnessesGroup = function(sigla) {
-        return witnessesCollection[sigla] !== undefined && witnessesCollection[sigla].type === 'group';
+        return witnessesCollection[sigla] !== undefined && witnessesCollection[sigla]._type === 'group';
     };
     parsedData.getWitnessesInGroup = function(groupId) {
         var wits = [];
-        if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId].type === 'group') {
+        if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId]._type === 'group') {
             wits = witnessesCollection[groupId].content;
         }
         return wits;

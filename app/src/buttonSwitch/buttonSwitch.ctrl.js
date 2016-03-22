@@ -86,7 +86,7 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'toggleInfoWit':
                     var witness = parsedData.getWitness($scope.$parent.vm.witness);
-                    var newTopBoxContent = witness.name || $scope.$parent.vm.topBoxContent;
+                    var newTopBoxContent = witness.description || $scope.$parent.vm.topBoxContent;
                     $scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
                     $scope.$parent.vm.toggleTopBox();
                     break;

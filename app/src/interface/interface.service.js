@@ -189,24 +189,7 @@ angular.module('evtviewer.interface')
                     }
                 }
             } else if (viewMode === 'critical'){
-                witnesses = parsedData.getWitnesses();
-                if (Array.isArray(witnesses)) {
-                    witIds = witnesses;
-                } else {
-                    for (var i = 0; i < witnesses.length; i++ ) {
-                        var currentOption = witnesses[witnesses[i]];
-                        if (currentOption !== undefined) {
-                            if ( currentOption.type === 'witness' ) {
-                                witIds.push(currentOption.id);
-                            } else {
-                                for (var j = 0; j < currentOption.content.length; j++ ) {
-                                    var currentSubOpt = currentOption.content[currentOption.content[j]];
-                                    witIds.push(currentSubOpt.id);
-                                }
-                            }
-                        }
-                    }
-                }
+                witIds = parsedData.getWitnessesList();
             }
             
             if ( viewMode !== undefined ) {
