@@ -85,9 +85,6 @@ angular.module('evtviewer.reading')
                             vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry);
                         }
                     }
-                    if (criticalEntry.note !== '') {
-                        vm.apparatusContent += '<br /><p>'+criticalEntry.note+'</p>';
-                    }
                 } 
                 if (!vm.tooltipOver) {
                     if ( vm.apparatusOpened ) {

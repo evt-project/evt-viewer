@@ -26,7 +26,6 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
             background: $popover-background-color;
             color: $popover-color;
             font-size: 90%;
-            text-align: center;
             
             @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
             border: 2.5px solid black;

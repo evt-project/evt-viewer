@@ -3,37 +3,120 @@ angular.module('evtviewer.dataHandler')
 .service('evtCriticalFormatter', function(parsedData, evtParser) {
     var formatter = {};
 
-    formatter.formatCriticalEntry = function(entry) {
+    formatter.formatCriticalEntry = function(entry, subApp) {
         // console.log('formatCriticalEntry', entry);
-        var appText  = '',
-            readings = entry.readings,
-            i        = 0;
+        var appText = '';
+        var lemma = entry.content[entry.lemma];
 
-        // se entry e' un raggruppamento di letture (<app> o <rdgGrp>), avra' delle letture
-        if (readings !== undefined) {
-            // ciclo le letture per ottenere la stampa del testo con sigla testimone
-            for (i = 0; i < readings.length; i++) {
-                var reading  = readings[readings[i]]
-                    elemType = readings.__elemTypes[readings[i]];
+        // appText += '<evt-reading data-app-id="'+lemma.id+'" data-reading-type="lem">'+formatter.formatLemma(lemma)+'</evt-reading>';
+        if (lemma !== undefined) {
+            appText += formatter.formatLemma(lemma);
+        }
 
-                if ( entry.__lacuna === undefined || (entry.__lacuna && reading.content.toString().indexOf('lacuna') >= 0) ) {
-                    appText += formatter.formatCriticalEntryContent(reading, elemType);
+        var readings = entry._indexes.readings;
+        
+        var significantReadingsText = '',
+            notSignificantReadingsText = '';
 
-                    if (elemType === 'lem') {
-                        appText = '<span class="variance variance-lem">'+appText+' ]</span> ';        
-                    } else {
-                        appText += '; ';
-                    }
+        var totReadings = readings._indexes;
+        for (var i = 0; i < totReadings.length; i++) {
+            var reading = entry.content[totReadings[i]];
+            if (reading !== undefined) {
+                if (readings._significant.indexOf(reading.id) >= 0) {
+                    significantReadingsText += formatter.formatSignificantReading(reading);
+                } else {
+                    notSignificantReadingsText += '<li>'+formatter.formatSignificantReading(reading)+'</li>';
                 }
             }
-            
-            appText = appText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-            
-            formatter.formatCriticalEntryFragmentMilestones(appText);
-        } 
-        return appText.trim().slice(0, -1);
+        }
+        appText += significantReadingsText;
+        
+        if (!subApp) {
+            //Varianti di forma
+            if (notSignificantReadingsText != '') {
+                appText += '<div><strong>V. forma</strong><ul>'+notSignificantReadingsText+'</ul></div>';
+            }
+
+            //Raggruppamenti
+            if (entry._indexes.groups.length > 0) {
+                var groupText = '';
+                for (var i = 0; i < entry._indexes.groups.length; i++) {
+                    var group = entry.content[entry._indexes.groups[i]];
+                    if (group !== undefined) {
+                        var groupHeader = '';
+                        for (j in group.attributes) {
+                            groupHeader += '<strong>'+j+': '+group.attributes[j]+'</strong>,';
+                        }
+                        groupHeader = groupHeader.trim().slice(0, -1);
+                        var groupReadings = '';
+                        for (var k = 0; k < group.content.length; k++) {
+                            var groupEntry = entry.content[group.content[k]];
+                            if (groupEntry !== undefined) {
+                                groupReadings += '<li>'+formatter.formatSignificantReading(groupEntry)+'</li>';
+                            }
+                        }
+                        if (groupReadings !== '') {
+                            groupText += '<div>'+groupHeader+'<ul>'+ groupReadings+'</ul></div>';
+                        }
+                    }
+                }
+
+                appText += groupText;
+
+            }
+
+            if (entry.node !== '') {
+                appText += '<br/><p>'+entry.note+'</p>';
+            }
+        }
+        appText = appText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+        formatter.formatCriticalEntryFragmentMilestones(appText);
+        return appText;
     };
 
+    formatter.formatLemma = function(lemma){
+        var lemmaText = '';
+        // lemma content
+        for (var i = 0; i < lemma.content.length; i++) {
+            if (lemma.content[i].type === 'subApp') {
+                var subApp = parsedData.getCriticalEntryByPos(lemma.content[i].id);
+                lemmaText += '(('+formatter.formatCriticalEntry(subApp, true)+'))';
+            } else {
+                lemmaText += lemma.content[i];
+            }
+        }
+
+        lemmaText = formatter.formatCriticalEntryLacunaMilestones(lemmaText);
+
+        if (lemmaText !== '') {
+            lemmaText += formatter.formatCriticalEntryAttributes(lemma, 'lem');
+            lemmaText += ']';
+        }
+        return lemmaText;
+    };
+    
+    formatter.formatSignificantReading = function(reading){
+        var readingText = '';
+
+        for (var i = 0; i < reading.content.length; i++) {
+            if (reading.content[i].type === 'subApp') {
+                var subApp = parsedData.getCriticalEntryByPos(reading.content[i].id);
+                readingText += '(('+formatter.formatCriticalEntry(subApp, true)+'))';
+            } else {
+                readingText += reading.content[i];
+            }
+        }
+        if (readingText === '') {
+            readingText = '<i>omit.</i>';
+        }
+        readingText = formatter.formatCriticalEntryLacunaMilestones(readingText);
+
+        readingText += formatter.formatCriticalEntryAttributes(reading, 'rdg');
+
+        return readingText;
+    };
+
+    //TODO: remove
     formatter.formatCriticalEntryContent = function(reading, elemType){
         var text    = '',
             content = '';
@@ -63,6 +146,7 @@ angular.module('evtviewer.dataHandler')
         return text + witsAndAttr;
     };
 
+    //TODO: rivedere elemento attributi generici
     formatter.formatCriticalEntryAttributes = function(reading, elemType) {
         var witnesses  = '',
             attributes = '';
@@ -86,12 +170,12 @@ angular.module('evtviewer.dataHandler')
                         }
                     }
                 } else {
-                    attributes += '<span class="'+key+'">'+reading.attributes[key]+'</span>';
+                    attributes += '<span class="'+key+'">'+key+": "+reading.attributes[key]+'</span>';
                 }
             }
         }
         if (attributes !== '') {
-            attributes = '<span class="attributes">'+attributes+'</span>';
+            attributes = '<span class="attributes" style="display:none">'+attributes+'</span>';
         }
         if (witnesses !== '') {
             witnesses = '<span class="witnesses witnesses-'+elemType+'">'+witnesses+'</span>';
@@ -99,12 +183,14 @@ angular.module('evtviewer.dataHandler')
         return witnesses+attributes;
     };
 
+    //TODO: check
     formatter.formatCriticalEntryLacunaMilestones = function(appText){
         appText = appText.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna in </i>');
         appText = appText.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna in </i>');
         return appText;
     };
     
+    //TODO: check
     formatter.formatCriticalEntryFragmentMilestones = function(appText){
         var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
         if (fragmentsStarts !== null) {

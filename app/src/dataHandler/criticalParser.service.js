@@ -6,6 +6,8 @@ angular.module('evtviewer.dataHandler')
     var listDef = 'listWit, listChange',
         versionDef = 'witness, change';
 
+    var notSignificantVariant = '<orig>, <sic>, [type=orthographic]';
+
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
             var appSelector = appId.replace(/\w-/g, '$&0>').replace(/[0-9]+/g, ":eq($&)").replace(/-:eq/g, ':eq');
@@ -82,7 +84,6 @@ angular.module('evtviewer.dataHandler')
                                     element = parseListWit(child);
                                 } else if (versionDef.indexOf(child.tagName) >= 0) { // witness
                                     var childElem = angular.element(child);
-                                    console.log(childElem.find('title'));
                                     element = {
                                         id          : child.getAttribute('xml:id'),
                                         description : evtParser.parseXMLElement(child),
@@ -108,54 +109,129 @@ angular.module('evtviewer.dataHandler')
     /* Function to parse the XML element representing an apparatus reading */
     /* (<lem> o <rdg> in XML-TEI P5)                                       */
     /* @elem element -> xml element to be parsed                           */
-    /* @return a json object representing the apparatus reading read       */
+    /* @return a json object representing the apparatus reading        */
     /* ******************************************************************* */
-    // It will save every attribute of the XML element
-    // and then cycle its children in order to find eventual nested apparatus entries or groups:
-    // - for each element representing a group or a nested apparatus entry (<rdgGrp> o <app> in XML-TEI P5) 
-    //   it will call the function parseAppEntry(element) and then add the resulting json object in the "content" attribute of the reading object
-    // - for each element representing a note (<note> in XML-TEI P5) 
-    //   it will save its content in the "note" attribute of the reading object
-    // – for any other kind of element 
-    //   it will add its content in the "content" attribute of the reading object
     var parseAppReading = function(elem){
+        var reading = {
+            id           : '',
+            attributes   : [],
+            content      : [
+                //text
+                //node
+                //subapp { id, type='subApp'}
+            ],
+            note         : '',
+            _significant : true,
+            _groupId     : undefined,
+            _xmlTagName  : elem.tagName,
+            _xmlSource   : elem.innerHTML
+        };
+
         var id;
         if (elem.getAttribute('xml:id')) {
             id = 'rdg_'+elem.getAttribute('xml:id');
         } else {
             id = evtParser.xpath(elem).substr(1);
         }
-        var reading = {
-            id           : id,
-            attributes   : { },
-            content      : [ ],
-            note         : '',
-            __xmlElem    : elem.tagName,
-            __xmlContent : elem.innerHTML
-        };
+        reading.id = id;
+
         for (var i = 0; i < elem.attributes.length; i++) {
             var attrib = elem.attributes[i];
             if (attrib.specified) {
                 reading.attributes[attrib.name] = attrib.value;
+
+                if (reading._significant) {
+                    if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
+                        reading._significant = false;
+                    }
+                }
             }
         }
+
         angular.forEach(elem.childNodes, function(child) {
             if (child.nodeType === 3) {
                 if (child.textContent.trim() !== '') {
                     reading.content.push(child.textContent.trim());
                 }
-            } else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
-                reading.content.push(parseAppEntry(child));
-            } else if (child.tagName === 'note') {
-                reading.note = child.innerHTML;
             } else {
-                if (child.outerHTML !== undefined) {
-                    reading.content.push(child.outerHTML.trim());
+                if (child.tagName === 'note') {
+                    reading.note = child.innerHTML;
+                } else if (child.tagName === 'app') {
+                    var entryApp = parseAppEntry(child);
+                    reading.content.push({id: entryApp.id, type: 'subApp'});
+                } else {
+                    if (reading._significant) {
+                        if (notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
+                            reading._significant = false;
+                        }
+                    }
+
+                    if (child.outerHTML !== undefined) {
+                        reading.content.push(child.outerHTML.trim());
+                    }
                 }
             }
         });
         
         return reading;
+    };
+
+    /* ****************************** */
+    /* parseGroupReading(entry, elem) */
+    /* ************************************************************************* */
+    /* Function to parse the XML element representing an apparatus reading group */
+    /* (<rdgGrp> in XML-TEI P5)                                                  */
+    /* @entry element -> json element representing parent apparatus entry        */
+    /* @elem element -> xml element to be parsed                                 */
+    /* @return void                                                              */
+    /* ************************************************************************* */
+    var parseGroupReading = function(entry, elem) {
+        var groupObj = {
+            attributes : [],
+            content    : []
+        }
+
+        var id;
+        if (elem.getAttribute('xml:id')) {
+            id = 'rdg_'+elem.getAttribute('xml:id');
+        } else {
+            id = evtParser.xpath(elem).substr(1);
+        }
+        groupObj.id = id;
+
+        angular.forEach(elem.childNodes, function(child) {
+            if (child.tagName === 'lem' || child.tagName === 'rdg') {
+                var readingObj = parseAppReading(child);
+                readingObj._group = groupObj.id;
+                groupObj.content.push(readingObj.id);
+                
+                for (var i = 0; i < elem.attributes.length; i++) {
+                    var attrib = elem.attributes[i];
+                    if (attrib.specified) {
+                        groupObj.attributes[attrib.name] = attrib.value;
+                        console.log(readingObj.attributes[attrib.name]);
+                        if (readingObj.attributes[attrib.name] === undefined) {
+                            readingObj.attributes[attrib.name] = attrib.value;
+                            if (readingObj._significant) {
+                                if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
+                                    readingObj._significant = false;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                entry._indexes.readings._indexes.push(readingObj.id);
+                entry.content[readingObj.id] = readingObj;
+
+                if (readingObj._significant || child.tagName === 'lem') {
+                    entry._indexes.readings._significant.push(readingObj.id);
+                }
+            }
+        });
+        entry._indexes.groups.push(groupObj.id);
+        entry.content[groupObj.id] = groupObj;
+        entry._indexes.encodingStructure.push(groupObj.id);
     };
 
     /* ****************** */
@@ -166,41 +242,48 @@ angular.module('evtviewer.dataHandler')
     /* @app element -> xml element representing the apparatus entry or group to be parsed */
     /* @return a json object representing the apparatus entry read                        */
     /* ********************************************************************************** */
-    // It will save every attribute of the XML element
-    // and then cycle its children in order to find eventual nested apparatus entries or groups:
-    // - for each element representing a group or a nested apparatus entry (<rdgGrp> o <app> in XML-TEI P5) 
-    //   it will call the function parseAppEntry(element) and then add the resulting json object in the "readings" attribute of the entry object
-    // - for each element representing a reading (<lem> o <rdg> in XML-TEI P5) 
-    //   it will call the function parseAppReading(element) and then add the resulting json object in the "readings" attribute of the entry object.
-    // - for each element representing an accepted reading (<lem> in XML-TEI P5) 
-    //   it will also save the reference in the "lemma" attribute of the entry object
-    // - for each element representing a note (<note> in XML-TEI P5) 
-    //   it will save its content in the "note" attribute of the entry object
     var parseAppEntry = function(app) {
+        var entry = {
+            id         : '',
+            attributes : [],
+            lemma      : '',
+            note       : '',
+            content    : {
+                // READINGS
+                // GROUPS
+                // SUBAPP
+            },
+            _indexes   : {
+                encodingStructure : [],
+                readings          : {
+                    _indexes     : [],
+                    _significant : []
+                },
+                groups            : [],
+                subApps           : []
+            },
+            _subApp    : false,
+            _xmlSource : app.innerHTML
+        };
+
         var id;
         if (app.getAttribute('xml:id')) {
             id = 'app_'+app.getAttribute('xml:id');
         } else {
             id = evtParser.xpath(app).substr(1);
         }
-        var entry = { 
-                id         : id,
-                attributes : { },
-                lemma      : '',
-                readings   : { 
-                    length      : 0,
-                    __elemTypes : { },
-                },
-                note       : '',
-                // __xmlContent: app.innerHTML
-            };
-        for (var i = 0; i < app.attributes.length; i++) {
-            var attrib = app.attributes[i];
-            if (attrib.specified) {
-                entry.attributes[attrib.name] = attrib.value;
+        entry.id = id;
+        
+        if (app.attributes) {
+            for (var i = 0; i < app.attributes.length; i++) {
+                var attrib = app.attributes[i];
+                if (attrib.specified) {
+                    entry.attributes[attrib.name] = attrib.value;
+                }
             }
         }
-        
+        entry._subApp = evtParser.isNestedInElem(app, 'app');
+
         angular.forEach(app.childNodes, function(child){
             if (child.nodeType === 1) {
                 if (child.tagName === 'lem' || child.tagName === 'rdg') {
@@ -208,18 +291,25 @@ angular.module('evtviewer.dataHandler')
                     
                     if (child.tagName === 'lem') {
                         entry.lemma = reading.id;
+                    } else {
+                        entry._indexes.readings._indexes.push(reading.id);
+                        if (reading._significant) {
+                            entry._indexes.readings._significant.push(reading.id);
+                        }
                     }
-                    entry.readings.__elemTypes[reading.id] = child.tagName;
-                    entry.readings[entry.readings.length]  = reading.id;
-                    entry.readings[reading.id]             = reading;
-                    entry.readings.length++;
+                    
+                    entry.content[reading.id] = reading;
+                    entry._indexes.encodingStructure.push(reading.id);
                 } 
-                else if (child.tagName === 'rdgGrp' || child.tagName === 'app') {
+                else if (child.tagName === 'rdgGrp') {
+                    parseGroupReading(entry, child);
+                } 
+                else if (child.tagName === 'app') {
                     var entryObj = parseAppEntry(child);
-                    entry.readings.__elemTypes[entryObj.id] = child.tagName;
-                    entry.readings[entry.readings.length]   = entryObj.id;
-                    entry.readings[entryObj.id]             = entryObj;
-                    entry.readings.length++;
+                    var subApp = {id: entryObj.id, type: 'subApp'};
+                    entry.content[entryObj.id] = subApp;
+                    entry._indexes.encodingStructure.push(entryObj.id);
+                    entry._indexes.subApp.push(entryObj.id);
                 } else if ( child.tagName === 'note' ) {
                     entry.note = child.innerHTML;
                 } 
@@ -232,12 +322,12 @@ angular.module('evtviewer.dataHandler')
         if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
             var entry = parseAppEntry(app);
             if (app.querySelectorAll('rdg lacunaStart').length > 0 || app.querySelectorAll('rdg lacunaEnd').length > 0) {
-                entry.__lacuna = true;
+                entry._lacuna = true;
             }
             if (app.querySelectorAll('rdg witStart').length > 0 || app.querySelectorAll('rdg witEnd').length > 0) {
-                entry.__fragment = true;
+                entry._fragment = true;
             }
-            parsedData.addCriticalEntry(entry, entry.id);
+            parsedData.addCriticalEntry(entry);
         }
     };
     /* ************************* */
@@ -256,9 +346,9 @@ angular.module('evtviewer.dataHandler')
             function(element) {
                 handleAppEntry(element);
         });
-        // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
+        console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
         parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately);
-        console.log('## Critical entries ##', parsedData.getCriticalEntries());
+        // console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
 
     /* ******* */

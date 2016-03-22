@@ -24,11 +24,14 @@ angular.module('evtviewer.dataHandler')
     };
 
     var criticalAppCollection = {
-        length: 0,
         filters: { },
         filtersColors: ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
         filtersLength : 0,
-        __allLoaded: false 
+        __allLoaded: false,
+        _indexes : {
+            encodingStructure : [],
+            appEntries        : []
+        }
     };
 
     var criticalTextMock = [];
@@ -218,14 +221,13 @@ angular.module('evtviewer.dataHandler')
         return criticalTextMock[0];
     };
 
-    parsedData.addCriticalEntry = function(entry, entryId) {
-        if ( criticalAppCollection.length === undefined ) {
-            criticalAppCollection.length = 0;
-        }
-        if ( criticalAppCollection[entryId] === undefined ) {
-            criticalAppCollection[criticalAppCollection.length] = entryId;
-            criticalAppCollection[entryId] = entry;
-            criticalAppCollection.length++;
+    parsedData.addCriticalEntry = function(entry) {
+        if ( criticalAppCollection[entry.id] === undefined ) {
+            criticalAppCollection[entry.id] = entry;
+            criticalAppCollection._indexes.appEntries.push(entry.id);
+            if (!entry._subApp) {
+                criticalAppCollection._indexes.encodingStructure.push(entry.id);
+            }
         }
     };
 
