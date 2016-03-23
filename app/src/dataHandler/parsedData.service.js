@@ -207,7 +207,15 @@ angular.module('evtviewer.dataHandler')
     parsedData.getWitnessesInGroup = function(groupId) {
         var wits = [];
         if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId]._type === 'group') {
-            wits = witnessesCollection[groupId].content;
+            var groupContent = witnessesCollection[groupId].content;
+            for (wit in groupContent) {
+                var sigla = groupContent[wit];
+                if (parsedData.isWitnessesGroup(groupContent[wit])){
+                    wits.push.apply(wits, parsedData.getWitnessesInGroup(groupContent[wit]));
+                } else {
+                    wits.push(groupContent[wit]);
+                }
+            }
         }
         return wits;
     };

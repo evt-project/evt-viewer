@@ -139,7 +139,21 @@ angular.module('evtviewer.dataHandler')
             var attrib = elem.attributes[i];
             if (attrib.specified) {
                 reading.attributes[attrib.name] = attrib.value;
-
+                
+                if (attrib.name === 'wit') {
+                    var wits = attrib.value.split('#').filter(function(el) { return el.length !== 0; });
+                    reading.wits = [];
+                    for(s in wits){
+                        var sigla = wits[s].replace(' ', '');
+                        if (parsedData.getWitness(sigla) !== undefined) { //exclude siglas without reference
+                            if (parsedData.isWitnessesGroup(sigla)) {
+                                reading.wits.push.apply(reading.wits, parsedData.getWitnessesInGroup(sigla));
+                            } else {
+                                reading.wits.push(sigla);
+                            }
+                        }
+                    }
+                }
                 if (reading._significant) {
                     if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
                         reading._significant = false;
@@ -346,9 +360,9 @@ angular.module('evtviewer.dataHandler')
             function(element) {
                 handleAppEntry(element);
         });
-        console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
+        // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
         parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately);
-        // console.log('## Critical entries ##', parsedData.getCriticalEntries());
+        console.log('## Critical entries ##', parsedData.getCriticalEntries());
     };
 
     /* ******* */

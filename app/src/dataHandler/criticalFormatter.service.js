@@ -89,6 +89,7 @@ angular.module('evtviewer.dataHandler')
         lemmaText = formatter.formatCriticalEntryLacunaMilestones(lemmaText);
 
         if (lemmaText !== '') {
+            lemmaText += formatter.formatCriticalEntryWitnesses(lemma, 'lem');
             lemmaText += formatter.formatCriticalEntryAttributes(lemma, 'lem');
             lemmaText += ']';
         }
@@ -111,6 +112,7 @@ angular.module('evtviewer.dataHandler')
         }
         readingText = formatter.formatCriticalEntryLacunaMilestones(readingText);
 
+        readingText += formatter.formatCriticalEntryWitnesses(reading, 'rdg');
         readingText += formatter.formatCriticalEntryAttributes(reading, 'rdg');
 
         return readingText;
@@ -141,35 +143,31 @@ angular.module('evtviewer.dataHandler')
         
         // recupero i testimoni e gli altri attributi
         // fatto insieme per evitare di fare troppi cicli sugli attributi
-        var witsAndAttr = formatter.formatCriticalEntryAttributes(reading, elemType);
+        var witsAndAttr = formatter.formatCriticalEntryWitnesses(reading, elemType);
+        witsAndAttr += formatter.formatCriticalEntryAttributes(reading, elemType);
 
         return text + witsAndAttr;
     };
 
+    formatter.formatCriticalEntryWitnesses = function(reading, elemType) {
+        var witnesses  = '';
+        if (reading.wits !== undefined ) {
+            for (wit in reading.wits) {
+                witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'"></evt-witness-ref>';
+            }
+        }
+        if (witnesses !== '') {
+            witnesses = '<span class="witnesses witnesses-'+elemType+'">'+witnesses+'</span>';
+        }
+        return witnesses;
+    };
+
     //TODO: rivedere elemento attributi generici
     formatter.formatCriticalEntryAttributes = function(reading, elemType) {
-        var witnesses  = '',
-            attributes = '';
+        var attributes = '';
         if (reading.attributes !== undefined) {
             for (var key in reading.attributes) {
-                if (key === 'wit') {
-                    var wits = reading.attributes[key].split('#').filter(function(el) {return el.length !== 0;});
-                    for(var s = 0; s < wits.length; s++ ){
-                        var sigla = wits[s].replace(' ', '');
-                        if (parsedData.isWitnessesGroup(sigla)) {
-                            var witnessesInGroup = parsedData.getWitnessesInGroup(sigla);
-                            if (witnessesInGroup.length > 0) {
-                                for(var w = 0; w < witnessesInGroup.length; w++ ){
-                                    witnesses += '<evt-witness-ref witness="'+witnessesInGroup[w]+'"></evt-witness-ref>';
-                                }
-                            } else {
-                                witnesses += '<evt-witness-ref witness="'+sigla+'"></evt-witness-ref>';
-                            }
-                        } else {
-                            witnesses += '<evt-witness-ref witness="'+sigla+'"></evt-witness-ref>';
-                        }
-                    }
-                } else {
+                if (key !== 'wit' && key !== 'xml:id') {
                     attributes += '<span class="'+key+'">'+key+": "+reading.attributes[key]+'</span>';
                 }
             }
@@ -177,10 +175,7 @@ angular.module('evtviewer.dataHandler')
         if (attributes !== '') {
             attributes = '<span class="attributes" style="display:none">'+attributes+'</span>';
         }
-        if (witnesses !== '') {
-            witnesses = '<span class="witnesses witnesses-'+elemType+'">'+witnesses+'</span>';
-        }
-        return witnesses+attributes;
+        return attributes;
     };
 
     //TODO: check
