@@ -271,7 +271,7 @@ section > div{
     display: block;
 }
 
-.lacuna {
+.lacuna, .fragment {
     font-variant: small-caps;
     font-size: 60%;
     vertical-align: 10%;
@@ -279,6 +279,83 @@ section > div{
 }
 .lacunaStart, .lacunaEnd {
     display: none;
+}
+.fragment {
+    min-height: 4px;
+    background: url("../images/fragment.png") repeat;
+    min-width: 100%;
+    height: 6px;
+    display: block;
+    position: absolute;
+    left: 0;
+
+    &-start{
+        min-height: 10px;
+        height: 10px;
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+100 */
+        background: #e5e5e5; /* Old browsers */
+        background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+
+        position: relative;
+        display: block;
+        padding: 8px 0px 39px 0px;
+        width: 110%;
+        left: -20px;
+        margin: 0;
+        margin-bottom: 20px;
+
+        &::after{
+            background: linear-gradient(-45deg, #fff 8px, transparent 0), linear-gradient(45deg, #fff 8px, transparent 0);
+            background-position: left-bottom;
+            background-repeat: repeat-x;
+            background-size: 16px 16px;
+            content: " ";
+            display: block;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 16px;
+        }
+    }
+
+    &-end{
+        min-height: 10px;
+        height: 10px;
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e5e5e5+0,ffffff+100,ffffff+100 */
+        background: #e5e5e5; /* Old browsers */
+        background: -moz-linear-gradient(top,  #e5e5e5 0%, #ffffff 100%, #ffffff 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #e5e5e5 0%,#ffffff 100%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #e5e5e5 0%,#ffffff 100%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+        position: relative;
+        display: block;
+        padding: 8px 0px 39px 0px;
+        width: 110%;
+        left: -20px;
+        margin: 0;
+        margin-top: 20px;
+
+        &::before{
+            top: 0px;
+            background-position: left top;
+            background: linear-gradient(-135deg, #fff 8px, transparent 0), linear-gradient(135deg, #fff 8px, transparent 0);
+            background-position: left-top;
+            background-repeat: repeat-x;
+            background-size: 16px 16px;
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 16px;
+        }
+    }
 }
 .msDesc {
     ::before {

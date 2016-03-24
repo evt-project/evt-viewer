@@ -615,7 +615,7 @@ angular.module('evtviewer.dataHandler')
                 
                 var match = '<evt-reading data-app-id="'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
                 var sRegExInput = new RegExp(match, 'ig'); 
-                fragmentaryText = '<br /><span class="lacuna">[FRAGMENT START] </span><br />'+(docDOM.innerHTML.match(sRegExInput))+'<br /><span class="lacuna">[FRAGMENT END] </span><br />'+fragmentaryText;
+                fragmentaryText = '<span class="fragment fragment-start"></span>'+(docDOM.innerHTML.match(sRegExInput))+'<span class="fragment fragment-end"></span>'+fragmentaryText;
             }
             return fragmentaryText;
         } else {
