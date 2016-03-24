@@ -299,7 +299,7 @@ section > div{
         background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
         margin-bottom: 20px;
-
+        @include set("box-shadow", "inset 0px -10px 9px -8px #000");
         &::after{
             background: linear-gradient(-45deg, #fff 8px, transparent 0), linear-gradient(45deg, #fff 8px, transparent 0);
             background-position: left-bottom;
@@ -323,7 +323,7 @@ section > div{
         background: linear-gradient(to bottom,  #e5e5e5 0%,#ffffff 100%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
         margin-top: 20px;
-
+        @include set("box-shadow", "inset 0px 10px 9px -8px #000");
         &::before{
             top: 0px;
             background-position: left top;
