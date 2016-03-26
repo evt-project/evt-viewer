@@ -42,30 +42,36 @@ angular.module('evtviewer.dataHandler')
     // It will transform a generic XML element into an <span> element
     // with a data-* attribute for each @attribute of the XML element
     // It will also transform its children
-    parser.parseXMLElement = function(element) {
+    parser.parseXMLElement = function(element, skip) {
         var newElement;
-        if (element.nodeType === 3 ) { // Text
+        if (element.nodeType === 3 || skip.indexOf('<'+element.tagName+'>') >= 0) { // Text
             newElement = element;
         } else {
-            newElement           = document.createElement('span');
-            newElement.className = element.tagName;
-            if (element.attributes) {
-                for (var i = 0; i < element.attributes.length; i++) {
-                    var attrib = element.attributes[i];
-                    if (attrib.specified) {
-                        if (attrib.name !== 'xml:id') {
-                            newElement.setAttribute('data-'+attrib.name, attrib.value);
+            if (element.tagName === 'l') {
+                newElement = parser.parseLine(element);
+            } else if(element.tagName === 'note') {
+                newElement = parser.parseNote(element);
+            } else {
+                newElement           = document.createElement('span');
+                newElement.className = element.tagName;
+                if (element.attributes) {
+                    for (var i = 0; i < element.attributes.length; i++) {
+                        var attrib = element.attributes[i];
+                        if (attrib.specified) {
+                            if (attrib.name !== 'xml:id') {
+                                newElement.setAttribute('data-'+attrib.name, attrib.value);
+                            }
                         }
                     }
                 }
-            }
-            if ( element.childNodes ) {
-                for (var j = 0; j < element.childNodes.length; j++) {
-                    var childElement = element.childNodes[j].cloneNode(true);
-                    newElement.appendChild(parser.parseXMLElement(childElement));
+                if ( element.childNodes ) {
+                    for (var j = 0; j < element.childNodes.length; j++) {
+                        var childElement = element.childNodes[j].cloneNode(true);
+                        newElement.appendChild(parser.parseXMLElement(childElement, skip));
+                    }
+                } else {
+                    newElement.innerHTML = element.innerHTML;
                 }
-            } else {
-                newElement.innerHTML = element.innerHTML;
             }
         }
         return newElement;
@@ -80,7 +86,7 @@ angular.module('evtviewer.dataHandler')
       // Check for a < after the last >, indicating a broken tag
       if (XHTMLstring.lastIndexOf('<') > XHTMLstring.lastIndexOf('>')) {
         // Truncate broken tag
-        XHTMLstring = XHTMLstring.substring(0,XHTMLstring.lastIndexOf('<'));
+        XHTMLstring = XHTMLstring.substring(0, XHTMLstring.lastIndexOf('<'));
       }
 
       // Check for broken elements, e.g. <strong>Hello, w
@@ -122,22 +128,13 @@ angular.module('evtviewer.dataHandler')
     /* **************************************************************************** */
     // It will look for every element representing a note
     // and replace it with a new evt-popover element
-    parser.parseNote = function(docDOM) {
-        var notes = docDOM.getElementsByTagName('note');
-        var n = 0;
-        while (n < notes.length) {
-            var noteNode    = notes[n],
-                popoverElem = document.createElement('evt-popover');
-            if (noteNode.parentNode.tagName !== 'app' &&
-                noteNode.parentNode.tagName !== 'evt-reading' ) {
-                popoverElem.setAttribute('data-trigger', 'click');
-                popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
-                popoverElem.innerHTML = '&bull;';
-                noteNode.parentNode.replaceChild(popoverElem, noteNode);
-            } else {
-                noteNode.parentNode.removeChild(noteNode);
-            }
-        }
+    parser.parseNote = function(noteNode) {
+        var popoverElem = document.createElement('evt-popover');
+
+            popoverElem.setAttribute('data-trigger', 'click');
+            popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
+            popoverElem.innerHTML = '&bull;';
+        return popoverElem;
     };
 
     parser.parseLines = function(docDOM){
@@ -157,6 +154,19 @@ angular.module('evtviewer.dataHandler')
                 newElement.innerHTML = lineNode.innerHTML;
                 lineNode.parentNode.replaceChild(newElement, lineNode);
         }
+    };
+    parser.parseLine = function(lineNode){
+        var newElement = document.createElement('div');
+            newElement.className = 'l';
+            newElement.className = lineNode.tagName;
+        for (var i = 0; i < lineNode.attributes.length; i++) {
+            var attrib = lineNode.attributes[i];
+            if (attrib.specified) {
+                newElement.setAttribute('data-'+attrib.name, attrib.value);
+            }
+        }
+        newElement.innerHTML = lineNode.innerHTML;
+        return newElement;
     };
     parser.xpath = function(el) {
         if (typeof el === 'string') {

@@ -60,7 +60,7 @@ angular.module('evtviewer.reading')
                 if (vm.active === false) {
                     evtReading.selectById(vm.appId);
                 } else {
-                    evtReading.unselectAll();
+                    // evtReading.unselectAll();
                 }
             }
         }
@@ -68,7 +68,7 @@ angular.module('evtviewer.reading')
 
     this.toggleApparatus = function($event) {
         $event.stopPropagation();
-        evtPopover.closeAll();
+        // evtPopover.closeAll();
         if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
                 if ( vm.apparatusContent === '') {
@@ -90,11 +90,8 @@ angular.module('evtviewer.reading')
                     if ( vm.apparatusOpened ) {
                         vm.closeApparatus();
                     } else {
-                        evtReading.closeAllApparatus(vm.uid);
+                        // evtReading.closeAllApparatus(vm.uid);
                         vm.apparatusOpened = !vm.apparatusOpened;
-                        if (vm.apparatusOpened === true) {
-                            vm.resizeTooltip($event, vm.defaults);
-                        }
                     }
                 }
             }
@@ -103,37 +100,54 @@ angular.module('evtviewer.reading')
 
     this.colorFilters = function() {
         var filterLabels = parsedData.getCriticalEntriesFilters();
-        var colors = '';
-        var opacity = vm.over || ((vm.active || vm.tooltipOver) && !$scope.$parent.vm.state.topBoxOpened) ? '1' : '.6';
-        for (var label in filterLabels) {
-            var filterLabel = filterLabels[label].name;
-            if (vm.entryAttr !== undefined && vm.entryAttr[filterLabel] !== undefined) {
-                for (var filter in filterLabels[label].values) {
-                    var filterColor = filterLabels[label].values[filter].color,
-                        filterValue = filterLabels[label].values[filter].name;
-                    if (vm.entryAttr[filterLabel] === filterValue){
-                        var color = filterColor.replace('rgb', 'rgba');
-                        colors += color.slice(0, -1)+','+opacity+'),';
+        var app          = parsedData.getCriticalEntryByPos(vm.appId);
+        var background;
+        if (vm.readingId !== undefined){
+            var reading       = app.content[vm.readingId];
+            var readingAttributes = reading.attributes || {};
+
+            if (Object.keys(readingAttributes).length > 0) {
+                var colors = '';
+                var opacity = vm.over || ((vm.active || vm.tooltipOver) && !$scope.$parent.vm.state.topBoxOpened) ? '1' : '.6';
+                for (var label in filterLabels) {
+                    var filterLabel = filterLabels[label].name;
+                    if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined) {
+                        for (var filter in filterLabels[label].values) {
+                            var filterColor = filterLabels[label].values[filter].color,
+                                filterValue = filterLabels[label].values[filter].name;
+                            if (readingAttributes[filterLabel] === filterValue){
+                                var color = filterColor.replace('rgb', 'rgba');
+                                colors += color.slice(0, -1)+','+opacity+'),';
+                            }
+                        }
                     }
                 }
-            }
-        }
-        var background;
-        if (colors !== '' ) {
-            colors = colors.slice(0, -1);
-            if ( (colors.match('rgb', 'gi') && colors.match('rgb', 'gi').length > 1) || (colors.match('#', 'gi') && colors.match('#', 'gi').length > 1)) {
-                background  = 'background: -moz-linear-gradient(top,'+colors+');';
-                background += 'background: -webkit-linear-gradient(top,'+colors+');';
-                background += 'background: ms-linear-gradient(top,'+colors+');'
-                background += 'background: linear-gradient(top,'+colors+');';
-            } else {
-                background = 'background: '+colors;
+                
+                if (colors !== '' ) {
+                    colors = colors.slice(0, -1);
+                    if ( (colors.match('rgb', 'gi') && colors.match('rgb', 'gi').length > 1) || (colors.match('#', 'gi') && colors.match('#', 'gi').length > 1)) {
+                        background  = 'background: -moz-linear-gradient(top,'+colors+');';
+                        background += 'background: -webkit-linear-gradient(top,'+colors+');';
+                        background += 'background: ms-linear-gradient(top,'+colors+');'
+                        background += 'background: linear-gradient(top,'+colors+');';
+                    } else {
+                        background = 'background: '+colors;
+                    }
+                }
             }
         }
         return background;
     };
 
     this.fitFilters = function(){
+        var app = parsedData.getCriticalEntryByPos(vm.appId),
+            reading,
+            readingAttributes;
+        
+        if (vm.readingId !== undefined){
+            reading           = app.content[vm.readingId];
+            readingAttributes = reading.attributes || {};
+        }
         var condizione = 'OR', //TODO: Decidere come gestire
             fit        = false,
             count      = 0,
@@ -143,20 +157,22 @@ angular.module('evtviewer.reading')
             values,
             value;
         
-        var filters = $scope.$parent.vm.state.filters;
-        
+        var filters = $scope.$parent.vm.state.filters || {};
+        var filterKeys = Object.keys(filters);
         if (condizione === 'OR') {
             // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
             match = false;
-            for (filter in filters) {
-                if (filters[filter].totActive > 0) {
+            for (var key in filterKeys) {
+                var filterLabel = filterKeys[key];
+                var filter      = filters[filterLabel];
+                if (filter.totActive > 0) {
                     count++;
-                    if (vm.entryAttr !== undefined && vm.entryAttr[filter] !== undefined){
+                    if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
                         i = 0;
-                        values = filters[filter].values;
+                        values = filter.values;
                         while ( i < values.length && !match) {
                             value = values[values[i]].name;
-                            match = match || vm.entryAttr[filter] === value;
+                            match = match || readingAttributes[filterLabel] === value;
                             i++;
                         }
                     }
@@ -166,15 +182,17 @@ angular.module('evtviewer.reading')
             fit = match;
         } else { //default
             var visible = true;
-            for (filter in filters) {
-                if (filters[filter].totActive > 0) {
+            for (var key in filterKeys) {
+                var filterLabel = filterKeys[key];
+                var filter      = filters[filterLabel];
+                if (filter.totActive > 0) {
                     count++;
                     match = false; 
-                    if (vm.entryAttr !== undefined && vm.entryAttr[filter] !== undefined){
-                        values = filters[filter].values;
+                    if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
+                        values = filter.values;
                         for ( i = 0; i < values.length; i++ ) {
                             value = values[values[i]].name;
-                            match = match || vm.entryAttr[filter] === value;
+                            match = match || readingAttributes[filterLabel] === value;
                         }
                     }
                     visible = visible && match;
@@ -185,6 +203,7 @@ angular.module('evtviewer.reading')
         if (count === 0) {
             fit = true;
         }
+        vm.hidden = !fit;
         return fit;
     };
 

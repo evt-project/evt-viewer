@@ -34,6 +34,7 @@ angular.module('evtviewer.reading')
                 // expansion
                 uid              : currentId,
                 appId            : entryId,
+                readingId        : scope.readingId,
                 readingType      : scope.readingType,
                 variance         : scope.variance,
 

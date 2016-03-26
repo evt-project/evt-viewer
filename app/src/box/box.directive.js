@@ -121,8 +121,10 @@ angular.module('evtviewer.box')
                     }
                     if (visible) {
                         if (currentBox.type === 'witness'){
-                            evtInterface.updateWitnessesPage(scope.witness, id.split('-')[1]);
-                            evtInterface.updateUrl();
+                            if (evtInterface.getCurrentWitnessPage(scope.witness) !== id.split('-')[1]) {
+                                evtInterface.updateWitnessesPage(scope.witness, id.split('-')[1]);
+                                evtInterface.updateUrl();
+                            }
                         }
                     }
                 });

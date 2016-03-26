@@ -52,7 +52,17 @@ angular.module('evtviewer.core')
     dataUrl: '../../data/pseudo-edition-test-file_mod.xml',
     defaultViewMode: 'imgTxt',
     defaultEdition: 'diplomatic',
-    skipCriticalEntriesFilters: 'wit, target, corresp',
 
-    loadCriticalEntriesImmediately: true
+    preferredWitness : 'edition',
+    
+    listDef                    : 'listWit, listChange',
+    versionDef                 : 'witness, change',
+    fragmentMilestone          : 'witStart, witEnd',
+    lacunaMilestone            : 'lacunaStart, lacunaEnd',
+    skipCriticalEntriesFilters : 'wit, target, corresp',
+    possibleVariantFilters     : 'type, cause, hand, resp, cert',
+    notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
+
+    loadCriticalEntriesImmediately: true,
+    maxWitsLoadTogether : 5
 });

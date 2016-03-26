@@ -149,7 +149,8 @@ angular.module('evtviewer.box')
                     //TODO: Differentiate main text from second one
                     topMenuList.selectors.push({id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() },
                                                {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
-                    
+                    topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'list', type: 'witList'});
+
                     bottomMenuList.buttons.push({title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
 
                     // if (evtInterface.getCurrentViewMode() === 'critical') {

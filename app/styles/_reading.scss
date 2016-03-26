@@ -4,32 +4,47 @@
 $reading-background-default : rgba(255, 108, 63, .3);
 $reading-background-hover   : rgba(255, 108, 63, 1);
 
+.autoLemma {
+    .reading {
+        .reading__text {
+            background: url('../images/autoLemma.png') !important;
+        }
+    }
+}
 .reading {
     &:not(.hidden) {
-        background: $reading-background-default;
-        // border:1px solid black;
-        padding: 0 3px;
+        padding:0;
         cursor: pointer;
 
+        .reading__text{
+            background: $reading-background-default;
+        }
         &.active, &.over,
         &.active .reading, &.over .reading{
-            // background: #FF6C3F !important;
-            background: $reading-background-hover;
+            .reading__text{
+                background: $reading-background-hover;
+            }
+        }
+        &.selected {
+            .reading__text{
+                background: $reading-background-hover;
+                border: 1px solid #000;
+                border-bottom: 5px solid #ECEFF1;
+                position: relative;
+                z-index: 9;
+            }
         }
         .reading__apparatus {
             display: none;
-            margin: 0 10px;
+            margin:0;
+            margin-bottom: 10px;
             position: relative;
-            padding: 5px;
-            z-index:99;
+            z-index:0;
 
             background: $popover-background-color;
             color: $popover-color;
             font-size: 90%;
-            
-            @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
-            border: 2.5px solid black;
-            border-radius: 3px;
+            border: 1px solid black;
             
             cursor: text !important;
 
@@ -44,48 +59,37 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
                 opacity:0;
                 background: transparent !important;
             }
-            .reading__apparatus__before{
-                position:absolute;
-                top:0px;
 
-                &::before {
-                    @include tooltipBeforeAfter();
-                    top: -20px;
-                    content:"\f0d8";
-                    text-shadow: 0px -3px 0px #000;
-                    height:0px;
-                }
+            &_main-content{
+                padding: 5px;
             }
-            &.open-up {
-                .reading__apparatus__before::before {
-                    content:"\f0d7";
-                    text-shadow: 0px 3px 0px #000;
+            &_other-content{
+                border-top: 1px dotted black;
+                padding: 5px;
+                max-height: 150px;
+                overflow-x: hidden;
+                overflow-y: auto;
+
+                p {
+                    padding: 0 10px;
                 }
             }
             .witnesses {
-                &::before {
-                    content: " ";
-                }
                 .wit {
-                    // font-weight: bold;
+                    margin: 0 3px;
                     cursor: pointer;
+                    text-decoration: underline;
+
                     &:hover {
-                        text-decoration: underline;
+                        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
                     }
                     &::after {
-                        content:" ";
                         text-decoration: none !important;
                     }
-                    &:last-child {
-                        &::after {
-                            content:"";
-                        }
-                    }
-                    &.disabled {
+                    &.selected {
                         cursor: default;
-                        &:hover {
-                            text-decoration: none;
-                        }
+                        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+                        text-decoration: none;
                     }
                 }
             }
@@ -112,10 +116,11 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
     }
 
     &.invisible {
-        background: transparent !important;
-        border: none;
-        cursor: default;
-
+        .reading__text{
+            background: transparent !important;
+            border: none;
+            cursor: default;
+        }
         > .reading__apparatus {
             display: none !important
         }
@@ -129,6 +134,3 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
     height: 10px; 
     display: inline-block; 
 }
-// [data-reading-type='lem'] > .reading:not(.hidden) {
-//     background: rgba(255, 138, 101, .7);
-// }

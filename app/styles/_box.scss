@@ -114,7 +114,8 @@
     &.box-text, &.box-witness {
         .box-body {
             position: relative;
-            overflow-y: scroll;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
     }
 

@@ -254,7 +254,7 @@ angular.module('evtviewer.dataHandler')
     
     /* CRITICAL ENTRIES FILTERS */
     parsedData.addCriticalEntryFilter = function(name, value) {
-        if (GLOBALDEFAULTCONF.skipCriticalEntriesFilters.indexOf(name) < 0) {
+        if (GLOBALDEFAULTCONF.possibleVariantFilters.indexOf(name) >= 0) {
             var valueObj = {
                 name : value,
                 color : criticalAppCollection.filtersColors[criticalAppCollection.filtersLength]

@@ -1,12 +1,20 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function(parsedData, evtParser, GLOBALDEFAULTCONF) {
+.service('evtCriticalParser', function(parsedData, evtParser, xmlParser, GLOBALDEFAULTCONF) {
     var parser = {};
+    var config = GLOBALDEFAULTCONF;
+    
+    var listDef               = config.listDef,
+        versionDef            = config.versionDef,
+        fragmentMilestone     = config.fragmentMilestone,
+        lacunaMilestone       = config.lacunaMilestone,
+        notSignificantVariant = config.notSignificantVariant;
 
-    var listDef = 'listWit, listChange',
-        versionDef = 'witness, change';
-
-    var notSignificantVariant = '<orig>, <sic>, [type=orthographic]';
+    var apparatusEntryDef     = '<app>',
+        lemmaDef              = '<lem>',
+        readingDef            = lemmaDef+', <rdg>',
+        readingGroupDef       = '<rdgGrp>';;
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+lacunaMilestone+','+lacunaMilestone;
 
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
@@ -46,7 +54,7 @@ angular.module('evtviewer.dataHandler')
                 else if (versionDef.indexOf(child.tagName) >= 0){ //witness
                     var witnessElem = {
                         id          : child.getAttribute('xml:id'),
-                        description : evtParser.parseXMLElement(child),
+                        description : evtParser.parseXMLElement(child, ''),
                         _group      : list.id,
                         _type       : 'witness'
                     };
@@ -78,26 +86,25 @@ angular.module('evtviewer.dataHandler')
                     if ( !evtParser.isNestedInElem(element, element.tagName) ) {
                         angular.forEach(element.childNodes, function(child){
                             if (child.nodeType === 1) {
-                                var element = {};
+                                var el = {};
                                 
                                 if (listDef.indexOf(child.tagName) >= 0) { // group
-                                    element = parseListWit(child);
+                                    el = parseListWit(child);
                                 } else if (versionDef.indexOf(child.tagName) >= 0) { // witness
-                                    var childElem = angular.element(child);
-                                    element = {
+                                    el = {
                                         id          : child.getAttribute('xml:id'),
-                                        description : evtParser.parseXMLElement(child),
+                                        description : evtParser.parseXMLElement(child, ''),
                                         _group      : undefined,
                                         _type       : 'witness'
                                     };
                                 }
-                                parsedData.addElementInWitnessCollection(element);
+                                parsedData.addElementInWitnessCollection(el);
                             }
                         });
                     }
             });
         } else {
-            console.log('ERROR: <listWit> missing. Please add this element to make EVT work properly.');
+            console.log('ERROR: '+listDef+' missing. Please add this element to make EVT work properly.');
         }
         // console.log('## Witnesses ##', JSON.stringify(parsedData.getWitnesses()));
         console.log('## Witnesses ##', parsedData.getWitnesses());
@@ -111,7 +118,7 @@ angular.module('evtviewer.dataHandler')
     /* @elem element -> xml element to be parsed                           */
     /* @return a json object representing the apparatus reading        */
     /* ******************************************************************* */
-    var parseAppReading = function(elem){
+    var parseAppReading = function(entry, elem){
         var reading = {
             id           : '',
             attributes   : [],
@@ -143,13 +150,22 @@ angular.module('evtviewer.dataHandler')
                 if (attrib.name === 'wit') {
                     var wits = attrib.value.split('#').filter(function(el) { return el.length !== 0; });
                     reading.wits = [];
-                    for(s in wits){
+                    for(var s in wits){
                         var sigla = wits[s].replace(' ', '');
                         if (parsedData.getWitness(sigla) !== undefined) { //exclude siglas without reference
                             if (parsedData.isWitnessesGroup(sigla)) {
-                                reading.wits.push.apply(reading.wits, parsedData.getWitnessesInGroup(sigla));
+                                var witsInGroup = parsedData.getWitnessesInGroup(sigla);
+                                reading.wits.push.apply(reading.wits, witsInGroup);
+                                for (var wit in witsInGroup) {
+                                    if (entry.content._witMap[witsInGroup[wit]] === undefined){
+                                        entry.content._witMap[witsInGroup[wit]] = id;
+                                    }
+                                }
                             } else {
                                 reading.wits.push(sigla);
+                                if (entry.content._witMap[sigla] === undefined){
+                                    entry.content._witMap[sigla] = id;
+                                }
                             }
                         }
                     }
@@ -159,6 +175,7 @@ angular.module('evtviewer.dataHandler')
                         reading._significant = false;
                     }
                 }
+                parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
             }
         }
 
@@ -170,7 +187,7 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (child.tagName === 'note') {
                     reading.note = child.innerHTML;
-                } else if (child.tagName === 'app') {
+                } else if ('<'+child.tagName+'>' === apparatusEntryDef) {
                     var entryApp = parseAppEntry(child);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                 } else {
@@ -179,10 +196,16 @@ angular.module('evtviewer.dataHandler')
                             reading._significant = false;
                         }
                     }
-
-                    if (child.outerHTML !== undefined) {
-                        reading.content.push(child.outerHTML.trim());
+                    if (fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                        var fragmentSigla = elem.getAttribute('wit');
+                        child.setAttribute('wit', fragmentSigla);
                     }
+
+                    if (lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                        var lacunaSigla = elem.getAttribute('wit');
+                        child.setAttribute('wit', lacunaSigla);
+                    }
+                    reading.content.push(child.cloneNode(true));
                 }
             }
         });
@@ -203,7 +226,7 @@ angular.module('evtviewer.dataHandler')
         var groupObj = {
             attributes : [],
             content    : []
-        }
+        };
 
         var id;
         if (elem.getAttribute('xml:id')) {
@@ -214,8 +237,8 @@ angular.module('evtviewer.dataHandler')
         groupObj.id = id;
 
         angular.forEach(elem.childNodes, function(child) {
-            if (child.tagName === 'lem' || child.tagName === 'rdg') {
-                var readingObj = parseAppReading(child);
+            if (readingDef.indexOf('<'+child.tagName+'>') >= 0) {
+                var readingObj = parseAppReading(entry, child);
                 readingObj._group = groupObj.id;
                 groupObj.content.push(readingObj.id);
                 
@@ -223,7 +246,6 @@ angular.module('evtviewer.dataHandler')
                     var attrib = elem.attributes[i];
                     if (attrib.specified) {
                         groupObj.attributes[attrib.name] = attrib.value;
-                        console.log(readingObj.attributes[attrib.name]);
                         if (readingObj.attributes[attrib.name] === undefined) {
                             readingObj.attributes[attrib.name] = attrib.value;
                             if (readingObj._significant) {
@@ -232,6 +254,7 @@ angular.module('evtviewer.dataHandler')
                                 }
                             }
                         }
+                        parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                     }
                 }
 
@@ -241,6 +264,8 @@ angular.module('evtviewer.dataHandler')
                 if (readingObj._significant || child.tagName === 'lem') {
                     entry._indexes.readings._significant.push(readingObj.id);
                 }
+            } else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
+                //TODO
             }
         });
         entry._indexes.groups.push(groupObj.id);
@@ -263,6 +288,7 @@ angular.module('evtviewer.dataHandler')
             lemma      : '',
             note       : '',
             content    : {
+                _witMap : { }
                 // READINGS
                 // GROUPS
                 // SUBAPP
@@ -293,21 +319,23 @@ angular.module('evtviewer.dataHandler')
                 var attrib = app.attributes[i];
                 if (attrib.specified) {
                     entry.attributes[attrib.name] = attrib.value;
+                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
                 }
             }
         }
-        entry._subApp = evtParser.isNestedInElem(app, 'app');
+        entry._subApp = evtParser.isNestedInElem(app, apparatusEntryDef.replace(/[<>]/g, ''));
 
         angular.forEach(app.childNodes, function(child){
             if (child.nodeType === 1) {
-                if (child.tagName === 'lem' || child.tagName === 'rdg') {
-                    var reading  = parseAppReading(child);
+                if (readingDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    var reading  = parseAppReading(entry, child);
                     
-                    if (child.tagName === 'lem') {
+                    if (lemmaDef.indexOf('<'+child.tagName+'>') >= 0) {
                         entry.lemma = reading.id;
                     } else {
                         entry._indexes.readings._indexes.push(reading.id);
-                        if (reading._significant) {
+                        if (reading._significant && 
+                            entry._indexes.readings._significant.indexOf(reading.id) < 0) {
                             entry._indexes.readings._significant.push(reading.id);
                         }
                     }
@@ -315,10 +343,10 @@ angular.module('evtviewer.dataHandler')
                     entry.content[reading.id] = reading;
                     entry._indexes.encodingStructure.push(reading.id);
                 } 
-                else if (child.tagName === 'rdgGrp') {
+                else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
                     parseGroupReading(entry, child);
                 } 
-                else if (child.tagName === 'app') {
+                else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
                     var entryObj = parseAppEntry(child);
                     var subApp = {id: entryObj.id, type: 'subApp'};
                     entry.content[entryObj.id] = subApp;
@@ -335,6 +363,9 @@ angular.module('evtviewer.dataHandler')
     var handleAppEntry = function(app) {
         if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
             var entry = parseAppEntry(app);
+
+            // controllo testimoni mancanti
+            
             if (app.querySelectorAll('rdg lacunaStart').length > 0 || app.querySelectorAll('rdg lacunaEnd').length > 0) {
                 entry._lacuna = true;
             }
@@ -356,7 +387,7 @@ angular.module('evtviewer.dataHandler')
     // and add the json object generated into parsedData with the function parsedData.addCriticalEntry();
     parser.parseCriticalEntries = function(doc) {
         var currentDocument = angular.element(doc);
-        angular.forEach(currentDocument.find('app'), 
+        angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
             function(element) {
                 handleAppEntry(element);
         });
@@ -373,97 +404,6 @@ angular.module('evtviewer.dataHandler')
             return false;
         } else {
             return (witObj.group !== undefined && elem.indexOf('#'+witObj.group) >= 0) || (elem.indexOf('#') >= 0 && elem.indexOf('#'+witObj.id) >= 0) || elem.indexOf(witObj.id) >= 0;
-        }
-    };
-
-    /* ******************************************** */
-    /* parseWitnessApp(app, wit, evtReadingElement) */
-    /* ******************************************************************************** */
-    /* Function to parse an XML node representing an apparatus entry                    */
-    /* and filter its content for a particular witness                                  */
-    /* @app XML element representing an apparatus entry                                 */
-    /* @wit sigla of the witness                                                        */
-    /* @evtReadingElement reference to the HTML element for the apparatus entry of @wit */
-    /* ******************************************************************************** */
-    // It will save every attribute of the XML element in a data-* attribute
-    // (excluding @xml:id and @wit that will be handled differently)
-    // and add them into the possible critical entry filters with parsedData.addCriticalEntryFilter()
-    // if the entry contains a reading for the specified witness (@wit)
-    // the function will look for it into the app children
-    // otherwise if there is a lemma it will choose this one
-    // The children cycle will consider
-    // – textual nodes
-    // – lemma/reading for the specified witness
-    // – nested group of readings or sub-apparatus
-    // The parsed content will be appended to the evtReadingElement
-    var parseWitnessApp = function(app, witObj, evtReadingElement) {
-        // var wit = witObj.id;
-        var attrib;
-        for (var k = 0; k < app.attributes.length; k++) {
-            attrib = app.attributes[k];
-            if (attrib.specified) {
-                if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                    evtReadingElement.setAttribute('data-entry-attr-'+attrib.name, attrib.value);
-                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
-                }
-            }
-        }
-
-        if ( containsWitnessReading(app.innerHTML, witObj) ) {
-            var children = app.childNodes;
-            for (var i = 0; i < children.length; i++) {
-                var childNode = children[i];
-                if (childNode.nodeType === 3 ) { // Text
-                    evtReadingElement.appendChild(childNode.cloneNode(true));
-                } else {
-                    if (childNode.tagName === 'lem' || childNode.tagName === 'rdg') {
-                        if ( childNode.getElementsByTagName('app').length > 0 || 
-                             childNode.getElementsByTagName('rdgGrp').length > 0 ) {
-                            if (containsWitnessReading(childNode.innerHTML, witObj)) {
-                                evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
-                                parseWitnessApp(childNode, witObj, evtReadingElement);
-                            }
-                        } else {
-                            if ( childNode.getAttribute('wit') !== null ) {
-                                if (containsWitnessReading(childNode.getAttribute('wit'), witObj)) {
-                                    // evtReadingElement.appendChild(evtParser.parseXMLElement(childNode));
-                                    evtReadingElement.appendChild(childNode.cloneNode(true));
-                                    evtReadingElement.setAttribute('data-reading-type', childNode.tagName);
-                                    for (var j = 0; j < childNode.attributes.length; j++) {
-                                        attrib = childNode.attributes[j];
-                                        if (attrib.specified) {
-                                            if (attrib.name !== 'xml:id' && attrib.name !== 'wit') {
-                                                evtReadingElement.setAttribute('data-entry-attr-'+attrib.name, attrib.value);
-                                                parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else if (childNode.tagName === 'rdgGrp') {
-                        if (containsWitnessReading(childNode.innerHTML, witObj)) {
-                            parseWitnessApp(childNode, witObj, evtReadingElement);
-                        }
-                    } else if (childNode.tagName === 'app') {
-                        if (containsWitnessReading(childNode.innerHTML, witObj)) {
-                            var id         = childNode.getAttribute('xml:id') || evtParser.xpath(childNode).substr(1),
-                                newElement = document.createElement('evt-reading');
-                            newElement.setAttribute('data-entry-id', evtParser.xpath(childNode.parentNode).substr(1));
-                            newElement.setAttribute('data-app-id', id);
-                            parseWitnessApp(childNode, witObj, newElement);
-                            evtReadingElement.appendChild(newElement);
-                        }
-                    } else {
-                        evtReadingElement.appendChild(childNode.cloneNode(true));
-                    }   
-                }
-            }
-        } else {
-            if ( app.getElementsByTagName('lem').length > 0) {
-                var lem = app.getElementsByTagName('lem')[0];
-                evtReadingElement.appendChild(evtParser.parseXMLElement(lem));
-            }
         }
     };
 
@@ -509,51 +449,53 @@ angular.module('evtviewer.dataHandler')
     /* @docDOM -> XML to be parsed        */
     /* @wit -> witness specified          */
     /* ********************************** */
-    parser.parseWintessLacunas = function(docDOM, witObj) {
+    parser.parseWintessLacunas = function(docDOM, wit) {
         var startLacunas = docDOM.getElementsByTagName('lacunaStart'),
             endLacunas   = docDOM.getElementsByTagName('lacunaEnd'),
             startLacunasWit = [],
-            endLacunasWit   = [];
+            endLacunasWit   = [], 
+            appId,
+            readingId,
+            readingWits;
         for (var i = 0; i < startLacunas.length; i++) {
-            if (startLacunas[i].getAttribute('wit') !== null &&
-                containsWitnessReading(startLacunas[i].getAttribute('wit'), witObj)) {
+            appId       = startLacunas[i].parentNode.getAttribute('data-app-id');
+            readingId   = startLacunas[i].parentNode.getAttribute('data-reading-id');
+            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            if (readingWits !== undefined) {
+                if (readingWits.indexOf(wit) >= 0) {
                     startLacunasWit.push(startLacunas[i]);
-            } else if ( startLacunas[i].parentNode.getAttribute('wit') !== null &&
-                        containsWitnessReading(startLacunas[i].parentNode.getAttribute('wit'), witObj)){
-                startLacunasWit.push(startLacunas[i]);
+                }
             }
         }
         for (var j = 0; j < endLacunas.length; j++) {
-            if (endLacunas[j].getAttribute('wit') !== null &&
-                containsWitnessReading(endLacunas[j].getAttribute('wit'), witObj)) {
+            appId       = endLacunas[j].parentNode.getAttribute('data-app-id');
+            readingId   = endLacunas[j].parentNode.getAttribute('data-reading-id');
+            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            if (readingWits !== undefined) {
+                if (readingWits.indexOf(wit) >= 0) {
                     endLacunasWit.push(endLacunas[j]);
-            } else if ( endLacunas[j].parentNode.getAttribute('wit') !== null &&
-                        containsWitnessReading(endLacunas[j].parentNode.getAttribute('wit'), witObj)){
-                endLacunasWit.push(endLacunas[j]);
+                }
             }
         }
         if (startLacunasWit.length === endLacunasWit.length) {
             for(var k = startLacunasWit.length-1; k >= 0; k--) {
-                // if (startLacunasWit[k].parentNode !== null && endLacunasWit[k].parentNode !== null) {
-                    var appStart = startLacunasWit[k].parentNode.parentNode;
-                    var appEnd   = endLacunasWit[k].parentNode.parentNode;
-
-                    var newElement = document.createElement('span');
-                    newElement.setAttribute('data-wit', witObj.id);
-
-                    newElement.className = 'lacunaEnd';
-                    endLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), endLacunasWit[k]);
-
-                    newElement.className = 'lacunaStart';
-                    startLacunasWit[k].parentNode.replaceChild(newElement.cloneNode(true), startLacunasWit[k]);
-                    
-                    var match = '<evt-reading.*data-app-id.*'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
-                    var sRegExInput = new RegExp(match, 'ig'); 
-                    docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML.replace(sRegExInput, appStart.outerHTML+'<span class="lacuna">[LACUNA] </span>'+appEnd.outerHTML));
-                // }
+                var appStart = startLacunasWit[k].parentNode, 
+                    appEnd   = endLacunasWit[k].parentNode;
+                
+                var appStartId = appStart.getAttribute('data-app-id'),
+                    appEndId   = appEnd.getAttribute('data-app-id');
+                
+                var match = '<evt-reading.*data-app-id.*'+appStartId+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEndId+'.*<\/evt-reading>';
+                var sRegExInput = new RegExp(match, 'ig'),
+                    newHTML     = appStart.outerHTML+'<span class="lacuna">[LACUNA]</span>'+appEnd.outerHTML;
+                docDOM.innerHTML = docDOM.innerHTML.replace(sRegExInput, newHTML);
+                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
             }
+        } else {
+            docDOM.innerHTML = '<span class="error">There was a problem in loading lacuna for this witness.</span>';
         }
     };
+
     /* ************************************ */
     /* isFragmentaryWitness(docDOM, witObj) */
     /* ********************************************************** */
@@ -574,46 +516,44 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************* */
     /* Function to parse text of fragmentary witness */
     /* ********************************************* */
-    parser.parseFragmentaryWitnessText = function(docDOM, witObj) {
+    parser.parseFragmentaryWitnessText = function(docDOM, wit) {
         var starts = docDOM.getElementsByTagName('witStart'),
             ends   = docDOM.getElementsByTagName('witEnd'),
             startsWit = [],
-            endsWit   = [];
+            endsWit   = [],
+            appId,
+            readingId,
+            readingWits;
         for (var i = 0; i < starts.length; i++) {
-            if (starts[i].getAttribute('wit') !== null &&
-                containsWitnessReading(starts[i].getAttribute('wit'), witObj)) {
+            appId       = starts[i].parentNode.getAttribute('data-app-id');
+            readingId   = starts[i].parentNode.getAttribute('data-reading-id');
+            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            if (readingWits !== undefined) {
+                if (readingWits.indexOf(wit) >= 0) {
                     startsWit.push(starts[i]);
-            } else if ( starts[i].parentNode.getAttribute('wit') !== null &&
-                        containsWitnessReading(starts[i].parentNode.getAttribute('wit'), witObj)){
-                startsWit.push(starts[i]);
+                }
             }
         }
         for (var j = 0; j < ends.length; j++) {
-            if (ends[j].getAttribute('wit') !== null &&
-                containsWitnessReading(ends[j].getAttribute('wit'), witObj)) {
+            appId       = ends[j].parentNode.getAttribute('data-app-id');
+            readingId   = ends[j].parentNode.getAttribute('data-reading-id');
+            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            if (readingWits !== undefined) {
+                if (readingWits.indexOf(wit) >= 0) {
                     endsWit.push(ends[j]);
-            } else if ( ends[j].parentNode.getAttribute('wit') !== null &&
-                        containsWitnessReading(ends[j].parentNode.getAttribute('wit'), witObj)){
-                endsWit.push(ends[j]);
+                }
             }
         }
-        
         var fragmentaryText = '';
         if (starts.length === ends.length) {
             for(var k = startsWit.length-1; k >= 0; k--) {
-                var appStart = startsWit[k].parentNode.parentNode,
-                    appEnd   = endsWit[k].parentNode.parentNode;
+                var appStart = startsWit[k].parentNode,
+                    appEnd   = endsWit[k].parentNode;
 
-                var newElement = document.createElement('span');
-                newElement.setAttribute('data-wit', witObj.id);
+                var appStartId = appStart.getAttribute('data-app-id'),
+                    appEndId   = appEnd.getAttribute('data-app-id');
                 
-                newElement.className = 'fragmentaryWitStart';
-                startsWit[k].parentNode.replaceChild(newElement.cloneNode(true), startsWit[k]);
-                
-                newElement.className = 'fragmentaryWitEnd';
-                endsWit[k].parentNode.replaceChild(newElement.cloneNode(true), endsWit[k]);
-                
-                var match = '<evt-reading data-app-id="'+appStart.getAttribute('data-app-id')+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading data-app-id.*'+appEnd.getAttribute('data-app-id')+'.*<\/evt-reading>';
+                var match = '<evt-reading data-app-id="'+appStartId+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading data-app-id.*'+appEndId+'.*<\/evt-reading>';
                 var sRegExInput = new RegExp(match, 'ig'); 
                 fragmentaryText = '<span class="fragment fragment-start"></span>'+(docDOM.innerHTML.match(sRegExInput))+'<span class="fragment fragment-end"></span>'+fragmentaryText;
             }
@@ -623,6 +563,70 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+    /* ******************************************* */
+    /* getEntryWitnessReadingText(entry, wit) */
+    /* ******************************************************************************************************* */
+    /* Function to get the text of the reading for a particular witness in a specific critical apparatus entry */
+    /* @entry -> critical entry object from model                                                              */
+    /* @wit -> witness specified                                                                               */
+    /* ******************************************************************************************************* */
+    var getEntryWitnessReadingText = function(entry, wit){
+        var spanElement = document.createElement('evt-reading');
+            spanElement.setAttribute('data-app-id', entry.id);
+            
+        if (entry !== null) {
+            var readingId = entry.content._witMap[wit];
+            if (readingId !== undefined && readingId !== '') {
+                spanElement.setAttribute('data-reading-id', readingId);
+                var readingContent = entry.content[readingId].content;
+                if (readingContent.length > 0) {
+                    for (var i in readingContent) {
+                        if (typeof(readingContent[i]) === 'string'){
+                            spanElement.appendChild(document.createTextNode(readingContent[i]));
+                        } else {
+                            if (readingContent[i].type === 'subApp'){
+                                var subEntry = parsedData.getCriticalEntryByPos(readingContent[i].id);
+                                var subEntryElem = getEntryLemmaText(subEntry);
+                                spanElement.appendChild(subEntryElem);
+                            } else {
+                                spanElement.appendChild(readingContent[i]);
+                            }
+                        }
+                    }
+                } else if (!entry._lacuna){
+                    var omitElement = document.createElement('span');
+                        omitElement.className = 'omission';
+                    spanElement.appendChild(omitElement);
+                } else {
+                    var lacunaElement = document.createElement('span');
+                        lacunaElement.className = 'lacunaApp';
+                    spanElement.appendChild(lacunaElement);
+                }
+
+                // var attribKeys = Object.keys(entry.content[readingId].attributes);
+                // for (var key in attribKeys) {
+                //     var attrib = attribKeys[key];
+                //     var value  = entry.content[readingId].attributes[attrib];
+                //     if (attrib !== 'xml:id') {
+                //         spanElement.setAttribute('data-entry-attr-'+attrib, value);
+                //     }
+                // }
+
+            } else {
+                var noRdgElement = document.createElement('span');
+                    noRdgElement.className = 'encodingError';
+                    noRdgElement.setAttribute('title', 'noRdg');
+                spanElement.appendChild(noRdgElement);
+            }
+        } else {
+            var errorElement = document.createElement('span');
+                errorElement.className = 'encodingError';
+                errorElement.setAttribute('title', 'General error');
+            spanElement.appendChild(errorElement);
+        }
+        return spanElement;
+    };
+    
     /* ************************** */
     /* parseWitnessText(doc, wit) */
     /* ************************************************************************************** */
@@ -630,59 +634,74 @@ angular.module('evtviewer.dataHandler')
     /* @doc -> XML to be parsed                                                               */
     /* @wit -> witness specified                                                              */
     /* ************************************************************************************** */
-    // - It will look for every critical entries (<app> in XML-TEI P5),
-    //   tranform them into evtReading directive, 
-    //   and parse its content with the function parseWitnessApp() 
-    //   in order to show only the reading of the specified witness
-    // – It will parse the pages of the specified witness parseWintessPageBreaks()
-    // – It will transform every element representing a note (<note> in XML-TEI P5)
-    //   into an evtPopover directive
-    // Before returning the parsed text it will store it (parsedData.addWitnessText())
-    // in order to avoid the system to parse it every time it is needed
     parser.parseWitnessText = function(doc, wit) {
+        // console.log('parseWitnessText', wit);
         var witnessText;
         if ( doc !== undefined ) {
             doc = doc.cloneNode(true);
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
                 witObj = parsedData.getWitness(wit);
 
-            var apps   = docDOM.getElementsByTagName('app'),
+            var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                 j      = apps.length-1;
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
             docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
-                if (!evtParser.isNestedInElem(appNode, 'app')) {
+                if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
                     var id;
                     if (appNode.getAttribute('xml:id')) {
                         id = 'app_'+appNode.getAttribute('xml:id');
                     } else {
                         id = evtParser.xpath(appNode).substr(1);
                     }
-                    // var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-                    var spanElement = document.createElement('evt-reading');
-                    spanElement.setAttribute('data-app-id', id);
-                    parseWitnessApp(appNode, witObj, spanElement);
+                    var spanElement;
+                    var entry = parsedData.getCriticalEntryByPos(id);
+                    // If I've already parsed all critical entries,
+                    // or I've alreafy parsed the current entry...
+                    // ...I can simply access the model to get the right output
+                    // ... otherwise I parse the DOM and save the entry in the model
+                    if (!GLOBALDEFAULTCONF.loadCriticalEntriesImmediately && entry === undefined) {
+                        handleAppEntry(appNode);
+                        var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
+                        if (subApps.length > 0){
+                            for (var z = 0; z < subApps.length; z++) {
+                                handleAppEntry(subApps[z]);
+                            }
+                        }
+                        entry = parsedData.getCriticalEntryByPos(id);
+                    }
+                    if (entry !== undefined) {
+                        spanElement = getEntryWitnessReadingText(entry, wit);
+                    } else {
+                        spanElement = document.createElement('span');
+                        spanElement.className = 'encodingError';
+                    }
                     appNode.parentNode.replaceChild(spanElement, appNode);
                 }
                 j--;
             }
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
 
-            //parse lacunas
-            parser.parseWintessLacunas(docDOM, witObj);
+            // // DA PROBLEMI [ma serve per parsare i vari nodi XML]
+            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
+            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.tei-c\.org\/ns\/1.0"/g, '');
+            
+            angular.forEach(docDOM.children, function(elem){
+                elem.parentNode.replaceChild(evtParser.parseXMLElement(elem, skipFromBeingParsed), elem);
+            });
 
             //parse <pb>
             parser.parseWintessPageBreaks(docDOM, witObj);
-            //parse lines
-            evtParser.parseLines(docDOM);
-            //parse <note>
-            evtParser.parseNote(docDOM);
             
+            //parse lacunas
+            parser.parseWintessLacunas(docDOM, wit);
+
             // DA PROBLEMI [ma serve per parsare i frammenti]
             docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
+            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.tei-c\.org\/ns\/1.0"/g, '');
             if (isFragmentaryWitness(docDOM, witObj)) {
-                var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, witObj);
+                var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, wit);
                 witnessText = evtParser.balanceXHTML(fragmentaryText);
             } else {
                 witnessText = docDOM.innerHTML;
@@ -691,6 +710,7 @@ angular.module('evtviewer.dataHandler')
             witnessText = '<span>Text not available.</span>';
         }
         witnessText = evtParser.balanceXHTML(witnessText);
+        
         //save witness text
         parsedData.addWitnessText(wit, witnessText);
         return witnessText;
@@ -700,103 +720,63 @@ angular.module('evtviewer.dataHandler')
     /* CRITICAL TEXT */
     /* ************* */
 
-    /* ************************************* */
-    /* parseCriticalTextApp(app, lemElement) */
-    /* ******************************************************************************** */
-    /* Function to parse an XML node representing an apparatus entry                    */
-    /* and filter its content for the critical text                                     */
-    /* @app XML element representing an apparatus entry                                 */
-    /* @lemElement reference to the HTML element representing the critical lemma        */
-    /* ******************************************************************************** */
-    // It will save every attribute of the XML element in a data-* attribute
-    // (excluding @xml:id that will be handled differently)
-    // if the entry contains a lemma
-    // the function will look for it into the app children
-    // otherwise it will append the content of every alternative reading to the lemElement
-    // The children cycle will consider
-    // – textual nodes
-    // – lemma 
-    // – nested group of readings or sub-apparatus both in the app node and in the chil node
-    // The parsed content will be appended to the lemElement
-    // For very reading or group of readings found it will add a criticalEntryFilter 
-    // based on the attribute of the node parsedData.addCriticalEntryFilter()
-    var parseCriticalTextApp = function(app, lemElement){
-        var attrib;
-        for (var k = 0; k < app.attributes.length; k++) {
-            attrib = app.attributes[k];
-            if (attrib.specified) {
-                if (attrib.name !== 'xml:id') {
-                    lemElement.setAttribute('data-'+attrib.name, attrib.value);
-                }
-            }
-        }
-        var variance = 0;
-        if ( app.getElementsByTagName('lem').length > 0 ) {
-            var children = app.childNodes;
-            for (var i = 0; i < children.length; i++) {
-                var childNode = children[i];
-                if (childNode.nodeType === 3 ) { // Text
-                    lemElement.appendChild(childNode.cloneNode(true));
-                } else {
-                    if (childNode.tagName === 'lem') {
-                        if ( childNode.getElementsByTagName('app').length > 0 ) {
-                            if ( childNode.getElementsByTagName('lem').length > 0 ) {
-                                parseCriticalTextApp(childNode, lemElement);
-                            }
-                        } else {
-                            // lemElement.appendChild(childNode.cloneNode(true));
-                            lemElement.appendChild(evtParser.parseXMLElement(childNode));
-                        }
-                    } else if (childNode.tagName === 'app') {
-                        if ( childNode.getElementsByTagName('lem').length > 0 ) {
-                            var id         = childNode.getAttribute('xml:id') || evtParser.xpath(childNode).substr(1),
-                                newElement = document.createElement('evt-reading');
-                            newElement.setAttribute('data-entry-id', evtParser.xpath(childNode.parentNode).substr(1));
-                            newElement.setAttribute('data-app-id', id);
-                            parseCriticalTextApp(childNode, newElement);
-                            lemElement.appendChild(newElement);
-                        }
-                    } else if (childNode.tagName !== 'rdg' && childNode.tagName !== 'rdgGrp') {
-                        lemElement.appendChild(childNode.cloneNode(true));
-                    }   
-                    if (childNode.tagName === 'lem' || childNode.tagName === 'rdg' || childNode.tagName === 'rdgGrp' || childNode.tagName === 'app') {
-                        variance++;
-                        for (var j = 0; j < childNode.attributes.length; j++) {
-                            attrib = childNode.attributes[j];
-                            if (attrib.specified) {
-                                if (attrib.name !== 'xml:id') {
-                                    if (childNode.tagName === 'lem') {    
-                                        lemElement.setAttribute('data-'+attrib.name, attrib.value);
-                                    }
-                                    parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
-                                }
-                            }
+    /* ******************************************* */
+    /* getEntryLemmaText(entry) */
+    /* **************************************************************************** */
+    /* Function to get the text of the lemma in a specific critical apparatus entry */
+    /* @entry -> critical entry object from model                                   */
+    /* **************************************************************************** */
+    var getEntryLemmaText = function(entry){
+        var spanElement = document.createElement('evt-reading'),
+            errorElement;
+            spanElement.setAttribute('data-app-id', entry.id);
+            
+        if (entry !== null) {
+            if (entry._lacuna) {
+                var lacunaElement = document.createElement('span');
+                    lacunaElement.className = 'lacunaApp';
+                spanElement.appendChild(lacunaElement);
+            } else if (entry.lemma !== undefined && entry.lemma !== '') {
+                var lemmaContent = entry.content[entry.lemma].content;
+                for (var i in lemmaContent) {
+                    if (typeof(lemmaContent[i]) === 'string'){
+                        spanElement.appendChild(document.createTextNode(lemmaContent[i]));
+                    } else {
+                        if (lemmaContent[i].type === 'subApp'){
+                            var subEntry = parsedData.getCriticalEntryByPos(lemmaContent[i].id);
+                            var subEntryElem = getEntryLemmaText(subEntry);
+                            spanElement.appendChild(subEntryElem);
                         }
                     }
                 }
+            } else {
+                if (GLOBALDEFAULTCONF.preferredWitness !== '') {
+                    spanElement = getEntryWitnessReadingText(entry, GLOBALDEFAULTCONF.preferredWitness);
+                    spanElement.className = 'autoLemma';
+                } else {
+                    errorElement = document.createElement('span');
+                    errorElement.className = 'encodingError';
+                    errorElement.setAttribute('title', 'General error');
+                    spanElement.appendChild(errorElement);        
+                }
+            }
+            
+            var attribKeys = Object.keys(entry.attributes);
+            for (var key in attribKeys) {
+                var attrib = attribKeys[key];
+                var value = entry.attributes[attrib];
+                if (attrib !== 'xml:id') {
+                    spanElement.setAttribute('data-'+attrib, value);
+                }
             }
         } else {
-            // There are no <lem> elements
-            var rdgs = app.getElementsByTagName('rdg'),
-                wits = '';
-
-            if ( rdgs.length > 0) {
-                var lemElem = document.createElement('span'),
-                    lemText = '{';
-                for (var x = 0; x < rdgs.length; x++) {
-                    var rdgNode = rdgs[x];
-                    lemText    += rdgNode.textContent+', ';
-                    wits       += rdgNode.getAttribute('wit');
-                }
-                lemText = lemText.slice(0, -2)+'}';
-                
-                lemElem.textContent = lemText;
-                lemElement.appendChild(lemElem);
-                lemElement.setAttribute('data-wit', wits);
-            }
-            variance += rdgs.length;
+            errorElement = document.createElement('span');
+            errorElement.className = 'encodingError';
+            errorElement.setAttribute('title', "General error");
+            spanElement.appendChild(errorElement);
         }
-        lemElement.setAttribute('data-variance', variance);
+        
+        return spanElement;
     };
 
     /* ************************** */
@@ -805,29 +785,24 @@ angular.module('evtviewer.dataHandler')
     /* Function to parse the XML of the document and generate the critical text */
     /* @doc -> XML to be parsed                                                 */
     /* ************************************************************************************** */
-    // - It will look for every critical entries (<app> in XML-TEI P5),
-    //   tranform them into evtReading directive, 
-    //   and parse its content with the function parseCriticalTextApp() 
-    //   in order to show only the choosed reading (the lemma), if there is one
-    // – It will transform every element representing a note (<note> in XML-TEI P5)
-    //   into an evtPopover directive
-    // Before returning the parsed text it will store it (parsedData.addCriticalText())
-    // in order to avoid the system to parse it every time it is needed
     parser.parseCriticalText = function(doc) {
+        // console.log('parseCriticalText');
         var criticalText;
         if ( doc !== undefined ) {
             doc = doc.cloneNode(true);
             var docDOM = doc.documentElement.getElementsByTagName('body')[0],
-                lemmas = docDOM.getElementsByTagName('lem');
+                lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
             
-            if (lemmas.length > 0) {
-                var apps   = docDOM.getElementsByTagName('app'),
+            if (lemmas.length > 0 || 
+                (parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== undefined &&
+                 parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== '') ) {
+                var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                     j      = apps.length-1, 
                     count  = 0;
             
                 while(j < apps.length && j >= 0) {
                     var appNode = apps[j];
-                    if (!evtParser.isNestedInElem(appNode, 'app')) {
+                    if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
                         // var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
                         var id;
                         if (appNode.getAttribute('xml:id')) {
@@ -835,15 +810,36 @@ angular.module('evtviewer.dataHandler')
                         } else {
                             id = evtParser.xpath(appNode).substr(1);
                         }
-                        // var id          = appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1), //'app-'+count,
-                        var spanElement = document.createElement('evt-reading');
-                        spanElement.setAttribute('data-app-id', id);
-                        parseCriticalTextApp(appNode, spanElement);
+                        var spanElement;
+                        var entry = parsedData.getCriticalEntryByPos(id);
+                        
+                        // If I've already parsed all critical entries,
+                        // or I've already parsed the current entry...
+                        // ...I can simply access the model to get the right output
+                        // ... otherwise I parse the DOM and save the entry in the model
+                        if (!GLOBALDEFAULTCONF.loadCriticalEntriesImmediately || entry === undefined) {
+                            handleAppEntry(appNode);
+                            var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
+                            if (subApps.length > 0){
+                                for (var z = 0; z < subApps.length; z++) {
+                                    handleAppEntry(subApps[z]);
+                                }
+                            }
+                            entry = parsedData.getCriticalEntryByPos(id);
+                        }
+                        if (entry !== undefined) {
+                            spanElement = getEntryLemmaText(entry);
+                        } else {
+                            spanElement = document.createElement('span');
+                            spanElement.className = 'errorMsg';
+                            spanElement.textContent = 'ERROR';
+                        }
                         appNode.parentNode.replaceChild(spanElement, appNode);
                         count++;
                     }
                     j--;
                 }
+                console.log('## Critical entries ##', parsedData.getCriticalEntries());
                 //remove <pb>
                 var pbs = docDOM.getElementsByTagName('pb'),
                     k   = 0;
@@ -851,10 +847,10 @@ angular.module('evtviewer.dataHandler')
                     var pbNode = pbs[k];
                         pbNode.parentNode.removeChild(pbNode);
                 }
-                //parse lines
-                evtParser.parseLines(docDOM);
                 
-                evtParser.parseNote(docDOM);
+                angular.forEach(docDOM.children, function(elem){
+                    elem.parentNode.replaceChild(evtParser.parseXMLElement(elem, skipFromBeingParsed), elem);
+                });
                 criticalText = docDOM;
             } else {
                 criticalText = undefined;
