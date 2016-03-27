@@ -39,6 +39,11 @@ $popover-shadow-color: #7e7067;
             text-decoration: none;
         }
     }
+
+    &.blurred{
+        color: transparent !important;
+        text-shadow: 0 0 5px #000;
+    }
 }
 
 .popover_tooltip {

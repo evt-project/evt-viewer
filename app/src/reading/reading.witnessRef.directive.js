@@ -5,14 +5,13 @@ angular.module('evtviewer.reading')
         restrict: 'E',
         require: '^evtReading',
         scope: {
-            witness : '@'
+            witness  : '@',
+            scopeWit : '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.witnessRef.directive.tmpl.html',
         link: function(scope, element, attrs){
             // Initialize reading
-            scope.scopeWit = scope.$parent.$parent.vm.witness;
-            
             if (scope.scopeWit === scope.witness) {
                 scope.title = scope.witness+' is the current witness';
             } else {

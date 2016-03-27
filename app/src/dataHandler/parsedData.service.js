@@ -25,10 +25,11 @@ angular.module('evtviewer.dataHandler')
 
     var criticalAppCollection = {
         filters: { },
-        filtersColors: ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
+        filtersColors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
         filtersLength : 0,
-        __allLoaded: false,
-        _indexes : {
+        __allLoaded   : false,
+        _maxVariance  : 0,
+        _indexes      : {
             encodingStructure : [],
             appEntries        : []
         }
@@ -237,6 +238,9 @@ angular.module('evtviewer.dataHandler')
                 criticalAppCollection._indexes.encodingStructure.push(entry.id);
             }
         }
+        if (entry._variance > criticalAppCollection._maxVariance){
+            criticalAppCollection._maxVariance = entry._variance;
+        }
     };
 
     parsedData.setCriticalEntriesLoaded = function(status) {
@@ -251,6 +255,9 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection[entryPos];
     };
 
+    parsedData.getCriticalEntriesMaxVariance = function() {
+        return criticalAppCollection._maxVariance;
+    };    
     
     /* CRITICAL ENTRIES FILTERS */
     parsedData.addCriticalEntryFilter = function(name, value) {

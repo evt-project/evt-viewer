@@ -3,19 +3,20 @@ angular.module('evtviewer.dataHandler')
 .service('evtCriticalFormatter', function(parsedData, evtParser) {
     var formatter = {};
 
-    formatter.formatCriticalEntry = function(entry, subApp) {
+    formatter.formatCriticalEntry = function(entry, subApp, scopeWit) {
         // console.log('formatCriticalEntry', entry);
         var appText                    = '',
             lemmaText                  = '',
             significantReadingsText    = '',
             notSignificantReadingsText = '',
             readingGroupText           = '',
-            criticalNoteText           = '';
+            criticalNoteText           = '',
+            scopeWit                   = scopeWit || '';
 
         //Lemma
         var lemma = entry.content[entry.lemma];
         if (lemma !== undefined) {
-            lemmaText += '<span class="reading__lemma">'+formatter.formatLemma(lemma)+'</span>';
+            lemmaText += '<span class="reading__lemma">'+formatter.formatLemma(lemma, scopeWit)+'</span>';
         }
 
         //Readings
@@ -26,9 +27,9 @@ angular.module('evtviewer.dataHandler')
             var reading = entry.content[totReadings[i]];
             if (reading !== undefined) {
                 if (readings._significant.indexOf(reading.id) >= 0) {
-                    significantReadingsText    += ' '+formatter.formatSignificantReading(reading)+';';
+                    significantReadingsText    += ' '+formatter.formatSignificantReading(reading, scopeWit)+';';
                 } else {
-                    notSignificantReadingsText += '<li>'+formatter.formatSignificantReading(reading)+'</li>';
+                    notSignificantReadingsText += '<li>'+formatter.formatSignificantReading(reading, scopeWit)+'</li>';
                 }
             }
         }
@@ -56,7 +57,7 @@ angular.module('evtviewer.dataHandler')
                         for (var k = 0; k < group.content.length; k++) {
                             var groupEntry = entry.content[group.content[k]];
                             if (groupEntry !== undefined) {
-                                groupReadings += '<li>'+formatter.formatSignificantReading(groupEntry)+'</li>';
+                                groupReadings += '<li>'+formatter.formatSignificantReading(groupEntry, scopeWit)+'</li>';
                             }
                         }
                         if (groupReadings !== '') {
@@ -90,13 +91,13 @@ angular.module('evtviewer.dataHandler')
         return appText;
     };
 
-    formatter.formatLemma = function(lemma){
+    formatter.formatLemma = function(lemma, scopeWit){
         var lemmaText = '';
         // lemma content
         for (var i = 0; i < lemma.content.length; i++) {
             if (lemma.content[i].type === 'subApp') {
                 var subApp = parsedData.getCriticalEntryByPos(lemma.content[i].id);
-                lemmaText += ' (('+formatter.formatCriticalEntry(subApp, true)+')) ';
+                lemmaText += ' (('+formatter.formatCriticalEntry(subApp, true, scopeWit)+')) ';
             } else {
                 lemmaText += lemma.content[i];
             }
@@ -105,14 +106,14 @@ angular.module('evtviewer.dataHandler')
         lemmaText = formatter.formatCriticalEntryLacunaMilestones(lemmaText);
 
         if (lemmaText !== '') {
-            lemmaText += formatter.formatCriticalEntryWitnesses(lemma, 'lem');
+            lemmaText += formatter.formatCriticalEntryWitnesses(lemma, 'lem', scopeWit);
             lemmaText += formatter.formatCriticalEntryAttributes(lemma, 'lem');
             lemmaText += ']';
         }
         return lemmaText;
     };
     
-    formatter.formatSignificantReading = function(reading){
+    formatter.formatSignificantReading = function(reading, scopeWit){
         var readingText = '';
 
         for (var i = 0; i < reading.content.length; i++) {
@@ -121,7 +122,7 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (reading.content[i].type === 'subApp') {
                     var subApp = parsedData.getCriticalEntryByPos(reading.content[i].id);
-                    readingText += ' (('+formatter.formatCriticalEntry(subApp, true)+')) ';
+                    readingText += ' (('+formatter.formatCriticalEntry(subApp, true, scopeWit)+')) ';
                 } else {
                     readingText += reading.content[i].outerHTML;
                 }
@@ -132,17 +133,17 @@ angular.module('evtviewer.dataHandler')
         }
         readingText = formatter.formatCriticalEntryLacunaMilestones(readingText);
 
-        readingText += formatter.formatCriticalEntryWitnesses(reading, 'rdg');
+        readingText += formatter.formatCriticalEntryWitnesses(reading, 'rdg', scopeWit);
         readingText += formatter.formatCriticalEntryAttributes(reading, 'rdg');
 
         return readingText;
     };
 
-    formatter.formatCriticalEntryWitnesses = function(reading, elemType) {
+    formatter.formatCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
         var witnesses  = '';
         if (reading.wits !== undefined ) {
             for (wit in reading.wits) {
-                witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'"></evt-witness-ref>';
+                witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
             }
         }
         if (witnesses !== '') {

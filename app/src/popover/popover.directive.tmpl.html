@@ -4,7 +4,9 @@
         ng-mouseover="vm.toggleMouseHover($event, vm)" 
         ng-mouseout="vm.toggleMouseHover($event, vm)"
         ng-click="vm.triggerClick($event, vm);" 
-        ng-class="{'expanded':vm.expanded, 'active': vm.over}">
+        ng-class="{'expanded':vm.expanded, 
+                   'active': vm.over,
+                   'blurred': $parent.vm.state.topBoxOpened}">
         <span ng-transclude></span>
    </span>
    <span 

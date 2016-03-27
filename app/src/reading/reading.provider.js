@@ -30,9 +30,11 @@ angular.module('evtviewer.reading')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
+
             scopeHelper = {
                 // expansion
                 uid              : currentId,
+                scopeWit         : scope.scopeWit || '',
                 appId            : entryId,
                 readingId        : scope.readingId,
                 readingType      : scope.readingType,

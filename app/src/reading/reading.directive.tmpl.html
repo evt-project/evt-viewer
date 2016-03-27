@@ -8,8 +8,9 @@
                 'over'     : vm.over, 
                 'invisible': !vm.fitFilters()}">
     <span 
-        class="reading__text" 
-        style="{{vm.colorFilters()}}"
+        class="reading__text"
+        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
+        style="{{vm.backgroundColor()}}"
         ng-transclude></span>
     <span 
         class="reading__apparatus" 

@@ -6,7 +6,7 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
 
 .autoLemma {
     .reading {
-        .reading__text {
+        .reading__text:not(.blurred) {
             background: url('../images/autoLemma.png') !important;
         }
     }
@@ -25,6 +25,9 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
                 background: $reading-background-hover;
             }
         }
+        &.over .reading {
+            border: 1px dashed black;
+        }
         &.selected {
             .reading__text{
                 background: $reading-background-hover;
@@ -32,6 +35,12 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
                 border-bottom: 5px solid #ECEFF1;
                 position: relative;
                 z-index: 9;
+
+                &.blurred, &.blurred *{
+                    color: transparent !important;
+                    text-shadow: 0 0 5px #000 !important;
+                    background: transparent !important
+                }
             }
         }
         .reading__apparatus {
@@ -54,6 +63,11 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
 
             &.active {
                 display: block;
+            }
+            &.blurred {
+                border: none;
+                color: transparent !important;
+                text-shadow: 0 0 5px #000;
             }
             &.hidden {
                 opacity:0;

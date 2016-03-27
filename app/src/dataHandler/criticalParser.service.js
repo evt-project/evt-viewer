@@ -372,6 +372,18 @@ angular.module('evtviewer.dataHandler')
             if (app.querySelectorAll('rdg witStart').length > 0 || app.querySelectorAll('rdg witEnd').length > 0) {
                 entry._fragment = true;
             }
+
+
+            var significantReadings    = entry._indexes.readings._significant,
+                significantReadingsTot = significantReadings.length;
+            if (entry.lemma !== '' && significantReadings.indexOf(entry.lemma) >= 0) {
+                significantReadingsTot -= 1; //escludo lemma
+            }
+            var totWits = parsedData.getWitnessesList().length;
+            
+            var variance = significantReadingsTot/totWits;
+            entry._variance = variance;
+
             parsedData.addCriticalEntry(entry);
         }
     };
@@ -573,6 +585,7 @@ angular.module('evtviewer.dataHandler')
     var getEntryWitnessReadingText = function(entry, wit){
         var spanElement = document.createElement('evt-reading');
             spanElement.setAttribute('data-app-id', entry.id);
+            spanElement.setAttribute('data-scope-wit', wit);
             
         if (entry !== null) {
             var readingId = entry.content._witMap[wit];
@@ -586,7 +599,7 @@ angular.module('evtviewer.dataHandler')
                         } else {
                             if (readingContent[i].type === 'subApp'){
                                 var subEntry = parsedData.getCriticalEntryByPos(readingContent[i].id);
-                                var subEntryElem = getEntryLemmaText(subEntry);
+                                var subEntryElem = getEntryLemmaText(subEntry, wit);
                                 spanElement.appendChild(subEntryElem);
                             } else {
                                 spanElement.appendChild(readingContent[i]);
@@ -721,15 +734,17 @@ angular.module('evtviewer.dataHandler')
     /* ************* */
 
     /* ******************************************* */
-    /* getEntryLemmaText(entry) */
+    /* getEntryLemmaText(entry, wit) */
     /* **************************************************************************** */
     /* Function to get the text of the lemma in a specific critical apparatus entry */
     /* @entry -> critical entry object from model                                   */
+    /* @wit -> current witness (optional)                                           */
     /* **************************************************************************** */
-    var getEntryLemmaText = function(entry){
+    var getEntryLemmaText = function(entry, wit){
         var spanElement = document.createElement('evt-reading'),
             errorElement;
-            spanElement.setAttribute('data-app-id', entry.id);
+        spanElement.setAttribute('data-app-id', entry.id);
+        spanElement.setAttribute('data-scope-wit', wit);
             
         if (entry !== null) {
             if (entry._lacuna) {
@@ -744,7 +759,7 @@ angular.module('evtviewer.dataHandler')
                     } else {
                         if (lemmaContent[i].type === 'subApp'){
                             var subEntry = parsedData.getCriticalEntryByPos(lemmaContent[i].id);
-                            var subEntryElem = getEntryLemmaText(subEntry);
+                            var subEntryElem = getEntryLemmaText(subEntry, wit);
                             spanElement.appendChild(subEntryElem);
                         }
                     }
@@ -768,6 +783,11 @@ angular.module('evtviewer.dataHandler')
                 if (attrib !== 'xml:id') {
                     spanElement.setAttribute('data-'+attrib, value);
                 }
+            }
+
+            if (entry._variance !== undefined) {
+                spanElement.setAttribute('data-variance', entry._variance);
+                // da pesare sulla varianza massima
             }
         } else {
             errorElement = document.createElement('span');
@@ -828,7 +848,7 @@ angular.module('evtviewer.dataHandler')
                             entry = parsedData.getCriticalEntryByPos(id);
                         }
                         if (entry !== undefined) {
-                            spanElement = getEntryLemmaText(entry);
+                            spanElement = getEntryLemmaText(entry, '');
                         } else {
                             spanElement = document.createElement('span');
                             spanElement.className = 'errorMsg';
@@ -839,7 +859,7 @@ angular.module('evtviewer.dataHandler')
                     }
                     j--;
                 }
-                console.log('## Critical entries ##', parsedData.getCriticalEntries());
+
                 //remove <pb>
                 var pbs = docDOM.getElementsByTagName('pb'),
                     k   = 0;

@@ -73,17 +73,16 @@ angular.module('evtviewer.reading')
             if (!vm.tooltipOver) {
                 if ( vm.apparatusContent === '') {
                     var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
-                    if (criticalEntry !== undefined) {
-                        vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry);
-                    } else {
+                    if (criticalEntry === undefined) {
                         var XMLdocument = baseData.getXMLDocuments()[0];
                         XMLdocument = XMLdocument.cloneNode(true);
                         evtCriticalParser.findCriticalEntryById(XMLdocument, vm.appId);
                         delete XMLdocument;
                         var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
-                        if (criticalEntry !== undefined) {
-                            vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry);
-                        }
+                    }
+
+                    if (criticalEntry !== undefined) {
+                        vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry, criticalEntry._subApp, vm.scopeWit);
                     }
                 } 
                 if (!vm.tooltipOver) {
@@ -98,7 +97,21 @@ angular.module('evtviewer.reading')
         }
     };
 
-    this.colorFilters = function() {
+    this.backgroundColor = function(){
+        if ($scope.$parent.vm.type === 'witness') {
+            return colorFilters();
+        } else {
+            return colorVariance();
+        }
+    };
+
+    var colorVariance = function() {
+        var maxVariance = parsedData.getCriticalEntriesMaxVariance();
+        var opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
+        return 'background: rgba(255, 138, 101, '+opacity+')';
+    };
+
+    var colorFilters = function() {
         var filterLabels = parsedData.getCriticalEntriesFilters();
         var app          = parsedData.getCriticalEntryByPos(vm.appId);
         var background;
@@ -108,7 +121,7 @@ angular.module('evtviewer.reading')
 
             if (Object.keys(readingAttributes).length > 0) {
                 var colors = '';
-                var opacity = vm.over || ((vm.active || vm.tooltipOver) && !$scope.$parent.vm.state.topBoxOpened) ? '1' : '.6';
+                var opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.6';
                 for (var label in filterLabels) {
                     var filterLabel = filterLabels[label].name;
                     if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined) {
