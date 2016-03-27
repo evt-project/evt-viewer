@@ -4,7 +4,7 @@
     ng-mouseover="vm.toggleOverAppEntries($event);"
     ng-mouseout="vm.toggleOverAppEntries($event)"
     ng-class="{ 'active'   : (vm.active || vm.tooltipOver) && !$parent.vm.state.topBoxOpened,
-                'selected' : (!$parent.vm.state.topBoxOpened && vm.apparatusOpened),
+                'selected' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
                 'over'     : vm.over, 
                 'invisible': !vm.fitFilters()}">
     <span 
@@ -14,10 +14,58 @@
         ng-transclude></span>
     <span 
         class="reading__apparatus" 
-        ng-class="{ 'active': (!$parent.vm.state.topBoxOpened && vm.apparatusOpened), 
+        ng-class="{ 'active': vm.apparatus.opened, 
                     'hidden': $parent.vm.state.topBoxOpened}"
         ng-mouseover="vm.toggleTooltipHover($event, vm)"
         ng-mouseout="vm.toggleTooltipHover($event, vm)">
-        <span compile="vm.apparatusContent"></span>
+        <div class="reading__apparatus_main-content">
+            <span compile="vm.apparatus.content.lemma"></span> 
+            <ul>
+                <li ng-repeat="reading in vm.apparatus.content.significantReadings" compile="reading"></li>
+            </ul>
+        </div>
+        <div class="reading__apparatus_other-content"
+            ng-if="vm.apparatus.content.criticalNote != '' || 
+                   vm.apparatus.content.notSignificantReadings.length > 0 ||
+                   vm.apparatus.content.attributes._keys.length > 0">
+            <div class="reading__apparatus_other-content_headers">
+                <span ng-if="vm.apparatus.content.criticalNote != ''"
+                      ng-click="vm.openApparatusSubContent('criticalNote')"
+                      ng-class="{'active' : vm.apparatus._subContentOpened == 'criticalNote'}">
+                      Critical Note</span>
+                <span ng-if="vm.apparatus.content.notSignificantReadings.length > 0"
+                      ng-click="vm.openApparatusSubContent('notSignificantReadings')"
+                      ng-class="{'active' : vm.apparatus._subContentOpened == 'notSignificantReadings'}">
+                      Orthographic Variants</span>
+                <span ng-if="vm.apparatus.content.attributes._keys.length > 0"
+                      ng-click="vm.openApparatusSubContent('moreInfo')"
+                      ng-class="{'active' : vm.apparatus._subContentOpened == 'moreInfo'}">
+                      More Info</span>
+            </div>
+            <div class="reading__apparatus_other-content_panels">
+                <div class="reading__apparatus_other-content_panel"
+                     ng-class="{'active' : vm.apparatus._subContentOpened == 'criticalNote'}"
+                     compile="vm.apparatus.content.criticalNote"
+                     ng-if="vm.apparatus.content.criticalNote != ''"></div>
+
+                <div class="reading__apparatus_other-content_panel" 
+                     ng-class="{'active' : vm.apparatus._subContentOpened == 'notSignificantReadings'}"
+                     ng-if="vm.apparatus.content.notSignificantReadings.length > 0">
+                    <ul>
+                        <li ng-repeat="reading in vm.apparatus.content.notSignificantReadings" compile="reading"></li>
+                    </ul>
+                </div>
+
+                <div class="reading__apparatus_other-content_panel"
+                     ng-class="{'active' : vm.apparatus._subContentOpened == 'moreInfo'}"
+                     ng-if="vm.apparatus.content.attributes._keys.length > 0">
+                    <ul>
+                        <li ng-repeat="attr in vm.apparatus.content.attributes._keys">
+                            <strong>{{attr}}:</strong> {{vm.apparatus.content.attributes.values[attr]}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
    </span>
 </span>

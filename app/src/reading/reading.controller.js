@@ -26,15 +26,15 @@ angular.module('evtviewer.reading')
     };
 
     this.isApparatusOpened = function() {
-        return (vm.apparatusOpened && !$scope.$parent.vm.state.topBoxOpened);
+        return (vm.apparatus.opened && !$scope.$parent.vm.state.topBoxOpened);
     };
 
     this.closeApparatus = function() {
-        vm.apparatusOpened = false;
+        vm.apparatus.opened = false;
     };
 
     this.openApparatus = function() {
-        vm.apparatusOpened = true;
+        vm.apparatus.opened = true;
     };
 
     
@@ -71,7 +71,7 @@ angular.module('evtviewer.reading')
         // evtPopover.closeAll();
         if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
-                if ( vm.apparatusContent === '') {
+                if ( !vm.apparatus._loaded) {
                     var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
                     if (criticalEntry === undefined) {
                         var XMLdocument = baseData.getXMLDocuments()[0];
@@ -82,19 +82,24 @@ angular.module('evtviewer.reading')
                     }
 
                     if (criticalEntry !== undefined) {
-                        vm.apparatusContent = evtCriticalFormatter.formatCriticalEntry(criticalEntry, criticalEntry._subApp, vm.scopeWit);
+                        vm.apparatus.content = evtCriticalFormatter.formatCriticalEntry(criticalEntry, criticalEntry._subApp, vm.scopeWit);
+                        vm.apparatus._loaded = true;
                     }
                 } 
                 if (!vm.tooltipOver) {
-                    if ( vm.apparatusOpened ) {
+                    if ( vm.apparatus.opened ) {
                         vm.closeApparatus();
                     } else {
                         // evtReading.closeAllApparatus(vm.uid);
-                        vm.apparatusOpened = !vm.apparatusOpened;
+                        vm.apparatus.opened = !vm.apparatus.opened;
                     }
                 }
             }
         }
+    };
+
+    this.openApparatusSubContent = function(subContent) {
+        vm.apparatus._subContentOpened = subContent;
     };
 
     this.backgroundColor = function(){

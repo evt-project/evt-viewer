@@ -25,9 +25,7 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
                 background: $reading-background-hover;
             }
         }
-        &.over .reading {
-            border: 1px dashed black;
-        }
+        
         &.selected {
             .reading__text{
                 background: $reading-background-hover;
@@ -76,16 +74,65 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
 
             &_main-content{
                 padding: 5px;
+                ul {
+                    display: inline;
+                    margin: 0;
+                    padding: 0;
+                    li {
+                        display: inline-block;
+                        margin-right: 5px;
+                        &:not(:last-child)::after {
+                            content:"; ";
+                        }
+
+                    }
+                }
             }
             &_other-content{
-                border-top: 1px dotted black;
-                padding: 5px;
-                max-height: 150px;
-                overflow-x: hidden;
-                overflow-y: auto;
-
+                border-top: 3px double #000;
+                
                 p {
                     padding: 0 10px;
+                }
+
+                &_headers {
+                    @include set(box-shadow, 0px -1px 0px 0px rgba(0, 0, 0, 0.5) inset);
+                    span {
+                        padding: 5px;
+                        display: inline-block;
+                        font-size: 90%;
+                        cursor: pointer;
+                        &:hover {
+                            text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+                        }
+                        &.active{
+                            border-right: 1px solid #000;
+                            border-bottom: 1px solid $popover-background-color; 
+                            &:not(:first-child) {
+                                border-left: 1px solid #000;
+                            }
+                        }
+                    }
+                }
+
+                &_panels{
+                    padding: 5px;
+                    max-height: 150px;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+
+                }
+
+                &_panel {
+                    display: none;
+                    &.active {
+                        display: block;
+                    }
+                    ul {
+                        padding-left: 10px;
+                        list-style-type: none;
+                        margin: 5px 0px;
+                    }
                 }
             }
             .witnesses {

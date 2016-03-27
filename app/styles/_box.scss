@@ -64,7 +64,7 @@
         height: auto;
         overflow: hidden;
         border-top: 1px solid;
-        box-shadow: 0px 0px 4px rgba(0,0,0,.5);
+        @include set(box-shadow, 0px 0px 4px rgba(0,0,0,.5));
     }
     .filters-section-title {
         text-transform: uppercase;

@@ -5,90 +5,72 @@ angular.module('evtviewer.dataHandler')
 
     formatter.formatCriticalEntry = function(entry, subApp, scopeWit) {
         // console.log('formatCriticalEntry', entry);
-        var appText                    = '',
-            lemmaText                  = '',
-            significantReadingsText    = '',
-            notSignificantReadingsText = '',
-            readingGroupText           = '',
-            criticalNoteText           = '',
-            scopeWit                   = scopeWit || '';
+        var apparatus = {
+            attributes             : {
+                values : entry.attributes || {},
+                _keys  : Object.keys(entry.attributes) || []
+            },
+            lemma                  : '',
+            significantReadings    : [],
+            notSignificantReadings : [],
+            readingGroups          : [],
+            criticalNote           : ''
+        };
 
         //Lemma
         var lemma = entry.content[entry.lemma];
         if (lemma !== undefined) {
-            lemmaText += '<span class="reading__lemma">'+formatter.formatLemma(lemma, scopeWit)+'</span>';
+            apparatus.lemma += '<span class="reading__lemma">'+formatter.formatLemma(lemma, scopeWit)+'</span>';
         }
 
-        //Readings
+        //Significant Readings
         var readings = entry._indexes.readings;
-
         var totReadings = readings._indexes;
         for (var i = 0; i < totReadings.length; i++) {
             var reading = entry.content[totReadings[i]];
             if (reading !== undefined) {
                 if (readings._significant.indexOf(reading.id) >= 0) {
-                    significantReadingsText    += ' '+formatter.formatSignificantReading(reading, scopeWit)+';';
+                    apparatus.significantReadings.push(formatter.formatSignificantReading(reading, scopeWit));
                 } else {
-                    notSignificantReadingsText += '<li>'+formatter.formatSignificantReading(reading, scopeWit)+'</li>';
+                    apparatus.notSignificantReadings.push(formatter.formatSignificantReading(reading, scopeWit));
                 }
             }
         }
-        if (significantReadingsText != ''){
-            significantReadingsText = significantReadingsText.slice(0, -1);
-        }
         
         if (!subApp) {
-            //Varianti di forma
-            if (notSignificantReadingsText != '') {
-                notSignificantReadingsText += '<div><strong>V. forma</strong><ul>'+notSignificantReadingsText+'</ul></div>';
-            }
-
             //Raggruppamenti
             if (entry._indexes.groups.length > 0) {
                 for (var i = 0; i < entry._indexes.groups.length; i++) {
                     var group = entry.content[entry._indexes.groups[i]];
                     if (group !== undefined) {
-                        var groupHeader = '';
+                        var groupHeader = [];
                         for (j in group.attributes) {
-                            groupHeader += '<strong>'+j+': '+group.attributes[j]+'</strong>,';
+                            groupHeader.push({
+                                label  : j,
+                                values : group.attributes[j]
+                            });
                         }
-                        groupHeader = groupHeader.trim().slice(0, -1);
-                        var groupReadings = '';
+
+                        var groupReadings = [];
                         for (var k = 0; k < group.content.length; k++) {
                             var groupEntry = entry.content[group.content[k]];
                             if (groupEntry !== undefined) {
-                                groupReadings += '<li>'+formatter.formatSignificantReading(groupEntry, scopeWit)+'</li>';
+                                groupReadings.push(formatter.formatSignificantReading(groupEntry, scopeWit));
                             }
                         }
-                        if (groupReadings !== '') {
-                            readingGroupText += '<div>'+groupHeader+'<ul>'+ groupReadings+'</ul></div>';
+                        if (groupReadings.length > 0) {
+                            apparatus.readingGroups.push({
+                                header   : groupHeader,
+                                readings : groupReadings
+                            });
                         }
                     }
                 }
             }
-
-            if (entry.note !== '') {
-                criticalNoteText += '<p>'+entry.note+'</p>';
-            }
         }
+        apparatus.criticalNote += entry.note;
         
-        var mainContentText = '',
-            subContentText  = '';
-        mainContentText += lemmaText+significantReadingsText;
-        if (mainContentText !== '') {
-            if (entry._subApp) {
-                appText += mainContentText;
-            } else {
-                appText += '<div class="reading__apparatus_main-content">'+mainContentText+'</div>';
-            }
-        }
-        
-        subContentText += notSignificantReadingsText+readingGroupText+criticalNoteText;
-        appText += subContentText !== '' ? '<div class="reading__apparatus_other-content">'+subContentText+'</div>' : '';
-        
-        appText = appText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-        appText = formatter.formatCriticalEntryFragmentMilestones(appText);
-        return appText;
+        return apparatus;
     };
 
     formatter.formatLemma = function(lemma, scopeWit){
@@ -96,8 +78,7 @@ angular.module('evtviewer.dataHandler')
         // lemma content
         for (var i = 0; i < lemma.content.length; i++) {
             if (lemma.content[i].type === 'subApp') {
-                var subApp = parsedData.getCriticalEntryByPos(lemma.content[i].id);
-                lemmaText += ' (('+formatter.formatCriticalEntry(subApp, true, scopeWit)+')) ';
+                lemmaText += formatter.formatSubApparatus(lemma.content[i].id, scopeWit);
             } else {
                 lemmaText += lemma.content[i];
             }
@@ -110,9 +91,28 @@ angular.module('evtviewer.dataHandler')
             lemmaText += formatter.formatCriticalEntryAttributes(lemma, 'lem');
             lemmaText += ']';
         }
+
+        lemmaText = lemmaText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+        lemmaText = formatter.formatCriticalEntryFragmentMilestones(lemmaText);
+
         return lemmaText;
     };
     
+    formatter.formatSubApparatus = function(subAppId, scopeWit){
+        var subAppText    = '';
+        var subApp        = parsedData.getCriticalEntryByPos(subAppId);
+        var subAppContent = formatter.formatCriticalEntry(subApp, true, scopeWit);
+        
+        subAppText += ' (('+subAppContent.lemma+" ";
+        for (var i = 0; i < subAppContent.significantReadings.length; i++) {
+            subAppText += subAppContent.significantReadings[i];
+            if (i < subAppContent.significantReadings.length - 1) {
+                subAppText += ';';
+            }
+        }
+        subAppText += ')) ';
+        return subAppText;
+    };
     formatter.formatSignificantReading = function(reading, scopeWit){
         var readingText = '';
 
@@ -121,8 +121,7 @@ angular.module('evtviewer.dataHandler')
                 readingText += reading.content[i];
             } else {
                 if (reading.content[i].type === 'subApp') {
-                    var subApp = parsedData.getCriticalEntryByPos(reading.content[i].id);
-                    readingText += ' (('+formatter.formatCriticalEntry(subApp, true, scopeWit)+')) ';
+                    readingText += formatter.formatSubApparatus(reading.content[i].id, scopeWit);
                 } else {
                     readingText += reading.content[i].outerHTML;
                 }
@@ -135,6 +134,9 @@ angular.module('evtviewer.dataHandler')
 
         readingText += formatter.formatCriticalEntryWitnesses(reading, 'rdg', scopeWit);
         readingText += formatter.formatCriticalEntryAttributes(reading, 'rdg');
+
+        readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+        readingText = formatter.formatCriticalEntryFragmentMilestones(readingText);
 
         return readingText;
     };

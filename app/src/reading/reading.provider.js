@@ -42,8 +42,12 @@ angular.module('evtviewer.reading')
 
                 over             : false,
                 tooltipOver      : false,
-                apparatusOpened  : false,
-                apparatusContent : '',
+                apparatus        : {
+                    opened            : false,
+                    content           : {},
+                    _loaded           : false,
+                    _subContentOpened : 'criticalNote'
+                },
                 active           : entryId === reading.getCurrentAppEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
                 defaults         : angular.copy(defaults)
