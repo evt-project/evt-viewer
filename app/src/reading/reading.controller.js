@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalFormatter, evtCriticalParser, baseData) {
+.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData) {
     var vm = this;
     
     var _console = $log.getInstance('reading');

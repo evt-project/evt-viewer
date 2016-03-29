@@ -8,7 +8,7 @@ angular.module('evtviewer.criticalApparatusEntry')
         defaults = _defaults;
     };
 
-    this.$get = function(parsedData, baseData, evtCriticalParser, evtCriticalFormatter) {
+    this.$get = function(parsedData, baseData, evtCriticalParser, evtCriticalApparatus) {
         var appEntry   = {},
             collection = {},
             list       = [],
@@ -42,7 +42,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             }
 
             if (criticalEntry !== undefined) {
-                content = evtCriticalFormatter.formatCriticalEntry(criticalEntry, criticalEntry._subApp, scopeWit);
+                content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
             }
 
             scopeHelper = {

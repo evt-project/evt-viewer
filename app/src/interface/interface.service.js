@@ -206,6 +206,8 @@ angular.module('evtviewer.interface')
 
             if ( edition !== undefined ) {
                 mainInterface.updateCurrentEdition(edition);
+            } else if (viewMode === 'collation'){
+                mainInterface.updateCurrentEdition('critical');
             }
 
             if ( pageId !== undefined ) {

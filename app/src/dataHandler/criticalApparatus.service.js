@@ -1,11 +1,11 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalFormatter', function(parsedData, evtParser) {
-    var formatter = {};
+.service('evtCriticalApparatus', function(parsedData, evtParser) {
+    var apparatus = {};
 
-    formatter.formatCriticalEntry = function(entry, subApp, scopeWit) {
-        // console.log('formatCriticalEntry', entry);
-        var apparatus = {
+    apparatus.getContent = function(entry, subApp, scopeWit) {
+        // console.log('getContent', entry);
+        var appContent = {
             attributes             : {
                 values : entry.attributes || {},
                 _keys  : Object.keys(entry.attributes) || []
@@ -20,7 +20,7 @@ angular.module('evtviewer.dataHandler')
         //Lemma
         var lemma = entry.content[entry.lemma];
         if (lemma !== undefined) {
-            apparatus.lemma += '<span class="reading__lemma">'+formatter.formatLemma(lemma, scopeWit)+'</span>';
+            appContent.lemma += '<span class="reading__lemma">'+apparatus.getLemma(lemma, scopeWit)+'</span>';
         }
 
         //Significant Readings
@@ -30,9 +30,9 @@ angular.module('evtviewer.dataHandler')
             var reading = entry.content[totReadings[i]];
             if (reading !== undefined) {
                 if (readings._significant.indexOf(reading.id) >= 0) {
-                    apparatus.significantReadings.push(formatter.formatSignificantReading(reading, scopeWit));
+                    appContent.significantReadings.push(apparatus.getSignificantReading(reading, scopeWit));
                 } else {
-                    apparatus.notSignificantReadings.push(formatter.formatSignificantReading(reading, scopeWit));
+                    appContent.notSignificantReadings.push(apparatus.getSignificantReading(reading, scopeWit));
                 }
             }
         }
@@ -55,11 +55,11 @@ angular.module('evtviewer.dataHandler')
                         for (var k = 0; k < group.content.length; k++) {
                             var groupEntry = entry.content[group.content[k]];
                             if (groupEntry !== undefined) {
-                                groupReadings.push(formatter.formatSignificantReading(groupEntry, scopeWit));
+                                groupReadings.push(apparatus.getSignificantReading(groupEntry, scopeWit));
                             }
                         }
                         if (groupReadings.length > 0) {
-                            apparatus.readingGroups.push({
+                            appContent.readingGroups.push({
                                 header   : groupHeader,
                                 readings : groupReadings
                             });
@@ -68,40 +68,40 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-        apparatus.criticalNote += entry.note;
+        appContent.criticalNote += entry.note;
         
-        return apparatus;
+        return appContent;
     };
 
-    formatter.formatLemma = function(lemma, scopeWit){
+    apparatus.getLemma = function(lemma, scopeWit){
         var lemmaText = '';
         // lemma content
         for (var i = 0; i < lemma.content.length; i++) {
             if (lemma.content[i].type === 'subApp') {
-                lemmaText += formatter.formatSubApparatus(lemma.content[i].id, scopeWit);
+                lemmaText += apparatus.getSubApparatus(lemma.content[i].id, scopeWit);
             } else {
                 lemmaText += lemma.content[i];
             }
         }
 
-        lemmaText = formatter.formatCriticalEntryLacunaMilestones(lemmaText);
+        lemmaText = apparatus.transformCriticalEntryLacunaMilestones(lemmaText);
 
         if (lemmaText !== '') {
-            lemmaText += formatter.formatCriticalEntryWitnesses(lemma, 'lem', scopeWit);
-            lemmaText += formatter.formatCriticalEntryAttributes(lemma, 'lem');
+            lemmaText += apparatus.getCriticalEntryWitnesses(lemma, 'lem', scopeWit);
+            lemmaText += apparatus.getCriticalEntryAttributes(lemma, 'lem');
             lemmaText += ']';
         }
 
         lemmaText = lemmaText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-        lemmaText = formatter.formatCriticalEntryFragmentMilestones(lemmaText);
+        lemmaText = apparatus.transformCriticalEntryFragmentMilestones(lemmaText);
 
         return lemmaText;
     };
     
-    formatter.formatSubApparatus = function(subAppId, scopeWit){
+    apparatus.getSubApparatus = function(subAppId, scopeWit){
         var subAppText    = '';
         var subApp        = parsedData.getCriticalEntryByPos(subAppId);
-        var subAppContent = formatter.formatCriticalEntry(subApp, true, scopeWit);
+        var subAppContent = apparatus.getContent(subApp, true, scopeWit);
         
         subAppText += ' (('+subAppContent.lemma+" ";
         for (var i = 0; i < subAppContent.significantReadings.length; i++) {
@@ -113,7 +113,8 @@ angular.module('evtviewer.dataHandler')
         subAppText += ')) ';
         return subAppText;
     };
-    formatter.formatSignificantReading = function(reading, scopeWit){
+
+    apparatus.getSignificantReading = function(reading, scopeWit){
         var readingText = '';
 
         for (var i = 0; i < reading.content.length; i++) {
@@ -121,7 +122,7 @@ angular.module('evtviewer.dataHandler')
                 readingText += reading.content[i];
             } else {
                 if (reading.content[i].type === 'subApp') {
-                    readingText += formatter.formatSubApparatus(reading.content[i].id, scopeWit);
+                    readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
                 } else {
                     readingText += reading.content[i].outerHTML;
                 }
@@ -130,18 +131,18 @@ angular.module('evtviewer.dataHandler')
         if (readingText === '') {
             readingText = ' <i>omit.</i> ';
         }
-        readingText = formatter.formatCriticalEntryLacunaMilestones(readingText);
+        readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
 
-        readingText += formatter.formatCriticalEntryWitnesses(reading, 'rdg', scopeWit);
-        readingText += formatter.formatCriticalEntryAttributes(reading, 'rdg');
+        readingText += apparatus.getCriticalEntryWitnesses(reading, 'rdg', scopeWit);
+        readingText += apparatus.getCriticalEntryAttributes(reading, 'rdg');
 
         readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-        readingText = formatter.formatCriticalEntryFragmentMilestones(readingText);
+        readingText = apparatus.transformCriticalEntryFragmentMilestones(readingText);
 
         return readingText;
     };
 
-    formatter.formatCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
+    apparatus.getCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
         var witnesses  = '';
         if (reading.wits !== undefined ) {
             for (wit in reading.wits) {
@@ -155,7 +156,7 @@ angular.module('evtviewer.dataHandler')
     };
 
     //TODO: rivedere output raggruppamenti attributi
-    formatter.formatCriticalEntryAttributes = function(reading, elemType) {
+    apparatus.getCriticalEntryAttributes = function(reading, elemType) {
         var attributes = '';
         if (reading.attributes !== undefined) {
             for (var key in reading.attributes) {
@@ -170,13 +171,13 @@ angular.module('evtviewer.dataHandler')
         return attributes;
     };
 
-    formatter.formatCriticalEntryLacunaMilestones = function(appText){
+    apparatus.transformCriticalEntryLacunaMilestones = function(appText){
         appText = appText.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna in </i>');
         appText = appText.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna in </i>');
         return appText;
     };
     
-    formatter.formatCriticalEntryFragmentMilestones = function(appText){
+    apparatus.transformCriticalEntryFragmentMilestones = function(appText){
         var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
         if (fragmentsStarts !== null) {
             for (var i = 0; i < fragmentsStarts.length; i++) {
@@ -208,5 +209,6 @@ angular.module('evtviewer.dataHandler')
         }
         return appText;
     };
-    return formatter;
+
+    return apparatus;
 });
