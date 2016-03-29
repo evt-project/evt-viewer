@@ -46,7 +46,7 @@ angular.module('evtviewer.reading')
         $event.stopPropagation();
         if ( !vm.hidden ) {
             if (vm.over === false) {
-                evtReading.mouseOverById(vm.appId);
+                evtReading.mouseOverByAppId(vm.appId);
             } else {
                 evtReading.mouseOutAll();
             }
@@ -72,19 +72,7 @@ angular.module('evtviewer.reading')
         if ( !vm.hidden ) {
             if (!vm.tooltipOver) {
                 if ( !vm.apparatus._loaded) {
-                    var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
-                    if (criticalEntry === undefined) {
-                        var XMLdocument = baseData.getXMLDocuments()[0];
-                        XMLdocument = XMLdocument.cloneNode(true);
-                        evtCriticalParser.findCriticalEntryById(XMLdocument, vm.appId);
-                        delete XMLdocument;
-                        var criticalEntry = parsedData.getCriticalEntryByPos(vm.appId);
-                    }
-
-                    if (criticalEntry !== undefined) {
-                        vm.apparatus.content = evtCriticalFormatter.formatCriticalEntry(criticalEntry, criticalEntry._subApp, vm.scopeWit);
-                        vm.apparatus._loaded = true;
-                    }
+                    vm.apparatus._loaded = true;
                 } 
                 if (!vm.tooltipOver) {
                     if ( vm.apparatus.opened ) {
@@ -96,6 +84,10 @@ angular.module('evtviewer.reading')
                 }
             }
         }
+    };
+
+    this.isApparatusOpened = function(){
+        return vm.apparatus.opened;
     };
 
     this.openApparatusSubContent = function(subContent) {
@@ -111,9 +103,15 @@ angular.module('evtviewer.reading')
     };
 
     var colorVariance = function() {
-        var maxVariance = parsedData.getCriticalEntriesMaxVariance();
-        var opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
-        return 'background: rgba(255, 138, 101, '+opacity+')';
+        var opacity;
+        if ($scope.$parent.vm.state.heatmap) {
+            var maxVariance = parsedData.getCriticalEntriesMaxVariance();
+            opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
+            return 'background: rgba(101, 138, 255, '+opacity+')';
+        } else {
+            opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.3';
+            return 'background: rgba(255, 108, 63, '+opacity+')';
+        }
     };
 
     var colorFilters = function() {

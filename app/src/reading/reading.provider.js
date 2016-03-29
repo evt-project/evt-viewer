@@ -89,7 +89,7 @@ angular.module('evtviewer.reading')
             });
         };
 
-        reading.mouseOverById = function(appId) {
+        reading.mouseOverByAppId = function(appId) {
             angular.forEach(collection, function(currentReading) {
                 if (currentReading.appId === appId) {
                     currentReading.mouseOver();

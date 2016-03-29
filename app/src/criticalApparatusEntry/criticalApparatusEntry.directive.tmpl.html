@@ -1,0 +1,56 @@
+<div 
+  class="critical-apparatus-entry"
+  ng-mouseover="vm.toggleOverAppEntries($event);"
+  ng-mouseout="vm.toggleOverAppEntries($event)">
+  <div 
+    class="critical-apparatus-entry_main-content">
+      <span compile="vm.content.lemma"></span> 
+      <ul>
+          <li ng-repeat="reading in vm.content.significantReadings" compile="reading"></li>
+      </ul>
+  </div>
+  <div class="critical-apparatus-entry_other-content"
+      ng-if="vm.content.criticalNote != '' || 
+             vm.content.notSignificantReadings.length > 0 ||
+             vm.content.attributes._keys.length > 0">
+
+      <div class="critical-apparatus-entry_other-content_headers">
+          <span ng-if="vm.content.criticalNote != ''"
+                ng-click="vm.openSubContent('criticalNote')"
+                ng-class="{'active' : vm._subContentOpened == 'criticalNote'}">
+                Critical Note</span>
+          <span ng-if="vm.content.notSignificantReadings.length > 0"
+                ng-click="vm.openSubContent('notSignificantReadings')"
+                ng-class="{'active' : vm._subContentOpened == 'notSignificantReadings'}">
+                Orthographic Variants</span>
+          <span ng-if="vm.content.attributes._keys.length > 0"
+                ng-click="vm.openSubContent('moreInfo')"
+                ng-class="{'active' : vm._subContentOpened == 'moreInfo'}">
+                More Info</span>
+      </div>
+      <div class="critical-apparatus-entry_other-content_panels">
+          <div class="critical-apparatus-entry_other-content_panel"
+               ng-class="{'active' : vm._subContentOpened == 'criticalNote'}"
+               compile="vm.content.criticalNote"
+               ng-if="vm.content.criticalNote != ''"></div>
+
+          <div class="critical-apparatus-entry_other-content_panel" 
+               ng-class="{'active' : vm._subContentOpened == 'notSignificantReadings'}"
+               ng-if="vm.content.notSignificantReadings.length > 0">
+              <ul>
+                  <li ng-repeat="reading in vm.content.notSignificantReadings" compile="reading"></li>
+              </ul>
+          </div>
+
+          <div class="critical-apparatus-entry_other-content_panel"
+               ng-class="{'active' : vm._subContentOpened == 'moreInfo'}"
+               ng-if="vm.content.attributes._keys.length > 0">
+              <ul>
+                  <li ng-repeat="attr in vm.content.attributes._keys">
+                      <strong>{{attr}}:</strong> {{vm.content.attributes.values[attr]}}
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>

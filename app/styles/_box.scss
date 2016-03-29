@@ -86,7 +86,7 @@
         }
     }
     //TEXT
-    &.box-text {
+    &.box-text, &.box-critical_apparatus {
         &.span6of18 {
             @include span(isolate 6 of 18);
         }
@@ -119,7 +119,12 @@
         }
     }
 
-
+    &.box-critical_apparatus {
+        .box-body{
+            height: 100%;
+            overflow-x: auto;
+        }
+    }
     // BODY
     &.topBoxOpened {
         .box-body {

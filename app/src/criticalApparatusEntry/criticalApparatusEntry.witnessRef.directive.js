@@ -1,17 +1,16 @@
-angular.module('evtviewer.reading')
+angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtWitnessRef', function(evtReading, parsedData, evtInterface) {
+.directive('evtWitnessRef', function(evtCriticalApparatusEntry, parsedData, evtInterface) {
     return {
         restrict: 'E',
-        require: '^evtReading',
+        require: '^evtCriticalApparatusEntry',
         scope: {
             witness  : '@',
             scopeWit : '@'
         },
         transclude: true,
-        templateUrl: 'src/reading/reading.witnessRef.directive.tmpl.html',
+        templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.tmpl.html',
         link: function(scope, element, attrs){
-            // Initialize reading
             if (scope.scopeWit === scope.witness) {
                 scope.title = scope.witness+' is the current witness';
             } else {
@@ -20,9 +19,7 @@ angular.module('evtviewer.reading')
             scope.openWit = function(){
                 var newWit = scope.witness,
                     scopeWit = scope.scopeWit;
-                if (evtInterface.getCurrentView !== 'critical') {
-                    evtInterface.updateCurrentViewMode('critical');
-                }
+                
                 if (newWit !== scopeWit) {
                     var witnesses = evtInterface.getCurrentWitnesses(),
                         scopeWitnessIndex = witnesses.indexOf(scopeWit);
@@ -32,8 +29,12 @@ angular.module('evtviewer.reading')
                     if (scopeWitnessIndex !== undefined) {
                         evtInterface.addWitnessAtIndex(newWit, scopeWitnessIndex+1);
                     }
+                    if (evtInterface.getCurrentView !== 'collation') {
+                        evtInterface.updateCurrentViewMode('collation');
+                    }
                     evtInterface.updateUrl();
                 }
+
             };
         }
     };

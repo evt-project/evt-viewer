@@ -26,6 +26,11 @@ angular.module('evtviewer.interface')
                 label    : 'Critical',
                 icon     : 'critical',
                 viewMode : 'critical'
+            },
+            {
+                label    : 'Collation',
+                icon     : 'collation',
+                viewMode : 'collation'
             }];
 
         mainInterface.boot = function() {  
@@ -188,8 +193,11 @@ angular.module('evtviewer.interface')
                         }
                     }
                 }
-            } else if (viewMode === 'critical'){
+            } else if (viewMode === 'collation'){
                 witIds = parsedData.getWitnessesList();
+                if (witIds.length > config.maxWitsLoadTogether) {
+                    witIds = witIds.slice(0, config.maxWitsLoadTogether);
+                }
             }
             
             if ( viewMode !== undefined ) {
@@ -225,7 +233,7 @@ angular.module('evtviewer.interface')
                 searchPath += state.currentDoc === undefined ? '' : (searchPath === '' ? '' : '&')+'d='+state.currentDoc;
                 searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
                 searchPath = state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
-                if (viewMode === 'critical') {
+                if (viewMode === 'collation') {
                     if (state.currentWits !== undefined && state.currentWits.length > 0) {
                         if (searchPath !== '') {
                           searchPath += '&';  
