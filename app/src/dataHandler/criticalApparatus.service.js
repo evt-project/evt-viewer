@@ -73,12 +73,33 @@ angular.module('evtviewer.dataHandler')
         return appContent;
     };
 
+    apparatus.getGenericContent = function(element, scopeWit){
+        var genericContentText;
+        
+        genericContentText = '<span class="'+element.tagName+' inApparatus">';
+        for (var i = 0; i < element.content.length; i++) {
+            if (typeof(element.content[i]) === 'string') {
+                genericContentText += element.content[i];
+            } else if (element.content[i].type === 'subApp') {
+                    genericContentText += apparatus.getSubApparatus(element.content[i].id, scopeWit);
+            } else if (element.content[i].type === 'genericElement') {
+                genericContentText += apparatus.getGenericContent(element.content[i], scopeWit);
+            } else {
+                genericContentText += element.content[i].outerHTML;
+            }
+        }
+        genericContentText += '</span>';
+        return genericContentText;
+    };
+
     apparatus.getLemma = function(lemma, scopeWit){
         var lemmaText = '';
         // lemma content
         for (var i = 0; i < lemma.content.length; i++) {
             if (lemma.content[i].type === 'subApp') {
                 lemmaText += apparatus.getSubApparatus(lemma.content[i].id, scopeWit);
+            } else if (lemma.content[i].type === 'genericElement') {
+                lemmaText += apparatus.getGenericContent(lemma.content[i], scopeWit);
             } else {
                 lemmaText += lemma.content[i];
             }
@@ -123,6 +144,8 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (reading.content[i].type === 'subApp') {
                     readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
+                } else if (reading.content[i].type === 'genericElement') {
+                    readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
                 } else {
                     readingText += reading.content[i].outerHTML;
                 }

@@ -42,24 +42,27 @@ angular.module('evtviewer.dataHandler')
     // It will transform a generic XML element into an <span> element
     // with a data-* attribute for each @attribute of the XML element
     // It will also transform its children
-    parser.parseXMLElement = function(element, skip) {
+    parser.parseXMLElement = function(doc, element, skip) {
         var newElement;
-        if (element.nodeType === 3 || skip.indexOf('<'+element.tagName+'>') >= 0) { // Text
+        if (element.nodeType === 3) { // Text
+            newElement = element;
+        } else if (element.tagName !== undefined && skip.indexOf('<'+element.tagName.toLowerCase()+'>') >= 0) {
             newElement = element;
         } else {
-            if (element.tagName === 'l') {
+            var tagName = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
+            if (tagName === 'l') {
                 newElement = parser.parseLine(element);
-            } else if(element.tagName === 'note') {
+            } else if(tagName === 'note') {
                 newElement = parser.parseNote(element);
             } else {
                 newElement           = document.createElement('span');
-                newElement.className = element.tagName;
+                newElement.className = tagName;
                 if (element.attributes) {
                     for (var i = 0; i < element.attributes.length; i++) {
                         var attrib = element.attributes[i];
                         if (attrib.specified) {
                             if (attrib.name !== 'xml:id') {
-                                newElement.setAttribute('data-'+attrib.name, attrib.value);
+                                newElement.setAttribute('data-'+attrib.name.replace(':', '-'), attrib.value);
                             }
                         }
                     }
@@ -67,7 +70,7 @@ angular.module('evtviewer.dataHandler')
                 if ( element.childNodes ) {
                     for (var j = 0; j < element.childNodes.length; j++) {
                         var childElement = element.childNodes[j].cloneNode(true);
-                        newElement.appendChild(parser.parseXMLElement(childElement, skip));
+                        newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
                     }
                 } else {
                     newElement.innerHTML = element.innerHTML;

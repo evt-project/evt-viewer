@@ -256,7 +256,9 @@ section > div{
         font-weight: bold; 
     }
 }
-
+.del {
+    text-decoration: line-through;
+}
 .encodingError {
     font-variant: small-caps;
     background: url('../images/encodingError.png') repeat-x;
@@ -271,6 +273,13 @@ section > div{
 }
 .l {
     display: block;
+    background: inherit;
+    &.inApparatus {
+        display: inline-block;
+        &::after {
+            content:" // ";
+        }
+    }
 }
 
 .lacuna, .fragment {
@@ -520,7 +529,7 @@ section > div{
 }
 
 //TEI generic rend
-[data-rend="italic"] {
+[data-rend="italic"], .i {
     font-style: italic !important;
 }
 [data-rend="bold"] {

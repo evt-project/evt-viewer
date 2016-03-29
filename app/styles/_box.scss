@@ -144,7 +144,7 @@
 
 .compareWits_box {
     @include span(isolate 12 of 18);
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden; 
     height:100%;
     white-space: normal;

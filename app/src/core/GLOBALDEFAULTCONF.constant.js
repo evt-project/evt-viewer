@@ -57,8 +57,8 @@ angular.module('evtviewer.core')
     
     listDef                    : 'listWit, listChange',
     versionDef                 : 'witness, change',
-    fragmentMilestone          : 'witStart, witEnd',
-    lacunaMilestone            : 'lacunaStart, lacunaEnd',
+    fragmentMilestone          : '<witStart>, <witEnd>',
+    lacunaMilestone            : '<lacunaStart>, <lacunaEnd>',
     skipCriticalEntriesFilters : 'wit, target, corresp',
     possibleVariantFilters     : 'type, cause, hand, resp, cert',
     notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
