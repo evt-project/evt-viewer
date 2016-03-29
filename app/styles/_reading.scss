@@ -5,8 +5,8 @@ $reading-background-default : rgba(255, 108, 63, .3);
 $reading-background-hover   : rgba(255, 108, 63, 1);
 
 .autoLemma {
-    .reading {
-        .reading__text:not(.blurred) {
+    .reading:not(.blurred) {
+        .reading__text {
             background: url('../images/autoLemma.png') !important;
         }
     }
@@ -19,8 +19,8 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
         .reading__text{
             background: $reading-background-default;
         }
-        &.active, &.over,
-        &.active .reading, &.over .reading{
+        &.over,
+        &.over .reading{
             .reading__text{
                 background: $reading-background-hover;
             }
@@ -28,17 +28,15 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
         
         &.selected {
             .reading__text{
-                background: $reading-background-hover;
                 border: 1px solid #000;
                 border-bottom: 5px solid #ECEFF1;
                 position: relative;
                 z-index: 9;
-
-                &.blurred, &.blurred *{
-                    color: transparent !important;
-                    text-shadow: 0 0 5px #000 !important;
-                    background: transparent !important
-                }
+            }
+            &.blurred, &.blurred *{
+                color: transparent !important;
+                text-shadow: 0 0 5px #000 !important;
+                background: transparent !important
             }
         }
 

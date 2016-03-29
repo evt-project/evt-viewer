@@ -131,3 +131,11 @@
         }
     }
 }
+
+.blurred .critical-apparatus-entry, .blurred .critical-apparatus-entry * {
+    border: none !important;
+    @include set(box-shadow, 'none');
+    color: transparent !important;
+    text-shadow: 0 0 5px #000 !important;
+    background: transparent !important
+}

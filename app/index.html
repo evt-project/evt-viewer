@@ -53,6 +53,11 @@
                     data-icon="share"                    
                     data-type="share">
             </button-switch>
+            <button-switch 
+                    title="Witnesses List"
+                    data-icon="list"                    
+                    data-type="witList">
+            </button-switch>
         </div>
     </header>
     
@@ -65,6 +70,19 @@
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"
                  ng-show="existCriticalText()"></box>
+            <box data-type="critical_apparatus"></box>
+        </section> 
+
+        <!-- COLLAZIONE -->
+        <section id="main-container" class="viewMode" ng-switch-when="collation">
+            <box data-type="text"
+                 data-edition="{{getCurrentEdition()}}"
+                 id="mainText"
+                 ng-show="existCriticalText()"></box>
+            <!-- <div 
+                compile="printCriticalApparatus()"
+                style="position: absolute; background: rgb(255, 255, 255) none repeat scroll 0% 0%;"> -->
+
             <div class="compareWits_box" id="compareWits_box"
                  ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
                             'span18of18': !existCriticalText()}">
@@ -212,12 +230,19 @@
     <script src="/src/mobile/mobileView.ctrl.js"></script>
     <script src="/src/mobile/mobileView.dir.js"></script>
 
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.configuration.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.provider.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.controller.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.directive.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.js"></script>
+
     <script src="/src/reading/reading.js"></script>
     <script src="/src/reading/reading.configuration.js"></script>
     <script src="/src/reading/reading.provider.js"></script>
     <script src="/src/reading/reading.controller.js"></script>
     <script src="/src/reading/reading.directive.js"></script>
-    <script src="/src/reading/reading.witnessRef.directive.js"></script>
+
 
     <!-- endinjector -->
     <!-- endbuild -->

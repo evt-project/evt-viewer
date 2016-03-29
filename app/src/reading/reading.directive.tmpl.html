@@ -1,23 +1,23 @@
 <span 
     class="reading"
-    ng-click="vm.toggleSelectAppEntries($event); vm.toggleApparatus($event);"
     ng-mouseover="vm.toggleOverAppEntries($event);"
     ng-mouseout="vm.toggleOverAppEntries($event)"
-    ng-class="{ 'active'   : (vm.active || vm.tooltipOver) && !$parent.vm.state.topBoxOpened,
+    ng-class="{ 'active'   : vm.active && !$parent.vm.state.topBoxOpened,
                 'selected' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
                 'over'     : vm.over, 
-                'invisible': !vm.fitFilters()}">
+                'invisible': !vm.fitFilters(),
+                'blurred'  : $parent.vm.state.topBoxOpened}">
     <span 
         class="reading__text"
-        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
         style="{{vm.backgroundColor()}}"
+        ng-click="vm.toggleSelectAppEntries($event); vm.toggleApparatus($event);"
         ng-transclude></span>
+
     <evt-critical-apparatus-entry 
+      ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
       ng-if="vm.apparatus._loaded"
+      ng-show="vm.isApparatusOpened()"
       data-app-id="{{vm.appId}}"
       data-reading-id="{{vm.readingId}}"
-      data-scope-wit="{{vm.scopeWit}}"
-      ng-show="vm.isApparatusOpened()"
-      ng-mouseover="vm.toggleTooltipHover($event, vm)"
-      ng-mouseout="vm.toggleTooltipHover($event, vm)"></evt-critical-apparatus-entry>
+      data-scope-wit="{{vm.scopeWit}}"></evt-critical-apparatus-entry>
 </span>

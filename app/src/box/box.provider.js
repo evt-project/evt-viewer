@@ -169,6 +169,21 @@ angular.module('evtviewer.box')
                         }
                     };
                     break;
+                case 'critical_apparatus':
+                    state.docId   = evtInterface.getCurrentDocument();
+                    updateContent = function(){
+                        var newContent = ''; 
+                        var criticalEntries = parsedData.getCriticalEntries();
+                        for (var i in criticalEntries._indexes.appEntries) {
+                            var appId = criticalEntries._indexes.appEntries[i],
+                                app   = criticalEntries[appId];
+                            if (!app._lacuna){
+                                newContent += '<evt-critical-apparatus-entry data-app-id="'+appId+'"></evt-critical-apparatus-entry>';
+                            }
+                        }
+                        scope.vm.content = newContent;
+                    };
+                    break;
                 case 'witness':
                     var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness+'-'+vm.witPage : '';
                     topMenuList.selectors.push({id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness },

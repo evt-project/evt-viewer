@@ -4,9 +4,13 @@
          data-getTotElementsOfType="{{vm.getTotElementsOfType('witness')}}"
          ng-class="{'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
                     'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
-                    'span6of18': (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 3) || (vm.type === 'text' && vm.getTotElementsOfType('witness') > 1),
+                    'span6of18': (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 3) || (vm.type === 'text' && vm.getTotElementsOfType('witness') > 1) || (vm.type === 'critical_apparatus'),
                     'topBoxOpened': vm.state.topBoxOpened}">
-    <div class="box-menu" data-position="top">
+    
+    <div 
+        class="box-menu" 
+        data-position="top"
+        ng-if="vm.type !== 'critical_apparatus'">
         <evt-select 
             data-id="{{selector.id}}"
             data-type="{{selector.type}}"
@@ -63,7 +67,8 @@
     </div>
     <div 
         class="box-menu" 
-        data-position="bottom" >
+        data-position="bottom" 
+        ng-if="vm.type !== 'critical_apparatus'">
         <button-switch 
             title="{{button.title}}"
             data-label="{{button.label}}"
@@ -72,13 +77,21 @@
             ng-repeat="button in vm.bottomMenuList.buttons">
         </button-switch>
 
+        <button-switch 
+            title="Heat Map"
+            data-label="Heat Map"
+            data-icon='barcode'
+            data-type="heatMap"
+            ng-if="vm.type=='text' && vm.edition=='critical'"
+            ng-class="{'buttonSwitch-active' : vm.getState('heatmap')}"
+            ng-click="vm.updateState('heatmap', !vm.getState('heatmap'))"></button-switch>
         <!-- <button-switch 
             title="Filters"
             data-label="Filters"
             data-icon='filters'
             data-type="filterReading"
             ng-if="vm.type=='witness'"
-            ng-click="vm.toggleFilterBox()"> -->
-        </button-switch>
+            ng-click="vm.toggleFilterBox()">
+        </button-switch>-->
     </div>
 </section>

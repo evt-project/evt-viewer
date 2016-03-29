@@ -45,7 +45,7 @@ angular.module('evtviewer.reading')
     this.toggleOverAppEntries = function($event) {
         $event.stopPropagation();
         if ( !vm.hidden ) {
-            if (vm.over === false) {
+            if ( vm.over === false ) {
                 evtReading.mouseOverByAppId(vm.appId);
             } else {
                 evtReading.mouseOutAll();
@@ -56,12 +56,10 @@ angular.module('evtviewer.reading')
     this.toggleSelectAppEntries = function($event) {
         $event.stopPropagation();
         if ( !vm.hidden ) {
-            if (!vm.tooltipOver) {
-                if (vm.active === false) {
-                    evtReading.selectById(vm.appId);
-                } else {
-                    // evtReading.unselectAll();
-                }
+            if (vm.active === false) {
+                evtReading.selectById(vm.appId);
+            } else {
+                // evtReading.unselectAll();
             }
         }
     };
@@ -70,19 +68,12 @@ angular.module('evtviewer.reading')
         $event.stopPropagation();
         // evtPopover.closeAll();
         if ( !vm.hidden ) {
-            if (!vm.tooltipOver) {
-                if ( !vm.apparatus._loaded) {
-                    vm.apparatus._loaded = true;
-                } 
-                if (!vm.tooltipOver) {
-                    if ( vm.apparatus.opened ) {
-                        vm.closeApparatus();
-                    } else {
-                        // evtReading.closeAllApparatus(vm.uid);
-                        vm.apparatus.opened = !vm.apparatus.opened;
-                    }
-                }
-            }
+            if ( !vm.apparatus._loaded) {
+                vm.apparatus._loaded = true;
+            } 
+            
+            // evtReading.closeAllApparatus(vm.uid);
+            vm.apparatus.opened = !vm.apparatus.opened;
         }
     };
 

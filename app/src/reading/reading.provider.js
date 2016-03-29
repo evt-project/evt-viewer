@@ -41,7 +41,6 @@ angular.module('evtviewer.reading')
                 variance         : scope.variance,
 
                 over             : false,
-                tooltipOver      : false,
                 apparatus        : {
                     opened            : false,
                     content           : {},

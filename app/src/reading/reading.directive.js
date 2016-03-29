@@ -17,10 +17,7 @@ angular.module('evtviewer.reading')
         link: function(scope, element, attrs){
             // Initialize reading
             var currentReading = evtReading.build(scope.appId, scope);
-            scope.vm.toggleTooltipHover = function(e, vm) {
-                e.stopPropagation();
-                vm.toggleTooltipOver();
-            };
+            
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentReading){

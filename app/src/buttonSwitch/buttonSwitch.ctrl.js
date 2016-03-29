@@ -19,6 +19,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'info':
                 icon = 'fa-info-circle';
                 break;
+            case 'list':
+                icon = 'fa-list';
+                break;
             case 'remove':
                 icon = 'fa-times';
                 break;
@@ -62,9 +65,11 @@ angular.module('evtviewer.buttonSwitch')
                     $scope.active = false;
                     break;
                 case 'changeViewMode':
-                    console.log('changeViewMode', $scope.value);
                     if ($scope.value !== undefined) {
                         evtInterface.updateCurrentViewMode($scope.value);
+                        if ($scope.value === 'critical'){
+                            evtInterface.updateCurrentEdition('critical');
+                        }
                         evtInterface.updateUrl();
                     }
                     break; 
@@ -92,6 +97,39 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'toggleFilterApp':
                     $scope.$parent.vm.toggleFilterBox();
+                    break;
+                case 'witList':
+                    var witnessesCollection = parsedData.getWitnesses();
+                    var structure = witnessesCollection._indexes.encodingStructure;
+                    var content;
+                    content += '<ul>';
+                    for (var i = 0; i < structure.length; i++) {
+                        var element = witnessesCollection[structure[i]];
+                        if (element._type === 'witness') {
+                            content += '<li>';
+                                content += '<strong>#'+element.id+'</strong><br /><div>'+element.description.innerHTML+'</div>';
+                            content += '</li>';
+                        } else {
+                            content += '<li>';
+                                content += '<strong>#'+element.id+'</strong><br /><div>'+element.name+'</div>';
+                                content += '<ul>';
+                                for (var j = 0; j < element.content.length; j++) {
+                                    var subElement = witnessesCollection[element.content[j]];
+                                    if (subElement._type === 'witness') {
+                                        content += '<li>';
+                                        content += '<strong>#'+subElement.id+'</strong><br /><div>'+subElement.description.innerHTML+'</div>';
+                                        content += '</li>';
+                                    }
+                                    //TO RICORSIVA!!!            
+                                }
+                                content += '</ul>';
+                            content += '</li>';
+                        }
+                    }
+                    content += '</ul>';
+                    var newTopBoxContent = content || $scope.$parent.vm.topBoxContent;
+                    $scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+                    $scope.$parent.vm.toggleTopBox();
                     break;
                 default:
                     break;

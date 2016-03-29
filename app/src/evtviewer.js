@@ -28,5 +28,6 @@ angular
     'evtviewer.buttonSwitch',
     'evtviewer.popover',
     'evtviewer.mobile',
+    'evtviewer.criticalApparatusEntry',
     'evtviewer.reading'
   ]);
