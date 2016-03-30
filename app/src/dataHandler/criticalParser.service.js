@@ -563,16 +563,21 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* ************************************ */
-    /* isFragmentaryWitness(docDOM, witObj) */
+    /* isFragmentaryWitness(docDOM, wit) */
     /* ********************************************************** */
     /* Function to check if a witness is a fragmentary one or not */
     /* ********************************************************** */
-    var isFragmentaryWitness = function(docDOM, witObj){
-        if (docDOM.querySelectorAll("rdg[wit*='#"+witObj.id+"'] witStart:not([wit]").length > 0 || 
-            docDOM.querySelectorAll("lem[wit*='#"+witObj.id+"'] witStart:not([wit]").length > 0 ||
-            docDOM.querySelectorAll("witStart[wit*='#"+witObj.id+"']").length > 0) {
-            return true;
-        } else {
+    var isFragmentaryWitness = function(docDOM, wit){
+        try {
+            if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
+                return true;
+            } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
+                       docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(err) {
             return false;
         }
     };
@@ -771,7 +776,7 @@ angular.module('evtviewer.dataHandler')
             // DA PROBLEMI [ma serve per parsare i frammenti]
             docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
             docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.tei-c\.org\/ns\/1.0"/g, '');
-            if (isFragmentaryWitness(docDOM, witObj)) {
+            if (isFragmentaryWitness(docDOM, wit)) {
                 var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, wit);
                 witnessText = evtParser.balanceXHTML(fragmentaryText);
             } else {
