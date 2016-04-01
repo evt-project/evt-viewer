@@ -31,6 +31,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'share':
                 icon = 'fa-share-alt';
                 break;
+            case 'bookmark':
+                icon = 'fa-bookmark';
+                break;
             case 'thumb':
             case 'thumbs':
             case 'thumbnail':
@@ -87,6 +90,7 @@ angular.module('evtviewer.buttonSwitch')
                     alert('Search in witness '+wit+'. Coming Soon...');
                     break;
                 case 'share':
+                case 'bookmark':
                     alert(window.location);
                     break;
                 case 'toggleInfoWit':
