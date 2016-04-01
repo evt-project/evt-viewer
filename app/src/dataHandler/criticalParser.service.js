@@ -662,12 +662,14 @@ angular.module('evtviewer.dataHandler')
         var spanElement;
         if (entry !== null) {
             var entryReadings = entry._indexes.readings._indexes;
-            if (entryReadings.length === 1 && 
-                entry.content[entryReadings[0]].wits.length === parsedData.getWitnessesList().length) {
-                spanElement = document.createElement('span');
-                spanElement.className = entry.content[entryReadings[0]]._xmlTagName;
-            } else {
-                spanElement = document.createElement('evt-reading');
+            spanElement = document.createElement('evt-reading');
+            
+            if (entry.lemma !== '' && !entry._lacuna && entryReadings.length === 1) {
+                var entryWits = entry.content[entryReadings[0]].wits || [];
+                if(entryWits.length === parsedData.getWitnessesList().length) {
+                    spanElement = document.createElement('span');
+                    spanElement.className = entry.content[entryReadings[0]]._xmlTagName;
+                }
             }
             spanElement.setAttribute('data-app-id', entry.id);
             spanElement.setAttribute('data-scope-wit', wit);
@@ -683,8 +685,9 @@ angular.module('evtviewer.dataHandler')
                             if (readingContent[i].type === 'subApp'){
                                 var subEntry = parsedData.getCriticalEntryByPos(readingContent[i].id);
                                 var subEntryElem = getEntryLemmaText(subEntry, wit);
-                                if (subEntryElem !== null)
+                                if (subEntryElem !== null) {
                                     spanElement.appendChild(subEntryElem);
+                                }
                             } else if (readingContent[i].type === 'genericElement'){
                                 var genericElement = getGenericElementText(readingContent[i], wit);
                                 spanElement.appendChild(genericElement);
@@ -777,8 +780,9 @@ angular.module('evtviewer.dataHandler')
                         spanElement = document.createElement('span');
                         spanElement.className = 'encodingError';
                     }
-                    if (spanElement !== null)
+                    if (spanElement !== null) {
                         appNode.parentNode.replaceChild(spanElement, appNode);
+                    }
                 }
                 j--;
             }
@@ -841,8 +845,9 @@ angular.module('evtviewer.dataHandler')
                 if (elementContent[i].type === 'subApp'){
                     var subEntry = parsedData.getCriticalEntryByPos(elementContent[i].id);
                     var subEntryElem = getEntryLemmaText(subEntry, wit);
-                    if (subEntryElem !== null)
+                    if (subEntryElem !== null){
                         spanElement.appendChild(subEntryElem);
+                    }
                 } else if (elementContent[i].type === 'genericElement'){
                     var genericElement = getGenericElementText(elementContent[i], wit);
                     spanElement.appendChild(genericElement);
@@ -885,8 +890,9 @@ angular.module('evtviewer.dataHandler')
                         if (lemmaContent[i].type === 'subApp'){
                             var subEntry = parsedData.getCriticalEntryByPos(lemmaContent[i].id);
                             var subEntryElem = getEntryLemmaText(subEntry, wit);
-                            if (subEntryElem !== null)
+                            if (subEntryElem !== null){
                                 spanElement.appendChild(subEntryElem);
+                            }
                         } else if (lemmaContent[i].type === 'genericElement'){
                             var genericElement = getGenericElementText(lemmaContent[i], wit);
                             spanElement.appendChild(genericElement);
@@ -896,8 +902,9 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (GLOBALDEFAULTCONF.preferredWitness !== '') {
                     spanElement = getEntryWitnessReadingText(entry, GLOBALDEFAULTCONF.preferredWitness);
-                    if (spanElement !== null)
+                    if (spanElement !== null){
                         spanElement.className = 'autoLemma';
+                    }
                 } else {
                     errorElement = document.createElement('span');
                     errorElement.className = 'encodingError';
@@ -985,8 +992,9 @@ angular.module('evtviewer.dataHandler')
                             spanElement.className = 'errorMsg';
                             spanElement.textContent = 'ERROR';
                         }
-                        if (spanElement !== null)
+                        if (spanElement !== null){
                             appNode.parentNode.replaceChild(spanElement, appNode);
+                        }
                         count++;
                     }
                     j--;
