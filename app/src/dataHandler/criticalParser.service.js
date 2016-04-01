@@ -73,11 +73,6 @@ angular.module('evtviewer.dataHandler')
     /* and save them in parsedData                                 */
     /* @doc document -> XML to be parsed                          */
     /* ********************************************************** */
-    // It searches for <listWit> elements not nested and cycles their children
-    // For each children, if it is a nested <listWit> it calls the function parseListWit(element),
-    // otherwise, if it is a <witness> element it create a json object with witness info
-    // In both cases it add the json object generated (that is a group of witness or a simple witness)
-    // to parsedData with the function parsedData.addWitness(json);
     parser.parseWitnesses = function(doc) {
         var currentDocument = angular.element(doc);
         if (currentDocument.find(listDef).length > 0) {
@@ -110,14 +105,13 @@ angular.module('evtviewer.dataHandler')
         console.log('## Witnesses ##', parsedData.getWitnesses());
     };
 
-    /* ********************* */
-    /* parseAppReading(elem) */
-    /* ******************************************************************* */
-    /* Function to parse the XML element representing an apparatus reading */
-    /* (<lem> o <rdg> in XML-TEI P5)                                       */
-    /* @elem element -> xml element to be parsed                           */
-    /* @return a json object representing the apparatus reading        */
-    /* ******************************************************************* */
+    /* ************************* */
+    /* parseGenericElement(elem) */
+    /* ******************************************************************** */
+    /* Function to parse a generic XML element inside the apparatus reading */
+    /* @elem element -> xml element to be parsed                            */
+    /* @return a json object representing the apparatus reading             */
+    /* ******************************************************************** */
     var parseGenericElement = function(elem) {
         if (lacunaMilestone.indexOf('<'+elem.tagName+'>') < 0 && fragmentMilestone.indexOf('<'+elem.tagName+'>') < 0) {
             var genericElement = {
@@ -126,10 +120,13 @@ angular.module('evtviewer.dataHandler')
                 attributes : [],
                 content    : []
             };
-            for (var i = 0; i < elem.attributes.length; i++) {
-                var attrib = elem.attributes[i];
-                if (attrib.specified) {
-                    genericElement.attributes[attrib.name] = attrib.value;
+            
+            if (elem.attributes) {
+                for (var i = 0; i < elem.attributes.length; i++) {
+                    var attrib = elem.attributes[i];
+                    if (attrib.specified) {
+                        genericElement.attributes[attrib.name] = attrib.value;
+                    }
                 }
             }
 
@@ -167,6 +164,14 @@ angular.module('evtviewer.dataHandler')
         }
         
     };
+    /* ********************* */
+    /* parseAppReading(elem) */
+    /* ******************************************************************* */
+    /* Function to parse the XML element representing an apparatus reading */
+    /* (<lem> o <rdg> in XML-TEI P5)                                       */
+    /* @elem element -> xml element to be parsed                           */
+    /* @return a json object representing the apparatus reading            */
+    /* ******************************************************************* */
     var parseAppReading = function(entry, elem){
         var reading = {
             id           : '',
@@ -177,7 +182,7 @@ angular.module('evtviewer.dataHandler')
                 //subapp { id, type='subApp'}
             ],
             note         : '',
-            _significant : true,
+            significant : true,
             _groupId     : undefined,
             _xmlTagName  : elem.tagName,
             _xmlSource   : elem.innerHTML
@@ -206,22 +211,22 @@ angular.module('evtviewer.dataHandler')
                                 var witsInGroup = parsedData.getWitnessesInGroup(sigla);
                                 reading.wits.push.apply(reading.wits, witsInGroup);
                                 for (var wit in witsInGroup) {
-                                    if (entry.content._witMap[witsInGroup[wit]] === undefined){
-                                        entry.content._witMap[witsInGroup[wit]] = id;
+                                    if (entry._indexes.witMap[witsInGroup[wit]] === undefined){
+                                        entry._indexes.witMap[witsInGroup[wit]] = id;
                                     }
                                 }
                             } else {
                                 reading.wits.push(sigla);
-                                if (entry.content._witMap[sigla] === undefined){
-                                    entry.content._witMap[sigla] = id;
+                                if (entry._indexes.witMap[sigla] === undefined){
+                                    entry._indexes.witMap[sigla] = id;
                                 }
                             }
                         }
                     }
                 }
-                if (reading._significant) {
+                if (reading.significant) {
                     if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
-                        reading._significant = false;
+                        reading.significant = false;
                     }
                 }
                 parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
@@ -241,9 +246,9 @@ angular.module('evtviewer.dataHandler')
                     var entryApp = parseAppEntry(child);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                 } else {
-                    if (reading._significant) {
+                    if (reading.significant) {
                         if (notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
-                            reading._significant = false;
+                            reading.significant = false;
                         }
                     }
                     if (fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
@@ -302,9 +307,9 @@ angular.module('evtviewer.dataHandler')
                         groupObj.attributes[attrib.name] = attrib.value;
                         if (readingObj.attributes[attrib.name] === undefined) {
                             readingObj.attributes[attrib.name] = attrib.value;
-                            if (readingObj._significant) {
+                            if (readingObj.significant) {
                                 if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
-                                    readingObj._significant = false;
+                                    readingObj.significant = false;
                                 }
                             }
                         }
@@ -315,8 +320,8 @@ angular.module('evtviewer.dataHandler')
                 entry._indexes.readings._indexes.push(readingObj.id);
                 entry.content[readingObj.id] = readingObj;
 
-                if (readingObj._significant || child.tagName === 'lem') {
-                    entry._indexes.readings._significant.push(readingObj.id);
+                if (readingObj.significant || child.tagName === 'lem') {
+                    entry._indexes.readings.significant.push(readingObj.id);
                 }
             } else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
                 //TODO
@@ -342,7 +347,6 @@ angular.module('evtviewer.dataHandler')
             lemma      : '',
             note       : '',
             content    : {
-                _witMap : { }
                 // READINGS
                 // GROUPS
                 // SUBAPP
@@ -351,10 +355,11 @@ angular.module('evtviewer.dataHandler')
                 encodingStructure : [],
                 readings          : {
                     _indexes     : [],
-                    _significant : []
+                    significant : []
                 },
                 groups            : [],
-                subApps           : []
+                subApps           : [],
+                witMap            : { }
             },
             _subApp    : false,
             _xmlSource : app.innerHTML
@@ -388,9 +393,9 @@ angular.module('evtviewer.dataHandler')
                         entry.lemma = reading.id;
                     } else {
                         entry._indexes.readings._indexes.push(reading.id);
-                        if (reading._significant && 
-                            entry._indexes.readings._significant.indexOf(reading.id) < 0) {
-                            entry._indexes.readings._significant.push(reading.id);
+                        if (reading.significant && 
+                            entry._indexes.readings.significant.indexOf(reading.id) < 0) {
+                            entry._indexes.readings.significant.push(reading.id);
                         }
                     }
                     
@@ -427,17 +432,29 @@ angular.module('evtviewer.dataHandler')
                 entry._fragment = true;
             }
 
-
-            var significantReadings    = entry._indexes.readings._significant,
+            // Save variance
+            var significantReadings    = entry._indexes.readings.significant,
                 significantReadingsTot = significantReadings.length;
             if (entry.lemma !== '' && significantReadings.indexOf(entry.lemma) >= 0) {
                 significantReadingsTot -= 1; //escludo lemma
             }
-            var totWits = parsedData.getWitnessesList().length;
+            var totWits = parsedData.getWitnessesList();
             
-            var variance = significantReadingsTot/totWits;
+            var variance = significantReadingsTot/totWits.length;
             entry._variance = variance;
 
+            //Find witnesses not encoded in app
+            var encodedWits = Object.keys(entry._indexes.witMap),
+                missingWits = [];
+
+            if (encodedWits.length < totWits.length){
+                for (var i in totWits) {
+                    if (encodedWits.indexOf(totWits[i]) < 0){
+                        missingWits.push(totWits[i]);
+                    }
+                }
+            }
+            entry._indexes.missingWits = missingWits;
             parsedData.addCriticalEntry(entry);
         }
     };
@@ -567,20 +584,20 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     /* Function to check if a witness is a fragmentary one or not */
     /* ********************************************************** */
-    var isFragmentaryWitness = function(docDOM, wit){
-        try {
-            if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
-                return true;
-            } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
-                       docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
-                return true;
-            } else {
+        var isFragmentaryWitness = function(docDOM, wit){
+            try {
+                if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
+                    return true;
+                } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
+                           docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(err) {
                 return false;
             }
-        } catch(err) {
-            return false;
-        }
-    };
+        };
 
     /* ******************************************* */
     /* parseFragmentaryWitnessText(docDOM, witObj) */
@@ -642,12 +659,19 @@ angular.module('evtviewer.dataHandler')
     /* @wit -> witness specified                                                                               */
     /* ******************************************************************************************************* */
     var getEntryWitnessReadingText = function(entry, wit){
-        var spanElement = document.createElement('evt-reading');
+        var spanElement;
+        if (entry !== null) {
+            var entryReadings = entry._indexes.readings._indexes;
+            if (entryReadings.length === 1 && 
+                entry.content[entryReadings[0]].wits.length === parsedData.getWitnessesList().length) {
+                spanElement = document.createElement('span');
+                spanElement.className = entry.content[entryReadings[0]]._xmlTagName;
+            } else {
+                spanElement = document.createElement('evt-reading');
+            }
             spanElement.setAttribute('data-app-id', entry.id);
             spanElement.setAttribute('data-scope-wit', wit);
-            
-        if (entry !== null) {
-            var readingId = entry.content._witMap[wit];
+            var readingId = entry._indexes.witMap[wit];
             if (readingId !== undefined && readingId !== '') {
                 spanElement.setAttribute('data-reading-id', readingId);
                 var readingContent = entry.content[readingId].content;
@@ -659,7 +683,8 @@ angular.module('evtviewer.dataHandler')
                             if (readingContent[i].type === 'subApp'){
                                 var subEntry = parsedData.getCriticalEntryByPos(readingContent[i].id);
                                 var subEntryElem = getEntryLemmaText(subEntry, wit);
-                                spanElement.appendChild(subEntryElem);
+                                if (subEntryElem !== null)
+                                    spanElement.appendChild(subEntryElem);
                             } else if (readingContent[i].type === 'genericElement'){
                                 var genericElement = getGenericElementText(readingContent[i], wit);
                                 spanElement.appendChild(genericElement);
@@ -721,8 +746,6 @@ angular.module('evtviewer.dataHandler')
 
             var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                 j      = apps.length-1;
-            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
             while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
@@ -754,16 +777,13 @@ angular.module('evtviewer.dataHandler')
                         spanElement = document.createElement('span');
                         spanElement.className = 'encodingError';
                     }
-                    appNode.parentNode.replaceChild(spanElement, appNode);
+                    if (spanElement !== null)
+                        appNode.parentNode.replaceChild(spanElement, appNode);
                 }
                 j--;
             }
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
 
-            // // DA PROBLEMI [ma serve per parsare i vari nodi XML]
-            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
-            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.tei-c\.org\/ns\/1.0"/g, '');
-            
             angular.forEach(docDOM.children, function(elem){
                 elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skipFromBeingParsed), elem);
             });
@@ -773,10 +793,10 @@ angular.module('evtviewer.dataHandler')
             
             //parse lacunas
             parser.parseWintessLacunas(docDOM, wit);
-            // DA PROBLEMI [ma serve per parsare i frammenti]
-            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
-            docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.tei-c\.org\/ns\/1.0"/g, '');
+
             if (isFragmentaryWitness(docDOM, wit)) {
+                // DA PROBLEMI [ma serve per parsare i frammenti]
+                docDOM.innerHTML = docDOM.innerHTML.replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '');
                 var fragmentaryText = parser.parseFragmentaryWitnessText(docDOM, wit);
                 witnessText = evtParser.balanceXHTML(fragmentaryText);
             } else {
@@ -785,6 +805,7 @@ angular.module('evtviewer.dataHandler')
         } else {
             witnessText = '<span>Text not available.</span>';
         }
+
         witnessText = evtParser.balanceXHTML(witnessText);
         
         //save witness text
@@ -800,8 +821,7 @@ angular.module('evtviewer.dataHandler')
     /* @wit -> current witness (optional)                                                   */
     /* ************************************************************************************ */
     var getGenericElementText = function(element, wit){
-        var spanElement = document.createElement('span'),
-            errorElement;
+        var spanElement = document.createElement('span');
         spanElement.className = element.tagName;
         
         var attribKeys = Object.keys(element.attributes);
@@ -821,7 +841,8 @@ angular.module('evtviewer.dataHandler')
                 if (elementContent[i].type === 'subApp'){
                     var subEntry = parsedData.getCriticalEntryByPos(elementContent[i].id);
                     var subEntryElem = getEntryLemmaText(subEntry, wit);
-                    spanElement.appendChild(subEntryElem);
+                    if (subEntryElem !== null)
+                        spanElement.appendChild(subEntryElem);
                 } else if (elementContent[i].type === 'genericElement'){
                     var genericElement = getGenericElementText(elementContent[i], wit);
                     spanElement.appendChild(genericElement);
@@ -844,12 +865,13 @@ angular.module('evtviewer.dataHandler')
     /* @wit -> current witness (optional)                                           */
     /* **************************************************************************** */
     var getEntryLemmaText = function(entry, wit){
-        var spanElement = document.createElement('evt-reading'),
+        var spanElement,
             errorElement;
-        spanElement.setAttribute('data-app-id', entry.id);
-        spanElement.setAttribute('data-scope-wit', wit);
             
         if (entry !== null) {
+            spanElement = document.createElement('evt-reading');
+            spanElement.setAttribute('data-app-id', entry.id);
+            spanElement.setAttribute('data-scope-wit', wit);
             if (entry._lacuna) {
                 var lacunaElement = document.createElement('span');
                     lacunaElement.className = 'lacunaApp';
@@ -863,7 +885,8 @@ angular.module('evtviewer.dataHandler')
                         if (lemmaContent[i].type === 'subApp'){
                             var subEntry = parsedData.getCriticalEntryByPos(lemmaContent[i].id);
                             var subEntryElem = getEntryLemmaText(subEntry, wit);
-                            spanElement.appendChild(subEntryElem);
+                            if (subEntryElem !== null)
+                                spanElement.appendChild(subEntryElem);
                         } else if (lemmaContent[i].type === 'genericElement'){
                             var genericElement = getGenericElementText(lemmaContent[i], wit);
                             spanElement.appendChild(genericElement);
@@ -873,7 +896,8 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (GLOBALDEFAULTCONF.preferredWitness !== '') {
                     spanElement = getEntryWitnessReadingText(entry, GLOBALDEFAULTCONF.preferredWitness);
-                    spanElement.className = 'autoLemma';
+                    if (spanElement !== null)
+                        spanElement.className = 'autoLemma';
                 } else {
                     errorElement = document.createElement('span');
                     errorElement.className = 'encodingError';
@@ -881,24 +905,25 @@ angular.module('evtviewer.dataHandler')
                     spanElement.appendChild(errorElement);        
                 }
             }
-            
-            var attribKeys = Object.keys(entry.attributes);
-            for (var key in attribKeys) {
-                var attrib = attribKeys[key];
-                var value = entry.attributes[attrib];
-                if (attrib !== 'xml:id') {
-                    spanElement.setAttribute('data-'+attrib, value);
+            if (spanElement !== null) {
+                var attribKeys = Object.keys(entry.attributes);
+                for (var key in attribKeys) {
+                    var attrib = attribKeys[key];
+                    var value = entry.attributes[attrib];
+                    if (attrib !== 'xml:id') {
+                        spanElement.setAttribute('data-'+attrib.replace(':','-'), value);
+                    }
                 }
-            }
 
-            if (entry._variance !== undefined) {
-                spanElement.setAttribute('data-variance', entry._variance);
-                // da pesare sulla varianza massima
+                if (entry._variance !== undefined) {
+                    spanElement.setAttribute('data-variance', entry._variance);
+                    // da pesare sulla varianza massima
+                }
             }
         } else {
             errorElement = document.createElement('span');
             errorElement.className = 'encodingError';
-            errorElement.setAttribute('title', "General error");
+            errorElement.setAttribute('title', 'General error');
             spanElement.appendChild(errorElement);
         }
         
@@ -960,7 +985,8 @@ angular.module('evtviewer.dataHandler')
                             spanElement.className = 'errorMsg';
                             spanElement.textContent = 'ERROR';
                         }
-                        appNode.parentNode.replaceChild(spanElement, appNode);
+                        if (spanElement !== null)
+                            appNode.parentNode.replaceChild(spanElement, appNode);
                         count++;
                     }
                     j--;

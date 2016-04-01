@@ -4,10 +4,13 @@
   ng-mouseout="vm.toggleOverAppEntries($event)">
   <div 
     class="critical-apparatus-entry_main-content">
-      <span compile="vm.content.lemma"></span> 
-      <ul>
-          <li ng-repeat="reading in vm.content.significantReadings" compile="reading"></li>
-      </ul>
+      <span 
+        ng-if="vm.content.lemma !== ''"
+        compile="vm.content.lemma"></span> 
+      <span 
+        ng-if="vm.content.significantReadings.length > 0"
+        ng-repeat="reading in vm.content.significantReadings" 
+        compile="reading"></span> 
   </div>
   <div class="critical-apparatus-entry_other-content"
       ng-if="vm.content.criticalNote != '' || 

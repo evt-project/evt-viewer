@@ -37,7 +37,10 @@ angular.module('evtviewer.reading')
         vm.apparatus.opened = true;
     };
 
-    
+    this.toggleApparatus = function() {
+        vm.apparatus.opened = !vm.apparatus.opened;
+    };
+
     this.toggleTooltipOver = function() {
         vm.tooltipOver = !vm.tooltipOver;
     };
@@ -133,10 +136,10 @@ angular.module('evtviewer.reading')
                 if (colors !== '' ) {
                     colors = colors.slice(0, -1);
                     if ( (colors.match('rgb', 'gi') && colors.match('rgb', 'gi').length > 1) || (colors.match('#', 'gi') && colors.match('#', 'gi').length > 1)) {
-                        background  = 'background: -moz-linear-gradient(top,'+colors+');';
-                        background += 'background: -webkit-linear-gradient(top,'+colors+');';
-                        background += 'background: ms-linear-gradient(top,'+colors+');'
-                        background += 'background: linear-gradient(top,'+colors+');';
+                        background  = 'background: -moz-linear-gradient(left,'+colors+');';
+                        background += 'background: -webkit-linear-gradient(left,'+colors+');';
+                        background += 'background: ms-linear-gradient(left,'+colors+');'
+                        background += 'background: linear-gradient(left,'+colors+');';
                     } else {
                         background = 'background: '+colors;
                     }

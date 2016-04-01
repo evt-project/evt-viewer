@@ -29,7 +29,7 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < totReadings.length; i++) {
             var reading = entry.content[totReadings[i]];
             if (reading !== undefined) {
-                if (readings._significant.indexOf(reading.id) >= 0) {
+                if (readings.significant.indexOf(reading.id) >= 0) {
                     appContent.significantReadings.push(apparatus.getSignificantReading(reading, scopeWit));
                 } else {
                     appContent.notSignificantReadings.push(apparatus.getSignificantReading(reading, scopeWit));

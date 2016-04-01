@@ -14,6 +14,7 @@
 
     span {
         background: transparent;
+        display: inline-block;
     }
 
     &.active {
@@ -93,6 +94,7 @@
         }
     }
     .witnesses {
+        display: inline;
         .wit {
             margin: 0 3px;
             cursor: pointer;

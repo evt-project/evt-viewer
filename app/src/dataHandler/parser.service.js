@@ -81,7 +81,7 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* ********************* */
-    /* balanceXML(XHTMLstring) */
+    /* balanceXHTML(XHTMLstring) */
     /* ********************* */ 
     // balance takes an excerpted or truncated XHTML string and returns a well-balanced XHTML string
     parser.balanceXHTML = function(XHTMLstring) {
