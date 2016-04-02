@@ -44,6 +44,7 @@ angular.module('evtviewer.box')
                 filters = vm.state.filters;
             if (filters[filter] === undefined ) {
                 filters[filter] = {
+                    name       : filter,
                     any        : true,
                     totActive  : 0,
                     values     : {
@@ -60,7 +61,8 @@ angular.module('evtviewer.box')
                 values[values.length] = value;
                 values[value] = { 
                                     name   : value,
-                                    active : true 
+                                    active : true,
+                                    color  : parsedData.getCriticalEntriesFilterColor(filter, value) 
                                 };
                 values.length++;
             } else {
@@ -69,8 +71,10 @@ angular.module('evtviewer.box')
             
             if (values[value].active) {
                 filters[filter].totActive++;
+                filters._totActive++;
             } else {
                 filters[filter].totActive--;
+                filters._totActive--;
             }
             
             filters[filter].any = (filters[filter].totActive === 0);
@@ -79,6 +83,7 @@ angular.module('evtviewer.box')
         function clearFilter(filter){
             var vm = this;
             vm.state.filters[filter].values    = { length: 0 };
+            vm.state.filters._totActive       -= vm.state.filters[filter].totActive;
             vm.state.filters[filter].totActive = 0;
         }
 
@@ -196,7 +201,9 @@ angular.module('evtviewer.box')
                                                 {title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit' });
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
-                    state.filters = {};
+                    state.filters = {
+                        _totActive : 0
+                    };
                     state.filterBox = false;
                     updateContent = function(){
                         if ( vm.witness !== undefined ) {

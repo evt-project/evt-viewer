@@ -184,6 +184,51 @@ section > div{
 @import "criticalApparatusEntry.scss";
 
 // Temporary
+.filters-in-box {
+    position: absolute;
+    top: 44px;
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    left: 3px;
+    right: 2px;
+    width: calc(100% - 21px);
+    background: #fff;
+    @include set(box-shadow, 0px 7px 6px -4px #fff);
+    span.filter-group {
+        display: inline;
+        &::after{
+            content: "•";
+        }
+        &:last-child::after{
+            content: "";
+        }
+        span.filter-value{
+            display: inline-block;
+            background: #CF00FF;
+            border-radius: 4px;
+            font-size: 85%;
+            margin: 4px;
+            padding: 0px 5px;
+            font-variant: small-caps;
+            cursor: pointer;
+            min-width: 50px;
+            text-align: center;
+            @include set(box-shadow, 0px 2px 4px rgba(0, 0, 0, 0.4));
+            &:hover{
+                opacity: 0.9;
+            }
+            &::after{
+                content: "x";
+                color: #333;
+                font-weight: lighter;
+                font-size: 80%;
+                top: -1px;
+                position: relative;
+            }
+        }
+    }
+}
 .alert-msg {
     background: rgba(0,0,0,.1);
     display: block;

@@ -160,6 +160,20 @@ angular.module('evtviewer.box')
                     }
                 }, true); 
             }
+
+            if (currentBox.type === 'witness') {
+                scope.$watch(function() {
+                    return scope.vm.state.filters._totActive;
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        $timeout(function(){
+                            var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
+                            var height = angular.element(filtersActiveElem).height();
+                            angular.element(boxBody).css('padding-top', (height+20)+'px');
+                        });
+                    }
+                }, true);
+            }
         }
     };
 });

@@ -25,7 +25,11 @@ angular.module('evtviewer.dataHandler')
 
     var criticalAppCollection = {
         filters: { },
-        filtersColors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
+        // filtersColors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
+        filtersColors : ['rgb(51,102,204)', 'rgb(16,150,24)', 'rgb(255,153,0)', 
+                         'rgb(221,68,119)', 'rgb(34,170,153)', 
+                         'rgb(153,0,153)', 'rgb(220,57,18', 'rgb(0,153,198)', 'rgb(102,170,0)',
+                         'rgb(184,46,46)', 'rgb(49,99,149)', 'rgb(153,68,153)'],
         filtersLength : 0,
         __allLoaded   : false,
         _maxVariance  : 0,
@@ -288,6 +292,10 @@ angular.module('evtviewer.dataHandler')
 
     parsedData.getCriticalEntriesFilterValues = function(filter) {
         return criticalAppCollection.filters[filter];
+    };
+
+    parsedData.getCriticalEntriesFilterColor = function(filter, value) {
+        return criticalAppCollection.filters[filter].values[value].color;
     };
 
     return parsedData;

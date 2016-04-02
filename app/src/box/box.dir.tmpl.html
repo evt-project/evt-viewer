@@ -32,6 +32,23 @@
     </div>
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
+    <div class="filters-in-box" 
+         ng-if="(vm.type=='witness' || vm.state.edition=='critical') && vm.state.filters._totActive > 0">
+        <span 
+            class="filter-group"
+            ng-repeat="filter in vm.state.filters"
+            ng-if="filter.totActive > 0">
+            <span 
+                class="filter-value"
+                ng-repeat="value in filter.values"
+                ng-if="filter.values[value].active"
+                ng-click="vm.toggleCriticalAppFilter(filter.name, filter.values[value].name);"
+                style="background:{{filter.values[value].color}}"
+                title="Remove ''{{filter.values[value].name}}''">
+                {{filter.values[value].name}}
+            </span>
+        </span>
+    </div>
     <div 
         class="box-bottom-box filters"
         ng-if="vm.type=='witness' || vm.state.edition=='critical'"
