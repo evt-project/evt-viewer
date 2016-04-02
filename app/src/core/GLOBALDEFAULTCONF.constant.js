@@ -50,8 +50,8 @@ angular.module('evtviewer.core')
     },
 
     dataUrl: '../../data/pseudo-edition-test-file_mod.xml',
-    defaultViewMode: 'imgTxt',
-    defaultEdition: 'diplomatic',
+    defaultViewMode: 'critical',
+    defaultEdition: 'critical',
 
     preferredWitness : 'edition',
     

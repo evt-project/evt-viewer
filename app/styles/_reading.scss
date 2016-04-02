@@ -1,9 +1,9 @@
 /* *************************** */
 /* READING                     */
 /* *************************** */
-$reading-background-default : rgba(255, 108, 63, .3);
-$reading-background-hover   : rgba(255, 108, 63, 1);
-
+$reading-background-default  : rgba(101, 138, 255, .3);
+$reading-background-hover    : rgb(101, 138, 255);
+$reading-background-selected : rgb(208, 220, 255);
 .autoLemma {
     .reading:not(.blurred) {
         .reading__text {
@@ -31,10 +31,14 @@ $reading-background-hover   : rgba(255, 108, 63, 1);
         
         &.selected {
             > .reading__text{
-                border: 1px solid #000;
-                border-bottom: 5px solid #ECEFF1;
-                position: relative;
-                z-index: 9;
+                background: $reading-background-selected;
+                > * {
+                    border: 1px solid #000;
+                    border-bottom: 3px solid $critical-apparatus-entry-background-color;
+                    position: relative;
+                    z-index: 9;
+                    margin-bottom:-1px;
+                }
             }
             &.blurred, &.blurred *{
                 color: transparent !important;

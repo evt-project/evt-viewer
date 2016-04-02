@@ -101,10 +101,11 @@ angular.module('evtviewer.reading')
         if ($scope.$parent.vm.state.heatmap) {
             var maxVariance = parsedData.getCriticalEntriesMaxVariance();
             opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
-            return 'background: rgba(101, 138, 255, '+opacity+')';
-        } else {
-            opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.3';
             return 'background: rgba(255, 108, 63, '+opacity+')';
+        } else {
+            // opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.3';
+            // return 'background: rgba(208, 220, 255, '+opacity+')';
+            return '';
         }
     };
 

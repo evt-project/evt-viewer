@@ -16,7 +16,7 @@
     <evt-critical-apparatus-entry 
       ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
       ng-if="vm.apparatus._loaded"
-      ng-show="vm.isApparatusOpened()"
+      ng-show="vm.isApparatusOpened() && vm.fitFilters()"
       data-app-id="{{vm.appId}}"
       data-reading-id="{{vm.readingId}}"
       data-scope-wit="{{vm.scopeWit}}"></evt-critical-apparatus-entry>

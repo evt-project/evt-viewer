@@ -180,8 +180,8 @@ section > div{
 @import "buttonSwitch.scss";
 @import "box.scss";
 @import "popover.scss";
-@import "reading.scss";
 @import "criticalApparatusEntry.scss";
+@import "reading.scss";
 
 // Temporary
 .filters-in-box {
@@ -303,6 +303,11 @@ section > div{
 }
 .del {
     text-decoration: line-through;
+}
+.div {
+    display: block;
+    margin:15px 0;
+    background: inherit;
 }
 .encodingError {
     font-variant: small-caps;
@@ -517,11 +522,7 @@ section > div{
             font-variant: small-caps;
         }
     }
-    .p {
-        display: block;
-        margin-bottom:5px;
-    }
-
+    
     .quote {
         font-style: italic;
         &::before {
@@ -538,6 +539,10 @@ section > div{
     &::before{
         content: "[omit.]";
     }
+}
+.p {
+    display: block;
+    margin-bottom:5px;
 }
 .pb {
     display: block;
