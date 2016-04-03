@@ -62,11 +62,20 @@ $reading-background-selected : rgb(208, 220, 255);
     }
 
     // Nested
-    .reading {
-        &:not(.hidden) {
-            .reading__text {
-                > * {
-                    border: 1px dotted black;
+    &:not(.invisible){
+        .reading {
+            &:not(.hidden) {
+                .reading__text {
+                    > * {
+                        border: 1px dotted black;
+                    }
+                }
+                &.selected {
+                    > .reading__text{
+                        > * {
+                            border-bottom: 5px solid $critical-apparatus-entry-background-color;
+                        }
+                    }
                 }
             }
         }
