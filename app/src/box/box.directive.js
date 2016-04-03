@@ -169,7 +169,9 @@ angular.module('evtviewer.box')
                         $timeout(function(){
                             var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
                             var height = angular.element(filtersActiveElem).height();
-                            angular.element(boxBody).css('padding-top', (height+20)+'px');
+                            
+                            var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
+                            angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
                         });
                     }
                 }, true);

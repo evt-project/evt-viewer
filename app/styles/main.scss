@@ -185,8 +185,9 @@ section > div{
 
 // Temporary
 .filters-in-box {
+    text-align: center;
     position: absolute;
-    top: 44px;
+    bottom: 44px;
     width: 100%;
     height: auto;
     padding: 5px;
@@ -194,7 +195,7 @@ section > div{
     right: 2px;
     width: calc(100% - 21px);
     background: #fff;
-    @include set(box-shadow, 0px 7px 6px -4px #fff);
+    @include set(box-shadow, 0px -7px 6px -4px #fff);
     span.filter-group {
         display: inline;
         &::after{
