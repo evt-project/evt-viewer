@@ -1,7 +1,7 @@
 /* *************************** */
 /* READING                     */
 /* *************************** */
-$reading-background-default  : rgba(101, 138, 255, .3);
+$reading-background-default  : rgb(208, 220, 255);
 $reading-background-hover    : rgb(101, 138, 255);
 $reading-background-selected : rgb(208, 220, 255);
 .autoLemma {
@@ -19,6 +19,7 @@ $reading-background-selected : rgb(208, 220, 255);
         .reading__text{
             background: $reading-background-default;
         }
+
         &.over,
         &.over .reading{
             .reading__text{
@@ -34,7 +35,7 @@ $reading-background-selected : rgb(208, 220, 255);
                 background: $reading-background-selected;
                 > * {
                     border: 1px solid #000;
-                    border-bottom: 3px solid $critical-apparatus-entry-background-color;
+                    border-bottom: 5px solid $critical-apparatus-entry-background-color;
                     position: relative;
                     z-index: 9;
                     margin-bottom:-1px;
@@ -50,13 +51,24 @@ $reading-background-selected : rgb(208, 220, 255);
     }
 
     &.invisible {
-        .reading__text{
+        > .reading__text{
             background: transparent !important;
             border: none;
             cursor: default;
         }
         > .reading__apparatus {
             display: none !important
+        }
+    }
+
+    // Nested
+    .reading {
+        &:not(.hidden) {
+            .reading__text {
+                > * {
+                    border: 1px dotted black;
+                }
+            }
         }
     }
 }

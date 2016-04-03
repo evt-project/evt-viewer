@@ -257,7 +257,7 @@ angular.module('evtviewer.dataHandler')
                     }
 
                     if (lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
-                        var lacunaSigla = elem.getAttribute('wit');
+                        var lacunaSigla = elem.getAttribute('wit');                        
                         child.setAttribute('wit', lacunaSigla);
                     }
                     if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))){
@@ -570,7 +570,7 @@ angular.module('evtviewer.dataHandler')
                 
                 var match = '<evt-reading.*data-app-id.*'+appStartId+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEndId+'.*<\/evt-reading>';
                 var sRegExInput = new RegExp(match, 'ig'),
-                    newHTML     = appStart.outerHTML+'<span class="lacuna">[LACUNA]</span>'+appEnd.outerHTML;
+                    newHTML     = '<span data-app-id-start="'+appStartId+'" data-app-id-end="'+appEndId+'" class="lacuna">[LACUNA]</span>';
                 docDOM.innerHTML = docDOM.innerHTML.replace(sRegExInput, newHTML);
                 docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
             }
@@ -584,20 +584,20 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     /* Function to check if a witness is a fragmentary one or not */
     /* ********************************************************** */
-        var isFragmentaryWitness = function(docDOM, wit){
-            try {
-                if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
-                    return true;
-                } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
-                           docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch(err) {
+    var isFragmentaryWitness = function(docDOM, wit){
+        try {
+            if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
+                return true;
+            } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
+                       docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
+                return true;
+            } else {
                 return false;
             }
-        };
+        } catch(err) {
+            return false;
+        }
+    };
 
     /* ******************************************* */
     /* parseFragmentaryWitnessText(docDOM, witObj) */
@@ -685,6 +685,8 @@ angular.module('evtviewer.dataHandler')
                             if (readingContent[i].type === 'subApp'){
                                 var subEntry = parsedData.getCriticalEntryByPos(readingContent[i].id);
                                 var subEntryElem = getEntryLemmaText(subEntry, wit);
+                                var subReadingId = subEntry._indexes.witMap[wit] || '';
+                                subEntryElem.setAttribute('data-reading-id', subReadingId);
                                 if (subEntryElem !== null) {
                                     spanElement.appendChild(subEntryElem);
                                 }
@@ -845,6 +847,8 @@ angular.module('evtviewer.dataHandler')
                 if (elementContent[i].type === 'subApp'){
                     var subEntry = parsedData.getCriticalEntryByPos(elementContent[i].id);
                     var subEntryElem = getEntryLemmaText(subEntry, wit);
+                    var subReadingId = subEntry._indexes.witMap[wit] || '';
+                    subEntryElem.setAttribute('data-reading-id', subReadingId);
                     if (subEntryElem !== null){
                         spanElement.appendChild(subEntryElem);
                     }
@@ -890,6 +894,8 @@ angular.module('evtviewer.dataHandler')
                         if (lemmaContent[i].type === 'subApp'){
                             var subEntry = parsedData.getCriticalEntryByPos(lemmaContent[i].id);
                             var subEntryElem = getEntryLemmaText(subEntry, wit);
+                            var subReadingId = subEntry._indexes.witMap[wit] || '';
+                            subEntryElem.setAttribute('data-reading-id', subReadingId);
                             if (subEntryElem !== null){
                                 spanElement.appendChild(subEntryElem);
                             }
