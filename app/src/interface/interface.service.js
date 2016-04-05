@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, config, $routeParams, parsedData) {    
+.service('evtInterface', function(evtCommunication, config, $routeParams, parsedData, evtReading) {    
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -9,6 +9,7 @@ angular.module('evtviewer.interface')
             currentWits      : undefined,
             currentWitsPages : undefined,
             currentEdition   : undefined,
+            currentAppEntry  : undefined
         };
 
         var availableViewModes = [
@@ -72,6 +73,10 @@ angular.module('evtviewer.interface')
 
         mainInterface.getCurrentWitnessPage = function(wit){
             return state.currentWitsPages[wit];
+        };
+
+        mainInterface.getCurrentAppEntry = function(){
+            return state.currentAppEntry;
         };
 
         mainInterface.existCriticalText = function(){
@@ -138,6 +143,10 @@ angular.module('evtviewer.interface')
             //TODO: update box scroll to page on switching...
         };
         
+        // app entry
+        mainInterface.updateCurrentAppEntry = function(appEntryId) {
+            state.currentAppEntry = appEntryId;
+        };
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,
@@ -145,7 +154,8 @@ angular.module('evtviewer.interface')
                 docId,
                 witnesses,
                 witIds = [],
-                witPageIds = {};
+                witPageIds = {},
+                appId;
 
             // VIEW MODE 
             if (params.viewMode !== undefined) {
@@ -200,6 +210,13 @@ angular.module('evtviewer.interface')
                 }
             }
             
+            // APP ENTRY
+            if ( params.app !== undefined ) {
+                if (parsedData.getCriticalEntryById(params.app) !== undefined){
+                    appId  = params.app;
+                }
+            }
+
             if ( viewMode !== undefined ) {
                 mainInterface.updateCurrentViewMode(viewMode);
             }
@@ -224,6 +241,11 @@ angular.module('evtviewer.interface')
 
             if ( witPageIds !== {}) {
                 mainInterface.updateCurrentWitnessesPages(witPageIds);
+            }
+
+            if ( appId !== undefined) {
+                mainInterface.updateCurrentAppEntry(appId);
+                evtReading.setCurrentAppEntry(appId);
             }
             mainInterface.updateUrl();
         };
@@ -253,6 +275,12 @@ angular.module('evtviewer.interface')
                             }
                         }
                     }
+                }
+                if (state.currentAppEntry !== undefined && state.currentAppEntry !== '') {
+                    if (searchPath !== '') {
+                      searchPath += '&';  
+                    }
+                    searchPath += 'app='+state.currentAppEntry;
                 }
                 
             if (viewMode !== undefined) {

@@ -543,7 +543,7 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < startLacunas.length; i++) {
             appId       = startLacunas[i].parentNode.getAttribute('data-app-id');
             readingId   = startLacunas[i].parentNode.getAttribute('data-reading-id');
-            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            readingWits = parsedData.getCriticalEntryById(appId).content[readingId].wits;
             if (readingWits !== undefined) {
                 if (readingWits.indexOf(wit) >= 0) {
                     startLacunasWit.push(startLacunas[i]);
@@ -553,7 +553,7 @@ angular.module('evtviewer.dataHandler')
         for (var j = 0; j < endLacunas.length; j++) {
             appId       = endLacunas[j].parentNode.getAttribute('data-app-id');
             readingId   = endLacunas[j].parentNode.getAttribute('data-reading-id');
-            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            readingWits = parsedData.getCriticalEntryById(appId).content[readingId].wits;
             if (readingWits !== undefined) {
                 if (readingWits.indexOf(wit) >= 0) {
                     endLacunasWit.push(endLacunas[j]);
@@ -615,7 +615,7 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < starts.length; i++) {
             appId       = starts[i].parentNode.getAttribute('data-app-id');
             readingId   = starts[i].parentNode.getAttribute('data-reading-id');
-            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            readingWits = parsedData.getCriticalEntryById(appId).content[readingId].wits;
             if (readingWits !== undefined) {
                 if (readingWits.indexOf(wit) >= 0) {
                     startsWit.push(starts[i]);
@@ -625,7 +625,7 @@ angular.module('evtviewer.dataHandler')
         for (var j = 0; j < ends.length; j++) {
             appId       = ends[j].parentNode.getAttribute('data-app-id');
             readingId   = ends[j].parentNode.getAttribute('data-reading-id');
-            readingWits = parsedData.getCriticalEntryByPos(appId).content[readingId].wits;
+            readingWits = parsedData.getCriticalEntryById(appId).content[readingId].wits;
             if (readingWits !== undefined) {
                 if (readingWits.indexOf(wit) >= 0) {
                     endsWit.push(ends[j]);
@@ -683,7 +683,7 @@ angular.module('evtviewer.dataHandler')
                             spanElement.appendChild(document.createTextNode(readingContent[i]));
                         } else {
                             if (readingContent[i].type === 'subApp'){
-                                var subEntry = parsedData.getCriticalEntryByPos(readingContent[i].id);
+                                var subEntry = parsedData.getCriticalEntryById(readingContent[i].id);
                                 var subEntryElem = getEntryLemmaText(subEntry, wit);
                                 var subReadingId = subEntry._indexes.witMap[wit] || '';
                                 subEntryElem.setAttribute('data-reading-id', subReadingId);
@@ -761,7 +761,7 @@ angular.module('evtviewer.dataHandler')
                         id = evtParser.xpath(appNode).substr(1);
                     }
                     var spanElement;
-                    var entry = parsedData.getCriticalEntryByPos(id);
+                    var entry = parsedData.getCriticalEntryById(id);
                     // If I've already parsed all critical entries,
                     // or I've alreafy parsed the current entry...
                     // ...I can simply access the model to get the right output
@@ -774,7 +774,7 @@ angular.module('evtviewer.dataHandler')
                                 handleAppEntry(subApps[z]);
                             }
                         }
-                        entry = parsedData.getCriticalEntryByPos(id);
+                        entry = parsedData.getCriticalEntryById(id);
                     }
                     if (entry !== undefined) {
                         spanElement = getEntryWitnessReadingText(entry, wit);
@@ -845,7 +845,7 @@ angular.module('evtviewer.dataHandler')
                 spanElement.appendChild(document.createTextNode(elementContent[i]));
             } else {
                 if (elementContent[i].type === 'subApp'){
-                    var subEntry = parsedData.getCriticalEntryByPos(elementContent[i].id);
+                    var subEntry = parsedData.getCriticalEntryById(elementContent[i].id);
                     var subEntryElem = getEntryLemmaText(subEntry, wit);
                     var subReadingId = subEntry._indexes.witMap[wit] || '';
                     subEntryElem.setAttribute('data-reading-id', subReadingId);
@@ -892,7 +892,7 @@ angular.module('evtviewer.dataHandler')
                         spanElement.appendChild(document.createTextNode(lemmaContent[i]));
                     } else {
                         if (lemmaContent[i].type === 'subApp'){
-                            var subEntry = parsedData.getCriticalEntryByPos(lemmaContent[i].id);
+                            var subEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
                             var subEntryElem = getEntryLemmaText(subEntry, wit);
                             var subReadingId = subEntry._indexes.witMap[wit] || '';
                             subEntryElem.setAttribute('data-reading-id', subReadingId);
@@ -975,7 +975,7 @@ angular.module('evtviewer.dataHandler')
                             id = evtParser.xpath(appNode).substr(1);
                         }
                         var spanElement;
-                        var entry = parsedData.getCriticalEntryByPos(id);
+                        var entry = parsedData.getCriticalEntryById(id);
                         
                         // If I've already parsed all critical entries,
                         // or I've already parsed the current entry...
@@ -989,7 +989,7 @@ angular.module('evtviewer.dataHandler')
                                     handleAppEntry(subApps[z]);
                                 }
                             }
-                            entry = parsedData.getCriticalEntryByPos(id);
+                            entry = parsedData.getCriticalEntryById(id);
                         }
                         if (entry !== undefined) {
                             spanElement = getEntryLemmaText(entry, '');

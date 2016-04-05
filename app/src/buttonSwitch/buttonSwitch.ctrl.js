@@ -1,6 +1,6 @@
 angular.module('evtviewer.buttonSwitch')
 
-.controller('ButtonSwitchCtrl', function($log, $scope, evtInterface, parsedData) {
+.controller('ButtonSwitchCtrl', function($timeout, $log, $scope, evtInterface, parsedData) {
     $scope.active   = false;
     $scope.disabled = false;
     
@@ -51,7 +51,7 @@ angular.module('evtviewer.buttonSwitch')
             switch($scope.type) {
                 case 'addWit':
                     var witnesses   = parsedData.getWitnessesList(), 
-                        currentWits = evtInterface.getCurrentWitnesses(),
+                        currentWits = evtInterface.getCurrentWitnesses() || [],
                         newWit,
                         i = 0;
                     while (newWit === undefined && i < witnesses.length) {
@@ -66,6 +66,10 @@ angular.module('evtviewer.buttonSwitch')
                         evtInterface.updateUrl();
                     }
                     $scope.active = false;
+                    $timeout(function(){
+                        var singleBox_width = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
+                        document.getElementById('compareWits_box').scrollLeft = singleBox_width*(currentWits.length+1);
+                    });
                     break;
                 case 'changeViewMode':
                     if ($scope.value !== undefined) {

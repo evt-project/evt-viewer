@@ -32,13 +32,13 @@ angular.module('evtviewer.criticalApparatusEntry')
             
             // Get Apparatus Entry content 
             var content;
-            var criticalEntry = parsedData.getCriticalEntryByPos(id);
+            var criticalEntry = parsedData.getCriticalEntryById(id);
             if (criticalEntry === undefined) {
                 var XMLdocument = baseData.getXMLDocuments()[0];
                 XMLdocument = XMLdocument.cloneNode(true);
                 evtCriticalParser.findCriticalEntryById(XMLdocument, id);
                 delete XMLdocument;
-                criticalEntry = parsedData.getCriticalEntryByPos(id);
+                criticalEntry = parsedData.getCriticalEntryById(id);
             }
 
             if (criticalEntry !== undefined) {

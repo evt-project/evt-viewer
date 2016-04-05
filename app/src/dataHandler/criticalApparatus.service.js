@@ -121,7 +121,7 @@ angular.module('evtviewer.dataHandler')
     
     apparatus.getSubApparatus = function(subAppId, scopeWit){
         var subAppText    = '';
-        var subApp        = parsedData.getCriticalEntryByPos(subAppId);
+        var subApp        = parsedData.getCriticalEntryById(subAppId);
         var subAppContent = apparatus.getContent(subApp, true, scopeWit);
         
         subAppText += ' (('+subAppContent.lemma+" ";

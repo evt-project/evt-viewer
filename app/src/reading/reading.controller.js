@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData) {
+.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -18,11 +18,11 @@ angular.module('evtviewer.reading')
     };
 
     this.setSelected = function() {
-        vm.active = true;
+        vm.selected = true;
     };
 
     this.unselect = function() {
-        vm.active = false;
+        vm.selected = false;
     };
 
     this.isApparatusOpened = function() {
@@ -59,12 +59,19 @@ angular.module('evtviewer.reading')
     this.toggleSelectAppEntries = function($event) {
         $event.stopPropagation();
         if ( !vm.hidden ) {
-            if (vm.active === false) {
-                evtReading.selectById(vm.appId);
+            if (vm.selected === false) {
+                if (!vm.apparatus.opened){
+                    evtReading.selectById(vm.appId);
+                    evtInterface.updateCurrentAppEntry(vm.appId);
+                }
             } else {
-                // evtReading.unselectAll();
+                if (vm.apparatus.opened){
+                    evtReading.unselectAll();
+                    evtInterface.updateCurrentAppEntry('');
+                }
             }
         }
+        evtInterface.updateUrl();
     };
 
     this.toggleApparatus = function($event) {
@@ -77,6 +84,14 @@ angular.module('evtviewer.reading')
             
             // evtReading.closeAllApparatus(vm.uid);
             vm.apparatus.opened = !vm.apparatus.opened;
+        }
+    };
+
+    this.callbackClick = function($event) {
+        $event.stopPropagation();
+        vm.toggleSelectAppEntries($event);
+        if (!vm.selected || !vm.apparatus.opened){
+            vm.toggleApparatus($event);
         }
     };
 
@@ -103,6 +118,9 @@ angular.module('evtviewer.reading')
             opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
             return 'background: rgba(255, 108, 63, '+opacity+')';
         } else {
+            if (vm.selected && !$scope.$parent.vm.state.topBoxOpened){
+                return 'background: rgb(101, 138, 255)';
+            }
             // opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.3';
             // return 'background: rgba(208, 220, 255, '+opacity+')';
             return '';
@@ -111,15 +129,14 @@ angular.module('evtviewer.reading')
 
     var colorFilters = function() {
         var filterLabels = parsedData.getCriticalEntriesFilters();
-        var app          = parsedData.getCriticalEntryByPos(vm.appId);
+        var app          = parsedData.getCriticalEntryById(vm.appId);
         var background;
         if (vm.readingId !== undefined){
             var reading       = app.content[vm.readingId];
             var readingAttributes = reading.attributes || {};
-
             if (Object.keys(readingAttributes).length > 0) {
                 var colors = '';
-                var opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.6';
+                var opacity = (vm.over || vm.selected) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
                 for (var label in filterLabels) {
                     var filterLabel = filterLabels[label].name;
                     if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined) {
@@ -147,11 +164,16 @@ angular.module('evtviewer.reading')
                 }
             }
         }
+        if (background === undefined) {
+            if ((vm.over || vm.selected) && !$scope.$parent.vm.state.topBoxOpened) {
+                background = 'background: rgba(101, 138, 255)';    
+            }
+        }
         return background;
     };
 
     this.fitFilters = function(){
-        var app = parsedData.getCriticalEntryByPos(vm.appId),
+        var app = parsedData.getCriticalEntryById(vm.appId),
             reading,
             readingAttributes;
         

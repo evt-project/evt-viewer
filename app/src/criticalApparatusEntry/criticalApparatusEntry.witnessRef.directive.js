@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtWitnessRef', function(evtCriticalApparatusEntry, parsedData, evtInterface) {
+.directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface) {
     return {
         restrict: 'E',
         require: '^evtCriticalApparatusEntry',
