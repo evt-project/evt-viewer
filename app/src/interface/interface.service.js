@@ -56,11 +56,28 @@ angular.module('evtviewer.interface')
                             mainInterface.updateUrl();
                         }
                         state.isLoading = false;
+
+                        // Update Pinned entries
+                        var cookies = document.cookie.split(';');
+                        for (var i in cookies) {
+                            var cookie = cookies[i].split('=');
+                            if (cookie[0].trim() === 'pinned') {
+                                var pinnedCookie = cookie[1].split(',').filter(function(el) {
+                                    return el.length !== 0 && parsedData.getCriticalEntryById(el) !== undefined;
+                                });
+                                if (pinnedCookie.length > 0){
+                                    evtCriticalApparatusEntry.setPinned(pinnedCookie);
+                                }
+                            }
+                        }
                     });
                 }
             });
         };
 
+        mainInterface.getPinnedEntries = function() {
+            return evtCriticalApparatusEntry.getPinned();
+        };
         /* ********** */
         /* PARAMS GET */
         /* ********** */

@@ -42,7 +42,7 @@
         <div class="globalMenu">
             <button-switch 
                     title="{{mode.label}}"
-                    data-label="{{mode.label}}"
+                    data-label=""
                     data-icon="{{mode.icon}}"
                     data-value="{{mode.viewMode}}"
                     data-type="changeViewMode"
@@ -70,7 +70,17 @@
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"
                  ng-show="existCriticalText()"></box>
-            <box data-type="critical_apparatus"></box>
+            <box data-type="generic">
+                 <span ng-if="getPinnedEntries().length <= 0">No apparatus entries pinned.</span>
+                 <evt-critical-apparatus-entry 
+                    class="in_critical_apparatus" 
+                    ng-class="{'active': getCurrentAppEntry() === entry}"
+                    ng-if="getPinnedEntries().length > 0"
+                    ng-click="updateCurrentAppEntry(entry)"
+                    ng-repeat="entry in getPinnedEntries()"
+                    ng-if="entry !== ''"
+                    data-app-id="{{entry}}"></evt-critical-apparatus-entry>
+            </box>
         </section> 
 
         <!-- COLLAZIONE -->

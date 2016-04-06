@@ -11,6 +11,14 @@
         ng-if="vm.content.significantReadings.length > 0"
         ng-repeat="reading in vm.content.significantReadings" 
         compile="reading"></span> 
+
+      <button-switch 
+            title="Toggle Pin"
+            data-label=""
+            data-icon='pin'
+            data-type="pinReading"
+            ng-class="{'pinned' : vm.isPinned()}"
+            ng-click="vm.togglePin()"></button-switch>
   </div>
   <div class="critical-apparatus-entry_other-content"
       ng-if="vm.content.criticalNote != '' || 

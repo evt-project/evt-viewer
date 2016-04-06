@@ -12,7 +12,8 @@ angular.module('evtviewer.criticalApparatusEntry')
         var appEntry   = {},
             collection = {},
             list       = [],
-            idx        = 0;
+            idx        = 0,
+            pinned     = [];
         
 
         // 
@@ -82,6 +83,31 @@ angular.module('evtviewer.criticalApparatusEntry')
             delete collection[tempId];
         };
         
+        appEntry.getPinned = function() {
+            return pinned;
+        };
+
+        appEntry.setPinned = function(pinnedArray) {
+            pinned = pinnedArray;
+        };
+
+        appEntry.isPinned = function(appId) {
+            return pinned.indexOf(appId) >= 0;
+        };
+
+        appEntry.pin = function(appId) {
+            if (pinned.indexOf(appId) < 0) {
+                pinned.push(appId);
+            }
+        };
+
+        appEntry.unpin = function(appId) {
+            var index = pinned.indexOf(appId);
+            if (index >= 0) {
+                pinned.splice(index, 1);
+            }
+        };
+
         return appEntry;
     };
 

@@ -44,6 +44,11 @@ angular.module('evtviewer.interface')
         evtInterface.updateCurrentAppEntry(entry);
         evtInterface.updateUrl();
     };
+
+    $scope.getPinnedEntries = function() {
+        return evtInterface.getPinnedEntries();
+    };
+
     $scope.isLoading = function() {
         return evtInterface.isLoading();
     };

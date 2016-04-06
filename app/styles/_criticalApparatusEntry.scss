@@ -135,8 +135,43 @@ $critical-apparatus-entry-background-color : $base-color-light;
             }
         }
     }
+
+    [data-type='pinReading']{
+        .buttonSwitch {
+            position: absolute;
+            right: 2px;
+            left: auto;
+            box-shadow: none;
+            top: 0;
+
+            &:hover {
+                opacity: .7;
+            }
+        }
+        &.pinned > *{
+            color: #f00;
+        }
+    }
 }
 
+.in_critical_apparatus {
+    .critical-apparatus-entry {
+        cursor: pointer !important;
+        border: none;
+        background: transparent;
+        &:hover{
+            background: $critical-apparatus-entry-background-color;
+        }
+        &_other-content {
+            display: none;   
+        }
+    }
+    &.active {
+        .critical-apparatus-entry {
+            background: $critical-apparatus-entry-background-color;
+        }
+    }
+}
 .blurred .critical-apparatus-entry, .blurred .critical-apparatus-entry * {
     border: none !important;
     @include set(box-shadow, 'none');

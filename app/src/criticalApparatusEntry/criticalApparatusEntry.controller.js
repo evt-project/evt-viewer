@@ -19,6 +19,21 @@ angular.module('evtviewer.criticalApparatusEntry')
         }
     };
 
+    this.isPinned = function(){
+        return evtCriticalApparatusEntry.isPinned(vm.appId);
+    };
+
+    this.togglePin = function(){
+        if (vm.isPinned()) {
+            console.log('unpin');
+            evtCriticalApparatusEntry.unpin(vm.appId);
+        } else {
+            evtCriticalApparatusEntry.pin(vm.appId);
+        }
+        document.cookie = 'pinned' + "=" + evtCriticalApparatusEntry.getPinned() + "; 1";
+    };
+
+
     this.destroy = function() {
         var tempId = this.uid;
         // TODO: remove from list and collection
