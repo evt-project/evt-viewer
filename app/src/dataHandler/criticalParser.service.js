@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function(parsedData, evtParser, xmlParser, GLOBALDEFAULTCONF) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, xmlParser, GLOBALDEFAULTCONF) {
     var parser = {};
     var config = GLOBALDEFAULTCONF;
     
@@ -37,7 +37,8 @@ angular.module('evtviewer.dataHandler')
             name    : '',
             content : [],
             _type   : 'group',
-            _group  : undefined
+            _group  : undefined,
+            text    : {}
         };
         
         angular.forEach(listWit.childNodes, function(child){
@@ -90,7 +91,8 @@ angular.module('evtviewer.dataHandler')
                                         id          : child.getAttribute('xml:id'),
                                         description : evtParser.parseXMLElement(doc, child, ''),
                                         _group      : undefined,
-                                        _type       : 'witness'
+                                        _type       : 'witness',
+                                        text        : {}
                                     };
                                 }
                                 parsedData.addElementInWitnessCollection(el);
@@ -362,7 +364,7 @@ angular.module('evtviewer.dataHandler')
                 witMap            : { }
             },
             _subApp    : false,
-            _xmlSource : app.innerHTML
+            _xmlSource : app.innerHTML || ''
         };
 
         var id;
@@ -420,8 +422,8 @@ angular.module('evtviewer.dataHandler')
     };
     
     var handleAppEntry = function(app) {
-        if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
-            var entry = parseAppEntry(app);
+        // if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
+            var entry = parseAppEntry(app) || undefined;
 
             // controllo testimoni mancanti
             
@@ -456,7 +458,7 @@ angular.module('evtviewer.dataHandler')
             }
             entry._indexes.missingWits = missingWits;
             parsedData.addCriticalEntry(entry);
-        }
+        // }
     };
     /* ************************* */
     /* parseCriticalEntries(doc) */
@@ -469,6 +471,7 @@ angular.module('evtviewer.dataHandler')
     // it calls the function parseAppEntry(element)
     // and add the json object generated into parsedData with the function parsedData.addCriticalEntry();
     parser.parseCriticalEntries = function(doc) {
+        var deferred = $q.defer();
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
             function(element) {
@@ -477,6 +480,8 @@ angular.module('evtviewer.dataHandler')
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
         parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately);
         console.log('## Critical entries ##', parsedData.getCriticalEntries());
+        deferred.resolve('success');
+        return deferred;
     };
 
     /* ******* */
@@ -684,7 +689,7 @@ angular.module('evtviewer.dataHandler')
                         } else {
                             if (readingContent[i].type === 'subApp'){
                                 var subEntry = parsedData.getCriticalEntryById(readingContent[i].id);
-                                var subEntryElem = getEntryLemmaText(subEntry, wit);
+                                var subEntryElem = getEntryWitnessReadingText(subEntry, wit);
                                 var subReadingId = subEntry._indexes.witMap[wit] || '';
                                 subEntryElem.setAttribute('data-reading-id', subReadingId);
                                 if (subEntryElem !== null) {
@@ -731,6 +736,9 @@ angular.module('evtviewer.dataHandler')
                 errorElement.setAttribute('title', 'General error');
             spanElement.appendChild(errorElement);
         }
+        if (entry.id === 'text-body-div5-head-app-lem-app'){
+            console.log(spanElement);
+        }
         return spanElement;
     };
     
@@ -738,15 +746,17 @@ angular.module('evtviewer.dataHandler')
     /* parseWitnessText(doc, wit) */
     /* ************************************************************************************** */
     /* Function to parse the XML of the document and generate the text of a specified witness */
-    /* @doc -> XML to be parsed                                                               */
-    /* @wit -> witness specified                                                              */
+    /* @doc   -> XML to be parsed                                                             */
+    /* @docID -> ID of current DOC                                                            */
+    /* @wit   -> witness specified                                                            */
     /* ************************************************************************************** */
-    parser.parseWitnessText = function(doc, wit) {
+    parser.parseWitnessText = function(doc, docId, wit) {
         // console.log('parseWitnessText', wit);
+        var deferred = $q.defer();
         var witnessText;
         if ( doc !== undefined ) {
             doc = doc.cloneNode(true);
-            var docDOM = doc.documentElement.getElementsByTagName('body')[0],
+            var docDOM = doc.getElementsByTagName('body')[0],
                 witObj = parsedData.getWitness(wit);
 
             var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
@@ -815,8 +825,10 @@ angular.module('evtviewer.dataHandler')
         witnessText = evtParser.balanceXHTML(witnessText);
         
         //save witness text
-        parsedData.addWitnessText(wit, witnessText);
-        return witnessText;
+        parsedData.addWitnessText(wit, docId, witnessText);
+        
+        deferred.resolve('success');
+        return deferred;
     };
 
     /* ******************************************* */
@@ -846,7 +858,7 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (elementContent[i].type === 'subApp'){
                     var subEntry = parsedData.getCriticalEntryById(elementContent[i].id);
-                    var subEntryElem = getEntryLemmaText(subEntry, wit);
+                    var subEntryElem = wit === '' ? getEntryLemmaText(subEntry, wit) : getEntryWitnessReadingText(subEntry, wit);
                     var subReadingId = subEntry._indexes.witMap[wit] || '';
                     subEntryElem.setAttribute('data-reading-id', subReadingId);
                     if (subEntryElem !== null){
@@ -893,7 +905,7 @@ angular.module('evtviewer.dataHandler')
                     } else {
                         if (lemmaContent[i].type === 'subApp'){
                             var subEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
-                            var subEntryElem = getEntryLemmaText(subEntry, wit);
+                            var subEntryElem = wit === '' ? getEntryLemmaText(subEntry, wit) : getEntryWitnessReadingText(subEntry, wit);
                             var subReadingId = subEntry._indexes.witMap[wit] || '';
                             subEntryElem.setAttribute('data-reading-id', subReadingId);
                             if (subEntryElem !== null){
@@ -948,18 +960,19 @@ angular.module('evtviewer.dataHandler')
     /* ************************************************************************ */
     /* Function to parse the XML of the document and generate the critical text */
     /* @doc -> XML to be parsed                                                 */
-    /* ************************************************************************************** */
-    parser.parseCriticalText = function(doc) {
+    /* @docID -> ID of current DOC                                              */
+    /* ************************************************************************ */
+    parser.parseCriticalText = function(doc, docId) {
+        var deferred = $q.defer();
         // console.log('parseCriticalText');
         var criticalText;
         if ( doc !== undefined ) {
             doc = doc.cloneNode(true);
-            var docDOM = doc.documentElement.getElementsByTagName('body')[0],
-                lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
-            
-            if (lemmas.length > 0 || 
-                (parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== undefined &&
-                 parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== '') ) {
+            var docDOM = doc.getElementsByTagName('body')[0];
+            // lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
+            // if (lemmas.length > 0 || 
+            //     (parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== undefined &&
+            //      parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== '') ) {
                 var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                     j      = apps.length-1, 
                     count  = 0;
@@ -1017,14 +1030,17 @@ angular.module('evtviewer.dataHandler')
                 angular.forEach(docDOM.children, function(elem){
                     elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skipFromBeingParsed), elem);
                 });
-                criticalText = docDOM;
-            } else {
-                criticalText = undefined;
-            }   
+                criticalText = docDOM.outerHTML;
+            // } else {
+            //     criticalText = '<span>Text not available.</span>';
+            // }   
         } else {
             criticalText = '<span>Text not available.</span>';
         }
-        parsedData.addCriticalText(criticalText, '');
+        parsedData.addCriticalText(criticalText, docId);
+        
+        deferred.resolve('success');
+        return deferred;
     };
 
     return parser;

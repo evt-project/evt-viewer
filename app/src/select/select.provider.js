@@ -61,7 +61,7 @@ angular.module('evtviewer.select')
                     break;
                 case 'document':
                     callback = function(oldOption, newOption) {
-                        _console.log('document select callback ', newOption);
+                        // _console.log('document select callback ', newOption);
                         if (newOption !== undefined){
                             vm.selectOption(newOption);
                             evtInterface.updateCurrentDocument(newOption.value);

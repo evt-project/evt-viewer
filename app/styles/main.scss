@@ -317,7 +317,14 @@ section > div{
         content:"[ERROR]";
     }
 }
-
+.figure {
+    display: block;
+    text-align: center;
+    margin: 10px 0px;
+    .desc {
+        font-size: 90%;
+    }
+}
 .head {
     display: block;
     font-weight: bold;
@@ -447,6 +454,16 @@ section > div{
 }
 .lacunaApp::before {
     content: "+";
+}
+.list{
+    .item {
+        display: block;
+        &:before{
+            content : "•";
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+    }
 }
 .msDesc {
     ::before {
@@ -588,4 +605,9 @@ section > div{
 }
 [data-rend="underline"] {
     text-decoration: underline !important;
+}
+[data-rendition="pencil"] {
+    font-weight: lighter;
+    color: #a9a9a9;
+    text-shadow: 0px 0px 1px #bfbfbf;
 }

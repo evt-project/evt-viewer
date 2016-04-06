@@ -29,11 +29,11 @@ angular.module('evtviewer.select')
     };
 
     vm.selectOption = function(option) {
-        vm.optionSelected = option;
-        vm.optionSelectedValue = option !== undefined ? option.value : undefined;
         if (vm.expanded) {
             vm.toggleExpand();
         }
+        vm.optionSelected = option;
+        vm.optionSelectedValue = option !== undefined ? option.value : undefined;
     };
 
     vm.selectOptionByValue = function(optionValue) {

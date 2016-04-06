@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
+    this.$get = function($log, $q, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
         var box        = {},
             collection = {},
             list       = [],
@@ -127,7 +127,8 @@ angular.module('evtviewer.box')
                     topBoxOpened : false
                 },
                 appFilters = [],
-                updateContent;
+                updateContent,
+                isLoading = true;
 
             var scopeHelper = {};
 
@@ -144,10 +145,12 @@ angular.module('evtviewer.box')
                     topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
 
                     updateContent = function(){
+                        scope.vm.isLoading = true;
                         var currentPage = evtInterface.getCurrentPage(),
                             pageFacs    = parsedData.getPage(evtInterface.getCurrentPage()).facs || '',
                             folder      = 'data/images/';
                         scope.vm.content = '<img src="'+folder+pageFacs+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'"/>';
+                        scope.vm.isLoading = false;
                     };
                     break;
                 case 'text':
@@ -163,14 +166,32 @@ angular.module('evtviewer.box')
                     // }
                     state.docId   = evtInterface.getCurrentDocument();
                     updateContent = function(){
-                        var newContent; 
+                        scope.vm.isLoading = true;
+                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                            noTextAvailableMsg = '<span class="alert-msg alert-msg-error">Text is not available.</span>';
                         if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
-                            newContent = parsedData.getCriticalText(scope.vm.state.docId);
-                        }
-                        if ( newContent !== undefined && newContent !== '') {
-                            scope.vm.content = newContent.innerHTML;
+                            var newDoc = parsedData.getCriticalText(scope.vm.state.docId);
+                            if (newDoc === undefined) {
+                                newDoc = parsedData.getDocument(scope.vm.state.docId);
+                                try {
+                                    var promises = [];
+                                    promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+                                    $q.all(promises).then(function(){
+                                        scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
+                                        scope.vm.isLoading = false;
+                                    });
+                                }
+                                catch(err) {
+                                    newContent = errorMsg;
+                                    scope.vm.isLoading = false;
+                                }
+                            } else {
+                                scope.vm.content = newDoc || noTextAvailableMsg;
+                                scope.vm.isLoading = false;
+                            }
                         } else {
-                            scope.vm.content = 'Text is not available.';
+                            scope.vm.content = parsedData.getDocument(scope.vm.state.docId) || noTextAvailableMsg;
+                            scope.vm.isLoading = false;
                         }
                     };
                     break;
@@ -206,29 +227,40 @@ angular.module('evtviewer.box')
                     };
                     state.filterBox = false;
                     updateContent = function(){
+                        scope.vm.isLoading = true;
+                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                            noTextAvailableMsg = 'Text of witness '+vm.witness+' is not available.';
+                        
                         if ( vm.witness !== undefined ) {
                             // Main content
-                            newContent = parsedData.getWitnessText(vm.witness) || undefined;
+                            var currentDocId = evtInterface.getCurrentDocument(),
+                                newContent = parsedData.getWitnessText(vm.witness, currentDocId) || undefined;
                             if ( newContent === undefined ) {
                                 var documents  = parsedData.getDocuments(),
                                     currentDoc = '';
                                 if (documents.length > 0) {
-                                    currentDoc = documents[documents[0]];
+                                    currentDoc = documents[currentDocId];
                                 }
                                 if (currentDoc !== undefined) {
                                     try {
-                                        newContent = evtCriticalParser.parseWitnessText(xmlParser.parse(currentDoc.content), vm.witness);
+                                        var promises = [];
+                                        promises.push(evtCriticalParser.parseWitnessText(currentDoc.content, currentDocId, vm.witness).promise);
+                                        $q.all(promises).then(function(){
+                                            scope.vm.content = parsedData.getWitnessText(vm.witness, currentDocId) || noTextAvailableMsg;
+                                            scope.vm.isLoading = false;
+                                        });
                                     }
                                     catch(err) {
-                                        newContent = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+                                        scope.vm.content = errorMsg;
+                                        scope.vm.isLoading = false;
                                     }
+                                } else {
+                                    scope.vm.content = noTextAvailableMsg;
+                                    scope.vm.isLoading = false;
                                 }
-                            }
-                            
-                            if ( newContent !== undefined && newContent !== '') {
-                                scope.vm.content = newContent;
                             } else {
-                                scope.vm.content = 'Text of witness '+vm.witness+' is not available.';
+                                scope.vm.content = newContent;
+                                scope.vm.isLoading = false;
                             }
                         }
                     };
@@ -247,6 +279,7 @@ angular.module('evtviewer.box')
                 topBoxContent           : topBoxContent,
                 state                   : state,
                 appFilters              : appFilters,
+                isLoading               : isLoading,
 
                 // function
                 updateContent           : updateContent,

@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, config, $routeParams, parsedData, evtReading) {    
+.service('evtInterface', function(evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, GLOBALDEFAULTCONF, $routeParams, parsedData, evtReading, $q) {    
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -9,7 +9,8 @@ angular.module('evtviewer.interface')
             currentWits      : undefined,
             currentWitsPages : undefined,
             currentEdition   : undefined,
-            currentAppEntry  : undefined
+            currentAppEntry  : undefined,
+            isLoading        : true
         };
 
         var availableViewModes = [
@@ -37,12 +38,36 @@ angular.module('evtviewer.interface')
         mainInterface.boot = function() {  
             evtCommunication.getData(config.dataUrl).then(function () {
                 mainInterface.updateParams($routeParams);
+                // Parse critical text and entries
+                var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
+                if (currentDocFirstLoad !== undefined){
+                    var promises = [];
+                    // Parse critical entries
+                    if (GLOBALDEFAULTCONF.loadCriticalEntriesImmediately){
+                        promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
+                    }
+                    // Parse critical text
+                    promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                    $q.all(promises).then(function(){
+                        // Update current app entry
+                        if (state.currentAppEntry !== undefined && 
+                            parsedData.getCriticalEntryById(state.currentAppEntry) === undefined){
+                            mainInterface.updateCurrentAppEntry('');
+                            mainInterface.updateUrl();
+                        }
+                        state.isLoading = false;
+                    });
+                }
             });
         };
 
         /* ********** */
         /* PARAMS GET */
         /* ********** */
+        mainInterface.isLoading = function() {
+            return state.isLoading;
+        };
+
         mainInterface.getAvailableViewModes = function() {
             return availableViewModes;
         };
@@ -182,8 +207,8 @@ angular.module('evtviewer.interface')
             }
 
             // DOCUMENT
-            if ( params.docId !== undefined ) {
-                docId  = params.docId;
+            if ( params.d !== undefined && parsedData.getDocument(params.d) !== undefined ) {
+                docId  = params.d;
             } else {
                 var documents = parsedData.getDocuments();
                 if (documents.length > 0) {
@@ -212,9 +237,7 @@ angular.module('evtviewer.interface')
             
             // APP ENTRY
             if ( params.app !== undefined ) {
-                if (parsedData.getCriticalEntryById(params.app) !== undefined){
-                    appId  = params.app;
-                }
+                appId  = params.app;
             }
 
             if ( viewMode !== undefined ) {
@@ -256,7 +279,7 @@ angular.module('evtviewer.interface')
 
                 searchPath += state.currentDoc === undefined ? '' : (searchPath === '' ? '' : '&')+'d='+state.currentDoc;
                 searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
-                searchPath = state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
+                searchPath += state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
                 if (viewMode === 'collation') {
                     if (state.currentWits !== undefined && state.currentWits.length > 0) {
                         if (searchPath !== '') {
@@ -285,7 +308,7 @@ angular.module('evtviewer.interface')
                 
             if (viewMode !== undefined) {
                 // window.history.pushState(null, null, '#/'+viewMode+'?'+searchPath.substr(1));
-                window.location = '#/'+viewMode+'?'+searchPath.substr(1);
+                window.location = '#/'+viewMode+'?'+searchPath;
             }
         };
     return mainInterface;

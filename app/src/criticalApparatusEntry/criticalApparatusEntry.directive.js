@@ -14,7 +14,6 @@ angular.module('evtviewer.criticalApparatusEntry')
         controllerAs: 'vm',
         controller: 'CriticalApparatusEntryCtrl',
         link: function(scope, element, attrs){
-            // Initialize reading
             var currentAppEntry = evtCriticalApparatusEntry.build(scope.appId, scope);
             
             // Garbage collection

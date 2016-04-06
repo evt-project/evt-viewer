@@ -42,7 +42,7 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    var criticalTextMock = [];
+    var criticalTexts = {};
     
     var mockEditions = [
         {
@@ -173,14 +173,19 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    parsedData.addWitnessText = function(witId, content) {
+    parsedData.addWitnessText = function(witId, docId, content) {
         if (witnessesCollection[witId] !== undefined) {
-            witnessesCollection[witId].text = '<text>'+content+'</text>';
+            if (witnessesCollection[witId].text === undefined){
+                witnessesCollection[witId].text = {};
+            }
+            witnessesCollection[witId].text[docId] = '<text>'+content+'</text>';
         }
     };
-    parsedData.getWitnessText = function(witId) {
+    parsedData.getWitnessText = function(witId, docId) {
         if (witnessesCollection[witId] !== undefined) {
-            return witnessesCollection[witId].text;
+            if (witnessesCollection[witId].text !== undefined && witnessesCollection[witId].text[docId] !== undefined){
+                return witnessesCollection[witId].text[docId];
+            }
         }
     };
     parsedData.getWitnessesList = function() {
@@ -216,12 +221,12 @@ angular.module('evtviewer.dataHandler')
         var wits = [];
         if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId]._type === 'group') {
             var groupContent = witnessesCollection[groupId].content;
-            for (wit in groupContent) {
+            for (var wit in groupContent) {
                 var sigla = groupContent[wit];
-                if (parsedData.isWitnessesGroup(groupContent[wit])){
-                    wits.push.apply(wits, parsedData.getWitnessesInGroup(groupContent[wit]));
+                if (parsedData.isWitnessesGroup(sigla)){
+                    wits.push.apply(wits, parsedData.getWitnessesInGroup(sigla));
                 } else {
-                    wits.push(groupContent[wit]);
+                    wits.push(sigla);
                 }
             }
         }
@@ -230,11 +235,11 @@ angular.module('evtviewer.dataHandler')
 
     /* CRITICAL ENTRIES */
     parsedData.addCriticalText = function(text, docId) {
-        criticalTextMock.push(text);
+        criticalTexts[docId] = text;
     };
 
     parsedData.getCriticalText = function(docId) {
-        return criticalTextMock[0];
+        return criticalTexts[docId];
     };
 
     parsedData.addCriticalEntry = function(entry) {

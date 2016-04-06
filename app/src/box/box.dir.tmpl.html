@@ -32,6 +32,7 @@
     </div>
     <div class="box-body" id="box_body_{{vm.uid}}" compile="vm.content"></div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
+    <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     <div class="filters-in-box" 
          ng-if="(vm.type=='witness' || vm.state.edition=='critical') && vm.state.filters._totActive > 0">
         <span 

@@ -179,8 +179,10 @@ angular.module('evtviewer.dataHandler')
         if (!el || el.nodeType !== 1) {
             return '';
         }
-
-        var sames      = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
+        var sames = [];
+        if (el.parentNode) {
+            sames = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
+        }
         var countIndex = sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '';
         countIndex     = countIndex > 1 ? countIndex-1 : '';
         var tagName    = el.tagName.toLowerCase() !== 'tei' ? '-'+el.tagName.toLowerCase() : '';
@@ -214,7 +216,9 @@ angular.module('evtviewer.dataHandler')
     parser.parseDocuments = function(doc) {
         var currentDocument = angular.element(doc),
             defDocElement;
-        if ( currentDocument.find('text').length > 0 ) {
+        if ( currentDocument.find('text group text').length > 0 ) {
+            defDocElement = 'text group text';
+        } else if ( currentDocument.find('text').length > 0 ) {
             defDocElement = 'text';
         } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
             defDocElement = 'div[subtype="edition_text"]';
@@ -225,7 +229,7 @@ angular.module('evtviewer.dataHandler')
                     value   : element.getAttribute('xml:id')  || parser.xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1),
                     label   : element.getAttribute('n')       || 'Doc '+(parsedData.getDocuments().length+1),
                     title   : element.getAttribute('n')       || 'Document '+(parsedData.getDocuments().length+1),
-                    content : '<text>'+element.innerHTML+'</text>'
+                    content : element
                 };
                 for (var i = 0; i < element.attributes.length; i++) {
                     var attrib = element.attributes[i];
@@ -236,7 +240,8 @@ angular.module('evtviewer.dataHandler')
                 parsedData.addDocument(newDoc);
                 parser.parsePages(element, newDoc.value);
         });
-        // console.log('## Documents ##', parsedData.getDocuments());
+        console.log('## Documents ##', parsedData.getDocuments());
+        return parsedData.getDocuments();
     };
 
     return parser;

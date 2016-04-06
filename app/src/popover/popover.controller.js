@@ -1,6 +1,6 @@
 angular.module('evtviewer.popover')
 
-.controller('PopoverCtrl', function($log, $scope, evtPopover, evtReading) {
+.controller('PopoverCtrl', function($log, $scope, evtPopover) {
     var vm = this;
     vm.parentRef = '.box-body';
     
@@ -35,8 +35,6 @@ angular.module('evtviewer.popover')
     };
 
     this.toggleExpand = function(closeSiblings) {
-        evtReading.closeAllApparatus();
-
         if (!closeSiblings) {
             evtPopover.closeAll(vm.uid);
         }

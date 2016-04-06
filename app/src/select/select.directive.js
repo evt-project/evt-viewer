@@ -1,6 +1,6 @@
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function(evtSelect, evtInterface) {
+.directive('evtSelect', function($timeout, evtSelect, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -15,13 +15,15 @@ angular.module('evtviewer.select')
             // Initialize select
             var currentSelect = evtSelect.build(scope, scope.vm);
 
-            if (currentSelect !== undefined) {
-                if (scope.init !== undefined && scope.init !== '') {
-                    currentSelect.selectOptionByValue(scope.init);
-                } else {
-                    currentSelect.callback(undefined, scope.vm.optionList[0]);
+            $timeout(function(){
+                if (currentSelect !== undefined) {
+                    if (scope.init !== undefined && scope.init !== '') {
+                        currentSelect.selectOptionByValue(scope.init);
+                    } else {
+                        currentSelect.callback(undefined, scope.vm.optionList[0]);
+                    }
                 }
-            }
+            });
 
             if (scope.type === 'witness-page') {
                 var witness = scope.$parent.vm.witness;

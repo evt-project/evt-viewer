@@ -60,7 +60,7 @@
         </div>
     </header>
     
-    <section id="global-container" ng-switch="getCurrentViewMode()">
+    <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
         <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
         
         <!-- CRITICAL -->
@@ -127,6 +127,13 @@
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
     </section>
 
+    <section id="global-container" ng-if="isLoading()">
+        <!-- LOADING... -->
+        <section id="main-container" class="viewMode">
+            <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+        </section>
+    </section>
+    
     <footer>Footer</footer>
 
 
