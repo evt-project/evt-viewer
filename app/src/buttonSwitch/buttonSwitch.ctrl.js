@@ -10,37 +10,54 @@ angular.module('evtviewer.buttonSwitch')
         var icon = '';
         switch(angular.lowercase($scope.icon)) {
             case 'add':
-                icon = 'fa-plus';
+                icon = 'icon-plus';
                 break;
             case 'filter':
             case 'filters':
-                icon = 'fa-filter';
+                icon = 'icon-filter';
+                break;
+            case 'heatmap':
+                icon = 'icon-evt_heatmap';
                 break;
             case 'info':
                 icon = 'fa-info-circle';
                 break;
             case 'list':
-                icon = 'fa-list';
+                icon = 'icon-evt_list';
+                break;
+            case 'mode-imgtxt':
+                icon = 'icon-evt_imgtxt';
+                break;
+            case 'mode-txttxt':
+                icon = 'icon-evt_txttxt';
+                break;
+            case 'mode-critical':
+                icon = 'icon-file-text';
+                break;
+            case 'mode-collation':
+                icon = 'icon-evt_collation';
+                break;
+            case 'mode-bookreader':
+                icon = 'icon-evt_bookreader';
+                break;
+            case 'pin':
+                icon = 'icon-pushpin';
                 break;
             case 'remove':
-                icon = 'fa-times';
+                icon = 'icon-cross';
                 break;
             case 'search':
-                icon = 'fa-search';
-                break;
-            case 'share':
-                icon = 'fa-share-alt';
+                icon = 'icon-evt_search';
                 break;
             case 'bookmark':
-                icon = 'fa-bookmark';
+                icon = 'icon-bookmark';
                 break;
             case 'thumb':
             case 'thumbs':
             case 'thumbnail':
             case 'thumbnails':
-                icon = 'fa-th';
+                icon = 'icon-evt_thumb';
                 break;
-            
         }
         return icon;
     };
@@ -140,6 +157,7 @@ angular.module('evtviewer.buttonSwitch')
                     $scope.$parent.vm.toggleTopBox();
                     break;
                 default:
+                    _console.log('TODO '+$scope.type);
                     break;
             }
         }

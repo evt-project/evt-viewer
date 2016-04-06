@@ -20,3 +20,123 @@
 }
 /* == END Fonts */
 /* =========================== */
+
+@font-face {
+    font-family: 'evt';
+    src: url('../fonts/evt.eot?5zfx0s');
+    src: url('../fonts/evt.eot?5zfx0s#iefix') format('embedded-opentype'),
+         url('../fonts/evt.ttf?5zfx0s') format('truetype'),
+         url('../fonts/evt.woff?5zfx0s') format('woff'),
+         url('../fonts/evt.svg?5zfx0s#evt') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'evt' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1.4;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-evt_bookreader:before {
+    content: "\e900";
+}
+.icon-evt_collation:before {
+    content: "\e901";
+}
+.icon-evt_heatmap:before {
+    content: "\e902";
+}
+.icon-evt_hotspot:before {
+    content: "\e903";
+}
+.icon-evt_imgtxt:before {
+    content: "\e904";
+}
+.icon-evt_list:before {
+    content: "\e905";
+}
+.icon-evt_search:before {
+    content: "\e906";
+}
+.icon-evt_thumb:before {
+    content: "\e907";
+}
+.icon-evt_txttxt:before {
+    content: "\e908";
+}
+.icon-evt_zoom-fit:before {
+    content: "\e909";
+}
+.icon-evt_zoom-minus:before {
+    content: "\e90a";
+}
+.icon-evt_zoom-one:before {
+    content: "\e90b";
+}
+.icon-evt_zoom-plus:before {
+    content: "\e90c";
+}
+.icon-evt_zoom:before {
+    content: "\e90d";
+}
+.icon-image:before {
+    content: "\e90e";
+}
+.icon-images:before {
+    content: "\e90f";
+}
+.icon-book:before {
+    content: "\e910";
+}
+.icon-books:before {
+    content: "\e911";
+}
+.icon-file-text:before {
+    content: "\e912";
+}
+.icon-price-tag:before {
+    content: "\e913";
+}
+.icon-price-tags:before {
+    content: "\e914";
+}
+.icon-pushpin:before {
+    content: "\e915";
+}
+.icon-link:before {
+    content: "\e916";
+}
+.icon-bookmark:before {
+    content: "\e917";
+}
+.icon-bookmarks:before {
+    content: "\e918";
+}
+.icon-plus:before {
+    content: "\e91d";
+}
+.icon-cross:before {
+    content: "\e91e";
+}
+.icon-sort-amount-desc:before {
+    content: "\e919";
+}
+.icon-filter:before {
+    content: "\e91a";
+}
+.icon-font-size:before {
+    content: "\e91b";
+}
+.icon-insert-template:before {
+    content: "\e91c";
+}
