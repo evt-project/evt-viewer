@@ -736,9 +736,6 @@ angular.module('evtviewer.dataHandler')
                 errorElement.setAttribute('title', 'General error');
             spanElement.appendChild(errorElement);
         }
-        if (entry.id === 'text-body-div5-head-app-lem-app'){
-            console.log(spanElement);
-        }
         return spanElement;
     };
     
@@ -963,8 +960,8 @@ angular.module('evtviewer.dataHandler')
     /* @docID -> ID of current DOC                                              */
     /* ************************************************************************ */
     parser.parseCriticalText = function(doc, docId) {
-        var deferred = $q.defer();
         // console.log('parseCriticalText');
+        var deferred = $q.defer();
         var criticalText;
         if ( doc !== undefined ) {
             doc = doc.cloneNode(true);

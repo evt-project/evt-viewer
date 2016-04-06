@@ -27,17 +27,27 @@ angular.module('evtviewer.interface')
         return evtInterface.getCurrentWitnessPage(wit);
     };
 
-    $scope.getAvailableViewModes = function(){
+    $scope.getAvailableViewModes = function() {
         return evtInterface.getAvailableViewModes();
     };
     
-    $scope.existCriticalText = function(){
+    $scope.existCriticalText = function() {
         return evtInterface.existCriticalText();
     };
 
-    $scope.isLoading = function(){
+    $scope.getCurrentAppEntry = function() {
+        return evtInterface.getCurrentAppEntry();
+    };
+
+    $scope.updateCurrentAppEntry = function(entry) {
+        console.log('updateCurrentAppEntry');
+        evtInterface.updateCurrentAppEntry(entry);
+        evtInterface.updateUrl();
+    };
+    $scope.isLoading = function() {
         return evtInterface.isLoading();
     };
+
     _console.log('InterfaceCtrl running');
 })
 

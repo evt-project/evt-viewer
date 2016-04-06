@@ -16,19 +16,24 @@
 
     /* BOX INTERNAL ELEMENTS */
     .box-menu {
-            @include inside-header();
-            @include colors($box-structure-color-light, $box-structure-color-dark);
+        @include inside-header();
+        @include colors($box-structure-color-light, $box-structure-color-dark);
 
-            &[data-position='top']{
-                display: setVisibility($mainContainer-top-menu);
-            }
-
-            &[data-position='bottom']{
-                display: setVisibility($mainContainer-bottom-menu);
-            }
+        &[data-position='top']{
+            display: setVisibility($mainContainer-top-menu);
         }
-        .box-body {
+
+        &[data-position='bottom']{
+            display: setVisibility($mainContainer-bottom-menu);
+        }
+    }
+
+    .box-body {
         @include frameBody();
+
+        &.noBottomMenu {
+            @include calc(height, #{setInsideFrameHeight()} + $mainContainer-menu-height);
+        }
     }
 
     .box-top-box, .box-bottom-box{

@@ -12,6 +12,7 @@ angular.module('evtviewer.box')
             witpage : '@',
             edition : '@'
         },
+        transclude : true,
         templateUrl: 'src/box/box.dir.tmpl.html',
         link: function(scope, element, attrs) {
             // Add attributes in vm
@@ -157,11 +158,11 @@ angular.module('evtviewer.box')
                 scope.$watch(function() {
                     return evtInterface.getCurrentAppEntry();
                 }, function(newItem, oldItem) {
-                    if (oldItem !== newItem) {
-                        if (evtInterface.getCurrentViewMode() === 'collation' && evtInterface.getCurrentWitnesses().length > 0){
+                    // if (oldItem !== newItem) {
+                        // if (evtInterface.getCurrentViewMode() === 'collation' && evtInterface.getCurrentWitnesses().length > 0){
                             scope.vm.scrollToAppEntry(newItem);
-                        }
-                    }
+                        // }
+                    // }
                 }, true);
                 
                 scope.$watch(function() {
