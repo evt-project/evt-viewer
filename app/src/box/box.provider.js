@@ -107,6 +107,29 @@ angular.module('evtviewer.box')
             vm.topBoxContent = newContent;
         }
         
+        function fontSize() {
+            var vm = this;
+            return 'font-size:'+vm.state.fontSize+'%' || '';
+        }
+
+        function fontSizeIncrease() {
+            var vm = this;
+            vm.state.fontSize++;
+        }
+
+        function fontSizeDecrease() {
+            var vm = this;
+            vm.state.fontSize--;
+        }
+
+        function fontSizeReset() {
+            var vm = this;
+            vm.state.fontSize = '100';
+        }
+
+        function toggleBtnGroup(groupState){
+            groupState = !groupState;
+        }
         // 
         // Box builder
         // 
@@ -124,11 +147,19 @@ angular.module('evtviewer.box')
                 content,
                 topBoxContent = '<span class="alert-msg">No info available</span>',
                 state      = {
-                    topBoxOpened : false
+                    topBoxOpened : false,
+                    fontSizeBtn  : false,
+                    fontSize     : '100',
                 },
                 appFilters = [],
                 updateContent,
                 isLoading = true;
+
+            var genericTools = {
+                fontSizeBtn   : [ {title: 'Reset font size', label: '', icon: 'font-size-reset', type: 'fontSizeReset'},
+                                {title: 'Decrease font size', label: '', icon: 'font-size-minus', type: 'fontSizeDecrease'},
+                                {title: 'Increase font size', label: '', icon: 'font-size-plus', type: 'fontSizeIncrease'}]
+            };
 
             var scopeHelper = {};
 
@@ -157,7 +188,7 @@ angular.module('evtviewer.box')
                     //TODO: Differentiate main text from second one
                     topMenuList.selectors.push({id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() },
                                                {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
-                    topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'list', type: 'witList'});
+                    topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
 
                     bottomMenuList.buttons.push({title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
 
@@ -272,6 +303,7 @@ angular.module('evtviewer.box')
                 state                   : state,
                 appFilters              : appFilters,
                 isLoading               : isLoading,
+                genericTools            : genericTools,
 
                 // function
                 updateContent           : updateContent,
@@ -282,7 +314,12 @@ angular.module('evtviewer.box')
                 toggleCriticalAppFilter : toggleCriticalAppFilter,
                 toggleFilterBox         : toggleFilterBox,
                 toggleTopBox            : toggleTopBox,
-                clearFilter             : clearFilter
+                clearFilter             : clearFilter,
+                fontSize                : fontSize,
+                fontSizeIncrease        : fontSizeIncrease,
+                fontSizeDecrease        : fontSizeDecrease,
+                fontSizeReset           : fontSizeReset,
+                toggleBtnGroup          : toggleBtnGroup
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

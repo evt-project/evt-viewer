@@ -31,6 +31,7 @@
         compile="vm.topBoxContent">
     </div>
     <div class="box-body" 
+         style="{{vm.fontSize();}}"
          ng-class="{ 'noBottomMenu' : vm.bottomMenuList.buttons.length <= 0 && vm.bottomMenuList.selectors.length <= 0}"
          id="box_body_{{vm.uid}}" 
          compile="vm.content" ng-transclude></div>
@@ -91,6 +92,16 @@
         data-position="bottom"
         ng-if="vm.bottomMenuList.buttons.length > 0 || vm.bottomMenuList.selectors.length > 0">
         <button-switch 
+            title="Heat Map"
+            data-label="Heat Map"
+            data-icon='heatmap'
+            data-type="heatMap"
+            ng-if="vm.type=='text' && vm.edition=='critical'"
+            ng-class="{'buttonSwitch-active' : vm.getState('heatmap')}"
+            ng-click="vm.updateState('heatmap', !vm.getState('heatmap'))">
+        </button-switch>
+
+        <button-switch 
             title="{{button.title}}"
             data-label="{{button.label}}"
             data-icon="{{button.icon}}"
@@ -98,14 +109,30 @@
             ng-repeat="button in vm.bottomMenuList.buttons">
         </button-switch>
 
-        <button-switch 
-            title="Heat Map"
-            data-label="Heat Map"
-            data-icon='heatmap'
-            data-type="heatMap"
-            ng-if="vm.type=='text' && vm.edition=='critical'"
-            ng-class="{'buttonSwitch-active' : vm.getState('heatmap')}"
-            ng-click="vm.updateState('heatmap', !vm.getState('heatmap'))"></button-switch>
+        <div 
+            class="btnGroup"
+            ng-if="vm.type=='text' || vm.type=='witness'">
+            <button-switch 
+                title="Change font size"
+                data-label=""
+                data-icon='font-size'
+                data-type="fontSizeOpen"
+                ng-click="vm.updateState('fontSizeBtn', !vm.getState('fontSizeBtn'));">
+            </button-switch>
+            <div 
+                class="fontSizeBtnGroup" 
+                ng-show="vm.getState('fontSizeBtn')">
+                <button-switch 
+                    class="no-background"
+                    title="{{button.title}}"
+                    data-label="{{button.label}}"
+                    data-icon="{{button.icon}}"
+                    data-type="{{button.type}}"
+                    ng-repeat="button in vm.genericTools.fontSizeBtn">
+                </button-switch>
+            </div>
+        </div>
+
         <!-- <button-switch 
             title="Filters"
             data-label="Filters"

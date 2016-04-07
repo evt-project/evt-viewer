@@ -119,6 +119,18 @@ angular.module('evtviewer.buttonSwitch')
                         evtInterface.updateUrl();
                     }
                     break; 
+                case 'fontSizeDecrease':
+                    $scope.$parent.vm.fontSizeDecrease();
+                    $scope.active = !$scope.active;
+                    break;
+                case 'fontSizeIncrease':
+                    $scope.$parent.vm.fontSizeIncrease();
+                    $scope.active = !$scope.active;
+                    break;
+                case 'fontSizeReset':
+                    $scope.$parent.vm.fontSizeReset();
+                    $scope.active = !$scope.active;
+                    break;
                 case 'removeWit':
                     var wit = $scope.$parent.vm.witness;
                     evtInterface.removeWitness(wit);
