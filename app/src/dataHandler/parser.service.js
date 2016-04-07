@@ -136,7 +136,7 @@ angular.module('evtviewer.dataHandler')
 
             popoverElem.setAttribute('data-trigger', 'click');
             popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
-            popoverElem.innerHTML = '&bull;';
+            popoverElem.innerHTML = '<i class="icon-evt_note"></i>';
         return popoverElem;
     };
 

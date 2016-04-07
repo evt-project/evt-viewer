@@ -1,9 +1,12 @@
 <span class="buttonSwitch" 
       title="{{title}}"
       ng-click="doCallback()"
-      ng-class="{'buttonSwitch-active': active, 'buttonSwitch-disabled': disabled}">
+      ng-class="{'buttonSwitch-active': active, 'buttonSwitch-disabled': disabled,
+                 'only-icon': label === undefined || label === ''}">
 
-      <span class="buttonSwitch-label">{{label}}</span>
+      <span 
+        class="buttonSwitch-label"
+        ng-if="label !== undefined && label !== ''">{{label}}</span>
       <i class="icon {{setIcon()}} buttonSwitch-icon"></i>
       
 </span>

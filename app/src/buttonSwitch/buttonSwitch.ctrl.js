@@ -10,20 +10,35 @@ angular.module('evtviewer.buttonSwitch')
         var icon = '';
         switch(angular.lowercase($scope.icon)) {
             case 'add':
-                icon = 'icon-plus';
+                icon = 'icon-evt_add';
                 break;
             case 'filter':
             case 'filters':
-                icon = 'icon-filter';
+                icon = 'icon-evt_filter';
+                break;
+            case 'font-size':
+                icon = 'icon-evt_font-size';
+                break;
+            case 'font-size-minus':
+                icon = 'icon-evt_font-size-minus-alt';
+                break;
+            case 'font-size-plus':
+                icon = 'icon-evt_font-size-plus-alt';
+                break;
+            case 'font-size-reset':
+                icon = 'icon-evt_font-size-reset-alt';
                 break;
             case 'heatmap':
-                icon = 'icon-evt_heatmap';
+                icon = 'icon-evt_heatmap-alt';
                 break;
             case 'info':
-                icon = 'fa-info-circle';
+                icon = 'icon-evt_info';
                 break;
             case 'list':
                 icon = 'icon-evt_list';
+                break;
+            case 'menu-vert':
+                icon = 'icon-evt_more-vert';
                 break;
             case 'mode-imgtxt':
                 icon = 'icon-evt_imgtxt';
@@ -32,7 +47,7 @@ angular.module('evtviewer.buttonSwitch')
                 icon = 'icon-evt_txttxt';
                 break;
             case 'mode-critical':
-                icon = 'icon-file-text';
+                icon = 'icon-evt_txt';
                 break;
             case 'mode-collation':
                 icon = 'icon-evt_collation';
@@ -41,22 +56,29 @@ angular.module('evtviewer.buttonSwitch')
                 icon = 'icon-evt_bookreader';
                 break;
             case 'pin':
-                icon = 'icon-pushpin';
+            case 'pin-off':
+                icon = 'icon-evt_pin-off';
+                break;
+            case 'pin-on':
+                icon = 'icon-evt_pin-on';
                 break;
             case 'remove':
-                icon = 'icon-cross';
+                icon = 'icon-evt_close';
                 break;
             case 'search':
                 icon = 'icon-evt_search';
                 break;
             case 'bookmark':
-                icon = 'icon-bookmark';
+                icon = 'icon-evt_bookmark';
                 break;
             case 'thumb':
             case 'thumbs':
             case 'thumbnail':
             case 'thumbnails':
                 icon = 'icon-evt_thumb';
+                break;
+            case 'witnesses':
+                icon = 'icon-evt_books';
                 break;
         }
         return icon;

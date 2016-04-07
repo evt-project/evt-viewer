@@ -209,6 +209,7 @@
             width: 40px;
             text-align: center;
             opacity: .5;
+            font-weight: bold;
             
             &:hover{
                 opacity: 1;
@@ -223,8 +224,9 @@
         }
         .buttonSwitch-icon {
             margin-left: 8px;
-            margin: 7px 0;
-            font-size: 1.2em;
+            margin: 8px 0;
+            font-size: 2.2em;
+            top: 19px;
         }
     }
 }

@@ -15,6 +15,11 @@ angular.module('evtviewer.interface')
 
         var availableViewModes = [
             {
+                label    : 'Critical',
+                icon     : 'mode-critical',
+                viewMode : 'critical'
+            },
+            {
                 label    : 'Image Text',
                 icon     : 'mode-imgTxt',
                 viewMode : 'imgTxt'
@@ -23,11 +28,6 @@ angular.module('evtviewer.interface')
                 label    : 'Text Text',
                 icon     : 'mode-txtTxt',
                 viewMode : 'txtTxt'
-            },
-            {
-                label    : 'Critical',
-                icon     : 'mode-critical',
-                viewMode : 'critical'
             },
             {
                 label    : 'Collation',
@@ -127,6 +127,10 @@ angular.module('evtviewer.interface')
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */
+        mainInterface.setLoading = function(state) {
+            state.isLoading = state;
+        };
+
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;
         };

@@ -709,7 +709,7 @@ angular.module('evtviewer.dataHandler')
                     spanElement.appendChild(omitElement);
                 } else {
                     var lacunaElement = document.createElement('span');
-                        lacunaElement.className = 'lacunaApp';
+                        lacunaElement.className = 'lacunaApp icon-evt_note';
                     spanElement.appendChild(lacunaElement);
                 }
 
@@ -892,7 +892,7 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-scope-wit', wit);
             if (entry._lacuna) {
                 var lacunaElement = document.createElement('span');
-                    lacunaElement.className = 'lacunaApp';
+                    lacunaElement.className = 'lacunaApp icon-evt_note';
                 spanElement.appendChild(lacunaElement);
             } else if (entry.lemma !== undefined && entry.lemma !== '') {
                 var lemmaContent = entry.content[entry.lemma].content;

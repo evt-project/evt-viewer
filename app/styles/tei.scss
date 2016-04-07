@@ -164,7 +164,8 @@
     }
 }
 .lacunaApp::before {
-    content: "+";
+    top: 1px;
+    position: relative;
 }
 .list{
     .item {

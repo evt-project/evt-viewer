@@ -12,7 +12,7 @@ button-switch {
     margin-right: 5px;
 
     .buttonSwitch {
-        height: 28px;
+        min-height: 28px;
         min-width: 30px;
         width: auto;
 
@@ -23,7 +23,9 @@ button-switch {
 
         font-size: 1em;
         text-align: left;
-        
+        &.only-icon {
+            text-align: center;
+        }
         background: $buttonSwitch-background-color;
         color: $buttonSwitch-color;
 
@@ -49,16 +51,17 @@ button-switch {
         }
 
         &-label {
-            margin: 0px 4px;
+            margin: 0px;
+            margin-left: 4px;
             top: 3.5px;
             position: relative;
         }
 
         &-icon {
-            margin-right: 4px;
             position: relative;
             right: 0px;
-            top: 4px;
+            top: 9px;
+            font-size: 1.4em
         }
     }
 
@@ -69,6 +72,33 @@ button-switch {
         }
     }
 
+    &.no-background {
+        .buttonSwitch {
+            background: none;
+            box-shadow: none;
+            border-radius: 0;
+            width: 0px;
+            color: $buttonSwitch-background-color;
+            &-label{
+                font-variant: small-caps;
+                font-size: 80%;
+                top: 0;
+                color: $base-color-light;
+            }
+            &-icon{
+                color: $base-color-light;
+                font-size: 1.3em;
+                top:7px;
+            }
+            &-active, &:hover{
+                .icon {
+                    color:$base-color-active;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
     &[data-type='removeWit'], &[data-type*='remove']{
         position: absolute;
         right: 6px;
@@ -76,13 +106,15 @@ button-switch {
         .buttonSwitch {
             border-radius: 100px;
             height: 22px;
+            min-height: 22px;
             min-width: 22px;
             width: 22px;
             font-size: 0.7em;
             
             &-icon {
-                top: -12px;
-                right: -6px;
+                right: 0px;
+                font-weight: bold;
+                top: 8px;
             }
         }
     }
