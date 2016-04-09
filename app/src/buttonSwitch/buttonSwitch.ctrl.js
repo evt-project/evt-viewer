@@ -138,7 +138,6 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'heatmap':
                     var heatMapState = $scope.$parent.vm.getState('heatmap') || false;
-                    console.log(heatMapState);
                     $scope.$parent.vm.updateState('heatmap', !heatMapState);
                     break;
                 case 'pin':

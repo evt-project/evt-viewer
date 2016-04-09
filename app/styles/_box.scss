@@ -71,9 +71,88 @@
         border-top: 1px solid;
         @include set(box-shadow, 0px 0px 4px rgba(0,0,0,.5));
     }
-    .filters-section-title {
-        text-transform: uppercase;
-        font-weight: bold;
+
+    .filters-box {
+        display: none;
+        position: absolute;
+        z-index: 10;
+        
+        height: auto;
+        min-width: 30%;
+        overflow: hidden;
+
+        margin-top: 42px;
+        margin-bottom: 42px;
+        bottom: $mainContainer-border-width+1;
+        left: $mainContainer-border-width*2;
+        
+        border: $mainContainer-border-width solid $box-structure-color-dark;
+        background: rgba(255, 255, 255, .97);
+        @include set(box-shadow, 0px 0px 14px -4px rgba(0, 0, 0, 0.5));
+        
+        text-align: left;
+        font-size: 90%;
+
+        &.open {
+            display: block;
+        }
+        .filter-group {
+            border-bottom: 3px double #000;
+            &:last-child {
+                border-bottom:0;
+            }
+        }
+        .filters-section-title {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 85%;
+            width: 100%;
+            text-align: right;
+            padding: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .filter-value-outer {
+            padding: 3px 10px;
+            border-top: 1px dotted #000;
+        }
+        .filter-value{
+            border-radius: 4px;
+            background: #E0E0E0;
+            display: inline-block;
+            &-label {
+                cursor: pointer;
+                padding: 0 8px;
+                display: inline-block;
+                font-variant: small-caps;
+                &:not(.active){
+                    background: #fff !important;
+                    &:hover{
+                        border-radius: 4px;
+                        background: rgba(255,255,255,0.5) !important;
+                    }
+                }
+                &.active {
+                    border-radius: 4px;
+                    @include set(box-shadow, 0px 1px 3px rgba(0, 0, 0, 0.3));
+                    &:not(.filter-any){
+                        // &::after{
+                        //     content: "x";
+                        //     position: relative;
+                        //     top: -1px;
+                        //     margin-left: 5px;
+                        //     font-size: 80%;
+                        //     color: rgb(51, 51, 51);
+                        //     font-weight: lighter;
+                        // }
+                        &:hover{
+                            border-radius: 4px;
+                            background: rgba(255,255,255,0.2) !important;
+                        }
+                    }
+                }
+            }            
+        }
     }
 
     /* ********* */
@@ -114,6 +193,9 @@
         }
         .box-menu {
             @include colors($box-witness-structure-color-light, $box-witness-structure-color-dark);
+        }
+        .filters-box, .tools-group-box {
+            border-color: $box-witness-structure-color-dark;
         }
     }
     &.box-text, &.box-witness {

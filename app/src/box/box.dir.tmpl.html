@@ -38,7 +38,7 @@
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     <div class="filters-in-box" 
-         ng-if="(vm.type=='witness' || vm.state.edition=='critical') && vm.state.filters._totActive > 0">
+         ng-if="(vm.type=='witness' || vm.type=='text') && vm.state.filters._totActive > 0">
         <span 
             class="filter-group"
             ng-repeat="filter in vm.state.filters"
@@ -54,36 +54,35 @@
             </span>
         </span>
     </div>
+    <!-- <div class="box-bottom-box"> </div> -->
     <div 
-        class="box-bottom-box filters"
+        class="filters-box"
         ng-if="vm.type=='witness' || vm.type=='text'"
         ng-class="{'open': vm.state.filterBox}">
         
-        <div class="filters__reading"
+        <div class="filter-group"
              ng-repeat="filter in vm.appFilters"
              ng-if="(vm.type=='witness' && filter.possibleFor.variant) || (vm.type=='text' && filter.possibleFor.lemma)">
             <div class="filters-section-title">{{filter.name}}</div>
-            <div>
-                <input 
-                    type="checkbox" 
-                    value="" 
-                    name="{{filter.name}}_any"
-                    ng-checked="vm.state.filters[filter.name] === undefined || vm.state.filters[filter.name].any" 
-                    ng-model="vm.state.filters[filter.name].any"
-                    ng-click="vm.clearFilter(filter.name);"
-                    />
-                <label for="{{filter.name}}_any"> any {{ vm.state.filters[filter.name].active }}</label>
+            <div class="filter-value-outer">
+                <div 
+                    class="filter-value">
+                    <span 
+                        class="filter-value-label filter-any"
+                        ng-class="{'active': vm.state.filters[filter.name] === undefined || vm.state.filters[filter.name].totActive === 0}"
+                        ng-click="vm.clearFilter(filter.name);"> any </span>
+                </div>
             </div>
-            <div ng-repeat="value in filter.values">
-                <input 
-                    type="checkbox" 
-                    value="{{value.name}}" 
-                    name="{{value.name}}"
-                    ng-checked="vm.state.filters[filter.name].values[value.name].active !== undefined && vm.state.filters[filter.name].values[value.name].active"
-                    ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);"
-                    />
-                <label for="{{value.name}}"> {{value.name}}</label>
-                <span class="filters__reading__color" style="background:{{value.color}}"></span>
+            <div class="filter-value-outer" ng-repeat="value in filter.values" >
+                <div 
+                    style="background:{{value.color}}" 
+                    class="filter-value">
+                    <span 
+                        class="filter-value-label"
+                        ng-class="{'active': vm.state.filters[filter.name].values[value.name].active !== undefined && vm.state.filters[filter.name].values[value.name].active}"
+                        ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);"> 
+                        {{value.name}}</span>
+                </div>
             </div>
         </div>
     </div>

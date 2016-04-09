@@ -190,8 +190,7 @@ angular.module('evtviewer.box')
                                                {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
 
-                    bottomMenuList.buttons.push({title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition', show: function(){return 'true';}},
-                                                {title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }},
+                    bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }},
                                                 {title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
@@ -239,7 +238,6 @@ angular.module('evtviewer.box')
                                              {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
 
                     bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} },
-                                                {title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit', show: function(){return 'true';} });
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {

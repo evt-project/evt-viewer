@@ -174,6 +174,19 @@ angular.module('evtviewer.box')
                         currentBox.updateContent();
                     }
                 }, true);
+
+                scope.$watch(function() {
+                    return scope.vm.state.filters._totActive;
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        $timeout(function(){
+                            var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
+                            var height = angular.element(filtersActiveElem).height();
+                            var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
+                            angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
+                        });
+                    }
+                }, true);
             }
 
             if (currentBox.type === 'text') {
@@ -197,21 +210,6 @@ angular.module('evtviewer.box')
                         currentBox.updateContent();
                     }
                 }, true); 
-            }
-
-            if (currentBox.type === 'witness') {
-                scope.$watch(function() {
-                    return scope.vm.state.filters._totActive;
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem) {
-                        $timeout(function(){
-                            var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
-                            var height = angular.element(filtersActiveElem).height();
-                            var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
-                            angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
-                        });
-                    }
-                }, true);
             }
         }
     };
