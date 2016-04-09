@@ -108,8 +108,8 @@ angular.module('evtviewer.buttonSwitch')
                     }
                     $scope.active = false;
                     $timeout(function(){
-                        var singleBox_width = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
-                        document.getElementById('compareWits_box').scrollLeft = singleBox_width*(currentWits.length+1);
+                        var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
+                        document.getElementById('compareWits_box').scrollLeft = singleBoxWidth*(currentWits.length+1);
                     });
                     break;
                 case 'bookmark':
@@ -135,6 +135,11 @@ angular.module('evtviewer.buttonSwitch')
                 case 'fontSizeReset':
                     $scope.$parent.vm.fontSizeReset();
                     $scope.active = !$scope.active;
+                    break;
+                case 'heatmap':
+                    var heatMapState = $scope.$parent.vm.getState('heatmap') || false;
+                    console.log(heatMapState);
+                    $scope.$parent.vm.updateState('heatmap', !heatMapState);
                     break;
                 case 'pin':
                 case 'pin-on':

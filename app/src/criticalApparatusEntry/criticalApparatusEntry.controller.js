@@ -4,8 +4,12 @@ angular.module('evtviewer.criticalApparatusEntry')
     $scope.content = {};
     var vm = this;
 
-    this.openSubContent = function(subContentName) {
-        vm._subContentOpened = subContentName;
+    this.toggleSubContent = function(subContentName) {
+        if (vm._subContentOpened !== subContentName) {
+            vm._subContentOpened = subContentName;
+        } else {
+            vm._subContentOpened = '';
+        }
     };
 
     this.toggleOverAppEntries = function($event) {
@@ -34,7 +38,7 @@ angular.module('evtviewer.criticalApparatusEntry')
         } else {
             evtCriticalApparatusEntry.pin(vm.appId);
         }
-        document.cookie = 'pinned' + "=" + evtCriticalApparatusEntry.getPinned() + "; 1";
+        document.cookie = 'pinned' + '=' + evtCriticalApparatusEntry.getPinned() + '; 1';
     };
 
 
@@ -43,5 +47,5 @@ angular.module('evtviewer.criticalApparatusEntry')
         // TODO: remove from list and collection
         // this.$destroy();
         evtCriticalApparatusEntry.destroy(tempId);
-    }
+    };
 });

@@ -53,14 +53,15 @@ angular.module('evtviewer.core')
     defaultViewMode: 'critical',
     defaultEdition: 'critical',
 
-    preferredWitness : 'edition',
+    preferredWitness : 'A',
     
     listDef                    : 'listWit, listChange',
     versionDef                 : 'witness, change',
     fragmentMilestone          : '<witStart>, <witEnd>',
     lacunaMilestone            : '<lacunaStart>, <lacunaEnd>',
     skipCriticalEntriesFilters : 'wit, target, corresp',
-    possibleVariantFilters     : 'type, cause, hand, resp, cert',
+    possibleVariantFilters     : 'type, cause, hand',
+    possibleLemmaFilters       : 'resp, cert',
     notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
 
     loadCriticalEntriesImmediately: true,

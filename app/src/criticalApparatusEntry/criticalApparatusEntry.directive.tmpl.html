@@ -24,7 +24,7 @@
 
       <div class="critical-apparatus-entry_other-content_headers">
           <span ng-repeat="tab in vm.tabs._indexes"
-                ng-click="vm.openSubContent(tab)"
+                ng-click="vm.toggleSubContent(tab)"
                 ng-class="{'active' : vm._subContentOpened == tab }">
                 {{ vm.tabs[tab].label }}
           </span>

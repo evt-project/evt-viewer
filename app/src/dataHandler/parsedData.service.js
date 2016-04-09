@@ -24,15 +24,18 @@ angular.module('evtviewer.dataHandler')
     };
 
     var criticalAppCollection = {
-        filters: { },
-        // filtersColors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
-        // filtersColors : ['rgb(51,102,204)', 'rgb(16,150,24)', 'rgb(255,153,0)', 
-        //                  'rgb(221,68,119)', 'rgb(34,170,153)', 
-        //                  'rgb(153,0,153)', 'rgb(220,57,18', 'rgb(0,153,198)', 'rgb(102,170,0)',
-        //                  'rgb(184,46,46)', 'rgb(49,99,149)', 'rgb(153,68,153)'],
-        filtersColors : ['rgb(52, 197, 173)', 'rgb(238, 194, 66)', 'rgb(253, 153, 54)', 'rgb(253, 95, 58)',
-                         'rgb(235, 77, 153)', 'rgb(252, 144, 172)', 'rgb(171, 99, 219)', 'rgb(67, 135, 217)',
-                         'rgb(163, 207, 81)', 'rgb(238, 194, 66)', 'rgb(228, 99, 220)', 'rgb(124, 113, 232)'],
+        filtersCollection: { 
+            filters    : { },
+            length     : 0, 
+            colors     : ['rgb(52, 197, 173)', 'rgb(238, 194, 66)', 'rgb(253, 153, 54)', 'rgb(253, 95, 58)',
+                           'rgb(235, 77, 153)', 'rgb(252, 144, 172)', 'rgb(171, 99, 219)', 'rgb(67, 135, 217)',
+                           'rgb(163, 207, 81)', 'rgb(238, 194, 66)', 'rgb(228, 99, 220)', 'rgb(124, 113, 232)']
+            // colors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
+            // colors : ['rgb(51,102,204)', 'rgb(16,150,24)', 'rgb(255,153,0)', 
+            //           'rgb(221,68,119)', 'rgb(34,170,153)', 
+            //           'rgb(153,0,153)', 'rgb(220,57,18', 'rgb(0,153,198)', 'rgb(102,170,0)',
+            //           'rgb(184,46,46)', 'rgb(49,99,149)', 'rgb(153,68,153)'],
+        },
         filtersLength : 0,
         __allLoaded   : false,
         _maxVariance  : 0,
@@ -273,37 +276,47 @@ angular.module('evtviewer.dataHandler')
     
     /* CRITICAL ENTRIES FILTERS */
     parsedData.addCriticalEntryFilter = function(name, value) {
-        if (GLOBALDEFAULTCONF.possibleVariantFilters.indexOf(name) >= 0) {
+        var possibleVariantFilters = GLOBALDEFAULTCONF.possibleVariantFilters,
+            possibleLemmaFilters   = GLOBALDEFAULTCONF.possibleLemmaFilters,
+            filtersCollection      = criticalAppCollection.filtersCollection;
+        // Add filter to collection
+        // if it can be a filter
+        if (possibleVariantFilters.indexOf(name) >= 0 || possibleLemmaFilters.indexOf(name) >= 0) {
+            // assign color
             var valueObj = {
-                name : value,
-                color : criticalAppCollection.filtersColors[criticalAppCollection.filtersLength]
+                name        : value,
+                color       : filtersCollection.colors[filtersCollection.length]
             };
-            if ( criticalAppCollection.filters[name] === undefined ) {
-                criticalAppCollection.filters[name] = {
+            
+            // create group for filter if not exist
+            if ( filtersCollection.filters[name] === undefined ) {
+                filtersCollection.filters[name] = {
                     name   : name,
+                    possibleFor : {
+                        lemma   : possibleLemmaFilters.indexOf(name) >= 0,
+                        variant : possibleVariantFilters.indexOf(name) >= 0 
+                    },
                     values : {}
                 };
             }
-            // if ( criticalAppCollection.filters[name].values.indexOf(value) < 0 ) {
-            //     criticalAppCollection.filters[name].values.push(value);
-            // }
-            if ( criticalAppCollection.filters[name].values[value] === undefined) {
-                criticalAppCollection.filters[name].values[value] = valueObj;
-                criticalAppCollection.filtersLength++;
+            // add value if not already added
+            if ( filtersCollection.filters[name].values[value] === undefined) {
+                filtersCollection.filters[name].values[value] = valueObj;
+                filtersCollection.length++;
             }
         }
     };
 
     parsedData.getCriticalEntriesFilters = function() {
-        return criticalAppCollection.filters;
+        return criticalAppCollection.filtersCollection.filters;
     };
 
     parsedData.getCriticalEntriesFilterValues = function(filter) {
-        return criticalAppCollection.filters[filter];
+        return criticalAppCollection.filtersCollection.filters[filter];
     };
 
     parsedData.getCriticalEntriesFilterColor = function(filter, value) {
-        return criticalAppCollection.filters[filter].values[value].color;
+        return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
     };
 
     return parsedData;

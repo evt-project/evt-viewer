@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
+    this.$get = function($log, $q, parsedData, evtCriticalParser, xmlParser, evtInterface, GLOBALDEFAULTCONF) {        
         var box        = {},
             collection = {},
             list       = [],
@@ -190,11 +190,15 @@ angular.module('evtviewer.box')
                                                {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
 
-                    bottomMenuList.buttons.push({title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition'});
+                    bottomMenuList.buttons.push({title: 'Search in edition', label: 'Search', icon: 'search', type: 'searchInEdition', show: function(){return 'true';}},
+                                                {title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }},
+                                                {title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});
 
-                    // if (evtInterface.getCurrentViewMode() === 'critical') {
-                    //     topMenuList.buttons.push({ title: 'Add Witness', label: '', icon: 'add', type: 'addWit'});
-                    // }
+                    appFilters    = parsedData.getCriticalEntriesFilters();
+                    state.filters = {
+                        _totActive : 0
+                    };
+                    state.filterBox = false;
                     state.docId   = evtInterface.getCurrentDocument();
                     updateContent = function(){
                         scope.vm.isLoading = true;
@@ -234,8 +238,8 @@ angular.module('evtviewer.box')
                     topMenuList.buttons.push({title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit' },
                                              {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
 
-                    bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp' },
-                                                {title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit' });
+                    bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} },
+                                                {title: 'Search in witness', label: 'Search', icon: 'search', type: 'searchInWit', show: function(){return 'true';} });
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {
@@ -286,7 +290,7 @@ angular.module('evtviewer.box')
                     topMenuList.buttons.push({title: 'Remove Box', label: '', icon: 'remove', type: 'removeBox' });
                     updateContent = function(newContent) {
                         scope.vm.content = newContent;
-                    }
+                    };
                     break;
             }
 

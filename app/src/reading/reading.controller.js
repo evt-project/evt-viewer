@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function($log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface) {
+.controller('ReadingCtrl', function(GLOBALDEFAULTCONF, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -118,34 +118,35 @@ angular.module('evtviewer.reading')
             opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
             return 'background: rgba(255, 108, 63, '+opacity+')';
         } else {
-            if (vm.selected && !$scope.$parent.vm.state.topBoxOpened){
-                return 'background: rgb(101, 138, 255)';
-            }
-            // opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.3';
-            // return 'background: rgba(208, 220, 255, '+opacity+')';
-            return '';
+            return colorFilters();
         }
     };
 
     var colorFilters = function() {
-        var filterLabels = parsedData.getCriticalEntriesFilters();
-        var app          = parsedData.getCriticalEntryById(vm.appId);
-        var background;
-        if (vm.readingId !== undefined){
-            var reading       = app.content[vm.readingId];
-            var readingAttributes = reading.attributes || {};
+        var background, filterLabels, possibleFilters;
+        var app, reading, readingAttributes;
+        
+        if (vm.appId !== undefined){
+            app     = parsedData.getCriticalEntryById(vm.appId);
+            reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
+            readingAttributes = reading.attributes || {};
+            
+            filterLabels = parsedData.getCriticalEntriesFilters();
+            possibleFilters = $scope.$parent.vm.type === 'witness' ? GLOBALDEFAULTCONF.possibleVariantFilters : GLOBALDEFAULTCONF.possibleLemmaFilters;
             if (Object.keys(readingAttributes).length > 0) {
                 var colors = '';
                 var opacity = (vm.over || vm.selected) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
                 for (var label in filterLabels) {
                     var filterLabel = filterLabels[label].name;
-                    if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined) {
-                        for (var filter in filterLabels[label].values) {
-                            var filterColor = filterLabels[label].values[filter].color,
-                                filterValue = filterLabels[label].values[filter].name;
-                            if (readingAttributes[filterLabel] === filterValue){
-                                var color = filterColor.replace('rgb', 'rgba');
-                                colors += color.slice(0, -1)+','+opacity+'),';
+                    if (possibleFilters.indexOf(filterLabel) >= 0) {
+                        if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined) {
+                            for (var filter in filterLabels[label].values) {
+                                var filterColor = filterLabels[label].values[filter].color,
+                                    filterValue = filterLabels[label].values[filter].name;
+                                if (readingAttributes[filterLabel] === filterValue){
+                                    var color = filterColor.replace('rgb', 'rgba');
+                                    colors += color.slice(0, -1)+','+opacity+'),';
+                                }
                             }
                         }
                     }
@@ -156,7 +157,7 @@ angular.module('evtviewer.reading')
                     if ( (colors.match('rgb', 'gi') && colors.match('rgb', 'gi').length > 1) || (colors.match('#', 'gi') && colors.match('#', 'gi').length > 1)) {
                         background  = 'background: -moz-linear-gradient(left,'+colors+');';
                         background += 'background: -webkit-linear-gradient(left,'+colors+');';
-                        background += 'background: ms-linear-gradient(left,'+colors+');'
+                        background += 'background: ms-linear-gradient(left,'+colors+');';
                         background += 'background: linear-gradient(left,'+colors+');';
                     } else {
                         background = 'background: '+colors;
@@ -186,18 +187,20 @@ angular.module('evtviewer.reading')
             count      = 0,
             match,
             filter,
+            filterLabel,
             i,
             values,
-            value;
+            value,
+            key;
         
         var filters = $scope.$parent.vm.state.filters || {};
         var filterKeys = Object.keys(filters);
         if (condizione === 'OR') {
             // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
             match = false;
-            for (var key in filterKeys) {
-                var filterLabel = filterKeys[key];
-                var filter      = filters[filterLabel];
+            for (key in filterKeys) {
+                filterLabel = filterKeys[key];
+                filter      = filters[filterLabel];
                 if (filter.totActive > 0) {
                     count++;
                     if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
@@ -215,9 +218,9 @@ angular.module('evtviewer.reading')
             fit = match;
         } else { //default
             var visible = true;
-            for (var key in filterKeys) {
-                var filterLabel = filterKeys[key];
-                var filter      = filters[filterLabel];
+            for (key in filterKeys) {
+                filterLabel = filterKeys[key];
+                filter      = filters[filterLabel];
                 if (filter.totActive > 0) {
                     count++;
                     match = false; 
@@ -246,6 +249,6 @@ angular.module('evtviewer.reading')
         // this.$destroy();
         evtReading.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);
-    }
+    };
     // _console.log('ReadingCtrl running');
 });
