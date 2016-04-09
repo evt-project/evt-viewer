@@ -78,21 +78,21 @@ button-switch {
             box-shadow: none;
             border-radius: 0;
             width: 0px;
-            color: $buttonSwitch-background-color;
+            // color: $buttonSwitch-background-color;
             &-label{
                 font-variant: small-caps;
                 font-size: 80%;
                 top: 0;
-                color: $base-color-light;
+                // color: $base-color-light;
             }
             &-icon{
-                color: $base-color-light;
+                // color: $base-color-light;
                 font-size: 1.3em;
                 top:7px;
             }
             &-active, &:hover{
                 .icon {
-                    color:$base-color-active;
+                    // color:$base-color-active;
                     cursor: pointer;
                 }
             }

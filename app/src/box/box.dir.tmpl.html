@@ -86,6 +86,24 @@
             </div>
         </div>
     </div>
+
+    <div 
+        class="tools-group-box"
+        ng-if="vm.type=='text' || vm.type=='witness'"
+        ng-class="{'open': vm.getState('fontSizeBtn')}">
+        <div 
+            class="fontSizeBtnGroup">
+            <button-switch 
+                class="no-background"
+                title="{{button.title}}"
+                data-label="{{button.label}}"
+                data-icon="{{button.icon}}"
+                data-type="{{button.type}}"
+                ng-repeat="button in vm.genericTools.fontSizeBtn">
+            </button-switch>
+        </div>
+    </div>
+
     <div 
         class="box-menu" 
         data-position="bottom"
@@ -98,38 +116,5 @@
             ng-repeat="button in vm.bottomMenuList.buttons"
             ng-show="button.show()">
         </button-switch>
-
-        <div 
-            class="btnGroup"
-            ng-if="vm.type=='text' || vm.type=='witness'">
-            <button-switch 
-                title="Change font size"
-                data-label=""
-                data-icon='font-size'
-                data-type="fontSizeOpen"
-                ng-click="vm.updateState('fontSizeBtn', !vm.getState('fontSizeBtn'));">
-            </button-switch>
-            <div 
-                class="fontSizeBtnGroup" 
-                ng-show="vm.getState('fontSizeBtn')">
-                <button-switch 
-                    class="no-background"
-                    title="{{button.title}}"
-                    data-label="{{button.label}}"
-                    data-icon="{{button.icon}}"
-                    data-type="{{button.type}}"
-                    ng-repeat="button in vm.genericTools.fontSizeBtn">
-                </button-switch>
-            </div>
-        </div>
-
-        <!-- <button-switch 
-            title="Filters"
-            data-label="Filters"
-            data-icon='filters'
-            data-type="filterReading"
-            ng-if="vm.type=='witness'"
-            ng-click="vm.toggleFilterBox()">
-        </button-switch>-->
     </div>
 </section>

@@ -114,12 +114,13 @@ angular.module('evtviewer.box')
 
         function fontSizeIncrease() {
             var vm = this;
-            vm.state.fontSize++;
+            vm.state.fontSize = parseInt(vm.state.fontSize)+4;
         }
 
         function fontSizeDecrease() {
             var vm = this;
-            vm.state.fontSize--;
+            vm.state.fontSize = parseInt(vm.state.fontSize)-4;
+
         }
 
         function fontSizeReset() {
@@ -191,6 +192,7 @@ angular.module('evtviewer.box')
                     topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
 
                     bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }},
+                                                {title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }},
                                                 {title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
@@ -238,6 +240,7 @@ angular.module('evtviewer.box')
                                              {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
 
                     bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} },
+                                                {title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
 
                     appFilters    = parsedData.getCriticalEntriesFilters();
                     state.filters = {

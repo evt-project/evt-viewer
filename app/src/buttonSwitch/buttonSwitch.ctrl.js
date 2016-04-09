@@ -136,6 +136,10 @@ angular.module('evtviewer.buttonSwitch')
                     $scope.$parent.vm.fontSizeReset();
                     $scope.active = !$scope.active;
                     break;
+                case 'fontSizeTools':
+                    var fontSizeBtnState = $scope.$parent.vm.getState('fontSizeBtn') || false;
+                    $scope.$parent.vm.updateState('fontSizeBtn', !fontSizeBtnState);
+                    break;
                 case 'heatmap':
                     var heatMapState = $scope.$parent.vm.getState('heatmap') || false;
                     $scope.$parent.vm.updateState('heatmap', !heatMapState);

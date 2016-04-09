@@ -71,6 +71,31 @@
         border-top: 1px solid;
         @include set(box-shadow, 0px 0px 4px rgba(0,0,0,.5));
     }
+    .tools-group-box {
+        display: none;
+        position: absolute;
+        z-index: 10;
+        
+        height: auto;
+        min-width: calc(100% - #{$mainContainer-border-width*2*2});
+        overflow: hidden;
+
+        padding: 5px 10px;
+        margin-top: 42px;
+        margin-bottom: 42px;
+        bottom: $mainContainer-border-width+1;
+        left: $mainContainer-border-width*2;
+        
+        border: $mainContainer-border-width solid $box-structure-color-dark;
+        background: #fff;
+        @include set(box-shadow, 0px 0px 14px -4px rgba(0, 0, 0, 0.5));
+        
+        text-align: left;
+        font-size: 1.5em;
+        &.open {
+            display: block;
+        }
+    } 
 
     .filters-box {
         display: none;
