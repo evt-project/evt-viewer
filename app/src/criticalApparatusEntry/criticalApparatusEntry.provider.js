@@ -32,7 +32,11 @@ angular.module('evtviewer.criticalApparatusEntry')
             }
             
             // Get Apparatus Entry content 
-            var content;
+            var content,
+                firstSubContentOpened,
+                tabs = { 
+                    _indexes : []
+                };
             var criticalEntry = parsedData.getCriticalEntryById(id);
             if (criticalEntry === undefined) {
                 var XMLdocument = baseData.getXMLDocuments()[0];
@@ -44,6 +48,39 @@ angular.module('evtviewer.criticalApparatusEntry')
 
             if (criticalEntry !== undefined) {
                 content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
+                if (content.criticalNote !== '' ){
+                    tabs._indexes.push('criticalNote');
+                    tabs['criticalNote'] = {
+                        label : 'Critical Note'
+                    }
+                }
+                if (content.notSignificantReadings.length > 0 ){
+                    tabs._indexes.push('notSignificantReadings');
+                    tabs['notSignificantReadings'] = {
+                        label : 'Orthographic Variants'
+                    }
+                }
+                if (content.attributes._keys.length > 0 ){
+                    tabs._indexes.push('moreInfo');
+                    tabs['moreInfo'] = {
+                        label : 'More Info'
+                    }
+                }
+                if (criticalEntry._xmlSource !== '') {
+                    tabs._indexes.push('xmlSource');
+                    tabs['xmlSource'] = {
+                        label : 'XML'
+                    }
+                    content['xmlSource'] = criticalEntry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+                }
+                if (tabs._indexes.length > 0){
+                    if (tabs._indexes.indexOf(defaults.firstSubContentOpened) < 0) {
+                        firstSubContentOpened = tabs._indexes[0];
+                    } else {
+                        firstSubContentOpened = defaults.firstSubContentOpened;
+                    }
+                }
+                console.log(content);
             }
 
             scopeHelper = {
@@ -53,8 +90,9 @@ angular.module('evtviewer.criticalApparatusEntry')
                 appId             : entryId,
                 readingId         : scope.readingId,
                 content           : content,
-                _subContentOpened : defaults.firstSubContentOpened,
-                over              : false
+                _subContentOpened : firstSubContentOpened,
+                over              : false,
+                tabs              : tabs
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

@@ -19,6 +19,7 @@ angular
     'ngTouch',
     'templates-main',
     'xml',
+    'prettyXml',
     'evtviewer.core',
     'evtviewer.communication',
     'evtviewer.dataHandler',

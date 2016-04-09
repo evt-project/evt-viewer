@@ -10,7 +10,13 @@ angular.module('evtviewer.dataHandler')
                 values : entry.attributes || {},
                 _keys  : Object.keys(entry.attributes) || []
             },
-            lemma                  : '',
+            lemma                  : {
+                content    : '',
+                attributes : {
+                    values : {},
+                    _keys  : []
+                }
+            },
             significantReadings    : [],
             notSignificantReadings : [],
             readingGroups          : [],
@@ -20,7 +26,9 @@ angular.module('evtviewer.dataHandler')
         //Lemma
         var lemma = entry.content[entry.lemma];
         if (lemma !== undefined) {
-            appContent.lemma += '<span class="reading__lemma">'+apparatus.getLemma(lemma, scopeWit)+'</span>';
+            appContent.lemma.content += '<span class="app_lemma">'+apparatus.getLemma(lemma, scopeWit)+'</span>';
+            appContent.lemma.attributes.values = lemma.attributes || {};
+            appContent.lemma.attributes._keys  = Object.keys(lemma.attributes) || [];
         }
 
         //Significant Readings
@@ -109,8 +117,6 @@ angular.module('evtviewer.dataHandler')
 
         if (lemmaText !== '') {
             lemmaText += apparatus.getCriticalEntryWitnesses(lemma, 'lem', scopeWit);
-            lemmaText += apparatus.getCriticalEntryAttributes(lemma, 'lem');
-            lemmaText += ']';
         }
 
         lemmaText = lemmaText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -124,7 +130,7 @@ angular.module('evtviewer.dataHandler')
         var subApp        = parsedData.getCriticalEntryById(subAppId);
         var subAppContent = apparatus.getContent(subApp, true, scopeWit);
         
-        subAppText += ' (('+subAppContent.lemma+" ";
+        subAppText += ' (('+subAppContent.lemma.content+" ";
         for (var i = 0; i < subAppContent.significantReadings.length; i++) {
             subAppText += subAppContent.significantReadings[i];
             if (i < subAppContent.significantReadings.length - 1) {
@@ -157,12 +163,19 @@ angular.module('evtviewer.dataHandler')
         readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
 
         readingText += apparatus.getCriticalEntryWitnesses(reading, 'rdg', scopeWit);
-        readingText += apparatus.getCriticalEntryAttributes(reading, 'rdg');
+        // readingText += apparatus.getCriticalEntryAttributes(reading, 'rdg');
 
         readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
         readingText = apparatus.transformCriticalEntryFragmentMilestones(readingText);
 
-        return readingText;
+        var readingObj = {
+            content    : readingText,
+            attributes : {
+                values : reading.attributes || {},
+                _keys  : Object.keys(reading.attributes) || []
+            }
+        }
+        return readingObj;
     };
 
     apparatus.getCriticalEntryWitnesses = function(reading, elemType, scopeWit) {

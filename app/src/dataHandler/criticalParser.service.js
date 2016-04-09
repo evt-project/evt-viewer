@@ -187,7 +187,7 @@ angular.module('evtviewer.dataHandler')
             significant : true,
             _groupId     : undefined,
             _xmlTagName  : elem.tagName,
-            _xmlSource   : elem.innerHTML
+            _xmlSource   : elem.outerHTML
         };
 
         var id;
@@ -364,7 +364,7 @@ angular.module('evtviewer.dataHandler')
                 witMap            : { }
             },
             _subApp    : false,
-            _xmlSource : app.innerHTML || ''
+            _xmlSource : app.outerHTML || ''
         };
 
         var id;

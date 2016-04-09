@@ -228,6 +228,10 @@ section > div{
         margin: 0;
     }
 }
+pre {
+    white-space: pre-wrap;
+    font-size: 80%; 
+}
 
 // Generic style 
 .hidden {

@@ -56,6 +56,8 @@ angular.module('evtviewer.buttonSwitch')
                 icon = 'icon-evt_bookreader';
                 break;
             case 'pin':
+                icon = 'icon-evt_pin-alt-on';
+                break;
             case 'pin-off':
                 icon = 'icon-evt_pin-off';
                 break;
@@ -110,6 +112,9 @@ angular.module('evtviewer.buttonSwitch')
                         document.getElementById('compareWits_box').scrollLeft = singleBox_width*(currentWits.length+1);
                     });
                     break;
+                case 'bookmark':
+                    alert(window.location);
+                    break;
                 case 'changeViewMode':
                     if ($scope.value !== undefined) {
                         evtInterface.updateCurrentViewMode($scope.value);
@@ -131,6 +136,10 @@ angular.module('evtviewer.buttonSwitch')
                     $scope.$parent.vm.fontSizeReset();
                     $scope.active = !$scope.active;
                     break;
+                case 'pin':
+                case 'pin-on':
+                case 'pin-off':
+                    break;
                 case 'removeWit':
                     var wit = $scope.$parent.vm.witness;
                     evtInterface.removeWitness(wit);
@@ -145,7 +154,6 @@ angular.module('evtviewer.buttonSwitch')
                     alert('Search in witness '+wit+'. Coming Soon...');
                     break;
                 case 'share':
-                case 'bookmark':
                     alert(window.location);
                     break;
                 case 'toggleInfoWit':
