@@ -175,8 +175,10 @@ $critical-apparatus-entry-background-color : $base-color-light;
             opacity: 1;
         }
         &.pinned {
-            color: $base-color-active;
             opacity: 1;
+            > * {
+                color: $base-color-active;
+            }
         }
     }
 }

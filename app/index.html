@@ -73,14 +73,13 @@
                  id="mainText"
                  ng-show="existCriticalText()"></box>
             <box data-type="generic">
-                 <span ng-if="getPinnedEntries().length <= 0">No apparatus entries pinned.</span>
+                 <span ng-if="!isLoading() && getPinnedEntries().length <= 0">No apparatus entries pinned.</span>
                  <evt-critical-apparatus-entry 
                     class="in_critical_apparatus" 
                     ng-class="{'active': getCurrentAppEntry() === entry}"
-                    ng-if="getPinnedEntries().length > 0"
+                    ng-if="getPinnedEntries().length > 0 && entry !== ''"
                     ng-click="updateCurrentAppEntry(entry)"
                     ng-repeat="entry in getPinnedEntries()"
-                    ng-if="entry !== ''"
                     data-app-id="{{entry}}"></evt-critical-apparatus-entry>
             </box>
         </section> 
@@ -185,6 +184,7 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-xml/angular-xml.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

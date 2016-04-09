@@ -23,6 +23,10 @@ angular.module('evtviewer.criticalApparatusEntry')
         return evtCriticalApparatusEntry.isPinned(vm.appId);
     };
 
+    this.getPinnedState = function() {
+        return vm.isPinned() ? 'pin-on' : 'pin-off';
+    };
+
     this.togglePin = function(){
         if (vm.isPinned()) {
             console.log('unpin');
