@@ -722,7 +722,7 @@ angular.module('evtviewer.dataHandler')
                 //     }
                 // }
 
-            } else if (!entry._subApp && entry.lemma){
+            } else if (entry.lemma){
                 spanElement = getEntryLemmaText(entry, wit);
             } else {
                 var noRdgElement = document.createElement('span');
