@@ -124,6 +124,9 @@ angular.module('evtviewer.buttonSwitch')
                         evtInterface.updateUrl();
                     }
                     break; 
+                case 'closePinned':
+                    evtInterface.togglePinnedAppBoardOpened();
+                    break;
                 case 'fontSizeDecrease':
                     $scope.$parent.vm.fontSizeDecrease();
                     $scope.active = !$scope.active;
@@ -172,6 +175,9 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'toggleFilterApp':
                     $scope.$parent.vm.toggleFilterBox();
+                    break;
+                case 'togglePinned':
+                    evtInterface.togglePinnedAppBoardOpened();
                     break;
                 case 'witList':
                     var witnessesCollection = parsedData.getWitnesses();

@@ -14,13 +14,14 @@ $mainContainer-bottom-menu: true;
 $base-color-dark: #263238;
 $base-color-middle: #37474f;
 $base-color-light: #ECEFF1;
-$base-color-active: #f3b136;
+$base-color-active-background: #FFC107;
+$base-color-active: #000;
 /* GREY*/
 // $base-color-dark: #424242;
 // $base-color-middle: #37474f;
 // $base-color-light: #f5f5f5;
 
-$base-backgroundImage: '';
+$base-backgroundImage: #f0f0f0;
 $base-minHeight: 600px;
 $base-fontSize: 30px;
 $base-header-height: 54px;

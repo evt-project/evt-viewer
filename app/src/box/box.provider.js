@@ -293,7 +293,11 @@ angular.module('evtviewer.box')
                     break;
                 default:
                     isLoading = false;
-                    topMenuList.buttons.push({title: 'Remove Box', label: '', icon: 'remove', type: 'removeBox' });
+                    if (currentType === 'pinnedBoard') {
+                        topMenuList.buttons.push({title: 'Close Board', label: '', icon: 'remove', type: 'closePinned' });
+                    } else {
+                        topMenuList.buttons.push({title: 'Remove Box', label: '', icon: 'remove', type: 'removeBox' });
+                    }
                     updateContent = function(newContent) {
                         scope.vm.content = newContent;
                     };

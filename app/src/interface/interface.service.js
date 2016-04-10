@@ -10,7 +10,8 @@ angular.module('evtviewer.interface')
             currentWitsPages : undefined,
             currentEdition   : undefined,
             currentAppEntry  : undefined,
-            isLoading        : true
+            isLoading        : true,
+            isPinnedAppBoardOpened : false
         };
 
         var availableViewModes = [
@@ -84,7 +85,9 @@ angular.module('evtviewer.interface')
         mainInterface.isLoading = function() {
             return state.isLoading;
         };
-
+        mainInterface.isPinnedAppBoardOpened = function() {
+            return state.isPinnedAppBoardOpened;
+        };
         mainInterface.getAvailableViewModes = function() {
             return availableViewModes;
         };
@@ -130,7 +133,9 @@ angular.module('evtviewer.interface')
         mainInterface.setLoading = function(state) {
             state.isLoading = state;
         };
-
+        mainInterface.togglePinnedAppBoardOpened = function() {
+            state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
+        };
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;
         };

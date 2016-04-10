@@ -75,15 +75,17 @@ $reading-background-selected : rgb(208, 220, 255);
     &:not(.invisible){
         .reading {
             &:not(.hidden) {
-                .reading__text {
-                    > * {
-                        border: 1px dotted black;
-                    }
-                }
-                &.expansed {
-                    > .reading__text{
+                &:not(.blurred){
+                    .reading__text {
                         > * {
-                            border-bottom: 5px solid $critical-apparatus-entry-background-color;
+                            border: 1px dotted black;
+                        }
+                    }
+                    &.expansed {
+                        > .reading__text{
+                            > * {
+                                border-bottom: 5px solid $critical-apparatus-entry-background-color;
+                            }
                         }
                     }
                 }

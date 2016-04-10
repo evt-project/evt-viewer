@@ -141,6 +141,7 @@
         .filter-value-outer {
             padding: 3px 10px;
         }
+
         .filter-value{
             border-radius: 4px;
             background: #E0E0E0;
@@ -237,6 +238,10 @@
             overflow-x: auto;
         }
     }
+    &.box-pinnedBoard {
+        width: 25%;
+        left: 12.5%;
+    }
     // BODY
     &.topBoxOpened {
         .box-body {
@@ -260,6 +265,16 @@
     }
 }
 
+.centered {
+    .box {
+        left:25%;
+    }
+}
+.half-centered {
+    .box {
+        left: 12.5%;
+    }
+}
 // Temporary
 // .viewMode .box:last-child{
     // margin: 0px 0px 0px 0.5px;

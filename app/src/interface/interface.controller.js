@@ -53,6 +53,9 @@ angular.module('evtviewer.interface')
         return evtInterface.isLoading();
     };
 
+    $scope.isPinnedAppBoardOpened = function(){
+        return evtInterface.isPinnedAppBoardOpened();
+    };
     _console.log('InterfaceCtrl running');
 })
 

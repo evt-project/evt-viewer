@@ -71,8 +71,22 @@
             <box data-type="text"
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"
-                 ng-show="existCriticalText()"></box>
-            <box data-type="generic">
+                 ng-show="existCriticalText()"
+                 ng-class="{'centered': !isPinnedAppBoardOpened(),
+                            'half-centered': isPinnedAppBoardOpened()}"></box>
+            <button-switch 
+                    title="Show pinned apparatus entries"
+                    data-label=""
+                    data-icon="pin"
+                    data-type="togglePinned"
+                    ng-if="getPinnedEntries().length > 0 && entry !== ''"
+                    class="togglePinned_btn"
+                    ng-class="{'centered': !isPinnedAppBoardOpened(),
+                               'half-centered': isPinnedAppBoardOpened()}">
+            </button-switch>
+
+            <box data-type="pinnedBoard" 
+                ng-show="isPinnedAppBoardOpened()">
                  <span ng-if="!isLoading() && getPinnedEntries().length <= 0">No apparatus entries pinned.</span>
                  <evt-critical-apparatus-entry 
                     class="in_critical_apparatus" 

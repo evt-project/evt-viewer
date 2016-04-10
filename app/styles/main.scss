@@ -199,7 +199,7 @@ section > div{
                 padding:0;
                 &-active, &:hover{
                     .icon {
-                        color:$base-color-active;
+                        color:$base-color-active-background;
                     }
                 }
                 &-icon {
