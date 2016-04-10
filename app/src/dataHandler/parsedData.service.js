@@ -25,9 +25,11 @@ angular.module('evtviewer.dataHandler')
 
     var criticalAppCollection = {
         filtersCollection: { 
-            filters    : { },
-            length     : 0, 
-            colors     : ['rgb(52, 197, 173)', 'rgb(238, 194, 66)', 'rgb(253, 153, 54)', 'rgb(253, 95, 58)',
+            filters     : { },
+            length      : 0, 
+            forLemmas   : 0,
+            forVariants : 0,
+            colors      : ['rgb(52, 197, 173)', 'rgb(238, 194, 66)', 'rgb(253, 153, 54)', 'rgb(253, 95, 58)',
                            'rgb(235, 77, 153)', 'rgb(252, 144, 172)', 'rgb(171, 99, 219)', 'rgb(67, 135, 217)',
                            'rgb(163, 207, 81)', 'rgb(238, 194, 66)', 'rgb(228, 99, 220)', 'rgb(124, 113, 232)']
             // colors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
@@ -36,7 +38,6 @@ angular.module('evtviewer.dataHandler')
             //           'rgb(153,0,153)', 'rgb(220,57,18', 'rgb(0,153,198)', 'rgb(102,170,0)',
             //           'rgb(184,46,46)', 'rgb(49,99,149)', 'rgb(153,68,153)'],
         },
-        filtersLength : 0,
         __allLoaded   : false,
         _maxVariance  : 0,
         _indexes      : {
@@ -303,8 +304,18 @@ angular.module('evtviewer.dataHandler')
             if ( filtersCollection.filters[name].values[value] === undefined) {
                 filtersCollection.filters[name].values[value] = valueObj;
                 filtersCollection.length++;
+                if (possibleVariantFilters.indexOf(name) >= 0) {
+                    filtersCollection.forVariants++;
+                }
+                if (possibleLemmaFilters.indexOf(name) >= 0) {
+                    filtersCollection.forLemmas++;   
+                }
             }
         }
+    };
+    
+    parsedData.getCriticalEntriesFiltersCollection = function() {
+        return criticalAppCollection.filtersCollection;
     };
 
     parsedData.getCriticalEntriesFilters = function() {

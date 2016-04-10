@@ -191,16 +191,18 @@ angular.module('evtviewer.box')
                                                {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
 
-                    bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }},
-                                                {title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }},
-                                                {title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});
-
-                    appFilters    = parsedData.getCriticalEntriesFilters();
+                    bottomMenuList.buttons.push({title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});
+                    appFilters = parsedData.getCriticalEntriesFiltersCollection();
+                    if (appFilters.forLemmas > 0) {
+                        bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }});
+                        appFilters = appFilters.filters;
+                    }
                     state.filters = {
                         _totActive : 0
                     };
                     state.filterBox = false;
                     state.docId   = evtInterface.getCurrentDocument();
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
@@ -239,14 +241,17 @@ angular.module('evtviewer.box')
                     topMenuList.buttons.push({title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit' },
                                              {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
 
-                    bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} },
-                                                {title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
-
-                    appFilters    = parsedData.getCriticalEntriesFilters();
+                    appFilters = parsedData.getCriticalEntriesFiltersCollection();
+                    if (appFilters.forVariants > 0) {
+                        bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} });
+                        appFilters = appFilters.filters;
+                    }
                     state.filters = {
                         _totActive : 0
                     };
                     state.filterBox = false;
+
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
