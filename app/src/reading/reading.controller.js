@@ -76,13 +76,13 @@ angular.module('evtviewer.reading')
 
     this.toggleApparatus = function($event) {
         $event.stopPropagation();
-        // evtPopover.closeAll();
+        evtPopover.closeAll();
         if ( !vm.hidden ) {
             if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 
             
-            // evtReading.closeAllApparatus(vm.uid);
+            evtReading.closeAllApparatus(vm.uid);
             vm.apparatus.opened = !vm.apparatus.opened;
         }
     };
@@ -177,11 +177,9 @@ angular.module('evtviewer.reading')
         var app = parsedData.getCriticalEntryById(vm.appId),
             reading,
             readingAttributes;
-        
-        if (vm.readingId !== undefined){
-            reading           = app.content[vm.readingId];
-            readingAttributes = reading.attributes || {};
-        }
+
+        reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
+        readingAttributes = reading.attributes || {};
         var condizione = 'OR', //TODO: Decidere come gestire
             fit        = false,
             count      = 0,
