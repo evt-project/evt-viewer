@@ -182,7 +182,7 @@ angular.module('evtviewer.dataHandler')
             if (witnessesCollection[witId].text === undefined){
                 witnessesCollection[witId].text = {};
             }
-            witnessesCollection[witId].text[docId] = '<text>'+content+'</text>';
+            witnessesCollection[witId].text[docId] = content;
         }
     };
     parsedData.getWitnessText = function(witId, docId) {

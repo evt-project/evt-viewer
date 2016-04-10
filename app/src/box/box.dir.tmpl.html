@@ -69,6 +69,7 @@
                     class="filter-value">
                     <span 
                         class="filter-value-label filter-any"
+                        title="Toggle ''any''"
                         ng-class="{'active': vm.state.filters[filter.name] === undefined || vm.state.filters[filter.name].totActive === 0}"
                         ng-click="vm.clearFilter(filter.name);"> any </span>
                 </div>
@@ -79,6 +80,7 @@
                     class="filter-value">
                     <span 
                         class="filter-value-label"
+                        title="Toggle ''{{value.name}}''"
                         ng-class="{'active': vm.state.filters[filter.name].values[value.name].active !== undefined && vm.state.filters[filter.name].values[value.name].active}"
                         ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);"> 
                         {{value.name}}</span>
