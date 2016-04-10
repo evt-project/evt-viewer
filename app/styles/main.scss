@@ -191,9 +191,15 @@ section > div{
                 font-size: 1.3em;
                 top:7px;
             }
+            &:hover, &:hover > *{
+                color: $buttonSwitch-active-background-color;
+            }
         }
         &.mode-view {
             margin:0px 1px;
+            &[data-icon='mode-critical']{
+                margin-right:-4px;
+            }
             .buttonSwitch{
                 width: auto;
                 padding:0;
