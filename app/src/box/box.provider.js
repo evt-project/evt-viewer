@@ -369,6 +369,22 @@ angular.module('evtviewer.box')
             return listType;
         };
 
+        box.getElementByValueOfParameter = function(parameter, value) {
+            var element;
+            for (var i in collection) {
+                if (collection[i][parameter] === value) {
+                    element = collection[i];
+                }
+            }
+            return element;
+        };
+
+        box.alignScrollToApp = function(appId){
+            for (var i in collection) {
+                collection[i].scrollToAppEntry(appId);
+            }
+        };
+
         return box;
     };
 

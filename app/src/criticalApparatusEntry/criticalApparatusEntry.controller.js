@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.controller('CriticalApparatusEntryCtrl', function($log, $scope, evtCriticalApparatusEntry, evtReading) {
+.controller('CriticalApparatusEntryCtrl', function($log, $scope, evtCriticalApparatusEntry, evtReading, evtBox) {
     $scope.content = {};
     var vm = this;
 
@@ -41,6 +41,9 @@ angular.module('evtviewer.criticalApparatusEntry')
         document.cookie = 'pinned' + '=' + evtCriticalApparatusEntry.getPinned() + '; 1';
     };
 
+    this.alignReadings = function(){
+        evtBox.alignScrollToApp(vm.appId);
+    };
 
     this.destroy = function() {
         var tempId = this.uid;

@@ -33,6 +33,13 @@ angular.module('evtviewer.criticalApparatusEntry')
                         evtInterface.updateCurrentViewMode('collation');
                     }
                     evtInterface.updateUrl();
+                    var currentAppId = evtInterface.getCurrentAppEntry() || '';
+                    if (currentAppId !== '') {
+                        var newBox = evtBox.getElementByValueOfParameter('witness', newWit);
+                        if (newBox !== undefined) {
+                            newBox.scrollToAppEntry(currentAppId);
+                        }
+                    }
                 }
 
             };

@@ -79,6 +79,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'thumbnails':
                 icon = 'icon-evt_thumb';
                 break;
+            case 'v-align':
+                icon = 'icon-evt_align';
+                break;
             case 'witnesses':
                 icon = 'icon-evt_books';
                 break;
@@ -111,6 +114,8 @@ angular.module('evtviewer.buttonSwitch')
                         var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
                         document.getElementById('compareWits_box').scrollLeft = singleBoxWidth*(currentWits.length+1);
                     });
+                    break;
+                case 'alignReadings':
                     break;
                 case 'bookmark':
                     alert(window.location);

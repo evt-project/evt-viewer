@@ -4,13 +4,21 @@
   ng-mouseout="vm.toggleOverAppEntries($event)">
   <div 
     class="critical-apparatus-entry_main-content">
-      <button-switch 
-            title="Toggle Pin"
-            data-label=""
-            data-icon="pin"
-            data-type="pinReading"
-            ng-class="{'pinned' : vm.isPinned()}"
-            ng-click="vm.togglePin()"></button-switch>
+      <div class="critical-apparatus-entry_tools">
+        <button-switch 
+              title="Align Readings"
+              data-label=""
+              data-icon="v-align"
+              data-type="alignReadings"
+              ng-click="vm.alignReadings()"></button-switch>
+        <button-switch 
+              title="Toggle Pin"
+              data-label=""
+              data-icon="pin"
+              data-type="pinReading"
+              ng-class="{'active' : vm.isPinned()}"
+              ng-click="vm.togglePin()"></button-switch>
+      </div>
       <span 
         ng-if="vm.content.lemma.content !== ''"
         compile="vm.content.lemma.content"></span> 

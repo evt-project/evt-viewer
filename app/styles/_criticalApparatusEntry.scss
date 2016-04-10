@@ -30,7 +30,27 @@ $critical-apparatus-entry-background-color : $base-color-light;
         background: transparent !important;
     }
 
-
+    &_tools{
+        float: right;
+        top: 0px;
+        position: absolute;
+        right: 4px;
+        button-switch{
+            opacity: .6;
+            margin-right: 0;
+            font-size: 80%;
+            .buttonSwitch {
+                min-width: auto;
+                box-shadow: none;
+            }
+            &.active, &:hover {
+                opacity: 1;
+                > * {
+                    color: $base-color-active-background !important;
+                }
+            }
+        }
+    }
     &_main-content{
         padding: 5px;
         ul {
@@ -158,26 +178,6 @@ $critical-apparatus-entry-background-color : $base-color-light;
                 &::after {
                     content:"";
                 }
-            }
-        }
-    }
-
-    [data-type='pinReading']{
-        opacity: .6;
-        .buttonSwitch {
-            position: absolute;
-            right: 2px;
-            left: auto;
-            box-shadow: none;
-            top: 0;
-        }
-        &:hover {
-            opacity: 1;
-        }
-        &.pinned {
-            opacity: 1;
-            > * {
-                color: $base-color-active-background;
             }
         }
     }
