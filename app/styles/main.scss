@@ -87,8 +87,13 @@ section > div{
 @import "popover.scss";
 @import "criticalApparatusEntry.scss";
 @import "reading.scss";
+@import "dialog.scss";
+@import "tabsContainer.scss";
 
 // Temporary
+.secondary-container {
+    position: absolute;
+}
 .btnGroup {
     display: inline;
     .fontSizeBtnGroup {

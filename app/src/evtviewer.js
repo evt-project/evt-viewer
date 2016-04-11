@@ -30,5 +30,7 @@ angular
     'evtviewer.popover',
     'evtviewer.mobile',
     'evtviewer.criticalApparatusEntry',
-    'evtviewer.reading'
+    'evtviewer.reading',
+    'evtviewer.dialog',
+    'evtviewer.tabsContainer'
   ]);

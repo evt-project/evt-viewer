@@ -1,0 +1,17 @@
+<div class="evt-dialog"
+    ng-show="vm.opened">
+    <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
+
+    <div class="evt-dialog-container">
+        <div class="evt-dialog-container-top">
+            <span class="evt-dialog-container-top-title">{{ vm.title }}</span>
+            <button-switch 
+                    class="noPadding"
+                    title="Close"
+                    data-icon="remove"
+                    data-type="closeDialog">
+            </button-switch>
+        </div>
+        <div class="evt-dialog-container-content" ng-transclude></div>
+    </div>
+</div>

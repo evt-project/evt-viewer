@@ -1,0 +1,24 @@
+<div class="evt-tabs-container {{ orientation }}">
+    <div 
+        class="evt-tabs-container_headers"
+        ng-class="{'closed': subContentOpened === ''}">
+        
+        <span 
+            class="evt-tabs-container_header"
+            ng-repeat="tab in tabs._indexes"
+            ng-click="toggleSubContent(tab)"
+            ng-class="{'active' : subContentOpened == tab }">
+            {{ tabs[tab].label }}
+        </span>
+    </div>
+    <div 
+        class="evt-tabs-container_panels"
+        ng-class="{'closed': subContentOpened === ''}">
+        
+        <div class="evt-tabs-container_panel"
+            ng-repeat="tab in tabs._indexes"
+            ng-class="{'active' : subContentOpened == tab}"
+            compile="tabs[tab].content">
+        </div>
+    </div>
+</div>

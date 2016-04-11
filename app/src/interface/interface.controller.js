@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $injector, $scope, $route, evtInterface, evtBox) {    
+.controller('InterfaceCtrl', function($log, $injector, $scope, $route, evtInterface, evtBox, parsedData) {    
     var _console = $log.getInstance('interface');
 
     $scope.getCurrentViewMode = function() {
@@ -58,6 +58,18 @@ angular.module('evtviewer.interface')
     $scope.isPinnedAppBoardOpened = function(){
         return evtInterface.isPinnedAppBoardOpened();
     };
+
+    $scope.getSecondaryContentOpened = function(){
+        return evtInterface.getSecondaryContentOpened();
+    };
+
+    $scope.getProjectInfo = function(){
+        return parsedData.getProjectInfo();
+    };
+
+    $scope.getWitnessesListFormatted = function(){
+        return parsedData.getWitnessesListFormatted();
+    }
     _console.log('InterfaceCtrl running');
 })
 

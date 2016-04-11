@@ -50,6 +50,17 @@
                     ng-repeat="mode in getAvailableViewModes()">
             </button-switch>
             <button-switch 
+                    title="Witnesses"
+                    data-icon="witnesses"
+                    data-type="openGlobalDialogWitnesses">
+            </button-switch>
+            <button-switch 
+                    class="smaller"
+                    title="Info"
+                    data-icon="info"
+                    data-type="openGlobalDialogInfo">
+            </button-switch>
+            <button-switch 
                     title="Bookmark"
                     data-icon="bookmark"                    
                     data-type="bookmark">
@@ -62,6 +73,20 @@
             </button-switch>
         </div>
     </header>
+    <section 
+        class="secondary-container" 
+        ng-show="getSecondaryContentOpened() !== ''"  
+        ng-if="!isLoading()">
+        <evt-dialog data-type="globalInfo" data-title="Project Info">
+            <evt-tabs-container 
+                data-type="projectInfo" 
+                data-orientation="vertical">
+            </evt-tabs-container>
+        </evt-dialog>
+        <evt-dialog data-type="witnessesList" data-title="Witnesses">
+            <div compile="getWitnessesListFormatted()"></div>
+        </evt-dialog>
+    </section>
     
     <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
         <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
@@ -87,12 +112,13 @@
 
             <box data-type="pinnedBoard" 
                 ng-show="isPinnedAppBoardOpened()">
-                 <span ng-if="!isLoading() && getPinnedEntries().length <= 0">No apparatus entries pinned.</span>
+                 <span ng-if="!isLoading() && getPinnedEntries().length <= 0">
+                    No apparatus entries pinned.</span>
                  <evt-critical-apparatus-entry 
                     class="in_critical_apparatus" 
                     ng-class="{'active': getCurrentAppEntry() === entry}"
                     ng-if="getPinnedEntries().length > 0 && entry !== ''"
-                    ng-click="updateCurrentAppEntry(entry)"
+                    ng-click="updateCurrentAppEntry(entry);"
                     ng-repeat="entry in getPinnedEntries()"
                     data-type="pinned"
                     data-app-id="{{entry}}"></evt-critical-apparatus-entry>
@@ -154,7 +180,7 @@
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
     </section>
 
-    <section id="global-container" ng-if="isLoading()">
+    <section id="global-container" ng-if="isLoading() || isLoading() === undefined">
         <!-- LOADING... -->
         <section id="main-container" class="viewMode">
             <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
@@ -277,7 +303,14 @@
     <script src="/src/reading/reading.controller.js"></script>
     <script src="/src/reading/reading.directive.js"></script>
 
+    <script src="/src/dialog/dialog.js"></script>
+    <script src="/src/dialog/dialog.configuration.js"></script>
+    <script src="/src/dialog/dialog.provider.js"></script>
+    <script src="/src/dialog/dialog.directive.js"></script>
 
+    <script src="/src/tabsContainer/tabsContainer.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.controller.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.directive.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

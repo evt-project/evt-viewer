@@ -11,7 +11,8 @@ angular.module('evtviewer.interface')
             currentEdition   : undefined,
             currentAppEntry  : undefined,
             isLoading        : true,
-            isPinnedAppBoardOpened : false
+            isPinnedAppBoardOpened : false,
+            secondaryContent : ''
         };
 
         var availableViewModes = [
@@ -88,6 +89,11 @@ angular.module('evtviewer.interface')
         mainInterface.isPinnedAppBoardOpened = function() {
             return state.isPinnedAppBoardOpened;
         };
+        
+        mainInterface.getSecondaryContentOpened = function(){
+            return state.secondaryContent;
+        };
+
         mainInterface.getAvailableViewModes = function() {
             return availableViewModes;
         };
@@ -127,15 +133,22 @@ angular.module('evtviewer.interface')
         mainInterface.existCriticalText = function(){
             return parsedData.getCriticalText(state.currentDoc) !== undefined;
         };
+
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */
         mainInterface.setLoading = function(state) {
             state.isLoading = state;
         };
+
         mainInterface.togglePinnedAppBoardOpened = function() {
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
+        
+        mainInterface.updateSecondaryContentOpened = function(secondaryContent){
+            state.secondaryContent = secondaryContent;
+        };
+        
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;
         };

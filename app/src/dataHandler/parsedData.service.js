@@ -237,6 +237,38 @@ angular.module('evtviewer.dataHandler')
         return wits;
     };
 
+    //temp
+    parsedData.getWitnessesListFormatted = function(){
+        var structure = witnessesCollection._indexes.encodingStructure;
+        var content;
+        content = '<ul>';
+        for (var i = 0; i < structure.length; i++) {
+            var element = witnessesCollection[structure[i]];
+            if (element._type === 'witness') {
+                content += '<li>';
+                    content += '<strong>#'+element.id+'</strong><br /><div>'+element.description.innerHTML+'</div>';
+                content += '</li>';
+            } else {
+                content += '<li>';
+                    content += '<strong>#'+element.id+'</strong><br /><div>'+element.name+'</div>';
+                    content += '<ul>';
+                    for (var j = 0; j < element.content.length; j++) {
+                        var subElement = witnessesCollection[element.content[j]];
+                        if (subElement._type === 'witness') {
+                            content += '<li>';
+                            content += '<strong>#'+subElement.id+'</strong><br /><div>'+subElement.description.innerHTML+'</div>';
+                            content += '</li>';
+                        }
+                        //TO DO RICORSIVA!!!            
+                    }
+                    content += '</ul>';
+                content += '</li>';
+            }
+        }
+        content += '</ul>';
+        return content;
+    };
+
     /* CRITICAL ENTRIES */
     parsedData.addCriticalText = function(text, docId) {
         criticalTexts[docId] = text;
@@ -330,5 +362,9 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
     };
 
+
+    parsedData.getProjectInfo = function(){
+        return '<span>Project Info</span>';
+    }
     return parsedData;
 });

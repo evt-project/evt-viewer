@@ -1,6 +1,6 @@
 angular.module('evtviewer.buttonSwitch')
 
-.controller('ButtonSwitchCtrl', function($timeout, $log, $scope, evtInterface, parsedData) {
+.controller('ButtonSwitchCtrl', function($timeout, $log, $scope, evtInterface, parsedData, evtDialog) {
     $scope.active   = false;
     $scope.disabled = false;
     
@@ -129,6 +129,11 @@ angular.module('evtviewer.buttonSwitch')
                         evtInterface.updateUrl();
                     }
                     break; 
+                case 'closeDialog':
+                    evtDialog.closeAll();
+                    evtInterface.updateSecondaryContentOpened('');
+                    $scope.active = !$scope.active;
+                    break;
                 case 'closePinned':
                     evtInterface.togglePinnedAppBoardOpened();
                     break;
@@ -151,6 +156,16 @@ angular.module('evtviewer.buttonSwitch')
                 case 'heatmap':
                     var heatMapState = $scope.$parent.vm.getState('heatmap') || false;
                     $scope.$parent.vm.updateState('heatmap', !heatMapState);
+                    break;
+                case 'openGlobalDialogInfo':
+                    evtInterface.updateSecondaryContentOpened('globalInfo');
+                    evtDialog.openByType('globalInfo');
+                    $scope.active = !$scope.active;
+                    break;
+                case 'openGlobalDialogWitnesses':
+                    evtInterface.updateSecondaryContentOpened('witnessesList');
+                    evtDialog.openByType('witnessesList');
+                    $scope.active = !$scope.active;
                     break;
                 case 'pin':
                 case 'pin-on':
@@ -185,34 +200,7 @@ angular.module('evtviewer.buttonSwitch')
                     evtInterface.togglePinnedAppBoardOpened();
                     break;
                 case 'witList':
-                    var witnessesCollection = parsedData.getWitnesses();
-                    var structure = witnessesCollection._indexes.encodingStructure;
-                    var content;
-                    content += '<ul>';
-                    for (var i = 0; i < structure.length; i++) {
-                        var element = witnessesCollection[structure[i]];
-                        if (element._type === 'witness') {
-                            content += '<li>';
-                                content += '<strong>#'+element.id+'</strong><br /><div>'+element.description.innerHTML+'</div>';
-                            content += '</li>';
-                        } else {
-                            content += '<li>';
-                                content += '<strong>#'+element.id+'</strong><br /><div>'+element.name+'</div>';
-                                content += '<ul>';
-                                for (var j = 0; j < element.content.length; j++) {
-                                    var subElement = witnessesCollection[element.content[j]];
-                                    if (subElement._type === 'witness') {
-                                        content += '<li>';
-                                        content += '<strong>#'+subElement.id+'</strong><br /><div>'+subElement.description.innerHTML+'</div>';
-                                        content += '</li>';
-                                    }
-                                    //TO RICORSIVA!!!            
-                                }
-                                content += '</ul>';
-                            content += '</li>';
-                        }
-                    }
-                    content += '</ul>';
+                    var content = parsedData.getWitnessesListFormatted();
                     var newTopBoxContent = content || $scope.$parent.vm.topBoxContent;
                     $scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
                     $scope.$parent.vm.toggleTopBox();

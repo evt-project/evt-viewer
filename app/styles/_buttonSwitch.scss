@@ -119,6 +119,15 @@ button-switch {
             }
         }
     }
+
+    //Temp
+    &.smaller{
+        .buttonSwitch{
+            font-size: 90%;
+            top: -2px;
+            left: 4px;
+        }
+    }
 }
 
 // Temporary
