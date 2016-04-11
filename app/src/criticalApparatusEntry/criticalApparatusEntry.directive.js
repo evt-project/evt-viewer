@@ -1,12 +1,13 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtCriticalApparatusEntry', function(evtCriticalApparatusEntry, parsedData) {
+.directive('evtCriticalApparatusEntry', function(evtCriticalApparatusEntry, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
             appId       : '@',
             readingId   : '@',
             scopeWit    : '@',
+            type        : '@',
             visible     : '@'
         },
         transclude: true,
@@ -14,6 +15,7 @@ angular.module('evtviewer.criticalApparatusEntry')
         controllerAs: 'vm',
         controller: 'CriticalApparatusEntryCtrl',
         link: function(scope, element, attrs){
+            scope.scopeViewMode = evtInterface.getCurrentViewMode();
             var currentAppEntry = evtCriticalApparatusEntry.build(scope.appId, scope);
             
             // Garbage collection

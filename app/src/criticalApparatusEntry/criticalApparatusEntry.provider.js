@@ -23,7 +23,8 @@ angular.module('evtviewer.criticalApparatusEntry')
         appEntry.build = function(id, scope) {
             var currentId = idx++,
                 entryId   = id || undefined,
-                scopeWit  = scope.scopeWit || '';
+                scopeWit  = scope.scopeWit || '',
+                type      = scope.type || 'default';
 
             var scopeHelper = {};
 
@@ -33,7 +34,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             
             // Get Apparatus Entry content 
             var content,
-                firstSubContentOpened,
+                firstSubContentOpened = '',
                 tabs = { 
                     _indexes : []
                 };
@@ -73,7 +74,7 @@ angular.module('evtviewer.criticalApparatusEntry')
                     };
                     content.xmlSource = criticalEntry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
                 }
-                if (tabs._indexes.length > 0){
+                if (tabs._indexes.length > 0 && defaults.firstSubContentOpened !== ''){
                     if (tabs._indexes.indexOf(defaults.firstSubContentOpened) < 0) {
                         firstSubContentOpened = tabs._indexes[0];
                     } else {
@@ -89,6 +90,7 @@ angular.module('evtviewer.criticalApparatusEntry')
                 appId             : entryId,
                 readingId         : scope.readingId,
                 content           : content,
+                type              : type,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
                 tabs              : tabs

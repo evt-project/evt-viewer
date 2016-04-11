@@ -34,12 +34,12 @@ $reading-background-selected : rgb(208, 220, 255);
             > .reading__text{
                 // background: $reading-background-selected;
                 > * {
-                    border-top: 1px solid #000;
+                    border-top: 1px solid rgb(125, 125, 125);
                     &:first-child{
-                        border-left: 1px solid #000;
+                        border-left: 1px solid rgb(125, 125, 125);
                     }
                     &:last-child{
-                        border-right: 1px solid #000;
+                        border-right: 1px solid rgb(125, 125, 125);
                     }
                     border-bottom: 5px solid $critical-apparatus-entry-background-color;
                     position: relative;

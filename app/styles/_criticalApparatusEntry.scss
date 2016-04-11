@@ -1,4 +1,6 @@
 $critical-apparatus-entry-background-color : $base-color-light;
+$critical-apparatus-entry-background-color-darker : rgb(225, 225, 225);
+$critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
 .critical-apparatus-entry {
     margin:0;
@@ -8,7 +10,7 @@ $critical-apparatus-entry-background-color : $base-color-light;
     background: $critical-apparatus-entry-background-color;
     color: $base-color-dark;
     font-size: 90%;
-    border: 1px solid black;
+    border-left: 1px solid $critical-apparatus-entry-border-color;
     
     cursor: text !important;
 
@@ -31,28 +33,37 @@ $critical-apparatus-entry-background-color : $base-color-light;
     }
 
     &_tools{
+        padding: 0 5px 5px;
         float: right;
-        top: 0px;
+        display: block;
+        height: 100%;
         position: absolute;
-        right: 4px;
+        top: 0;
+        right: 0;
+        border-left: 1px solid $critical-apparatus-entry-border-color;
+        background: #fff;
+        width: 10%;
+        text-align: center;
         button-switch{
-            opacity: .6;
             margin-right: 0;
-            font-size: 80%;
+            font-size: 70%;
             .buttonSwitch {
-                min-width: auto;
                 box-shadow: none;
+                border: 1px solid $critical-apparatus-entry-background-color;
             }
             &.active, &:hover {
-                opacity: 1;
-                > * {
-                    color: $base-color-active-background !important;
+                .buttonSwitch {
+                    @include set(box-shadow, inset 0 1px 2px 0 rgba(0,0,0,.1));
+                    background-color: $critical-apparatus-entry-background-color-darker;
+                    border: 1px solid $critical-apparatus-entry-border-color;
                 }
             }
         }
     }
     &_main-content{
         padding: 5px;
+        width:90%;
+        border-top: 1px solid $critical-apparatus-entry-border-color;
         ul {
             display: inline;
             margin: 0;
@@ -71,14 +82,17 @@ $critical-apparatus-entry-background-color : $base-color-light;
         }
     }
     &_other-content{
-        border-top: 3px double #000;
-        
+        border-top: 3px double $critical-apparatus-entry-border-color;
+        border-bottom: 1px solid $critical-apparatus-entry-border-color;
+        width:90%;
         p {
             padding: 0 10px;
         }
 
         &_headers {
-            @include set(box-shadow, "0px -1px 0px 0px rgba(0, 0, 0, 0.5) inset, 0px 9px 5px -4px "+$critical-apparatus-entry-background-color);
+            &:not(.closed){
+                @include set(box-shadow, 0px 9px 5px -4px $critical-apparatus-entry-background-color-darker);
+            }
             z-index: 2;
             position: relative;
             span {
@@ -86,7 +100,7 @@ $critical-apparatus-entry-background-color : $base-color-light;
                 display: inline-block;
                 font-size: 90%;
                 cursor: pointer;
-                border-left: 1px dotted #000;
+                border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                 &:first-child {
                     border-left: none;
                 }
@@ -94,10 +108,11 @@ $critical-apparatus-entry-background-color : $base-color-light;
                     text-shadow: 0px 0px 1px rgba(0,0,0,.7);
                 }
                 &.active{
-                    border-right: 1px solid #000;
-                    border-bottom: 1px solid $critical-apparatus-entry-background-color;
+                    @include set(box-shadow, inset 0 2px 2px -1px $critical-apparatus-entry-border-color);
+                    background-color: $critical-apparatus-entry-background-color-darker;
+                    border-right: 1px solid $critical-apparatus-entry-background-color-darker;
                     &:not(:first-child) {
-                        border-left: 1px solid #000;
+                        border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                     }
                     + span {
                         border-left: none;
@@ -107,10 +122,13 @@ $critical-apparatus-entry-background-color : $base-color-light;
         }
 
         &_panels{
-            padding: 10px 15px;
+            &:not(.closed){
+                padding: 10px 15px;
+            }
             max-height: 150px;
             overflow-x: hidden;
             overflow-y: auto;
+            background-color: $critical-apparatus-entry-background-color-darker;
 
         }
 
@@ -186,10 +204,25 @@ $critical-apparatus-entry-background-color : $base-color-light;
 .in_critical_apparatus {
     .critical-apparatus-entry {
         cursor: pointer !important;
-        border: none;
+        border: 0;
         background: transparent;
         &:hover{
             background: $critical-apparatus-entry-background-color;
+            > * {
+                background: $critical-apparatus-entry-background-color;
+            }
+        }
+        &_tools{
+            border: 0;
+            padding-left: 0;
+            button-switch  {
+                .buttonSwitch {
+                    border: 1px solid transparent;
+                }
+            }
+        }
+        &_main-content{
+            border: 0;
         }
         &_other-content {
             display: none;   

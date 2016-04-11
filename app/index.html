@@ -94,6 +94,7 @@
                     ng-if="getPinnedEntries().length > 0 && entry !== ''"
                     ng-click="updateCurrentAppEntry(entry)"
                     ng-repeat="entry in getPinnedEntries()"
+                    data-type="pinned"
                     data-app-id="{{entry}}"></evt-critical-apparatus-entry>
             </box>
         </section> 

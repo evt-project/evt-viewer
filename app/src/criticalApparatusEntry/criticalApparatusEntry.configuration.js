@@ -1,7 +1,7 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
 .constant('APPENTRYDEFAULTS', {
-    firstSubContentOpened : 'criticalNote'
+    firstSubContentOpened : ''
 })
 
 .config(function(evtCriticalApparatusEntryProvider, configProvider, APPENTRYDEFAULTS) {
