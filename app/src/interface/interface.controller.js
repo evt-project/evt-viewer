@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $injector, $scope, $route, evtInterface) {    
+.controller('InterfaceCtrl', function($log, $injector, $scope, $route, evtInterface, evtBox) {    
     var _console = $log.getInstance('interface');
 
     $scope.getCurrentViewMode = function() {
@@ -40,8 +40,10 @@ angular.module('evtviewer.interface')
     };
 
     $scope.updateCurrentAppEntry = function(entry) {
-        console.log('updateCurrentAppEntry');
         evtInterface.updateCurrentAppEntry(entry);
+        if (evtInterface.getCurrentViewMode() === 'critical') {
+            evtBox.alignScrollToApp(entry);
+        }
         evtInterface.updateUrl();
     };
 

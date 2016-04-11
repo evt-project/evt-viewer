@@ -381,7 +381,9 @@ angular.module('evtviewer.box')
 
         box.alignScrollToApp = function(appId){
             for (var i in collection) {
-                collection[i].scrollToAppEntry(appId);
+                if (collection[i].scrollToAppEntry !== undefined){
+                    collection[i].scrollToAppEntry(appId);
+                }
             }
         };
 
