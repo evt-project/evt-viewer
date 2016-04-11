@@ -15,27 +15,59 @@ angular.module('evtviewer.tabsContainer')
     };
 
     if ($scope.type === 'projectInfo') {
-        $scope.tabs.generalInfo = {
-            label   : 'General Info',
-            name    : 'generalInfo',
-            content : '<span>This is general info.</span>'
-        };
-        $scope.tabs._indexes.push('generalInfo');
+        var noContent = '<span>No content</span>';
 
-        $scope.tabs.publicationInfo = {
-            label   : 'Publication Info',
-            name    : 'publicationInfo',
-            content : '<span>This is publication info.</span>'
-        };
-        $scope.tabs._indexes.push('publicationInfo');
+        /* fileDescription */
+        if (parsedData.getProjectInfo().fileDescription !== '') {
+            $scope.tabs.fileDescription = {
+                label   : 'File Description',
+                name    : 'fileDescription',
+                content : parsedData.getProjectInfo().fileDescription || noContent
+            };
+            $scope.tabs._indexes.push('fileDescription');
+        }
 
-        $scope.tabs.projectDesc = {
-            label   : 'Project Description',
-            name    : 'projectDesc',
-            content : '<span>This is project description.</span>'
-        };
-        $scope.tabs._indexes.push('projectDesc');
+        /* encodingDescription */
+        if (parsedData.getProjectInfo().encodingDescription !== '') {
+            $scope.tabs.encodingDescription = {
+                label   : 'Encoding Description',
+                name    : 'encodingDescription',
+                content : parsedData.getProjectInfo().encodingDescription || noContent
+            };
+            $scope.tabs._indexes.push('encodingDescription');
+        }
+
+        /* textProfile */
+        if (parsedData.getProjectInfo().textProfile !== '') {
+            $scope.tabs.textProfile = {
+                label   : 'Text Profile',
+                name    : 'textProfile',
+                content : parsedData.getProjectInfo().textProfile || noContent
+            };
+            $scope.tabs._indexes.push('textProfile');
+        }
+
+        /* outsideMetadata */
+        if (parsedData.getProjectInfo().outsideMetadata !== '') {
+            $scope.tabs.outsideMetadata = {
+                label   : 'Outside Metadata',
+                name    : 'outsideMetadata',
+                content : parsedData.getProjectInfo().outsideMetadata || noContent
+            };
+            $scope.tabs._indexes.push('outsideMetadata');
+        }
+
+        /* revisionHistory */
+        if (parsedData.getProjectInfo().revisionHistory !== '') {
+            $scope.tabs.revisionHistory = {
+                label   : 'Revision History',
+                name    : 'revisionHistory',
+                content : parsedData.getProjectInfo().revisionHistory || noContent
+            };
+            $scope.tabs._indexes.push('revisionHistory');
+        }
     }
+
     
     $scope.subContentOpened = $scope.tabs._indexes[0] || '';
     var _console = $log.getInstance('tabsContainer');

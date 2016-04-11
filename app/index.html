@@ -111,7 +111,7 @@
             </button-switch>
 
             <box data-type="pinnedBoard" 
-                ng-show="isPinnedAppBoardOpened()">
+                ng-show="!isLoading() && isPinnedAppBoardOpened()">
                  <span ng-if="!isLoading() && getPinnedEntries().length <= 0">
                     No apparatus entries pinned.</span>
                  <evt-critical-apparatus-entry 
@@ -248,6 +248,7 @@
     <script src="/src/dataHandler/parser.service.js"></script>
     <script src="/src/dataHandler/criticalParser.service.js"></script>
     <script src="/src/dataHandler/criticalApparatus.service.js"></script>
+    <script src="/src/dataHandler/projectInfoParser.service.js"></script>
 
     <script src="/src/interface/interface.js"></script>
     <script src="/src/interface/interface.configuration.js"></script>

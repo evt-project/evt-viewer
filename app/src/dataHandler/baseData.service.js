@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, GLOBALDEFAULTCONF, xmlParser, evtParser, evtCriticalParser) {
+.service('baseData', function($log, GLOBALDEFAULTCONF, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser) {
     var baseData = {},
         state = {
             XMLDocuments: [],
@@ -21,6 +21,7 @@ angular.module('evtviewer.dataHandler')
             // Parse witnesses list
             evtCriticalParser.parseWitnesses(docElements);
             
+            evtProjectInfoParser.parseProjectInfo(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {
             _console.error('Something wrong with the XML');

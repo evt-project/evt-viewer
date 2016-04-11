@@ -9,10 +9,9 @@
             &_headers {
                 display: inline-block;
                 float: left;
-                height: 100%;
+                @include calc(height, 100% - #{$mainContainer-menu-height});
                 border-right: 1px solid $base-color-dark;
                 width: 20%;
-                height: 100%;
                 position: fixed;
                 overflow: hidden;
             }
@@ -50,7 +49,6 @@
         &:not(.closed){
             padding: 10px 15px;
         }
-        max-height: 150px;
         overflow-x: hidden;
         overflow-y: auto;
     }

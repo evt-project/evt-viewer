@@ -5,6 +5,15 @@ angular.module('evtviewer.dataHandler')
     var _console = $log.getInstance('dataHandler');
 
     _console.log('parsedData running');
+    
+    var projectInfo = {
+        fileDescription     : '',
+        encodingDescription : '',
+        textProfile         : '',
+        outsideMetadata     : '',
+        revisionHistory     : ''
+    }
+
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
         length: 0
@@ -362,9 +371,14 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
     };
 
-
+    /* ************ */
+    /* PROJECT INFO */
+    /* ************ */
+    parsedData.updateProjectInfoContent = function(newContent, type){
+        projectInfo[type] = newContent;
+    };
     parsedData.getProjectInfo = function(){
-        return '<span>Project Info</span>';
+        return projectInfo;
     }
     return parsedData;
 });
