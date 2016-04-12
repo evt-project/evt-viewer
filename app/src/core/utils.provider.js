@@ -22,9 +22,14 @@ angular.module('evtviewer.core')
                 destination[property] = destination[property] || {};
                 arguments.callee(destination[property], source[property]);
             } else {
-                if ( (property === 'dataUrl' && source[property] !== '') &&
-                      source[property] !== 'DEFAULT') {
-                    destination[property] = angular.copy(source[property]);
+                if (property === 'dataUrl') {
+                    if ( source[property] !== '' ) {
+                        destination[property] = angular.copy(source[property]);
+                    }
+                } else {
+                    if ( source[property] !== 'DEFAULT' ) {
+                        destination[property] = angular.copy(source[property]);
+                    }
                 }
             }
         }
