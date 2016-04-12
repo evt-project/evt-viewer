@@ -300,6 +300,7 @@
     display: block;
     text-align: center;
 }
+
 .witnesses-lem, .variance-lem {
     font-weight: bold;
 }
@@ -322,4 +323,80 @@
     font-weight: lighter;
     color: #a9a9a9;
     text-shadow: 0px 0px 1px #bfbfbf;
+}
+
+/* TEI HEADER */
+.titleStmt {
+    .title {
+        display: block;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+}
+.principal {
+    display:block;
+    &:before{
+        content: "Principal researcher: ";
+        font-variant: small-caps;
+        color: #666;
+        font-size:90%;
+    }
+    
+}
+.respstmt{
+    display:block;
+    &:before{
+        content: "Responsable: ";
+        font-variant: small-caps;
+        color: #666;
+        font-size:90%;
+    }
+}
+
+.publicationstmt{
+    display:block;
+    margin-top: 14px;
+    &:before{
+        content: "About the publication. ";
+        display:block;
+        border-bottom: 1px dotted #666;
+        margin-bottom: 5px;
+    }
+    &:before, > *:before{
+        font-variant: small-caps;
+        color: #666;
+        font-size:90%;
+    }
+    .publisher {
+        &:before{
+            content: "Publisher: ";
+        }
+    }
+    .availability{
+        &:before{
+            content: "Availability: ";
+            display:block;
+        }
+    }
+}
+
+.sourcedesc{
+    display:block;
+    margin-top: 14px;
+    &:before{
+        content: "Encoding description. ";
+        display:block;
+        border-bottom: 1px dotted #666;
+        margin-bottom: 5px;
+    } 
+    &:before, > *:before{
+        font-variant: small-caps;
+        color: #666;
+        font-size:90%;
+    }
+}
+//Temp
+.filedesc .listwit,
+.filedesc .listperson{
+    display:none;
 }

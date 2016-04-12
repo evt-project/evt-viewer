@@ -31,11 +31,20 @@ angular.module('evtviewer.dataHandler')
     /* or which a librarian or archivist could use in creating a catalogue entry   */
     /* recording its presence within a library or archive.                         */
     /* *************************************************************************** */
+    var editionStmt     = '<editionStmt>', //dichiarazione sul titolo
+        extent          = '<extent>',
+        notesStmt       = '<notesStmt>',
+        publicationStmt = '<publicationStmt>',
+        seriesStmt      = '<seriesStmt>',
+        sourceDesc      = '<sourceDesc>',
+        titleStmt       = '<titleStmt>';
+
     parser.parseFileDescription = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(fileDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
-                parsedData.updateProjectInfoContent(element.outerHTML, 'fileDescription');
+                var fileDescContent = evtParser.parseXMLElement(teiHeader, element, '').outerHTML;
+                parsedData.updateProjectInfoContent(fileDescContent, 'fileDescription');
         });
         // console.log('## parseFileDescription ##', parsedData.getProjectInfo().fileDescription);
     };
@@ -49,7 +58,14 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(encodingDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
-                parsedData.updateProjectInfoContent(element.outerHTML, 'encodingDescription');
+                var variantEncodingEl = angular.element(element).find('variantEncoding')[0];
+                if (variantEncodingEl){
+                    var encodingDescContent = evtParser.parseXMLElement(teiHeader, element, '').outerHTML;
+                    encodingDescContent += "<span>This edition is using <i>";
+                    encodingDescContent += variantEncodingEl.getAttribute('method');
+                    encodingDescContent +=" method</i> to encode text-critical variants.</span>";
+                }
+                parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
         });
         // console.log('## parseEncodingDescription ##', parsedData.getProjectInfo().encodingDescription);
     };
