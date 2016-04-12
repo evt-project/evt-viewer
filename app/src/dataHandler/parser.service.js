@@ -2,7 +2,7 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtParser', function(parsedData) {
     var parser = { };
-
+    var idx = 0;
     // TODO: create module provider and add default configuration
     // var defAttributes = ['n', 'n', 'n'];
     var defPageElement = 'pb';
@@ -172,21 +172,26 @@ angular.module('evtviewer.dataHandler')
         return newElement;
     };
     parser.xpath = function(el) {
-        if (typeof el === 'string') {
-            // document.evaluate(xpathExpression, contextNode, namespaceResolver, resultType, result );
-            return document.evaluate(el, document, null, 0, null);
+        try{
+            if (typeof el === 'string') {
+                // document.evaluate(xpathExpression, contextNode, namespaceResolver, resultType, result );
+                return document.evaluate(el, document, null, 0, null);
+            }
+            if (!el || el.nodeType !== 1) {
+                return '';
+            }
+            var sames = [];
+            if (el.parentNode) {
+                sames = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
+            }
+            var countIndex = sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '';
+            countIndex     = countIndex > 1 ? countIndex-1 : '';
+            var tagName    = el.tagName.toLowerCase() !== 'tei' ? '-'+el.tagName.toLowerCase() : '';
+            return parser.xpath(el.parentNode) + tagName + countIndex;
+        } catch(e){
+            idx++;
+            return '-id'+idx;
         }
-        if (!el || el.nodeType !== 1) {
-            return '';
-        }
-        var sames = [];
-        if (el.parentNode) {
-            sames = [].filter.call(el.parentNode.children, function (x) { return x.tagName === el.tagName; });
-        }
-        var countIndex = sames.length > 1 ? ([].indexOf.call(sames, el)+1) : '';
-        countIndex     = countIndex > 1 ? countIndex-1 : '';
-        var tagName    = el.tagName.toLowerCase() !== 'tei' ? '-'+el.tagName.toLowerCase() : '';
-        return parser.xpath(el.parentNode) + tagName + countIndex;
     };
 
     parser.parsePages = function(doc, docId) {

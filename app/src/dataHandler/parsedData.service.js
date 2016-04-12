@@ -279,6 +279,9 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* CRITICAL ENTRIES */
+    parsedData.getCriticalTextsCollection = function() {
+        return criticalTexts;
+    };
     parsedData.addCriticalText = function(text, docId) {
         criticalTexts[docId] = text;
     };

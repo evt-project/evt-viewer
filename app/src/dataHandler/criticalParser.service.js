@@ -1034,6 +1034,11 @@ angular.module('evtviewer.dataHandler')
         } else {
             criticalText = '<span>Text not available.</span>';
         }
+
+        if (criticalText === undefined) {
+             var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+             criticalText = errorMsg;
+        }
         parsedData.addCriticalText(criticalText, docId);
         
         deferred.resolve('success');
