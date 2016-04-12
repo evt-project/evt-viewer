@@ -32,7 +32,8 @@
                                 "visible"  : true
                             }],
 
-    "toolHeatMap" : true,
+    "toolHeatMap"       : true,
+    "toolPinAppEntries" : false,
 
     "listDef"                    : "listWit, listChange",
     "versionDef"                 : "witness, change",

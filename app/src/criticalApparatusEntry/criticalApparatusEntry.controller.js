@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.controller('CriticalApparatusEntryCtrl', function($log, $scope, evtCriticalApparatusEntry, evtReading, evtBox) {
+.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtCriticalApparatusEntry, evtReading, evtBox) {
     $scope.content = {};
     var vm = this;
 
@@ -21,6 +21,10 @@ angular.module('evtviewer.criticalApparatusEntry')
                 evtReading.mouseOutAll();
             }
         }
+    };
+
+    this.isPinAvailable = function(){
+        return config.toolPinAppEntries;
     };
 
     this.isPinned = function(){

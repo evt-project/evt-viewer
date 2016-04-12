@@ -85,14 +85,14 @@
   <div class="critical-apparatus-entry_tools">
     <button-switch 
           title="Remove Pin"
-          ng-if="vm.type === 'pinned'"
+          ng-if="vm.isPinAvailable() && vm.type === 'pinned'"
           data-label=""
           data-icon="remove"
           data-type="pinReading"
           ng-click="vm.togglePin()"></button-switch>
     <button-switch 
           title="Toggle Pin"
-          ng-if="vm.type === 'default'"
+          ng-if="vm.isPinAvailable() && vm.type === 'default'"
           data-label=""
           data-icon="pin"
           data-type="pinReading"
