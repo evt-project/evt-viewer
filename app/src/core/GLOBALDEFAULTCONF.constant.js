@@ -64,12 +64,42 @@ angular.module('evtviewer.core')
     configUrl       : '../../config/config.json',
     
 
-    dataUrl         : '../../data/pseudo-edition-test-file_mod.xml',
-    defaultViewMode : 'critical',
-    defaultEdition  : 'critical',
-
+    dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
     preferredWitness : 'A',
+
+    indexTitle       : 'EVT Critical Viewer',
+    webSite          : '',
     
+    defaultViewMode    : 'critical',
+    defaultEdition     : 'critical',
+    availableViewModes : [
+                            {
+                                label    : 'Critical',
+                                icon     : 'mode-critical',
+                                viewMode : 'critical',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Image Text',
+                                icon     : 'mode-imgTxt',
+                                viewMode : 'imgTxt',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Text Text',
+                                icon     : 'mode-txtTxt',
+                                viewMode : 'txtTxt',
+                                visible  : false
+                            },
+                            {
+                                label    : 'Collation',
+                                icon     : 'mode-collation',
+                                viewMode : 'collation',
+                                visible  : true
+                            }],
+
+    toolHeatMap : true,
+
     listDef                    : 'listWit, listChange',
     versionDef                 : 'witness, change',
     fragmentMilestone          : '<witStart>, <witEnd>',
@@ -80,5 +110,7 @@ angular.module('evtviewer.core')
     notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
 
     loadCriticalEntriesImmediately: true,
-    maxWitsLoadTogether : 5
+    maxWitsLoadTogether : 5,
+
+    xsltUrl: ''
 });

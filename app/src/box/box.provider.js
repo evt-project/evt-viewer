@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
+    this.$get = function($log, $q, config, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
         var box        = {},
             collection = {},
             list       = [],
@@ -201,8 +201,10 @@ angular.module('evtviewer.box')
                     };
                     state.filterBox = false;
                     state.docId   = evtInterface.getCurrentDocument();
-                    bottomMenuList.buttons.push({title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }},
-                                                {title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+                    if (config.toolHeatMap) {
+                        bottomMenuList.buttons.push({title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});    
+                    }
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',

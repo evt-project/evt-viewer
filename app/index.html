@@ -38,7 +38,7 @@
     
 
     <header>
-        EVT Critical Viewer
+        {{ getProperty('indexTitle') }}
         <div class="globalMenu">
             <button-switch 
                     title="{{mode.label}}"
@@ -47,7 +47,8 @@
                     data-icon="{{mode.icon}}"
                     data-value="{{mode.viewMode}}"
                     data-type="changeViewMode"
-                    ng-repeat="mode in getAvailableViewModes()">
+                    ng-repeat="mode in getAvailableViewModes()"
+                    ng-if="mode.visible">
             </button-switch>
             <button-switch 
                     title="Witnesses"
@@ -180,11 +181,9 @@
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
     </section>
 
-    <section id="global-container" ng-if="isLoading() || isLoading() === undefined">
+    <section class="global-loading-container" ng-if="isLoading() || isLoading() === undefined">
         <!-- LOADING... -->
-        <section id="main-container" class="viewMode">
-            <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
-        </section>
+        <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     </section>
     
     <footer>Footer</footer>

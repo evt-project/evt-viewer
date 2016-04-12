@@ -223,7 +223,17 @@ section > div{
         }
     }
 }
-.viewMode {
+.global-loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: #e5e5e5;
+    font-size: 60%;
+}
+.viewMode, .global-loading-container {
     .loading {
         background: rgba(0,0,0,.1);
         .loader {

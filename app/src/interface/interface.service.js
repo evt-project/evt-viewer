@@ -14,31 +14,15 @@ angular.module('evtviewer.interface')
             isPinnedAppBoardOpened : false,
             secondaryContent : ''
         };
-
-        var availableViewModes = [
-            {
-                label    : 'Critical',
-                icon     : 'mode-critical',
-                viewMode : 'critical'
-            },
-            {
-                label    : 'Image Text',
-                icon     : 'mode-imgTxt',
-                viewMode : 'imgTxt'
-            },
-            {
-                label    : 'Text Text',
-                icon     : 'mode-txtTxt',
-                viewMode : 'txtTxt'
-            },
-            {
-                label    : 'Collation',
-                icon     : 'mode-collation',
-                viewMode : 'collation'
-            }];
+        var properties = {
+            indexTitle         : '',
+            availableViewModes : [ ]
+        }
 
         mainInterface.boot = function() {  
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
+                properties.indexTitle         = config.indexTitle;
+                properties.availableViewModes = config.availableViewModes;
                 evtCommunication.getData(config.dataUrl).then(function () {
                     mainInterface.updateParams($routeParams);
                     // Parse critical text and entries
@@ -79,25 +63,23 @@ angular.module('evtviewer.interface')
             });
         };
 
-        mainInterface.getPinnedEntries = function() {
-            return evtCriticalApparatusEntry.getPinned();
-        };
         /* ********** */
         /* PARAMS GET */
         /* ********** */
         mainInterface.isLoading = function() {
             return state.isLoading;
         };
-        mainInterface.isPinnedAppBoardOpened = function() {
-            return state.isPinnedAppBoardOpened;
-        };
         
-        mainInterface.getSecondaryContentOpened = function(){
-            return state.secondaryContent;
+        mainInterface.getProperties = function(){
+            return properties;
+        };
+
+        mainInterface.getProperty = function(name){
+            return properties[name];
         };
 
         mainInterface.getAvailableViewModes = function() {
-            return availableViewModes;
+            return properties.availableViewModes;
         };
 
         mainInterface.getCurrentViewMode = function(){
@@ -134,6 +116,18 @@ angular.module('evtviewer.interface')
 
         mainInterface.existCriticalText = function(){
             return parsedData.getCriticalText(state.currentDoc) !== undefined;
+        };
+
+        mainInterface.isPinnedAppBoardOpened = function() {
+            return state.isPinnedAppBoardOpened;
+        };
+
+        mainInterface.getPinnedEntries = function() {
+            return evtCriticalApparatusEntry.getPinned();
+        };
+
+        mainInterface.getSecondaryContentOpened = function(){
+            return state.secondaryContent;
         };
 
         /* ************** */

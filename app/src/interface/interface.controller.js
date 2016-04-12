@@ -69,7 +69,11 @@ angular.module('evtviewer.interface')
 
     $scope.getWitnessesListFormatted = function(){
         return parsedData.getWitnessesListFormatted();
-    }
+    };
+
+    $scope.getProperty = function(name){
+        return evtInterface.getProperty(name);
+    };
     _console.log('InterfaceCtrl running');
 })
 

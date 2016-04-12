@@ -1,16 +1,46 @@
 {
     "dataUrl"          : "",
-    "defaultViewMode"  : "critical",
-    "defaultEdition"   : "critical",
     "preferredWitness" : "",
     
+    "indexTitle"       : "",
+    "webSite"          : "",
+
+    "defaultViewMode"  : "critical",
+    "defaultEdition"   : "critical",
+    "availableViewModes" : [{
+                                "label"    : "Critical",
+                                "icon"     : "mode-critical",
+                                "viewMode" : "critical",
+                                "visible"  : true
+                            },
+                            {
+                                "label"    : "Image Text",
+                                "icon"     : "mode-imgTxt",
+                                "viewMode" : "imgTxt",
+                                "visible"  : true
+                            },
+                            {
+                                "label"    : "Text Text",
+                                "icon"     : "mode-txtTxt",
+                                "viewMode" : "txtTxt",
+                                "visible"  : false
+                            },
+                            {
+                                "label"    : "Collation",
+                                "icon"     : "mode-collation",
+                                "viewMode" : "collation",
+                                "visible"  : true
+                            }],
+
+    "toolHeatMap" : true,
+
     "listDef"                    : "listWit, listChange",
     "versionDef"                 : "witness, change",
     "fragmentMilestone"          : "<witStart>, <witEnd>",
     "lacunaMilestone"            : "<lacunaStart>, <lacunaEnd>",
     "skipCriticalEntriesFilters" : "wit, target, corresp",
-    "possibleVariantFilters"     : "DEFAULT",
-    "possibleLemmaFilters"       : "DEFAULT",
+    "possibleVariantFilters"     : "",
+    "possibleLemmaFilters"       : "resp",
     "notSignificantVariant"      : "<orig>, <sic>, [type=orthographic]",
 
     "maxWitsLoadTogether"        : 5

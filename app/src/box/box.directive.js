@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config) {
 
     return {
         restrict: 'E',
@@ -76,7 +76,7 @@ angular.module('evtviewer.box')
                     //     }
                     // }, true);
                 }
-                displayResult(scope, scope.vm.defaults.xsltUrl);
+                displayResult(scope, config.xsltUrl);
             });
             
             /* ****************** */
