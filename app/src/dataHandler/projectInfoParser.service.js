@@ -1,8 +1,7 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtProjectInfoParser', function($q, parsedData, evtParser, xmlParser, GLOBALDEFAULTCONF) {
+.service('evtProjectInfoParser', function($q, parsedData, evtParser, xmlParser) {
     var parser = {};
-    var config = GLOBALDEFAULTCONF;
     
     var projectInfoDef         = '<teiHeader>',
         fileDescriptionDef     = '<fileDesc>',

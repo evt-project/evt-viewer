@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('parsedData', function($log, GLOBALDEFAULTCONF) {
+.service('parsedData', function($log, config) {
     var parsedData = {};
     var _console = $log.getInstance('dataHandler');
 
@@ -321,8 +321,8 @@ angular.module('evtviewer.dataHandler')
     
     /* CRITICAL ENTRIES FILTERS */
     parsedData.addCriticalEntryFilter = function(name, value) {
-        var possibleVariantFilters = GLOBALDEFAULTCONF.possibleVariantFilters,
-            possibleLemmaFilters   = GLOBALDEFAULTCONF.possibleLemmaFilters,
+        var possibleVariantFilters = config.possibleVariantFilters,
+            possibleLemmaFilters   = config.possibleLemmaFilters,
             filtersCollection      = criticalAppCollection.filtersCollection;
         // Add filter to collection
         // if it can be a filter

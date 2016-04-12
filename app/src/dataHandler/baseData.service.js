@@ -1,8 +1,8 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, GLOBALDEFAULTCONF, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser) {
-    var baseData = {},
-        state = {
+.service('baseData', function($log, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser) {
+    var baseData     = {},
+        state        = {
             XMLDocuments: [],
             XMLStrings: []
         };

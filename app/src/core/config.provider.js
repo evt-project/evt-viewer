@@ -48,9 +48,13 @@ angular.module('evtviewer.core')
         return angular.isObject(config.modules[moduleName]) && config.modules[moduleName].active === true;
     };
 
+    this.extendDefault = function(json){
+        UtilsProvider.deepExtendSkipDefault(config, json);
+    };
     this.$get = function() {
         config.isValid = this.isValid;
         config.isModuleActive = this.isModuleActive;
+        config.extendDefault = this.extendDefault;
         return config;
     };
 

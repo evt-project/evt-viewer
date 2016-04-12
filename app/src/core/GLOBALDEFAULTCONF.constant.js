@@ -4,7 +4,7 @@ angular.module('evtviewer.core')
 
     // TODO: select doc system 
     /**
-     * @module evtviewerConfig
+     * @module evtviewerCore
      * @ngdoc object
      * @name test
      * @description
@@ -24,7 +24,7 @@ angular.module('evtviewer.core')
     },
 
     /**
-     * @module evtviewerConfig
+     * @module evtviewerCore
      * @ngdoc object
      * @name debugAllModules
      * @description
@@ -48,10 +48,25 @@ angular.module('evtviewer.core')
             active: true
         }
     },
+    /**
+     * @module evtviewerCore
+     * @ngdoc object
+     * @name configUrl
+     * @description
+     * `boolean`
+     * Url for external configuration file
+     *
+     * Default for DEV:
+     * <pre> configUrl: '../../config/config.json' </pre>
+     * Default for BUILD:
+     * <pre> configUrl: 'config/config.json' </pre>
+     */
+    configUrl       : '../../config/config.json',
+    
 
-    dataUrl: '../../data/pseudo-edition-test-file_mod.xml',
-    defaultViewMode: 'critical',
-    defaultEdition: 'critical',
+    dataUrl         : '../../data/pseudo-edition-test-file_mod.xml',
+    defaultViewMode : 'critical',
+    defaultEdition  : 'critical',
 
     preferredWitness : 'A',
     

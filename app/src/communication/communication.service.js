@@ -4,9 +4,19 @@ angular.module('evtviewer.communication')
     mode: 'xml'
 })
 
-.service('evtCommunication', function($http, $log, baseData) {
+.service('evtCommunication', function($http, $log, baseData, config) {
     var communication = {};
     var _console = $log.getInstance('communication');
+
+    communication.getExternalConfig = function(url) {
+        return $http.get(url)
+            .success(function(data) {
+                config.extendDefault(data);
+            })
+            .error(function() {
+                communication.err('Something wrong during loading configuration file');
+            });
+    };
 
     communication.getData = function(url) {
         return $http.get(url)

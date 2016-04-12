@@ -1,14 +1,17 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function($q, parsedData, evtParser, xmlParser, GLOBALDEFAULTCONF) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, xmlParser, config) {
     var parser = {};
-    var config = GLOBALDEFAULTCONF;
-    
+
     var listDef               = config.listDef,
         versionDef            = config.versionDef,
         fragmentMilestone     = config.fragmentMilestone,
         lacunaMilestone       = config.lacunaMilestone,
         notSignificantVariant = config.notSignificantVariant;
+
+    var preferredWitness      = config.preferredWitness;
+    
+    var loadCriticalEntriesImmediately = config.loadCriticalEntriesImmediately;
 
     var apparatusEntryDef     = '<app>',
         lemmaDef              = '<lem>',
@@ -478,7 +481,7 @@ angular.module('evtviewer.dataHandler')
                 handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
-        parsedData.setCriticalEntriesLoaded(GLOBALDEFAULTCONF.loadCriticalEntriesImmediately);
+        parsedData.setCriticalEntriesLoaded(loadCriticalEntriesImmediately);
         console.log('## Critical entries ##', parsedData.getCriticalEntries());
         deferred.resolve('success');
         return deferred;
@@ -773,7 +776,7 @@ angular.module('evtviewer.dataHandler')
                     // or I've alreafy parsed the current entry...
                     // ...I can simply access the model to get the right output
                     // ... otherwise I parse the DOM and save the entry in the model
-                    if (!GLOBALDEFAULTCONF.loadCriticalEntriesImmediately && entry === undefined) {
+                    if (!loadCriticalEntriesImmediately && entry === undefined) {
                         handleAppEntry(appNode);
                         var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                         if (subApps.length > 0){
@@ -915,8 +918,8 @@ angular.module('evtviewer.dataHandler')
                     }
                 }
             } else {
-                if (GLOBALDEFAULTCONF.preferredWitness !== '') {
-                    spanElement = getEntryWitnessReadingText(entry, GLOBALDEFAULTCONF.preferredWitness);
+                if (preferredWitness !== '') {
+                    spanElement = getEntryWitnessReadingText(entry, preferredWitness);
                     if (spanElement !== null){
                         spanElement.className = 'autoLemma';
                     }
@@ -968,8 +971,8 @@ angular.module('evtviewer.dataHandler')
             var docDOM = doc.getElementsByTagName('body')[0];
             // lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
             // if (lemmas.length > 0 || 
-            //     (parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== undefined &&
-            //      parsedData.getWitness(GLOBALDEFAULTCONF.preferredWitness) !== '') ) {
+            //     (parsedData.getWitness(preferredWitness) !== undefined &&
+            //      parsedData.getWitness(preferredWitness) !== '') ) {
                 var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                     j      = apps.length-1, 
                     count  = 0;
@@ -991,7 +994,7 @@ angular.module('evtviewer.dataHandler')
                         // or I've already parsed the current entry...
                         // ...I can simply access the model to get the right output
                         // ... otherwise I parse the DOM and save the entry in the model
-                        if (!GLOBALDEFAULTCONF.loadCriticalEntriesImmediately || entry === undefined) {
+                        if (!loadCriticalEntriesImmediately || entry === undefined) {
                             handleAppEntry(appNode);
                             var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                             if (subApps.length > 0){

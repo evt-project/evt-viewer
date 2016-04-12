@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, GLOBALDEFAULTCONF, $routeParams, parsedData, evtReading, $q) {    
+.service('evtInterface', function(evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -38,42 +38,44 @@ angular.module('evtviewer.interface')
             }];
 
         mainInterface.boot = function() {  
-            evtCommunication.getData(config.dataUrl).then(function () {
-                mainInterface.updateParams($routeParams);
-                // Parse critical text and entries
-                var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
-                if (currentDocFirstLoad !== undefined){
-                    var promises = [];
-                    // Parse critical entries
-                    if (GLOBALDEFAULTCONF.loadCriticalEntriesImmediately){
-                        promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
-                    }
-                    // Parse critical text
-                    promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
-                    $q.all(promises).then(function(){
-                        // Update current app entry
-                        if (state.currentAppEntry !== undefined && 
-                            parsedData.getCriticalEntryById(state.currentAppEntry) === undefined){
-                            mainInterface.updateCurrentAppEntry('');
-                            mainInterface.updateUrl();
+            evtCommunication.getExternalConfig(config.configUrl).then(function(){
+                evtCommunication.getData(config.dataUrl).then(function () {
+                    mainInterface.updateParams($routeParams);
+                    // Parse critical text and entries
+                    var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
+                    if (currentDocFirstLoad !== undefined){
+                        var promises = [];
+                        // Parse critical entries
+                        if (config.loadCriticalEntriesImmediately){
+                            promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
-                        state.isLoading = false;
+                        // Parse critical text
+                        promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                        $q.all(promises).then(function(){
+                            // Update current app entry
+                            if (state.currentAppEntry !== undefined && 
+                                parsedData.getCriticalEntryById(state.currentAppEntry) === undefined){
+                                mainInterface.updateCurrentAppEntry('');
+                                mainInterface.updateUrl();
+                            }
+                            state.isLoading = false;
 
-                        // Update Pinned entries
-                        var cookies = document.cookie.split(';');
-                        for (var i in cookies) {
-                            var cookie = cookies[i].split('=');
-                            if (cookie[0].trim() === 'pinned') {
-                                var pinnedCookie = cookie[1].split(',').filter(function(el) {
-                                    return el.length !== 0 && parsedData.getCriticalEntryById(el) !== undefined;
-                                });
-                                if (pinnedCookie.length > 0){
-                                    evtCriticalApparatusEntry.setPinned(pinnedCookie);
+                            // Update Pinned entries
+                            var cookies = document.cookie.split(';');
+                            for (var i in cookies) {
+                                var cookie = cookies[i].split('=');
+                                if (cookie[0].trim() === 'pinned') {
+                                    var pinnedCookie = cookie[1].split(',').filter(function(el) {
+                                        return el.length !== 0 && parsedData.getCriticalEntryById(el) !== undefined;
+                                    });
+                                    if (pinnedCookie.length > 0){
+                                        evtCriticalApparatusEntry.setPinned(pinnedCookie);
+                                    }
                                 }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
         };
 

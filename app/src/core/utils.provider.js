@@ -16,6 +16,21 @@ angular.module('evtviewer.core')
         return destination;
     };
 
+    this.deepExtendSkipDefault = function(destination, source) {
+        for (var property in source) {
+            if (source[property] && source[property].constructor && source[property].constructor === Object) {
+                destination[property] = destination[property] || {};
+                arguments.callee(destination[property], source[property]);
+            } else {
+                if ( (property === 'dataUrl' && source[property] !== '') &&
+                      source[property] !== 'DEFAULT') {
+                    destination[property] = angular.copy(source[property]);
+                }
+            }
+        }
+        return destination;
+    };
+
     this.$get = function() {
         return {
             deepExtend: this.deepExtend

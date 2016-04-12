@@ -1,0 +1,17 @@
+{
+    "dataUrl"          : "",
+    "defaultViewMode"  : "critical",
+    "defaultEdition"   : "critical",
+    "preferredWitness" : "",
+    
+    "listDef"                    : "listWit, listChange",
+    "versionDef"                 : "witness, change",
+    "fragmentMilestone"          : "<witStart>, <witEnd>",
+    "lacunaMilestone"            : "<lacunaStart>, <lacunaEnd>",
+    "skipCriticalEntriesFilters" : "wit, target, corresp",
+    "possibleVariantFilters"     : "DEFAULT",
+    "possibleLemmaFilters"       : "DEFAULT",
+    "notSignificantVariant"      : "<orig>, <sic>, [type=orthographic]",
+
+    "maxWitsLoadTogether"        : 5
+}

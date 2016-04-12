@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function(GLOBALDEFAULTCONF, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface) {
+.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -126,6 +126,8 @@ angular.module('evtviewer.reading')
         var background, filterLabels, possibleFilters;
         var app, reading, readingAttributes;
         
+        var possibleVariantFilters = config.possibleVariantFilters, 
+            possibleLemmaFilters   = config.possibleLemmaFilters;
         if (vm.appId !== undefined){
             app     = parsedData.getCriticalEntryById(vm.appId);
             reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
@@ -133,7 +135,8 @@ angular.module('evtviewer.reading')
                 readingAttributes = reading.attributes || {};
             
                 filterLabels = parsedData.getCriticalEntriesFilters();
-                possibleFilters = $scope.$parent.vm.type === 'witness' ? GLOBALDEFAULTCONF.possibleVariantFilters : GLOBALDEFAULTCONF.possibleLemmaFilters;
+
+                possibleFilters = $scope.$parent.vm.type === 'witness' ? possibleVariantFilters : possibleLemmaFilters;
                 if (Object.keys(readingAttributes).length > 0) {
                     var colors = '';
                     var opacity = (vm.over || vm.selected) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
@@ -155,7 +158,7 @@ angular.module('evtviewer.reading')
                     
                     if (colors !== '' ) {
                         colors = colors.slice(0, -1);
-                        if ( (colors.match('rgb', 'gi') && colors.match('rgb', 'gi').length > 1) || (colors.match('#', 'gi') && colors.match('#', 'gi').length > 1)) {
+                        if ( (colors.match(/rgb/gi) && colors.match(/rgb/gi).length > 1) || (colors.match(/#/gi) && colors.match(/#/gi).length > 1)) {
                             background  = 'background: -moz-linear-gradient(left,'+colors+');';
                             background += 'background: -webkit-linear-gradient(left,'+colors+');';
                             background += 'background: ms-linear-gradient(left,'+colors+');';
