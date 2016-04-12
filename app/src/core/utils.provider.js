@@ -24,10 +24,12 @@ angular.module('evtviewer.core')
             } else {
                 if (property === 'dataUrl') {
                     if ( source[property] !== '' ) {
-                        destination[property] = angular.copy(source[property]);
+                        destination[property] = angular.copy(source[property]); 
                     }
                 } else {
-                    if ( source[property] !== 'DEFAULT' ) {
+                    if ( source[property] === 'NONE' || source[property] === 'NULL') {
+                        destination[property] = '';
+                    } else if ( source[property] !== '' ) {
                         destination[property] = angular.copy(source[property]);
                     }
                 }
