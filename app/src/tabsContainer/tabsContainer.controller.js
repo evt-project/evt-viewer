@@ -18,51 +18,56 @@ angular.module('evtviewer.tabsContainer')
         var noContent = '<span>No content</span>';
 
         /* fileDescription */
-        if (parsedData.getProjectInfo().fileDescription !== '') {
+        var fileDescriptionContent = parsedData.getProjectInfo().fileDescription || '';
+        if (fileDescriptionContent !== '') {
             $scope.tabs.fileDescription = {
                 label   : 'File Description',
                 name    : 'fileDescription',
-                content : parsedData.getProjectInfo().fileDescription || noContent
+                content : fileDescriptionContent || noContent
             };
             $scope.tabs._indexes.push('fileDescription');
         }
 
         /* encodingDescription */
-        if (parsedData.getProjectInfo().encodingDescription !== '') {
+        var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
+        if (encodingDescriptionContent !== '') {
             $scope.tabs.encodingDescription = {
                 label   : 'Encoding Description',
                 name    : 'encodingDescription',
-                content : parsedData.getProjectInfo().encodingDescription || noContent
+                content : encodingDescriptionContent || noContent
             };
             $scope.tabs._indexes.push('encodingDescription');
         }
 
         /* textProfile */
-        if (parsedData.getProjectInfo().textProfile !== '') {
+        var textProfileContent = parsedData.getProjectInfo().textProfile || '';
+        if (textProfileContent !== '') {
             $scope.tabs.textProfile = {
                 label   : 'Text Profile',
                 name    : 'textProfile',
-                content : parsedData.getProjectInfo().textProfile || noContent
+                content : textProfileContent || noContent
             };
             $scope.tabs._indexes.push('textProfile');
         }
 
         /* outsideMetadata */
-        if (parsedData.getProjectInfo().outsideMetadata !== '') {
+        var outsideMetadataContent = parsedData.getProjectInfo().outsideMetadata || '';
+        if (outsideMetadataContent !== '') {
             $scope.tabs.outsideMetadata = {
                 label   : 'Outside Metadata',
                 name    : 'outsideMetadata',
-                content : parsedData.getProjectInfo().outsideMetadata || noContent
+                content : outsideMetadataContent || noContent
             };
             $scope.tabs._indexes.push('outsideMetadata');
         }
 
         /* revisionHistory */
-        if (parsedData.getProjectInfo().revisionHistory !== '') {
+        var revisionHistoryContent = parsedData.getProjectInfo().revisionHistory || '';
+        if (revisionHistoryContent !== '') {
             $scope.tabs.revisionHistory = {
                 label   : 'Revision History',
                 name    : 'revisionHistory',
-                content : parsedData.getProjectInfo().revisionHistory || noContent
+                content : revisionHistoryContent || noContent
             };
             $scope.tabs._indexes.push('revisionHistory');
         }

@@ -43,8 +43,10 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(fileDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
-                var fileDescContent = evtParser.parseXMLElement(teiHeader, element, '').outerHTML;
-                parsedData.updateProjectInfoContent(fileDescContent, 'fileDescription');
+                if (element.children.length > 0){
+                    var fileDescContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                    parsedData.updateProjectInfoContent(fileDescContent, 'fileDescription');
+                }
         });
         // console.log('## parseFileDescription ##', parsedData.getProjectInfo().fileDescription);
     };
@@ -58,14 +60,16 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(encodingDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
-                var variantEncodingEl = angular.element(element).find('variantEncoding')[0];
-                if (variantEncodingEl){
-                    var encodingDescContent = evtParser.parseXMLElement(teiHeader, element, '').outerHTML;
-                    encodingDescContent += "<span>This edition is using <i>";
-                    encodingDescContent += variantEncodingEl.getAttribute('method');
-                    encodingDescContent +=" method</i> to encode text-critical variants.</span>";
+                if (element.children.length > 0){
+                    var variantEncodingEl = angular.element(element).find('variantEncoding')[0];
+                    if (variantEncodingEl){
+                        var encodingDescContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                        encodingDescContent += '<span class="variantEncoding">This edition is using <i>';
+                        encodingDescContent += variantEncodingEl.getAttribute('method');
+                        encodingDescContent +=' method</i> to encode text-critical variants.</span>';
+                    }
+                    parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
                 }
-                parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
         });
         // console.log('## parseEncodingDescription ##', parsedData.getProjectInfo().encodingDescription);
     };
@@ -81,7 +85,10 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(textProfileDef.replace(/[<>]/g, '')), 
             function(element) {
-                parsedData.updateProjectInfoContent(element.outerHTML, 'textProfile');
+                if (element.children.length > 0){
+                    var textProfileContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                    parsedData.updateProjectInfoContent(textProfileContent, 'textProfile');
+                }
         });
         // console.log('## parseTextProfile ##', parsedData.getProjectInfo().textProfile);
     };
@@ -95,7 +102,10 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(outsideMetadataDef.replace(/[<>]/g, '')), 
             function(element) {
-                parsedData.updateProjectInfoContent(element.outerHTML, 'outsideMetadata');
+                if (element.children.length > 0){
+                    var outsideMetadataContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                    parsedData.updateProjectInfoContent(outsideMetadataContent, 'outsideMetadata');
+                }
         });
         // console.log('## parseOutsideMetadata ##', parsedData.getProjectInfo().outsideMetadata);
     };
@@ -110,7 +120,8 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(revisionHistoryDef.replace(/[<>]/g, '')), 
             function(element) {
-                parsedData.updateProjectInfoContent(element.outerHTML, 'revisionHistory');
+                var revisionHistoryContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                parsedData.updateProjectInfoContent(revisionHistoryContent, 'revisionHistory');
         });
         // console.log('## parseRevisionHistory ##', parsedData.getProjectInfo().revisionHistory);
     };

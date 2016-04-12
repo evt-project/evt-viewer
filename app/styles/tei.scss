@@ -325,78 +325,372 @@
     text-shadow: 0px 0px 1px #bfbfbf;
 }
 
+/* ********** */
 /* TEI HEADER */
-.titleStmt {
-    .title {
+/* ********** */
+.address, .addrline {
+    display: block;
+    font-size: 90%;
+}
+.encodingdesc {
+    .editorialdecl {
+        display:block;
+        margin-top: 14px;
+        &:before{
+            content: "Editorial principles and practices";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+        }
+        &:before, > *:before {
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+        .correction {
+            display: block;
+            &:before {
+                content: "Correction principles: ";
+            }
+        }
+        .hyphenation {
+            display: block;
+            &:before {
+                content: "Hyphenation principles: ";
+            }
+        }
+        .interpretation {
+            display: block;
+            &:before {
+                content: "Interpretive information: ";
+            }
+        }
+        .normalization {
+            display: block;
+            &:before {
+                content: "Normalization or regularization principles: ";
+            }   
+        }
+        .punctuation {
+            display: block;
+            &:before {
+                content: "Punctuation marks principles: ";
+            }      
+        }
+        .quotation {
+            display: block;
+            &:before {
+                content: "Quotation marks principles: ";
+            }      
+        }
+        .segmentation {
+            display: block;
+            &:before {
+                content: "Segmentation principles: ";
+            }      
+        }
+        .stdvals {
+            display: block;
+            &:before {
+                content: "Standard values: ";
+            }      
+        }
+    }
+
+    .projectdesc {
+        display:block;
+        margin-top: 14px;
+        &:before{
+            content: "Project description";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        } 
+    }
+
+    .refsdecl {
+        display:block;
+        margin-top: 14px;
+        &:before{
+            content: "References declaration";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+    }
+}
+
+.filedesc {
+    *:before{
+        font-variant: small-caps;
+        color: #666;
+        font-size:90%;
+    }
+    .author {
+        display:block;
+        &:before{
+            content: "Author: ";
+        }
+    }
+    .editor {
+        display:block;
+        &:before{
+            content: "Editor: ";
+        }
+    }
+    .notesstmt {
+        display:block;
+        &:before{
+            content: "Notes";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+        .note {
+            display: block;
+            margin-top: 10px;
+        }
+    }
+    .publicationstmt{
+        display:block;
+        margin-top: 14px;
+        > * {
+            display:block;
+        }
+        &:before{
+            content: "About the publication";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+        }
+        &:before, > *:before{
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+        .publisher {
+            &:before{
+                content: "Publisher: ";
+                display: block;
+            }
+        }
+        .availability{
+            &:before{
+                content: "Availability: ";
+                display:block;
+            }
+        }
+        .idno {
+            &:before {
+                content: "idno: ";
+            }
+        }
+        .date {
+            &:before {
+                content: "Date: ";
+            }
+        }
+    }
+    .respstmt {
+        display:block;
+        &:before{
+            content: "Responsable: ";
+        }
+    }
+    .seriesstmt {
+        display:block;
+        margin-top: 14px;
+        &:before{
+            content: "Series";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+    }
+    .sourcedesc {
+        display:block;
+        margin-top: 14px;
+        &:before{
+            content: "Source description";
+            display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+        .listwit, .listbibl {
+            display:none;
+        }
+    }
+    .titlestmt {
+        margin-bottom: 10px;
+        .title {
+            display: block;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        [data-type='sub']{
+            display: block;
+            font-weight: bold;
+            font-size: 1em;   
+        }
+    }
+    .editionstmt {
+        .edition {
+            &:before{
+                content: "Edition: ";
+                font-variant: small-caps;
+                color: #666;
+                font-size:90%;
+            }
+        }
+    }
+}
+.funder, .sponsor, .principal {
+    display:block;
+    margin-top: 14px;
+    &:before{
+        display:block;
+        border-bottom: 1px dotted #666;
+        margin-bottom: 5px;
+    }
+    .orgname {
         display: block;
-        font-weight: bold;
-        font-size: 1.2em;
+    }
+}
+.funder {
+    &:before{
+        content: "Funder";
+    }
+}
+.sponsor {
+    &:before{
+        content: "Sponsor";
     }
 }
 .principal {
-    display:block;
     &:before{
         content: "Principal researcher: ";
-        font-variant: small-caps;
-        color: #666;
-        font-size:90%;
-    }
-    
-}
-.respstmt{
-    display:block;
-    &:before{
-        content: "Responsable: ";
-        font-variant: small-caps;
-        color: #666;
-        font-size:90%;
     }
 }
 
-.publicationstmt{
-    display:block;
-    margin-top: 14px;
-    &:before{
-        content: "About the publication. ";
-        display:block;
-        border-bottom: 1px dotted #666;
-        margin-bottom: 5px;
-    }
-    &:before, > *:before{
-        font-variant: small-caps;
-        color: #666;
-        font-size:90%;
-    }
-    .publisher {
+.profiledesc {
+    .langusage, .particdesc, .textclass{
         &:before{
-            content: "Publisher: ";
-        }
-    }
-    .availability{
-        &:before{
-            content: "Availability: ";
             display:block;
+            border-bottom: 1px dotted #666;
+            margin-bottom: 5px;
+            margin-top:5px;
+            font-variant: small-caps;
+            color: #666;
+            font-size:90%;
+        }
+    }
+    .langusage {
+        &:before{
+            content: "Language usage";
+        }
+        .language {
+            display: block;
+        }
+    }
+    .particdesc {
+        &:before{
+            content: "Participation description";
+        }
+        .listperson, .person {
+            display: block;
+            * {
+                margin: 0;
+                display: inline;
+            }
+            .head {
+                display: block;
+                font-variant: small-caps;
+                margin: 10px 0 5px 0;
+            }
+        }
+        .person, .persongrp {
+            margin-bottom: 10px;
+            display: block;
+            .state {
+                &:before {
+                    content : "- ";
+                }
+            }
+            .sex {
+                &:before {
+                    content : " (";
+                }
+                &:after {
+                    content : ")";
+                }
+            }
+        }
+    }
+    .textclass{ 
+        &:before{
+            content: "Text classification";
         }
     }
 }
-
-.sourcedesc{
+.revisiondesc {
+    .change {
+        display: block;
+        margin-bottom: 10px;
+    }
+}
+.respstmt {
+    .resp {
+        &:after{
+            content: ': ';
+        }
+    }
+    .name, .persname {
+        &:not(:last-child):after{
+            content: ', ';
+        }
+        &:last-child:after{
+            content: '. ';
+        }
+    }
+}
+.variantEncoding {
     display:block;
     margin-top: 14px;
     &:before{
-        content: "Encoding description. ";
+        content: "Variant encoding";
         display:block;
         border-bottom: 1px dotted #666;
         margin-bottom: 5px;
-    } 
-    &:before, > *:before{
         font-variant: small-caps;
         color: #666;
         font-size:90%;
-    }
+    } 
 }
 //Temp
 .filedesc .listwit,
 .filedesc .listperson{
     display:none;
+}
+.gi, .val{
+    font-style: italic;
+}
+.em {
+    font-weight: bolder;
+    font-style: italic;
 }
