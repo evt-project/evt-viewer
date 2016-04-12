@@ -19,6 +19,9 @@ angular.module('evtviewer.dataHandler')
     /* @return boolean                                                             */
     /* *************************************************************************** */
     parser.isNestedInElem = function(element, parentTagName) {
+        if (parentTagName === 'notesstmt'){
+            console.log(angular.element(element));
+        }
         if (element.parentNode !== null) {
             if (element.parentNode.tagName === 'text' ) {
                 return false;
@@ -50,30 +53,46 @@ angular.module('evtviewer.dataHandler')
             newElement = element;
         } else {
             var tagName = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
-            if (tagName === 'l') {
-                newElement = parser.parseLine(element);
-            } else if(tagName === 'note') {
-                newElement = parser.parseNote(element);
-            } else {
+            if (element.attributes !== undefined && 
+                element.attributes.copyOf !== undefined && 
+                element.attributes.copyOf.value !== '') {
                 newElement           = document.createElement('span');
-                newElement.className = tagName;
-                if (element.attributes) {
-                    for (var i = 0; i < element.attributes.length; i++) {
-                        var attrib = element.attributes[i];
-                        if (attrib.specified) {
-                            if (attrib.name !== 'xml:id') {
-                                newElement.setAttribute('data-'+attrib.name.replace(':', '-'), attrib.value);
+                newElement.className = tagName+' copy';
+                var copyOfId = element.attributes.copyOf.value.replace('#', '');
+                var match = '<'+element.tagName+' xml:id="'+copyOfId+'.*<\/'+element.tagName+'>';
+                var sRegExInput = new RegExp(match, 'ig'); 
+                var copiedElementText = doc.outerHTML.match(sRegExInput);
+                
+                if (copiedElementText) {
+                    var copiedElement = angular.element(copiedElementText[0])[0];
+                    newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip));
+                }
+            } else {
+                if (tagName === 'l') {
+                    newElement = parser.parseLine(element);
+                } else if(tagName === 'note' && skip !== 'evtNote') {
+                    newElement = parser.parseNote(element);
+                } else {
+                    newElement           = document.createElement('span');
+                    newElement.className = tagName;
+                    if (element.attributes) {
+                        for (var i = 0; i < element.attributes.length; i++) {
+                            var attrib = element.attributes[i];
+                            if (attrib.specified) {
+                                if (attrib.name !== 'xml:id') {
+                                    newElement.setAttribute('data-'+attrib.name.replace(':', '-'), attrib.value);
+                                }
                             }
                         }
                     }
-                }
-                if ( element.childNodes ) {
-                    for (var j = 0; j < element.childNodes.length; j++) {
-                        var childElement = element.childNodes[j].cloneNode(true);
-                        newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
+                    if ( element.childNodes ) {
+                        for (var j = 0; j < element.childNodes.length; j++) {
+                            var childElement = element.childNodes[j].cloneNode(true);
+                            newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
+                        }
+                    } else {
+                        newElement.innerHTML = element.innerHTML;
                     }
-                } else {
-                    newElement.innerHTML = element.innerHTML;
                 }
             }
         }
