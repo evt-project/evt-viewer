@@ -64,6 +64,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         padding: 5px;
         width:90%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
+        
         ul {
             display: inline;
             margin: 0;
@@ -200,7 +201,12 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         }
     }
 }
-
+.critical-apparatus-entry.noTools{
+    .critical-apparatus-entry_main-content, .critical-apparatus-entry_other-content {
+        width: 100%;
+    }
+    border-right: 1px solid $critical-apparatus-entry-border-color;
+}
 .in_critical_apparatus {
     .critical-apparatus-entry {
         cursor: pointer !important;

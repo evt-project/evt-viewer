@@ -99,7 +99,7 @@ angular.module('evtviewer.core')
                             }],
 
     toolHeatMap : true,
-    toolPinAppEntries : true,
+    toolPinAppEntries : false,
     
     listDef                    : 'listWit, listChange',
     versionDef                 : 'witness, change',

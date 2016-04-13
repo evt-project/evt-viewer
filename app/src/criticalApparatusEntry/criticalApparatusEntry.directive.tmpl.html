@@ -1,7 +1,8 @@
 <div 
   class="critical-apparatus-entry"
   ng-mouseover="vm.toggleOverAppEntries($event);"
-  ng-mouseout="vm.toggleOverAppEntries($event)">
+  ng-mouseout="vm.toggleOverAppEntries($event)"
+  ng-class="{'noTools': scopeViewMode !== 'collation' && !vm.isPinAvailable()}">
   <div 
     class="critical-apparatus-entry_main-content">
       <span 
@@ -82,7 +83,8 @@
           </div>
       </div>
   </div>
-  <div class="critical-apparatus-entry_tools">
+  <div class="critical-apparatus-entry_tools"
+    ng-if="scopeViewMode === 'collation' || vm.isPinAvailable()">
     <button-switch 
           title="Remove Pin"
           ng-if="vm.isPinAvailable() && vm.type === 'pinned'"
