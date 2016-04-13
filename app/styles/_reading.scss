@@ -4,10 +4,13 @@
 $reading-background-default  : rgb(208, 220, 255);
 $reading-background-hover    : rgb(101, 138, 255);
 $reading-background-selected : rgb(208, 220, 255);
-.autoLemma {
-    .reading:not(.blurred) {
-        .reading__text {
-            background: url('../images/autoLemma.png') !important;
+
+.filterNotActive{
+    .autoLemma {
+        .reading:not(.blurred) {
+            .reading__text {
+                background: url('../images/autoLemma.png') !important;
+            }
         }
     }
 }
@@ -30,7 +33,7 @@ $reading-background-selected : rgb(208, 220, 255);
             }
         }
         
-        &.expansed {
+        &.expansed:not(.invisible) {
             > .reading__text{
                 // background: $reading-background-selected;
                 > * {
