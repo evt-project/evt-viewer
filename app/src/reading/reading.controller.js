@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface) {
+.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalParser, baseData, evtInterface, config) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -116,7 +116,8 @@ angular.module('evtviewer.reading')
         if ($scope.$parent.vm.state.heatmap) {
             var maxVariance = parsedData.getCriticalEntriesMaxVariance();
             opacity = vm.over && !$scope.$parent.vm.state.topBoxOpened ? '1' : vm.variance/maxVariance;
-            return 'background: rgba(255, 108, 63, '+opacity+')';
+            var color = config.heatmapColor.replace('rgb', 'rgba').slice(0, -1)+','+opacity+')';
+            return 'background: '+color;
         } else {
             return colorFilters();
         }
@@ -171,8 +172,12 @@ angular.module('evtviewer.reading')
             }
         }
         if (background === undefined) {
-            if ((vm.over || vm.selected) && !$scope.$parent.vm.state.topBoxOpened) {
-                background = 'background: rgba(101, 138, 255)';    
+            if (!$scope.$parent.vm.state.topBoxOpened) {
+                if (vm.over || vm.selected) {
+                    background = 'background: '+config.variantColorDark;
+                } else {
+                    background = 'background: '+config.variantColorLight;
+                }
             }
         }
         return background;

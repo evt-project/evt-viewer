@@ -32,15 +32,16 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+    var genericColors = config.genericColors;
+
     var criticalAppCollection = {
         filtersCollection: { 
             filters     : { },
             length      : 0, 
             forLemmas   : 0,
             forVariants : 0,
-            colors      : ['rgb(52, 197, 173)', 'rgb(238, 194, 66)', 'rgb(253, 153, 54)', 'rgb(253, 95, 58)',
-                           'rgb(235, 77, 153)', 'rgb(252, 144, 172)', 'rgb(171, 99, 219)', 'rgb(67, 135, 217)',
-                           'rgb(163, 207, 81)', 'rgb(238, 194, 66)', 'rgb(228, 99, 220)', 'rgb(124, 113, 232)']
+            colors      : []
+            
             // colors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
             // colors : ['rgb(51,102,204)', 'rgb(16,150,24)', 'rgb(255,153,0)', 
             //           'rgb(221,68,119)', 'rgb(34,170,153)', 
@@ -318,8 +319,21 @@ angular.module('evtviewer.dataHandler')
     parsedData.getCriticalEntriesMaxVariance = function() {
         return criticalAppCollection._maxVariance;
     };    
-    
+
     /* CRITICAL ENTRIES FILTERS */
+    parsedData.getGenericColorForAppEntry = function(index){
+        var filtersCollection = criticalAppCollection.filtersCollection,
+            color;
+        if (filtersCollection.colors === undefined || 
+            filtersCollection.colors.indexOf(genericColors[index]) < 0) {
+            color = genericColors[index];
+            genericColors.splice(index, 1);
+        } else {
+            color = parsedData.getGenericColorForAppEntry(index+1);
+        }
+        return color;
+    };
+
     parsedData.addCriticalEntryFilter = function(name, value) {
         var possibleVariantFilters = config.possibleVariantFilters,
             possibleLemmaFilters   = config.possibleLemmaFilters,
@@ -327,12 +341,6 @@ angular.module('evtviewer.dataHandler')
         // Add filter to collection
         // if it can be a filter
         if (possibleVariantFilters.indexOf(name) >= 0 || possibleLemmaFilters.indexOf(name) >= 0) {
-            // assign color
-            var valueObj = {
-                name        : value,
-                color       : filtersCollection.colors[filtersCollection.length]
-            };
-            
             // create group for filter if not exist
             if ( filtersCollection.filters[name] === undefined ) {
                 filtersCollection.filters[name] = {
@@ -346,6 +354,23 @@ angular.module('evtviewer.dataHandler')
             }
             // add value if not already added
             if ( filtersCollection.filters[name].values[value] === undefined) {
+                // assign color
+                var color;
+                if (config.variantColors[name] !== undefined && 
+                    config.variantColors[name][value] !== undefined && config.variantColors[name][value] !== '' ){
+                    color = config.variantColors[name][value];
+                    if (genericColors.indexOf(color) >= 0) {
+                        genericColors.splice(genericColors.indexOf(color), 1);
+                    }
+                } else {
+                    color = parsedData.getGenericColorForAppEntry(0);
+                }
+                filtersCollection.colors.push(color);
+
+                var valueObj = {
+                    name  : value,
+                    color : color
+                };
                 filtersCollection.filters[name].values[value] = valueObj;
                 filtersCollection.length++;
                 if (possibleVariantFilters.indexOf(name) >= 0) {
