@@ -59,6 +59,10 @@ angular.module('evtviewer.interface')
         return evtInterface.isPinnedAppBoardOpened();
     };
 
+    $scope.isToolAvailable = function(toolName){
+        return evtInterface.isToolAvailable(toolName);
+    };
+
     $scope.getSecondaryContentOpened = function(){
         return evtInterface.getSecondaryContentOpened();
     };

@@ -148,9 +148,10 @@ angular.module('evtviewer.box')
                 content,
                 topBoxContent = '<span class="alert-msg">No info available</span>',
                 state      = {
-                    topBoxOpened : false,
-                    fontSizeBtn  : false,
-                    fontSize     : '100',
+                    topBoxOpened  : false,
+                    fontSizeBtn   : false,
+                    fontSize      : '100',
+                    topBoxContent : ''
                 },
                 appFilters = [],
                 updateContent,
@@ -193,6 +194,7 @@ angular.module('evtviewer.box')
 
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {
+                        topMenuList.buttons.push({title: 'Color legend', label: '', icon: 'color-legend', type: 'colorLegend'});
                         bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }});
                         appFilters = appFilters.filters;
                     }

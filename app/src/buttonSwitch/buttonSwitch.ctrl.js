@@ -12,6 +12,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'add':
                 icon = 'icon-evt_add';
                 break;
+            case 'color-legend':
+                icon = 'icon-evt_color-legend';
+                break;
             case 'filter':
             case 'filters':
                 icon = 'icon-evt_filter';
@@ -129,6 +132,40 @@ angular.module('evtviewer.buttonSwitch')
                         evtInterface.updateUrl();
                     }
                     break; 
+                case 'colorLegend':
+                    var parentBox = $scope.$parent.vm;
+                    if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'colorLegend'){
+                        parentBox.toggleTopBox();
+                    } else {
+                        var appFilters = parsedData.getCriticalEntriesFiltersCollection(),
+                            content    = '';
+                        if (appFilters.length > 0) {
+                            content += '<div class="colorLegend">';
+                            for (var filter in appFilters.filters) {
+                                var filterObj = appFilters.filters[filter],
+                                    values    = '';
+                                for (var value in filterObj.values) {
+                                    var valueName  = filterObj.values[value].name,
+                                        valueColor = '<i class="colorLegend-filter-color" style="background:'+filterObj.values[value].color+'"></i>';
+                                    values += '<span class="colorLegend-filter-value">'+valueColor+valueName+'</span>';
+                                }
+                                if (values !== '') {
+                                    content += '<span class="colorLegend-filter-name">'+filter+"</span>"+values;
+                                }
+                            }
+                            content += '</div>';
+                        } else {
+                            content = '<span>No filters available</span>';
+                        }
+                        var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+                        parentBox.updateTopBoxContent(newTopBoxContent);
+                        parentBox.updateState('topBoxContent', 'colorLegend');
+                        if (!parentBox.getState('topBoxOpened')) {
+                            parentBox.toggleTopBox();
+                        }
+                    }
+                    //TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
+                    break;
                 case 'closeDialog':
                     evtDialog.closeAll();
                     evtInterface.updateSecondaryContentOpened('');
@@ -200,10 +237,19 @@ angular.module('evtviewer.buttonSwitch')
                     evtInterface.togglePinnedAppBoardOpened();
                     break;
                 case 'witList':
-                    var content = parsedData.getWitnessesListFormatted();
-                    var newTopBoxContent = content || $scope.$parent.vm.topBoxContent;
-                    $scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
-                    $scope.$parent.vm.toggleTopBox();
+                    var parentBox = $scope.$parent.vm;
+                    if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'witList'){
+                        parentBox.toggleTopBox();
+                    } else {
+                        var content = parsedData.getWitnessesListFormatted();
+                        var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+                        parentBox.updateTopBoxContent(newTopBoxContent);
+                        parentBox.updateState('topBoxContent', 'witList');
+                        if (!parentBox.getState('topBoxOpened')) {
+                            parentBox.toggleTopBox();
+                        }
+                    }
+                    //TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
                     break;
                 default:
                     _console.log('TODO '+$scope.type);

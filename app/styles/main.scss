@@ -254,6 +254,29 @@ pre {
     font-size: 80%; 
 }
 
+.colorLegend {
+    padding: 15px;
+    &-filter {
+        &-name {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            font-variant: small-caps;
+            text-transform: uppercase;
+        }
+        &-value {
+            display: block;
+        }
+        &-color {
+            display: inline-block;
+            min-height: 15px;
+            min-width: 15px;
+            margin-right: 10px;
+            vertical-align: top;
+        }
+    }
+}
+
 // Generic style 
 .hidden {
     display: none;

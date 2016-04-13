@@ -70,6 +70,10 @@ angular.module('evtviewer.interface')
             return state.isLoading;
         };
         
+        mainInterface.isToolAvailable = function(toolName){
+            return config[toolName];
+        };
+
         mainInterface.getProperties = function(){
             return properties;
         };

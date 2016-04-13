@@ -105,7 +105,7 @@
                     data-label=""
                     data-icon="pin"
                     data-type="togglePinned"
-                    ng-if="isPinnedAppBoardOpened() && getPinnedEntries().length > 0 && entry !== ''"
+                    ng-if="isToolAvailable('toolPinAppEntries') && getPinnedEntries().length > 0 && entry !== ''"
                     class="togglePinned_btn"
                     ng-class="{'centered': !isPinnedAppBoardOpened(),
                                'half-centered': isPinnedAppBoardOpened()}">
