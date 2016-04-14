@@ -124,7 +124,7 @@ angular.module('evtviewer.buttonSwitch')
             var tempId = this.uid;
             delete collection[tempId];
             // _console.log('vm - destroy ' + tempId);
-        }
+        };
 
         button.build = function(scope) {
             var currentId   = scope.id             || idx++,
@@ -134,9 +134,9 @@ angular.module('evtviewer.buttonSwitch')
                 icon        = getIcon(scope.icon)  || '',
                 type        = scope.type           || '',
                 value       = scope.value          || '',
-                active      = false,
-                disabled    = false,
-                standAlone  = false,
+                active      = scope.active         || false,
+                disabled    = scope.disabled       || false,
+                btnType     = scope.btnType        || '',
                 callback    = function() { console.log('TODO '+type); },
                 fakeCallback = function() { };
             var scopeHelper = {};
@@ -144,28 +144,10 @@ angular.module('evtviewer.buttonSwitch')
             /* SET CALLBACK */
             switch(type) {
                 case 'addWit':
-                    standAlone = true;
+                    btnType = 'standAlone';
                     callback  = function() {
-                        var witnesses   = parsedData.getWitnessesList(), 
-                            currentWits = evtInterface.getCurrentWitnesses() || [],
-                            newWit,
-                            i = 0;
-                        while (newWit === undefined && i < witnesses.length) {
-                            if ( currentWits.indexOf(witnesses[i]) < 0) {
-                                newWit = witnesses[i];
-                            }
-                            i++;
-                        }
-
-                        if (newWit !== undefined) {
-                            evtInterface.addWitness(newWit);
-                            evtInterface.updateUrl();
-                        }
-                        scope.active = false;
-                        $timeout(function(){
-                            var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
-                            document.getElementById('compareWits_box').scrollLeft = singleBoxWidth*(currentWits.length+1);
-                        });
+                        evtInterface.updateProperty('witnessSelector', true);
+                        scope.vm.active = false;
                     };
                     break;
                 case 'alignReadings':
@@ -176,7 +158,7 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     break;
                 case 'changeViewMode':
-                    standAlone = true;
+                    btnType = 'standAlone';
                     callback = function() {
                         var vm = this;
                         if (vm.value !== undefined) {
@@ -189,8 +171,8 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     break; 
                 case 'colorLegend':
+                    btnType = 'toggler';
                     callback = function() {
-                        var vm = this;
                         var parentBox = scope.$parent.vm;
                         if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'colorLegend'){
                             parentBox.toggleTopBox();
@@ -244,6 +226,7 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     break;
                 case 'fontSizeDecrease':
+                    btnType = 'standAlone';
                     callback = function(){
                         var vm = this;
                         scope.$parent.vm.fontSizeDecrease();
@@ -251,6 +234,7 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     break;
                 case 'fontSizeIncrease':
+                    btnType = 'standAlone';
                     callback = function(){
                         var vm = this;
                         scope.$parent.vm.fontSizeIncrease();
@@ -258,6 +242,7 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     break;
                 case 'fontSizeReset':
+                    btnType = 'standAlone';
                     callback = function(){
                         var vm = this;
                         scope.$parent.vm.fontSizeReset();
@@ -266,19 +251,16 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'fontSizeTools':
                     callback = function(){
-                        var vm = this;
                         var fontSizeBtnState = scope.$parent.vm.getState('fontSizeBtn') || false;
                         scope.$parent.vm.updateState('fontSizeBtn', !fontSizeBtnState);
                     };
                     fakeCallback = function() {
-                        var vm = this;
                         scope.$parent.vm.updateState('fontSizeBtn', false);
                     };
                     break;
                 case 'heatmap':
-                    standAlone = true;
+                    btnType = 'standAlone';
                     callback = function(){
-                        var vm = this;
                         var heatMapState = scope.$parent.vm.getState('heatmap') || false;
                         scope.$parent.vm.updateState('heatmap', !heatMapState);
                     };
@@ -331,8 +313,8 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     break;
                 case 'toggleInfoWit':
+                    btnType = 'toggler';
                     callback = function(){
-                        var vm = this;
                         var witness = parsedData.getWitness(scope.$parent.vm.witness);
                         var newTopBoxContent = witness.description || scope.$parent.vm.topBoxContent;
                         scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
@@ -340,7 +322,7 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     fakeCallback = function(){
                         scope.$parent.vm.updateState('topBoxOpened', false);
-                    }
+                    };
                     break;
                 case 'toggleFilterApp':
                     callback = function(){
@@ -350,11 +332,13 @@ angular.module('evtviewer.buttonSwitch')
                     fakeCallback = callback;
                     break;
                 case 'togglePinned':
+                    btnType = 'toggler';
                     callback = function(){
                         evtInterface.togglePinnedAppBoardOpened();
                     };
                     break;
                 case 'witList':
+                    btnType = 'toggler';
                     callback = function(){
                         var vm = this;
                         var parentBox = scope.$parent.vm;
@@ -383,7 +367,7 @@ angular.module('evtviewer.buttonSwitch')
 
             var doCallback = function(){
                 var vm = this;
-                button.unselectAllSkipStandAlone(vm.uid);
+                button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
                 evtSelect.closeAll();
                 vm.toggleActive();
                 vm.callback();
@@ -405,7 +389,7 @@ angular.module('evtviewer.buttonSwitch')
                 active      : active,
                 disabled    : disabled,
 
-                standAlone  : standAlone,
+                btnType     : btnType,
                 
                 // function
                 callback     : callback,
@@ -447,9 +431,9 @@ angular.module('evtviewer.buttonSwitch')
             });
         };
 
-        button.unselectAllSkipStandAlone = function(currentId) {
+        button.unselectAllSkipByBtnType = function(currentId, btnTypes) {
             angular.forEach(collection, function(currentButton) {
-                if (currentButton.uid !== currentId && !currentButton.standAlone) {
+                if (currentButton.uid !== currentId && btnTypes.indexOf(currentButton.btnType) < 0) {
                     if (currentButton.active) {
                         currentButton.fakeCallback();
                     }

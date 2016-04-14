@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="styles/tei.css">
         <!-- endbuild -->
     </head>
-    <body ng-app="evtviewer" ng-controller="InterfaceCtrl">
+    <body ng-app="evtviewer" ng-controller="InterfaceCtrl" ng-click="handleGenericClick($event)">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -149,10 +149,20 @@
                     data-label="Add Witness"
                     data-icon="add"
                     data-type="addWit"
-                    class="compareWits_box--buttonAddWit inverted-color"
+                    class="compareWits_box--buttonAddWit inverted-color witnessSelector"
                     ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0),
                                 'floatRight': (!existCriticalText() && getCurrentWitnesses().length > 1) || (existCriticalText() && getCurrentWitnesses().length > 0)}">
             </button-switch>
+
+            <div 
+                ng-if="isWitnessSelectorActive()"
+                class="availableWitnesses-selector witnessSelector"
+                ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
+                <span 
+                    ng-click="addWitness(witness)" 
+                    ng-repeat="witness in getAvailableWitnesses()">Witness #{{witness}}</span>
+            </div>
+
         </section>       
 
         <!-- TXT TXT -->

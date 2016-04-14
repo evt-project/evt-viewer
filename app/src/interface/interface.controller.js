@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $injector, $scope, $route, evtInterface, evtBox, parsedData) {    
+.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover) {    
     var _console = $log.getInstance('interface');
 
     $scope.getCurrentViewMode = function() {
@@ -17,6 +17,26 @@ angular.module('evtviewer.interface')
 
     $scope.getCurrentEdition = function() {
         return evtInterface.getCurrentEdition();
+    };
+
+    $scope.getAvailableWitnesses = function(){
+        return evtInterface.getAvailableWitnesses();
+    };
+
+    $scope.isWitnessSelectorActive = function(){
+        return evtInterface.getProperty('witnessSelector');
+    };
+
+    $scope.addWitness = function(wit){
+        if (wit !== undefined) {
+            evtInterface.addWitness(wit);
+            evtInterface.updateUrl();
+        }
+        $timeout(function(){
+            var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
+            document.getElementById('compareWits_box').scrollLeft = singleBoxWidth*(evtInterface.getCurrentWitnesses().length+1);
+        });
+        evtInterface.updateProperty('witnessSelector', false);
     };
 
     $scope.getCurrentWitnesses = function() {
@@ -77,6 +97,26 @@ angular.module('evtviewer.interface')
 
     $scope.getProperty = function(name){
         return evtInterface.getProperty(name);
+    };
+    
+    $scope.handleGenericClick = function($event){
+        var target = $event.target;
+        if ($(target).parents('evt-select').length === 0){
+            evtSelect.closeAll();
+        }
+        if ($(target).parents('button-switch').length === 0){
+            var skipBtnTypes = ['standAlone', 'toggler'];
+            evtButtonSwitch.unselectAllSkipByBtnType('', skipBtnTypes);
+        }
+        if ($(target).parents('evt-popover').length === 0){
+            evtPopover.closeAll();
+        }
+        //Temp
+        if ($(target).parents('.witnessSelector').length === 0){
+            if (evtInterface.getProperty('witnessSelector')){
+                evtInterface.updateProperty('witnessSelector', false);
+            }
+        }
     };
     _console.log('InterfaceCtrl running');
 })

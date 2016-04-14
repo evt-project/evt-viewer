@@ -16,7 +16,9 @@ angular.module('evtviewer.interface')
         };
         var properties = {
             indexTitle         : '',
-            availableViewModes : [ ]
+            availableViewModes : [ ],
+            availableWitnesses : [ ],
+            witnessSelector    : false
         }
 
         mainInterface.boot = function() {  
@@ -102,6 +104,10 @@ angular.module('evtviewer.interface')
             return state.currentEdition;
         };
 
+        mainInterface.getAvailableWitnesses = function() {
+            return properties.availableWitnesses;
+        };
+
         mainInterface.getCurrentWitnesses = function(){
             return state.currentWits;
         };
@@ -145,6 +151,10 @@ angular.module('evtviewer.interface')
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
         
+        mainInterface.updateProperty = function(property, value){
+            properties[property] = value;
+        };
+
         mainInterface.updateSecondaryContentOpened = function(secondaryContent){
             state.secondaryContent = secondaryContent;
         };
@@ -166,6 +176,12 @@ angular.module('evtviewer.interface')
         };
 
         // WITNESS
+        mainInterface.removeAvailableWitness = function(witness) {
+            var index = properties.availableWitnesses.indexOf(witness);
+            if (index !== undefined){
+                properties.availableWitnesses.splice(index, 1);
+            }
+        };
         mainInterface.updateWitnessesPage = function(witness, pageId) {
             state.currentWitsPages[witness] = pageId;
         };
@@ -182,17 +198,21 @@ angular.module('evtviewer.interface')
             // } else {
                 state.currentWits.push(newWit);
             // }
-
+            mainInterface.removeAvailableWitness(newWit);
             //TODO: Add scroll to new box added
         };
         mainInterface.addWitnessAtIndex = function(newWit, index) {
             state.currentWits.splice(index, 0, newWit);
+            mainInterface.removeAvailableWitness(newWit);
         };
         mainInterface.removeWitness = function(wit) {
             var witIndex = state.currentWits.indexOf(wit);
             if (witIndex >= 0) {
                 state.currentWits.splice(witIndex, 1);
                 delete state.currentWitsPages[wit];
+            }
+            if (properties.availableWitnesses.indexOf(wit) < 0) {
+                properties.availableWitnesses.push(wit);
             }
         };
         mainInterface.switchWitnesses = function(oldWit, newWit) {
@@ -257,23 +277,32 @@ angular.module('evtviewer.interface')
             // WITNESSES
             if (params.ws !== undefined) {
                 witnesses = params.ws.split(',').filter(function(el) {return el.length !== 0;});
+                var totWits = parsedData.getWitnessesList();
+                properties.availableWitnesses = totWits.slice(0, totWits.length);
                 for (var w in witnesses) {
                     var wit     = witnesses[w].split('@')[0],
                         witPage = witnesses[w].split('@')[1];
                     if (parsedData.getWitness(wit) !== undefined){
                         witIds.push(wit);
+                        mainInterface.removeAvailableWitness(wit);
                         if (witPage !== undefined && parsedData.getPage(wit+'-'+witPage) !== undefined){
                             witPageIds[wit] = witPage;
                         }
                     }
                 }
-            } else if (viewMode === 'collation'){
-                witIds = parsedData.getWitnessesList();
-                if (witIds.length > config.maxWitsLoadTogether) {
-                    witIds = witIds.slice(0, config.maxWitsLoadTogether);
+            } else {
+                if (viewMode === 'collation'){
+                    witIds = parsedData.getWitnessesList();
+                    if (witIds.length > config.maxWitsLoadTogether) {
+                        properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
+                        witIds = witIds.slice(0, config.maxWitsLoadTogether);
+                    } else {
+                        properties.availableWitnesses = []    
+                    }
+                } else {
+                    properties.availableWitnesses = parsedData.getWitnessesList();
                 }
             }
-            
             // APP ENTRY
             if ( params.app !== undefined ) {
                 appId  = params.app;

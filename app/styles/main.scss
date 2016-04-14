@@ -277,6 +277,34 @@ pre {
     }
 }
 
+.availableWitnesses-selector {
+    position: absolute;
+    z-index: 9999;
+    display: block;
+    right: 0;
+    background: #fff;
+    height: auto;
+    top: calc(50% - #{$base-header-height});
+    margin-right: 9px;
+    transform: translate(0, -25%);
+    min-width: 150px;
+    @include set(box-shadow, 0px 0px 4px 0px rgba(0,0,0,0.6));
+    > span {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        &:hover{
+            background: #f0f0f0;
+        }
+    }
+    &.left75 {
+        position: absolute;
+        right: auto;
+        left: 75%;
+        transform: translate(-50%, -25%);
+    }
+}
 // Generic style 
 .hidden {
     display: none;

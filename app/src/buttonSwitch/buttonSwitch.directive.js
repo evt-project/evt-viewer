@@ -18,16 +18,16 @@ angular.module('evtviewer.buttonSwitch')
             var currentButton = evtButtonSwitch.build(scope);
             
             if (scope.type === 'addWit') {
-                if (evtInterface.getCurrentWitnesses().length === parsedData.getWitnessesList().length) {
+                if (evtInterface.getAvailableWitnesses().length === 0) {
                     scope.vm.disabled = true;
                     scope.vm.title = 'No more witnesses available';
                 }
 
                 scope.$watch(function() {
-                    return evtInterface.getCurrentWitnesses();
+                    return evtInterface.getAvailableWitnesses();
                 }, function(newItem, oldItem) {
                     if (newItem !== oldItem) {
-                        if (newItem.length === parsedData.getWitnessesList().length) {
+                        if (newItem.length === 0) {
                             scope.vm.disabled = true;
                             scope.vm.title = 'No more witnesses available';
                         } else {
