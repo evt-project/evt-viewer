@@ -51,10 +51,11 @@ angular.module('evtviewer.core')
     this.extendDefault = function(json){
         UtilsProvider.deepExtendSkipDefault(config, json);
     };
+
     this.$get = function() {
-        config.isValid = this.isValid;
+        config.isValid        = this.isValid;
         config.isModuleActive = this.isModuleActive;
-        config.extendDefault = this.extendDefault;
+        config.extendDefault  = this.extendDefault;
         return config;
     };
 

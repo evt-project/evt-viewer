@@ -19,9 +19,6 @@ angular.module('evtviewer.dataHandler')
     /* @return boolean                                                             */
     /* *************************************************************************** */
     parser.isNestedInElem = function(element, parentTagName) {
-        if (parentTagName === 'notesstmt'){
-            console.log(angular.element(element));
-        }
         if (element.parentNode !== null) {
             if (element.parentNode.tagName === 'text' ) {
                 return false;

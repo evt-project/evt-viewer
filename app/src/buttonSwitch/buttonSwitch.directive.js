@@ -1,6 +1,6 @@
 angular.module('evtviewer.buttonSwitch')
 
-.directive('buttonSwitch', function(evtButtonSwitch, evtInterface, parsedData) {
+.directive('buttonSwitch', function(evtButtonSwitch, evtInterface) {
     return {
         restrict: 'E',
         scope: {

@@ -206,7 +206,6 @@ angular.module('evtviewer.buttonSwitch')
                         }
                     };
                     fakeCallback = function() {
-                        var vm = this;
                         var parentBox = scope.$parent.vm;
                         parentBox.updateState('topBoxOpened', false);
                     };
@@ -287,7 +286,6 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'removeWit':
                     callback = function(){
-                        var vm = this;
                         var wit = scope.$parent.vm.witness;
                         evtInterface.removeWitness(wit);
                         evtInterface.updateUrl();
@@ -295,14 +293,12 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'searchInEdition':
                     callback = function(){
-                        var vm = this;
                         var edition = scope.$parent.vm.edition;
                         alert('Search in edition level '+edition+'. Coming Soon...');
                     };
                     break;
                 case 'searchInWit':
                     callback = function(){
-                        var vm = this;
                         var wit = scope.$parent.vm.witness;
                         alert('Search in witness '+wit+'. Coming Soon...');
                     };
@@ -326,7 +322,6 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'toggleFilterApp':
                     callback = function(){
-                        var vm = this;
                         scope.$parent.vm.toggleFilterBox();
                     };
                     fakeCallback = callback;
@@ -340,7 +335,6 @@ angular.module('evtviewer.buttonSwitch')
                 case 'witList':
                     btnType = 'toggler';
                     callback = function(){
-                        var vm = this;
                         var parentBox = scope.$parent.vm;
                         if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'witList'){
                             parentBox.toggleTopBox();
@@ -355,7 +349,6 @@ angular.module('evtviewer.buttonSwitch')
                         }
                     };
                     fakeCallback = function() {
-                        var vm = this;
                         var parentBox = scope.$parent.vm;
                         parentBox.updateState('topBoxOpened', false);
                     };

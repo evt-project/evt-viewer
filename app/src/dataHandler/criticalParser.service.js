@@ -3,21 +3,11 @@ angular.module('evtviewer.dataHandler')
 .service('evtCriticalParser', function($q, parsedData, evtParser, xmlParser, config) {
     var parser = {};
 
-    var listDef               = config.listDef,
-        versionDef            = config.versionDef,
-        fragmentMilestone     = config.fragmentMilestone,
-        lacunaMilestone       = config.lacunaMilestone,
-        notSignificantVariant = config.notSignificantVariant;
-
-    var preferredWitness      = config.preferredWitness;
-    
-    var loadCriticalEntriesImmediately = config.loadCriticalEntriesImmediately;
-
     var apparatusEntryDef     = '<app>',
         lemmaDef              = '<lem>',
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>';
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+lacunaMilestone+','+lacunaMilestone;
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef;
 
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
@@ -49,13 +39,13 @@ angular.module('evtviewer.dataHandler')
                 if (child.tagName === 'head') {
                     list.name = child.innerHTML;
                 }
-                else if (listDef.indexOf(child.tagName) >= 0) { //group
+                else if (config.listDef.indexOf(child.tagName) >= 0) { //group
                     var subList = parseListWit(doc, child);
                     subList._group = list.id;
                     parsedData.addElementInWitnessCollection(subList);
                     list.content.push(subList.id);
                 } 
-                else if (versionDef.indexOf(child.tagName) >= 0){ //witness
+                else if (config.versionDef.indexOf(child.tagName) >= 0){ //witness
                     var witnessElem = {
                         id          : child.getAttribute('xml:id'),
                         description : evtParser.parseXMLElement(doc, child, ''),
@@ -79,17 +69,17 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     parser.parseWitnesses = function(doc) {
         var currentDocument = angular.element(doc);
-        if (currentDocument.find(listDef).length > 0) {
-            angular.forEach(currentDocument.find(listDef), 
+        if (currentDocument.find(config.listDef).length > 0) {
+            angular.forEach(currentDocument.find(config.listDef), 
                 function(element) {
                     if ( !evtParser.isNestedInElem(element, element.tagName) ) {
                         angular.forEach(element.childNodes, function(child){
                             if (child.nodeType === 1) {
                                 var el = {};
                                 
-                                if (listDef.indexOf(child.tagName) >= 0) { // group
+                                if (config.listDef.indexOf(child.tagName) >= 0) { // group
                                     el = parseListWit(doc, child);
-                                } else if (versionDef.indexOf(child.tagName) >= 0) { // witness
+                                } else if (config.versionDef.indexOf(child.tagName) >= 0) { // witness
                                     el = {
                                         id          : child.getAttribute('xml:id'),
                                         description : evtParser.parseXMLElement(doc, child, ''),
@@ -104,7 +94,7 @@ angular.module('evtviewer.dataHandler')
                     }
             });
         } else {
-            console.log('ERROR: '+listDef+' missing. Please add this element to make EVT work properly.');
+            console.log('ERROR: '+config.listDef+' missing. Please add this element to make EVT work properly.');
         }
         // console.log('## Witnesses ##', JSON.stringify(parsedData.getWitnesses()));
         console.log('## Witnesses ##', parsedData.getWitnesses());
@@ -118,7 +108,7 @@ angular.module('evtviewer.dataHandler')
     /* @return a json object representing the apparatus reading             */
     /* ******************************************************************** */
     var parseGenericElement = function(elem) {
-        if (lacunaMilestone.indexOf('<'+elem.tagName+'>') < 0 && fragmentMilestone.indexOf('<'+elem.tagName+'>') < 0) {
+        if (config.lacunaMilestone.indexOf('<'+elem.tagName+'>') < 0 && config.fragmentMilestone.indexOf('<'+elem.tagName+'>') < 0) {
             var genericElement = {
                 tagName    : elem.tagName,
                 type       : 'genericElement',
@@ -146,12 +136,12 @@ angular.module('evtviewer.dataHandler')
                         var entryApp = parseAppEntry(child);
                         genericElement.content.push({id: entryApp.id, type: 'subApp'});
                     } else {
-                        if (fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                        if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                             var fragmentSigla = elem.getAttribute('wit');
                             child.setAttribute('wit', fragmentSigla);
                         }
 
-                        if (lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                        if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                             var lacunaSigla = elem.getAttribute('wit');
                             child.setAttribute('wit', lacunaSigla);
                         }
@@ -230,7 +220,7 @@ angular.module('evtviewer.dataHandler')
                     }
                 }
                 if (reading.significant) {
-                    if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
+                    if (config.notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
                         reading.significant = false;
                     }
                 }
@@ -252,16 +242,16 @@ angular.module('evtviewer.dataHandler')
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                 } else {
                     if (reading.significant) {
-                        if (notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
+                        if (config.notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
                             reading.significant = false;
                         }
                     }
-                    if (fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                    if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                         var fragmentSigla = elem.getAttribute('wit');
                         child.setAttribute('wit', fragmentSigla);
                     }
 
-                    if (lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                    if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                         var lacunaSigla = elem.getAttribute('wit');                        
                         child.setAttribute('wit', lacunaSigla);
                     }
@@ -313,7 +303,7 @@ angular.module('evtviewer.dataHandler')
                         if (readingObj.attributes[attrib.name] === undefined) {
                             readingObj.attributes[attrib.name] = attrib.value;
                             if (readingObj.significant) {
-                                if (notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
+                                if (config.notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
                                     readingObj.significant = false;
                                 }
                             }
@@ -481,7 +471,7 @@ angular.module('evtviewer.dataHandler')
                 handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
-        parsedData.setCriticalEntriesLoaded(loadCriticalEntriesImmediately);
+        parsedData.setCriticalEntriesLoaded(config.loadCriticalEntriesImmediately);
         console.log('## Critical entries ##', parsedData.getCriticalEntries());
         deferred.resolve('success');
         return deferred;
@@ -776,7 +766,7 @@ angular.module('evtviewer.dataHandler')
                     // or I've alreafy parsed the current entry...
                     // ...I can simply access the model to get the right output
                     // ... otherwise I parse the DOM and save the entry in the model
-                    if (!loadCriticalEntriesImmediately && entry === undefined) {
+                    if (!config.loadCriticalEntriesImmediately && entry === undefined) {
                         handleAppEntry(appNode);
                         var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                         if (subApps.length > 0){
@@ -801,7 +791,8 @@ angular.module('evtviewer.dataHandler')
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
 
             angular.forEach(docDOM.children, function(elem){
-                elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skipFromBeingParsed), elem);
+                var skip = skipFromBeingParsed+','+config.lacunaMilestone+','+config.fragmentMilestone;
+                elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
             });
 
             //parse <pb>
@@ -918,8 +909,8 @@ angular.module('evtviewer.dataHandler')
                     }
                 }
             } else {
-                if (preferredWitness !== '') {
-                    spanElement = getEntryWitnessReadingText(entry, preferredWitness);
+                if (config.preferredWitness !== '') {
+                    spanElement = getEntryWitnessReadingText(entry, config.preferredWitness);
                     if (spanElement !== null){
                         spanElement.className = 'autoLemma';
                     }
@@ -971,8 +962,8 @@ angular.module('evtviewer.dataHandler')
             var docDOM = doc.getElementsByTagName('body')[0];
             // lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
             // if (lemmas.length > 0 || 
-            //     (parsedData.getWitness(preferredWitness) !== undefined &&
-            //      parsedData.getWitness(preferredWitness) !== '') ) {
+            //     (parsedData.getWitness(config.preferredWitness) !== undefined &&
+            //      parsedData.getWitness(config.preferredWitness) !== '') ) {
                 var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                     j      = apps.length-1, 
                     count  = 0;
@@ -994,7 +985,7 @@ angular.module('evtviewer.dataHandler')
                         // or I've already parsed the current entry...
                         // ...I can simply access the model to get the right output
                         // ... otherwise I parse the DOM and save the entry in the model
-                        if (!loadCriticalEntriesImmediately || entry === undefined) {
+                        if (!config.loadCriticalEntriesImmediately || entry === undefined) {
                             handleAppEntry(appNode);
                             var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                             if (subApps.length > 0){
@@ -1028,7 +1019,8 @@ angular.module('evtviewer.dataHandler')
                 }
                 
                 angular.forEach(docDOM.children, function(elem){
-                    elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skipFromBeingParsed), elem);
+                    var skip = skipFromBeingParsed+','+config.lacunaMilestone+','+config.fragmentMilestone;
+                    elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
                 });
                 criticalText = docDOM.outerHTML;
             // } else {
