@@ -11,10 +11,11 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
     color: $base-color-dark;
     font-size: 90%;
     border-left: 1px solid $critical-apparatus-entry-border-color;
+    border-right: 1px solid $critical-apparatus-entry-border-color;
     
     cursor: text !important;
 
-    span {
+    span:not(.app_lemma), span:not(.app_lemma_content) {
         background: transparent;
         display: inline-block;
     }
@@ -33,16 +34,13 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
     }
 
     &_tools{
-        padding: 0 5px 5px;
+        padding: 0;
         float: right;
         display: block;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        right: 0;
-        border-left: 1px solid $critical-apparatus-entry-border-color;
-        background: #fff;
-        width: 10%;
+        position: relative;
+        bottom: 6px;
+        right: -2px;
+        background: transparent;
         text-align: center;
         button-switch{
             margin-right: 0;
@@ -62,7 +60,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
     }
     &_main-content{
         padding: 5px;
-        width:90%;
+        // width:90%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
         
         ul {
@@ -81,11 +79,14 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         .app_lemma::after {
             content: "]";
         }
+        .sub_app .app_lemma_content::after {
+            content: "]";
+        }
     }
     &_other-content{
         border-top: 3px double $critical-apparatus-entry-border-color;
         border-bottom: 1px solid $critical-apparatus-entry-border-color;
-        width:90%;
+        // width:90%;
         p {
             padding: 0 10px;
         }
@@ -145,7 +146,9 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
                 margin: 5px 0px;
             }
             .app_lemma {
-                font-weight: bold;
+                em {
+                    font-weight: bold;
+                }
                 &::after {
                     content: "";
                 }
@@ -246,4 +249,27 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
     color: transparent !important;
     text-shadow: 0 0 5px #000 !important;
     background: transparent !important
+}
+
+//Temp
+.moreInfo{
+    &-label{
+        font-weight: bold;
+        font-variant: small-caps;
+        &:after {
+            content: ": ";
+        }
+    }
+    &-metadataTitle{
+        text-align: center;
+        width: 100%;
+        font-variant: small-caps;
+        font-size: 95%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.app_reading_content {
+    margin-bottom: 20px !important;
 }

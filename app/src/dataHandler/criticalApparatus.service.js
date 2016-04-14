@@ -26,7 +26,7 @@ angular.module('evtviewer.dataHandler')
         //Lemma
         var lemma = entry.content[entry.lemma];
         if (lemma !== undefined) {
-            appContent.lemma.content += '<span class="app_lemma">'+apparatus.getLemma(lemma, scopeWit)+'</span>';
+            appContent.lemma.content += '<span class="app_lemma_content">'+apparatus.getLemma(lemma, scopeWit)+'</span>';
             appContent.lemma.attributes.values = lemma.attributes || {};
             appContent.lemma.attributes._keys  = Object.keys(lemma.attributes) || [];
         }
@@ -130,14 +130,14 @@ angular.module('evtviewer.dataHandler')
         var subApp        = parsedData.getCriticalEntryById(subAppId);
         var subAppContent = apparatus.getContent(subApp, true, scopeWit);
         
-        subAppText += ' (('+subAppContent.lemma.content+" ";
+        subAppText += '<span class="sub_app"> (('+subAppContent.lemma.content+" ";
         for (var i = 0; i < subAppContent.significantReadings.length; i++) {
             subAppText += subAppContent.significantReadings[i].content;
             if (i < subAppContent.significantReadings.length - 1) {
                 subAppText += ';';
             }
         }
-        subAppText += ')) ';
+        subAppText += ')) </span>';
         return subAppText;
     };
 
