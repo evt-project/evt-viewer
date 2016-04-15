@@ -153,8 +153,11 @@ angular.module('evtviewer.buttonSwitch')
                 case 'alignReadings':
                     break;
                 case 'bookmark':
-                    callback = function() {
-                        alert(window.location);
+                    callback = function(){
+                        var vm = this;
+                        evtInterface.updateSecondaryContentOpened('bookmark');
+                        evtDialog.openByType('bookmark');
+                        vm.active = !vm.active;
                     };
                     break;
                 case 'changeViewMode':

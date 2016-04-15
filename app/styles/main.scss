@@ -305,6 +305,16 @@ pre {
         transform: translate(-50%, -25%);
     }
 }
+
+.bookmark {
+    display: block;
+    text-align: center;
+    top: 50%;
+    position: absolute;
+    width: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 // Generic style 
 .hidden {
     display: none;

@@ -118,6 +118,11 @@ angular.module('evtviewer.interface')
             }
         }
     };
+
+    $scope.getBookmark = function() {
+        return '<div class="bookmark">'+window.location+'</div>';
+    };
+
     _console.log('InterfaceCtrl running');
 })
 

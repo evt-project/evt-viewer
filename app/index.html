@@ -87,6 +87,9 @@
         <evt-dialog data-type="witnessesList" data-title="Witnesses">
             <div compile="getWitnessesListFormatted()"></div>
         </evt-dialog>
+        <evt-dialog data-type="bookmark" data-title="Bookmark">
+            <div compile="getBookmark()"></div>
+        </evt-dialog>
     </section>
     
     <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
