@@ -177,8 +177,8 @@ angular.module('evtviewer.dataHandler')
                 //subapp { id, type='subApp'}
             ],
             note         : '',
-            significant : true,
-            _groupId     : undefined,
+            _significant : true,
+            _group       : undefined,
             _xmlTagName  : elem.tagName,
             _xmlSource   : elem.outerHTML
         };
@@ -219,9 +219,9 @@ angular.module('evtviewer.dataHandler')
                         }
                     }
                 }
-                if (reading.significant) {
+                if (reading._significant) {
                     if (config.notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
-                        reading.significant = false;
+                        reading._significant = false;
                     }
                 }
                 parsedData.addCriticalEntryFilter(attrib.name, attrib.value);
@@ -241,9 +241,9 @@ angular.module('evtviewer.dataHandler')
                     var entryApp = parseAppEntry(child);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                 } else {
-                    if (reading.significant) {
+                    if (reading._significant) {
                         if (config.notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
-                            reading.significant = false;
+                            reading._significant = false;
                         }
                     }
                     if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
@@ -302,9 +302,9 @@ angular.module('evtviewer.dataHandler')
                         groupObj.attributes[attrib.name] = attrib.value;
                         if (readingObj.attributes[attrib.name] === undefined) {
                             readingObj.attributes[attrib.name] = attrib.value;
-                            if (readingObj.significant) {
+                            if (readingObj._significant) {
                                 if (config.notSignificantVariant.indexOf('['+attrib.name+'='+attrib.value+']') >= 0) {
-                                    readingObj.significant = false;
+                                    readingObj._significant = false;
                                 }
                             }
                         }
@@ -315,8 +315,8 @@ angular.module('evtviewer.dataHandler')
                 entry._indexes.readings._indexes.push(readingObj.id);
                 entry.content[readingObj.id] = readingObj;
 
-                if (readingObj.significant || child.tagName === 'lem') {
-                    entry._indexes.readings.significant.push(readingObj.id);
+                if (readingObj._significant || child.tagName === 'lem') {
+                    entry._indexes.readings._significant.push(readingObj.id);
                 }
             } else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
                 //TODO
@@ -350,7 +350,7 @@ angular.module('evtviewer.dataHandler')
                 encodingStructure : [],
                 readings          : {
                     _indexes     : [],
-                    significant : []
+                    _significant : []
                 },
                 groups            : [],
                 subApps           : [],
@@ -388,9 +388,9 @@ angular.module('evtviewer.dataHandler')
                         entry.lemma = reading.id;
                     } else {
                         entry._indexes.readings._indexes.push(reading.id);
-                        if (reading.significant && 
-                            entry._indexes.readings.significant.indexOf(reading.id) < 0) {
-                            entry._indexes.readings.significant.push(reading.id);
+                        if (reading._significant && 
+                            entry._indexes.readings._significant.indexOf(reading.id) < 0) {
+                            entry._indexes.readings._significant.push(reading.id);
                         }
                     }
                     
@@ -428,7 +428,7 @@ angular.module('evtviewer.dataHandler')
             }
 
             // Save variance
-            var significantReadings    = entry._indexes.readings.significant,
+            var significantReadings    = entry._indexes.readings._significant,
                 significantReadingsTot = significantReadings.length;
             if (entry.lemma !== '' && significantReadings.indexOf(entry.lemma) >= 0) {
                 significantReadingsTot -= 1; //escludo lemma

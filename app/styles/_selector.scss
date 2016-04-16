@@ -72,7 +72,8 @@ $selector-option-background-color-hover: $base-color-middle;
 		display: none;
 		height:auto;
 		max-height: 170px;
-		width: 100%;
+		min-width: 100%;
+		width: auto;
 
 		position: absolute;
 		left: 0;

@@ -218,6 +218,7 @@
 
         .box-body {
             border-color: $box-witness-structure-color-dark;
+            background: $box-witness-background-color;
         }
         .box-menu {
             @include colors($box-witness-structure-color-light, $box-witness-structure-color-dark);

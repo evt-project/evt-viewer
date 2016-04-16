@@ -171,7 +171,7 @@ section > div{
     width: auto;
     display: inline-block;
     position: absolute;
-    right: 0px;
+    right: 4px;
     top: 0px;
     height: 54px;
     padding: 10px;
@@ -203,7 +203,7 @@ section > div{
         &.mode-view {
             margin:0px 1px;
             &[data-icon='mode-critical']{
-                margin-right:-4px;
+                margin-right:-2px;
             }
             .buttonSwitch{
                 width: auto;
@@ -284,10 +284,12 @@ pre {
     right: 0;
     background: #fff;
     height: auto;
-    top: calc(50% - #{$base-header-height});
+    top: 50%;
     margin-right: 9px;
-    transform: translate(0, -25%);
+    transform: translate(0, -50%);
     min-width: 150px;
+    max-height: 80%;
+    overflow: auto;
     @include set(box-shadow, 0px 0px 4px 0px rgba(0,0,0,0.6));
     > span {
         display: block;

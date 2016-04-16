@@ -73,15 +73,15 @@
 
     &-start{
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+100 */
-        background: #e5e5e5; /* Old browsers */
-        background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+        background: #bdbdbd; /* Old browsers */
+        background: -moz-linear-gradient(top,  $box-witness-background-color 0%,  #bdbdbd 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  $box-witness-background-color 0%, #bdbdbd 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  $box-witness-background-color 0%, #bdbdbd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$box-witness-background-color', endColorstr=' #bdbdbd',GradientType=0 ); /* IE6-9 */
         margin-bottom: 20px;
         @include set("box-shadow", "inset 0px -10px 9px -8px #000");
         &::after{
-            background: linear-gradient(-45deg, #fff 8px, transparent 0), linear-gradient(45deg, #fff 8px, transparent 0);
+            background: linear-gradient(-45deg, $box-witness-background-color 8px, transparent 0), linear-gradient(45deg, $box-witness-background-color 8px, transparent 0);
             background-position: left-bottom;
             background-repeat: repeat-x;
             background-size: 16px 16px;
@@ -96,18 +96,18 @@
     }
 
     &-end{
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e5e5e5+0,ffffff+100,ffffff+100 */
-        background: #e5e5e5; /* Old browsers */
-        background: -moz-linear-gradient(top,  #e5e5e5 0%, #ffffff 100%, #ffffff 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #e5e5e5 0%,#ffffff 100%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #e5e5e5 0%,#ffffff 100%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/ #bdbdbd+0,ffffff+100,ffffff+100 */
+        background:  #bdbdbd; /* Old browsers */
+        background: -moz-linear-gradient(top,   #bdbdbd 0%, $box-witness-background-color 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,   #bdbdbd 0%,$box-witness-background-color 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,   #bdbdbd 0%,$box-witness-background-color 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=' #bdbdbd', endColorstr='$box-witness-background-color',GradientType=0 ); /* IE6-9 */
         margin-top: 20px;
         @include set("box-shadow", "inset 0px 10px 9px -8px #000");
         &::before{
             top: 0px;
             background-position: left top;
-            background: linear-gradient(-135deg, #fff 8px, transparent 0), linear-gradient(135deg, #fff 8px, transparent 0);
+            background: linear-gradient(-135deg, $box-witness-background-color 8px, transparent 0), linear-gradient(135deg, $box-witness-background-color 8px, transparent 0);
             background-position: left-top;
             background-repeat: repeat-x;
             background-size: 16px 16px;
@@ -135,7 +135,7 @@
     text-align: center;
     padding-top: 20px;
     &::after{
-        background: linear-gradient(-45deg, #fff 8px, transparent 0), linear-gradient(45deg, #fff 8px, transparent 0);
+        background: linear-gradient(-45deg, $box-witness-background-color 8px, transparent 0), linear-gradient(45deg, $box-witness-background-color 8px, transparent 0);
         background-position: left-bottom;
         background-repeat: repeat-x;
         background-size: 16px 16px;
@@ -150,7 +150,7 @@
     &::before{
         top: 0px;
         background-position: left top;
-        background: linear-gradient(-135deg, #fff 8px, transparent 0), linear-gradient(135deg, #fff 8px, transparent 0);
+        background: linear-gradient(-135deg, $box-witness-background-color 8px, transparent 0), linear-gradient(135deg, $box-witness-background-color 8px, transparent 0);
         background-position: left-top;
         background-repeat: repeat-x;
         background-size: 16px 16px;

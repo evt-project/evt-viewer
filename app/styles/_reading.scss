@@ -81,7 +81,7 @@ $reading-background-selected : rgb(208, 220, 255);
                 &:not(.blurred){
                     .reading__text {
                         > * {
-                            border: 1px dotted black;
+                            border: 1px solid #999;
                         }
                     }
                     &.expansed {

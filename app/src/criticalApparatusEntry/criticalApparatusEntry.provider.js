@@ -61,12 +61,12 @@ angular.module('evtviewer.criticalApparatusEntry')
                         label : 'Orthographic Variants'
                     };
                 }
-                if (content.attributes._keys.length > 0 ){
+                // if (content.attributes._keys.length > 0 ){
                     tabs._indexes.push('moreInfo');
                     tabs.moreInfo = {
                         label : 'More Info'
                     };
-                }
+                // }
                 if (criticalEntry._xmlSource !== '') {
                     tabs._indexes.push('xmlSource');
                     tabs.xmlSource = {

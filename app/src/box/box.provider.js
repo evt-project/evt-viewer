@@ -232,7 +232,9 @@ angular.module('evtviewer.box')
                                 scope.vm.isLoading = false;
                             }
                         } else {
-                            scope.vm.content = parsedData.getDocument(scope.vm.state.docId) || noTextAvailableMsg;
+                            //TODO: Handle different edition level
+                            // parsedData.getDocument(scope.vm.state.docId).content
+                            scope.vm.content = noTextAvailableMsg;
                             scope.vm.isLoading = false;
                         }
                     };

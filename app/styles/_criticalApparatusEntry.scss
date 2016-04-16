@@ -261,6 +261,8 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         }
     }
     &-metadataTitle{
+        border-top: 1px solid #999;
+        padding-top: 10px;
         text-align: center;
         width: 100%;
         font-variant: small-caps;
