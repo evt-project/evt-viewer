@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication) {    
+.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {    
     var _console = $log.getInstance('interface');
 
     $scope.getCurrentViewMode = function() {
@@ -117,6 +117,12 @@ angular.module('evtviewer.interface')
             if (evtInterface.getProperty('witnessSelector')){
                 evtInterface.updateProperty('witnessSelector', false);
             }
+        }
+    };
+
+    $scope.handleKeydownEvent = function($event){
+        if ($event.keyCode === 27) {
+            evtDialog.closeAll();
         }
     };
 
