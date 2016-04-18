@@ -661,6 +661,7 @@ angular.module('evtviewer.dataHandler')
         if (entry !== null) {
             var entryReadings = entry._indexes.readings._indexes;
             spanElement = document.createElement('evt-reading');
+            spanElement.setAttribute('data-type', 'variant');
             
             if (entry.lemma !== '' && !entry._lacuna && entryReadings.length === 1) {
                 var entryWits = entry.content[entryReadings[0]].wits || [];
@@ -884,11 +885,13 @@ angular.module('evtviewer.dataHandler')
             spanElement = document.createElement('evt-reading');
             spanElement.setAttribute('data-app-id', entry.id);
             spanElement.setAttribute('data-scope-wit', wit);
+            spanElement.setAttribute('data-type', 'lemma');
             if (entry._lacuna) {
                 var lacunaElement = document.createElement('span');
                     lacunaElement.className = 'lacunaApp icon-evt_note';
                 spanElement.appendChild(lacunaElement);
             } else if (entry.lemma !== undefined && entry.lemma !== '') {
+                spanElement.setAttribute('data-reading-id', entry.lemma);
                 var lemmaContent = entry.content[entry.lemma].content;
                 for (var i in lemmaContent) {
                     if (typeof(lemmaContent[i]) === 'string'){

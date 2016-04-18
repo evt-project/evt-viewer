@@ -52,6 +52,7 @@ angular.module('evtviewer.reading')
                 readingId        : scope.readingId,
                 readingType      : scope.readingType,
                 variance         : scope.variance,
+                type             : scope.type,
                 attributes       : attributes,
 
                 over             : false,
