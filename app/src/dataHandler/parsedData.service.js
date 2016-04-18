@@ -279,7 +279,9 @@ angular.module('evtviewer.dataHandler')
         return content;
     };
 
+    /* **************** */
     /* CRITICAL ENTRIES */
+    /* **************** */
     parsedData.getCriticalTextsCollection = function() {
         return criticalTexts;
     };
@@ -318,7 +320,11 @@ angular.module('evtviewer.dataHandler')
 
     parsedData.getCriticalEntriesMaxVariance = function() {
         return criticalAppCollection._maxVariance;
-    };    
+    }; 
+
+    parsedData.getReadingAttributes = function(readingId, appId){
+        return criticalAppCollection[appId].content[readingId].attributes;
+    };
 
     /* CRITICAL ENTRIES FILTERS */
     parsedData.getGenericColorForAppEntry = function(index){

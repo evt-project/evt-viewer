@@ -10,7 +10,7 @@ angular.module('evtviewer.reading')
 
     var currentAppEntry = '';
 
-    this.$get = function() {
+    this.$get = function(parsedData) {
         var reading    = {},
             collection = {},
             list       = [],
@@ -22,13 +22,26 @@ angular.module('evtviewer.reading')
         // 
         
         reading.build = function(id, scope) {
-            var currentId = idx++,
-                entryId = id || undefined;
+            var currentId  = idx++,
+                entryId    = id || undefined,
+                attributes = '';
 
             var scopeHelper = {};
-
+            
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
+            }
+
+            if (scope.readingId !== undefined){
+                var aAttributes = parsedData.getReadingAttributes(scope.readingId, id) || [];
+                for (var attr in aAttributes) {
+                    if (attr !== 'wit' && attr !== 'xml:id'){
+                        attributes += attr.toUpperCase()+': '+aAttributes[attr]+' - ';
+                    }
+                }
+                if (attributes !== '') {
+                    attributes = attributes.slice(0, -3);
+                }
             }
 
             scopeHelper = {
@@ -39,6 +52,7 @@ angular.module('evtviewer.reading')
                 readingId        : scope.readingId,
                 readingType      : scope.readingType,
                 variance         : scope.variance,
+                attributes       : attributes,
 
                 over             : false,
                 apparatus        : {
