@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover) {    
+.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication) {    
     var _console = $log.getInstance('interface');
 
     $scope.getCurrentViewMode = function() {
@@ -72,7 +72,8 @@ angular.module('evtviewer.interface')
     };
 
     $scope.isLoading = function() {
-        return evtInterface.isLoading();
+        var error = evtCommunication.getError();
+        return evtInterface.isLoading() && error.title === '';
     };
 
     $scope.isPinnedAppBoardOpened = function(){
@@ -123,6 +124,9 @@ angular.module('evtviewer.interface')
         return '<div class="bookmark">'+window.location+'</div>';
     };
 
+    $scope.getErrorMsg = function(){
+        return evtCommunication.getError();
+    }
     _console.log('InterfaceCtrl running');
 })
 

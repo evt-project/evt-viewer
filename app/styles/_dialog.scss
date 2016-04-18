@@ -47,3 +47,19 @@
         }
     }
 }
+
+.evt-dialog.evt-dialog-error,  
+.evt-dialog.evt-dialog-small{
+    .evt-dialog-container {
+        min-width: 10%;
+        max-width: 60%;
+        height: auto;
+        &-content {
+            padding:20px;
+        }
+    }
+}
+
+.evt-dialog.evt-dialog-error .evt-dialog-container-top {
+    background: #990000;
+}

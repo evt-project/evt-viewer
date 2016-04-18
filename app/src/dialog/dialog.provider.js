@@ -50,8 +50,8 @@ angular.module('evtviewer.dialog')
         // Dialog builder
         // 
         dialog.build = function(scope) {
-            var currentId   = idx++,
-                currentType = scope.type || 'default',
+            var currentId   = scope.id    || idx++,
+                currentType = scope.type  || 'default',
                 title       = scope.title || '',
                 opened      = false,
                 content;
@@ -68,6 +68,7 @@ angular.module('evtviewer.dialog')
                 defaults      : angular.copy(defaults),
 
                 // model
+                type          : currentType,
                 content       : content,
                 title         : title,
                 opened        : opened,
@@ -128,7 +129,6 @@ angular.module('evtviewer.dialog')
                 }
             }
         };
-
         return dialog;
     };
 

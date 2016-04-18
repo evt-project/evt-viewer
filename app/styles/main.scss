@@ -171,7 +171,7 @@ section > div{
     width: auto;
     display: inline-block;
     position: absolute;
-    right: 4px;
+    right: 8px;
     top: 0px;
     height: 54px;
     padding: 10px;
@@ -223,7 +223,8 @@ section > div{
         }
     }
 }
-.global-loading-container {
+.global-loading-container,
+.global-msg-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -232,6 +233,17 @@ section > div{
     z-index: 9999;
     background: #e5e5e5;
     font-size: 60%;
+    .global-msg {
+        h1 {
+            font-size:2.5em; 
+        }
+        height: auto;
+        text-align: center;
+        padding: 20px;
+    }
+}
+.global-loading-container {
+    display: block;
 }
 .viewMode, .global-loading-container {
     .loading {
@@ -245,6 +257,7 @@ section > div{
             transform: translate(-50%, -50%);
         }
     }
+
     box:last-child .box{
         margin: 0;
     }
@@ -306,16 +319,6 @@ pre {
         left: 75%;
         transform: translate(-50%, -25%);
     }
-}
-
-.bookmark {
-    display: block;
-    text-align: center;
-    top: 50%;
-    position: absolute;
-    width: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 // Generic style 
 .hidden {

@@ -231,6 +231,7 @@ angular.module('evtviewer.interface')
         mainInterface.updateCurrentAppEntry = function(appEntryId) {
             state.currentAppEntry = appEntryId;
         };
+
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,

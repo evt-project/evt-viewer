@@ -195,11 +195,25 @@
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
     </section>
 
-    <section class="global-loading-container" ng-if="isLoading() || isLoading() === undefined">
+    <section class="global-msg-container" 
+            ng-if="!isLoading() && getErrorMsg() !== undefined && getErrorMsg().title !== ''">
+        <div class="global-msg"> 
+            <h1>EVT Viewer</h1>
+            <h2>{{getErrorMsg().title}}</h2>
+            <p>{{ getErrorMsg().msg }}</p>
+        </div>
+    </section>
+
+    <section class="global-loading-container" 
+            ng-hide="!isLoading()">
         <!-- LOADING... -->
         <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     </section>
     
+    <evt-dialog 
+        data-id="errorMsg"
+        data-type="error" 
+        data-title="ERROR" ></evt-dialog>
     <footer>Footer</footer>
 
 
