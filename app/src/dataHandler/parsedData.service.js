@@ -323,7 +323,11 @@ angular.module('evtviewer.dataHandler')
     }; 
 
     parsedData.getReadingAttributes = function(readingId, appId){
-        return criticalAppCollection[appId].content[readingId].attributes;
+        var attributes = [];
+        if (criticalAppCollection[appId].content[readingId] !== undefined){
+            attributes = criticalAppCollection[appId].content[readingId].attributes;
+        }
+        return attributes;
     };
 
     /* CRITICAL ENTRIES FILTERS */

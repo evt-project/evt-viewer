@@ -187,6 +187,7 @@ angular.module('evtviewer.reading')
         var app = parsedData.getCriticalEntryById(vm.appId),
             reading,
             readingAttributes;
+        
         var condizione = 'OR', //TODO: Decidere come gestire
             fit        = false,
             count      = 0,
@@ -197,53 +198,55 @@ angular.module('evtviewer.reading')
             values,
             value,
             key;
-        reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
-        if (reading !== undefined){
-            readingAttributes = reading.attributes || {};
-        
-        var filters = $scope.$parent.vm.state.filters || {};
-        var filterKeys = Object.keys(filters);
-        if (condizione === 'OR') {
-            // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
-            match = false;
-            for (key in filterKeys) {
-                filterLabel = filterKeys[key];
-                filter      = filters[filterLabel];
-                if (filter.totActive > 0) {
-                    count++;
-                    if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
-                        i = 0;
-                        values = filter.values;
-                        while ( i < values.length && !match) {
-                            value = values[values[i]].name;
-                            match = match || readingAttributes[filterLabel] === value;
-                            i++;
+        if (app !== undefined){
+            reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
+            if (reading !== undefined){
+                readingAttributes = reading.attributes || {};
+            
+                var filters = $scope.$parent.vm.state.filters || {};
+                var filterKeys = Object.keys(filters);
+                if (condizione === 'OR') {
+                    // basta che almeno un filtro corrisponda, quindi non importa ciclarli tutti
+                    match = false;
+                    for (key in filterKeys) {
+                        filterLabel = filterKeys[key];
+                        filter      = filters[filterLabel];
+                        if (filter.totActive > 0) {
+                            count++;
+                            if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
+                                i = 0;
+                                values = filter.values;
+                                while ( i < values.length && !match) {
+                                    value = values[values[i]].name;
+                                    match = match || readingAttributes[filterLabel] === value;
+                                    i++;
+                                }
+                            }
+                        }
+                        if (match) { break; }
+                    }
+                    fit = match;
+                } else { //default
+                    var visible = true;
+                    for (key in filterKeys) {
+                        filterLabel = filterKeys[key];
+                        filter      = filters[filterLabel];
+                        if (filter.totActive > 0) {
+                            count++;
+                            match = false; 
+                            if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
+                                values = filter.values;
+                                for ( i = 0; i < values.length; i++ ) {
+                                    value = values[values[i]].name;
+                                    match = match || readingAttributes[filterLabel] === value;
+                                }
+                            }
+                            visible = visible && match;
                         }
                     }
-                }
-                if (match) { break; }
-            }
-            fit = match;
-        } else { //default
-            var visible = true;
-            for (key in filterKeys) {
-                filterLabel = filterKeys[key];
-                filter      = filters[filterLabel];
-                if (filter.totActive > 0) {
-                    count++;
-                    match = false; 
-                    if (readingAttributes !== undefined && readingAttributes[filterLabel] !== undefined){
-                        values = filter.values;
-                        for ( i = 0; i < values.length; i++ ) {
-                            value = values[values[i]].name;
-                            match = match || readingAttributes[filterLabel] === value;
-                        }
-                    }
-                    visible = visible && match;
+                    fit = visible;
                 }
             }
-            fit = visible;
-        }
         }
         
         if (count === 0) {
