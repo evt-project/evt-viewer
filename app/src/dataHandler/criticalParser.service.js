@@ -240,6 +240,7 @@ angular.module('evtviewer.dataHandler')
                     // Sub apparatus
                     var entryApp = parseAppEntry(child);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
+                    entry._indexes.subApps.push(entryApp.id);
                 } else {
                     if (reading._significant) {
                         if (config.notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
