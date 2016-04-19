@@ -84,6 +84,13 @@ $reading-background-selected : rgb(208, 220, 255);
                             border: 1px solid #999;
                         }
                     }
+                    &:not(.expansed){
+                        > .reading__text:hover {
+                            > * {
+                                border-color: #000;
+                            }
+                        }
+                    }
                     &.expansed {
                         > .reading__text{
                             > * {

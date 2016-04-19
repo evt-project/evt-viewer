@@ -82,6 +82,9 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         .sub_app .app_lemma_content::after {
             content: "]";
         }
+        .sub_app{
+            margin: 0 5px;
+        }
     }
     &_other-content{
         border-top: 3px double $critical-apparatus-entry-border-color;

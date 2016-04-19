@@ -133,7 +133,7 @@ angular.module('evtviewer.dataHandler')
                 } else {
                     if ('<'+child.tagName+'>' === apparatusEntryDef) {
                         // Sub apparatus
-                        var entryApp = parseAppEntry(child);
+                        var entryApp = handleAppEntry(child);
                         genericElement.content.push({id: entryApp.id, type: 'subApp'});
                     } else {
                         if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
@@ -236,9 +236,9 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (child.tagName === 'note') {
                     reading.note = child.innerHTML;
-                } else if ('<'+child.tagName+'>' === apparatusEntryDef) {
+                } else if ( apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0 ) {
                     // Sub apparatus
-                    var entryApp = parseAppEntry(child);
+                    var entryApp = handleAppEntry(child, entry.id);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                     entry._indexes.subApps.push(entryApp.id);
                 } else {
@@ -379,7 +379,6 @@ angular.module('evtviewer.dataHandler')
             }
         }
         entry._subApp = evtParser.isNestedInElem(app, apparatusEntryDef.replace(/[<>]/g, ''));
-
         angular.forEach(app.childNodes, function(child){
             if (child.nodeType === 1) {
                 if (readingDef.indexOf('<'+child.tagName+'>') >= 0) {
@@ -402,7 +401,7 @@ angular.module('evtviewer.dataHandler')
                     parseGroupReading(entry, child);
                 } 
                 else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    var entryObj = parseAppEntry(child);
+                    var entryObj = handleAppEntry(child, id);
                     var subApp = {id: entryObj.id, type: 'subApp'};
                     entry.content[entryObj.id] = subApp;
                     entry._indexes.encodingStructure.push(entryObj.id);
@@ -412,10 +411,11 @@ angular.module('evtviewer.dataHandler')
                 } 
             }
         });
+        
         return entry;
     };
     
-    var handleAppEntry = function(app) {
+    var handleAppEntry = function(app, parentEntryId) {
         // if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
             var entry = parseAppEntry(app) || undefined;
 
@@ -451,7 +451,12 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             entry._indexes.missingWits = missingWits;
+            
+            if (parentEntryId) {
+                entry._indexes._parentEntry = parentEntryId;
+            }
             parsedData.addCriticalEntry(entry);
+            return entry;
         // }
     };
     /* ************************* */
@@ -462,7 +467,7 @@ angular.module('evtviewer.dataHandler')
     /* @doc document -> XML to be parsed                                 */
     /* ***************************************************************** */
     // It searches for <app> elements and for each one of them
-    // it calls the function parseAppEntry(element)
+    // it calls the function handleAppEntry(element)
     // and add the json object generated into parsedData with the function parsedData.addCriticalEntry();
     parser.parseCriticalEntries = function(doc) {
         var deferred = $q.defer();

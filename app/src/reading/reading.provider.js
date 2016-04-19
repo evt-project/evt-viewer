@@ -24,7 +24,8 @@ angular.module('evtviewer.reading')
         reading.build = function(id, scope) {
             var currentId  = idx++,
                 entryId    = id || undefined,
-                attributes = '';
+                attributes = '',
+                parentEntryId;
 
             var scopeHelper = {};
             
@@ -43,12 +44,16 @@ angular.module('evtviewer.reading')
                     attributes = attributes.slice(0, -3);
                 }
             }
-
+            var appObj = parsedData.getCriticalEntryById(entryId);
+            if (appObj._subApp) {
+                parentEntryId = appObj._indexes._parentEntry || '';
+            }
             scopeHelper = {
                 // expansion
                 uid              : currentId,
                 scopeWit         : scope.scopeWit || '',
                 appId            : entryId,
+                parentAppId      : parentEntryId,
                 readingId        : scope.readingId,
                 readingType      : scope.readingType,
                 variance         : scope.variance,
@@ -110,7 +115,7 @@ angular.module('evtviewer.reading')
                 } else {
                     currentReading.mouseOut();
                 }
-            });  
+            });
         };
 
         reading.unselectAll = function() {

@@ -134,7 +134,7 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < subAppContent.significantReadings.length; i++) {
             subAppText += subAppContent.significantReadings[i].content;
             if (i < subAppContent.significantReadings.length - 1) {
-                subAppText += ';';
+                subAppText += '; ';
             }
         }
         subAppText += ')) </span>';

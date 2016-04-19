@@ -2,7 +2,7 @@
     class="reading"
     ng-mouseover="vm.toggleOverAppEntries($event);"
     ng-mouseout="vm.toggleOverAppEntries($event)"
-    ng-class="{ 'selected' : vm.selected && !$parent.vm.state.topBoxOpened,
+    ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
                 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
                 'over'     : vm.over, 
                 'invisible': !vm.fitFilters(),

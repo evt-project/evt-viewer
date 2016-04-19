@@ -25,6 +25,15 @@ angular.module('evtviewer.reading')
         vm.selected = false;
     };
 
+    this.isSelect = function() {
+        if (vm.parentAppId !== undefined ) {
+            return vm.selected || (evtInterface.getCurrentAppEntry() === vm.parentAppId);
+        } else {
+            return vm.selected;
+        }
+        
+    };
+
     this.isApparatusOpened = function() {
         return (vm.apparatus.opened && !$scope.$parent.vm.state.topBoxOpened);
     };
@@ -82,8 +91,9 @@ angular.module('evtviewer.reading')
     };
 
     this.callbackClick = function($event) {
+        $event.stopPropagation();
         vm.toggleSelectAppEntries($event);
-        if (vm.over && (!vm.selected || !vm.apparatus.opened)){
+        if (vm.over && (!vm.isSelect() || !vm.apparatus.opened)){
             vm.toggleApparatus($event);
         }
     };
@@ -133,7 +143,7 @@ angular.module('evtviewer.reading')
                 possibleFilters = $scope.$parent.vm.type === 'witness' ? possibleVariantFilters : possibleLemmaFilters;
                 if (Object.keys(readingAttributes).length > 0) {
                     var colors = '';
-                    var opacity = (vm.over || vm.selected) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
+                    var opacity = (vm.over || vm.isSelect()) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
                     for (var label in filterLabels) {
                         var filterLabel = filterLabels[label].name;
                         if (possibleFilters.indexOf(filterLabel) >= 0) {
@@ -166,7 +176,7 @@ angular.module('evtviewer.reading')
         }
         if (background === undefined) {
             if (!$scope.$parent.vm.state.topBoxOpened) {
-                if (vm.over || vm.selected) {
+                if (vm.over || vm.isSelect()) {
                     background = 'background: '+config.variantColorDark;
                 } else {
                     background = 'background: '+config.variantColorLight;
