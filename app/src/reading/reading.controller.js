@@ -37,10 +37,6 @@ angular.module('evtviewer.reading')
         vm.apparatus.opened = true;
     };
 
-    this.toggleApparatus = function() {
-        vm.apparatus.opened = !vm.apparatus.opened;
-    };
-
     this.toggleTooltipOver = function() {
         vm.tooltipOver = !vm.tooltipOver;
     };
@@ -57,7 +53,6 @@ angular.module('evtviewer.reading')
     };
 
     this.toggleSelectAppEntries = function($event) {
-        $event.stopPropagation();
         if ( !vm.hidden ) {
             if (vm.selected === false) {
                 if (!vm.apparatus.opened){
@@ -75,9 +70,8 @@ angular.module('evtviewer.reading')
     };
 
     this.toggleApparatus = function($event) {
-        $event.stopPropagation();
         evtPopover.closeAll();
-        if ( !vm.hidden ) {
+        if ( !vm.hidden && vm.over ) {
             if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 
@@ -88,9 +82,8 @@ angular.module('evtviewer.reading')
     };
 
     this.callbackClick = function($event) {
-        $event.stopPropagation();
         vm.toggleSelectAppEntries($event);
-        if (!vm.selected || !vm.apparatus.opened){
+        if (vm.over && (!vm.selected || !vm.apparatus.opened)){
             vm.toggleApparatus($event);
         }
     };
@@ -104,7 +97,7 @@ angular.module('evtviewer.reading')
     };
 
     this.backgroundColor = function(){
-        if ($scope.$parent.vm.type === 'witness') {
+        if (vm.type === 'variant') {
             return colorFilters();
         } else {
             return colorVariance();
