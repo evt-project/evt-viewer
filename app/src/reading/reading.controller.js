@@ -92,9 +92,11 @@ angular.module('evtviewer.reading')
 
     this.callbackClick = function($event) {
         $event.stopPropagation();
-        vm.toggleSelectAppEntries($event);
-        if (vm.over && (!vm.isSelect() || !vm.apparatus.opened)){
-            vm.toggleApparatus($event);
+        if (vm.over) {
+            vm.toggleSelectAppEntries($event);
+            if (!vm.isSelect() || !vm.apparatus.opened){
+                vm.toggleApparatus($event);
+            }
         }
     };
 
