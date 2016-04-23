@@ -14,6 +14,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(projectInfoDef.replace(/[<>]/g, '')), 
             function(element) {
+                parser.parseEditionReference(element);
                 parser.parseFileDescription(element);
                 parser.parseEncodingDescription(element);
                 parser.parseTextProfile(element);
@@ -37,6 +38,19 @@ angular.module('evtviewer.dataHandler')
         seriesStmt      = '<seriesStmt>',
         sourceDesc      = '<sourceDesc>',
         titleStmt       = '<titleStmt>';
+
+    parser.parseEditionReference = function(teiHeader){
+        var currentDocument = angular.element(teiHeader);
+        var title = currentDocument.find(titleStmt.replace(/[<>]/g, '')+ ' title')[0],
+            author = currentDocument.find(titleStmt.replace(/[<>]/g, '')+ ' author')[0],
+            publisher = currentDocument.find(publicationStmt.replace(/[<>]/g, '')+' publisher')[0];
+        var reference = {
+            title     : title.textContent,
+            author    : author.textContent,
+            publisher : publisher.textContent
+        };
+        parsedData.updateProjectInfoContent(reference, 'editionReference');
+    };
 
     parser.parseFileDescription = function(teiHeader){
         var currentDocument = angular.element(teiHeader);

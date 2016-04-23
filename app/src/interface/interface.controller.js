@@ -38,7 +38,11 @@ angular.module('evtviewer.interface')
         });
         evtInterface.updateProperty('witnessSelector', false);
     };
-
+    $scope.getWitness = function(wit){
+        var desc = wit+' - '+parsedData.getWitness(wit).description.textContent.trim() || wit;
+        desc = desc.length > 30 ? desc.substr(0, 30)+'...' : desc;
+        return desc;
+    };
     $scope.getCurrentWitnesses = function() {
         return evtInterface.getCurrentWitnesses();
     };
@@ -127,7 +131,14 @@ angular.module('evtviewer.interface')
     };
 
     $scope.getBookmark = function() {
-        return '<div class="bookmark">'+window.location+'</div>';
+        var projectRef = parsedData.getProjectInfo().editionReference || {};
+        var output = '<div class="bookmark">';
+        output += projectRef.author ? projectRef.author+'. ' : '';
+        output += projectRef.title ? '<em>'+projectRef.title+'</em>. ' : '';
+        output += projectRef.publisher ? 'Published by '+projectRef.publisher+'. ' : '';
+        output += '<<a href="'+window.location+'" target="blank">'+window.location+'</a>>';
+        output += '</div>';
+        return output;
     };
 
     $scope.getErrorMsg = function(){
