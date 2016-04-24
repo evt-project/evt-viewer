@@ -20,7 +20,7 @@
         font-size: 60%;
         background: #fff;
         min-width: 80%;
-        height: 80%;
+        height: 2000px;
         max-height: 80%;
         position: absolute;
         top: 50%;
@@ -28,6 +28,9 @@
         transform: translate(-50%,-50%);
         @include set(box-shadow, 0px 0px 8px #000);
 
+        div[ng-switch] {
+            @include calc(height, 100% - #{$mainContainer-menu-height});
+        }
         &-top{
             height: $mainContainer-menu-height;
             background: $base-color-dark;
@@ -43,7 +46,8 @@
 
         &-content {
             overflow-y: auto;
-            @include calc(height, 100% - #{$mainContainer-menu-height});
+            height: 100%;
+            // @include calc(height, 100% - #{$mainContainer-menu-height});
         }
     }
 }

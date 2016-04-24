@@ -302,7 +302,8 @@ pre {
     transform: translate(0, -50%);
     min-width: 150px;
     max-height: 80%;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     @include set(box-shadow, 0px 0px 4px 0px rgba(0,0,0,0.6));
     > span {
         display: block;
@@ -317,7 +318,7 @@ pre {
         position: absolute;
         right: auto;
         left: 75%;
-        transform: translate(-50%, -25%);
+        transform: translate(-50%, -45%);
     }
 }
 // Generic style 
