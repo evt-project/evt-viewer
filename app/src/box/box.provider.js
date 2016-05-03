@@ -194,7 +194,7 @@ angular.module('evtviewer.box')
 
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {
-                        topMenuList.buttons.push({title: 'Color legend', label: '', icon: 'color-legend', type: 'colorLegend'});
+                        topMenuList.buttons.push({title: 'Color key', label: '', icon: 'color-legend', type: 'colorLegend'});
                         bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }});
                         appFilters = appFilters.filters;
                     }
