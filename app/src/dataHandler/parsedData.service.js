@@ -172,17 +172,20 @@ angular.module('evtviewer.dataHandler')
 
     /* WITNESSES */
     parsedData.addElementInWitnessCollection = function(element){
-        if (witnessesCollection[element.id] === undefined) {
-            witnessesCollection[element.id] = element;
-            
-            if (element._type === 'group') {
-                witnessesCollection._indexes.groups.push(element.id);
-            } else {
-                witnessesCollection._indexes.witnesses.push(element.id);    
-            }
-            
-            if (element._group === undefined) {
-                witnessesCollection._indexes.encodingStructure.push(element.id);
+        var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
+        if (skipWitnesses.indexOf(element.id) < 0){
+            if (witnessesCollection[element.id] === undefined) {
+                witnessesCollection[element.id] = element;
+                
+                if (element._type === 'group') {
+                    witnessesCollection._indexes.groups.push(element.id);
+                } else {
+                    witnessesCollection._indexes.witnesses.push(element.id);    
+                }
+                
+                if (element._group === undefined) {
+                    witnessesCollection._indexes.encodingStructure.push(element.id);
+                }
             }
         }
     };

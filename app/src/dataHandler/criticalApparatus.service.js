@@ -1,7 +1,9 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalApparatus', function(parsedData, evtParser) {
+.service('evtCriticalApparatus', function(parsedData, evtParser, config) {
     var apparatus = {};
+
+    var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
     apparatus.getContent = function(entry, subApp, scopeWit) {
         // console.log('getContent', entry);
@@ -142,7 +144,8 @@ angular.module('evtviewer.dataHandler')
     };
 
     apparatus.getSignificantReading = function(reading, scopeWit){
-        var readingText = '';
+        var readingText = '',
+            readingObj  = {};
 
         for (var i = 0; i < reading.content.length; i++) {
             if (typeof(reading.content[i]) === 'string') {
@@ -162,17 +165,19 @@ angular.module('evtviewer.dataHandler')
         }
         readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
 
-        readingText += apparatus.getCriticalEntryWitnesses(reading, 'rdg', scopeWit);
-        // readingText += apparatus.getCriticalEntryAttributes(reading, 'rdg');
+        var readingWits = apparatus.getCriticalEntryWitnesses(reading, 'rdg', scopeWit);
+        if (reading.wits === undefined || readingWits !== ''){
+            readingText += readingWits;
+            // readingText += apparatus.getCriticalEntryAttributes(reading, 'rdg');
+            readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+            readingText = apparatus.transformCriticalEntryFragmentMilestones(readingText);
 
-        readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-        readingText = apparatus.transformCriticalEntryFragmentMilestones(readingText);
-
-        var readingObj = {
-            content    : readingText,
-            attributes : {
-                values : reading.attributes || {},
-                _keys  : Object.keys(reading.attributes) || []
+            readingObj = {
+                content    : readingText,
+                attributes : {
+                    values : reading.attributes || {},
+                    _keys  : Object.keys(reading.attributes) || []
+                }
             }
         }
         return readingObj;
@@ -182,7 +187,9 @@ angular.module('evtviewer.dataHandler')
         var witnesses  = '';
         if (reading.wits !== undefined ) {
             for (wit in reading.wits) {
-                witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
+                if (skipWitnesses.indexOf(wit) < 0){
+                    witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
+                }
             }
         }
         if (witnesses !== '') {

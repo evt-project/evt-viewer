@@ -7,7 +7,8 @@ angular.module('evtviewer.dataHandler')
         lemmaDef              = '<lem>',
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>';
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef;
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef,
+        skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
@@ -52,8 +53,10 @@ angular.module('evtviewer.dataHandler')
                         _group      : list.id,
                         _type       : 'witness'
                     };
-                    parsedData.addElementInWitnessCollection(witnessElem);
-                    list.content.push(witnessElem.id);
+                    if (skipWitnesses.indexOf(witnessElem.id) < 0){
+                        parsedData.addElementInWitnessCollection(witnessElem);
+                        list.content.push(witnessElem.id);
+                    }
                 }
             }
         });

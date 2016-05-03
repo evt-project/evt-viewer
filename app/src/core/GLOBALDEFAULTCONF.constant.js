@@ -66,6 +66,7 @@ angular.module('evtviewer.core')
 
     dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
     preferredWitness : 'A',
+    skipWitnesses    : '',
 
     indexTitle       : 'EVT Critical Viewer',
     webSite          : '',

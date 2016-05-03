@@ -1,6 +1,7 @@
 {
     "dataUrl"          : "",
     "preferredWitness" : "",
+    "skipWitnesses"    : "",
     
     "indexTitle"       : "",
     "webSite"          : "",
