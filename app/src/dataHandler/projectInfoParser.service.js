@@ -45,9 +45,9 @@ angular.module('evtviewer.dataHandler')
             author = currentDocument.find(titleStmt.replace(/[<>]/g, '')+ ' author')[0],
             publisher = currentDocument.find(publicationStmt.replace(/[<>]/g, '')+' publisher')[0];
         var reference = {
-            title     : title.textContent,
-            author    : author.textContent,
-            publisher : publisher.textContent
+            title     : title ? title.textContent : '',
+            author    : author ? author.textContent : '',
+            publisher : publisher ? publisher.textContent : ''
         };
         parsedData.updateProjectInfoContent(reference, 'editionReference');
     };
