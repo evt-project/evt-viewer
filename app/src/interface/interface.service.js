@@ -301,7 +301,8 @@ angular.module('evtviewer.interface')
                         properties.availableWitnesses = []    
                     }
                 } else {
-                    properties.availableWitnesses = parsedData.getWitnessesList();
+                    var totWits = parsedData.getWitnessesList();
+                    properties.availableWitnesses = totWits.slice(0, totWits.length);
                 }
             }
             // APP ENTRY
