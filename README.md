@@ -131,7 +131,7 @@ Istruzioni per l'installazione e la configurazione dell'ambiente di sviluppo di 
 | $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 
 | $ brew doctor
 
-* GIT [da fare solo se non già presente nel pc]
+* GIT [da fare solo se non già presente nel pc] - Se da problemi, provare senza sudo
 | $ sudo brew install git
 
 * RUBY

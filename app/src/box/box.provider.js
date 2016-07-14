@@ -182,7 +182,7 @@ angular.module('evtviewer.box')
                         var currentPage = evtInterface.getCurrentPage(),
                             pageFacs    = parsedData.getPage(evtInterface.getCurrentPage()).facs || '',
                             folder      = 'data/images/';
-                        scope.vm.content = '<img src="'+folder+pageFacs+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'"/>';
+                        scope.vm.content = '<img src="'+folder+pageFacs+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
                         scope.vm.isLoading = false;
                     };
                     break;
