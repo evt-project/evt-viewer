@@ -114,6 +114,7 @@ angular.module('evtviewer.core')
     loadCriticalEntriesImmediately : true,
     maxWitsLoadTogether            : 5,
 
+    variantColors : { },
     filterColors  : { },
     genericColors : ['rgb(52, 197, 173)', 'rgb(238, 194, 66)', 'rgb(253, 153, 54)', 'rgb(253, 95, 58)',
                      'rgb(235, 77, 153)', 'rgb(252, 144, 172)', 'rgb(171, 99, 219)', 'rgb(67, 135, 217)',
