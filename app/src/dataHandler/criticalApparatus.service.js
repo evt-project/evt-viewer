@@ -185,13 +185,22 @@ angular.module('evtviewer.dataHandler')
 
     apparatus.getCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
         var witnesses  = '';
-        if (reading.wits !== undefined ) {
+        if (reading.wits !== undefined && reading.wits.length > 0) {
             for (wit in reading.wits) {
                 if (skipWitnesses.indexOf(wit) < 0){
                     witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
                 }
             }
+        } else if (elemType === 'lem') {
+            if (reading.autoWits !== undefined && reading.autoWits.length > 0) {
+                for (wit in reading.autoWits) {
+                    if (skipWitnesses.indexOf(wit) < 0){
+                        witnesses += '<evt-witness-ref witness="'+reading.autoWits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
+                    }
+                }
+            }
         }
+
         if (witnesses !== '') {
             witnesses = '<span class="witnesses witnesses-'+elemType+'">'+witnesses+'</span>';
         }

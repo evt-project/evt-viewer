@@ -454,6 +454,13 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             entry._indexes.missingWits = missingWits;
+
+            var entryLemmaObj = entry.content[entry.lemma];
+            if (entryLemmaObj) {
+                if (!entryLemmaObj.wits || entryLemmaObj.wits.length == 0){
+                    entryLemmaObj['autoWits'] = missingWits;
+                }
+            }
             
             if (parentEntryId) {
                 entry._indexes._parentEntry = parentEntryId;
