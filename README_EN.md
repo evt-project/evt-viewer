@@ -39,10 +39,10 @@ Short instructions to install and configure the development framework for EVT 2.
 | $ bower install [choose the angular.js version recommended for evt-viewer]
 
 * START GRUNT DEV
-| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the critical-edition branch]
+| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the develop branch]
 
-* SWITCH TO THE CRITICAL-EDITION GIT BRANCH
-| $ git checkout critical-edition
+* SWITCH TO THE DEVELOP GIT BRANCH
+| $ git checkout develop
 
 * TO UPDATE THE REPOSITORY
 | $ git pull
@@ -102,10 +102,10 @@ Short instructions to install and configure the development framework for EVT 2.
 | $ bower install [choose the angular.js version recommended for evt-viewer]
 
 * START GRUNT DEV
-| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the critical-edition branch]
+| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the develop branch]
 
-* SWITCH TO THE CRITICAL-EDITION GIT BRANCH 
-| $ git checkout critical-edition
+* SWITCH TO THE DEVELOP GIT BRANCH 
+| $ git checkout develop
 
 * TO UPDATE THE REPOSITORY
 | $ git pull
@@ -157,10 +157,10 @@ Short instructions to install and configure the development framework for EVT 2.
 | $ bower install [choose the angular.js version recommended for evt-viewer]
 
 * START GRUNT DEV
-| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the critical-edition branch]
+| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the develop branch]
 
-* SWITCH TO THE CRITICAL-EDITION GIT BRANCH 
-| $ git checkout critical-edition
+* SWITCH TO THE DEVELOP GIT BRANCH 
+| $ git checkout develop
 
 * TO UPDATE THE REPOSITORY
 | $ git pull

@@ -41,10 +41,10 @@ Istruzioni per l'installazione e la configurazione dell'ambiente di sviluppo di 
 | $ bower install [scegliere versione più recente di angular consigliata per evt-viewer]
 
 * START GRUNT DEV
-| $ grunt dev [se evt-viewer non è visualizzato correttamente nel branch master => passare al branch critical-edition ]
+| $ grunt dev [se evt-viewer non è visualizzato correttamente nel branch master => passare al branch develop ]
 
-* PASSO AL BRANCH CRITICAL-EDITION 
-| $ git checkout critical-edition
+* PASSO AL BRANCH DEVELOP 
+| $ git checkout develop
 
 * PULL DA REPO
 | $ git pull
@@ -105,10 +105,10 @@ Istruzioni per l'installazione e la configurazione dell'ambiente di sviluppo di 
 | $ bower install [scegliere versione più recente di angular consigliata per evt-viewer]
 
 * START GRUNT DEV
-| $ grunt dev [se evt-viewer non è visualizzato correttamente nel branch master => passare al branch critical-edition ]
+| $ grunt dev [se evt-viewer non è visualizzato correttamente nel branch master => passare al branch develop ]
 
-* PASSO AL BRANCH CRITICAL-EDITION 
-| $ git checkout critical-edition
+* PASSO AL BRANCH DEVELOP 
+| $ git checkout develop
 
 * PULL DA REPO
 | $ git pull
@@ -164,8 +164,8 @@ Istruzioni per l'installazione e la configurazione dell'ambiente di sviluppo di 
 * START GRUNT DEV
 | $ grunt dev [se evt-viewer è visualizzato correttamente nel branch master => passare al branch critica-edition ]
 
-* PASSO AL BRANCH CRITICAL-EDITION 
-| $ git checkout critical-edition
+* PASSO AL BRANCH DEVELOP 
+| $ git checkout develop
 
 * PULL PER AGGIORNARE IL REPOSITORY
 | $ git pull
