@@ -91,7 +91,7 @@ angular.module('evtviewer.buttonSwitch')
                 case 'thumbs':
                 case 'thumbnail':
                 case 'thumbnails':
-                    evtIcon = 'icon-evt_thumb';
+                    evtIcon = 'icon-evt_thumbnails';
                     break;
                 case 'v-align':
                     evtIcon = 'icon-evt_align';

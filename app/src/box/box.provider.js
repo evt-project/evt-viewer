@@ -175,14 +175,14 @@ angular.module('evtviewer.box')
                 case 'image':
                     topMenuList.selectors.push({id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
                     
-                    topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbs', type: 'thumbs' });
+                    topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbnails', type: 'thumbs' });
 
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var currentPage = evtInterface.getCurrentPage(),
-                            pageFacs    = parsedData.getPage(evtInterface.getCurrentPage()).facs || '',
-                            folder      = 'data/images/';
-                        scope.vm.content = '<img src="'+folder+pageFacs+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
+                            pageSource   = parsedData.getPage(currentPage).source || '',
+                            pageSource   = pageSource === '' ? 'data/images/'+currentPage+'.png' : pageSource;
+                        scope.vm.content = '<img src="'+pageSource+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
                         scope.vm.isLoading = false;
                     };
                     break;
