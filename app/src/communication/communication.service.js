@@ -43,7 +43,11 @@ angular.module('evtviewer.communication')
                 }
             })
             .error(function(data, status) {
-                communication.err(defaults.errorMsgs[status].msg+' "'+url+'"', status);
+                if (defaults.errorMsgs[status]) {
+                    communication.err(defaults.errorMsgs[status].msg+' "'+url+'"', status);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', status);
+                }
             });
     };
 
