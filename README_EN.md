@@ -3,7 +3,9 @@ EVT 2.0 (evt-viewer)
 
 Short instructions to install and configure the development framework for EVT 2.0 (evt-viewer).
 
-###Linux
+# ##### #
+# Linux #
+# ##### #
 
 * UPDATE THE PACKAGE DATABASE [to do just to be sure that everything's ok]
 | $ sudo apt-get update
@@ -63,9 +65,11 @@ Short instructions to install and configure the development framework for EVT 2.
 | $ grunt dev --force
 
 
-***
+* *********************** *
 
-###Windows
+# ####### #
+# Windows #
+# ####### #
 
 * GIT 
 | Install GIT (if not already available in your system)
@@ -118,9 +122,11 @@ Short instructions to install and configure the development framework for EVT 2.
 * IN CASE OF VISUALIZATION PROBLEMS
 | $ grunt dev --force
 
-***
+* *********************** *
 
-###OS X 
+# #### #
+# OS X #
+# #### #
 
 * HOMEBREW [to do only if you haven't already installed homebrew]
 | $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 
