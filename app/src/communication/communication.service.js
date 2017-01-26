@@ -24,29 +24,27 @@ angular.module('evtviewer.communication')
 
     communication.getExternalConfig = function(url) {
         return $http.get(url)
-            .success(function(data) {
-                config.extendDefault(data);
-            })
-            .error(function(data, status) {
-                communication.err('Something wrong while loading configuration file', status);
+            .then(function(response) {
+                config.extendDefault(response.data);
+            }, function(error) {
+                communication.err('Something wrong while loading configuration file', error);
             });
     };
 
     communication.getData = function(url) {
         return $http.get(url)
-            .success(function(data) {
-                if (typeof(data) === 'string') {
-                    baseData.addXMLString(data);
+            .then(function(response) {
+                if (typeof(response.data) === 'string') {
+                    baseData.addXMLString(response.data);
                     _console.log('XML Data received');
                 } else {
                     // TODO: JSON? 
                 }
-            })
-            .error(function(data, status) {
-                if (defaults.errorMsgs[status]) {
-                    communication.err(defaults.errorMsgs[status].msg+' "'+url+'"', status);
+            }, function(error) {
+                if (defaults.errorMsgs[error]) {
+                    communication.err(defaults.errorMsgs[error].msg+' "'+url+'"', error);
                 } else {
-                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', status);
+                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', error);
                 }
             });
     };
