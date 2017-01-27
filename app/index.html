@@ -100,8 +100,8 @@
     <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
         <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
         
-        <!-- CRITICAL -->
-        <section id="main-container" class="viewMode" ng-switch-when="critical">
+        <!-- READING TEXT -->
+        <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
             <box data-type="text"
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"

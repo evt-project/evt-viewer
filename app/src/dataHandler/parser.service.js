@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtParser', function(parsedData) {
+.service('evtParser', function(parsedData, config) {
     var parser = { };
     var idx = 0;
     // TODO: create module provider and add default configuration
@@ -110,7 +110,7 @@ angular.module('evtviewer.dataHandler')
 
       // Check for broken elements, e.g. <strong>Hello, w
       // Get an array of all tags (start, end, and self-closing)
-      var tags = XHTMLstring.match(/<[^>]+>/g);
+      var tags = XHTMLstring.match(/<[^!>]+>/g);
       var stack = [];
       for (var tag in tags) {
         if (tags[tag].search('/') <= 0) {
@@ -252,6 +252,9 @@ angular.module('evtviewer.dataHandler')
         } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
             defDocElement = 'div[subtype="edition_text"]';
         }
+
+        parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0)
+
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
                 var newDoc   = { 
@@ -268,9 +271,36 @@ angular.module('evtviewer.dataHandler')
                 }
                 parsedData.addDocument(newDoc);
                 parser.parsePages(element, newDoc.value);
+                if (config.editionType !== "critical" || !parsedData.isCriticalEditionAvailable()) { 
+                    // Split pages works only on diplomatic/interpretative edition
+                    // In critical edition, text will be splitted into pages for each witness
+                    config.defaultEdition = 'diplomatic';
+                    parser.splitPages(element, newDoc.value);
+                }
         });
+        console.log('## PAGES ##', parsedData.getPages());
         console.log('## Documents ##', parsedData.getDocuments());
         return parsedData.getDocuments();
+    };
+
+    parser.splitPages = function(docElement, docId) {
+        var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + docElement.tagName + '>))'; 
+        var sRegExInput = new RegExp(match, 'ig');
+        var matches = docElement.outerHTML.match(sRegExInput);
+        var totMatches = matches.length;
+        for (var i = 0; i < totMatches; i++) {
+            var balancedHTMLString = parser.balanceXHTML(matches[i]);
+            var matchPbIdAttr = 'xml:id=".*"'; 
+            var sRegExPbAttr = new RegExp(matchPbIdAttr, 'ig');
+            var pbHTMLString = matches[i].match(sRegExPbAttr);
+
+            var sRegExPbAttr = new RegExp('xml:id=".*"', 'ig');
+            var idAttr = pbHTMLString[0].match(sRegExPbAttr);
+            var pageId = idAttr[0].replace(/xml:id/, "").replace(/(=|\"|\')/ig, "") || "";
+            if (pageId && pageId !== "") {
+                parsedData.setPageText(pageId, docId, balancedHTMLString);
+            }
+        }
     };
 
     return parser;

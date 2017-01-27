@@ -65,7 +65,7 @@ angular.module('evtviewer.interface')
 
     $scope.updateCurrentAppEntry = function(entry) {
         evtInterface.updateCurrentAppEntry(entry);
-        if (evtInterface.getCurrentViewMode() === 'critical') {
+        if (evtInterface.getCurrentViewMode() === 'readingTxt') {
             evtBox.alignScrollToApp(entry);
         }
         evtInterface.updateUrl();

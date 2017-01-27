@@ -200,6 +200,12 @@ angular.module('evtviewer.box')
 
                     }
                 }, true);
+
+                scope.$watch(function() {
+                    return evtInterface.getCurrentPage();
+                }, function(newItem, oldItem) {
+                    currentBox.updateContent();
+                }, true);
             }
 
             if (currentBox.type === 'image') {

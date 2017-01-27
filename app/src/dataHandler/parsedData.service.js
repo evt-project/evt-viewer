@@ -58,6 +58,7 @@ angular.module('evtviewer.dataHandler')
 
     var criticalTexts = {};
     
+    // TODO: Gestire edizioni
     var mockEditions = [
         {
             value: 'critical',
@@ -76,6 +77,7 @@ angular.module('evtviewer.dataHandler')
         }
     ]; 
     
+    var criticalEdition = false;
     /* PAGES */
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
@@ -100,15 +102,21 @@ angular.module('evtviewer.dataHandler')
     parsedData.getPage = function(pageId) {
         return pagesCollection[pageId];
     };
-    parsedData.getPageText = function(pageId) {
-        var texts = [];
 
-        var i = 0;
-        while ( i < texts.length && texts[i].page !== pageId) {
-            i++;
+    parsedData.setPageText = function(pageId, docId, HTMLtext) {
+        if (pagesCollection[pageId]) {
+            if (!pagesCollection[pageId].text) {
+                pagesCollection[pageId].text = {};
+            }
+            pagesCollection[pageId].text[docId] = HTMLtext;
         }
-        // return texts[i];
-        return {};
+    };
+
+    parsedData.getPageText = function(pageId, docId) {
+        if (pagesCollection[pageId] && pagesCollection[pageId].text) {
+            return pagesCollection[pageId].text[docId];
+        }
+        return undefined;
     };
     parsedData.getPageImage = function(pageId) {
         var images = [];
@@ -146,6 +154,15 @@ angular.module('evtviewer.dataHandler')
     };
 
     /* EDITION */
+    parsedData.setCriticalEditionAvailability = function(isAvailable) {
+        console.log('setCriticalEditionAvailability', isAvailable);
+        criticalEdition = isAvailable; 
+    };
+
+    parsedData.isCriticalEditionAvailable = function() {
+        return criticalEdition;
+    };
+
     parsedData.addEditions = function() {
         // var mock = {
         //     value: 'edition3',

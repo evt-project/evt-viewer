@@ -97,7 +97,7 @@ angular.module('evtviewer.dataHandler')
                     }
             });
         } else {
-            console.log('ERROR: '+config.listDef+' missing. Please add this element to make EVT work properly.');
+            console.log('WARNING: '+config.listDef+' missing. Please add this element to make EVT work properly with different witnesses.');
         }
         // console.log('## Witnesses ##', JSON.stringify(parsedData.getWitnesses()));
         console.log('## Witnesses ##', parsedData.getWitnesses());
@@ -830,6 +830,8 @@ angular.module('evtviewer.dataHandler')
             } else {
                 witnessText = docDOM.innerHTML;
             }
+
+            //TODO: Split witness into pages
         } else {
             witnessText = '<span>Text not available.</span>';
         }

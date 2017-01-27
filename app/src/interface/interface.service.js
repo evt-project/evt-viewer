@@ -245,13 +245,14 @@ angular.module('evtviewer.interface')
             // VIEW MODE 
             if (params.viewMode !== undefined) {
                 viewMode = params.viewMode;
+                //TODO: remove collation view mode if there are no witnesses
             }
 
             // EDITION 
             if (params.edition !== undefined ) {
                 edition = params.edition;
             } else {
-                if (viewMode === 'critical') {
+                if (viewMode === 'readingTxt' && parsedData.isCriticalEditionAvailable()) {
                     edition = 'critical';
                 }
             }

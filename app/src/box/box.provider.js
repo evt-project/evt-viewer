@@ -188,9 +188,13 @@ angular.module('evtviewer.box')
                     break;
                 case 'text':
                     //TODO: Differentiate main text from second one
-                    topMenuList.selectors.push({id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() },
-                                               {id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
-                    topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
+                    topMenuList.selectors.push({ id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() });
+                    if (!parsedData.isCriticalEditionAvailable()) {
+                        topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() },
+                                                   { id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
+                    } else {
+                        topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
+                    }
 
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {
@@ -234,7 +238,12 @@ angular.module('evtviewer.box')
                         } else {
                             //TODO: Handle different edition level
                             // parsedData.getDocument(scope.vm.state.docId).content
-                            scope.vm.content = noTextAvailableMsg;
+                            var newDoc = parsedData.getPageText(evtInterface.getCurrentPage(), evtInterface.getCurrentDocument());
+                            if (newDoc !== undefined) {
+                                scope.vm.content = newDoc
+                            } else {
+                                scope.vm.content = noTextAvailableMsg;
+                            }
                             scope.vm.isLoading = false;
                         }
                     };

@@ -71,13 +71,15 @@ angular.module('evtviewer.core')
     indexTitle       : 'EVT Critical Viewer',
     webSite          : '',
     
-    defaultViewMode    : 'critical',
+    editionType        : 'critical',
+
+    defaultViewMode    : 'readingTxt',
     defaultEdition     : 'critical',
     availableViewModes : [
                             {
-                                label    : 'Critical',
-                                icon     : 'mode-critical',
-                                viewMode : 'critical',
+                                label    : 'Reading text',
+                                icon     : 'reading-txt',
+                                viewMode : 'readingTxt',
                                 visible  : true
                             },
                             {

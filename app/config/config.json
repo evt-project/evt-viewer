@@ -6,12 +6,12 @@
     "indexTitle"       : "",
     "webSite"          : "",
 
-    "defaultViewMode"  : "critical",
+    "defaultViewMode"  : "readingTxt",
     "defaultEdition"   : "critical",
     "availableViewModes" : [{
-                                "label"    : "Critical",
-                                "icon"     : "mode-critical",
-                                "viewMode" : "critical",
+                                "label"    : "Reading Text",
+                                "icon"     : "reading-txt",
+                                "viewMode" : "readingTxt",
                                 "visible"  : true
                             },
                             {

@@ -60,7 +60,7 @@ angular.module('evtviewer.buttonSwitch')
                 case 'mode-txttxt':
                     evtIcon = 'icon-evt_txttxt';
                     break;
-                case 'mode-critical':
+                case 'reading-txt':
                     evtIcon = 'icon-evt_txt';
                     break;
                 case 'mode-collation':
@@ -166,9 +166,6 @@ angular.module('evtviewer.buttonSwitch')
                         var vm = this;
                         if (vm.value !== undefined) {
                             evtInterface.updateCurrentViewMode(vm.value);
-                            if (vm.value === 'critical'){
-                                evtInterface.updateCurrentEdition('critical');
-                            }
                             evtInterface.updateUrl();
                         }
                     };
