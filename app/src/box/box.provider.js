@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, config, parsedData, evtCriticalParser, xmlParser, evtInterface) {        
+    this.$get = function($log, $q, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface) {        
         var box        = {},
             collection = {},
             list       = [],
@@ -238,11 +238,27 @@ angular.module('evtviewer.box')
                         } else {
                             //TODO: Handle different edition level
                             // parsedData.getDocument(scope.vm.state.docId).content
-                            var newDoc = parsedData.getPageText(evtInterface.getCurrentPage(), evtInterface.getCurrentDocument());
-                            if (newDoc !== undefined) {
-                                scope.vm.content = newDoc
+                            var currentPage = evtInterface.getCurrentPage(),
+                                currentDoc  = evtInterface.getCurrentDocument(),
+                                currentEdition = evtInterface.getCurrentEdition();
+                            var newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
+                            if (newDoc === undefined) {
+                                newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
+                                try {
+                                    var promises = [];
+                                    promises.push(evtParser.parseTextForEditionLevel(currentPage, currentDoc, currentEdition, newDoc).promise);
+                                    $q.all(promises).then(function(){
+                                        scope.vm.content = parsedData.getPageText(currentPage, currentDoc, currentEdition) || noTextAvailableMsg;
+                                        scope.vm.isLoading = false;
+                                    });
+                                }
+                                catch(err) {
+                                    newContent = errorMsg;
+                                    scope.vm.isLoading = false;
+                                }
                             } else {
-                                scope.vm.content = noTextAvailableMsg;
+                                scope.vm.content = newDoc || noTextAvailableMsg;
+                                scope.vm.isLoading = false;
                             }
                             scope.vm.isLoading = false;
                         }

@@ -103,21 +103,32 @@ angular.module('evtviewer.dataHandler')
         return pagesCollection[pageId];
     };
 
-    parsedData.setPageText = function(pageId, docId, HTMLtext) {
-        if (pagesCollection[pageId]) {
-            if (!pagesCollection[pageId].text) {
-                pagesCollection[pageId].text = {};
+    parsedData.setPageText = function(pageId, docId, editionLevel, HTMLtext) {
+        var pageObj = pagesCollection[pageId];
+        if (pageObj) {
+            if (!pageObj.text) {
+                pageObj.text = {};
             }
-            pagesCollection[pageId].text[docId] = HTMLtext;
+            var pageDocObj = pageObj.text[docId];
+            if (pageDocObj !== undefined && pageDocObj[editionLevel] !== undefined) {
+                pageDocObj[editionLevel] += HTMLtext;
+            } else if (pageDocObj !== undefined) {
+                pageDocObj[editionLevel] = HTMLtext;
+            } else {
+                pageObj.text[docId] = { };
+                pageObj.text[docId][editionLevel] = HTMLtext;
+            }
         }
     };
 
-    parsedData.getPageText = function(pageId, docId) {
-        if (pagesCollection[pageId] && pagesCollection[pageId].text) {
-            return pagesCollection[pageId].text[docId];
+    parsedData.getPageText = function(pageId, docId, editionLevel) {
+        var pageObj = pagesCollection[pageId];
+        if (pageObj && pageObj.text && pageObj.text[docId]) {
+            return pageObj.text[docId][editionLevel];
         }
         return undefined;
     };
+    
     parsedData.getPageImage = function(pageId) {
         var images = [];
 

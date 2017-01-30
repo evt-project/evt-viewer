@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtParser', function(parsedData, config) {
+.service('evtParser', function($q, xmlParser, parsedData, config) {
     var parser = { };
     var idx = 0;
     // TODO: create module provider and add default configuration
@@ -101,41 +101,54 @@ angular.module('evtviewer.dataHandler')
     /* ********************* */ 
     // balance takes an excerpted or truncated XHTML string and returns a well-balanced XHTML string
     parser.balanceXHTML = function(XHTMLstring) {
-      // Check for broken tags, e.g. <stro
-      // Check for a < after the last >, indicating a broken tag
-      if (XHTMLstring.lastIndexOf('<') > XHTMLstring.lastIndexOf('>')) {
-        // Truncate broken tag
-        XHTMLstring = XHTMLstring.substring(0, XHTMLstring.lastIndexOf('<'));
-      }
-
-      // Check for broken elements, e.g. <strong>Hello, w
-      // Get an array of all tags (start, end, and self-closing)
-      var tags = XHTMLstring.match(/<[^!>]+>/g);
-      var stack = [];
-      for (var tag in tags) {
-        if (tags[tag].search('/') <= 0) {
-          // start tag -- push onto the stack
-          stack.push(tags[tag]);
-        } else if (tags[tag].search('/') === 1) {
-          // end tag -- pop off of the stack
-          stack.pop();
-        } else {
-          // self-closing tag -- do nothing
+        // Check for broken tags, e.g. <stro
+        // Check for a < after the last >, indicating a broken tag
+        if (XHTMLstring.lastIndexOf('<') > XHTMLstring.lastIndexOf('>')) {
+            // Truncate broken tag
+            XHTMLstring = XHTMLstring.substring(0, XHTMLstring.lastIndexOf('<'));
         }
-      }
 
-      // stack should now contain only the start tags of the broken elements, most deeply-nested at the top
-      while (stack.length > 0) {
-        // pop the unmatched tag off the stack
-        var endTag = stack.pop();
-        // get just the tag name
-        endTag = endTag.substring(1,endTag.search(/[ >]/));
-        // append the end tag
-        XHTMLstring += '</' + endTag + '>';
-      }
+        // Check for broken elements, e.g. <strong>Hello, w
+        // Get an array of all tags (start, end, and self-closing)
+        var tags = XHTMLstring.match(/<(?!\!)[^>]+>/g);
+        var stack = [];
+        var tagToOpen = [];
+        for (var tag in tags) {
+            if (tags[tag].search('/') <= 0) {
+                // start tag -- push onto the stack
+                stack.push(tags[tag]);
+            } else if (tags[tag].search('/') === 1) {
+                // end tag -- pop off of the stack
+                // se l'ultimo elemento di stack è il corrispettivo tag di apertura
+                var tagName = tags[tag].replace(/[<\/>]/ig, "");
+                var openTag = stack[stack.length-1];
+                if (openTag && (openTag.search("<"+tagName+" ") >= 0 || openTag.search("<"+tagName+">") >= 0))  {
+                    stack.pop();
+                } else { //Tag non aperto
+                    tagToOpen.push(tagName);
+                }
+            } else {
+                // self-closing tag -- do nothing
+            }
+        }
 
-      // Return the well-balanced XHTML string
-      return(XHTMLstring);
+        // stack should now contain only the start tags of the broken elements, most deeply-nested at the top
+        while (stack.length > 0) {
+            // pop the unmatched tag off the stack
+            var endTag = stack.pop();
+            // get just the tag name
+            endTag = endTag.substring(1,endTag.search(/[ >]/));
+            // append the end tag
+            XHTMLstring += '</' + endTag + '>';
+        }
+
+        while (tagToOpen.length > 0) {
+            var startTag = tagToOpen.shift();
+            XHTMLstring = '<' + startTag + '>' + XHTMLstring;
+        }
+        
+        // Return the well-balanced XHTML string
+        return(XHTMLstring);
     };
 
     /* ************************ */
@@ -289,7 +302,6 @@ angular.module('evtviewer.dataHandler')
         var matches = docElement.outerHTML.match(sRegExInput);
         var totMatches = matches.length;
         for (var i = 0; i < totMatches; i++) {
-            var balancedHTMLString = parser.balanceXHTML(matches[i]);
             var matchPbIdAttr = 'xml:id=".*"'; 
             var sRegExPbAttr = new RegExp(matchPbIdAttr, 'ig');
             var pbHTMLString = matches[i].match(sRegExPbAttr);
@@ -298,10 +310,47 @@ angular.module('evtviewer.dataHandler')
             var idAttr = pbHTMLString[0].match(sRegExPbAttr);
             var pageId = idAttr[0].replace(/xml:id/, "").replace(/(=|\"|\')/ig, "") || "";
             if (pageId && pageId !== "") {
-                parsedData.setPageText(pageId, docId, balancedHTMLString);
+                parsedData.setPageText(pageId, docId, 'original', matches[i]);
             }
         }
     };
+
+    parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
+        console.log('parseTextForEditionLevel');
+        var balancedHTMLString = parser.balanceXHTML(docHTML);
+        
+        var deferred = $q.defer(),
+            editionText = balancedHTMLString, //TEMP
+            doc = xmlParser.parse("<div id='mainContentToTranform' class='" + editionLevel + "'>" + balancedHTMLString + "</div>");
+        if ( doc !== undefined ) {
+            var docDOM = doc.getElementById('mainContentToTranform');
+            //remove <pb>s
+            var pbs = docDOM.getElementsByTagName('pb'),
+                k   = 0;
+            while ( k < pbs.length) {
+                var pbNode = pbs[k];
+                    pbNode.parentNode.removeChild(pbNode);
+            }
+            
+            angular.forEach(docDOM.children, function(elem){
+                var skip = 'pb,lb';
+                elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, skip), elem);
+            });
+            editionText = docDOM.outerHTML;
+        } else {
+            editionText = '<span>Text not available.</span>';
+        }
+
+        if (editionText === undefined) {
+             var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+             editionText = errorMsg;
+        }
+
+        parsedData.setPageText(pageId, docId, editionLevel, editionText);
+        
+        deferred.resolve('success');
+        return deferred;
+    }
 
     return parser;
 });
