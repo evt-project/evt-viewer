@@ -263,13 +263,15 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseDocuments = function(doc) {
         var currentDocument = angular.element(doc),
-            defDocElement;
+            defDocElement, 
+            defContentEdition = 'body';
         if ( currentDocument.find('text group text').length > 0 ) {
             defDocElement = 'text group text';
         } else if ( currentDocument.find('text').length > 0 ) {
             defDocElement = 'text';
         } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
             defDocElement = 'div[subtype="edition_text"]';
+            defContentEdition = 'div';
         }
 
         parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0)
@@ -294,19 +296,52 @@ angular.module('evtviewer.dataHandler')
                     // Split pages works only on diplomatic/interpretative edition
                     // In critical edition, text will be splitted into pages for each witness
                     config.defaultEdition = 'diplomatic';
-                    parser.splitPages(element, newDoc.value);
+                    angular.forEach(angular.element(element).find(defContentEdition), 
+                        function(editionElement) {
+                            editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
+                            parser.splitPages(editionElement, newDoc.value, defContentEdition);
+                        });
                 }
         });
         console.log('## PAGES ##', parsedData.getPages());
         console.log('## Documents ##', parsedData.getDocuments());
         return parsedData.getDocuments();
     };
+    
+    parser.splitLineBreaks = function(docElement, defContentEdition) {
+        var splittedHTML = '';
+        // First Line Breaks (intended as text before first <lb>)
+        var contentEditionMatch = '<' + defContentEdition + '(.|[\r\n])*?>',
+            firstLineMatch = contentEditionMatch + '(.|[\r\n])*?<lb(.|[\r\n])*?\/>',
+            sRegExFirstLine = new RegExp(firstLineMatch, 'ig'),
+            matchesFirstLine = docElement.outerHTML.match(sRegExFirstLine);
+        if (matchesFirstLine && matchesFirstLine.length > 0) {
+            var sRegExContentEdition = new RegExp(contentEditionMatch, 'ig'),
+                firstLineHTML = matchesFirstLine[0].replace(sRegExContentEdition, '');
+            firstLineHTML = parser.balanceXHTML(firstLineHTML);
+            splittedHTML += '<evtLB>'+firstLineHTML+'</evtLB>';
+        }
+            // var sRegExLbElem = new RegExp(/<lb(.|[\r\n])*?\/>/, 'ig');
+            // var lbHTMLString = matches[i].match(sRegExLbElem);
+        
+        // Other Line Breaks 
+        var lineMatch = '<lb(.|[\r\n])*?(?=(<lb|<\/' + defContentEdition + '>))',
+            sRegExLine = new RegExp(lineMatch, 'ig'),
+            matches = docElement.outerHTML.match(sRegExLine);
+        var totMatches = matches ? matches.length : 0;
+        for (var i = 0; i < totMatches; i++) {
+            var lineHTML = parser.balanceXHTML(matches[i]);
+            splittedHTML += '<evtLB>'+lineHTML+'</evtLB>';
+        }
+        return splittedHTML;
+    };
 
-    parser.splitPages = function(docElement, docId) {
-        var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + docElement.tagName + '>))'; 
+    parser.splitPages = function(docElement, docId, defContentEdition) {
+        console.log('splitPages', docElement);
+        var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))'; 
         var sRegExInput = new RegExp(match, 'ig');
         var matches = docElement.outerHTML.match(sRegExInput);
-        var totMatches = matches.length;
+        var totMatches = matches ? matches.length : 0;
         for (var i = 0; i < totMatches; i++) {
             var matchPbIdAttr = 'xml:id=".*"'; 
             var sRegExPbAttr = new RegExp(matchPbIdAttr, 'ig');

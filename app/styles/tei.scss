@@ -63,8 +63,11 @@
     font-weight: bold;
 }
 .l {
-    display: block;
+    display: inline;
     background: inherit;
+    &::after { 
+        content: " ";
+    }
     &.inApparatus {
         display: inline-block;
         &::after {

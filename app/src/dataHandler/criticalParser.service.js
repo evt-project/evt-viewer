@@ -993,7 +993,7 @@ angular.module('evtviewer.dataHandler')
             // if (lemmas.length > 0 || 
             //     (parsedData.getWitness(config.preferredWitness) !== undefined &&
             //      parsedData.getWitness(config.preferredWitness) !== '') ) {
-                var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
+                var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
                     j      = apps.length-1, 
                     count  = 0;
             

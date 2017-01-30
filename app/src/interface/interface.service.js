@@ -36,7 +36,9 @@ angular.module('evtviewer.interface')
                             promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
                         // Parse critical text
-                        promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                        if (config.editionType === "critical" && parsedData.isCriticalEditionAvailable()) {
+                            promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                        }
                         $q.all(promises).then(function(){
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
