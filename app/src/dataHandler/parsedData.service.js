@@ -78,6 +78,10 @@ angular.module('evtviewer.dataHandler')
     ]; 
     
     var criticalEdition = false;
+
+    var glyphsCollection = {
+        _indexes : []
+    };
     /* PAGES */
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
@@ -449,5 +453,32 @@ angular.module('evtviewer.dataHandler')
     parsedData.getProjectInfo = function(){
         return projectInfo;
     }
+
+    /* ****** */
+    /* GLYPHS */
+    /* ****** */
+    parsedData.addGlyph = function(glyph) {
+        var glyphId,
+            glyphIndexes = glyphsCollection._indexes;
+        
+        if ( glyph && glyph.id !== '' ) {
+            glyphId = glyph.id;
+        } else {
+            glyphId = glyph.id = 'glyph_'+(glyphIndexes+1);
+        }
+        if ( glyphsCollection[glyphId] === undefined ) {
+            glyphIndexes[glyphIndexes.length] = glyphId;
+            glyphsCollection[glyphId] = glyph;
+            glyphIndexes.length++;
+            // _console.log('parsedData - addGlyph ', glyph);
+        }
+    };
+    parsedData.getGlyphs = function() {
+        return glyphsCollection;
+    };
+    parsedData.getGlyph = function(docId) {
+        return glyphsCollection[docId];
+    };
+
     return parsedData;
 });

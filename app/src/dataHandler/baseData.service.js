@@ -17,6 +17,7 @@ angular.module('evtviewer.dataHandler')
             // Parse pages
             // evtParser.parsePages(docElements);
             // Parse documents
+            evtParser.parseGlyphs(docElements);
             var parsedDocuments = evtParser.parseDocuments(docElements);
             // Parse witnesses list
             evtCriticalParser.parseWitnesses(docElements);

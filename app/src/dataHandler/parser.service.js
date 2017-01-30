@@ -65,9 +65,10 @@ angular.module('evtviewer.dataHandler')
                     newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip));
                 }
             } else {
-                if (tagName === 'l') {
-                    newElement = parser.parseLine(element);
-                } else if(tagName === 'note' && skip !== 'evtNote') {
+                // if (tagName === 'l') {
+                //     newElement = parser.parseLine(element);
+                // } else 
+                if (tagName === 'note' && skip !== 'evtNote') {
                     newElement = parser.parseNote(element);
                 } else {
                     newElement           = document.createElement('span');
@@ -174,19 +175,11 @@ angular.module('evtviewer.dataHandler')
         var n = 0;
         while (n < lines.length) {
             var lineNode    = lines[n],
-                newElement = document.createElement('div');
-                newElement.className = 'l';
-                newElement.className = lineNode.tagName;
-                for (var i = 0; i < lineNode.attributes.length; i++) {
-                    var attrib = lineNode.attributes[i];
-                    if (attrib.specified) {
-                        newElement.setAttribute('data-'+attrib.name, attrib.value);
-                    }
-                }
-                newElement.innerHTML = lineNode.innerHTML;
-                lineNode.parentNode.replaceChild(newElement, lineNode);
+                newElement = parser.parseLine(lineNode);
+            lineNode.parentNode.replaceChild(newElement, lineNode);
         }
     };
+    
     parser.parseLine = function(lineNode){
         var newElement = document.createElement('div');
             newElement.className = 'l';
@@ -200,6 +193,19 @@ angular.module('evtviewer.dataHandler')
         newElement.innerHTML = lineNode.innerHTML;
         return newElement;
     };
+    
+    parser.parseGlyphs = function(doc) {
+        var currentDocument = angular.element(doc);
+        angular.forEach(currentDocument.find('glyph'), 
+            function(element) {
+                var glyph = { };
+                glyph.id = element.getAttribute('xml:id') || '';
+                glyph.xmlCode = element.outerHTML;
+                //TODO: decide how to structure content
+                parsedData.addGlyph(glyph);
+            });
+    };
+
     parser.xpath = function(el) {
         try{
             if (typeof el === 'string') {
@@ -331,9 +337,41 @@ angular.module('evtviewer.dataHandler')
                 var pbNode = pbs[k];
                     pbNode.parentNode.removeChild(pbNode);
             }
+
+            //remove <lb>s
+            var lbs = docDOM.getElementsByTagName('lb'),
+                k   = 0;
+            while ( k < lbs.length) {
+                var pbNode = lbs[k];
+                    pbNode.parentNode.removeChild(pbNode);
+            }
             
+            var Gs = docDOM.getElementsByTagName('g'),
+                k   = 0;
+            while ( k < Gs.length) {
+                var gNode = Gs[k],
+                    sRef = gNode.getAttribute('ref'),
+                    glyphNode;
+                if (sRef && sRef !== '') {
+                    sRef = sRef.replace('#', '');
+                    var glyphObj = parsedData.getGlyph(sRef);
+                    if (glyphObj && glyphObj.xmlCode !== '') {
+                        var glyphNodes = angular.element(glyphObj.xmlCode);
+                        if (glyphNodes && glyphNodes.length > 0) {
+                            glyphNode = glyphNodes[0];
+                        }
+                    }
+                }
+                if (glyphNode) {
+                    //TODO Creare direttiva apposita per GLYPHs
+                    gNode.parentNode.insertBefore(glyphNode, gNode.nextSibling);
+                } 
+                gNode.parentNode.removeChild(gNode);
+            }
+            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
+
             angular.forEach(docDOM.children, function(elem){
-                var skip = 'pb,lb';
+                var skip = '<pb>,<lb>,<g>';
                 elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, skip), elem);
             });
             editionText = docDOM.outerHTML;

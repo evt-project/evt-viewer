@@ -5,6 +5,28 @@
 @import "mixins.scss";
 
 // TEI Elements
+
+    // 11.6 Headers, Footers, and Similar Matter
+    .fw {
+        display: block;
+        width: 100%;
+
+        &[data-place="top-middle"] {
+            text-align: center;
+        }
+        &[data-place="top-right"] {
+            text-align: right;
+        }
+        &[data-place="top-left"]{
+            text-align: left;
+        }
+    }
+
+// TODO: Reorder and organize elements 
+// TODO: Differentiate edition specific styles and generic ones
+[data-type="hot-spot"] {
+    display: none;
+}
 .bibl {
     .editor {
         font-style: italic;
