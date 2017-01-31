@@ -38,11 +38,13 @@ angular.module('evtviewer.interface')
         });
         evtInterface.updateProperty('witnessSelector', false);
     };
+
     $scope.getWitness = function(wit){
         var desc = wit+' - '+parsedData.getWitness(wit).description.textContent.trim() || wit;
         desc = desc.length > 30 ? desc.substr(0, 30)+'...' : desc;
         return desc;
     };
+    
     $scope.getCurrentWitnesses = function() {
         return evtInterface.getCurrentWitnesses();
     };

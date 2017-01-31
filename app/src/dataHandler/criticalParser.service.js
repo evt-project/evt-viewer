@@ -586,7 +586,7 @@ angular.module('evtviewer.dataHandler')
                 var sRegExInput = new RegExp(match, 'ig'),
                     newHTML     = '<span data-app-id-start="'+appStartId+'" data-app-id-end="'+appEndId+'" class="lacuna">[LACUNA]</span>';
                 docDOM.innerHTML = docDOM.innerHTML.replace(sRegExInput, newHTML);
-                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
+                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);;
             }
         } else {
             docDOM.innerHTML = '<span class="error">There was a problem in loading lacuna for this witness.</span>';
@@ -772,7 +772,7 @@ angular.module('evtviewer.dataHandler')
 
             var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                 j      = apps.length-1;
-            while(j < apps.length && j >= 0) {
+            while (j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
                     var id;
@@ -810,7 +810,7 @@ angular.module('evtviewer.dataHandler')
                 j--;
             }
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-
+            
             angular.forEach(docDOM.children, function(elem){
                 var skip = skipFromBeingParsed+','+config.lacunaMilestone+','+config.fragmentMilestone;
                 elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
@@ -831,12 +831,11 @@ angular.module('evtviewer.dataHandler')
                 witnessText = docDOM.innerHTML;
             }
 
+            witnessText = evtParser.balanceXHTML(witnessText);
             //TODO: Split witness into pages
         } else {
             witnessText = '<span>Text not available.</span>';
         }
-
-        witnessText = evtParser.balanceXHTML(witnessText);
         
         //save witness text
         parsedData.addWitnessText(wit, docId, witnessText);

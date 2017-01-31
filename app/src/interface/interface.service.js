@@ -27,6 +27,7 @@ angular.module('evtviewer.interface')
                 properties.availableViewModes = config.availableViewModes;
                 evtCommunication.getData(config.dataUrl).then(function () {
                     mainInterface.updateParams($routeParams);
+                    
                     // Parse critical text and entries
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                     if (currentDocFirstLoad !== undefined){

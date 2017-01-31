@@ -89,7 +89,7 @@ angular.module('evtviewer.dataHandler')
                             newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
                         }
                     } else {
-                        newElement.innerHTML = element.innerHTML;
+                        newElement.innerHTML = element.innerHTML + " ";
                     }
                 }
             }
@@ -115,10 +115,7 @@ angular.module('evtviewer.dataHandler')
         var stack = [];
         var tagToOpen = [];
         for (var tag in tags) {
-            if (tags[tag].search('/') <= 0) {
-                // start tag -- push onto the stack
-                stack.push(tags[tag]);
-            } else if (tags[tag].search('/') === 1) {
+            if (tags[tag].search('/') === 1) { // </tagName>
                 // end tag -- pop off of the stack
                 // se l'ultimo elemento di stack è il corrispettivo tag di apertura
                 var tagName = tags[tag].replace(/[<\/>]/ig, "");
@@ -128,7 +125,10 @@ angular.module('evtviewer.dataHandler')
                 } else { //Tag non aperto
                     tagToOpen.push(tagName);
                 }
-            } else {
+            } else if (tags[tag].search('/>') <= 0) { // <tagName>
+                // start tag -- push onto the stack
+                stack.push(tags[tag]);
+            } else { // <tagName />
                 // self-closing tag -- do nothing
             }
         }
@@ -337,7 +337,6 @@ angular.module('evtviewer.dataHandler')
     };
 
     parser.splitPages = function(docElement, docId, defContentEdition) {
-        console.log('splitPages', docElement);
         var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))'; 
         var sRegExInput = new RegExp(match, 'ig');
         var matches = docElement.outerHTML.match(sRegExInput);
@@ -357,7 +356,6 @@ angular.module('evtviewer.dataHandler')
     };
 
     parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
-        console.log('parseTextForEditionLevel');
         var balancedHTMLString = parser.balanceXHTML(docHTML);
         
         var deferred = $q.defer(),
