@@ -8,7 +8,7 @@ angular.module('evtviewer.buttonSwitch')
         defaults = _defaults;
     };
 
-    this.$get = function($timeout, $log, parsedData, evtInterface, evtDialog, evtSelect) {
+    this.$get = function($timeout, $log, parsedData, evtInterface, evtDialog, evtSelect, Utils) {
         var button    = {},
             collection = {},
             list       = [],
@@ -47,6 +47,9 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'info':
                     evtIcon = 'icon-evt_info';
+                    break;
+                case 'itl':
+                    evtIcon = 'icon-evt_link';
                     break;
                 case 'list':
                     evtIcon = 'icon-evt_list';
@@ -259,9 +262,76 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'heatmap':
                     btnType = 'standAlone';
-                    callback = function(){
+                    callback = function() {
                         var heatMapState = scope.$parent.vm.getState('heatmap') || false;
                         scope.$parent.vm.updateState('heatmap', !heatMapState);
+                    };
+                    break;
+                case 'itl':
+                    callback = function() {
+                        //TODO: Move function in proper service
+                        var lbs = document.getElementsByClassName('lb')
+                        for (var i = 0; i < lbs.length; i++) {
+                            //TODO: handle <lb> with _reg and _orig
+                            if (i === 0) {
+                                // Prima riga... inizio coincide con inizio documento
+                            } else if (i === lbs.length-1) {
+                                // Ultima linea da gestire con riferimento diverso
+                            } else {
+                                var lbStart = lbs[i],
+                                    lbEnd = lbs[i+1];
+                                //Todo: Handle _reg e _orig
+                                var elems = Utils.getElementsBetweenTree(lbStart, lbEnd);
+                                var lbId = lbStart.id;
+                                if (lbId) {
+                                    for (var el in elems) { 
+                                        var lineElement = elems[el];
+                                        lineElement.className += ' inLine';
+                                        lineElement.setAttribute("data-line", lbId); 
+                                        lineElement.onmouseover = function() { 
+                                            var lbId = this.getAttribute("data-line");
+                                            var elemsInSameLine = document.querySelectorAll("[data-line='"+lbId+"']"); 
+                                            for(var i = 0; i < elemsInSameLine.length; i++) { 
+                                                elemsInSameLine[i].className += " lineHover";
+                                            } 
+                                        };
+                                        lineElement.onmouseout = function() {
+                                            var lbId = this.getAttribute("data-line");
+                                            var elemsInSameLine = document.querySelectorAll("[data-line='"+lbId+"']"); 
+                                            for(var i = 0; i < elemsInSameLine.length; i++) { 
+                                                var newClass = elemsInSameLine[i].className ? elemsInSameLine[i].className.replace(" lineHover", "") : "";
+                                                elemsInSameLine[i].className = newClass;
+                                            } 
+                                        }; 
+                                        lineElement.onclick = function() { 
+                                            var lbId = this.getAttribute("data-line"),
+                                                currentHzone = evtInterface.getCurrentHighlightZone();
+
+                                            if (currentHzone && currentHzone.name === 'lb') {
+                                                // Deselect current selected
+                                                var currentSelected = document.querySelectorAll("[data-line='" + currentHzone.id + "']"); 
+                                                for (var i = 0; i < currentSelected.length; i++) {
+                                                    var newClass = currentSelected[i].className ? currentSelected[i].className.replace(" lineSelected", "") : "";
+                                                    currentSelected[i].className = newClass;
+                                                }    
+                                            }
+                                            
+                                            // Select this and set current
+                                            if (!currentHzone || (currentHzone.name === 'lb' && currentHzone.id !== lbId)) {
+                                                evtInterface.updateCurrentHighlightZone({ name: 'lb', id: lbId } );
+                                                var elemsInSameLine = document.querySelectorAll("[data-line='"+lbId+"']"); 
+                                                for (var i = 0; i < elemsInSameLine.length; i++) { 
+                                                    elemsInSameLine[i].className += " lineSelected";
+                                                } 
+                                            } else {
+                                                evtInterface.updateCurrentHighlightZone(undefined);
+
+                                            }
+                                        };
+                                    }
+                                }
+                            }
+                        }
                     };
                     break;
                 case 'openGlobalDialogInfo':

@@ -10,6 +10,7 @@ angular.module('evtviewer.interface')
             currentWitsPages : undefined,
             currentEdition   : undefined,
             currentAppEntry  : undefined,
+            currentHighlightedZone: undefined,
             isLoading        : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : ''
@@ -107,6 +108,10 @@ angular.module('evtviewer.interface')
             return state.currentEdition;
         };
 
+        mainInterface.getCurrentHighlightZone = function(zone) {
+            return state.currentHighlightedZone;
+        };
+
         mainInterface.getAvailableWitnesses = function() {
             return properties.availableWitnesses;
         };
@@ -176,6 +181,14 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentEdition = function(edition){
             state.currentEdition = edition;
+        };
+
+        mainInterface.updateCurrentHighlightZone = function(zone) {
+            var currentZone = state.currentHighlightedZone;
+            if ( !currentZone || !zone || !(currentZone.id === zone.id && currentZone.name === zone.name) ) {
+                state.currentHighlightedZone = zone;
+                console.log('## HIGHLIGHT ##', state.currentHighlightedZone);
+            }
         };
 
         // WITNESS

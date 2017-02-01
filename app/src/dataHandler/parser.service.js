@@ -45,7 +45,9 @@ angular.module('evtviewer.dataHandler')
     parser.parseXMLElement = function(doc, element, skip) {
         var newElement;
         if (element.nodeType === 3) { // Text
-            newElement = element;
+            newElement = document.createElement('span');
+            newElement.className = "textNode";
+            newElement.appendChild(element);
         } else if (element.tagName !== undefined && skip.indexOf('<'+element.tagName.toLowerCase()+'>') >= 0) {
             newElement = element;
         } else {
@@ -90,6 +92,15 @@ angular.module('evtviewer.dataHandler')
                         }
                     } else {
                         newElement.innerHTML = element.innerHTML + " ";
+                    }
+
+                    if (tagName === 'lb') {
+                        newElement.id = element.getAttribute('xml:id');
+                        newElement.appendChild(document.createElement('br'));
+                        var lineN = document.createElement('span');
+                        lineN.className = "lineN";
+                        lineN.textContent = element.getAttribute('n');
+                        newElement.appendChild(lineN);
                     }
                 }
             }
@@ -298,7 +309,7 @@ angular.module('evtviewer.dataHandler')
                     config.defaultEdition = 'diplomatic';
                     angular.forEach(angular.element(element).find(defContentEdition), 
                         function(editionElement) {
-                            editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
+                            //editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
                             parser.splitPages(editionElement, newDoc.value, defContentEdition);
                         });
                 }
@@ -372,12 +383,12 @@ angular.module('evtviewer.dataHandler')
             }
 
             //remove <lb>s
-            var lbs = docDOM.getElementsByTagName('lb'),
+            /*var lbs = docDOM.getElementsByTagName('lb'),
                 k   = 0;
             while ( k < lbs.length) {
                 var pbNode = lbs[k];
                     pbNode.parentNode.removeChild(pbNode);
-            }
+            }*/
             
             var Gs = docDOM.getElementsByTagName('g'),
                 k   = 0;
@@ -404,7 +415,7 @@ angular.module('evtviewer.dataHandler')
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
 
             angular.forEach(docDOM.children, function(elem){
-                var skip = '<pb>,<lb>,<g>';
+                var skip = '<pb>,<g>';
                 elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, skip), elem);
             });
             editionText = docDOM.outerHTML;

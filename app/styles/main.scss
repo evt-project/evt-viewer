@@ -342,3 +342,15 @@ pre {
         display: inline !important;
     }
 }
+
+.lineHover, .lineHover:after {
+    cursor: pointer;
+    background-color: rgba(230,206,160,0.8) !important;
+    color: #000000;
+}
+
+.lineSelected, .lineSelected:after {
+    cursor: pointer;
+    background-color: rgba(213,177,125,0.9) !important;
+    color: #000000;
+}

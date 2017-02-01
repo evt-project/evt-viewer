@@ -192,10 +192,11 @@ angular.module('evtviewer.box')
                     if (!parsedData.isCriticalEditionAvailable()) {
                         topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() },
                                                    { id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
+                        //TEMP
+                        topMenuList.buttons.push({title: 'Image Text Linking', label: '', icon: 'itl', type: 'itl'});
                     } else {
                         topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
                     }
-
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {
                         topMenuList.buttons.push({title: 'Color key', label: '', icon: 'color-legend', type: 'colorLegend'});

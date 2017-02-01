@@ -70,7 +70,6 @@
 			position: absolute;
 			line-height: 16px;
 			display: none;
-			background: #e5dac4;
 			border: 2.5px solid black;
 			border-radius: 3px;
 			padding: 0.4%;
@@ -91,6 +90,10 @@
 			}
 		}
 
+		.reg, .reg * {
+			background: #e5dac4 !important;
+		}
+		
 		.orig {
 			.sup {
 			    line-height: 20px;

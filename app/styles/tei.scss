@@ -65,9 +65,11 @@
 .l {
     display: inline;
     background: inherit;
-    &::after { 
+    
+    >*:last-child:after{ 
         content: " ";
     }
+    
     &.inApparatus {
         display: inline-block;
         &::after {
@@ -84,6 +86,17 @@
 }
 .lacunaStart, .lacunaEnd {
     display: none;
+}
+.lb {
+    .lineN {
+        text-align: right;
+        color: grey;
+        font-size: 0.8em;
+        margin-right: 10px;
+        height: 100%;
+        width: 24px !important;
+        display: inline-block;
+    }
 }
 .fragment {
     min-height: 10px;

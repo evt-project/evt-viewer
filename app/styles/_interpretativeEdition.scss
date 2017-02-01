@@ -30,7 +30,7 @@
 
 
 	.choice {
-		display: inline-table;
+		display: inline;
 		
 		&:before, &:after {
 			content: " ";
@@ -41,7 +41,6 @@
 			position: absolute;
 			line-height: 16px;
 			display: none;
-			background: #e5dac4;
 			border: 2.5px solid black;
 			border-radius: 3px;
 			@include set(box-shadow, 2px 2px 2px #7e7067);
@@ -54,6 +53,10 @@
 				position: absolute;
 				top: -13px;
 			}
+		}
+		
+		.orig, .orig * {
+			background: #e5dac4 !important;
 		}
 
 		.reg { 
