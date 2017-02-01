@@ -65,7 +65,6 @@ angular.module('evtviewer.core')
     };
 
     // Get the innermost element that is an ancestor of two nodes.
-    
     this.getCommonAncestor = function(a, b) {
         var parents = $(a).parents().andSelf();
         while (b) {
@@ -80,8 +79,10 @@ angular.module('evtviewer.core')
     this.$get = function() {
         return {
             deepExtend: this.deepExtend,
-            getElementsBetweenTree: this.getElementsBetweenTree,
-            getCommonAncestor: this.getCommonAncestor
+            DOMutils : {
+                getElementsBetweenTree: this.getElementsBetweenTree,
+                getCommonAncestor: this.getCommonAncestor
+            }
         };
     };
 

@@ -20,7 +20,11 @@ angular.module('evtviewer.interface')
             availableViewModes : [ ],
             availableWitnesses : [ ],
             witnessSelector    : false
-        }
+        };
+
+        var tools = {
+
+        };
 
         mainInterface.boot = function() {  
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
@@ -78,6 +82,9 @@ angular.module('evtviewer.interface')
         
         mainInterface.isToolAvailable = function(toolName){
             return config[toolName];
+        };
+        mainInterface.getToolState = function(toolName) {
+            return (tools[toolName] ? tools[toolName].status : undefined);
         };
 
         mainInterface.getProperties = function(){
@@ -159,6 +166,13 @@ angular.module('evtviewer.interface')
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
         
+        mainInterface.setToolState = function(toolName, status) {
+            if (!tools[toolName]) {
+                tools[toolName] = {};
+            }
+            tools[toolName].status = status;
+        };
+
         mainInterface.updateProperty = function(property, value){
             properties[property] = value;
         };

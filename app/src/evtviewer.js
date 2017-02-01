@@ -32,5 +32,6 @@ angular
     'evtviewer.criticalApparatusEntry',
     'evtviewer.reading',
     'evtviewer.dialog',
-    'evtviewer.tabsContainer'
+    'evtviewer.tabsContainer',
+    'evtviewer.UItools'
   ]);

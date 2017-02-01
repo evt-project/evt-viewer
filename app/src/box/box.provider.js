@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface) {        
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking) {        
         var box        = {},
             collection = {},
             list       = [],
@@ -212,11 +212,13 @@ angular.module('evtviewer.box')
                         bottomMenuList.buttons.push({title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});    
                     }
                     bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+
                     updateContent = function(){
                         scope.vm.isLoading = true;
+                        var isITLon = evtInterface.getToolState('ITL') === 'active';
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
                             noTextAvailableMsg = '<span class="alert-msg alert-msg-error">Text is not available.</span>';
-                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') {
+                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') { // Critical edition
                             var newDoc = parsedData.getCriticalText(scope.vm.state.docId);
                             if (newDoc === undefined) {
                                 newDoc = parsedData.getDocument(scope.vm.state.docId);
@@ -236,8 +238,7 @@ angular.module('evtviewer.box')
                                 scope.vm.content = newDoc || noTextAvailableMsg;
                                 scope.vm.isLoading = false;
                             }
-                        } else {
-                            //TODO: Handle different edition level
+                        } else { // Other edition level
                             // parsedData.getDocument(scope.vm.state.docId).content
                             var currentPage = evtInterface.getCurrentPage(),
                                 currentDoc  = evtInterface.getCurrentDocument(),
@@ -251,6 +252,11 @@ angular.module('evtviewer.box')
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getPageText(currentPage, currentDoc, currentEdition) || noTextAvailableMsg;
                                         scope.vm.isLoading = false;
+                                        if (isITLon) {
+                                            $timeout(function(){
+                                                evtImageTextLinking.prepareLines();
+                                            })
+                                        }
                                     });
                                 }
                                 catch(err) {
@@ -260,6 +266,12 @@ angular.module('evtviewer.box')
                             } else {
                                 scope.vm.content = newDoc || noTextAvailableMsg;
                                 scope.vm.isLoading = false;
+                                if (isITLon) {
+                                    console.log('isITLon', isITLon);
+                                    $timeout(function(){
+                                        evtImageTextLinking.prepareLines();
+                                    })
+                                }
                             }
                             scope.vm.isLoading = false;
                         }

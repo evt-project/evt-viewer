@@ -383,12 +383,25 @@ angular.module('evtviewer.dataHandler')
             }
 
             //remove <lb>s
-            /*var lbs = docDOM.getElementsByTagName('lb'),
-                k   = 0;
-            while ( k < lbs.length) {
-                var pbNode = lbs[k];
-                    pbNode.parentNode.removeChild(pbNode);
-            }*/
+            var invalidLbsSuffix;
+            if (editionLevel === 'diplomatic') {
+                invalidLbsSuffix = '_reg';
+            } else if (editionLevel === 'interpretative') {
+                invalidLbsSuffix = '_orig';
+            }
+            if (invalidLbsSuffix) {
+                var lbs = docDOM.getElementsByTagName('lb'),
+                    k   = 0;
+                while ( k < lbs.length ) {
+                    var pbNode = lbs[k],
+                        pbNodeId = pbNode.getAttribute('xml:id');
+                    if (pbNodeId.indexOf(invalidLbsSuffix) >= 0) {
+                        pbNode.parentNode.removeChild(pbNode);
+                    } else {
+                        k++;
+                    }
+                }
+            }
             
             var Gs = docDOM.getElementsByTagName('g'),
                 k   = 0;
