@@ -131,6 +131,11 @@ angular.module('evtviewer.box')
         function toggleBtnGroup(groupState){
             groupState = !groupState;
         }
+
+        function isITLactive() { //TEMP
+            return evtInterface.getToolState('ITL') === 'active';
+        }
+
         // 
         // Box builder
         // 
@@ -217,8 +222,6 @@ angular.module('evtviewer.box')
                     if (!parsedData.isCriticalEditionAvailable()) {
                         topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() },
                                                    { id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
-                        //TEMP
-                        topMenuList.buttons.push({title: 'Image Text Linking', label: '', icon: 'itl', type: 'itl'});
                     } else {
                         topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
                     }
@@ -280,6 +283,7 @@ angular.module('evtviewer.box')
                                         if (isITLon) {
                                             $timeout(function(){
                                                 evtImageTextLinking.prepareLines();
+                                                evtImageTextLinking.prepareZoneInImgInteractions();
                                             })
                                         }
                                     });
@@ -292,9 +296,9 @@ angular.module('evtviewer.box')
                                 scope.vm.content = newDoc || noTextAvailableMsg;
                                 scope.vm.isLoading = false;
                                 if (isITLon) {
-                                    console.log('isITLon', isITLon);
                                     $timeout(function(){
                                         evtImageTextLinking.prepareLines();
+                                        evtImageTextLinking.prepareZoneInImgInteractions();
                                     })
                                 }
                             }
@@ -402,7 +406,9 @@ angular.module('evtviewer.box')
                 fontSizeIncrease        : fontSizeIncrease,
                 fontSizeDecrease        : fontSizeDecrease,
                 fontSizeReset           : fontSizeReset,
-                toggleBtnGroup          : toggleBtnGroup
+                toggleBtnGroup          : toggleBtnGroup,
+
+                isITLactive             : isITLactive //TEMP
             };
 
             collection[currentId] = angular.extend(vm, scopeHelper);

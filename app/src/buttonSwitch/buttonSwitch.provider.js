@@ -276,7 +276,13 @@ angular.module('evtviewer.buttonSwitch')
                             evtImageTextLinking.prepareZoneInImgInteractions();
                             evtInterface.setToolState('ITL', 'active');
                         } else {
+                            currentHzone = evtInterface.getCurrentHighlightZone();
+                            // Deselect current selected
+                            if (currentHzone) {
+                                evtImageTextLinking.changeLinesHighlightStatus(currentHzone.id, 'unselect');
+                            }
                             evtInterface.setToolState('ITL', 'inactive');
+                            evtInterface.updateCurrentHighlightZone(undefined);
                             // TODO: Deactivate interactions with lines
                         }
                     };
