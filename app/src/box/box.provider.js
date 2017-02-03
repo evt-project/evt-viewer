@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking) {        
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking) {
         var box        = {},
             collection = {},
             list       = [],
@@ -176,6 +176,7 @@ angular.module('evtviewer.box')
                     topMenuList.selectors.push({id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
                     
                     topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbnails', type: 'thumbs' });
+                    topMenuList.buttons.push({title: 'Image Text Linking', label: '', icon: 'itl', type: 'itl'});
 
                     updateContent = function(){
                         scope.vm.isLoading = true;
@@ -183,6 +184,30 @@ angular.module('evtviewer.box')
                             pageSource   = parsedData.getPage(currentPage).source || '',
                             pageSource   = pageSource === '' ? 'data/images/'+currentPage+'.png' : pageSource;
                         scope.vm.content = '<img src="'+pageSource+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
+                        
+                        // TEMP... TODO: creare direttiva per gestire le zone sull'immagine
+                        var zonesHTML = '',
+                            zones = parsedData.getZones();
+                        for (var zoneId in zones._indexes) {
+                            var zone = zones[zones._indexes[zoneId]];
+                            if (zone) {
+                                if ( zone.page === currentPage ) {
+                                    zonesHTML += '<div class="zoneInImg" data-zone-id="'+zone.id+'" data-zone-name="'+zone.rendition+'"';
+                                    if (zone.corresp && zone.corresp !== '') {
+                                        var correspId = zone.corresp.replace("#", "");
+                                        zonesHTML += ' data-corresp-id="'+ correspId +'"';
+                                        if (zone.rendition === 'Line') {
+                                            zonesHTML += ' data-line="'+ correspId +'"';
+                                        } else if (zone.rendition === 'HotSpot') {
+                                            zonesHTML += ' data-hs="'+ correspId +'"';
+                                        }
+                                    }
+                                    zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', '+ zone.lry + ') (' + zone.ulx + ', '+ zone.uly + ') </div>'
+                                }
+                            }
+                        }
+                        scope.vm.content += zonesHTML;
+                        // =/ END TEMP
                         scope.vm.isLoading = false;
                     };
                     break;

@@ -1,6 +1,6 @@
 angular.module('evtviewer.UItools')
 
-.service('evtImageTextLinking', function(evtInterface, Utils) {
+.service('evtImageTextLinking', function(evtInterface, Utils, parsedData) {
     var ITLutils = {};
 
     ITLutils.prepareLines = function() {
@@ -34,47 +34,103 @@ angular.module('evtviewer.UItools')
     };
 
     ITLutils.preapareElementInLine = function(elementInLine, lineId) {
-    	elementInLine.className += ' inLine';
-        elementInLine.setAttribute("data-line", lineId); 
-        elementInLine.onmouseover = function() { 
-            var lineId = this.getAttribute("data-line");
-            var elemsInSameLine = document.querySelectorAll("[data-line='"+lineId+"']"); 
-            for (var i = 0; i < elemsInSameLine.length; i++) { 
-                elemsInSameLine[i].className += " lineHover";
-            } 
-        };
-        elementInLine.onmouseout = function() {
-            var lineId = this.getAttribute("data-line");
-            var elemsInSameLine = document.querySelectorAll("[data-line='"+lineId+"']"); 
-            for (var i = 0; i < elemsInSameLine.length; i++) { 
-                elemsInSameLine[i].className = elemsInSameLine[i].className.replace(" lineHover", "") || "";
-            } 
-        }; 
-        elementInLine.onclick = function() { 
-            var lineId = this.getAttribute("data-line"),
-                currentHzone = evtInterface.getCurrentHighlightZone();
+    	if ( elementInLine.className && elementInLine.className.indexOf('inLine') < 0 ) {
+            elementInLine.className += ' inLine';
+            elementInLine.setAttribute("data-line", lineId); 
+            elementInLine.onmouseover = function() { 
+                var lineId = this.getAttribute("data-line");
+                ITLutils.changeLinesHighlightStatus(lineId, 'over');
+            };
+            elementInLine.onmouseout = function() {
+                var lineId = this.getAttribute("data-line");
+                ITLutils.changeLinesHighlightStatus(lineId, 'out');
+            }; 
+            elementInLine.onclick = function() { 
+                var lineId = this.getAttribute("data-line"),
+                    currentHzone = evtInterface.getCurrentHighlightZone();
 
-            if (currentHzone && currentHzone.name === 'lb') {
-                // Deselect current selected
-                var currentSelected = document.querySelectorAll("[data-line='" + currentHzone.id + "']"); 
-                for (var i = 0; i < currentSelected.length; i++) {
-                    currentSelected[i].className = currentSelected[i].className.replace(" lineSelected", "") || "";
-                }    
+                if (currentHzone && currentHzone.name === 'Line') {
+                    // Deselect current selected
+                    ITLutils.changeLinesHighlightStatus(currentHzone.id, 'unselect');
+                }
+                
+                // Select this and set current
+                if (!currentHzone || (currentHzone.name === 'Line' && currentHzone.id !== lineId)) {
+                    evtInterface.updateCurrentHighlightZone({ name: 'Line', id: lineId } );
+                    ITLutils.changeLinesHighlightStatus(lineId, 'select');
+                } else {
+                    evtInterface.updateCurrentHighlightZone(undefined);
+                }
+            };
+        }
+    };
+
+    ITLutils.changeLinesHighlightStatus = function(lineId, statusToSet) {
+        var ITLactive = evtInterface.getToolState('ITL') === 'active';
+        if ( ITLactive ) {
+            var elemsInLine = document.querySelectorAll("[data-line='" + lineId + "']"); 
+            for (var i = 0; i < elemsInLine.length; i++) {
+                switch (statusToSet) {
+                    case 'over':
+                        elemsInLine[i].className += " lineHover";
+                        break;
+                    case 'out':
+                        elemsInLine[i].className = elemsInLine[i].className.replace(" lineHover", "") || "";
+                        break;
+                    case 'select':
+                        elemsInLine[i].className += " lineSelected";
+                        break;
+                    case 'unselect':
+                        elemsInLine[i].className = elemsInLine[i].className.replace(" lineSelected", "") || "";
+                        break;
+                    default:
+                        break;
+                }
             }
+        }
+    };
+
+    ITLutils.prepareZoneInImgInteractions = function() {
+        var zones = document.getElementsByClassName('zoneInImg');
+        for (var i = 0; i < zones.length; i++) {
+            var zone = zones[i];
             
-            // Select this and set current
-            if (!currentHzone || (currentHzone.name === 'lb' && currentHzone.id !== lineId)) {
-                evtInterface.updateCurrentHighlightZone({ name: 'lb', id: lineId } );
-                var elemsInSameLine = document.querySelectorAll("[data-line='"+lineId+"']"); 
-                for (var i = 0; i < elemsInSameLine.length; i++) { 
-                    elemsInSameLine[i].className += " lineSelected";
-                } 
-            } else {
-                evtInterface.updateCurrentHighlightZone(undefined);
+            zone.onmouseover = function() { 
+                var zoneId = this.getAttribute("data-corresp-id");
+                ITLutils.changeLinesHighlightStatus(zoneId, 'over');
+            };
 
-            }
-        };
-    }
+            zone.onmouseout = function() { 
+                var zoneId = this.getAttribute("data-corresp-id");
+                ITLutils.changeLinesHighlightStatus(zoneId, 'out');
+            };
+            zone.onclick = function() { 
+                var zoneId = this.getAttribute("data-corresp-id"),
+                    zoneName = this.getAttribute("data-zone-name"),
+                    currentHzone = evtInterface.getCurrentHighlightZone();
+
+                // Deselect current selected
+                if (currentHzone) {
+                    ITLutils.changeLinesHighlightStatus(currentHzone.id, 'unselect');
+                }
+                
+                // Select this and set current
+                if (!currentHzone || (currentHzone.name === zoneName && currentHzone.id !== zoneId)) {
+                    evtInterface.updateCurrentHighlightZone({ name: zoneName, id: zoneId } );
+                    ITLutils.changeLinesHighlightStatus(zoneId, 'select');
+                } else {
+                    evtInterface.updateCurrentHighlightZone(undefined);
+                }
+            };
+        }
+    };
+
+    ITLutils.highlightZoneInImage = function(zoneId) {
+        var zone = parsedData.getZone(zoneId);
+        if (zone) {
+            console.log("## HIGHLIGHT ZONE : ", zone);
+        }
+    };
 
     return ITLutils;
 });

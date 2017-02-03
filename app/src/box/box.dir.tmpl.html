@@ -6,7 +6,8 @@
                     'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
                     'span6of18': (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 3) || (vm.type === 'text' && vm.getTotElementsOfType('witness') > 1) || (vm.type === 'critical_apparatus'),
                     'topBoxOpened': vm.state.topBoxOpened,
-                    'filterNotActive': vm.state.filters._totActive <= 0}">
+                    'filterNotActive': vm.state.filters._totActive <= 0,
+                    'ITLactive': vm.isITLactive()}">
     
     <div 
         class="box-menu" 

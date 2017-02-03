@@ -201,7 +201,6 @@ angular.module('evtviewer.interface')
             var currentZone = state.currentHighlightedZone;
             if ( !currentZone || !zone || !(currentZone.id === zone.id && currentZone.name === zone.name) ) {
                 state.currentHighlightedZone = zone;
-                console.log('## HIGHLIGHT ##', state.currentHighlightedZone);
             }
         };
 

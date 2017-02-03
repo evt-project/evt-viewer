@@ -343,14 +343,40 @@ pre {
     }
 }
 
-.lineHover, .lineHover:after {
-    cursor: pointer;
-    background-color: rgba(230,206,160,0.8) !important;
-    color: #000000;
+.zoneInImg {
+    display: none;
+
+    &.lineHover {
+        border: 1px solid #4c2f2f !important;
+        background-color: #c67261 !important;
+        opacity: 0.4;
+    }
+    &.lineSelected, &.lineSelected.lineHover {
+        border: 1px solid #4c2f2f !important;
+        background-color: #9c4837 !important;
+        opacity: 0.5;
+    }
 }
 
-.lineSelected, .lineSelected:after {
-    cursor: pointer;
-    background-color: rgba(213,177,125,0.9) !important;
-    color: #000000;
+.ITLactive {
+    &.box-image {
+        img {
+            display: none;
+        }
+        .zoneInImg {
+            display: block;
+        }
+    }
+
+    .lineHover, .lineHover:after {
+        cursor: pointer;
+        background-color: rgba(230,206,160,0.8) !important;
+        color: #000000;
+    }
+
+    .lineSelected, .lineSelected:after {
+        cursor: pointer;
+        background-color: rgba(213,177,125,0.9) !important;
+        color: #000000;
+    }
 }

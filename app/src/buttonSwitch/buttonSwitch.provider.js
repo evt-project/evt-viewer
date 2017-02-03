@@ -273,9 +273,11 @@ angular.module('evtviewer.buttonSwitch')
                         var vm = this;
                         if (vm.active) {
                             evtImageTextLinking.prepareLines();
+                            evtImageTextLinking.prepareZoneInImgInteractions();
                             evtInterface.setToolState('ITL', 'active');
                         } else {
                             evtInterface.setToolState('ITL', 'inactive');
+                            // TODO: Deactivate interactions with lines
                         }
                     };
                     break;

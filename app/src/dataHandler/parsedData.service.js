@@ -82,6 +82,11 @@ angular.module('evtviewer.dataHandler')
     var glyphsCollection = {
         _indexes : []
     };
+
+    var zonesCollection = {
+        _indexes : []
+    };
+
     /* PAGES */
     // TODO: add attribute for the original xml reference
     parsedData.addPage = function(page) {
@@ -476,8 +481,37 @@ angular.module('evtviewer.dataHandler')
     parsedData.getGlyphs = function() {
         return glyphsCollection;
     };
-    parsedData.getGlyph = function(docId) {
-        return glyphsCollection[docId];
+    parsedData.getGlyph = function(glyphId) {
+        return glyphsCollection[glyphId];
+    };
+
+
+    /* ***************** */
+    /* DIGITAL FACSIMILE */
+    /* ***************** */
+    parsedData.addZone = function(zone) {
+        var zoneId,
+            zoneIndexes = zonesCollection._indexes;
+        
+        if ( zone && zone.id !== '' ) {
+            zoneId = zone.id;
+        } else {
+            zoneId = zone.id = 'zone_'+(zoneIndexes+1);
+        }
+        if ( zonesCollection[zoneId] === undefined ) {
+            zoneIndexes[zoneIndexes.length] = zoneId;
+            zonesCollection[zoneId] = zone;
+            zoneIndexes.length++;
+            // _console.log('parsedData - addZone ', zone);
+        }
+    };
+
+    parsedData.getZones = function() {
+        return zonesCollection;
+    };
+
+    parsedData.getZone = function(zoneId) {
+        return zonesCollection[zoneId];
     };
 
     return parsedData;
