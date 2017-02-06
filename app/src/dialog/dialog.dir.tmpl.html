@@ -17,7 +17,8 @@
         <div ng-switch="vm.type">
             <div 
                 ng-switch-when="error"
-                class="evt-dialog-container-content">{{vm.content}}</div>
+                class="evt-dialog-container-content"
+                compile="vm.content"></div>
             <div 
                 ng-switch-default
                 class="evt-dialog-container-content" ng-transclude></div>

@@ -286,7 +286,7 @@ angular.module('evtviewer.dataHandler')
         }
 
         parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0)
-
+        
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
                 var newDoc   = { 
@@ -323,9 +323,9 @@ angular.module('evtviewer.dataHandler')
         var splittedHTML = '';
         // First Line Breaks (intended as text before first <lb>)
         var contentEditionMatch = '<' + defContentEdition + '(.|[\r\n])*?>',
-            firstLineMatch = contentEditionMatch + '(.|[\r\n])*?<lb(.|[\r\n])*?\/>',
-            sRegExFirstLine = new RegExp(firstLineMatch, 'ig'),
-            matchesFirstLine = docElement.outerHTML.match(sRegExFirstLine);
+            firstLineMatch      = contentEditionMatch + '(.|[\r\n])*?<lb(.|[\r\n])*?\/>',
+            sRegExFirstLine     = new RegExp(firstLineMatch, 'ig'),
+            matchesFirstLine    = docElement.outerHTML.match(sRegExFirstLine);
         if (matchesFirstLine && matchesFirstLine.length > 0) {
             var sRegExContentEdition = new RegExp(contentEditionMatch, 'ig'),
                 firstLineHTML = matchesFirstLine[0].replace(sRegExContentEdition, '');
@@ -336,10 +336,10 @@ angular.module('evtviewer.dataHandler')
             // var lbHTMLString = matches[i].match(sRegExLbElem);
         
         // Other Line Breaks 
-        var lineMatch = '<lb(.|[\r\n])*?(?=(<lb|<\/' + defContentEdition + '>))',
+        var lineMatch  = '<lb(.|[\r\n])*?(?=(<lb|<\/' + defContentEdition + '>))',
             sRegExLine = new RegExp(lineMatch, 'ig'),
-            matches = docElement.outerHTML.match(sRegExLine);
-        var totMatches = matches ? matches.length : 0;
+            matches    = docElement.outerHTML.match(sRegExLine),
+            totMatches = matches ? matches.length : 0;
         for (var i = 0; i < totMatches; i++) {
             var lineHTML = parser.balanceXHTML(matches[i]);
             splittedHTML += '<evtLB>'+lineHTML+'</evtLB>';
@@ -353,13 +353,12 @@ angular.module('evtviewer.dataHandler')
         var matches = docElement.outerHTML.match(sRegExInput);
         var totMatches = matches ? matches.length : 0;
         for (var i = 0; i < totMatches; i++) {
-            var matchPbIdAttr = 'xml:id=".*"'; 
-            var sRegExPbAttr = new RegExp(matchPbIdAttr, 'ig');
-            var pbHTMLString = matches[i].match(sRegExPbAttr);
-
-            var sRegExPbAttr = new RegExp('xml:id=".*"', 'ig');
-            var idAttr = pbHTMLString[0].match(sRegExPbAttr);
-            var pageId = idAttr[0].replace(/xml:id/, "").replace(/(=|\"|\')/ig, "") || "";
+            var matchPbIdAttr = 'xml:id=".*"',
+                sRegExPbAttr  = new RegExp(matchPbIdAttr, 'ig'),
+                pbHTMLString  = matches[i].match(sRegExPbAttr),
+                sRegExPbAttr  = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig'),
+                idAttr        = pbHTMLString[0].match(sRegExPbAttr),
+                pageId        = idAttr[0].replace(/xml:id/, "").replace(/(=|\"|\')/ig, "") || "";
             if (pageId && pageId !== "") {
                 parsedData.setPageText(pageId, docId, 'original', matches[i]);
             }

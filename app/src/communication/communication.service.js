@@ -35,8 +35,8 @@ angular.module('evtviewer.communication')
         return $http.get(url)
             .then(function(response) {
                 if (typeof(response.data) === 'string') {
-                    baseData.addXMLString(response.data);
                     _console.log('XML Data received');
+                    return baseData.addXMLString(response.data);
                 } else {
                     // TODO: JSON? 
                 }
