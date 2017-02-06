@@ -79,13 +79,18 @@ angular.module('evtviewer.dataHandler')
     
     var criticalEdition = false;
 
-    var glyphsCollection = {
-        _indexes : []
+    var sourcesAppCollection = {
+        _indexes: {
+            encodingStructure: [],
+            refId: [],
+        },
     };
 
-    var zonesCollection = {
-        _indexes : []
-    };
+    var sourcesCollection = {
+        _indexes: {
+            encodingStructure: []
+        },
+    }
 
     /* PAGES */
     // TODO: add attribute for the original xml reference
@@ -112,32 +117,21 @@ angular.module('evtviewer.dataHandler')
         return pagesCollection[pageId];
     };
 
-    parsedData.setPageText = function(pageId, docId, editionLevel, HTMLtext) {
-        var pageObj = pagesCollection[pageId];
-        if (pageObj) {
-            if (!pageObj.text) {
-                pageObj.text = {};
+    parsedData.setPageText = function(pageId, docId, HTMLtext) {
+        if (pagesCollection[pageId]) {
+            if (!pagesCollection[pageId].text) {
+                pagesCollection[pageId].text = {};
             }
-            var pageDocObj = pageObj.text[docId];
-            if (pageDocObj !== undefined && pageDocObj[editionLevel] !== undefined) {
-                pageDocObj[editionLevel] += HTMLtext;
-            } else if (pageDocObj !== undefined) {
-                pageDocObj[editionLevel] = HTMLtext;
-            } else {
-                pageObj.text[docId] = { };
-                pageObj.text[docId][editionLevel] = HTMLtext;
-            }
+            pagesCollection[pageId].text[docId] = HTMLtext;
         }
     };
 
-    parsedData.getPageText = function(pageId, docId, editionLevel) {
-        var pageObj = pagesCollection[pageId];
-        if (pageObj && pageObj.text && pageObj.text[docId]) {
-            return pageObj.text[docId][editionLevel];
+    parsedData.getPageText = function(pageId, docId) {
+        if (pagesCollection[pageId] && pagesCollection[pageId].text) {
+            return pagesCollection[pageId].text[docId];
         }
         return undefined;
     };
-    
     parsedData.getPageImage = function(pageId) {
         var images = [];
 
@@ -459,60 +453,16 @@ angular.module('evtviewer.dataHandler')
         return projectInfo;
     }
 
-    /* ****** */
-    /* GLYPHS */
-    /* ****** */
-    parsedData.addGlyph = function(glyph) {
-        var glyphId,
-            glyphIndexes = glyphsCollection._indexes;
-        
-        if ( glyph && glyph.id !== '' ) {
-            glyphId = glyph.id;
-        } else {
-            glyphId = glyph.id = 'glyph_'+(glyphIndexes+1);
+    parsedData.addSourceEntry = function (sourceEntry){
+        if (sourcesAppCollection[sourceEntry.id] === undefined){
+            sourcesAppCollection[sourceEntry.id] = sourceEntry;
+            sourcesAppCollection._indexes.encodingStructure.push(sourceEntry.id);
         }
-        if ( glyphsCollection[glyphId] === undefined ) {
-            glyphIndexes[glyphIndexes.length] = glyphId;
-            glyphsCollection[glyphId] = glyph;
-            glyphIndexes.length++;
-            // _console.log('parsedData - addGlyph ', glyph);
-        }
-    };
-    parsedData.getGlyphs = function() {
-        return glyphsCollection;
-    };
-    parsedData.getGlyph = function(glyphId) {
-        return glyphsCollection[glyphId];
-    };
+    }
 
-
-    /* ***************** */
-    /* DIGITAL FACSIMILE */
-    /* ***************** */
-    parsedData.addZone = function(zone) {
-        var zoneId,
-            zoneIndexes = zonesCollection._indexes;
-        
-        if ( zone && zone.id !== '' ) {
-            zoneId = zone.id;
-        } else {
-            zoneId = zone.id = 'zone_'+(zoneIndexes+1);
-        }
-        if ( zonesCollection[zoneId] === undefined ) {
-            zoneIndexes[zoneIndexes.length] = zoneId;
-            zonesCollection[zoneId] = zone;
-            zoneIndexes.length++;
-            // _console.log('parsedData - addZone ', zone);
-        }
-    };
-
-    parsedData.getZones = function() {
-        return zonesCollection;
-    };
-
-    parsedData.getZone = function(zoneId) {
-        return zonesCollection[zoneId];
-    };
+    parsedData.getSourcesEntries = function (){
+        return sourcesAppCollection;
+    }
 
     return parsedData;
 });

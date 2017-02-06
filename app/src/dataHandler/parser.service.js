@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtParser', function($q, xmlParser, parsedData, config) {
+.service('evtParser', function(parsedData, config) {
     var parser = { };
     var idx = 0;
     // TODO: create module provider and add default configuration
@@ -45,9 +45,7 @@ angular.module('evtviewer.dataHandler')
     parser.parseXMLElement = function(doc, element, skip) {
         var newElement;
         if (element.nodeType === 3) { // Text
-            newElement = document.createElement('span');
-            newElement.className = "textNode";
-            newElement.appendChild(element);
+            newElement = element;
         } else if (element.tagName !== undefined && skip.indexOf('<'+element.tagName.toLowerCase()+'>') >= 0) {
             newElement = element;
         } else {
@@ -67,10 +65,9 @@ angular.module('evtviewer.dataHandler')
                     newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip));
                 }
             } else {
-                // if (tagName === 'l') {
-                //     newElement = parser.parseLine(element);
-                // } else 
-                if (tagName === 'note' && skip !== 'evtNote') {
+                if (tagName === 'l') {
+                    newElement = parser.parseLine(element);
+                } else if(tagName === 'note' && skip !== 'evtNote') {
                     newElement = parser.parseNote(element);
                 } else {
                     newElement           = document.createElement('span');
@@ -91,16 +88,7 @@ angular.module('evtviewer.dataHandler')
                             newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
                         }
                     } else {
-                        newElement.innerHTML = element.innerHTML + " ";
-                    }
-
-                    if (tagName === 'lb') {
-                        newElement.id = element.getAttribute('xml:id');
-                        newElement.appendChild(document.createElement('br'));
-                        var lineN = document.createElement('span');
-                        lineN.className = "lineN";
-                        lineN.textContent = element.getAttribute('n');
-                        newElement.appendChild(lineN);
+                        newElement.innerHTML = element.innerHTML;
                     }
                 }
             }
@@ -113,54 +101,41 @@ angular.module('evtviewer.dataHandler')
     /* ********************* */ 
     // balance takes an excerpted or truncated XHTML string and returns a well-balanced XHTML string
     parser.balanceXHTML = function(XHTMLstring) {
-        // Check for broken tags, e.g. <stro
-        // Check for a < after the last >, indicating a broken tag
-        if (XHTMLstring.lastIndexOf('<') > XHTMLstring.lastIndexOf('>')) {
-            // Truncate broken tag
-            XHTMLstring = XHTMLstring.substring(0, XHTMLstring.lastIndexOf('<'));
-        }
+      // Check for broken tags, e.g. <stro
+      // Check for a < after the last >, indicating a broken tag
+      if (XHTMLstring.lastIndexOf('<') > XHTMLstring.lastIndexOf('>')) {
+        // Truncate broken tag
+        XHTMLstring = XHTMLstring.substring(0, XHTMLstring.lastIndexOf('<'));
+      }
 
-        // Check for broken elements, e.g. <strong>Hello, w
-        // Get an array of all tags (start, end, and self-closing)
-        var tags = XHTMLstring.match(/<(?!\!)[^>]+>/g);
-        var stack = [];
-        var tagToOpen = [];
-        for (var tag in tags) {
-            if (tags[tag].search('/') === 1) { // </tagName>
-                // end tag -- pop off of the stack
-                // se l'ultimo elemento di stack è il corrispettivo tag di apertura
-                var tagName = tags[tag].replace(/[<\/>]/ig, "");
-                var openTag = stack[stack.length-1];
-                if (openTag && (openTag.search("<"+tagName+" ") >= 0 || openTag.search("<"+tagName+">") >= 0))  {
-                    stack.pop();
-                } else { //Tag non aperto
-                    tagToOpen.push(tagName);
-                }
-            } else if (tags[tag].search('/>') <= 0) { // <tagName>
-                // start tag -- push onto the stack
-                stack.push(tags[tag]);
-            } else { // <tagName />
-                // self-closing tag -- do nothing
-            }
+      // Check for broken elements, e.g. <strong>Hello, w
+      // Get an array of all tags (start, end, and self-closing)
+      var tags = XHTMLstring.match(/<[^!>]+>/g);
+      var stack = [];
+      for (var tag in tags) {
+        if (tags[tag].search('/') <= 0) {
+          // start tag -- push onto the stack
+          stack.push(tags[tag]);
+        } else if (tags[tag].search('/') === 1) {
+          // end tag -- pop off of the stack
+          stack.pop();
+        } else {
+          // self-closing tag -- do nothing
         }
+      }
 
-        // stack should now contain only the start tags of the broken elements, most deeply-nested at the top
-        while (stack.length > 0) {
-            // pop the unmatched tag off the stack
-            var endTag = stack.pop();
-            // get just the tag name
-            endTag = endTag.substring(1,endTag.search(/[ >]/));
-            // append the end tag
-            XHTMLstring += '</' + endTag + '>';
-        }
+      // stack should now contain only the start tags of the broken elements, most deeply-nested at the top
+      while (stack.length > 0) {
+        // pop the unmatched tag off the stack
+        var endTag = stack.pop();
+        // get just the tag name
+        endTag = endTag.substring(1,endTag.search(/[ >]/));
+        // append the end tag
+        XHTMLstring += '</' + endTag + '>';
+      }
 
-        while (tagToOpen.length > 0) {
-            var startTag = tagToOpen.shift();
-            XHTMLstring = '<' + startTag + '>' + XHTMLstring;
-        }
-        
-        // Return the well-balanced XHTML string
-        return(XHTMLstring);
+      // Return the well-balanced XHTML string
+      return(XHTMLstring);
     };
 
     /* ************************ */
@@ -186,11 +161,19 @@ angular.module('evtviewer.dataHandler')
         var n = 0;
         while (n < lines.length) {
             var lineNode    = lines[n],
-                newElement = parser.parseLine(lineNode);
-            lineNode.parentNode.replaceChild(newElement, lineNode);
+                newElement = document.createElement('div');
+                newElement.className = 'l';
+                newElement.className = lineNode.tagName;
+                for (var i = 0; i < lineNode.attributes.length; i++) {
+                    var attrib = lineNode.attributes[i];
+                    if (attrib.specified) {
+                        newElement.setAttribute('data-'+attrib.name, attrib.value);
+                    }
+                }
+                newElement.innerHTML = lineNode.innerHTML;
+                lineNode.parentNode.replaceChild(newElement, lineNode);
         }
     };
-    
     parser.parseLine = function(lineNode){
         var newElement = document.createElement('div');
             newElement.className = 'l';
@@ -204,19 +187,6 @@ angular.module('evtviewer.dataHandler')
         newElement.innerHTML = lineNode.innerHTML;
         return newElement;
     };
-    
-    parser.parseGlyphs = function(doc) {
-        var currentDocument = angular.element(doc);
-        angular.forEach(currentDocument.find('glyph'), 
-            function(element) {
-                var glyph = { };
-                glyph.id = element.getAttribute('xml:id') || '';
-                glyph.xmlCode = element.outerHTML;
-                //TODO: decide how to structure content
-                parsedData.addGlyph(glyph);
-            });
-    };
-
     parser.xpath = function(el) {
         try{
             if (typeof el === 'string') {
@@ -274,15 +244,13 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseDocuments = function(doc) {
         var currentDocument = angular.element(doc),
-            defDocElement, 
-            defContentEdition = 'body';
+            defDocElement;
         if ( currentDocument.find('text group text').length > 0 ) {
             defDocElement = 'text group text';
         } else if ( currentDocument.find('text').length > 0 ) {
             defDocElement = 'text';
         } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
             defDocElement = 'div[subtype="edition_text"]';
-            defContentEdition = 'div';
         }
 
         parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0)
@@ -307,52 +275,21 @@ angular.module('evtviewer.dataHandler')
                     // Split pages works only on diplomatic/interpretative edition
                     // In critical edition, text will be splitted into pages for each witness
                     config.defaultEdition = 'diplomatic';
-                    angular.forEach(angular.element(element).find(defContentEdition), 
-                        function(editionElement) {
-                            //editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-                            parser.splitPages(editionElement, newDoc.value, defContentEdition);
-                        });
+                    parser.splitPages(element, newDoc.value);
                 }
         });
         console.log('## PAGES ##', parsedData.getPages());
         console.log('## Documents ##', parsedData.getDocuments());
         return parsedData.getDocuments();
     };
-    
-    parser.splitLineBreaks = function(docElement, defContentEdition) {
-        var splittedHTML = '';
-        // First Line Breaks (intended as text before first <lb>)
-        var contentEditionMatch = '<' + defContentEdition + '(.|[\r\n])*?>',
-            firstLineMatch = contentEditionMatch + '(.|[\r\n])*?<lb(.|[\r\n])*?\/>',
-            sRegExFirstLine = new RegExp(firstLineMatch, 'ig'),
-            matchesFirstLine = docElement.outerHTML.match(sRegExFirstLine);
-        if (matchesFirstLine && matchesFirstLine.length > 0) {
-            var sRegExContentEdition = new RegExp(contentEditionMatch, 'ig'),
-                firstLineHTML = matchesFirstLine[0].replace(sRegExContentEdition, '');
-            firstLineHTML = parser.balanceXHTML(firstLineHTML);
-            splittedHTML += '<evtLB>'+firstLineHTML+'</evtLB>';
-        }
-            // var sRegExLbElem = new RegExp(/<lb(.|[\r\n])*?\/>/, 'ig');
-            // var lbHTMLString = matches[i].match(sRegExLbElem);
-        
-        // Other Line Breaks 
-        var lineMatch = '<lb(.|[\r\n])*?(?=(<lb|<\/' + defContentEdition + '>))',
-            sRegExLine = new RegExp(lineMatch, 'ig'),
-            matches = docElement.outerHTML.match(sRegExLine);
-        var totMatches = matches ? matches.length : 0;
-        for (var i = 0; i < totMatches; i++) {
-            var lineHTML = parser.balanceXHTML(matches[i]);
-            splittedHTML += '<evtLB>'+lineHTML+'</evtLB>';
-        }
-        return splittedHTML;
-    };
 
-    parser.splitPages = function(docElement, docId, defContentEdition) {
-        var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))'; 
+    parser.splitPages = function(docElement, docId) {
+        var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + docElement.tagName + '>))'; 
         var sRegExInput = new RegExp(match, 'ig');
         var matches = docElement.outerHTML.match(sRegExInput);
-        var totMatches = matches ? matches.length : 0;
+        var totMatches = matches.length;
         for (var i = 0; i < totMatches; i++) {
+            var balancedHTMLString = parser.balanceXHTML(matches[i]);
             var matchPbIdAttr = 'xml:id=".*"'; 
             var sRegExPbAttr = new RegExp(matchPbIdAttr, 'ig');
             var pbHTMLString = matches[i].match(sRegExPbAttr);
@@ -361,91 +298,10 @@ angular.module('evtviewer.dataHandler')
             var idAttr = pbHTMLString[0].match(sRegExPbAttr);
             var pageId = idAttr[0].replace(/xml:id/, "").replace(/(=|\"|\')/ig, "") || "";
             if (pageId && pageId !== "") {
-                parsedData.setPageText(pageId, docId, 'original', matches[i]);
+                parsedData.setPageText(pageId, docId, balancedHTMLString);
             }
         }
     };
-
-    parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
-        var balancedHTMLString = parser.balanceXHTML(docHTML);
-        
-        var deferred = $q.defer(),
-            editionText = balancedHTMLString, //TEMP
-            doc = xmlParser.parse("<div id='mainContentToTranform' class='" + editionLevel + "'>" + balancedHTMLString + "</div>");
-        if ( doc !== undefined ) {
-            var docDOM = doc.getElementById('mainContentToTranform');
-            //remove <pb>s
-            var pbs = docDOM.getElementsByTagName('pb'),
-                k   = 0;
-            while ( k < pbs.length) {
-                var pbNode = pbs[k];
-                    pbNode.parentNode.removeChild(pbNode);
-            }
-
-            //remove <lb>s
-            var invalidLbsSuffix;
-            if (editionLevel === 'diplomatic') {
-                invalidLbsSuffix = '_reg';
-            } else if (editionLevel === 'interpretative') {
-                invalidLbsSuffix = '_orig';
-            }
-            if (invalidLbsSuffix) {
-                var lbs = docDOM.getElementsByTagName('lb'),
-                    k   = 0;
-                while ( k < lbs.length ) {
-                    var pbNode = lbs[k],
-                        pbNodeId = pbNode.getAttribute('xml:id');
-                    if (pbNodeId.indexOf(invalidLbsSuffix) >= 0) {
-                        pbNode.parentNode.removeChild(pbNode);
-                    } else {
-                        k++;
-                    }
-                }
-            }
-            
-            var Gs = docDOM.getElementsByTagName('g'),
-                k   = 0;
-            while ( k < Gs.length) {
-                var gNode = Gs[k],
-                    sRef = gNode.getAttribute('ref'),
-                    glyphNode;
-                if (sRef && sRef !== '') {
-                    sRef = sRef.replace('#', '');
-                    var glyphObj = parsedData.getGlyph(sRef);
-                    if (glyphObj && glyphObj.xmlCode !== '') {
-                        var glyphNodes = angular.element(glyphObj.xmlCode);
-                        if (glyphNodes && glyphNodes.length > 0) {
-                            glyphNode = glyphNodes[0];
-                        }
-                    }
-                }
-                if (glyphNode) {
-                    //TODO Creare direttiva apposita per GLYPHs
-                    gNode.parentNode.insertBefore(glyphNode, gNode.nextSibling);
-                } 
-                gNode.parentNode.removeChild(gNode);
-            }
-            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-
-            angular.forEach(docDOM.children, function(elem){
-                var skip = '<pb>,<g>';
-                elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, skip), elem);
-            });
-            editionText = docDOM.outerHTML;
-        } else {
-            editionText = '<span>Text not available.</span>';
-        }
-
-        if (editionText === undefined) {
-             var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
-             editionText = errorMsg;
-        }
-
-        parsedData.setPageText(pageId, docId, editionLevel, editionText);
-        
-        deferred.resolve('success');
-        return deferred;
-    }
 
     return parser;
 });

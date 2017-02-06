@@ -34,7 +34,7 @@
                             }],
 
     "toolHeatMap"       : true,
-    "toolPinAppEntries" : false,
+    "toolPinAppEntries" : true,
 
     "listDef"                    : "listWit, listChange",
     "versionDef"                 : "witness, change",
@@ -44,6 +44,10 @@
     "possibleVariantFilters"     : "",
     "possibleLemmaFilters"       : "resp",
     "notSignificantVariant"      : "<orig>, <sic>, [type=orthographic]",
+
+    "sourcesUrl"                 : "",
+    "sourceDef"                : "<cit>",
+    "sourceAppDef"              : "<quote>",
 
     "maxWitsLoadTogether"        : 5,
 

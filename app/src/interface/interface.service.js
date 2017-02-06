@@ -10,7 +10,6 @@ angular.module('evtviewer.interface')
             currentWitsPages : undefined,
             currentEdition   : undefined,
             currentAppEntry  : undefined,
-            currentHighlightedZone: undefined,
             isLoading        : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : ''
@@ -20,11 +19,7 @@ angular.module('evtviewer.interface')
             availableViewModes : [ ],
             availableWitnesses : [ ],
             witnessSelector    : false
-        };
-
-        var tools = {
-
-        };
+        }
 
         mainInterface.boot = function() {  
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
@@ -32,7 +27,6 @@ angular.module('evtviewer.interface')
                 properties.availableViewModes = config.availableViewModes;
                 evtCommunication.getData(config.dataUrl).then(function () {
                     mainInterface.updateParams($routeParams);
-                    
                     // Parse critical text and entries
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                     if (currentDocFirstLoad !== undefined){
@@ -42,9 +36,7 @@ angular.module('evtviewer.interface')
                             promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
                         // Parse critical text
-                        if (config.editionType === "critical" && parsedData.isCriticalEditionAvailable()) {
-                            promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
-                        }
+                        promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);       
                         $q.all(promises).then(function(){
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
@@ -83,9 +75,6 @@ angular.module('evtviewer.interface')
         mainInterface.isToolAvailable = function(toolName){
             return config[toolName];
         };
-        mainInterface.getToolState = function(toolName) {
-            return (tools[toolName] ? tools[toolName].status : undefined);
-        };
 
         mainInterface.getProperties = function(){
             return properties;
@@ -113,10 +102,6 @@ angular.module('evtviewer.interface')
 
         mainInterface.getCurrentEdition = function(){
             return state.currentEdition;
-        };
-
-        mainInterface.getCurrentHighlightZone = function(zone) {
-            return state.currentHighlightedZone;
         };
 
         mainInterface.getAvailableWitnesses = function() {
@@ -166,13 +151,6 @@ angular.module('evtviewer.interface')
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
         
-        mainInterface.setToolState = function(toolName, status) {
-            if (!tools[toolName]) {
-                tools[toolName] = {};
-            }
-            tools[toolName].status = status;
-        };
-
         mainInterface.updateProperty = function(property, value){
             properties[property] = value;
         };
@@ -195,13 +173,6 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentEdition = function(edition){
             state.currentEdition = edition;
-        };
-
-        mainInterface.updateCurrentHighlightZone = function(zone) {
-            var currentZone = state.currentHighlightedZone;
-            if ( !currentZone || !zone || !(currentZone.id === zone.id && currentZone.name === zone.name) ) {
-                state.currentHighlightedZone = zone;
-            }
         };
 
         // WITNESS

@@ -7,8 +7,16 @@ angular.module('evtviewer.dataHandler')
         lemmaDef              = '<lem>',
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>';
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef,
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+sourceAppDef, //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
+
+    // Al momento ho usato solo questa variabile
+    var sourceAppDef = '<quote>';
+    
+    //Queste due le userò appena inizierò a parsare le fonti
+    var sourceDef = '<cit>';
+    var sourcesUrl = ''; // Parsing di più documenti
+
 
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
@@ -586,7 +594,7 @@ angular.module('evtviewer.dataHandler')
                 var sRegExInput = new RegExp(match, 'ig'),
                     newHTML     = '<span data-app-id-start="'+appStartId+'" data-app-id-end="'+appEndId+'" class="lacuna">[LACUNA]</span>';
                 docDOM.innerHTML = docDOM.innerHTML.replace(sRegExInput, newHTML);
-                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);;
+                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
             }
         } else {
             docDOM.innerHTML = '<span class="error">There was a problem in loading lacuna for this witness.</span>';
@@ -772,7 +780,7 @@ angular.module('evtviewer.dataHandler')
 
             var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                 j      = apps.length-1;
-            while (j < apps.length && j >= 0) {
+            while(j < apps.length && j >= 0) {
                 var appNode = apps[j];
                 if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
                     var id;
@@ -810,7 +818,7 @@ angular.module('evtviewer.dataHandler')
                 j--;
             }
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-            
+
             angular.forEach(docDOM.children, function(elem){
                 var skip = skipFromBeingParsed+','+config.lacunaMilestone+','+config.fragmentMilestone;
                 elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
@@ -831,11 +839,12 @@ angular.module('evtviewer.dataHandler')
                 witnessText = docDOM.innerHTML;
             }
 
-            witnessText = evtParser.balanceXHTML(witnessText);
             //TODO: Split witness into pages
         } else {
             witnessText = '<span>Text not available.</span>';
         }
+
+        witnessText = evtParser.balanceXHTML(witnessText);
         
         //save witness text
         parsedData.addWitnessText(wit, docId, witnessText);
@@ -992,7 +1001,7 @@ angular.module('evtviewer.dataHandler')
             // if (lemmas.length > 0 || 
             //     (parsedData.getWitness(config.preferredWitness) !== undefined &&
             //      parsedData.getWitness(config.preferredWitness) !== '') ) {
-                var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
+                var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
                     j      = apps.length-1, 
                     count  = 0;
             
@@ -1067,6 +1076,221 @@ angular.module('evtviewer.dataHandler')
         deferred.resolve('success');
         return deferred;
     };
+
+    /* ******* */
+    /* SOURCES */
+    /* ******* */
+
+
+    /********************************* */
+    /* parseSourcesEntryReference(elem)*/
+    /******************************************************************/
+    /* Function to parse an element inside of a sourceAppDef element  */
+    /* that may point to the bibliographic reference of the quotation */
+    /* @elem --> an element inside of sourceAppDef, like <ptr>, <link>*/
+    /**************************************************************** */
+
+    var parseSourcesEntryReference = function (elem) {
+        
+        var refElement = {
+            id: evtParser.xpath(elem),
+            tagName: elem.tagName,
+            attributes : [],
+            content: [],
+            // In questo array salvo i riferimenti alle fonti, che poi copierò nel sourceId dell'entrata
+            _index: []
+        }
+
+        //salvo gli attributi
+        if (elem.attributes) {
+            var refValues = [];
+            for (var i = 0; i < elem.attributes.length; i++) {
+                var attrib = elem.attributes[i];
+                if (attrib.specified) {
+                    refElement.attributes[attrib.name] = attrib.value;
+                    // Se trovo uno dei seguenti attributi...
+                    if (attrib.name === 'source' || attrib.name === 'target' || attrib.name === 'corresp' || attrib.name === 'xml:id'){
+                        var values = attrib.value.replace(/#/g, '').split(" ");
+                        for (var i = 0; i < values.length; i++) {
+                            refValues.push(values[i]);
+                        }
+                    }
+                }
+            }
+            //...lo aggiungo nell'array dei riferimenti alle fonti
+            for (var i = 0; i < refValues.length; i++) {
+                refElement._index.push(refValues[i]);
+            }
+        }
+
+        //parso i contenuti
+        angular.forEach(elem.childNodes, function(child) {
+            if (child.nodeType === 3) {
+                if (child.textContent.trim() !== '') {
+                    refElement.content.push(child.textContent.trim());
+                }
+            } else if (child.tagName === 'linkGrp') {
+                angular.forEach(child.childNodes, function(subChild) {
+                    var link = parseSourcesEntryReference(subChild);
+                    refElement.content[link.id] = link;
+                })
+            } else {
+                refElement.content.push(child.cloneNode(true));
+            }
+        });
+
+        return refElement;
+    }
+
+    /* ************************* */
+    /* parseSourceAppEntries(doc) */
+    /* ****************************************************************** */
+    /* Function to parse the content and the attributes of a single entry */
+    /* of the sources apparatus inside of the critical text and save it   */
+    /* in parsedData.                                                     */
+    /* @entry-> the XML element that marks up the quotation of a source   */
+    /* inside the text to be parsed                                       */
+    /* ****************************************************************** */
+
+    var parseSourcesAppEntry = function(entry){
+        
+        var sourcesAppEntry = {
+            id : '',
+            attributes: [],
+            content: [],
+            references: {
+            },
+            _indexes: {
+                sourceId: [], //array in cui salvo gli id delle fonti cui l'entrata fa riferimento
+                subSources: [], //salvo gli id dei sourceAppDef annidati
+            },
+            _subSource: false, //indica se l'entrata in questione è annidata o meno in un sourceAppDef
+        }
+
+        //Parsing the id or creating it with the evtParser.xpath method
+        var id;
+        if (entry.getAttribute('xml:id')) {
+            id = 'srcappe_'+entry.getAttribute('xml:id');
+        } else {
+            id = evtParser.xpath(entry).substr(1);
+        }
+        sourcesAppEntry.id = id;
+
+        //Parsing the attributes
+        if (entry.attributes) {
+            //Checking the presence of the xml:base attribute, in order not to break links. DA IMPLEMENTARE CON isNestedInElem
+            /*var urlBase = '';
+            for (var i = 0; i < entry.attributes.length; i++) {
+                if (attrib.specified && attrib.name == 'xml:base') {
+                    urlBase = attrib.value;
+                }
+            } <--- QUESTA ERA SOLO UN'IDEA:
+            GESTIRE EVENTUALI PRESENZE DI XML:BASE, MA AL MOMENTO LO METTEREI DA PARTE*/
+            for (var i = 0; i < entry.attributes.length; i++) {
+                var attrib = entry.attributes[i];
+                if (attrib.specified) {                    
+                    sourcesAppEntry.attributes[attrib.name] = attrib.value;                 
+                }
+                /*Se l'elemento sourceAppDef ha un attributo che contiene info sulla fonte, salvo il contenuto nell'array sourceId*/
+                if (attrib.name === 'source') {
+                    /*if (urlBase !== '') {
+                        //implementare aggiunta di xml:base
+                        var values = attrib.value.replace(/#/g, '').split(" ");
+                        for (var i = 0; i < values.length; i++) {
+                            var fullUrl = urlBase.concat(values[i]);
+                            values[i] = fullUrl;
+                        }
+                        sourcesAppEntry._indexes.sourceId = values;
+                    } else {*/
+                    var values = attrib.value.replace(/#/g, '').split(" ");
+                    sourcesAppEntry._indexes.sourceId = values;
+                    //}
+                }
+                if (attrib.name === 'corresp') {
+                    var values = attrib.value.replace(/#/g, '').split(" ");
+                    sourcesAppEntry._indexes.sourceId = values;
+                }
+            }
+        }
+
+        //Check if the sourceAppDef element is nested in another sourceAppDef element
+        sourcesAppEntry._subSource = evtParser.isNestedInElem(entry, sourceAppDef.replace(/[<>]/g, ''));
+
+        //Parsing dei contenuti
+        angular.forEach(entry.childNodes, function(child) {
+            if (child.nodeType === 3) {
+                if (child.textContent.trim() !== '') {
+                    sourcesAppEntry.content.push(child.textContent.trim());
+                }
+            } else if (child.nodeType === 1) {
+                //Se si trova uno dei seguenti elementi, lo si gestisce con la funzione apposita (parseSourcesEntryReference)
+                var ref = ['linkGrp', 'link', 'ptr', 'ref', 'bibl'];
+                //Se si incontra un sourceAppDEf annidato, si invoca ricorsivamente il parser
+                if (sourceAppDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    var childSource = parseSourcesAppEntry(child);
+                    sourcesAppEntry.content.push(childSource);
+                    sourcesAppEntry._indexes.subSources.push(childSource.id);
+                }
+                else if (ref.indexOf(child.tagName) >= 0) {
+                    var childContent = parseSourcesEntryReference(child);
+                    sourcesAppEntry.references[childContent.id] = childContent;
+                    for (var i = 0; i < childContent._index.length; i++) {
+                        sourcesAppEntry._indexes.sourceId.push(childContent._index[i]);
+                    }                    
+                }
+                else {
+                    //Altrimenti si clona il nodo e lo si aggiunge a content
+                    sourcesAppEntry.content.push(child.cloneNode(true));
+                }
+            }
+        });
+
+        parsedData.addSourceEntry(sourcesAppEntry);
+
+        if (sourcesAppEntry._indexes.sourceId.length > 0) {
+                        for (var i = 0; i < sourcesAppEntry._indexes.sourceId.length; i++) {
+                            var ref = sourcesAppEntry._indexes.sourceId[i];
+                            if (parsedData.getSourcesEntries()._indexes.refId.indexOf(ref) < 0){
+                                parsedData.getSourcesEntries()._indexes.refId.push(ref);
+                            }
+                        }
+                    }
+
+        return sourcesAppEntry;
+    }
+
+    /* ************************* */
+    /* parseSourcesAppEntries(doc) */
+    /* ***************************************************************** */
+    /* Function to parse the blocks of the critical texts that cite a source in the XML file */
+    /* and save them in parsedData                                       */
+    /* @doc document -> XML to be parsed                                 */
+    /* ***************************************************************** */
+
+    // It searches for <quote> elements and for each one of them
+    parser.parseSourcesAppEntries = function(doc) {
+        var deferred = $q.defer();
+        var currentDocument = angular.element(doc); //wraps the DOM of doc as a jquery elementContent
+
+        // Avvio parser delle entrate dell'apparato delle fonti
+        angular.forEach(currentDocument.find(sourceAppDef.replace(/[<>]/g, '')),
+            function(element){
+                var isInBody = evtParser.isNestedInElem(element, 'body');
+                if (isInBody){
+                    parseSourcesAppEntry(element);
+                }
+            });
+
+            console.log('## SourcesApp Entries ##', parsedData.getSourcesEntries());
+
+            deferred.resolve('success');
+            return deferred;
+    };
+
+    parser.parseSources = function(doc) {
+        var deferred = q$.defer();
+        var currentDocument = angular.element(doc);
+    }
 
     return parser;
 });
