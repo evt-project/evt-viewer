@@ -283,6 +283,19 @@ angular.module('evtviewer.dataHandler')
         return parsedData.getDocuments();
     };
 
+    /***********************************************************/
+    /*Method to parse external files and add them to parsedData*/
+    /*@author: CM                                              */
+    /***********************************************************/
+    parser.parseExternalDocuments = function(doc, type) {
+        var newExtDoc = {
+            value: type,
+            content: doc,
+        }
+        parsedData.addExternalDocument(newExtDoc);
+        console.log('## External Documents ##', parsedData.getExternalDocuments());
+    };
+
     parser.splitPages = function(docElement, docId) {
         var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + docElement.tagName + '>))'; 
         var sRegExInput = new RegExp(match, 'ig');

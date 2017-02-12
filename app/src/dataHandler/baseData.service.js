@@ -4,6 +4,7 @@ angular.module('evtviewer.dataHandler')
     var baseData     = {},
         state        = {
             XMLDocuments: [],
+            XMLExtDocuments: [],
             XMLStrings: []
         };
 
@@ -21,7 +22,10 @@ angular.module('evtviewer.dataHandler')
             // Parse witnesses list
             evtCriticalParser.parseWitnesses(docElements);
 
+            // Parse the Sources Apparatus entries (@author: CM)
             evtCriticalParser.parseSourcesAppEntries(docElements);
+
+            evtCriticalParser.parseSources(docElements);
             
             evtProjectInfoParser.parseProjectInfo(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
@@ -29,6 +33,28 @@ angular.module('evtviewer.dataHandler')
             _console.error('Something wrong with the XML');
         }
     };
+
+    /********************************************************/
+    /*Method to store the external XML files and parse them */
+    /*@author: CM                                           */
+    /********************************************************/
+
+    baseData.addXMLExtDocument = function(extDoc, type) {
+        var docElements = xmlParser.parse(extDoc);
+        try {
+            state.XMLStrings.push(extDoc);
+            state.XMLExtDocuments[type] = docElements;
+            state.XMLExtDocuments.length++;
+            var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
+            
+            if (type === 'sources') {
+                evtCriticalParser.parseExternalSources(docElements);
+            }
+            _console.log('External Files parsed and stored', state.XMLExtDocuments);
+        } catch (e) {
+            _console.log('Something wrong with the supplementary XML files '+e);
+        }
+    }
 
     baseData.addXMLString = function(xmlString) {
         addXMLDocument(xmlString);

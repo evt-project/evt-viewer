@@ -49,6 +49,31 @@ angular.module('evtviewer.communication')
             });
     };
 
+    communication.getExternalData = function(url) {
+        return $http.get(url)
+        .then(function(response){
+            if (typeof(response.data) === 'string') {
+                    var docType = '';
+                    if (url === config.sourcesUrl){
+                        docType = 'sources';
+                    }
+                    /*else (url === config.lociUrl) {
+                        docType = 'loci';
+                    }*/
+                    baseData.addXMLExtDocument(response.data, docType);
+                    _console.log('XML Data received');
+                } else {
+                    // TODO: JSON? 
+                }
+            }, function(error) {
+                if (defaults.errorMsgs[error]) {
+                    communication.err(defaults.errorMsgs[error].msg+' "'+url+'"', error);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', error);
+                }
+            });
+    };
+
     communication.getError = function(){
         return currentError;
     };

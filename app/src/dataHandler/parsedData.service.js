@@ -20,7 +20,11 @@ angular.module('evtviewer.dataHandler')
     };
     var documentsCollection = {
         length: 0
-    }; 
+    };
+
+    var externalDocsCollection = {
+        length : 0
+    };
     
     // var pagesCollectionTexts = []; 
     
@@ -79,10 +83,16 @@ angular.module('evtviewer.dataHandler')
     
     var criticalEdition = false;
 
+/**************************/
+/*VARIABILI AGGIUNTE DA CM*/
+/**************************/
+
     var sourcesAppCollection = {
         _indexes: {
             encodingStructure: [],
-            refId: [],
+            refId: {
+                _id: [],
+            }
         },
     };
 
@@ -90,6 +100,19 @@ angular.module('evtviewer.dataHandler')
         _indexes: {
             encodingStructure: []
         },
+    }
+
+    var analoguesAppCollection = {
+        _indexes: {
+            encodingStructure: [],
+            refId: []
+        }
+    }
+
+    var analoguesCollection = {
+        _indexes: {
+            encodingStructure: []
+        }
     }
 
     /* PAGES */
@@ -165,6 +188,33 @@ angular.module('evtviewer.dataHandler')
     };
     parsedData.getDocument = function(docId) {
         return documentsCollection[docId];
+    };
+
+    /********************************************************/
+    /*Metodi aggiunti da CM, per la gestione di file esterni*/
+    /********************************************************/
+
+    parsedData.addExternalDocument = function (extDoc) {
+        var docId = extDoc.value;
+        if (externalDocsCollection.length === undefined) {
+            externalDocsCollection.length = 0;
+        }
+        if (extDoc.value === '') {
+            docId = doc.value = 'extDoc_'+(externalDocsCollection.length+1);
+        }
+        if (externalDocsCollection[docId] === undefined) {
+            externalDocsCollection[externalDocsCollection.length] = docId;
+            externalDocsCollection[docId] = extDoc;
+            externalDocsCollection.length++;
+        }
+    };
+
+    parsedData.getExternalDocuments = function() {
+        return externalDocsCollection;
+    };
+
+    parsedData.getExternalDocument = function(extDocId) {
+        return externalDocsCollection[extDocId];
     };
 
     /* EDITION */
@@ -453,15 +503,46 @@ angular.module('evtviewer.dataHandler')
         return projectInfo;
     }
 
+    /******************************************************************/
+    /*Metodi aggiunti da CM, per la gestione dell'apparato delle fonti*/
+    /******************************************************************/
+
     parsedData.addSourceEntry = function (sourceEntry){
         if (sourcesAppCollection[sourceEntry.id] === undefined){
             sourcesAppCollection[sourceEntry.id] = sourceEntry;
             sourcesAppCollection._indexes.encodingStructure.push(sourceEntry.id);
         }
+        
+        var appRef = sourceEntry._indexes.sourceId;
+        var sourcesRef = parsedData.getSourcesEntries()._indexes.refId;
+
+        if (appRef.length > 0) {
+            for (var i = 0; i < appRef.length; i++){
+                if (sourcesRef[appRef[i]] === undefined && sourcesRef._id.indexOf(appRef[i])<0) {
+                    sourcesRef[appRef[i]] = [];
+                    sourcesRef[appRef[i]].push(sourceEntry.id)
+                    sourcesRef._id.push(appRef[i]);
+            } else /*if (sourcesRef[appRef[i]] > 0 && sourcesRef._id.indexOf(appRef[i])>= 0)*/{
+                    sourcesRef[appRef[i]].push(sourceEntry.id);
+                    
+                }
+            }
+        }
     }
 
     parsedData.getSourcesEntries = function (){
         return sourcesAppCollection;
+    }
+
+    parsedData.addSource = function(source) {
+        if (sourcesCollection[source.id] === undefined){
+            sourcesCollection[source.id] = source;
+            sourcesCollection._indexes.encodingStructure.push(source.id);
+        }
+    }
+
+    parsedData.getSources = function() {
+        return sourcesCollection;
     }
 
     return parsedData;
