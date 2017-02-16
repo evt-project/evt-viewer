@@ -22,6 +22,7 @@ angular.module('evtviewer.dataHandler')
         length: 0
     };
 
+    //Collezione aggiunta da CM
     var externalDocsCollection = {
         length : 0
     };
@@ -83,6 +84,14 @@ angular.module('evtviewer.dataHandler')
     
     var criticalEdition = false;
 
+    var glyphsCollection = {
+        _indexes : []
+    };
+
+    var zonesCollection = {
+        _indexes : []
+    };
+
 /**************************/
 /*VARIABILI AGGIUNTE DA CM*/
 /**************************/
@@ -98,7 +107,8 @@ angular.module('evtviewer.dataHandler')
 
     var sourcesCollection = {
         _indexes: {
-            encodingStructure: []
+            encodingStructure: [],
+            appEntriesId: [],
         },
     }
 
@@ -140,21 +150,32 @@ angular.module('evtviewer.dataHandler')
         return pagesCollection[pageId];
     };
 
-    parsedData.setPageText = function(pageId, docId, HTMLtext) {
-        if (pagesCollection[pageId]) {
-            if (!pagesCollection[pageId].text) {
-                pagesCollection[pageId].text = {};
+    parsedData.setPageText = function(pageId, docId, editionLevel, HTMLtext) {
+        var pageObj = pagesCollection[pageId];
+        if (pageObj) {
+            if (!pageObj.text) {
+                pageObj.text = {};
             }
-            pagesCollection[pageId].text[docId] = HTMLtext;
+            var pageDocObj = pageObj.text[docId];
+            if (pageDocObj !== undefined && pageDocObj[editionLevel] !== undefined) {
+                pageDocObj[editionLevel] += HTMLtext;
+            } else if (pageDocObj !== undefined) {
+                pageDocObj[editionLevel] = HTMLtext;
+            } else {
+                pageObj.text[docId] = { };
+                pageObj.text[docId][editionLevel] = HTMLtext;
+            }
         }
     };
 
-    parsedData.getPageText = function(pageId, docId) {
-        if (pagesCollection[pageId] && pagesCollection[pageId].text) {
-            return pagesCollection[pageId].text[docId];
+    parsedData.getPageText = function(pageId, docId, editionLevel) {
+        var pageObj = pagesCollection[pageId];
+        if (pageObj && pageObj.text && pageObj.text[docId]) {
+            return pageObj.text[docId][editionLevel];
         }
         return undefined;
     };
+   
     parsedData.getPageImage = function(pageId) {
         var images = [];
 
@@ -502,11 +523,68 @@ angular.module('evtviewer.dataHandler')
     parsedData.getProjectInfo = function(){
         return projectInfo;
     }
+    
+    /* ****** */
+    /* GLYPHS */
+    /* ****** */
+    parsedData.addGlyph = function(glyph) {
+        var glyphId,
+            glyphIndexes = glyphsCollection._indexes;
+        
+        if ( glyph && glyph.id !== '' ) {
+            glyphId = glyph.id;
+        } else {
+            glyphId = glyph.id = 'glyph_'+(glyphIndexes+1);
+        }
+        if ( glyphsCollection[glyphId] === undefined ) {
+            glyphIndexes[glyphIndexes.length] = glyphId;
+            glyphsCollection[glyphId] = glyph;
+            glyphIndexes.length++;
+            // _console.log('parsedData - addGlyph ', glyph);
+        }
+    };
+    parsedData.getGlyphs = function() {
+        return glyphsCollection;
+    };
+    parsedData.getGlyph = function(glyphId) {
+        return glyphsCollection[glyphId];
+    };
+
+    /* ***************** */
+    /* DIGITAL FACSIMILE */
+    /* ***************** */
+    parsedData.addZone = function(zone) {
+        var zoneId,
+            zoneIndexes = zonesCollection._indexes;
+        
+        if ( zone && zone.id !== '' ) {
+            zoneId = zone.id;
+        } else {
+            zoneId = zone.id = 'zone_'+(zoneIndexes+1);
+        }
+        if ( zonesCollection[zoneId] === undefined ) {
+            zoneIndexes[zoneIndexes.length] = zoneId;
+            zonesCollection[zoneId] = zone;
+            zoneIndexes.length++;
+            // _console.log('parsedData - addZone ', zone);
+        }
+    };
+
+    parsedData.getZones = function() {
+        return zonesCollection;
+    };
+
+    parsedData.getZone = function(zoneId) {
+        return zonesCollection[zoneId];
+    };
 
     /******************************************************************/
     /*Metodi aggiunti da CM, per la gestione dell'apparato delle fonti*/
     /******************************************************************/
 
+    /*******************/
+    /*SOURCES APPARATUS*/
+    /*******************/
     parsedData.addSourceEntry = function (sourceEntry){
         if (sourcesAppCollection[sourceEntry.id] === undefined){
             sourcesAppCollection[sourceEntry.id] = sourceEntry;
@@ -538,11 +616,30 @@ angular.module('evtviewer.dataHandler')
         if (sourcesCollection[source.id] === undefined){
             sourcesCollection[source.id] = source;
             sourcesCollection._indexes.encodingStructure.push(source.id);
+        var sourceRef = source.sourcesAppEntries;
+        var sourcesAppEntries = parsedData.getSources()._indexes.appEntriesId;
+
+        if (sourceRef.length > 0) {
+            for (var i = 0; i < sourceRef.length; i++){
+                if (sourcesAppEntries[source[i]] === undefined && sourcesAppEntries.indexOf(sourceRef[i])<0) {
+                    sourcesAppEntries[sourceRef[i]] = [];
+                    sourcesAppEntries[sourceRef[i]].push(source.id)
+                    sourcesAppEntries.push(sourceRef[i]);
+            } else /*if (sourcesRef[appRef[i]] > 0 && sourcesAppEntries._id.indexOf(appRef[i])>= 0)*/{
+                    sourcesAppEntries[sourceRef[i]].push(source.id);
+                    
+                }
+            }
+        }
         }
     }
 
     parsedData.getSources = function() {
         return sourcesCollection;
+    }
+
+    parsedData.getSource = function (sourceId) {
+        return sourcesCollection[sourceId];
     }
 
     return parsedData;
