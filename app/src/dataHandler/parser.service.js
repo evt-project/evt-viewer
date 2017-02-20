@@ -46,7 +46,7 @@ angular.module('evtviewer.dataHandler')
         var newElement;
         if (element.nodeType === 3) { // Text
             newElement = document.createElement('span');
-            newElement.className = "textNode";
+            newElement.className = 'textNode';
             newElement.appendChild(element);
         } else if (element.tagName !== undefined && skip.indexOf('<'+element.tagName.toLowerCase()+'>') >= 0) {
             newElement = element;
@@ -91,14 +91,14 @@ angular.module('evtviewer.dataHandler')
                             newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
                         }
                     } else {
-                        newElement.innerHTML = element.innerHTML + " ";
+                        newElement.innerHTML = element.innerHTML + ' ';
                     }
 
                     if (tagName === 'lb') {
                         newElement.id = element.getAttribute('xml:id');
                         newElement.appendChild(document.createElement('br'));
                         var lineN = document.createElement('span');
-                        lineN.className = "lineN";
+                        lineN.className = 'lineN';
                         lineN.textContent = element.getAttribute('n');
                         newElement.appendChild(lineN);
                     }
@@ -129,9 +129,9 @@ angular.module('evtviewer.dataHandler')
             if (tags[tag].search('/') === 1) { // </tagName>
                 // end tag -- pop off of the stack
                 // se l'ultimo elemento di stack è il corrispettivo tag di apertura
-                var tagName = tags[tag].replace(/[<\/>]/ig, "");
+                var tagName = tags[tag].replace(/[<\/>]/ig, '');
                 var openTag = stack[stack.length-1];
-                if (openTag && (openTag.search("<"+tagName+" ") >= 0 || openTag.search("<"+tagName+">") >= 0))  {
+                if (openTag && (openTag.search('<'+tagName+' ') >= 0 || openTag.search('<'+tagName+'>') >= 0))  {
                     stack.pop();
                 } else { //Tag non aperto
                     tagToOpen.push(tagName);
@@ -284,7 +284,7 @@ angular.module('evtviewer.dataHandler')
             defContentEdition = 'div';
         }
 
-        parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0)
+        parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0);
         
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
@@ -303,7 +303,7 @@ angular.module('evtviewer.dataHandler')
                 }
                 parsedData.addDocument(newDoc);
                 parser.parsePages(element, newDoc.value);
-                if (config.editionType !== "critical" || !parsedData.isCriticalEditionAvailable()) { 
+                if (config.editionType !== 'critical' || !parsedData.isCriticalEditionAvailable()) { 
                     // Split pages works only on diplomatic/interpretative edition
                     // In critical edition, text will be splitted into pages for each witness
                     config.defaultEdition = 'diplomatic';
@@ -355,7 +355,7 @@ angular.module('evtviewer.dataHandler')
             var previousDoc = parsedData.getPreviousDocument(docId);
             if (previousDoc && previousDoc.pages && previousDoc.pages.length > 0) {
                 var parentPageId = previousDoc.pages[previousDoc.pages.length-1];
-                if (parentPageId && parentPageId !== "") {
+                if (parentPageId && parentPageId !== '') {
                     parsedData.setPageText(parentPageId, docId, 'original', matchesOrphanText[0]);
                 }
             }
@@ -366,12 +366,12 @@ angular.module('evtviewer.dataHandler')
         var totMatches = matches ? matches.length : 0;
         for (var i = 0; i < totMatches; i++) {
             var matchPbIdAttr = 'xml:id=".*"',
-                sRegExPbAttr  = new RegExp(matchPbIdAttr, 'ig'),
-                pbHTMLString  = matches[i].match(sRegExPbAttr),
-                sRegExPbAttr  = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig'),
-                idAttr        = pbHTMLString[0].match(sRegExPbAttr),
-                pageId        = idAttr[0].replace(/xml:id/, "").replace(/(=|\"|\')/ig, "") || "";
-            if (pageId && pageId !== "") {
+                sRegExPbIdAttr  = new RegExp(matchPbIdAttr, 'ig'),
+                pbHTMLString  = matches[i].match(sRegExPbIdAttr);
+            sRegExPbIdAttr  = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
+            var idAttr = pbHTMLString[0].match(sRegExPbIdAttr),
+                pageId  = idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') || '';
+            if (pageId && pageId !== '') {
                 parsedData.setPageText(pageId, docId, 'original', matches[i]);
             }
         }
@@ -382,15 +382,16 @@ angular.module('evtviewer.dataHandler')
         
         var deferred = $q.defer(),
             editionText = balancedHTMLString, //TEMP
-            doc = xmlParser.parse("<div id='mainContentToTranform' class='" + editionLevel + "'>" + balancedHTMLString + "</div>");
+            doc = xmlParser.parse('<div id="mainContentToTranform" class="' + editionLevel + '">' + balancedHTMLString + '</div>');
         if ( doc !== undefined ) {
             var docDOM = doc.getElementById('mainContentToTranform');
             //remove <pb>s
-            var pbs = docDOM.getElementsByTagName('pb'),
+            var pbNode,
+                pbs = docDOM.getElementsByTagName('pb'),
                 k   = 0;
             while ( k < pbs.length) {
-                var pbNode = pbs[k];
-                    pbNode.parentNode.removeChild(pbNode);
+                pbNode = pbs[k];
+                pbNode.parentNode.removeChild(pbNode);
             }
 
             //remove <lb>s
@@ -401,11 +402,11 @@ angular.module('evtviewer.dataHandler')
                 invalidLbsSuffix = '_orig';
             }
             if (invalidLbsSuffix) {
-                var lbs = docDOM.getElementsByTagName('lb'),
-                    k   = 0;
+                var lbs = docDOM.getElementsByTagName('lb');
+                k = 0;
                 while ( k < lbs.length ) {
-                    var pbNode = lbs[k],
-                        pbNodeId = pbNode.getAttribute('xml:id');
+                    pbNode = lbs[k];
+                    var pbNodeId = pbNode.getAttribute('xml:id');
                     if (pbNodeId.indexOf(invalidLbsSuffix) >= 0) {
                         pbNode.parentNode.removeChild(pbNode);
                     } else {
@@ -414,8 +415,8 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             
-            var Gs = docDOM.getElementsByTagName('g'),
-                k   = 0;
+            var Gs = docDOM.getElementsByTagName('g');
+            k = 0;
             while ( k < Gs.length) {
                 var gNode = Gs[k],
                     sRef = gNode.getAttribute('ref'),
@@ -456,7 +457,7 @@ angular.module('evtviewer.dataHandler')
         
         deferred.resolve('success');
         return deferred;
-    }
+    };
 
     return parser;
 });

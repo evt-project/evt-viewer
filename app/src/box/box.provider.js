@@ -15,7 +15,6 @@ angular.module('evtviewer.box')
             idx        = 0;
 
         var _console = $log.getInstance('box');
-
         // 
         // Control function
         // 
@@ -186,8 +185,8 @@ angular.module('evtviewer.box')
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var currentPage = evtInterface.getCurrentPage(),
-                            pageSource   = parsedData.getPage(currentPage).source || '',
-                            pageSource   = pageSource === '' ? 'data/images/'+currentPage+'.png' : pageSource;
+                            pageSource   = parsedData.getPage(currentPage).source || '';
+                        pageSource = pageSource === '' ? 'data/images/'+currentPage+'.png' : pageSource;
                         scope.vm.content = '<img src="'+pageSource+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
                         
                         // TEMP... TODO: creare direttiva per gestire le zone sull'immagine
@@ -199,7 +198,7 @@ angular.module('evtviewer.box')
                                 if ( zone.page === currentPage ) {
                                     zonesHTML += '<div class="zoneInImg" data-zone-id="'+zone.id+'" data-zone-name="'+zone.rendition+'"';
                                     if (zone.corresp && zone.corresp !== '') {
-                                        var correspId = zone.corresp.replace("#", "");
+                                        var correspId = zone.corresp.replace('#', '');
                                         zonesHTML += ' data-corresp-id="'+ correspId +'"';
                                         if (zone.rendition === 'Line') {
                                             zonesHTML += ' data-line="'+ correspId +'"';
@@ -207,7 +206,7 @@ angular.module('evtviewer.box')
                                             zonesHTML += ' data-hs="'+ correspId +'"';
                                         }
                                     }
-                                    zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', '+ zone.lry + ') (' + zone.ulx + ', '+ zone.uly + ') </div>'
+                                    zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', '+ zone.lry + ') (' + zone.ulx + ', '+ zone.uly + ') </div>';
                                 }
                             }
                         }
@@ -243,15 +242,16 @@ angular.module('evtviewer.box')
 
                     updateContent = function(){
                         scope.vm.isLoading = true;
-                        var isITLon = evtInterface.getToolState('ITL') === 'active';
-                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                        var newDoc,
+                            promises = [],
+                            isITLon  = evtInterface.getToolState('ITL') === 'active',
+                            errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
                             noTextAvailableMsg = '<span class="alert-msg alert-msg-error">Text is not available.</span>';
                         if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') { // Critical edition
-                            var newDoc = parsedData.getCriticalText(scope.vm.state.docId);
+                            newDoc = parsedData.getCriticalText(scope.vm.state.docId);
                             if (newDoc === undefined) {
                                 newDoc = parsedData.getDocument(scope.vm.state.docId);
                                 try {
-                                    var promises = [];
                                     promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
@@ -271,11 +271,10 @@ angular.module('evtviewer.box')
                             var currentPage = evtInterface.getCurrentPage(),
                                 currentDoc  = evtInterface.getCurrentDocument(),
                                 currentEdition = evtInterface.getCurrentEdition();
-                            var newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
+                            newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
                             if (newDoc === undefined) {
                                 newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
                                 try {
-                                    var promises = [];
                                     promises.push(evtParser.parseTextForEditionLevel(currentPage, currentDoc, currentEdition, newDoc).promise);
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getPageText(currentPage, currentDoc, currentEdition) || noTextAvailableMsg;
@@ -284,7 +283,7 @@ angular.module('evtviewer.box')
                                             $timeout(function(){
                                                 evtImageTextLinking.prepareLines();
                                                 evtImageTextLinking.prepareZoneInImgInteractions();
-                                            })
+                                            });
                                         }
                                     });
                                 }
@@ -299,7 +298,7 @@ angular.module('evtviewer.box')
                                     $timeout(function(){
                                         evtImageTextLinking.prepareLines();
                                         evtImageTextLinking.prepareZoneInImgInteractions();
-                                    })
+                                    });
                                 }
                             }
                             scope.vm.isLoading = false;

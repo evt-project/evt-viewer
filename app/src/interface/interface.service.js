@@ -42,7 +42,7 @@ angular.module('evtviewer.interface')
                             promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
                         // Parse critical text
-                        if (config.editionType === "critical" && parsedData.isCriticalEditionAvailable()) {
+                        if (config.editionType === 'critical' && parsedData.isCriticalEditionAvailable()) {
                             promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
                         }
                         $q.all(promises).then(function(){
@@ -115,7 +115,7 @@ angular.module('evtviewer.interface')
             return state.currentEdition;
         };
 
-        mainInterface.getCurrentHighlightZone = function(zone) {
+        mainInterface.getCurrentHighlightZone = function() {
             return state.currentHighlightedZone;
         };
 
@@ -306,9 +306,10 @@ angular.module('evtviewer.interface')
                 }
             }
             // WITNESSES
+            var totWits;
             if (params.ws !== undefined) {
                 witnesses = params.ws.split(',').filter(function(el) {return el.length !== 0;});
-                var totWits = parsedData.getWitnessesList();
+                totWits = parsedData.getWitnessesList();
                 properties.availableWitnesses = totWits.slice(0, totWits.length);
                 for (var w in witnesses) {
                     var wit     = witnesses[w].split('@')[0],
@@ -328,10 +329,10 @@ angular.module('evtviewer.interface')
                         properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
                         witIds = witIds.slice(0, config.maxWitsLoadTogether);
                     } else {
-                        properties.availableWitnesses = []    
+                        properties.availableWitnesses = [];
                     }
                 } else {
-                    var totWits = parsedData.getWitnessesList();
+                    totWits = parsedData.getWitnessesList();
                     properties.availableWitnesses = totWits.slice(0, totWits.length);
                 }
             }

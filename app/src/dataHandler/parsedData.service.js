@@ -12,7 +12,7 @@ angular.module('evtviewer.dataHandler')
         textProfile         : '',
         outsideMetadata     : '',
         revisionHistory     : ''
-    }
+    };
 
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
@@ -470,9 +470,10 @@ angular.module('evtviewer.dataHandler')
     parsedData.updateProjectInfoContent = function(newContent, type){
         projectInfo[type] = newContent;
     };
+    
     parsedData.getProjectInfo = function(){
         return projectInfo;
-    }
+    };
 
     /* ****** */
     /* GLYPHS */
