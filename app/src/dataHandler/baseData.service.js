@@ -45,14 +45,20 @@ angular.module('evtviewer.dataHandler')
     var launchXMLParsers = function(docElements) {
         // Parse pages
         // evtParser.parsePages(docElements);
-        // Parse documents
+        
+        // Parse Glyphs
         evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
+        
+        // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
         
-        var parsedDocuments = evtParser.parseDocuments(docElements);
+        // Parse documents
+        evtParser.parseDocuments(docElements);
+
         // Parse witnesses list
         evtCriticalParser.parseWitnesses(docElements);
         
+        // Parse projet info 
         evtProjectInfoParser.parseProjectInfo(docElements);
     };
 
@@ -63,11 +69,11 @@ angular.module('evtviewer.dataHandler')
     /* ************************************************************* */
     // It will replace <xi:include> node with the <text> found in loaded file
     var loadXIinclude = function(doc) {
-        var deferred = $q.defer();
-        var mainUrl = config.dataUrl;
-            mainUrl = mainUrl.substring(0, mainUrl.lastIndexOf("/") + 1),
+        var deferred = $q.defer(),
+            mainUrl = config.dataUrl,
             includedFilesLoaded = 0,
             filesToInclude = doc.getElementsByTagName('include');
+        mainUrl = mainUrl.substring(0, mainUrl.lastIndexOf('/') + 1);
         if (filesToInclude && filesToInclude.length > 0) {
             var totFilesToInclude = filesToInclude.length;
             angular.forEach(filesToInclude, function(element) {
@@ -86,7 +92,7 @@ angular.module('evtviewer.dataHandler')
                         var fallbackElem = element.getElementsByTagName('fallback')[0],
                             errorDialog  = evtDialog.getById('errorMsg');
                         var errorContent = fallbackElem.innerHTML;
-                        errorContent += '<div style="text-align:center;">Warning! <br/> EVT could not work properly.</div>'
+                        errorContent += '<div style="text-align:center;">Warning! <br/> EVT could not work properly.</div>';
                         errorDialog.updateContent(errorContent);
                         errorDialog.setTitle(fileXpointer + ' - XI:INCLUDE ERROR');
                         errorDialog.open();

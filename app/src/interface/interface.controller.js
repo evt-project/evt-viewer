@@ -145,7 +145,8 @@ angular.module('evtviewer.interface')
 
     $scope.getErrorMsg = function(){
         return evtCommunication.getError();
-    }
+    };
+    
     _console.log('InterfaceCtrl running');
 })
 

@@ -45,7 +45,7 @@ angular.module('evtviewer.box')
                             var docViewTop = boxElem.scrollTop + 42,
                                 docViewBottom = docViewTop + angular.element(boxElem).height();
                             id = pbElems[i].getAttribute('data-id');
-                            var elemTop =  $("span.pb[data-id='"+id+"']").offset().top;
+                            var elemTop =  $('span.pb[data-id=\''+id+'\']').offset().top;
                             if ((elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
                                 visible = true;
                             } else {
@@ -137,7 +137,7 @@ angular.module('evtviewer.box')
 
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find("[data-app-id='"+appId+"']");
+                        var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;

@@ -276,7 +276,7 @@ angular.module('evtviewer.buttonSwitch')
                             evtImageTextLinking.prepareZoneInImgInteractions();
                             evtInterface.setToolState('ITL', 'active');
                         } else {
-                            currentHzone = evtInterface.getCurrentHighlightZone();
+                            var currentHzone = evtInterface.getCurrentHighlightZone();
                             // Deselect current selected
                             if (currentHzone) {
                                 evtImageTextLinking.changeLinesHighlightStatus(currentHzone.id, 'unselect');

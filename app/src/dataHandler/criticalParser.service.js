@@ -457,8 +457,8 @@ angular.module('evtviewer.dataHandler')
 
             var entryLemmaObj = entry.content[entry.lemma];
             if (entryLemmaObj) {
-                if (!entryLemmaObj.wits || entryLemmaObj.wits.length == 0){
-                    entryLemmaObj['autoWits'] = missingWits;
+                if (!entryLemmaObj.wits || entryLemmaObj.wits.length === 0){
+                    entryLemmaObj.autoWits = missingWits;
                 }
             }
             
@@ -586,7 +586,7 @@ angular.module('evtviewer.dataHandler')
                 var sRegExInput = new RegExp(match, 'ig'),
                     newHTML     = '<span data-app-id-start="'+appStartId+'" data-app-id-end="'+appEndId+'" class="lacuna">[LACUNA]</span>';
                 docDOM.innerHTML = docDOM.innerHTML.replace(sRegExInput, newHTML);
-                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);;
+                docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
             }
         } else {
             docDOM.innerHTML = '<span class="error">There was a problem in loading lacuna for this witness.</span>';
@@ -600,10 +600,10 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     var isFragmentaryWitness = function(docDOM, wit){
         try {
-            if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
+            if (docDOM.querySelectorAll('witStart[wit*=\'#'+wit+'\']').length > 0) {
                 return true;
-            } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
-                       docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
+            } else if (docDOM.querySelectorAll('rdg[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 || 
+                       docDOM.querySelectorAll('lem[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 ) {
                 return true;
             } else {
                 return false;

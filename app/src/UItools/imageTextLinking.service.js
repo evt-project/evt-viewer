@@ -7,11 +7,12 @@ angular.module('evtviewer.UItools')
     	//TODO: Move function in proper service
         var lbs = document.getElementsByClassName('lb');
         for (var i = 0; i < lbs.length; i++) {
+            var lbId;
             //TODO: handle <lb> with _reg and _orig
             if (i === lbs.length-1) {
                 // Ultima linea da gestire con riferimento diverso
                 var nextElem = lbs[i].nextElementSibling;
-                var lbId = lbs[i].id;
+                lbId = lbs[i].id;
                 while (nextElem && nextElem.className.indexOf('inLine') < 0) {
                     this.preapareElementInLine(nextElem, lbId);
                     nextElem = nextElem.nextElementSibling || lbs[i].parentNode.nextElementSibling || undefined;
@@ -20,7 +21,7 @@ angular.module('evtviewer.UItools')
                 var lbStart = lbs[i],
                     lbEnd = lbs[i+1];
                 //Todo: Handle _reg e _orig
-                var lbId = lbStart.id;
+                lbId = lbStart.id;
                 if (lbId) {
                     if (lbStart && lbEnd) {
                         var elems = Utils.DOMutils.getElementsBetweenTree(lbStart, lbEnd);
@@ -36,17 +37,17 @@ angular.module('evtviewer.UItools')
     ITLutils.preapareElementInLine = function(elementInLine, lineId) {
     	if ( elementInLine.className && elementInLine.className.indexOf('inLine') < 0 ) {
             elementInLine.className += ' inLine';
-            elementInLine.setAttribute("data-line", lineId); 
+            elementInLine.setAttribute('data-line', lineId); 
             elementInLine.onmouseover = function() { 
-                var lineId = this.getAttribute("data-line");
+                var lineId = this.getAttribute('data-line');
                 ITLutils.changeLinesHighlightStatus(lineId, 'over');
             };
             elementInLine.onmouseout = function() {
-                var lineId = this.getAttribute("data-line");
+                var lineId = this.getAttribute('data-line');
                 ITLutils.changeLinesHighlightStatus(lineId, 'out');
             }; 
             elementInLine.onclick = function() { 
-                var lineId = this.getAttribute("data-line"),
+                var lineId = this.getAttribute('data-line'),
                     currentHzone = evtInterface.getCurrentHighlightZone();
 
                 if (currentHzone && currentHzone.name === 'Line') {
@@ -68,20 +69,20 @@ angular.module('evtviewer.UItools')
     ITLutils.changeLinesHighlightStatus = function(lineId, statusToSet) {
         var ITLactive = evtInterface.getToolState('ITL') === 'active';
         if ( ITLactive ) {
-            var elemsInLine = document.querySelectorAll("[data-line='" + lineId + "']"); 
+            var elemsInLine = document.querySelectorAll('[data-line=\'' + lineId + '\']'); 
             for (var i = 0; i < elemsInLine.length; i++) {
                 switch (statusToSet) {
                     case 'over':
-                        elemsInLine[i].className += " lineHover";
+                        elemsInLine[i].className += ' lineHover';
                         break;
                     case 'out':
-                        elemsInLine[i].className = elemsInLine[i].className.replace(" lineHover", "") || "";
+                        elemsInLine[i].className = elemsInLine[i].className.replace(' lineHover', '') || '';
                         break;
                     case 'select':
-                        elemsInLine[i].className += " lineSelected";
+                        elemsInLine[i].className += ' lineSelected';
                         break;
                     case 'unselect':
-                        elemsInLine[i].className = elemsInLine[i].className.replace(" lineSelected", "") || "";
+                        elemsInLine[i].className = elemsInLine[i].className.replace(' lineSelected', '') || '';
                         break;
                     default:
                         break;
@@ -96,17 +97,17 @@ angular.module('evtviewer.UItools')
             var zone = zones[i];
             
             zone.onmouseover = function() { 
-                var zoneId = this.getAttribute("data-corresp-id");
+                var zoneId = this.getAttribute('data-corresp-id');
                 ITLutils.changeLinesHighlightStatus(zoneId, 'over');
             };
 
             zone.onmouseout = function() { 
-                var zoneId = this.getAttribute("data-corresp-id");
+                var zoneId = this.getAttribute('data-corresp-id');
                 ITLutils.changeLinesHighlightStatus(zoneId, 'out');
             };
             zone.onclick = function() { 
-                var zoneId = this.getAttribute("data-corresp-id"),
-                    zoneName = this.getAttribute("data-zone-name"),
+                var zoneId = this.getAttribute('data-corresp-id'),
+                    zoneName = this.getAttribute('data-zone-name'),
                     currentHzone = evtInterface.getCurrentHighlightZone();
 
                 // Deselect current selected
@@ -128,7 +129,7 @@ angular.module('evtviewer.UItools')
     ITLutils.highlightZoneInImage = function(zoneId) {
         var zone = parsedData.getZone(zoneId);
         if (zone) {
-            console.log("## HIGHLIGHT ZONE : ", zone);
+            console.log('## HIGHLIGHT ZONE : ', zone);
         }
     };
 

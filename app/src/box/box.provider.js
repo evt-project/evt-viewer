@@ -22,7 +22,7 @@ angular.module('evtviewer.box')
             // _console.log('vm - updating state '+key+': '+value);
             var vm        = this;
             vm.state[key] = value;
-            return vm.state[key];            
+            return vm.state[key];
         }
 
         function getState(key) {

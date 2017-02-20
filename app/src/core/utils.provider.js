@@ -44,23 +44,26 @@ angular.module('evtviewer.core')
 
         var before = [];
         while (start.parentNode!== ancestor) {
-            var el = start;
-            while (el.nextSibling)
-                before.push(el = el.nextSibling);
+            var elS = start;
+            while (elS.nextSibling) {
+                before.push(elS = elS.nextSibling);
+            }
             start = start.parentNode;
         }
 
         var after = [];
         while (end.parentNode!== ancestor) {
-            var el = end;
-            while (el.previousSibling)
-                after.push(el = el.previousSibling);
+            var elE = end;
+            while (elE.previousSibling) {
+                after.push(elE = elE.previousSibling);
+            }
             end = end.parentNode;
         }
         after.reverse();
 
-        while ((start = start.nextSibling)!== end)
+        while ((start = start.nextSibling)!== end){
             before.push(start);
+        }
         return before.concat(after);
     };
 
@@ -69,8 +72,9 @@ angular.module('evtviewer.core')
         var parents = $(a).parents().andSelf();
         while (b) {
             var ix = parents.index(b);
-            if (ix !== -1)
+            if (ix !== -1) {
                 return b;
+            }
             b = b.parentNode;
         }
         return null;

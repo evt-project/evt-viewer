@@ -55,7 +55,7 @@ angular.module('evtviewer.communication')
 
     communication.updateError = function(newError){
         currentError = newError;
-    }
+    };
 
     communication.err = function(msg, code) {
         // _console.log('# ERROR '+code+' # ' + msg);
@@ -64,7 +64,7 @@ angular.module('evtviewer.communication')
             code  : code,
             msg   : msg,
             title : defaults.errorMsgs[code] ? 'Error '+code+' - '+defaults.errorMsgs[code].title : 'Communication error '+code
-        }
+        };
         communication.updateError(newError);
         
         var errorDialog = evtDialog.getById('errorMsg');

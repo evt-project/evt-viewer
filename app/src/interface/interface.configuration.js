@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.config(function($routeProvider, $httpProvider) {
+.config(function($routeProvider) {
     $routeProvider
         .when('/:viewMode', {
             template: 'index.html',
