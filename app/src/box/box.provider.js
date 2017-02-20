@@ -337,8 +337,8 @@ angular.module('evtviewer.box')
                             if ( newContent === undefined ) {
                                 var documents  = parsedData.getDocuments(),
                                     currentDoc = '';
-                                if (documents.length > 0) {
-                                    currentDoc = documents[currentDocId];
+                                if (documents._indexes.length > 0) {
+                                    currentDoc = documents._indexes[currentDocId];
                                 }
                                 if (currentDoc !== undefined) {
                                     try {

@@ -266,8 +266,7 @@ angular.module('evtviewer.dataHandler')
                     // TODO: handle other cases (e.g. <surface>)
                     newPage.source = '';
                 }
-                newPage.doc = docId;
-                parsedData.addPage(newPage);
+                parsedData.addPage(newPage, docId);
         });
         console.log('## Pages ##', parsedData.getPages());
     };
@@ -290,10 +289,11 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(defDocElement), 
             function(element) {
                 var newDoc   = { 
-                    value   : element.getAttribute('xml:id')  || parser.xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments().length+1),
-                    label   : element.getAttribute('n')       || 'Doc '+(parsedData.getDocuments().length+1),
-                    title   : element.getAttribute('n')       || 'Document '+(parsedData.getDocuments().length+1),
-                    content : element
+                    value   : element.getAttribute('xml:id')  || parser.xpath(doc).substr(1) || 'doc_'+(parsedData.getDocuments()._indexes.length+1),
+                    label   : element.getAttribute('n')       || 'Doc '+(parsedData.getDocuments()._indexes.length+1),
+                    title   : element.getAttribute('n')       || 'Document '+(parsedData.getDocuments()._indexes.length+1),
+                    content : element,
+                    pages   : [] // Pages will be added later
                 };
                 for (var i = 0; i < element.attributes.length; i++) {
                     var attrib = element.attributes[i];
@@ -348,6 +348,18 @@ angular.module('evtviewer.dataHandler')
     };
 
     parser.splitPages = function(docElement, docId, defContentEdition) {
+        var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
+            sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
+            matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
+        if (matchesOrphanText && matchesOrphanText.length > 0) {
+            var previousDoc = parsedData.getPreviousDocument(docId);
+            if (previousDoc && previousDoc.pages && previousDoc.pages.length > 0) {
+                var parentPageId = previousDoc.pages[previousDoc.pages.length-1];
+                if (parentPageId && parentPageId !== "") {
+                    parsedData.setPageText(parentPageId, docId, 'original', matchesOrphanText[0]);
+                }
+            }
+        }
         var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))'; 
         var sRegExInput = new RegExp(match, 'ig');
         var matches = docElement.outerHTML.match(sRegExInput);

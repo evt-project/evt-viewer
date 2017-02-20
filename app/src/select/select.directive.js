@@ -36,6 +36,26 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
+            if (scope.type === 'page') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentPage();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
+            if (scope.type === 'document') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentDocument();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentSelect){

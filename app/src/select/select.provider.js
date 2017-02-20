@@ -43,7 +43,11 @@ angular.module('evtviewer.select')
                         _console.log('page select callback ', newOption);
                         if (newOption !== undefined){
                             vm.selectOption(newOption);
+                            var currentDocument = evtInterface.getCurrentDocument();
                             evtInterface.updateCurrentPage(newOption.value);
+                            if ( newOption.docs.length > 0 && newOption.docs.indexOf(currentDocument) < 0 ) { // The page is not part of the document
+                                evtInterface.updateCurrentDocument(newOption.docs[0]);
+                            }
                             evtInterface.updateUrl();
                         }                        
                     };
@@ -64,14 +68,18 @@ angular.module('evtviewer.select')
                         // _console.log('document select callback ', newOption);
                         if (newOption !== undefined){
                             vm.selectOption(newOption);
+                            var currentPage = evtInterface.getCurrentPage();
                             evtInterface.updateCurrentDocument(newOption.value);
+                            if ( newOption.pages.length > 0 && newOption.pages.indexOf(currentPage) < 0 ) { // The page is not part of the document
+                                evtInterface.updateCurrentPage(newOption.pages[0]);
+                            }
                             evtInterface.updateUrl();
                         }                        
                     };
                     formatOptionList = function(optionList) {
                         var formattedList = [];
-                        for (var i = 0; i < optionList.length; i++ ) {
-                            formattedList.push(optionList[optionList[i]]);
+                        for (var i = 0; i < optionList._indexes.length; i++ ) {
+                            formattedList.push(optionList[optionList._indexes[i]]);
                         }
                         return formattedList;
                     };

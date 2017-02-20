@@ -19,7 +19,7 @@ angular.module('evtviewer.dataHandler')
         length: 0
     };
     var documentsCollection = {
-        length: 0
+        _indexes: []
     }; 
     
     // var pagesCollectionTexts = []; 
@@ -89,7 +89,7 @@ angular.module('evtviewer.dataHandler')
 
     /* PAGES */
     // TODO: add attribute for the original xml reference
-    parsedData.addPage = function(page) {
+    parsedData.addPage = function(page, docId) {
         var pageId = page.value;
         if ( pagesCollection.length === undefined ) {
             pagesCollection.length = 0;
@@ -99,10 +99,20 @@ angular.module('evtviewer.dataHandler')
             pageId = page.value = 'page_'+(pagesCollection.length+1);
         }
         if ( pagesCollection[pageId] === undefined ) {
+            page.docs = [docId];
             pagesCollection[pagesCollection.length] = pageId;
             pagesCollection[pageId] = page;
             pagesCollection.length++;
             // _console.log('parsedData - addPage ', page);
+        } else  {
+            var parsedPage = pagesCollection[pageId];
+            if ( parsedPage.docs && parsedPage.docs.indexOf(docId) < 0) {
+                parsedPage.docs.push(docId);
+            }
+        }
+
+        if ( docId && docId !== '' && documentsCollection[docId] !== undefined ) {
+            documentsCollection[docId].pages.push(pageId);
         }
     };
     parsedData.getPages = function() {
@@ -119,6 +129,7 @@ angular.module('evtviewer.dataHandler')
                 pageObj.text = {};
             }
             var pageDocObj = pageObj.text[docId];
+
             if (pageDocObj !== undefined && pageDocObj[editionLevel] !== undefined) {
                 pageDocObj[editionLevel] += HTMLtext;
             } else if (pageDocObj !== undefined) {
@@ -127,6 +138,10 @@ angular.module('evtviewer.dataHandler')
                 pageObj.text[docId] = { };
                 pageObj.text[docId][editionLevel] = HTMLtext;
             }
+        }
+
+        if ( pageObj.docs && pageObj.docs.indexOf(docId) < 0) {
+            pageObj.docs.push(docId);
         }
     };
 
@@ -152,17 +167,13 @@ angular.module('evtviewer.dataHandler')
     /* DOCUMENTS */
     parsedData.addDocument = function(doc) {
         var docId = doc.value;
-        if ( documentsCollection.length === undefined ) {
-            documentsCollection.length = 0;
-        }
         
         if ( doc.value === '' ) {
-            docId = doc.value = 'doc_'+(documentsCollection.length+1);
+            docId = doc.value = 'doc_'+(documentsCollection._indexes.length+1);
         }
         if ( documentsCollection[docId] === undefined ) {
-            documentsCollection[documentsCollection.length] = docId;
+            documentsCollection._indexes.push(docId);
             documentsCollection[docId] = doc;
-            documentsCollection.length++;
             // _console.log('parsedData - addDocument ', doc);
         }
     };
@@ -172,7 +183,11 @@ angular.module('evtviewer.dataHandler')
     parsedData.getDocument = function(docId) {
         return documentsCollection[docId];
     };
-
+    parsedData.getPreviousDocument = function(docId) {
+        var currentDocIndex = documentsCollection._indexes.indexOf(docId);
+        var previousId = documentsCollection._indexes[currentDocIndex-1];
+        return documentsCollection[previousId];
+    };
     /* EDITION */
     parsedData.setCriticalEditionAvailability = function(isAvailable) {
         console.log('setCriticalEditionAvailability', isAvailable);

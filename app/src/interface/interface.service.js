@@ -301,8 +301,8 @@ angular.module('evtviewer.interface')
                 docId  = params.d;
             } else {
                 var documents = parsedData.getDocuments();
-                if (documents.length > 0) {
-                    docId = documents[documents[0]].value || undefined;
+                if (documents._indexes.length > 0) {
+                    docId = documents[documents._indexes[0]].value || undefined;
                 }
             }
             // WITNESSES
