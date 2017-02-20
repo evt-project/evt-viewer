@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser, evtPrimarySourcesParser, evtDialog) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser, evtPrimarySourcesParser, evtDialog, evtBibliographyParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -60,6 +60,9 @@ angular.module('evtviewer.dataHandler')
         
         // Parse projet info 
         evtProjectInfoParser.parseProjectInfo(docElements);
+
+        // Parse bibliography
+        evtBibliographyParser.parseBiblInfo(docElements);
     };
 
     /* ************************** */

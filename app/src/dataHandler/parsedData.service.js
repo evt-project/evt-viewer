@@ -11,7 +11,8 @@ angular.module('evtviewer.dataHandler')
         encodingDescription : '',
         textProfile         : '',
         outsideMetadata     : '',
-        revisionHistory     : ''
+        revisionHistory     : '',
+        bibliography        : ''
     };
 
     // TODO manage unique value for pages, documents and editions

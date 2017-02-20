@@ -734,3 +734,9 @@
     font-weight: bolder;
     font-style: italic;
 }
+
+.biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
+.biblRef .date,  .biblRef .note, .biblRef  .idno {
+    color: #666;
+    font-size: 90%;
+}
