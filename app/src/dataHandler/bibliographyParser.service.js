@@ -49,6 +49,7 @@ angular.module('evtviewer.dataHandler')
 			id: '',
 			author: [],
 			titleAnalytic: '',
+			titleLevel:"",
 			titleMonogr: '',
 			editionMonogr: '',
 			date: '',
@@ -76,7 +77,17 @@ angular.module('evtviewer.dataHandler')
 			monographElem = angular.element(monographElem);
 			
 			var monographTitles        = monographElem.find('title');
-			newBiblElement.titleMonogr = monographTitles && monographTitles.length > 0 ? monographTitles[0].textContent : '';
+			if(monographTitles && monographTitles.length > 0){
+				newBiblElement.titleMonogr=monographTitles[0].textContent;
+				var titleLevel=monographTitles[0].getAttribute("level");
+				//recuperiamo il tipo di pubblicazione
+				if(titleLevel!=null)
+					newBiblElement.titleLevel=titleLevel.substring(0,1);
+			}
+			//newBiblElement.titleMonogr = monographTitles && monographTitles.length > 0 ? monographTitles[0].textContent : '';
+			
+			
+			//newBiblElement.titleLevel=monographTitles && monographTitles.length > 0 ? monograph.find("title")[0].getAttribute("level").substring(0,1);
 			
 			var monographEditions = monographElem.find('edition');
 			newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : '';
@@ -120,71 +131,30 @@ angular.module('evtviewer.dataHandler')
 		var string = '';
 		if (newBiblElement) {
 			//presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
-			if (styleCode === 0) {
-				//tutti i dati raccolti sono presentati
+			if (styleCode === 1) {
+				//autore-data-titolo-titolo_monografia(se presente)-luogo pubblicazione-numero pagina
 				angular.forEach(newBiblElement.author, function(el){
-					string += '<span class="author">' + el + ', </span>'; 
+					string += '<span class="author">' + el + '</span>';
 				});
+
 				if (newBiblElement.date !== '') {
-					string += '<span class="date">' + newBiblElement.date + ', </span>';
-				}
-				if (newBiblElement.publisher !== '') {
-					string += '<span class="publisher">' + newBiblElement.publisher + ', </span>';
-				}
-				if (newBiblElement.pubPlace !== '') {
-					string += '<span class="pubPlace">' + newBiblElement.pubPlace + ', </span>';
-				}
-				if (newBiblElement.titleMonogr !== '') {
-					string += '<span class="titleMonogr">' + newBiblElement.titleMonogr + ', </span>';
+					string += '<span class="date">' + newBiblElement.date + '</span>';
 				}
 				if (newBiblElement.titleAnalytic !== '') {
-					string += '<span class="titleAnalytic">' + newBiblElement.titleAnalytic + ', </span>';
+					string += '<span class="titleAnalytic">' + newBiblElement.titleAnalytic + '</span>';
 				}
-				if (newBiblElement.editionMonogr !== '') {
-					string += '<span class="editionMonogr">' + newBiblElement.titleMonogr + ', </span>';
+				if (newBiblElement.titleMonogr !== '') {
+					string += '<span class="titleMonogr">' + newBiblElement.titleMonogr + '</span>';
 				}
-
-				angular.forEach(newBiblElement.biblScope, function(el){
-					string += '<span class="biblScope">' + el + ', </span>';
-				});
-
+				if (newBiblElement.pubPlace !== '') {
+					string += '<span class="pubPlace">' + newBiblElement.pubPlace + '</span>';
+				}
 				if (typeof newBiblElement.note !== 'undefined') {
 					if (typeof newBiblElement.note.pp !== 'undefined') {
 						string += '<span class="pp">' + newBiblElement.note.pp + '</span>';
 					}
-					if (typeof newBiblElement.note.vol !== 'undefined') {
-						string += '<span class="vol">' + newBiblElement.note.vol + '</span>';
-					}
-				}
-			} else if (styleCode === 1) {
-				//autore-data-titolo-titolo_monografia(se presente)-luogo pubblicazione-numero pagina
-				angular.forEach(newBiblElement.author, function(el){
-					string += '<span class="author">' + el + ', </span>';
-				});
-
-				if (newBiblElement.date !== '') {
-					string += '<span class="date">' + newBiblElement.date + ', </span>';
-				}
-				if (newBiblElement.titleAnalytic !== '') {
-					string += '<span class="titleAnalytic">' + newBiblElement.titleAnalytic + ', </span>';
-				}
-				if (newBiblElement.titleMonogr !== '') {
-					string += '<span class="titleMonogr">' + newBiblElement.titleMonogr + ', </span>';
-				}
-				if (newBiblElement.pubPlace !== '') {
-					string += '<span class="pubPlace">' + newBiblElement.pubPlace + ', </span>';
-				}
-				if (typeof newBiblElement.note !== 'undefined') {
-					if (typeof newBiblElement.note.pp !== 'undefined') {
-						string += '<span class="pp">' + newBiblElement.note.pp + ', </span>';
-					}
 				}
 			}
-		}
-		// in fondo togliamo la virgola che puo essere di troppo
-		if (typeof string !== 'undefined') {
-			var n = string.lastIndexOf(',');
-			string = string.substr(0, n) + '</span>';
 		}
 		return string;
 	};
