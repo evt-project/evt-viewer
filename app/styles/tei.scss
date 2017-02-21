@@ -739,4 +739,11 @@
 .biblRef .date,  .biblRef .note, .biblRef  .idno {
     color: #666;
     font-size: 90%;
+	    &:after{
+		content:",";
+		}
+}
+
+.biblRef span:last-child::after {
+    content: "";
 }
