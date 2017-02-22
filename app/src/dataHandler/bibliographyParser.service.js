@@ -59,24 +59,47 @@ angular.module('evtviewer.dataHandler')
 			note: {},
 			idno: {}
 		};
-		
+		var newAuthorElement = {
+			name: [],
+			surname : [],
+			forename : []
+		};
 		var currentDocument = angular.element(element);
 		
 		newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : '';
         
         var analyticElem 			 = currentDocument.find(analyticDef.replace(/[<>]/g, '')+ ' title');
         newBiblElement.titleAnalytic = analyticElem && analyticElem.length > 0 ? analyticElem[0].textContent : '';
-		
+		/*/
 		angular.forEach(currentDocument.find('author surname'), function(el) {
 			newBiblElement.author.push(el.textContent);
 		});
+		/*/
+		angular.forEach(currentDocument.find('author'), function(el) {
+			//gli autori possono avere più name/surname/forename
+			var authorName = el.find('name');
+			angular.forEach(authorName, function(el) {
+				newAuthorElement.name = el.textContent;
+			});
 
+			var authorSurname = el.find('surname');
+			angular.forEach(authorSurname, function(el) {
+				newAuthorElement.surname = el.textContent;
+			});
+			
+			var authorForename = el.find('forename');
+			angular.forEach(authorForename, function(el) {
+				newAuthorElement.forename = el.textContent;
+			});
+		newBiblElement.author.push(newAuthorElement);	
+		});
+		
 		var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
 		//entriamo nel tag monogr
 		if (monographElem) {
 			monographElem = angular.element(monographElem);
 			
-			var monographTitles        = monographElem.find('title');
+			var monographTitles = monographElem.find('title');
 			if(monographTitles && monographTitles.length > 0){
 				newBiblElement.titleMonogr=monographTitles[0].textContent;
 				var titleLevel=monographTitles[0].getAttribute("level");
@@ -84,14 +107,16 @@ angular.module('evtviewer.dataHandler')
 				if(titleLevel!=null)
 					newBiblElement.titleLevel=titleLevel.substring(0,1);
 			}
-			//newBiblElement.titleMonogr = monographTitles && monographTitles.length > 0 ? monographTitles[0].textContent : '';
-			
-			
-			//newBiblElement.titleLevel=monographTitles && monographTitles.length > 0 ? monograph.find("title")[0].getAttribute("level").substring(0,1);
-			
+
 			var monographEditions = monographElem.find('edition');
 			newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : '';
 			
+			//biblscope può stare dentro monogr ma anche dentro imprint
+			angular.forEach(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), function(el){
+				//prendere attributo type
+				newBiblElement.biblScope[el.getAttribute('type')] = el.textContent;
+			});
+				
 			//entriamo dentro imprint che è dentro monogr
 			var monographImprints = angular.element(monographElem.find(imprintDef.replace(/[<>]/g, '')));
 			if (monographImprints && monographImprints.length > 0) {
@@ -133,8 +158,10 @@ angular.module('evtviewer.dataHandler')
 			//presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
 			if (styleCode === 1) {
 				//autore-data-titolo-titolo_monografia(se presente)-luogo pubblicazione-numero pagina
-				angular.forEach(newBiblElement.author, function(el){
-					string += '<span class="author">' + el + '</span>';
+				angular.forEach(newBiblElement.author, function(authorElement){
+					angular.forEach(authorElement, function(el){
+						string += '<span class="author">' + el.surname + '</span>';
+					});
 				});
 
 				if (newBiblElement.date !== '') {
