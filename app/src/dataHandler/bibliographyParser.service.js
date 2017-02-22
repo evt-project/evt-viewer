@@ -2,7 +2,7 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser) {
 	console.log('Bibliography Parser service running');
-
+	var chicagoStyle=1;
 	// Bibliographic data container
 	var harvestedBiblContainer = [];
 	
@@ -29,7 +29,7 @@ angular.module('evtviewer.dataHandler')
 				function(element) {
 					var newBiblElement = parser.extractInfo(element);
 					harvestedBiblContainer.push(newBiblElement);
-					biblStringArray.push(parser.formatResult(1, newBiblElement));
+					biblStringArray.push(parser.formatResult(chicagoStyle, newBiblElement));
 			});
 		}
 		var string = '';
@@ -60,9 +60,9 @@ angular.module('evtviewer.dataHandler')
 			idno: {}
 		};
 		var newAuthorElement = {
-			name: [],
-			surname : [],
-			forename : []
+			name: '',
+			surname : '',
+			forename : ''
 		};
 		var currentDocument = angular.element(element);
 		
@@ -70,27 +70,23 @@ angular.module('evtviewer.dataHandler')
         
         var analyticElem 			 = currentDocument.find(analyticDef.replace(/[<>]/g, '')+ ' title');
         newBiblElement.titleAnalytic = analyticElem && analyticElem.length > 0 ? analyticElem[0].textContent : '';
-		/*/
-		angular.forEach(currentDocument.find('author surname'), function(el) {
-			newBiblElement.author.push(el.textContent);
-		});
-		/*/
+
 		angular.forEach(currentDocument.find('author'), function(el) {
 			//gli autori possono avere più name/surname/forename
 			var el=angular.element(el);
 			var authorName = el.find('name');
 			angular.forEach(authorName, function(el) {
-				newAuthorElement.name.push(el.textContent);
+				newAuthorElement.name = el.textContent;
 			});
 
 			var authorSurname = el.find('surname');
 			angular.forEach(authorSurname, function(el) {
-				newAuthorElement.surname.push(el.textContent);
+				newAuthorElement.surname = el.textContent;
 			});
 			
 			var authorForename = el.find('forename');
 			angular.forEach(authorForename, function(el) {
-				newAuthorElement.forename.push(el.textContent);
+				newAuthorElement.forename = el.textContent;
 			});
 		newBiblElement.author.push(newAuthorElement);	
 		});
@@ -103,10 +99,10 @@ angular.module('evtviewer.dataHandler')
 			var monographTitles = monographElem.find('title');
 			if(monographTitles && monographTitles.length > 0){
 				newBiblElement.titleMonogr=monographTitles[0].textContent;
-				var titleLevel=monographTitles[0].getAttribute("level");
+				var titleLevel = monographTitles[0].getAttribute("level");
 				//recuperiamo il tipo di pubblicazione
-				if(titleLevel!=null)
-					newBiblElement.titleLevel=titleLevel.substring(0,1);
+				if(titleLevel != null)
+					newBiblElement.titleLevel = titleLevel.substring(0,1);
 			}
 
 			var monographEditions = monographElem.find('edition');
@@ -114,8 +110,13 @@ angular.module('evtviewer.dataHandler')
 			
 			//biblscope può stare dentro monogr ma anche dentro imprint
 			angular.forEach(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), function(el){
-				//prendere attributo type
-				newBiblElement.biblScope[el.getAttribute('type')] = el.textContent;
+				//prendere attributo type o unit di ogni biblScope trovato
+				angular.forEach(['type','unit'],function(attr){
+					var attrValue = el.getAttribute(attr);
+					if(attrValue != null){
+						newBiblElement.biblScope[attrValue] = el.textContent;					
+					}
+				});	
 			});
 				
 			//entriamo dentro imprint che è dentro monogr
@@ -157,29 +158,50 @@ angular.module('evtviewer.dataHandler')
 		var string = '';
 		if (newBiblElement) {
 			//presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
-			if (styleCode === 1) {
+			if (styleCode === chicagoStyle) {
 				//autore-data-titolo-titolo_monografia(se presente)-luogo pubblicazione-numero pagina
-				angular.forEach(newBiblElement.author, function(authorElement){
-					angular.forEach(authorElement.surname, function(el){
-						string += '<span class="author">' + el + '</span>';
-					});
+				//il primo autore deve essere citato con cognome-nome
+				var firstAuthor = newBiblElement.author[0];
+				//il nome lo prendiamo per mezzo del tag name o forename
+				var firstName = firstAuthor.name != '' ? firstAuthor.name : firstAuthor.forename;
+				var firstSurname = firstAuthor.surname;
+				string += '<span class="author">' + firstSurname + '</span>';
+				string += '<span class="author">' + firstName + '</span>';
+			
+				//se c'è più di un autore gli altri sono citati con nome-cognome	
+				angular.forEach(newBiblElement.author, function(authorElement,key){
+					//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
+					if(key>0){
+						var name = authorElement.name != '' ? authorElement.name : authorElement.forename;
+						var surname = authorElement.surname;
+						string += '<span class="author">' + name + '</span>';
+						string += '<span class="author">' + surname + '</span>';
+					}
 				});
-
-				if (newBiblElement.date !== '') {
-					string += '<span class="date">' + newBiblElement.date + '</span>';
-				}
+				
 				if (newBiblElement.titleAnalytic !== '') {
 					string += '<span class="titleAnalytic">' + newBiblElement.titleAnalytic + '</span>';
 				}
 				if (newBiblElement.titleMonogr !== '') {
 					string += '<span class="titleMonogr">' + newBiblElement.titleMonogr + '</span>';
 				}
+				//se non è la prima edizione la segnaliamo
+				if(newBiblElement.editionMonogr>1){
+					string += '<span class="edition">' + newBiblElement.editionMonogr + '</span>';
+				}			
 				if (newBiblElement.pubPlace !== '') {
 					string += '<span class="pubPlace">' + newBiblElement.pubPlace + '</span>';
+				}
+				if (newBiblElement.date !== '') {
+					string += '<span class="date">' + newBiblElement.date + '</span>';
 				}
 				if (typeof newBiblElement.note !== 'undefined') {
 					if (typeof newBiblElement.note.pp !== 'undefined') {
 						string += '<span class="pp">' + newBiblElement.note.pp + '</span>';
+					}
+					//magari si chiama pages
+					else if (typeof newBiblElement.note.pages !== 'undefined') {
+						string += '<span class="pages">' + newBiblElement.note.pp + '</span>';
 					}
 				}
 			}
