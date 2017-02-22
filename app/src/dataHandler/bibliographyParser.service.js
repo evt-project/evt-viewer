@@ -77,19 +77,20 @@ angular.module('evtviewer.dataHandler')
 		/*/
 		angular.forEach(currentDocument.find('author'), function(el) {
 			//gli autori possono avere più name/surname/forename
+			var el=angular.element(el);
 			var authorName = el.find('name');
 			angular.forEach(authorName, function(el) {
-				newAuthorElement.name = el.textContent;
+				newAuthorElement.name.push(el.textContent);
 			});
 
 			var authorSurname = el.find('surname');
 			angular.forEach(authorSurname, function(el) {
-				newAuthorElement.surname = el.textContent;
+				newAuthorElement.surname.push(el.textContent);
 			});
 			
 			var authorForename = el.find('forename');
 			angular.forEach(authorForename, function(el) {
-				newAuthorElement.forename = el.textContent;
+				newAuthorElement.forename.push(el.textContent);
 			});
 		newBiblElement.author.push(newAuthorElement);	
 		});
@@ -159,8 +160,8 @@ angular.module('evtviewer.dataHandler')
 			if (styleCode === 1) {
 				//autore-data-titolo-titolo_monografia(se presente)-luogo pubblicazione-numero pagina
 				angular.forEach(newBiblElement.author, function(authorElement){
-					angular.forEach(authorElement, function(el){
-						string += '<span class="author">' + el.surname + '</span>';
+					angular.forEach(authorElement.surname, function(el){
+						string += '<span class="author">' + el + '</span>';
 					});
 				});
 
