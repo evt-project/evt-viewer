@@ -736,14 +736,67 @@
 }
 
 .biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
-.biblRef .date,  .biblRef .note, .biblRef  .idno {
+.biblRef .pubPlace,.biblRef .date,  .biblRef .note, .biblRef  .idno, .biblRef  .edition, .biblRef  .accessed,.biblRef  .url,
+.biblRef .vol,.biblRef .editor,.biblRef .date {
     color: #666;
     font-size: 90%;
-	    &:after{
-		content:",";
-		}
+		&:before{
+		content: ' ';
+	}
+}
+
+.biblRef  .accessed:before{
+	content: ' accessed '
+}
+
+.biblRef  .date:before{
+	content: ' ('
+}
+
+.biblRef  .date[data-style=chicago]:after{
+	content: ') '
+}
+
+.biblRef  .date[data-style=apa]:after{
+	content: '). '
+}
+
+.biblRef  .url:before{
+	content: ' url: '
 }
 
 .biblRef span:last-child::after {
     content: "";
+}
+
+.biblRef .idno[data-type=DOI]:before{
+		content: 'DOI:'
+	}
+
+.biblRef .idno[data-type=ISSN]:before{
+		content: 'ISSN:'	
+}
+
+.biblRef .idno[data-type=ISBN]:before{
+		content: 'ISBN:'
+	}
+
+.biblRef .idno[data-type=URI]:before{
+		content: 'URI:'	
+}
+
+.biblRef .idno[data-type=VIAF]:before{
+		content: 'VIAF:'
+	}
+
+.biblRef .idno[data-type=ESTC]:before{
+		content: 'ESTC:'	
+}
+
+.biblRef .idno[data-type=OCLC]:before{
+		content: 'DOI:'
+	}
+
+.biblRef .idno[data-type=OCLC]:before{
+		content: 'ISSN:'	
 }
