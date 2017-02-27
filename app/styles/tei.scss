@@ -735,7 +735,7 @@
     font-style: italic;
 }
 
-.biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
+.biblRef,.biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
 .biblRef .pubPlace,.biblRef .date,  .biblRef .note, .biblRef  .idno, .biblRef  .edition, .biblRef  .accessed,.biblRef  .url,
 .biblRef .vol,.biblRef .editor,.biblRef .date {
     color: #666;
@@ -745,7 +745,21 @@
 	}
 }
 
-.biblRef  .accessed:before{
+
+.biblRef .author .surname:before{
+	content: ' '
+}
+
+.biblRef .titleAnalytic:before,.biblRef .titleMonogr:before{
+	content: ' "'
+}
+
+
+.biblRef .titleAnalytic:after,.biblRef .titleMonogr:after{
+	content: '" '
+}
+
+.biblRef  .accessed{
 	content: ' accessed '
 }
 
@@ -754,11 +768,11 @@
 }
 
 .biblRef  .date[data-style=chicago]:after{
-	content: ') '
+	content: ')'
 }
 
 .biblRef  .date[data-style=apa]:after{
-	content: '). '
+	content: ').'
 }
 
 .biblRef  .url:before{
@@ -770,33 +784,30 @@
 }
 
 .biblRef .idno[data-type=DOI]:before{
-		content: 'DOI:'
+		content: ' DOI:'
 	}
 
 .biblRef .idno[data-type=ISSN]:before{
-		content: 'ISSN:'	
+		content: ' ISSN:'	
 }
 
 .biblRef .idno[data-type=ISBN]:before{
-		content: 'ISBN:'
+		content: ' ISBN:'
 	}
 
 .biblRef .idno[data-type=URI]:before{
-		content: 'URI:'	
+		content: ' URI:'	
 }
 
 .biblRef .idno[data-type=VIAF]:before{
-		content: 'VIAF:'
+		content: ' VIAF:'
 	}
 
 .biblRef .idno[data-type=ESTC]:before{
-		content: 'ESTC:'	
+		content: ' ESTC:'	
 }
 
 .biblRef .idno[data-type=OCLC]:before{
-		content: 'DOI:'
+		content: ' OCLC:'
 	}
 
-.biblRef .idno[data-type=OCLC]:before{
-		content: 'ISSN:'	
-}

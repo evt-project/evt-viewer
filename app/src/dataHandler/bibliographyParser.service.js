@@ -3,7 +3,7 @@ angular.module('evtviewer.dataHandler')
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser) {
 	console.log('Bibliography Parser service running');
 	const CHICAGO_STYLE=1,APA_STYLE=2;
-	var STYLE_SELECTED=1;
+	var STYLE_SELECTED=2;
 	// Bibliographic data container
 	
 	
@@ -287,15 +287,10 @@ angular.module('evtviewer.dataHandler')
 					string += '<span data-style="chicago" class="author">';
 					if (firstName != '' && firstSurname != ''){
 						string += '<span data-style="chicago" class="surname">' + firstSurname + ',</span>';
-						string += '<span data-style="chicago" class="name">' + firstName + '.</span>';		
+						string += '<span data-style="chicago" class="name">' + firstName + ',</span>';		
 					}
 					else if (firstSurname == ''){
-						string += '<span data-style="chicago" class="name">' + firstName + '.</span>';
-					}
-					//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
-					var index=string.lastIndexOf('.');
-					if( (index-1 <= string.length) && string[index-1] =='.'){
-						string=setCharAt(string,index-1,'');
+						string += '<span data-style="chicago" class="name">' + firstName + ',</span>';
 					}
 					string += '</span>';
 					//se c'è più di un autore gli altri sono citati con nome-cognome	
@@ -306,13 +301,16 @@ angular.module('evtviewer.dataHandler')
 							var surname = authorElement.surname;
 							string += '<span data-style="chicago" class="author">';
 							if (name != '' && surname != ''){
-								string += '<span data-style="chicago" class="name">' + name + ',</span>';
-								string += '<span data-style="chicago" class="surname">' + surname + '.</span>';
+								string += '<span data-style="chicago" class="name">' + name + '</span>';
+								string += '<span data-style="chicago" class="surname">' + surname + ',</span>';
 							}
 							else if (surname == ''){
-								string += '<span data-style="chicago" class="name">' + name + '.</span>';
+								string += '<span data-style="chicago" class="name">' + name + ',</span>';
 							}
-												//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
+							//l'ultimo autore deve finire con un punto non con una virgola
+							var index=string.lastIndexOf(',');
+							string=setCharAt(string,index,'.');
+							//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
 							var index=string.lastIndexOf('.');
 							if( (index-1 <= string.length) && string[index-1] =='.'){
 								string=setCharAt(string,index-1,'');
@@ -321,15 +319,20 @@ angular.module('evtviewer.dataHandler')
 						}
 					});
 				}
-				//qualche cosa è comune a tutti i tipi di pubblicazione
-				if (getTitleAnalytic(newBiblElement)) {
-					string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
-				}
-				if (getTitleMonogr(newBiblElement)) {
-					string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
-				}	
+
 					
 				if(getPubblicationType(newBiblElement).toLowerCase() == 'journalarticle' ){
+					if (getTitleAnalytic(newBiblElement)) {
+						string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
+					}
+					if (getTitleMonogr(newBiblElement)) {
+						if (getTitleAnalytic(newBiblElement)) {
+							string += '<span class data-style="chicago">in</span><span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+						}
+						else {
+							string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+						}
+					}	
 					if (getVolumes(newBiblElement)){
 						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';	
 					}				
@@ -339,19 +342,39 @@ angular.module('evtviewer.dataHandler')
 					if (getPages(newBiblElement)) {
 						string += '<span data-style="chicago" class="pp">' + getPages(newBiblElement) + '</span>';
 					}	
+					angular.forEach(newBiblElement.idno,function(el,key){
+						if(key === 'DOI'){
+							string += '<span data-style="chicago" class="idno" data-type="'+key+'">' + el.textContent + '</span>';
+						}
+					});
 				}
-				else if(getPubblicationType(newBiblElement).toLowerCase() == 'monograph' ){
-					if (getPubPlace(newBiblElement)) {
-						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
+				else{
+				//else if(getPubblicationType(newBiblElement).toLowerCase() == 'monograph' ){
+					if (getTitleAnalytic(newBiblElement)) {
+						string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '.</span>';
 					}
+					if (getTitleMonogr(newBiblElement)) {
+						string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '.</span>';
+					}
+					if (getVolumes(newBiblElement)){
+						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '.</span>';	
+					}	
+					if (getPubPlace(newBiblElement)){
+						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + ':</span>';	
+					}	
 					if (getEditor(newBiblElement)) {
-						string += '<span data-style="chicago" class="editor">' + getEditor(newBiblElement) + '</span>';
+						string += '<span data-style="chicago" class="editor">' + getEditor(newBiblElement) + ',</span>';
 					}
+					if (getUrl(newBiblElement)){
+						string += '<span data-style="chicago" class="url">' + getUrl(newBiblElement) + '</span>';	
+					}						
+					angular.forEach(newBiblElement.idno,function(el,key){
+						if(key == 'ISSN'){
+							string += '<span data-style="chicago" class="idno" data-type="'+key+'">' + el.textContent + '</span>';
+						}
+					});
 				}
 					
-				angular.forEach(newBiblElement.idno,function(el,key){
-					string += '<span data-style="chicago" class="idno" data-type="'+key+'">' + el.textContent + '</span>';
-				});
 				
 			}
 			/*/
@@ -376,11 +399,11 @@ angular.module('evtviewer.dataHandler')
 							if (surname != ''){
 								string += '<span data-style="apa" class="author">' + surname + '</span>';
 							}
-						//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
-						var index=string.lastIndexOf('.');
-						if( (index-1 <= string.length) && string[index-1] =='.'){
-							string=setCharAt(string,index-1,'');
-						}							
+							//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
+							var index=string.lastIndexOf('.');
+							if( (index-1 <= string.length) && string[index-1] =='.'){
+								string=setCharAt(string,index-1,'');
+							}							
 						}
 					});		
 				}
@@ -418,7 +441,21 @@ angular.module('evtviewer.dataHandler')
 				if (getUrl(newBiblElement)){
 					string += '<span data-style="apa" class="url">' + getUrl(newBiblElement) + '</span>';
 				}
-			}				
+			}	
+			//togliere possibili rimasugli in fondo alla stringa
+			var spanLenght='</span>'.length;
+			var index=string.lastIndexOf('.');
+			if(index == string.length-1-spanLenght){
+				string=setCharAt(string,index,'');
+			}
+			index=string.lastIndexOf(':');
+			if(index == string.length-1-spanLenght){
+				string=setCharAt(string,index,'');
+			}
+			index=string.lastIndexOf(',');
+			if(index == string.length-1-spanLenght){
+				string=setCharAt(string,index,'');
+			}			
 		}
 	return string;
 	}
