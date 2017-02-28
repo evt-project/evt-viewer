@@ -750,38 +750,15 @@
 	content: ' '
 }
 
-.biblRef .titleAnalytic:before,.biblRef .titleMonogr:before{
-	content: ' "'
-}
-
-
-.biblRef .titleAnalytic:after,.biblRef .titleMonogr:after{
-	content: '" '
-}
-
 .biblRef  .accessed{
 	content: ' accessed '
-}
-
-.biblRef  .date:before{
-	content: ' ('
-}
-
-.biblRef  .date[data-style=chicago]:after{
-	content: ')'
-}
-
-.biblRef  .date[data-style=apa]:after{
-	content: ').'
 }
 
 .biblRef  .url:before{
 	content: ' url: '
 }
 
-.biblRef span:last-child::after {
-    content: "";
-}
+
 
 .biblRef .idno[data-type=DOI]:before{
 		content: ' DOI:'
@@ -811,3 +788,102 @@
 		content: ' OCLC:'
 	}
 
+
+.biblRef  .author[data-style=chicago]:not:first-child:after{
+	content: ','
+}
+
+.biblRef .titleAnalytic[data-style=chicago]:before,.biblRef .titleMonogr[data-style=chicago]:before{
+	content: ' "'
+}
+
+
+.biblRef .titleAnalytic[data-style=chicago]:after,.biblRef .titleMonogr[data-style=chicago]:after{
+	content: '" '
+}
+
+
+
+.biblRef  .date[data-style=chicago]:before{
+	content: ' ('
+}
+
+.biblRef  .date[data-style=chicago]:after{
+	content: ')'
+}
+
+.biblRef span[data-style=chicago]:last-child::after {
+    content: "";
+}
+
+.biblRef  .date[data-style=apa]:after{
+	content: ').'
+}
+
+.biblRef  .author[data-style=apa]:not:first-child:after{
+	content: '.'
+}
+
+.biblRef  .author[data-style=apa]:last-child:before{
+	content: ' and '
+}
+
+.biblRef  .date[data-style=apa]:after{
+	content: '.'
+}
+
+.biblRef  .vol[data-style=apa]:before{
+	content: ' '
+}
+
+.biblRef .titleAnalytic[data-style=apa]:after,.biblRef .titleMonogr[data-style=apa]:after{
+	content: '.'
+}
+
+.biblRef  .edition[data-style=apa]:before{
+	content: ' '
+}
+
+.biblRef  .edition[data-style=apa]:after{
+	content: '.'
+}
+
+.biblRef  .pubPlace[data-style=apa]:before{
+	content: ' '
+}
+
+.biblRef  .pubPlace[data-style=apa]:after{
+	content: ':'
+}
+
+.biblRef  .publisher[data-style=apa]:before{
+	content: ' '
+}
+
+.biblRef  .publisher[data-style=apa]:after{
+	content: '.'
+}
+
+.biblRef  .url[data-style=apa]:before{
+	content: ' '
+}
+
+.biblRef  .url[data-style=apa]:after{
+	content: '.'
+}
+
+.biblRef span[data-style=apa]:last-child:after {
+    content: "";
+}
+
+.biblRef .author .name[data-style=apa]:after {
+    content: ",";
+}
+
+.biblRef .author .surname[data-style=apa]:after {
+    content: ",";
+}
+
+.biblRef .author[data-style=apa]:not(span):after {
+    content: ",";
+}

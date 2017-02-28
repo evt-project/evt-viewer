@@ -285,13 +285,13 @@ angular.module('evtviewer.dataHandler')
 					var firstName = firstAuthor.name != '' ? firstAuthor.name : firstAuthor.forename;
 					var firstSurname = firstAuthor.surname;
 					string += '<span data-style="chicago" class="author">';
-					if (firstName != '' && firstSurname != ''){
+					if (firstName != ''){
 						string += '<span data-style="chicago" class="surname">' + firstSurname + ',</span>';
-						string += '<span data-style="chicago" class="name">' + firstName + ',</span>';		
 					}
-					else if (firstSurname == ''){
-						string += '<span data-style="chicago" class="name">' + firstName + ',</span>';
-					}
+					if(firstSurname != ''){
+						string += '<span data-style="chicago" class="name">' + firstName + ',</span>';	
+					}						
+				}
 					string += '</span>';
 					//se c'è più di un autore gli altri sono citati con nome-cognome	
 					angular.forEach(newBiblElement.author, function(authorElement,key){
@@ -300,27 +300,15 @@ angular.module('evtviewer.dataHandler')
 							var name = authorElement.name != '' ? authorElement.name : authorElement.forename;
 							var surname = authorElement.surname;
 							string += '<span data-style="chicago" class="author">';
-							if (name != '' && surname != ''){
+							if (name != ''){
 								string += '<span data-style="chicago" class="name">' + name + '</span>';
-								string += '<span data-style="chicago" class="surname">' + surname + ',</span>';
 							}
-							else if (surname == ''){
-								string += '<span data-style="chicago" class="name">' + name + ',</span>';
-							}
-							//l'ultimo autore deve finire con un punto non con una virgola
-							var index=string.lastIndexOf(',');
-							string=setCharAt(string,index,'.');
-							//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
-							var index=string.lastIndexOf('.');
-							if( (index-1 <= string.length) && string[index-1] =='.'){
-								string=setCharAt(string,index-1,'');
+							if(surname != ''){
+								string += '<span data-style="chicago" class="surname">' + surname + '</span>';
 							}
 							string += '</span>';
 						}
-					});
-				}
-
-					
+					});		
 				if(getPubblicationType(newBiblElement).toLowerCase() == 'journalarticle' ){
 					if (getTitleAnalytic(newBiblElement)) {
 						string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
@@ -374,35 +362,30 @@ angular.module('evtviewer.dataHandler')
 						}
 					});
 				}
-					
+			}	
 				
-			}
 			/*/
 			Altro stile
 			/*/
 			else if(styleCode == APA_STYLE){
 				if(newBiblElement.author && newBiblElement.author.length > 0){
 					var firstAuthor = newBiblElement.author[0];
-					var firstSurname = firstAuthor.surname != '' ? firstAuthor.surname : firstAuthor.name;
+					var firstName = firstAuthor.name != '' ? firstAuthor.name : firstAuthor.forename;
+					var firstSurname = firstAuthor.surname;
+					string += '<span data-style="apa" class="author">';
 					if (firstSurname != ''){
-						string += '<span data-style="apa" class="author">' + firstSurname + '</span>';
+						string += '<span data-style="apa" class="surname">' + firstSurname + '</span>';
 					}
-					//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
-					var index=string.lastIndexOf('.');
-					if( (index-1 <= string.length) && string[index-1] =='.'){
-						string=setCharAt(string,index-1,'');
+					if(firstName != ''){
+						string += '<span data-style="apa" class="name">' + firstName + '</span>';		
 					}
+					string += '</span>';
 					angular.forEach(newBiblElement.author, function(authorElement,key){
 						//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
 						if(key>0){
 							var surname = authorElement.surname != '' ? authorElement.surname : authorElement.name;
 							if (surname != ''){
 								string += '<span data-style="apa" class="author">' + surname + '</span>';
-							}
-							//nel caso sia già stato incluso il punto nel nome dell'autore non ne vogliamo due
-							var index=string.lastIndexOf('.');
-							if( (index-1 <= string.length) && string[index-1] =='.'){
-								string=setCharAt(string,index-1,'');
 							}							
 						}
 					});		
@@ -441,62 +424,9 @@ angular.module('evtviewer.dataHandler')
 				if (getUrl(newBiblElement)){
 					string += '<span data-style="apa" class="url">' + getUrl(newBiblElement) + '</span>';
 				}
-			}	
-			//togliere possibili rimasugli in fondo alla stringa
-			var spanLenght='</span>'.length;
-			var index=string.lastIndexOf('.');
-			if(index == string.length-1-spanLenght){
-				string=setCharAt(string,index,'');
-			}
-			index=string.lastIndexOf(':');
-			if(index == string.length-1-spanLenght){
-				string=setCharAt(string,index,'');
-			}
-			index=string.lastIndexOf(',');
-			if(index == string.length-1-spanLenght){
-				string=setCharAt(string,index,'');
-			}			
-		}
+			}				
+		}	
 	return string;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
 return parser;
 });
