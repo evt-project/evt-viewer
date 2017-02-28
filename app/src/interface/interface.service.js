@@ -47,6 +47,7 @@ angular.module('evtviewer.interface')
                         if (config.loadCriticalEntriesImmediately){
                             promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
+                        promises.push(evtCriticalParser.parseQuotes(currentDocFirstLoad.content).promise);
                         // Parse critical text
                         if (config.editionType === "critical" && parsedData.isCriticalEditionAvailable()) {
                             promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);

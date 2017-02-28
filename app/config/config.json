@@ -1,5 +1,6 @@
 {
     "dataUrl"          : "",
+    "sourcesUrl"       : "",
     "preferredWitness" : "",
     "skipWitnesses"    : "",
     
@@ -45,9 +46,7 @@
     "possibleLemmaFilters"       : "resp",
     "notSignificantVariant"      : "<orig>, <sic>, [type=orthographic]",
 
-    "sourcesUrl"                 : "",
-    "sourceDef"                : "<cit>",
-    "sourceAppDef"              : "<quote>",
+    "quoteDef"              : "<quote>",
 
     "maxWitsLoadTogether"        : 5,
 

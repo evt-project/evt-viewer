@@ -26,7 +26,7 @@ angular.module('evtviewer.dataHandler')
             evtCriticalParser.parseWitnesses(docElements);
 
             // Parse the Sources Apparatus entries (@author: CM)
-            evtCriticalParser.parseSourcesAppEntries(docElements);
+            evtCriticalParser.parseQuotes(docElements);
 
             evtCriticalParser.parseSources(docElements);
             

@@ -92,14 +92,15 @@ angular.module('evtviewer.dataHandler')
         _indexes : []
     };
 
-/**************************/
-/*VARIABILI AGGIUNTE DA CM*/
-/**************************/
+/*****************************/
+/*QUOTES & SOURCES collection*/
+/*(author: CM)               */
+/*****************************/
 
-    var sourcesAppCollection = {
+    var quotesCollection = {
         _indexes: {
             encodingStructure: [],
-            refId: {
+            sourcesRef: {
                 _id: [],
             }
         },
@@ -108,7 +109,9 @@ angular.module('evtviewer.dataHandler')
     var sourcesCollection = {
         _indexes: {
             encodingStructure: [],
-            appEntriesId: [],
+            quotesRef: {
+                _id: [],
+            }
         },
     }
 
@@ -585,48 +588,52 @@ angular.module('evtviewer.dataHandler')
     /*******************/
     /*SOURCES APPARATUS*/
     /*******************/
-    parsedData.addSourceEntry = function (sourceEntry){
-        if (sourcesAppCollection[sourceEntry.id] === undefined){
-            sourcesAppCollection[sourceEntry.id] = sourceEntry;
-            sourcesAppCollection._indexes.encodingStructure.push(sourceEntry.id);
+    parsedData.addQuote = function (entry){
+        if (quotesCollection[entry.id] === undefined){
+            quotesCollection[entry.id] = entry;
+            quotesCollection._indexes.encodingStructure.push(entry.id);
         }
         
-        var appRef = sourceEntry._indexes.sourceId;
-        var sourcesRef = parsedData.getSourcesEntries()._indexes.refId;
+        var entryRef = entry._indexes.sourceRefId;
+        var quotesRef = parsedData.getQuotes()._indexes.sourcesRef;
 
-        if (appRef.length > 0) {
-            for (var i = 0; i < appRef.length; i++){
-                if (sourcesRef[appRef[i]] === undefined && sourcesRef._id.indexOf(appRef[i])<0) {
-                    sourcesRef[appRef[i]] = [];
-                    sourcesRef[appRef[i]].push(sourceEntry.id)
-                    sourcesRef._id.push(appRef[i]);
+        if (entryRef.length > 0) {
+            for (var i = 0; i < entryRef.length; i++){
+                if (quotesRef[entryRef[i]] === undefined && quotesRef._id.indexOf(entryRef[i])<0) {
+                    quotesRef[entryRef[i]] = [];
+                    quotesRef[entryRef[i]].push(entry.id)
+                    quotesRef._id.push(entryRef[i]);
             } else /*if (sourcesRef[appRef[i]] > 0 && sourcesRef._id.indexOf(appRef[i])>= 0)*/{
-                    sourcesRef[appRef[i]].push(sourceEntry.id);
+                    quotesRef[entryRef[i]].push(entry.id);
                     
                 }
             }
         }
     }
 
-    parsedData.getSourcesEntries = function (){
-        return sourcesAppCollection;
+    parsedData.getQuotes = function (){
+        return quotesCollection;
     }
 
-    parsedData.addSource = function(source) {
-        if (sourcesCollection[source.id] === undefined){
-            sourcesCollection[source.id] = source;
-            sourcesCollection._indexes.encodingStructure.push(source.id);
-        var sourceRef = source.sourcesAppEntries;
-        var sourcesAppEntries = parsedData.getSources()._indexes.appEntriesId;
+    parsedData.getQuote = function(entryId) {
+        return quotesCollection[entryId];
+    }
 
-        if (sourceRef.length > 0) {
-            for (var i = 0; i < sourceRef.length; i++){
-                if (sourcesAppEntries[source[i]] === undefined && sourcesAppEntries.indexOf(sourceRef[i])<0) {
-                    sourcesAppEntries[sourceRef[i]] = [];
-                    sourcesAppEntries[sourceRef[i]].push(source.id)
-                    sourcesAppEntries.push(sourceRef[i]);
+    parsedData.addSource = function(entry) {
+        if (sourcesCollection[entry.id] === undefined){
+            sourcesCollection[entry.id] = entry;
+            sourcesCollection._indexes.encodingStructure.push(entry.id);
+        var entryRef = entry.quotesEntries;
+        var quotesRef = parsedData.getSources()._indexes.quotesRef;
+
+        if (entryRef.length > 0) {
+            for (var i = 0; i < entryRef.length; i++){
+                if (quotesRef[entryRef[i]] === undefined && quotesRef._id.indexOf(entryRef[i])<0) {
+                    quotesRef[entryRef[i]] = [];
+                    quotesRef[entryRef[i]].push(entry.id)
+                    quotesRef.push(entryRef[i]);
             } else /*if (sourcesRef[appRef[i]] > 0 && sourcesAppEntries._id.indexOf(appRef[i])>= 0)*/{
-                    sourcesAppEntries[sourceRef[i]].push(source.id);
+                    quotesRef[entryRef[i]].push(entry.id);
                     
                 }
             }
@@ -638,8 +645,8 @@ angular.module('evtviewer.dataHandler')
         return sourcesCollection;
     }
 
-    parsedData.getSource = function (sourceId) {
-        return sourcesCollection[sourceId];
+    parsedData.getSource = function (entryId) {
+        return sourcesCollection[entryId];
     }
 
     return parsedData;
