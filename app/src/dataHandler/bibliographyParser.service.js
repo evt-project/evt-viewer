@@ -4,7 +4,7 @@ angular.module('evtviewer.dataHandler')
 	console.log('Bibliography Parser service running');
 	const CHICAGO_STYLE=1,APA_STYLE=2;
 	var STYLE_SELECTED=2;
-	// Bibliographic data container
+
 	
 	
     var monographDef = '<monogr>',
@@ -48,7 +48,7 @@ angular.module('evtviewer.dataHandler')
 		return harvestedBiblContainer;
     };
 	
-	
+	// Bibliographic data container
 	parser.extractInfo = function(element) {
 		var newBiblElement = {
 			id: '',
