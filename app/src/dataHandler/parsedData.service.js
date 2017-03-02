@@ -15,6 +15,9 @@ angular.module('evtviewer.dataHandler')
         bibliography        : ''
     };
 
+
+	var bibliographicRefsCollection = {};
+	
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
         length: 0
@@ -465,6 +468,14 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
     };
 
+	parsedData.setbibliographicRefsCollection = function(arrayEntries) {
+		bibliographicRefsCollection = arrayEntries;
+	}
+		
+	parsedData.getbibliographicRefsCollection = function(id) {
+		return bibliographicRefsCollection[id];
+	}
+		
     /* ************ */
     /* PROJECT INFO */
     /* ************ */

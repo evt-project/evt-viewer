@@ -20,32 +20,23 @@ angular.module('evtviewer.dataHandler')
     var bibliographyDef = ['<biblStruct>', '<bibl'];
 
 	var parser = {};
-	var harvestedBiblContainer = [];
+	var harvestedBiblContainer = {};
     parser.parseBiblInfo = function(doc){
-		var bibliographyContent = [],
-        	currentDocument = angular.element(doc),
-			biblStringArray = [];
+		var currentDocument = angular.element(doc);
 
 		for (var c = 0; c < bibliographyDef.length; c++) {
 			angular.forEach(currentDocument.find(bibliographyDef[c].replace(/[<>]/g, '')), 
 				function(element) {
 					var newBiblElement = parser.extractInfo(element);
-					harvestedBiblContainer.push(newBiblElement);
-					biblStringArray.push(parser.formatResult(STYLE_SELECTED, newBiblElement));
+					var currentID = getID(newBiblElement);
+					harvestedBiblContainer[currentID] = newBiblElement;
 			});
 		}
-		var string = '';
-		for (var k = 0; k < biblStringArray.length; k++) {
-			string += '<li class="biblRef">' + biblStringArray[k] + '</li>';
-		}
 		
-		string = '<ul>' + string + '</ul>';
-
+		var string = '<evt-bibl-ref ng-repeat="bibl in bibliographyCollection" biblId="bibl.id"></evt-bibl-ref>';
 		parsedData.updateProjectInfoContent(string, 'bibliography');
+		parsedData.setbibliographicRefsCollection(harvestedBiblContainer);
         console.log('## parseBiblInfo ##', harvestedBiblContainer);
-		//al parser aggiungiamo i dati estratti
-		this.harvestedBiblContainer=harvestedBiblContainer;
-		return harvestedBiblContainer;
     };
 	
 	// Bibliographic data container
@@ -187,91 +178,10 @@ angular.module('evtviewer.dataHandler')
 
 	
 	
+/*/	
 	/*/
-	Getters, ritornano o il valore richiesto o undefined. 
+	//Format result
 	/*/
-	function getTitleAnalytic(newBiblElement){
-		if (newBiblElement.titleAnalytic !== '') {
-			return newBiblElement.titleAnalytic;
-		}
-	}
-	
-	function getTitleMonogr(newBiblElement){
-		if (newBiblElement.titleMonogr !== '') {
-			return newBiblElement.titleMonogr;
-		}
-	}
-	function getEditionMonogr(newBiblElement){
-		if (newBiblElement.editionMonogr !== ''){
-			return newBiblElement.editionMonogr;	
-		}
-	}
-	function getPubPlace(newBiblElement){				
-		if (newBiblElement.pubPlace !== '') {
-			return newBiblElement.pubPlace;
-		}
-	}
-	function getDate(newBiblElement){
-		if (newBiblElement.date !== '') {
-			return newBiblElement.date;
-		}
-	}
-	
-	function getPages(newBiblElement){
-		if (typeof newBiblElement.note !== 'undefined') {
-			if (typeof newBiblElement.note.pp !== 'undefined') {
-				return newBiblElement.note.pp;
-			}
-			//magari si chiama pages
-			else if (typeof newBiblElement.note.pages !== 'undefined') {
-				return newBiblElement.note.pages;
-			}
-		}
-	}
-			
-			
-	function getAccessed(newBiblElement){		
-			if (typeof newBiblElement.note.accessed !== 'undefined'){
-				return newBiblElement.note.accessed;
-			}
-	}
-	
-	function getUrl(newBiblElement){
-			if (typeof newBiblElement.note.url !== 'undefined'){
-				return newBiblElement.note.url;
-			}
-		}
-	
-	function getVolumes(newBiblElement){
-		if(typeof newBiblElement.biblScope.vol !== 'undefined'){
-			return newBiblElement.biblScope.vol;
-		}
-	}
-
-	function getIssue(newBiblElement){
-		if(typeof newBiblElement.biblScope.issue !== 'undefined'){
-			return newBiblElement.biblScope.issue;
-		}
-	}	
-	
-	function getPubblicationType(newBiblElement){
-		if(typeof newBiblElement.type !== ''){
-			return newBiblElement.type;
-		}
-	}
-	
-	function getEditor(newBiblElement){
-	if(newBiblElement.editor !== ''){
-		return newBiblElement.editor;
-	}
-}
-	
-	function setCharAt(str,index,chr) {
-    if(index > str.length-1) return str;
-    return str.substr(0,index) + chr + str.substr(index+1);
-	}
-	
-	/*/Format result/*/
 	parser.formatResult = function(styleCode, newBiblElement) {
 		var string = '';
 		if (newBiblElement) {
@@ -365,7 +275,7 @@ angular.module('evtviewer.dataHandler')
 			}	
 				
 			/*/
-			Altro stile
+			//Altro stile
 			/*/
 			else if(styleCode == APA_STYLE){
 				if(newBiblElement.author && newBiblElement.author.length > 0){
@@ -427,6 +337,6 @@ angular.module('evtviewer.dataHandler')
 			}				
 		}	
 	return string;
-	}
+	}/*/
 return parser;
 });
