@@ -3,7 +3,7 @@ angular.module('evtviewer.dataHandler')
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser) {
 	console.log('Bibliography Parser service running');
 	const CHICAGO_STYLE=1,APA_STYLE=2;
-	var STYLE_SELECTED=2;
+	var STYLE_SELECTED=1;
 
 	
 	
@@ -286,10 +286,10 @@ angular.module('evtviewer.dataHandler')
 					var firstSurname = firstAuthor.surname;
 					string += '<span data-style="chicago" class="author">';
 					if (firstName != ''){
-						string += '<span data-style="chicago" class="surname">' + firstSurname + ',</span>';
+						string += '<span data-style="chicago" class="name">' + firstName + '</span>';
 					}
 					if(firstSurname != ''){
-						string += '<span data-style="chicago" class="name">' + firstName + ',</span>';	
+						string += '<span data-style="chicago" class="surname">' + firstSurname + '</span>';	
 					}						
 				}
 					string += '</span>';
@@ -339,19 +339,19 @@ angular.module('evtviewer.dataHandler')
 				else{
 				//else if(getPubblicationType(newBiblElement).toLowerCase() == 'monograph' ){
 					if (getTitleAnalytic(newBiblElement)) {
-						string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '.</span>';
+						string += '<span data-style="chicago" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '.</span>';
 					}
 					if (getTitleMonogr(newBiblElement)) {
-						string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '.</span>';
+						string += '<span data-style="chicago" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '.</span>';
 					}
 					if (getVolumes(newBiblElement)){
-						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '.</span>';	
+						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';	
 					}	
 					if (getPubPlace(newBiblElement)){
-						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + ':</span>';	
+						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';	
 					}	
 					if (getEditor(newBiblElement)) {
-						string += '<span data-style="chicago" class="editor">' + getEditor(newBiblElement) + ',</span>';
+						string += '<span data-style="chicago" class="editor">' + getEditor(newBiblElement) + '</span>';
 					}
 					if (getUrl(newBiblElement)){
 						string += '<span data-style="chicago" class="url">' + getUrl(newBiblElement) + '</span>';	
@@ -395,11 +395,11 @@ angular.module('evtviewer.dataHandler')
 				}	
 				
 				if (getTitleAnalytic(newBiblElement)) {
-					string += '<span data-style="apa" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
+					string += '<span data-style="apa" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
 				}
-				
-				if (getTitleMonogr(newBiblElement)) {
-					string += '<span data-style="apa" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+				//se non c'è il titolo dentro analytic allora prendiamo quello dentro monogr, entrambi no
+				if (getTitleMonogr(newBiblElement) && !getTitleAnalytic(newBiblElement)) {
+					string += '<span data-style="apa" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
 				}
 				
 				if(getVolumes(newBiblElement)){

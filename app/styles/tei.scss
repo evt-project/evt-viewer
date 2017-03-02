@@ -812,7 +812,11 @@
 	content: ')'
 }
 
-.biblRef span[data-style=chicago]:last-child::after {
+.biblRef  .editor[data-style=chicago]:after{
+	content: ','
+}
+
+.biblRef span[data-style=chicago]:not([data-attr=titolo]):last-child::after {
     content: "";
 }
 
@@ -824,8 +828,12 @@
 	content: '.'
 }
 
+.biblRef  .author[data-style=apa]:not(:first-child):before{
+	content: ' ,'
+}
+
 .biblRef  .author[data-style=apa]:last-child:before{
-	content: ' and '
+	content: ' ,'
 }
 
 .biblRef  .date[data-style=apa]:after{
@@ -836,8 +844,12 @@
 	content: ' '
 }
 
+.biblRef .titleAnalytic[data-style=apa]:before,.biblRef .titleMonogr[data-style=apa]:before{
+	content: '"'
+}
+
 .biblRef .titleAnalytic[data-style=apa]:after,.biblRef .titleMonogr[data-style=apa]:after{
-	content: '.'
+	content: '."'
 }
 
 .biblRef  .edition[data-style=apa]:before{
@@ -872,7 +884,7 @@
 	content: '.'
 }
 
-.biblRef span[data-style=apa]:last-child:after {
+.biblRef span[data-style=apa]:not([data-attr=titolo]):last-child:after {
     content: "";
 }
 
