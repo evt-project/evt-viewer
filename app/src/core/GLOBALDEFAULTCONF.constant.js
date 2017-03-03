@@ -125,5 +125,6 @@ angular.module('evtviewer.core')
     variantColorLight : 'rgb(208, 220, 255)',
     variantColorDark  : 'rgb(101, 138, 255)',
     heatmapColor      : 'rgb(255, 108, 63)',
-    xsltUrl: ''
+    xsltUrl: '',
+	allowedBibliographicStyles : ['Chicago' , 'APA']
 });

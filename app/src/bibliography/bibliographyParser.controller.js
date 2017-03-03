@@ -1,20 +1,20 @@
 angular.module('evtviewer.dataHandler')
 
-.controller('BibliographyCtrl', function($scope, $element,$attrs,parsedData) {
-	$scope.styles=["Chicago","APA"];
+.controller('BibliographyCtrl', function($scope, $element,$attrs,parsedData,config) {
+	$scope.styles=config.allowedBibliographicStyles;
 	$scope.data=$scope.$parent.bibl;
 	$scope.string="";
 	
 	/*/Format result/*/
 	$scope.formatResult = function(styleCode, newBiblElement) {
-		console.log(styleCode);
-		if(styleCode==$scope.styles[0])styleCode=1;
+		
+		/*/if(styleCode==$scope.styles[0])styleCode=1;
 		else if(styleCode==$scope.styles[1])styleCode=2;
-		else styleCode=1;
+		else styleCode=1;/*/
 		var string = '';
 		if (newBiblElement) {
 			//presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
-			if (styleCode === 1) {
+			if (styleCode === $scope.styles[0]) {
 				//autore-data-titolo-titolo_monografia(se presente)- edizione-luogo pubblicazione-data-numero pagina-idno(se dati)
 				//il primo autore deve essere citato con cognome-nome
 				if(newBiblElement.author && newBiblElement.author.length > 0){
@@ -105,7 +105,7 @@ angular.module('evtviewer.dataHandler')
 			/*/
 			Altro stile
 			/*/
-			else if(styleCode == 2){
+			else if(styleCode === $scope.styles[1]){
 				if(newBiblElement.author && newBiblElement.author.length > 0){
 					var firstAuthor = newBiblElement.author[0];
 					var firstName = firstAuthor.name != '' ? firstAuthor.name : firstAuthor.forename;
@@ -167,5 +167,5 @@ angular.module('evtviewer.dataHandler')
 			$scope.string=string;
 	return string;
 	}
-	$scope.formatResult(1,$scope.data);
+	$scope.formatResult($scope.styles[0],$scope.data);
 });
