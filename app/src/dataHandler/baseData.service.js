@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser, evtPrimarySourcesParser) {
+.service('baseData', function($log, xmlParser, evtParser, evtCriticalParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -26,9 +26,9 @@ angular.module('evtviewer.dataHandler')
             evtCriticalParser.parseWitnesses(docElements);
 
             // Parse the Sources Apparatus entries (@author: CM)
-            evtCriticalParser.parseQuotes(docElements);
+            evtSourcesParser.parseQuotes(docElements);
 
-            evtCriticalParser.parseSources(docElements);
+            evtSourcesParser.parseSources(docElements);
             
             evtProjectInfoParser.parseProjectInfo(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
@@ -51,7 +51,7 @@ angular.module('evtviewer.dataHandler')
             var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
             
             if (type === 'sources') {
-                evtCriticalParser.parseExternalSources(docElements);
+                evtSourcesParser.parseExternalSources(docElements);
             }
             _console.log('External Files parsed and stored', state.XMLExtDocuments);
         } catch (e) {

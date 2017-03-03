@@ -589,23 +589,31 @@ angular.module('evtviewer.dataHandler')
     /*SOURCES APPARATUS*/
     /*******************/
     parsedData.addQuote = function (entry){
+        //Adding the quote object to the collection...
         if (quotesCollection[entry.id] === undefined){
             quotesCollection[entry.id] = entry;
-            quotesCollection._indexes.encodingStructure.push(entry.id);
+            //and its id to the encoding structure
+            //if (quotesCollection._indexes.encodingStructure.indexOf(entry.id) < 0) {
+                quotesCollection._indexes.encodingStructure.push(entry.id);
+            //}
         }
         
         var entryRef = entry._indexes.sourceRefId;
+        var entrySource = entry._indexes.sourceId;
         var quotesRef = parsedData.getQuotes()._indexes.sourcesRef;
 
         if (entryRef.length > 0) {
-            for (var i = 0; i < entryRef.length; i++){
+            for (var i = 0; i < entryRef.length; i++) {
+                //If the array of quotes id for that source hasn't been created yet, create a new one...
                 if (quotesRef[entryRef[i]] === undefined && quotesRef._id.indexOf(entryRef[i])<0) {
                     quotesRef[entryRef[i]] = [];
+                    //and add the entry id to it.
                     quotesRef[entryRef[i]].push(entry.id)
+                    //Then add the id of the source to the general ids array.
                     quotesRef._id.push(entryRef[i]);
-            } else /*if (sourcesRef[appRef[i]] > 0 && sourcesRef._id.indexOf(appRef[i])>= 0)*/{
-                    quotesRef[entryRef[i]].push(entry.id);
-                    
+            } else if (quotesRef[entryRef[i]].indexOf(entry.id) < 0) {
+                    //If an array for that source already exists, just add the quote id to the array of the source
+                    quotesRef[entryRef[i]].push(entry.id);                    
                 }
             }
         }
@@ -623,22 +631,27 @@ angular.module('evtviewer.dataHandler')
         if (sourcesCollection[entry.id] === undefined){
             sourcesCollection[entry.id] = entry;
             sourcesCollection._indexes.encodingStructure.push(entry.id);
-        var entryRef = entry.quotesEntries;
-        var quotesRef = parsedData.getSources()._indexes.quotesRef;
+        }
+
+        var entryRef = entry.quotesEntriesId;
+        var sourcesRef = parsedData.getSources()._indexes.quotesRef;
 
         if (entryRef.length > 0) {
-            for (var i = 0; i < entryRef.length; i++){
-                if (quotesRef[entryRef[i]] === undefined && quotesRef._id.indexOf(entryRef[i])<0) {
-                    quotesRef[entryRef[i]] = [];
-                    quotesRef[entryRef[i]].push(entry.id)
-                    quotesRef.push(entryRef[i]);
-            } else /*if (sourcesRef[appRef[i]] > 0 && sourcesAppEntries._id.indexOf(appRef[i])>= 0)*/{
-                    quotesRef[entryRef[i]].push(entry.id);
-                    
+            for (var i = 0; i < entryRef.length; i++) {
+                //If the array of quotes id for that source hasn't been created yet, create a new one...
+                if (sourcesRef[entryRef[i]] === undefined && sourcesRef._id.indexOf(entryRef[i])<0) {
+                    sourcesRef[entryRef[i]] = [];
+                    //and add the entry id to it.
+                    sourcesRef[entryRef[i]].push(entry.id)
+                    //Then add the id of the source to the general ids array.
+                    sourcesRef._id.push(entryRef[i]);
+            } else if (sourcesRef[entryRef[i]].indexOf(entry.id) < 0) {
+                    //If an array for that source already exists, just add the quote id to the array of the source
+                    sourcesRef[entryRef[i]].push(entry.id);                    
                 }
             }
         }
-        }
+        
     }
 
     parsedData.getSources = function() {

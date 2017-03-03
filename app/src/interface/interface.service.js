@@ -37,7 +37,7 @@ angular.module('evtviewer.interface')
                     //Oggetto di file esterni in globaldefault, su cui ciclare
                     //Parse the external Sources file, if defined (@author: CM)
                     if (config.sourcesUrl !== "") {
-                        evtCommunication.getExternalData(config.sourcesUrl);
+                        promises.push(evtCommunication.getExternalData(config.sourcesUrl));
                     }
                     // Parse critical text and entries
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
@@ -47,7 +47,7 @@ angular.module('evtviewer.interface')
                         if (config.loadCriticalEntriesImmediately){
                             promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
-                        promises.push(evtCriticalParser.parseQuotes(currentDocFirstLoad.content).promise);
+
                         // Parse critical text
                         if (config.editionType === "critical" && parsedData.isCriticalEditionAvailable()) {
                             promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);

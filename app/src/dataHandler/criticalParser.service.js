@@ -23,7 +23,7 @@ angular.module('evtviewer.dataHandler')
         if ( doc !== undefined ) {
             var appSelector = appId.replace(/\w-/g, '$&0>').replace(/[0-9]+/g, ':eq($&)').replace(/-:eq/g, ':eq');
             var appElement = $(doc).find(appSelector);
-            handleAppEntry(appElement.get(0));
+            parser.handleAppEntry(appElement.get(0));
         } else {
             console.log('ERROR');
         }
@@ -145,7 +145,7 @@ angular.module('evtviewer.dataHandler')
                 } else {
                     if ('<'+child.tagName+'>' === apparatusEntryDef) {
                         // Sub apparatus
-                        var entryApp = handleAppEntry(child);
+                        var entryApp = parser.handleAppEntry(child);
                         genericElement.content.push({id: entryApp.id, type: 'subApp'});
                     } else {
                         if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
@@ -250,7 +250,7 @@ angular.module('evtviewer.dataHandler')
                     reading.note = child.innerHTML;
                 } else if ( apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0 ) {
                     // Sub apparatus
-                    var entryApp = handleAppEntry(child, entry.id);
+                    var entryApp = parser.handleAppEntry(child, entry.id);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                     entry._indexes.subApps.push(entryApp.id);
                 } else {
@@ -413,7 +413,7 @@ angular.module('evtviewer.dataHandler')
                     parseGroupReading(entry, child);
                 } 
                 else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    var entryObj = handleAppEntry(child, id);
+                    var entryObj = parser.handleAppEntry(child, id);
                     var subApp = {id: entryObj.id, type: 'subApp'};
                     entry.content[entryObj.id] = subApp;
                     entry._indexes.encodingStructure.push(entryObj.id);
@@ -427,7 +427,7 @@ angular.module('evtviewer.dataHandler')
         return entry;
     };
     
-    var handleAppEntry = function(app, parentEntryId) {
+    parser.handleAppEntry = function(app, parentEntryId) {
         // if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
             var entry = parseAppEntry(app) || undefined;
 
@@ -493,7 +493,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
             function(element) {
-                handleAppEntry(element);
+                parser.handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
         parsedData.setCriticalEntriesLoaded(config.loadCriticalEntriesImmediately);
@@ -797,11 +797,11 @@ angular.module('evtviewer.dataHandler')
                     // ...I can simply access the model to get the right output
                     // ... otherwise I parse the DOM and save the entry in the model
                     if (!config.loadCriticalEntriesImmediately && entry === undefined) {
-                        handleAppEntry(appNode);
+                        parser.handleAppEntry(appNode);
                         var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                         if (subApps.length > 0){
                             for (var z = 0; z < subApps.length; z++) {
-                                handleAppEntry(subApps[z]);
+                                parser.handleAppEntry(subApps[z]);
                             }
                         }
                         entry = parsedData.getCriticalEntryById(id);
@@ -1023,11 +1023,11 @@ angular.module('evtviewer.dataHandler')
                         // ...I can simply access the model to get the right output
                         // ... otherwise I parse the DOM and save the entry in the model
                         if (!config.loadCriticalEntriesImmediately || entry === undefined) {
-                            handleAppEntry(appNode);
+                            parser.handleAppEntry(appNode);
                             var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                             if (subApps.length > 0){
                                 for (var z = 0; z < subApps.length; z++) {
-                                    handleAppEntry(subApps[z]);
+                                    parser.handleAppEntry(subApps[z]);
                                 }
                             }
                             entry = parsedData.getCriticalEntryById(id);
@@ -1102,363 +1102,5 @@ angular.module('evtviewer.dataHandler')
         return deferred;
     };
 
-
-    /* ******* */
-    /* SOURCES */
-    /* ******* */
-
-
-    /********************************* */
-    /* parseSourcesEntryReference(elem)*/
-    /******************************************************************/
-    /* Function to parse an element inside of a quoteDef element  */
-    /* that may point to the bibliographic reference of the quotation */
-    /* @elem --> an element inside of quoteDef, like <ptr>, <link>*/
-    /* @author: CM                                                    */
-    /**************************************************************** */
-    var parseSourcesEntryReference = function (elem) {
-        
-        var refElement = {
-            id: elem.getAttribute('xml:id') || evtParser.xpath(elem),
-            tagName: elem.tagName,
-            attributes : [],
-            content: [],
-            // In questo array salvo i riferimenti alle fonti, che poi copierò nel sourceId dell'entrata
-            _indexes: []
-        }
-
-        //salvo gli attributi
-        if (elem.attributes) {
-            var refValues = [];
-            for (var i = 0; i < elem.attributes.length; i++) {
-                var attrib = elem.attributes[i];
-                if (attrib.specified) {
-                    refElement.attributes[attrib.name] = attrib.value;
-                    // Se trovo uno dei seguenti attributi...
-                    if (attrib.name === 'source' 
-                        || attrib.name === 'target'
-                        || attrib.name === 'corresp'
-                        || attrib.name === 'xml:id'
-                        || attrib.name === 'ref'){
-                        var values = attrib.value.replace(/#/g, '').split(" ");
-                        for (var i = 0; i < values.length; i++) {
-                            refValues.push(values[i]);
-                        }
-                    }
-                }
-            }
-            //...lo aggiungo nell'array dei riferimenti alle fonti
-            for (var i = 0; i < refValues.length; i++) {
-                refElement._indexes.push(refValues[i]);
-            }
-        }
-
-        //parso i contenuti
-        angular.forEach(elem.childNodes, function(child) {
-            if (child.nodeType === 3) {
-                if (child.textContent.trim() !== '') {
-                    refElement.content.push(child.textContent.trim());
-                }
-            } else if (child.tagName === 'linkGrp') {
-                angular.forEach(child.childNodes, function(subChild) {
-                    var link = parseSourcesEntryReference(subChild);
-                    refElement.content[link.id] = link;
-                })
-            } else {
-                refElement.content.push(child.cloneNode(true));
-            }
-        });
-
-        return refElement;
-    }
-
-    /* ************************* */
-    /* parseSourceAppEntries(doc) */
-    /* ****************************************************************** */
-    /* Function to parse the content and the attributes of a single entry */
-    /* of the sources apparatus inside of the critical text and save it   */
-    /* in parsedData.                                                     */
-    /* @entry-> the XML element that marks up the quotation of a source   */
-    /* inside the text to be parsed                                       */
-    /* @author: CM                                                        */
-    /* ****************************************************************** */
-    var parseQuote = function(entry){
-        
-        var quote = {
-            id : '',
-            attributes: [],
-            content: [],
-            references: {
-            },
-            _indexes: {
-                sourceId: [],//array in cui salvo gli id delle entrate bibliografiche nell'elemento
-                sourceRefId: [], //array in cui salvo gli id delle fonti cui l'entrata fa riferimento
-                subQuotes: [], //salvo gli id dei quoteDef annidati                
-            },
-            _subQuote: false, //indica se l'entrata in questione è annidata o meno in un quoteDef
-        }
-
-        //Parsing the id or creating it with the evtParser.xpath method
-        var id;
-        if (entry.getAttribute('xml:id')) {
-            id = entry.getAttribute('xml:id');
-        } else {
-            id = evtParser.xpath(entry).substr(1);
-        }
-        quote.id = id;
-
-        //Parsing the attributes
-        if (entry.attributes) {
-            for (var i = 0; i < entry.attributes.length; i++) {
-                var attrib = entry.attributes[i];
-                if (attrib.specified) {                    
-                    quote.attributes[attrib.name] = attrib.value;                 
-                }
-                if (attrib.name === 'source') {
-                    var values = attrib.value.replace(/#/g, '').split(" ");
-                    quote._indexes.sourceRefId = values;
-                }
-                if (attrib.name === 'corresp') {
-                    var values = attrib.value.replace(/#/g, '').split(" ");
-                    quote._indexes.sourceRefId = values;
-                }
-            }
-        }
-
-        //Check if the sourceAppDef element is nested in another quoteDef element
-        quote._subQuote = evtParser.isNestedInElem(entry, quoteDef.replace(/[<>]/g, ''));
-
-        //Parsing dei contenuti
-        angular.forEach(entry.childNodes, function(child) {
-            if (child.nodeType === 3) {
-                if (child.textContent.trim() !== '') {
-                    quote.content.push(child.textContent.trim());
-                }
-            } else if (child.nodeType === 1) {
-                //nested quoteDef element
-                if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    var childQuote = parseQuote(child);
-                    quote.content.push(childQuote);
-                    quote._indexes.subQuotes.push(childQuote.id);
-                }
-                //note
-                if (child.tagName === 'note') {
-                    childNote = evtParser.parseNote(child);
-                    quote.content.push(childNote);
-                }
-                //app
-                if (child.tagName === 'app'){
-                    childApp = handleAppEntry(child);
-                    quote.content.push(childApp);
-                }
-
-            }
-        });
-
-        //parsedData.addSourceEntry(quote);
-
-        return quote;
-    }
-
-    /*********************/
-    /*parseSource(source)*/
-    /**************************************************************/
-    /*Function to parse a source bibliographic reference, and save*/
-    /*it in SourcesCollection.                                    */
-    /*@source --> source to parse                                 */
-    /*@author --> CM                                              */
-    /************************************************************ */
-    var parseSource = function(entry) {
-        var source = {
-            id: '',
-            attributes: [],
-            quotesEntries: [],
-            content: [],
-            text: [],
-            refBibl: {
-                _encodingStructure: [],
-            },
-        }
-
-        if (entry.attributes) {
-            for (var i = 0; i < entry.attributes.length; i++) {
-                var attrib = entry.attributes[i];
-                if (attrib.name === 'xml:id') {
-                    //Modify the id
-                    source.id = attrib.value;
-                    //Add the id of the sourcesAppEntries that link to the source
-                    source.sourcesAppEntries = parsedData.getQuotes()._indexes.sourcesRef[attrib.value];
-                } 
-                if (attrib.specified) {
-                    source.attributes[attrib.name] = attrib.value;
-                    source.attributes.length++;
-                }
-            }
-        }
-
-        angular.forEach(entry.childNodes, function(child){
-            if (child.nodeType === 3) {
-                if (child.textContent.trim() !== '') {
-                    source.text.push(child.textContent.trim());
-                }
-            }
-            else if (child.nodeType === 1) {
-                if (child.parentNode.tagName === 'cit' && child.tagName === 'quote') {
-                    var contentEl = parseSourcesEntryReference(child);
-                    source.content[child.tagName] = contentEl;
-                    source.text.push(child.textContent);
-                }
-                else if (child.tagName === 'bibl' /*|| child.tagName === 'biblFull' || child.tagName === 'biblStruct'*/){
-                    var biblEl = ['author', 'title', 'editor', 'publisher', 'pubPlace', 'date', 'citedRange', 'edition'];
-                    for (var i = 0; i < child.childNodes.length; i++) {
-                        if (biblEl.indexOf(child.childNodes[i].tagName) >= 0) {
-                            var biblElem = parseSourcesEntryReference(child.childNodes[i]);
-                            source.refBibl[biblElem.tagName] = biblElem;
-                            source.refBibl._encodingStructure[biblElem.id] = biblElem;
-                        }
-                    }
-                }
-            }
-        });
-
-        parsedData.addSource(source);
-
-        return source;
-    };
-    
-    /****************** */
-    /*handleSource(elem)*/
-    /************************************************************ */
-    /*Function to search XML elements containing information about*/
-    /*sources, cited inside the critical text. These elements are */
-    /*referred through an xml:id attribute.                       */
-    /*@elem --> element to analyze                                */
-    /*@author --> CM                                              */
-    /************************************************************ */
-    var handleSource = function(elem){
-        //Get the ids saved in quotesCollection
-        var ref = parsedData.getQuotes()._indexes.sourcesRef._id;
-        if (elem.nodeType === 1) {
-            if (elem.attributes.length > 0) {
-                for (var i = 0; i < elem.attributes.length; i++) {
-                    //Search elements that have the xml:id attribute
-                    if (elem.attributes[i].name === 'xml:id') {
-                        var attr = elem.attributes[i].value;
-                        //If the value of the xml:id attribute of the element is equal to one of the ids...
-                        if (ref.indexOf(attr) >= 0) {
-                            //...the element is parsed by parseSource(source) and saved in the SourcesCollection
-                            parseSource(elem);
-                        }
-                    }
-                }
-            }
-            else if (elem.childNodes.length > 0) {
-                for (var i = 0; i < elem.childNodes.length; i++) {
-                    handleSource(elem.childNodes[i]);
-                }
-            }
-        } else if (elem.nodeType === 3) {
-            return;
-        }
-    };
-
-    /* ************************* */
-    /* parseSourcesAppEntries(doc) */
-    /* ****************************************************************/
-    /* Function to parse the blocks of the critical texts that cite a */
-    /* source in the XML file (sourceAppDef)                          */
-    /* and save them in parsedData                                    */
-    /* @doc document -> XML to be parsed                              */
-    /* @author: CM                                                    */
-    /* ****************************************************************/
-    parser.parseQuotes = function(doc) {
-        var deferred = $q.defer();
-        var currentDocument = angular.element(doc); //wraps the DOM of doc as a jquery elementContent
-
-        // Avvio parser delle entrate dell'apparato delle fonti
-        angular.forEach(currentDocument.find(quoteDef.replace(/[<>]/g, '')),
-            function(element){
-                var isInBody = evtParser.isNestedInElem(element, 'body');
-                if (isInBody){
-                    var quote = parseQuote(element);
-                    parsedData.addQuote(quote);
-                }
-            });
-            
-            console.log('## QUOTES ##', parsedData.getQuotes());
-
-            deferred.resolve('success');
-            return deferred;
-    };
-
-    /***************** */
-    /*parseSources(doc)*/
-    /**************************************************************/
-    /*Function to parse the sources bibliographic references, when*/
-    /*they are inside of the critical text document               */
-    /*@doc --> XML document to parse                              */
-    /*@author --> CM                                              */
-    /************************************************************ */
-    parser.parseSources = function(doc) {
-        var deferred = $q.defer();
-
-        if (parsedData.getQuotes()._indexes.sourcesRef._id.length > 0) {
-            var currentDocument = angular.element(doc),
-                defDocElement;
-
-            if (config.sourcesUrl === "") {
-                if ( currentDocument.find('text group text').length > 0 ) {
-                    defDocElement = 'text group text';
-                } else if ( currentDocument.find('text').length > 0 ) {
-                    defDocElement = 'text';
-                } else if ( currentDocument.find('div[subtype="edition_text"]').length > 0 ) {
-                    defDocElement = 'div[subtype="edition_text"]';
-                }
-                angular.forEach(currentDocument.find(defDocElement),
-                    function(element){
-                        handleSource(element);
-                    });
-                    handleSource(defDocElement);
-                console.log('## Sources ##', parsedData.getSources());
-            }
-        }
-        else {
-            //TODO: implementare gestione di source codificate nel testo.
-        }
-        //Delete the source entries from the collection, if they don't correspond to a source
-        var appEntriesId = parsedData.getSources()._indexes.quotesRef._id;
-        var sourcesEntriesId = parsedData.getQuotes()._indexes.encodingStructure;
-        var missing = [];
-        for (var i = 0; i < sourcesEntriesId.length; i++) {
-            if (appEntriesId.indexOf(sourcesEntriesId[i]) < 0) {
-                missing.push(sourcesEntriesId[i]);
-            }
-        }
-        for (var i = 0; i < missing.length; i++) {
-            delete parsedData.getQuotes()[missing[i]];
-        }
-        console.log('## UPDATED SOURCES APP ENTRIES##', parsedData.getQuotes());
-        deferred.resolve('success');
-        return deferred;
-    };
-
-    /***************************/
-    /*parseExternalSources(doc)*/
-    /**************************************************************/
-    /*Function to parse the sources bibliographic references, when*/
-    /*they are inside an external document                        */
-    /*@doc --> XML external document to parse                     */
-    /*@author --> CM                                              */
-    /************************************************************ */
-    parser.parseExternalSources = function(doc) {
-        //TODO: risolvere problema di childNodes[0]
-        var deferred = $q.defer();
-        for (var i = 0; i < doc.childNodes.length; i++) {
-            handleSource(doc.childNodes[i]);
-        }
-        console.log('## External Sources ##', parsedData.getSources());
-        deferred.resolve('success');
-        return deferred;
-    }
     return parser;
 });
