@@ -7,10 +7,6 @@ angular.module('evtviewer.dataHandler')
 	
 	/*/Format result/*/
 	$scope.formatResult = function(styleCode, newBiblElement) {
-		
-		/*/if(styleCode==$scope.styles[0])styleCode=1;
-		else if(styleCode==$scope.styles[1])styleCode=2;
-		else styleCode=1;/*/
 		var string = '';
 		if (newBiblElement) {
 			//presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
@@ -167,5 +163,8 @@ angular.module('evtviewer.dataHandler')
 			$scope.string=string;
 	return string;
 	}
-	$scope.formatResult($scope.styles[0],$scope.data);
+	//settiamo un valore di default della select
+	$scope.selectedStyle=$scope.styles[0];
+	//nonostante diamo noi un valore alla select, non viene eseguita la ng-change assocciata, quindi per ora viene fatta a mano all'inizio
+	$scope.formatResult($scope.selectedStyle,$scope.data);
 });
