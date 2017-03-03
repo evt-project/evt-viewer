@@ -61,22 +61,15 @@ angular.module('evtviewer.dataHandler')
                     contentEl.content.push(evtParser.parseNote(child));
                 } else if (child.children.length > 0) {
                     for (var i = 0; i < child.children.length; i++) {
-                        contentEl.content.push(parseQuoteContent(child.children[i]));
+                        contentEl.content.push(child.children[i].cloneNode(true));
+                        parseQuoteContent(child.children[i])
                     }
                 } else {
-                    contentEl.content.push(parseQuoteContent(child));
+                    contentEl.content.push(child.cloneNode(true));
                 }
             }
         });
 
-        /*if (child.children.length <= 0){
-            contentEl.content.push(child.cloneNode(true));
-        }
-        else if (child.children.length > 0){
-            for (var i =0; i <child.children.length; i++) {
-                contentEl.content.push(parseQuoteContent(child.children[i]));
-            }
-        }*/
         return contentEl;
     }
 
@@ -125,6 +118,10 @@ angular.module('evtviewer.dataHandler')
                     quote._indexes.sourceRefId = values;
                 }
                 if (attrib.name === 'corresp') {
+                    var values = attrib.value.replace(/#/g, '').split(" ");
+                    quote._indexes.sourceRefId = values;
+                }
+                if (attrib.name === 'ref') {
                     var values = attrib.value.replace(/#/g, '').split(" ");
                     quote._indexes.sourceRefId = values;
                 }
@@ -221,67 +218,52 @@ angular.module('evtviewer.dataHandler')
     /* ******* */
 
     /********************************* */
-    /* parseSourcesEntryReference(elem)*/
+    /* parseSourcesEntryContent(elem)*/
     /******************************************************************/
     /* Function to parse an element inside of a quoteDef element  */
     /* that may point to the bibliographic reference of the quotation */
     /* @elem --> an element inside of quoteDef, like <ptr>, <link>*/
     /* @author: CM                                                    */
     /**************************************************************** */
-    var parseSourcesEntryReference = function (elem) {
+    var parseSourceContent = function (elem, source) {
+        var contentEl = {
+            tagName : elem.tagName,
+            type : 'sourceContent',
+            attributes: [],
+            content : [],
+            url: []
+        };
         
-        var refElement = {
-            id: elem.getAttribute('xml:id') || evtParser.xpath(elem),
-            tagName: elem.tagName,
-            attributes : [],
-            content: [],
-            // In questo array salvo i riferimenti alle fonti, che poi copierò nel sourceId dell'entrata
-            _indexes: []
-        }
-
-        //salvo gli attributi
         if (elem.attributes) {
-            var refValues = [];
             for (var i = 0; i < elem.attributes.length; i++) {
                 var attrib = elem.attributes[i];
                 if (attrib.specified) {
-                    refElement.attributes[attrib.name] = attrib.value;
-                    // Se trovo uno dei seguenti attributi...
-                    if (attrib.name === 'source' 
-                        || attrib.name === 'target'
-                        || attrib.name === 'corresp'
-                        || attrib.name === 'xml:id'
-                        || attrib.name === 'ref'){
-                        var values = attrib.value.replace(/#/g, '').split(" ");
-                        for (var i = 0; i < values.length; i++) {
-                            refValues.push(values[i]);
-                        }
-                    }
+                    contentEl.attributes[attrib.name] = attrib.value;
                 }
-            }
-            //...lo aggiungo nell'array dei riferimenti alle fonti
-            for (var i = 0; i < refValues.length; i++) {
-                refElement._indexes.push(refValues[i]);
             }
         }
 
-        //parso i contenuti
         angular.forEach(elem.childNodes, function(child) {
             if (child.nodeType === 3) {
                 if (child.textContent.trim() !== '') {
-                    refElement.content.push(child.textContent.trim());
+                    contentEl.content.push(child.textContent.trim());
                 }
-            } else if (child.tagName === 'linkGrp') {
-                angular.forEach(child.childNodes, function(subChild) {
-                    var link = parseSourcesEntryReference(subChild);
-                    refElement.content[link.id] = link;
-                })
-            } else {
-                refElement.content.push(child.cloneNode(true));
+            } else if (child.nodeType === 1) {
+                if (child.tagName === 'citedRange') {
+                    if (child.getAttribute('target') !== null && child.getAttribute('target') !== '') {
+                        contentEl.url.push(child.getAttribute('target'));
+                    }
+                } else if (child.children.length > 0) {
+                    for (var i = 0; i < child.children.length; i++) {
+                        contentEl.content.push(parseQuoteContent(child.children[i]));                        
+                    }
+                } else {
+                    contentEl.content.push(parseQuoteContent(child));
+                }
             }
         });
 
-        return refElement;
+        return contentEl;
     }
 
     /*********************/
@@ -297,38 +279,45 @@ angular.module('evtviewer.dataHandler')
             id: '',
             attributes: [],
             quotesEntriesId: [],
-            content: [],
-            bibl: {
-                _encodingStructure: [],
-            },
-            text: [],
-            textUrl: ''
+            bibl: [],
+            text: {},
+            url: [],
+            quote: []
         }
 
+        //Parsing the attributes and saving the id
         var id;
-
         if (entry.attributes) {
             for (var i = 0; i < entry.attributes.length; i++) {
                 var attrib = entry.attributes[i];
-                if (attrib.name === 'xml:id') {
-                    id = attrib.value;
-                } 
                 if (attrib.specified) {
+                    if (attrib.name === 'xml:id') {
+                        id = attrib.value;
+                    }
+                    if (attrib.name === 'target' ||
+                        attrib.name === 'source' ||
+                        attrib.name === 'ref') {
+                            var values = attrib.value.replace(/#/g, '').split(" ");
+                            for (var i = 0; i < values.length; i++) {
+                                url.push(values[i]);
+                            }
+                        }
                     source.attributes[attrib.name] = attrib.value;
                     source.attributes.length++;
                 }
             }
         }
-
         if (id === undefined) {
             id = evtParser.xpath(entry).substr(1);
         }
-
         source.id = id;
         
+        //Parsing the quotes that refer to this source.
         if (parsedData.getQuotes()._indexes.sourcesRef[source.id] !== undefined) {
             source.quotesEntriesId = parsedData.getQuotes()._indexes.sourcesRef[source.id];
         } else {
+            //If the bibliographic reference of the source is inside a quote,
+            //the id of the quote is pushed int he quotesEntriesId array.
             if (quote.hasAttribute('xml:id')) {
                 source.quotesEntriesId.push(quote.getAttribute('xml:id'));
             } else {
@@ -343,19 +332,47 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             else if (child.nodeType === 1) {
-                if (child.parentNode.tagName === 'cit' && child.tagName === 'quote') {
-                    var contentEl = parseSourcesEntryReference(child);
-                    source.content[child.tagName] = contentEl;
-                    source.content.push(child.textContent);
-                }
-                else if (child.tagName === 'bibl' /*|| child.tagName === 'biblFull' || child.tagName === 'biblStruct'*/){
-                    var biblEl = ['author', 'title', 'editor', 'publisher', 'pubPlace', 'date', 'citedRange', 'edition'];
-                    for (var i = 0; i < child.childNodes.length; i++) {
-                        if (biblEl.indexOf(child.childNodes[i].tagName) >= 0) {
-                            var biblElem = parseSourcesEntryReference(child.childNodes[i]);
-                            source.bibl[biblElem.tagName] = biblElem;
-                            source.bibl._encodingStructure[biblElem.id] = biblElem;
+                //Array of TEI-elements for pointers
+                var linkEl = ['ptr', 'ref', 'link'];
+
+                if (entry.tagName === 'cit' && child.tagName === 'quote') {
+                    var contentEl = parseSourceContent(child);
+                    source.quote.push(contentEl);
+                } else if (linkEl.indexOf(child.tagName) >= 0) {
+                    source.bibl.push(child);
+                    if (child.hasAttribute('target')) {
+                        var attrib = child.getAttribute('target');
+                        var val = attrib.replace(/#/g, '').split(" ");
+                        for (var i = 0; i < val.length; i++) {
+                            //...add its target values to the sourceRefId array.
+                            source.url.push(val[i]);
                         }
+                    }
+                } //If there is a linkGrp...
+                  else if (child.tagName === 'linkGrp') {
+                      //...parse the children...
+                    for (var i = 0; i < child.children.length; i++) {
+                        if (linkEl.indexOf(child.children[i].tagName) >= 0) {
+                            source.bibl.push(child.children[i]);
+                            if (child.children[i].hasAttribute('target')) {
+                                var attr = child.children[i].getAttribute('target');
+                                var val = attr.replace(/#/g, '').split(" ");
+                                for (var i = 0; i < val.length; i++) {
+                                    //...and add their target values to the SourceRefId array.
+                                    source.url.push(val[i]);
+                                }
+                            }
+                        }
+                    }
+                } else if (child.tagName === 'citedRange') {
+                    if (child.getAttribute('target') !== null && child.getAttribute('target') !== '') {
+                        source.url.push(child.getAttribute('target'));
+                    }
+                } else {
+                    childContent = parseSourceContent(child, entry)
+                    source.bibl.push(childContent);
+                    for (var i = 0; i < childContent.url.length; i++) {
+                        source.url.push(childContent.url[i]);
                     }
                 }
             }
@@ -442,7 +459,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
         for (var i = 0; i < missing.length; i++) {
-            //delete parsedData.getQuotes()[missing[i]];
+            delete parsedData.getQuotes()[missing[i]];
         }
     }
 
@@ -507,6 +524,32 @@ angular.module('evtviewer.dataHandler')
         
         deferred.resolve('success');
         return deferred;
+    }
+
+    /******************* */
+    /*getQuoteText(quote)*/
+    /******************* */
+    parser.getQuoteText = function(quote){
+        var spanElement,
+            errorElement;
+
+        spanElement = document.createElement('span'); //Wanna be <evt-quote>
+        spanElement.setAttribute('data-q-id', quote.id);
+        spanElement.setAttribute('data-type', 'quote');
+
+        var quoteContent = quote.content;
+        for (var i in quoteContent) {
+            if (typeOf(quoteContent[i] === 'string')) {
+                spanElement.appendChild(document.createTextNode(quoteContent[i]));
+            } else {
+                if (lemmaContent[i].type === 'quoteContent') {
+                    //
+                } else if (lemmaContent[i].nodeName === 'EVT-POPOVER') {
+                    spanElement.appenChild(lemmaContent[i]);
+                }
+            }
+        }
+        return spanElement;
     }
 
     return parser;

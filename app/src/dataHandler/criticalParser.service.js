@@ -922,7 +922,7 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-type', 'lemma');
             if (entry._lacuna) {
                 var lacunaElement = document.createElement('span');
-                    lacunaElement.className = 'lacunaApp icon-evt_note';
+                    lacunaElement.className = 'lacunaApp icon-evt_note'; //DA ELIMINARE QUI IL PALLINO
                 spanElement.appendChild(lacunaElement);
             } else if (entry.lemma !== undefined && entry.lemma !== '') {
                 spanElement.setAttribute('data-reading-id', entry.lemma);
@@ -1056,17 +1056,18 @@ angular.module('evtviewer.dataHandler')
                     var id;
                     if (element.getAttribute('xml:id')) {
                         id = element.getAttribute('xml:id');
-                        id = element.getAttribute('xml:id');
                     } else {
                         id = evtParser.xpath(element).substr(1);
                     }
-                    var source = parsedData.getQuote(id);
-                    if (source !== undefined){
-                        var prova = document.createElement('strong');
+                    var quote = parsedData.getQuote(id);
+                    if (quote !== undefined){
+
+                        /*var prova = evtSourcesParser.getQuoteText(quote);
+                        document.createElement('strong');
                         prova.className = 'prova';
-                        provatext = document.createTextNode(source.content[0]);
+                        provatext = document.createTextNode(quote.content);
                         prova.appendChild(provatext);
-                        element.parentNode.replaceChild(prova, element);
+                        element.parentNode.replaceChild(prova, element);*/
                     }
                     k--;
                 }
