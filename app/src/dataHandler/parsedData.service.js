@@ -3,7 +3,6 @@ angular.module('evtviewer.dataHandler')
 .service('parsedData', function($log, config) {
     var parsedData = {};
     var _console = $log.getInstance('dataHandler');
-
     _console.log('parsedData running');
     
     var projectInfo = {
@@ -16,7 +15,7 @@ angular.module('evtviewer.dataHandler')
     };
 
 
-	var bibliographicRefsCollection = {};
+	var bibliographicRefsCollection = [];
 	
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
@@ -468,12 +467,12 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
     };
 
-	parsedData.setbibliographicRefsCollection = function(arrayEntries) {
+	parsedData.setBibliographicRefsCollection = function(arrayEntries) {
 		bibliographicRefsCollection = arrayEntries;
 	}
 		
-	parsedData.getbibliographicRefsCollection = function(id) {
-		return bibliographicRefsCollection[id];
+	parsedData.getBibliographicRefsCollection = function() {
+		return bibliographicRefsCollection;
 	}
 		
     /* ************ */

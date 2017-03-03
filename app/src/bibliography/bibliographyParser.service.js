@@ -20,7 +20,7 @@ angular.module('evtviewer.dataHandler')
     var bibliographyDef = ['<biblStruct>', '<bibl'];
 
 	var parser = {};
-	var harvestedBiblContainer = {};
+	var harvestedBiblContainer = [];
     parser.parseBiblInfo = function(doc){
 		var currentDocument = angular.element(doc);
 
@@ -29,13 +29,13 @@ angular.module('evtviewer.dataHandler')
 				function(element) {
 					var newBiblElement = parser.extractInfo(element);
 					var currentID = getID(newBiblElement);
-					harvestedBiblContainer[currentID] = newBiblElement;
+					harvestedBiblContainer.push(newBiblElement);
 			});
 		}
-		
-		var string = '<evt-bibl-ref ng-repeat="bibl in bibliographyCollection" biblId="bibl.id"></evt-bibl-ref>';
+		var string = '<evt-bibl-ref ng-repeat="bibl in bibliographicRefsCollection" biblId="bibl.id"></evt-bibl-ref>';
+		//var string = '<evt-bibl-ref ng-repeat="bibl in bibliographicRefsCollection" biblId="bibl.id"></evt-bibl-ref>';
 		parsedData.updateProjectInfoContent(string, 'bibliography');
-		parsedData.setbibliographicRefsCollection(harvestedBiblContainer);
+		parsedData.setBibliographicRefsCollection(harvestedBiblContainer);
         console.log('## parseBiblInfo ##', harvestedBiblContainer);
     };
 	

@@ -1,5 +1,6 @@
 <div class="evt-bibl-ref">
-        <div class="evt-bibl-ref_entry">
-		<p>{{formatResult(1,data)}}</p>
+        <div class="biblRef">
+		<p ng-bind-html = 'string'></p>
+		<select ng-model="selectedStyle" ng-options="x for x in styles" ng-change="formatResult(selectedStyle,data)">
         </div>
 </div>

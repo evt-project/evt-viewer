@@ -1,11 +1,16 @@
 angular.module('evtviewer.dataHandler')
 
 .controller('BibliographyCtrl', function($scope, $element,$attrs,parsedData) {
-	$scope.currentID = $attrs.biblId;
-	$scope.data = parsedData.getbibliographicRefsCollection($scope.currentID);
-
+	$scope.styles=["Chicago","APA"];
+	$scope.data=$scope.$parent.bibl;
+	$scope.string="";
+	
 	/*/Format result/*/
 	$scope.formatResult = function(styleCode, newBiblElement) {
+		console.log(styleCode);
+		if(styleCode==$scope.styles[0])styleCode=1;
+		else if(styleCode==$scope.styles[1])styleCode=2;
+		else styleCode=1;
 		var string = '';
 		if (newBiblElement) {
 			//presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
@@ -158,7 +163,9 @@ angular.module('evtviewer.dataHandler')
 					string += '<span data-style="apa" class="url">' + getUrl(newBiblElement) + '</span>';
 				}
 			}				
-		}	
+		}
+			$scope.string=string;
 	return string;
 	}
+	$scope.formatResult(1,$scope.data);
 });
