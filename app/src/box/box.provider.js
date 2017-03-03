@@ -395,6 +395,15 @@ angular.module('evtviewer.box')
 						});
 					}
 					bottomMenuList.buttons.push({
+						title: 'BUTTONS.SEARCH',
+						label: 'BUTTONS.SEARCH',
+						icon: 'search',
+						type: '',
+						show: function() {
+							return 'true';
+						}
+					});
+					bottomMenuList.buttons.push({
 						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
 						icon: 'font-size',
@@ -885,5 +894,4 @@ angular.module('evtviewer.box')
 
 		return box;
 	};
-
 });

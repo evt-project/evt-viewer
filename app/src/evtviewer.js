@@ -45,6 +45,7 @@
  * @requires evtviewer.versionReading
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
+ * @requires evtviewer.search
  */
 angular
 	.module('evtviewer', [
@@ -85,5 +86,6 @@ angular
         'evtviewer.apparatuses',
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools'
+        'evtviewer.UItools',
+    	'evtviewer.search'
     ]);
