@@ -5,7 +5,7 @@
  * @description 
  * # evtBox
  * TODO: Add description and comments for every method
-**/
+ **/
 angular.module('evtviewer.box')
 
 .provider('evtBox', function() {
@@ -247,7 +247,7 @@ angular.module('evtviewer.box')
 						type: 'page',
 						initValue: evtInterface.getState('currentPage')
 					});
-					
+
 					topMenuList.buttons.push({
 						title: 'BUTTONS.THUMBNAILS',
 						label: 'BUTTONS.THUMBS',
@@ -577,7 +577,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "'+vm.witness+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "' + vm.witness + '" }\' }}</span>';
 
 						if (vm.witness !== undefined) {
 							// Main content
@@ -613,18 +613,18 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-				// /////////// //
-				// Case source //
-				// ////////////////////////////////////////////////////////////////////////////
-				// It loads the parsed text of the current source text. Available a selector //
-				// to choose the source to show, a button for bibliographic reference and a  //
-				// button to change font size. | author --> CM                               //
-				// ////////////////////////////////////////////////////////////////////////////
+					// /////////// //
+					// Case source //
+					// ////////////////////////////////////////////////////////////////////////////
+					// It loads the parsed text of the current source text. Available a selector //
+					// to choose the source to show, a button for bibliographic reference and a  //
+					// button to change font size. | author --> CM                               //
+					// ////////////////////////////////////////////////////////////////////////////
 				case 'source':
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,
 						type: 'source',
-						initValue: evtInterface.getState('currentSourceText') 
+						initValue: evtInterface.getState('currentSourceText')
 					});
 					topMenuList.buttons.push({
 						title: 'BUTTONS.BIBLIOGRAPHIC_REF',
@@ -646,7 +646,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "'+scope.vm.source+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
 
 						// Main content
 						var sourceObj = parsedData.getSource(scope.vm.source),
@@ -664,7 +664,7 @@ angular.module('evtviewer.box')
 										scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
 										scope.vm.isLoading = false;
 									});
-									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
+									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText')));
 									updateTopBoxContent(sourceBibl);
 								} catch (err) {
 									_console.log(err);
@@ -717,7 +717,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "'+vm.version+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "' + vm.version + '" }\' }}</span>';
 
 						if (vm.version !== undefined) {
 							var currentDocId = evtInterface.getState('currentDoc'),
