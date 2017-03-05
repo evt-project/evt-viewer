@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser) {
+.service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser,config) {
 	console.log('Bibliography Parser service running');
 	const CHICAGO_STYLE=1,APA_STYLE=2;
 	var STYLE_SELECTED=1;
@@ -32,9 +32,7 @@ angular.module('evtviewer.dataHandler')
 					harvestedBiblContainer.push(newBiblElement);
 			});
 		}
-		var string = '<evt-bibl-ref ng-repeat="bibl in bibliographicRefsCollection" biblId="bibl.id"></evt-bibl-ref>';
-		//var string = '<evt-bibl-ref ng-repeat="bibl in bibliographicRefsCollection" biblId="bibl.id"></evt-bibl-ref>';
-		parsedData.updateProjectInfoContent(string, 'bibliography');
+
 		parsedData.setBibliographicRefsCollection(harvestedBiblContainer);
         console.log('## parseBiblInfo ##', harvestedBiblContainer);
     };

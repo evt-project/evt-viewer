@@ -4,6 +4,7 @@ angular.module('evtviewer.dataHandler')
 	$scope.styles=config.allowedBibliographicStyles;
 	$scope.data=$scope.$parent.bibl;
 	$scope.string="";
+
 	
 	/*/Format result/*/
 	$scope.formatResult = function(styleCode, newBiblElement) {
@@ -163,8 +164,8 @@ angular.module('evtviewer.dataHandler')
 			$scope.string=string;
 	return string;
 	}
-	//settiamo un valore di default della select
-	$scope.selectedStyle=$scope.styles[0];
-	//nonostante diamo noi un valore alla select, non viene eseguita la ng-change assocciata, quindi per ora viene fatta a mano all'inizio
-	$scope.formatResult($scope.selectedStyle,$scope.data);
+
+	$scope.$on('styleChangedBroadcast', function(event, args) {
+		$scope.formatResult(args.message,$scope.data);
+    });
 });

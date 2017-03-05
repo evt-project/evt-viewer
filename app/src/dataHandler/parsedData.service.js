@@ -10,8 +10,7 @@ angular.module('evtviewer.dataHandler')
         encodingDescription : '',
         textProfile         : '',
         outsideMetadata     : '',
-        revisionHistory     : '',
-        bibliography        : ''
+        revisionHistory     : ''
     };
 
 
