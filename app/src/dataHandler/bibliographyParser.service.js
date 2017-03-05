@@ -214,7 +214,7 @@ angular.module('evtviewer.dataHandler')
                      string += '</span>';
                   }
                });
-               if (getPubblicationType(newBiblElement).toLowerCase() == 'journalarticle') {
+               if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase() === 'journalarticle') {
                   if (getTitleAnalytic(newBiblElement)) {
                      string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
                   }
@@ -240,7 +240,7 @@ angular.module('evtviewer.dataHandler')
                      }
                   });
                } else {
-                  //else if(getPubblicationType(newBiblElement).toLowerCase() == 'monograph' ){
+                  //else if(getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase() === 'monograph' ){
                   if (getTitleAnalytic(newBiblElement)) {
                      string += '<span data-style="chicago" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '.</span>';
                   }
