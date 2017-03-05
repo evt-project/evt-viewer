@@ -41,17 +41,17 @@ angular.module('evtviewer.dataHandler')
       // Bibliographic data container
       parser.extractInfo = function(element) {
          var newBiblElement = {
-            id: "",
-            type: "",
+            id: '',
+            type: '',
             author: [],
-            titleAnalytic: "",
-            titleLevel: "",
-            titleMonogr: "",
-            editionMonogr: "",
-            date: "",
-            editor: "",
-            publisher: "",
-            pubPlace: "",
+            titleAnalytic: '',
+            titleLevel: '',
+            titleMonogr: '',
+            editionMonogr: '',
+            date: '',
+            editor: '',
+            publisher: '',
+            pubPlace: '',
             biblScope: {},
             note: {},
             idno: {},
@@ -91,14 +91,14 @@ angular.module('evtviewer.dataHandler')
                newAuthorElement.forename = element.textContent;
             });
             //nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-            if (authorName.length == 0 && authorForename.length == 0 && authorSurname.length == 0) {
+            if (authorName.length === 0 && authorForename.length === 0 && authorSurname.length === 0) {
                newAuthorElement.name = el[0].textContent;
             }
             newBiblElement.author.push(newAuthorElement);
          });
          //cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
          angular.forEach(currentDocument.children(), function(el) {
-            if (el.tagName == 'date') {
+            if (el.tagName === 'date') {
                newBiblElement.date = el.innerHTML;
             }
          });
@@ -113,13 +113,14 @@ angular.module('evtviewer.dataHandler')
                newBiblElement.titleMonogr = monographTitles[0].textContent;
                var titleLevel = monographTitles[0].getAttribute("level");
                //recuperiamo il tipo di pubblicazione
-               if (titleLevel != null)
+               if (titleLevel !== null){
                   newBiblElement.titleLevel = titleLevel.substring(0, 1);
+			   }
             }
 
             var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
             //magari l'editore lo abbiamo già estratto dento bibl/biblStruct, se no lo prendiamo dentro <monogr>
-            if (newBiblElement.editor != '') {
+            if (newBiblElement.editor !== '') {
                newBiblElement.editor = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : '';
             }
             var monographEditions = monographElem.find('edition');
@@ -131,7 +132,7 @@ angular.module('evtviewer.dataHandler')
                //prendere attributo type o unit di ogni biblScope trovato
                angular.forEach(['type', 'unit'], function(attr) {
                   var attrValue = el.getAttribute(attr);
-                  if (attrValue != null) {
+                  if (attrValue !== null) {
                      newBiblElement.biblScope[attrValue] = el.textContent;
                   }
                });
@@ -186,13 +187,13 @@ angular.module('evtviewer.dataHandler')
                if (newBiblElement.author && newBiblElement.author.length > 0) {
                   var firstAuthor = newBiblElement.author[0];
                   //il nome lo prendiamo per mezzo del tag name o forename
-                  var firstName = firstAuthor.name != '' ? firstAuthor.name : firstAuthor.forename;
+                  var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
                   var firstSurname = firstAuthor.surname;
                   string += '<span data-style="chicago" class="author">';
-                  if (firstName != '') {
+                  if (firstName !== '') {
                      string += '<span data-style="chicago" class="name">' + firstName + '</span>';
                   }
-                  if (firstSurname != '') {
+                  if (firstSurname !== '') {
                      string += '<span data-style="chicago" class="surname">' + firstSurname + '</span>';
                   }
                }
@@ -201,13 +202,13 @@ angular.module('evtviewer.dataHandler')
                angular.forEach(newBiblElement.author, function(authorElement, key) {
                   //il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
                   if (key > 0) {
-                     var name = authorElement.name != '' ? authorElement.name : authorElement.forename;
+                     var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
                      var surname = authorElement.surname;
                      string += '<span data-style="chicago" class="author">';
-                     if (name != '') {
+                     if (name !== '') {
                         string += '<span data-style="chicago" class="name">' + name + '</span>';
                      }
-                     if (surname != '') {
+                     if (surname !== '') {
                         string += '<span data-style="chicago" class="surname">' + surname + '</span>';
                      }
                      string += '</span>';
@@ -259,7 +260,7 @@ angular.module('evtviewer.dataHandler')
                      string += '<span data-style="chicago" class="url">' + getUrl(newBiblElement) + '</span>';
                   }
                   angular.forEach(newBiblElement.idno, function(el, key) {
-                     if (key == 'ISSN') {
+                     if (key === 'ISSN') {
                         string += '<span data-style="chicago" class="idno" data-type="' + key + '">' + el.textContent + '</span>';
                      }
                   });
@@ -272,13 +273,13 @@ angular.module('evtviewer.dataHandler')
             else if (styleCode === APA_STYLE) {
                if (newBiblElement.author && newBiblElement.author.length > 0) {
                   var firstAuthor = newBiblElement.author[0];
-                  var firstName = firstAuthor.name != '' ? firstAuthor.name : firstAuthor.forename;
+                  var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
                   var firstSurname = firstAuthor.surname;
                   string += '<span data-style="apa" class="author">';
-                  if (firstSurname != '') {
+                  if (firstSurname !== '') {
                      string += '<span data-style="apa" class="surname">' + firstSurname + '</span>';
                   }
-                  if (firstName != '') {
+                  if (firstName !== '') {
                      string += '<span data-style="apa" class="name">' + firstName + '</span>';
                   }
                   string += '</span>';
@@ -310,7 +311,7 @@ angular.module('evtviewer.dataHandler')
                      var issue = getVolumes(newBiblElement);
                      string += '<span data-style="apa" class="vol">' + vol + '(' + issue + ')</span>';
                   } else {
-                     string += '<span data-style="apa" class="vol">' + vol + '</span>'
+                     string += '<span data-style="apa" class="vol">' + vol + '</span>';
                   }
                }
 
@@ -408,7 +409,7 @@ angular.module('evtviewer.dataHandler')
       }
 
       function getPubblicationType(newBiblElement) {
-         if (typeof newBiblElement.type !== '') {
+         if (newBiblElement.type !== '') {
             return newBiblElement.type;
          }
       }
