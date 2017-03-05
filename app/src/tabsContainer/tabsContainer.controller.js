@@ -73,10 +73,7 @@ angular.module('evtviewer.tabsContainer')
         }
 
         /* Bibliography */
-        var bibliographyContent = //'<select ng-model="selectedStyle" ng-controller="StyleSelectorCTRL" ng-options="x for x in styles" ng-change="notify(selectedStyle)">'+
-									//'</select><evt-bibl-ref ng-repeat="bibl in bibliographicRefsCollection" biblId="bibl.id"></evt-bibl-ref>';
-									//'</select>
-									'<evt-bibl-ref></evt-bibl-ref>';
+        var bibliographyContent = '<evt-bibl-ref></evt-bibl-ref>';
         if (bibliographyContent !== '') {
             $scope.tabs.bibliography = {
                 label   : 'Bibliography',
@@ -84,8 +81,6 @@ angular.module('evtviewer.tabsContainer')
                 content : bibliographyContent || noContent
             };
 			$scope.tabs._indexes.push('bibliography');
-			//$scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
-			
         }
     }
 

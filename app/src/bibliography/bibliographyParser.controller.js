@@ -2,8 +2,6 @@ angular.module('evtviewer.dataHandler')
 
 .controller('BibliographyCtrl', function($scope, $element,$attrs,parsedData,config) {
 	$scope.styles=config.allowedBibliographicStyles;
-	$scope.data=$scope.$parent.bibl;
-	//$scope.string="";
 	$scope.string=[];
 	$scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
 	
@@ -161,14 +159,15 @@ angular.module('evtviewer.dataHandler')
 					string += '<span data-style="apa" class="url">' + getUrl(newBiblElement) + '</span>';
 				}
 			}				
-		}$scope.string.push(string);
-			//$scope.string=string;
-	return string;
+		}
+		$scope.string.push(string);
 	}
 
 	$scope.$on('styleChangedBroadcast', function(event, args) {
-		//$scope.formatResult(args.message,$scope.data);
+		//resettiamo il contenitore degli elementi bibliografici formattati
 		$scope.string.length=0;
-		for(var c=0;c<$scope.bibliographicRefsCollection.length;c++){$scope.formatResult(args.message,$scope.bibliographicRefsCollection[c]);}
+		for(var c=0;c<$scope.bibliographicRefsCollection.length;c++){
+			$scope.formatResult(args.message,$scope.bibliographicRefsCollection[c]);
+			}
     });
 });

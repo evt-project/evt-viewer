@@ -1,11 +1,12 @@
 angular.module('evtviewer.dataHandler')
 
-.controller('StyleSelectorCTRL', function($scope,config,$timeout) {
+.controller('StyleSelectorCTRL', function($scope,config) {
 	$scope.notify = function(selectedStyle){
 		$scope.$emit('styleChangedEmit', {message: selectedStyle});
 	}
 	$scope.styles = config.allowedBibliographicStyles;
-	//all'inizio diamo un pochetto di tempo per istanziare gli altri controller riceventi della direttiva evt-bibl-ref
-	
+
+	//non volendo abusare di $watch all'inizio diamo un valore manuale alla select
 	$scope.selectedStyle = $scope.styles[0];	
+	//visto che non usiamo $watch, non viene lanciato ng-change,quindi dobbiamo farlo manualmente
 	$scope.notify($scope.selectedStyle);},0);
