@@ -821,23 +821,23 @@
 }
 
 .biblRef  .date[data-style=apa]:after{
-	content: ').'
+	content: '). '
 }
 
-.biblRef  .author[data-style=apa]:not:first-child:after{
-	content: '.'
+.biblRef  .author[data-style=apa]:not(:first-child):after{
+	content: '. '
 }
 
 .biblRef  .author[data-style=apa]:not(:first-child):before{
-	content: ' ,'
+	content: ', '
 }
 
 .biblRef  .author[data-style=apa]:last-child:before{
-	content: ' ,'
+	content: ','
 }
 
 .biblRef  .date[data-style=apa]:after{
-	content: '.'
+	content: '. '
 }
 
 .biblRef  .vol[data-style=apa]:before{
@@ -849,7 +849,7 @@
 }
 
 .biblRef .titleAnalytic[data-style=apa]:after,.biblRef .titleMonogr[data-style=apa]:after{
-	content: '."'
+	content: '." '
 }
 
 .biblRef  .edition[data-style=apa]:before{
@@ -857,7 +857,7 @@
 }
 
 .biblRef  .edition[data-style=apa]:after{
-	content: '.'
+	content: '. '
 }
 
 .biblRef  .pubPlace[data-style=apa]:before{
@@ -873,7 +873,7 @@
 }
 
 .biblRef  .publisher[data-style=apa]:after{
-	content: '.'
+	content: '. '
 }
 
 .biblRef  .url[data-style=apa]:before{
@@ -881,7 +881,7 @@
 }
 
 .biblRef  .url[data-style=apa]:after{
-	content: '.'
+	content: '. '
 }
 
 .biblRef span[data-style=apa]:not([data-attr=titolo]):last-child:after {
@@ -893,9 +893,5 @@
 }
 
 .biblRef .author .surname[data-style=apa]:after {
-    content: ",";
-}
-
-.biblRef .author[data-style=apa]:not(span):after {
-    content: ",";
+    content: ", ";
 }
