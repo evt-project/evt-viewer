@@ -33,5 +33,6 @@ angular
     'evtviewer.reading',
     'evtviewer.dialog',
     'evtviewer.tabsContainer',
+    'evtviewer.bibliography',
     'evtviewer.UItools'
   ]);

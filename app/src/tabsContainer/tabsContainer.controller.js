@@ -5,7 +5,7 @@ angular.module('evtviewer.tabsContainer')
     $scope.tabs = {
         _indexes : []
     };
-    
+
     $scope.toggleSubContent = function(subContentName) {
         if ($scope.subContentOpened !== subContentName) {
             $scope.subContentOpened = subContentName;
@@ -73,7 +73,7 @@ angular.module('evtviewer.tabsContainer')
         }
 
         /* Bibliography */
-        var bibliographyContent = '<evt-bibl-ref></evt-bibl-ref>';
+        var bibliographyContent = '<evt-bibliography></evt-bibliography>';
         if (bibliographyContent !== '') {
             $scope.tabs.bibliography = {
                 label   : 'Bibliography',
@@ -84,7 +84,7 @@ angular.module('evtviewer.tabsContainer')
         }
     }
 
-    
+
     $scope.subContentOpened = $scope.tabs._indexes[0] || '';
     var _console = $log.getInstance('tabsContainer');
 
