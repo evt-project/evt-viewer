@@ -6,8 +6,6 @@ angular.module('evtviewer.dataHandler')
 	}
 	$scope.styles = config.allowedBibliographicStyles;
 	//all'inizio diamo un pochetto di tempo per istanziare gli altri controller riceventi della direttiva evt-bibl-ref
-	$timeout(function(){
-	//diamo un primo valore alla select e notifichiamo, non voglio abusare di $watch quando si può mettere ng-change	
+	
 	$scope.selectedStyle = $scope.styles[0];	
-	$scope.notify($scope.selectedStyle);},1000);
-	});
+	$scope.notify($scope.selectedStyle);},0);

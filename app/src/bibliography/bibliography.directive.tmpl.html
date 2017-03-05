@@ -1,5 +1,7 @@
-<div class="evt-bibl-ref">
-        <div class="biblRef">
-		<div compile = 'string'></div>
+<div class='evt-bibl-ref'>
+        <div class='biblRef'>
+		<label for='biblStyleSelect'>Select your style </label>
+		<select id='biblStyleSelect' ng-model='selectedStyle' ng-controller='StyleSelectorCTRL' ng-options='x for x in styles' ng-change='notify(selectedStyle)'></select>
+		<div ng-repeat='bibl in bibliographicRefsCollection track by $index' compile = 'string[$index]'></div>
         </div>
 </div>
