@@ -85,9 +85,7 @@ angular.module('evtviewer.tabsContainer')
             };
 			$scope.tabs._indexes.push('bibliography');
 			//$scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
-			$scope.$on('styleChangedEmit', function(event, args) {
-				$scope.$broadcast('styleChangedBroadcast', args);
-			});
+			
         }
     }
 

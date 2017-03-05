@@ -11,7 +11,14 @@ angular.module('evtviewer.dataHandler')
 		},
         templateUrl: 'src/bibliography/bibliography.directive.tmpl.html',
         controller:  'BibliographyCtrl',
-		controllerAs:'biblCtrl'
+		controllerAs:'biblCtrl',
+		link:{
+			pre:function(scope,element,attr){
+				scope.$on('styleChangedEmit', function(event, args) {
+					scope.$broadcast('styleChangedBroadcast', args);
+				});
+			}
+		}
 	}
 });
 
