@@ -41,7 +41,7 @@ angular.module('evtviewer.dataHandler')
       // Bibliographic data container
       parser.extractInfo = function(element) {
          var newBiblElement = {
-            id: '',
+            id: '', 
             type: '',
             author: [],
             titleAnalytic: '',
