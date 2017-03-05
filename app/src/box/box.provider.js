@@ -15,9 +15,9 @@ angular.module('evtviewer.box')
             idx        = 0;
 
         var _console = $log.getInstance('box');
-        // 
+        //
         // Control function
-        // 
+        //
         function updateState(key, value) {
             // _console.log('vm - updating state '+key+': '+value);
             var vm        = this;
@@ -58,16 +58,16 @@ angular.module('evtviewer.box')
             var values = filters[filter].values;
             if (values[value] === undefined) {
                 values[values.length] = value;
-                values[value] = { 
+                values[value] = {
                                     name   : value,
                                     active : true,
-                                    color  : parsedData.getCriticalEntriesFilterColor(filter, value) 
+                                    color  : parsedData.getCriticalEntriesFilterColor(filter, value)
                                 };
                 values.length++;
             } else {
                 values[value].active = !values[value].active;
             }
-            
+
             if (values[value].active) {
                 filters[filter].totActive++;
                 filters._totActive++;
@@ -75,7 +75,7 @@ angular.module('evtviewer.box')
                 filters[filter].totActive--;
                 filters._totActive--;
             }
-            
+
             filters[filter].any = (filters[filter].totActive === 0);
         }
 
@@ -105,7 +105,7 @@ angular.module('evtviewer.box')
             var vm = this;
             vm.topBoxContent = newContent;
         }
-        
+
         function fontSize() {
             var vm = this;
             return 'font-size:'+vm.state.fontSize+'%' || '';
@@ -135,17 +135,17 @@ angular.module('evtviewer.box')
             return evtInterface.getToolState('ITL') === 'active';
         }
 
-        // 
+        //
         // Box builder
-        // 
+        //
         box.build = function(scope, vm) {
             var currentId   = vm.id || idx++,
                 currentType = vm.type || 'default',
-                topMenuList = { 
+                topMenuList = {
                     selectors : [],
                     buttons   : []
                 },
-                bottomMenuList = { 
+                bottomMenuList = {
                     selectors : [],
                     buttons   : []
                 },
@@ -172,13 +172,13 @@ angular.module('evtviewer.box')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-            
+
             // _console.log('vm - building box for ' + currentId);
             var newContent;
             switch (currentType) {
                 case 'image':
                     topMenuList.selectors.push({id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
-                    
+
                     topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbnails', type: 'thumbs' });
                     topMenuList.buttons.push({title: 'Image Text Linking', label: '', icon: 'itl', type: 'itl'});
 
@@ -188,7 +188,7 @@ angular.module('evtviewer.box')
                             pageSource   = parsedData.getPage(currentPage).source || '';
                         pageSource = pageSource === '' ? 'data/images/'+currentPage+'.png' : pageSource;
                         scope.vm.content = '<img src="'+pageSource+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
-                        
+
                         // TEMP... TODO: creare direttiva per gestire le zone sull'immagine
                         var zonesHTML = '',
                             zones = parsedData.getZones();
@@ -236,7 +236,7 @@ angular.module('evtviewer.box')
                     state.filterBox = false;
                     state.docId   = evtInterface.getCurrentDocument();
                     if (config.toolHeatMap) {
-                        bottomMenuList.buttons.push({title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});    
+                        bottomMenuList.buttons.push({title: 'Heat Map', label: 'Heat Map', icon: 'heatmap', type: 'heatmap', show: function(){ return vm.type === 'text' && vm.edition === 'critical'; }});
                     }
                     bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
 
@@ -309,7 +309,7 @@ angular.module('evtviewer.box')
                     var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness+'-'+vm.witPage : '';
                     topMenuList.selectors.push({id:'witnesses_'+currentId, type: 'witness', initValue: vm.witness },
                                                {id:'page_'+currentId, type: 'witness-page', initValue: witPageId });
-                    
+
                     topMenuList.buttons.push({title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit' },
                                              {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
 
@@ -328,7 +328,7 @@ angular.module('evtviewer.box')
                         scope.vm.isLoading = true;
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
                             noTextAvailableMsg = 'Text of witness '+vm.witness+' is not available.';
-                        
+
                         if ( vm.witness !== undefined ) {
                             // Main content
                             var currentDocId = evtInterface.getCurrentDocument(),
@@ -337,7 +337,7 @@ angular.module('evtviewer.box')
                                 var documents  = parsedData.getDocuments(),
                                     currentDoc = '';
                                 if (documents._indexes.length > 0) {
-                                    currentDoc = documents._indexes[currentDocId];
+                                    currentDoc = documents[currentDocId];
                                 }
                                 if (currentDoc !== undefined) {
                                     try {
@@ -422,7 +422,7 @@ angular.module('evtviewer.box')
 
         //
         // Service function
-        // 
+        //
         box.getById = function(currentId) {
             if (collection[currentId] !== 'undefined') {
                 return collection[currentId];
