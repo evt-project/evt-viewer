@@ -8,7 +8,7 @@ angular.module('evtviewer.criticalApparatusEntry')
         defaults = _defaults;
     };
 
-    this.$get = function(parsedData, baseData, evtCriticalParser, evtCriticalApparatus) {
+    this.$get = function(parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus) {
         var appEntry   = {},
             collection = {},
             list       = [],
@@ -42,7 +42,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             if (criticalEntry === undefined) {
                 var XMLdocument = baseData.getXMLDocuments()[0];
                 XMLdocument = XMLdocument.cloneNode(true);
-                evtCriticalParser.findCriticalEntryById(XMLdocument, id);
+                evtCriticalApparatusParser.findCriticalEntryById(XMLdocument, id);
                 // delete XMLdocument;
                 criticalEntry = parsedData.getCriticalEntryById(id);
             }

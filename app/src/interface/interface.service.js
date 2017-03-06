@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function(evtCommunication, evtCriticalApparatusParser, evtCriticalApparatusEntry, evtCriticalParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -45,7 +45,7 @@ angular.module('evtviewer.interface')
                         var promises = [];
                         // Parse critical entries
                         if (config.loadCriticalEntriesImmediately){
-                            promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
+                            promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
 
                         // Parse critical text

@@ -2,7 +2,7 @@ angular.module('evtviewer.dataHandler')
 
 angular.module('evtviewer.dataHandler')
 
-.service('evtSourcesParser', function($q, parsedData, evtParser, evtCriticalParser, xmlParser, config) {
+.service('evtSourcesParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, xmlParser, config) {
     var parser = {};
 
     var apparatusEntryDef = '<app>',
@@ -52,11 +52,11 @@ angular.module('evtviewer.dataHandler')
                 if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(parseQuote(child));
                 } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    contentEl.content.push(evtCriticalParser.handleAppEntry(child));
+                    contentEl.content.push(evtCriticalApparatusParser.handleAppEntry(child));
                 } /*else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(evtAnaloguesParser.parseAnalogue(child));
                 } else if (child.tagName === 'witDetail') {
-                    contentEl.content.push(evtCriticalParser.parseWitDetail(child));
+                    contentEl.content.push(evtCriticalApparatusParser.parseWitDetail(child));
                 }*/ else if (child.tagName === 'note') {
                     contentEl.content.push(evtParser.parseNote(child));
                 } else if (child.children.length > 0) {
@@ -129,7 +129,12 @@ angular.module('evtviewer.dataHandler')
         }
 
         //Check if the sourceAppDef element is nested in another quoteDef element
-        quote._subQuote = evtParser.isNestedInElem(entry, quoteDef.replace(/[<>]/g, ''));
+        var aQuoteDef = quoteDef.split(","),
+        i = 0;
+        while (i < aQuoteDef.length && !quote._subQuote) {
+            quote._subQuote = evtParser.isNestedInElem(entry, aQuoteDef[i].replace(/[<>]/g, ''));
+            i++;
+        }
 
         //Parsing the contents
         angular.forEach(entry.childNodes, function(child) {
@@ -163,7 +168,11 @@ angular.module('evtviewer.dataHandler')
                     quote.content.push(bib);
                 } //If there is a link or pointer or ref...
                   else if (linkEl.indexOf(child.tagName) >= 0) {
-                    quote.content.push(child);
+                    if (child.tagName === 'ref') {
+                        quote.content.push(parseQuoteContent(child));
+                    } else {
+                        quote.content.push(child);
+                    }
                     if (child.hasAttribute('target')) {
                         var attrib = child.getAttribute('target');
                         var values = attrib.replace(/#/g, '').split(" ");
@@ -177,7 +186,11 @@ angular.module('evtviewer.dataHandler')
                       //...parse the children...
                     for (var i = 0; i < child.children.length; i++) {
                         if (linkEl.indexOf(child.children[i].tagName) >= 0) {
-                            quote.content.push(child.children[i]);
+                            if (child.children[i].tagName === 'ref') {
+                                quote.content.push(parseQuoteContent(child.children[i]));
+                            } else {
+                                quote.content.push(child.children[i]);
+                            }
                             if (child.children[i].hasAttribute('target')) {
                                 var attr = child.children[i].getAttribute('target');
                                 var val = attr.replace(/#/g, '').split(" ");
@@ -190,7 +203,7 @@ angular.module('evtviewer.dataHandler')
                     }
                 } //If there is an apparatus Entry, parse it with handleAppEntry.
                   else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    quote.content.push(evtCriticalParser.handleAppEntry(child));
+                    quote.content.push(evtCriticalApparatusParser.handleAppEntry(child));
                 } //If there is a nested quote, parse it recursively.
                   else if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                     var subQuote = parseQuote(child);
@@ -200,7 +213,7 @@ angular.module('evtviewer.dataHandler')
                 } /*else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
                     content.push(evtAnaloguesParser.parseAnalogue(child));
                 } else if (child.tagName === 'witDetail') {
-                    content.push(evtCriticalParser.parseWitDetail(child));
+                    content.push(evtCriticalApparatusParser.parseWitDetail(child));
                 }*/ else if (child.tagName === 'note') {
                     quote.content.push(evtParser.parseNote(child));
                 } 
@@ -255,10 +268,10 @@ angular.module('evtviewer.dataHandler')
                     }
                 } else if (child.children.length > 0) {
                     for (var i = 0; i < child.children.length; i++) {
-                        contentEl.content.push(parseQuoteContent(child.children[i]));                        
+                        contentEl.content.push(parseSourceContent(child.children[i]));                        
                     }
                 } else {
-                    contentEl.content.push(parseQuoteContent(child));
+                    contentEl.content.push(parseSourceContent(child));
                 }
             }
         });
@@ -339,7 +352,11 @@ angular.module('evtviewer.dataHandler')
                     var contentEl = parseSourceContent(child);
                     source.quote.push(contentEl);
                 } else if (linkEl.indexOf(child.tagName) >= 0) {
-                    source.bibl.push(child);
+                    if (child.tagName === 'ref') {
+                        source.bibl.push(parseSourceContent(child));
+                    } else {
+                        source.bibl.push(child);
+                    }
                     if (child.hasAttribute('target')) {
                         var attrib = child.getAttribute('target');
                         var val = attrib.replace(/#/g, '').split(" ");
@@ -353,7 +370,11 @@ angular.module('evtviewer.dataHandler')
                       //...parse the children...
                     for (var i = 0; i < child.children.length; i++) {
                         if (linkEl.indexOf(child.children[i].tagName) >= 0) {
-                            source.bibl.push(child.children[i]);
+                            if (child.tagName === 'ref') {
+                                source.bibl.push(parseSourceContent(child));
+                            } else {
+                                source.bibl.push(child.children[i]);
+                            }
                             if (child.children[i].hasAttribute('target')) {
                                 var attr = child.children[i].getAttribute('target');
                                 var val = attr.replace(/#/g, '').split(" ");
@@ -459,7 +480,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
         for (var i = 0; i < missing.length; i++) {
-            delete parsedData.getQuotes()[missing[i]];
+            //delete parsedData.getQuotes()[missing[i]];
         }
     }
 
@@ -539,13 +560,13 @@ angular.module('evtviewer.dataHandler')
 
         var quoteContent = quote.content;
         for (var i in quoteContent) {
-            if (typeOf(quoteContent[i] === 'string')) {
+            if (typeof quoteContent[i] === 'string') {
                 spanElement.appendChild(document.createTextNode(quoteContent[i]));
             } else {
-                if (lemmaContent[i].type === 'quoteContent') {
+                if (quoteContent[i].type === 'quoteContent') {
                     //
-                } else if (lemmaContent[i].nodeName === 'EVT-POPOVER') {
-                    spanElement.appenChild(lemmaContent[i]);
+                } else if (quoteContent[i].nodeName === 'EVT-POPOVER') {
+                    spanElement.appenChild(quoteContent[i]);
                 }
             }
         }

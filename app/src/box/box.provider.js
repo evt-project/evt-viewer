@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking) {
         var box        = {},
             collection = {},
             list       = [],
