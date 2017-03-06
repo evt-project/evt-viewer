@@ -6,7 +6,7 @@ angular.module('evtviewer.bibliography')
       $scope.styles = config.allowedBibliographicStyles;
       $scope.selectedStyle = $scope.styles[0];
 
-      $scope.string = [];
+
       $scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
 
       _console.log($scope.allowedBibliographicStyles);
@@ -16,4 +16,7 @@ angular.module('evtviewer.bibliography')
          }
          return BiblElement.outputs[$scope.selectedStyle];
       }
+	  $scope.pubblicationType = function(BiblElement) {
+		  return evtBibliographyParser.getType(BiblElement);
+		  }
    });

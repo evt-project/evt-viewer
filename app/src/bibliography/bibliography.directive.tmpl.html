@@ -5,8 +5,9 @@
         ng-model="selectedStyle"
         ng-options="x for x in styles"></select>
 
-      <div class="biblRef"
+      <div class="biblRef" 
         ng-repeat="bibl in bibliographicRefsCollection"
-        compile="getFormattedBibl(bibl)"></div>
+        compile="getFormattedBibl(bibl)"
+		ng-attr-pubblicationType="{{pubblicationType(bibl) ? pubblicationType(bibl) : 'unknown'}}"></div>
    </div>
 </div>

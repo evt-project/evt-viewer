@@ -67,7 +67,10 @@ angular.module('evtviewer.dataHandler')
          newBiblElement.editor = editorElem && editorElem.length > 0 ? editorElem[0].textContent : '';
          var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, '') + ' title');
          newBiblElement.titleAnalytic = analyticElem && analyticElem.length > 0 ? analyticElem[0].textContent : '';
-
+		 
+		 for(var c=0; newBiblElement.type === '' && analyticElem && c<analyticElem.length; c++){
+			newBiblElement.type = analyticElem[0].getAttribute('level') ? analyticElem[0].getAttribute('level') : '';
+		 }
          angular.forEach(currentDocument.find('author'), function(el) {
             var newAuthorElement = {
                name: '',
@@ -115,6 +118,13 @@ angular.module('evtviewer.dataHandler')
                //recuperiamo il tipo di pubblicazione
                if (titleLevel !== null){
                   newBiblElement.titleLevel = titleLevel.substring(0, 1);
+			   }
+			   for(var c=0; c<monographTitles.length && newBiblElement.type === '';c++){
+					var titleLevel = monographTitles[0].getAttribute("level");
+					//recuperiamo il tipo di pubblicazione
+					if (titleLevel !== null){
+						newBiblElement.type = analyticElem.length == 0 && newBiblElement.type === '' ? titleLevel.substring(0, 1) : '';
+					}					
 			   }
             }
 
@@ -214,7 +224,7 @@ angular.module('evtviewer.dataHandler')
                      string += '</span>';
                   }
                });
-               if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase() === 'journalarticle') {
+               if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) === 'j') {
                   if (getTitleAnalytic(newBiblElement)) {
                      string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
                   }
@@ -240,7 +250,7 @@ angular.module('evtviewer.dataHandler')
                      }
                   });
                } else {
-                  //else if(getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase() === 'monograph' ){
+                  //else if(getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) === 'm' ){
                   if (getTitleAnalytic(newBiblElement)) {
                      string += '<span data-style="chicago" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '.</span>';
                   }
@@ -335,6 +345,12 @@ angular.module('evtviewer.dataHandler')
       	Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
       	/*/
 
+	  parser.getType=function(newBiblElement){
+		 if (newBiblElement.type !== ''){
+			return newBiblElement.type;
+		 }
+	  }	
+	
       function getID(newBiblElement) {
          if (newBiblElement.id !== '') {
             return newBiblElement.id;
