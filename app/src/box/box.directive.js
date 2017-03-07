@@ -45,8 +45,13 @@ angular.module('evtviewer.box')
                             var docViewTop = boxElem.scrollTop + 42,
                                 docViewBottom = docViewTop + angular.element(boxElem).height();
                             id = pbElems[i].getAttribute('data-id');
-                            var elemTop =  $("span.pb[data-id='"+id+"']").offset().top;
-                            if ((elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
+                            
+                            var elemOffset = $("span.pb[data-id='"+id+"']").offset();
+                            var elemTop;
+                            if (elemOffset) {
+                                elemTop =  elemOffset.top;
+                            }
+                            if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
                                 visible = true;
                             } else {
                                 i++;
