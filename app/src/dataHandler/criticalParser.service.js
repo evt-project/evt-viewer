@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, xmlParser, config) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, xmlParser, config) {
     var parser = {};
 
     var apparatusEntryDef     = '<app>',
@@ -8,7 +8,7 @@ angular.module('evtviewer.dataHandler')
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>',
         quoteDef              = '<quote>';
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef, //Da aggiungere anche <evt-source>, quando lo avrai creato.
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+',<evt-quote>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
     // Al momento ho usato solo questa variabile
@@ -195,23 +195,7 @@ angular.module('evtviewer.dataHandler')
                     var quote = parsedData.getQuote(id);
                     if (quote !== undefined){
 
-                        var prova = document.createElement('strong');
-                        prova.className = 'prova';
-                        var quoteContent = quote.content;
-                        
-                        for (var i in quoteContent) {
-                            if (typeof(quoteContent[i]) === 'string') {
-                                prova.appendChild(document.createTextNode(quoteContent[i]));
-                            } else {
-                                if (quoteContent[i].type === 'quoteContent') {
-                                    //
-                                } else if (quoteContent[i].nodeName === 'EVT-POPOVER') {
-                                    prova.appendChild(quoteContent[i]);
-                                }   
-                            }
-                        }
-                        //provatext = document.createTextNode(quote.content);
-                        //prova.appendChild(provatext);
+                        var prova = evtSourcesParser.getQuoteText(quote, '', doc);
                         element.parentNode.replaceChild(prova, element);
                     }
                     k--;

@@ -31,7 +31,8 @@ angular.module('evtviewer.dataHandler')
             tagName : elem.tagName,
             type : 'quoteContent',
             attributes: [],
-            content : []
+            content : [],
+            xml: elem
         };
         
         if (elem.attributes) {
@@ -65,12 +66,42 @@ angular.module('evtviewer.dataHandler')
                         parseQuoteContent(child.children[i])
                     }
                 } else {
-                    contentEl.content.push(child.cloneNode(true));
+                    contentEl.content.push(parseQuoteContent(child));
                 }
             }
         });
 
         return contentEl;
+    }
+
+    //Tentativo di parsare solo gli elementi XML
+    var parxeQuoteContent = function(elem) {
+        var content = [];
+        if (elem.children.length <= 0) {
+            content.push(elem);
+        } else {
+            angular.forEach(elem.children, function(child){
+                if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    content.push(parseQuote(child));
+                } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    content.push(evtCriticalApparatusParser.handleAppEntry(child));
+                } /*else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    contentEl.content.push(evtAnaloguesParser.parseAnalogue(child));
+                } else if (child.tagName === 'witDetail') {
+                    contentEl.content.push(evtCriticalApparatusParser.parseWitDetail(child));
+                }*/ else if (child.tagName === 'note') {
+                    content.push(evtParser.parseNote(child));
+                } else if (child.children.length > 0) {
+                    for (var i = 0; i < child.children.length; i++) {
+                        content.push(child.children[i].cloneNode(true));
+                        parxeQuoteContent(child.children[i])
+                    }
+                } else {
+                    content.push(child.cloneNode(true));
+                }
+            });             
+        }
+        return content;
     }
 
     /* *************** */
@@ -86,6 +117,7 @@ angular.module('evtviewer.dataHandler')
     var parseQuote = function(entry){
         
         var quote = {
+            type: 'quote',
             id : '',
             attributes: [],
             content: [],
@@ -158,6 +190,8 @@ angular.module('evtviewer.dataHandler')
                             //...then add their id to the sourceId array.
                             quote._indexes.sourceId.push(bibl.id);
                             quote.content.push(bibl);
+                        } else {
+                            quote.content.push(parseQuoteContent(child.children[i]));
                         }
                     }
                 } // If there is a bibliographic element, parse it as a Source.
@@ -168,11 +202,7 @@ angular.module('evtviewer.dataHandler')
                     quote.content.push(bib);
                 } //If there is a link or pointer or ref...
                   else if (linkEl.indexOf(child.tagName) >= 0) {
-                    if (child.tagName === 'ref') {
-                        quote.content.push(parseQuoteContent(child));
-                    } else {
-                        quote.content.push(child);
-                    }
+                    quote.content.push(parseQuoteContent(child));
                     if (child.hasAttribute('target')) {
                         var attrib = child.getAttribute('target');
                         var values = attrib.replace(/#/g, '').split(" ");
@@ -186,11 +216,7 @@ angular.module('evtviewer.dataHandler')
                       //...parse the children...
                     for (var i = 0; i < child.children.length; i++) {
                         if (linkEl.indexOf(child.children[i].tagName) >= 0) {
-                            if (child.children[i].tagName === 'ref') {
-                                quote.content.push(parseQuoteContent(child.children[i]));
-                            } else {
-                                quote.content.push(child.children[i]);
-                            }
+                            quote.content.push(parseQuoteContent(child.children[i]));
                             if (child.children[i].hasAttribute('target')) {
                                 var attr = child.children[i].getAttribute('target');
                                 var val = attr.replace(/#/g, '').split(" ");
@@ -547,29 +573,90 @@ angular.module('evtviewer.dataHandler')
         return deferred;
     }
 
+    parser.getQuoteContentText = function(elem, wit, doc) {
+        var spanElement = document.createElement('span');
+        spanElement.className = elem.tagName;
+
+        var attribKeys = Object.keys(elem.attributes);
+        for (var key in attribKeys) {
+            var attrib = attribKeys[key];
+            var value = elem.attributes[attrib];
+            if (attrib !== 'xml:id') {
+                spanElement.setAttribute('data-'+attrib, value);
+            }
+        }
+
+        var elementContent = elem.content;
+        for (var i in elementContent) {
+            if (typeof(elementContent[i]) === 'string') {
+                spanElement.appendChild(document.createTextNode(elementContent[i]));
+            } else {
+                if (elementContent[i].type === 'quote') {
+                    spanElement.appendChild(parser.getQuoteText(elementContent[i]));
+                } else if (elementContent[i].tagName === 'EVT-POPOVER') {
+                    spanElement.appendChild(elementContent[i]);
+                } else if (elementContent[i].type === 'app') {
+                    if (wit === '') {
+                        spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(elementContent[i]));
+                    } else {
+                        spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(elementContent[i], wit));
+                    }
+                } else 
+                // if (elementContent[i].type === 'analogue') {
+                        //
+                //} else
+                if ((elementContent[i].content.length = 1 && typeof elementContent[i].content[0] === 'string') ||
+                    elementContent[i].content.length <= 0) {
+                    spanElement.appendChild(evtParser.parseXMLElement(doc, elementContent[i].xml, ''));
+                } else {
+                   spanElement.appendChild(parser.getQuoteContentText(elementContent[i], wit, doc)); 
+                }
+            }
+        }
+
+        return spanElement;
+    }
+
     /******************* */
     /*getQuoteText(quote)*/
     /******************* */
-    parser.getQuoteText = function(quote){
+    parser.getQuoteText = function(quote, wit, doc){
         var spanElement,
             errorElement;
 
-        spanElement = document.createElement('span'); //Wanna be <evt-quote>
+        spanElement = document.createElement('evt-quote'); //Wanna be <evt-quote>
         spanElement.setAttribute('data-q-id', quote.id);
         spanElement.setAttribute('data-type', 'quote');
 
         var quoteContent = quote.content;
         for (var i in quoteContent) {
+                /*Modo per avere uno span di testo all'interno di quote,
+                trattato come gli altri nel testo corrente
+                newElement = document.createElement('span');
+                newElement.className = "textNode";
+                newElement.innerHTML = quoteContent[i];
+                spanElement.appendChild(newElement);*/
             if (typeof quoteContent[i] === 'string') {
                 spanElement.appendChild(document.createTextNode(quoteContent[i]));
             } else {
                 if (quoteContent[i].type === 'quoteContent') {
-                    //
-                } else if (quoteContent[i].nodeName === 'EVT-POPOVER') {
-                    spanElement.appenChild(quoteContent[i]);
+                    spanElement.appendChild(parser.getQuoteContentText(quoteContent[i], wit, doc))
+                } else
+                if (quoteContent[i].tagName === 'EVT-POPOVER') {
+                    spanElement.appendChild(quoteContent[i]);
+                } else if (quoteContent[i].type === 'app') {
+                    if (wit === '') {
+                        spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(quoteContent[i]));
+                    } else {
+                        spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(quoteContent[i], wit));
+                    }
+                } else if (quoteContent[i].type === 'quote') {
+                    spanElement.appendChild(parser.getQuoteText(quoteContent[i], wit, doc));
                 }
+                //else if (quoteContent[i].type === 'analogue')...
             }
         }
+        console.log(spanElement);
         return spanElement;
     }
 

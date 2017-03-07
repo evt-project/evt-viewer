@@ -350,6 +350,7 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************************************** */
     var parseAppEntry = function(app) {
         var entry = {
+            type : 'app',
             id         : '',
             attributes : [],
             lemma      : '',
