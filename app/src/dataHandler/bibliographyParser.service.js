@@ -9,6 +9,7 @@ angular.module('evtviewer.dataHandler')
       var monographDef = '<monogr>',
          analyticDef = '<analytic>',
          imprintDef = '<imprint>',
+		 seriesDef  = '<series>',
          biblScopeDef = '<biblScope>',
          editorDef = '<editor>',
          dateDef = '<date>',
@@ -136,7 +137,10 @@ angular.module('evtviewer.dataHandler')
             var monographEditions = monographElem.find('edition');
             newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].firstChild.textContent : '';
             var date = monographEditions.find("date");
-            newBiblElement.date = date && date.length > 0 ? date[0].textContent : newBiblElement.date;
+			//magari la data è già stata presa dentro <bibl>
+			if (newBiblElement.date === ''){
+				newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
+			}
             //biblscope può stare dentro monogr ma anche dentro imprint
             angular.forEach(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), function(el) {
                //prendere attributo type o unit di ogni biblScope trovato
@@ -162,23 +166,70 @@ angular.module('evtviewer.dataHandler')
                var imprintsDates = monographImprints.find('date');
                /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
                oppure contiene '', possiamo quindi riassegnare newBiblElement.date a se stesso senza problemi.
-               Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition>.
+               Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
                Magari la troviamo anche subito dentro <bibl>/*/
-               newBiblElement.date = imprintsDates && imprintsDates.length > 0 ? imprintsDates[0].textContent : newBiblElement.date;
-
+			   if (newBiblElement.date === ''){
+				newBiblElement.date = imprintsDates && imprintsDates.length > 0 ? imprintsDates[0].textContent : '';
+			   }
+			   
                var imprintsPublishers = monographImprints.find('publisher');
-               newBiblElement.publisher = imprintsPublishers && imprintsPublishers.length > 0 ? imprintsPublishers[0].textContent : '';
-
+			   if (newBiblElement.publisher === ''){
+				newBiblElement.publisher = imprintsPublishers && imprintsPublishers.length > 0 ? imprintsPublishers[0].textContent : '';
+			   }
                var imprintsPubPlaces = monographImprints.find('pubPlace');
-               newBiblElement.pubPlace = imprintsPubPlaces && imprintsPubPlaces.length > 0 ? imprintsPubPlaces[0].textContent : '';
-
+			   if (newBiblElement.pubPlace === ''){
+				newBiblElement.pubPlace = imprintsPubPlaces && imprintsPubPlaces.length > 0 ? imprintsPubPlaces[0].textContent : '';
+			   }
                angular.forEach(monographImprints.find('note'), function(el) {
                   //salviamo le note dentro imprint che è dentro monogr
                   newBiblElement.note[el.getAttribute('type')] = el.textContent;
                });
             }
          }
+		
+		var seriesElem = angular.element(currentDocument.find(seriesDef.replace(/[<>]/g, '')));
+            if (seriesElem && seriesElem.length > 0) {
+				
+			    var seriesTitles = seriesElem.find('title');
+				if (seriesTitles && seriesTitles.length > 0) {
+				   newBiblElement.titleMonogr = seriesTitles[0].textContent;
+				}
+               //salviamo la data dentro monogr
+               var dates = seriesElem.find('date');
+               /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
+               oppure contiene '', possiamo quindi riassegnare newBiblElement.date a se stesso senza problemi.
+               Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
+               Magari la troviamo anche subito dentro <bibl>/*/
+			   if (newBiblElement.date === ''){
+				newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
+			   }
+			   //magari è gia stato preso dentro <monogr>, quindi non vogliamo rischiare di sovrascriverlo
+               var publishers = seriesElem.find('publisher');
+			   if (newBiblElement.publisher === ''){
+				newBiblElement.publisher = publishers && publishers.length > 0 ? publishers[0].textContent : '';
+			   }
+			   //magari è gia stato preso dentro <monogr>, quindi non vogliamo rischiare di sovrascriverlo
+               var pubPlaces = seriesElem.find('pubPlace');
+			   if (newBiblElement.pubPlace === ''){
+				newBiblElement.pubPlace = pubPlaces && pubPlaces.length > 0 ? pubPlaces[0].textContent :  '';
+			   }
+               angular.forEach(seriesElem.find('note'), function(el) {
+                  //salviamo le note dentro imprint che è dentro monogr
+                  newBiblElement.note[el.getAttribute('type')] = el.textContent;
+               });
+			   //dentro series ci sono anche i biblScope
+				angular.forEach(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), function(el) {
+				   //prendere attributo type o unit di ogni biblScope trovato
+				   angular.forEach(['type', 'unit'], function(attr) {
+					  var attrValue = el.getAttribute(attr);
+					  if (attrValue !== null) {
+						 newBiblElement.biblScope[attrValue] = el.textContent;
+					  }
+				   });
+				});			   
+            }
 
+			
          angular.forEach(currentDocument.find(idnoDef.replace(/[<>]/g, '')), function(el) {
             //prendere attributo type
             newBiblElement.idno[el.getAttribute('type')] = el;
@@ -238,6 +289,9 @@ angular.module('evtviewer.dataHandler')
                   if (getVolumes(newBiblElement)) {
                      string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';
                   }
+				  if (getIssue(newBiblElement)) {
+					 string += '<span data-style="chicago" class="issue">' + getIssue(newBiblElement) + '</span>'; 
+				  }string += '<span data-style="chicago" class="issue">' + "ppppp" + '</span>'; 
                   if (getDate(newBiblElement)) {
                      string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
                   }
@@ -251,20 +305,26 @@ angular.module('evtviewer.dataHandler')
                   });
                } else {
                   //else if(getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) === 'm' ){
+				  if (getDate(newBiblElement)) {
+					 string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
+				  }	  
                   if (getTitleAnalytic(newBiblElement)) {
-                     string += '<span data-style="chicago" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '.</span>';
+                     string += '<span data-style="chicago" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
                   }
                   if (getTitleMonogr(newBiblElement)) {
-                     string += '<span data-style="chicago" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '.</span>';
+                     string += '<span data-style="chicago" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
                   }
+                  if (getEditionMonogr(newBiblElement)) {
+                     string += '<span data-style="chicago" data-attr="titolo" class="edition">' + getEditionMonogr(newBiblElement) + '</span>';
+                  }				  
                   if (getVolumes(newBiblElement)) {
                      string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';
                   }
                   if (getPubPlace(newBiblElement)) {
                      string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
                   }
-                  if (getEditor(newBiblElement)) {
-                     string += '<span data-style="chicago" class="editor">' + getEditor(newBiblElement) + '</span>';
+                  if (getPublisher(newBiblElement)) {
+                     string += '<span data-style="chicago" class="publisher">' + getPublisher(newBiblElement) + '</span>';
                   }
                   if (getUrl(newBiblElement)) {
                      string += '<span data-style="chicago" class="url">' + getUrl(newBiblElement) + '</span>';
@@ -430,6 +490,12 @@ angular.module('evtviewer.dataHandler')
          }
       }
 
+	  function getPublisher(newBiblElement) {
+         if (newBiblElement.publisher !== '') {
+            return newBiblElement.publisher;
+         }
+      }
+	  
       function getEditor(newBiblElement) {
          if (newBiblElement.editor !== '') {
             return newBiblElement.editor;
