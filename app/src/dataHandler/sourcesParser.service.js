@@ -574,83 +574,82 @@ angular.module('evtviewer.dataHandler')
     }
 
     parser.getQuoteContentText = function(elem, wit, doc) {
-        //console.log('ciao', elem.content.length, elem.tagName)
         var spanElement;
-        
-        if (elem.content.length === 0) {
-            var e = xmlParser.parse(elem._xmlSource);
-            //if pb/ && wit...else
-            /*if (elem.tagName === 'pb') {
-                var pbNode = elem;
-                console.log(elem)
-                if (evtCriticalApparatusParser.containsWitnessReading(pbNode.getAttribute('ed'), wit)){
-                var newPbElem = document.createElement('span'),
-                    id;
-                if (pbNode.getAttribute('ed')) {
-                    id  = pbNode.getAttribute('xml:id') || pbNode.getAttribute('ed').replace('#', '')+'-'+pbNode.getAttribute('n') || 'page_'+k;
-                } else {
-                    id  = pbNode.getAttribute('xml:id') || 'page_'+k;
-                }
-                newPbElem.className = 'pb';
-                newPbElem.setAttribute('data-wit', pbNode.getAttribute('ed'));
-                newPbElem.setAttribute('data-id', id);
-                newPbElem.setAttribute('id', 'pb_'+id);
-                newPbElem.textContent = pbNode.getAttribute('n');
-                pbNode.parentNode.replaceChild(newPbElem, pbNode);
-            } else {
-                pbNode.parentNode.removeChild(pbNode); 
-            }
-            } else {*/
-            
-            spanElement = evtParser.parseXMLElement(doc, e, '');
-        //}
-        } else if (elem.content.length > 0) {
-            spanElement = document.createElement('span');
-            spanElement.className = elem.tagName;
-            
-            var attribKeys = Object.keys(elem.attributes);
-            for (var key in attribKeys) {
-                var attrib = attribKeys[key];
-                var value = elem.attributes[attrib];
-                if (attrib !== 'xml:id') {
-                    spanElement.setAttribute('data-'+attrib, value);
-                }
-            }
-            
-            var elementContent = elem.content;
-            for (var i in elementContent) {
-                if (typeof(elementContent[i]) === 'string') {
-                    spanElement.appendChild(document.createTextNode(elementContent[i]));
-                } else {
-                    if (elementContent[i].type === 'quote') {
-                        spanElement.appendChild(parser.getQuoteText(elementContent[i]));
-                    } else if (elementContent[i].tagName === 'EVT-POPOVER') {
-                        spanElement.appendChild(elementContent[i]);
-                    } else if (elementContent[i].type === 'app') {
-                        if (wit === '') {
-                            spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(elementContent[i]));
+
+        if (elem.content !== undefined) {
+            if (elem.content.length === 0) {
+                var xmlEl = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
+                var el = xmlEl.children[0];
+                if (elem.tagName === 'pb') {
+                    if (wit !== '' && (el.getAttribute('ed').indexOf(wit) >= 0)) {
+                        var newPbElem = document.createElement('span'),
+                            id;
+                        if (el.getAttribute('ed')) {
+                            id  = el.getAttribute('xml:id') || el.getAttribute('ed').replace('#', '')+'-'+el.getAttribute('n'); // || 'page_'+k;
                         } else {
-                            spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(elementContent[i], wit));
+                            id  = el.getAttribute('xml:id'); //|| 'page_'+k;
                         }
-                    } else
-                    // if (elementContent[i].type === 'analogue') {
-                        //
-                    //} else
-                        if (elementContent[i].content !== undefined) {
-                            
-                            if ((elementContent[i].content.length = 1) && (typeof elementContent[i].content[0] === 'string')) {
-                                console.log('hey',elementContent[i].content.length, elementContent[i])
-                                var ele = xmlParser.parse(elementContent[i]._xmlSource);
-                                spanElement.appendChild(evtParser.parseXMLElement(doc, ele, ''));
+                        newPbElem.className = 'pb';
+                        newPbElem.setAttribute('data-wit', el.getAttribute('ed'));
+                        newPbElem.setAttribute('data-id', id);
+                        newPbElem.setAttribute('id', 'pb_'+id);
+                        newPbElem.textContent = el.getAttribute('n');
+                        spanElement = newPbElem;
+                    }
+                } else {
+                    spanElement = evtParser.parseXMLElement(doc, el, '');
+                }
+            }
+            else if (elem.content.length === 1 && typeof elem.content[0] === 'string') {
+                //spanElement = document.createTextNode('FATTO!!!');
+                var xmlE = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
+                var e = xmlE.children[0];
+                spanElement = evtParser.parseXMLElement(doc, e, '');
+            }
+            else {
+                spanElement = document.createElement('span');
+                spanElement.className = elem.tagName;
+
+                var attribKeys = Object.keys(elem.attributes);
+                for (var key in attribKeys) {
+                    var attrib = attribKeys[key];
+                    var value = elem.attributes[attrib];
+                    if (attrib !== 'xml:id') {
+                        spanElement.setAttribute('data-'+attrib, value);
+                    }
+                }
+
+                var content = elem.content;
+                for (var i in content) {
+                    if (typeof content[i] === 'string') {
+                        spanElement.appendChild(document.createTextNode(content[i]));
+                    } else {
+                        if (content[i].type === 'quote') {
+                            spanElement.appendChild(parser.getQuoteText(content[i]));
+                        } else if (content[i].tagName === 'EVT-POPOVER') {
+                            spanElement.appendChild(content[i]);
+                        } else if (content[i].type === 'app') {
+                            if (wit === '') {
+                                spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(content[i]));
+                            } else {
+                                spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(content[i], wit));
                             }
-                        } else {
-                             spanElement.appendChild(parser.getQuoteContentText(elementContent[i], wit, doc));
+                        } else
+                        // if (elementContent[i].type === 'analogue') {
+                            //
+                        //} else
+                         {
+                            var child = parser.getQuoteContentText(content[i], wit, doc);
+                            if (child !== undefined) {
+                                spanElement.appendChild(child);
+                            }
                         }
                     }
                 }
             }
+        }
 
-            return spanElement;
+        return spanElement;
     }
 
     /******************* */
@@ -665,19 +664,14 @@ angular.module('evtviewer.dataHandler')
         spanElement.setAttribute('data-type', 'quote');
 
         var quoteContent = quote.content;
+
+        var link = ['link', 'ptr', 'linkGrp'];
+
         for (var i in quoteContent) {
-                /*Modo per avere uno span di testo all'interno di quote,
-                trattato come gli altri nel testo corrente
-                newElement = document.createElement('span');
-                newElement.className = "textNode";
-                newElement.innerHTML = quoteContent[i];
-                spanElement.appendChild(newElement);*/
             if (typeof quoteContent[i] === 'string') {
                 spanElement.appendChild(document.createTextNode(quoteContent[i]));
             } else {
-                if (quoteContent[i].type === 'quoteContent') {
-                    spanElement.appendChild(parser.getQuoteContentText(quoteContent[i], wit, doc))
-                } else if (quoteContent[i].tagName === 'EVT-POPOVER') {
+                if (quoteContent[i].tagName === 'EVT-POPOVER') {
                     spanElement.appendChild(quoteContent[i]);
                 } else if (quoteContent[i].type === 'app') {
                     if (wit === '') {
@@ -689,8 +683,16 @@ angular.module('evtviewer.dataHandler')
                     spanElement.appendChild(parser.getQuoteText(quoteContent[i], wit, doc));
                 }
                 //else if (quoteContent[i].type === 'analogue')...
+                 else if (quoteContent[i].type === 'quoteContent' && link.indexOf(quoteContent[i].tagName) < 0) {
+                     var child = parser.getQuoteContentText(quoteContent[i], wit, doc);
+                     if (child !== undefined) {
+                         spanElement.appendChild(child);
+                         //spanElement.appendChild(document.createTextNode('FATTO!!!'));
+                     }
+                 }
             }
         }
+
         console.log(spanElement);
         return spanElement;
     }
