@@ -506,7 +506,7 @@ angular.module('evtviewer.dataHandler')
     /* ******* */
     /* WITNESS */
     /* ******* */
-    var containsWitnessReading = function(elem, witObj) {
+    parser.containsWitnessReading = function(elem, witObj) {
         if (elem === null) {
             return false;
         } else {

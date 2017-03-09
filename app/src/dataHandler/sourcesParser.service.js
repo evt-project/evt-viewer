@@ -32,7 +32,7 @@ angular.module('evtviewer.dataHandler')
             type : 'quoteContent',
             attributes: [],
             content : [],
-            xml: elem
+            _xmlSource: elem.outerHTML
         };
         
         if (elem.attributes) {
@@ -318,9 +318,9 @@ angular.module('evtviewer.dataHandler')
             id: '',
             attributes: [],
             quotesEntriesId: [],
-            bibl: [],
+            bibl: [], //Array that saves the full bibliographic reference of the source (which almost always corresponds the content of the source itself)
             text: {},
-            url: [],
+            url: [], //Array that saves the link to the full text of the source
             quote: []
         }
 
@@ -387,7 +387,7 @@ angular.module('evtviewer.dataHandler')
                         var attrib = child.getAttribute('target');
                         var val = attrib.replace(/#/g, '').split(" ");
                         for (var i = 0; i < val.length; i++) {
-                            //...add its target values to the sourceRefId array.
+                            //...add its target values to the url array.
                             source.url.push(val[i]);
                         }
                     }
@@ -405,7 +405,7 @@ angular.module('evtviewer.dataHandler')
                                 var attr = child.children[i].getAttribute('target');
                                 var val = attr.replace(/#/g, '').split(" ");
                                 for (var i = 0; i < val.length; i++) {
-                                    //...and add their target values to the SourceRefId array.
+                                    //...and add their target values to the url array.
                                     source.url.push(val[i]);
                                 }
                             }
@@ -574,47 +574,83 @@ angular.module('evtviewer.dataHandler')
     }
 
     parser.getQuoteContentText = function(elem, wit, doc) {
-        var spanElement = document.createElement('span');
-        spanElement.className = elem.tagName;
-
-        var attribKeys = Object.keys(elem.attributes);
-        for (var key in attribKeys) {
-            var attrib = attribKeys[key];
-            var value = elem.attributes[attrib];
-            if (attrib !== 'xml:id') {
-                spanElement.setAttribute('data-'+attrib, value);
-            }
-        }
-
-        var elementContent = elem.content;
-        for (var i in elementContent) {
-            if (typeof(elementContent[i]) === 'string') {
-                spanElement.appendChild(document.createTextNode(elementContent[i]));
-            } else {
-                if (elementContent[i].type === 'quote') {
-                    spanElement.appendChild(parser.getQuoteText(elementContent[i]));
-                } else if (elementContent[i].tagName === 'EVT-POPOVER') {
-                    spanElement.appendChild(elementContent[i]);
-                } else if (elementContent[i].type === 'app') {
-                    if (wit === '') {
-                        spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(elementContent[i]));
-                    } else {
-                        spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(elementContent[i], wit));
-                    }
-                } else 
-                // if (elementContent[i].type === 'analogue') {
-                        //
-                //} else
-                if ((elementContent[i].content.length = 1 && typeof elementContent[i].content[0] === 'string') ||
-                    elementContent[i].content.length <= 0) {
-                    spanElement.appendChild(evtParser.parseXMLElement(doc, elementContent[i].xml, ''));
+        //console.log('ciao', elem.content.length, elem.tagName)
+        var spanElement;
+        
+        if (elem.content.length === 0) {
+            var e = xmlParser.parse(elem._xmlSource);
+            //if pb/ && wit...else
+            /*if (elem.tagName === 'pb') {
+                var pbNode = elem;
+                console.log(elem)
+                if (evtCriticalApparatusParser.containsWitnessReading(pbNode.getAttribute('ed'), wit)){
+                var newPbElem = document.createElement('span'),
+                    id;
+                if (pbNode.getAttribute('ed')) {
+                    id  = pbNode.getAttribute('xml:id') || pbNode.getAttribute('ed').replace('#', '')+'-'+pbNode.getAttribute('n') || 'page_'+k;
                 } else {
-                   spanElement.appendChild(parser.getQuoteContentText(elementContent[i], wit, doc)); 
+                    id  = pbNode.getAttribute('xml:id') || 'page_'+k;
+                }
+                newPbElem.className = 'pb';
+                newPbElem.setAttribute('data-wit', pbNode.getAttribute('ed'));
+                newPbElem.setAttribute('data-id', id);
+                newPbElem.setAttribute('id', 'pb_'+id);
+                newPbElem.textContent = pbNode.getAttribute('n');
+                pbNode.parentNode.replaceChild(newPbElem, pbNode);
+            } else {
+                pbNode.parentNode.removeChild(pbNode); 
+            }
+            } else {*/
+            
+            spanElement = evtParser.parseXMLElement(doc, e, '');
+        //}
+        } else if (elem.content.length > 0) {
+            spanElement = document.createElement('span');
+            spanElement.className = elem.tagName;
+            
+            var attribKeys = Object.keys(elem.attributes);
+            for (var key in attribKeys) {
+                var attrib = attribKeys[key];
+                var value = elem.attributes[attrib];
+                if (attrib !== 'xml:id') {
+                    spanElement.setAttribute('data-'+attrib, value);
                 }
             }
-        }
+            
+            var elementContent = elem.content;
+            for (var i in elementContent) {
+                if (typeof(elementContent[i]) === 'string') {
+                    spanElement.appendChild(document.createTextNode(elementContent[i]));
+                } else {
+                    if (elementContent[i].type === 'quote') {
+                        spanElement.appendChild(parser.getQuoteText(elementContent[i]));
+                    } else if (elementContent[i].tagName === 'EVT-POPOVER') {
+                        spanElement.appendChild(elementContent[i]);
+                    } else if (elementContent[i].type === 'app') {
+                        if (wit === '') {
+                            spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(elementContent[i]));
+                        } else {
+                            spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(elementContent[i], wit));
+                        }
+                    } else
+                    // if (elementContent[i].type === 'analogue') {
+                        //
+                    //} else
+                        if (elementContent[i].content !== undefined) {
+                            
+                            if ((elementContent[i].content.length = 1) && (typeof elementContent[i].content[0] === 'string')) {
+                                console.log('hey',elementContent[i].content.length, elementContent[i])
+                                var ele = xmlParser.parse(elementContent[i]._xmlSource);
+                                spanElement.appendChild(evtParser.parseXMLElement(doc, ele, ''));
+                            }
+                        } else {
+                             spanElement.appendChild(parser.getQuoteContentText(elementContent[i], wit, doc));
+                        }
+                    }
+                }
+            }
 
-        return spanElement;
+            return spanElement;
     }
 
     /******************* */
@@ -641,8 +677,7 @@ angular.module('evtviewer.dataHandler')
             } else {
                 if (quoteContent[i].type === 'quoteContent') {
                     spanElement.appendChild(parser.getQuoteContentText(quoteContent[i], wit, doc))
-                } else
-                if (quoteContent[i].tagName === 'EVT-POPOVER') {
+                } else if (quoteContent[i].tagName === 'EVT-POPOVER') {
                     spanElement.appendChild(quoteContent[i]);
                 } else if (quoteContent[i].type === 'app') {
                     if (wit === '') {

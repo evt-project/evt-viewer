@@ -45,7 +45,7 @@ angular.module('evtviewer.reading')
                 }
             }
             var appObj = parsedData.getCriticalEntryById(entryId);
-            if (appObj._subApp) {
+            if (appObj && appObj._subApp) {
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
             scopeHelper = {

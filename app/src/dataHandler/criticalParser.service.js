@@ -11,13 +11,6 @@ angular.module('evtviewer.dataHandler')
     var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+',<evt-quote>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
-    // Al momento ho usato solo questa variabile
-
-    
-    //Queste due le userò appena inizierò a parsare le fonti
-    var sourceDef = '<cit>';
-    var sourcesUrl = ''; // Parsing di più documenti
-
 
     /* ************************** */
     /* parseWitnessText(doc, wit) */
@@ -75,6 +68,27 @@ angular.module('evtviewer.dataHandler')
                 }
                 j--;
             }
+
+            var quotes   = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, '')) || [],
+            k      = quotes.length-1, 
+            c  = 0;
+
+            while(k < quotes.length && k >= 0) {
+                var element = quotes[k];
+                var ide;
+                if (element.getAttribute('xml:id')) {
+                    ide = element.getAttribute('xml:id');
+                } else {
+                    ide = evtParser.xpath(element).substr(1);
+                }
+                var quote = parsedData.getQuote(ide);
+                if (quote !== undefined){
+                    var prova = evtSourcesParser.getQuoteText(quote, wit, doc);
+                    element.parentNode.replaceChild(prova, element);
+                }
+                k--;
+            }
+
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
 
             angular.forEach(docDOM.children, function(elem){
