@@ -6,7 +6,7 @@ angular.module('evtviewer.dataHandler')
     var parser = {};
 
     var apparatusEntryDef = '<app>',
-        quoteDef          = '<quote>';
+        quoteDef          = '<quote>,<seg>';
     // Al momento ho usato solo questa variabile
     //Queste due le userò appena inizierò a parsare le fonti
     var sourceDef  = '<cit>',
@@ -321,7 +321,8 @@ angular.module('evtviewer.dataHandler')
             bibl: [], //Array that saves the full bibliographic reference of the source (which almost always corresponds the content of the source itself)
             text: {},
             url: [], //Array that saves the link to the full text of the source
-            quote: []
+            quote: [],
+            _xmlSource: entry.outerHTML
         }
 
         //Parsing the attributes and saving the id
@@ -659,7 +660,7 @@ angular.module('evtviewer.dataHandler')
         var spanElement,
             errorElement;
 
-        spanElement = document.createElement('evt-quote'); //Wanna be <evt-quote>
+        spanElement = document.createElement('evt-quote');
         spanElement.setAttribute('data-q-id', quote.id);
         spanElement.setAttribute('data-type', 'quote');
 

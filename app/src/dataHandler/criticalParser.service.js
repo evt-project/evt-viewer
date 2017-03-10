@@ -7,7 +7,7 @@ angular.module('evtviewer.dataHandler')
         lemmaDef              = '<lem>',
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>',
-        quoteDef              = '<quote>';
+        quoteDef              = '<quote>,<seg>';
     var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+',<evt-quote>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
@@ -69,7 +69,22 @@ angular.module('evtviewer.dataHandler')
                 j--;
             }
 
-            var quotes   = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, '')) || [],
+                //docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''))
+                var quotes   = [];
+                if (quoteDef.lastIndexOf('<') != 0){
+                    var tags = quoteDef.split(',');
+                    for (var i = 0; i < tags.length; i++) {
+                        var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
+                        for (var j = 0; j < q.length; j++){
+                            quotes.push(q[j]);
+                        }
+                    }                    
+                } else {
+                    var quo = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''));
+                    for (var f = 0; f < quo.length; f++) {
+                        quotes.push(quo[f]);
+                    }
+                }
             k      = quotes.length-1, 
             c  = 0;
 
@@ -194,8 +209,23 @@ angular.module('evtviewer.dataHandler')
                     j--;
                 }
 
-                var quotes   = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, '')) || [],
-                    k      = quotes.length-1, 
+                //docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''))
+                var quotes   = [];
+                if (quoteDef.lastIndexOf('<') != 0){
+                    var tags = quoteDef.split(',');
+                    for (var i = 0; i < tags.length; i++) {
+                        var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
+                        for (var j = 0; j < q.length; j++){
+                            quotes.push(q[j]);
+                        }
+                    }                    
+                } else {
+                    var quo = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''));
+                    for (var f = 0; f < quo.length; f++) {
+                        quotes.push(quo[f]);
+                    }
+                }
+                var k      = quotes.length-1, 
                     c  = 0;
 
                 while(k < quotes.length && k >= 0) {

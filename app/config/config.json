@@ -46,7 +46,7 @@
     "possibleLemmaFilters"       : "resp",
     "notSignificantVariant"      : "<orig>, <sic>, [type=orthographic]",
 
-    "quoteDef"              : "<quote>",
+    "quoteDef"              : "<quote>,<seg>",
 
     "maxWitsLoadTogether"        : 5,
 
