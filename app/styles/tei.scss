@@ -737,7 +737,7 @@
 
 .biblRef,.biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
 .biblRef .pubPlace,.biblRef .date,  .biblRef .note, .biblRef  .idno, .biblRef  .edition, .biblRef  .accessed,.biblRef  .url,
-.biblRef .vol,.biblRef .editor,.biblRef .date,.biblRef .publisher {
+.biblRef .vol, .biblRef .pp, .biblRef .editor,.biblRef .date ,.biblRef .publisher {
     color: #666;
     font-size: 90%;
 		&:before{
@@ -745,9 +745,12 @@
 	}
 }
 
+.biblRef > span:last-child:after{
+	content:'' !important;
+}
 
-.biblRef .author .surname:before{
-	content: ' '
+.biblRef .name:before, .biblRef .surname:before{
+	content: ' ';
 }
 
 .biblRef  .accessed{
@@ -788,6 +791,10 @@
 		content: ' OCLC:'
 	}
 
+	
+.biblRef .author[data-style=chicago]:not(:first-child):before {
+    content: ", ";
+}
 
 .biblRef  .author[data-style=chicago]:not:first-child:after{
 	content: ','
@@ -797,17 +804,23 @@
 	content: ' "'
 }
 
+.biblRef .titleAnalytic[data-style=chicago]:after{
+	content: '", '
+}
+
 .biblRef .titleMonogr[data-style=chicago]{
 	font-style:italic;
 	&:before
 	{
 	content: ' '
 	}
+	&:after
+	{
+	content: '.'
+	}
 }
 
-.biblRef .titleAnalytic[data-style=chicago]:after{
-	content: '" '
-}
+
 
 .biblRef  .vol[data-style=chicago]:not(:last-child):after{
 	content: ','
@@ -833,9 +846,20 @@
 	content: ')'
 }
 
+.biblRef[pubblicationtype=u]  .date[data-style=chicago]:before{
+	content: ' ('
+}
 
-.biblRef[pubblicationtype=m]  .date[data-style=chicago]:after{
-	content: '.'
+.biblRef[pubblicationtype=u]  .date[data-style=chicago]:after{
+	content: ')'
+}
+
+.biblRef[pubblicationtype=a]  .date[data-style=chicago]:before{
+	content: ' ('
+}
+
+.biblRef[pubblicationtype=a]  .date[data-style=chicago]:after{
+	content: ')'
 }
 
 .biblRef[pubblicationtype=m]  .edition[data-style=chicago]:after{
@@ -854,36 +878,30 @@
 	content: ': '
 }
 
-.biblRef span[data-style=chicago]:not([data-attr=titolo]):last-child::after {
-    content: "";
-}
 
 .biblRef  .date[data-style=apa]:after{
 	content: '). '
 }
 
-.biblRef  .author[data-style=apa]:not(:first-child):after{
-	content: '. '
-}
+
 
 .biblRef  .author[data-style=apa]:not(:first-child):before{
-	content: ', '
+	content: ' '
 }
 
-.biblRef  .author[data-style=apa]:last-child:before{
-	content: ','
-}
+
 
 .biblRef  .date[data-style=apa]:after{
 	content: '. '
 }
 
-.biblRef  .vol[data-style=apa]:before{
-	content: ' '
-}
 
 .biblRef  .vol[data-style=apa]:not(:last-child):after{
 	content: ','
+}
+
+.biblRef  .pp[data-style=apa]:after{
+	content: '.'
 }
 
 .biblRef .titleAnalytic[data-style=apa]:before,.biblRef .titleMonogr[data-style=apa]:before{
@@ -923,9 +941,6 @@
 	content: '. '
 }
 
-.biblRef span[data-style=apa]:not([data-attr=titolo]):last-child:after {
-    content: "";
-}
 
 .biblRef .author .name[data-style=apa]:after {
     content: ",";
@@ -934,3 +949,4 @@
 .biblRef .author .surname[data-style=apa]:after {
     content: ", ";
 }
+
