@@ -49,7 +49,7 @@ angular.module('evtviewer.dataHandler')
 		titleMonogr: '',
 		editionMonogr: '',
 		date: '',
-		editor: '',
+		editor: [],
 		publisher: '',
 		pubPlace: '',
 		biblScope: {},
@@ -61,9 +61,7 @@ angular.module('evtviewer.dataHandler')
 
 		newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : '';
 		newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type') : '';
-		//cerchiamo l'editore dentro bibl/bilStruct
-		var editorElem = currentDocument.find(editorDef.replace(/[<>]/g, ''));
-		newBiblElement.editor = editorElem && editorElem.length > 0 ? editorElem[0].textContent : '';
+
 		var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, '') + ' title');
 		newBiblElement.titleAnalytic = analyticElem && analyticElem.length > 0 ? analyticElem[0].textContent : '';
 		
@@ -98,6 +96,35 @@ angular.module('evtviewer.dataHandler')
 			}
 			newBiblElement.author.push(newAuthorElement);
 		});
+
+		angular.forEach(currentDocument.find(editorDef.replace(/[<>]/g, '')), function(el) {
+			var newAuthorElement = {
+				name: '',
+				surname: '',
+				forename: ''
+			};
+
+			var el = angular.element(el);
+			var authorName = el.find('name');
+			angular.forEach(authorName, function(element) {
+				newAuthorElement.name = element.textContent;
+			});
+
+			var authorSurname = el.find('surname');
+			angular.forEach(authorSurname, function(element) {
+				newAuthorElement.surname = element.textContent;
+			});
+
+			var authorForename = el.find('forename');
+			angular.forEach(authorForename, function(element) {
+				newAuthorElement.forename = element.textContent;
+			});
+			//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
+			if (authorName.length === 0 && authorForename.length === 0 && authorSurname.length === 0) {
+				newAuthorElement.name = el[0].textContent;
+			}
+			newBiblElement.editor.push(newAuthorElement);
+		});		
 		//cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
 		angular.forEach(currentDocument.children(), function(el) {
 			if (el.tagName === 'date') {
@@ -128,10 +155,6 @@ angular.module('evtviewer.dataHandler')
 			}
 
 			var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
-			//magari l'editore lo abbiamo già estratto dento bibl/biblStruct, se no lo prendiamo dentro <monogr>
-			if (newBiblElement.editor !== '') {
-				newBiblElement.editor = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : '';
-			}
 			var monographEditions = monographElem.find('edition');
 			newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].firstChild.textContent : '';
 			var date = monographEditions.find("date");
@@ -274,6 +297,10 @@ angular.module('evtviewer.dataHandler')
 					}
 				});
 				if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) !== 'm') {
+					if (getDate(newBiblElement)) {
+						string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
+					}
+					
 					if (getTitleAnalytic(newBiblElement)) {
 						string += '<span data-style="chicago" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
 					}
@@ -281,15 +308,32 @@ angular.module('evtviewer.dataHandler')
 					if (getTitleMonogr(newBiblElement)) {
 						string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
 					}
+					//editore
+					string += '<span data-style="chicago" class="editor">';
+					angular.forEach(newBiblElement.editor, function(editorElement, key) {
+						var name = editorElement.name !== '' ? editorElement.name : editorElement.forename;
+						var surname = editorElement.surname;
+						
+						if (name !== '') {
+							string += '<span data-style="chicago" class="name">' + name + '</span>';
+						}
+						if (surname !== '') {
+							string += '<span data-style="chicago" class="surname">' + surname + '</span>';
+						}
+					});
+					string+="</span>";
+					if (getPubPlace(newBiblElement)) {
+						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
+					}
+					if (getPublisher(newBiblElement)) {
+						string += '<span data-style="chicago" class="publisher">' + getPublisher(newBiblElement) + '</span>';
+					}
 					
 					if (getVolumes(newBiblElement)) {
 						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';
 					}
 					if (getIssue(newBiblElement)) {
 						string += '<span data-style="chicago" class="issue">' + getIssue(newBiblElement) + '</span>'; 
-					}
-					if (getDate(newBiblElement)) {
-						string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
 					}
 					if (getPages(newBiblElement)) {
 						string += '<span data-style="chicago" class="pp">' + getPages(newBiblElement) + '</span>';
@@ -669,7 +713,7 @@ angular.module('evtviewer.dataHandler')
 	}
 	
 	function getEditor(newBiblElement) {
-		if (newBiblElement.editor !== '') {
+		if (newBiblElement.editor) {
 			return newBiblElement.editor;
 		}
 	}

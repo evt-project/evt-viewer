@@ -745,9 +745,8 @@
 	}
 }
 
-
 .biblRef > span:last-child:after{
-	content:'.' !important;
+	content:'.';
 }
 
 .biblRef .name:before, .biblRef .surname:before{
@@ -811,16 +810,16 @@
 
 .biblRef .titleMonogr[data-style=chicago]{
 	font-style:italic;
-	&:before
-	{
-	content: ' '
-	}
 	&:after
 	{
 	content: '.'
 	}
 }
 
+.biblRef .titleAnalytic[data-style=chicago] + .titleMonogr[data-style=chicago]:before{
+	font-style:initial;
+	content: 'in ';
+}
 
 
 .biblRef  .vol[data-style=chicago]:not(:last-child):after{
@@ -839,45 +838,41 @@
 	content: ' no. '
 }
 
-.biblRef[pubblicationtype=j]  .date[data-style=chicago]:before{
-	content: ' ('
-}
-
-.biblRef[pubblicationtype=j]  .date[data-style=chicago]:after{
-	content: ')'
-}
-
-.biblRef[pubblicationtype=u]  .date[data-style=chicago]:before{
-	content: ' ('
-}
-
-.biblRef[pubblicationtype=u]  .date[data-style=chicago]:after{
-	content: ')'
-}
-
-.biblRef[pubblicationtype=a]  .date[data-style=chicago]:before{
-	content: ' ('
-}
-
-.biblRef[pubblicationtype=a]  .date[data-style=chicago]:after{
-	content: ')'
-}
 
 .biblRef[pubblicationtype=m]  .edition[data-style=chicago]:after{
 	content: '.'
+}
+
+.biblRef  .editor[data-style=chicago]:before{
+	content: ' edited by '
 }
 
 .biblRef  .editor[data-style=chicago]:after{
 	content: ','
 }
 
-.biblRef .publisher[data-style=chicago]:after{
+
+.biblRef > .pubPlace[data-style=chicago]:not(:last-child):after{
+	content: ': '
+}
+
+.biblRef > .pubPlace[data-style=chicago]:after{
+	content: '. '
+}
+.biblRef[pubblicationtype=m] > .publisher[data-style=chicago]:not(:last-child):after{
+	content: ','
+}
+
+.biblRef[pubblicationtype=m] > .publisher[data-style=chicago]:after{
 	content: '.'
 }
 
-.biblRef  .pubPlace[data-style=chicago]:not(:last-child):after{
-	content: ': '
+.biblRef .date[data-style=chicago]:after{
+	content: '. '
 }
+
+
+
 
 
 .biblRef  .date[data-style=apa]:before{
@@ -887,8 +882,6 @@
 .biblRef  .date[data-style=apa]:after{
 	content: '). '
 }
-
-
 
 .biblRef  .author[data-style=apa]:not(:first-child):before{
 	content: ' '
