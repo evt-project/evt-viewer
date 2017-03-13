@@ -2,8 +2,7 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser, config) {
 	console.log('Bibliography Parser service running');
-	const CHICAGO_STYLE = 'Chicago',
-	APA_STYLE = 'APA';
+	const CHICAGO_STYLE = 'Chicago', APA_STYLE = 'APA', MLA_STYLE ='MLA';
 	var STYLE_SELECTED = CHICAGO_STYLE;
 
 	var monographDef = '<monogr>',
@@ -389,7 +388,7 @@ angular.module('evtviewer.dataHandler')
 				if (getVolumes(newBiblElement)) {
 					var vol = getVolumes(newBiblElement);
 					if (getIssue(newBiblElement)) {
-						var issue = getVolumes(newBiblElement);
+						var issue = getIssue(newBiblElement);
 						string += '<span data-style="apa" class="vol">' + vol + '(' + issue + ')</span>';
 					} else {
 						string += '<span data-style="apa" class="vol">' + vol + '</span>';
@@ -407,6 +406,99 @@ angular.module('evtviewer.dataHandler')
 				if (getUrl(newBiblElement)) {
 					string += '<span data-style="apa" class="url">' + getUrl(newBiblElement) + '</span>';
 				}
+			}
+			
+						/*/
+			Altro stile
+			/*/
+			else if (styleCode === MLA_STYLE) {
+				if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) !== 'm') {
+					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						var firstAuthor = newBiblElement.author[0];
+						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
+						var firstSurname = firstAuthor.surname;
+						string += '<span data-style="mla" class="author">';
+						//del primo autore prima si deve mettere il cognome
+						if (firstSurname !== '') {
+							string += '<span data-style="mla" class="surname">' + firstSurname + '</span>';
+						}
+						if (firstName !== ''){
+							string += '<span data-style="mla" class="name">' + firstName + '</span>';						
+						}
+						string += '</span>';
+					}
+					if (getTitleAnalytic(newBiblElement)) {
+						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
+					}
+					if (getVolumes(newBiblElement)) {
+							string += '<span data-style="mla" class="vol">' + getVolumes(newBiblElement) + '</span>';
+					}
+					if (getIssue(newBiblElement)) {
+						string += '<span data-style="mla" class="issue">' + getIssue(newBiblElement) + '</span>';
+					}
+					if (getDate(newBiblElement)) {
+						string += '<span data-style="mla" class="date">' + getDate(newBiblElement) + '</span>';
+					}
+					if (getPages(newBiblElement)) {
+						string += '<span data-style="mla" class="pp">' + getPages(newBiblElement) + '</span>';
+					}
+					if (getTitleMonogr(newBiblElement)) {
+						string += '<span data-style="mla" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+					}
+				}
+				else{
+					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						var firstAuthor = newBiblElement.author[0];
+						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
+						var firstSurname = firstAuthor.surname;
+						string += '<span data-style="mla" class="author">';
+						//del primo autore prima si deve mettere il cognome
+						if (firstSurname !== '') {
+							string += '<span data-style="mla" class="surname">' + firstSurname + '</span>';
+						}
+						if (firstName !== ''){
+							string += '<span data-style="mla" class="name">' + firstName + '</span>';						
+						}
+						string += '</span>';
+					}
+					if (getTitleAnalytic(newBiblElement)) {
+						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
+					}
+					if (getVolumes(newBiblElement)) {
+							string += '<span data-style="mla" class="vol">' + getVolumes(newBiblElement) + '</span>';
+					}
+					if (getIssue(newBiblElement)) {
+						string += '<span data-style="mla" class="issue">' + getIssue(newBiblElement) + '</span>';
+					}
+					if (getDate(newBiblElement)) {
+						string += '<span data-style="mla" class="date">' + getDate(newBiblElement) + '</span>';
+					}
+					if (getPages(newBiblElement)) {
+						string += '<span data-style="mla" class="pp">' + getPages(newBiblElement) + '</span>';
+					}
+					if (getTitleMonogr(newBiblElement)) {
+						string += '<span data-style="mla" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+					}					
+				}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
 			}
 			newBiblElement.outputs[styleCode] = string;
 		}

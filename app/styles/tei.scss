@@ -745,6 +745,7 @@
 	}
 }
 
+
 .biblRef > span:last-child:after{
 	content:'' !important;
 }
@@ -950,3 +951,130 @@
     content: ", ";
 }
 
+
+
+.biblRef[pubblicationtype=j] .author[data-style=mla]:not(:first-child):before {
+    content: ", ";
+}
+
+.biblRef[pubblicationtype=j]  .author[data-style=mla]:not:first-child:after{
+	content: ','
+}
+
+.biblRef[pubblicationtype=j] .titleAnalytic[data-style=mla]:before{
+	content: ' "'
+}
+
+.biblRef[pubblicationtype=j] .titleAnalytic[data-style=mla]:after{
+	content: '." '
+}
+
+
+.biblRef[pubblicationtype=j] .vol[data-style=mla]:after{
+	content: '. '
+}
+
+.biblRef[pubblicationtype=j] .date[data-style=mla]:before{
+	content: ' ('
+}
+
+.biblRef[pubblicationtype=j] > .date[data-style=mla]:not(:last-child):after{
+	content: '): '
+}
+
+.biblRef[pubblicationtype=j] .date[data-style=mla]:last-child:after{
+	content: ') ' !important;
+}
+
+.biblRef[pubblicationtype=j]  .pp[data-style=mla]:after{
+	content: '. '
+}
+
+.biblRef[pubblicationtype=j] .titleMonogr[data-style=mla]:after{
+	content: '. '
+}
+
+
+.biblRef[pubblicationtype=a] .author[data-style=mla]:not(:first-child):before {
+    content: ", ";
+}
+
+.biblRef[pubblicationtype=a]  .author[data-style=mla]:not:first-child:after{
+	content: ','
+}
+
+.biblRef[pubblicationtype=a] .titleAnalytic[data-style=mla]:before{
+	content: ' "'
+}
+
+.biblRef[pubblicationtype=a] .titleAnalytic[data-style=mla]:after{
+	content: '." '
+}
+
+
+.biblRef[pubblicationtype=a] .vol[data-style=mla]:after{
+	content: '. '
+}
+
+.biblRef[pubblicationtype=a] .date[data-style=mla]:before{
+	content: ' ('
+}
+
+.biblRef[pubblicationtype=a] > .date[data-style=mla]:not(:last-child):after{
+	content: '): '
+}
+
+.biblRef[pubblicationtype=a] .date[data-style=mla]:last-child:after{
+	content: ') ' !important;
+}
+
+.biblRef[pubblicationtype=a]  .pp[data-style=mla]:after{
+	content: '. '
+}
+
+.biblRef[pubblicationtype=a] .titleMonogr[data-style=mla]:after{
+	content: '. '
+}
+
+
+
+.biblRef[pubblicationtype=u] .author[data-style=mla]:not(:first-child):before {
+    content: ", ";
+}
+
+.biblRef[pubblicationtype=u]  .author[data-style=mla]:not:first-child:after{
+	content: ','
+}
+
+.biblRef[pubblicationtype=u] .titleAnalytic[data-style=mla]:before{
+	content: ' "'
+}
+
+.biblRef[pubblicationtype=u] .titleAnalytic[data-style=mla]:after{
+	content: '." '
+}
+
+
+.biblRef[pubblicationtype=u] .vol[data-style=mla]:after{
+	content: '. '
+}
+
+.biblRef[pubblicationtype=u] .date[data-style=mla]:before{
+	content: ' ('
+}
+
+.biblRef[pubblicationtype=u] > .date[data-style=mla]:not(:last-child):after{
+	content: '): '
+}
+
+.biblRef[pubblicationtype=u] .date[data-style=mla]:last-child:after{
+	content: ') ' !important;
+}
+
+.biblRef[pubblicationtype=u]  .pp[data-style=mla]:after{
+	content: '. '
+}
+
+.biblRef[pubblicationtype=u] .titleMonogr[data-style=mla]:after{
+	content: '. '
+}
