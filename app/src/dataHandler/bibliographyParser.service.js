@@ -293,6 +293,7 @@ angular.module('evtviewer.dataHandler')
 						if (surname !== '') {
 							string += '<span data-style="chicago" class="surname">' + surname + '</span>';
 						}
+						
 						string += '</span>';
 					}
 				});
@@ -313,13 +314,14 @@ angular.module('evtviewer.dataHandler')
 					angular.forEach(newBiblElement.editor, function(editorElement, key) {
 						var name = editorElement.name !== '' ? editorElement.name : editorElement.forename;
 						var surname = editorElement.surname;
+						if (surname !== '') {
+							string += '<span data-style="chicago" class="surname">' + surname + '</span>';
+						}
 						
 						if (name !== '') {
 							string += '<span data-style="chicago" class="name">' + name + '</span>';
 						}
-						if (surname !== '') {
-							string += '<span data-style="chicago" class="surname">' + surname + '</span>';
-						}
+						
 					});
 					string+="</span>";
 					if (getPubPlace(newBiblElement)) {

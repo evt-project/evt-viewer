@@ -6,7 +6,7 @@
         ng-options="x for x in styles"></select>
 
       <div class="biblRef" 
-        ng-repeat="bibl in bibliographicRefsCollection | orderBy: 'author[0]':false:myComparator"
+        ng-repeat="bibl in bibliographicRefsCollection | orderBy: 'author[0].name'"
         compile="getFormattedBibl(bibl)"
 		ng-attr-pubblicationType="{{pubblicationType(bibl) ? pubblicationType(bibl) : 'unknown'}}"></div>
    </div>
