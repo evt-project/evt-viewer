@@ -747,7 +747,7 @@
 
 
 .biblRef > span:last-child:after{
-	content:'' !important;
+	content:'.' !important;
 }
 
 .biblRef .name:before, .biblRef .surname:before{
@@ -880,6 +880,10 @@
 }
 
 
+.biblRef  .date[data-style=apa]:before{
+	content: ' ('
+}
+
 .biblRef  .date[data-style=apa]:after{
 	content: '). '
 }
@@ -891,26 +895,29 @@
 }
 
 
-
-.biblRef  .date[data-style=apa]:after{
-	content: '. '
-}
-
-
 .biblRef  .vol[data-style=apa]:not(:last-child):after{
 	content: ','
 }
 
-.biblRef  .pp[data-style=apa]:after{
-	content: '.'
+.biblRef[pubblicationtype=m]  .pp[data-style=apa]:before{
+	content: ' (pp. '
 }
 
-.biblRef .titleAnalytic[data-style=apa]:before,.biblRef .titleMonogr[data-style=apa]:before{
-	content: '"'
+.biblRef[pubblicationtype=m]  .pp[data-style=apa]:after{
+	content: '). '
+}
+
+
+.biblRef[pubblicationtype=j]  .pp[data-style=apa]:after, .biblRef[pubblicationtype=a]  .pp[data-style=apa]:after ,.biblRef[pubblicationtype=u]  .pp[data-style=apa]:after{
+	content: '. '
 }
 
 .biblRef .titleAnalytic[data-style=apa]:after,.biblRef .titleMonogr[data-style=apa]:after{
-	content: '." '
+	content: '. '
+}
+
+.biblRef .titleMonogr[data-style=apa]{
+	font-style: italic;
 }
 
 .biblRef  .edition[data-style=apa]:before{

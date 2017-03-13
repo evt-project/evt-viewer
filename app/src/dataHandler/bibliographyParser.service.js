@@ -337,74 +337,123 @@ angular.module('evtviewer.dataHandler')
 			Altro stile
 			/*/
 			else if (styleCode === APA_STYLE) {
-				if (newBiblElement.author && newBiblElement.author.length > 0) {
-					var firstAuthor = newBiblElement.author[0];
-					var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
-					var firstSurname = firstAuthor.surname;
-					string += '<span data-style="apa" class="author">';
-					//del primo autore prima si deve mettere il cognome
-					if (firstSurname !== '') {
-						string += '<span data-style="apa" class="surname">' + firstSurname + '</span>';
-					}
-					if (firstName !== '' && firstSurname !== '') {
-						string += '<span data-style="apa" class="name">' + getInitials(firstName) + '</span>';
-					}
-					//se non sappiamo il cognome allora mettiamo il nome tutto per intero, non possiamo prendere le iniziali se non conosciamo il cognome
-					if (firstName !== '' && firstSurname === '') {
-						string += '<span data-style="apa" class="name">' + firstName + '</span>';
-					}					
-					string += '</span>';
-					angular.forEach(newBiblElement.author, function(authorElement, key) {
-						//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
-						if (key > 0) {
-							var name = authorElement.name !== '' ? authorElement.name : firstAuthor.forename;
-							var surname = authorElement.surname !== '' ? authorElement.surname : '';
-							string += '<span data-style="apa" class="author">';
-							if (surname !== '') {
-								string += '<span data-style="apa" class="surname">' + surname + '</span>';
-							}
-							if (name !== '' && surname !== '') {
-								string += '<span data-style="apa" class="name">' + getInitials(name) + '</span>';
-							}
-							if (name !== '' && surname === '') {
-								string += '<span data-style="apa" class="name">' + name + '</span>';
-							}							
-							string += '</span>';
+				if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) !== 'm') {
+					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						var firstAuthor = newBiblElement.author[0];
+						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
+						var firstSurname = firstAuthor.surname;
+						string += '<span data-style="apa" class="author">';
+						//del primo autore prima si deve mettere il cognome
+						if (firstSurname !== '') {
+							string += '<span data-style="apa" class="surname">' + firstSurname + '</span>';
 						}
-					});
-				}
-				if (getDate(newBiblElement)) {
-					string += '<span data-style="apa" class="date">' + getDate(newBiblElement) + '</span>';
-				}
+						if (firstName !== '' && firstSurname !== '') {
+							string += '<span data-style="apa" class="name">' + getInitials(firstName) + '</span>';
+						}
+						//se non sappiamo il cognome allora mettiamo il nome tutto per intero, non possiamo prendere le iniziali se non conosciamo il cognome
+						if (firstName !== '' && firstSurname === '') {
+							string += '<span data-style="apa" class="name">' + firstName + '</span>';
+						}					
+						string += '</span>';
+						angular.forEach(newBiblElement.author, function(authorElement, key) {
+							//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
+							if (key > 0) {
+								var name = authorElement.name !== '' ? authorElement.name : firstAuthor.forename;
+								var surname = authorElement.surname !== '' ? authorElement.surname : '';
+								string += '<span data-style="apa" class="author">';
+								if (surname !== '') {
+									string += '<span data-style="apa" class="surname">' + surname + '</span>';
+								}
+								if (name !== '' && surname !== '') {
+									string += '<span data-style="apa" class="name">' + getInitials(name) + '</span>';
+								}
+								if (name !== '' && surname === '') {
+									string += '<span data-style="apa" class="name">' + name + '</span>';
+								}							
+								string += '</span>';
+							}
+						});
+					}
+					if (getDate(newBiblElement)) {
+						string += '<span data-style="apa" class="date">' + getDate(newBiblElement) + '</span>';
+					}
 
-				if (getTitleAnalytic(newBiblElement)) {
-					string += '<span data-style="apa" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
-				}
-				//se non c'è il titolo dentro analytic allora prendiamo quello dentro monogr, entrambi no
-				if (getTitleMonogr(newBiblElement) && !getTitleAnalytic(newBiblElement)) {
-					string += '<span data-style="apa" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
-				}
+					if (getTitleAnalytic(newBiblElement)) {
+						string += '<span data-style="apa" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
+					}
+					
+					if (getTitleMonogr(newBiblElement)) {
+						string += '<span data-style="apa" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+					}
 
-				if (getVolumes(newBiblElement)) {
-					var vol = getVolumes(newBiblElement);
-					if (getIssue(newBiblElement)) {
-						var issue = getIssue(newBiblElement);
-						string += '<span data-style="apa" class="vol">' + vol + '(' + issue + ')</span>';
-					} else {
-						string += '<span data-style="apa" class="vol">' + vol + '</span>';
+					if (getVolumes(newBiblElement)) {
+						var vol = getVolumes(newBiblElement);
+						if (getIssue(newBiblElement)) {
+							var issue = getIssue(newBiblElement);
+							string += '<span data-style="apa" class="vol">' + vol + '(' + issue + ')</span>';
+						} else {
+							string += '<span data-style="apa" class="vol">' + vol + '</span>';
+						}
+					}
+
+					if (getPages(newBiblElement)) {
+						string += '<span data-style="apa" class="pp">' + getPages(newBiblElement) + '</span>';
 					}
 				}
+				else {
+					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						var firstAuthor = newBiblElement.author[0];
+						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
+						var firstSurname = firstAuthor.surname;
+						string += '<span data-style="apa" class="author">';
+						//del primo autore prima si deve mettere il cognome
+						if (firstSurname !== '') {
+							string += '<span data-style="apa" class="surname">' + firstSurname + '</span>';
+						}
+						if (firstName !== '' && firstSurname !== '') {
+							string += '<span data-style="apa" class="name">' + getInitials(firstName) + '</span>';
+						}
+						//se non sappiamo il cognome allora mettiamo il nome tutto per intero, non possiamo prendere le iniziali se non conosciamo il cognome
+						if (firstName !== '' && firstSurname === '') {
+							string += '<span data-style="apa" class="name">' + firstName + '</span>';
+						}					
+						string += '</span>';
+						angular.forEach(newBiblElement.author, function(authorElement, key) {
+							//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
+							if (key > 0) {
+								var name = authorElement.name !== '' ? authorElement.name : firstAuthor.forename;
+								var surname = authorElement.surname !== '' ? authorElement.surname : '';
+								string += '<span data-style="apa" class="author">';
+								if (surname !== '') {
+									string += '<span data-style="apa" class="surname">' + surname + '</span>';
+								}
+								if (name !== '' && surname !== '') {
+									string += '<span data-style="apa" class="name">' + getInitials(name) + '</span>';
+								}
+								if (name !== '' && surname === '') {
+									string += '<span data-style="apa" class="name">' + name + '</span>';
+								}							
+								string += '</span>';
+							}
+						});
+					}
+					if (getDate(newBiblElement)) {
+						string += '<span data-style="apa" class="date">' + getDate(newBiblElement) + '</span>';
+					}
 
-				if (getPages(newBiblElement)) {
-					string += '<span data-style="apa" class="pp">' + getPages(newBiblElement) + '</span>';
-				}
-
-				if (getAccessed(newBiblElement)) {
-					string += '<span data-style="apa" class="accessed">' + getAccessed(newBiblElement) + '</span>';
-				}
-
-				if (getUrl(newBiblElement)) {
-					string += '<span data-style="apa" class="url">' + getUrl(newBiblElement) + '</span>';
+					if (getTitleMonogr(newBiblElement)) {
+						string += '<span data-style="apa" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
+					}
+					if (getPages(newBiblElement)) {
+						string += '<span data-style="apa" class="pp">' + getPages(newBiblElement) + '</span>';
+					}					
+					if (getPubPlace(newBiblElement)) {
+						string += '<span data-style="apa" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
+					}
+					if (getPublisher(newBiblElement)) {
+						string += '<span data-style="apa" class="publisher">' + getPublisher(newBiblElement) + '</span>';
+					}
+					
 				}
 			}
 			
