@@ -6,7 +6,7 @@ angular.module('evtviewer.dataHandler')
     var parser = {};
 
     var apparatusEntryDef = '<app>',
-        quoteDef          = '<quote>,<seg>';
+        quoteDef          = '<quote>';
     // Al momento ho usato solo questa variabile
     //Queste due le userò appena inizierò a parsare le fonti
     var sourceDef  = '<cit>',
@@ -663,7 +663,9 @@ angular.module('evtviewer.dataHandler')
         spanElement = document.createElement('evt-quote');
         spanElement.setAttribute('data-q-id', quote.id);
         spanElement.setAttribute('data-type', 'quote');
-
+        if (wit !== ''){
+            spanElement.setAttribute('data-scope-wit', wit);
+        }
         var quoteContent = quote.content;
 
         var link = ['link', 'ptr', 'linkGrp'];
@@ -694,7 +696,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
 
-        console.log(spanElement);
+        //console.log(spanElement);
         return spanElement;
     }
 

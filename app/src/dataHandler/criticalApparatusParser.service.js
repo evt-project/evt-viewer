@@ -7,7 +7,7 @@ angular.module('evtviewer.dataHandler')
         lemmaDef              = '<lem>',
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>',
-        quoteDef              = '<quote>,<seg>';
+        quoteDef              = '<quote>';
     var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef, //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
@@ -529,7 +529,7 @@ angular.module('evtviewer.dataHandler')
             k   = 0;
         while ( k < pbs.length) {
             var pbNode = pbs[k];
-            if (containsWitnessReading(pbNode.getAttribute('ed'), witObj)){
+            if (parser.containsWitnessReading(pbNode.getAttribute('ed'), witObj)){
                 var newPbElem = document.createElement('span'),
                     id;
                 if (pbNode.getAttribute('ed')) {

@@ -1,23 +1,19 @@
 angular.module('evtviewer.quote')
 
-.directive('evtQuote', function(evtQuote, parsedData) {
+.directive('evtQuote', function(/*evtQuote,*/parsedData) {
     return {
         restrict: 'E',
         scope: {
-            appId       : '@',
-            readingId   : '@',
-            readingType : '@',
-            variance    : '@',
-            scopeWit    : '@',
-            type        : '@'
+            qId       : '@',
+            scopeWit : '@'
         },
         transclude: true,
-        //templateUrl: 'src/quote/quote.directive.tmpl.html',
+        templateUrl: 'src/quote/quote.directive.tmpl.html',
         //controllerAs: 'vm',
         //controller: 'QuoteCtrl',
         link: function(scope, element, attrs){
             // Initialize reading
-            var currentQuote = evtQuote.build(scope.quoteId, scope);
+            //var currentQuote = evtQuote.build(scope.quoteId, scope);
             
             // Garbage collection
             scope.$on('$destroy', function() {
