@@ -1,7 +1,5 @@
 angular.module('evtviewer.dataHandler')
 
-angular.module('evtviewer.dataHandler')
-
 .service('evtSourcesParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, xmlParser, config) {
     var parser = {};
 

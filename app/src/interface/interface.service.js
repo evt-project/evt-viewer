@@ -33,16 +33,21 @@ angular.module('evtviewer.interface')
                 
                 evtCommunication.getData(config.dataUrl).then(function () {
                     mainInterface.updateParams($routeParams);
+
+                    var promises = [];
                     
                     //Oggetto di file esterni in globaldefault, su cui ciclare
                     //Parse the external Sources file, if defined (@author: CM)
                     if (config.sourcesUrl !== "") {
                         promises.push(evtCommunication.getExternalData(config.sourcesUrl));
                     }
+                    if (config.analoguesUrl !== "") {
+                        promises.push(evtCommunication.getExternalData(config.analoguesUrl));
+                    }
                     // Parse critical text and entries
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                     if (currentDocFirstLoad !== undefined){
-                        var promises = [];
+                        
                         // Parse critical entries
                         if (config.loadCriticalEntriesImmediately){
                             promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);

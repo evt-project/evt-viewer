@@ -65,6 +65,8 @@ angular.module('evtviewer.core')
     
 
     dataUrl          : '../../data/Phibor_Esempio_codifica.xml',
+    sourcesUrl       : '',
+    analoguesUrl     : '',
     preferredWitness : 'A',
     skipWitnesses    : '',
 
@@ -113,9 +115,8 @@ angular.module('evtviewer.core')
     possibleLemmaFilters       : 'resp, cert',
     notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
 
-    sourcesUrl                 : '',
-    sourceDef               : '<cit>',
-    sourceAppDef              : '<quote>',
+    quoteDef    : '<quote>',
+    analogueDef : '',
     
     loadCriticalEntriesImmediately : true,
     maxWitsLoadTogether            : 5,

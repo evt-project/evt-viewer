@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser) {
+.service('baseData', function($log, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -52,6 +52,8 @@ angular.module('evtviewer.dataHandler')
             
             if (type === 'sources') {
                 evtSourcesParser.parseExternalSources(docElements);
+            } else if (type === 'analogues') {
+                evtAnaloguesParser.parseExternalAnalogues(docElements);
             }
             _console.log('External Files parsed and stored', state.XMLExtDocuments);
         } catch (e) {

@@ -1,6 +1,7 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .provider('evtSourcesApparatusEntry', function() {
+    
     this.$get = function(parsedData, evtSourcesApparatus) {
         var sourceEntry = {},
             //Collezione di istanze della direttiva?
@@ -37,5 +38,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             
             return collection[currentId];
         }
+
+        return sourceEntry;
     }
 });

@@ -115,7 +115,7 @@ angular.module('evtviewer.dataHandler')
         },
     }
 
-    var analoguesAppCollection = {
+    var analoguesEntriesCollection = {
         _indexes: {
             encodingStructure: [],
             refId: []
@@ -662,5 +662,17 @@ angular.module('evtviewer.dataHandler')
         return sourcesCollection[entryId];
     }
 
+    parsedData.getAnaloguesEntry = function(analogueId) {
+        return analoguesEntriesCollection[analogueId];
+    }
+
+    parsedData.getAnaloguesEntries = function() {
+        return analoguesEntriesCollection;
+    }
+
+    parsedData.addAnalogueEntry = function(/*entry*/) {
+        //TODO
+    }
+    
     return parsedData;
 });
