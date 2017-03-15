@@ -1,6 +1,6 @@
 angular.module('evtviewer.dialog')
 
-.directive('evtDialog', function(evtDialog) {
+.directive('evtDialog', function(evtDialog,evtInterface) {
 
     return {
         restrict: 'E',
@@ -17,8 +17,11 @@ angular.module('evtviewer.dialog')
             scope.vm = {
                 id      : scope.id,
                 type    : scope.type,
-                title   : scope.title
+                title   : scope.title,
             };
+			if (scope.vm.title === 'Project Info'){
+				evtInterface.showDialog(true);
+				}
             // Initialize box
             var currentDialog = evtDialog.build(scope);
             

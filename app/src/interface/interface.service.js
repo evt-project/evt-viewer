@@ -13,7 +13,8 @@ angular.module('evtviewer.interface')
             currentHighlightedZone: undefined,
             isLoading        : true,
             isPinnedAppBoardOpened : false,
-            secondaryContent : ''
+            secondaryContent : '',
+			dialog : false
         };
         var properties = {
             indexTitle         : '',
@@ -154,6 +155,10 @@ angular.module('evtviewer.interface')
         mainInterface.getSecondaryContentOpened = function(){
             return state.secondaryContent;
         };
+		
+		mainInterface.getDialogOpened = function(){
+            return state.dialog;
+        };
 
         /* ************** */
         /* PARAMS UPDATES */
@@ -179,6 +184,10 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateSecondaryContentOpened = function(secondaryContent){
             state.secondaryContent = secondaryContent;
+        };
+
+        mainInterface.showDialog = function(val){
+            state.dialog = val;
         };
         
         mainInterface.updateCurrentViewMode = function(viewMode) {
