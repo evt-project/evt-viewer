@@ -1,6 +1,6 @@
 angular.module('evtviewer.quote')
 
-.directive('evtQuote', function(/*evtQuote,*/parsedData) {
+.directive('evtQuote', function(evtQuote, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -9,11 +9,11 @@ angular.module('evtviewer.quote')
         },
         transclude: true,
         templateUrl: 'src/quote/quote.directive.tmpl.html',
-        //controllerAs: 'vm',
-        //controller: 'QuoteCtrl',
+        controllerAs: 'vm',
+        controller: 'QuoteCtrl',
         link: function(scope, element, attrs){
-            // Initialize reading
-            //var currentQuote = evtQuote.build(scope.quoteId, scope);
+            // Initialize quote
+            var currentQuote = evtQuote.build(scope.qId, scope);
             
             // Garbage collection
             scope.$on('$destroy', function() {

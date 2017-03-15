@@ -1,6 +1,12 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .provider('evtSourcesApparatusEntry', function() {
+
+    var defaults = this.defaults;
+
+    this.setDefaults = function(_defaults) {
+        defaults = _defaults;
+    }
     
     this.$get = function(parsedData, evtSourcesApparatus) {
         var sourceEntry = {},
@@ -21,7 +27,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 return;
             }
 
-            var content;
+            var content = 'pippo';
 
             var quoteEntry = parsedData.getQuote(id);
             if (quoteEntry !== undefined) {

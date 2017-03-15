@@ -7,17 +7,27 @@ angular.module('evtviewer.quote')
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
     }
-    var currentQuote = '';
 
     this.$get = function(parsedData) {
         var quote = {},
+            collection = {},
+            list = [],
             idx = 0;
             
         quote.build = function(id, scope) {
             var currentId = idx++,
             entryId = id || undefined;
 
-            return currentId;
-        }
-    }
-})
+            if (typeof(collection[currentId]) !== 'undefined') {
+                return;
+            }
+
+            collection[currentId] = scope.vm;
+            list.push({
+                id: currentId
+            });
+
+            return collection[currentId];
+        };
+    };
+});

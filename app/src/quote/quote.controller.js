@@ -1,6 +1,6 @@
-angular.module('evtviewer.reading')
+angular.module('evtviewer.quote')
 
-.controller('QuoteCtrl', function() {
+.controller('QuoteCtrl', function($log, $scope, evtQuote) {
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -16,8 +16,8 @@ angular.module('evtviewer.reading')
         var tempId = this.uid;
         // TODO: remove from list and collection
         // this.$destroy();
-        evtReading.destroy(tempId);
+        evtQuote.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);
     };
-    // _console.log('ReadingCtrl running');
+    // _console.log('QuoteCtrl running');
 });
