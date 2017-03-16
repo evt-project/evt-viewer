@@ -3,8 +3,8 @@ angular.module('evtviewer.interface')
 .controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {    
     var _console = $log.getInstance('interface');
 
-	evtInterface.allowProgrammaticOpenings(true);
-	evtInterface.setTypeallowed('Project Info',true);
+
+	
     $scope.getCurrentViewMode = function() {
         return evtInterface.getCurrentViewMode();
     };
@@ -154,6 +154,12 @@ angular.module('evtviewer.interface')
     };
     
     _console.log('InterfaceCtrl running');
+	
+	//test-debug
+	$scope.updateSecondaryContentOpened(' ');
+	evtInterface.allowProgrammaticOpenings(true);
+	evtInterface.setTypeallowed('Project Info',true);
+	//test-debug
 })
 
 //TODO: Move this directive in a proper file
@@ -171,3 +177,4 @@ angular.module('evtviewer.interface')
         }
     };
 }]);
+

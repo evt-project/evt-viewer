@@ -31,6 +31,14 @@ angular.module('evtviewer.dialog')
                     currentDialog.destroy();
                 }     
             });
-        }
+        },
+		controller:function($scope,evtInterface){
+			$scope.getDialog=function(){
+				return evtInterface.getDialog();
+			}
+			$scope.getTypeallowed = function(type){
+				return evtInterface.getTypeallowed(type);
+			}
+		}
     };
 });

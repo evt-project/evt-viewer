@@ -93,7 +93,7 @@ angular.module('evtviewer.interface')
 				return false;
 			}
 			else {
-				return state.dialog[type] === type;
+				return state.dialog[type] === true;
 			}
 		}
 		
