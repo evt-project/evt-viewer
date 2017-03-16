@@ -24,6 +24,107 @@ angular.module('evtviewer.buttonSwitch')
         
         var _console = $log.getInstance('buttonSwitch');
 
+        /* GET EVT ICON */
+        var getIcon = function(icon) {
+            var evtIcon = '';
+            switch(angular.lowercase(icon)) {
+                case 'add':
+                    evtIcon = 'icon-evt_add';
+                    break;
+                case 'color-legend':
+                    evtIcon = 'icon-evt_color-legend';
+                    break;
+                case 'filter':
+                case 'filters':
+                    evtIcon = 'icon-evt_filter';
+                    break;
+                case 'font-size':
+                    evtIcon = 'icon-evt_font-size';
+                    break;
+                case 'font-size-minus':
+                    evtIcon = 'icon-evt_font-size-minus-alt';
+                    break;
+                case 'font-size-plus':
+                    evtIcon = 'icon-evt_font-size-plus-alt';
+                    break;
+                case 'font-size-reset':
+                    evtIcon = 'icon-evt_font-size-reset-alt';
+                    break;
+                case 'heatmap':
+                    evtIcon = 'icon-evt_heatmap-alt';
+                    break;
+                case 'info':
+                    evtIcon = 'icon-evt_info';
+                    break;
+                case 'itl':
+                    evtIcon = 'icon-evt_link';
+                    break;
+                case 'keyboard':
+                    evtIcon = 'icon-evt_keyboard';
+                    break;
+                case 'list':
+                    evtIcon = 'icon-evt_list';
+                    break;
+                case 'menu-vert':
+                    evtIcon = 'icon-evt_more-vert';
+                    break;
+                case 'mode-imgtxt':
+                    evtIcon = 'icon-evt_imgtxt';
+                    break;
+                case 'mode-txttxt':
+                    evtIcon = 'icon-evt_txttxt';
+                    break;
+                case 'reading-txt':
+                    evtIcon = 'icon-evt_txt';
+                    break;
+                case 'mode-collation':
+                    evtIcon = 'icon-evt_collation';
+                    break;
+                case 'mode-bookreader':
+                    evtIcon = 'icon-evt_bookreader';
+                    break;
+                case 'pin':
+                    evtIcon = 'icon-evt_pin-alt-on';
+                    break;
+                case 'pin-off':
+                    evtIcon = 'icon-evt_pin-off';
+                    break;
+                case 'pin-on':
+                    evtIcon = 'icon-evt_pin-on';
+                    break;
+                case 'remove':
+                    evtIcon = 'icon-evt_close';
+                    break;
+                case 'search':
+                    evtIcon = 'icon-evt_search';
+                    break;
+                case 'search-advanced':
+                    evtIcon = 'icon-evt_advanced-search';
+                    break;
+                case 'search-results-hide':
+                    evtIcon = 'icon-evt_search-results-close';
+                    break;
+                case 'search-results-show':
+                    evtIcon = 'icon-evt_search-results-open';
+                    break;
+                case 'bookmark':
+                    evtIcon = 'icon-evt_bookmark';
+                    break;
+                case 'thumb':
+                case 'thumbs':
+                case 'thumbnail':
+                case 'thumbnails':
+                    evtIcon = 'icon-evt_thumbnails';
+                    break;
+                case 'v-align':
+                    evtIcon = 'icon-evt_align';
+                    break;
+                case 'witnesses':
+                    evtIcon = 'icon-evt_books';
+                    break;
+            }
+            return evtIcon;
+        };
         
         var toggleActive = function() {
             var vm = this;

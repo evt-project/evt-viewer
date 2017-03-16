@@ -76,6 +76,9 @@
 .icon-evt_add:before {
     content: "\e900";
 }
+.icon-evt_advanced-search:before {
+    content: "\f013";
+}
 .icon-evt_book:before {
     content: "\e901";
 }
@@ -172,6 +175,9 @@
 .icon-evt_info:before {
     content: "\e920";
 }
+.icon-evt_keyboard:before {
+    content: "\f11c";
+}
 .icon-evt_link:before {
     content: "\e921";
 }
@@ -211,6 +217,12 @@
 }
 .icon-evt_search:before {
     content: "\e92d";
+}
+.icon-evt_search-results-close:before {
+    content: "\f103";
+}
+.icon-evt_search-results-open:before {
+    content: "\f102";
 }
 .icon-evt_txt:before {
     content: "\e92e";
