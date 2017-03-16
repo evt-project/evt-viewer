@@ -1,6 +1,6 @@
 angular.module('evtviewer.tabsContainer')
 
-.controller('TabsContainerCtrl', function($log, $scope, parsedData) {
+.controller('TabsContainerCtrl', function($log, $scope, parsedData,evtInterface) {
     $scope.subContentOpened = '';
     $scope.tabs = {
         _indexes : []
@@ -14,6 +14,10 @@ angular.module('evtviewer.tabsContainer')
         }
     };
 
+	$scope.$watch(evtInterface.getAllowProgrammaticOpenings(),function(){
+			$scope.toggleSubContent(evtInterface.getHomePanel());
+	});
+	
     if ($scope.type === 'projectInfo') {
         var noContent = '<span>No content</span>';
 

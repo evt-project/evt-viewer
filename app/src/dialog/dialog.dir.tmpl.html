@@ -1,5 +1,5 @@
 <div class="evt-dialog"
-    ng-show="vm.opened || (getDialog().allowProgrammaticOpenings && getTypeallowed(vm.title))"
+    ng-show="vm.opened || (getAllowProgrammaticOpenings() && getTypeallowed(vm.title))"
     ng-class="{'evt-dialog-error': vm.type === 'error',
                'evt-dialog-small': vm.type === 'bookmark' }">
     <div class="evt-dialog-shadow" ng-click="vm.close()"></div>

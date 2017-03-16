@@ -159,6 +159,7 @@ angular.module('evtviewer.interface')
 	$scope.updateSecondaryContentOpened(' ');
 	evtInterface.allowProgrammaticOpenings(true);
 	evtInterface.setTypeallowed('Project Info',true);
+	evtInterface.setHomePanel('bibliography');
 	//test-debug
 })
 

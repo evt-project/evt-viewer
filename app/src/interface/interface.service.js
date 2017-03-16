@@ -15,7 +15,8 @@ angular.module('evtviewer.interface')
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
 			dialog : {
-				allowProgrammaticOpenings: true
+				allowProgrammaticOpenings: true,
+				home : ''
 			}
         };
         var properties = {
@@ -80,6 +81,8 @@ angular.module('evtviewer.interface')
         /* PARAMS GET */
         /* ********** */
 
+	
+		
 		mainInterface.getDialog = function(){
             return state.dialog;
         };
@@ -87,6 +90,10 @@ angular.module('evtviewer.interface')
 		mainInterface.allowProgrammaticOpenings = function(val){
 			state.dialog.allowProgrammaticOpenings = val;
 		}
+		
+		mainInterface.getAllowProgrammaticOpenings = function(){
+			return state.dialog.allowProgrammaticOpenings;
+		}		
 		
 		mainInterface.getTypeallowed = function(type){
 			if(state.dialog.type === 'undefined'){
@@ -105,6 +112,15 @@ angular.module('evtviewer.interface')
 				state.dialog.type.val = val;
 			}
         };	
+		
+		mainInterface.setHomePanel = function(string){
+			state.dialog.home = string;
+		}
+		
+
+		mainInterface.getHomePanel = function(){
+			return state.dialog.home;
+		}
 		
         mainInterface.isLoading = function() {
             return state.isLoading;

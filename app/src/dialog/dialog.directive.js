@@ -33,8 +33,8 @@ angular.module('evtviewer.dialog')
             });
         },
 		controller:function($scope,evtInterface){
-			$scope.getDialog=function(){
-				return evtInterface.getDialog();
+			$scope.getAllowProgrammaticOpenings=function(){
+				return evtInterface.getAllowProgrammaticOpenings();
 			}
 			$scope.getTypeallowed = function(type){
 				return evtInterface.getTypeallowed(type);
