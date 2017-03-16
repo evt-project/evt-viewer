@@ -19,9 +19,9 @@ angular.module('evtviewer.dialog')
                 type    : scope.type,
                 title   : scope.title,
             };
-			if (scope.vm.title === 'Project Info'){
-				evtInterface.showDialog(true);
-				}
+			//if (scope.vm.title === 'Project Info' && evtInterface.getDialog().allowProgrammaticOpenings){
+				//evtInterface.showDialog(true);
+				//}
             // Initialize box
             var currentDialog = evtDialog.build(scope);
             

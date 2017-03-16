@@ -1,9 +1,10 @@
 <div class="evt-dialog"
-    ng-show="vm.opened"
+    ng-show="vm.opened || (evtInterface.getDialog().allowProgrammaticOpenings && evtInterface.getTypeallowed(vm.type))"
     ng-class="{'evt-dialog-error': vm.type === 'error',
                'evt-dialog-small': vm.type === 'bookmark' }">
     <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
 
+	<script>console.log("tipo");</script>
     <div class="evt-dialog-container">
         <div class="evt-dialog-container-top">
             <span class="evt-dialog-container-top-title">{{ vm.title }}</span>

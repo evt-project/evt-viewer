@@ -14,7 +14,9 @@ angular.module('evtviewer.interface')
             isLoading        : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
-			dialog : false
+			dialog : {
+				allowProgrammaticOpenings: true
+			}
         };
         var properties = {
             indexTitle         : '',
@@ -77,6 +79,33 @@ angular.module('evtviewer.interface')
         /* ********** */
         /* PARAMS GET */
         /* ********** */
+
+		mainInterface.getDialog = function(){
+            return state.dialog;
+        };
+		
+		mainInterface.allowProgrammaticOpenings = function(val){
+			state.dialog.allowProgrammaticOpenings = val;
+		}
+		
+		mainInterface.getTypeallowed = function(type){
+			if(state.dialog.type === 'undefined'){
+				return false;
+			}
+			else {
+				return state.dialog[type] === type;
+			}
+		}
+		
+        mainInterface.setTypeallowed = function(type,val){
+			if(state.dialog.type === undefined){
+				state.dialog[type]=val;
+			}
+			else{
+				state.dialog.type.val = val;
+			}
+        };	
+		
         mainInterface.isLoading = function() {
             return state.isLoading;
         };
@@ -156,10 +185,6 @@ angular.module('evtviewer.interface')
             return state.secondaryContent;
         };
 		
-		mainInterface.getDialogOpened = function(){
-            return state.dialog;
-        };
-
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */
@@ -186,9 +211,6 @@ angular.module('evtviewer.interface')
             state.secondaryContent = secondaryContent;
         };
 
-        mainInterface.showDialog = function(val){
-            state.dialog = val;
-        };
         
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;
