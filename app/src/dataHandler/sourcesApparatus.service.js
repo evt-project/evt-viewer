@@ -2,6 +2,7 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtSourcesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatusParser) {
     var apparatus = {};
+
     apparatus.getContent = function(quote, scopeWit) {
         // console.log('getContent', quote);
         var appContent = {
@@ -17,9 +18,10 @@ angular.module('evtviewer.dataHandler')
         }
         
         appContent.quote = apparatus.getQuote(quote, scopeWit);
+        //appContent.quote = 'collegamento riuscito';
 
         return appContent;
-    }
+    };
 
     apparatus.getQuote = function (quote, scopeWit) {
         var content = quote.content || [];
@@ -29,17 +31,18 @@ angular.module('evtviewer.dataHandler')
                 result += content[i];
             } else {
                 if (content[i].tagName === 'EVT-POPOVER'){
-                    result += content[i].innerHTML;
+                    result += '';
                 } else if (content[i].type === 'app') {
                     if (scopeWit === '' || scopeWit === undefined) {
-                        result += evtCriticalApparatusParser.getEntryLemmaText(content[i]).innerHTML;
+                        result += ''//evtCriticalApparatusParser.getEntryLemmaText(content[i]).innerHTML;
                     } else {
-                        result += evtCriticalApparatusParser.getEntryWitnessReadingText(content[i], scopeWit);
+                        result += ''//evtCriticalApparatusParser.getEntryWitnessReadingText(content[i], scopeWit);
                     }
                 } //else if...
                 else if (content[i].type === 'quote') {
                     result += '<span class="sub_quote"> (('+apparatus.getQuote(content[i], scopeWit)+')) </span>';
-                } else if (content[i].content.length === 1 && typeof content[i].content[0] === 'string') {
+                } else if (content[i].content !== undefined) {
+                     if (content[i].content.length === 1 && typeof content[i].content[0] === 'string') {
                     result += content[i].content[0];
                 } else {
                     for (var j = 0; j < content[i].content.length; j++) {
@@ -47,6 +50,9 @@ angular.module('evtviewer.dataHandler')
                     }
                 }
             }
+            }
         }
+        return result;
     }
+    return apparatus;
 });

@@ -4,7 +4,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
     return {
         restrict: 'E',
         scope: {
-            quoteId       : '@qId'
+            quoteId       : '@',
+            scopeWit : '@',
         },
         transclude: true,
         templateUrl: 'src/sourcesApparatusEntry/sourcesApparatusEntry.directive.tmpl.html',

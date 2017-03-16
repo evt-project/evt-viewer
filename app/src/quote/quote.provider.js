@@ -22,12 +22,21 @@ angular.module('evtviewer.quote')
                 return;
             }
 
-            collection[currentId] = scope.vm;
+            var scopeHelper = {}
+
+            scopeHelper = {
+                uid: currentId,
+                scopeWit : scope.scopeWit || '',
+                quoteId : entryId,
+            }
+
+            collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({
                 id: currentId
             });
 
             return collection[currentId];
         };
+        return quote;
     };
 });

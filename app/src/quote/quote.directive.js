@@ -4,8 +4,8 @@ angular.module('evtviewer.quote')
     return {
         restrict: 'E',
         scope: {
-            qId       : '@',
-            scopeWit : '@'
+            quoteId  : '@',
+            scopeWit : '@',
         },
         transclude: true,
         templateUrl: 'src/quote/quote.directive.tmpl.html',
@@ -13,7 +13,7 @@ angular.module('evtviewer.quote')
         controller: 'QuoteCtrl',
         link: function(scope, element, attrs){
             // Initialize quote
-            var currentQuote = evtQuote.build(scope.qId, scope);
+            var currentQuote = evtQuote.build(scope.quoteId, scope);
             
             // Garbage collection
             scope.$on('$destroy', function() {

@@ -51,6 +51,6 @@ angular.module('evtviewer.quote')
 })
 
 .config(function(evtQuoteProvider, configProvider, QUOTEDEFAULTS) {
-    var defaults = configProvider.makeDefaults('popover', QUOTEDEFAULTS);
+    var defaults = configProvider.makeDefaults('quote', QUOTEDEFAULTS);
     evtQuoteProvider.setDefaults(defaults);
 });

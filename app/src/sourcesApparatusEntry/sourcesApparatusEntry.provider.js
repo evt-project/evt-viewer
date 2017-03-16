@@ -8,7 +8,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
         defaults = _defaults;
     }
     
-    this.$get = function(parsedData, evtSourcesApparatus) {
+    this.$get = function(parsedData, evtSourcesApparatus, $log) {
         var sourceEntry = {},
             //Collezione di istanze della direttiva?
             collection = {},
@@ -17,8 +17,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         
         sourceEntry.build = function(id, scope) {
             var currentId = idx++,
-                scopeWit = scope.scopeWit || '';
                 entryId = id || undefined;
+                scopeWit = scope.scopeWit || '';
 
             var scopeHelper = {};
 
@@ -27,11 +27,14 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 return;
             }
 
-            var content = 'pippo';
+            //var nome = {nome:'pippo'};
+            var content;
 
             var quoteEntry = parsedData.getQuote(id);
             if (quoteEntry !== undefined) {
-                content = evtSourcesApparatus.getContent(quoteEntry, scopeWit);
+                //content.nome = 'minnie';
+                var c = evtSourcesApparatus.getContent(quoteEntry, scopeWit);
+                content = c.quote;
             }
 
             scopeHelper = {
