@@ -83,6 +83,9 @@ angular.module('evtviewer.buttonSwitch')
                 case 'mode-bookreader':
                     evtIcon = 'icon-evt_bookreader';
                     break;
+                case 'next':
+                    evtIcon = 'icon-evt_next';
+                    break;
                 case 'pin':
                     evtIcon = 'icon-evt_pin-alt-on';
                     break;
@@ -91,6 +94,9 @@ angular.module('evtviewer.buttonSwitch')
                     break;
                 case 'pin-on':
                     evtIcon = 'icon-evt_pin-on';
+                    break;
+                case 'previous':
+                    evtIcon = 'icon-evt_previous';
                     break;
                 case 'remove':
                     evtIcon = 'icon-evt_close';
