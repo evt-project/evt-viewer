@@ -1,0 +1,30 @@
+<div 
+     class="search-box"
+     ng-if="vm.type=='text'"
+     ng-class="{'open': vm.getState('searchBtn')}">
+    <div class="searchBtnGroup">
+        <div class="btn-left">
+            <button-switch
+            class="no-background"
+            title="{{button.title}}"
+            data-label="{{button.label}}"
+            data-icon="{{button.icon}}"
+            data-type="{{button.type}}"
+            ng-repeat="button in vm.genericTools.searchBtn|limitTo: 3"      
+            >
+            </button-switch>
+        </div>
+        <div class="btn-right">
+            <button-switch
+            class="no-background"
+            title="{{button.title}}"
+            data-label="{{button.label}}"
+            data-icon="{{button.icon}}"
+            data-type="{{button.type}}"
+            ng-repeat="button in vm.genericTools.searchBtn|limitTo: 3:3"      
+            >
+            </button-switch>
+        </div>
+    </div>
+    <input type="text" autofocus>
+</div>
