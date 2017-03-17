@@ -551,6 +551,12 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
+				case 'searchTools':
+					callback = function() {
+						var searchBtnState = scope.$parent.vm.getState('searchBtn') || false;
+						scope.$parent.vm.updateState('searchBtn', !searchBtnState);
+					};
+					break;
 				case 'witList':
 					btnType = 'toggler';
 					callback = function() {
