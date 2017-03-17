@@ -18,6 +18,8 @@ angular.module('evtviewer.dataHandler')
         }
         
         appContent.quote = apparatus.getQuote(quote, scopeWit);
+                console.log('Hey there!',  appContent.quote);
+
         //appContent.quote = 'collegamento riuscito';
 
         return appContent;
@@ -28,31 +30,54 @@ angular.module('evtviewer.dataHandler')
         var result = '';
         for (var i in content) {
             if (typeof content[i] === 'string') {
-                result += content[i];
+                result += '<span class="textNode">'+content[i]+'</span>';
             } else {
-                if (content[i].tagName === 'EVT-POPOVER'){
+                var skip = ['EVT-POPOVER', 'lb', 'ptr', 'link', 'linkGrp', 'pb'];
+                if (skip.indexOf(content[i].tagName) >= 0) {
                     result += '';
                 } else if (content[i].type === 'app') {
-                    if (scopeWit === '' || scopeWit === undefined) {
-                        result += ''//evtCriticalApparatusParser.getEntryLemmaText(content[i]).innerHTML;
-                    } else {
-                        result += ''//evtCriticalApparatusParser.getEntryWitnessReadingText(content[i], scopeWit);
-                    }
-                } //else if...
+                    result += apparatus.getAppText(content[i], scopeWit);
+                } //else if...analogue --> AnaloguesApparatus.getQuote(analogue).
                 else if (content[i].type === 'quote') {
                     result += '<span class="sub_quote"> (('+apparatus.getQuote(content[i], scopeWit)+')) </span>';
                 } else if (content[i].content !== undefined) {
-                     if (content[i].content.length === 1 && typeof content[i].content[0] === 'string') {
-                    result += content[i].content[0];
+                    result += apparatus.getText(content[i]);
                 } else {
-                    for (var j = 0; j < content[i].content.length; j++) {
-                        result += apparatus.getQuote(content[j], scopeWit);
-                    }
+                    result += apparatus.getQuote(content[i]);
                 }
-            }
             }
         }
         return result;
     }
+
+    apparatus.getText = function(entry) {
+        var result = '';
+        var content = entry.content;
+        for (var i in content){
+            if (typeof content[i] === 'string') {
+                result += '<span class="textNode">'+content[i]+'</span>';
+            } else if (content[i].content !== undefined) {
+                for (var j = 0; j < content[i].content.length; j++) {
+                    result += apparatus.getText(content[i].content[j]);
+                }
+            }
+        }
+        return result;
+    }
+
+     apparatus.getAppText = function(entry, scopeWit){
+            var result = '';
+            if (scopeWit === ''
+                || scopeWit === undefined
+                || entry._indexes.witMap[scopeWit] === undefined) {
+                    var lem = entry.lemma;
+                    result += apparatus.getText(entry.content[lem]);
+                } else {
+                    var rdg = entry._indexes.witMap[scopeWit];
+                    result += apparatus.getText(entry.content[rdg]);
+                }
+            return result;
+        }
+
     return apparatus;
 });
