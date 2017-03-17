@@ -154,13 +154,6 @@ angular.module('evtviewer.interface')
     };
     
     _console.log('InterfaceCtrl running');
-	
-	//test-debug
-	$scope.updateSecondaryContentOpened(' ');
-	evtInterface.allowProgrammaticOpenings(true);
-	evtInterface.setTypeallowed('Project Info',true);
-	evtInterface.setHomePanel('bibliography');
-	//test-debug
 })
 
 //TODO: Move this directive in a proper file

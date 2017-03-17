@@ -1,6 +1,6 @@
 angular.module('evtviewer.bibliography')
 
-   .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser) {
+   .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser,evtInterface,evtDialog) {
       var _console = $log.getInstance('BibliographyCtrl');
 
       $scope.styles = config.allowedBibliographicStyles;
@@ -18,5 +18,9 @@ angular.module('evtviewer.bibliography')
       }
 	  $scope.pubblicationType = function(BiblElement) {
 		  return evtBibliographyParser.getType(BiblElement);
-		  }	  
+		  }	
+
+	evtInterface.updateSecondaryContentOpened(' ');
+	evtDialog.openByType('globalInfo');
+	evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
    });

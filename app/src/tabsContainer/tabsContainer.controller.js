@@ -13,10 +13,15 @@ angular.module('evtviewer.tabsContainer')
             $scope.subContentOpened = '';
         }
     };
-
-	$scope.$watch(evtInterface.getAllowProgrammaticOpenings(),function(){
-			$scope.toggleSubContent(evtInterface.getHomePanel());
+	
+	$scope.service=evtInterface;
+	$scope.$watch('service.getHomePanel()', function(newVal) {
+		if(newVal !== ''){
+			$scope.toggleSubContent(newVal);
+		}
 	});
+	
+	$scope.service.setTabContainerPanel($scope.tabs);
 	
     if ($scope.type === 'projectInfo') {
         var noContent = '<span>No content</span>';
