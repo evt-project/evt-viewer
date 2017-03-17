@@ -67,5 +67,12 @@
     }
 }
 
+@mixin border($direction) {
+    @if($direction == 'all' or $direction == '') {
+        border: $mainContainer-border-width solid $box-structure-color-dark;
+    } @else {
+        border-#{$direction}: $mainContainer-border-width solid $box-structure-color-dark;
+    }
+}
 /* == END Mixins */
 /* =========================== */
