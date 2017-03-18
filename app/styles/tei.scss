@@ -959,6 +959,19 @@
 }
 
 
+
+
+.biblRef .titleMonogr[data-style=mla]{
+    font-style: italic;
+	&:after{
+		content: '. '
+	}
+}
+
+.biblRef .titleAnalytic[data-style=mla]:after,.biblRef .date[data-style=mla]:after,.biblRef .editor[data-style=mla]:after,.biblRef .pubPlace[data-style=mla]:after{
+	content: '. ';
+}
+
 .biblRef[pubblicationtype=j] .author[data-style=mla]:not(:first-child):before {
     content: ", ";
 }
@@ -989,7 +1002,7 @@
 }
 
 .biblRef[pubblicationtype=j] .date[data-style=mla]:last-child:after{
-	content: ') ' !important;
+	content: ') ';
 }
 
 .biblRef[pubblicationtype=j]  .pp[data-style=mla]:after{
