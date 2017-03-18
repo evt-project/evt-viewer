@@ -537,58 +537,19 @@ angular.module('evtviewer.dataHandler')
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="mla" class="date">' + getDate(newBiblElement) + '</span>';
 					}
+					
 					if (getPages(newBiblElement)) {
 						string += '<span data-style="mla" class="pp">' + getPages(newBiblElement) + '</span>';
 					}
-
-				}/*/
-				else{
-					if (newBiblElement.author && newBiblElement.author.length > 0) {
-						var firstAuthor = newBiblElement.author[0];
-						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
-						var firstSurname = firstAuthor.surname;
-						string += '<span data-style="mla" class="author">';
-						//del primo autore prima si deve mettere il cognome
-						if (firstSurname !== '') {
-							string += '<span data-style="mla" class="surname">' + firstSurname + '</span>';
-						}
-						if (firstName !== ''){
-							string += '<span data-style="mla" class="name">' + firstName + '</span>';						
-						}
-						string += '</span>';
+					
+					if (getUrl(newBiblElement)) {
+						string += '<span data-style="mla" class="generic">Web</span>';
 					}
-					if (getTitleAnalytic(newBiblElement)) {
-						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
+					else {
+						string += '<span data-style="mla" class="generic">Print</span>';
 					}
-					if (getDate(newBiblElement)) {
-						string += '<span data-style="mla" class="date">' + getDate(newBiblElement) + '</span>';
-					}
-					if (getPages(newBiblElement)) {
-						string += '<span data-style="mla" class="pp">' + getPages(newBiblElement) + '</span>';
-					}
-					if (getTitleMonogr(newBiblElement)) {
-						string += '<span data-style="mla" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
-					}					
 				}
-					/*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
 			}
 			newBiblElement.outputs[styleCode] = string;
 		}
