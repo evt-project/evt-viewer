@@ -212,7 +212,7 @@ angular.module('evtviewer.dataHandler')
 		if (seriesElem && seriesElem.length > 0) {
 			
 			var seriesTitles = seriesElem.find('title');
-			if (seriesTitles && seriesTitles.length > 0) {
+			if (seriesTitles && seriesTitles.length > 0 && newBiblElement.titleMonogr === '') {
 				newBiblElement.titleMonogr = seriesTitles[0].textContent;
 			}
 			//salviamo la data dentro monogr
@@ -297,7 +297,7 @@ angular.module('evtviewer.dataHandler')
 						string += '</span>';
 					}
 				});
-				if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) !== 'm') {
+				if (!isMonograph(newBiblElement)) {
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
 					}
@@ -310,33 +310,26 @@ angular.module('evtviewer.dataHandler')
 						string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
 					}
 					//editore
-					string += '<span data-style="chicago" class="editor">';
-					angular.forEach(newBiblElement.editor, function(editorElement, key) {
+					angular.forEach(getEditor(newBiblElement), function(editorElement, key) {
 						var name = editorElement.name !== '' ? editorElement.name : editorElement.forename;
 						var surname = editorElement.surname;
 						if (surname !== '') {
-							string += '<span data-style="chicago" class="surname">' + surname + '</span>';
+							string += '<span data-style="chicago" class="editor surname">' + surname + '</span>';
 						}
 						
 						if (name !== '') {
-							string += '<span data-style="chicago" class="name">' + name + '</span>';
+							string += '<span data-style="chicago" class="editor name">' + name + '</span>';
 						}
 						
 					});
-					string+="</span>";
+
 					if (getPubPlace(newBiblElement)) {
 						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
 					}
 					if (getPublisher(newBiblElement)) {
 						string += '<span data-style="chicago" class="publisher">' + getPublisher(newBiblElement) + '</span>';
 					}
-					
-					if (getVolumes(newBiblElement)) {
-						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';
-					}
-					if (getIssue(newBiblElement)) {
-						string += '<span data-style="chicago" class="issue">' + getIssue(newBiblElement) + '</span>'; 
-					}
+				
 					if (getPages(newBiblElement)) {
 						string += '<span data-style="chicago" class="pp">' + getPages(newBiblElement) + '</span>';
 					}
@@ -346,7 +339,7 @@ angular.module('evtviewer.dataHandler')
 						}
 					});
 				} else {
-					//else if(getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) === 'm' ){
+					//else if(isMonograph(newBiblElement) ){
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
 					}	  
@@ -359,9 +352,7 @@ angular.module('evtviewer.dataHandler')
 					if (getEditionMonogr(newBiblElement)) {
 						string += '<span data-style="chicago" data-attr="titolo" class="edition">' + getEditionMonogr(newBiblElement) + '</span>';
 					}				  
-					if (getVolumes(newBiblElement)) {
-						string += '<span data-style="chicago" class="vol">' + getVolumes(newBiblElement) + '</span>';
-					}
+
 					if (getPubPlace(newBiblElement)) {
 						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
 					}
@@ -383,7 +374,7 @@ angular.module('evtviewer.dataHandler')
 			Altro stile
 			/*/
 			else if (styleCode === APA_STYLE) {
-				if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) !== 'm') {
+				if (!isMonograph(newBiblElement)) {
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
@@ -445,6 +436,13 @@ angular.module('evtviewer.dataHandler')
 					if (getPages(newBiblElement)) {
 						string += '<span data-style="apa" class="pp">' + getPages(newBiblElement) + '</span>';
 					}
+					
+					if (getPubPlace(newBiblElement)) {
+						string += '<span data-style="apa" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
+					}
+					if (getPublisher(newBiblElement)) {
+						string += '<span data-style="apa" class="publisher">' + getPublisher(newBiblElement) + '</span>';
+					}					
 				}
 				else {
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
@@ -507,7 +505,7 @@ angular.module('evtviewer.dataHandler')
 			Altro stile
 			/*/
 			else if (styleCode === MLA_STYLE) {
-				if (getPubblicationType(newBiblElement) && getPubblicationType(newBiblElement).toLowerCase().substr(0,1) !== 'm') {
+				if (!isMonograph(newBiblElement)||true) {
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
@@ -525,22 +523,25 @@ angular.module('evtviewer.dataHandler')
 					if (getTitleAnalytic(newBiblElement)) {
 						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
 					}
-					if (getVolumes(newBiblElement)) {
-							string += '<span data-style="mla" class="vol">' + getVolumes(newBiblElement) + '</span>';
+					if (getTitleMonogr(newBiblElement)) {
+						string += '<span data-style="mla" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
 					}
-					if (getIssue(newBiblElement)) {
-						string += '<span data-style="mla" class="issue">' + getIssue(newBiblElement) + '</span>';
+
+					if (getPubPlace(newBiblElement)) {
+						string += '<span data-style="apa" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
 					}
+					if (getPublisher(newBiblElement)) {
+						string += '<span data-style="apa" class="publisher">' + getPublisher(newBiblElement) + '</span>';
+					}					
+					
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="mla" class="date">' + getDate(newBiblElement) + '</span>';
 					}
 					if (getPages(newBiblElement)) {
 						string += '<span data-style="mla" class="pp">' + getPages(newBiblElement) + '</span>';
 					}
-					if (getTitleMonogr(newBiblElement)) {
-						string += '<span data-style="mla" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
-					}
-				}
+
+				}/*/
 				else{
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
 						var firstAuthor = newBiblElement.author[0];
@@ -559,12 +560,6 @@ angular.module('evtviewer.dataHandler')
 					if (getTitleAnalytic(newBiblElement)) {
 						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
 					}
-					if (getVolumes(newBiblElement)) {
-							string += '<span data-style="mla" class="vol">' + getVolumes(newBiblElement) + '</span>';
-					}
-					if (getIssue(newBiblElement)) {
-						string += '<span data-style="mla" class="issue">' + getIssue(newBiblElement) + '</span>';
-					}
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="mla" class="date">' + getDate(newBiblElement) + '</span>';
 					}
@@ -575,7 +570,7 @@ angular.module('evtviewer.dataHandler')
 						string += '<span data-style="mla" data-attr="titolo" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
 					}					
 				}
-
+					/*/
 
 
 
@@ -708,6 +703,14 @@ angular.module('evtviewer.dataHandler')
 		}
 	}
 
+	function isMonograph(newBiblElement) {
+		return getPubblicationType(newBiblElement) && (getPubblicationType(newBiblElement).toLowerCase().substr(0,1) === 'm');
+	}
+	
+	function isJournalArticle(newBiblElement) {
+		return getPubblicationType(newBiblElement) && (getPubblicationType(newBiblElement).toLowerCase().substr(0,1) === 'j');	
+	}
+	
 	function getPublisher(newBiblElement) {
 		if (newBiblElement.publisher !== '') {
 			return newBiblElement.publisher;
@@ -715,7 +718,7 @@ angular.module('evtviewer.dataHandler')
 	}
 	
 	function getEditor(newBiblElement) {
-		if (newBiblElement.editor) {
+		if (newBiblElement.editor && newBiblElement.editor.length > 0) {
 			return newBiblElement.editor;
 		}
 	}

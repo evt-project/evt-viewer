@@ -76,22 +76,7 @@
           <head>Bibliografia commentata del <title>Vercelli Book</title></head>
 
           <!-- MONOGRAFIE -->
-                    <biblStruct xml:id="Wheelock2000">
-            <analytic>
-              <author>Wheelock, Jeremy I.</author>
-              <title level="a">The Word Made Flesh: 'engel dryhtnes' in <title>The Dream of the Rood</title></title>
-            </analytic>
-            <monogr>
-              <title level="j">English Language Notes</title>
-              <imprint>
-                <biblScope type="vol">37.3</biblScope>
-                <date>2000</date>
-                <biblScope type="pages">1-11</biblScope>
-              </imprint>
-            </monogr>
-            <note type="key">DOTR</note>
-          </biblStruct>
-		  
+          
           <biblStruct xml:id="Rodrigues1998">
             <monogr>
               <author>Rodrigues, Louis J.</author>
@@ -100,7 +85,6 @@
                 <pubPlace>Felinfach</pubPlace>
                 <publisher>Llanerch Publishers</publisher>
                 <date>1998</date>
-				<biblScope type="pages">241-252</biblScope>
               </imprint>
             </monogr>
           </biblStruct>
@@ -233,7 +217,21 @@
           
           <!-- ARTICOLI IN RIVISTE -->
 
-
+          <biblStruct xml:id="Wheelock2000">
+            <analytic>
+              <author>Wheelock, Jeremy I.</author>
+              <title level="a">The Word Made Flesh: 'engel dryhtnes' in <title>The Dream of the Rood</title></title>
+            </analytic>
+            <monogr>
+              <title level="j">English Language Notes</title>
+              <imprint>
+                <biblScope type="vol">37.3</biblScope>
+                <date>2000</date>
+                <biblScope type="pages">1-11</biblScope>
+              </imprint>
+            </monogr>
+            <note type="key">DOTR</note>
+          </biblStruct>
           
           <biblStruct xml:id="Cherniss1973">
             <analytic>
