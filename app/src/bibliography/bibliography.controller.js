@@ -1,6 +1,6 @@
 angular.module('evtviewer.bibliography')
 
-   .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser,evtInterface,evtDialog) {
+   .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser,evtInterface,evtHighlight) {
       var _console = $log.getInstance('BibliographyCtrl');
 
       $scope.styles = config.allowedBibliographicStyles;
@@ -19,8 +19,16 @@ angular.module('evtviewer.bibliography')
 	  $scope.pubblicationType = function(BiblElement) {
 		  return evtBibliographyParser.getType(BiblElement);
 		  }	
-
-	evtInterface.updateSecondaryContentOpened(' ');
-	evtDialog.openByType('globalInfo');
-	evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
+		
+	//osseriviamo evtHighlight.highlight, qui risiede l'id dell'entrata bibliografia	
+	 $scope.highlight=evtHighlight
+	 $scope.$watch('highlight.highlight',function(newVal){
+		 //mentre nel template della bibliografia viene registrato l'attributo 'highlight' qui effettuiamo lo scrolling
+		 $scope.scrollToElement(newVal);
+	 });
+	
+	  $scope.scrollToElement = function(elementID){
+		  $location.hash(elementID);
+		  $anchorScroll();
+	  }
    });
