@@ -1,9 +1,33 @@
 <strong>SOURCES APPARATUS</strong>
 <div class="sources-apparatus-entry">
     <div class="sources-apparatus-entry_main-content">
-        <span compile="vm.content">{{vm.content}}</span>
+        <span compile="vm.head">{{vm.head}}</span>
+        <span class="sources-apparatus-entry_list">
+            <ul>
+                <li ng-repeat="source in vm.sources track by $index">
+                    <em compile="{{source.id}}"></em>
+                </li>
+            </ul>
+        </span>
     </div>
-    <div class="sources-apparatus-entry_other-content">
+    <div class="sources-apparatus-entry_other-content"
+         ng-if="vm.tabs._indexes.length > 0">
         <strong>TABS</strong>
+        <div class="sources-apparatus-entry_other-content_headers">
+            <span ng-repeat="tab in vm.tabs._indexes">
+                {{ vm.tabs[tab].label}}
+            </span>
+        </div>
+        <div class="sources-apparatus-entry_other-content_panels">
+            <div class="sources-apparatus-entry_other-content_panel"
+                 ng-repeat="tab in vm.tabs._indexes"
+                 ng-switch="tab">
+                 <div ng-switch-when="xmlSource">
+                     XML Source for Quote
+                     <pre>{{ vm.xml | prettyXml}}</pre>
+                     <div ng-if=""></div>
+                 </div>
+            </div>
+        </div>
     </div>
 </div>

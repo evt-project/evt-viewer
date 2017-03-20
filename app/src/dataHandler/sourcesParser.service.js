@@ -125,6 +125,7 @@ angular.module('evtviewer.dataHandler')
                 subQuotes: [], //salvo gli id dei quoteDef annidati                
             },
             _subQuote: false, //indica se l'entrata in questione è annidata o meno in un quoteDef
+            _xmlSource: entry.outerHTML
         }
 
         //Parsing the id or creating it with the evtParser.xpath method
@@ -314,6 +315,8 @@ angular.module('evtviewer.dataHandler')
     var parseSource = function(entry, quote) {
         var source = {
             id: '',
+            title: [],
+            author: [],
             attributes: [],
             quotesEntriesId: [],
             bibl: [], //Array that saves the full bibliographic reference of the source (which almost always corresponds the content of the source itself)
@@ -366,7 +369,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(entry.childNodes, function(child){
             if (child.nodeType === 3) {
                 if (child.textContent.trim() !== '') {
-                    source.text.push(child.textContent.trim());
+                    source.bibl.push(child.textContent.trim());
                 }
             }
             else if (child.nodeType === 1) {
@@ -416,6 +419,12 @@ angular.module('evtviewer.dataHandler')
                     }
                 } else {
                     childContent = parseSourceContent(child, entry)
+                    if (childContent.tagName === 'author') {
+                        source.author.push(childContent.content);
+                    }
+                    if (childContent.tagName === 'title') {
+                        source.title = childContent.content;
+                    }
                     source.bibl.push(childContent);
                     for (var i = 0; i < childContent.url.length; i++) {
                         source.url.push(childContent.url[i]);
@@ -505,7 +514,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
         for (var i = 0; i < missing.length; i++) {
-            //delete parsedData.getQuotes()[missing[i]];
+            delete parsedData.getQuotes()[missing[i]];
         }
     }
 

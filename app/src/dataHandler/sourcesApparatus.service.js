@@ -13,16 +13,64 @@ angular.module('evtviewer.dataHandler')
             sources : [], //Elenco delle fonti, ognuna con tutte le info necessarie
             text: '', //Testo della fonte, tab apposito
             quote: '', //Intestazione
-            _xml: [] //Xml della citazione, cui si aggiungerà anche l'xml della source selezionata
+            _sourceXml: [],
+            _xmlSource: quote._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') //Xml della citazione, cui si aggiungerà anche l'xml della source selezionata
 
         }
         
+        var sourceId = quote._indexes.sourceId || [];
+        var sourceRefId = quote._indexes.sourceRefId || [];
+        for (var i = 0; i < sourceId.length; i++) {
+            var source = parsedData.getSource(sourceId[i]);
+            var entry = apparatus.getSource(source);
+            appContent[source.id] = entry;
+            appContent._sourceXml[source.id] = entry._xmlSource;
+            appContent._sourceXml.length++;
+        }
+        for (var j = 0;  j < sourceRefId.length; j++) {
+            var source = parsedData.getSource(sourceRefId[j]);
+            var entry = apparatus.getSource(source);
+            appContent.sources[source.id] = entry;
+            appContent.sources.length++;
+            appContent._sourceXml[source.id] = entry._xmlSource;
+            appContent._sourceXml.length++;
+        }
+
         appContent.quote = apparatus.getQuote(quote, scopeWit);
-                console.log('Hey there!',  appContent.quote);
+        //console.log('Hey there!',  appContent.quote);
 
         //appContent.quote = 'collegamento riuscito';
 
         return appContent;
+    };
+
+    apparatus.getSource = function(entry) {
+        var source = {
+            id: entry.id,
+            author: '',
+            title: '',
+            _xmlSource: entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''),
+            text: '',
+            bibl: '',
+            url: entry.url
+        }
+
+        //Transform the bibliographic reference into strings
+        var bibref = entry.bibl;
+        for (var i = 0; i < bibref.length; i++) {
+            source.bibl += apparatus.getText(bibref[i]);
+        }
+        
+        //Tranform the names of the authors into strings
+        var author = entry.author;
+        for (var i = 0; i < author.length; i++) {
+            source.author += apparatus.getText(author[i]);
+        }
+
+        //Get the text cited
+        source.text = apparatus.getText(entry.quote);
+
+        return source;
     };
 
     apparatus.getQuote = function (quote, scopeWit) {
@@ -50,6 +98,7 @@ angular.module('evtviewer.dataHandler')
         return result;
     }
 
+    //Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
     apparatus.getText = function(entry) {
         var result = '';
         var content = entry.content;
@@ -57,9 +106,7 @@ angular.module('evtviewer.dataHandler')
             if (typeof content[i] === 'string') {
                 result += '<span class="textNode">'+content[i]+'</span>';
             } else if (content[i].content !== undefined) {
-                for (var j = 0; j < content[i].content.length; j++) {
-                    result += apparatus.getText(content[i].content[j]);
-                }
+                result += apparatus.getText(content[i]);
             }
         }
         return result;

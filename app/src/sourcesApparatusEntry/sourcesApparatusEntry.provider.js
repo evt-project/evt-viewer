@@ -27,18 +27,36 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 return;
             }
 
-            //var nome = {nome:'pippo'};
-            var content;
+            var content,
+                src_list = {
+                    _indexes : []
+                },
+                tabs = {
+                    _indexes: []
+                };
 
             var quoteEntry = parsedData.getQuote(id);
             if (quoteEntry !== undefined) {
-                //content.nome = 'minnie';
-                var c = evtSourcesApparatus.getContent(quoteEntry, scopeWit);
-                content = c.quote;
+                content = evtSourcesApparatus.getContent(quoteEntry, scopeWit);
+                var sources = content.sources;
+                sources.length = content.sources.length;
+                var head = content.quote;
+                if (quoteEntry._xmlSource !== '') {
+                    tabs._indexes.push('xmlSource');
+                    tabs.xmlSource = {
+                        label : 'XML'
+                    };
+                var xml = content._xmlSource;
+                }
+
             }
 
             scopeHelper = {
-                content : content,
+                head : head,
+                xml : xml,
+                sources : sources,
+                src_list : src_list,
+                tabs : tabs
             }
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({
@@ -49,5 +67,5 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
 
         return sourceEntry;
-    }
+    };
 });
