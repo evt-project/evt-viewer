@@ -39,6 +39,10 @@ angular.module('evtviewer.sourcesApparatusEntry')
             if (quoteEntry !== undefined) {
                 content = evtSourcesApparatus.getContent(quoteEntry, scopeWit);
                 var sources = content.sources;
+                for (var i in sources) {
+                    src_list._indexes.push(sources[i].id);
+                    src_list[sources[i].id] = sources[i];
+                }
                 sources.length = content.sources.length;
                 var head = content.quote;
                 if (quoteEntry._xmlSource !== '') {
@@ -56,7 +60,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 xml : xml,
                 sources : sources,
                 src_list : src_list,
-                tabs : tabs
+                tabs : tabs,
+                _activeSource : sources[0].id
             }
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({

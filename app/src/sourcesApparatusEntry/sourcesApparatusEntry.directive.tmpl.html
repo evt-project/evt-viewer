@@ -4,9 +4,9 @@
         <span compile="vm.head"></span>
         <span class="sources-apparatus-entry_list">
             <ul>
-                <li ng-repeat="source in vm.sources">
+                <li ng-repeat="source in vm.sources"
+                    ng-click="vm.toggleSource(source.id)">
                     <em compile="source.id"></em>
-                    <span ng-if="source.author !== ''"><em compile="source.author"></em></span>
                 </li>
             </ul>
         </span>
@@ -20,6 +20,7 @@
             </span>
         </div>
         <div class="sources-apparatus-entry_other-content_panels">
+            <div ng-if="vm.src_list[vm._activeSource].bibl !== ''" compile="vm.src_list[vm._activeSource].bibl"></div>
             <div class="sources-apparatus-entry_other-content_panel"
                  ng-repeat="tab in vm.tabs._indexes"
                  ng-switch="tab">
