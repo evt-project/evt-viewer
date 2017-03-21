@@ -11,9 +11,9 @@ angular.module('evtviewer.dataHandler')
                 _keys: Object.keys(quote.attributes) || []
             },
             sources : [], //Elenco delle fonti, ognuna con tutte le info necessarie
-            text: '', //Testo della fonte, tab apposito
-            quote: '', //Intestazione
-            _sourceXml: [],
+            //text: '', //Testo
+            quote: '', //Intestazione dell'entrata d'apparato
+            //_sourceXml: [],
             _xmlSource: quote._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') //Xml della citazione, cui si aggiungerà anche l'xml della source selezionata
 
         }
@@ -24,21 +24,18 @@ angular.module('evtviewer.dataHandler')
             var source = parsedData.getSource(sourceId[i]);
             var entry = apparatus.getSource(source);
             appContent.sources.push(entry);
-            appContent._sourceXml[source.id] = entry._xmlSource;
-            appContent._sourceXml.length++;
+            //appContent._sourceXml[source.id] = entry._xmlSource;
+            //appContent._sourceXml.length++;
         }
         for (var j = 0;  j < sourceRefId.length; j++) {
             var source = parsedData.getSource(sourceRefId[j]);
             var entry = apparatus.getSource(source);
             appContent.sources.push(entry);
-            appContent._sourceXml[source.id] = entry._xmlSource;
-            appContent._sourceXml.length++;
+            //appContent._sourceXml[source.id] = entry._xmlSource;
+            //appContent._sourceXml.length++;
         }
 
         appContent.quote = apparatus.getQuote(quote, scopeWit);
-        //console.log('Hey there!',  appContent.quote);
-
-        //appContent.quote = 'collegamento riuscito';
 
         return appContent;
     };
