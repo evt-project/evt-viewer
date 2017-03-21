@@ -23,15 +23,14 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < sourceId.length; i++) {
             var source = parsedData.getSource(sourceId[i]);
             var entry = apparatus.getSource(source);
-            appContent[source.id] = entry;
+            appContent.sources.push(entry);
             appContent._sourceXml[source.id] = entry._xmlSource;
             appContent._sourceXml.length++;
         }
         for (var j = 0;  j < sourceRefId.length; j++) {
             var source = parsedData.getSource(sourceRefId[j]);
             var entry = apparatus.getSource(source);
-            appContent.sources[source.id] = entry;
-            appContent.sources.length++;
+            appContent.sources.push(entry);
             appContent._sourceXml[source.id] = entry._xmlSource;
             appContent._sourceXml.length++;
         }

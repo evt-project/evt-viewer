@@ -1,11 +1,12 @@
 <strong>SOURCES APPARATUS</strong>
 <div class="sources-apparatus-entry">
     <div class="sources-apparatus-entry_main-content">
-        <span compile="vm.head">{{vm.head}}</span>
+        <span compile="vm.head"></span>
         <span class="sources-apparatus-entry_list">
             <ul>
-                <li ng-repeat="source in vm.sources track by $index">
-                    <em compile="{{source.id}}"></em>
+                <li ng-repeat="source in vm.sources">
+                    <em compile="source.id"></em>
+                    <span ng-if="source.author !== ''"><em compile="source.author"></em></span>
                 </li>
             </ul>
         </span>
