@@ -1,6 +1,6 @@
 angular.module('evtviewer.bibliography')
 
-   .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser,evtInterface,evtHighlight) {
+   .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser,evtInterface,evtHighlight,$location,$anchorScroll) {
       var _console = $log.getInstance('BibliographyCtrl');
 
       $scope.styles = config.allowedBibliographicStyles;
