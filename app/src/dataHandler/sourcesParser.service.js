@@ -52,7 +52,7 @@ angular.module('evtviewer.dataHandler')
                 }
             } else if (child.nodeType === 1) {
                 if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    contentEl.content.push(parseQuote(child));
+                    contentEl.content.push(parser.parseQuote(child));
                 } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(evtCriticalApparatusParser.handleAppEntry(child));
                 } /*else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
@@ -85,7 +85,7 @@ angular.module('evtviewer.dataHandler')
     /* inside the text to be parsed                                       */
     /* @author: CM                                                        */
     /* ****************************************************************** */
-    var parseQuote = function(entry){
+    parser.parseQuote = function(entry){
         
         var quote = {
             type: 'quote',
@@ -204,7 +204,7 @@ angular.module('evtviewer.dataHandler')
                     quote.content.push(evtCriticalApparatusParser.handleAppEntry(child));
                 } //If there is a nested quote, parse it recursively.
                   else if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    var subQuote = parseQuote(child);
+                    var subQuote = parser.parseQuote(child);
                     quote.content.push(subQuote);
                     //Then add the id to the subQuotes array.
                     quote._indexes.subQuotes.push(subQuote.id);
@@ -466,7 +466,7 @@ angular.module('evtviewer.dataHandler')
             function(element){
                 var isInBody = evtParser.isNestedInElem(element, 'body');
                 if (isInBody){
-                    var quote = parseQuote(element);
+                    var quote = parser.parseQuote(element);
                     parsedData.addQuote(quote);
                 }
             });

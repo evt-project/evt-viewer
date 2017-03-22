@@ -13,22 +13,29 @@ angular.module('evtviewer.dataHandler')
         analoguesUrl      = config.analoguesUrl || '',
         analogueDef       = '<seg>,<ref[type=parallelPassage]>';
 
-    var match = [];
-    var anAnalogueDef = analogueDef.split(",");
+    var match = '(',
+        anAnalogueDef = analogueDef.split(",");
+
     for (var i = 0; i < anAnalogueDef.length; i++) {
-        var m = {
-            tagName : '',
-            attributes : []
-        }
         if (anAnalogueDef[i].indexOf("[") < 0) {
-            m.tagName = anAnalogueDef[i].replace(/[<>]/g, '');
+            match += anAnalogueDef[i].replace(/[<>]/g, '');
         } else {
-            e = anAnalogueDef[i].indexOf("[");
-            m.tagName = anAnalogueDef[i].substr(1, e-1);
-            //
+            var bracketOpen = anAnalogueDef[i].indexOf("[");
+            match += anAnalogueDef[i].substring(1, bracketOpen);
+            var bracketClose = anAnalogueDef[i].indexOf("]");
+            var equal = anAnalogueDef[i].indexOf("=");
+            match += '.*?'+anAnalogueDef[i].substring(bracketOpen + 1, equal);
+            match += '.*?';
+            match += anAnalogueDef[i].substring(equal + 1, bracketClose);
         }
-        match.push(m);
+        if (i < anAnalogueDef.length -1) {
+            match+='|';
+        } else if ( i = anAnalogueDef.length - 1) {
+            match+=')';
+        }
     }
+
+    var sRegExpInput = new RegExp(match, 'ig');
     
     /*********************/
     /*parseAnalogues(doc)*/
@@ -39,6 +46,8 @@ angular.module('evtviewer.dataHandler')
     parser.parseAnalogues = function(doc) {
         var deferred = $q.defer(),
             currentDocument = angular.element(doc);
+
+            console.log(match);
 
         angular.forEach(currentDocument.find(analogueDef.replace(/[<>]/g, '')),
         function(element){
@@ -130,10 +139,15 @@ angular.module('evtviewer.dataHandler')
                 }
             } else if (child.nodeType === 1) {
                 if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    contentEl.content.push(parseQuote(child));
+                    contentEl.content.push(evtSourcesParser.parseQuote(child));
                 } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(evtCriticalApparatusParser.handleAppEntry(child));
-                } /*else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
+                } else if (sRegExpInput.test(child.outerHTML)) {
+                    console.log("CE L'HAI FATTA!");
+                    contentEl.content.push(parser.parseAnalogue(child));
+                }/*
+                TODO: REG EXPR o ANGULAR.ELEMENT.FIND
+                else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(evtAnaloguesParser.parseAnalogue(child));
                 } else if (child.tagName === 'witDetail') {
                     contentEl.content.push(evtCriticalApparatusParser.parseWitDetail(child));
@@ -142,10 +156,10 @@ angular.module('evtviewer.dataHandler')
                 } else if (child.children.length > 0) {
                     for (var i = 0; i < child.children.length; i++) {
                         contentEl.content.push(child.children[i].cloneNode(true));
-                        parseQuoteContent(child.children[i])
+                        parseAnalogueContent(child.children[i])
                     }
                 } else {
-                    contentEl.content.push(parseQuoteContent(child));
+                    contentEl.content.push(parseAnalogueContent(child));
                 }
             }
         });
@@ -212,6 +226,9 @@ angular.module('evtviewer.dataHandler')
                     analogue.content.push(child.textContent.trim());
                 }
             } else if (child.nodeType === 1) {
+
+                var subst = angular.element(child)["0"].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+                var childXml = angular.element(child)["0"].outerHTML.replace(subst, '');
                 //Array of TEI-elements for bibliographic references
                 var biblEl = ['bibl', 'biblStruct', 'biblFull', 'msDesc'];
                 //Array of TEI-elements for pointers
@@ -270,7 +287,10 @@ angular.module('evtviewer.dataHandler')
                 } //If there is a nested quote, parse it recursively.
                   else if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                     analogue.content.push(evtSourcesParser.parseQuote(child));
-                } /*
+                } else if (sRegExpInput.test(childXml)) {
+                    console.log("CE L'HAI FATTA!", angular.element(child), childXml);
+                    analogue.content.push(parser.parseAnalogue(child));
+                }/*
                 TODO: REG EXPR o angular.element.find
                 else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
                     content.push(evtAnaloguesParser.parseAnalogue(child));
