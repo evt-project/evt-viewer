@@ -115,16 +115,10 @@ angular.module('evtviewer.dataHandler')
         },
     }
 
-    var analoguesEntriesCollection = {
+    var analoguesCollection = {
         _indexes: {
             encodingStructure: [],
             refId: []
-        }
-    }
-
-    var analoguesCollection = {
-        _indexes: {
-            encodingStructure: []
         }
     }
 
@@ -662,16 +656,32 @@ angular.module('evtviewer.dataHandler')
         return sourcesCollection[entryId];
     }
 
-    parsedData.getAnaloguesEntry = function(analogueId) {
-        return analoguesEntriesCollection[analogueId];
+    /***********/
+    /*ANALOGUES*/
+    /***********/
+    
+    parsedData.getAnalogue = function(analogueId) {
+        return analoguesCollection[analogueId];
     }
 
-    parsedData.getAnaloguesEntries = function() {
-        return analoguesEntriesCollection;
+    parsedData.getAnalogues = function() {
+        return analoguesCollection;
     }
 
-    parsedData.addAnalogueEntry = function(/*entry*/) {
-        //TODO
+    parsedData.addAnalogue = function(entry) {        
+        if (analoguesCollection[entry.id] === undefined) {
+            analoguesCollection[entry.id] = entry;
+            analoguesCollection._indexes.encodingStructure.push(entry.id);
+            
+            //Adding the entry sourceRef array to the refId array of the collection
+            var entryRef = entry._indexes.sourceRefId,
+                collectionRef = analoguesCollection._indexes.refId;
+            for (var i = 0; i < entryRef.length; i++) {
+                if (collectionRef.indexOf(entryRef[i]) < 0) {
+                    collectionRef.push(entryRef[i]);
+                }
+            }
+        }
     }
     
     return parsedData;

@@ -1,3 +1,6 @@
+/****************/
+/*AUTHOR --> @CM*/
+/****************/
 angular.module('evtviewer.dataHandler')
 
 .service('evtSourcesParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, xmlParser, config) {
@@ -72,36 +75,6 @@ angular.module('evtviewer.dataHandler')
         return contentEl;
     }
 
-    //Tentativo di parsare solo gli elementi XML
-    var parxeQuoteContent = function(elem) {
-        var content = [];
-        if (elem.children.length <= 0) {
-            content.push(elem);
-        } else {
-            angular.forEach(elem.children, function(child){
-                if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    content.push(parseQuote(child));
-                } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    content.push(evtCriticalApparatusParser.handleAppEntry(child));
-                } /*else if (analogueDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    contentEl.content.push(evtAnaloguesParser.parseAnalogue(child));
-                } else if (child.tagName === 'witDetail') {
-                    contentEl.content.push(evtCriticalApparatusParser.parseWitDetail(child));
-                }*/ else if (child.tagName === 'note') {
-                    content.push(evtParser.parseNote(child));
-                } else if (child.children.length > 0) {
-                    for (var i = 0; i < child.children.length; i++) {
-                        content.push(child.children[i].cloneNode(true));
-                        parxeQuoteContent(child.children[i])
-                    }
-                } else {
-                    content.push(child.cloneNode(true));
-                }
-            });             
-        }
-        return content;
-    }
-
     /* *************** */
     /* parseQuote(doc) */
     /* ****************************************************************** */
@@ -159,7 +132,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
 
-        //Check if the sourceAppDef element is nested in another quoteDef element
+        //Check if the quoteDef element is nested in another quoteDef element
         var aQuoteDef = quoteDef.split(","),
         i = 0;
         while (i < aQuoteDef.length && !quote._subQuote) {
@@ -498,10 +471,10 @@ angular.module('evtviewer.dataHandler')
                 }
             });
             
-            console.log('## QUOTES ##', parsedData.getQuotes());
+        console.log('## QUOTES ##', parsedData.getQuotes());
 
-            deferred.resolve('success');
-            return deferred;
+        deferred.resolve('success');
+        return deferred;
     };
 
     var updateQuotes = function(){

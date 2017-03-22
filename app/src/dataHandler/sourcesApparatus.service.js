@@ -46,7 +46,7 @@ angular.module('evtviewer.dataHandler')
             author: '',
             title: '',
             _xmlSource: entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''),
-            text: '',
+            text: 'Mock Text',
             bibl: '',
             url: entry.url
         }
@@ -64,7 +64,10 @@ angular.module('evtviewer.dataHandler')
         }
 
         //Get the text cited
-        source.text = apparatus.getText(entry.quote);
+        var text = apparatus.getText(entry.quote);
+        if (text !== '') {
+            source.text = text;
+        }
 
         return source;
     };

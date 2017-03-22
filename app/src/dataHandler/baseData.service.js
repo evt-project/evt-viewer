@@ -29,6 +29,8 @@ angular.module('evtviewer.dataHandler')
             evtSourcesParser.parseQuotes(docElements);
 
             evtSourcesParser.parseSources(docElements);
+
+            evtAnaloguesParser.parseAnalogues(docElements);
             
             evtProjectInfoParser.parseProjectInfo(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
