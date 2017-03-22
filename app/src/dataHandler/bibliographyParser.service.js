@@ -272,12 +272,13 @@ angular.module('evtviewer.dataHandler')
 					var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 					var firstSurname = firstAuthor.surname;
 					string += '<span data-style="chicago" class="author">';
-					if (firstName !== '') {
-						string += '<span data-style="chicago" class="name">' + firstName + '</span>';
-					}
 					if (firstSurname !== '') {
 						string += '<span data-style="chicago" class="surname">' + firstSurname + '</span>';
 					}
+					if (firstName !== '') {
+						string += '<span data-style="chicago" class="name">' + firstName + '</span>';
+					}
+					
 				}
 				string += '</span>';
 				//se c'è più di un autore gli altri sono citati con nome-cognome
@@ -520,6 +521,22 @@ angular.module('evtviewer.dataHandler')
 						}
 						string += '</span>';
 					}
+					angular.forEach(newBiblElement.author, function(authorElement, key) {
+						//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
+						if (key > 0) {
+							var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
+							var surname = authorElement.surname;
+							string += '<span data-style="mla" class="author">';
+							if (name !== '') {
+								string += '<span data-style="mla" class="name">' + name + '</span>';
+							}
+							if (surname !== '') {
+								string += '<span data-style="mla" class="surname">' + surname + '</span>';
+							}
+							
+							string += '</span>';
+						}
+					});					
 					if (getTitleAnalytic(newBiblElement)) {
 						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
 					}

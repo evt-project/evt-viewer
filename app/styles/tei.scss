@@ -791,13 +791,13 @@
 		content: ' OCLC:'
 	}
 
-	
-.biblRef .author[data-style=chicago]:not(:first-child):before {
-    content: ", ";
+
+.biblRef .author .name[data-style=chicago]:after{
+	content: ', '
 }
 
-.biblRef  .author[data-style=chicago]:not:first-child:after{
-	content: ','
+.biblRef .author .surname[data-style=chicago]:after{
+	content: ', '
 }
 
 .biblRef .titleAnalytic[data-style=chicago]:before{
@@ -950,15 +950,23 @@
 }
 
 
-.biblRef > .author > .name[data-style=apa]:not(:last-child):after {
+.biblRef > .author > .name[data-style=apa]:after {
     content: ',';
 }
 
-.biblRef > .author > .surname[data-style=apa]:not(:last-child):after {
+.biblRef > .author > .surname[data-style=apa]:after {
     content: ', ';
 }
 
 
+
+.biblRef .author .name[data-style=mla]:after {
+    content: ", ";
+}
+
+.biblRef  .author .surname[data-style=mla]:after{
+	content: ', '
+}
 
 
 .biblRef .titleMonogr[data-style=mla]{
@@ -972,13 +980,6 @@
 	content: '. ';
 }
 
-.biblRef[pubblicationtype=j] .author[data-style=mla]:not(:first-child):before {
-    content: ", ";
-}
-
-.biblRef[pubblicationtype=j]  .author[data-style=mla]:not:first-child:after{
-	content: ','
-}
 
 .biblRef[pubblicationtype=j] .titleAnalytic[data-style=mla]:before{
 	content: ' "'
@@ -1014,13 +1015,7 @@
 }
 
 
-.biblRef[pubblicationtype=a] .author[data-style=mla]:not(:first-child):before {
-    content: ", ";
-}
 
-.biblRef[pubblicationtype=a]  .author[data-style=mla]:not:first-child:after{
-	content: ','
-}
 
 .biblRef[pubblicationtype=a] .titleAnalytic[data-style=mla]:before{
 	content: ' "'
@@ -1057,13 +1052,6 @@
 
 
 
-.biblRef[pubblicationtype=u] .author[data-style=mla]:not(:first-child):before {
-    content: ", ";
-}
-
-.biblRef[pubblicationtype=u]  .author[data-style=mla]:not:first-child:after{
-	content: ','
-}
 
 .biblRef[pubblicationtype=u] .titleAnalytic[data-style=mla]:before{
 	content: ' "'
