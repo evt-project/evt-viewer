@@ -266,6 +266,7 @@ angular.module('evtviewer.dataHandler')
 			if (styleCode === CHICAGO_STYLE) {
 				//autore-data-titolo-titolo_monografia(se presente)- edizione-luogo pubblicazione-data-numero pagina-idno(se dati)
 				//il primo autore deve essere citato con cognome-nome
+				string += '<span data-style="chicago" class="authors">';
 				if (newBiblElement.author && newBiblElement.author.length > 0) {
 					var firstAuthor = newBiblElement.author[0];
 					//il nome lo prendiamo per mezzo del tag name o forename
@@ -278,26 +279,29 @@ angular.module('evtviewer.dataHandler')
 					if (firstName !== '') {
 						string += '<span data-style="chicago" class="name">' + firstName + '</span>';
 					}
-					
+					string += '</span>';
+				
+				
+					//se c'è più di un autore gli altri sono citati con nome-cognome
+					angular.forEach(newBiblElement.author, function(authorElement, key) {
+						//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
+						if (key > 0) {
+							var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
+							var surname = authorElement.surname;
+							string += '<span data-style="chicago" class="author">';
+							if (name !== '') {
+								string += '<span data-style="chicago" class="name">' + name + '</span>';
+							}
+							if (surname !== '') {
+								string += '<span data-style="chicago" class="surname">' + surname + '</span>';
+							}
+							
+							string += '</span>';
+						}
+					});
 				}
+				//chiude autors
 				string += '</span>';
-				//se c'è più di un autore gli altri sono citati con nome-cognome
-				angular.forEach(newBiblElement.author, function(authorElement, key) {
-					//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
-					if (key > 0) {
-						var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
-						var surname = authorElement.surname;
-						string += '<span data-style="chicago" class="author">';
-						if (name !== '') {
-							string += '<span data-style="chicago" class="name">' + name + '</span>';
-						}
-						if (surname !== '') {
-							string += '<span data-style="chicago" class="surname">' + surname + '</span>';
-						}
-						
-						string += '</span>';
-					}
-				});
 				if (!isMonograph(newBiblElement)) {
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="chicago" class="date">' + getDate(newBiblElement) + '</span>';
@@ -377,6 +381,7 @@ angular.module('evtviewer.dataHandler')
 			else if (styleCode === APA_STYLE) {
 				if (!isMonograph(newBiblElement)) {
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						string += '<span data-style="apa" class="authors">';
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 						var firstSurname = firstAuthor.surname;
@@ -411,6 +416,7 @@ angular.module('evtviewer.dataHandler')
 								string += '</span>';
 							}
 						});
+						string += '</span>';
 					}
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="apa" class="date">' + getDate(newBiblElement) + '</span>';
@@ -447,6 +453,7 @@ angular.module('evtviewer.dataHandler')
 				}
 				else {
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						string += '<span data-style="apa" class="authors">';
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 						var firstSurname = firstAuthor.surname;
@@ -481,6 +488,7 @@ angular.module('evtviewer.dataHandler')
 								string += '</span>';
 							}
 						});
+						string += '</span>';
 					}
 					if (getDate(newBiblElement)) {
 						string += '<span data-style="apa" class="date">' + getDate(newBiblElement) + '</span>';
@@ -508,6 +516,7 @@ angular.module('evtviewer.dataHandler')
 			else if (styleCode === MLA_STYLE) {
 				if (!isMonograph(newBiblElement)||true) {
 					if (newBiblElement.author && newBiblElement.author.length > 0) {
+						string += '<span data-style="mla" class="authors">';
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 						var firstSurname = firstAuthor.surname;
@@ -520,23 +529,25 @@ angular.module('evtviewer.dataHandler')
 							string += '<span data-style="mla" class="name">' + firstName + '</span>';						
 						}
 						string += '</span>';
-					}
-					angular.forEach(newBiblElement.author, function(authorElement, key) {
-						//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
-						if (key > 0) {
-							var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
-							var surname = authorElement.surname;
-							string += '<span data-style="mla" class="author">';
-							if (name !== '') {
-								string += '<span data-style="mla" class="name">' + name + '</span>';
+					
+						angular.forEach(newBiblElement.author, function(authorElement, key) {
+							//il primo autore lo abbiamo già sistemato prima, adesso (se ci sono) aggiungiamo gli altri
+							if (key > 0) {
+								var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
+								var surname = authorElement.surname;
+								string += '<span data-style="mla" class="author">';
+								if (name !== '') {
+									string += '<span data-style="mla" class="name">' + name + '</span>';
+								}
+								if (surname !== '') {
+									string += '<span data-style="mla" class="surname">' + surname + '</span>';
+								}
+								
+								string += '</span>';
 							}
-							if (surname !== '') {
-								string += '<span data-style="mla" class="surname">' + surname + '</span>';
-							}
-							
-							string += '</span>';
-						}
-					});					
+						});
+						string += '</span>';
+					}					
 					if (getTitleAnalytic(newBiblElement)) {
 						string += '<span data-style="mla" data-attr="titolo" class="titleAnalytic">' + getTitleAnalytic(newBiblElement) + '</span>';
 					}

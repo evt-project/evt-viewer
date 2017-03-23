@@ -787,6 +787,7 @@
 		content: ' ESTC:'	
 }
 
+
 .biblRef .idno[data-type=OCLC]:before{
 		content: ' OCLC:'
 	}
@@ -798,6 +799,20 @@
 
 .biblRef .author .surname[data-style=chicago]:after{
 	content: ', '
+}
+ 
+/*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
+.biblRef .authors[data-style=chicago] > .author:last-child span:last-child:after{
+	content: ''
+}
+ 
+/* prima dell'ultimo autore deve esserci and*/ 
+.biblRef .authors[data-style=chicago] > .author:last-child:before{
+	content: 'and '; 
+}
+/* se c'è solo un autore il before deve essere vuoto*/
+.biblRef .authors[data-style=chicago] > .author:first-child:before{
+	content: ' '; 
 }
 
 .biblRef .titleAnalytic[data-style=chicago]:before{
@@ -883,10 +898,6 @@
 	content: '). '
 }
 
-.biblRef  .author[data-style=apa]:not(:first-child):before{
-	content: ' '
-}
-
 
 .biblRef  .vol[data-style=apa]:not(:last-child):after{
 	content: ','
@@ -950,13 +961,38 @@
 }
 
 
-.biblRef > .author > .name[data-style=apa]:after {
-    content: ',';
-}
-
-.biblRef > .author > .surname[data-style=apa]:after {
+.biblRef  .author > .name[data-style=apa]:after {
     content: ', ';
 }
+
+.biblRef  .author > .surname[data-style=apa]:after {
+    content: ', ';
+}
+
+.biblRef  .author[data-style=apa]:not(:first-child):before{
+	content: ' '
+}
+
+/*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
+.biblRef .authors[data-style=apa] > .author:last-child span:last-child:after{
+	content: '';
+}
+ 
+/* prima dell'ultimo autore deve esserci &*/ 
+.biblRef .authors[data-style=apa] > .author:last-child:before{
+	content: '& '; 
+}
+/* se c'è solo un autore il before deve essere vuoto*/
+.biblRef .authors[data-style=apa] > .author:first-child:before{
+	content: ' '; 
+}
+
+
+
+
+
+
+
 
 
 
@@ -968,6 +1004,19 @@
 	content: ', '
 }
 
+/*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
+.biblRef .authors[data-style=mla] > .author:last-child span:last-child:after{
+	content: '';
+}
+ 
+/* prima dell'ultimo autore deve esserci &*/ 
+.biblRef .authors[data-style=mla] > .author:last-child:before{
+	content: 'and '; 
+}
+/* se c'è solo un autore il before deve essere vuoto*/
+.biblRef .authors[data-style=mla] > .author:first-child:before{
+	content: ' '; 
+}
 
 .biblRef .titleMonogr[data-style=mla]{
     font-style: italic;
