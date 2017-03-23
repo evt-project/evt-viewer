@@ -229,13 +229,13 @@ angular.module('evtviewer.dataHandler')
     /* ******* */
 
     /********************************* */
-    /* parseSourcesEntryContent(elem)*/
-    /******************************************************************/
-    /* Function to parse an element inside of a quoteDef element  */
-    /* that may point to the bibliographic reference of the quotation */
-    /* @elem --> an element inside of quoteDef, like <ptr>, <link>*/
-    /* @author: CM                                                    */
-    /**************************************************************** */
+    /* parseSourceContent(elem, source)*/
+    /***********************************************************/
+    /* Function to parse an element inside of a source content.*/
+    /* @elem --> an element inside of source                   */
+    /* @source --> the source                                  */
+    /* @author: CM                                             */
+    /***********************************************************/
     var parseSourceContent = function (elem, source) {
         var contentEl = {
             tagName : elem.tagName,
@@ -283,6 +283,7 @@ angular.module('evtviewer.dataHandler')
     /*Function to parse a source bibliographic reference, and save*/
     /*it in SourcesCollection.                                    */
     /*@source --> source to parse                                 */
+    /*@quote (optional) --> quote that contains the parsed source */
     /*@author --> CM                                              */
     /************************************************************ */
     var parseSource = function(entry, quote) {
