@@ -1,10 +1,10 @@
-angular.module('evtviewer.bibliography')
+angular.module('evtviewer.dataHandler')
 
-   .directive('evtBibliography', function(parsedData,evtHighlight,evtInterface,evtDialog) {
+   .directive('evtRefAttr', function(parsedData,evtHighlight,evtInterface,evtDialog) {
       return {
          restrict: 'A',
          link:  function(scope, element, attr) {
-            element.on('click',function(){
+            element.on('click',function(){console.log(2);
 				if(attr['type']!=='doc'){
 					evtInterface.updateSecondaryContentOpened(' ');
 					evtDialog.openByType('globalInfo');
