@@ -79,7 +79,7 @@
           
           <biblStruct xml:id="Rodrigues1998">
             <monogr>
-              <author>Rodrigues, Louis J.</author>
+              <author>Rodrigues Louis Jim</author>
               <title level="m">'The Dream of the Rood and Cyn(e)wulf' and Other Critical Essays</title>
               <imprint>
                 <pubPlace>Felinfach</pubPlace>
@@ -91,7 +91,7 @@
 
           <biblStruct xml:id="Goodwin1851">
             <monogr>
-              <author>Goodwin, Charles W.</author>
+              <author>Goodwin Charles W.</author>
               <title level="m">The Anglo-Saxon legends of St. Andrew and St. Veronica</title>
               <imprint>
                 <pubPlace>Cambridge</pubPlace>
@@ -106,8 +106,8 @@
 
           <biblStruct xml:id="Bazire1989">
             <monogr>
-              <author>Bazire, Joyce</author>
-              <author>Cross, James E.</author>
+              <author><surname>Bazire</surname> <name>Joyce</name></author>
+              <author><surname>Cross</surname> <name>James Edward</name></author>
               <title level="m">Eleven Old English Rogationtide Homilies</title>
               <imprint>
                 <pubPlace>Exeter</pubPlace>
@@ -137,7 +137,7 @@
           
           <biblStruct xml:id="Allen1976">
             <monogr>
-              <author>Allen, Michael J.B.</author>
+              <author><surname>Allen</surname><name> Michael J.B.</name></author>
               <author>Calder, Daniel G.</author>
               <title level="m">Sources and analogues of Old English poetry</title>
               <imprint>
@@ -155,7 +155,7 @@
           
           <biblStruct xml:id="Chaganti2001">
             <monogr>
-              <author>Chaganti, Seeta</author>
+              <author><surname>Chaganti</surname><name> Seeta</name></author>
               <title level="m">Memorial and Metamorphosis: The Image of the Reliquary in the Poetry of Medieval England and France</title>
               <note place="inline">Diss.</note>
               <note place="inline">DAI 62A (2002): 3384</note>
@@ -170,7 +170,7 @@
           
           <biblStruct xml:id="Allen-1982">
             <monogr>
-              <author>Allen, M.E.</author>
+              <author><surname>Allen</surname><name> M.E.</name></author>
               <title level="u">Personal names in Old and Middle English poetry</title>
               <note place="inline">[Thesis]</note>
               <imprint>
@@ -183,7 +183,7 @@
           
           <biblStruct xml:id="Baldini1958">
             <monogr>
-              <author>Baldini, Gabriele</author>
+              <author><surname>Baldini</surname><name> Gabriele</name></author>
               <title level="m">Storia della letteratura inglese</title>
               <imprint>
                 <pubPlace>Torino</pubPlace>
@@ -219,7 +219,7 @@
 
           <biblStruct xml:id="Wheelock2000">
             <analytic>
-              <author>Wheelock, Jeremy I.</author>
+              <author><surname>Wheelock</surname><name> Jeremy Iron</name></author>
               <title level="a">The Word Made Flesh: 'engel dryhtnes' in <title>The Dream of the Rood</title></title>
             </analytic>
             <monogr>
@@ -235,7 +235,7 @@
           
           <biblStruct xml:id="Cherniss1973">
             <analytic>
-              <author>Cherniss, Michael D.</author>
+              <author><surname>Cherniss</surname><name> Michael D.</name></author>
               <title level="a">The Cross as Christ’s weapon: the influence of heroic literary tradition on <title>The Dream of the Rood</title></title>
             </analytic>
             <monogr>
@@ -253,7 +253,7 @@
           
           <biblStruct xml:id="Roberts2000">
             <analytic>
-              <author>Roberts, Jane</author>
+              <author><surname>Roberts</surname><name> Jane</name></author>
               <title level="a">Some Relationships between <title>The Dream of the Rood</title> and the Cross at Ruthwell</title>
             </analytic>
             <monogr>
@@ -270,7 +270,7 @@
           
           <biblStruct xml:id="Crawford2000">
             <analytic>
-              <author>Crawford, Robert</author>
+              <author><surname>Crawford</surname><name> Robert</name></author>
               <title level="a">The Vision of the Cross</title>
             </analytic>
             <monogr>
@@ -309,7 +309,7 @@
           
           <biblStruct xml:id="Hill1985">
             <analytic>
-              <author>Hill, Thomas D.</author>
+              <author><surname>Hill</surname><name> Thomas D.</name></author>
               <title level="a">When God blew Satan of heaven: the motif of exsufflation in <title>Vercelli Homily XIX</title> and later English
                 literature</title>
             </analytic>
@@ -327,8 +327,8 @@
           
           <biblStruct xml:id="Bosse1987">
             <analytic>
-              <author>Bosse, Roberta B.</author>
-              <author>Wyatt, Jennyfer L.</author>
+              <author><surname>Bosse</surname><name> Roberta B.</name></author>
+              <author><surname>Wyatt</surname><name> Jennyfer L.</name></author>
               <title level="a">Hrothdar and Nebuchadnezzar: conversion in Old English verse</title>
             </analytic>
             <monogr>
@@ -346,7 +346,7 @@
 
           <biblStruct xml:id="Tweedie1892">
             <analytic>
-              <author>Tweedie, W.M.</author>
+              <author><surname>Tweedie</surname><name> W.M.</name></author>
               <title level="a">Kents Cynewulf’s <title>Elene</title></title>
             </analytic>
             <monogr>
@@ -366,7 +366,7 @@
           
           <biblStruct xml:id="Keefer2003b">
             <analytic>
-              <author>Keefer, Sarah Larratt</author>
+              <author><surname>Keefer</surname><name> Sarah Larratt</name></author>
               <title level="a">'Ic' and 'We' in Eleventh-Century Old English Liturgical Verse</title>
             </analytic>
             <monogr>
@@ -384,7 +384,7 @@
           
           <biblStruct xml:id="Frese1975">
             <analytic>
-              <author>Frese, Dolores W.</author>
+              <author><surname>Frese</surname><name> Dolores W.</name></author>
               <title level="a">The art of Cynewulf’s runic signatures</title>
             </analytic>
             <monogr>
@@ -405,7 +405,7 @@
           
           <biblStruct xml:id="Irving1986">
             <analytic>
-              <author>Irving, Edward B.</author>
+              <author><surname>Irving</surname><name> Edward B.</name></author>
               <title level="a">Crucifixion Witnesses; Or, Dramatic Interaction in <title>The Dream of the Rood</title></title>
             </analytic>
             <monogr>
@@ -427,7 +427,7 @@
           
           <biblStruct xml:id="OCarragain2000">
             <analytic>
-              <author>Ó Carragáin, Éamonn</author>
+              <author><surname>Ó Carragáin</surname><name> Éamonn</name></author>
               <title level="a">The Annunciation of the Lord and His Passion: a Liturgical Topos from St Peter's on the Vatican in <title>The Dream of the
                 Rood</title>, Thomas Cranmer and John Donne</title>
             </analytic>
@@ -450,7 +450,7 @@
           
           <biblStruct xml:id="Bourquin1994">
             <analytic>
-              <author>Bourquin, Guy</author>
+              <author><surname>Bourquin</surname><name> Guy</name></author>
               <title level="a">The lexis and deixis of the hero in Old English poetry</title>
             </analytic>
             <monogr>
@@ -474,7 +474,7 @@
           
           <biblStruct xml:id="Savage1986">
             <analytic>
-              <author>Savage, Anne</author>
+              <author><surname>Savage</surname><name>Anne</name></author>
               <title level="a">Mystical and Evangelical in <title>The Dream of the Rood</title>: The Private and the Public</title>
             </analytic>
             <monogr>

@@ -276,8 +276,11 @@ angular.module('evtviewer.dataHandler')
 					if (firstSurname !== '') {
 						string += '<span data-style="chicago" class="surname">' + firstSurname + '</span>';
 					}
-					if (firstName !== '') {
-						string += '<span data-style="chicago" class="name">' + firstName + '</span>';
+					if (firstName !== '' && firstSurname !== '') {
+						string += '<span data-style="chicago" class="name">' + getInitialsExceptFirstOne(firstName) + '</span>';
+					}
+					else if (firstName !== ''){
+						string += '<span data-style="chicago" class="name">' + firstName + '</span>';						
 					}
 					string += '</span>';
 				
@@ -289,8 +292,11 @@ angular.module('evtviewer.dataHandler')
 							var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
 							var surname = authorElement.surname;
 							string += '<span data-style="chicago" class="author">';
-							if (name !== '') {
-								string += '<span data-style="chicago" class="name">' + name + '</span>';
+							if (name !== '' && surname !== '') {
+								string += '<span data-style="mla" class="name">' + getInitialsExceptFirstOne(name) + '</span>';
+							}
+							else if (name !== ''){
+								string += '<span data-style="mla" class="name">' + name + '</span>';
 							}
 							if (surname !== '') {
 								string += '<span data-style="chicago" class="surname">' + surname + '</span>';
@@ -525,8 +531,11 @@ angular.module('evtviewer.dataHandler')
 						if (firstSurname !== '') {
 							string += '<span data-style="mla" class="surname">' + firstSurname + '</span>';
 						}
-						if (firstName !== ''){
-							string += '<span data-style="mla" class="name">' + firstName + '</span>';						
+						if (firstName !== '' && firstSurname !== '') {
+							string += '<span data-style="chicago" class="name">' + getInitialsExceptFirstOne(firstName) + '</span>';
+						}
+						else if (firstName !== ''){
+							string += '<span data-style="chicago" class="name">' + firstName + '</span>';						
 						}
 						string += '</span>';
 					
@@ -536,7 +545,10 @@ angular.module('evtviewer.dataHandler')
 								var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
 								var surname = authorElement.surname;
 								string += '<span data-style="mla" class="author">';
-								if (name !== '') {
+								if (name !== '' && surname !== '') {
+									string += '<span data-style="mla" class="name">' + getInitialsExceptFirstOne(name) + '</span>';
+								}
+								else if (name !== ''){
 									string += '<span data-style="mla" class="name">' + name + '</span>';
 								}
 								if (surname !== '') {
@@ -587,7 +599,7 @@ angular.module('evtviewer.dataHandler')
 	function getInitials(string){
 		var resultString='';
 		for(var c=0;c<string.length;c++){
-			if((c===0 || string[c-1]===' ') && string[c] === string[c].toUpperCase()){
+			if((c===0 || string[c-1]===' ') && string[c] !== ' ' && string[c] === string[c].toUpperCase()){
 				resultString+= '';
 				resultString+= string[c];
 				resultString+= '.';
@@ -595,6 +607,34 @@ angular.module('evtviewer.dataHandler')
 		}
 		return resultString;
 	}
+	
+	function getInitialsExceptFirstOne(string){
+		var resultString='';
+		var sIndex=-1;
+		var eIndex=0;
+		//troviamo la posizione della prima iniziale
+		for(var c=0;c<string.length;c++){
+			if (sIndex === -1 && string[c] !== ' ' && string[c] === string[c].toUpperCase()){
+				sIndex=c;
+				eIndex=c;
+			}
+			if (sIndex !== -1){
+				if (string[c] === ' ' || string[c] === '.'){
+					break;
+				}
+				else {
+					eIndex++;
+				}
+			}
+		}
+		//qua index avrà l'ultima posizione della prima iniziale
+		string1 = string.substr(sIndex,eIndex);
+		string2 = getInitials(string.substr(eIndex+1));
+		if (string2 !== ''){
+			string1 += ' ';
+		}
+		return string1+string2;
+	}	
 	
 	/*/
 		Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
