@@ -84,12 +84,9 @@ angular.module('evtviewer.dataHandler')
                     function(element){
                         parser.handleAnalogue(element);
                 });
-            }
+                parser.updateAnalogues();
         }
-
-        //Qui servirebbe per eliminare le analogue apparentemente con riferimento,
-        //ma che in realtà hanno un id che non corrisponde ad alcun elemento nel doc.
-        parser.updateAnalogues();
+        }
 
         console.log('## Analogues ##', parsedData.getAnalogues());
 
@@ -142,12 +139,11 @@ angular.module('evtviewer.dataHandler')
     /*************************************************************/
     parser.updateAnalogues = function() {
         var analogues = parsedData.getAnalogues();
-        console.log(analogues);
         var index = parsedData.getAnalogues()._indexes.encodingStructure;
         for (var i = 0; i < index.length; i++) {
             var analogue = parsedData.getAnalogue(index[i]);
             if (analogue.sources.length <= 0) {
-                //delete analogues[index[i]];
+                delete analogues[index[i]];
             }
         }
     
@@ -531,6 +527,130 @@ angular.module('evtviewer.dataHandler')
         
         deferred.resolve('success');
         return deferred;
+    }
+
+        parser.getAnalogueContentText = function(elem, wit, doc) {
+        var spanElement;
+
+        if (elem.content !== undefined) {
+            if (elem.content.length === 0) {
+                var xmlEl = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
+                var el = xmlEl.children[0];
+                if (elem.tagName === 'pb') {
+                    if (wit !== '' && (el.getAttribute('ed').indexOf(wit) >= 0)) {
+                        var newPbElem = document.createElement('span'),
+                            id;
+                        if (el.getAttribute('ed')) {
+                            id  = el.getAttribute('xml:id') || el.getAttribute('ed').replace('#', '')+'-'+el.getAttribute('n'); // || 'page_'+k;
+                        } else {
+                            id  = el.getAttribute('xml:id'); //|| 'page_'+k;
+                        }
+                        newPbElem.className = 'pb';
+                        newPbElem.setAttribute('data-wit', el.getAttribute('ed'));
+                        newPbElem.setAttribute('data-id', id);
+                        newPbElem.setAttribute('id', 'pb_'+id);
+                        newPbElem.textContent = el.getAttribute('n');
+                        spanElement = newPbElem;
+                    }
+                } else {
+                    spanElement = evtParser.parseXMLElement(doc, el, '');
+                }
+            }
+            else if (elem.content.length === 1 && typeof elem.content[0] === 'string') {
+                //spanElement = document.createTextNode('FATTO!!!');
+                var xmlE = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
+                var e = xmlE.children[0];
+                spanElement = evtParser.parseXMLElement(doc, e, '');
+            }
+            else {
+                spanElement = document.createElement('span');
+                spanElement.className = elem.tagName;
+
+                var attribKeys = Object.keys(elem.attributes);
+                for (var key in attribKeys) {
+                    var attrib = attribKeys[key];
+                    var value = elem.attributes[attrib];
+                    if (attrib !== 'xml:id') {
+                        spanElement.setAttribute('data-'+attrib, value);
+                    }
+                }
+
+                var content = elem.content;
+                for (var i in content) {
+                    if (typeof content[i] === 'string') {
+                        spanElement.appendChild(document.createTextNode(content[i]));
+                    } else {
+                        if (content[i].type === 'quote') {
+                            spanElement.appendChild(evtSourcesParser.getQuoteText(content[i]));
+                        } else if (content[i].tagName === 'EVT-POPOVER') {
+                            spanElement.appendChild(content[i]);
+                        } else if (content[i].type === 'app') {
+                            if (wit === '') {
+                                spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(content[i]));
+                            } else {
+                                spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(content[i], wit));
+                            }
+                        } else if (elementContent[i].type === 'analogue') {
+                            spanElement.appendChild(parser.getAnalogueText(elementContent[i]));
+                        } else {
+                            var child = parser.getAnalogueContentText(content[i], wit, doc);
+                            if (child !== undefined) {
+                                spanElement.appendChild(child);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return spanElement;
+    }
+
+    /***************************/
+    /*getAnalogueText(analogue)*/
+    /***************************/
+    parser.getAnalogueText = function(analogue, wit, doc){
+        var spanElement,
+            errorElement;
+
+        spanElement = document.createElement('evt-analogue');
+        spanElement.setAttribute('data-analogue-id', quote.id);
+        spanElement.setAttribute('data-type', 'analogue');
+        if (wit !== '' && wit !== undefined){
+            spanElement.setAttribute('data-scope-wit', wit);
+        }
+        var analogueContent = analogue.content;
+
+        var link = ['link', 'ptr', 'linkGrp'];
+
+        for (var i in analogueContent) {
+            if (typeof analogueContent[i] === 'string') {
+                spanElement.appendChild(document.createTextNode(analogueContent[i]));
+            } else {
+                if (analogueContent[i].tagName === 'EVT-POPOVER') {
+                    spanElement.appendChild(analogueContent[i]);
+                } else if (analogueContent[i].type === 'app') {
+                    if (wit === '') {
+                        spanElement.appendChild(evtCriticalApparatusParser.getEntryLemmaText(analogueContent[i]));
+                    } else {
+                        spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(analogueContent[i], wit));
+                    }
+                } else if (analogueContent[i].type === 'quote') {
+                    spanElement.appendChild(evtSourcesParser.getQuoteText(quoteContent[i], wit, doc));
+                } else if (analogueContent[i].type === 'analogue') {
+                    spanElement.appendChild(parser.getAnalogueText(analogueContent[i]));
+                }
+                 else if (analogueContent[i].type === 'analogueContent' && link.indexOf(analogueContent[i].tagName) < 0) {
+                     var child = parser.getAnalogueContentText(analogueContent[i], wit, doc);
+                     if (child !== undefined) {
+                         spanElement.appendChild(child);
+                     }
+                 }
+            }
+        }
+
+        //console.log(spanElement);
+        return spanElement;
     }
 
     return parser;
