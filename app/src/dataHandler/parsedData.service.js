@@ -118,7 +118,9 @@ angular.module('evtviewer.dataHandler')
     var analoguesCollection = {
         _indexes: {
             encodingStructure: [],
-            refId: []
+        },
+        _refId : {
+            _indexes : []
         }
     }
 
@@ -675,10 +677,16 @@ angular.module('evtviewer.dataHandler')
             
             //Adding the entry sourceRef array to the refId array of the collection
             var entryRef = entry._indexes.sourceRefId,
-                collectionRef = analoguesCollection._indexes.refId;
+                collectionRef = analoguesCollection._refId;
             for (var i = 0; i < entryRef.length; i++) {
-                if (collectionRef.indexOf(entryRef[i]) < 0) {
-                    collectionRef.push(entryRef[i]);
+                if (collectionRef._indexes.indexOf(entryRef[i]) < 0) {
+                    collectionRef._indexes.push(entryRef[i]);
+                    collectionRef[entryRef[i]] = [];
+                    collectionRef[entryRef[i]].push(entry.id);
+                } else {
+                    if (collectionRef[entryRef[i]].indexOf(entry.id) < 0) {
+                        collectionRef[entryRef[i]].push(entry.id);
+                    }
                 }
             }
         }

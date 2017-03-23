@@ -66,7 +66,7 @@ angular.module('evtviewer.core')
 
     dataUrl          : '../../data/Phibor_Esempio_codifica.xml',
     sourcesUrl       : '',
-    analoguesUrl     : '',
+    analoguesUrl     : '../../data/analogues.xml',
     preferredWitness : 'A',
     skipWitnesses    : '',
 

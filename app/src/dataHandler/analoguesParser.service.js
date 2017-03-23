@@ -22,11 +22,14 @@ angular.module('evtviewer.dataHandler')
             match += anAnalogueDef[i].replace(/[<>]/g, '');
         } else {
             var bracketOpen = anAnalogueDef[i].indexOf("[");
-            match += anAnalogueDef[i].substring(1, bracketOpen);
+            if(anAnalogueDef[i].substring(1, bracketOpen) !== "[") {
+                match += anAnalogueDef[i].substring(1, bracketOpen)
+            }
+            match += '[^<>]*?';
             var bracketClose = anAnalogueDef[i].indexOf("]");
             var equal = anAnalogueDef[i].indexOf("=");
-            match += '.*?'+anAnalogueDef[i].substring(bracketOpen + 1, equal);
-            match += '.*?';
+            match += anAnalogueDef[i].substring(bracketOpen + 1, equal);
+            match += '\\s*?=\\s*?[\'\"]\\s*?';
             match += anAnalogueDef[i].substring(equal + 1, bracketClose);
         }
         if (i < anAnalogueDef.length -1) {
@@ -52,7 +55,7 @@ angular.module('evtviewer.dataHandler')
         var deferred = $q.defer(),
             currentDocument = angular.element(doc);
 
-            console.log(match);
+        //console.log(match);
 
         angular.forEach(currentDocument.find(analogueDef.replace(/[<>]/g, '')),
         function(element){
@@ -68,8 +71,8 @@ angular.module('evtviewer.dataHandler')
             }
         });
 
-        if (parsedData.getAnalogues()._indexes.refId.length > 0) {
-            if (analoguesUrl === '') {
+        if (parsedData.getAnalogues()._refId._indexes.length > 0) {
+            if (analoguesUrl === '' || analoguesUrl === undefined) {
                 if ( currentDocument.find('text group text').length > 0 ) {
                     defDocElement = 'text group text';
                 } else if ( currentDocument.find('text').length > 0 ) {
@@ -96,22 +99,58 @@ angular.module('evtviewer.dataHandler')
 
     /**********************/
     /*handleAnalogue(elem)*/
-    /**********************/
-    /*Looks for the element (inside the current document or an outside document)
-    that has an xml:id corresponding to one of those in the array of the collection.
-    If so, it parses that element with the function parseSource(source), then
-    pushes the result in the sources array of all the analogue entries that have
-    him. If an analogue has no sourceId or sourceRefId, it is deleted by the updateAnalogues()*/
-    parser.handleAnalogue = function(element) {
-        //TO DO
+    /*******************************************************************************************/
+    /*Function that looks for the element (inside the current document or an external document)*/
+    /*that has an xml:id attribute corresponding to one of the ids saved in the array of the   */
+    /*collection. If so, it parses that element with the function parseSource(source), then    */
+    /*pushes the result in the sources array of all the analogue entries that refer to that    */
+    /*source.                                                                                  */
+    /*@elem --> element to be parsed inside the document                                       */
+    /*******************************************************************************************/
+    parser.handleAnalogue = function(elem) {
+        var ref = parsedData.getAnalogues()._refId;
+        var indexes = parsedData.getAnalogues()._refId._indexes;
+        //console.log('weila', ref)
+        if (elem.nodeType === 3) {
+            return;
+        } else if (elem.nodeType === 1) {
+            if (elem.attributes.length > 0) {
+                for (var i = 0; i < elem.attributes.length; i++) {
+                    if (elem.attributes[i].name === 'xml:id') {
+                        var attr = elem.attributes[i].value;
+                        if (indexes.indexOf(attr) >= 0) {
+                            var source = parser.parseSource(elem);
+                            for (var j = 0; j < ref[attr].length; j++) {
+                                var analogue = parsedData.getAnalogue(ref[attr][j]);
+                                analogue.sources.push(source);
+                            }
+                        }
+                    }
+                }
+            } else if (elem.childNodes.length > 0) {
+                for (var i = 0; i < elem.childNodes.length; i++) {
+                    parser.handleAnalogue(elem.childNodes[i]);
+                }
+            }
+        }
     }
 
     /*******************/
     /*updateAnalogues()*/
-    /*******************/
-    /*Deletes all the analogues that havo no sourceId or sourceRefId*/
+    /*************************************************************/
+    /*Deletes all the analogues that have an empty sources array.*/
+    /*************************************************************/
     parser.updateAnalogues = function() {
-        //TODO
+        var analogues = parsedData.getAnalogues();
+        console.log(analogues);
+        var index = parsedData.getAnalogues()._indexes.encodingStructure;
+        for (var i = 0; i < index.length; i++) {
+            var analogue = parsedData.getAnalogue(index[i]);
+            if (analogue.sources.length <= 0) {
+                //delete analogues[index[i]];
+            }
+        }
+    
     }
 
     /****************************/
@@ -427,6 +466,12 @@ angular.module('evtviewer.dataHandler')
         return source;
     }
 
+    /************************ */
+    /*parseSourceContent(elem)*/
+    /*******************************************************************/
+    /* Function to parse the element contained inside a source element.*/
+    /* @ elem --> element to be parsed                                 */
+    /*******************************************************************/
     var parseSourceContent = function (elem){
         var contentEl = {
             tagName : elem.tagName,
@@ -476,7 +521,6 @@ angular.module('evtviewer.dataHandler')
     /*@doc --> external XML document that contains the analogues      */
     /******************************************************************/
     parser.parseExternalAnalogues = function(doc) {
-        //TODO: risolvere problema di childNodes[0]
         var deferred = $q.defer();
         for (var i = 0; i < doc.childNodes.length; i++) {
             parser.handleAnalogue(doc.childNodes[i]);
