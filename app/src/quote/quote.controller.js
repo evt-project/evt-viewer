@@ -13,12 +13,12 @@ angular.module('evtviewer.quote')
 
 
 
-    //this.destroy = function() {
-        //var tempId = this.uid;
+    this.destroy = function() {
+        var tempId = this.uid;
         // TODO: remove from list and collection
-        // this.$destroy();
-        //evtQuote.destroy(tempId);
+         //this.$destroy();
+        evtQuote.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);
-    //};
+    };
     // _console.log('QuoteCtrl running');
 });

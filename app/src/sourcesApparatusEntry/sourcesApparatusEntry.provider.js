@@ -103,6 +103,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             }
 
             scopeHelper = {
+                uid : currentId,
                 head : head,
                 xml : xml,
                 sources : sources,
@@ -122,6 +123,10 @@ angular.module('evtviewer.sourcesApparatusEntry')
             return collection[currentId];
         }
 
+        sourceEntry.destroy = function(tempId) {
+            delete collection[tempId];
+        };
+        
         return sourceEntry;
     };
 });

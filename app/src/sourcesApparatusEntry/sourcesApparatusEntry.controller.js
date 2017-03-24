@@ -1,6 +1,6 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourcesApparatusEntryCtrl', function() {
+.controller('sourcesApparatusEntryCtrl', function(evtSourcesApparatusEntry) {
     var vm = this;
 
     /**********************/
@@ -31,5 +31,12 @@ angular.module('evtviewer.sourcesApparatusEntry')
         } else {
             vm._subContentOpened = '';
         }
+    };
+
+    this.destroy = function() {
+        var tempId = this.uid;
+        // TODO: remove from list and collection
+        // this.$destroy();
+        evtSourcesApparatusEntry.destroy(tempId);
     };
 });

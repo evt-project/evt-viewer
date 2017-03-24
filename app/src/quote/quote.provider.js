@@ -37,6 +37,12 @@ angular.module('evtviewer.quote')
 
             return collection[currentId];
         };
+
+
+        quote.destroy = function(tempId) {
+            delete collection[tempId];
+        };
+        
         return quote;
     };
 });
