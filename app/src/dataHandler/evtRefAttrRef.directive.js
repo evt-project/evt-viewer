@@ -5,7 +5,7 @@ angular.module('evtviewer.dataHandler')
          restrict: 'A',
          link:  function(scope, element, attr) {
             element.on('click',function(){
-				if(attr['type']!=='doc'){console.log(2);
+				if(attr['type']!=='doc'){
 					evtInterface.updateSecondaryContentOpened(' ');
 					evtDialog.openByType('globalInfo');
 					evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
