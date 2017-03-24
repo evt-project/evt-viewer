@@ -331,7 +331,7 @@ angular.module('evtviewer.dataHandler')
                     if (analogue !== undefined){
                         var prova = evtAnaloguesParser.getAnalogueText(analogue, '', doc);
                         element.parentNode.replaceChild(prova, element);
-                        console.log('weila', prova)
+                        //console.log(prova)
                     }
                     h--;
                 }
