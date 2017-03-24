@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser) {
+.service('baseData', function($log, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, config) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -28,10 +28,17 @@ angular.module('evtviewer.dataHandler')
             // Parse the Sources Apparatus entries (@author: CM)
             evtSourcesParser.parseQuotes(docElements);
 
-            evtSourcesParser.parseSources(docElements);
+            if (config.sourcesUrl === "") {
+                evtSourcesParser.parseSources(docElements);
+            } else {
+                evtSourcesParser.parseSources(docElement, state.XMLExtDocuments["sources"]);
+            }
+            if (config.analoguesUrl === "") {
+                evtAnaloguesParser.parseAnalogues(docElements, '');
+            } else {
+                evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments["analogues"]);
+            }
 
-            evtAnaloguesParser.parseAnalogues(docElements);
-            
             evtProjectInfoParser.parseProjectInfo(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {
@@ -52,11 +59,11 @@ angular.module('evtviewer.dataHandler')
             state.XMLExtDocuments.length++;
             var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
             
-            if (type === 'sources') {
+            /*if (type === 'sources') {
                 evtSourcesParser.parseExternalSources(docElements);
             } else if (type === 'analogues') {
                 evtAnaloguesParser.parseExternalAnalogues(docElements);
-            }
+            }*/
             _console.log('External Files parsed and stored', state.XMLExtDocuments);
         } catch (e) {
             _console.log('Something wrong with the supplementary XML files '+e);

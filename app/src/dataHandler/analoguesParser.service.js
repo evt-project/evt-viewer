@@ -3,7 +3,7 @@
 /****************/
 angular.module('evtviewer.dataHandler')
 
-.service('evtAnaloguesParser', function($q, evtParser, parsedData, evtCriticalApparatusParser, evtSourcesParser, config) {
+.service('evtAnaloguesParser', function($q, evtParser, parsedData, evtCriticalApparatusParser, evtSourcesParser, config, xmlParser) {
     //TODO
     //Forse dovrai spostare tutti i parser degli elementi critici in un unico file :(
     var parser = {}
@@ -19,11 +19,11 @@ angular.module('evtviewer.dataHandler')
 
     for (var i = 0; i < anAnalogueDef.length; i++) {
         if (anAnalogueDef[i].indexOf("[") < 0) {
-            match += anAnalogueDef[i].replace(/[<>]/g, '');
+            match += anAnalogueDef[i].replace(/[>]/g, '');
         } else {
             var bracketOpen = anAnalogueDef[i].indexOf("[");
             if(anAnalogueDef[i].substring(1, bracketOpen) !== "[") {
-                match += anAnalogueDef[i].substring(1, bracketOpen)
+                match += anAnalogueDef[i].substring(0, bracketOpen)
             }
             match += '[^<>]*?';
             var bracketClose = anAnalogueDef[i].indexOf("]");
@@ -51,7 +51,7 @@ angular.module('evtviewer.dataHandler')
     /*linked to a source.                                                              */
     /* @doc --> XML document to be parsed                                              */
     /***********************************************************************************/
-    parser.parseAnalogues = function(doc) {
+    parser.parseAnalogues = function(doc, extDoc) {
         var deferred = $q.defer(),
             currentDocument = angular.element(doc);
 
@@ -85,7 +85,9 @@ angular.module('evtviewer.dataHandler')
                         parser.handleAnalogue(element);
                 });
                 parser.updateAnalogues();
-        }
+            } else {
+                parser.parseExternalAnalogues(extDoc);
+            }
         }
 
         console.log('## Analogues ##', parsedData.getAnalogues());
@@ -590,8 +592,8 @@ angular.module('evtviewer.dataHandler')
                             } else {
                                 spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(content[i], wit));
                             }
-                        } else if (elementContent[i].type === 'analogue') {
-                            spanElement.appendChild(parser.getAnalogueText(elementContent[i]));
+                        } else if (content[i].type === 'analogue') {
+                            spanElement.appendChild(parser.getAnalogueText(content[i]));
                         } else {
                             var child = parser.getAnalogueContentText(content[i], wit, doc);
                             if (child !== undefined) {
@@ -614,7 +616,7 @@ angular.module('evtviewer.dataHandler')
             errorElement;
 
         spanElement = document.createElement('evt-analogue');
-        spanElement.setAttribute('data-analogue-id', quote.id);
+        spanElement.setAttribute('data-analogue-id', analogue.id);
         spanElement.setAttribute('data-type', 'analogue');
         if (wit !== '' && wit !== undefined){
             spanElement.setAttribute('data-scope-wit', wit);

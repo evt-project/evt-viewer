@@ -500,14 +500,13 @@ angular.module('evtviewer.dataHandler')
     /*@doc --> XML document to parse                              */
     /*@author --> CM                                              */
     /************************************************************ */
-    parser.parseSources = function(doc) {
+    parser.parseSources = function(doc, extDoc) {
         var deferred = $q.defer();
 
         if (parsedData.getQuotes()._indexes.sourcesRef._id.length > 0) {
-            var currentDocument = angular.element(doc),
-                defDocElement;
-
             if (config.sourcesUrl === "") {
+                var currentDocument = angular.element(doc),
+                defDocElement;
                 if ( currentDocument.find('text group text').length > 0 ) {
                     defDocElement = 'text group text';
                 } else if ( currentDocument.find('text').length > 0 ) {
@@ -520,13 +519,13 @@ angular.module('evtviewer.dataHandler')
                         handleSource(element);
                     });
                 console.log('## Sources ##', parsedData.getSources());
+                //Delete the source entries from the collection, if they don't correspond to a source
+                updateQuotes();
+            } else {
+                parser.parseExternalSources(extDoc);
             }
-        }
-        else {
-            //TODO: implementare gestione di source codificate nel testo.
-        }
-        //Delete the source entries from the collection, if they don't correspond to a source
-        updateQuotes();
+        }        
+        
         console.log('## QUOTES UPDATED ##', parsedData.getQuotes());
         
         deferred.resolve('success');

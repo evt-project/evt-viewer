@@ -1,14 +1,44 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, xmlParser, config) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, xmlParser, config) {
     var parser = {};
 
-    var apparatusEntryDef     = '<app>',
-        lemmaDef              = '<lem>',
-        readingDef            = lemmaDef+', <rdg>',
-        readingGroupDef       = '<rdgGrp>',
-        quoteDef              = '<quote>';
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+',<evt-quote>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
+    var apparatusEntryDef = '<app>',
+        lemmaDef          = '<lem>',
+        readingDef        = lemmaDef+', <rdg>',
+        readingGroupDef   = '<rdgGrp>',
+        quoteDef          = '<quote>';
+        analogueDef       = '<seg>,<ref[type=parallelPassage]>';
+    
+    //Creating the regular expression that will help finding nested analogueDef
+    var match = '(',
+        anAnalogueDef = analogueDef.split(",");
+
+    for (var i = 0; i < anAnalogueDef.length; i++) {
+        if (anAnalogueDef[i].indexOf("[") < 0) {
+            match += anAnalogueDef[i].replace(/[>]/g, '');
+        } else {
+            var bracketOpen = anAnalogueDef[i].indexOf("[");
+            if(anAnalogueDef[i].substring(1, bracketOpen) !== "[") {
+                match += anAnalogueDef[i].substring(0, bracketOpen)
+            }
+            match += '[^<>]*?';
+            var bracketClose = anAnalogueDef[i].indexOf("]");
+            var equal = anAnalogueDef[i].indexOf("=");
+            match += anAnalogueDef[i].substring(bracketOpen + 1, equal);
+            match += '\\s*?=\\s*?[\'\"]\\s*?';
+            match += anAnalogueDef[i].substring(equal + 1, bracketClose);
+        }
+        if (i < anAnalogueDef.length -1) {
+            match+='|';
+        } else if ( i = anAnalogueDef.length - 1) {
+            match+=')';
+        }
+    }
+
+    var sRegExpInput = new RegExp(match, 'ig');
+
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+','+analogueDef+',<evt-quote>,<evt-analogue>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
 
@@ -71,7 +101,7 @@ angular.module('evtviewer.dataHandler')
 
                 //docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''))
                 var quotes   = [];
-                if (quoteDef.lastIndexOf('<') != 0){
+                if (quoteDef.lastIndexOf('<') !== 0){
                     var tags = quoteDef.split(',');
                     for (var i = 0; i < tags.length; i++) {
                         var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
@@ -103,6 +133,36 @@ angular.module('evtviewer.dataHandler')
                 }
                 k--;
             }
+            
+            //ANALOGUES
+                var analogues = [],
+                //TO DO: trovare alternativa meno dispendiosa di memoria
+                    allEl = docDOM.getElementsByTagName("*");
+                for (var i = 0; i < allEl.length; i++) {
+                    var inner = allEl[i].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+                    var el = allEl[i].outerHTML.replace(inner, '');
+                    if (sRegExpInput.test(el)) {
+                        analogues.push(allEl[i]);
+                    }
+                }
+
+                var h = analogues.length - 1;
+                while(h < quotes.length && h >= 0) {
+                    var element = analogues[h];
+                    var id;
+                    if (element.getAttribute('xml:id')) {
+                        id = element.getAttribute('xml:id');
+                    } else {
+                        id = evtParser.xpath(element).substr(1);
+                    }
+                    var analogue = parsedData.getAnalogue(id);
+                    if (analogue !== undefined){
+                        var prova = evtAnaloguesParser.getAnalogueText(analogue, wit, doc);
+                        element.parentNode.replaceChild(prova, element);
+                        console.log('weila', prova)
+                    }
+                    h--;
+                }
 
             docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
 
@@ -163,6 +223,8 @@ angular.module('evtviewer.dataHandler')
             // if (lemmas.length > 0 || 
             //     (parsedData.getWitness(config.preferredWitness) !== undefined &&
             //      parsedData.getWitness(config.preferredWitness) !== '') ) {
+                
+                //READINGS
                 var apps   = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
                     j      = apps.length-1, 
                     count  = 0;
@@ -209,7 +271,7 @@ angular.module('evtviewer.dataHandler')
                     j--;
                 }
 
-                //docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''))
+                //QUOTES
                 var quotes   = [];
                 if (quoteDef.lastIndexOf('<') != 0){
                     var tags = quoteDef.split(',');
@@ -238,11 +300,40 @@ angular.module('evtviewer.dataHandler')
                     }
                     var quote = parsedData.getQuote(id);
                     if (quote !== undefined){
-
                         var prova = evtSourcesParser.getQuoteText(quote, '', doc);
                         element.parentNode.replaceChild(prova, element);
                     }
                     k--;
+                }
+                
+                //ANALOGUES
+                var analogues = [],
+                //TO DO: trovare alternativa meno dispendiosa di memoria
+                    allEl = docDOM.getElementsByTagName("*");
+                for (var i = 0; i < allEl.length; i++) {
+                    var inner = allEl[i].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+                    var el = allEl[i].outerHTML.replace(inner, '');
+                    if (sRegExpInput.test(el)) {
+                        analogues.push(allEl[i]);
+                    }
+                }
+
+                var h = analogues.length - 1;
+                while(h < quotes.length && h >= 0) {
+                    var element = analogues[h];
+                    var id;
+                    if (element.getAttribute('xml:id')) {
+                        id = element.getAttribute('xml:id');
+                    } else {
+                        id = evtParser.xpath(element).substr(1);
+                    }
+                    var analogue = parsedData.getAnalogue(id);
+                    if (analogue !== undefined){
+                        var prova = evtAnaloguesParser.getAnalogueText(analogue, '', doc);
+                        element.parentNode.replaceChild(prova, element);
+                        console.log('weila', prova)
+                    }
+                    h--;
                 }
                 
 

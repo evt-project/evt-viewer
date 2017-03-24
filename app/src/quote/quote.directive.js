@@ -18,7 +18,7 @@ angular.module('evtviewer.quote')
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentQuote){
-                    currentQuote.destroy();
+                    //currentQuote.destroy();
                 }     
             });
         }

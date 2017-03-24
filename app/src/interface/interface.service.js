@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, evtCriticalApparatusParser, evtCriticalApparatusEntry, evtCriticalParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function(evtCommunication, evtCriticalApparatusParser, evtCriticalApparatusEntry, evtCriticalParser, config, $routeParams, parsedData, evtReading, $q, evtAnaloguesParser) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -31,20 +31,20 @@ angular.module('evtviewer.interface')
                 properties.indexTitle         = config.indexTitle;
                 properties.availableViewModes = config.availableViewModes;
                 
+                //TO DO: oggetto di file esterni in globaldefault, su cui ciclare
+                //Parse the external Sources file, if defined (@author: CM)
+                if (config.sourcesUrl !== "") {
+                        evtCommunication.getExternalData(config.sourcesUrl);
+                    }
+                if (config.analoguesUrl !== "") {
+                        evtCommunication.getExternalData(config.analoguesUrl);
+                }
+
                 evtCommunication.getData(config.dataUrl).then(function () {
                     mainInterface.updateParams($routeParams);
 
                     var promises = [];
                     
-                    //Oggetto di file esterni in globaldefault, su cui ciclare
-                    //Parse the external Sources file, if defined (@author: CM)
-                    if (config.sourcesUrl !== "") {
-                        promises.push(evtCommunication.getExternalData(config.sourcesUrl));
-                    }
-                    if (config.analoguesUrl !== "") {
-                        promises.push(evtCommunication.getExternalData(config.analoguesUrl));
-                    }
-                    // Parse critical text and entries
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                     if (currentDocFirstLoad !== undefined){
                         
