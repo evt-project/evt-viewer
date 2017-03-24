@@ -9,7 +9,9 @@
         ng-repeat="bibl in bibliographicRefsCollection | orderBy: 'author[0].name'" 
         compile="getFormattedBibl(bibl)"
 		ng-attr-pubblicationType="{{pubblicationType(bibl) ? pubblicationType(bibl) : 'unknown'}}"
-		ng-attr-highlight="{{evtHighlight.highlight===bibl.id}}"
-		></div>
+		ng-attr-biblID="{{bibl.id ? bibl.id : 'unknown'}}"
+		ng-attr-highlight="{{highlight.highlight===bibl.id}}"
+		>
+		</div>
    </div>
 </div>

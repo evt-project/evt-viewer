@@ -71,7 +71,8 @@
   <text>
     <body>
       <div>
-
+	  <p>
+                   See especially <ref evt-Ref-Attr="" type="aaaaa" target="Rodrigues1998">the second sentence</ref></p>
         <listBibl>
           <head>Bibliografia commentata del <title>Vercelli Book</title></head>
 
@@ -328,7 +329,7 @@
           <biblStruct xml:id="Bosse1987">
             <analytic>
               <author><surname>Bosse</surname><name> Roberta B.</name></author>
-              <author><surname>Wyatt</surname><name> Jennyfer L.</name></author>
+              <author><surname>Wyatt</surname><name> Jennyfer Lawrence</name></author>
               <title level="a">Hrothdar and Nebuchadnezzar: conversion in Old English verse</title>
             </analytic>
             <monogr>

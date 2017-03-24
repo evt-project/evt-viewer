@@ -735,6 +735,9 @@
     font-style: italic;
 }
 
+.biblRef[highlight=true]{
+    background-color: antiquewhite;
+}
 .biblRef,.biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
 .biblRef .pubPlace,.biblRef .date,  .biblRef .note, .biblRef  .idno, .biblRef  .edition, .biblRef  .accessed,.biblRef  .url,
 .biblRef .vol, .biblRef .pp, .biblRef .editor,.biblRef .date ,.biblRef .publisher {

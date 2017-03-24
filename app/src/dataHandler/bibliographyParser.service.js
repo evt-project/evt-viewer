@@ -610,26 +610,28 @@ angular.module('evtviewer.dataHandler')
 	
 	function getInitialsExceptFirstOne(string){
 		var resultString='';
-		var sIndex=-1;
-		var eIndex=0;
+		var startIndex=-1;
+		var endIndex=0;
 		//troviamo la posizione della prima iniziale
 		for(var c=0;c<string.length;c++){
-			if (sIndex === -1 && string[c] !== ' ' && string[c] === string[c].toUpperCase()){
-				sIndex=c;
-				eIndex=c;
+			if (startIndex === -1 && string[c] !== ' ' && string[c] === string[c].toUpperCase()){
+				startIndex=c;
+				endIndex=c;
 			}
-			if (sIndex !== -1){
+			if (startIndex !== -1){
 				if (string[c] === ' ' || string[c] === '.'){
 					break;
 				}
 				else {
-					eIndex++;
+					endIndex++;
 				}
 			}
 		}
 		//qua index avrà l'ultima posizione della prima iniziale
-		string1 = string.substr(sIndex,eIndex);
-		string2 = getInitials(string.substr(eIndex+1));
+		//prendiamo la prima parte della stringa con la prima iniziale
+		//per il resto della stringa lasciamo che la funzione getInitials faccia il suo lavoro
+		string1 = string.substr(startIndex,endIndex);
+		string2 = getInitials(string.substr(endIndex+1));
 		if (string2 !== ''){
 			string1 += ' ';
 		}
