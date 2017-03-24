@@ -35,5 +35,6 @@ angular
     'evtviewer.tabsContainer',
     'evtviewer.UItools',
     'evtviewer.quote',
-    'evtviewer.sourcesApparatusEntry'
+    'evtviewer.sourcesApparatusEntry',
+    'evtviewer.analogue'
   ]);
