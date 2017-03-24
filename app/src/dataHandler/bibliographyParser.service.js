@@ -266,8 +266,8 @@ angular.module('evtviewer.dataHandler')
 			if (styleCode === CHICAGO_STYLE) {
 				//autore-data-titolo-titolo_monografia(se presente)- edizione-luogo pubblicazione-data-numero pagina-idno(se dati)
 				//il primo autore deve essere citato con cognome-nome
-				string += '<span data-style="chicago" class="authors">';
 				if (newBiblElement.author && newBiblElement.author.length > 0) {
+					string += '<span data-style="chicago" class="authors">';
 					var firstAuthor = newBiblElement.author[0];
 					//il nome lo prendiamo per mezzo del tag name o forename
 					var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
