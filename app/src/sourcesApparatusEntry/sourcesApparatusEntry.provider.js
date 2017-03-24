@@ -10,19 +10,17 @@ angular.module('evtviewer.sourcesApparatusEntry')
     
     this.$get = function(parsedData, evtSourcesApparatus, $log) {
         var sourceEntry = {},
-            //Collezione di istanze della direttiva?
-            collection = {},
-            list = [],
-            idx = 0;
+            collection  = {},
+            list        = [],
+            idx         = 0;
         
         sourceEntry.build = function(id, scope) {
             var currentId = idx++,
-                entryId = id || undefined;
+                entryId = id || undefined,
                 scopeWit = scope.scopeWit || '';
 
             var scopeHelper = {};
 
-            //Modo per non aggiungere nuove istanze della direttiva?
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
