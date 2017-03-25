@@ -8,11 +8,12 @@
       <div class="biblRef" 
         ng-repeat="bibl in bibliographicRefsCollection | orderBy: 'author[0].name'" 
         compile="getFormattedBibl(bibl)"
-		ng-attr-pubblicationType="{{pubblicationType(bibl) ? pubblicationType(bibl) : 'unknown'}}"
-		ng-attr-biblID="{{bibl.id ? bibl.id : 'unknown'}}"
 		ng-attr-highlight="{{highlight.highlight===bibl.id}}"
-		evt-scroll-if="highlight.highlight===bibl.id"
-		>
+		evt-scroll-if="{{highlight.highlight===bibl.id}}">
+<!-- 		just debug stuff -->
+<!-- 		ng-attr-pubblicationType="{{pubblicationType(bibl) ? pubblicationType(bibl) : 'unknown'}}" -->
+<!-- 		ng-attr-biblID="{{bibl.id ? bibl.id : 'unknown'}}" -->
+
 		</div>
    </div>
 </div>

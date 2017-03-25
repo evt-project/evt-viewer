@@ -20,14 +20,5 @@ angular.module('evtviewer.bibliography')
 		  return evtBibliographyParser.getType(BiblElement);
 		  };	
 		
-	//osseriviamo evtHighlight.highlight, qui risiede l'id dell'entrata bibliografia	
-	 $scope.$watch('highlight.highlight',function(newVal){
-		 mentre nel template della bibliografia viene registrato l'attributo 'highlight' qui effettuiamo lo scrolling
-		 $scope.scrollToElement(newVal);
-	 });/*/
-	/*/
-	  $scope.scrollToElement = function(elementID){
-		  $location.hash(elementID);
-		  $anchorScroll();
-	  }/*/
+	 $scope.highlight=evtHighlight;
    });
