@@ -1,8 +1,8 @@
-$sources-apparatus-entry-background-color : $base-color-light;
-$sources-apparatus-entry-background-color-darker : rgb(225, 225, 225);
-$sources-apparatus-entry-border-color : rgb(125, 125, 125);
+$analogues-apparatus-entry-background-color : $base-color-light;
+$analogues-apparatus-entry-background-color-darker : rgb(225, 225, 225);
+$analogues-apparatus-entry-border-color : rgb(125, 125, 125);
 
-.sources-apparatus-entry {
+.analogues-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
     position: relative;
@@ -167,21 +167,21 @@ $sources-apparatus-entry-border-color : rgb(125, 125, 125);
         }
     }
 }
-.sources-apparatus-entry.noTools{
-    .sources-apparatus-entry_main-content, .sources-apparatus-entry_other-content {
+.analogues-apparatus-entry.noTools{
+    .analogues-apparatus-entry_main-content, .analogues-apparatus-entry_other-content {
         width: 100%;
     }
-    border-right: 1px solid $sources-apparatus-entry-border-color;
+    border-right: 1px solid $analogues-apparatus-entry-border-color;
 }
-.in_sources_apparatus {
-    .sources-apparatus-entry {
+.in_analogues_apparatus {
+    .analogus-apparatus-entry {
         cursor: pointer !important;
         border: 0;
         background: transparent;
         &:hover{
-            background: $sources-apparatus-entry-background-color;
+            background: $analogues-apparatus-entry-background-color;
             > * {
-                background: $sources-apparatus-entry-background-color;
+                background: $analogues-apparatus-entry-background-color;
             }
         }
         &_tools{
@@ -201,12 +201,12 @@ $sources-apparatus-entry-border-color : rgb(125, 125, 125);
         }
     }
     &.active {
-        .sources-apparatus-entry {
-            background: $sources-apparatus-entry-background-color;
+        .analogues-apparatus-entry {
+            background: $analogues-apparatus-entry-background-color;
         }
     }
 }
-.blurred .sources-apparatus-entry, .blurred .sources-apparatus-entry * {
+.blurred .analogues-apparatus-entry, .blurred .analogues-apparatus-entry * {
     border: none !important;
     @include set(box-shadow, 'none');
     color: transparent !important;

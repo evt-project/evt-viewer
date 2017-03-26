@@ -328,7 +328,9 @@ angular.module('evtviewer.dataHandler')
                         id = evtParser.xpath(element).substr(1);
                     }
                     var analogue = parsedData.getAnalogue(id);
+                    
                     if (analogue !== undefined){
+                        console.log('ohibo', parsedData.getAnalogues())
                         var prova = evtAnaloguesParser.getAnalogueText(analogue, '', doc);
                         element.parentNode.replaceChild(prova, element);
                         //console.log(prova)

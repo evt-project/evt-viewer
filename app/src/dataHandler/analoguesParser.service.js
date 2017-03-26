@@ -218,7 +218,7 @@ angular.module('evtviewer.dataHandler')
     parser.parseAnalogue = function(entry) {
         var analogue = {
             id : '',
-            type : 'analogue',
+            type : '',
             attributes : [],
             content : [],
             sources : [],
@@ -344,6 +344,10 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         });
+
+        if (analogue._indexes.sourceId.length !== 0 || analogue._indexes.sourceRefId.length !== 0) {
+            analogue.type = 'analogue';
+        }
 
         return analogue;
     }
@@ -531,7 +535,10 @@ angular.module('evtviewer.dataHandler')
         return deferred;
     }
 
-        parser.getAnalogueContentText = function(elem, wit, doc) {
+    /************************************** */
+    /*getAnalogueContentText(elem, wit, doc)*/
+    /************************************** */
+    parser.getAnalogueContentText = function(elem, wit, doc) {
         var spanElement;
 
         if (elem.content !== undefined) {
@@ -647,6 +654,13 @@ angular.module('evtviewer.dataHandler')
                      if (child !== undefined) {
                          spanElement.appendChild(child);
                      }
+                 } else {
+                     if (analogueContent[i].content !== undefined && analogueContent[i].content.length !== 0) {
+                         var child = parser.getAnalogueContentText(analogueContent[i], wit, doc);
+                         if (child !== undefined) {
+                            spanElement.appendChild(child);
+                        }
+                    }
                  }
             }
         }

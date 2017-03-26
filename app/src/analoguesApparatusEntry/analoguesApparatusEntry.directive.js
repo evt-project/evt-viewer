@@ -1,11 +1,11 @@
 angular.module('evtviewer.analoguesApparatusEntry')
 
-.directive('evtAnaloguesourcesApparatusEntry', function(evtAnaloguesourcesApparatusEntry, parsedData, evtInterface) {
+.directive('evtAnaloguesApparatusEntry', function(evtAnaloguesApparatusEntry, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
             analogueId: '@',
-            scopeWit : '@',
+            scopeWit  : '@',
         },
         transclude: true,
         templateUrl: 'src/analoguesApparatusEntry/analoguesApparatusEntry.directive.tmpl.html',

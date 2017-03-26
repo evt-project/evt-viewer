@@ -1,0 +1,51 @@
+<div class="analogues-apparatus-entry">
+    <div class="analogues-apparatus-entry_main-content">
+        <div class="analogues-apparatus-entry_main-content_header"
+             compile="vm.header">
+        </div>
+        <div class="analogues-apparatus-entry_main-content_list">
+            <ul>
+                <li ng-repeat="source in vm.sources"
+                    ng-click="vm.toggleSource(source.id)">
+                    <em compile="source.id"></em>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="analogues-apparatus-entry_other-content"
+         ng-if="vm.tabs._indexes.length > 0">
+        <div class="analogues-apparatus-entry_other-content_headers">
+            <span ng-repeat="tab in vm.tabs._indexes"
+                  ng-click="vm.toggleSubContent(tab)"
+                  ng-class="{'active' : vm._subContentOpened == tab }">
+                {{ vm.tabs[tab].label}}
+            </span>
+        </div>
+        <div class="analogues-apparatus-entry_other-content_panels"
+             ng-class="{'closed': vm._subContentOpened === ''}">
+            <div class="analogues-apparatus-entry_other-content_panel"
+                 ng-repeat="tab in vm.tabs._indexes"
+                 ng-class="{'active' : vm._subContentOpened == tab}"
+                 ng-switch="tab">
+                 <div ng-switch-when="text"
+                      compile="vm.src_list[vm._activeSource].text">
+
+                 </div>
+                 <div ng-switch-when="biblRef"
+                      ng-if="vm.src_list[vm._activeSource].bibl !== ''"
+                      compile="vm.src_list[vm._activeSource].bibl">
+                </div>
+                <div ng-switch-when="moreInfo">
+
+                </div>
+                 <div ng-switch-when="xmlSource">
+                     XML Source for Analogue
+                     <pre>{{ vm.xml | prettyXml}}</pre>
+                     XML Source for {{vm._activeSource}}
+                     <pre>{{ vm.src_list[vm._activeSource]._xmlSource | prettyXml }}</pre>
+                     <div ng-if=""></div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>

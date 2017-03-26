@@ -472,7 +472,7 @@ angular.module('evtviewer.dataHandler')
                 }
             });
             
-        console.log('## QUOTES ##', parsedData.getQuotes());
+        console.log('## Quotes ##', parsedData.getQuotes());
 
         deferred.resolve('success');
         return deferred;
@@ -525,8 +525,6 @@ angular.module('evtviewer.dataHandler')
                 parser.parseExternalSources(extDoc);
             }
         }        
-        
-        console.log('## QUOTES UPDATED ##', parsedData.getQuotes());
         
         deferred.resolve('success');
         return deferred;

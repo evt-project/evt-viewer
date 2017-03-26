@@ -20,11 +20,11 @@ angular.module('evtviewer.analogue')
                 entryId = scope.analogueId || undefined,
                 attributes = '';
             
-            var scopeHelper = {};
-
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
+
+            var scopeHelper = {};
 
             scopeHelper = {
                 uid: currentId,
@@ -39,7 +39,7 @@ angular.module('evtviewer.analogue')
         };
 
         analogue.destroy = function(tempId) {
-            delete collection[temId];
+            delete collection[tempId];
         };
 
         return analogue;

@@ -5,8 +5,7 @@ angular.module('evtviewer.analogue')
         restrict: 'E',
         scope: {
             analogueId: '@',
-            scopeWit: '@',
-            type: '@'
+            scopeWit: '@'
         },
         transclude: true,
         templateUrl: 'src/analogue/analogue.directive.tmpl.html',
