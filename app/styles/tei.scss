@@ -922,11 +922,11 @@
 }
 
 .biblRef[pubblicationtype=a]  .pp[data-style=apa]:before{
-	content: ' (pp. '
+	content: '  '
 }
 
 .biblRef[pubblicationtype=a]  .pp[data-style=apa]:after{
-	content: '). '
+	content: '  '
 }
 
 .biblRef[pubblicationtype=j]  .pp[data-style=apa]:after,.biblRef[pubblicationtype=u]  .pp[data-style=apa]:after{
