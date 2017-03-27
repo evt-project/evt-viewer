@@ -86,6 +86,10 @@ angular.module('evtviewer.interface')
         return evtInterface.isPinnedAppBoardOpened();
     };
 
+    $scope.isApparatusBoxOpen = function() {
+        return evtInterface.isApparatusBoxOpen();
+    };
+
     $scope.isToolAvailable = function(toolName){
         return evtInterface.isToolAvailable(toolName);
     };

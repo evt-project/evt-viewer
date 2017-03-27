@@ -364,6 +364,14 @@ angular.module('evtviewer.box')
                         }
                     };
                     break;
+                case 'apparatus':
+                    isLoading = true;
+                    updateContent = function(newContent) {
+                        newContent = '<span>ciao</span><apparatuses></apparatuses>'
+                        scope.vm.content = newContent;
+                    };
+                    isLoading = false;
+                    break;
                 default:
                     isLoading = false;
                     if (currentType === 'pinnedBoard') {

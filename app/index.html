@@ -106,7 +106,8 @@
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"
                  ng-class="{'centered': !isPinnedAppBoardOpened(),
-                            'half-centered': isPinnedAppBoardOpened()}"></box>
+                            'half-centered': isPinnedAppBoardOpened(),
+                            'left': isApparatusBoxOpen()}"></box>
             <button-switch 
                     title="Show pinned apparatus entries"
                     data-label=""
@@ -130,6 +131,11 @@
                     ng-repeat="entry in getPinnedEntries()"
                     data-type="pinned"
                     data-app-id="{{entry}}"></evt-critical-apparatus-entry>
+            </box>
+
+            <box data-type="apparatus"
+                 id="apparatus">
+                <!---->
             </box>
         </section> 
 
@@ -380,6 +386,10 @@
     <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.directive.tmpl.html"></script>
     <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.directive.js"></script>
 
+    <script src="/src/apparatuses/apparatuses.js"></script>
+    <script src="/src/apparatuses/apparatuses.provider.js"></script>
+    <script src="/src/apparatuses/apparatuses.dir.tmpl.html"></script>
+    <script src="/src/apparatuses/apparatuses.directive.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

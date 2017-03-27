@@ -35,7 +35,8 @@ angular.module('evtviewer.box')
                 currentBox.updateContent();
                 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
-                    // Scrol box to update page numbers 
+                    // Scrol box to update page numbers
+                    //BIND DEPRECATED, USE ON
                     angular.element(boxBody).bind('DOMMouseScroll mousewheel', function() {
                         var i       = 0,
                             visible = false,
@@ -129,7 +130,7 @@ angular.module('evtviewer.box')
                 return evtBox.getListByType(type).length;
             };
             
-            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+            if (currentBox.type === 'witness' || currentBox.type === 'text') { //==='source'
                 scope.vm.scrollToPage = function(pageId) {
                     $timeout(function(){
                         var pbElem = $('#'+currentBox.uid).find('#pb_'+pageId);

@@ -13,7 +13,9 @@ angular.module('evtviewer.interface')
             currentHighlightedZone: undefined,
             isLoading        : true,
             isPinnedAppBoardOpened : false,
-            secondaryContent : ''
+            secondaryContent : '',
+            isApparatusBoxOpen: true,
+            /*Poi da ridefinire a false, quando si aprirà alla selezione di un elemento critico*/
         };
         var properties = {
             indexTitle         : '',
@@ -160,6 +162,10 @@ angular.module('evtviewer.interface')
             return state.isPinnedAppBoardOpened;
         };
 
+        mainInterface.isApparatusBoxOpen = function() {
+            return state.isApparatusBoxOpen;
+        };
+
         mainInterface.getPinnedEntries = function() {
             return evtCriticalApparatusEntry.getPinned();
         };
@@ -177,6 +183,10 @@ angular.module('evtviewer.interface')
 
         mainInterface.togglePinnedAppBoardOpened = function() {
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
+        };
+
+        mainInterface.toggleApparatusBoxOpen = function() {
+            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
         };
         
         mainInterface.setToolState = function(toolName, status) {
