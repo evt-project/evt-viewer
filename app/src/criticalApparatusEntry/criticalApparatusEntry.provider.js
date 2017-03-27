@@ -93,7 +93,8 @@ angular.module('evtviewer.criticalApparatusEntry')
                 type              : type,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
-                tabs              : tabs
+                tabs              : tabs,
+                witnessesGroups   : content.witnessesGroups
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

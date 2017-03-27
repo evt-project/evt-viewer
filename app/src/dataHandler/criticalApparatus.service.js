@@ -22,7 +22,8 @@ angular.module('evtviewer.dataHandler')
             significantReadings    : [],
             notSignificantReadings : [],
             readingGroups          : [],
-            criticalNote           : ''
+            criticalNote           : '',
+            witnessesGroups        : config.witnessesGroups,
         };
 
         //Lemma
@@ -33,6 +34,8 @@ angular.module('evtviewer.dataHandler')
             appContent.lemma.attributes._keys  = Object.keys(lemma.attributes) || [];
         }
 
+        //significant
+
         //Significant Readings
         var readings = entry._indexes.readings;
         var totReadings = readings._indexes;
@@ -40,7 +43,23 @@ angular.module('evtviewer.dataHandler')
             var reading = entry.content[totReadings[i]];
             if (reading !== undefined) {
                 if (readings._significant.indexOf(reading.id) >= 0) {
-                    appContent.significantReadings.push(apparatus.getSignificantReading(reading, scopeWit));
+                    var r = apparatus.getSignificantReading(reading, scopeWit);
+                    appContent.significantReadings.push(r);
+                    var wits = reading.wits || [];
+                    for (var j = 0; j < wits.length; j++) {
+                        var wit = wits[j],
+                            groups = appContent.witnessesGroups;
+                        for (var h in groups) {
+                            if (groups[h].witnesses.indexOf(wit) >= 0) {
+                                if (groups[h].content !== '') {
+                                    groups[h].content = r.content;
+                                } else {
+                                    groups[h].content += r;
+                                }
+                            }
+                        }
+                    }
+                    
                 } else {
                     appContent.notSignificantReadings.push(apparatus.getSignificantReading(reading, scopeWit));
                 }

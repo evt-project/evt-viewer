@@ -159,7 +159,6 @@ angular.module('evtviewer.dataHandler')
                     if (analogue !== undefined){
                         var prova = evtAnaloguesParser.getAnalogueText(analogue, wit, doc);
                         element.parentNode.replaceChild(prova, element);
-                        console.log('weila', prova)
                     }
                     h--;
                 }
@@ -330,10 +329,8 @@ angular.module('evtviewer.dataHandler')
                     var analogue = parsedData.getAnalogue(id);
                     
                     if (analogue !== undefined){
-                        console.log('ohibo', parsedData.getAnalogues())
                         var prova = evtAnaloguesParser.getAnalogueText(analogue, '', doc);
                         element.parentNode.replaceChild(prova, element);
-                        //console.log(prova)
                     }
                     h--;
                 }
