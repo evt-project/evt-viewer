@@ -4,7 +4,5 @@ angular.module('evtviewer.bibliography')
 
 	var highlight = '';
 	
-	var highlightEntry = function(entry){
-		highlight=entry;
-	}
+
 	});

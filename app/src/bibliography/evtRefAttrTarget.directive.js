@@ -4,7 +4,6 @@ angular.module('evtviewer.dataHandler')
       return {
          restrict: 'A',
          link:  function(scope, element, attr) {
-			 element.removeAttr('href');
             element.on('click',function(){
 				if(attr['type']!=='doc'){
 					/*/
@@ -17,8 +16,12 @@ angular.module('evtviewer.dataHandler')
 					evtDialog.openByType('globalInfo');
 					evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
 					evtHighlight.highlight = attr['target'];
+					console.log('evtRefAttr: elemento evidenziato è: '+evtHighlight.highlight);
 					//dopo 2s viene rimosso l'attributo highlight
-					$timeout(function(){evtHighlight.highlight=' ';},2000);
+					$timeout(function(){
+						evtHighlight.highlight=' ';
+						console.log('evtRefAttr: sono passati 2 secondi rimuovo il valore di highlight per resettare');
+						},2000);
 				}
 			});
          }
