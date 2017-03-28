@@ -157,19 +157,29 @@ angular.module('evtviewer.interface')
 })
 
 //TODO: Move this directive in a proper file
-/*/
+
 .directive('ref', [function () {
     return {
         restrict: 'C',
         scope: {
             target : '@'
         },
-        template: '<a href="{{target}}" ng-transclude></a>',
+        //template: '<a href="{{target}}" ng-transclude></a>',
         replace: true,
         transclude: true,
         link: function (scope, iElement, iAttrs) {
             // scope.href = scope.target;
-        }
+        },
+        compile: function(element, attrs) {
+			//se c'è la direttiva evtRefAttr, allora questa necessita di span e non di ancore
+			if(attrs.evtRefAttr === '') {
+				element.append('<span ng-transclude></span>');
+			}
+			//per tutti gli altri casi comportamento di default
+			else {
+				element.append('<a href="'+attrs.target+'" ng-transclude></a>');
+			}
+        }		
     };
-}]);/*/
+}]);
 
