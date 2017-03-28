@@ -16,11 +16,9 @@ angular.module('evtviewer.dataHandler')
 					evtDialog.openByType('globalInfo');
 					evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
 					evtHighlight.setHighlighted(attr['target']);
-					console.log('evtRefAttr: elemento evidenziato è: ' + evtHighlight.getHighlighted());
 					//dopo 2s viene rimosso l'attributo highlight
 					$timeout(function() {
 						evtHighlight.setHighlighted("");
-						console.log('evtRefAttr: sono passati 2 secondi rimuovo il valore di highlight per resettare');
 					}, 2000);
 				}
 			});
