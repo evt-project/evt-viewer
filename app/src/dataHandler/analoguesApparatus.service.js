@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtAnaloguesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatusParser, evtAnaloguesParser) {
+.service('evtAnaloguesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatusParser, evtAnaloguesParser, evtSourcesApparatus) {
     var apparatus = {};
 
     apparatus.getContent = function(analogue, scopeWit) {

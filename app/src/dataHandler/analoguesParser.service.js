@@ -645,7 +645,7 @@ angular.module('evtviewer.dataHandler')
                         spanElement.appendChild(evtCriticalApparatusParser.getEntryWitnessReadingText(analogueContent[i], wit));
                     }
                 } else if (analogueContent[i].type === 'quote') {
-                    spanElement.appendChild(evtSourcesParser.getQuoteText(quoteContent[i], wit, doc));
+                    spanElement.appendChild(evtSourcesParser.getQuoteText(analogueContent[i], wit, doc));
                 } else if (analogueContent[i].type === 'analogue') {
                     spanElement.appendChild(parser.getAnalogueText(analogueContent[i]));
                 }
