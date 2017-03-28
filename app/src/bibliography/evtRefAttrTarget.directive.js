@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.directive('evtRefAttr', function(parsedData, evtHighlight, evtInterface, evtDialog, $timeout) {
+.directive('evtRefAttr', function(parsedData, evtHighlight, evtInterface, evtDialog, $timeout, evtCommunication) {
 	return {
 		restrict: 'A',
 		link: function(scope, element, attr) {
@@ -12,14 +12,20 @@ angular.module('evtviewer.dataHandler')
 						apriamo il dialog con tipo globalInfo
 						scegliamo di visualizzare come pannello iniziale quello della bibliografia
 					/*/
-					evtInterface.updateSecondaryContentOpened(' ');
-					evtDialog.openByType('globalInfo');
-					evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
-					evtHighlight.setHighlighted(attr['target']);
-					//dopo 2s viene rimosso l'attributo highlight
-					$timeout(function() {
-						evtHighlight.setHighlighted("");
-					}, 2000);
+					var targetEl = $([target=attr['target']]);
+					if(false && targetEl && targetEl > 0) {
+						evtInterface.updateSecondaryContentOpened(' ');
+						evtDialog.openByType('globalInfo');
+						evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
+						evtHighlight.setHighlighted(attr['target']);
+						//dopo 2s viene rimosso l'attributo highlight
+						$timeout(function() {
+							evtHighlight.setHighlighted("");
+						}, 2000);
+					}
+					else {
+						evtCommunication.err('Could not find bibliography referement','405');
+					}
 				}
 			});
 		}

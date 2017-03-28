@@ -7,7 +7,11 @@ angular.module('evtviewer.communication')
         '404' : {
             title : 'File not found',
             msg   : 'Something wrong during loading file'
-        }
+        },
+       '405' : {
+            title : 'Missing referement',
+            msg   : 'Could not find bibliography ref'
+        }		
     }
 })
 
