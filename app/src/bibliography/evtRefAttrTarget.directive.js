@@ -12,7 +12,7 @@ angular.module('evtviewer.dataHandler')
 						apriamo il dialog con tipo globalInfo
 						scegliamo di visualizzare come pannello iniziale quello della bibliografia
 					/*/
-					var targetEl = $([target=attr['target']]);
+					var targetEl = $(attr['target']);
 					if(false && targetEl && targetEl > 0) {
 						evtInterface.updateSecondaryContentOpened(' ');
 						evtDialog.openByType('globalInfo');
