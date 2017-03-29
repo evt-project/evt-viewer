@@ -10,7 +10,7 @@ angular.module('evtviewer.communication')
         },
        '405' : {
             title : 'Missing referement',
-            msg   : 'Could not find bibliography ref'
+            msg   : 'Could not find bibliography referement'
         }		
     }
 })
