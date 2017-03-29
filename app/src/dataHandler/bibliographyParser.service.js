@@ -321,19 +321,22 @@ angular.module('evtviewer.dataHandler')
 						string += '<span data-style="chicago" class="titleMonogr">' + getTitleMonogr(newBiblElement) + '</span>';
 					}
 					//editore
-					angular.forEach(getEditor(newBiblElement), function(editorElement, key) {
-						var name = editorElement.name !== '' ? editorElement.name : editorElement.forename;
-						var surname = editorElement.surname;
-						if (surname !== '') {
-							string += '<span data-style="chicago" class="editor surname">' + surname + '</span>';
-						}
-						
-						if (name !== '') {
-							string += '<span data-style="chicago" class="editor name">' + name + '</span>';
-						}
-						
-					});
-
+					if (getEditor(newBiblElement)) {
+						string += '<span data-style="chicago" class="editors">';
+						angular.forEach(getEditor(newBiblElement), function(editorElement, key) {
+							string += '<span data-style="chicago" class="editor">';
+							var name = editorElement.name !== '' ? editorElement.name : editorElement.forename;
+							var surname = editorElement.surname;
+							if (surname !== '') {
+								string += '<span data-style="chicago" class="editor surname">' + surname + '</span>';
+							}
+							if (name !== '') {
+								string += '<span data-style="chicago" class="editor name">' + name + '</span>';
+							}
+							string += '</span>';
+						});
+						string += '</span>';
+					}
 					if (getPubPlace(newBiblElement)) {
 						string += '<span data-style="chicago" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
 					}

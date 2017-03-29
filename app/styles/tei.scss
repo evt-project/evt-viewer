@@ -751,7 +751,7 @@
 
 .biblRef,.biblRef .titleAnalytic, .biblRef .author, .biblRef .titleMonogr,  .biblRef .biblscope,
 .biblRef .pubPlace,.biblRef .date,  .biblRef .note, .biblRef  .idno, .biblRef  .edition, .biblRef  .accessed,.biblRef  .url,
-.biblRef .vol, .biblRef .pp, .biblRef .editor,.biblRef .date ,.biblRef .publisher {
+.biblRef .vol, .biblRef .pp, .biblRef .editors,.biblRef .date ,.biblRef .publisher {
     color: #666;
     font-size: 90%;
 		&:before{
@@ -872,14 +872,17 @@
 	content: '.'
 }
 
-.biblRef  .editor[data-style=chicago]:before{
-	content: ' edited by '
-}
-
-.biblRef  .editor[data-style=chicago]:after{
+.biblRef > .editors[data-style=chicago] > .editor[data-style=chicago]:after{
 	content: ','
 }
 
+.biblRef .editors[data-style=chicago] > .editor:first-child:before{
+	content: ' edited by '
+}
+
+.biblRef .editors[data-style=chicago] > .editor:last-child:before{
+	content: ' and '
+}
 
 .biblRef > .pubPlace[data-style=chicago]:not(:last-child):after{
 	content: ': '
