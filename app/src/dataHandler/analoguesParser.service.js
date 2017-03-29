@@ -12,34 +12,7 @@ angular.module('evtviewer.dataHandler')
         quoteDef          = '<quote>',
         analoguesUrl      = config.analoguesUrl || '',
         analogueDef       = '<seg>,<ref[type=parallelPassage]>';
-    
-    //Creating the regular expression that will help finding nested analogueDef
-    var match = '(',
-        anAnalogueDef = analogueDef.split(",");
 
-    for (var i = 0; i < anAnalogueDef.length; i++) {
-        if (anAnalogueDef[i].indexOf("[") < 0) {
-            match += anAnalogueDef[i].replace(/[>]/g, '');
-        } else {
-            var bracketOpen = anAnalogueDef[i].indexOf("[");
-            if(anAnalogueDef[i].substring(1, bracketOpen) !== "[") {
-                match += anAnalogueDef[i].substring(0, bracketOpen)
-            }
-            match += '[^<>]*?';
-            var bracketClose = anAnalogueDef[i].indexOf("]");
-            var equal = anAnalogueDef[i].indexOf("=");
-            match += anAnalogueDef[i].substring(bracketOpen + 1, equal);
-            match += '\\s*?=\\s*?[\'\"]\\s*?';
-            match += anAnalogueDef[i].substring(equal + 1, bracketClose);
-        }
-        if (i < anAnalogueDef.length -1) {
-            match+='|';
-        } else if ( i = anAnalogueDef.length - 1) {
-            match+=')';
-        }
-    }
-
-    var sRegExpInput = new RegExp(match, 'ig');
     
     /*********************/
     /*parseAnalogues(doc)*/
@@ -189,7 +162,7 @@ angular.module('evtviewer.dataHandler')
                     contentEl.content.push(evtSourcesParser.parseQuote(child));
                 } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(evtCriticalApparatusParser.handleAppEntry(child));
-                } else if (sRegExpInput.test(childXml)) {
+                } else if (evtParser.createRegExpr(analogueDef).test(childXml)) {
                     contentEl.content.push(parser.parseAnalogue(child));
                 }/* else if (child.tagName === 'witDetail') {
                     contentEl.content.push(evtCriticalApparatusParser.parseWitDetail(child));
@@ -332,7 +305,7 @@ angular.module('evtviewer.dataHandler')
                 } //If there is a nested quote, parse it recursively.
                   else if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                     analogue.content.push(evtSourcesParser.parseQuote(child));
-                } else if (sRegExpInput.test(childXml)) {
+                } else if (evtParser.createRegExpr(analogueDef).test(childXml)) {
                     analogue.content.push(parser.parseAnalogue(child));
                 }/*else if (child.tagName === 'witDetail') {
                     content.push(evtCriticalApparatusParser.parseWitDetail(child));

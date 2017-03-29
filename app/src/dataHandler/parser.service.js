@@ -331,6 +331,39 @@ angular.module('evtviewer.dataHandler')
         parsedData.addExternalDocument(newExtDoc);
         console.log('## External Documents ##', parsedData.getExternalDocuments());
     };
+
+    /*createRegExpr(string)*/
+    /*Takes a string, used in the config file to define a critical elements and return a string */
+    parser.createRegExpr = function(def) {
+            var match = '(',
+                aDef = def.split(",");
+            
+            for (var i = 0; i < aDef.length; i++) {
+                if (aDef[i].indexOf("[") < 0) {
+                    match += aDef[i].replace(/[>]/g, '');
+                } else {
+                var bracketOpen = aDef[i].indexOf("[");
+                if(aDef[i].substring(1, bracketOpen) !== "[") {
+                    match += aDef[i].substring(0, bracketOpen)
+                }
+                match += '[^<>]*?';
+                var bracketClose = aDef[i].indexOf("]");
+                var equal = aDef[i].indexOf("=");
+                match += aDef[i].substring(bracketOpen + 1, equal);
+                match += '\\s*?=\\s*?[\'\"]\\s*?';
+                match += aDef[i].substring(equal + 1, bracketClose);
+                }
+                if (i < aDef.length -1) {
+                match+='|';
+            } else if ( i = aDef.length - 1) {
+                match+=')';
+            }
+        }
+
+        var sRegExpInput = new RegExp(match, 'ig');
+
+        return sRegExpInput;
+    };
     
     parser.splitLineBreaks = function(docElement, defContentEdition) {
         var splittedHTML = '';

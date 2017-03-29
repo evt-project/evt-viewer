@@ -8,35 +8,8 @@ angular.module('evtviewer.dataHandler')
         readingDef        = lemmaDef+', <rdg>',
         readingGroupDef   = '<rdgGrp>',
         quoteDef          = '<quote>';
-        analogueDef       = '<seg>,<ref[type=parallelPassage]>';
-    
-    //Creating the regular expression that will help finding nested analogueDef
-    var match = '(',
-        anAnalogueDef = analogueDef.split(",");
-
-    for (var i = 0; i < anAnalogueDef.length; i++) {
-        if (anAnalogueDef[i].indexOf("[") < 0) {
-            match += anAnalogueDef[i].replace(/[>]/g, '');
-        } else {
-            var bracketOpen = anAnalogueDef[i].indexOf("[");
-            if(anAnalogueDef[i].substring(1, bracketOpen) !== "[") {
-                match += anAnalogueDef[i].substring(0, bracketOpen)
-            }
-            match += '[^<>]*?';
-            var bracketClose = anAnalogueDef[i].indexOf("]");
-            var equal = anAnalogueDef[i].indexOf("=");
-            match += anAnalogueDef[i].substring(bracketOpen + 1, equal);
-            match += '\\s*?=\\s*?[\'\"]\\s*?';
-            match += anAnalogueDef[i].substring(equal + 1, bracketClose);
-        }
-        if (i < anAnalogueDef.length -1) {
-            match+='|';
-        } else if ( i = anAnalogueDef.length - 1) {
-            match+=')';
-        }
-    }
-
-    var sRegExpInput = new RegExp(match, 'ig');
+        analogueDef       = '<seg>,<ref[type=parallelPassage]>',
+        analogueRegExpr   = evtParser.createRegExpr(analogueDef); 
 
     var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+','+analogueDef+',<evt-quote>,<evt-analogue>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
@@ -141,7 +114,7 @@ angular.module('evtviewer.dataHandler')
                 for (var i = 0; i < allEl.length; i++) {
                     var inner = allEl[i].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
                     var el = allEl[i].outerHTML.replace(inner, '');
-                    if (sRegExpInput.test(el)) {
+                    if (analogueRegExpr.test(el)) {
                         analogues.push(allEl[i]);
                     }
                 }
@@ -312,7 +285,7 @@ angular.module('evtviewer.dataHandler')
                 for (var i = 0; i < allEl.length; i++) {
                     var inner = allEl[i].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
                     var el = allEl[i].outerHTML.replace(inner, '');
-                    if (sRegExpInput.test(el)) {
+                    if (analogueRegExpr.test(el)) {
                         analogues.push(allEl[i]);
                     }
                 }
