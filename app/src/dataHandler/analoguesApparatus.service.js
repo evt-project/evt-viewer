@@ -71,17 +71,18 @@ angular.module('evtviewer.dataHandler')
         var result = '';
         for (var i in content) {
             if (typeof content[i] === 'string') {
-                result += '<span class="textNode">'+content[i]+'</span>';
+                result += ' '+content[i];
             } else {
                 var skip = ['EVT-POPOVER', 'lb', 'ptr', 'link', 'linkGrp', 'pb'];
                 if (skip.indexOf(content[i].tagName) >= 0) {
                     result += '';
                 } else if (content[i].type === 'app') {
-                    result += apparatus.getAppText(content[i], scopeWit);
+                    var t = apparatus.getAppText(content[i], scopeWit);
+                    result += t;
                 } else if (content[i].type === 'analogue') {
-                    result += '(('+apparatus.getHeader(content[i], scopeWit)+'))';
+                    result += ' (('+apparatus.getHeader(content[i], scopeWit)+'))';
                 } else if (content[i].type === 'quote') {
-                    result += '<span class="sub_quote"> (('+evtSourcesApparatus.getQuote(content[i], scopeWit)+')) </span>';
+                    result += ' (('+evtSourcesApparatus.getQuote(content[i], scopeWit)+'))';
                 } else if (content[i].content !== undefined) {
                     result += apparatus.getText(content[i]);
                 } /*else {
@@ -99,7 +100,7 @@ angular.module('evtviewer.dataHandler')
         if (content !== undefined) {
             for (var i = 0; i < content.length; i++) {
                 if (typeof content[i] === 'string') {
-                    result += '<span class="textNode">'+content[i]+'</span>';
+                    result += ' '+content[i];
                 } else if (content[i].content !== undefined) {
                     result += apparatus.getText(content[i]);
                 }

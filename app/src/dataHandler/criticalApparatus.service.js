@@ -23,7 +23,7 @@ angular.module('evtviewer.dataHandler')
             notSignificantReadings : [],
             readingGroups          : [],
             criticalNote           : '',
-            witnessesGroups        : config.witnessesGroups,
+            witnessesGroups        : [],
         };
 
         //Lemma
@@ -51,10 +51,10 @@ angular.module('evtviewer.dataHandler')
                             groups = appContent.witnessesGroups;
                         for (var h in groups) {
                             if (groups[h].witnesses.indexOf(wit) >= 0) {
-                                if (groups[h].content !== '') {
+                                if (groups[h].content === undefined) {
                                     groups[h].content = r.content;
                                 } else {
-                                    groups[h].content += r;
+                                    groups[h].content += r.content;
                                 }
                             }
                         }

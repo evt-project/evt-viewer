@@ -601,7 +601,10 @@ angular.module('evtviewer.dataHandler')
                 var content = elem.content;
                 for (var i in content) {
                     if (typeof content[i] === 'string') {
-                        spanElement.appendChild(document.createTextNode(content[i]));
+                        var child = document.createElement('span');
+                        child.setAttribute('class', 'textNode');
+                        child.appendChild(document.createTextNode(content[i]))
+                        spanElement.appendChild(child);
                     } else {
                         if (content[i].type === 'quote') {
                             spanElement.appendChild(parser.getQuoteText(content[i]));
@@ -650,7 +653,10 @@ angular.module('evtviewer.dataHandler')
 
         for (var i in quoteContent) {
             if (typeof quoteContent[i] === 'string') {
-                spanElement.appendChild(document.createTextNode(quoteContent[i]));
+                var child = document.createElement('span');
+                child.setAttribute('class', 'textNode');
+                child.appendChild(document.createTextNode(quoteContent[i]))
+                spanElement.appendChild(child);
             } else {
                 if (quoteContent[i].tagName === 'EVT-POPOVER') {
                     spanElement.appendChild(quoteContent[i]);

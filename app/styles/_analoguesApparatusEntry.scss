@@ -64,6 +64,12 @@ $analogues-apparatus-entry-border-color : rgb(125, 125, 125);
         font-size:105%;
         border-top: 1px solid $sources-apparatus-entry-border-color;
 
+        &_header {
+            .textNode {
+                margin-right: 0.2em;
+            }
+        }
+
         &_list {
             border-top: 1px solid $sources-apparatus-entry-border-color;
             ul {

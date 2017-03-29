@@ -620,7 +620,7 @@ angular.module('evtviewer.dataHandler')
     /***************************/
     parser.getAnalogueText = function(analogue, wit, doc){
         var spanElement,
-            errorElement;
+            errorElement; //TO DO: implementare gestione errore
 
         spanElement = document.createElement('evt-analogue');
         spanElement.setAttribute('data-analogue-id', analogue.id);
@@ -634,7 +634,6 @@ angular.module('evtviewer.dataHandler')
 
         for (var i in analogueContent) {
             if (typeof analogueContent[i] === 'string') {
-                spanElement.appendChild(document.createTextNode(analogueContent[i]));
             } else {
                 if (analogueContent[i].tagName === 'EVT-POPOVER') {
                     spanElement.appendChild(analogueContent[i]);
