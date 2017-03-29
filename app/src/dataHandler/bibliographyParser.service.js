@@ -255,10 +255,41 @@ angular.module('evtviewer.dataHandler')
 			//prendere attributo type
 			newBiblElement.idno[el.getAttribute('type')] = el;
 		});
-
+		//noPunti(newBiblElement);
 		return newBiblElement;
 	}
 
+	function isObject ( obj ) {
+		return obj && (typeof obj  === "object");
+	}
+
+	function isArray ( obj ) { 
+		return isObject(obj) && (obj instanceof Array);
+	}
+	function noPunti(arr){
+		if(typeof arr === 'string'){
+			if(arr[arr.length-1]==='.'){
+				var nVal = arr.replace(/.$/,'');
+				return nVal;
+			}
+		}
+		
+		else {
+			console.log("generico array");
+			if(isArray(arr)){
+				for(var c=0;c<arr.length;c++){
+					noPunti(arr[c]);
+				}
+			}
+			else if(isObject(arr)){
+				for (var key in arr) {
+					var res=noPunti(arr[key]);
+					if(res)arr[key]=res;
+				}
+			}			
+		}
+	}
+	
 	parser.formatResult = function(styleCode, newBiblElement) {
 		if (!newBiblElement.outputs[styleCode]) {
 			var string = '';
@@ -588,7 +619,7 @@ angular.module('evtviewer.dataHandler')
 					if (getUrl(newBiblElement)) {
 						string += '<span data-style="mla" class="generic">Web</span>';
 					}
-					else {
+					if (string.length > 0) {
 						string += '<span data-style="mla" class="generic">Print</span>';
 					}
 				}
