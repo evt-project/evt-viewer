@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalApparatusParser', function($q, parsedData, evtParser, xmlParser, config) {
+.service('evtCriticalApparatusParser', function($q, parsedData, evtParser, xmlParser, config, evtCriticalElementsParser) {
     var parser = {};
 
     var apparatusEntryDef     = '<app>',
@@ -23,7 +23,7 @@ angular.module('evtviewer.dataHandler')
         if ( doc !== undefined ) {
             var appSelector = appId.replace(/\w-/g, '$&0>').replace(/[0-9]+/g, ':eq($&)').replace(/-:eq/g, ':eq');
             var appElement = $(doc).find(appSelector);
-            parser.handleAppEntry(appElement.get(0));
+            evtCriticalElementsParser.handleAppEntry(appElement.get(0));
         } else {
             console.log('ERROR');
         }
@@ -145,7 +145,7 @@ angular.module('evtviewer.dataHandler')
                 } else {
                     if ('<'+child.tagName+'>' === apparatusEntryDef) {
                         // Sub apparatus
-                        var entryApp = parser.handleAppEntry(child);
+                        var entryApp = evtCriticalElementsParser.handleAppEntry(child);
                         genericElement.content.push({id: entryApp.id, type: 'subApp'});
                     } else {
                         if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
@@ -250,7 +250,7 @@ angular.module('evtviewer.dataHandler')
                     reading.note = child.innerHTML;
                 } else if ( apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0 ) {
                     // Sub apparatus
-                    var entryApp = parser.handleAppEntry(child, entry.id);
+                    var entryApp = evtCriticalElementsParser.handleAppEntry(child, entry.id);
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                     entry._indexes.subApps.push(entryApp.id);
                 } else {
@@ -494,7 +494,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
             function(element) {
-                parser.handleAppEntry(element);
+                evtCriticalElementsParser.handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
         parsedData.setCriticalEntriesLoaded(config.loadCriticalEntriesImmediately);

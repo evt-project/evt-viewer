@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, xmlParser, config) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, evtCriticalElementsParser, xmlParser, config) {
     var parser = {};
 
     var apparatusEntryDef = '<app>',
@@ -50,17 +50,17 @@ angular.module('evtviewer.dataHandler')
                     // ...I can simply access the model to get the right output
                     // ... otherwise I parse the DOM and save the entry in the model
                     if (!config.loadCriticalEntriesImmediately && entry === undefined) {
-                        evtCriticalApparatusParser.handleAppEntry(appNode);
+                        evtCriticalElementsParser.handleAppEntry(appNode);
                         var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                         if (subApps.length > 0){
                             for (var z = 0; z < subApps.length; z++) {
-                                evtCriticalApparatusParser.handleAppEntry(subApps[z]);
+                                evtCriticalElementsParser.handleAppEntry(subApps[z]);
                             }
                         }
                         entry = parsedData.getCriticalEntryById(id);
                     }
                     if (entry !== undefined) {
-                        spanElement = evtCriticalApparatusParser.getEntryWitnessReadingText(entry, wit);
+                        spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
                     } else {
                         spanElement = document.createElement('span');
                         spanElement.className = 'encodingError';
@@ -101,7 +101,7 @@ angular.module('evtviewer.dataHandler')
                 }
                 var quote = parsedData.getQuote(ide);
                 if (quote !== undefined){
-                    var prova = evtSourcesParser.getQuoteText(quote, wit, doc);
+                    var prova = evtCriticalElementsParser.getQuoteText(quote, wit, doc);
                     element.parentNode.replaceChild(prova, element);
                 }
                 k--;
@@ -130,7 +130,7 @@ angular.module('evtviewer.dataHandler')
                     }
                     var analogue = parsedData.getAnalogue(id);
                     if (analogue !== undefined){
-                        var prova = evtAnaloguesParser.getAnalogueText(analogue, wit, doc);
+                        var prova = evtCriticalElementsParser.getAnalogueText(analogue, wit, doc);
                         element.parentNode.replaceChild(prova, element);
                     }
                     h--;
@@ -219,17 +219,17 @@ angular.module('evtviewer.dataHandler')
                         // ...I can simply access the model to get the right output
                         // ... otherwise I parse the DOM and save the entry in the model
                         if (!config.loadCriticalEntriesImmediately || entry === undefined) {
-                            evtCriticalApparatusParser.handleAppEntry(appNode);
+                            evtCriticalElementsParser.handleAppEntry(appNode);
                             var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
                             if (subApps.length > 0){
                                 for (var z = 0; z < subApps.length; z++) {
-                                    evtCriticalApparatusParser.handleAppEntry(subApps[z]);
+                                    evtCriticalElementsParser.handleAppEntry(subApps[z]);
                                 }
                             }
                             entry = parsedData.getCriticalEntryById(id);
                         }
                         if (entry !== undefined) {
-                            spanElement = evtCriticalApparatusParser.getEntryLemmaText(entry, '');
+                            spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, '');
                         } else {
                             spanElement = document.createElement('span');
                             spanElement.className = 'errorMsg';
@@ -272,7 +272,7 @@ angular.module('evtviewer.dataHandler')
                     }
                     var quote = parsedData.getQuote(id);
                     if (quote !== undefined){
-                        var prova = evtSourcesParser.getQuoteText(quote, '', doc);
+                        var prova = evtCriticalElementsParser.getQuoteText(quote, '', doc);
                         element.parentNode.replaceChild(prova, element);
                     }
                     k--;
@@ -302,7 +302,7 @@ angular.module('evtviewer.dataHandler')
                     var analogue = parsedData.getAnalogue(id);
                     
                     if (analogue !== undefined){
-                        var prova = evtAnaloguesParser.getAnalogueText(analogue, '', doc);
+                        var prova = evtCriticalElementsParser.getAnalogueText(analogue, '', doc);
                         element.parentNode.replaceChild(prova, element);
                     }
                     h--;
