@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtSourcesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatusParser) {
+.service('evtSourcesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatus, evtCriticalApparatusParser) {
     var apparatus = {};
 
     apparatus.getContent = function(quote, scopeWit) {
@@ -12,7 +12,7 @@ angular.module('evtviewer.dataHandler')
             },
             sources : [], //Elenco delle fonti, ognuna con tutte le info necessarie
             //text: '', //Testo
-            quote: '', //Intestazione dell'entrata d'apparato
+            quote: '', //Intestazione dell'entrata d'apparato, che corrisponde alla citazione
             //_sourceXml: [],
             _xmlSource: quote._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') //Xml della citazione, cui si aggiungerà anche l'xml della source selezionata
 
@@ -24,15 +24,11 @@ angular.module('evtviewer.dataHandler')
             var source = parsedData.getSource(sourceId[i]);
             var entry = apparatus.getSource(source);
             appContent.sources.push(entry);
-            //appContent._sourceXml[source.id] = entry._xmlSource;
-            //appContent._sourceXml.length++;
         }
         for (var j = 0;  j < sourceRefId.length; j++) {
             var source = parsedData.getSource(sourceRefId[j]);
             var entry = apparatus.getSource(source);
             appContent.sources.push(entry);
-            //appContent._sourceXml[source.id] = entry._xmlSource;
-            //appContent._sourceXml.length++;
         }
 
         appContent.quote = apparatus.getQuote(quote, scopeWit);
@@ -90,8 +86,9 @@ angular.module('evtviewer.dataHandler')
                     result += '';
                 } else if (content[i].type === 'app') {
                     result += apparatus.getAppText(content[i], scopeWit);
-                } //else if...analogue --> AnaloguesApparatus.getQuote(analogue).
-                else if (content[i].type === 'quote') {
+                } else if (content[i].type === 'analogue') {
+                    result += evtCriticalApparatus.getCriticalElementContent(content[i], scopeWit);
+                } else if (content[i].type === 'quote') {
                     result += ' (('+apparatus.getQuote(content[i], scopeWit)+'))';
                 } else if (content[i].content !== undefined) {
                     result += apparatus.getText(content[i]);
