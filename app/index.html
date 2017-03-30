@@ -198,7 +198,7 @@
     </section>
 
     <section class="global-msg-container"
-            ng-if="!isLoading() && getErrorMsg() !== undefined && getErrorMsg().title !== ''">
+            ng-if="!isLoading() && getErrorMsg() !== undefined && getErrorMsg().code === 404">
         <div class="global-msg">
             <h1>EVT Viewer</h1>
             <h2>{{getErrorMsg().title}}</h2>

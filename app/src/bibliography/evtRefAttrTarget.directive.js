@@ -7,10 +7,10 @@ angular.module('evtviewer.dataHandler')
 			element.on('click', function() {
 				if (attr.type !== 'doc') {
 					/*/
-					Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
+					/*/Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
 						passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
 						apriamo il dialog con tipo globalInfo
-						scegliamo di visualizzare come pannello iniziale quello della bibliografia
+						scegliamo di visualizzare come pannello iniziale quello della bibliografia/*/
 					/*/
 					var targetEl = $(attr.target);
 					if(false && targetEl && targetEl > 0) {
@@ -25,12 +25,6 @@ angular.module('evtviewer.dataHandler')
 					}
 					else {
 						evtCommunication.err('Could not find bibliography referement','405');
-						var newError = {
-							code  : '',
-							msg   : '',
-							title : ''
-						};						
-						evtCommunication.updateError(newError);
 					}
 				}
 			});

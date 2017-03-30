@@ -679,9 +679,8 @@ angular.module('evtviewer.dataHandler')
 		Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
 	/*/
 	parser.getType=function(newBiblElement){
-		if (newBiblElement.type !== ''){
-			return newBiblElement.type;
-		}
+		//parser encapsulates an internal function
+		return  getPubblicationType(newBiblElement);
 	}	
 	
 	function getID(newBiblElement) {
