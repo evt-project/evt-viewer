@@ -3,10 +3,17 @@
 		<label for="biblStyleSelect">Select your style </label>
 		<select id="biblStyleSelect"
 			ng-model="selectedStyle"
-			ng-options="x for x in styles"></select>
+			ng-options="x for x in styles"/>
 		
+		
+		<label for="biblSortingSelect">How to sort entries? </label>
+		<select id="biblSortingSelect"
+			ng-model="selectedSorting"
+			ng-options="x for x in sortBy"/>
+
+			
 		<div class="biblRef"
-			ng-repeat="bibl in bibliographicRefsCollection | orderBy: 'author[0].name'"
+			ng-repeat="bibl in bibliographicRefsCollection | orderBy: myComparator:false"
 			compile="getFormattedBibl(bibl)"
 			ng-attr-highlight="{{ isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ isEntryHighlighted(bibl) }}"

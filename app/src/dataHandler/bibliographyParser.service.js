@@ -255,7 +255,7 @@ angular.module('evtviewer.dataHandler')
 			//prendere attributo type
 			newBiblElement.idno[el.getAttribute('type')] = el;
 		});
-		noPunti(newBiblElement);
+		removeEndingPoint(newBiblElement);
 		return newBiblElement;
 	}
 
@@ -267,7 +267,7 @@ angular.module('evtviewer.dataHandler')
 		return isObject(obj) && (obj instanceof Array);
 	}
 	
-	function noPunti(arr){
+	function removeEndingPoint(arr){
 		if(typeof arr === 'string'){
 			if(arr[arr.length-1]==='.'){
 				var nVal = arr.replace(/.$/,'');
@@ -277,13 +277,13 @@ angular.module('evtviewer.dataHandler')
 		else {
 			if(isArray(arr)){
 				for(var c=0;c<arr.length;c++){
-					noPunti(arr[c]);
+					removeEndingPoint(arr[c]);
 				}
 			}
 			else if(isObject(arr)){
 				for (var key in arr) {
 					if (key !== 'author') {
-						var res=noPunti(arr[key]);
+						var res=removeEndingPoint(arr[key]);
 						if(res) {
 							arr[key]=res;
 						}
@@ -636,7 +636,7 @@ angular.module('evtviewer.dataHandler')
 	function getInitials(string){
 		var resultString='';
 		for(var c=0;c<string.length;c++){
-			if((c===0 || string[c-1]===' ') && string[c] !== ' ' && string[c] === string[c].toUpperCase()){
+			if((c===0 || string[c-1]===' ' || string[c-1]==='.') && string[c] !== ' ' && string[c] === string[c].toUpperCase()){
 				resultString+= '';
 				resultString+= string[c];
 				resultString+= '.';
