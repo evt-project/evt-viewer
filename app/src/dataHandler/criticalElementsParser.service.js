@@ -51,16 +51,20 @@ angular.module('evtviewer.dataHandler')
                         var entryApp = parser.handleAppEntry(child);
                         genericElement.content.push({id: entryApp.id, type: 'subApp'});
                     } else {
+                        var subst = angular.element(child)["0"].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+                        var childXml = angular.element(child)["0"].outerHTML.replace(subst, '');
                         if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                             var fragmentSigla = elem.getAttribute('wit');
                             child.setAttribute('wit', fragmentSigla);
                         }
-
                         if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                             var lacunaSigla = elem.getAttribute('wit');
                             child.setAttribute('wit', lacunaSigla);
-                        }
-                        if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))){
+                        } if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
+                            genericElement.content.push(parser.parseQuote(child));
+                        } if (analogueRegExpr.test(childXml)) {
+                            reading.content.push(parser.parseAnalogue(child));
+                        } if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))){
                             genericElement.content.push(parseGenericElement(child));
                         } else {
                             genericElement.content.push(child.cloneNode(true));
@@ -148,7 +152,7 @@ angular.module('evtviewer.dataHandler')
                 if (child.textContent.trim() !== '') {
                     reading.content.push(child.textContent.trim());
                 }
-            } else {
+            } else if (child.nodeType === 1) {
                 if (child.tagName === 'note') {
                     reading.note = child.innerHTML;
                 } else if ( apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0 ) {
@@ -157,6 +161,13 @@ angular.module('evtviewer.dataHandler')
                     reading.content.push({id: entryApp.id, type: 'subApp'});
                     entry._indexes.subApps.push(entryApp.id);
                 } else {
+                    var subst = '',
+                        childXml = '';
+                    if (angular.element(child)["0"].innerHTML !== undefined){
+                        subst = angular.element(child)["0"].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+                        var childXml = angular.element(child)["0"].outerHTML.replace(subst, '');
+                    }                  
+                    
                     if (reading._significant) {
                         if (config.notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
                             reading._significant = false;
@@ -171,7 +182,13 @@ angular.module('evtviewer.dataHandler')
                         var lacunaSigla = elem.getAttribute('wit');                        
                         child.setAttribute('wit', lacunaSigla);
                     }
-                    if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))){
+                    if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
+                        reading.content.push(parser.parseQuote(child));
+                    }
+                    else if (analogueRegExpr.test(childXml)) {
+                        reading.content.push(parser.parseAnalogue(child));
+                    }
+                    else if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))){
                         reading.content.push(parseGenericElement(child));
                     } else {
                         reading.content.push(child.cloneNode(true));
@@ -429,6 +446,12 @@ angular.module('evtviewer.dataHandler')
                                 if (subEntryElem !== null) {
                                     spanElement.appendChild(subEntryElem);
                                 }
+                            } else if (readingContent[i].type === 'quote') {
+                                var quoteElement = parser.getQuoteText(readingContent[i], wit);
+                                spanElement.appendChild(quoteElement);
+                            } else if (readingContent[i].type === 'analogue') {
+                                var analogueElement = parser.getAnalogueText(readingContent[i], wit);
+                                spanElement.appendChild(analogueElement);
                             } else if (readingContent[i].type === 'genericElement'){
                                 var genericElement = getGenericElementText(readingContent[i], wit);
                                 spanElement.appendChild(genericElement);
@@ -509,6 +532,12 @@ angular.module('evtviewer.dataHandler')
                     if (subEntryElem !== null){
                         spanElement.appendChild(subEntryElem);
                     }
+                } else if (elementContent[i].type === 'quote') {
+                    var quoteElement = parser.getQuoteText(elementContent[i], wit);
+                    spanElement.appendChild(quoteElement);
+                } else if (elementContent[i].type === 'analogue') {
+                    var analogueElement = parser.getAnalogueText(elementContent[i], wit);
+                    spanElement.appendChild(analogueElement);
                 } else if (elementContent[i].type === 'genericElement'){
                     var genericElement = getGenericElementText(elementContent[i], wit);
                     spanElement.appendChild(genericElement);
@@ -562,6 +591,12 @@ angular.module('evtviewer.dataHandler')
                             if (subEntryElem !== null){
                                 spanElement.appendChild(subEntryElem);
                             }
+                        } else if (lemmaContent[i].type === 'quote') {
+                            var quoteElement = parser.getQuoteText(lemmaContent[i], wit);
+                            spanElement.appendChild(quoteElement);
+                        } else if (lemmaContent[i].type === 'analogue') {
+                            var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
+                            spanElement.appendChild(analogueElement);
                         } else if (lemmaContent[i].type === 'genericElement'){
                             var genericElement = getGenericElementText(lemmaContent[i], wit);
                             spanElement.appendChild(genericElement);
@@ -1080,7 +1115,7 @@ angular.module('evtviewer.dataHandler')
                                 spanElement.appendChild(parser.getEntryWitnessReadingText(content[i], wit));
                             }
                         } else if (content[i].type === 'analogue') {
-                            spanElement.appendChild(getAnalogueText(elementContent[i]))
+                            spanElement.appendChild(parser.getAnalogueText(elementContent[i]))
                         } else {
                             var child = getQuoteContentText(content[i], wit, doc);
                             if (child !== undefined) {
@@ -1515,7 +1550,7 @@ angular.module('evtviewer.dataHandler')
     /************************************** */
     /*getAnalogueContentText(elem, wit, doc)*/
     /************************************** */
-    getAnalogueContentText = function(elem, wit, doc) {
+    var getAnalogueContentText = function(elem, wit, doc) {
         var spanElement;
 
         if (elem.content !== undefined) {

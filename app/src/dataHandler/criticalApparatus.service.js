@@ -127,6 +127,9 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < lemma.content.length; i++) {
             if (lemma.content[i].type === 'subApp') {
                 lemmaText += apparatus.getSubApparatus(lemma.content[i].id, scopeWit);
+            } else if (lemma.content[i].type === 'quote'
+                        || lemma.content[i].type === 'analogue') {
+                lemmaText += apparatus.getCriticalElementContent(lemma.content[i], scopeWit)
             } else if (lemma.content[i].type === 'genericElement') {
                 lemmaText += apparatus.getGenericContent(lemma.content[i], scopeWit);
             } else {
@@ -174,6 +177,10 @@ angular.module('evtviewer.dataHandler')
                     readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
                 } else if (reading.content[i].type === 'genericElement') {
                     readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
+                //Added by CM    
+                } else if (reading.content[i].type === 'quote'
+                           ||reading.content[i].type === 'analogue') {
+                    readingText += apparatus.getCriticalElementContent(reading.content[i], scopeWit)
                 } else {
                     readingText += reading.content[i].outerHTML;
                 }
@@ -201,6 +208,64 @@ angular.module('evtviewer.dataHandler')
         }
         return readingObj;
     };
+
+    /*Method added by CM*/
+    apparatus.getCriticalElementContent = function(element, scopeWit) {
+        var content = element.content || [];
+        var result = '<span class="'+element.type+' inApparatus">';
+        for (var i in content) {
+            if (typeof content[i] === 'string') {
+                result += ' '+content[i];
+            } else {
+                var skip = ['EVT-POPOVER', 'lb', 'ptr', 'link', 'linkGrp', 'pb'];
+                if (skip.indexOf(content[i].tagName) >= 0) {
+                    result += '';
+                } else if (content[i].type === 'app') {
+                    var t = getAppText(content[i], scopeWit);
+                    result += t;
+                } else if (content[i].type === 'analogue') {
+                    result += apparatus.getCriticalElementContent(content[i], scopeWit);
+                } else if (content[i].type === 'quote') {
+                    result += apparatus.getCriticalElementContent(content[i], scopeWit);
+                } else if (content[i].content !== undefined) {
+                    result += getText(content[i]);
+                }
+            }
+        }
+        
+        result+= '</span>';
+        return result;
+    };
+    
+    //Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+    var getText = function(entry) {
+        var result = '';
+        var content = entry.content;
+        if (content !== undefined) {
+            for (var i = 0; i < content.length; i++) {
+                if (typeof content[i] === 'string') {
+                    result += ' '+content[i];
+                } else if (content[i].content !== undefined) {
+                    result += apparatus.getText(content[i]);
+                }
+            }
+        }        
+        return result;
+    }
+
+     var getAppText = function(entry, scopeWit){
+            var result = '';
+            if (scopeWit === ''
+                || scopeWit === undefined
+                || entry._indexes.witMap[scopeWit] === undefined) {
+                    var lem = entry.lemma;
+                    result += apparatus.getText(entry.content[lem]);
+                } else {
+                    var rdg = entry._indexes.witMap[scopeWit];
+                    result += apparatus.getText(entry.content[rdg]);
+                }
+            return result;
+        }
 
     apparatus.getCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
         var witnesses  = '';
@@ -280,6 +345,5 @@ angular.module('evtviewer.dataHandler')
         }
         return appText;
     };
-
     return apparatus;
 });
