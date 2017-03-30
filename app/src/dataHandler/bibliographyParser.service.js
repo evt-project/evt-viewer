@@ -255,7 +255,7 @@ angular.module('evtviewer.dataHandler')
 			//prendere attributo type
 			newBiblElement.idno[el.getAttribute('type')] = el;
 		});
-		//noPunti(newBiblElement);
+		noPunti(newBiblElement);
 		return newBiblElement;
 	}
 
@@ -266,6 +266,7 @@ angular.module('evtviewer.dataHandler')
 	function isArray ( obj ) { 
 		return isObject(obj) && (obj instanceof Array);
 	}
+	
 	function noPunti(arr){
 		if(typeof arr === 'string'){
 			if(arr[arr.length-1]==='.'){
@@ -273,9 +274,7 @@ angular.module('evtviewer.dataHandler')
 				return nVal;
 			}
 		}
-		
 		else {
-			console.log("generico array");
 			if(isArray(arr)){
 				for(var c=0;c<arr.length;c++){
 					noPunti(arr[c]);
@@ -283,8 +282,12 @@ angular.module('evtviewer.dataHandler')
 			}
 			else if(isObject(arr)){
 				for (var key in arr) {
-					var res=noPunti(arr[key]);
-					if(res)arr[key]=res;
+					if (key !== 'author') {
+						var res=noPunti(arr[key]);
+						if(res) {
+							arr[key]=res;
+						}
+					}
 				}
 			}			
 		}
