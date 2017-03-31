@@ -129,7 +129,7 @@ section > div{
     span.filter-group {
         display: inline;
         &::after{
-            content: "•";
+            content: "-";
         }
         &:last-child::after{
             content: "";
