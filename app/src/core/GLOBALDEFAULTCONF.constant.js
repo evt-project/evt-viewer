@@ -127,5 +127,6 @@ angular.module('evtviewer.core')
     heatmapColor      : 'rgb(255, 108, 63)',
     xsltUrl: '',
 	allowedBibliographicStyles : ['Chicago' , 'APA' , 'MLA'],
-	bibliographicEntriesSortBy : ['Author' , 'Year']
+	bibliographicEntriesSortBy : ['Author' , 'Year'],
+	bibliographySortOrder      : ['Ascendent','Descendent']
 });

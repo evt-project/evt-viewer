@@ -12,8 +12,13 @@
 			ng-options="x for x in sortBy"/>
 
 			
+		<label for="biblSortOrder">Sort order </label>
+		<select id="biblSortOrder"
+			ng-model="selectedSortOrder"
+			ng-options="x for x in sortOrder"/>			
+			
 		<div class="biblRef"
-			ng-repeat="bibl in bibliographicRefsCollection | orderBy: myComparator:false"
+			ng-repeat="bibl in bibliographicRefsCollection | orderBy: myComparator: selectedSortOrder === sortOrder[0]? false : true"
 			compile="getFormattedBibl(bibl)"
 			ng-attr-highlight="{{ isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ isEntryHighlighted(bibl) }}"

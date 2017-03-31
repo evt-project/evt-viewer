@@ -5,10 +5,13 @@ angular.module('evtviewer.bibliography')
 
 	$scope.styles = config.allowedBibliographicStyles;
 	$scope.selectedStyle = $scope.styles[0];
-
 	$scope.sortBy = config.bibliographicEntriesSortBy;
 	$scope.selectedSorting = $scope.sortBy[0];
 
+	$scope.sortOrder = config.bibliographySortOrder;
+	$scope.selectedSortOrder = $scope.sortOrder[0];
+	
+	
 	$scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
 
 	_console.log($scope.allowedBibliographicStyles);

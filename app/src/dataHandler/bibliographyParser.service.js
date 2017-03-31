@@ -306,6 +306,14 @@ angular.module('evtviewer.dataHandler')
 					//il nome lo prendiamo per mezzo del tag name o forename
 					var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 					var firstSurname = firstAuthor.surname;
+					
+					//proviamo a usare un po' di euristica se non è dato nome/cognome
+					if (firstName !== '' && firstSurname === '') {
+						var extractedAuthorInfo = extractSurnameNameFromString(firstName);
+						firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
+						firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
+					}
+					
 					string += '<span data-style="chicago" class="author">';
 					if (firstSurname !== '') {
 						string += '<span data-style="chicago" class="surname">' + firstSurname + '</span>';
@@ -325,6 +333,14 @@ angular.module('evtviewer.dataHandler')
 						if (key > 0) {
 							var name = authorElement.name !== '' ? authorElement.name : authorElement.forename;
 							var surname = authorElement.surname;
+							
+							//proviamo a usare un po' di euristica se non è dato nome/cognome
+							if (name !== '' && surname === '') {
+								var extractedAuthorInfo = extractSurnameNameFromString(name);
+								surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : surname;
+								name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : name;
+							}
+							
 							string += '<span data-style="chicago" class="author">';
 							if (name !== '' && surname !== '') {
 								string += '<span data-style="mla" class="name">' + getInitialsExceptFirstOne(name) + '</span>';
@@ -361,6 +377,14 @@ angular.module('evtviewer.dataHandler')
 							string += '<span data-style="chicago" class="editor">';
 							var name = editorElement.name !== '' ? editorElement.name : editorElement.forename;
 							var surname = editorElement.surname;
+							
+							//proviamo a usare un po' di euristica se non è dato nome/cognome
+							if (name !== '' && surname === '') {
+								var extractedAuthorInfo = extractSurnameNameFromString(name);
+								surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : surname;
+								name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : name;
+							}
+							
 							if (surname !== '') {
 								string += '<span data-style="chicago" class="editor surname">' + surname + '</span>';
 							}
@@ -428,6 +452,14 @@ angular.module('evtviewer.dataHandler')
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 						var firstSurname = firstAuthor.surname;
+						
+						//proviamo a usare un po' di euristica se non è dato nome/cognome
+						if (firstName !== '' && firstSurname === '') {
+							var extractedAuthorInfo = extractSurnameNameFromString(firstName);
+							firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
+							firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
+						}
+						
 						string += '<span data-style="apa" class="author">';
 						//del primo autore prima si deve mettere il cognome
 						if (firstSurname !== '') {
@@ -446,6 +478,14 @@ angular.module('evtviewer.dataHandler')
 							if (key > 0) {
 								var name = authorElement.name !== '' ? authorElement.name : firstAuthor.forename;
 								var surname = authorElement.surname !== '' ? authorElement.surname : '';
+								
+								//proviamo a usare un po' di euristica se non è dato nome/cognome
+								if (name !== '' && surname === '') {
+									var extractedAuthorInfo = extractSurnameNameFromString(name);
+									surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : surname;
+									name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : name;
+								}
+								
 								string += '<span data-style="apa" class="author">';
 								if (surname !== '') {
 									string += '<span data-style="apa" class="surname">' + surname + '</span>';
@@ -500,6 +540,14 @@ angular.module('evtviewer.dataHandler')
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 						var firstSurname = firstAuthor.surname;
+						
+						//proviamo a usare un po' di euristica se non è dato nome/cognome
+						if (firstName !== '' && firstSurname === '') {
+							var extractedAuthorInfo = extractSurnameNameFromString(firstName);
+							firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
+							firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
+						}
+						
 						string += '<span data-style="apa" class="author">';
 						//del primo autore prima si deve mettere il cognome
 						if (firstSurname !== '') {
@@ -518,6 +566,14 @@ angular.module('evtviewer.dataHandler')
 							if (key > 0) {
 								var name = authorElement.name !== '' ? authorElement.name : firstAuthor.forename;
 								var surname = authorElement.surname !== '' ? authorElement.surname : '';
+								
+								//proviamo a usare un po' di euristica se non è dato nome/cognome
+								if (name !== '' && surname === '') {
+									var extractedAuthorInfo = extractSurnameNameFromString(name);
+									surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : surname;
+									name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : name;
+								}
+								
 								string += '<span data-style="apa" class="author">';
 								if (surname !== '') {
 									string += '<span data-style="apa" class="surname">' + surname + '</span>';
@@ -563,6 +619,14 @@ angular.module('evtviewer.dataHandler')
 						var firstAuthor = newBiblElement.author[0];
 						var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
 						var firstSurname = firstAuthor.surname;
+						
+						//proviamo a usare un po' di euristica se non è dato nome/cognome
+						if (firstName !== '' && firstSurname === '') {
+							var extractedAuthorInfo = extractSurnameNameFromString(firstName);
+							firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
+							firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
+						}
+						
 						string += '<span data-style="mla" class="author">';
 						//del primo autore prima si deve mettere il cognome
 						if (firstSurname !== '') {
@@ -632,6 +696,25 @@ angular.module('evtviewer.dataHandler')
 		}
 	}
 
+	function extractSurnameNameFromString(string){
+		var author = {
+			surname : '',
+			name    : ''
+		};
+		var nComma = index = 0;
+		for (var c=0;c<string.length;c++) {
+			if (string[c] === ',' ) {
+				nComma++;
+				index = c;
+			}
+		}
+		//se c'è una virgola sola ok, altrimenti chissà quale sia il cognome/nome
+		if (nComma === 1 && index > 0) {
+			author.surname = string.substr(0,index);
+			author.name = string.substr(index+1,string.length-1);
+		}
+		return author;
+	}
 	
 	function getInitials(string){
 		var resultString='';
