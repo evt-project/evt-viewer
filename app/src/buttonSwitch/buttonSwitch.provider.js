@@ -16,7 +16,7 @@ angular.module('evtviewer.buttonSwitch')
 		defaults = _defaults;
 	};
 
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
+    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox) {
         var button    = {},
             collection = {},
             list       = [],
@@ -552,10 +552,12 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					break;
 				case 'searchTools':
-					callback = function() {
-						var searchBtnState = scope.$parent.vm.getState('searchBtn') || false;
-						scope.$parent.vm.updateState('searchBtn', !searchBtnState);
-					};
+					callback = function(){
+                        var searchBtnState = evtSearchBox.openBox('searchBtn');
+                    };
+                    fakeCallback = function() {
+                       return callback();
+                    }
 					break;
 				case 'witList':
 					btnType = 'toggler';

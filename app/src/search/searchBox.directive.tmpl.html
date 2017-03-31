@@ -1,7 +1,5 @@
-<div 
-     class="search-box"
-     ng-if="vm.type=='text'"
-     ng-class="{'open': vm.getState('searchBtn')}">
+<div class="search-box"
+     ng-class="{'open' : vm.getState('searchBtn')}">
     <div class="searchBtnGroup">
         <div class="btn-left">
             <button-switch
@@ -10,8 +8,7 @@
             data-label="{{button.label}}"
             data-icon="{{button.icon}}"
             data-type="{{button.type}}"
-            ng-repeat="button in vm.genericTools.searchBtn|limitTo: 3"      
-            >
+            ng-repeat="button in vm.searchBoxBtn|limitTo: 3">
             </button-switch>
         </div>
         <div class="btn-right">
@@ -21,8 +18,7 @@
             data-label="{{button.label}}"
             data-icon="{{button.icon}}"
             data-type="{{button.type}}"
-            ng-repeat="button in vm.genericTools.searchBtn|limitTo: 3:3"      
-            >
+            ng-repeat="button in vm.searchBoxBtn|limitTo: 3:3">
             </button-switch>
         </div>
     </div>

@@ -92,7 +92,9 @@
         </div>
     </div>
 
-    <evt-search-box></evt-search-box>
+    <evt-search-box 
+        ng-if="vm.type=='text'">
+    </evt-search-box>
     
     <div 
         class="tools-group-box"

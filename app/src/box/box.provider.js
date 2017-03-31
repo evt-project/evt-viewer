@@ -207,7 +207,6 @@ angular.module('evtviewer.box')
 					topBoxOpened: false,
 					fontSizeBtn: false,
 					fontSize: '100',
-					searchBtn: false,
 					topBoxContent: ''
 				},
 				appFilters = [],
@@ -230,37 +229,6 @@ angular.module('evtviewer.box')
 					label: '',
 					icon: 'font-size-plus',
 					type: 'fontSizeIncrease'
-				}],
-				searchBtn: [{
-					title: 'Show Results',
-					label: '',
-					icon: 'search-results-show',
-					type: ''
-				}, {
-					title: 'Advanced Search',
-					label: '',
-					icon: 'search-advanced',
-					type: ''
-				}, {
-					title: 'Virtual Keyboard',
-					label: '',
-					icon: 'keyboard',
-					type: ''
-				}, {
-					title: 'Previous',
-					label: '',
-					icon: 'previous',
-					type: ''
-				}, {
-					title: 'Next',
-					label: '',
-					icon: 'next',
-					type: ''
-				}, {
-					title: 'Search',
-					label: '',
-					icon: 'search',
-					type: ''
 				}]
 			};
 
