@@ -34,7 +34,7 @@
             data-type="alignReadings"
             ng-click="vm.alignReadings()"></button-switch>
     </div>
-    <div class="critical-apparatus-entry_main_content_list">
+    <div class="critical-apparatus-entry_main-content_list">
             <span 
               class="app_reading"
               ng-if="vm.witnessesGroups.length === 0"
@@ -44,8 +44,12 @@
                 class="app_reading_list"
                 ng-if="vm.witnessesGroups.length > 0">
                 <li ng-repeat="group in vm.witnessesGroups">
-                    <span ng_if="group.groupName !== '' && group.significantText !== ''">{{group.groupName}}:</span>
-                    <span compile="group.significantText"></span>
+                    <span
+                      class="witGrp_name"
+                      ng_if="group.groupName !== '' && group.significantText !== ''">{{group.groupName}}:</span>
+                    <span
+                      class="witGrp_content"
+                      compile="group.significantText"></span>
                 </li>
              </ul>
         </div>
@@ -76,9 +80,13 @@
                   <div
                     ng-if="vm.witnessesGroups.length > 0"
                     ng-repeat="group in vm.witnessesGroups">
-                    <span class="critical-apparatus-entry_other-content_panel_ortographic_title">Ortographic Variants for {{group.groupName}}</span>
                     <span 
-                      class="critical-apparatus-entry_other-content_panel_ortographic_text"
+                      class="critical-apparatus-entry_other-content_panel_orthographic_title"
+                      ng-if="group.notSignificantText !== undefined">
+                      Ortographic Variants for {{group.groupName}}</span>
+                    <span 
+                      class="critical-apparatus-entry_other-content_panel_orthographic_text"
+                      ng-if="group.notSignificantText !== undefined"
                       compile="group.notSignificantText"></span>
                   </div>
                 </div>

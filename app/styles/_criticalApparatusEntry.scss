@@ -58,12 +58,12 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             }
         }
     }
-    &_main-content{
+    
+    &_main-content {
         padding: 5px;
         // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
-        
         ul {
             display: inline;
             margin: 0;
@@ -76,6 +76,30 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
                 }
 
             }
+        }
+        ul.app_reading_list {
+                display: block;
+                list-style-type: initial !important;
+                -webkit-margin-before: 1em;
+                -webkit-margin-after: 1em;
+                -webkit-margin-start: 0px;
+                -webkit-margin-end: 0px;
+                -webkit-padding-start: 40px;
+                li {
+                    display: list-item;
+                    &:not(:last-child)::after {
+                    content: none;
+                }
+                    span.witGrp_name {
+                        display: inline;
+                        font-weight: bold;
+                        font-style: italic;
+                        font-variant: small-caps;
+                    }
+                    span.witGrp_content {
+                        display: inline;
+                    }
+                }
         }
         .app_lemma::after {
             content: "]";
@@ -165,6 +189,14 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
                 .witnesses {
                     display: none;
                 }
+            }
+            &_orthographic_title{
+                text-align: center;
+                width: 100%;
+                font-variant: small-caps;
+                font-size: 95%;
+                margin-top: 10px;
+                margin-bottom: 10px;
             }
         }
     }

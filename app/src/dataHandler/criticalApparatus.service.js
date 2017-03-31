@@ -140,11 +140,12 @@ angular.module('evtviewer.dataHandler')
                     } else {
                         s+= 'rdg inWitGrp">'
                     }
-                    s += apparatus.getReadingForGroup(groups[h].significantContent[c], scopeWit)+'</span>';
+                    s += apparatus.getReadingForGroup(groups[h].significantContent[c], scopeWit)+'</span><span class="witnesses">';
                     for (var f in groups[h].significant[c]) {
                         var wit = groups[h].significant[c][f];
                         s+= '<evt-witness-ref witness="'+wit+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>'
                     }
+                    s += '</span>';
                     groups[h].significantText += s;
                 }
                 delete groups[h].significant;
@@ -163,18 +164,18 @@ angular.module('evtviewer.dataHandler')
                     } else {
                         s+= 'rdg inWitGrp">'
                     }
-                    s += apparatus.getReadingForGroup(groups[h].notSignificantContent[c], scopeWit)+'</span>';
+                    s += apparatus.getReadingForGroup(groups[h].notSignificantContent[c], scopeWit)+'</span><span class="witnesses">';
                     for (var f in groups[h].notSignificant[c]) {
                         var wit = groups[h].notSignificant[c][f];
                         s+= '<evt-witness-ref witness="'+wit+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>'
                     }
+                    s+= '</span>';
                     groups[h].notSignificantText += s;;
                 }
                 delete groups[h].notSignificant;
                 delete groups[h].notSignificantContent;
             }
         }
-        console.log(groups)
     };
 
     /*getReadingForGroup(reading, scopeWit)*/

@@ -74,12 +74,7 @@ $sources-apparatus-entry-border-color : rgb(125, 125, 125);
             border-top: 1px solid $sources-apparatus-entry-border-color;
             ul {
                 display: block;
-                list-style-type: disc;
-                    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    -webkit-padding-start: 40px;
+                list-style-type: disc !important; 
                 li {
                     display: block;
                 }
