@@ -161,7 +161,7 @@ angular.module('evtviewer.dataHandler')
                     if (c === entry.lemma){
                         s += 'lem inWitGrp">'
                     } else {
-                        s+= 'rdg inWitGrp>'
+                        s+= 'rdg inWitGrp">'
                     }
                     s += apparatus.getReadingForGroup(groups[h].notSignificantContent[c], scopeWit)+'</span>';
                     for (var f in groups[h].notSignificant[c]) {
@@ -174,6 +174,7 @@ angular.module('evtviewer.dataHandler')
                 delete groups[h].notSignificantContent;
             }
         }
+        console.log(groups)
     };
 
     /*getReadingForGroup(reading, scopeWit)*/
