@@ -23,8 +23,10 @@ angular.module('evtviewer.dataHandler')
             notSignificantReadings : [],
             readingGroups          : [],
             criticalNote           : '',
-            witnessesGroups        : [],
+            witnessesGroups        : JSON.parse(JSON.stringify(config.witnessesGroups)),
         };
+
+        apparatus.getWitnessesGroups(entry, scopeWit, appContent.witnessesGroups);
 
         //Lemma
         var lemma = entry.content[entry.lemma];
@@ -42,26 +44,11 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < totReadings.length; i++) {
             var reading = entry.content[totReadings[i]];
             if (reading !== undefined) {
+                var readingContent = apparatus.getSignificantReading(reading, scopeWit);
                 if (readings._significant.indexOf(reading.id) >= 0) {
-                    var r = apparatus.getSignificantReading(reading, scopeWit);
-                    appContent.significantReadings.push(r);
-                    var wits = reading.wits || [];
-                    for (var j = 0; j < wits.length; j++) {
-                        var wit = wits[j],
-                            groups = appContent.witnessesGroups;
-                        for (var h in groups) {
-                            if (groups[h].witnesses.indexOf(wit) >= 0) {
-                                if (groups[h].content === undefined) {
-                                    groups[h].content = r.content;
-                                } else {
-                                    groups[h].content += r.content;
-                                }
-                            }
-                        }
-                    }
-                    
+                    appContent.significantReadings.push(readingContent);
                 } else {
-                    appContent.notSignificantReadings.push(apparatus.getSignificantReading(reading, scopeWit));
+                    appContent.notSignificantReadings.push(readingContent);
                 }
             }
         }
@@ -100,6 +87,123 @@ angular.module('evtviewer.dataHandler')
         appContent.criticalNote += entry.note;
         
         return appContent;
+    };
+
+    /*getWitnessesGroups(entry, scopeWit, groups)*/
+    /*Method added by CM*/
+    apparatus.getWitnessesGroups = function(entry, scopeWit, groups) {
+              
+        for (var h in groups) {
+            groups[h].wits = [];
+            groups[h].significant = {};
+            groups[h].significantContent = {};
+            groups[h].notSignificant = {};
+            groups[h].notSignificantContent = {};
+            for (var i in entry._indexes.witMap) {
+                if (groups[h].witnesses.indexOf(i) >= 0) {
+                    groups[h].wits.push(i);
+                }
+            }
+            delete groups[h].witnesses;
+
+            for (var j in groups[h].wits) {
+                var readingId = entry._indexes.witMap[groups[h].wits[j]];
+                var readingContent = entry.content[readingId];
+                if (readingContent._significant) {
+                    groups[h].significantContent[readingId] = readingContent;
+                    if (groups[h].significant[readingId] === undefined) {
+                        groups[h].significant[readingId] = [];
+                        groups[h].significant[readingId].push(groups[h].wits[j]);
+                    } else {
+                        groups[h].significant[readingId].push(groups[h].wits[j]);
+                    }
+                } else {
+                    groups[h].notSignificantContent[readingId] = readingContent;
+                    if (groups[h].notSignificant[readingId] === undefined) {
+                        groups[h].notSignificant[readingId] = [];
+                        groups[h].notSignificant[readingId].push(groups[h].wits[j]);
+                    } else {
+                        groups[h].notSignificant[readingId].push(groups[h].wits[j]);
+                    }
+                }
+            }
+
+            if (Object.keys(groups[h].significant).length === 0) {
+                delete groups[h].significant;
+                delete groups[h].significantContent;
+            } else {
+                groups[h].significantText = '';
+                for (var i in groups[h].significant) {
+                    var s = '<span class="'
+                    if (i === entry.lemma){
+                        s += 'lem inWitGrp">'
+                    } else {
+                        s+= 'rdg inWitGrp>'
+                    }
+                    s += apparatus.getReadingForGroup(groups[h].significantContent[i], scopeWit)+'</span>';
+                    for (var f in groups[h].significant[i]) {
+                        var wit = groups[h].significant[i][f];
+                        s+= '<evt-witness-ref witness="'+wit+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>'
+                    }
+                    groups[h].significantText += s;
+                }
+                delete groups[h].significant;
+                delete groups[h].significantContent;
+            }
+
+            if (Object.keys(groups[h].notSignificant).length === 0) {
+                delete groups[h].notSignificant;
+                delete groups[h].notSignificantContent;
+            } else {
+                groups[h].notSignificantText = '';
+                for (var i in groups[h].notSignificant) {
+                    var s = '<span class="'
+                    if (i === entry.lemma){
+                        s += 'lem inWitGrp">'
+                    } else {
+                        s+= 'rdg inWitGrp>'
+                    }
+                    s += apparatus.getReadingForGroup(groups[h].notSignificantContent[i], scopeWit)+'</span>';
+                    for (var f in groups[h].notSignificant[i]) {
+                        var wit = groups[h].notSignificant[i][f];
+                        s+= '<evt-witness-ref witness="'+wit+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>'
+                    }
+                    groups[h].notSignificantText += s;;
+                }
+                delete groups[h].notSignificant;
+                delete groups[h].notSignificantContent;
+            }
+        }
+    };
+
+    apparatus.getReadingForGroup = function(reading, scopeWit) {
+       var readingText = '';
+
+        for (var i = 0; i < reading.content.length; i++) {
+            if (typeof(reading.content[i]) === 'string') {
+                readingText += reading.content[i];
+            } else {
+                if (reading.content[i].type === 'subApp') {
+                    readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
+                } else if (reading.content[i].type === 'genericElement') {
+                    readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
+                //Added by CM    
+                } else if (reading.content[i].type === 'quote'
+                           ||reading.content[i].type === 'analogue') {
+                    readingText += apparatus.getCriticalElementContent(reading.content[i], scopeWit)
+                } else {
+                    readingText += reading.content[i].outerHTML;
+                }
+            }
+        }
+        if (readingText === '') {
+            readingText = ' <i>omit.</i> ';
+        }
+        readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
+        readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+        readingText = apparatus.transformCriticalEntryFragmentMilestones(readingText);
+        
+        return readingText;
     };
 
     apparatus.getGenericContent = function(element, scopeWit){
