@@ -23,7 +23,7 @@ angular.module('evtviewer.bibliography')
 	};
 
 	$scope.isEntryHighlighted = function(entry) {
-		return (entry && evtHighlight.getHighlighted() === entry.id);
+		return (entry && evtHighlight.getHighlighted()!== '' && evtHighlight.getHighlighted() === entry.id);
 	};
 	
 	$scope.myComparator = function(bibl) {

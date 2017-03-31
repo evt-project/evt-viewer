@@ -157,29 +157,62 @@ angular.module('evtviewer.interface')
 })
 
 //TODO: Move this directive in a proper file
-
-.directive('ref', [function () {
-    return {
-        restrict: 'C',
-        scope: {
-            target : '@'
-        },
-        //template: '<a href="{{target}}" ng-transclude></a>',
-        replace: true,
-        transclude: true,
-        link: function (scope, iElement, iAttrs) {
-            // scope.href = scope.target;
-        },
-        compile: function(element, attrs) {
-			//se c'è la direttiva evtRefAttr, allora questa necessita di span e non di ancore
-			if(attrs.evtRefAttr === '') {
-				element.append('<span ng-transclude></span>');
-			}
-			//per tutti gli altri casi comportamento di default
-			else {
-				element.append('<a href="'+attrs.target+'" ng-transclude></a>');
-			}
-        }		
-    };
+/*/
+.directive('ref', [function (parsedData, evtHighlight, evtInterface, evtDialog, $timeout, evtCommunication) {
+	return {//rivedere dipendenze
+		restrict: 'C',
+		scope: {
+					target : '@'
+				},
+				//template: '<a href="{{target}}" ng-transclude></a>',
+		replace: true,
+		transclude: true,
+		link: function (scope, iElement, iAttrs) {
+					// scope.href = scope.target;
+				},
+		compile: function(element, attrs) {
+					//se c'è type dentro <ref>, allora questa necessita di span e non di ancore
+					if(typeof attrs.type !== 'undefined' && attrs.type !== '') {
+						element.append('<span ng-transclude></span>');
+						element.on('click', function() {
+							if (attrs.type !== 'doc') {
+								/*//*/
+							Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
+								passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
+								apriamo il dialog con tipo globalInfo
+								scegliamo di visualizzare come pannello iniziale quello della bibliografia
+							/*//*/
+								var found = false;
+								var bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
+								for (var c=0;c<bibliographicRefsCollection.length;c++) {
+									if (bibliographicRefsCollection[c].id === attrs.target) {
+										found = true;
+										break;
+									}
+								}
+								//var targetEl = $("[biblid='"+attrs.target+"']");
+								//if(targetEl && targetEl.length > 0) {
+								if (found){
+									evtInterface.updateSecondaryContentOpened(' ');
+									evtDialog.openByType('globalInfo');
+									evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
+									evtHighlight.setHighlighted(attrs.target);
+									//dopo 2s viene rimosso l'attributo highlight
+									$timeout(function() {
+										evtHighlight.setHighlighted('');
+									}, 2000);
+								}
+								else {
+									evtCommunication.err('Could not find bibliography referement','405');
+								}
+							}
+						});
+					}
+					//per tutti gli altri casi comportamento di default
+					else {
+						element.append('<a href="'+attrs.target+'" ng-transclude></a>');
+					}
+				}		
+	};
 }]);
-
+/*/
