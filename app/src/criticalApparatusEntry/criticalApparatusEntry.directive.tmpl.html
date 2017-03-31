@@ -70,9 +70,17 @@
                 ng-class="{'active' : vm._subContentOpened == tab}"
                 ng-switch="tab">
                 <div ng-switch-when="notSignificantReadings">
-                  <ul>
+                  <ul ng-if="vm.witnessesGroups.length <= 0">
                       <li ng-repeat="reading in vm.content.notSignificantReadings" compile="reading.content"></li>
                   </ul>
+                  <div
+                    ng-if="vm.witnessesGroups.length > 0"
+                    ng-repeat="group in vm.witnessesGroups">
+                    <span class="critical-apparatus-entry_other-content_panel_ortographic_title">Ortographic Variants for {{group.groupName}}</span>
+                    <span 
+                      class="critical-apparatus-entry_other-content_panel_ortographic_text"
+                      compile="group.notSignificantText"></span>
+                  </div>
                 </div>
                 <div ng-switch-when="moreInfo">
                   <span class="app_lemma">
