@@ -133,16 +133,16 @@ angular.module('evtviewer.dataHandler')
                 delete groups[h].significantContent;
             } else {
                 groups[h].significantText = '';
-                for (var i in groups[h].significant) {
+                for (var c in groups[h].significant) {
                     var s = '<span class="'
-                    if (i === entry.lemma){
+                    if (c === entry.lemma){
                         s += 'lem inWitGrp">'
                     } else {
-                        s+= 'rdg inWitGrp>'
+                        s+= 'rdg inWitGrp">'
                     }
-                    s += apparatus.getReadingForGroup(groups[h].significantContent[i], scopeWit)+'</span>';
-                    for (var f in groups[h].significant[i]) {
-                        var wit = groups[h].significant[i][f];
+                    s += apparatus.getReadingForGroup(groups[h].significantContent[c], scopeWit)+'</span>';
+                    for (var f in groups[h].significant[c]) {
+                        var wit = groups[h].significant[c][f];
                         s+= '<evt-witness-ref witness="'+wit+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>'
                     }
                     groups[h].significantText += s;
@@ -156,16 +156,16 @@ angular.module('evtviewer.dataHandler')
                 delete groups[h].notSignificantContent;
             } else {
                 groups[h].notSignificantText = '';
-                for (var i in groups[h].notSignificant) {
+                for (var c in groups[h].notSignificant) {
                     var s = '<span class="'
-                    if (i === entry.lemma){
+                    if (c === entry.lemma){
                         s += 'lem inWitGrp">'
                     } else {
                         s+= 'rdg inWitGrp>'
                     }
-                    s += apparatus.getReadingForGroup(groups[h].notSignificantContent[i], scopeWit)+'</span>';
-                    for (var f in groups[h].notSignificant[i]) {
-                        var wit = groups[h].notSignificant[i][f];
+                    s += apparatus.getReadingForGroup(groups[h].notSignificantContent[c], scopeWit)+'</span>';
+                    for (var f in groups[h].notSignificant[c]) {
+                        var wit = groups[h].notSignificant[c][f];
                         s+= '<evt-witness-ref witness="'+wit+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>'
                     }
                     groups[h].notSignificantText += s;;
