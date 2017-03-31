@@ -115,6 +115,17 @@ angular.module('evtviewer.core')
     possibleLemmaFilters       : 'resp, cert',
     notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
 
+    witnessesGroups: [
+        {
+            groupName : "witGrp_1",
+            witnesses : ["V", "P", "N", "M", "G", "C", "R"]
+        },
+        {
+            groupName : "witGrp_2",
+            witnesses : ["F", "D", "O", "W", "M5mg", "B", "U"]
+        }
+    ],
+
     quoteDef    : '<quote>',
     analogueDef : '',
     

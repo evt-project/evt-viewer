@@ -176,6 +176,8 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+    /*getReadingForGroup(reading, scopeWit)*/
+    /*Method added by CM*/
     apparatus.getReadingForGroup = function(reading, scopeWit) {
        var readingText = '';
 
@@ -313,6 +315,7 @@ angular.module('evtviewer.dataHandler')
         return readingObj;
     };
 
+    /*getCriticalElementContent(element, scopeWit)*/
     /*Method added by CM*/
     apparatus.getCriticalElementContent = function(element, scopeWit) {
         var content = element.content || [];
@@ -341,7 +344,8 @@ angular.module('evtviewer.dataHandler')
         return result;
     };
     
-    //Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+    /*getText(entry)*/
+    /*Method added by CM*/
     var getText = function(entry) {
         var result = '';
         var content = entry.content;
@@ -357,6 +361,8 @@ angular.module('evtviewer.dataHandler')
         return result;
     }
 
+    /*getAppText(entry, scopeWit)*/
+    /*Method added by CM*/    
      var getAppText = function(entry, scopeWit){
             var result = '';
             if (scopeWit === ''
