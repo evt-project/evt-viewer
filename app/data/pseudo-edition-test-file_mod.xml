@@ -71,8 +71,8 @@
   <text>
     <body>
       <div><pb xml:id="p1" n="Page 1"/>
-	  <p>Vediamo <ref evt-Ref-Attr="" type="aaaaa" target="#Rodrigues1998">'The Dream of the Rood and Cyn(e)wulf' and Other Critical Essays</ref></p>
-	  <p>Oppure vediamo <ref evt-Ref-Attr="" type="aaaaa" target="IoNonEsisto">Riferimento errato</ref></p>
+	  <p>Vediamo <ref  type="aaaaa" target="#Rodrigues1998">'The Dream of the Rood and Cyn(e)wulf' and Other Critical Essays</ref></p>
+	  <p>Oppure vediamo <ref type="aaaaa" target="IoNonEsisto">Riferimento errato</ref></p>
         <listBibl>
           <head>Bibliografia commentata del <title>Vercelli Book</title></head>
 
