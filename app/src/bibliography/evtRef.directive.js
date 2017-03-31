@@ -59,11 +59,12 @@ angular.module('evtviewer.dataHandler')
 						var found = false;
 						var target = attrs.target.replace('#','');
 						var bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
-						bibliographicRefsCollection.forEach(function(item) {
-							if (item.id === target) {
+						for (var c=0, l= bibliographicRefsCollection.length; c<l; c++) {
+							if (bibliographicRefsCollection[c].id === target) {
 								found = true;
+								break;
 							}
-						});
+						}
 						//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
 						if (found){
 							evtInterface.updateSecondaryContentOpened(' ');

@@ -276,9 +276,9 @@ angular.module('evtviewer.dataHandler')
 		}
 		else {
 			if(isArray(arr)){
-				arr.forEach(function(item){
-					removeEndingPoint(item);
-				});
+				for (var c=0, l=arr.length; c<l; c++) {
+					removeEndingPoint(arr[c]);
+				}
 			}
 			else if(isObject(arr)){
 				for (var key in arr) {
