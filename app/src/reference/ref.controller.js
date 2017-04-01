@@ -12,19 +12,19 @@ angular.module('evtviewer.reference')
 				passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
 				apriamo il dialog con tipo globalInfo
 				scegliamo di visualizzare come pannello iniziale quello della bibliografia
-				/*/
-			//andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza 
-			var found = false;
-			var target = $scope.target.replace('#', '');
-			var bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
-			for (var c = 0, l = bibliographicRefsCollection.length; c < l; c++) {
-				if (bibliographicRefsCollection[c].id === target) {
-					found = true;
-					break;
+			/*/
+			var isExistingReference = function(target) {
+				var bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
+				for (var c = 0, l = bibliographicRefsCollection.length; c < l; c++) {
+					if (bibliographicRefsCollection[c].id === target) {
+						return true;
+					}
 				}
-			}
+			};
+			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza 
 			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
-			if (found) {
+			var target = $scope.target.replace('#', '');
+			if (isExistingReference(target)) {
 				evtInterface.updateSecondaryContentOpened(' ');
 				evtDialog.openByType('globalInfo');
 				evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
