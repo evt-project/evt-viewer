@@ -2,24 +2,27 @@ angular.module('evtviewer.bibliography')
 
 .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser, evtInterface, evtHighlight) {
 	var _console = $log.getInstance('BibliographyCtrl');
-
+	//recupero stili bibliografici
 	$scope.styles = config.allowedBibliographicStyles;
-	$scope.selectedStyle = $scope.styles[0];
+	$scope.initialSelectedStyle = $scope.styles.Chicago;
+	
+	//recupero i criteri di ordinamento (le label)
 	$scope.sortBy = config.bibliographicEntriesSortBy;
 	$scope.selectedSorting = $scope.sortBy[0];
-
+	
+	//recupero l'ordine per  l'ordinamento (le label)
 	$scope.sortOrder = config.bibliographySortOrder;
-	$scope.selectedSortOrder = $scope.sortOrder[0];
+	$scope.selectedSortOrder = $scope.sortOrder.ASC;
 	
 	
 	$scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
 
 	_console.log($scope.allowedBibliographicStyles);
 	$scope.getFormattedBibl = function(BiblElement) {
-		if (!BiblElement.outputs[$scope.selectedStyle]) {
-			evtBibliographyParser.formatResult($scope.selectedStyle, BiblElement);
+		if (!BiblElement.outputs[$scope.initialSelectedStyle]) {
+			evtBibliographyParser.formatResult($scope.initialSelectedStyle, BiblElement);
 		}
-		return BiblElement.outputs[$scope.selectedStyle];
+		return BiblElement.outputs[$scope.initialSelectedStyle];
 	};
 	$scope.pubblicationType = function(BiblElement) {
 		return evtBibliographyParser.getType(BiblElement);

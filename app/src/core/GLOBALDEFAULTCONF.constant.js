@@ -126,7 +126,14 @@ angular.module('evtviewer.core')
     variantColorDark  : 'rgb(101, 138, 255)',
     heatmapColor      : 'rgb(255, 108, 63)',
     xsltUrl: '',
-	allowedBibliographicStyles : ['Chicago' , 'APA' , 'MLA'],
+	allowedBibliographicStyles : {
+									Chicago : 'Chicago' ,
+									APA: 'APA' ,
+									MLA: 'MLA'
+								},
 	bibliographicEntriesSortBy : ['Author' , 'Year'],
-	bibliographySortOrder      : ['Ascendent','Descendent']
+	bibliographySortOrder      : {
+									ASC : 'Ascendent',
+									DESC : 'Descendent'
+								}
 });

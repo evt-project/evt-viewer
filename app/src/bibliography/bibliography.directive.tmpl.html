@@ -2,8 +2,8 @@
 	<div class="bibliography">
 		<label for="biblStyleSelect">Select your style </label>
 		<select id="biblStyleSelect"
-			ng-model="selectedStyle"
-			ng-options="x for x in styles"/>
+			ng-model="initialSelectedStyle"
+			ng-options="value as value for (key , value) in styles"/>
 		
 		
 		<label for="biblSortingSelect">How to sort entries? </label>
@@ -15,10 +15,10 @@
 		<label for="biblSortOrder">Sort order </label>
 		<select id="biblSortOrder"
 			ng-model="selectedSortOrder"
-			ng-options="x for x in sortOrder"/>			
+			ng-options="value as value for (key , value) in sortOrder"/>			
 			
 		<div class="biblRef"
-			ng-repeat="bibl in bibliographicRefsCollection | orderBy: myComparator: selectedSortOrder === sortOrder[0]? false : true"
+			ng-repeat="bibl in bibliographicRefsCollection | orderBy: myComparator: selectedSortOrder === sortOrder.DESC"
 			compile="getFormattedBibl(bibl)"
 			ng-attr-highlight="{{ isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ isEntryHighlighted(bibl) }}"
