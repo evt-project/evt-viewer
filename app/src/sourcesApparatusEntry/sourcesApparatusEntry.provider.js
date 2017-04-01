@@ -19,13 +19,12 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 entryId = id || undefined,
                 scopeWit = scope.scopeWit || '';
 
-            var scopeHelper = {};
-
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
 
-            var content,
+            var scopeHelper = {},
+                content,
                 firstSubContentOpened = '',
                 /*src_list will be used to dynamically change the tabs
                   and the contents depending on the  activeSource*/

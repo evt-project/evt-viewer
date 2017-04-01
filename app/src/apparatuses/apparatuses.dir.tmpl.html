@@ -1,20 +1,71 @@
-<!--
+<!--BUTTONS TO SWITCH THE VIEW MODE OF THE APPARATUSES-->
+<!--div
+    class="apparatuses_switch-mode-buttons">
+    <button
+        type="button"
+        ng-click="vm.toggleAppStructure('tabs')"
+        class="tabs-button">
+        Switch to tab mode
+    </button>
+    <button
+        type="button"
+        ng-click="vm.toggleAppStructure('subBoxes')"
+        class="subBoxes-button">
+        Switch to boxes mode
+    </button>
+</div-->
+
+<div
+    class="apparatuses_main"
+    ng-switch="vm.appStructure">
+
     <div
-        class="apparatuses_main"
-        ng_switch="appStructure">
+        ng-switch-when="tabs">
+        <ul class="apparatuses_tabs_headers">
+            <li
+                ng-repeat="apparatus in vm.apparatuses"
+                class="appLabel">
+                <span
+                    class="{'activeAppLabel' : vm.openApparatus == apparatus.label}"
+                    ng-click="vm.toggleOpenApparatus(apparatus.label)"
+                    compile="apparatus.label">
+                </span>
+            </li>
+        </ul>
         <div
-            ng_switch-when="tabs">
-            *
-        </div>
-        <div
-            ng_switch-when="subBoxes">
-            *
+            class="apparatuses_tabs_body"
+            ng-switch="vm.openApparatus">
+            <div
+                ng-switch-when="Critical Apparatus">
+                <evt-critical-apparatus-entry
+                    ng-repeat="app in vm.getList('Critical Apparatus')"
+                    data-app-id="{{app}}"></evt-critical-apparatus-entry>
+            </div>
+            <div
+                ng-switch-when="Sources">
+                <evt-sources-apparatus-entry
+                    ng-repeat="quote in vm.getList('Sources')"
+                    data-quote-id="{{quote}}">
+                </evt-sources-apparatus-entry>
+            </div>
+            <div
+                ng-switch-when="Analogues">
+                <evt-analogues-apparatus-entry
+                    ng-repeat="analogue in vm.getList('Analogues')"
+                    data-analogue-id="{{analogue}}">
+                </evt-analogues-apparatus-entry>
+            </div>
+            <!--div
+                ng-switch-when="Commentary Notes">
+            </div-->
         </div>
     </div>
--->
-<div class="apparatuses_headers">
-    <span>TABS</span>
-</div>
-<div class="apparatuses_panel">
-    <span>BOXES :)</span>
+    
+    <div
+        ng-switch-when="subBoxes">
+        <div class="apparatuses_headers">
+            <span>BOXES :)</span>
+        </div>
+    </div>
+    
 </div>

@@ -366,9 +366,8 @@ angular.module('evtviewer.box')
                     break;
                 case 'apparatus':
                     isLoading = true;
-                    updateContent = function(newContent) {
-                        newContent = '<span>ciao</span><apparatuses></apparatuses>'
-                        scope.vm.content = newContent;
+                    updateContent = function() {
+                        scope.vm.content = '<apparatuses></apparatuses>';
                     };
                     isLoading = false;
                     break;

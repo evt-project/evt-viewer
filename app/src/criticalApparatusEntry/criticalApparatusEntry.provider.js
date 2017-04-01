@@ -33,7 +33,8 @@ angular.module('evtviewer.criticalApparatusEntry')
             }
             
             // Get Apparatus Entry content 
-            var content,
+            var content
+                witnessesGroups = '',
                 firstSubContentOpened = '',
                 tabs = { 
                     _indexes : []
@@ -49,6 +50,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
             if (criticalEntry !== undefined) {
                 content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
+                witnessesGroups = content.witnessesGroups;
                 if (content.criticalNote !== '' ){
                     tabs._indexes.push('criticalNote');
                     tabs.criticalNote = {
@@ -94,7 +96,7 @@ angular.module('evtviewer.criticalApparatusEntry')
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
                 tabs              : tabs,
-                witnessesGroups   : content.witnessesGroups
+                witnessesGroups   : witnessesGroups
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

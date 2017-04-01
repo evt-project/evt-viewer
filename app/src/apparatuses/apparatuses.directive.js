@@ -4,9 +4,10 @@ angular.module('evtviewer.apparatuses')
     return {
         restrict: 'E',
         scope: {},
-        //transclude: true?,
+        transclude: true,
         templateUrl: 'src/apparatuses/apparatuses.dir.tmpl.html',
-        //controller?
+        controllerAs: 'vm',
+        controller: 'apparatusesCtrl',
         link: function(scope, element, attrs) {
             var currentApparatuses = evtApparatuses.build(scope);
             scope.$on('$destroy', function() {
