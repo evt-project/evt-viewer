@@ -1,40 +1,9 @@
 angular.module('evtviewer.quote')
 
 .constant('QUOTEDEFAULTS', {
-    /**
-     * @module evtviewerPopover
-     * @ngdoc property
-     * @name tooltipMaxHeight
-     * @description
-     * `property`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * tooltipMaxHeight: 170
-     * </pre>
-     */
-    tooltipMaxHeight: 170,
-
-    /**
-     * @module evtviewerPopover
-     * @ngdoc property
-     * @name tooltipMaxWidth
-     * @description
-     * `property`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * tooltipMaxWidth: 200
-     * </pre>
-     */
-    tooltipMaxWidth: 200,
     
     /**
-     * @module evtviewerReading
+     * @module evtviewerQuote
      * @ngdoc property
      * @name openTriggerEvent
      * @description

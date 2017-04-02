@@ -1,6 +1,6 @@
 angular.module('evtviewer.quote')
 
-.directive('evtQuote', function(evtQuote, parsedData) {
+.directive('evtQuote', function(evtQuote, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -12,8 +12,10 @@ angular.module('evtviewer.quote')
         controllerAs: 'vm',
         controller: 'QuoteCtrl',
         link: function(scope, element, attrs){
+            
+            scope.scopeViewMode = evtInterface.getCurrentViewMode();
             // Initialize quote
-            var currentQuote = evtQuote.build(scope.quoteId, scope);
+            var currentQuote = evtQuote.build(scope);
             
             // Garbage collection
             scope.$on('$destroy', function() {

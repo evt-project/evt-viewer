@@ -14,8 +14,14 @@ angular.module('evtviewer.interface')
             isLoading        : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
-            isApparatusBoxOpen: true,
+            /*ADDED BY CM*/
+            isApparatusBoxOpen : true,
+            currentApparatus : undefined,
+            currentQuote     : undefined,
+            currentAnalogue  : undefined,
+            currentSource    : undefined
             /*Poi da ridefinire a false, quando si aprirà alla selezione di un elemento critico*/
+            //TODO: aggiungere fonte, cit e passo parallelo corrente
         };
         var properties = {
             indexTitle         : '',
@@ -162,10 +168,6 @@ angular.module('evtviewer.interface')
             return state.isPinnedAppBoardOpened;
         };
 
-        mainInterface.isApparatusBoxOpen = function() {
-            return state.isApparatusBoxOpen;
-        };
-
         mainInterface.getPinnedEntries = function() {
             return evtCriticalApparatusEntry.getPinned();
         };
@@ -183,10 +185,6 @@ angular.module('evtviewer.interface')
 
         mainInterface.togglePinnedAppBoardOpened = function() {
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
-        };
-
-        mainInterface.toggleApparatusBoxOpen = function() {
-            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
         };
         
         mainInterface.setToolState = function(toolName, status) {
@@ -225,6 +223,55 @@ angular.module('evtviewer.interface')
             if ( !currentZone || !zone || !(currentZone.id === zone.id && currentZone.name === zone.name) ) {
                 state.currentHighlightedZone = zone;
             }
+        };
+
+        /*************/
+        /*Added by CM*/
+        /*************/
+
+        //ApparatusBoxOpen
+        mainInterface.toggleApparatusBoxOpen = function() {
+            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
+        };
+
+        mainInterface.isApparatusBoxOpen = function() {
+            return state.isApparatusBoxOpen;
+        };
+        
+        //currentApparatus
+        mainInterface.toggleApparatusBoxOpen = function() {
+            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
+        };
+
+        mainInterface.isApparatusBoxOpen = function() {
+            return state.isApparatusBoxOpen;
+        };
+
+        //Quote
+        mainInterface.getCurrentQuote = function() {
+            return state.currentQuote;
+        };
+
+        mainInterface.updateCurrentQuote = function(quoteId) {
+            state.currentQuote = quoteId;
+        };
+
+        //Analogue
+        mainInterface.getCurrentAnalogue = function() {
+            return state.currentAnalogue;
+        };
+
+        mainInterface.updateCurrentAnalogue = function(analogueId) {
+            state.currentAnalogue = analogueId;
+        };
+
+        //Source
+        mainInterface.getCurrentSource = function() {
+            return state.currentSource;
+        };
+
+        mainInterface.updateCurrentSource = function(sourceId) {
+            state.currentSource = sourceId;
         };
 
         // WITNESS
@@ -293,6 +340,8 @@ angular.module('evtviewer.interface')
                 witIds = [],
                 witPageIds = {},
                 appId;
+
+            //TODO: aggiungere q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
 
             // VIEW MODE 
             if (params.viewMode !== undefined) {

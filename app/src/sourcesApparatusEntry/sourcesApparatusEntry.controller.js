@@ -1,6 +1,7 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .controller('sourcesApparatusEntryCtrl', function(evtSourcesApparatusEntry) {
+    $scope.content = {};
     var vm = this;
 
     /**********************/
@@ -30,6 +31,17 @@ angular.module('evtviewer.sourcesApparatusEntry')
             vm._subContentOpened = subContentName;
         } else {
             vm._subContentOpened = '';
+        }
+    };
+
+    this.toggleOverQuotes = function($event) {
+        $event.stopPropagation();
+        if (vm.quoteId === undefined){
+            if (vm.over === false) {
+                evtQuote.mouseOverByQuoteId(vm.quoteId);
+            } else {
+                evtQuote.mouseOutAll();
+            }
         }
     };
 

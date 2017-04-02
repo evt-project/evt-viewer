@@ -65,6 +65,8 @@ angular.module('evtviewer.interface')
         return evtInterface.getCurrentAppEntry();
     };
 
+    //TODO: aggiungere metodi per la fonte, la cit e il passo parallelo corrente?
+
     $scope.updateCurrentAppEntry = function(entry) {
         evtInterface.updateCurrentAppEntry(entry);
         if (evtInterface.getCurrentViewMode() === 'readingTxt') {
@@ -86,6 +88,7 @@ angular.module('evtviewer.interface')
         return evtInterface.isPinnedAppBoardOpened();
     };
 
+    //Added by CM
     $scope.isApparatusBoxOpen = function() {
         return evtInterface.isApparatusBoxOpen();
     };

@@ -1,40 +1,9 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .constant('SOURCESAPPENTRY', {
-    /**
-     * @module evtviewerPopover
-     * @ngdoc property
-     * @name tooltipMaxHeight
-     * @description
-     * `property`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * tooltipMaxHeight: 170
-     * </pre>
-     */
-    //tooltipMaxHeight: 170,
-
-    /**
-     * @module evtviewerPopover
-     * @ngdoc property
-     * @name tooltipMaxWidth
-     * @description
-     * `property`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * tooltipMaxWidth: 200
-     * </pre>
-     */
-    //tooltipMaxWidth: 200,
     
     /**
-     * @module evtviewerReading
+     * @module evtviewerSourcesApparatusEntry
      * @ngdoc property
      * @name openTriggerEvent
      * @description

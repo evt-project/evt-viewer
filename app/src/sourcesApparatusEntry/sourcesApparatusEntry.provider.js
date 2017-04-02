@@ -100,16 +100,15 @@ angular.module('evtviewer.sourcesApparatusEntry')
             }
 
             scopeHelper = {
-                uid : currentId,
-                head : head,
-                xml : xml,
-                sources : sources,
-                src_list : src_list,
-                _activeSource : sources[0].id,
-                /*By default the active Source is the first (and maybe only one)
-                source inserted inside the sources array*/
-                tabs : tabs,
+                uid               : currentId,
+                head              : head,
+                xml               : xml,
+                sources           : sources,
+                src_list          : src_list,
+                _activeSource     : sources[0].id, /*By default the active Source is the first (and maybe only one) source inserted inside the sources array*/
+                tabs              : tabs,
                 _subContentOpened : firstSubContentOpened,
+                over              : false,
             }
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -119,6 +118,16 @@ angular.module('evtviewer.sourcesApparatusEntry')
             
             return collection[currentId];
         }
+
+        sourceEntry.getById = function(currentId) {
+            if (collection[currentId] !== 'undefined') {
+                return collection[currentId];
+            }
+        };
+
+        sourceEntry.getList = function() {
+            return list;
+        };
 
         sourceEntry.destroy = function(tempId) {
             delete collection[tempId];
