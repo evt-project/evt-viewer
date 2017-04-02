@@ -41,7 +41,8 @@
                 ng-switch-when="Critical Apparatus">
                 <evt-critical-apparatus-entry
                     ng-repeat="app in vm.getList('Critical Apparatus')"
-                    data-app-id="{{app}}"></evt-critical-apparatus-entry>
+                    data-app-id="{{app}}">
+                    </evt-critical-apparatus-entry>
             </div>
             <div
                 class="active-apparatus"
@@ -50,7 +51,6 @@
                     ng-repeat="quote in vm.getList('Sources')"
                     data-quote-id="{{quote}}">
                 </evt-sources-apparatus-entry>
-                <span>Some text</span>
             </div>
             <div
                 class="active-apparatus"

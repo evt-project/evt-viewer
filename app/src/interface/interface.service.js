@@ -66,7 +66,7 @@ angular.module('evtviewer.interface')
                             promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
                         }
                         
-                        $q.all(promises).then(function(){
+                        $q.all(promises).then(function() {
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
                                 parsedData.getCriticalEntryById(state.currentAppEntry) === undefined){
@@ -239,12 +239,12 @@ angular.module('evtviewer.interface')
         };
         
         //currentApparatus
-        mainInterface.toggleApparatusBoxOpen = function() {
-            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
+        mainInterface.getCurrentApparatus = function() {
+            return state.currentApparatus;
         };
 
-        mainInterface.isApparatusBoxOpen = function() {
-            return state.isApparatusBoxOpen;
+        mainInterface.updateCurrentApparatus = function(apparatus) {
+            state.currentApparatus = apparatus;
         };
 
         //Quote
@@ -339,7 +339,11 @@ angular.module('evtviewer.interface')
                 witnesses,
                 witIds = [],
                 witPageIds = {},
-                appId;
+                appId,
+                quoteId,
+                analogueId,
+                sourceId,
+                apparatusId;
 
             //TODO: aggiungere q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
 

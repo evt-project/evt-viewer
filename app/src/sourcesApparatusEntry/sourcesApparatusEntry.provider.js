@@ -8,15 +8,15 @@ angular.module('evtviewer.sourcesApparatusEntry')
         defaults = _defaults;
     }
     
-    this.$get = function(parsedData, evtSourcesApparatus, $log) {
+    this.$get = function(parsedData, evtSourcesApparatus, $log, evtInterface) {
         var sourceEntry = {},
             collection  = {},
             list        = [],
             idx         = 0;
         
-        sourceEntry.build = function(id, scope) {
+        sourceEntry.build = function(scope) {
             var currentId = idx++,
-                entryId = id || undefined,
+                entryId = scope.quoteId || undefined,
                 scopeWit = scope.scopeWit || '';
 
             if (typeof(collection[currentId]) !== 'undefined') {
@@ -35,7 +35,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     _indexes: []
                 };
 
-            var quoteEntry = parsedData.getQuote(id);
+            var quoteEntry = parsedData.getQuote(scope.quoteId);
 
             if (quoteEntry !== undefined) {
                 
@@ -99,6 +99,12 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             }
 
+            var selected = false;
+
+            if (evtInterface.getCurrentQuote() === scope.quoteId) {
+                selected = true;
+            }
+
             scopeHelper = {
                 uid               : currentId,
                 head              : head,
@@ -109,6 +115,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 tabs              : tabs,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
+                selected          : selected,
             }
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

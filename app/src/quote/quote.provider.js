@@ -36,7 +36,7 @@ angular.module('evtviewer.quote')
                     opened            : false,
                     content           : {},
                     _loaded           : false,
-                    _subContentOpened : 'criticalNote'
+                    //_subContentOpened : 'criticalNote'
                 },
                 selected         : entryId === quote.getCurrentQuote(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),

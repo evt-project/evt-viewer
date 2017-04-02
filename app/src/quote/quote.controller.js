@@ -1,7 +1,6 @@
 angular.module('evtviewer.quote')
 
 .controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface) {
-    $scope.content = {};
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -44,17 +43,14 @@ angular.module('evtviewer.quote')
 
     this.toggleOverQuotes = function($event) {
         $event.stopPropagation();
-        if ( !vm.hidden ) {
             if ( vm.over === false ) {
-                evtQuote.mouseOverByAppId(vm.appId);
+                evtQuote.mouseOverByQuoteId(vm.quoteId);
             } else {
                 evtQuote.mouseOutAll();
             }
-        }
     };
 
     this.toggleSelectQuotes = function($event) {
-        if ( !vm.hidden ) {
             if (vm.selected === false) {
                 if (!vm.apparatus.opened){
                     evtQuote.selectById(vm.quoteId);
@@ -66,13 +62,12 @@ angular.module('evtviewer.quote')
                     evtInterface.updateCurrentQuote('');
                 }
             }
-        }
         evtInterface.updateUrl();
     };
 
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
-        if ( !vm.hidden && vm.over ) {
+        if (vm.over) {
             if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 

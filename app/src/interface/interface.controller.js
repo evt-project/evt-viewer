@@ -75,6 +75,14 @@ angular.module('evtviewer.interface')
         evtInterface.updateUrl();
     };
 
+    $scope.updateCurrentQuote = function(quote) {
+        evtInterface.updateCurrentQuote(quote);
+    /*if (evtInterface.getCurrentViewMode() === 'readingTxt') {
+            evtBox.alignScrollToApp(entry);
+        }
+        evtInterface.updateUrl();*/
+    };
+
     $scope.getPinnedEntries = function() {
         return evtInterface.getPinnedEntries();
     };

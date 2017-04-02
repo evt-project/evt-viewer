@@ -4,7 +4,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     return {
         restrict: 'E',
         scope: {
-            quoteId       : '@',
+            quoteId  : '@',
             scopeWit : '@',
         },
         transclude: true,
@@ -13,7 +13,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
         controller: 'sourcesApparatusEntryCtrl',
         link: function(scope, element, attrs){
             scope.scopeViewMode = evtInterface.getCurrentViewMode();
-            var currentEntry = evtSourcesApparatusEntry.build(scope.quoteId, scope);
+            var currentEntry = evtSourcesApparatusEntry.build(scope);
             
             // Garbage collection
             scope.$on('$destroy', function() {

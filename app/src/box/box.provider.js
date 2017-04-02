@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtApparatuses) {
         var box        = {},
             collection = {},
             list       = [],
@@ -367,7 +367,7 @@ angular.module('evtviewer.box')
                 case 'apparatuses':
                     isLoading = true;
                     updateContent = function() {
-                        scope.vm.content = '<apparatuses></apparatuses>';
+                        scope.vm.content = '<apparatuses></apparatuses>'
                     };
                     isLoading = false;
                     break;

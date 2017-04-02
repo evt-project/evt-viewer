@@ -8,7 +8,7 @@ angular.module('evtviewer.apparatuses')
         defaults = _defaults;
     }*/
 
-    this.$get = function(parsedData) {
+    this.$get = function(parsedData, evtInterface) {
         var apparatuses = {},
             collection = {},
             list = [],
@@ -21,24 +21,24 @@ angular.module('evtviewer.apparatuses')
                 return;
             }
             var scopeHelper = {},
-                openApparatus = '',//l'apparato selezionato, ergo il contenuto del box e della fascia in fondo
-                //updateApparatus,//funzione che aggiorna l'apparato
+                openApparatus,// = evtInterface.getCurrentApparatus() || '',//l'apparato selezionato, ergo il contenuto del box e della fascia in fondo
+                openApparatusContent,
+                updateApparatus,//funzione che aggiorna l'apparato
                 apparatuses = [],
-                appStructure = 'tabs';//tutti gli apparati disponibili
+                appStructure = 'tabs'
+                appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
+                quotesList = parsedData.getQuotes()._indexes.encodingStructure,
+                analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;//tutti gli apparati disponibili
 
             /*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
 
-            if (parsedData.getCriticalEntries()._indexes.encodingStructure.length > 0) {
-                var appList = parsedData.getCriticalEntries()._indexes.encodingStructure;
+            if (appList.length > 0) {
                 apparatuses.push({label: 'Critical Apparatus', list: appList});
-                openApparatus = 'Critical Apparatus';
             }
-            if (parsedData.getQuotes()._indexes.encodingStructure.length > 0) {
-                var quotesList = parsedData.getQuotes()._indexes.encodingStructure;
+            if (quotesList.length > 0) {
                 apparatuses.push({label: 'Sources', list: quotesList});
             }
-            if (parsedData.getAnalogues()._indexes.encodingStructure.length > 0) {
-                var analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;
+            if (analoguesList.length > 0) {
                 apparatuses.push({label: 'Analogues', list: analoguesList});
             }
 

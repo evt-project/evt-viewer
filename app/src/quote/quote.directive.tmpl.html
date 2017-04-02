@@ -1,13 +1,14 @@
 <span 
     class="quote"
-    ng-mouseover="vm.toggleOverAppEntries($event);"
-    ng-mouseout="vm.toggleOverAppEntries($event)"
+    ng-mouseover="vm.toggleOverQuotes($event)"
+    ng-mouseout="vm.toggleOverQuotes($event)"
     ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
                 'over'     : vm.over}">
     <span 
         class="quote__text"
-        ng-transclude
-        ng-click="vm.callbackClick($event)"></span>
+        ng-click="vm.callbackClick($event);"
+        ng-transclude></span>
+
     <evt-sources-apparatus-entry
         ng-if="vm.apparatus._loaded"
         ng-show="vm.isApparatusOpened()"
