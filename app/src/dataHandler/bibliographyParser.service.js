@@ -71,63 +71,41 @@ angular.module('evtviewer.dataHandler')
 		for(var c=0; newBiblElement.type === '' && analyticElem && c<analyticElem.length; c++){
 			newBiblElement.type = analyticElem[0].getAttribute('level') ? analyticElem[0].getAttribute('level') : '';
 		}
-		angular.forEach(currentDocument.find('author'), function(el) {
-			var newAuthorElement = {
-				name: '',
-				surname: '',
-				forename: ''
-			};
 
-			var el = angular.element(el);
-			var authorName = el.find('name');
-			angular.forEach(authorName, function(element) {
-				newAuthorElement.name = element.textContent;
+		function extractNameSurnameForename(whereToFind,whereToPutInfoArray) {
+			angular.forEach(whereToFind, function(el) {
+				var newAuthorElement = {
+					name: '',
+					surname: '',
+					forename: ''
+				};
+
+				var el = angular.element(el);
+				var authorName = el.find('name');
+				angular.forEach(authorName, function(element) {
+					newAuthorElement.name = element.textContent;
+				});
+
+				var authorSurname = el.find('surname');
+				angular.forEach(authorSurname, function(element) {
+					newAuthorElement.surname = element.textContent;
+				});
+
+				var authorForename = el.find('forename');
+				angular.forEach(authorForename, function(element) {
+					newAuthorElement.forename = element.textContent;
+				});
+				//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
+				if (authorName.length === 0 && authorForename.length === 0 && authorSurname.length === 0) {
+					newAuthorElement.name = el[0].textContent;
+				}
+				whereToPutInfoArray.push(newAuthorElement);
 			});
+		}
+		
+		extractNameSurnameForename(currentDocument.find('author'),newBiblElement.author);
+		extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')),newBiblElement.editor);
 
-			var authorSurname = el.find('surname');
-			angular.forEach(authorSurname, function(element) {
-				newAuthorElement.surname = element.textContent;
-			});
-
-			var authorForename = el.find('forename');
-			angular.forEach(authorForename, function(element) {
-				newAuthorElement.forename = element.textContent;
-			});
-			//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-			if (authorName.length === 0 && authorForename.length === 0 && authorSurname.length === 0) {
-				newAuthorElement.name = el[0].textContent;
-			}
-			newBiblElement.author.push(newAuthorElement);
-		});
-
-		angular.forEach(currentDocument.find(editorDef.replace(/[<>]/g, '')), function(el) {
-			var newAuthorElement = {
-				name: '',
-				surname: '',
-				forename: ''
-			};
-
-			var el = angular.element(el);
-			var authorName = el.find('name');
-			angular.forEach(authorName, function(element) {
-				newAuthorElement.name = element.textContent;
-			});
-
-			var authorSurname = el.find('surname');
-			angular.forEach(authorSurname, function(element) {
-				newAuthorElement.surname = element.textContent;
-			});
-
-			var authorForename = el.find('forename');
-			angular.forEach(authorForename, function(element) {
-				newAuthorElement.forename = element.textContent;
-			});
-			//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-			if (authorName.length === 0 && authorForename.length === 0 && authorSurname.length === 0) {
-				newAuthorElement.name = el[0].textContent;
-			}
-			newBiblElement.editor.push(newAuthorElement);
-		});		
 		//cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
 		angular.forEach(currentDocument.children(), function(el) {
 			if (el.tagName === 'date') {
@@ -135,6 +113,13 @@ angular.module('evtviewer.dataHandler')
 			}
 		});
 
+		if (currentDocument[0].tagName === 'bibl') {
+			var biblTitle = currentDocument.find('title');
+			if(biblTitle && biblTitle.length > 0) {
+				newBiblElement.titleMonogr = biblTitle[0].textContent;
+			}
+		}
+		
 		var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
 		//entriamo nel tag monogr
 		if (monographElem) {
@@ -143,13 +128,8 @@ angular.module('evtviewer.dataHandler')
 			var monographTitles = monographElem.find('title');
 			if (monographTitles && monographTitles.length > 0) {
 				newBiblElement.titleMonogr = monographTitles[0].textContent;
-				var titleLevel = monographTitles[0].getAttribute("level");
-				//recuperiamo il tipo di pubblicazione
-				if (titleLevel !== null){
-					newBiblElement.titleLevel = titleLevel.substring(0, 1);
-				}
 				for(var c=0; c<monographTitles.length && newBiblElement.type === '';c++){
-					var titleLevel = monographTitles[0].getAttribute("level");
+					var titleLevel = monographTitles[c].getAttribute("level");
 					//recuperiamo il tipo di pubblicazione
 					if (titleLevel !== null){
 						newBiblElement.type = analyticElem.length == 0 && newBiblElement.type === '' ? titleLevel.substring(0, 1) : '';
@@ -165,27 +145,28 @@ angular.module('evtviewer.dataHandler')
 			if (newBiblElement.date === ''){
 				newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
 			}
-			//biblscope può stare dentro monogr ma anche dentro imprint
-			angular.forEach(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), function(el) {
+			
+			function extractBiblScope(whatToFind,whereToPutInfoArray){
+				angular.forEach(whatToFind, function(el) {
 				//prendere attributo type o unit di ogni biblScope trovato
-				angular.forEach(['type', 'unit'], function(attr) {
-					var attrValue = el.getAttribute(attr);
-					if (attrValue !== null) {
-						newBiblElement.biblScope[attrValue] = el.textContent;
-					}
-				});
-			});
-
+					angular.forEach(['type', 'unit'], function(attr) {
+						var attrValue = el.getAttribute(attr);
+						if (attrValue !== null) {
+							whereToPutInfoArray[attrValue] = el.textContent;
+						}
+					});
+				})
+			}
+			
+			//biblscope può stare dentro monogr ma anche dentro imprint
+			extractBiblScope(monographElem.find(biblScopeDef.replace(/[<>]/g, '')),newBiblElement.biblScope);
+			
 			//entriamo dentro imprint che è dentro monogr
 			var monographImprints = angular.element(monographElem.find(imprintDef.replace(/[<>]/g, '')));
 			if (monographImprints && monographImprints.length > 0) {
 				var monographImprint = angular.element(monographImprints[0]);
 				//dentro imprint salviamo i biblScope
-				angular.forEach(monographImprint.find(biblScopeDef.replace(/[<>]/g, '')), function(el) {
-					//prendere attributo type
-					newBiblElement.biblScope[el.getAttribute('type')] = el.textContent;
-				});
-
+				extractBiblScope(monographImprint.find(biblScopeDef.replace(/[<>]/g, '')),newBiblElement.biblScope);
 				//salviamo la data dentro monogr
 				var imprintsDates = monographImprints.find('date');
 				/*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
@@ -242,15 +223,7 @@ angular.module('evtviewer.dataHandler')
 				newBiblElement.note[el.getAttribute('type')] = el.textContent;
 			});
 			//dentro series ci sono anche i biblScope
-			angular.forEach(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), function(el) {
-				//prendere attributo type o unit di ogni biblScope trovato
-				angular.forEach(['type', 'unit'], function(attr) {
-					var attrValue = el.getAttribute(attr);
-					if (attrValue !== null) {
-						newBiblElement.biblScope[attrValue] = el.textContent;
-					}
-				});
-			});			   
+			extractBiblScope(seriesElem.find(biblScopeDef.replace(/[<>]/g, '')),newBiblElement.biblScope);			   
 		}
 
 		

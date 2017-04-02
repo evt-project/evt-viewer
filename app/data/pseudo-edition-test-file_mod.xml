@@ -78,7 +78,19 @@
           <head>Bibliografia commentata del <title>Vercelli Book</title></head>
 
           <!-- MONOGRAFIE -->
-          
+          <bibl type="article"
+ subtype="magazine_article" xml:id="beaupaire_1911">
+ <author>
+
+   <surname>Beaupaire</surname>
+     <forename>Edmond</forename>
+ </author>
+<title level="a">A propos de la rue de la Femme-sans-Tête</title>,
+<bibl type="monogr">
+  <title level="j">La Cité</title>,
+ <date when="1911-01">janvier 1911</date>, pp. <biblScope unit="pp" from="5" to="17">5-17</biblScope>.
+ </bibl>
+</bibl>
           <biblStruct xml:id="Rodrigues1998">
             <monogr>
               <author><surname>Rodrigues</surname> <name>Louis Jim</name></author>
@@ -287,27 +299,6 @@
             <note type="key">DOTR</note>
           </biblStruct>
           
-          <biblStruct xml:id="Crawford-2000">
-            <analytic>
-              <author>
-                <persName>
-                  <surname>Crawford</surname>
-                  <forename>Robert</forename>
-                </persName>
-              </author>
-              <title level="a">The Vision of the Cross</title>
-            </analytic>
-            <monogr>
-              <title level="j">Stand n.s.</title>
-              <imprint>
-                <biblScope type="vol">2.2</biblScope>
-                <date>2000</date>
-                <biblScope type="pages">143-46</biblScope>
-              </imprint>
-            </monogr>
-            <note type="comment">Traduzione.</note>
-            <note type="key">DOTR</note>
-          </biblStruct>
           
           <biblStruct xml:id="Hill1985">
             <analytic>
