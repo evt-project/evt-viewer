@@ -29,7 +29,7 @@ angular.module('evtviewer.apparatuses')
             /*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
 
             if (parsedData.getCriticalEntries()._indexes.encodingStructure.length > 0) {
-                var appList = parsedData.getCriticalEntries()._indexes.appEntries;
+                var appList = parsedData.getCriticalEntries()._indexes.encodingStructure;
                 apparatuses.push({label: 'Critical Apparatus', list: appList});
                 openApparatus = 'Critical Apparatus';
             }

@@ -43,10 +43,11 @@
               <ul 
                 class="app_reading_list"
                 ng-if="vm.witnessesGroups.length > 0">
-                <li ng-repeat="group in vm.witnessesGroups">
+                <li ng-repeat="group in vm.witnessesGroups"
+                  ng-if="group.significantText !== undefined">
                     <span
                       class="witGrp_name"
-                      ng_if="group.groupName !== '' && group.significantText !== ''">{{group.groupName}}:</span>
+                      ng_if="group.groupName !== '' && group.significantText !== undefined">{{group.groupName}}:</span>
                     <span
                       class="witGrp_content"
                       compile="group.significantText"></span>

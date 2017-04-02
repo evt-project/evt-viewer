@@ -20,13 +20,14 @@
     ng-switch="vm.appStructure">
 
     <div
+        class="apparatuses_tabs"
         ng-switch-when="tabs">
         <ul class="apparatuses_tabs_headers">
             <li
                 ng-repeat="apparatus in vm.apparatuses"
                 class="appLabel">
                 <span
-                    class="{'activeAppLabel' : vm.openApparatus == apparatus.label}"
+                    ng-class="{activeAppLabel : vm.openApparatus == apparatus.label}"
                     ng-click="vm.toggleOpenApparatus(apparatus.label)"
                     compile="apparatus.label">
                 </span>
@@ -36,19 +37,23 @@
             class="apparatuses_tabs_body"
             ng-switch="vm.openApparatus">
             <div
+                class="active-apparatus"
                 ng-switch-when="Critical Apparatus">
                 <evt-critical-apparatus-entry
                     ng-repeat="app in vm.getList('Critical Apparatus')"
                     data-app-id="{{app}}"></evt-critical-apparatus-entry>
             </div>
             <div
+                class="active-apparatus"
                 ng-switch-when="Sources">
                 <evt-sources-apparatus-entry
                     ng-repeat="quote in vm.getList('Sources')"
                     data-quote-id="{{quote}}">
                 </evt-sources-apparatus-entry>
+                <span>Some text</span>
             </div>
             <div
+                class="active-apparatus"
                 ng-switch-when="Analogues">
                 <evt-analogues-apparatus-entry
                     ng-repeat="analogue in vm.getList('Analogues')"
@@ -62,6 +67,7 @@
     </div>
     
     <div
+        class="apparatuses_sub-boxes"
         ng-switch-when="subBoxes">
         <div class="apparatuses_headers">
             <span>BOXES :)</span>

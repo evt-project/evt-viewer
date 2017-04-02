@@ -364,7 +364,7 @@ angular.module('evtviewer.box')
                         }
                     };
                     break;
-                case 'apparatus':
+                case 'apparatuses':
                     isLoading = true;
                     updateContent = function() {
                         scope.vm.content = '<apparatuses></apparatuses>';

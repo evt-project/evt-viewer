@@ -5,8 +5,7 @@ $sources-apparatus-entry-border-color : rgb(125, 125, 125);
 .sources-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
-    position: relative;
-    z-index:0;
+    position: static;
     background: $sources-apparatus-entry-background-color;
     color: $base-color-dark;
     font-size: 90%;
