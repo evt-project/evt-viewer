@@ -32,7 +32,9 @@ angular.module('evtviewer.dataHandler')
 			function(element) {
 				var newBiblElement = parser.extractInfo(element);
 				var currentID = getID(newBiblElement);
-				harvestedBiblContainer.push(newBiblElement);
+				if(addToCollection(newBiblElement)) {
+					harvestedBiblContainer.push(newBiblElement);
+				}
 			});
 		}
 
@@ -41,6 +43,11 @@ angular.module('evtviewer.dataHandler')
 		console.log('## parseBiblInfo ##', harvestedBiblContainer);
 	};
 
+	//pe essere salvato, un riferimento, basta che sia trovata almeno qualche cosa per l'autore o il titolo dell'opera
+	function addToCollection(newBiblElement) {
+		return newBiblElement.author.toString() !== '' || newBiblElement.titleAnalytic !== '' || newBiblElement.titleMonogr !== '';
+	}
+		
 	// Bibliographic data container
 	parser.extractInfo = function(element) {
 		var newBiblElement = {
@@ -60,6 +67,7 @@ angular.module('evtviewer.dataHandler')
 		idno: {},
 		outputs: {}
 				};
+		
 		var currentDocument = angular.element(element);
 
 		newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : '';
@@ -74,32 +82,32 @@ angular.module('evtviewer.dataHandler')
 
 		function extractNameSurnameForename(whereToFind,whereToPutInfoArray) {
 			angular.forEach(whereToFind, function(el) {
-				var newAuthorElement = {
+				var newPersonElement = {
 					name: '',
 					surname: '',
 					forename: ''
 				};
 
 				var el = angular.element(el);
-				var authorName = el.find('name');
-				angular.forEach(authorName, function(element) {
-					newAuthorElement.name = element.textContent;
+				var personName = el.find('name');
+				angular.forEach(personName, function(element) {
+					newPersonElement.name = element.textContent;
 				});
 
-				var authorSurname = el.find('surname');
-				angular.forEach(authorSurname, function(element) {
-					newAuthorElement.surname = element.textContent;
+				var personSurname = el.find('surname');
+				angular.forEach(personSurname, function(element) {
+					newPersonElement.surname = element.textContent;
 				});
 
-				var authorForename = el.find('forename');
-				angular.forEach(authorForename, function(element) {
-					newAuthorElement.forename = element.textContent;
+				var personForename = el.find('forename');
+				angular.forEach(personForename, function(element) {
+					newPersonElement.forename = element.textContent;
 				});
 				//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-				if (authorName.length === 0 && authorForename.length === 0 && authorSurname.length === 0) {
-					newAuthorElement.name = el[0].textContent;
+				if (personName.length === 0 && personForename.length === 0 && personSurname.length === 0) {
+					newPersonElement.name = el[0].textContent;
 				}
-				whereToPutInfoArray.push(newAuthorElement);
+				whereToPutInfoArray.push(newPersonElement);
 			});
 		}
 		
