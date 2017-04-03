@@ -18,8 +18,8 @@
 			ng-options="value as value for (key , value) in sortOrder"/>			
 			
 		<div class="biblRef"
-			id="{{bibl.id ? bibl.id : ''}}"
-			ng-repeat="bibl in bibliographicRefsCollection | orderBy: myComparator: selectedSortOrder === sortOrder.DESC"
+			id="{{bibl}}"
+			ng-repeat="bibl in biblRefsCollection._indexes | orderBy: myComparator: selectedSortOrder === sortOrder.DESC"
 			compile="getFormattedBibl(bibl)"
 			ng-attr-highlight="{{ isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ isEntryHighlighted(bibl) }}"

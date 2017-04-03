@@ -14,7 +14,9 @@ angular.module('evtviewer.dataHandler')
     };
 
 
-	var bibliographicRefsCollection = [];
+	var bibliographicRefsCollection = {
+        _indexes: []
+    };
 	
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
@@ -466,14 +468,25 @@ angular.module('evtviewer.dataHandler')
         return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
     };
 
-	parsedData.setBibliographicRefsCollection = function(arrayEntries) {
-		bibliographicRefsCollection = arrayEntries;
-	}
-		
+    /* ****************** */
+    /* BIBLIOGRAPHIC REFs */
+    /* ****************** */
+    /* TODO: reorganize in EVT general style JSON model */
+    parsedData.addBibliographicRef = function(biblElement) {
+        if ( bibliographicRefsCollection[biblElement.id] === undefined ) {
+            bibliographicRefsCollection[biblElement.id] = biblElement;
+            bibliographicRefsCollection._indexes.push(biblElement.id);
+        }
+    };
+
 	parsedData.getBibliographicRefsCollection = function() {
 		return bibliographicRefsCollection;
-	}
-		
+	};
+	
+    parsedData.getBibliographicRefById = function(refId) {
+        return bibliographicRefsCollection[refId];
+    };
+
     /* ************ */
     /* PROJECT INFO */
     /* ************ */

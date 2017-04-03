@@ -1,15 +1,27 @@
 angular.module('evtviewer.reference')
 
-.directive('ref', function(parsedData, evtHighlight, evtInterface, evtDialog, $timeout, evtCommunication) {
-	return { //rivedere dipendenze
-		restrict: 'C',
-		scope: {
-			target: '@',
-			type: '@'
-		},
-		replace: true,
-		transclude: true,
-		controller: 'RefCtrl',
-		template: '<span ng-click="handleRefClick($event)" ng-transclude></span>'
-	};
+.directive('ref', function(evtRef) {
+    return { //rivedere dipendenze
+        restrict: 'C',
+        scope: {
+            target: '@',
+            type: '@'
+        },
+        replace: true,
+        transclude: true,
+        controllerAs: 'vm',
+        controller: 'RefCtrl',
+        template: '<span class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>',
+        link: function(scope) {
+            // Initialize reading
+            var currentRef = evtRef.build(scope);
+
+            // Garbage collection
+            scope.$on('$destroy', function() {
+                if (currentRef && currentRef.destroy) {
+                    currentRef.destroy();
+                }
+            });
+        }
+    };
 });
