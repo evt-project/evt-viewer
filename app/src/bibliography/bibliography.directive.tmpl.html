@@ -9,7 +9,7 @@
 		<label for="biblSortingSelect">How to sort entries? </label>
 		<select id="biblSortingSelect"
 			ng-model="selectedSorting"
-			ng-options="x for x in sortBy"/>
+			ng-options="value as value for (key , value) in sortBy"/>
 
 			
 		<label for="biblSortOrder">Sort order </label>

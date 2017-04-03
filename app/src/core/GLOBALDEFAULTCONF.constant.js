@@ -131,7 +131,10 @@ angular.module('evtviewer.core')
 									APA: 'APA' ,
 									MLA: 'MLA'
 								},
-	bibliographicEntriesSortBy : ['Author' , 'Year'],
+	bibliographicEntriesSortBy : {
+									Author : 'Author' ,
+									Year : 'Year'
+									},
 	bibliographySortOrder      : {
 									ASC : 'Ascendent',
 									DESC : 'Descendent'

@@ -8,7 +8,7 @@ angular.module('evtviewer.bibliography')
 	
 	//recupero i criteri di ordinamento (le label)
 	$scope.sortBy = config.bibliographicEntriesSortBy;
-	$scope.selectedSorting = $scope.sortBy[0];
+	$scope.selectedSorting = $scope.sortBy.Author;
 	
 	//recupero l'ordine per  l'ordinamento (le label)
 	$scope.sortOrder = config.bibliographySortOrder;
@@ -17,7 +17,7 @@ angular.module('evtviewer.bibliography')
 	
 	$scope.bibliographicRefsCollection = parsedData.getBibliographicRefsCollection();
 
-	_console.log($scope.allowedBibliographicStyles);
+	_console.log($scope.styles);
 	$scope.getFormattedBibl = function(BiblElement) {
 		if (!BiblElement.outputs[$scope.initialSelectedStyle]) {
 			evtBibliographyParser.formatResult($scope.initialSelectedStyle, BiblElement);
@@ -35,7 +35,7 @@ angular.module('evtviewer.bibliography')
 	$scope.myComparator = function(bibl) {
 		var result = '';
 		//surname/name/forename sorting
-		if ($scope.selectedSorting === $scope.sortBy[0]) {
+		if ($scope.selectedSorting === $scope.sortBy.Author) {
 			//check if author exist
 			if (typeof bibl.author !== 'undefined' && bibl.author.length > 0){
 				//first try to compare according to author's surname
@@ -53,7 +53,7 @@ angular.module('evtviewer.bibliography')
 			}
 		}
 		//year sorting
-		else {
+		else if ($scope.selectedSorting === $scope.sortBy.Year){
 			result = bibl.date;
 		}
 		return result;
