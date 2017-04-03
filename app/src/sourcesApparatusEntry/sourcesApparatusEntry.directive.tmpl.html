@@ -1,6 +1,6 @@
 <div
     class="sources-apparatus-entry"
-    ng-class="{ 'selected' : vm.isSelect() && scope.viewMode == 'readingTxt'}"
+    ng-class="{ 'selected' : vm.isSelect() && vm.currentViewMode == 'readingTxt'}"
     ng-mouseover="vm.toggleOverQuotes($event)"
     ng-mouseout="vm.toggleOverQuotes($event)">
     <div class="sources-apparatus-entry_main-content">

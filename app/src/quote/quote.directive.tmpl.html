@@ -10,7 +10,7 @@
         ng-transclude></span>
 
     <evt-sources-apparatus-entry
-        ng-if="vm.apparatus._loaded"
+        ng-if="vm.apparatus._loaded && vm.apparatus.inline"
         ng-show="vm.isApparatusOpened()"
         data-quote-id="{{vm.quoteId}}"
         data-scope-wit="{{vm.scopeWit}}">

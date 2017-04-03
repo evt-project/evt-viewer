@@ -130,7 +130,7 @@ angular.module('evtviewer.box')
                 return evtBox.getListByType(type).length;
             };
             
-            if (currentBox.type === 'witness' || currentBox.type === 'text') { //==='source'
+            if (currentBox.type === 'witness' || currentBox.type === 'text') {
                 scope.vm.scrollToPage = function(pageId) {
                     $timeout(function(){
                         var pbElem = $('#'+currentBox.uid).find('#pb_'+pageId);
@@ -195,6 +195,40 @@ angular.module('evtviewer.box')
                     }
                 }, true);
             }
+
+            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'apparatuses') {
+                scope.vm.scrollToAppEntry = function(appId) {
+                    $timeout(function(){
+                        var appElem = $('#'+currentBox.uid).find("[data-app-id='"+appId+"']");
+                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (appElem.length > 0 && appElem[0] !== undefined) {
+                            boxBody.scrollTop = appElem[0].offsetTop-padding;
+                        }
+                    });
+                };
+
+                scope.vm.scrollToQuotesEntry = function(quoteId) {
+                    $timeout(function(){
+                        var appElem = $('#'+currentBox.uid).find("[data-quote-id='"+quoteId+"']");
+                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (appElem.length > 0 && appElem[0] !== undefined) {
+                            boxBody.scrollTop = appElem[0].offsetTop-padding;
+                        }
+                    });
+                };
+
+                scope.vm.scrollToAnaloguesEntry = function(analogueId) {
+                    $timeout(function(){
+                        var appElem = $('#'+currentBox.uid).find("[data-analogue-id='"+analogueId+"']");
+                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (appElem.length > 0 && appElem[0] !== undefined) {
+                            boxBody.scrollTop = appElem[0].offsetTop-padding;
+                        }
+                    });
+                };
+            }
+
+            //TODO: aggiungere scroll per sources view
 
             if (currentBox.type === 'text') {
                 scope.$watch(function() {

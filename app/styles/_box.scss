@@ -255,15 +255,14 @@
             @include span(1 of 3);
             height: 42px;
             padding: 6px;
-            background-color: $base-color-middle;
+            background-color: $box-witness-structure-color-dark;
             text-align: center;
             vertical-align: middle;
             font-size: 18px;
             border-left: 1px solid $base-color-light;
             border-radius: 2px 2px 0 0;
             &.selected {
-                background-color: $box-witness-structure-color-dark;
-                color: $base-color-light;
+                background-color: $base-color-dark;
             }
 
         }

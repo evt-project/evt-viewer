@@ -1,6 +1,6 @@
 angular.module('evtviewer.quote')
 
-.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface) {
+.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox) {
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -70,6 +70,13 @@ angular.module('evtviewer.quote')
         if (vm.over) {
             if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
+                //Changes made by CM
+                if(!vm.apparatus.inline) {
+                    evtInterface.updateCurrentApparatus('Sources');
+                    evtApparatuses.setCurrentApparatus('Sources');
+                    evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
+                    //evtBox.alignScrollToQuote(vm.quoteId);
+                }
             } 
             
             evtQuote.closeAllApparatus(vm.uid);

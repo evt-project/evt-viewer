@@ -116,6 +116,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
                 selected          : selected,
+                currentViewMode   : evtInterface.getCurrentViewMode()
             }
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

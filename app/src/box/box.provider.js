@@ -490,6 +490,24 @@ angular.module('evtviewer.box')
             }
         };
 
+        /*Methods added by CM*/
+        /*For the alignment of the apparatuses panel, with the other boxes*/
+        box.alignScrollToQuote = function (quoteId) {
+            for (var i in collection) {
+                if (collection[i].scrollToQuotesEntry !== undefined) {
+                    collection[i].scrollToQuotesEntry(quoteId);
+                }
+            }
+        };
+
+        box.alignScrollToAnalogue = function (analogueId) {
+            for (var i in collection) {
+                if (collection[i].scrollToAnaloguesEntry !== undefined) {
+                    collection[i].scrollToAnaloguesEntry(analogueId);
+                }
+            }
+        };
+
         return box;
     };
 

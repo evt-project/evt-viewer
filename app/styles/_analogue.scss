@@ -1,0 +1,20 @@
+$analogue-background-default: rgb(173, 235, 173);
+$analogue-background-hover:rgb(111, 220, 111);
+$analogue-background-selected:rgb(111, 220, 111);
+
+.analogue {
+    padding: 0;
+    cursor: pointer;
+    
+    .analogue__text {
+        background-color: $analogue-background-default;
+    }
+
+    &.over,
+    &.over .analogue,
+    &.selected {
+        .analogue__text{
+            background-color: $analogue-background-hover;
+        }        
+    }
+}

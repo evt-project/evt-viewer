@@ -10,7 +10,7 @@ angular.module('evtviewer.quote')
 
     var currentQuote = '';
 
-    this.$get = function(parsedData) {
+    this.$get = function(parsedData, evtInterface) {
         var quote = {},
             collection = {},
             list = [],
@@ -30,12 +30,14 @@ angular.module('evtviewer.quote')
                 uid: currentId,
                 scopeWit : scope.scopeWit || '',
                 quoteId : entryId,
+                scopeViewMode : evtInterface.getCurrentViewMode(),
                 
                 over             : false,
                 apparatus        : {
-                    opened            : false,
-                    content           : {},
-                    _loaded           : false,
+                    opened  : false,
+                    content : {},
+                    _loaded : false,
+                    inline  : evtInterface.getCurrentViewMode() !== 'readingTxt'
                     //_subContentOpened : 'criticalNote'
                 },
                 selected         : entryId === quote.getCurrentQuote(),

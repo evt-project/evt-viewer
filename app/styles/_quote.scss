@@ -1,3 +1,20 @@
-.quote__text {
-    background-color: yellow;
+$quote-background-default: rgb(255, 179, 179);
+$quote-background-hover:rgb(255, 102, 102);
+$quote-background-selected:rgb(255, 102, 102);
+
+.quote {
+    padding: 0;
+    cursor: pointer;
+    
+    .quote__text {
+        background-color: $quote-background-default;
+    }
+
+    &.over,
+    &.over .quote,
+    &.selected {
+        .quote__text{
+            background-color: $quote-background-hover;
+        }        
+    }
 }

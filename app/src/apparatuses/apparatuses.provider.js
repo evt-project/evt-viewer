@@ -41,20 +41,9 @@ angular.module('evtviewer.apparatuses')
                 apparatuses.push({label: 'Analogues', list: analoguesList});
             }
 
-            var updateApparatusContent = function(app){
-                if (app === 'Critical Apparatus') {
-                    return 'critical entries';
-                } else if (app === 'Sources') {
-                    return 'sources entries';
-                } else if (app === 'Analogues') {
-                    return 'analogues entries';
-                }
-            };
-
             scopeHelper = {
                 uid : currentId,
                 currentApparatus : currentApparatus,
-                updateApparatusContent : updateApparatusContent,
                 apparatuses : apparatuses,
                 appStructure : appStructure
             };
