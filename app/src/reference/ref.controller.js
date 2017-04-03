@@ -43,6 +43,4 @@ angular.module('evtviewer.reference')
         evtRef.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);
     };
-
-	_console.log('RefCtrl running');
 });
