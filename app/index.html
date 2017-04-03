@@ -133,10 +133,11 @@
                     data-app-id="{{entry}}"></evt-critical-apparatus-entry>
             </box>
 
-            <box data-type="apparatuses"
-                 id="apparatuses">
+            <box
+                ng-if="getCurrentEdition() === 'critical'"
+                data-type="apparatuses"
+                id="apparatuses">
             </box>
-            <!--apparatuses></apparatuses-->
         </section> 
 
         <!-- COLLAZIONE -->

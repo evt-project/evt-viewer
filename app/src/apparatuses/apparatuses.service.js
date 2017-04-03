@@ -4,5 +4,5 @@ angular.module('evtviewer.apparatuses')
     //
     //Funzione per creare i tab per gli apparati
 
-    //Funzione per creare 
+    //Funzione per creare i bottoni
 });

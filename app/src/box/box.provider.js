@@ -144,7 +144,8 @@ angular.module('evtviewer.box')
                 currentType = vm.type || 'default',
                 topMenuList = { 
                     selectors : [],
-                    buttons   : []
+                    buttons   : [],
+                    appLabels : []
                 },
                 bottomMenuList = { 
                     selectors : [],
@@ -366,7 +367,27 @@ angular.module('evtviewer.box')
                     break;
                 case 'apparatuses':
                     isLoading = true;
+                    var appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
+                        quotesList = parsedData.getQuotes()._indexes.encodingStructure,
+                        analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;
+                    
+                    if (appList.length > 0) {
+                        topMenuList.appLabels.push({label: 'Critical Apparatus'});
+                    }
+                    if (quotesList.length > 0) {
+                        topMenuList.appLabels.push({label: 'Sources'});
+                    }
+                    if (analoguesList.length > 0) {
+                        topMenuList.appLabels.push({label: 'Analogues'});
+                    }
+                    vm.getCurrentApparatus = function() {
+                        return evtInterface.getCurrentApparatus();
+                    }
+                    vm.updateApparatus = function(app) {
+                        evtInterface.updateCurrentApparatus(app);
+                    }
                     updateContent = function() {
+
                         scope.vm.content = '<apparatuses></apparatuses>'
                     };
                     isLoading = false;

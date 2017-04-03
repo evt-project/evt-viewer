@@ -22,17 +22,6 @@
     <div
         class="apparatuses_tabs"
         ng-switch-when="tabs">
-        <ul class="apparatuses_tabs_headers">
-            <li
-                ng-repeat="apparatus in vm.apparatuses"
-                class="appLabel">
-                <span
-                    ng-class="{activeAppLabel : vm.openApparatus == apparatus.label}"
-                    ng-click="vm.toggleOpenApparatus(apparatus.label)"
-                    compile="apparatus.label">
-                </span>
-            </li>
-        </ul>
         <div
             class="apparatuses_tabs_body"
             ng-switch="vm.openApparatus">
@@ -69,7 +58,7 @@
     <div
         class="apparatuses_sub-boxes"
         ng-switch-when="subBoxes">
-        <div class="apparatuses_headers">
+        <div class="apparatuses_sub-boxes_body">
             <span>BOXES :)</span>
         </div>
     </div>

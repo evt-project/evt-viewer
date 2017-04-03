@@ -86,6 +86,7 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < sourcesEntriesId.length; i++) {
             if (appEntriesId.indexOf(sourcesEntriesId[i]) < 0) {
                 missing.push(sourcesEntriesId[i]);
+                sourcesEntriesId.splice(i, 1);
             }
         }
         for (var i = 0; i < missing.length; i++) {
