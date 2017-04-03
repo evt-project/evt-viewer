@@ -21,9 +21,8 @@ angular.module('evtviewer.apparatuses')
                 return;
             }
             var scopeHelper = {},
-                openApparatus,// = evtInterface.getCurrentApparatus() || '',//l'apparato selezionato, ergo il contenuto del box e della fascia in fondo
+                currentApparatus = scope.currentApparatus || '',//l'apparato selezionato nell'interfaccia
                 openApparatusContent,
-                updateApparatus,//funzione che aggiorna l'apparato
                 apparatuses = [],
                 appStructure = 'tabs'
                 appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
@@ -42,16 +41,20 @@ angular.module('evtviewer.apparatuses')
                 apparatuses.push({label: 'Analogues', list: analoguesList});
             }
 
-            /*updateApparatus = function(app) {
+            var updateApparatusContent = function(app){
                 if (app === 'Critical Apparatus') {
-                    
+                    return 'critical entries';
+                } else if (app === 'Sources') {
+                    return 'sources entries';
+                } else if (app === 'Analogues') {
+                    return 'analogues entries';
                 }
-            }*/
+            };
 
             scopeHelper = {
                 uid : currentId,
-                openApparatus : openApparatus,
-                //updateApparatus : updateApparatus,
+                currentApparatus : currentApparatus,
+                updateApparatusContent : updateApparatusContent,
                 apparatuses : apparatuses,
                 appStructure : appStructure
             };
@@ -63,6 +66,12 @@ angular.module('evtviewer.apparatuses')
 
             return collection[currentId];
         }
+
+        apparatuses.setCurrentApparatus = function(app) {
+            angular.forEach(collection, function(currentApparatuses){
+                currentApparatuses.currentApparatus = app;
+            });
+        };
 
         apparatuses.destroy = function(tempId) {
             delete collection[tempId];

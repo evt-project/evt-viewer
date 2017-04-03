@@ -1,9 +1,11 @@
 angular.module('evtviewer.apparatuses')
 
-.directive('apparatuses', function(evtApparatuses) {
+.directive('evtApparatuses', function(evtApparatuses) {
     return {
         restrict: 'E',
-        scope: {},
+        scope: {
+            currentApparatus: '@'
+        },
         transclude: true,
         templateUrl: 'src/apparatuses/apparatuses.dir.tmpl.html',
         controllerAs: 'vm',

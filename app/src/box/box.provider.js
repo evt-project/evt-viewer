@@ -385,10 +385,10 @@ angular.module('evtviewer.box')
                     }
                     vm.updateApparatus = function(app) {
                         evtInterface.updateCurrentApparatus(app);
+                        evtApparatuses.setCurrentApparatus(app);
                     }
                     updateContent = function() {
-
-                        scope.vm.content = '<apparatuses></apparatuses>'
+                        scope.vm.content = '<evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>'
                     };
                     isLoading = false;
                     break;

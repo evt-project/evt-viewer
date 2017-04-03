@@ -119,6 +119,7 @@ angular.module('evtviewer.dataHandler')
             var analogue = parsedData.getAnalogue(index[i]);
             if (analogue.sources.length <= 0) {
                 delete analogues[index[i]];
+                index.splice(index.indexOf(analogue.id), 1);
             }
         }
     

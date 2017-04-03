@@ -23,11 +23,10 @@
         class="apparatuses_tabs"
         ng-switch-when="tabs">
         <div
-            class="apparatuses_tabs_body"
-            ng-switch="vm.openApparatus">
+            class="apparatuses_tabs_body">
             <div
                 class="active-apparatus"
-                ng-switch-when="Critical Apparatus">
+                ng-if="vm.currentApparatus == 'Critical Apparatus'">
                 <evt-critical-apparatus-entry
                     ng-repeat="app in vm.getList('Critical Apparatus')"
                     data-app-id="{{app}}">
@@ -35,7 +34,7 @@
             </div>
             <div
                 class="active-apparatus"
-                ng-switch-when="Sources">
+                ng-if="vm.currentApparatus == 'Sources'">
                 <evt-sources-apparatus-entry
                     ng-repeat="quote in vm.getList('Sources')"
                     data-quote-id="{{quote}}">
@@ -43,11 +42,15 @@
             </div>
             <div
                 class="active-apparatus"
-                ng-switch-when="Analogues">
+                ng-if="vm.currentApparatus =='Analogues'">
                 <evt-analogues-apparatus-entry
                     ng-repeat="analogue in vm.getList('Analogues')"
                     data-analogue-id="{{analogue}}">
                 </evt-analogues-apparatus-entry>
+            </div>
+            <div
+                ng-switch-default="">
+                <span>Select an apparatus</span>
             </div>
             <!--div
                 ng-switch-when="Commentary Notes">

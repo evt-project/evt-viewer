@@ -1,7 +1,11 @@
 angular.module('evtviewer.apparatuses')
 
-.controller('apparatusesCtrl', function(evtApparatuses) {
+.controller('apparatusesCtrl', function(evtApparatuses, $scope) {
     var vm = this;
+
+    this.setCurrentApparatus = function(app) {
+        evtApparatuses.setCurrentApparatus(app);
+    };
 
     this.toggleAppStructure = function(appStructure) {
         if (vm.appStructure !== appStructure) {
