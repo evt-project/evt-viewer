@@ -7,6 +7,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
     }
+
+    var currentSourcesEntry = '';
     
     this.$get = function(parsedData, evtSourcesApparatus, $log, evtInterface) {
         var sourceEntry = {},
@@ -101,12 +103,13 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             var selected = false;
 
-            if (evtInterface.getCurrentQuote() === scope.quoteId) {
+            /*if (evtInterface.getCurrentQuote() === scope.quoteId) {
                 selected = true;
-            }
+            }*/
 
             scopeHelper = {
                 uid               : currentId,
+                quoteId           : scope.quoteId,
                 head              : head,
                 xml               : xml,
                 sources           : sources,
@@ -115,7 +118,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 tabs              : tabs,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
-                selected          : selected,
+                selected          : false,
                 currentViewMode   : evtInterface.getCurrentViewMode()
             }
             
@@ -135,6 +138,47 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
         sourceEntry.getList = function() {
             return list;
+        };
+
+        sourceEntry.setCurrentSourcesEntry = function(quoteId) {
+            currentSourcesEntry = quoteId;
+        };
+
+        sourceEntry.getCurrentSourcesEntry = function(quoteId) {
+            return currentSourcesEntry;
+        };
+
+        sourceEntry.mouseOutAll = function() {
+            angular.forEach(collection, function(currentSourcesEntry) {
+                currentSourcesEntry.mouseOut();
+            });
+        };
+
+        sourceEntry.mouseOverByQuoteId = function(quoteId) {
+            angular.forEach(collection, function(currentSourcesEntry) {
+                if (currentSourcesEntry.quoteId === quoteId) {
+                    currentSourcesEntry.mouseOver();
+                } else {
+                    currentSourcesEntry.mouseOut();
+                }
+            });
+        };
+
+        sourceEntry.unselectAll = function() {
+            angular.forEach(collection, function(currentSourcesEntry) {
+                currentSourcesEntry.unselect();
+            });
+        };
+
+        sourceEntry.selectById = function(quoteId) {
+            angular.forEach(collection, function(currentQuote) {
+                if (currentSourcesEntry.quoteId === quoteId) {
+                    currentSourcesEntry.setSelected();
+                } else {
+                    currentSourcesEntry.unselect();
+                }
+            });  
+            sourceEntry.setCurrentSourcesEntry(quoteId);
         };
 
         sourceEntry.destroy = function(tempId) {

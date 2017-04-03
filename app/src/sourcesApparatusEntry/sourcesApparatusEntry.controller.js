@@ -1,9 +1,9 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote) {
+.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox) {
     $scope.content = {};
     var vm = this;
-
+    
     /**********************/
     /*toggleSource(source)*/
     /***************************/
@@ -54,16 +54,35 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
     };
 
-    this.toggleOverQuotes = function($event) {
+    this.toggleOverSourcesEntries = function($event) {
         $event.stopPropagation();
-        if (vm.quoteId === undefined){
-            if (vm.over === false) {
-                evtQuote.mouseOverByQuoteId(vm.quoteId);
-            } else {
-                evtQuote.mouseOutAll();
+        if (vm.over === false) {
+            if(vm.currentViewMode !== 'readingTxt') {
+                evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
+            } else if (vm.currentViewMode === 'readingTxt') {
+                this.mouseOver();
             }
+        } else {
+            evtSourcesApparatusEntry.mouseOutAll();
         }
     };
+
+    this.callbackClick = function($event) {
+        $event.stopPropagation();
+        if (vm.currentViewMode === 'readingTxt') {
+            evtSourcesApparatusEntry.unselectAll();
+            this.setSelected();
+            evtQuote.selectById(vm.quoteId);
+        }
+    };
+
+    this.doubleClick = function($event) {
+        $event.stopPropagation();
+        if (vm.currentViewMode === 'readingTxt') {
+            evtBox.alignScrollToQuote(vm.quoteId);
+            evtQuote.selectById(vm.quoteId);
+        }
+    }
 
     this.destroy = function() {
         var tempId = this.uid;

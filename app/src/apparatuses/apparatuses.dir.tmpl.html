@@ -49,8 +49,8 @@
                 </evt-analogues-apparatus-entry>
             </div>
             <div
-                ng-switch-default="">
-                <span>Select an apparatus</span>
+                ng-if="vm.currentApparatus == ''">
+                <span>Select an apparatus or a critical element inside the critical text.</span>
             </div>
             <!--div
                 ng-switch-when="Commentary Notes">

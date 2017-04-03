@@ -112,6 +112,7 @@ angular.module('evtviewer.quote')
                 }
             });  
             quote.setCurrentQuote(quoteId);
+            evtInterface.updateCurrentQuote(quoteId);
         };
 
         quote.destroy = function(tempId) {

@@ -75,7 +75,6 @@ angular.module('evtviewer.quote')
                     evtInterface.updateCurrentApparatus('Sources');
                     evtApparatuses.setCurrentApparatus('Sources');
                     evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
-                    //evtBox.alignScrollToQuote(vm.quoteId);
                 }
             } 
             
