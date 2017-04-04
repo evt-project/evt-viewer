@@ -61,7 +61,7 @@ angular.module('evtviewer.dataHandler')
 
         var currentDocument = angular.element(element);
 
-        newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : '';
+        newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : evtParser.xpath(element);
         newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type') : '';
 
         var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, '') + ' title');
@@ -71,70 +71,103 @@ angular.module('evtviewer.dataHandler')
             newBiblElement.type = analyticElem[0].getAttribute('level') ? analyticElem[0].getAttribute('level') : '';
         }
 
-        function extractNameSurnameForename(whereToFind, whereToPutInfoArray) {
-            angular.forEach(whereToFind, function(el) {
-                var newPersonElement = {
-                    name: '',
-                    surname: '',
-                    forename: ''
-                };
+		function extractNameSurnameForename(whereToFind, whereToPutInfoArray) {
+			angular.forEach(whereToFind, function(element) {
+				var newPersonElement = {
+					name: '',
+					surname: '',
+					forename: ''
+				};
+				
+				var el = angular.element(element);var personName=[];
+				if(element.tagName !== 'name'){personName = el.find('name');
+					angular.forEach(personName, function(element) {
+						if(personName.children().length>0){
+							extractNameSurnameForename(personName,whereToPutInfoArray);
+						}
+						else newPersonElement.name = element.textContent;
+					});
+				}
+				if(element.tagName !== 'name'){
+					var personSurname = el.find('surname');
+					angular.forEach(personSurname, function(element) {
+						newPersonElement.surname = element.textContent;
+					});
 
-                var el = angular.element(el);
-                var personName = el.find('name');
-                angular.forEach(personName, function(element) {
-                    newPersonElement.name = element.textContent;
-                });
-
-                var personSurname = el.find('surname');
-                angular.forEach(personSurname, function(element) {
-                    newPersonElement.surname = element.textContent;
-                });
-
-                var personForename = el.find('forename');
-                angular.forEach(personForename, function(element) {
-                    newPersonElement.forename = element.textContent;
-                });
-                //nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-                if (personName.length === 0 && personForename.length === 0 && personSurname.length === 0) {
-                    newPersonElement.name = el[0].textContent;
-                }
-                whereToPutInfoArray.push(newPersonElement);
-            });
-        }
+					var personForename = el.find('forename');
+					angular.forEach(personForename, function(element) {
+						newPersonElement.forename = element.textContent;
+					});
+					//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
+					if (personName.length === 0 && personForename.length === 0 && personSurname.length === 0) {
+						newPersonElement.name = el[0].textContent;
+					}
+					whereToPutInfoArray.push(newPersonElement);}
+			});
+		}
 
         extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
         extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
 
         //cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
-        angular.forEach(currentDocument.children(), function(el) {
-            if (el.tagName === 'date') {
-                newBiblElement.date = el.innerHTML;
-            }
-        });
-
-
-		function extractTitleTitleLevel (whereToFind,whereToPutInfoArray) {
+		function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
+			angular.forEach(whereToFind.children(), function(el) {
+				if (el.tagName === 'date') {
+					whereToPutInfoArray.date = el.innerHTML;
+				}
+				else if (el.tagName === 'pubPlace') {
+					whereToPutInfoArray.pubPlace = el.innerHTML;
+				}
+				else if (el.tagName === 'publisher') {
+					whereToPutInfoArray.publisher = el.innerHTML;
+				}			
+			});
+		}
+		
+		extractDatePubPlacePublisher(currentDocument,newBiblElement);
+		
+		function extractTitleTitleLevel (whereToFind,whereToPutInfoArray,nestedBibl) {
+			/*/ci possono essere altri title fratelli oppure anche title provenienti da altri elementi interni, tipo altri bibl
+			per questo c'è da sapere se è un bibl o biblStruct, in modo (sotto) da essere sicuri degli assegnamenti di titleAnalytic e titleMonogr
+			/*/
 			var titleEl = whereToFind.find('title');
             if (titleEl && titleEl.length > 0) {
-                whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
-                for (var c = 0; c < titleEl.length && whereToPutInfoArray.type === ''; c++) {
+                for (var c = 0; c < titleEl.length; c++) {
                     var titleLevel = titleEl[c].getAttribute("level");
+					if (!nestedBibl) {
+						whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
+					}
                     //recuperiamo il tipo di pubblicazione
                     if (titleLevel !== null) {
-                        whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel.substring(0, 1) : '';
+					
+						titleLevel = titleLevel.substring(0, 1);
+						whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type;
+
+						if (nestedBibl && titleLevel === 'm' ) {
+							whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
+						}
+						if (nestedBibl && titleLevel === 'a' ) {
+							whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;
+						}						
                     }
                 }
             }
 		}
+		
+		
 		if (currentDocument[0].tagName === 'bibl') {
-			extractTitleTitleLevel(currentDocument,newBiblElement);
+			extractTitleTitleLevel(currentDocument,newBiblElement,true);
+			var nestedBibl = currentDocument.find('bibl');
+			angular.forEach(nestedBibl,function(){
+				extractDatePubPlacePublisher(angular.element(nestedBibl),newBiblElement);
+			});
         }
 
         var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
         //entriamo nel tag monogr
         if (monographElem) {
             monographElem = angular.element(monographElem);
-			extractTitleTitleLevel(monographElem,newBiblElement);
+			extractTitleTitleLevel(monographElem,newBiblElement,false);
 
             var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
             var monographEditions = monographElem.find('edition');
@@ -169,7 +202,7 @@ angular.module('evtviewer.dataHandler')
                 //salviamo la data dentro monogr
                 var imprintsDates = monographImprints.find('date');
                 /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
-                oppure contiene '', possiamo quindi riassegnare newBiblElement.date a se stesso senza problemi.
+                oppure contiene ''.
                 Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
                 Magari la troviamo anche subito dentro <bibl>/*/
                 if (newBiblElement.date === '') {
