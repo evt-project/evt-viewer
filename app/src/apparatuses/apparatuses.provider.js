@@ -2,11 +2,13 @@ angular.module('evtviewer.apparatuses')
 
 .provider('evtApparatuses', function() {
 
-    /*var defaults = this.defaults;
+    var defaults = this.defaults;
 
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
-    }*/
+    }
+
+    var currentApparatuses = '';
 
     this.$get = function(parsedData, evtInterface) {
         var apparatuses = {},
@@ -20,9 +22,11 @@ angular.module('evtviewer.apparatuses')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
+            //Aggiungere l'apparato da aprire per configurazione
+            //Aggiungere nella configurazione, un array con l'ordine degli apparati
+            //E la struttura dei tabs
             var scopeHelper = {},
                 currentApparatus = scope.currentApparatus || '',//l'apparato selezionato nell'interfaccia
-                openApparatusContent,
                 apparatuses = [],
                 appStructure = 'tabs'
                 appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
@@ -31,6 +35,7 @@ angular.module('evtviewer.apparatuses')
 
             /*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
 
+            
             if (appList.length > 0) {
                 apparatuses.push({label: 'Critical Apparatus', list: appList});
             }
@@ -57,10 +62,17 @@ angular.module('evtviewer.apparatuses')
         }
 
         apparatuses.setCurrentApparatus = function(app) {
+            if (evtInterface.getCurrentApparatus() !== app) {
+                evtInterface.updateCurrentApparatus(app);
+            }
             angular.forEach(collection, function(currentApparatuses){
                 currentApparatuses.currentApparatus = app;
             });
         };
+        
+        apparatuses.getCurrentApparatus = function() {
+            return currentApparatuses.currentApparatus;
+        }
 
         apparatuses.destroy = function(tempId) {
             delete collection[tempId];
