@@ -38,7 +38,6 @@ angular.module('evtviewer.quote')
                     content : {},
                     _loaded : false,
                     inline  : evtInterface.getCurrentViewMode() !== 'readingTxt'
-                    //_subContentOpened : 'criticalNote'
                 },
                 selected         : entryId === quote.getCurrentQuote(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),

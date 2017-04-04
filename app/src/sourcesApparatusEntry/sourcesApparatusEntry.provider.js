@@ -101,12 +101,6 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             }
 
-            var selected = false;
-
-            /*if (evtInterface.getCurrentQuote() === scope.quoteId) {
-                selected = true;
-            }*/
-
             scopeHelper = {
                 uid               : currentId,
                 quoteId           : scope.quoteId,
@@ -171,11 +165,12 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
 
         sourceEntry.selectById = function(quoteId) {
-            angular.forEach(collection, function(currentQuote) {
+            angular.forEach(collection, function(currentSourcesEntry) {
                 if (currentSourcesEntry.quoteId === quoteId) {
                     currentSourcesEntry.setSelected();
                 } else {
                     currentSourcesEntry.unselect();
+                    currentSourcesEntry.closeSubContent();
                 }
             });  
             sourceEntry.setCurrentSourcesEntry(quoteId);

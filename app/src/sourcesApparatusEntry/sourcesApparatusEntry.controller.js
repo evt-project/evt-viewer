@@ -46,6 +46,10 @@ angular.module('evtviewer.sourcesApparatusEntry')
         return vm.selected;
     };
 
+    this.closeSubContent = function() {
+        vm._subContentOpened = '';
+    };
+
     this.toggleSubContent = function(subContentName) {
         if (vm._subContentOpened !== subContentName) {
             vm._subContentOpened = subContentName;
@@ -57,10 +61,9 @@ angular.module('evtviewer.sourcesApparatusEntry')
     this.toggleOverSourcesEntries = function($event) {
         $event.stopPropagation();
         if (vm.over === false) {
-            if(vm.currentViewMode !== 'readingTxt') {
-                evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
-            } else if (vm.currentViewMode === 'readingTxt') {
-                this.mouseOver();
+            evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
+            if (vm.currentViewMode === 'readingTxt') {
+                evtQuote.mouseOverByQuoteId(vm.quoteId);
             }
         } else {
             evtSourcesApparatusEntry.mouseOutAll();
@@ -71,7 +74,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         $event.stopPropagation();
         if (vm.currentViewMode === 'readingTxt') {
             evtSourcesApparatusEntry.unselectAll();
-            this.setSelected();
+            //this.setSelected();
+            evtSourcesApparatusEntry.selectById(vm.quoteId);
             evtQuote.selectById(vm.quoteId);
         }
     };

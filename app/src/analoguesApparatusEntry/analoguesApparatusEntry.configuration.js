@@ -1,22 +1,7 @@
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .constant('ANALOGUESAPPENTRY', {
-    /**
-     * @module evtviewerAnaloguesApparatusEntry
-     * @ngdoc property
-     * @name tooltipMaxHeight
-     * @description
-     * `property`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * tooltipMaxHeight: 170
-     * </pre>
-     */
-
-    //openTriggerEvent: 'click'
+    firstSubContentOpened : ''
 })
 
 .config(function(evtAnaloguesApparatusEntryProvider, configProvider, ANALOGUESAPPENTRY) {

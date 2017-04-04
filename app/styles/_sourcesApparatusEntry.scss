@@ -1,6 +1,9 @@
 $sources-apparatus-entry-background-color : $base-color-light;
 $sources-apparatus-entry-background-color-darker : rgb(225, 225, 225);
 $sources-apparatus-entry-border-color : rgb(125, 125, 125);
+$sources-apparatus-entry-selected-background-color: rgb(195, 207, 213);
+$sources-apparatus-entry-selected-content-color: rgb(180, 195, 203);
+$sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
 
 .sources-apparatus-entry {
     margin:0;
@@ -31,7 +34,14 @@ $sources-apparatus-entry-border-color : rgb(125, 125, 125);
         opacity:0;
         background: transparent !important;
     }
-
+    &.over {
+        -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+    }
+    &.selected {
+        background-color: $sources-apparatus-entry-selected-background-color;
+    }
     &_tools{
         padding: 0;
         float: right;

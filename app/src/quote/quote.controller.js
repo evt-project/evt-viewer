@@ -1,6 +1,6 @@
 angular.module('evtviewer.quote')
 
-.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox) {
+.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry) {
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -45,8 +45,10 @@ angular.module('evtviewer.quote')
         $event.stopPropagation();
             if ( vm.over === false ) {
                 evtQuote.mouseOverByQuoteId(vm.quoteId);
+                evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
             } else {
                 evtQuote.mouseOutAll();
+                evtSourcesApparatusEntry.mouseOutAll();
             }
     };
 
@@ -74,6 +76,7 @@ angular.module('evtviewer.quote')
                 if(!vm.apparatus.inline) {
                     evtInterface.updateCurrentApparatus('Sources');
                     evtApparatuses.setCurrentApparatus('Sources');
+                    evtSourcesApparatusEntry.selectById(vm.quoteId);
                     evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
                 }
             } 

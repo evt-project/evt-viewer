@@ -3,13 +3,17 @@
     ng-mouseover="vm.toggleOverQuotes($event)"
     ng-mouseout="vm.toggleOverQuotes($event)"
     ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
-                'over'     : vm.over}">
+                'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
+                'over'     : vm.over, 
+                'invisible': !vm.fitFilters(),
+                'blurred'  : $parent.vm.state.topBoxOpened}">
     <span 
         class="quote__text"
         ng-click="vm.callbackClick($event);"
         ng-transclude></span>
 
     <evt-sources-apparatus-entry
+        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
         ng-if="vm.apparatus._loaded && vm.apparatus.inline"
         ng-show="vm.isApparatusOpened()"
         data-quote-id="{{vm.quoteId}}"

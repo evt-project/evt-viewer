@@ -1,22 +1,7 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .constant('SOURCESAPPENTRY', {
-    
-    /**
-     * @module evtviewerSourcesApparatusEntry
-     * @ngdoc property
-     * @name openTriggerEvent
-     * @description
-     * `property`
-     *
-     * Some info
-     *
-     * Default:
-     * <pre>
-     * openTriggerEvent: 'click'
-     * </pre>
-     */
-    openTriggerEvent: 'click'
+    firstSubContentOpened : ''
 })
 
 .config(function(evtSourcesApparatusEntryProvider, configProvider, SOURCESAPPENTRY) {
