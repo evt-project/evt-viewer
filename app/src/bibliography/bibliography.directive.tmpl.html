@@ -2,28 +2,28 @@
 	<div class="bibliography">
 		<label for="biblStyleSelect">Select your style </label>
 		<select id="biblStyleSelect"
-			ng-model="initialSelectedStyle"
-			ng-options="value as value for (key , value) in styles"/>
+			ng-model="vm.initialSelectedStyle"
+			ng-options="value as value for (key , value) in vm.styles"/>
 		
 		
 		<label for="biblSortingSelect">How to sort entries? </label>
 		<select id="biblSortingSelect"
-			ng-model="selectedSorting"
-			ng-options="value as value for (key , value) in sortBy"/>
+			ng-model="vm.selectedSorting"
+			ng-options="value as value for (key , value) in vm.sortBy"/>
 
 			
 		<label for="biblSortOrder">Sort order </label>
 		<select id="biblSortOrder"
-			ng-model="selectedSortOrder"
-			ng-options="value as value for (key , value) in sortOrder"/>			
+			ng-model="vm.selectedSortOrder"
+			ng-options="value as value for (key , value) in vm.sortOrder"/>			
 			
 		<div class="biblRef"
 			id="{{bibl}}"
-			ng-repeat="bibl in biblRefsCollection._indexes | orderBy: myComparator: selectedSortOrder === sortOrder.DESC"
-			compile="getFormattedBibl(bibl)"
-			ng-attr-highlight="{{ isEntryHighlighted(bibl) }}"
-			evt-scroll-if="{{ isEntryHighlighted(bibl) }}"
-			ng-attr-pubblicationType="{{ pubblicationType(bibl) }}">
+			ng-repeat="bibl in vm.biblRefsCollection._indexes | orderBy: myComparator: selectedSortOrder === sortOrder.DESC"
+			compile="vm.getFormattedBibl(bibl)"
+			ng-attr-highlight="{{ vm.isEntryHighlighted(bibl) }}"
+			evt-scroll-if="{{ vm.isEntryHighlighted(bibl) }}"
+			ng-attr-pubblicationType="{{ vm.pubblicationType(bibl) }}">
 		</div>
 	</div>
 </div>

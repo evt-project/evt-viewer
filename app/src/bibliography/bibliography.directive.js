@@ -5,6 +5,6 @@ angular.module('evtviewer.bibliography')
 		restrict: 'E',
 		templateUrl: 'src/bibliography/bibliography.directive.tmpl.html',
 		controller: 'BibliographyCtrl',
-		controllerAs: 'bibliographyCtrl'
+		controllerAs: 'vm'
 	};
 });

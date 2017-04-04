@@ -2,44 +2,45 @@ angular.module('evtviewer.bibliography')
 
 .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser, evtInterface, evtHighlight) {
     var _console = $log.getInstance('BibliographyCtrl');
+	var vm = this;
     //recupero stili bibliografici
-    $scope.styles = config.allowedBibliographicStyles;
-    $scope.initialSelectedStyle = $scope.styles.Chicago;
+    vm.styles = config.allowedBibliographicStyles;
+    vm.initialSelectedStyle = vm.styles.Chicago;
 
     //recupero i criteri di ordinamento (le label)
-    $scope.sortBy = config.bibliographicEntriesSortBy;
-    $scope.selectedSorting = $scope.sortBy.Author;
+    vm.sortBy = config.bibliographicEntriesSortBy;
+    vm.selectedSorting = vm.sortBy.Author;
 
     //recupero l'ordine per  l'ordinamento (le label)
-    $scope.sortOrder = config.bibliographySortOrder;
-    $scope.selectedSortOrder = $scope.sortOrder.ASC;
+    vm.sortOrder = config.bibliographySortOrder;
+    vm.selectedSortOrder = vm.sortOrder.ASC;
 
 
-    $scope.biblRefsCollection = parsedData.getBibliographicRefsCollection();
+    vm.biblRefsCollection = parsedData.getBibliographicRefsCollection();
 
-    $scope.getFormattedBibl = function(biblId) {
+    vm.getFormattedBibl = function(biblId) {
         var biblElement = parsedData.getBibliographicRefById(biblId);
-        if (!biblElement.outputs[$scope.initialSelectedStyle]) {
-            evtBibliographyParser.formatResult($scope.initialSelectedStyle, biblElement);
+        if (!biblElement.outputs[vm.initialSelectedStyle]) {
+            evtBibliographyParser.formatResult(vm.initialSelectedStyle, biblElement);
         }
-        return biblElement.outputs[$scope.initialSelectedStyle];
+        return biblElement.outputs[vm.initialSelectedStyle];
     };
-    $scope.pubblicationType = function(biblId) {
+    vm.pubblicationType = function(biblId) {
         var biblElement = parsedData.getBibliographicRefById(biblId),
             type = evtBibliographyParser.getType(biblElement);
         type = type ? type : 'unknown';
         return type;
     };
 
-    $scope.isEntryHighlighted = function(entryId) {
+    vm.isEntryHighlighted = function(entryId) {
         return (evtHighlight.getHighlighted() !== '' && evtHighlight.getHighlighted() === entryId);
     };
 
-    $scope.myComparator = function(biblId) {
+    vm.myComparator = function(biblId) {
         var result = '',
             biblElement = parsedData.getBibliographicRefById(biblId);
         //surname/name/forename sorting
-        if ($scope.selectedSorting === $scope.sortBy.Author) {
+        if (vm.selectedSorting === vm.sortBy.Author) {
             //check if author exist
             if (typeof biblElement.author !== 'undefined' && biblElement.author.length > 0) {
                 //first try to compare according to author's surname
@@ -57,7 +58,7 @@ angular.module('evtviewer.bibliography')
             }
         }
         //year sorting
-        else if ($scope.selectedSorting === $scope.sortBy.Year) {
+        else if (vm.selectedSorting === vm.sortBy.Year) {
             result = biblElement.date;
         }
         return result;

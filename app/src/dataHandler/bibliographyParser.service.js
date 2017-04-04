@@ -118,29 +118,29 @@ angular.module('evtviewer.dataHandler')
             }
         });
 
-        if (currentDocument[0].tagName === 'bibl') {
-            var biblTitle = currentDocument.find('title');
-            if (biblTitle && biblTitle.length > 0) {
-                newBiblElement.titleMonogr = biblTitle[0].textContent;
+
+		function extractTitleTitleLevel (whereToFind,whereToPutInfoArray) {
+			var titleEl = whereToFind.find('title');
+            if (titleEl && titleEl.length > 0) {
+                whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
+                for (var c = 0; c < titleEl.length && whereToPutInfoArray.type === ''; c++) {
+                    var titleLevel = titleEl[c].getAttribute("level");
+                    //recuperiamo il tipo di pubblicazione
+                    if (titleLevel !== null) {
+                        whereToPutInfoArray.type = analyticElem.length == 0 && whereToPutInfoArray.type === '' ? titleLevel.substring(0, 1) : '';
+                    }
+                }
             }
+		}
+		if (currentDocument[0].tagName === 'bibl') {
+			extractTitleTitleLevel(currentDocument,newBiblElement);
         }
 
         var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
         //entriamo nel tag monogr
         if (monographElem) {
             monographElem = angular.element(monographElem);
-
-            var monographTitles = monographElem.find('title');
-            if (monographTitles && monographTitles.length > 0) {
-                newBiblElement.titleMonogr = monographTitles[0].textContent;
-                for (var c = 0; c < monographTitles.length && newBiblElement.type === ''; c++) {
-                    var titleLevel = monographTitles[c].getAttribute("level");
-                    //recuperiamo il tipo di pubblicazione
-                    if (titleLevel !== null) {
-                        newBiblElement.type = analyticElem.length == 0 && newBiblElement.type === '' ? titleLevel.substring(0, 1) : '';
-                    }
-                }
-            }
+			extractTitleTitleLevel(monographElem,newBiblElement);
 
             var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
             var monographEditions = monographElem.find('edition');
