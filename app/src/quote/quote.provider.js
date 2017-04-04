@@ -8,7 +8,7 @@ angular.module('evtviewer.quote')
         defaults = _defaults;
     }
 
-    var currentQuote = '';
+    var currentSourcesEntry = '';
 
     this.$get = function(parsedData, evtInterface) {
         var quote = {},
@@ -39,7 +39,7 @@ angular.module('evtviewer.quote')
                     _loaded : false,
                     inline  : evtInterface.getCurrentViewMode() !== 'readingTxt'
                 },
-                selected         : entryId === quote.getCurrentQuote(),
+                selected         : entryId === quote.getCurrentSourcesEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
                 defaults         : angular.copy(defaults)
             }
@@ -62,12 +62,15 @@ angular.module('evtviewer.quote')
             return list;
         };
 
-        quote.setCurrentQuote = function(quoteId) {
-            currentQuote = quoteId;
+        quote.setCurrentSourcesEntry = function(quoteId) {
+            if (evtInterface.getCurrentQuote !== quoteId) {
+                evtInterface.updateCurrentQuote(quoteId);
+            }
+            currentSourcesEntry = quoteId;
         };
 
-        quote.getCurrentQuote = function(){
-            return currentQuote;
+        quote.getCurrentSourcesEntry = function(){
+            return currentSourcesEntry;
         };
 
         quote.mouseOutAll = function() {
@@ -110,8 +113,7 @@ angular.module('evtviewer.quote')
                     currentQuote.unselect();
                 }
             });  
-            quote.setCurrentQuote(quoteId);
-            evtInterface.updateCurrentQuote(quoteId);
+            quote.setCurrentSourcesEntry(quoteId);
         };
 
         quote.destroy = function(tempId) {

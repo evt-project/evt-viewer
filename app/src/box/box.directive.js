@@ -196,6 +196,8 @@ angular.module('evtviewer.box')
                 }, true);
             }
 
+
+            //Added by CM
             if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'apparatuses') {
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
@@ -227,6 +229,7 @@ angular.module('evtviewer.box')
                     });
                 };
             }
+            //
 
             //TODO: aggiungere scroll per sources view
 

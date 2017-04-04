@@ -53,6 +53,7 @@ angular.module('evtviewer.quote')
     };
 
     this.toggleSelectQuotes = function($event) {
+        //TODO: aggiungere controllo per gli altri elementi critici
             if (vm.selected === false) {
                 if (!vm.apparatus.opened){
                     evtQuote.selectById(vm.quoteId);
@@ -70,15 +71,17 @@ angular.module('evtviewer.quote')
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
         if (vm.over) {
-            if ( !vm.apparatus._loaded) {
-                vm.apparatus._loaded = true;
-                //Changes made by CM
-                if(!vm.apparatus.inline) {
-                    evtInterface.updateCurrentApparatus('Sources');
-                    evtApparatuses.setCurrentApparatus('Sources');
+            if(!vm.apparatus.inline) {
+                    if (evtApparatuses.getCurrentApparatus() !== 'Sources') {
+                        evtApparatuses.setCurrentApparatus('Sources');
+                    }                    
+                    //Dopo l'avvio ancora non è stato creato alcun apparato, non c'è un apparato corrente
                     evtSourcesApparatusEntry.selectById(vm.quoteId);
                     evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
-                }
+                } else
+            
+            if ( !vm.apparatus._loaded) {
+                vm.apparatus._loaded = true;
             } 
             
             evtQuote.closeAllApparatus(vm.uid);

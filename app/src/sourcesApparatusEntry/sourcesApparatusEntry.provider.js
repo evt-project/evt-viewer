@@ -135,6 +135,9 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
 
         sourceEntry.setCurrentSourcesEntry = function(quoteId) {
+            if (evtInterface.getCurrentQuote !== quoteId) {
+                evtInterface.updateCurrentQuote(quoteId);
+            }
             currentSourcesEntry = quoteId;
         };
 
@@ -143,34 +146,34 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
 
         sourceEntry.mouseOutAll = function() {
-            angular.forEach(collection, function(currentSourcesEntry) {
-                currentSourcesEntry.mouseOut();
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.mouseOut();
             });
         };
 
         sourceEntry.mouseOverByQuoteId = function(quoteId) {
-            angular.forEach(collection, function(currentSourcesEntry) {
-                if (currentSourcesEntry.quoteId === quoteId) {
-                    currentSourcesEntry.mouseOver();
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.quoteId === quoteId) {
+                    currentEntry.mouseOver();
                 } else {
-                    currentSourcesEntry.mouseOut();
+                    currentEntry.mouseOut();
                 }
             });
         };
 
         sourceEntry.unselectAll = function() {
-            angular.forEach(collection, function(currentSourcesEntry) {
-                currentSourcesEntry.unselect();
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.unselect();
             });
         };
 
         sourceEntry.selectById = function(quoteId) {
-            angular.forEach(collection, function(currentSourcesEntry) {
-                if (currentSourcesEntry.quoteId === quoteId) {
-                    currentSourcesEntry.setSelected();
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.quoteId === quoteId) {
+                    currentEntry.setSelected();
                 } else {
-                    currentSourcesEntry.unselect();
-                    currentSourcesEntry.closeSubContent();
+                    currentEntry.unselect();
+                    currentEntry.closeSubContent();
                 }
             });  
             sourceEntry.setCurrentSourcesEntry(quoteId);
