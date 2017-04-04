@@ -885,6 +885,10 @@
 	content: ' and '
 }
 
+.biblRef .editors[data-style=chicago] > .editor:last-child:after{
+	content: ''
+}
+
 .biblRef > .pubPlace[data-style=chicago]:not(:last-child):after{
 	content: ': '
 }

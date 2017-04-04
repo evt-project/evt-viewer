@@ -31,19 +31,13 @@ angular.module('evtviewer.dataHandler')
                 function(element) {
                     var newBiblElement = parser.extractInfo(element);
                     var currentID = getID(newBiblElement);
-                    if (addToCollection(newBiblElement)) {
-                        parsedData.addBibliographicRef(newBiblElement);
-                    }
+                    parsedData.addBibliographicRef(newBiblElement);
                 });
         }
 
         console.log('## parseBiblInfo ##', parsedData.getBibliographicRefsCollection());
     };
 
-    //pe essere salvato, un riferimento, basta che sia trovata almeno qualche cosa per l'autore o il titolo dell'opera
-    function addToCollection(newBiblElement) {
-        return newBiblElement.author.toString() !== '' || newBiblElement.titleAnalytic !== '' || newBiblElement.titleMonogr !== '';
-    }
 
     // Bibliographic data container
     parser.extractInfo = function(element) {
@@ -127,7 +121,7 @@ angular.module('evtviewer.dataHandler')
                     var titleLevel = titleEl[c].getAttribute("level");
                     //recuperiamo il tipo di pubblicazione
                     if (titleLevel !== null) {
-                        whereToPutInfoArray.type = analyticElem.length == 0 && whereToPutInfoArray.type === '' ? titleLevel.substring(0, 1) : '';
+                        whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel.substring(0, 1) : '';
                     }
                 }
             }
