@@ -56,7 +56,8 @@ angular.module('evtviewer.dataHandler')
             biblScope: {},
             note: {},
             idno: {},
-            outputs: {}
+            outputs: {},
+			plainText: ''
         };
 
         var currentDocument = angular.element(element);
@@ -113,13 +114,13 @@ angular.module('evtviewer.dataHandler')
 		function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
 			angular.forEach(whereToFind.children(), function(el) {
 				if (el.tagName === 'date') {
-					whereToPutInfoArray.date = el.innerHTML;
+					whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? el.innerHTML : whereToPutInfoArray.date;
 				}
 				else if (el.tagName === 'pubPlace') {
-					whereToPutInfoArray.pubPlace = el.innerHTML;
+					whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? el.innerHTML : whereToPutInfoArray.pubPlace;
 				}
 				else if (el.tagName === 'publisher') {
-					whereToPutInfoArray.publisher = el.innerHTML;
+					whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? el.innerHTML : whereToPutInfoArray.publisher;
 				}			
 			});
 		}
@@ -264,6 +265,9 @@ angular.module('evtviewer.dataHandler')
             newBiblElement.idno[el.getAttribute('type')] = el;
         });
         removeEndingPoint(newBiblElement);
+		if ( !isChanged(newBiblElement) ) {
+			newBiblElement.plainText = currentDocument[0].textContent;
+		}
         return newBiblElement;
     }
 
@@ -274,7 +278,11 @@ angular.module('evtviewer.dataHandler')
     function isArray(obj) {
         return isObject(obj) && (obj instanceof Array);
     }
-
+	
+	function isString(obj) {
+		return typeof obj === 'String';
+	}
+	
     function removeEndingPoint(arr) {
         if (typeof arr === 'string') {
             if (arr[arr.length - 1] === '.') {
@@ -298,12 +306,34 @@ angular.module('evtviewer.dataHandler')
             }
         }
     }
+	
+	function isChanged(arr) {
+		var res = false;
+		if(isString(arr)){
+			if( arr !== '')res = true;
+		}
+		else if(isArray(arr)) {
+			if( arr.length > 0)res = true;
+		}
+		else if(isObject(arr)) {
+			for (var key in arr) {
+				if(res)return true;
+				if(key !== 'id'){res = isChanged(arr[key]);}
+				if(res)return true;
+				}
+		}
+		
+		return res;
+	}
 
     parser.formatResult = function(styleCode, newBiblElement) {
         if (!newBiblElement.outputs[styleCode]) {
             var string = '';
             //presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
             if (styleCode === CHICAGO_STYLE) {
+				if (newBiblElement.plainText != '' ) {
+					string += '<span data-style="chicago">'+newBiblElement.plainText+'<span>'; 
+				}
                 //autore-data-titolo-titolo_monografia(se presente)- edizione-luogo pubblicazione-data-numero pagina-idno(se dati)
                 //il primo autore deve essere citato con cognome-nome
                 if (newBiblElement.author && newBiblElement.author.length > 0) {
@@ -450,6 +480,9 @@ angular.module('evtviewer.dataHandler')
             Altro stile
             /*/
             else if (styleCode === APA_STYLE) {
+				if (newBiblElement.plainText != '' ) {
+					string += '<span data-style="apa">'+newBiblElement.plainText+'<span>'; 
+				}
                 if (!isMonograph(newBiblElement)) {
                     if (newBiblElement.author && newBiblElement.author.length > 0) {
                         string += '<span data-style="apa" class="authors">';
@@ -616,6 +649,9 @@ angular.module('evtviewer.dataHandler')
 			Altro stile
 			/*/
             else if (styleCode === MLA_STYLE) {
+				if (newBiblElement.plainText != '' ) {
+					string += '<span data-style="mla">'+newBiblElement.plainText+'<span>'; 
+				}
                 if (!isMonograph(newBiblElement) || true) {
                     if (newBiblElement.author && newBiblElement.author.length > 0) {
                         string += '<span data-style="mla" class="authors">';
