@@ -289,10 +289,11 @@ angular.module('evtviewer.dataHandler')
             //prendere attributo type
             newBiblElement.idno[el.getAttribute('type')] = el;
         });
-        removeEndingPoint(newBiblElement);
 		if ( !isChanged(newBiblElement) ) {
 			newBiblElement.plainText = currentDocument[0].textContent;
 		}
+        removeEndingPoint(newBiblElement);
+		
         return newBiblElement;
     }
 
