@@ -1,22 +1,23 @@
 <div class="evt-bibliography">
-	<div class="bibliography">
-		<label for="biblStyleSelect">Select your style </label>
+	<div class="evt-bibliography__header">
+		<label for="biblStyleSelect">Style </label>
 		<select id="biblStyleSelect"
 			ng-model="vm.initialSelectedStyle"
 			ng-options="value as value for (key , value) in vm.styles"/>
 		
 		
-		<label for="biblSortingSelect">How to sort entries? </label>
+		<label for="biblSortingSelect">Sort by </label>
 		<select id="biblSortingSelect"
 			ng-model="vm.selectedSorting"
 			ng-options="value as value for (key , value) in vm.sortBy"/>
 
 			
-		<label for="biblSortOrder">Sort order </label>
+		<label for="biblSortOrder">Order </label>
 		<select id="biblSortOrder"
 			ng-model="vm.selectedSortOrder"
-			ng-options="value as value for (key , value) in vm.sortOrder"/>			
-			
+			ng-options="value as value for (key , value) in vm.sortOrder"/>
+	</div>
+	<div class="evt-bibliography__content">
 		<div class="biblRef"
 			id="{{bibl}}"
 			ng-repeat="bibl in vm.biblRefsCollection._indexes | orderBy: vm.myComparator: vm.selectedSortOrder === vm.sortOrder.DESC"

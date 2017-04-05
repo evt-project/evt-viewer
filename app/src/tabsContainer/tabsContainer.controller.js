@@ -87,7 +87,8 @@ angular.module('evtviewer.tabsContainer')
             $scope.tabs.bibliography = {
                 label   : 'Bibliography',
                 name    : 'bibliography',
-                content : bibliographyContent || noContent
+                content : bibliographyContent || noContent,
+                scrollDisabled: true
             };
 			$scope.tabs._indexes.push('bibliography');
         }
