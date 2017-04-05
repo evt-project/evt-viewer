@@ -4,8 +4,7 @@
     ng-mouseout="vm.toggleOverQuotes($event)"
     ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
                 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
-                'over'     : vm.over, 
-                'invisible': !vm.fitFilters(),
+                'over'     : vm.over,
                 'blurred'  : $parent.vm.state.topBoxOpened}">
     <span 
         class="quote__text"

@@ -1,6 +1,6 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox) {
+.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox, evtInterface) {
     $scope.content = {};
     var vm = this;
     
@@ -43,6 +43,9 @@ angular.module('evtviewer.sourcesApparatusEntry')
     };
 
     this.isSelect = function() {
+        if (evtInterface.getCurrentQuote() === vm.quoteId) {
+            return true;
+        } else 
         return vm.selected;
     };
 
