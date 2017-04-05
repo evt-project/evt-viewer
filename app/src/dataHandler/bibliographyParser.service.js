@@ -19,7 +19,7 @@ angular.module('evtviewer.dataHandler')
         idnoDef = '<idno>';
 
     // Tags in cui cercare info bibliografiche
-    var bibliographyDef = ['<biblStruct>', '<bibl'];
+    var bibliographyDef = ['<biblStruct>', '<bibl>'];
 
     var parser = {};
     
@@ -27,7 +27,14 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
 
         for (var c = 0; c < bibliographyDef.length; c++) {
-            angular.forEach(currentDocument.find(bibliographyDef[c].replace(/[<>]/g, '')),
+			var set = $(bibliographyDef[c].replace(/[<>]/g, ''),doc);
+/* 			non vogliamo i tag annidati ma solo quelli top, 
+			il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
+			set = $(set).filter(function(){
+				return $(this).parents(bibliographyDef[c].replace(/[<>]/g, '')).length === 0;
+			})
+             //angular.forEach(currentDocument.find(bibliographyDef[c].replace(/[<>]/g, '')),
+			angular.forEach(set,
                 function(element) {
                     var newBiblElement = parser.extractInfo(element);
                     var currentID = getID(newBiblElement);
@@ -106,69 +113,97 @@ angular.module('evtviewer.dataHandler')
 					whereToPutInfoArray.push(newPersonElement);}
 			});
 		}
-
-        extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
-        extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
-
-        //cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
-		function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
-			angular.forEach(whereToFind.children(), function(el) {
-				if (el.tagName === 'date') {
-					whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? el.innerHTML : whereToPutInfoArray.date;
-				}
-				else if (el.tagName === 'pubPlace') {
-					whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? el.innerHTML : whereToPutInfoArray.pubPlace;
-				}
-				else if (el.tagName === 'publisher') {
-					whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? el.innerHTML : whereToPutInfoArray.publisher;
-				}			
-			});
-		}
 		
-		extractDatePubPlacePublisher(currentDocument,newBiblElement);
-		
-		function extractTitleTitleLevel (whereToFind,whereToPutInfoArray,nestedBibl) {
-			/*/ci possono essere altri title fratelli oppure anche title provenienti da altri elementi interni, tipo altri bibl
-			per questo c'è da sapere se è un bibl o biblStruct, in modo (sotto) da essere sicuri degli assegnamenti di titleAnalytic e titleMonogr
-			/*/
+		function extractTitleTitleLevel (whereToFind,whereToPutInfoArray) {
 			var titleEl = whereToFind.find('title');
             if (titleEl && titleEl.length > 0) {
                 for (var c = 0; c < titleEl.length; c++) {
-                    var titleLevel = titleEl[c].getAttribute("level");
-					if (!nestedBibl) {
-						whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
-					}
+                    var titleLevel = titleEl[c].getAttribute('level');
+					whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
                     //recuperiamo il tipo di pubblicazione
                     if (titleLevel !== null) {
-					
 						titleLevel = titleLevel.substring(0, 1);
-						whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type;
-
-						if (nestedBibl && titleLevel === 'm' ) {
-							whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
-						}
-						if (nestedBibl && titleLevel === 'a' ) {
-							whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;
-						}						
+						whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type;						
                     }
                 }
             }
 		}
 		
+		//cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
+		function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
+			angular.forEach(whereToFind.children(), function(el) {
+				if (el.tagName === 'date') {
+					whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? el.innerText : whereToPutInfoArray.date;
+				}
+				else if (el.tagName === 'pubPlace') {
+					whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? el.innerText : whereToPutInfoArray.pubPlace;
+				}
+				else if (el.tagName === 'publisher') {
+					whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? el.innerText : whereToPutInfoArray.publisher;
+				}			
+			});
+		}
 		
+		function biblExtractInfo(whereToFind,whereToPutInfoArray) {
+			var level;
+			children = whereToFind.children;
+			for (var c=0; c<children.length; c++) {
+				if (children[c].tagName === 'title') {
+					level = children[c].getAttribute('level');
+					if (level !== null && typeof level !== 'undefined') {
+						level = level.substring(0, 1);}
+					if (level === 'm' || level === null || typeof level === 'undefined') {
+						whereToPutInfoArray.titleMonogr = children[c].textContent;	
+					}
+					if (level === 'a' && level !== null && typeof level !== 'undefined') {
+						whereToPutInfoArray.titleAnalytic = children[c].textContent;
+					}						
+				}
+				if (level === 'm' || level === null || typeof level === 'undefined') {
+					if (children[c].tagName === 'date') {
+						whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? children[c].textContent : whereToPutInfoArray.date;
+					}
+					else if (children[c].tagName === 'pubPlace') {
+						whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? children[c].textContent : whereToPutInfoArray.pubPlace;
+					}
+					else if (children[c].tagName === 'publisher') {
+						whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? children[c].textContent : whereToPutInfoArray.publisher;
+					}
+				}				
+			}
+		}
+		
+		function extractBiblScope(whatToFind, whereToPutInfoArray) {
+			angular.forEach(whatToFind, function(el) {
+				//prendere attributo type o unit di ogni biblScope trovato
+				angular.forEach(['type', 'unit'], function(attr) {
+					var attrValue = el.getAttribute(attr);
+					if (attrValue !== null) {
+						whereToPutInfoArray[attrValue] = el.textContent;
+					}
+				});
+			})
+		}	
+		
+		extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
+        extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
+
 		if (currentDocument[0].tagName === 'bibl') {
-			extractTitleTitleLevel(currentDocument,newBiblElement,true);
-			var nestedBibl = currentDocument.find('bibl');
-			angular.forEach(nestedBibl,function(){
-				extractDatePubPlacePublisher(angular.element(nestedBibl),newBiblElement);
+			biblExtractInfo(currentDocument[0],newBiblElement);
+			extractBiblScope(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+			angular.forEach(currentDocument.find('bibl'),function(nestedBibl){
+				biblExtractInfo(nestedBibl,newBiblElement);
 			});
         }
+		else {
+			extractDatePubPlacePublisher(currentDocument,newBiblElement);
+		}
 
         var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
         //entriamo nel tag monogr
         if (monographElem) {
             monographElem = angular.element(monographElem);
-			extractTitleTitleLevel(monographElem,newBiblElement,false);
+			extractTitleTitleLevel(monographElem,newBiblElement);
 
             var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
             var monographEditions = monographElem.find('edition');
@@ -179,17 +214,7 @@ angular.module('evtviewer.dataHandler')
                 newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
             }
 
-            function extractBiblScope(whatToFind, whereToPutInfoArray) {
-                angular.forEach(whatToFind, function(el) {
-                    //prendere attributo type o unit di ogni biblScope trovato
-                    angular.forEach(['type', 'unit'], function(attr) {
-                        var attrValue = el.getAttribute(attr);
-                        if (attrValue !== null) {
-                            whereToPutInfoArray[attrValue] = el.textContent;
-                        }
-                    });
-                })
-            }
+            
 
             //biblscope può stare dentro monogr ma anche dentro imprint
             extractBiblScope(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
