@@ -15,7 +15,7 @@
                     ng-mouseover="vm.toggleOverSource($event, source.id)"
                     ng-mouseout="vm.toggleOverSource($event, source.id)"
                     ng-click="vm.toggleSource(source.id)"
-                    compile="source.id">
+                    compile="source.abbr">
                 </li>
             </ul>
         </div>
@@ -47,9 +47,12 @@
 
                 </div>
                  <div ng-switch-when="xmlSource">
-                     XML Source for Analogue
+                     <span class="xml-title">XML Source for Analogue</span>
                      <pre>{{ vm.xml | prettyXml}}</pre>
-                     XML Source for {{vm._activeSource}}
+                     <span class="xml-title">
+                         XML Source for
+                         <span compile="vm.getActiveSourceAbbr(vm._activeSource)">
+                     </span>
                      <pre>{{ vm.src_list[vm._activeSource]._xmlSource | prettyXml }}</pre>
                      <div ng-if=""></div>
                  </div>

@@ -38,25 +38,38 @@ angular.module('evtviewer.dataHandler')
 
     apparatus.getSource = function(entry) {
         var source = {
-            id: entry.id,
-            author: '',
-            title: '',
-            _xmlSource: entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''),
-            text: '',
-            bibl: '',
-            url: entry.url
+            id         : entry.id,
+            abbr       : '',
+            text       : '',
+            bibl       : '',
+            url        : entry.url,
+            _xmlSource : entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''),
         }
-
-        //Transform the bibliographic reference into strings
+        
+        if (entry.abbr.msId.length > 0) {
+            for (var i = 0; i < entry.abbr.msId.length; i++) {
+                source.abbr += '<span class="msId inSource">'+apparatus.getText(entry.abbr.msId[i])+'</span>';
+            }
+        } else {
+            if (entry.abbr.author.length > 0) {
+                source.abbr += '<span class="author inSource">'+apparatus.getText(entry.abbr.author[0])+'</span>';
+                if (entry.abbr.author.length > 1) {
+                    source.abbr += 'et al.,';
+                } else {
+                    source.abbr += ',';
+                }
+            }
+            if (entry.abbr.title.length > 0) {
+                source.abbr += '<span class="title inSource">'+apparatus.getText(entry.abbr.title[0])+'</span>';
+            }
+        }
+        if (source.abbr === '') {
+            source.abbr = entry.id;
+        }
+        
         var bibref = entry.bibl;
         for (var i = 0; i < bibref.length; i++) {
             source.bibl += apparatus.getText(bibref[i]);
-        }
-        
-        //Tranform the names of the authors into strings
-        var author = entry.author;
-        for (var i = 0; i < author.length; i++) {
-            source.author += apparatus.getText(author[i]);
         }
 
         //Get the text cited

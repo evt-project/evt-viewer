@@ -36,6 +36,14 @@ angular.module('evtviewer.sourcesApparatusEntry')
             vm._overSource = '';
         }
     };
+
+    this.getActiveSourceAbbr = function(activeSourceId) {
+        for (var i = 0; i < vm.sources.length; i++) {
+            if (vm.sources[i].id === activeSourceId ) {
+                return vm.sources[i].abbr;
+            }
+        }
+    };
     
     this.mouseOver = function() {
         vm.over = true;

@@ -36,6 +36,14 @@ angular.module('evtviewer.analoguesApparatusEntry')
         }
     };
 
+    this.getActiveSourceAbbr = function(activeSourceId) {
+        for (var i = 0; i < vm.sources.length; i++) {
+            if (vm.sources[i].id === activeSourceId ) {
+                return vm.sources[i].abbr;
+            }
+        }
+    };
+
     this.toggleSubContent = function(subContentName) {
         if (vm._subContentOpened !== subContentName) {
             vm._subContentOpened = subContentName;

@@ -924,8 +924,11 @@ angular.module('evtviewer.dataHandler')
     parser.parseSource = function(entry, quote) {
         var source = {
             id: '',
-            title: [],
-            author: [],
+            abbr: {
+                title: [],
+                author: [],
+                msId: []
+            },            
             attributes: [],
             quotesEntriesId: [],
             bibl: [], //Array that saves the full bibliographic reference of the source (which almost always corresponds the content of the source itself)
@@ -973,6 +976,21 @@ angular.module('evtviewer.dataHandler')
             } else {
                 source.quotesEntriesId.push(evtParser.xpath(quote).substr(1));
             }
+        }
+
+        //Adding info that will form the source abbreviated reference (.abbr)
+        var elem = angular.element(entry);
+        if (entry.tagName === 'msDesc') {
+            angular.forEach(elem.find('idno'), function(el) {
+                source.abbr.msId.push(parseSourceContent(el));
+            });
+        } else {
+            angular.forEach(elem.find('author'), function(el) {
+                source.abbr.author.push(parseSourceContent(el));
+            });
+            angular.forEach(elem.find('title'), function(el) {
+                source.abbr.title.push(parseSourceContent(el));
+            });
         }
 
         angular.forEach(entry.childNodes, function(child){
@@ -1028,12 +1046,12 @@ angular.module('evtviewer.dataHandler')
                     }
                 } else {
                     childContent = parseSourceContent(child, entry)
-                    if (childContent.tagName === 'author') {
+                    /*if (childContent.tagName === 'author') {
                         source.author.push(childContent.content);
                     }
                     if (childContent.tagName === 'title') {
                         source.title = childContent.content;
-                    }
+                    }*/
                     source.bibl.push(childContent);
                     for (var i = 0; i < childContent.url.length; i++) {
                         source.url.push(childContent.url[i]);
@@ -1394,8 +1412,11 @@ angular.module('evtviewer.dataHandler')
     parser.parseAnalogueSource = function(entry) {
         var source = {
             id : '',
-            title : [],
-            author : [],
+            abbr: {
+                title: [],
+                author: [],
+                msId: []
+            },
             attributes : [],
             bibl : [],
             text : [],
@@ -1429,6 +1450,20 @@ angular.module('evtviewer.dataHandler')
             id = evtParser.xpath(entry).substr(1);
         }
         source.id = id;
+
+        var elem = angular.element(entry);
+        if (entry.tagName === 'msDesc') {
+            angular.forEach(elem.find('idno'), function(el) {
+                source.abbr.msId.push(parseAnalogueSourceContent(el));
+            });
+        } else {
+            angular.forEach(elem.find('author'), function(el) {
+                source.abbr.author.push(parseAnalogueSourceContent(el));
+            });
+            angular.forEach(elem.find('title'), function(el) {
+                source.abbr.title.push(parseAnalogueSourceContent(el));
+            });
+        }
 
         angular.forEach(entry.childNodes, function(child){
             if (child.nodeType === 3) {
