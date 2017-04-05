@@ -1,6 +1,7 @@
 $sources-apparatus-entry-background-color : $base-color-light;
 $sources-apparatus-entry-background-color-darker : rgb(225, 225, 225);
 $sources-apparatus-entry-border-color : rgb(125, 125, 125);
+
 $sources-apparatus-entry-selected-background-color: rgb(195, 207, 213);
 $sources-apparatus-entry-selected-content-color: rgb(180, 195, 203);
 $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
@@ -81,11 +82,32 @@ $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         
         &_list {
             border-top: 1px solid $sources-apparatus-entry-border-color;
+            padding: 0;
+            &-label {
+                width: 100%;
+                font-variant: small-caps;
+                font-size: 95%;
+                margin-top: 5px;
+            }
             ul {
+                &.pointer {
+                    cursor: pointer;
+                }
+                width: 100%;
                 display: block;
-                list-style-type: disc !important; 
-                li {
-                    display: block;
+                list-style-type: disc; 
+                li.source-id {
+                    font-size: 105%;
+                    display: list-item;
+                    font-style: italic;
+                    &.over{
+                        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+                        cursor: pointer;
+                    }
+                    &.selected {
+                        font-weight:bold;
+                        cursor: pointer;
+                    }
                 }
             }
         }

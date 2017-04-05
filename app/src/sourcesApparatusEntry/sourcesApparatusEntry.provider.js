@@ -109,6 +109,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 sources           : sources,
                 src_list          : src_list,
                 _activeSource     : sources[0].id, /*By default the active Source is the first (and maybe only one) source inserted inside the sources array*/
+                _overSource       : '',
                 tabs              : tabs,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,

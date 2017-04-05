@@ -25,6 +25,17 @@ angular.module('evtviewer.sourcesApparatusEntry')
             }
         }
     }
+
+    this.toggleOverSource = function($event, sourceId) {
+        $event.stopPropagation();
+        //Provoca uno sfarfallio
+        vm.over = !vm.over;
+        if (vm._overSource !== sourceId) {
+            vm._overSource = sourceId;
+        } else {
+            vm._overSource = '';
+        }
+    };
     
     this.mouseOver = function() {
         vm.over = true;
@@ -45,8 +56,9 @@ angular.module('evtviewer.sourcesApparatusEntry')
     this.isSelect = function() {
         if (evtInterface.getCurrentQuote() === vm.quoteId) {
             return true;
-        } else 
-        return vm.selected;
+        } else {
+            return vm.selected;
+        }
     };
 
     this.closeSubContent = function() {

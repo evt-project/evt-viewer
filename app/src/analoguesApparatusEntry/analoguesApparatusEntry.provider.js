@@ -114,8 +114,11 @@ angular.module('evtviewer.analoguesApparatusEntry')
                 sources          : sources,
                 src_list         : src_list,
                 _activeSource    : _activeSource,
+                _overSource       : '',
                 tabs             : tabs,
                 _subContentOpened: firstSubContentOpened,
+                over              : false,
+                selected          : false,
             }
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

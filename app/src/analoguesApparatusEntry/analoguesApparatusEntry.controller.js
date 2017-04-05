@@ -25,6 +25,17 @@ angular.module('evtviewer.analoguesApparatusEntry')
         }
     }
 
+    this.toggleOverSource = function($event, sourceId) {
+        $event.stopPropagation();
+        //Provoca uno sfarfallio
+        vm.over = !vm.over;
+        if (vm._overSource !== sourceId) {
+            vm._overSource = sourceId;
+        } else {
+            vm._overSource = '';
+        }
+    };
+
     this.toggleSubContent = function(subContentName) {
         if (vm._subContentOpened !== subContentName) {
             vm._subContentOpened = subContentName;
