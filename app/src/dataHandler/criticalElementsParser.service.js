@@ -1578,7 +1578,6 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             else if (elem.content.length === 1 && typeof elem.content[0] === 'string') {
-                //spanElement = document.createTextNode('FATTO!!!');
                 var xmlE = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
                 var e = xmlE.children[0];
                 spanElement = evtParser.parseXMLElement(doc, e, '');
@@ -1646,6 +1645,10 @@ angular.module('evtviewer.dataHandler')
 
         for (var i in analogueContent) {
             if (typeof analogueContent[i] === 'string') {
+                var child = document.createElement('span');
+                child.setAttribute('class', 'textNode');
+                child.appendChild(document.createTextNode(analogueContent[i]))
+                spanElement.appendChild(child);
             } else {
                 if (analogueContent[i].tagName === 'EVT-POPOVER') {
                     spanElement.appendChild(analogueContent[i]);
