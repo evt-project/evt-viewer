@@ -19,21 +19,21 @@ angular.module('evtviewer.dataHandler')
         idnoDef = '<idno>';
 
     // Tags in cui cercare info bibliografiche
-    var bibliographyDef = ['<biblStruct>', '<bibl>'];
+    var bibliographyDef = {biblStruct : '<biblStruct>', bibl : '<bibl>'};
 
     var parser = {};
     
     parser.parseBiblInfo = function(doc) {
         var currentDocument = angular.element(doc);
 
-        for (var c = 0; c < bibliographyDef.length; c++) {
-			var resultsSet = $(bibliographyDef[c].replace(/[<>]/g, ''),doc);
+        for (var key in bibliographyDef) {
+			var resultsSet = $(bibliographyDef[key].replace(/[<>]/g, ''),doc);
 /* 			non vogliamo i tag annidati ma solo quelli top, 
 			il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
 			resultsSet = $(resultsSet).filter(function(){
-				return $(this).parents(bibliographyDef[c].replace(/[<>]/g, '')).length === 0;
+				return $(this).parents(bibliographyDef[key].replace(/[<>]/g, '')).length === 0;
 			});
-             //angular.forEach(currentDocument.find(bibliographyDef[c].replace(/[<>]/g, '')),
+             //angular.forEach(currentDocument.find(bibliographyDef[key].replace(/[<>]/g, '')),
 			angular.forEach(resultsSet,
                 function(element) {
                     var newBiblElement = parser.extractInfo(element);
@@ -188,10 +188,16 @@ angular.module('evtviewer.dataHandler')
 		extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
         extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
 
-		if (currentDocument[0].tagName === 'bibl') {
+		//controllo se è un tag bibl
+		if (currentDocument[0].tagName === bibliographyDef.bibl) {
 			biblExtractInfo(currentDocument[0],newBiblElement);
 			extractBiblScope(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-			angular.forEach(currentDocument.find('bibl'),function(nestedBibl){
+			//solo un sotto-livello di bibl viene analizzato
+			children = currentDocument.children();
+			children = $(children).filter(function(el){
+				return el.tagName === bibliographyDef.bibl;
+			});
+			angular.forEach(children,function(nestedBibl){	
 				biblExtractInfo(nestedBibl,newBiblElement);
 			});
         }
