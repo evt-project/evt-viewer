@@ -103,6 +103,11 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
     };
 
+    this.alignQuotes = function() {
+        evtBox.alignScrollToQuote(vm.quoteId);
+        evtQuote.selectById(vm.quoteId);
+    };
+
     this.doubleClick = function($event) {
         $event.stopPropagation();
         if (vm.currentViewMode === 'readingTxt') {

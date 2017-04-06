@@ -46,9 +46,9 @@ angular.module('evtviewer.dataHandler')
             if (entry.abbr.author.length > 0) {
                 source.abbr += '<span class="author inSource">'+apparatus.getText(entry.abbr.author[0])+'</span>';
                 if (entry.abbr.author.length > 1) {
-                    source.abbr += 'et al.,';
+                    source.abbr += 'et al., ';
                 } else {
-                    source.abbr += ',';
+                    source.abbr += ', ';
                 }
             }
             if (entry.abbr.title.length > 0) {
