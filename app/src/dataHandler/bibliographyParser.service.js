@@ -87,16 +87,17 @@ angular.module('evtviewer.dataHandler')
 					forename: ''
 				};
 				
-				var el = angular.element(element);var personName=[];
-				if(element.tagName !== 'name'){personName = el.find('name');
+				var el = angular.element(element);
+				var personName=[];
+				if(element.tagName !== 'name'){
+					personName = el.find('name');
 					angular.forEach(personName, function(element) {
 						if(personName.children().length>0){
 							extractNameSurnameForename(personName,whereToPutInfoArray);
 						}
 						else newPersonElement.name = element.textContent;
 					});
-				}
-				if(element.tagName !== 'name'){
+
 					var personSurname = el.find('surname');
 					angular.forEach(personSurname, function(element) {
 						newPersonElement.surname = element.textContent;
@@ -110,7 +111,8 @@ angular.module('evtviewer.dataHandler')
 					if (personName.length === 0 && personForename.length === 0 && personSurname.length === 0) {
 						newPersonElement.name = el[0].textContent;
 					}
-					whereToPutInfoArray.push(newPersonElement);}
+					whereToPutInfoArray.push(newPersonElement);
+				}
 			});
 		}
 		
@@ -189,13 +191,13 @@ angular.module('evtviewer.dataHandler')
         extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
 
 		//controllo se è un tag bibl
-		if (currentDocument[0].tagName === bibliographyDef.bibl) {
+		if (currentDocument[0].tagName === bibliographyDef.bibl.replace(/[<>]/g, '')) {
 			biblExtractInfo(currentDocument[0],newBiblElement);
 			extractBiblScope(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 			//solo un sotto-livello di bibl viene analizzato
 			children = currentDocument.children();
 			children = $(children).filter(function(el){
-				return el.tagName === bibliographyDef.bibl;
+				return el.tagName === bibliographyDef.bibl.replace(/[<>]/g, '');
 			});
 			angular.forEach(children,function(nestedBibl){	
 				biblExtractInfo(nestedBibl,newBiblElement);
@@ -319,6 +321,7 @@ angular.module('evtviewer.dataHandler')
         if (typeof arr === 'string') {
             if (arr[arr.length - 1] === '.') {
                 var nVal = arr.replace(/.$/, '');
+				nVal = nVal.trim();
                 return nVal;
             }
         } else {

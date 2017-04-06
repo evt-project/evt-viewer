@@ -56,6 +56,9 @@ angular.module('evtviewer.bibliography')
                     result = biblElement.author[0].forename;
                 }
             }
+			else if (biblElement.plainText !== '') {
+				result = biblElement.plainText;
+			}
         }
         //year sorting
         else if (vm.selectedSorting === vm.sortBy.Year) {
