@@ -21902,7 +21902,7 @@
 				   <name><name><surname>Cognome1</surname><surname>Cognome2</surname><forename>Soprannome1</forename></name></name>
 				</author>
 				<author>   
-				   <persName>Autore2</persName>
+				   <persName><name>Marco</name><name>Antonio</name><surname>paganini</surname></persName>
 			   </author></bibl>
 
                <bibl xml:id="ASFi_DM">ASFi, <emph>Diplomatico Malaspina</emph>, Spoglio 100.</bibl>

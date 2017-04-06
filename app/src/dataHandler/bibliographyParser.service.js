@@ -88,27 +88,32 @@ angular.module('evtviewer.dataHandler')
 				};
 				
 				var el = angular.element(element);
-				var personName=[];
+				var personNameEl=[];
 				if(element.tagName !== 'name'){
-					personName = el.find('name');
-					angular.forEach(personName, function(element) {
+					personNameEl = el.find('name');
+					angular.forEach(personNameEl, function(element) {
 						if(element.children.length>0){
-							extractNameSurnameForename(personName,whereToPutInfoArray);
+							extractNameSurnameForename(personNameEl,whereToPutInfoArray);
 						}
-						else newPersonElement.name += element.textContent + ' ';
+						else {
+							var personName = element.textContent.substr(0,1).toLowerCase() + element.textContent.substr(1);
+							newPersonElement.name += personName + ' ';
+						}
 					});
 
-					var personSurname = el.find('surname');
-					angular.forEach(personSurname, function(element) {
-						newPersonElement.surname += element.textContent + ' ';
+					var personSurnameEl = el.find('surname');
+					angular.forEach(personSurnameEl, function(element) {
+						var personSurname = element.textContent.substr(0,1).toLowerCase() + element.textContent.substr(1);
+						newPersonElement.surname += personSurname + ' ';
 					});
 
-					var personForename = el.find('forename');
-					angular.forEach(personForename, function(element) {
-						newPersonElement.forename += element.textContent + ' ';
+					var personForenameEl = el.find('forename');
+					angular.forEach(personForenameEl, function(element) {
+						var personForename = element.textContent.substr(0,1).toLowerCase() + element.textContent.substr(1);
+						newPersonElement.forename += personForename + ' ';
 					});
 					//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-					if (personName.length === 0 && personForename.length === 0 && personSurname.length === 0) {
+					if (personNameEl.length === 0 && personForenameEl.length === 0 && personSurnameEl.length === 0) {
 						newPersonElement.name = el[0].textContent;
 					}
 					whereToPutInfoArray.push(newPersonElement);
