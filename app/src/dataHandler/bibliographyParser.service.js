@@ -27,14 +27,14 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
 
         for (var c = 0; c < bibliographyDef.length; c++) {
-			var set = $(bibliographyDef[c].replace(/[<>]/g, ''),doc);
+			var resultsSet = $(bibliographyDef[c].replace(/[<>]/g, ''),doc);
 /* 			non vogliamo i tag annidati ma solo quelli top, 
 			il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
-			set = $(set).filter(function(){
+			resultsSet = $(resultsSet).filter(function(){
 				return $(this).parents(bibliographyDef[c].replace(/[<>]/g, '')).length === 0;
-			})
+			});
              //angular.forEach(currentDocument.find(bibliographyDef[c].replace(/[<>]/g, '')),
-			angular.forEach(set,
+			angular.forEach(resultsSet,
                 function(element) {
                     var newBiblElement = parser.extractInfo(element);
                     var currentID = getID(newBiblElement);
@@ -306,7 +306,7 @@ angular.module('evtviewer.dataHandler')
     }
 	
 	function isString(obj) {
-		return typeof obj === 'String';
+		return (typeof obj).toLowerCase() === 'string';
 	}
 	
     function removeEndingPoint(arr) {
