@@ -21897,8 +21897,13 @@
          <div type="biblCompleta">
             <listBibl>
 
-               <bibl xml:id="APG"><emph>Annales Placentini Gibellini</emph>,in <emph>Monumenta Germaniae
-                     Historica</emph>.</bibl>
+               <bibl xml:id="APG">
+			   <author>
+				   <name><name><surname>Cognome1</surname><surname>Cognome2</surname><forename>Soprannome1</forename></name></name>
+				</author>
+				<author>   
+				   <persName>Autore2</persName>
+			   </author></bibl>
 
                <bibl xml:id="ASFi_DM">ASFi, <emph>Diplomatico Malaspina</emph>, Spoglio 100.</bibl>
 

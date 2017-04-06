@@ -92,20 +92,20 @@ angular.module('evtviewer.dataHandler')
 				if(element.tagName !== 'name'){
 					personName = el.find('name');
 					angular.forEach(personName, function(element) {
-						if(personName.children().length>0){
+						if(element.children.length>0){
 							extractNameSurnameForename(personName,whereToPutInfoArray);
 						}
-						else newPersonElement.name = element.textContent;
+						else newPersonElement.name += element.textContent + ' ';
 					});
 
 					var personSurname = el.find('surname');
 					angular.forEach(personSurname, function(element) {
-						newPersonElement.surname = element.textContent;
+						newPersonElement.surname += element.textContent + ' ';
 					});
 
 					var personForename = el.find('forename');
 					angular.forEach(personForename, function(element) {
-						newPersonElement.forename = element.textContent;
+						newPersonElement.forename += element.textContent + ' ';
 					});
 					//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
 					if (personName.length === 0 && personForename.length === 0 && personSurname.length === 0) {
@@ -300,7 +300,7 @@ angular.module('evtviewer.dataHandler')
 		if ( !isChanged(newBiblElement) ) {
 			newBiblElement.plainText = currentDocument[0].textContent;
 		}
-        removeEndingPoint(newBiblElement);
+        removeEndingPointTrim(newBiblElement,true,true);
 		
         return newBiblElement;
     }
@@ -317,25 +317,33 @@ angular.module('evtviewer.dataHandler')
 		return (typeof obj).toLowerCase() === 'string';
 	}
 	
-    function removeEndingPoint(arr) {
+    function removeEndingPointTrim(arr,removeEndingPoint,trim) {
         if (typeof arr === 'string') {
-            if (arr[arr.length - 1] === '.') {
-                var nVal = arr.replace(/.$/, '');
-				nVal = nVal.trim();
-                return nVal;
-            }
+				
+			if(removeEndingPoint) {
+				//cerca un punto prima di un fine riga
+				var arr = arr.replace(/.$/, '');
+			}
+			if(trim) {
+				arr = arr.trim();
+			}
+			return arr;
+            
         } else {
             if (isArray(arr)) {
                 for (var c = 0, l = arr.length; c < l; c++) {
-                    removeEndingPoint(arr[c]);
+                    removeEndingPointTrim(arr[c],true,true);
                 }
             } else if (isObject(arr)) {
                 for (var key in arr) {
                     if (key !== 'author') {
-                        var res = removeEndingPoint(arr[key]);
-                        if (res) {
-                            arr[key] = res;
-                        }
+						var res = removeEndingPointTrim(arr[key],true,true);
+					}
+					else {
+                        var res = removeEndingPointTrim(arr[key],false,true);
+					}
+                    if (res) {
+                        arr[key] = res;
                     }
                 }
             }
