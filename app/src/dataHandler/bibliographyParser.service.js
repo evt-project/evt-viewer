@@ -3,8 +3,8 @@ angular.module('evtviewer.dataHandler')
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser, config) {
     console.log('Bibliography Parser service running');
     const CHICAGO_STYLE = config.allowedBibliographicStyles.Chicago,
-        APA_STYLE = config.allowedBibliographicStyles.APA,
-        MLA_STYLE = config.allowedBibliographicStyles.MLA;
+          APA_STYLE = config.allowedBibliographicStyles.APA,
+          MLA_STYLE = config.allowedBibliographicStyles.MLA;
 
     var STYLE_SELECTED = CHICAGO_STYLE;
 
@@ -150,7 +150,7 @@ angular.module('evtviewer.dataHandler')
 				}			
 			});
 		}
-		
+		//serve a estrarre info solo per i tag bibl
 		function biblExtractInfo(whereToFind,whereToPutInfoArray) {
 			var level;
 			children = whereToFind.children;
@@ -158,14 +158,18 @@ angular.module('evtviewer.dataHandler')
 				if (children[c].tagName === 'title') {
 					level = children[c].getAttribute('level');
 					if (level !== null && typeof level !== 'undefined') {
-						level = level.substring(0, 1);}
+						level = level.substring(0, 1);
+					}
+					//se il level è m o se non è dato salviamo il titolo
 					if (level === 'm' || level === null || typeof level === 'undefined') {
 						whereToPutInfoArray.titleMonogr = children[c].textContent;	
 					}
+					//se è dato il level a lo salviamo
 					if (level === 'a' && level !== null && typeof level !== 'undefined') {
 						whereToPutInfoArray.titleAnalytic = children[c].textContent;
 					}						
 				}
+				//se il level è m o se non è dato salviamo altre info
 				if (level === 'm' || level === null || typeof level === 'undefined') {
 					if (children[c].tagName === 'date') {
 						whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? children[c].textContent : whereToPutInfoArray.date;
@@ -180,8 +184,8 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 		
-		function extractBiblScope(whatToFind, whereToPutInfoArray) {
-			angular.forEach(whatToFind, function(el) {
+		function extractBiblScope(whereToFind, whereToPutInfoArray) {
+			angular.forEach(whereToFind, function(el) {
 				//prendere attributo type o unit di ogni biblScope trovato
 				angular.forEach(['type', 'unit'], function(attr) {
 					var attrValue = el.getAttribute(attr);
@@ -191,8 +195,9 @@ angular.module('evtviewer.dataHandler')
 				});
 			})
 		}	
-		
+		//estraiamo gli autori
 		extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
+		//estraiamo gli editori
         extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
 
 		//controllo se è un tag bibl
@@ -262,7 +267,7 @@ angular.module('evtviewer.dataHandler')
                 });
             }
         }
-
+		//entriamo nel tag series
         var seriesElem = angular.element(currentDocument.find(seriesDef.replace(/[<>]/g, '')));
         if (seriesElem && seriesElem.length > 0) {
 
@@ -311,7 +316,7 @@ angular.module('evtviewer.dataHandler')
     }
 
     function isObject(obj) {
-        return obj && (typeof obj === "object");
+        return obj && ((typeof obj).toLowerCase() === "object");
     }
 
     function isArray(obj) {
@@ -322,6 +327,8 @@ angular.module('evtviewer.dataHandler')
 		return (typeof obj).toLowerCase() === 'string';
 	}
 	
+/* 	toglie i punti finali dal testo raccolto e rimuove anche gli spazi iniziali/finali per 
+	garantire un corretto sorting e per maggiore omogeneità una volta su schermo */
     function removeEndingPointTrim(arr,removeEndingPoint,trim) {
         if (typeof arr === 'string') {
 				
@@ -354,7 +361,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
     }
-	
+	//ricorsivamente scende fino ai campi stringa e va a controllare se c'è scritto qualcosa
 	function isChanged(arr) {
 		var res = false;
 		if(isString(arr)){
@@ -365,15 +372,20 @@ angular.module('evtviewer.dataHandler')
 		}
 		else if(isObject(arr)) {
 			for (var key in arr) {
-				if(res)return true;
-				if(key !== 'id'){res = isChanged(arr[key]);}
-				if(res)return true;
+				if(res) {
+					return true;
 				}
+				if(key !== 'id') {
+					res = isChanged(arr[key]);
+				}
+				if(res) {
+					return true;
+				}
+			}
 		}
-		
 		return res;
 	}
-
+	//genera una stringa html in base alle informazioni estratte e a un certo stile bibliografico
     parser.formatResult = function(styleCode, newBiblElement) {
         if (!newBiblElement.outputs[styleCode]) {
             var string = '';
