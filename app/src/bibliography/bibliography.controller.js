@@ -3,30 +3,48 @@ angular.module('evtviewer.bibliography')
 .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser, evtInterface, evtHighlight) {
     var _console = $log.getInstance('BibliographyCtrl');
 	var vm = this;
+	vm.biblSortSelectVisibility = true;
+	vm.biblSortStyleSelectVisibility = true;
 	vm.biblSortOrderSelectVisibility = true;
+	
     //recupero stili bibliografici
     vm.styles = config.allowedBibliographicStyles;
     vm.initialSelectedStyle = vm.styles.Chicago;
-
+	//controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
+	if(!evtBibliographyParser.bibliographicStylesAvaible()){
+		vm.biblSortStyleSelectVisibility = false;
+	}
+	
     //recupero i criteri di ordinamento (le label)
     vm.sortBy = config.bibliographicEntriesSortBy;
+	//controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
 	if (!evtBibliographyParser.authorInfoDetected()){
 		delete vm.sortBy.Author;
 	}
 	if (!evtBibliographyParser.yearInfoDetected()){
 		delete vm.sortBy.Year;
 	}
-	if (vm.sortBy.length > 0 ) {
-		vm.selectedSorting = vm.sortBy.Author;
+	if (Object.keys(vm.sortBy).length) {
+		var firstKey;
+		if(typeof vm.sortBy.Author !== 'undefined'){
+			firstKey = vm.sortBy.Author;
+		}
+		else {
+			firstKey = Object.keys(vm.sortBy)[0];
+		}
+		vm.selectedSorting = vm.sortBy[firstKey];
 	}
 	else {
-		vm.biblSortOrderSelectVisibility = false;
+		vm.biblSortSelectVisibility = false;
 	}
 
     //recupero l'ordine per  l'ordinamento (le label)
     vm.sortOrder = config.bibliographySortOrder;
     vm.selectedSortOrder = vm.sortOrder.ASC;
-
+	//se le select per stile/ordinamento sono nascoste, nascondiamo anche quella per il reverse sorting
+	if (!vm.biblSortStyleSelectVisibility && !vm.biblSortSelectVisibility){
+		vm.biblSortOrderSelectVisibility = false;
+	}
 	
 	//recupero collezione bibliografica
     vm.biblRefsCollection = parsedData.getBibliographicRefsCollection();
