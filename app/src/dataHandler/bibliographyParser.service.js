@@ -334,7 +334,7 @@ angular.module('evtviewer.dataHandler')
 				
 			if(removeEndingPoint) {
 				//cerca un punto prima di un fine riga
-				var arr = arr.replace(/.$/, '');
+				var arr = arr.replace(/\.$/, '');
 			}
 			if(trim) {
 				arr = arr.trim();
@@ -375,9 +375,6 @@ angular.module('evtviewer.dataHandler')
 		}
 		else if(isObject(arr)) {
 			for (var key in arr) {
-				if(res) {
-					return true;
-				}
 				if(key !== 'id') {
 					res = isChanged(arr[key]);
 				}
@@ -386,9 +383,6 @@ angular.module('evtviewer.dataHandler')
 				}
 				if(key === 'date' && arr[key] !== ''){
 					year = true;
-				}
-				if(res) {
-					return true;
 				}
 			}
 		}
