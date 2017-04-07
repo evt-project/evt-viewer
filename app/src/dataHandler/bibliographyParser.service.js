@@ -96,20 +96,20 @@ angular.module('evtviewer.dataHandler')
 							extractNameSurnameForename(personNameEl,whereToPutInfoArray);
 						}
 						else {
-							var personName = element.textContent.substr(0,1).toLowerCase() + element.textContent.substr(1);
+							var personName = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
 							newPersonElement.name += personName + ' ';
 						}
 					});
 
 					var personSurnameEl = el.find('surname');
 					angular.forEach(personSurnameEl, function(element) {
-						var personSurname = element.textContent.substr(0,1).toLowerCase() + element.textContent.substr(1);
+						var personSurname = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
 						newPersonElement.surname += personSurname + ' ';
 					});
 
 					var personForenameEl = el.find('forename');
 					angular.forEach(personForenameEl, function(element) {
-						var personForename = element.textContent.substr(0,1).toLowerCase() + element.textContent.substr(1);
+						var personForename = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
 						newPersonElement.forename += personForename + ' ';
 					});
 					//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
@@ -362,6 +362,9 @@ angular.module('evtviewer.dataHandler')
         }
     }
 	//ricorsivamente scende fino ai campi stringa e va a controllare se c'è scritto qualcosa
+	
+	var year = false,
+		author = false;
 	function isChanged(arr) {
 		var res = false;
 		if(isString(arr)){
@@ -377,6 +380,12 @@ angular.module('evtviewer.dataHandler')
 				}
 				if(key !== 'id') {
 					res = isChanged(arr[key]);
+				}
+				if(key === 'author' && arr[key].length > 0){
+					author = true;
+				}
+				if(key === 'date' && arr[key] !== ''){
+					year = true;
 				}
 				if(res) {
 					return true;
@@ -793,6 +802,7 @@ angular.module('evtviewer.dataHandler')
         }
     }
 
+	//generic helper function
     function extractSurnameNameFromString(string) {
         var author = {
             surname: '',
@@ -854,9 +864,16 @@ angular.module('evtviewer.dataHandler')
         return string1 + string2;
     }
 
-    /*/
-    	Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
-    /*/
+    //Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
+	
+	parser.yearInfoDetected = function(){
+		return year;
+	}
+	
+	parser.authorInfoDetected = function(){
+		return author;
+	}
+	
     parser.getType = function(newBiblElement) {
         //parser encapsulates an internal function
         return getPubblicationType(newBiblElement);

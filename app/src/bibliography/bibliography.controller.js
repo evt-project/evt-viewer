@@ -3,19 +3,32 @@ angular.module('evtviewer.bibliography')
 .controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser, evtInterface, evtHighlight) {
     var _console = $log.getInstance('BibliographyCtrl');
 	var vm = this;
+	vm.biblSortOrderSelectVisibility = true;
     //recupero stili bibliografici
     vm.styles = config.allowedBibliographicStyles;
     vm.initialSelectedStyle = vm.styles.Chicago;
 
     //recupero i criteri di ordinamento (le label)
     vm.sortBy = config.bibliographicEntriesSortBy;
-    vm.selectedSorting = vm.sortBy.Author;
+	if (!evtBibliographyParser.authorInfoDetected()){
+		delete vm.sortBy.Author;
+	}
+	if (!evtBibliographyParser.yearInfoDetected()){
+		delete vm.sortBy.Year;
+	}
+	if (vm.sortBy.length > 0 ) {
+		vm.selectedSorting = vm.sortBy.Author;
+	}
+	else {
+		vm.biblSortOrderSelectVisibility = false;
+	}
 
     //recupero l'ordine per  l'ordinamento (le label)
     vm.sortOrder = config.bibliographySortOrder;
     vm.selectedSortOrder = vm.sortOrder.ASC;
 
-
+	
+	//recupero collezione bibliografica
     vm.biblRefsCollection = parsedData.getBibliographicRefsCollection();
 
     vm.getFormattedBibl = function(biblId) {
