@@ -11,7 +11,7 @@ angular.module('evtviewer.bibliography')
     vm.styles = config.allowedBibliographicStyles;
     vm.initialSelectedStyle = vm.styles.Chicago;
 	//controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
-	if(!evtBibliographyParser.bibliographicStylesAvaible()){
+	if(!evtBibliographyParser.bibliographicStyleInfoDetected()){
 		vm.biblSortStyleSelectVisibility = false;
 	}
 	
@@ -24,7 +24,7 @@ angular.module('evtviewer.bibliography')
 	if (!evtBibliographyParser.yearInfoDetected()){
 		delete vm.sortBy.Year;
 	}
-	if (Object.keys(vm.sortBy).length) {
+	if (Object.keys(vm.sortBy).length > 0) {
 		var firstKey;
 		if(typeof vm.sortBy.Author !== 'undefined'){
 			firstKey = vm.sortBy.Author;
@@ -42,7 +42,7 @@ angular.module('evtviewer.bibliography')
     vm.sortOrder = config.bibliographySortOrder;
     vm.selectedSortOrder = vm.sortOrder.ASC;
 	//se le select per stile/ordinamento sono nascoste, nascondiamo anche quella per il reverse sorting
-	if (!vm.biblSortStyleSelectVisibility && !vm.biblSortSelectVisibility){
+	if (!vm.biblSortSelectVisibility){
 		vm.biblSortOrderSelectVisibility = false;
 	}
 	

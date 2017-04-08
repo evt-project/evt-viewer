@@ -7,7 +7,11 @@ angular.module('evtviewer.dataHandler')
           MLA_STYLE = config.allowedBibliographicStyles.MLA;
 
     var STYLE_SELECTED = CHICAGO_STYLE;
-
+	//tengono conto di quali info il parser mette a disposizione per l'output finale
+	var yearTagDetected = false,
+		authorTagDetected = false,
+		bibliographicStyleInfoDetected = false;
+		
     var monographDef = '<monogr>',
         analyticDef = '<analytic>',
         imprintDef = '<imprint>',
@@ -312,6 +316,9 @@ angular.module('evtviewer.dataHandler')
 		}
         removeEndingPointTrim(newBiblElement,true,true);
 		
+		if (getAuthor(newBiblElement) && getTitleMonogr(newBiblElement)){
+			bibliographicStyleInfoDetected = true;
+		}
         return newBiblElement;
     }
 
@@ -363,8 +370,7 @@ angular.module('evtviewer.dataHandler')
     }
 	//ricorsivamente scende fino ai campi stringa e va a controllare se c'è scritto qualcosa
 	
-	var year = false,
-		author = false;
+
 	function isChanged(arr) {
 		var res = false;
 		if(isString(arr)){
@@ -379,10 +385,10 @@ angular.module('evtviewer.dataHandler')
 					res = isChanged(arr[key]);
 				}
 				if(key === 'author' && arr[key].length > 0){
-					author = true;
+					authorTagDetected = true;
 				}
 				if(key === 'date' && arr[key] !== ''){
-					year = true;
+					yearTagDetected = true;
 				}
 			}
 		}
@@ -861,12 +867,16 @@ angular.module('evtviewer.dataHandler')
     //Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
 	
 	parser.yearInfoDetected = function(){
-		return year;
+		return yearTagDetected;
 	}
 	
 	parser.authorInfoDetected = function(){
-		return author;
+		return authorTagDetected;
 	}
+	
+	parser.bibliographicStyleInfoDetected = function(){
+		return bibliographicStyleInfoDetected;
+	}	
 	
     parser.getType = function(newBiblElement) {
         //parser encapsulates an internal function
@@ -878,6 +888,12 @@ angular.module('evtviewer.dataHandler')
             return newBiblElement.id;
         }
     }
+
+    function getAuthor(newBiblElement) {
+        if (newBiblElement.author && newBiblElement.author.length > 0) {
+            return newBiblElement.author;
+        }
+    }	
 
     function getTitleAnalytic(newBiblElement) {
         if (newBiblElement.titleAnalytic !== '') {
