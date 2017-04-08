@@ -82,16 +82,18 @@ angular.module('evtviewer.tabsContainer')
         }
 
         /* Bibliography */
-        var bibliographyContent = '<evt-bibliography></evt-bibliography>';
-        if (bibliographyContent !== '') {
-            $scope.tabs.bibliography = {
-                label   : 'Bibliography',
-                name    : 'bibliography',
-                content : bibliographyContent || noContent,
-                scrollDisabled: true
-            };
-			$scope.tabs._indexes.push('bibliography');
-        }
+		if (parsedData.getBibliographicRefsCollection().length > 0) {
+			var bibliographyContent = '<evt-bibliography></evt-bibliography>';
+			if (bibliographyContent !== '') {
+				$scope.tabs.bibliography = {
+					label   : 'Bibliography',
+					name    : 'bibliography',
+					content : bibliographyContent || noContent,
+					scrollDisabled: true
+				};
+				$scope.tabs._indexes.push('bibliography');
+			}
+		}
     }
 
 
