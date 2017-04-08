@@ -91,10 +91,12 @@
             </div>
         </div>
     </div>
-
-    <evt-search-box 
-        ng-if="vm.type=='text'">
-    </evt-search-box>
+    
+   <evt-search-box 
+        ng-if="vm.type=='text'"
+        ng-controller="SearchBoxCtrl as searchBox"
+        ng-show="searchBox.getPosition()=='internal'"> 
+    </evt-search-box> 
     
     <div 
         class="tools-group-box"

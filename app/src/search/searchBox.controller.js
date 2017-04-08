@@ -1,12 +1,17 @@
 angular.module('evtviewer.search')
 
-.controller('SearchBoxCtrl', function($scope, evtSearchBox) {
-    var vm = this; 
+.controller ('SearchBoxCtrl', function(config, evtSearchBox) {
+    var vm = this;
     
     // 
     // Control function
-    // 
-    this.open = function(key){
+    //
+    this.getPosition = function() {
+        var position = config.searchBoxPosition /*|| evtSearchBox.getDefaults('searchBoxPosition')*/;
+        return position;
+    };
+    
+     this.open = function(key){
         var currentState = vm.getState(key);
         if(currentState !== undefined) {
             currentState = !currentState;
@@ -18,4 +23,3 @@ angular.module('evtviewer.search')
         return evtSearchBox.getStatus(key);
     };
 });
-

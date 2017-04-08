@@ -395,12 +395,12 @@ angular.module('evtviewer.box')
 						});
 					}
 					bottomMenuList.buttons.push({
-						title: 'BUTTONS.SEARCH',
-						label: 'BUTTONS.SEARCH',
+						title: 'Search',
+						label: 'Search',
 						icon: 'search',
-						type: '',
+						type: 'searchTools',
 						show: function() {
-							return 'true';
+							return config.searchBoxPosition == 'internal' || config.searchBoxPosition == undefined;
 						}
 					});
 					bottomMenuList.buttons.push({

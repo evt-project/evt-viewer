@@ -74,6 +74,7 @@
 
 	"toolHeatMap": true,
 	"toolPinAppEntries": true,
+    "searchBoxPosition" : "",
 	"toolImageTextLinking": true,
 
 	"listDef": "<listWit>, <listChange>",
