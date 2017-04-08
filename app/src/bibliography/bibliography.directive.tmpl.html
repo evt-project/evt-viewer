@@ -29,12 +29,12 @@
 	</div>
 	<div class="evt-bibliography__content">
 		<div class="biblRef"
-			id="{{bibl}}"
+			id="{{ ::bibl }}"
 			ng-repeat="bibl in vm.biblRefsCollection._indexes | orderBy: vm.myComparator: vm.selectedSortOrder === vm.sortOrder.DESC"
 			compile="vm.getFormattedBibl(bibl)"
 			ng-attr-highlight="{{ vm.isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ vm.isEntryHighlighted(bibl) }}"
-			ng-attr-pubblicationType="{{ vm.pubblicationType(bibl) }}">
+			ng-attr-pubblicationType="{{ ::vm.pubblicationType(bibl) }}">
 		</div>
 	</div>
 </div>
