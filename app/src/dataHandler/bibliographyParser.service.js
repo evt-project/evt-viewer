@@ -796,8 +796,12 @@ angular.module('evtviewer.dataHandler')
                         string += '<span data-style="mla" class="generic">Print</span>';
                     }
                 }
-
             }
+			if (string !== '' && getNotes(newBiblElement)) {
+				string += '<evt-popover data-trigger="click" data-tooltip="<p>Ciao</p>">'+
+				'<i class="icon-evt_note"></i>'+
+				'</evt-popover>';
+			}
             newBiblElement.outputs[styleCode] = string;
         }
     }
@@ -972,6 +976,12 @@ angular.module('evtviewer.dataHandler')
     function getPubblicationType(newBiblElement) {
         if (newBiblElement.type !== '') {
             return newBiblElement.type;
+        }
+    }
+	
+	function getNotes(newBiblElement) {
+        if (newBiblElement.note && Object.keys(newBiblElement.note).lenght > 0) {
+            return newBiblElement.note;
         }
     }
 
