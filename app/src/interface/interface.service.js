@@ -44,6 +44,7 @@ angular.module('evtviewer.interface')
             currentEdition : undefined,
             currentAppEntry : undefined,
             currentHighlightedZone : undefined,
+			currentSearchBoxPosition : '',
             isLoading : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
@@ -72,6 +73,7 @@ angular.module('evtviewer.interface')
         currentEdition   : undefined,
         currentAppEntry  : undefined,
         currentHighlightedZone: undefined,
+        currentSearchBoxPosition : '',
         isLoading        : true,
         isPinnedAppBoardOpened : false,
         secondaryContent : '',
@@ -189,6 +191,10 @@ angular.module('evtviewer.interface')
                 }
 
                 mainInterface.updateProperty('dataUrl', config.dataUrl);
+				
+                state.currentSearchBoxPosition = config.searchBoxPosition;
+				mainInterface.getSearchBoxPositionAlert();
+                
                 evtCommunication.getData(config.dataUrl).then(function () {
                     // Remove Collation View Mode if Witnesses List Empty
                     for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
@@ -520,6 +526,32 @@ angular.module('evtviewer.interface')
          */
         mainInterface.isAnaloguesInline = function() {
             return config.showInlineAnalogues || mainInterface.getState('currentViewMode') !== 'readingTxt';
+        };
+
+        mainInterface.getSecondaryContentOpened = function(){
+            return state.secondaryContent;
+        };
+	
+		mainInterface.getSearchBoxPositionAlert = function() {
+			var avaiblePos = GLOBALCONFIG.avaibleSearchBoxPositions;
+			var currentPos = state.currentSearchBoxPosition;
+			
+			if(!avaiblePos.includes(currentPos)) {
+				var msg = "La posizione scelta per il box di ricerca non è valida.\nLa funzionalità di ricerca non verrà visualizzata.\nPer visualizzare le posizioni valide [da inserire]"
+				alert(msg);
+			}
+			
+		};
+
+        /* ************** */
+        /* PARAMS UPDATES */
+        /* ************** */
+        mainInterface.setLoading = function(state) {
+            state.isLoading = state;
+        };
+
+        mainInterface.togglePinnedAppBoardOpened = function() {
+            state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
         
         /**
