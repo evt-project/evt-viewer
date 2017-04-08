@@ -555,10 +555,10 @@ angular.module('evtviewer.buttonSwitch')
 					callback = function(){
                         var searchBtnState = evtSearchBox.openBox('searchBtn');
                     };
-                    fakeCallback = function() {
+                    /*fakeCallback = function() {
                        return callback();
-                    }
-					break;
+                    };*/
+                    break;
 				case 'witList':
 					btnType = 'toggler';
 					callback = function() {
