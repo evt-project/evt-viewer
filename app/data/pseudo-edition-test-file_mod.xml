@@ -21903,7 +21903,10 @@
 				</author>
 				<author>   
 				   <persName><name>Marco</name><name>Antonio</name><surname>paganini</surname></persName>
-			   </author></bibl>
+			   </author>
+			   
+			   <biblScope unit="page" from="12" to="34"><note><p>Ciao</p></note></biblScope>
+			   </bibl>
 
                <bibl xml:id="ASFi_DM">ASFi, <emph>Diplomatico Malaspina</emph>, Spoglio 100.</bibl>
 

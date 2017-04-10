@@ -75,7 +75,8 @@ angular.module('evtviewer.dataHandler')
 
         newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : evtParser.xpath(element);
         newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type') : '';
-
+		//estraiamo le note dentro <bibl>/<biblStruct>
+		extractNote(currentDocument,newBiblElement);
         var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, '') + ' title');
         newBiblElement.titleAnalytic = analyticElem && analyticElem.length > 0 ? analyticElem[0].textContent : '';
 
@@ -193,12 +194,36 @@ angular.module('evtviewer.dataHandler')
 				//prendere attributo type o unit di ogni biblScope trovato
 				angular.forEach(['type', 'unit'], function(attr) {
 					var attrValue = el.getAttribute(attr);
+					var additionalAttrFrom = el.getAttribute('from');
+					var additionalAttrTo = el.getAttribute('to');
 					if (attrValue !== null) {
-						whereToPutInfoArray[attrValue] = el.textContent;
+						if(el.textContent !== ''){
+							whereToPutInfoArray[attrValue] = el.textContent;
+						}
+						else if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
+							whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
+						}
 					}
 				});
 			})
-		}	
+		}
+
+		function extractNote(whereToFind, whereToPutInfoArray){
+            angular.forEach(whereToFind.find('note'), function(el) {
+                //salviamo le note dentro imprint che è dentro monogr
+				var type = el.getAttribute('type');
+				if(type === null){
+					//se il tag note non ha specificato l'attributo type allora la chiave è note + <numero-nota>
+					var c=1;
+					type = 'note-'+c;
+					while(type in whereToPutInfoArray.note){
+						type = 'note'+ (++c);
+					}
+				} 
+                whereToPutInfoArray.note[type] = el.textContent;
+            });			
+		}
+		
 		//estraiamo gli autori
 		extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
 		//estraiamo gli editori
@@ -206,6 +231,7 @@ angular.module('evtviewer.dataHandler')
 
 		//controllo se è un tag bibl
 		if (currentDocument[0].tagName === bibliographyDef.bibl.replace(/[<>]/g, '')) {
+			//qui non cerchiamo le note perchè lo abbiamo già fatto all'inizio
 			biblExtractInfo(currentDocument[0],newBiblElement);
 			extractBiblScope(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 			//solo un sotto-livello di bibl viene analizzato
@@ -215,6 +241,7 @@ angular.module('evtviewer.dataHandler')
 			});
 			angular.forEach(children,function(nestedBibl){	
 				biblExtractInfo(nestedBibl,newBiblElement);
+				extractNote(nestedBibl,newBiblElement);
 			});
         }
 		else {
@@ -236,10 +263,11 @@ angular.module('evtviewer.dataHandler')
                 newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
             }
 
-            
-
+           
             //biblscope può stare dentro monogr ma anche dentro imprint
             extractBiblScope(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+			//estraiamo le note
+			extractNote(monographElem,newBiblElement);
 
             //entriamo dentro imprint che è dentro monogr
             var monographImprints = angular.element(monographElem.find(imprintDef.replace(/[<>]/g, '')));
@@ -265,10 +293,11 @@ angular.module('evtviewer.dataHandler')
                 if (newBiblElement.pubPlace === '') {
                     newBiblElement.pubPlace = imprintsPubPlaces && imprintsPubPlaces.length > 0 ? imprintsPubPlaces[0].textContent : '';
                 }
-                angular.forEach(monographImprints.find('note'), function(el) {
+                /* angular.forEach(monographImprints.find('note'), function(el) {
                     //salviamo le note dentro imprint che è dentro monogr
                     newBiblElement.note[el.getAttribute('type')] = el.textContent;
-                });
+                }); */
+				extractNote(monographImprints,newBiblElement);
             }
         }
 		//entriamo nel tag series
@@ -298,10 +327,11 @@ angular.module('evtviewer.dataHandler')
             if (newBiblElement.pubPlace === '') {
                 newBiblElement.pubPlace = pubPlaces && pubPlaces.length > 0 ? pubPlaces[0].textContent : '';
             }
-            angular.forEach(seriesElem.find('note'), function(el) {
+            /* angular.forEach(seriesElem.find('note'), function(el) {
                 //salviamo le note dentro imprint che è dentro monogr
                 newBiblElement.note[el.getAttribute('type')] = el.textContent;
-            });
+            }); */
+			extractNote(seriesElem,newBiblElement);
             //dentro series ci sono anche i biblScope
             extractBiblScope(seriesElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
         }
@@ -382,7 +412,8 @@ angular.module('evtviewer.dataHandler')
 		else if(isObject(arr)) {
 			for (var key in arr) {
 				if(key !== 'id') {
-					res = isChanged(arr[key]);
+					//ci basta trovare almeno una volta true per sapere che qualcosa è cambiato
+					res = !res ? isChanged(arr[key]) : res;
 				}
 				if(key === 'author' && arr[key].length > 0){
 					authorTagDetected = true;
@@ -945,6 +976,9 @@ angular.module('evtviewer.dataHandler')
         } else if (typeof newBiblElement.biblScope.pp !== 'undefined') {
             pages = newBiblElement.biblScope.pp;
         }
+		else if (typeof newBiblElement.biblScope.page !== 'undefined') {
+            pages = newBiblElement.biblScope.page;
+        }
         return pages;
     }
 
@@ -965,6 +999,12 @@ angular.module('evtviewer.dataHandler')
         if (typeof newBiblElement.biblScope.vol !== 'undefined') {
             return newBiblElement.biblScope.vol;
         }
+		else if (typeof newBiblElement.biblScope.volume !== 'undefined') {
+            return newBiblElement.biblScope.volume;
+        }
+		else if (typeof newBiblElement.biblScope.volumes !== 'undefined') {
+            return newBiblElement.biblScope.volumes;
+        } 		
     }
 
     function getIssue(newBiblElement) {
@@ -980,7 +1020,7 @@ angular.module('evtviewer.dataHandler')
     }
 	
 	function getNotes(newBiblElement) {
-        if (newBiblElement.note && Object.keys(newBiblElement.note).lenght > 0) {
+        if (newBiblElement.note && Object.keys(newBiblElement.note).length > 0) {
             return newBiblElement.note;
         }
     }
