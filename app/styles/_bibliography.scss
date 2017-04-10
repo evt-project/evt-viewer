@@ -50,8 +50,12 @@
 	}
 }
 
+.biblRef > span:last-of-type:after{
+	content: '.' !important;
+}
+
 .biblRef > span:last-child:after{
-	content:'.';
+	content: '.' !important;
 }
 
 .biblRef .name:before, .biblRef .surname:before{
