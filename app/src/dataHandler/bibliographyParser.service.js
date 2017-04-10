@@ -174,8 +174,8 @@ angular.module('evtviewer.dataHandler')
 						whereToPutInfoArray.titleAnalytic = children[c].textContent;
 					}						
 				}
-				//se il level è m o se non è dato salviamo altre info
-				if (level === 'm' || level === null || typeof level === 'undefined') {
+				//se abbiamo trovato che il level è m o se non è dato salviamo altre info
+				if (typeof level === 'undefined' || level === null || level === 'm') {
 					if (children[c].tagName === 'date') {
 						whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? children[c].textContent : whereToPutInfoArray.date;
 					}
@@ -217,7 +217,7 @@ angular.module('evtviewer.dataHandler')
 					var c=1;
 					type = 'note-'+c;
 					while(type in whereToPutInfoArray.note){
-						type = 'note'+ (++c);
+						type = 'note' + (++c);
 					}
 				} 
                 whereToPutInfoArray.note[type] = el.textContent;
@@ -236,12 +236,12 @@ angular.module('evtviewer.dataHandler')
 			extractBiblScope(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 			//solo un sotto-livello di bibl viene analizzato
 			children = currentDocument.children();
-			children = $(children).filter(function(el){
+			children = $(children).filter(function(key,el){
 				return el.tagName === bibliographyDef.bibl.replace(/[<>]/g, '');
 			});
 			angular.forEach(children,function(nestedBibl){	
 				biblExtractInfo(nestedBibl,newBiblElement);
-				extractNote(nestedBibl,newBiblElement);
+				extractNote(angular.element(nestedBibl),newBiblElement);
 			});
         }
 		else {
@@ -829,7 +829,11 @@ angular.module('evtviewer.dataHandler')
                 }
             }
 			if (string !== '' && getNotes(newBiblElement)) {
-				string += '<evt-popover data-trigger="click" data-tooltip="<p>Ciao</p>">'+
+				var noteContent = '';
+				angular.forEach(getNotes(newBiblElement),function(noteEl){
+					noteContent += '<p>' + noteEl + '</p>';
+				});
+				string += '<evt-popover data-trigger="click" data-tooltip="' + noteContent + '">'+
 				'<i class="icon-evt_note"></i>'+
 				'</evt-popover>';
 			}
