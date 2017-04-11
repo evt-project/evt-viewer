@@ -5,7 +5,8 @@ angular.module('evtviewer.popover')
         restrict: 'E',
         scope: {
             trigger: '@',
-            tooltip: '@'
+            tooltip: '@',
+			parentRef : '@'
         },
         transclude: true,
         templateUrl: 'src/popover/popover.directive.tmpl.html',
@@ -42,7 +43,9 @@ angular.module('evtviewer.popover')
             scope.vm.resizeTooltip = function(e, settings){
                 e.stopPropagation();
                 var parentRef = scope.vm.parentRef;
-
+				if ( typeof scope.parentRef !== 'undefined' ) {
+					parentRef = scope.parentRef;
+				}
                 var trigger = element,
                     tooltip = angular.element(element).find('span.popover_tooltip').last(),
                     before  = angular.element(tooltip).find('.popover__tooltip__before');
