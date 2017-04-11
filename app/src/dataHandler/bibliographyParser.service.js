@@ -197,13 +197,14 @@ angular.module('evtviewer.dataHandler')
 					var additionalAttrFrom = el.getAttribute('from');
 					var additionalAttrTo = el.getAttribute('to');
 					if (attrValue !== null) {
-						if(el.textContent !== ''){
+						//diamo la precedenza agli attributi @from & @to
+						if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
+							whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
+						}	
+						else if(el.textContent !== ''){
 							whereToPutInfoArray[attrValue] = el.textContent;
 						}
-						else if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
-							whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
-						}
-					}
+					}						
 				});
 			})
 		}
@@ -833,7 +834,7 @@ angular.module('evtviewer.dataHandler')
 				angular.forEach(getNotes(newBiblElement),function(noteEl){
 					noteContent += '<p>' + noteEl + '</p>';
 				});
-				string += '<evt-popover data-trigger="click" data-tooltip="' + noteContent + '">'+
+				string += '<evt-popover data-trigger="click" data-parent-ref=".evt-bibliography__content" data-tooltip="' + noteContent + '">'+
 				'<i class="icon-evt_note"></i>'+
 				'</evt-popover>';
 			}
