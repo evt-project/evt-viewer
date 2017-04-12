@@ -345,8 +345,9 @@ angular.module('evtviewer.dataHandler')
 		if ( !isChanged(newBiblElement) ) {
 			newBiblElement.plainText = currentDocument[0].textContent;
 		}
+		//toglie il punto finale (se l'utente l'ha inserito) dal testo estratto e toglie gli spazi (trim)
         removeEndingPointTrim(newBiblElement,true,true);
-		
+		//se è stato esplicitato l'autore e il titolo allora abbiamo abbastanza info per gli stili bibliografici
 		if (getAuthor(newBiblElement) && getTitleMonogr(newBiblElement)){
 			bibliographicStyleInfoDetected = true;
 		}
@@ -834,7 +835,7 @@ angular.module('evtviewer.dataHandler')
 				angular.forEach(getNotes(newBiblElement),function(noteEl){
 					noteContent += '<p>' + noteEl + '</p>';
 				});
-				string += '<evt-popover data-trigger="click" data-parent-ref=".evt-bibliography__content" data-tooltip="' + noteContent + '">'+
+				string += '<evt-popover data-trigger="click"  data-tooltip="' + noteContent + '">'+
 				'<i class="icon-evt_note"></i>'+
 				'</evt-popover>';
 			}

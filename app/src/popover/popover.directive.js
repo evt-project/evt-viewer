@@ -99,8 +99,14 @@ angular.module('evtviewer.popover')
                 // Spostare il tooltip, prima allineando la metà al punto in cui si è verificato il click
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
-                var boxOffsetLeft     = element.parents(parentRef).offset().left,
-                    boxContainerWidth = element.parents(parentRef).innerWidth();
+				var parent = element.parents(parentRef);
+				/*Se element.parents(parentRef) e non viene passato come attributo della direttiva un parentRef,
+				allora prendiamo come parentRef l'elemento che contiene la direttiva popover stessa */
+				if ( parent.length === 0 && typeof scope.parentRef === 'undefined' ) {
+					parent = element.parent();
+				}
+                var boxOffsetLeft     = parent.offset().left,
+                    boxContainerWidth = parent.innerWidth();
                 
                 var tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2),
                     diff;
