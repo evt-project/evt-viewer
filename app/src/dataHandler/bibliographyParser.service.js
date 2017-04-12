@@ -32,12 +32,11 @@ angular.module('evtviewer.dataHandler')
 
         for (var key in bibliographyDef) {
 			var resultsSet = $(bibliographyDef[key].replace(/[<>]/g, ''),doc);
-/* 			non vogliamo i tag annidati ma solo quelli top, 
+			/*Non vogliamo i tag annidati ma solo quelli top, 
 			il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
 			resultsSet = $(resultsSet).filter(function(){
 				return $(this).parents(bibliographyDef[key].replace(/[<>]/g, '')).length === 0;
 			});
-             //angular.forEach(currentDocument.find(bibliographyDef[key].replace(/[<>]/g, '')),
 			angular.forEach(resultsSet,
                 function(element) {
                     var newBiblElement = parser.extractInfo(element);
@@ -57,7 +56,6 @@ angular.module('evtviewer.dataHandler')
             type: '',
             author: [],
             titleAnalytic: '',
-            titleLevel: '',
             titleMonogr: '',
             editionMonogr: '',
             date: '',
@@ -77,12 +75,8 @@ angular.module('evtviewer.dataHandler')
         newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type') : '';
 		//estraiamo le note dentro <bibl>/<biblStruct>
 		extractNote(currentDocument,newBiblElement);
-        var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, '') + ' title');
-        newBiblElement.titleAnalytic = analyticElem && analyticElem.length > 0 ? analyticElem[0].textContent : '';
-
-        for (var c = 0; newBiblElement.type === '' && analyticElem && c < analyticElem.length; c++) {
-            newBiblElement.type = analyticElem[0].getAttribute('level') ? analyticElem[0].getAttribute('level') : '';
-        }
+        var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, ''));
+		extractTitleandTitleLevel(angular.element(analyticElem),newBiblElement);
 
 		function extractNameSurnameForename(whereToFind, whereToPutInfoArray) {
 			angular.forEach(whereToFind, function(element) {
@@ -98,6 +92,7 @@ angular.module('evtviewer.dataHandler')
 					personNameEl = el.find('name');
 					angular.forEach(personNameEl, function(element) {
 						if(element.children.length>0){
+							//<name> è un caso particolare perchè può contenere <surname> e <forename> al suo interno
 							extractNameSurnameForename(personNameEl,whereToPutInfoArray);
 						}
 						else {
@@ -108,6 +103,7 @@ angular.module('evtviewer.dataHandler')
 
 					var personSurnameEl = el.find('surname');
 					angular.forEach(personSurnameEl, function(element) {
+						//tutti i tag <surname> trovati vengono concatenati e la prima parola del cognome diventa maiuscola
 						var personSurname = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
 						newPersonElement.surname += personSurname + ' ';
 					});
@@ -126,18 +122,22 @@ angular.module('evtviewer.dataHandler')
 			});
 		}
 		
-		function extractTitleTitleLevel (whereToFind,whereToPutInfoArray) {
+		function extractTitleandTitleLevel (whereToFind,whereToPutInfoArray) {
 			var titleEl = whereToFind.find('title');
             if (titleEl && titleEl.length > 0) {
-                for (var c = 0; c < titleEl.length; c++) {
-                    var titleLevel = titleEl[c].getAttribute('level');
+				var titleLevel = titleEl[0].getAttribute('level');
+				titleLevel = titleLevel !== null ? titleLevel.substr(0,1) : '';
+				if ( whereToFind[0].tagName === monographDef.replace(/[<>]/g, '') ) {
+					//se @title non è dato possiamo assumere che sia m perchè <title> è contenuto dentro <monograph>, uguale per gli altri
+					titleLevel = titleLevel === '' ? 'm' : titleLevel;
 					whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
-                    //recuperiamo il tipo di pubblicazione
-                    if (titleLevel !== null) {
-						titleLevel = titleLevel.substring(0, 1);
-						whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type;						
-                    }
-                }
+					whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type
+				}
+				else if ( whereToFind[0].tagName === analyticDef.replace(/[<>]/g, '') ) {
+					titleLevel = titleLevel === '' ? 'a' : titleLevel;
+					whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;
+					whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type					
+				}
             }
 		}
 		
@@ -253,7 +253,7 @@ angular.module('evtviewer.dataHandler')
         //entriamo nel tag monogr
         if (monographElem) {
             monographElem = angular.element(monographElem);
-			extractTitleTitleLevel(monographElem,newBiblElement);
+			extractTitleandTitleLevel(monographElem,newBiblElement);
 
             var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
             var monographEditions = monographElem.find('edition');
@@ -294,21 +294,12 @@ angular.module('evtviewer.dataHandler')
                 if (newBiblElement.pubPlace === '') {
                     newBiblElement.pubPlace = imprintsPubPlaces && imprintsPubPlaces.length > 0 ? imprintsPubPlaces[0].textContent : '';
                 }
-                /* angular.forEach(monographImprints.find('note'), function(el) {
-                    //salviamo le note dentro imprint che è dentro monogr
-                    newBiblElement.note[el.getAttribute('type')] = el.textContent;
-                }); */
 				extractNote(monographImprints,newBiblElement);
             }
         }
 		//entriamo nel tag series
         var seriesElem = angular.element(currentDocument.find(seriesDef.replace(/[<>]/g, '')));
         if (seriesElem && seriesElem.length > 0) {
-
-            var seriesTitles = seriesElem.find('title');
-            if (seriesTitles && seriesTitles.length > 0 && newBiblElement.titleMonogr === '') {
-                newBiblElement.titleMonogr = seriesTitles[0].textContent;
-            }
             //salviamo la data dentro monogr
             var dates = seriesElem.find('date');
             /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
