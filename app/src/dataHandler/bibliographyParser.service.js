@@ -799,10 +799,10 @@ angular.module('evtviewer.dataHandler')
                     }
 
                     if (getPubPlace(newBiblElement)) {
-                        string += '<span data-style="apa" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
+                        string += '<span data-style="mla" class="pubPlace">' + getPubPlace(newBiblElement) + '</span>';
                     }
                     if (getPublisher(newBiblElement)) {
-                        string += '<span data-style="apa" class="publisher">' + getPublisher(newBiblElement) + '</span>';
+                        string += '<span data-style="mla" class="publisher">' + getPublisher(newBiblElement) + '</span>';
                     }
 
                     if (getDate(newBiblElement)) {

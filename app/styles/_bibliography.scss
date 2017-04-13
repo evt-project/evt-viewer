@@ -58,6 +58,7 @@
 	content: '.' !important;
 }
 
+
 .biblRef .name:before, .biblRef .surname:before{
 	content: ' ';
 }
@@ -311,7 +312,6 @@
 
 
 
-
 .biblRef .author .name[data-style=mla]:after {
     content: ", ";
 }
@@ -332,6 +332,14 @@
 /* se c'è solo un autore il before deve essere vuoto*/
 .biblRef .authors[data-style=mla] > .author:first-child:before{
 	content: ' '; 
+}
+
+.biblRef > .pubPlace[data-style=mla]:after{
+	content: ': '!important;
+}
+
+.biblRef > .publisher[data-style=mla]:after{
+	content: ', ';
 }
 
 .biblRef .titleMonogr[data-style=mla]{
@@ -432,15 +440,15 @@
 }
 
 .biblRef[pubblicationtype=u] .date[data-style=mla]:before{
-	content: ' ('
+	content: ' '
 }
 
-.biblRef[pubblicationtype=u] > .date[data-style=mla]:not(:last-child):after{
-	content: '): '
+.biblRef[pubblicationtype=u] > .date[data-style=mla]+:not(span.generic):after{
+	content: ' '
 }
 
 .biblRef[pubblicationtype=u] .date[data-style=mla]:last-child:after{
-	content: ') ' !important;
+	content: '. ' !important;
 }
 
 .biblRef[pubblicationtype=u]  .pp[data-style=mla]:after{
