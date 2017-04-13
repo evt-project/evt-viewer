@@ -236,9 +236,18 @@
 	content: '  '
 }
 
+.biblRef[pubblicationtype=am]  .pp[data-style=apa]:before,.biblRef[pubblicationtype=ma]  .pp[data-style=apa]:before{
+	content: ' (pp. '
+}
+
+.biblRef[pubblicationtype=am]  .pp[data-style=apa]:after,.biblRef[pubblicationtype=ma]  .pp[data-style=apa]:after{
+	content: '). '
+}
+
 .biblRef[pubblicationtype=j]  .pp[data-style=apa]:after,.biblRef[pubblicationtype=u]  .pp[data-style=apa]:after{
 	content: '. '
 }
+
 
 .biblRef .titleAnalytic[data-style=apa]:after,.biblRef .titleMonogr[data-style=apa]:after{
 	content: '. '

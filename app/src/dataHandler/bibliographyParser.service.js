@@ -72,7 +72,6 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(element);
 
         newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : evtParser.xpath(element);
-        newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type').substr(0,1) : '';
 		//estraiamo le note dentro <bibl>/<biblStruct>
 		extractNote(currentDocument,newBiblElement);
         var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, ''));
@@ -131,12 +130,12 @@ angular.module('evtviewer.dataHandler')
 					//se @title non è dato possiamo assumere che sia m perchè <title> è contenuto dentro <monograph>, uguale per gli altri
 					titleLevel = titleLevel === '' ? 'm' : titleLevel;
 					whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
-					whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type
+					whereToPutInfoArray.type += titleLevel;
 				}
 				else if ( whereToFind[0].tagName === analyticDef.replace(/[<>]/g, '') ) {
 					titleLevel = titleLevel === '' ? 'a' : titleLevel;
-					whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;
-					whereToPutInfoArray.type = whereToPutInfoArray.type === '' ? titleLevel : whereToPutInfoArray.type					
+					whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;	
+					whereToPutInfoArray.type += titleLevel;					
 				}
             }
 		}
@@ -168,10 +167,12 @@ angular.module('evtviewer.dataHandler')
 					//se il level è m o se non è dato salviamo il titolo
 					if (level === 'm' || level === null || typeof level === 'undefined') {
 						whereToPutInfoArray.titleMonogr = children[c].textContent;	
+						whereToPutInfoArray.type += level;
 					}
 					//se è dato il level a lo salviamo
 					if (level === 'a' && level !== null && typeof level !== 'undefined') {
 						whereToPutInfoArray.titleAnalytic = children[c].textContent;
+						whereToPutInfoArray.type += level;
 					}						
 				}
 				//se abbiamo trovato che il level è m o se non è dato salviamo altre info
@@ -331,7 +332,12 @@ angular.module('evtviewer.dataHandler')
 
         angular.forEach(currentDocument.find(idnoDef.replace(/[<>]/g, '')), function(el) {
             //prendere attributo type
-            newBiblElement.idno[el.getAttribute('type')] = el;
+			var type = el.getAttribute('type');
+			if(type !== null){
+				//non si può salvare un <idno> se non si conosce l'attributo type, è essenziale
+				newBiblElement.idno[type] = el;
+			} 
+            
         });
 		if ( !isChanged(newBiblElement) ) {
 			newBiblElement.plainText = currentDocument[0].textContent;
@@ -1021,6 +1027,11 @@ angular.module('evtviewer.dataHandler')
             return newBiblElement.note;
         }
     }
+	
+	function isMiscellanea(newBiblElement) {
+		return (getPubblicationType(newBiblElement).toLowerCase().substr(0, 2) === 'ma') ||
+		(getPubblicationType(newBiblElement).toLowerCase().substr(0, 2) === 'am');
+	}	
 
     function isMonograph(newBiblElement) {
         return getPubblicationType(newBiblElement) && (getPubblicationType(newBiblElement).toLowerCase().substr(0, 1) === 'm');
