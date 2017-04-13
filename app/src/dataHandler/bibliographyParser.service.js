@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(element);
 
         newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : evtParser.xpath(element);
-        newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type') : '';
+        newBiblElement.type = currentDocument.attr('type') ? currentDocument.attr('type').substr(0,1) : '';
 		//estraiamo le note dentro <bibl>/<biblStruct>
 		extractNote(currentDocument,newBiblElement);
         var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, ''));

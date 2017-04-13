@@ -310,7 +310,9 @@
 
 
 
-
+.biblRef .generic:before {
+	content: ' ';
+}
 
 .biblRef .author .name[data-style=mla]:after {
     content: ", ";
