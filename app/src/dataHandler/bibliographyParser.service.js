@@ -165,7 +165,7 @@ angular.module('evtviewer.dataHandler')
 						level = level.substring(0, 1);
 					}
 					//se il level è m o se non è dato salviamo il titolo
-					if (level === 'm' || level === null || typeof level === 'undefined') {
+					if (level === 'm' || level === 'j' || level === 'u' || level === null || typeof level === 'undefined') {
 						whereToPutInfoArray.titleMonogr = children[c].textContent;	
 						whereToPutInfoArray.type += level;
 					}
@@ -186,7 +186,15 @@ angular.module('evtviewer.dataHandler')
 					else if (children[c].tagName === 'publisher') {
 						whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? children[c].textContent : whereToPutInfoArray.publisher;
 					}
-				}				
+					else if (children[c].tagName === 'edition') {           
+						whereToPutInfoArray.editionMonogr = whereToPutInfoArray.editionMonogr === '' ? children[c].textContent : whereToPutInfoArray.editionMonogr;
+						var date = angular.element(children[c]).find('date');
+						//dentro edition può starci la data dell'opera, nel caso prendiamo la prima
+						if (date && date.length > 0) {
+							whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? date[0].textContent : whereToPutInfoArray.date;
+						}
+					}				
+				}
 			}
 		}
 		
@@ -258,7 +266,7 @@ angular.module('evtviewer.dataHandler')
 
             var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
             var monographEditions = monographElem.find('edition');
-            newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].firstChild.textContent : '';
+            newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : newBiblElement.editionMonogr;
             var date = monographEditions.find("date");
             //magari la data è già stata presa dentro <bibl>
             if (newBiblElement.date === '') {
