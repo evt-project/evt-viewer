@@ -144,7 +144,7 @@ angular.module('evtviewer.dataHandler')
 		function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
 			angular.forEach(whereToFind.children(), function(el) {
 				if (el.tagName === 'date') {
-					whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? el.innerText : whereToPutInfoArray.date;
+					whereToPutInfoArray.date = el.innerText;
 				}
 				else if (el.tagName === 'pubPlace') {
 					whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? el.innerText : whereToPutInfoArray.pubPlace;
@@ -177,8 +177,9 @@ angular.module('evtviewer.dataHandler')
 				}
 				//se abbiamo trovato che il level è m o se non è dato salviamo altre info
 				if (typeof level === 'undefined' || level === null || level === 'm') {
+					//il tag date ha precedenza sulla data trovata dentro edition
 					if (children[c].tagName === 'date') {
-						whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? children[c].textContent : whereToPutInfoArray.date;
+						whereToPutInfoArray.date = children[c].textContent;
 					}
 					else if (children[c].tagName === 'pubPlace') {
 						whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? children[c].textContent : whereToPutInfoArray.pubPlace;
@@ -291,9 +292,7 @@ angular.module('evtviewer.dataHandler')
                 oppure contiene ''.
                 Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
                 Magari la troviamo anche subito dentro <bibl>/*/
-                if (newBiblElement.date === '') {
-                    newBiblElement.date = imprintsDates && imprintsDates.length > 0 ? imprintsDates[0].textContent : '';
-                }
+                newBiblElement.date = imprintsDates && imprintsDates.length > 0 ? imprintsDates[0].textContent : '';
 
                 var imprintsPublishers = monographImprints.find('publisher');
                 if (newBiblElement.publisher === '') {
