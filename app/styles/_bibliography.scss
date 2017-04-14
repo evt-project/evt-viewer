@@ -317,7 +317,7 @@
 
 
 
-.biblRef > span:last-of-type:after{
+.biblRef > span[data-style=mla]:last-of-type:after{
 	content: '. Print.' !important;
 }
 
