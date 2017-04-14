@@ -317,10 +317,8 @@
 
 
 
-
-
-.biblRef .generic:before {
-	content: ' ';
+.biblRef > span:last-of-type:after{
+	content: '. Print.' !important;
 }
 
 .biblRef .author .name[data-style=mla]:after {

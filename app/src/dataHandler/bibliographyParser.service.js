@@ -822,9 +822,6 @@ angular.module('evtviewer.dataHandler')
                     if (getUrl(newBiblElement)) {
                         string += '<span data-style="mla" class="generic">Web</span>';
                     }
-                    if (string.length > 0) {
-                        string += '<span data-style="mla" class="generic">Print</span>';
-                    }
                 }
             }
 			if (string !== '' && getNotes(newBiblElement)) {
@@ -927,6 +924,12 @@ angular.module('evtviewer.dataHandler')
         }
     }
 
+	function getIDNO(newBiblElement) {
+		if (Object.keys(newBiblElement.idno).length > 0 ) {
+			return newBiblElement.idno;
+		}
+	}
+	
     function getAuthor(newBiblElement) {
         if (newBiblElement.author && newBiblElement.author.length > 0) {
             return newBiblElement.author;
@@ -1018,7 +1021,20 @@ angular.module('evtviewer.dataHandler')
 
     function getPubblicationType(newBiblElement) {
         if (newBiblElement.type !== '') {
-            return newBiblElement.type;
+			//am è un caso particolare, per gli altri casi ci rifacciamo a una forma più semplice per non complicare il css
+			if ( newBiblElement.type === 'am' || newBiblElement.type === 'ma') {
+				
+			}
+			else if ( newBiblElement.type === 'aj' || newBiblElement.type === 'ja') {
+				newBiblElement.type = 'j';
+			}
+			else if ( newBiblElement.type.includes('a') ) {
+				newBiblElement.type = 'a';
+			}
+			else {
+				newBiblElement.type = newBiblElement.type.substr(0,1);
+			}
+			return newBiblElement.type;
         }
     }
 	
