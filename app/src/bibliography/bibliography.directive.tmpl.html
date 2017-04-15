@@ -30,7 +30,7 @@
 	<div class="evt-bibliography__content">
 		<div class="biblRef"
 			id="{{ ::bibl }}"
-			ng-repeat="bibl in vm.biblRefsCollection._indexes | orderBy: vm.myComparator: vm.selectedSortOrder === vm.sortOrder.DESC"
+			ng-repeat="bibl in vm.biblRefsCollection._indexes | orderBy: vm.getBibliographicRefById : vm.selectedSortOrder === vm.sortOrder.DESC : vm.myComparator"
 			compile="vm.getFormattedBibl(bibl)"
 			ng-attr-highlight="{{ vm.isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ vm.isEntryHighlighted(bibl) }}"
