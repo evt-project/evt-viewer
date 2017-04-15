@@ -24,6 +24,9 @@ angular.module('evtviewer.bibliography')
 	if (!evtBibliographyParser.yearInfoDetected()){
 		delete vm.sortBy.Year;
 	}
+	if (!evtBibliographyParser.titleInfoDetected()){
+		delete vm.sortBy.Title;
+	}	
 	if (Object.keys(vm.sortBy).length > 0) {
 		var firstKey;
 		if(typeof vm.sortBy.Author !== 'undefined'){
@@ -111,15 +114,11 @@ angular.module('evtviewer.bibliography')
 		if (vm.selectedSorting === vm.sortBy.Author) {
             if (typeof biblId1.value.author !== 'undefined' && biblId1.value.author.length > 0) {
                 //first try to compare according to author's surname
-                if (biblId1.value.author[0].surname !== '') {
-                    result1 = biblId1.value.author[0].surname;
-                }
-            }	
+                result1 = biblId1.value.author[0].surname !== '' ? biblId1.value.author[0].surname : '';
+            }
 			if (typeof biblId2.value.author !== 'undefined' && biblId2.value.author.length > 0) {
                 //first try to compare according to author's surname
-                if (biblId2.value.author[0].surname !== '') {
-                    result2 = biblId2.value.author[0].surname;
-                }
+                result2 = biblId2.value.author[0].surname !== '' ? biblId2.value.author[0].surname : '';
             }
 			//if both doesn't have surname use name, so the remainig item without surnames will be sorted using it's name property
 			if (result1 === '' && result2 === '' && 
@@ -132,16 +131,27 @@ angular.module('evtviewer.bibliography')
 		//sorting by year
 		else if (vm.selectedSorting === vm.sortBy.Year) {
 			if (typeof biblId1.value.date !== 'undefined'){
-                if (biblId1.value.date !== '') {
-                    result1 = Number(biblId1.value.date);
+                    result1 = biblId1.value.date !== '' ? Number(biblId1.value.date) : '';
                 }
-			}
 			if (typeof biblId2.value.date !== 'undefined') {
-                if (biblId2.value.date !== '') {
-                    result2 = Number(biblId2.value.date);
-                }
+				result2 = biblId1.value.date !== '' ? Number(biblId2.value.date) : '';
 			}
         }	
+		else if (vm.selectedSorting === vm.sortBy.Title) {
+			//sorting by analytic title or normale title 
+            if (typeof biblId1.value.titleAnalytic !== 'undefined') {
+                result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : '';
+            }
+			if (typeof biblId1.value.titleMonogr !== 'undefined') {
+                result1 = biblId1.value.titleMonogr !== '' && result1 === '' ? biblId1.value.titleMonogr : '';
+			}
+			if (typeof biblId2.value.titleAnalytic !== 'undefined') {
+                result2 = biblId2.value.titleAnalytic !== '' && result2 === '' ? biblId2.value.titleAnalytic : '';
+            }
+			if (typeof biblId2.value.titleMonogr !== 'undefined') {
+                result2 = biblId2.value.titleMonogr !== '' && result2 === '' ? biblId2.value.titleMonogr : '';
+            }
+		}
 		return result1.toString().localeCompare(result2.toString());
 	}
 	

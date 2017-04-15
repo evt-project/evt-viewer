@@ -64,7 +64,7 @@ angular.module('evtviewer.core')
     configUrl       : '../../config/config.json',
     
 
-    dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
+    dataUrl          : '../../data/pseudo-edition-test-file_mod3.xml',
     preferredWitness : 'A',
     skipWitnesses    : '',
 
@@ -133,7 +133,8 @@ angular.module('evtviewer.core')
 								},
 	bibliographicEntriesSortBy : {
 									Author : 'Author' ,
-									Year : 'Year'
+									Year : 'Year',
+									Title : 'Title'
 									},
 	bibliographySortOrder      : {
 									ASC : 'Ascendent',
