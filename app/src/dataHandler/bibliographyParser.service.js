@@ -120,8 +120,8 @@ angular.module('evtviewer.dataHandler')
 					//proviamo a usare un po' di euristica se non è dato nome/cognome
 					if (newPersonElement.name !== '' && newPersonElement.surname === '') {
 						var extractedAuthorInfo = extractSurnameNameFromString(newPersonElement.name);
-						newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.name;
-						newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.surname;
+						newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.surname;
+						newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.name;
 					}
 					whereToPutInfoArray.push(newPersonElement);
 				}
@@ -703,12 +703,6 @@ angular.module('evtviewer.dataHandler')
                                 var name = authorElement.name !== '' ? authorElement.name : firstAuthor.forename;
                                 var surname = authorElement.surname !== '' ? authorElement.surname : '';
 
-                                //proviamo a usare un po' di euristica se non è dato nome/cognome
-                                if (name !== '' && surname === '') {
-                                    var extractedAuthorInfo = extractSurnameNameFromString(name);
-                                    surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : surname;
-                                    name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : name;
-                                }
 
                                 string += '<span data-style="apa" class="author">';
                                 if (surname !== '') {
