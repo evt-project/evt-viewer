@@ -116,6 +116,13 @@ angular.module('evtviewer.dataHandler')
 					if (personNameEl.length === 0 && personForenameEl.length === 0 && personSurnameEl.length === 0) {
 						newPersonElement.name = el[0].textContent;
 					}
+					
+					//proviamo a usare un po' di euristica se non è dato nome/cognome
+					if (newPersonElement.name !== '' && newPersonElement.surname === '') {
+						var extractedAuthorInfo = extractSurnameNameFromString(newPersonElement.name);
+						newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.name;
+						newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.surname;
+					}
 					whereToPutInfoArray.push(newPersonElement);
 				}
 			});
@@ -596,12 +603,6 @@ angular.module('evtviewer.dataHandler')
                         var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
                         var firstSurname = firstAuthor.surname;
 
-                        //proviamo a usare un po' di euristica se non è dato nome/cognome
-                        if (firstName !== '' && firstSurname === '') {
-                            var extractedAuthorInfo = extractSurnameNameFromString(firstName);
-                            firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
-                            firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
-                        }
 
                         string += '<span data-style="apa" class="author">';
                         //del primo autore prima si deve mettere il cognome
@@ -683,13 +684,6 @@ angular.module('evtviewer.dataHandler')
                         var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
                         var firstSurname = firstAuthor.surname;
 
-                        //proviamo a usare un po' di euristica se non è dato nome/cognome
-                        if (firstName !== '' && firstSurname === '') {
-                            var extractedAuthorInfo = extractSurnameNameFromString(firstName);
-                            firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
-                            firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
-                        }
-
                         string += '<span data-style="apa" class="author">';
                         //del primo autore prima si deve mettere il cognome
                         if (firstSurname !== '') {
@@ -764,13 +758,6 @@ angular.module('evtviewer.dataHandler')
                         var firstAuthor = newBiblElement.author[0];
                         var firstName = firstAuthor.name !== '' ? firstAuthor.name : firstAuthor.forename;
                         var firstSurname = firstAuthor.surname;
-
-                        //proviamo a usare un po' di euristica se non è dato nome/cognome
-                        if (firstName !== '' && firstSurname === '') {
-                            var extractedAuthorInfo = extractSurnameNameFromString(firstName);
-                            firstSurname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : firstSurname;
-                            firstName = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : firstName;
-                        }
 
                         string += '<span data-style="mla" class="author">';
                         //del primo autore prima si deve mettere il cognome
