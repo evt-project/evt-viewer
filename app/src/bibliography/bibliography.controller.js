@@ -26,8 +26,13 @@ angular.module('evtviewer.bibliography')
 	}
 	if (!evtBibliographyParser.titleInfoDetected()){
 		delete vm.sortBy.Title;
-	}	
+	}
+	if (!evtBibliographyParser.publisherInfoDetected()){
+		delete vm.sortBy.Publisher;
+	}
+	
 	if (Object.keys(vm.sortBy).length > 0) {
+		//setting the first sorting entry (if existing)
 		var firstKey;
 		if(typeof vm.sortBy.Author !== 'undefined'){
 			firstKey = vm.sortBy.Author;
@@ -76,42 +81,55 @@ angular.module('evtviewer.bibliography')
 	
 	vm.myComparator = function(biblId1,biblId2) {
         var result1 = result2 = '';
-		//sorting by author
-		if (vm.selectedSorting === vm.sortBy.Author) {
-            if (typeof biblId1.value.author !== 'undefined' && biblId1.value.author.length > 0) {
-                //first try to compare according to author's name, then surname if provided
-				result1 = biblId1.value.author[0].name !== '' ? biblId1.value.author[0].name : '';
-                result1 = biblId1.value.author[0].surname !== '' ? biblId1.value.author[0].surname : result1;
-            }
-			if (typeof biblId2.value.author !== 'undefined' && biblId2.value.author.length > 0) {
-                //first try to compare according to author's surname
-				result2 = biblId2.value.author[0].name !== '' ? biblId2.value.author[0].name : '';
-                result2 = biblId2.value.author[0].surname !== '' ? biblId2.value.author[0].surname : result2;
-            }
-		}
-		//sorting by year
-		else if (vm.selectedSorting === vm.sortBy.Year) {
-			if (typeof biblId1.value.date !== 'undefined'){
-                    result1 = biblId1.value.date !== '' ? Number(biblId1.value.date) : '';
-                }
-			if (typeof biblId2.value.date !== 'undefined') {
-				result2 = biblId1.value.date !== '' ? Number(biblId2.value.date) : '';
-			}
-        }	
-		else if (vm.selectedSorting === vm.sortBy.Title) {
-			//sorting by analytic title or normale title 
-            if (typeof biblId1.value.titleAnalytic !== 'undefined') {
-                result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : '';
-            }
-			if (typeof biblId1.value.titleMonogr !== 'undefined') {
-                result1 = biblId1.value.titleMonogr !== '' && result1 === '' ? biblId1.value.titleMonogr : '';
-			}
-			if (typeof biblId2.value.titleAnalytic !== 'undefined') {
-                result2 = biblId2.value.titleAnalytic !== '' && result2 === '' ? biblId2.value.titleAnalytic : '';
-            }
-			if (typeof biblId2.value.titleMonogr !== 'undefined') {
-                result2 = biblId2.value.titleMonogr !== '' && result2 === '' ? biblId2.value.titleMonogr : '';
-            }
+		switch ( vm.selectedSorting ) {
+			case vm.sortBy.Author:
+				//sorting by author
+				if (typeof biblId1.value.author !== 'undefined' && biblId1.value.author.length > 0) {
+					//first try to compare according to author's name, then surname if provided
+					result1 = biblId1.value.author[0].name !== '' ? biblId1.value.author[0].name : '';
+					result1 = biblId1.value.author[0].surname !== '' ? biblId1.value.author[0].surname : result1;
+				}
+				if (typeof biblId2.value.author !== 'undefined' && biblId2.value.author.length > 0) {
+					//first try to compare according to author's name, then surname if provided
+					result2 = biblId2.value.author[0].name !== '' ? biblId2.value.author[0].name : '';
+					result2 = biblId2.value.author[0].surname !== '' ? biblId2.value.author[0].surname : result2;
+				}
+				break;
+			
+			case vm.sortBy.Year :
+				//sorting by year
+				if (typeof biblId1.value.date !== 'undefined'){
+						result1 = biblId1.value.date !== '' ? Number(biblId1.value.date) : '';
+					}
+				if (typeof biblId2.value.date !== 'undefined') {
+					result2 = biblId1.value.date !== '' ? Number(biblId2.value.date) : '';
+				}
+				break;
+				
+			case vm.sortBy.Title :
+				//sorting by analytic title or normale title 
+				if (typeof biblId1.value.titleAnalytic !== 'undefined') {
+					result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : '';
+				}
+				if (typeof biblId1.value.titleMonogr !== 'undefined') {
+					result1 = biblId1.value.titleMonogr !== '' && result1 === '' ? biblId1.value.titleMonogr : '';
+				}
+				if (typeof biblId2.value.titleAnalytic !== 'undefined') {
+					result2 = biblId2.value.titleAnalytic !== '' && result2 === '' ? biblId2.value.titleAnalytic : '';
+				}
+				if (typeof biblId2.value.titleMonogr !== 'undefined') {
+					result2 = biblId2.value.titleMonogr !== '' && result2 === '' ? biblId2.value.titleMonogr : '';
+				}
+			    break;
+				
+			case vm.sortBy.Publisher :
+				if (typeof biblId1.value.publisher !== 'undefined') {
+					result1 = biblId1.value.publisher !== '' ? biblId1.value.publisher : '';
+				}
+				if (typeof biblId2.value.publisher !== 'undefined') {
+					result2 = biblId2.value.publisher !== '' ? biblId2.value.publisher : '';
+				}			
+				break;	
 		}
 		return result1.toString().localeCompare(result2.toString());
 	}

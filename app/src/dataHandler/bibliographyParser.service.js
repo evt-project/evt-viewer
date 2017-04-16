@@ -10,7 +10,8 @@ angular.module('evtviewer.dataHandler')
 	//tengono conto di quali info il parser mette a disposizione per l'output finale
 	var yearTagDetected = false,
 		authorTagDetected = false,
-		titleTagDetected
+		titleTagDetected = false,
+		publisherTagDetected = false,
 		bibliographicStyleInfoDetected = false;
 		
     var monographDef = '<monogr>',
@@ -435,8 +436,11 @@ angular.module('evtviewer.dataHandler')
 				if(key === 'date' && arr[key] !== ''){
 					yearTagDetected = true;
 				}
-				if(key === 'titleAnalytic' || key === 'titleMonogr'){
+				if( (key === 'titleAnalytic' || key === 'titleMonogr') && arr[key] !== '' ){
 					titleTagDetected = true;
+				}
+				if (key === 'publisher' && arr[key] !== ''){
+					publisherTagDetected = true;
 				}
 			}
 		}
@@ -903,6 +907,10 @@ angular.module('evtviewer.dataHandler')
 
 	parser.titleInfoDetected = function(){
 		return titleTagDetected;
+	}
+
+	parser.publisherInfoDetected = function(){
+		return publisherTagDetected;
 	}
 	
 	parser.bibliographicStyleInfoDetected = function(){

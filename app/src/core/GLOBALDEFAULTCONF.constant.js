@@ -134,7 +134,8 @@ angular.module('evtviewer.core')
 	bibliographicEntriesSortBy : {
 									Author : 'Author' ,
 									Year : 'Year',
-									Title : 'Title'
+									Title : 'Title',
+									Publisher : 'Publisher'
 									},
 	bibliographySortOrder      : {
 									ASC : 'Ascendent',
