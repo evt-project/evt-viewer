@@ -69,40 +69,6 @@ angular.module('evtviewer.bibliography')
     vm.isEntryHighlighted = function(entryId) {
         return (evtHighlight.getHighlighted() !== '' && evtHighlight.getHighlighted() === entryId);
     };
-
-/*     vm.myComparator = function(biblId) {
-        var result = '',
-            biblElement = parsedData.getBibliographicRefById(biblId);
-        //surname/name/forename sorting
-        if (vm.selectedSorting === vm.sortBy.Author) {
-            //check if author exist
-            if (typeof biblElement.author !== 'undefined' && biblElement.author.length > 0) {
-                //first try to compare according to author's surname
-                if (biblElement.author[0].surname !== '') {
-                    result = biblElement.author[0].surname;
-                }
-                //try to compare according to author's name
-                else if (biblElement.author[0].name !== '') {
-                    result = biblElement.author[0].name;
-                }
-                // try to compare according to author's forename
-                else if (biblElement.author[0].forename !== '') {
-                    result = biblElement.author[0].forename;
-                }
-            }
-			else if (biblElement.plainText !== '') {
-				result = biblElement.plainText;
-			}
-        }
-        //year sorting
-        else if (vm.selectedSorting === vm.sortBy.Year) {
-            result = biblElement.date;
-        }
-		else if (vm.selectedSorting === vm.sortBy.Title) {
-			result = biblElement.titleAnalytic !== '' ? biblElement.titleAnalytic : biblElement.titleMonogr;
-		}
-        return result;
-    } */
 	
 	vm.getBibliographicRefById =function(biblId){
 		return parsedData.getBibliographicRefById(biblId);;
@@ -113,20 +79,15 @@ angular.module('evtviewer.bibliography')
 		//sorting by author
 		if (vm.selectedSorting === vm.sortBy.Author) {
             if (typeof biblId1.value.author !== 'undefined' && biblId1.value.author.length > 0) {
-                //first try to compare according to author's surname
-                result1 = biblId1.value.author[0].surname !== '' ? biblId1.value.author[0].surname : '';
+                //first try to compare according to author's name, then surname if provided
+				result1 = biblId1.value.author[0].name !== '' ? biblId1.value.author[0].name : '';
+                result1 = biblId1.value.author[0].surname !== '' ? biblId1.value.author[0].surname : result1;
             }
 			if (typeof biblId2.value.author !== 'undefined' && biblId2.value.author.length > 0) {
                 //first try to compare according to author's surname
-                result2 = biblId2.value.author[0].surname !== '' ? biblId2.value.author[0].surname : '';
+				result2 = biblId2.value.author[0].name !== '' ? biblId2.value.author[0].name : '';
+                result2 = biblId2.value.author[0].surname !== '' ? biblId2.value.author[0].surname : result2;
             }
-			//if both doesn't have surname use name, so the remainig item without surnames will be sorted using it's name property
-			if (result1 === '' && result2 === '' && 
-			typeof biblId1.value.author !== 'undefined' && biblId1.value.author.length > 0 &&
-			typeof biblId2.value.author !== 'undefined' && biblId2.value.author.length > 0) {
-				result1 = biblId1.value.author[0].name;
-				result2 = biblId2.value.author[0].name;
-			}
 		}
 		//sorting by year
 		else if (vm.selectedSorting === vm.sortBy.Year) {
