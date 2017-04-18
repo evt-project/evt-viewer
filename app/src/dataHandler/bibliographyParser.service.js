@@ -19,6 +19,7 @@ angular.module('evtviewer.dataHandler')
         imprintDef = '<imprint>',
         seriesDef = '<series>',
         biblScopeDef = '<biblScope>',
+		citedRangeDef = '<citedRange>',
         editorDef = '<editor>',
         dateDef = '<date>',
         noteDef = '<note>',
@@ -208,7 +209,7 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 		
-		function extractBiblScope(whereToFind, whereToPutInfoArray) {
+		function extractBiblScopeCitedRange(whereToFind, whereToPutInfoArray) {
 			angular.forEach(whereToFind, function(el) {
 				//prendere attributo type o unit di ogni biblScope trovato
 				angular.forEach(['type', 'unit'], function(attr) {
@@ -216,12 +217,14 @@ angular.module('evtviewer.dataHandler')
 					var additionalAttrFrom = el.getAttribute('from');
 					var additionalAttrTo = el.getAttribute('to');
 					if (attrValue !== null) {
-						//diamo la precedenza agli attributi @from & @to
-						if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
-							whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
-						}	
-						else if(el.textContent !== ''){
-							whereToPutInfoArray[attrValue] = el.textContent;
+						if ( !attrValue in whereToPutInfoArray ) {
+							//diamo la precedenza agli attributi @from & @to
+							if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
+								whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
+							}	
+							else if(el.textContent !== ''){
+								whereToPutInfoArray[attrValue] = el.textContent;
+							}
 						}
 					}						
 				});
@@ -253,7 +256,8 @@ angular.module('evtviewer.dataHandler')
 		if (currentDocument[0].tagName === bibliographyDef.bibl.replace(/[<>]/g, '')) {
 			//qui non cerchiamo le note perchè lo abbiamo già fatto all'inizio
 			biblExtractInfo(currentDocument[0],newBiblElement);
-			extractBiblScope(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+			extractBiblScopeCitedRange(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+			extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 			//solo un sotto-livello di bibl viene analizzato
 			children = currentDocument.children();
 			children = $(children).filter(function(key,el){
@@ -261,10 +265,13 @@ angular.module('evtviewer.dataHandler')
 			});
 			angular.forEach(children,function(nestedBibl){	
 				biblExtractInfo(nestedBibl,newBiblElement);
+				extractBiblScopeCitedRange(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+				extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 				extractNote(angular.element(nestedBibl),newBiblElement);
 			});
         }
 		else {
+			extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 			extractDatePubPlacePublisher(currentDocument,newBiblElement);
 		}
 
@@ -285,7 +292,7 @@ angular.module('evtviewer.dataHandler')
 
            
             //biblscope può stare dentro monogr ma anche dentro imprint
-            extractBiblScope(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+            extractBiblScopeCitedRange(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
 			//estraiamo le note
 			extractNote(monographElem,newBiblElement);
 
@@ -294,7 +301,7 @@ angular.module('evtviewer.dataHandler')
             if (monographImprints && monographImprints.length > 0) {
                 var monographImprint = angular.element(monographImprints[0]);
                 //dentro imprint salviamo i biblScope
-                extractBiblScope(monographImprint.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+                extractBiblScopeCitedRange(monographImprint.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
                 //salviamo la data dentro monogr
                 var imprintsDates = monographImprints.find('date');
                 /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
@@ -342,7 +349,7 @@ angular.module('evtviewer.dataHandler')
             }); */
 			extractNote(seriesElem,newBiblElement);
             //dentro series ci sono anche i biblScope
-            extractBiblScope(seriesElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+            extractBiblScopeCitedRange(seriesElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
         }
 
 
