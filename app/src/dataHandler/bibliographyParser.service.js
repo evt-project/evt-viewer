@@ -265,9 +265,6 @@ angular.module('evtviewer.dataHandler')
 			});
 			angular.forEach(children,function(nestedBibl){	
 				biblExtractInfo(nestedBibl,newBiblElement);
-				extractBiblScopeCitedRange(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-				extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-				extractNote(angular.element(nestedBibl),newBiblElement);
 			});
         }
 		else {
