@@ -86,16 +86,14 @@ angular.module('evtviewer.dataHandler')
 					name: '',
 					surname: '',
 					forename: ''
-				};
-				
+				};	
 				var el = angular.element(element);
-				var personNameEl=[];
-				if(element.tagName !== 'name'){
-					personNameEl = el.find('name');
+				var personNameEl = el.find('name');
+					
 					angular.forEach(personNameEl, function(element) {
-						if(element.children.length>0){
+						if($(element).children('name,surname,forename').length > 0){
 							//<name> è un caso particolare perchè può contenere <surname> e <forename> al suo interno
-							extractNameSurnameForename(personNameEl,whereToPutInfoArray);
+							extractNameSurnameForename(element,whereToPutInfoArray);
 						}
 						else {
 							var personName = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
@@ -127,7 +125,6 @@ angular.module('evtviewer.dataHandler')
 						newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.name;
 					}
 					whereToPutInfoArray.push(newPersonElement);
-				}
 			});
 		}
 		
