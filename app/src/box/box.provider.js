@@ -365,6 +365,13 @@ angular.module('evtviewer.box')
                         }
                     };
                     break;
+                /**************** */
+                /*Case added by CM*/
+                /************************************************************ */
+                /*It creates the labels for every type of apparatus available.*/
+                /*It updates the currentApparatus inside of Interface.        */
+                /*Then it loads the apparatuses directive.                    */
+                /************************************************************ */
                 case 'apparatuses':
                     isLoading = true;
                     var appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
@@ -380,17 +387,85 @@ angular.module('evtviewer.box')
                     if (analoguesList.length > 0) {
                         topMenuList.appLabels.push({label: 'Analogues'});
                     }
+                    //method to get the currentApparatus inside of Interface, to initialize or change the apparatuses directive
                     vm.getCurrentApparatus = function() {
                         return evtInterface.getCurrentApparatus();
                     }
+                    //method to update the current apparatus inside of interface
                     vm.updateApparatus = function(app) {
                         evtInterface.updateCurrentApparatus(app);
                         evtApparatuses.setCurrentApparatus(app);
                     }
+                    //The updateContent function loads the evt-apparatuses directive
                     updateContent = function() {
                         scope.vm.content = '<evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>'
                     };
                     isLoading = false;
+                    break;
+                /**************** */
+                /*Case added by CM*/
+                /************************************************************ */
+                /**/
+                /**/
+                /**/
+                /************************************************************ */
+                case 'source':
+                    var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness+'-'+vm.witPage : '';
+                    topMenuList.selectors.push({id:'sources_'+currentId, type: 'witness', initValue: vm.witness },
+                                               {id:'page_'+currentId, type: 'witness-page', initValue: witPageId });
+                    
+                    topMenuList.buttons.push({title: 'Info', label: '', icon: 'info', type: 'toggleInfoWit' },
+                                             {title: 'Remove Witness', label: '', icon: 'remove', type: 'removeWit' });
+
+                    appFilters = parsedData.getCriticalEntriesFiltersCollection();
+                    if (appFilters.forVariants > 0) {
+                        bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} });
+                        appFilters = appFilters.filters;
+                    }
+                    state.filters = {
+                        _totActive : 0
+                    };
+                    state.filterBox = false;
+
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+                    updateContent = function(){
+                        scope.vm.isLoading = true;
+                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                            noTextAvailableMsg = 'Text of witness '+vm.witness+' is not available.';
+                        
+                        if ( vm.witness !== undefined ) {
+                            // Main content
+                            var currentDocId = evtInterface.getCurrentDocument(),
+                                newContent = parsedData.getWitnessText(vm.witness, currentDocId) || undefined;
+                            if ( newContent === undefined ) {
+                                var documents  = parsedData.getDocuments(),
+                                    currentDoc = '';
+                                if (documents.length > 0) {
+                                    currentDoc = documents[currentDocId];
+                                }
+                                if (currentDoc !== undefined) {
+                                    try {
+                                        var promises = [];
+                                        promises.push(evtCriticalParser.parseWitnessText(currentDoc.content, currentDocId, vm.witness).promise);
+                                        $q.all(promises).then(function(){
+                                            scope.vm.content = parsedData.getWitnessText(vm.witness, currentDocId) || noTextAvailableMsg;
+                                            scope.vm.isLoading = false;
+                                        });
+                                    }
+                                    catch(err) {
+                                        scope.vm.content = errorMsg;
+                                        scope.vm.isLoading = false;
+                                    }
+                                } else {
+                                    scope.vm.content = noTextAvailableMsg;
+                                    scope.vm.isLoading = false;
+                                }
+                            } else {
+                                scope.vm.content = newContent;
+                                scope.vm.isLoading = false;
+                            }
+                        }
+                    };
                     break;
                 default:
                     isLoading = false;

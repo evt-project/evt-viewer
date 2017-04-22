@@ -33,6 +33,12 @@
                                 "icon"     : "mode-collation",
                                 "viewMode" : "collation",
                                 "visible"  : true
+                            },
+                            {
+                                "label"    : "Source Text",
+                                "icon"     : "mode-srcTxt",
+                                "viewMode" : "srcTxt",
+                                "visible"  : true
                             }],
 
     "toolHeatMap"       : true,

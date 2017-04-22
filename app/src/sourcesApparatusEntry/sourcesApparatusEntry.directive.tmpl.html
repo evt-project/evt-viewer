@@ -54,9 +54,13 @@
                  ng-repeat="tab in vm.tabs._indexes"
                  ng-class="{'active' : vm._subContentOpened == tab}"
                  ng-switch="tab">
-                 <div ng-switch-when="text"
-                      compile="vm.src_list[vm._activeSource].text">
-
+                 <div ng-switch-when="text">
+                      <span
+                        ng-if="vm.src_list[vm._activeSource].text != ''"
+                        compile="vm.src_list[vm._activeSource].text"></span>
+                      <span
+                        ng-if="vm.src_list[vm._activeSource].url != ''"
+                        compile="vm.src_list[vm._activeSource].url"></span>
                  </div>
                  <div ng-switch-when="biblRef"
                       ng-if="vm.src_list[vm._activeSource].bibl !== ''"

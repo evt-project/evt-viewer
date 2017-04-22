@@ -198,6 +198,17 @@
                  id="mainText"></box>
         </section>
 
+        <!-- SRC TXT -->
+        <section id="main-container" class="viewMode" ng-switch-when="srcTxt">
+            <box data-type="text"
+                 data-edition="{{getCurrentEdition()}}"
+                 id="mainText"
+                 ng-show="existCriticalText()"></box>
+            <box data-type="source"
+                 id="srcText"
+                 data-source="{{source}}"></box>
+        </section>
+
         <!-- LOADING... -->
         <section id="main-container" class="viewMode" ng-switch-default>
             <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>

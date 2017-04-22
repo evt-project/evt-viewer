@@ -79,7 +79,7 @@ angular.module('evtviewer.core')
     defaultEdition     : 'critical',
     availableViewModes : [
                             {
-                                label    : 'Reading text',
+                                label    : 'Reading Text',
                                 icon     : 'reading-txt',
                                 viewMode : 'readingTxt',
                                 visible  : true
@@ -100,6 +100,12 @@ angular.module('evtviewer.core')
                                 label    : 'Collation',
                                 icon     : 'mode-collation',
                                 viewMode : 'collation',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Source Text',
+                                icon     : 'mode-srcTxt',
+                                viewMode : 'srcTxt',
                                 visible  : true
                             }],
 

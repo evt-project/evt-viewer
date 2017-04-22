@@ -42,15 +42,17 @@ angular.module('evtviewer.dataHandler')
             abbr       : '',
             text       : '',
             bibl       : '',
-            url        : entry.url,
+            url        : '',
             _xmlSource : entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''),
         }
         
+        //Creates the abbreviated reference of the source with ms identifier...
         if (entry.abbr.msId.length > 0) {
             for (var i = 0; i < entry.abbr.msId.length; i++) {
                 source.abbr += '<span class="msId inSource">'+apparatus.getText(entry.abbr.msId[i])+'</span>';
             }
         } else {
+            //...or author and title.
             if (entry.abbr.author.length > 0) {
                 source.abbr += '<span class="author inSource">'+apparatus.getText(entry.abbr.author[0])+'</span>';
                 if (entry.abbr.author.length > 1) {
@@ -63,6 +65,7 @@ angular.module('evtviewer.dataHandler')
                 source.abbr += '<span class="title inSource">'+apparatus.getText(entry.abbr.title[0])+'</span>';
             }
         }
+        //If there is no author nor title, it uses the xml:id
         if (source.abbr === '') {
             source.abbr = entry.id;
         }
@@ -83,6 +86,14 @@ angular.module('evtviewer.dataHandler')
             }
         }
         
+        //Prepares the links to the source text (online or in the source view)
+        if (entry.url.length === 1) {
+            if (entry.url[0].indexOf("http") >= 0) {
+                source.url += '<span class="linkLabel">See source text online</span><a target="_blank" href="'+entry.url[0]+'">'+entry.url[0]+'</a><br/>';
+            } else if (entry.url[0].indexOf("sources/"+entry.id) >= 0) {
+                source.url += '<span class="linkLabel">See source text in the "Source-Text" view</span><evt-source-ref data-source-id="'+entry.id+'"></evt-source-ref>'
+            }
+        }
 
         return source;
     };

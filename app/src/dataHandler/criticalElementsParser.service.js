@@ -1042,7 +1042,12 @@ angular.module('evtviewer.dataHandler')
                     }
                 } else if (child.tagName === 'citedRange') {
                     if (child.getAttribute('target') !== null && child.getAttribute('target') !== '') {
-                        source.url.push(child.getAttribute('target'));
+                        var attrib = child.getAttribute('target');
+                        var val = attrib.replace(/#/g, '').split(" ");
+                        for (var i = 0; i < val.length; i++) {
+                            //...add its target values to the url array.
+                            source.url.push(val[i]);
+                        }
                     }
                 } else {
                     childContent = parseSourceContent(child, entry)

@@ -58,7 +58,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     src_list[sources[i].id].tabs = {
                         _indexes: []
                     }
-                    if (src_list[sources[i].id].text !== '') {
+                    if (src_list[sources[i].id].text !== '' || src_list[sources[i].id].url !== '') {
                         src_list[sources[i].id].tabs._indexes.push('text');
                         src_list[sources[i].id].tabs.text = {
                             label: 'Text'
