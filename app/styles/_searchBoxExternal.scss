@@ -1,0 +1,26 @@
+/* *************************** */
+/* SEARCH BOX EXTERNAL         */
+/* *************************** */
+
+.search-box.external {
+	height: auto;
+	position: absolute;
+	right: 4px;
+	@include border('right');
+    @include border('left');
+	background-color: $box-background-color;
+	.searchBtnGroup {
+		display: none;
+		
+	}
+	input {
+		display: none;
+	}
+	&:before {
+		content: "External position coming soon!";
+		padding: 10px;
+		display: block;
+		font-size: 20px;
+		text-align: center;
+	}
+}
