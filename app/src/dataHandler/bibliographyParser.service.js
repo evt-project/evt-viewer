@@ -91,11 +91,10 @@ angular.module('evtviewer.dataHandler')
 				var personNameEl = el.find('name');
 					
 					angular.forEach(personNameEl, function(element) {
-						if($(element).children('name,surname,forename').length > 0){
-							//<name> è un caso particolare perchè può contenere <surname> e <forename> al suo interno
-							extractNameSurnameForename(element,whereToPutInfoArray);
-						}
-						else {
+						if($(element).children('name,surname,forename').length === 0){
+							/*/<name> è un caso particolare perchè può contenere <surname> e <forename> al suo interno
+							dobbiamo accedere ai <name> più interni senza cognomi dentro per cercare le informazioni, i cognomi vengono trovati sotto.
+							Se non accediamo al name più interno senza cognome potremmo trovare nome+cognome nel testo che non va bene/*/
 							var personName = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
 							newPersonElement.name += personName + ' ';
 						}
