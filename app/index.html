@@ -307,6 +307,10 @@
 								ng-if="::witness"
 							ng-repeat="witness in getAvailableWitnesses() track by $index">{{::getWitness(witness)}}</span>
 						</div>
+						<evt-search-box 
+							ng-controller="SearchBoxCtrl as searchBox"
+							ng-show="searchBox.getPosition()=='external'"> 
+						</evt-search-box>
 					</section>
 					<!-- TXT TXT -->
 					<section id="main-container" class="viewMode" ng-switch-when="txtTxt">
@@ -320,10 +324,14 @@
 					<!-- IMG TXT -->
 					<section id="main-container" class="viewMode" ng-switch-when="imgTxt">
 						<box data-type="image"
-						id="mainImage"></box>
+							id="mainImage"></box>
 						<box data-type="text"
-						data-edition="{{getCurrentEdition()}}"
-						id="mainText"></box>
+							data-edition="{{getCurrentEdition()}}"
+							id="mainText"></box>
+						<evt-search-box 
+							ng-controller="SearchBoxCtrl as searchBox"
+							ng-show="searchBox.getPosition()=='external'"> 
+						</evt-search-box>
 					</section>
 					<!-- SRC TXT -->
 					<section id="main-container" class="viewMode" ng-switch-when="srcTxt">
@@ -553,7 +561,7 @@
 		<script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
 		
 		<script src="/src/search/search.js"></script>
-		<script src="/src/search/search.configuration.js"></script>
+		<script src="/src/search/searchBox.configuration.js"></script>
 		<script src="/src/search/searchBox.directive.js"></script>
 		<script src="/src/search/searchBox.controller.js"></script>
 		<script src="/src/search/searchBox.provider.js"></script>

@@ -408,6 +408,11 @@ angular.module('evtviewer.interface')
 	$scope.getSearchBoxPosition = function() {
 		return GLOBALCONFIG.searchBoxPosition;
 	};
+
+	$scope.isSearchBoxOpened = function() {
+		return evtInterface.isSearchBoxOpened();
+	};
+	
 	_console.log('InterfaceCtrl running');
 })
 

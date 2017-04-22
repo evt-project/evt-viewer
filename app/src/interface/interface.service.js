@@ -46,6 +46,7 @@ angular.module('evtviewer.interface')
             currentHighlightedZone : undefined,
 			currentSearchBoxPosition : '',
             isLoading : true,
+			isSearchBoxOpened : false,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
             dialog : { 
@@ -75,6 +76,7 @@ angular.module('evtviewer.interface')
         currentHighlightedZone: undefined,
         currentSearchBoxPosition : '',
         isLoading        : true,
+        isSearchBoxOpened : false,
         isPinnedAppBoardOpened : false,
         secondaryContent : '',
 		dialog : {
@@ -530,6 +532,10 @@ angular.module('evtviewer.interface')
         mainInterface.getSecondaryContentOpened = function(){
             return state.secondaryContent;
         };
+	
+		mainInterface.isSearchBoxOpened = function() {
+			return state.isSearchBoxOpened;
+		}
 
         /* ************** */
         /* PARAMS UPDATES */
@@ -541,6 +547,10 @@ angular.module('evtviewer.interface')
         mainInterface.togglePinnedAppBoardOpened = function() {
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
+	
+		mainInterface.toogleSearchBoxOpened = function() {
+			state.isSearchBoxOpened = !state.isSearchBoxOpened;
+		}
         
         /**
          * @ngdoc method

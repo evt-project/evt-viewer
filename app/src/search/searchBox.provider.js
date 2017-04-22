@@ -9,8 +9,8 @@ angular.module('evtviewer.search')
     };
 
     this.$get = function(config, evtDialog) {
-		var currentPosition = config.searchBoxPosition;
-        var searchBox = {},
+		var currentPosition = config.searchBoxPosition,
+			searchBox = {},
             collection = {};
 
         //
@@ -50,9 +50,9 @@ angular.module('evtviewer.search')
         //
         // Service function
         //
-        /*searchBox.getDefaults = function(key) {
+        searchBox.getDefaults = function(key) {
             return defaults[key];
-        };*/
+        };
 		
         searchBox.getStatus = function(key) {
             return collection.status[key];
