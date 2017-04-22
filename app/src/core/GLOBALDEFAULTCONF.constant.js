@@ -145,8 +145,8 @@ angular.module('evtviewer.core')
                                 viewMode : 'srcTxt',
                                 visible  : true
                             }],
-	
-	avaibleSearchBoxPositions : [
+
+	availableSearchBoxPositions : [
 		'internal',
 		'external'
 	],
