@@ -87,43 +87,50 @@ angular.module('evtviewer.dataHandler')
 					surname: '',
 					forename: ''
 				};	
-				var el = angular.element(element);
-				var personNameEl = el.find('name');
-					
-					angular.forEach(personNameEl, function(element) {
-						if($(element).children('name,surname,forename').length === 0){
-							/*/<name> è un caso particolare perchè può contenere <surname> e <forename> al suo interno
-							dobbiamo accedere ai <name> più interni senza cognomi dentro per cercare le informazioni, i cognomi vengono trovati sotto.
-							Se non accediamo al name più interno senza cognome potremmo trovare nome+cognome nel testo che non va bene/*/
-							var personName = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
-							newPersonElement.name += personName + ' ';
+				/*/
+				elemento = dove cercare
+				lastRelevantParent = ultimo genitore conosciuto tra quelli di cui vogliamo estrarre info (name,surname,forename,author),
+				dobbiamo tenerne traccia per sapere dove salvare poi via via i dati ricevuti
+				/*/
+				function parseInfo(elemento,lastRelevantParent){
+					if(elemento.nodeType === 3){
+						var text = elemento.textContent.substr(0,1).toUpperCase() + elemento.textContent.substr(1);
+						if (lastRelevantParent){
+							switch (lastRelevantParent.tagName){
+								case 'author':
+								case 'name':	
+									newPersonElement.name += text + ' ';			
+									break;
+								case 'surname':	
+									newPersonElement.surname += text + ' ';			
+									break;
+								case 'forename':
+									newPersonElement.forename += text + ' ';	
+									break;
+							}
 						}
-					});
-
-					var personSurnameEl = el.find('surname');
-					angular.forEach(personSurnameEl, function(element) {
-						//tutti i tag <surname> trovati vengono concatenati e la prima parola del cognome diventa maiuscola
-						var personSurname = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
-						newPersonElement.surname += personSurname + ' ';
-					});
-
-					var personForenameEl = el.find('forename');
-					angular.forEach(personForenameEl, function(element) {
-						var personForename = element.textContent.substr(0,1).toUpperCase() + element.textContent.substr(1);
-						newPersonElement.forename += personForename + ' ';
-					});
-					//nel caso il nome sia dentro <author> o nel caso dentro <author> ci sia un <persName> con solo testo
-					if (personNameEl.length === 0 && personForenameEl.length === 0 && personSurnameEl.length === 0) {
-						newPersonElement.name = el[0].textContent;
 					}
-					
-					//proviamo a usare un po' di euristica se non è dato nome/cognome
-					if (newPersonElement.name !== '' && newPersonElement.surname === '') {
-						var extractedAuthorInfo = extractSurnameNameFromString(newPersonElement.name);
-						newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.surname;
-						newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.name;
-					}
-					whereToPutInfoArray.push(newPersonElement);
+					angular.forEach(elemento.childNodes,function(el){
+						switch (el.tagName){
+							case 'author':
+							case 'name':						
+							case 'surname':
+							case 'forename':
+								parseInfo(el,el);
+								break;
+							default:
+								parseInfo(el,lastRelevantParent);
+						}
+					});	
+				}
+				parseInfo(element,element);
+				//proviamo a usare un po' di euristica se non è dato nome/cognome
+				if (newPersonElement.name !== '' && newPersonElement.surname === '') {
+					var extractedAuthorInfo = extractSurnameNameFromString(newPersonElement.name);
+					newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.surname;
+					newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.name;
+				}
+				whereToPutInfoArray.push(newPersonElement);
 			});
 		}
 		
@@ -390,6 +397,7 @@ angular.module('evtviewer.dataHandler')
 			}
 			if(trim) {
 				arr = arr.trim();
+				arr = arr.replace(/\s+/g, ' ');
 			}
 			return arr;
             
