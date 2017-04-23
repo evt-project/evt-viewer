@@ -554,7 +554,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'searchTools':
 					callback = function(){
                         var searchBtnState = evtSearchBox.openBox('searchBtn');
-						evtInterface.toogleSearchBoxOpened();
+						//evtInterface.toogleSearchBoxOpened();
                     };
                     /*fakeCallback = function() {
                        return callback();

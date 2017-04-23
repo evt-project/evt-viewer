@@ -16,7 +16,7 @@ angular.module('evtviewer.box')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus) {
+	this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus, evtSearchBox) {
 		var box = {},
 			collection = {},
 			list = [],
@@ -400,7 +400,7 @@ angular.module('evtviewer.box')
 						icon: 'search',
 						type: 'searchTools',
 						show: function() {
-							return config.searchBoxPosition == 'internal' || config.searchBoxPosition == undefined;
+							return evtSearchBox.getCurrentPosition() == 'internal'
 						}
 					});
 					bottomMenuList.buttons.push({
