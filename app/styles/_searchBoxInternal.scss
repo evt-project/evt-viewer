@@ -3,14 +3,11 @@
 /* *************************** */
 
 .search-box.internal {
-    //height: auto;
     min-width: calc(100% - #{$mainContainer-border-width*2*2}); 
     position: absolute;
     bottom: $mainContainer-border-width+1;
     left: $mainContainer-border-width*2;
     margin: 42px 0;
-    /*@include border('top');
-    @include border('bottom');*/
     background: $box-background-color;
     .buttonSwitch {
         @include border('right');
@@ -38,8 +35,5 @@
         position: absolute;
         padding: 0 10px 0 5px;
         border: transparent;
-    }
-    &.open {
-        display: block;
     }
 }

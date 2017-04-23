@@ -6,8 +6,7 @@
 	height: auto;
 	position: absolute;
 	right: 4px;
-	@include border('right');
-    @include border('left');
+	@include border('all');
 	background-color: $box-background-color;
 	.searchBtnGroup {
 		display: none;
