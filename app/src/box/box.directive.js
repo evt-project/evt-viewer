@@ -10,7 +10,8 @@ angular.module('evtviewer.box')
             subtype : '@',
             witness : '@',
             witpage : '@',
-            edition : '@'
+            edition : '@',
+            source  : '@'
         },
         transclude : true,
         templateUrl: 'src/box/box.dir.tmpl.html',
@@ -22,7 +23,8 @@ angular.module('evtviewer.box')
                 subtype : scope.subtype,
                 witness : scope.witness,
                 witPage : scope.witpage,
-                edition : scope.edition
+                edition : scope.edition,
+                source  : scope.source
             };
 
             // Initialize box

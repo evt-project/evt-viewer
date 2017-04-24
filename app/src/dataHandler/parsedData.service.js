@@ -27,6 +27,10 @@ angular.module('evtviewer.dataHandler')
 		length: 0
 	};
 
+	var sourcesDocsCollection = {
+		length: 0
+	};
+
 	// var pagesCollectionTexts = []; 
 
 	var witnessesCollection = {
@@ -107,7 +111,8 @@ angular.module('evtviewer.dataHandler')
 			encodingStructure: [],
 			quotesRef: {
 				_id: [],
-			}
+			},
+			availableTexts : []
 		},
 	}
 
@@ -231,6 +236,31 @@ angular.module('evtviewer.dataHandler')
 
 	parsedData.getExternalDocument = function(extDocId) {
 		return externalDocsCollection[extDocId];
+	};
+
+	/*Methods to store sources XML documents*/
+	/*@author: CM*/
+	parsedData.addSourceDocument = function(extDoc, id) {
+		var docId = extDoc.value;
+		if (sourcesDocsCollection.length === undefined) {
+			sourcesDocsCollection.length = 0;
+		}
+		if (extDoc.value === '') {
+			docId = doc.value = id;
+		}
+		if (sourcesDocsCollection[docId] === undefined) {
+			sourcesDocsCollection[sourcesDocsCollection.length] = docId;
+			sourcesDocsCollection[docId] = extDoc;
+			sourcesDocsCollection.length++;
+		}
+	};
+
+	parsedData.getSourceDocuments = function() {
+		return sourcesDocsCollection;
+	};
+
+	parsedData.getSourceDocument = function(extDocId) {
+		return sourcesDocsCollection[extDocId];
 	};
 
 	/* EDITION */
@@ -657,6 +687,10 @@ angular.module('evtviewer.dataHandler')
 					sourcesRef[entryRef[i]].push(entry.id);
 				}
 			}
+		}
+
+		if (entry._textAvailable) {
+			sourcesCollection._indexes.availableTexts.push({id: entry.id, abbr: entry.abbr});
 		}
 
 	}

@@ -158,6 +158,10 @@ angular.module('evtviewer.select')
                     };  
                     optionList = formatOptionList(parsedData.getWitnessPages(witness));                  
                     break;
+                /*Case added By CM*/
+                case 'source':
+                    
+                    break;
             }
 
             scopeHelper = {

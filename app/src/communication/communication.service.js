@@ -59,8 +59,29 @@ angular.module('evtviewer.communication')
                     }
                     else if (url === config.analoguesUrl) {
                         docType = 'analogues';
+                    } else if (url.indexOf('sources/') >= 0) {
+                        docType = 'source';
                     }
                     baseData.addXMLExtDocument(response.data, docType);
+                                        
+                    _console.log('XML Data received');
+                } else {
+                    // TODO: JSON? 
+                }
+            }, function(error) {
+                if (defaults.errorMsgs[error]) {
+                    communication.err(defaults.errorMsgs[error].msg+' "'+url+'"', error);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', error);
+                }
+            });
+    };
+
+    communication.getSourceTextFile = function(url, id) {
+        return $http.get(url)
+        .then(function(response){
+            if (typeof(response.data) === 'string') {
+                    baseData.addXMLSrcDocument(response.data, id);                   
                     _console.log('XML Data received');
                 } else {
                     // TODO: JSON? 

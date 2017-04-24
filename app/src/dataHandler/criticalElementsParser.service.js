@@ -930,11 +930,12 @@ angular.module('evtviewer.dataHandler')
                 msId: []
             },            
             attributes: [],
-            quotesEntriesId: [],
+            quotesEntriesId: [], //Array to save id of the quotes that refer to this source
             bibl: [], //Array that saves the full bibliographic reference of the source (which almost always corresponds the content of the source itself)
-            text: {},
-            url: [], //Array that saves the link to the full text of the source
             quote: [],
+            url: [], //Array that saves the links to the full text of the source
+            text: {},
+            _textAvailable: false,
             _xmlSource: entry.outerHTML
         }
 
@@ -952,7 +953,7 @@ angular.module('evtviewer.dataHandler')
                         attrib.name === 'ref') {
                             var values = attrib.value.replace(/#/g, '').split(" ");
                             for (var i = 0; i < values.length; i++) {
-                                url.push(values[i]);
+                                source.url.push(values[i]);
                             }
                         }
                     source.attributes[attrib.name] = attrib.value;
@@ -1064,6 +1065,12 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         });
+
+        for (var i in source.url) {
+            if (source.url[i].indexOf('.xml') >= 0) {
+                source._textAvailable = true;
+            }
+        }
 
         parsedData.addSource(source);
 

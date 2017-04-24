@@ -339,5 +339,18 @@ angular.module('evtviewer.dataHandler')
         return deferred;
     };
 
+    /*************/
+    /*SOURCE TEXT*/
+    /*************/
+
+    /*parseSourceText(*/
+    parser.parseSourceText = function(doc, sourceId) {
+        var deferred = $q.defer();
+        var content = 'ciao';
+        parsedData.getSource(sourceId).text = content;
+        deferred.resolve('success');
+        return deferred;
+    };
+
     return parser;
 });

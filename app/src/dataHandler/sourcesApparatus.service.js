@@ -90,8 +90,8 @@ angular.module('evtviewer.dataHandler')
         if (entry.url.length === 1) {
             if (entry.url[0].indexOf("http") >= 0) {
                 source.url += '<span class="linkLabel">See source text online</span><a target="_blank" href="'+entry.url[0]+'">'+entry.url[0]+'</a><br/>';
-            } else if (entry.url[0].indexOf("sources/"+entry.id) >= 0) {
-                source.url += '<span class="linkLabel">See source text in the "Source-Text" view</span><evt-source-ref data-source-id="'+entry.id+'"></evt-source-ref>'
+            } else if (entry.url[0].indexOf(entry.id) >= 0) {
+                source.url += '<span class="linkLabel">See source text in the "Source-Text" view</span><evt-source-ref data-source-id="'+entry.id+'">'+source.abbr+'</evt-source-ref>'
             }
         }
 

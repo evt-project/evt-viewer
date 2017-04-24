@@ -4,7 +4,10 @@ angular.module('evtviewer.dataHandler')
     var baseData     = {},
         state        = {
             XMLDocuments: [],
+            //Added by CM to save references to external documents
             XMLExtDocuments: [],
+            //Added by CM to save references to sources text documents
+            XMLSrcDocuments: [],
             XMLStrings: []
         };
 
@@ -64,6 +67,21 @@ angular.module('evtviewer.dataHandler')
             } else if (type === 'analogues') {
                 evtAnaloguesParser.parseExternalAnalogues(docElements);
             }*/
+            _console.log('External Files parsed and stored', state.XMLExtDocuments);
+        } catch (e) {
+            _console.log('Something wrong with the supplementary XML files '+e);
+        }
+    };
+
+    /*Method to store XML documents for Source-Text view*/
+    /*@author: CM*/
+    baseData.addXMLSrcDocument = function (srcDoc, id) {
+        var docElements = xmlParser.parse(srcDoc);
+        try {
+            state.XMLStrings.push(srcDoc);
+            state.XMLSrcDocuments[id] = docElements;
+            state.XMLSrcDocuments.length++;
+            var parsedDocuments = evtParser.parseExternalDocuments(docElements, id);
             _console.log('External Files parsed and stored', state.XMLExtDocuments);
         } catch (e) {
             _console.log('Something wrong with the supplementary XML files '+e);

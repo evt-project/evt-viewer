@@ -13,15 +13,18 @@
         class="box-menu" 
         data-position="top"
         ng-if="vm.type !== 'critical_apparatus'">
-        <div ng-if="vm.type === 'apparatuses'">
-        <span
-            class="appLabel"
-            ng-repeat="appLabel in vm.topMenuList.appLabels"
-            compile="appLabel.label"
-            ng-click="vm.updateApparatus(appLabel.label)"
-            ng-class="{'selected': appLabel.label == vm.getCurrentApparatus()}">
-        </span>
+        
+        <!--Headers for the apparatuses added by CM-->
+        <div ng-if="vm.type == 'apparatuses'">
+            <span
+                class="appLabel"
+                ng-repeat="appLabel in vm.topMenuList.appLabels"
+                compile="appLabel.label"
+                ng-click="vm.updateApparatus(appLabel.label)"
+                ng-class="{'selected': appLabel.label == vm.getCurrentApparatus()}">
+            </span>
         </div>
+
         <evt-select 
             data-id="{{selector.id}}"
             data-type="{{selector.type}}"
@@ -102,7 +105,7 @@
 
     <div 
         class="tools-group-box"
-        ng-if="vm.type=='text' || vm.type=='witness'"
+        ng-if="vm.type=='text' || vm.type=='witness' || vm.type=='source'"
         ng-class="{'open': vm.getState('fontSizeBtn')}">
         <div 
             class="fontSizeBtnGroup">

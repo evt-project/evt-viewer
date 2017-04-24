@@ -328,8 +328,12 @@ angular.module('evtviewer.dataHandler')
             value: type,
             content: doc,
         }
-        parsedData.addExternalDocument(newExtDoc);
-        console.log('## External Documents ##', parsedData.getExternalDocuments());
+        if (type !== 'analogues' && type !== 'sources') {
+            parsedData.addSourceDocument(newExtDoc, type);
+        } else {
+            parsedData.addExternalDocument(newExtDoc, type);
+        }        
+        console.log('## External Documents ##');
     };
 
     /*createRegExpr(string)*/
