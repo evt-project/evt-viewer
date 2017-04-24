@@ -63,7 +63,7 @@ angular.module('evtviewer.search')
         };
 
         searchBox.openBox = function(key) {
-            var btnStatus = collection.open(key);
+            var btnStatus = collection.updateState(key);
             collection.status[key] = btnStatus;
             return btnStatus;
         };
