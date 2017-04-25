@@ -8,7 +8,7 @@ angular.module('evtviewer.buttonSwitch')
         defaults = _defaults;
     };
 
-    this.$get = function($timeout, $log, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking) {
+    this.$get = function($timeout, $log, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
         var button    = {},
             collection = {},
             list       = [],
@@ -376,6 +376,21 @@ angular.module('evtviewer.buttonSwitch')
                         parentBox.updateState('topBoxOpened', false);
                     };
                     //TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
+                    break;
+                /*Case added by CM*/
+                /*Button to show/hide the bibliographic reference of the source
+                currently shown in the source-text view*/
+                case 'toggleInfoSrc':
+                    btnType = 'toggler';
+                    callback = function(){
+                        var source = evtSourcesApparatus.getSource(parsedData.getSource(scope.$parent.vm.source));
+                        var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
+                        scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+                        scope.$parent.vm.toggleTopBox();
+                    };
+                    fakeCallback = function(){
+                        scope.$parent.vm.updateState('topBoxOpened', false);
+                    };
                     break;
                 default:
                     break;
