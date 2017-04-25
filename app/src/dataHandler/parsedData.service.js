@@ -112,7 +112,8 @@ angular.module('evtviewer.dataHandler')
 			quotesRef: {
 				_id: [],
 			},
-			availableTexts : []
+			availableTexts : [],
+			correspId: {}
 		},
 	}
 
@@ -654,6 +655,29 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
+
+		//Adding the correspId object to the SourcesCollection
+		var entryCorresp = entry._indexes.correspId;
+		var sourcesCorresp = sourcesCollection._indexes.correspId;
+
+		if (Object.keys(entryCorresp).length > 0) {
+			for (var i = 0; i < Object.keys(entryCorresp).length; i++) {
+				var newSource = Object.keys(entryCorresp)[i];
+				for (var j = 0; j < entryCorresp[newSource].length; j++) {
+					if (sourcesCorresp[newSource] === undefined) {
+						sourcesCorresp[newSource] = {};
+						sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id];
+					} else {
+						if (sourcesCorresp[newSource][entryCorresp[newSource][j]] === undefined) {
+							sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id]
+						} else {
+							sourcesCorresp[newSource][entryCorresp[newSource][j]].push(entry.id);
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	parsedData.getQuotes = function() {

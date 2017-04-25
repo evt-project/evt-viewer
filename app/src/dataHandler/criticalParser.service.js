@@ -346,8 +346,27 @@ angular.module('evtviewer.dataHandler')
     /*parseSourceText(*/
     parser.parseSourceText = function(doc, sourceId) {
         var deferred = $q.defer();
-        var content = 'ciao';
-        parsedData.getSource(sourceId).text = content;
+        var sourceText = 'ciao';
+
+        if (doc !== undefined) {
+            doc = doc.cloneNode(true);
+            var docDOM = doc.getElementsByTagName('body')[0];
+
+            angular.forEach(docDOM.children, function(elem) {
+                var skip = skipFromBeingParsed;
+                elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+            });
+            sourceText = docDOM.outerHTML;
+        } else {
+            sourceText = '<span>Text not available.</span>'
+        }
+
+        if (sourceText === undefined) {
+            var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+             sourceText = errorMsg;
+        }
+
+        parsedData.getSource(sourceId).text = sourceText;
         deferred.resolve('success');
         return deferred;
     };

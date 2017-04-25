@@ -725,7 +725,8 @@ angular.module('evtviewer.dataHandler')
             content: [],
             _indexes: {
                 sourceId: [],//array in cui salvo gli id delle entrate bibliografiche nell'elemento
-                sourceRefId: [], //array in cui salvo gli id delle fonti cui l'entrata fa riferimento
+                sourceRefId: [],
+                correspId: {}, //array in cui salvo gli id delle fonti cui l'entrata fa riferimento
                 subQuotes: [], //salvo gli id dei quoteDef annidati                
             },
             _subQuote: false, //indica se l'entrata in questione è annidata o meno in un quoteDef
@@ -748,17 +749,29 @@ angular.module('evtviewer.dataHandler')
                 if (attrib.specified) {                    
                     quote.attributes[attrib.name] = attrib.value;                 
                 }
+                //References to the sources elements
                 if (attrib.name === 'source') {
                     var values = attrib.value.replace(/#/g, '').split(" ");
                     quote._indexes.sourceRefId = values;
                 }
-                if (attrib.name === 'corresp') {
-                    var values = attrib.value.replace(/#/g, '').split(" ");
-                    quote._indexes.sourceRefId = values;
-                }
+                //TODO: rivedere se è consono usare ref :/
                 if (attrib.name === 'ref') {
                     var values = attrib.value.replace(/#/g, '').split(" ");
                     quote._indexes.sourceRefId = values;
+                }
+                //Adding the references to the corresponding portions of the sources texts
+                if (attrib.name === 'corresp') {
+                    var values = attrib.value.replace(/#/g, '').split(" ");
+                    for (var j in values) {
+                        var slashIndex = values[j].indexOf('/');
+                        var sourceId = values[j].substring(0, slashIndex);
+                        if (quote._indexes.correspId[sourceId] === undefined) {
+                            quote._indexes.correspId[sourceId] = [];
+                            quote._indexes.correspId[sourceId].push(values[j].substring(slashIndex+1));
+                        } else {
+                            quote._indexes.correspId[sourceId].push(values[j].substring(slashIndex+1))
+                        }
+                    }
                 }
             }
         }
