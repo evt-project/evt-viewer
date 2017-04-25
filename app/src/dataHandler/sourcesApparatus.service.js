@@ -13,6 +13,7 @@ angular.module('evtviewer.dataHandler')
             sources : [], //Elenco delle fonti, ognuna con tutte le info necessarie
             //text: '', //Testo
             quote: '', //Intestazione dell'entrata d'apparato, che corrisponde alla citazione
+            quoteCorresp: quote._indexes.correspId,
             //_sourceXml: [],
             _xmlSource: quote._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') //Xml della citazione, cui si aggiungerà anche l'xml della source selezionata
 
@@ -91,7 +92,7 @@ angular.module('evtviewer.dataHandler')
             if (entry.url[0].indexOf("http") >= 0) {
                 source.url += '<span class="linkLabel">See source text online</span><a target="_blank" href="'+entry.url[0]+'">'+entry.url[0]+'</a><br/>';
             } else if (entry.url[0].indexOf(entry.id) >= 0) {
-                source.url += '<span class="linkLabel">See source text in the "Source-Text" view</span><evt-source-ref data-source-id="'+entry.id+'">'+source.abbr+'</evt-source-ref>'
+                source.url += '<span class="linkLabel">See source text in the</span> <evt-source-ref data-source-id="'+entry.id+'"></evt-source-ref>'
             }
         }
 
