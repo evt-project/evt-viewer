@@ -29,15 +29,15 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     var corresp = parsedData.getSources()._indexes.correspId[scope.sourceId] || [];
                     for (var i in Object.keys(corresp)) {
                         //TODO: sistemare qui
-                        for (var j = 0; j < corresp[i].length; j++) {
-                            if (corresp[i][j].indexOf(currentSource) >= 0) {
-                                segToAlign = corresp[i][j];
+                        for (var j = 0; j < corresp[Object.keys(corresp)[i]].length; j++) {
+                            if (corresp[Object.keys(corresp)[i]][j] === currentQuote) {
+                                segToAlign = corresp[Object.keys(corresp)[i]][j];
                             }
                         }
                         
                     }
                     if (segToAlign !== '') {
-                        var newBox = evtBox.getElementByValueOfParameter('witness', newWit);
+                        var newBox = evtBox.getElementByValueOfParameter('source', newSource);
                         if (newBox !== undefined) {
                             newBox.scrollToQuotesEntry(segToAlign);
                         }
