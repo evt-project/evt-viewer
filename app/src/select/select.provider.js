@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData, evtInterface) {
+    this.$get = function($log, parsedData, evtInterface, evtSourcesApparatus) {
         var select     = {},
             collection = {},
             list       = [],
@@ -160,7 +160,36 @@ angular.module('evtviewer.select')
                     break;
                 /*Case added By CM*/
                 case 'source':
-                    
+                    callback = function(oldOption, newOption) {
+                        if (newOption !== undefined) {
+                            vm.selectOption(newOption);
+                            evtInterface.updateCurrentSourceText(newOption.value);
+                            //TODO: controllare che funzioni
+                        }
+                    }
+                     formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++) {
+                            var currentOption = optionList[i];
+                            var option = {
+                                value : currentOption.id,
+                                label : evtSourcesApparatus.getSourceAbbr(currentOption),
+                                title : 'See full text'
+                            };
+                            formattedList.push(option);
+                        }
+                        return formattedList;
+                    }
+                    formatOption = function(option) {
+                        var formattedOption = {};
+                        formattedOption = {
+                            value : option.id,
+                            label : evtSourcesApparatus.getSourceAbbr(option),
+                            title : 'See full text'
+                        };
+                        return formattedOption;
+                    }
+                    optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
                     break;
             }
 

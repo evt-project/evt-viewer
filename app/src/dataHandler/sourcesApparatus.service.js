@@ -98,6 +98,33 @@ angular.module('evtviewer.dataHandler')
         return source;
     };
 
+    apparatus.getSourceAbbr = function(entry) {
+        var abbr = '';
+        if (entry.abbr.msId.length > 0) {
+            for (var i = 0; i < entry.abbr.msId.length; i++) {
+                abbr += apparatus.getText(entry.abbr.msId[i])+' ';
+            }
+        } else {
+            //...or author and title.
+            if (entry.abbr.author.length > 0) {
+                abbr += apparatus.getText(entry.abbr.author[0]);
+                if (entry.abbr.author.length > 1) {
+                    abbr += 'et al., ';
+                } else {
+                    abbr += ', ';
+                }
+            }
+            if (entry.abbr.title.length > 0) {
+                abbr += apparatus.getText(entry.abbr.title[0]);
+            }
+        }
+        //If there is no author nor title, it uses the xml:id
+        if (abbr === '') {
+            abbr = entry.id;
+        }
+        return abbr;
+    };
+
     apparatus.getQuote = function (quote, scopeWit) {
         var content = quote.content || [];
         var result = '';

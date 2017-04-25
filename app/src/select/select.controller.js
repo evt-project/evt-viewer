@@ -55,6 +55,16 @@ angular.module('evtviewer.select')
                 case 'witness-page':
                     option = vm.formatOption(parsedData.getPage(optionValue));
                     break;
+                case 'source':
+                    var source,
+                        sources = parsedData.getSources()._indexes.availableTexts;
+                    for (var i in sources) {
+                        if (sources[i].id === optionValue) {
+                            source = sources[i];
+                        }
+                    }
+                    option = vm.formatOption(source);
+                    break;
                 default:
                     option = vm.optionList[0];
                     break;

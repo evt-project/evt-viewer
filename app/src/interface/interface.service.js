@@ -19,7 +19,8 @@ angular.module('evtviewer.interface')
             currentApparatus : undefined,
             currentQuote     : undefined,
             currentAnalogue  : undefined,
-            currentSource    : undefined
+            currentSource    : undefined,
+            currentSourceText : undefined,
             /*Poi da ridefinire a false, quando si aprirà alla selezione di un elemento critico*/
             //TODO: aggiungere fonte, cit e passo parallelo corrente
         };
@@ -27,7 +28,8 @@ angular.module('evtviewer.interface')
             indexTitle         : '',
             availableViewModes : [ ],
             availableWitnesses : [ ],
-            witnessSelector    : false
+            witnessSelector    : false,
+            availableSourcesTexts : [ ]
         };
 
         var tools = {
@@ -73,6 +75,14 @@ angular.module('evtviewer.interface')
                                 mainInterface.updateCurrentAppEntry('');
                                 mainInterface.updateUrl();
                             }
+
+                             sourcesTexts = parsedData.getSources()._indexes.availableTexts;
+                             if (Object.keys(sourcesTexts).length !== 0) {
+                                 for (var i in sourcesTexts) {
+                                    properties.availableSourcesTexts.push(sourcesTexts[i].id);
+                                }
+                                state.currentSourceText = properties.availableSourcesTexts[0];
+                             }
                             state.isLoading = false;
 
                             // Update Pinned entries
@@ -272,6 +282,20 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateCurrentSource = function(sourceId) {
             state.currentSource = sourceId;
+        };
+
+        //Available Sources Texts
+        mainInterface.getAvailableSourcesTexts = function() {
+            return properties.availableSourcesTexts;
+        }
+
+        //Current source text
+        mainInterface.getCurrentSourceText = function() {
+            return state.currentSourceText;
+        };
+
+        mainInterface.updateCurrentSourceText = function(sourceId) {
+            state.currentSourceText = sourceId;
         };
 
         // WITNESS
