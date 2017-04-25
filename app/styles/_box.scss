@@ -272,6 +272,11 @@
         }
         padding : 0;
     }
+    &.box-source {
+        .box-body {
+            overflow-y: scroll;
+        }
+    }
     // BODY
     &.topBoxOpened {
         .box-body {

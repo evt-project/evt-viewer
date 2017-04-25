@@ -383,7 +383,9 @@ angular.module('evtviewer.buttonSwitch')
                 case 'toggleInfoSrc':
                     btnType = 'toggler';
                     callback = function(){
-                        var source = evtSourcesApparatus.getSource(parsedData.getSource(scope.$parent.vm.source));
+                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
+                        //Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
+                        //TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
                         var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
                         scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
                         scope.$parent.vm.toggleTopBox();
