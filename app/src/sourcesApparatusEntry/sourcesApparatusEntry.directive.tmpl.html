@@ -1,7 +1,7 @@
 <div
     class="sources-apparatus-entry"
     ng-class="{ 'selected' : vm.isSelect() && vm.currentViewMode == 'readingTxt',
-                'over' : vm.over}"
+                'over' : vm.currentViewMode === 'readingTxt' && vm.over}"
     ng-mouseover="vm.toggleOverSourcesEntries($event)"
     ng-mouseout="vm.toggleOverSourcesEntries($event)"
     ng-click="vm.callbackClick($event)"

@@ -361,6 +361,8 @@ angular.module('evtviewer.dataHandler')
                 newElement,
                 textContent;
 
+            var correspId = parsedData.getSources()._indexes.correspId[sourceId];
+
             while (i >= 0) {
                 element = segs[i];
                 if (element.hasAttribute('type')
@@ -368,12 +370,15 @@ angular.module('evtviewer.dataHandler')
                     if (element.hasAttribute('xml:id')) {
                         id = element.getAttribute('xml:id');
                     }
-                    newElement = document.createElement('evt-source-seg');
-                    newElement.setAttribute('data-seg-id', id);
-                    newElement.setAttribute('data-source-id', sourceId);
-                    textContent = element.innerHTML;
-                    newElement.innerHTML = textContent;
-                    element.parentNode.replaceChild(newElement, element);
+                    if (correspId[id] !== undefined) {
+                        newElement = document.createElement('evt-source-seg');
+                        newElement.setAttribute('data-seg-id', id);
+                        newElement.setAttribute('data-source-id', sourceId);
+                        newElement.setAttribute('data-quote-id', '');
+                        textContent = element.innerHTML;
+                        newElement.innerHTML = textContent;
+                        element.parentNode.replaceChild(newElement, element);
+                    }
                 }
                 i--;
             }
