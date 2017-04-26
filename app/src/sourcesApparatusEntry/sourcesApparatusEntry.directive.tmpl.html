@@ -33,6 +33,11 @@
                     ng-mouseout="vm.toggleOverSource($event, source.id)"
                     ng-click="vm.toggleSource(source.id)"
                     compile="source.abbr">
+                    <evt-source-ref
+                        data-source-id="source.id"
+                        ng-if="vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)">
+                        Compare texts
+                    </evt-source-ref>
                 </li>
             </ul>
         </div>

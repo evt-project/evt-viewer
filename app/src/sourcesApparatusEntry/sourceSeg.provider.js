@@ -4,9 +4,9 @@ angular.module('evtviewer.sourcesApparatusEntry')
     
     //defaults here
 
-    var currentSourceSeg = '';
+    var currentQuote = '';
 
-    this.$get = function(parsedData, evtSourcesApparatus) {
+    this.$get = function(parsedData, evtSourcesApparatus, evtInterface) {
         var sourceSeg = {},
             collection = {},
             list = [],
@@ -15,12 +15,14 @@ angular.module('evtviewer.sourcesApparatusEntry')
         sourceSeg.build = function(scope) {
             var currentId = idx++,
                 segId = scope.segId || undefined,
-                quoteId = scope.quoteId || undefined,
+                quoteId, //= scope.quoteId || undefined,
                 sourceId = scope.sourceId || undefined;
             
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
+
+            var currentQuoteId = evtInterface.getCurrentQuote();
 
             var quote,
                 quotes = [],
@@ -28,6 +30,10 @@ angular.module('evtviewer.sourcesApparatusEntry')
             for (var i = 0; i < quotesId.length; i++) {
                 quote = evtSourcesApparatus.getContent(parsedData.getQuote(quotesId[i]), '').quote; //TODO: modificare in abbrQuote
                 quotes.push({id: quotesId[i], text: quote});
+            }
+
+            if (quotesId.indexOf(currentQuoteId) >= 0) {
+                quoteId = currentQuoteId;
             }
 
             var scopeHelper = {
@@ -43,7 +49,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     opened : false,
                     quotes : quotes,
                     _quoteOver : '',
-                    _quoteSelected : ''
+                    _quoteSelected : quoteId || ''
                 }
             };
 
@@ -51,7 +57,44 @@ angular.module('evtviewer.sourcesApparatusEntry')
             list.push({
                 id: currentId
             });
+
+            return collection[currentId];
         }
+
+        sourceSeg.getById = function(currentId) {
+            if (collection[currentId] !== 'undefined') {
+                return collection[currentId];
+            }
+        };
+
+        sourceSeg.getList = function() {
+            return list;
+        };
+
+        sourceSeg.mouseOutAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.mouseOut();
+            });
+        };
+
+        sourceSeg.updateCurrentQuote = function(quoteId) {
+            if (currentQuote !== quoteId) {
+                angular.forEach(collection, function(currentEntry) {
+                    var quotes = currentEntry.panel.quotes;
+                    for (var i = 0; i < quotes.length; i++) {
+                        if (quotes[i].id === quoteId
+                            && currentQuote !== quoteId) {
+                            currentEntry.setQuoteId(quoteId);
+                            currentQuote = quoteId;
+                        }
+                    }
+                });
+            }
+        };
+
+        sourceSeg.getCurrentQuote = function() {
+            return currentQuote;
+        };
 
         sourceSeg.destroy = function(tempId) {
             delete collection[tempId];

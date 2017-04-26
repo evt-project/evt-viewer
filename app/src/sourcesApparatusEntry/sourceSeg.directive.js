@@ -5,7 +5,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
         restrict: 'E',
         scope: {
             segId : '@',
-            quoteId : '@',
+            //quoteId : '@',
             sourceId : '@'
         },
         transclude: true,

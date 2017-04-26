@@ -1,6 +1,6 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox, evtInterface) {
+.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox, evtInterface, parsedData) {
     $scope.content = {};
     var vm = this;
     
@@ -114,6 +114,17 @@ angular.module('evtviewer.sourcesApparatusEntry')
             evtBox.alignScrollToQuote(vm.quoteId);
             evtQuote.selectById(vm.quoteId);
         }
+    };
+
+    this.isSourceTextAvailable = function(sourceId) {
+        availableTexts = parsedData.getSources()._indexes.availableTexts;
+        var isAvailable = false;
+        for (var i = 0; i < availableTexts.length; i++) {
+            if (availableTexts[i].id === sourceId) {
+                isAvailable = true;
+            }
+        }
+        return isAvailable;
     }
 
     this.destroy = function() {
