@@ -346,14 +346,40 @@ angular.module('evtviewer.dataHandler')
     /*parseSourceText(*/
     parser.parseSourceText = function(doc, sourceId) {
         var deferred = $q.defer();
-        var sourceText = 'ciao';
+        var sourceText,
+            currentDoc = angular.element(doc);
 
         if (doc !== undefined) {
             doc = doc.cloneNode(true);
             var docDOM = doc.getElementsByTagName('body')[0];
+            
+            var segs = docDOM.getElementsByTagName('seg'),
+                i = segs.length - 1;
+
+            var element,
+                id,
+                newElement,
+                textContent;
+
+            while (i >= 0) {
+                element = segs[i];
+                if (element.hasAttribute('type')
+                    && element.getAttribute('type') === 'srcTxtLink') {
+                    if (element.hasAttribute('xml:id')) {
+                        id = element.getAttribute('xml:id');
+                    }
+                    newElement = document.createElement('evt-source-seg');
+                    newElement.setAttribute('data-seg-id', id);
+                    newElement.setAttribute('data-source-id', sourceId);
+                    textContent = element.innerHTML;
+                    newElement.innerHTML = textContent;
+                    element.parentNode.replaceChild(newElement, element);
+                }
+                i--;
+            }
 
             angular.forEach(docDOM.children, function(elem) {
-                var skip = skipFromBeingParsed;
+                var skip = skipFromBeingParsed + '<evt-source-seg>';
                 elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
             });
             sourceText = docDOM.outerHTML;
