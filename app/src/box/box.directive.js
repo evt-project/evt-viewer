@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, evtCommunication, parsedData) {
 
     return {
         restrict: 'E',
@@ -33,6 +33,13 @@ angular.module('evtviewer.box')
                 boxBody = angular.element(element).find('.box-body')[0];
 
             $timeout(function(){
+
+                if (currentBox.type === 'source') {
+                    evtCommunication.getSourceTextFile('../../data/sources/'+scope.vm.source+'.xml', scope.vm.source).then(function() {
+                                    sourceDoc = parsedData.getSourceDocument(scope.vm.source);
+                                    console.log(parsedData.getSourceDocuments());
+                                });
+                }                
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
                 
@@ -231,7 +238,6 @@ angular.module('evtviewer.box')
                     });
                 };
             }
-            //
 
             //TODO: aggiungere scroll per sources view
 
@@ -262,6 +268,19 @@ angular.module('evtviewer.box')
                         currentBox.updateContent();
                     }
                 }, true); 
+            }
+
+            //Added by CM
+            if (currentBox.type === 'source') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentSourceText();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        scope.vm.source = newItem;
+                        currentBox.updateContent();
+                        console.log('content updated')
+                    }
+                })
             }
 
             // Garbage collection

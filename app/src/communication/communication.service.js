@@ -59,8 +59,6 @@ angular.module('evtviewer.communication')
                     }
                     else if (url === config.analoguesUrl) {
                         docType = 'analogues';
-                    } else if (url.indexOf('sources/') >= 0) {
-                        docType = 'source';
                     }
                     baseData.addXMLExtDocument(response.data, docType);
                                         

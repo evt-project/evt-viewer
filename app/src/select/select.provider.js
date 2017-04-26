@@ -164,7 +164,7 @@ angular.module('evtviewer.select')
                         if (newOption !== undefined) {
                             vm.selectOption(newOption);
                             evtInterface.updateCurrentSourceText(newOption.value);
-                            //TODO: controllare che funzioni
+                            evtInterface.updateCurrentSource(newOption.value);
                         }
                     }
                      formatOptionList = function(optionList) {

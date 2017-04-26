@@ -36,6 +36,16 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
+            if (scope.type === 'source') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentSource();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true);
+            }
+
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentSelect){

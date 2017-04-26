@@ -14,7 +14,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             scope.openSource = function() {
                 var newSource = scope.sourceId;
 
-                if (evtInterface.getCurrentSourceText() !== newSource) {
+                if (evtInterface.getCurrentSource() !== newSource) {
                     evtInterface.updateCurrentSourceText(newSource);
                     evtInterface.updateCurrentSource(newSource);
                 }

@@ -410,68 +410,45 @@ angular.module('evtviewer.box')
                 /**/
                 /************************************************************ */
                 case 'source':
-                    /**TODO: spostare questa parte in interface in modo da usare {{source}} */
-                    var sourceShown,
-                        souceShownAbbr,
-                        currentSource = evtInterface.getCurrentSource() || '';
-                    if (currentSource !== '') {
-                        if (parsedData.getSource(currentSource)._textAvailable) {
-                            sourceShown = currentSource.id;
-                        }
-                    } else if (parsedData.getSources()._indexes.availableTexts.length > 0) {
-                        sourceShown = parsedData.getSources()._indexes.availableTexts[0].id;
-                    }
-
-                    topMenuList.selectors.push({id:'sources_'+currentId, type: 'source', initValue: evtInterface.getCurrentSourceText() });
                     
+                    topMenuList.selectors.push({id:'sources_'+currentId, type: 'source', initValue: evtInterface.getCurrentSourceText() });
                     topMenuList.buttons.push({title: 'Bibliographic Reference', label: 'Bibl', icon: 'bibl', type: 'toggleInfoSrc' });
-
-                    /*appFilters = parsedData.getCriticalEntriesFiltersCollection();
-                    if (appFilters.forVariants > 0) {
-                        bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){return 'true';} });
-                        appFilters = appFilters.filters;
-                    }
-                    state.filters = {
-                        _totActive : 0
-                    };
-                    state.filterBox = false;*/
 
                     bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
                     
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
-                            noTextAvailableMsg = 'Text of source '+sourceShown+' is not available.';
+                            noTextAvailableMsg = 'Text of source '+scope.vm.source+' is not available.';
                         
-                        
-                            // Main content
-                            var newContent = parsedData.getSource(sourceShown).text || undefined;
-                            if ( Object.keys(parsedData.getSource(sourceShown).text).length === 0 || newContent === undefined ) {
-                                //if per non fare due volte il parsing del documento esterno
-                                var sourceDoc = parsedData.getSourceDocument(sourceShown);
-                                if (sourceDoc === undefined) {
-                                    evtCommunication.getSourceTextFile('../../data/sources/'+sourceShown+'.xml', sourceShown).then(function() {
-                                        _console.log(parsedData.getSourceDocuments());
-                                    })
-                                    sourceDoc = parsedData.getSourceDocument(sourceShown);
-                                }
-
-                                try {
-                                        var promises = [];
-                                        promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, sourceShown).promise);
-                                        $q.all(promises).then(function(){
-                                            scope.vm.content = parsedData.getSource(sourceShown).text || noTextAvailableMsg;
-                                            scope.vm.isLoading = false;
-                                        });
-                                    }
-                                    catch(err) {
-                                        scope.vm.content = errorMsg;
-                                        scope.vm.isLoading = false;
-                                    }
+                        // Main content
+                        var newContent = parsedData.getSource(scope.vm.source).text || undefined;
+                        if ( Object.keys(parsedData.getSource(scope.vm.source).text).length === 0 || newContent === undefined ) {
+                            //if per non fare due volte il parsing del documento esterno
+                            var sourceDoc = parsedData.getSourceDocument(scope.vm.source);
+                            if (sourceDoc === undefined) {
+                                //Prima volta che viene eseguito, non funziona. Funziona la seconda volta.
+                                evtCommunication.getSourceTextFile('../../data/sources/'+scope.vm.source+'.xml', scope.vm.source).then(function() {
+                                    sourceDoc = parsedData.getSourceDocument(scope.vm.source);
+                                    console.log(parsedData.getSourceDocuments());
+                                });
                             } else {
-                                scope.vm.content = newContent;
+                            try {
+                            var promises = [];
+                            promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, scope.vm.source).promise);
+                            $q.all(promises).then(function(){
+                                scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
+                                scope.vm.isLoading = false;
+                                });
+                            } catch(err) {
+                                scope.vm.content = errorMsg;
                                 scope.vm.isLoading = false;
                             }
+                            }
+                        } else {
+                            scope.vm.content = newContent;
+                            scope.vm.isLoading = false;
+                        }
                     };
                     break;
                 default:
