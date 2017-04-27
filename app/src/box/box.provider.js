@@ -410,7 +410,6 @@ angular.module('evtviewer.box')
                 /**/
                 /************************************************************ */
                 case 'source':
-                    
                     topMenuList.selectors.push({id:'sources_'+currentId, type: 'source', initValue: evtInterface.getCurrentSourceText() });
                     topMenuList.buttons.push({title: 'Bibliographic Reference', label: 'Bibl', icon: 'bibl', type: 'toggleInfoSrc' });
 

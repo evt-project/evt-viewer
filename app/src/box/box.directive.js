@@ -239,6 +239,18 @@ angular.module('evtviewer.box')
                 };
             }
 
+            if (currentBox.type === 'source') {
+                scope.vm.scrollToQuotesEntry = function(quoteId) {
+                    $timeout(function(){
+                        var appElem = $('#'+currentBox.uid).find("[data-quote-id='"+quoteId+"']");
+                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (appElem.length > 0 && appElem[0] !== undefined) {
+                            boxBody.scrollTop = appElem[0].offsetTop-padding;
+                        }
+                    });
+                };
+            }
+
             //TODO: aggiungere scroll per sources view
 
             if (currentBox.type === 'text') {

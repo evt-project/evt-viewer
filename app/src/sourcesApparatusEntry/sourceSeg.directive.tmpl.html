@@ -1,10 +1,12 @@
 <span class="source-seg">
     <span
         class="source-seg_text"
-        data-quote-id = "{{vm.quoteId}}"
+        data-quote-id="{{vm.quoteId}}"
+        ng-click="vm.callbackClick($event)"
         ng-transclude></span>
     <div
-        class="source-seg_panel">
+        class="source-seg_panel"
+        ng-if="vm.panel.opened">
         <span
             class="source-seg_panel_label">
             Related quotes:

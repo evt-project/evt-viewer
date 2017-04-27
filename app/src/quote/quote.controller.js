@@ -1,6 +1,6 @@
 angular.module('evtviewer.quote')
 
-.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry) {
+.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry, evtSourceSeg) {
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -46,6 +46,9 @@ angular.module('evtviewer.quote')
             if ( vm.over === false ) {
                 evtQuote.mouseOverByQuoteId(vm.quoteId);
                 evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
+                /*if (currentViewMode === srcTxt) {
+                    evtSourceSeg.mouseOverByQuoteId(vm.quoteId)
+                } */
             } else {
                 evtQuote.mouseOutAll();
                 evtSourcesApparatusEntry.mouseOutAll();
