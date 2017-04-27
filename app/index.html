@@ -205,8 +205,8 @@
                  id="mainText"
                  ng-show="existCriticalText()"></box>
             <box data-type="source"
-                 id="srcText"
-                 ></box><!--data-source="{{getCurrentSource()}}"-->
+                 data-source={{getCurrentSourceText()}}
+                 id="srcText"></box>
         </section>
 
         <!-- LOADING... -->
@@ -384,6 +384,14 @@
     <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.controller.js"></script>
     <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.directive.tmpl.html"></script>
     <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.directive.js"></script>
+        <!--evt-source-ref-->
+    <script src="/src/sourcesApparatusEntry/sourceRef.directive.tmpl.html"></script>
+    <script src="/src/sourcesApparatusEntry/sourceRef.directive.js"></script>
+        <!--evt-source-seg-->
+    <script src="/src/sourcesApparatusEntry/sourceSeg.provider.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.controller.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.directive.tmpl.html"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.directive.js"></script>
 
     <script src="/src/analogue/analogue.js"></script>
     <script src="/src/analogue/analogue.configuration.js"></script>
