@@ -30,30 +30,21 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
     };
 
-    this.toggleOverSeg = function($event) {
+    this.toggleOverSeg = function($event, segId) {
         $event.stopPropagation();
         if (vm.over === false) {
-            evtSourceSeg.mouseOverBySegId(vm.segId);
+            evtSourceSeg.mouseOverBySegId(segId);
         } else {
             evtSourceSeg.mouseOutAll();
         }
     };
 
-    this.callbackClick = function($event) {
+    this.callbackClick = function($event, segId) {
         $event.stopPropagation();
-        evtSourceSeg.unselectAll();
-        evtSourceSeg.closeAllPanels();
-        if (vm.panel.opened === false) {
-            vm.panel.opened = true;
+        if (!vm.selected) {
+            evtSourceSeg.selectBySegId(segId);
         } else {
-            //evtSourceSeg.closeAllPanels();
-            vm.panel.opened = false;
-        }
-        if (vm.selected === false) {
-            vm.selected = true;
-        } else {
-            //evtSourceSeg.unselectAll();
-            vm.selected = false;
+            evtSourceSeg.unselectAll();
         }
     };
 
@@ -67,14 +58,14 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     this.selectQuote = function($event, quoteId) {
         $event.stopPropagation();
-        if (vm.quoteId !== quoteId) {
+        //if (vm.quoteId !== quoteId) {
             vm.quoteId = quoteId;
-            if (evtSourceSeg.getCurrentQuote() !== quoteId) {
+            //if (evtSourceSeg.getCurrentQuote() !== quoteId) {
                 evtSourceSeg.updateCurrentQuote(quoteId);
-            }
-            evtBox.alignScrollToQuote(quoteId);
-            evtInterface.updateCurrentQuote(quoteId);
-        }
+                evtInterface.updateCurrentQuote(quoteId);
+            //}
+            evtBox.alignScrollToQuote(quoteId, vm.segId);            
+        //}
     };
 
     this.destroy = function() {

@@ -240,9 +240,9 @@ angular.module('evtviewer.box')
             }
 
             if (currentBox.type === 'source') {
-                scope.vm.scrollToQuotesEntry = function(quoteId) {
+                scope.vm.scrollToQuotesEntry = function(segId) {
                     $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find("[data-quote-id='"+quoteId+"']");
+                        var appElem = $('#'+currentBox.uid).find("[data-seg-id='"+segId+"']");
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;

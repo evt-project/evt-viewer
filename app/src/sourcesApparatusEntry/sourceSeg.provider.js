@@ -46,7 +46,6 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 selected : false,
 
                 panel : {
-                    opened : false,
                     quotes : quotes,
                     _quoteOver : '',
                     _quoteSelected : quoteId || ''
@@ -84,18 +83,22 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 } else {
                     currentEntry.mouseOut();
                 }
-            })
+            });
+        };
+
+        sourceSeg.selectBySegId = function(segId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.segId === segId) {
+                    currentEntry.setSelected();
+                } else {
+                    currentEntry.unselect();
+                }
+            });
         };
 
         sourceSeg.unselectAll = function() {
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.unselect();
-            });
-        };
-
-        sourceSeg.closeAllPanels = function() {
-            angular.forEach(collection, function(currentEntry) {
-                currentEntry.panel.opened = false;
             });
         };
 

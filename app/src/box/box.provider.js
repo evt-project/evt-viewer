@@ -550,10 +550,14 @@ angular.module('evtviewer.box')
 
         /*Methods added by CM*/
         /*For the alignment of the apparatuses panel, with the other boxes*/
-        box.alignScrollToQuote = function (quoteId) {
+        box.alignScrollToQuote = function (quoteId, segId) {
             for (var i in collection) {
                 if (collection[i].scrollToQuotesEntry !== undefined) {
-                    collection[i].scrollToQuotesEntry(quoteId);
+                    if (collection[i].type === 'source') {
+                        collection[i].scrollToQuotesEntry(segId);
+                    } else {
+                        collection[i].scrollToQuotesEntry(quoteId);
+                    }                    
                 }
             }
         };

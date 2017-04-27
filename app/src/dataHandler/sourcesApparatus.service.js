@@ -11,8 +11,11 @@ angular.module('evtviewer.dataHandler')
                 _keys: Object.keys(quote.attributes) || []
             },
             sources : [], //Elenco delle fonti, ognuna con tutte le info necessarie
-            //text: '', //Testo
             quote: '', //Intestazione dell'entrata d'apparato, che corrisponde alla citazione
+            abbrQuote : {
+                begin : '',
+                end : ''
+            },
             quoteCorresp: quote._indexes.correspId,
             //_sourceXml: [],
             _xmlSource: quote._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') //Xml della citazione, cui si aggiungerà anche l'xml della source selezionata
@@ -35,6 +38,13 @@ angular.module('evtviewer.dataHandler')
         appContent.quote = apparatus.getQuote(quote, scopeWit);
 
         //TODO : abbreviated quote for sourceSeg panel and collapse mechanism
+        if (appContent.quote.length >= 140) {
+            var space = appContent.quote.indexOf(" ", 20);
+            var lastSpace = appContent.quote.lastIndexOf(" ");
+            appContent.abbrQuote.begin = '<span class="beginQuote">'+appContent.quote.substring(0, space)+'</span>';
+            appContent.abbrQuote.end = '<span class="endQuote">'+appContent.quote.substring(lastSpace)+'</span>';
+
+        }
 
         return appContent;
     };
