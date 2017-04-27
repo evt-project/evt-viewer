@@ -34,6 +34,8 @@ angular.module('evtviewer.dataHandler')
 
         appContent.quote = apparatus.getQuote(quote, scopeWit);
 
+        //TODO : abbreviated quote for sourceSeg panel and collapse mechanism
+
         return appContent;
     };
 
@@ -92,7 +94,7 @@ angular.module('evtviewer.dataHandler')
             if (entry.url[0].indexOf("http") >= 0) {
                 source.url += '<span class="linkLabel">See source text online</span><a target="_blank" href="'+entry.url[0]+'">'+entry.url[0]+'</a><br/>';
             } else if (entry.url[0].indexOf(entry.id) >= 0) {
-                source.url += '<span class="linkLabel">See source text in the</span> <evt-source-ref data-source-id="'+entry.id+'"></evt-source-ref>'
+                source.url += '<span class="linkLabel"><evt-source-ref data-source-id="'+entry.id+'">See full text in the "Source-Text" view</evt-source-ref></span>'
             }
         }
 

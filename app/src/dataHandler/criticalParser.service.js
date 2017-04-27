@@ -374,7 +374,6 @@ angular.module('evtviewer.dataHandler')
                         newElement = document.createElement('evt-source-seg');
                         newElement.setAttribute('data-seg-id', id);
                         newElement.setAttribute('data-source-id', sourceId);
-                        newElement.setAttribute('data-quote-id', '');
                         textContent = element.innerHTML;
                         newElement.innerHTML = textContent;
                         element.parentNode.replaceChild(newElement, element);

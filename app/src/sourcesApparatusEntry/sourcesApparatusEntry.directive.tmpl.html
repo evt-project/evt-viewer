@@ -25,7 +25,7 @@
             <ul
                 ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1}">
                 <li 
-                    ng-repeat="source in vm.sources"
+                    ng-repeat-start="source in vm.sources"
                     class="source-id"
                     ng-class="{ 'selected' : (vm.over || vm.selected) && vm.sources.length > 1 && source.id == vm._activeSource,
                                   'over'   : vm.selected && vm.sources.length > 1 && source.id == vm._overSource}"
@@ -33,17 +33,19 @@
                     ng-mouseout="vm.toggleOverSource($event, source.id)"
                     ng-click="vm.toggleSource(source.id)"
                     compile="source.abbr">
+                </li>
+                <span class="compareLabel" ng-repeat-end>
                     <evt-source-ref
-                        data-source-id="source.id"
+                        data-source-id="{{source.id}}"
                         ng-if="vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)">
                         Compare texts
                     </evt-source-ref>
-                </li>
+                </span>
             </ul>
         </div>
     </div>
     <div class="sources-apparatus-entry_other-content"
-         ng-if="vm.tabs._indexes.length > 0">
+         ng-if="vm.tabs._indexes.length > 0 && vm.currentViewMode !== 'srcTxt'">
         <div
             class="sources-apparatus-entry_other-content_headers"
             ng-class="{'closed' : vm._subContentOpened === ''}">
