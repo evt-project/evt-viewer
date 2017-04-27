@@ -26,14 +26,12 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     evtInterface.updateCurrentViewMode('srcTxt');
                 }
 
-                //Updates the selected source seg inside of the source text
-                //evtSourceSeg.updateCurrentQuote(evtInterface.getCurrentQuote());
-
                 //TODO: evtInterface.updateUrl();
                 
                 /* Checks if the selected quote has a corresponding segment inside of the souce text. */
                 /* If so, it saves the reference inside of the the "segToAlign" variable. */
-                var segToAlign = '',
+                var quoteToAlign = '',
+                    segToAlign = '',
                     currentQuote = evtInterface.getCurrentQuote() || '',
                     corresp = parsedData.getSources()._indexes.correspId[scope.sourceId] || [];
                 
@@ -41,15 +39,16 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     //TODO: sistemare qui
                     for (var j = 0; j < corresp[Object.keys(corresp)[i]].length; j++) {
                         if (corresp[Object.keys(corresp)[i]][j] === currentQuote) {
-                            segToAlign = corresp[Object.keys(corresp)[i]][j];
+                            quoteToAlign = corresp[Object.keys(corresp)[i]][j];
+                            segToAlign = Object.keys(corresp)[i];
                         }
                     }
                         
                 }
                 
-                if (segToAlign !== '') {
-                    evtSourceSeg.updateCurrentQuote(currentQuote);
-                    evtBox.alignScrollToQuote(segToAlign);
+                if (quoteToAlign !== '' && segToAlign !== '') {
+                    //evtSourceSeg.updateCurrentQuote(currentQuote);
+                    evtBox.alignScrollToQuote(quoteToAlign, segToAlign);
                 }
             }
         }
