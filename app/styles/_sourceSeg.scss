@@ -1,0 +1,39 @@
+/**************/
+/* SOURCE SEG */
+/**************/
+
+/* Variables */
+$selected-seg-color: #ffd24d;
+$over-seg-color: #8b9aa7;
+$seg-color: #b6c0c8;
+$panel-background-color:  $base-color-light;
+$panel-border-color: #7d7d7d;
+
+.source-seg {
+    &_text {
+        cursor: pointer;
+        padding: 0;
+        background: $seg-color;
+        &.over {
+            background: $over-seg-color;
+        }
+        &.selected {
+            background: $selected-seg-color;
+        }
+    }
+    &_panel {
+        //
+        &_label {
+            //
+        }
+    }
+}
+.quoteText {
+    //
+    &.over {
+        //
+    }
+    &.selected {
+        //
+    }
+}

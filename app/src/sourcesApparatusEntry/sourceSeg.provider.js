@@ -22,7 +22,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 return;
             }
 
-            var currentQuoteId = evtInterface.getCurrentQuote();
+            var currentQuoteId = evtInterface.getCurrentQuote() || '';
 
             var quote,
                 quotes = [],
@@ -77,13 +77,35 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });
         };
 
+        sourceSeg.mouseOverBySegId = function(segId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.segId === segId) {
+                    currentEntry.mouseOver();
+                } else {
+                    currentEntry.mouseOut();
+                }
+            })
+        };
+
+        sourceSeg.unselectAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.unselect();
+            });
+        };
+
+        sourceSeg.closeAllPanels = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.panel.opened = false;
+            });
+        };
+
         sourceSeg.updateCurrentQuote = function(quoteId) {
             if (currentQuote !== quoteId) {
                 angular.forEach(collection, function(currentEntry) {
                     var quotes = currentEntry.panel.quotes;
                     for (var i = 0; i < quotes.length; i++) {
                         if (quotes[i].id === quoteId
-                            && currentQuote !== quoteId) {
+                            && currentEntry.getQuoteId() !== quoteId) {
                             currentEntry.setQuoteId(quoteId);
                             currentQuote = quoteId;
                         }

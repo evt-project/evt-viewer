@@ -1,5 +1,5 @@
 $quote-background-default: rgb(255, 179, 179);
-$quote-background-hover:rgb(255, 102, 102);
+$quote-background-over:rgb(255, 102, 102);
 $quote-background-selected:rgb(255, 102, 102);
 
 .quote {
@@ -7,14 +7,14 @@ $quote-background-selected:rgb(255, 102, 102);
     cursor: pointer;
     
     .quote__text {
-        background-color: $quote-background-default;
+        background-color: $quote-background-default !important;
     }
 
     &.over,
     &.over .quote,
     &.selected {
         .quote__text{
-            background-color: $quote-background-hover;
+            background-color: $quote-background-over !important;
         }        
     }
 }

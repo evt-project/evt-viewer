@@ -1,6 +1,7 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .controller('sourceSegCtrl', function(evtInterface, evtSourceSeg, evtBox) {
+    //$scope.content = {};
     var vm = this;
 
     this.mouseOver = function() {
@@ -29,11 +30,31 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
     };
 
+    this.toggleOverSeg = function($event) {
+        $event.stopPropagation();
+        if (vm.over === false) {
+            evtSourceSeg.mouseOverBySegId(vm.segId);
+        } else {
+            evtSourceSeg.mouseOutAll();
+        }
+    };
+
     this.callbackClick = function($event) {
         $event.stopPropagation();
-        vm.panel.opened = !vm.panel.opened;
-        vm.selected = !vm.selected;
-        evtSourceSeg.mouseOutAll();
+        evtSourceSeg.unselectAll();
+        evtSourceSeg.closeAllPanels();
+        if (vm.panel.opened === false) {
+            vm.panel.opened = true;
+        } else {
+            //evtSourceSeg.closeAllPanels();
+            vm.panel.opened = false;
+        }
+        if (vm.selected === false) {
+            vm.selected = true;
+        } else {
+            //evtSourceSeg.unselectAll();
+            vm.selected = false;
+        }
     };
 
     this.toggleQuoteOver = function($event, quoteId) {
