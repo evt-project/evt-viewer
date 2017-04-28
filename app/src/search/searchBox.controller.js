@@ -8,7 +8,7 @@ angular.module('evtviewer.search')
     //
     this.getPosition = function() {
         var currentPos = config.searchBoxPosition,
-			availablePos = GLOBALCONFIG.availableSearchBoxPositions;
+			availablePos = evtSearchBox.getDefaults('availableSearchBoxPositions');
 		
         return !availablePos.includes(currentPos) ? evtSearchBox.getDefaults('searchBoxPosition') : currentPos;
     };

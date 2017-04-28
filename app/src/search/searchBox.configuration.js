@@ -1,6 +1,10 @@
 angular.module('evtviewer.search')
 
 .constant('SEARCHDEFAULTS', {
+   availableSearchBoxPositions : [
+      'internal',
+      'external'
+   ],
 	/**
      * @module evtviewerSearch
      * @ngdoc property

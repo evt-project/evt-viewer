@@ -146,12 +146,6 @@ angular.module('evtviewer.core')
                                 visible  : true
                             }],
 
-	availableSearchBoxPositions : [
-		'internal',
-		'external'
-	],
-	searchBoxPosition : "internal",
-	
 	toolHeatMap: true,
 	toolPinAppEntries: false,
 	toolImageTextLinking: true,
