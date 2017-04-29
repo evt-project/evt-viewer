@@ -903,8 +903,11 @@ angular.module('evtviewer.dataHandler')
         return string1 + string2;
     }
 
-    //Getters, ritornano o il valore richiesto relativo a una entrata bibliografica estratta o undefined.
-	
+    /*/Getters, ritornano il valore richiesto relativo a una entrata bibliografica estratta, oppure undefined.
+	Le funzioni senza argomenti ritornano il valore di variabili definite dentro al servizio (chiamato parser).
+	Le funzioni che accettano un parametro (per facilità di comprensione chiamato newBiblElement) accedono dei campi di un oggetto definito 
+	nella funzione parser.extractInfo; per una descrizione più completa del modello dei dati estratti, vedere la documentazione di questo file,
+	alla voce newBiblElement. /*/
 	parser.yearInfoDetected = function(){
 		return yearTagDetected;
 	}
