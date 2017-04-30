@@ -62,6 +62,14 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
       },
+      babel: {
+        files: ['<%= yeoman.app %>/src/dataHandler/searchParser.service.js'],
+        tasks: ['babel']
+      },
+      webpack: {
+        files: ['<%= yeoman.app %>/dist/searchParser.service.js'],
+        tasks: ['webpack']
+      },
       // gruntfile: {
       //   files: ['Gruntfile.js']
       // },
@@ -229,6 +237,27 @@ module.exports = function (grunt) {
           debugInfo: true
         }
       }
+    },
+
+    // Compiles ES6 to ES5
+    babel: {
+       options: {
+             sourceMap: true,
+             presets: ['es2015']
+       },
+       dist: {
+          files: {
+             'app/dist/searchParser.service.js': 'app/src/dataHandler/searchParser.service.js'
+          }
+       }
+     },
+
+    // Module bundler
+    webpack: {
+      options: {
+        progress: true
+      },
+      app: require('./webpack.config')
     },
 
     // Renames files for browser caching purposes
@@ -464,6 +493,8 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
+      'babel',
+      'webpack',
       'connect:livereload',
       'watch'
     ]);

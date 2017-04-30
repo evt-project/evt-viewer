@@ -3,8 +3,6 @@ dist
 .tmp
 .sass-cache
 .idea
-.babelrc
-webpack.config.js
 bower_components
 build
 docs
