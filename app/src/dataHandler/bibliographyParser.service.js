@@ -29,7 +29,14 @@ angular.module('evtviewer.dataHandler')
     var bibliographyDef = {biblStruct : '<biblStruct>', bibl : '<bibl>'};
 
     var parser = {};
-    
+/*/
+Questo file si compone sostanzialmente di 3 funzioni principali:
+	-parseBiblInfo: ricerca nel documento i tag, in cui cercare le info bibliografiche
+	-extractInfo: serve a estrarre le informazioni contenute dentro un certo tag. Per rendere più modulare la funzione,
+				al suo interno sono oontenute altre funzioni ausiliarie, ciascuna con il compito di estrarre un certo tipo di informazioni
+	-formatResult: ha il compito di usare le informazioni estratte in precedenza per creare una stringa html secondo un certo stile bibliografico,
+				mediante CSS, viene curato lo stile, aggiungendo eventuali punti/virgole
+/*/    
     parser.parseBiblInfo = function(doc) {
         var currentDocument = angular.element(doc);
 
@@ -841,7 +848,11 @@ angular.module('evtviewer.dataHandler')
         }
     }
 
-	//generic helper function
+	/*/serve a estrarre nome/cognome da una stringa con un certo pattern:
+		<cognome>+\s*,\s*<nome>* dove <cognome> e <nome> sono stringhe di testo rappresentanti un cognome/nome
+		Esempio: Rossi, Mario -> cognome= Rossi, nome= Mario
+				 Rossi, Mario, Luigi -> stringa non riconosciuta come valida
+	/*/
     function extractSurnameNameFromString(string) {
         var author = {
             surname: '',
