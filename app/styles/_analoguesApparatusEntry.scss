@@ -36,6 +36,14 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         opacity:0;
         background: transparent !important;
     }
+    &.over {
+        -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+    }
+    &.selected {
+        background-color: $analogues-apparatus-entry-selected-background-color;
+    }
 
     &_tools{
         padding: 0;

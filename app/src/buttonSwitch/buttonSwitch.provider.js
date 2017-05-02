@@ -398,6 +398,12 @@ angular.module('evtviewer.buttonSwitch')
                         scope.$parent.vm.updateState('topBoxOpened', false);
                     };
                     break;
+                case 'cropText':
+                    btnType = 'toggler';
+                    callback = function() {
+                        var s = scope.$parent.vm;
+                        return s;
+                    }
                 default:
                     break;
             }

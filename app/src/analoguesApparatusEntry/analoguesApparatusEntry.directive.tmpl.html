@@ -1,10 +1,25 @@
-<div class="analogues-apparatus-entry">
+<div class="analogues-apparatus-entry"
+     ng-class="{ 'selected' : vm.isSelect() && vm.currentViewMode == 'readingTxt',
+                'over' : vm.currentViewMode === 'readingTxt' && vm.over}"
+     ng-mouseover="vm.toggleOverAnaloguesEntries($event)"
+     ng-mouseout="vm.toggleOverAnaloguesEntries($event)"
+     ng-click="vm.callbackClick($event)">
     <div class="analogues-apparatus-entry_main-content">
         <div class="analogues-apparatus-entry_main-content_header"
              compile="vm.header">
         </div>
+        <div
+            class="analogues-apparatus-entry_tools">
+            <button-switch 
+            title="Align Analogues"
+            ng-if="vm.currentViewMode === 'readingTxt' || vm.currentViewMode === 'collation'"
+            data-label=""
+            data-icon="v-align"
+            data-type="alignReadings"
+            ng-click="vm.alignAnalogues()"></button-switch>
+        </div>
         <div class="analogues-apparatus-entry_main-content_list">
-            <span class="sources-apparatus-entry_main-content_list-label">Parallel Passages in</span>
+            <span class="analogues-apparatus-entry_main-content_list-label">Parallel Passages in</span>
             <ul
                 ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1}">
                 <li 
@@ -54,7 +69,6 @@
                          <span compile="vm.getActiveSourceAbbr(vm._activeSource)">
                      </span>
                      <pre>{{ vm.src_list[vm._activeSource]._xmlSource | prettyXml }}</pre>
-                     <div ng-if=""></div>
                  </div>
             </div>
         </div>

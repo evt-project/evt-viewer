@@ -8,7 +8,9 @@ angular.module('evtviewer.analoguesApparatusEntry')
         defaults = _defaults;
     }
 
-    this.$get = function(parsedData, $log, evtAnaloguesApparatus) {
+    var currentAnaloguesEntry = '';
+
+    this.$get = function(parsedData, $log, evtAnaloguesApparatus, evtInterface) {
         var analoguesAppEntry = {},
             collection     = {},
             list           = [],
@@ -109,16 +111,18 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
             scopeHelper = {
                 uid              : currentId,
+                analogueId       : scope.analogueId,
                 header           : header,
                 xml              : xml,
                 sources          : sources,
                 src_list         : src_list,
                 _activeSource    : _activeSource,
-                _overSource       : '',
+                _overSource      : '',
                 tabs             : tabs,
                 _subContentOpened: firstSubContentOpened,
-                over              : false,
-                selected          : false,
+                over             : false,
+                selected         : false,
+                currentViewMode  : evtInterface.getCurrentViewMode()
             }
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -128,6 +132,61 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
             return collection[currentId];
         }
+
+        analoguesAppEntry.getById = function(currentId) {
+            if (collection[currentId] !== 'undefined') {
+                return collection[currentId];
+            }
+        };
+
+        analoguesAppEntry.getList = function() {
+            return list;
+        };
+
+        analoguesAppEntry.setCurrentAnaloguesEntry = function(analogueId) {
+            if (evtInterface.getCurrentAnalogue !== analogueId) {
+                evtInterface.updateCurrentAnalogue(analogueId);
+            }
+            currentAnaloguesEntry = analogueId;
+        };
+
+        analoguesAppEntry.getCurrentAnaloguesEntry = function(analogueId) {
+            return currentAnaloguesEntry;
+        };
+
+        analoguesAppEntry.mouseOutAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.mouseOut();
+            });
+        };
+
+        analoguesAppEntry.mouseOverByAnalogueId = function(analogueId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.analogueId === analogueId) {
+                    currentEntry.mouseOver();
+                } else {
+                    currentEntry.mouseOut();
+                }
+            });
+        };
+
+        analoguesAppEntry.unselectAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.unselect();
+            });
+        };
+
+        analoguesAppEntry.selectById = function(analogueId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.analogueId === analogueId) {
+                    currentEntry.setSelected();
+                } else {
+                    currentEntry.unselect();
+                    currentEntry.closeSubContent();
+                }
+            });
+            analoguesAppEntry.setCurrentAnaloguesEntry(analogueId);
+        };
 
         analoguesAppEntry.destroy = function(tempId) {
             delete collection[tempId];

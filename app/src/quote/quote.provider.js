@@ -63,7 +63,7 @@ angular.module('evtviewer.quote')
         };
 
         quote.setCurrentSourcesEntry = function(quoteId) {
-            if (evtInterface.getCurrentQuote !== quoteId) {
+            if (evtInterface.getCurrentQuote() !== quoteId) {
                 evtInterface.updateCurrentQuote(quoteId);
             }
             currentSourcesEntry = quoteId;

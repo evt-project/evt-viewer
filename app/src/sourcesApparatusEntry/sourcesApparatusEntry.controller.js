@@ -108,13 +108,13 @@ angular.module('evtviewer.sourcesApparatusEntry')
         evtQuote.selectById(vm.quoteId);
     };
 
-    this.doubleClick = function($event) {
+    /*this.doubleClick = function($event) {
         $event.stopPropagation();
         if (vm.currentViewMode === 'readingTxt') {
             evtBox.alignScrollToQuote(vm.quoteId);
             evtQuote.selectById(vm.quoteId);
         }
-    };
+    };*/
 
     this.isSourceTextAvailable = function(sourceId) {
         availableTexts = parsedData.getSources()._indexes.availableTexts;

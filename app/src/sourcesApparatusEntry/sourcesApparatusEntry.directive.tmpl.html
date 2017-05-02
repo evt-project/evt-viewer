@@ -4,8 +4,7 @@
                 'over' : vm.currentViewMode === 'readingTxt' && vm.over}"
     ng-mouseover="vm.toggleOverSourcesEntries($event)"
     ng-mouseout="vm.toggleOverSourcesEntries($event)"
-    ng-click="vm.callbackClick($event)"
-    ng-dblclick="vm.doubleClick($event)">
+    ng-click="vm.callbackClick($event)">
     <div class="sources-apparatus-entry_main-content">
         <div class="sources-apparatus-entry_main-content_header"
              ng-if="vm.currentViewMode !== 'srcTxt'"
@@ -14,7 +13,7 @@
         <div
             class="sources-apparatus-entry_tools">
             <button-switch 
-            title="Align Readings"
+            title="Align Quotes"
             ng-if="vm.currentViewMode === 'readingTxt' || vm.currentViewMode === 'collation'"
             data-label=""
             data-icon="v-align"

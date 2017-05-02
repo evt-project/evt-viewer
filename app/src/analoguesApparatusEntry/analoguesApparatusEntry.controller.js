@@ -1,6 +1,6 @@
 angular.module('evtviewer.analoguesApparatusEntry')
 
-.controller('analoguesApparatusEntryCtrl', function(evtAnaloguesApparatusEntry) {
+.controller('analoguesApparatusEntryCtrl', function(evtAnaloguesApparatusEntry, evtInterface, evtAnalogue, evtBox, parsedData) {
     var vm = this;
 
     /**********************/
@@ -50,6 +50,60 @@ angular.module('evtviewer.analoguesApparatusEntry')
         } else {
             vm._subContentOpened = '';
         }
+    };
+
+    this.mouseOver = function() {
+        vm.over = true;
+    };
+    
+    this.mouseOut = function() {
+        vm.over = false;
+    };
+
+    this.setSelected = function() {
+        vm.selected = true;
+    };
+
+    this.unselect = function() {
+        vm.selected = false;
+    };
+
+    this.isSelect = function() {
+        if (evtInterface.getCurrentAnalogue() === vm.analogueId) {
+            return true;
+        } else {
+            return vm.selected;
+        }
+    };
+
+    this.closeSubContent = function() {
+        vm._subContentOpened = '';
+    };
+
+    this.toggleOverAnaloguesEntries = function($event) {
+        $event.stopPropagation();
+        if (vm.over === false) {
+            evtAnaloguesApparatusEntry.mouseOverByAnalogueId(vm.analogueId);
+            if (vm.currentViewMode === 'readingTxt') {
+                evtAnalogue.mouseOverByAnalogueId(vm.analogueId);
+            }
+        } else {
+            evtAnaloguesApparatusEntry.mouseOutAll();
+        }
+    };
+    
+    this.callbackClick = function($event) {
+        $event.stopPropagation();
+        if (vm.currentViewMode === 'readingTxt') {
+            evtAnaloguesApparatusEntry.unselectAll();
+            evtAnaloguesApparatusEntry.selectById(vm.analogueId);
+            evtAnalogue.selectById(vm.analogueId);
+        }
+    };
+
+    this.alignAnalogues = function() {
+        evtBox.alignScrollToAnalogue(vm.analogueId);
+        evtAnalogue.selectById(vm.analogueId);
     };
 
     this.destroy = function() {

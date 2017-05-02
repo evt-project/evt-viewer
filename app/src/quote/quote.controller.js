@@ -57,15 +57,15 @@ angular.module('evtviewer.quote')
 
     this.toggleSelectQuotes = function($event) {
         //TODO: aggiungere controllo per gli altri elementi critici
-            if (vm.selected === false) {
-                if (!vm.apparatus.opened){
-                    evtQuote.selectById(vm.quoteId);
-                }
-            } else {
-                if (vm.apparatus.opened){
-                    evtQuote.unselectAll();
-                }
+        if (vm.selected === false) {
+            if (!vm.apparatus.opened){
+                evtQuote.selectById(vm.quoteId);
             }
+        } else {
+            if (vm.apparatus.opened){
+                evtQuote.unselectAll();
+            }
+        }
         evtInterface.updateUrl();
     };
 

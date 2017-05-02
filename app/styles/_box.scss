@@ -253,6 +253,7 @@
         }
         .appLabel {
             @include span(1 of 3);
+            cursor: pointer;
             height: 42px;
             padding: 6px;
             background-color: $box-witness-structure-color-dark;
