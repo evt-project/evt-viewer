@@ -168,6 +168,10 @@ angular.module('evtviewer.buttonSwitch')
                     callback = function() {
                         var vm = this;
                         if (vm.value !== undefined) {
+                            if (vm.value === 'srcTxt') {
+                                var sourceId = evtInterface.getCurrentSourceText();
+                                evtInterface.updateCurrentSourceText(sourceId);
+                            }
                             evtInterface.updateCurrentViewMode(vm.value);
                             evtInterface.updateUrl();
                         }

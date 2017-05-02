@@ -430,6 +430,17 @@ angular.module('evtviewer.box')
                                 evtCommunication.getSourceTextFile('../../data/sources/'+scope.vm.source+'.xml', scope.vm.source).then(function() {
                                     sourceDoc = parsedData.getSourceDocument(scope.vm.source);
                                     console.log(parsedData.getSourceDocuments());
+                                    try {
+                                        var promises = [];
+                                        promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, scope.vm.source).promise);
+                                        $q.all(promises).then(function(){
+                                            scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
+                                            scope.vm.isLoading = false;
+                                        });
+                                    } catch(err) {
+                                        scope.vm.content = errorMsg;
+                                        scope.vm.isLoading = false;
+                                    }
                                 });
                             } else {
                             try {

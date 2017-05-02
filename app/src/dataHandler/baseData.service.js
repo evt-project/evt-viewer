@@ -82,7 +82,7 @@ angular.module('evtviewer.dataHandler')
             state.XMLSrcDocuments[id] = docElements;
             state.XMLSrcDocuments.length++;
             var parsedDocuments = evtParser.parseExternalDocuments(docElements, id);
-            _console.log('External Files parsed and stored', state.XMLExtDocuments);
+            _console.log('Source file parsed and stored', state.XMLSrcDocuments);
         } catch (e) {
             _console.log('Something wrong with the supplementary XML files '+e);
         }

@@ -295,6 +295,15 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.updateCurrentSourceText = function(sourceId) {
+            var isTextAvailable = parsedData.getSource(sourceId)._textAvailable
+            if (isTextAvailable) {
+                var isTextLoaded = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
+                if (!isTextLoaded) {
+                    evtCommunication.getSourceTextFile('../../data/sources/'+sourceId+'.xml', sourceId).then(function() {
+                        console.log('text parsed', sourceId);
+                    });
+                }
+            }
             state.currentSourceText = sourceId;
         };
 
