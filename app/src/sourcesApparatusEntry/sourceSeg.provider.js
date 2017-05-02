@@ -92,6 +92,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     currentEntry.setSelected();
                 } else {
                     currentEntry.unselect();
+                    currentEntry.panel._quoteOver = '';
+                    currentEntry.panel._quoteSelected = '';
                 }
             });
         };
@@ -99,6 +101,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         sourceSeg.unselectAll = function() {
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.unselect();
+                currentEntry.panel._quoteOver = '';
+                currentEntry.panel._quoteSelected = '';
             });
         };
 

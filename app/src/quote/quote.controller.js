@@ -60,12 +60,10 @@ angular.module('evtviewer.quote')
             if (vm.selected === false) {
                 if (!vm.apparatus.opened){
                     evtQuote.selectById(vm.quoteId);
-                    evtInterface.updateCurrentQuote(vm.quoteId);
                 }
             } else {
                 if (vm.apparatus.opened){
                     evtQuote.unselectAll();
-                    evtInterface.updateCurrentQuote('');
                 }
             }
         evtInterface.updateUrl();

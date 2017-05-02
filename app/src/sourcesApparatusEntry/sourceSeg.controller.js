@@ -1,6 +1,6 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourceSegCtrl', function(evtInterface, evtSourceSeg, evtBox) {
+.controller('sourceSegCtrl', function(evtInterface, evtSourceSeg, evtBox, evtQuote) {
     //$scope.content = {};
     var vm = this;
 
@@ -53,6 +53,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         if (vm.panel._quoteOver !== quoteId) {
             evtSourceSeg.mouseOutAll();
             vm.panel._quoteOver = quoteId;
+        } else {
+            vm.panel._quoteOver = '';
         }
     };
 
@@ -60,9 +62,10 @@ angular.module('evtviewer.sourcesApparatusEntry')
         $event.stopPropagation();
         //if (vm.quoteId !== quoteId) {
             vm.quoteId = quoteId;
+            vm.panel._quoteSelected = quoteId;
             //if (evtSourceSeg.getCurrentQuote() !== quoteId) {
                 evtSourceSeg.updateCurrentQuote(quoteId);
-                evtInterface.updateCurrentQuote(quoteId);
+                evtQuote.selectById(quoteId);
             //}
             evtBox.alignScrollToQuote(quoteId, vm.segId);            
         //}

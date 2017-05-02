@@ -171,7 +171,7 @@ angular.module('evtviewer.interface')
 })
 
 //TODO: Move this directive in a proper file
-.directive('ref', [function () {
+/*.directive('ref', [function () {
     return {
         restrict: 'C',
         scope: {
@@ -184,4 +184,4 @@ angular.module('evtviewer.interface')
             // scope.href = scope.target;
         }
     };
-}]);
+}]);*/

@@ -8,6 +8,7 @@
     ng-dblclick="vm.doubleClick($event)">
     <div class="sources-apparatus-entry_main-content">
         <div class="sources-apparatus-entry_main-content_header"
+             ng-if="vm.currentViewMode !== 'srcTxt'"
              compile="vm.head">
         </div>
         <div

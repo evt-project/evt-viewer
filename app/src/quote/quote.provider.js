@@ -93,6 +93,7 @@ angular.module('evtviewer.quote')
             angular.forEach(collection, function(currentQuote) {
                 currentQuote.unselect();
             });
+            evtInterface.updateCurrentQuote('');
         };
 
         quote.closeAllApparatus = function(skipId) {
@@ -112,7 +113,8 @@ angular.module('evtviewer.quote')
                 } else {
                     currentQuote.unselect();
                 }
-            });  
+            });
+            evtInterface.updateCurrentQuote(quoteId);  
             quote.setCurrentSourcesEntry(quoteId);
         };
 
