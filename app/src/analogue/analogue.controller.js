@@ -57,6 +57,7 @@ angular.module('evtviewer.analogue')
         } else {
             if (vm.apparatus.opened) {
                 evtAnalogue.unselectAll();
+                evtAnalogue.closeAllApparatus();
             }
         }
         evtInterface.updateUrl();
@@ -85,6 +86,8 @@ angular.module('evtviewer.analogue')
             vm.toggleSelectAnalogues($event);
             if (vm.isSelect() && !vm.apparatus.opened) {
                 vm.toggleApparatus($event);
+            } else {
+                evtAnaloguesApparatusEntry.unselectAll();
             }
         }
     };
