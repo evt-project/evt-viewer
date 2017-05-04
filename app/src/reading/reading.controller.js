@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, config) {
+.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, config, evtCriticalApparatusEntry, evtApparatuses, evtBox) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -55,8 +55,10 @@ angular.module('evtviewer.reading')
         if ( !vm.hidden ) {
             if ( vm.over === false ) {
                 evtReading.mouseOverByAppId(vm.appId);
+                evtCriticalApparatusEntry.mouseOverByAppId(vm.appId);
             } else {
                 evtReading.mouseOutAll();
+                evtCriticalApparatusEntry.mouseOutAll();
             }
         }
     };
@@ -81,7 +83,13 @@ angular.module('evtviewer.reading')
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
         if ( !vm.hidden && vm.over ) {
-            if ( !vm.apparatus._loaded) {
+            if (!vm.apparatus.inline) {
+                if (evtApparatuses.getCurrentApparatus() !== 'Critical Apparatus') {
+                    evtApparatuses.setCurrentApparatus('Critical Apparatus');
+                }
+                evtCriticalApparatusEntry.selectById(vm.appId);
+                evtBox.getById('apparatuses').scrollToAppEntry(vm.appId);
+            } else if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 
             

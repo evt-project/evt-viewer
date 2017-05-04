@@ -2,6 +2,10 @@ $critical-apparatus-entry-background-color : $base-color-light;
 $critical-apparatus-entry-background-color-darker : rgb(225, 225, 225);
 $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
+$critical-apparatus-entry-selected-background-color: rgb(195, 207, 213);
+$critical-apparatus-entry-selected-content-color: rgb(180, 195, 203);
+$critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
+
 .critical-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
@@ -32,6 +36,23 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         opacity:0;
         background: transparent !important;
     }
+
+    /*Styles added for the highlighting of the selected box within the appratuses panel*/
+    /*@author --> CM*/
+    &.over {
+        -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1); 
+    }
+
+    &.selected {
+        background-color: $critical-apparatus-entry-selected-background-color;
+        border-color: $critical-apparatus-entry-border-color;
+        .critical-apparatus-entry-panels {
+            background-color: $critical-apparatus-entry-selected-content-color;
+        }
+    }
+    /*--End of addition--*/
 
     &_tools{
         padding: 0;
@@ -111,6 +132,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             margin: 0 5px;
         }
     }
+
     &_other-content{
         border-top: 3px double $critical-apparatus-entry-border-color;
         border-bottom: 1px solid $critical-apparatus-entry-border-color;
@@ -200,6 +222,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             }
         }
     }
+
     .witnesses {
         display: inline;
         .wit {
@@ -220,6 +243,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             }
         }
     }
+    
     .attributes {
         &::before {
             content: " – ";

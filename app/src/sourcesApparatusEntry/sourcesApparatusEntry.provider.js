@@ -142,7 +142,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             currentSourcesEntry = quoteId;
         };
 
-        sourceEntry.getCurrentSourcesEntry = function(quoteId) {
+        sourceEntry.getCurrentSourcesEntry = function() {
             return currentSourcesEntry;
         };
 

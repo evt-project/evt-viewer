@@ -2,7 +2,10 @@
   class="critical-apparatus-entry"
   ng-mouseover="vm.toggleOverAppEntries($event);"
   ng-mouseout="vm.toggleOverAppEntries($event)"
-  ng-class="{'noTools': scopeViewMode !== 'collation' && !vm.isPinAvailable()}">
+  ng-click="vm.callbackClick($event)"
+  ng-class="{'noTools': (scopeViewMode !== 'collation' && scopeViewMode !== 'readingTxt') && !vm.isPinAvailable(),
+             'selected': vm.selected && scopeViewMode === 'readingTxt',
+             'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
       <span 
         class="app_lemma"
@@ -10,7 +13,7 @@
         compile="vm.content.lemma.content"></span>      
     
     <div class="critical-apparatus-entry_tools"
-      ng-if="scopeViewMode === 'collation' || vm.isPinAvailable()">
+      ng-if="(scopeViewMode === 'collation' || scopeVieMode === 'readingTxt') || vm.isPinAvailable()">
       <button-switch 
             title="Remove Pin"
             ng-if="vm.isPinAvailable() && vm.type === 'pinned'"
@@ -28,7 +31,7 @@
             ng-click="vm.togglePin()"></button-switch>
       <button-switch 
             title="Align Readings"
-            ng-if="vm.type === 'default' && scopeViewMode === 'collation'"
+            ng-if="vm.type === 'default' && (scopeViewMode === 'collation' || scopeViewMode === 'readingTxt')"
             data-label=""
             data-icon="v-align"
             data-type="alignReadings"

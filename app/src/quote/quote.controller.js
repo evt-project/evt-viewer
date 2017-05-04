@@ -46,9 +46,9 @@ angular.module('evtviewer.quote')
             if ( vm.over === false ) {
                 evtQuote.mouseOverByQuoteId(vm.quoteId);
                 evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
-                /*if (currentViewMode === srcTxt) {
+                /*if (vm.scopeViewMode === 'srcTxt') {
                     evtSourceSeg.mouseOverByQuoteId(vm.quoteId)
-                } */
+                }*/
             } else {
                 evtQuote.mouseOutAll();
                 evtSourcesApparatusEntry.mouseOutAll();
@@ -64,6 +64,7 @@ angular.module('evtviewer.quote')
         } else {
             if (vm.apparatus.opened){
                 evtQuote.unselectAll();
+                evtInterface.updateCurrentQuote('');
             }
         }
         evtInterface.updateUrl();
@@ -73,15 +74,13 @@ angular.module('evtviewer.quote')
         evtPopover.closeAll();
         if (vm.over) {
             if(!vm.apparatus.inline) {
-                    if (evtApparatuses.getCurrentApparatus() !== 'Sources') {
-                        evtApparatuses.setCurrentApparatus('Sources');
-                    }                    
-                    //Dopo l'avvio ancora non è stato creato alcun apparato, non c'è un apparato corrente
-                    evtSourcesApparatusEntry.selectById(vm.quoteId);
-                    evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
-                } else
-            
-            if ( !vm.apparatus._loaded) {
+                if (evtApparatuses.getCurrentApparatus() !== 'Sources') {
+                    evtApparatuses.setCurrentApparatus('Sources');
+                }                    
+                //Dopo l'avvio ancora non è stato creato alcun apparato, non c'è un apparato corrente
+                evtSourcesApparatusEntry.selectById(vm.quoteId);
+                evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
+            } else if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 
             

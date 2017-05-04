@@ -100,7 +100,7 @@ angular.module('evtviewer.dataHandler')
                 } else if (content[i].type === 'analogueContent') {
                     result += apparatus.getHeader(content[i], scopeWit);
                 } else if (content[i].content !== undefined) {
-                    result += apparatus.getText(content[i]);
+                    result += '<span class="textNode inAnalogueHeader">'+apparatus.getText(content[i])+'</span>';
                 }
             }
         }
@@ -110,8 +110,7 @@ angular.module('evtviewer.dataHandler')
 
     //Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
     apparatus.getText = function(entry) {
-        var elemName = entry.tagName || 'textNode',
-            result = '<span class="'+elemName+' inAnalogueHeader">',
+        var result = '',
             content = entry.content;
         if (content !== undefined) {
             for (var i = 0; i < content.length; i++) {
@@ -121,8 +120,7 @@ angular.module('evtviewer.dataHandler')
                     result += apparatus.getText(content[i]);
                 }
             }
-        }
-        result += '</span>';        
+        }        
         return result;
     }
 

@@ -72,12 +72,12 @@ angular.module('evtviewer.analogue')
                 }
                 evtAnaloguesApparatusEntry.selectById(vm.analogueId);
                 evtBox.getById('apparatuses').scrollToAnaloguesEntry(vm.analogueId);
-            }
-        } else if (!vm.apparatus._loaded) {
-            vm.apparatus._loaded = true;
+            } else if (!vm.apparatus._loaded) {
+                vm.apparatus._loaded = true;
+            } 
+            evtAnalogue.closeAllApparatus(vm.uid);
+            vm.apparatus.opened = !vm.apparatus.opened;
         }
-        evtAnalogue.closeAllApparatus(vm.uid);
-        vm.apparatus.opened = !vm.apparatus.opened;
     };
 
     this.callbackClick = function($event) {

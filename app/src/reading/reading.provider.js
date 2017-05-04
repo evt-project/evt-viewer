@@ -65,7 +65,8 @@ angular.module('evtviewer.reading')
                     opened            : false,
                     content           : {},
                     _loaded           : false,
-                    _subContentOpened : 'criticalNote'
+                    _subContentOpened : 'criticalNote',
+                    inline            : scope.currentViewMode !== 'readingTxt'
                 },
                 selected         : entryId === reading.getCurrentAppEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
@@ -140,7 +141,7 @@ angular.module('evtviewer.reading')
                 } else {
                     currentReading.unselect();
                 }
-            });  
+            }); 
             reading.setCurrentAppEntry(appId);
         };
 

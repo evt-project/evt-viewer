@@ -8,6 +8,8 @@ angular.module('evtviewer.criticalApparatusEntry')
         defaults = _defaults;
     };
 
+    var currentAppEntry = '';
+
     this.$get = function(parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus) {
         var appEntry   = {},
             collection = {},
@@ -95,8 +97,10 @@ angular.module('evtviewer.criticalApparatusEntry')
                 type              : type,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
+                selected          : false,
                 tabs              : tabs,
-                witnessesGroups   : witnessesGroups
+                witnessesGroups   : witnessesGroups,
+                currentViewMode   : scope.scopeViewMode
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -148,6 +152,50 @@ angular.module('evtviewer.criticalApparatusEntry')
             if (index >= 0) {
                 pinned.splice(index, 1);
             }
+        };
+
+        appEntry.setCurrentAppEntry = function(appId) {
+            if (currentAppEntry !== appId) {
+                currentAppEntry = appId;
+            }
+        };
+
+        appEntry.getCurrentAppEntry = function() {
+            return currentAppEntry;
+        };
+
+        appEntry.mouseOutAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.mouseOut();
+            });
+        };
+
+        appEntry.mouseOverByAppId = function(appId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.appId === appId) {
+                    currentEntry.mouseOver();
+                } else {
+                    currentEntry.mouseOut();
+                }
+            });
+        };
+
+        appEntry.unselectAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.unselect();
+            });
+        };
+
+        appEntry.selectById = function(appId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.appId === appId) {
+                    currentEntry.setSelected();
+                } else {
+                    currentEntry.unselect();
+                    //currentEntry.closeSubContent();
+                }
+            });
+            appEntry.setCurrentAppEntry(appId);
         };
 
         return appEntry;
