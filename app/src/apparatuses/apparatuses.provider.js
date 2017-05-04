@@ -26,13 +26,16 @@ angular.module('evtviewer.apparatuses')
             //Aggiungere nella configurazione, un array con l'ordine degli apparati
             //E la struttura dei tabs
             var scopeHelper = {},
-                currentApparatus = scope.currentApparatus || '',//l'apparato selezionato nell'interfaccia
+                currentApparatus = scope.currentApparatus || 'Critical Apparatus',//l'apparato selezionato nell'interfaccia
                 apparatuses = [],
                 appStructure = 'tabs'
                 appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
                 quotesList = parsedData.getQuotes()._indexes.encodingStructure,
                 analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;//tutti gli apparati disponibili
 
+            if (currentApparatus === 'Critical Apparatus') {
+                evtInterface.updateCurrentApparatus('Critical Apparatus');
+            }
             /*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
 
             
