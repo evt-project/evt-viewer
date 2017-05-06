@@ -30,6 +30,10 @@
 /* SINGLE BIBLIOGRAPHIC ENTRY */
 /* ************************** */
 
+/* .biblRef > span[data-style=unstructuredBibl] span:last-of-type:after {
+	content: '';
+} */
+
 .biblRef {
     background-color: initial;
     @include set(transition-property, background-color);
@@ -176,7 +180,7 @@
 	content: ' edited by '
 }
 
-.biblRef .editors[data-style=chicago] > .editor:last-child:before{
+.biblRef .editors[data-style=chicago] > .editor:last-child:not(:first-child):before{
 	content: ' and '
 }
 
@@ -384,10 +388,9 @@
 	content: '): '
 }
 
-.biblRef[pubblicationtype=j] .date[data-style=mla]:last-child:after{
-	content: ') ';
+.biblRef[pubblicationtype=j] .date[data-style=mla]:last-of-type:after{
+	content: '). Print. ' !important;
 }
-
 .biblRef[pubblicationtype=j]  .pp[data-style=mla]:after{
 	content: '. '
 }
@@ -420,8 +423,8 @@
 	content: '): '
 }
 
-.biblRef[pubblicationtype=a] .date[data-style=mla]:last-child:after{
-	content: ') ' !important;
+.biblRef[pubblicationtype=a] .date[data-style=mla]:last-of-type:after{
+	content: '). Print. ' !important;
 }
 
 .biblRef[pubblicationtype=a]  .pp[data-style=mla]:after{
@@ -457,7 +460,7 @@
 }
 
 .biblRef[pubblicationtype=u] .date[data-style=mla]:last-child:after{
-	content: '. ' !important;
+	content: '. Print.' !important;
 }
 
 .biblRef[pubblicationtype=u]  .pp[data-style=mla]:after{

@@ -13,6 +13,7 @@ angular.module('evtviewer.bibliography')
 	//controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
 	if(!evtBibliographyParser.bibliographicStyleInfoDetected()){
 		vm.biblSortStyleSelectVisibility = false;
+		vm.initialSelectedStyle = '';
 	}
 	
     //recupero i criteri di ordinamento (le label)

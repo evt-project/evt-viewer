@@ -23,7 +23,9 @@ angular.module('evtviewer.dataHandler')
         editorDef = '<editor>',
         dateDef = '<date>',
         noteDef = '<note>',
-        idnoDef = '<idno>';
+        idnoDef = '<idno>',
+		sourceDescDef = '<sourceDesc>',
+		listBiblDef = '<listBibl>';
 
     // Tags in cui cercare info bibliografiche
     var bibliographyDef = {biblStruct : '<biblStruct>', bibl : '<bibl>'};
@@ -41,11 +43,14 @@ Questo file si compone sostanzialmente di 3 funzioni principali:
         var currentDocument = angular.element(doc);
 
         for (var key in bibliographyDef) {
-			var resultsSet = $(bibliographyDef[key].replace(/[<>]/g, ''),doc);
+			var listBibl = currentDocument.find(listBiblDef.replace(/[<>]/g, ''));
+			var resultsSet = listBibl.find(bibliographyDef[key].replace(/[<>]/g, ''));
 			/*Non vogliamo i tag annidati ma solo quelli top, 
 			il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
 			resultsSet = $(resultsSet).filter(function(){
-				return $(this).parents(bibliographyDef[key].replace(/[<>]/g, '')).length === 0;
+				//non vogliamo niente che sia dentro sourceDesc ne che sia annidato dentro un altro bibl,
+				//scartiamo i bibl annidati per poter lavorare direttamente con il bibl genitore dei sotto-bibl
+				return $(this).parents(sourceDescDef.replace(/[<>]/g, '')+','+bibliographyDef[key].replace(/[<>]/g, '')).length === 0;
 			});
 			angular.forEach(resultsSet,
                 function(element) {
@@ -80,306 +85,329 @@ Questo file si compone sostanzialmente di 3 funzioni principali:
         };
 
         var currentDocument = angular.element(element);
-
+		var unstructuredBibl = false;
+		var nodi = currentDocument[0].childNodes;
+		for(var c=0;c<nodi.length;c++){
+			if (nodi[c].nodeType === 3 && nodi[c].textContent.trim() !== ''){
+				unstructuredBibl = true;
+				}
+		}
+		
         newBiblElement.id = currentDocument.attr('xml:id') ? currentDocument.attr('xml:id') : evtParser.xpath(element);
-		//estraiamo le note dentro <bibl>/<biblStruct>
-		extractNote(currentDocument,newBiblElement);
-        var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, ''));
-		extractTitleandTitleLevel(angular.element(analyticElem),newBiblElement);
+		if(!unstructuredBibl){
+			//estraiamo le note dentro <bibl>/<biblStruct>
+			extractNote(currentDocument,newBiblElement);
+			var analyticElem = currentDocument.find(analyticDef.replace(/[<>]/g, ''));
+			extractTitleandTitleLevel(angular.element(analyticElem),newBiblElement);
 
-		function extractNameSurnameForename(whereToFind, whereToPutInfoArray) {
-			angular.forEach(whereToFind, function(element) {
-				var newPersonElement = {
-					name: '',
-					surname: '',
-					forename: ''
-				};	
-				/*/
-				elemento = dove cercare
-				lastRelevantParent = ultimo genitore conosciuto tra quelli di cui vogliamo estrarre info (name,surname,forename,author),
-				dobbiamo tenerne traccia per sapere dove salvare poi via via i dati ricevuti
-				/*/
-				function parseInfo(elemento,lastRelevantParent){
-					if(elemento.nodeType === 3){
-						var text = elemento.textContent.substr(0,1).toUpperCase() + elemento.textContent.substr(1);
-						if (lastRelevantParent){
-							switch (lastRelevantParent.tagName){
-								case 'author':
-								case 'name':	
-									newPersonElement.name += text + ' ';			
-									break;
-								case 'surname':	
-									newPersonElement.surname += text + ' ';			
-									break;
-								case 'forename':
-									newPersonElement.forename += text + ' ';	
-									break;
+			function extractNameSurnameForename(whereToFind, whereToPutInfoArray) {
+				angular.forEach(whereToFind, function(element) {
+					var newPersonElement = {
+						name: '',
+						surname: '',
+						forename: ''
+					};	
+					/*/
+					elemento = dove cercare
+					lastRelevantParent = ultimo genitore conosciuto tra quelli di cui vogliamo estrarre info (name,surname,forename,author),
+					dobbiamo tenerne traccia per sapere dove salvare poi via via i dati ricevuti
+					/*/
+					function parseInfo(elemento,lastRelevantParent){
+						if(elemento.nodeType === 3){
+							var text = elemento.textContent.substr(0,1).toUpperCase() + elemento.textContent.substr(1);
+							if (lastRelevantParent){
+								switch (lastRelevantParent.tagName){
+									case 'author':
+									case 'editor':
+									case 'name':	
+										newPersonElement.name += text + ' ';			
+										break;
+									case 'surname':	
+										newPersonElement.surname += text + ' ';			
+										break;
+									case 'forename':
+										newPersonElement.forename += text + ' ';	
+										break;
+								}
 							}
 						}
+						angular.forEach(elemento.childNodes,function(el){
+							switch (el.tagName){
+								case 'author':
+								case 'editor':
+								case 'name':						
+								case 'surname':
+								case 'forename':
+									parseInfo(el,el);
+									break;
+								default:
+									parseInfo(el,lastRelevantParent);
+							}
+						});	
 					}
-					angular.forEach(elemento.childNodes,function(el){
-						switch (el.tagName){
-							case 'author':
-							case 'name':						
-							case 'surname':
-							case 'forename':
-								parseInfo(el,el);
-								break;
-							default:
-								parseInfo(el,lastRelevantParent);
-						}
-					});	
-				}
-				parseInfo(element,element);
-				//proviamo a usare un po' di euristica se non è dato nome/cognome
-				if (newPersonElement.name !== '' && newPersonElement.surname === '') {
-					var extractedAuthorInfo = extractSurnameNameFromString(newPersonElement.name);
-					newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.surname;
-					newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.name;
-				}
-				whereToPutInfoArray.push(newPersonElement);
-			});
-		}
-		
-		function extractTitleandTitleLevel (whereToFind,whereToPutInfoArray) {
-			var titleEl = whereToFind.find('title');
-            if (titleEl && titleEl.length > 0) {
-				var titleLevel = titleEl[0].getAttribute('level');
-				titleLevel = titleLevel !== null ? titleLevel.substr(0,1) : '';
-				if ( whereToFind[0].tagName === monographDef.replace(/[<>]/g, '') ) {
-					//se @title non è dato possiamo assumere che sia m perchè <title> è contenuto dentro <monograph>, uguale per gli altri
-					titleLevel = titleLevel === '' ? 'm' : titleLevel;
-					whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
-					whereToPutInfoArray.type += titleLevel;
-				}
-				else if ( whereToFind[0].tagName === analyticDef.replace(/[<>]/g, '') ) {
-					titleLevel = titleLevel === '' ? 'a' : titleLevel;
-					whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;	
-					whereToPutInfoArray.type += titleLevel;					
-				}
-            }
-		}
-		
-		//cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
-		function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
-			angular.forEach(whereToFind.children(), function(el) {
-				if (el.tagName === 'date') {
-					whereToPutInfoArray.date = el.innerText;
-				}
-				else if (el.tagName === 'pubPlace') {
-					whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? el.innerText : whereToPutInfoArray.pubPlace;
-				}
-				else if (el.tagName === 'publisher') {
-					whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? el.innerText : whereToPutInfoArray.publisher;
-				}			
-			});
-		}
-		//serve a estrarre info solo per i tag bibl
-		function biblExtractInfo(whereToFind,whereToPutInfoArray) {
-			var level;
-			children = whereToFind.children;
-			for (var c=0; c<children.length; c++) {
-				if (children[c].tagName === 'title') {
-					level = children[c].getAttribute('level');
-					if (level !== null && typeof level !== 'undefined') {
-						level = level.substring(0, 1);
+					parseInfo(element,element);
+					//proviamo a usare un po' di euristica se non è dato nome/cognome
+					if (newPersonElement.name !== '' && newPersonElement.surname === '') {
+						var extractedAuthorInfo = extractSurnameNameFromString(newPersonElement.name);
+						newPersonElement.surname = extractedAuthorInfo.surname !== '' ? extractedAuthorInfo.surname : newPersonElement.surname;
+						newPersonElement.name = extractedAuthorInfo.name !== '' ? extractedAuthorInfo.name : newPersonElement.name;
 					}
-					//se il level è m o se non è dato salviamo il titolo
-					if (level === 'm' || level === 'j' || level === 'u' || level === null || typeof level === 'undefined') {
-						whereToPutInfoArray.titleMonogr = children[c].textContent;	
-						whereToPutInfoArray.type += level;
+					whereToPutInfoArray.push(newPersonElement);
+				});
+			}
+			
+			function extractTitleandTitleLevel (whereToFind,whereToPutInfoArray) {
+				var titleEl = whereToFind.find('title');
+				if (titleEl && titleEl.length > 0) {
+					var titleLevel = titleEl[0].getAttribute('level');
+					titleLevel = titleLevel !== null ? titleLevel.substr(0,1) : '';
+					if ( whereToFind[0].tagName === monographDef.replace(/[<>]/g, '') ) {
+						//se @title non è dato possiamo assumere che sia m perchè <title> è contenuto dentro <monograph>, uguale per gli altri
+						titleLevel = titleLevel === '' ? 'm' : titleLevel;
+						whereToPutInfoArray.titleMonogr = titleEl[0].textContent;
+						whereToPutInfoArray.type += titleLevel;
 					}
-					//se è dato il level a lo salviamo
-					if (level === 'a' && level !== null && typeof level !== 'undefined') {
-						whereToPutInfoArray.titleAnalytic = children[c].textContent;
-						whereToPutInfoArray.type += level;
-					}						
-				}
-				//se abbiamo trovato che il level è m o se non è dato salviamo altre info
-				if (typeof level === 'undefined' || level === null || level === 'm') {
-					//il tag date ha precedenza sulla data trovata dentro edition
-					if (children[c].tagName === 'date') {
-						whereToPutInfoArray.date = children[c].textContent;
+					else if ( whereToFind[0].tagName === analyticDef.replace(/[<>]/g, '') ) {
+						titleLevel = titleLevel === '' ? 'a' : titleLevel;
+						whereToPutInfoArray.titleAnalytic = titleEl[0].textContent;	
+						whereToPutInfoArray.type += titleLevel;					
 					}
-					else if (children[c].tagName === 'pubPlace') {
-						whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? children[c].textContent : whereToPutInfoArray.pubPlace;
-					}
-					else if (children[c].tagName === 'publisher') {
-						whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? children[c].textContent : whereToPutInfoArray.publisher;
-					}
-					else if (children[c].tagName === 'edition') {           
-						whereToPutInfoArray.editionMonogr = whereToPutInfoArray.editionMonogr === '' ? children[c].textContent : whereToPutInfoArray.editionMonogr;
-						var date = angular.element(children[c]).find('date');
-						//dentro edition può starci la data dell'opera, nel caso prendiamo la prima
-						if (date && date.length > 0) {
-							whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? date[0].textContent : whereToPutInfoArray.date;
-						}
-					}				
 				}
 			}
-		}
-		
-		function extractBiblScopeCitedRange(whereToFind, whereToPutInfoArray) {
-			angular.forEach(whereToFind, function(el) {
-				//prendere attributo type o unit di ogni biblScope trovato
-				angular.forEach(['type', 'unit'], function(attr) {
-					var attrValue = el.getAttribute(attr);
-					var additionalAttrFrom = el.getAttribute('from');
-					var additionalAttrTo = el.getAttribute('to');
-					if (attrValue !== null) {
-						if ( !attrValue in whereToPutInfoArray ) {
-							//diamo la precedenza agli attributi @from & @to
-							if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
-								whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
-							}	
-							else if(el.textContent !== ''){
-								whereToPutInfoArray[attrValue] = el.textContent;
-							}
-						}
-					}						
-				});
-			})
-		}
-
-		function extractNote(whereToFind, whereToPutInfoArray){
-            angular.forEach(whereToFind.find('note'), function(el) {
-                //salviamo le note dentro imprint che è dentro monogr
-				var type = el.getAttribute('type');
-				if(type === null){
-					//se il tag note non ha specificato l'attributo type allora la chiave è note + <numero-nota>
-					var c=1;
-					type = 'note-'+c;
-					while(type in whereToPutInfoArray.note){
-						type = 'note' + (++c);
+			
+			//cerchiamo la data dentro <bibl> o <biblStruct>, poi verrà cercata anche dentro <imprint>
+			function extractDatePubPlacePublisher(whereToFind,whereToPutInfoArray){
+				angular.forEach(whereToFind.children(), function(el) {
+					if (el.tagName === 'date') {
+						whereToPutInfoArray.date = el.innerText;
 					}
+					else if (el.tagName === 'pubPlace') {
+						whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? el.innerText : whereToPutInfoArray.pubPlace;
+					}
+					else if (el.tagName === 'publisher') {
+						whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? el.innerText : whereToPutInfoArray.publisher;
+					}			
+				});
+			}
+			//serve a estrarre info solo per i tag bibl
+			function biblExtractInfo(whereToFind,whereToPutInfoArray) {
+				var level;
+				children = whereToFind.children;
+				for (var c=0; c<children.length; c++) {
+					if (children[c].tagName === 'title') {
+						level = children[c].getAttribute('level');
+						if (level !== null && typeof level !== 'undefined') {
+							level = level.substring(0, 1);
+						}
+						//se il level è m o se non è dato salviamo il titolo
+						if (level === 'm' || level === 'j' || level === 'u' || level === null || typeof level === 'undefined') {
+							whereToPutInfoArray.titleMonogr = children[c].textContent;	
+							whereToPutInfoArray.type += level;
+						}
+						//se è dato il level a lo salviamo
+						if (level === 'a' && level !== null && typeof level !== 'undefined') {
+							whereToPutInfoArray.titleAnalytic = children[c].textContent;
+							whereToPutInfoArray.type += level;
+						}						
+					}
+					//se abbiamo trovato che il level è m o se non è dato salviamo altre info
+					if (typeof level === 'undefined' || level === null || level === 'm') {
+						//il tag date ha precedenza sulla data trovata dentro edition
+						if (children[c].tagName === 'date') {
+							whereToPutInfoArray.date = children[c].textContent;
+						}
+						else if (children[c].tagName === 'pubPlace') {
+							whereToPutInfoArray.pubPlace = whereToPutInfoArray.pubPlace === '' ? children[c].textContent : whereToPutInfoArray.pubPlace;
+						}
+						else if (children[c].tagName === 'publisher') {
+							whereToPutInfoArray.publisher = whereToPutInfoArray.publisher === '' ? children[c].textContent : whereToPutInfoArray.publisher;
+						}
+						else if (children[c].tagName === 'edition') {           
+							whereToPutInfoArray.editionMonogr = whereToPutInfoArray.editionMonogr === '' ? children[c].textContent : whereToPutInfoArray.editionMonogr;
+							var date = angular.element(children[c]).find('date');
+							//dentro edition può starci la data dell'opera, nel caso prendiamo la prima
+							if (date && date.length > 0) {
+								whereToPutInfoArray.date = whereToPutInfoArray.date === '' ? date[0].textContent : whereToPutInfoArray.date;
+							}
+						}				
+					}
+				}
+			}
+			
+			function extractBiblScopeCitedRange(whereToFind, whereToPutInfoArray) {
+				angular.forEach(whereToFind, function(el) {
+					//prendere attributo type o unit di ogni biblScope trovato
+					angular.forEach(['type', 'unit'], function(attr) {
+						var attrValue = el.getAttribute(attr);
+						var additionalAttrFrom = el.getAttribute('from');
+						var additionalAttrTo = el.getAttribute('to');
+						if (attrValue !== null) {
+							if ( !attrValue in whereToPutInfoArray ) {
+								//diamo la precedenza agli attributi @from & @to
+								if(additionalAttrTo !== null && additionalAttrFrom !== null && additionalAttrTo !== '' && additionalAttrFrom !== ''){
+									whereToPutInfoArray[attrValue] = additionalAttrFrom + '-' + additionalAttrTo;
+								}	
+								else if(el.textContent !== ''){
+									whereToPutInfoArray[attrValue] = el.textContent;
+								}
+							}
+						}						
+					});
+				})
+			}
+
+			function extractNote(whereToFind, whereToPutInfoArray){
+				angular.forEach(whereToFind.find('note'), function(el) {
+					//salviamo le note dentro imprint che è dentro monogr
+					var type = el.getAttribute('type');
+					if(type === null){
+						//se il tag note non ha specificato l'attributo type allora la chiave è note + <numero-nota>
+						var c=1;
+						type = 'note-'+c;
+						while(type in whereToPutInfoArray.note){
+							type = 'note' + (++c);
+						}
+					} 
+					whereToPutInfoArray.note[type] = el.textContent;
+				});			
+			}
+			
+			//estraiamo gli autori
+			extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
+			//estraiamo gli editori
+			extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
+
+			//controllo se è un tag bibl
+			if (currentDocument[0].tagName === bibliographyDef.bibl.replace(/[<>]/g, '')) {
+				//qui non cerchiamo le note perchè lo abbiamo già fatto all'inizio
+				biblExtractInfo(currentDocument[0],newBiblElement);
+				extractBiblScopeCitedRange(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+				extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+				//solo un sotto-livello di bibl viene analizzato
+				children = currentDocument.children();
+				children = $(children).filter(function(key,el){
+					return el.tagName === bibliographyDef.bibl.replace(/[<>]/g, '');
+				});
+				angular.forEach(children,function(nestedBibl){	
+					biblExtractInfo(nestedBibl,newBiblElement);
+				});
+			}
+			else {
+				extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+				extractDatePubPlacePublisher(currentDocument,newBiblElement);
+			}
+
+			var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
+			//entriamo nel tag monogr
+			if (monographElem) {
+				monographElem = angular.element(monographElem);
+				extractTitleandTitleLevel(monographElem,newBiblElement);
+
+				var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
+				var monographEditions = monographElem.find('edition');
+				newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : newBiblElement.editionMonogr;
+				var date = monographEditions.find("date");
+				//magari la data è già stata presa dentro <bibl>
+				if (newBiblElement.date === '') {
+					newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
+				}
+
+			   
+				//biblscope può stare dentro monogr ma anche dentro imprint
+				extractBiblScopeCitedRange(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+				//estraiamo le note
+				extractNote(monographElem,newBiblElement);
+
+				//entriamo dentro imprint che è dentro monogr
+				var monographImprints = angular.element(monographElem.find(imprintDef.replace(/[<>]/g, '')));
+				if (monographImprints && monographImprints.length > 0) {
+					var monographImprint = angular.element(monographImprints[0]);
+					//dentro imprint salviamo i biblScope
+					extractBiblScopeCitedRange(monographImprint.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+					//salviamo la data dentro monogr
+					var imprintsDates = monographImprints.find('date');
+					/*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
+					oppure contiene ''.
+					Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
+					Magari la troviamo anche subito dentro <bibl>/*/
+					newBiblElement.date = imprintsDates && imprintsDates.length > 0 ? imprintsDates[0].textContent : '';
+
+					var imprintsPublishers = monographImprints.find('publisher');
+					if (newBiblElement.publisher === '') {
+						newBiblElement.publisher = imprintsPublishers && imprintsPublishers.length > 0 ? imprintsPublishers[0].textContent : '';
+					}
+					var imprintsPubPlaces = monographImprints.find('pubPlace');
+					if (newBiblElement.pubPlace === '') {
+						newBiblElement.pubPlace = imprintsPubPlaces && imprintsPubPlaces.length > 0 ? imprintsPubPlaces[0].textContent : '';
+					}
+					extractNote(monographImprints,newBiblElement);
+				}
+			}
+			//entriamo nel tag series
+			var seriesElem = angular.element(currentDocument.find(seriesDef.replace(/[<>]/g, '')));
+			if (seriesElem && seriesElem.length > 0) {
+				//salviamo la data dentro monogr
+				var dates = seriesElem.find('date');
+				/*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
+				oppure contiene '', possiamo quindi riassegnare newBiblElement.date a se stesso senza problemi.
+				Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
+				Magari la troviamo anche subito dentro <bibl>/*/
+				if (newBiblElement.date === '') {
+					newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
+				}
+				//magari è gia stato preso dentro <monogr>, quindi non vogliamo rischiare di sovrascriverlo
+				var publishers = seriesElem.find('publisher');
+				if (newBiblElement.publisher === '') {
+					newBiblElement.publisher = publishers && publishers.length > 0 ? publishers[0].textContent : '';
+				}
+				//magari è gia stato preso dentro <monogr>, quindi non vogliamo rischiare di sovrascriverlo
+				var pubPlaces = seriesElem.find('pubPlace');
+				if (newBiblElement.pubPlace === '') {
+					newBiblElement.pubPlace = pubPlaces && pubPlaces.length > 0 ? pubPlaces[0].textContent : '';
+				}
+				/* angular.forEach(seriesElem.find('note'), function(el) {
+					//salviamo le note dentro imprint che è dentro monogr
+					newBiblElement.note[el.getAttribute('type')] = el.textContent;
+				}); */
+				extractNote(seriesElem,newBiblElement);
+				//dentro series ci sono anche i biblScope
+				extractBiblScopeCitedRange(seriesElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
+			}
+
+
+			angular.forEach(currentDocument.find(idnoDef.replace(/[<>]/g, '')), function(el) {
+				//prendere attributo type
+				var type = el.getAttribute('type');
+				if(type !== null){
+					//non si può salvare un <idno> se non si conosce l'attributo type, è essenziale
+					newBiblElement.idno[type] = el;
 				} 
-                whereToPutInfoArray.note[type] = el.textContent;
-            });			
+				
+			});
+			if ( !isChanged(newBiblElement) ) {
+				newBiblElement.plainText = currentDocument[0].textContent;
+			}
+			//se è stato esplicitato l'autore e il titolo allora abbiamo abbastanza info per gli stili bibliografici
+			if (getAuthor(newBiblElement) && getTitleMonogr(newBiblElement)){
+				bibliographicStyleInfoDetected = true;
+			}
 		}
-		
-		//estraiamo gli autori
-		extractNameSurnameForename(currentDocument.find('author'), newBiblElement.author);
-		//estraiamo gli editori
-        extractNameSurnameForename(currentDocument.find(editorDef.replace(/[<>]/g, '')), newBiblElement.editor);
-
-		//controllo se è un tag bibl
-		if (currentDocument[0].tagName === bibliographyDef.bibl.replace(/[<>]/g, '')) {
-			//qui non cerchiamo le note perchè lo abbiamo già fatto all'inizio
-			biblExtractInfo(currentDocument[0],newBiblElement);
-			extractBiblScopeCitedRange(currentDocument.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-			extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-			//solo un sotto-livello di bibl viene analizzato
-			children = currentDocument.children();
-			children = $(children).filter(function(key,el){
-				return el.tagName === bibliographyDef.bibl.replace(/[<>]/g, '');
-			});
-			angular.forEach(children,function(nestedBibl){	
-				biblExtractInfo(nestedBibl,newBiblElement);
-			});
-        }
 		else {
-			extractBiblScopeCitedRange(currentDocument.find(citedRangeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-			extractDatePubPlacePublisher(currentDocument,newBiblElement);
-		}
-
-        var monographElem = currentDocument.find(monographDef.replace(/[<>]/g, ''));
-        //entriamo nel tag monogr
-        if (monographElem) {
-            monographElem = angular.element(monographElem);
-			extractTitleandTitleLevel(monographElem,newBiblElement);
-
-            var monographEditor = monographElem.find(editorDef.replace(/[<>]/g, ''));
-            var monographEditions = monographElem.find('edition');
-            newBiblElement.editionMonogr = monographEditions && monographEditions.length > 0 ? monographEditions[0].textContent : newBiblElement.editionMonogr;
-            var date = monographEditions.find("date");
-            //magari la data è già stata presa dentro <bibl>
-            if (newBiblElement.date === '') {
-                newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
-            }
-
-           
-            //biblscope può stare dentro monogr ma anche dentro imprint
-            extractBiblScopeCitedRange(monographElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-			//estraiamo le note
-			extractNote(monographElem,newBiblElement);
-
-            //entriamo dentro imprint che è dentro monogr
-            var monographImprints = angular.element(monographElem.find(imprintDef.replace(/[<>]/g, '')));
-            if (monographImprints && monographImprints.length > 0) {
-                var monographImprint = angular.element(monographImprints[0]);
-                //dentro imprint salviamo i biblScope
-                extractBiblScopeCitedRange(monographImprint.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-                //salviamo la data dentro monogr
-                var imprintsDates = monographImprints.find('date');
-                /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
-                oppure contiene ''.
-                Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
-                Magari la troviamo anche subito dentro <bibl>/*/
-                newBiblElement.date = imprintsDates && imprintsDates.length > 0 ? imprintsDates[0].textContent : '';
-
-                var imprintsPublishers = monographImprints.find('publisher');
-                if (newBiblElement.publisher === '') {
-                    newBiblElement.publisher = imprintsPublishers && imprintsPublishers.length > 0 ? imprintsPublishers[0].textContent : '';
-                }
-                var imprintsPubPlaces = monographImprints.find('pubPlace');
-                if (newBiblElement.pubPlace === '') {
-                    newBiblElement.pubPlace = imprintsPubPlaces && imprintsPubPlaces.length > 0 ? imprintsPubPlaces[0].textContent : '';
-                }
-				extractNote(monographImprints,newBiblElement);
-            }
-        }
-		//entriamo nel tag series
-        var seriesElem = angular.element(currentDocument.find(seriesDef.replace(/[<>]/g, '')));
-        if (seriesElem && seriesElem.length > 0) {
-            //salviamo la data dentro monogr
-            var dates = seriesElem.find('date');
-            /*/qua newBiblElement.date contiene già o la data estratta dentro <edition> (che può contenere <date>
-            oppure contiene '', possiamo quindi riassegnare newBiblElement.date a se stesso senza problemi.
-            Se è disponibile una data dentro <imprint> prendiamo quella altrimenti la prendiamo dentro <edition> o dentro <monogr>.
-            Magari la troviamo anche subito dentro <bibl>/*/
-            if (newBiblElement.date === '') {
-                newBiblElement.date = date && date.length > 0 ? date[0].textContent : '';
-            }
-            //magari è gia stato preso dentro <monogr>, quindi non vogliamo rischiare di sovrascriverlo
-            var publishers = seriesElem.find('publisher');
-            if (newBiblElement.publisher === '') {
-                newBiblElement.publisher = publishers && publishers.length > 0 ? publishers[0].textContent : '';
-            }
-            //magari è gia stato preso dentro <monogr>, quindi non vogliamo rischiare di sovrascriverlo
-            var pubPlaces = seriesElem.find('pubPlace');
-            if (newBiblElement.pubPlace === '') {
-                newBiblElement.pubPlace = pubPlaces && pubPlaces.length > 0 ? pubPlaces[0].textContent : '';
-            }
-            /* angular.forEach(seriesElem.find('note'), function(el) {
-                //salviamo le note dentro imprint che è dentro monogr
-                newBiblElement.note[el.getAttribute('type')] = el.textContent;
-            }); */
-			extractNote(seriesElem,newBiblElement);
-            //dentro series ci sono anche i biblScope
-            extractBiblScopeCitedRange(seriesElem.find(biblScopeDef.replace(/[<>]/g, '')), newBiblElement.biblScope);
-        }
-
-
-        angular.forEach(currentDocument.find(idnoDef.replace(/[<>]/g, '')), function(el) {
-            //prendere attributo type
-			var type = el.getAttribute('type');
-			if(type !== null){
-				//non si può salvare un <idno> se non si conosce l'attributo type, è essenziale
-				newBiblElement.idno[type] = el;
-			} 
-            
-        });
-		if ( !isChanged(newBiblElement) ) {
-			newBiblElement.plainText = currentDocument[0].textContent;
+			var nodi = currentDocument.find('*');
+			//sorting dal più profondo nel dom al più esterno
+			nodi = nodi.sort(function(cb1, cb2) {
+				return $(cb2).parents().length - $(cb1).parents().length;
+			});
+			nodi.replaceWith(function() {
+				//var aperturaTag = $(this).prop("tagName") === 'title' ? '<span style=\'font-weight: bold\'>' : '<span>';
+				return '<span class="unstructuredBibl '+this.tagName+'">'+$(this).html()+'</span>';
+			});
+			newBiblElement.plainText = $(currentDocument).html();
 		}
 		//toglie il punto finale (se l'utente l'ha inserito) dal testo estratto e toglie gli spazi (trim)
-        removeEndingPointTrim(newBiblElement,true,true);
-		//se è stato esplicitato l'autore e il titolo allora abbiamo abbastanza info per gli stili bibliografici
-		if (getAuthor(newBiblElement) && getTitleMonogr(newBiblElement)){
-			bibliographicStyleInfoDetected = true;
-		}
-        return newBiblElement;
-    }
+		removeEndingPointTrim(newBiblElement,true,true);
+		return newBiblElement;
+	}
 
     function isObject(obj) {
         return obj && ((typeof obj).toLowerCase() === "object");
@@ -421,7 +449,7 @@ Questo file si compone sostanzialmente di 3 funzioni principali:
 					else {
                         var res = removeEndingPointTrim(arr[key],false,true);
 					}
-                    if (res) {
+                    if (typeof res !== 'undefined') {
                         arr[key] = res;
                     }
                 }
@@ -465,8 +493,13 @@ Questo file si compone sostanzialmente di 3 funzioni principali:
     parser.formatResult = function(styleCode, newBiblElement) {
         if (!newBiblElement.outputs[styleCode]) {
             var string = '';
+			if(styleCode === null || typeof styleCode === 'undefined' || styleCode === ''){
+				if (newBiblElement.plainText != '' ) {
+					string += '<span data-style="unstructuredBibl">'+newBiblElement.plainText+'<span>'; 
+				}	
+			}
             //presentiamo i risultati estratti, in teoria in base a un codice scegliamo l'otput desiderato
-            if (styleCode === CHICAGO_STYLE) {
+            else if (styleCode === CHICAGO_STYLE) {
 				if (newBiblElement.plainText != '' ) {
 					string += '<span data-style="chicago">'+newBiblElement.plainText+'<span>'; 
 				}
@@ -514,9 +547,9 @@ Questo file si compone sostanzialmente di 3 funzioni principali:
 
                             string += '<span data-style="chicago" class="author">';
                             if (name !== '' && surname !== '') {
-                                string += '<span data-style="mla" class="name">' + getInitialsExceptFirstOne(name) + '</span>';
+                                string += '<span data-style="chicago" class="name">' + getInitialsExceptFirstOne(name) + '</span>';
                             } else if (name !== '') {
-                                string += '<span data-style="mla" class="name">' + name + '</span>';
+                                string += '<span data-style="chicago" class="name">' + name + '</span>';
                             }
                             if (surname !== '') {
                                 string += '<span data-style="chicago" class="surname">' + surname + '</span>';
@@ -782,9 +815,9 @@ Questo file si compone sostanzialmente di 3 funzioni principali:
                             string += '<span data-style="mla" class="surname">' + firstSurname + '</span>';
                         }
                         if (firstName !== '' && firstSurname !== '') {
-                            string += '<span data-style="chicago" class="name">' + getInitialsExceptFirstOne(firstName) + '</span>';
+                            string += '<span data-style="mla" class="name">' + getInitialsExceptFirstOne(firstName) + '</span>';
                         } else if (firstName !== '') {
-                            string += '<span data-style="chicago" class="name">' + firstName + '</span>';
+                            string += '<span data-style="mla" class="name">' + firstName + '</span>';
                         }
                         string += '</span>';
 
