@@ -9,7 +9,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearchParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -143,6 +143,8 @@ angular.module('evtviewer.dataHandler')
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
 
+        // Test search parser
+        evtSearchParser.parseWords(docElements);
     };
 
     /* ************************** */
