@@ -3,172 +3,159 @@ EVT 2.0 (evt-viewer)
 
 Short instructions to install and configure the development framework for EVT 2.0 (evt-viewer).
 
-###Linux
+Dev Environment Prerequisites
+-----------------------------
 
-* UPDATE THE PACKAGE DATABASE [to do just to be sure that everything's ok]
-| $ sudo apt-get update
-
-* GIT [to do only if you haven't already installed git]
-| $ sudo apt-get install git
-
-* RUBY
-| $ sudo apt-get install ruby-compass build-essential curl
-| $ sudo gem install compass [to do in any case to avoid CSS compilation problems]
-
-* NODE JS
-| $ curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-| $ sudo apt-get install -y nodejs
-
-* BOWER AT SYSTEM LEVEL
-| $ sudo npm install -g bower
-
-* GRUNT AT SYSTEM LEVEL
-| $ sudo npm install -g grunt-cli 
-
-* CLONE THE EVT REPOSITORY FROM GITHUB
-| $ git clone https://github.com/evt-project/evt-viewer.git
-
-* GO INTO THE REPOSITORY FOLDER
-| $ cd evt-viewer
-
-* NPM
-| $ npm install [ignore any WARN message, they are harmless]
-| $ npm install bower
-
-* BOWER 
-| $ bower install [choose the angular.js version recommended for evt-viewer]
-
-* START GRUNT DEV
-| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the critical-edition branch]
-
-* SWITCH TO THE CRITICAL-EDITION GIT BRANCH
-| $ git checkout critical-edition
-
-* TO UPDATE THE REPOSITORY
-| $ git pull
-
-* START GRUNT DEV
-| $ grunt dev
+EVT has dependencies that require ruby, ruby-compass, bower, grunt, npm, git
 
 
+Environment setup
+-----------------
 
-* IN CASE OF CSS COMPILATION ERRORS
-| $ sudo gem install rubygems-update
-| $ sudo update_rubygems
-|
-| $ sudo apt-get install ruby-dev
-| $ sudo gem install compass susy
+### Linux [apt baset distribution]
 
-* IN CASE OF VISUALIZATION PROBLEMS
-| $ grunt dev --force
+The following commands assume that you are runinng a distribution with the *apt* package manager.
 
-
-***
-
-###Windows
-
-* GIT 
-| Install GIT (if not already available in your system)
-|https://git-scm.com/downloads
-
-* RUBY
-| Install the latest Ruby version
-| http://rubyinstaller.org/
-|[IMPORTANT: in the installer window select the "Add Ruby executables" options]
-| Open a shell as administrator, then typ
-| $ gem install compass
-| $ gem install susy
-
-* NODEJS
-| Install nodejs from https://nodejs.org/ or https://nodejs.org/en/download/package­manager
-
-* BOWER AT SYSTEM LEVEL
-| $ npm install -g bower 
-
-* GRUNT AT SYSTEM LEVEL
-| $ npm install -g grunt-cli
-
-* CLONE REPOSITORY FROM GITHUB
-| $ git clone https://github.com/evt-project/evt-viewer.git
-
-* GO INTO THE REPOSITORY FOLDER
-| $ cd evt-viewer
-
-* NPM
-| $ npm install [ignore any WARN message, they are harmless]
-| $ npm install bower
-
-* BOWER 
-| $ bower install [choose the angular.js version recommended for evt-viewer]
-
-* START GRUNT DEV
-| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the critical-edition branch]
-
-* SWITCH TO THE CRITICAL-EDITION GIT BRANCH 
-| $ git checkout critical-edition
-
-* TO UPDATE THE REPOSITORY
-| $ git pull
-
-* START GRUNT DEV
-| $ grunt dev
+1. Update the package dataase (just to be sure that everything's ok)
+```bash
+sudo apt-get update
+```
+2. Install GIT (to do only if you haven't already installed git)
+```bash
+sudo apt-get install git
+```
+3. Install ruby
+```bash
+sudo apt-get install ruby-compass build-essential curl
+sudo gem install compass
+```
+4. Install Nodejs
+``` bash
+curl -sL https://deb.nodesource.com/setup_5.x
+sudo -E bash
+sudo apt-get install -y nodejs
+```
+5. Install grunt and bower globally
+```bash
+sudo npm install -g bower
+sudo npm install -g grunt-cli 
+```
+6. Clone the EVT repository
+```bash
+git clone https://github.com/evt-project/evt-viewer.git
+cd evt-viewer
+```
+7. Install dependencies
+```bash
+npm install [ignore any WARN message, they are harmless]
+npm install bower
+bower install [choose the angular.js version recommended for evt-viewer]
+```
 
 
 
-* IN CASE OF VISUALIZATION PROBLEMS
-| $ grunt dev --force
+### Windows
 
-***
+1. Install GIT (to do only if you haven't already installed git)
 
-###OS X 
+Download and install from the (git web site)[https://git-scm.com]
 
-* HOMEBREW [to do only if you haven't already installed homebrew]
-| $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 
-| $ brew doctor
+2. Install ruby
 
-* GIT [to do only if you haven't already installed git]
-| $ sudo brew install git
+ Install the latest Ruby version at (http://rubyinstaller.org/)[http://rubyinstaller.org/]
+ *IMPORTANT: in the installer window select the "Add Ruby executables" options*
+ Open a shell as administrator, then type:
 
-* RUBY
-| $ sudo brew install ruby
-| $ sudo gem update --system
-| $ sudo gem install compass
+```bash
+gem install compass
+gem install susy
+```
 
-* NODE JS
-| $ sudo brew install node
+3. Install Nodejs
 
-* BOWER AT SYSTEM LEVEL
-| $ sudo npm install -g bower
+Install nodejs from https://nodejs.org/ or https://nodejs.org/en/download/package­manager
 
-* GRUNT AT SYSTEM LEVEL
-| $ sudo npm install -g grunt-cli 
+4. Install grunt and bower globally
+```bash
+npm install -g bower 
+npm install -g grunt-cli
+```
 
-* CLONE THE EVT REPOSITORY FROM GITHUB
-| $ git clone https://github.com/evt-project/evt-viewer.git
+5. Clone the EVT repository
 
-* GO INTO THE REPOSITORY FOLDER
-| $ cd evt-viewer
+```bash
+git clone https://github.com/evt-project/evt-viewer.git
+cd evt-viewer
+```
 
-* NPM
-| $ npm install [ignore any WARN message, they are harmless]
-| $ npm install bower
+6. Install dependencies
 
-* BOWER 
-| $ bower install [choose the angular.js version recommended for evt-viewer]
+```bash
+npm install [ignore any WARN message, they are harmless]
+npm install bower
+bower install [choose the angular.js version recommended for evt-viewer]
+```
 
-* START GRUNT DEV
-| $ grunt dev [most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the critical-edition branch]
+### OS X 
 
-* SWITCH TO THE CRITICAL-EDITION GIT BRANCH 
-| $ git checkout critical-edition
+1. Install Homebrew [to do only if you haven't already installed homebrew]
 
-* TO UPDATE THE REPOSITORY
-| $ git pull
+Follow installation instructions at [https://brew.sh](https://brew.sh)
 
-* START GRUNT DEV
-| $ grunt dev
+2. Install GIT (to do only if you haven't already installed git)
+```bash
+brew install git
+```
+3. Install ruby
+```bash
+brew install ruby
+sudo gem update --system
+sudo gem install compass
+```
 
+4. Install Nodejs
+```bash
+brew install node
+```
 
+5. Install grunt and bower globally
+```bash
+npm install -g bower
+npm install -g grunt-cli 
+```
 
-* IN CASE OF VISUALIZATION PROBLEMS
-| $ grunt dev --force
+6. Clone the EVT repository
+```bash
+git clone https://github.com/evt-project/evt-viewer.git
+cd evt-viewer
+```
+7. Install dependencies
+```bash
+npm install [ignore any WARN message, they are harmless]
+npm install bower
+bower install [choose the angular.js version recommended for evt-viewer]
+```
+
+Start EVT
+---------
+
+To start EVT use *grunt*
+``` bash
+grunt dev
+```
+
+Troubleshooting
+----------------
+
+### IN CASE OF CSS COMPILATION ERRORS
+``` bash
+sudo gem install rubygems-update
+sudo update_rubygems
+sudo apt-get install ruby-dev
+sudo gem install compass susy
+```
+
+### IN CASE OF VISUALIZATION PROBLEMS
+```bash
+grunt dev --force
+```
