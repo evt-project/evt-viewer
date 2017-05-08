@@ -81,20 +81,20 @@ angular.module('evtviewer.interface')
         /* ********** */
 		
 		mainInterface.setTabContainerPanel = function(arr){
-			state.dialog['tabContainerPanel'] = arr;
-		}
+			state.dialog.tabContainerPanel = arr;
+		};
 		
 		mainInterface.getTabContainerPanel = function(){
-			return state.dialog['tabContainerPanel'];
-		}
+			return state.dialog.tabContainerPanel;
+		};
 		
 		mainInterface.setHomePanel = function(string){
 			state.dialog.home = string;
-		}
+		};
 		
 		mainInterface.getHomePanel = function(){
 			return state.dialog.home;
-		}
+		};
 		
         mainInterface.isLoading = function() {
             return state.isLoading;

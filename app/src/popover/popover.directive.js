@@ -61,7 +61,6 @@ angular.module('evtviewer.popover')
 
                 // Prendere altezza, larghezza e offset superiore e sinistro del trigger 
                 // [NB: vanno gestiti trigger spezzati su piu righe]
-                var triggerHeightSingleLine;
                 var triggerHeight           = trigger.height(),
                     triggerHeightSingleLine = trigger.css('font-size').substr(0,2)*1+1,
                     triggerWidth            = trigger.width(),
@@ -71,7 +70,6 @@ angular.module('evtviewer.popover')
                 // Prendere larghezza, altezza e offset superiore e sinistro del tooltip
                 // Mi servono la larghezza e l'altezza reali, quindi devo mettere il tooltip in posizione relativa
                 // L'offset superiore 
-                var tooltipTop, tooltipRealWidth, tooltipRealHeight;
                 var tooltipTop        = tooltip.offset().top,
                     tooltipRealWidth  = tooltip.outerWidth(),
                     tooltipRealHeight = tooltip.outerHeight();

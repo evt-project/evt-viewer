@@ -50,14 +50,14 @@ angular.module('evtviewer.dataHandler')
         if (!subApp) {
             //Raggruppamenti
             if (entry._indexes.groups.length > 0) {
-                for (var i = 0; i < entry._indexes.groups.length; i++) {
-                    var group = entry.content[entry._indexes.groups[i]];
+                for (var j = 0; j < entry._indexes.groups.length; j++) {
+                    var group = entry.content[entry._indexes.groups[j]];
                     if (group !== undefined) {
                         var groupHeader = [];
-                        for (j in group.attributes) {
+                        for (var x in group.attributes) {
                             groupHeader.push({
-                                label  : j,
-                                values : group.attributes[j]
+                                label  : x,
+                                values : group.attributes[x]
                             });
                         }
 
@@ -132,7 +132,7 @@ angular.module('evtviewer.dataHandler')
         var subApp        = parsedData.getCriticalEntryById(subAppId);
         var subAppContent = apparatus.getContent(subApp, true, scopeWit);
         
-        subAppText += '<span class="sub_app"> (('+subAppContent.lemma.content+" ";
+        subAppText += '<span class="sub_app"> (('+subAppContent.lemma.content+' ';
         for (var i = 0; i < subAppContent.significantReadings.length; i++) {
             subAppText += subAppContent.significantReadings[i].content;
             if (i < subAppContent.significantReadings.length - 1) {
@@ -178,7 +178,7 @@ angular.module('evtviewer.dataHandler')
                     values : reading.attributes || {},
                     _keys  : Object.keys(reading.attributes) || []
                 }
-            }
+            };
         }
         return readingObj;
     };
@@ -186,16 +186,16 @@ angular.module('evtviewer.dataHandler')
     apparatus.getCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
         var witnesses  = '';
         if (reading.wits !== undefined && reading.wits.length > 0) {
-            for (wit in reading.wits) {
+            for (var wit in reading.wits) {
                 if (skipWitnesses.indexOf(wit) < 0){
                     witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
                 }
             }
         } else if (elemType === 'lem') {
             if (reading.autoWits !== undefined && reading.autoWits.length > 0) {
-                for (wit in reading.autoWits) {
-                    if (skipWitnesses.indexOf(wit) < 0){
-                        witnesses += '<evt-witness-ref witness="'+reading.autoWits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
+                for (var autoWit in reading.autoWits) {
+                    if (skipWitnesses.indexOf(autoWit) < 0){
+                        witnesses += '<evt-witness-ref witness="'+reading.autoWits[autoWit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
                     }
                 }
             }
@@ -213,7 +213,7 @@ angular.module('evtviewer.dataHandler')
         if (reading.attributes !== undefined) {
             for (var key in reading.attributes) {
                 if (key !== 'wit' && key !== 'xml:id') {
-                    attributes += '<span class="'+key+'">'+key+": "+reading.attributes[key]+'</span>';
+                    attributes += '<span class="'+key+'">'+key+': '+reading.attributes[key]+'</span>';
                 }
             }
         }
@@ -233,30 +233,30 @@ angular.module('evtviewer.dataHandler')
         var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
         if (fragmentsStarts !== null) {
             for (var i = 0; i < fragmentsStarts.length; i++) {
-                var matched = fragmentsStarts[i];
-                var wit = matched.match(/"#.*"/g);
-                if (wit !== null) {
-                    wit = ' of '+wit[0].replace(/["#]/g, '');
+                var matchedStart = fragmentsStarts[i];
+                var witStart = matchedStart.match(/"#.*"/g);
+                if (witStart !== null) {
+                    witStart = ' of '+witStart[0].replace(/["#]/g, '');
                 } else {
-                    wit = '';
+                    witStart = '';
                 }
-                var sRegExInput = new RegExp(matched, 'ig'); 
-                appText = appText.replace(sRegExInput, '<i> [beginning of fragment'+wit+'] </i>');
+                var sRegExInputStart = new RegExp(matchedStart, 'ig'); 
+                appText = appText.replace(sRegExInputStart, '<i> [beginning of fragment'+witStart+'] </i>');
             }
         }
 
         var fragmentsEnds = appText.match(/<witEnd(.|[\r\n])*?\/>/ig);
         if (fragmentsEnds !== null) {
-            for (var i = 0; i < fragmentsEnds.length; i++) {
-                var matched = fragmentsEnds[i];
-                var wit = matched.match(/"#.*"/g);
-                if (wit !== null) {
-                    wit = ' of '+wit[0].replace(/["#]/g, '');
+            for (var j = 0; j < fragmentsEnds.length; j++) {
+                var matchedEnd = fragmentsEnds[j];
+                var witEnd = matchedEnd.match(/"#.*"/g);
+                if (witEnd !== null) {
+                    witEnd = ' of '+witEnd[0].replace(/["#]/g, '');
                 } else {
-                    wit = '';
+                    witEnd = '';
                 }
-                var sRegExInput = new RegExp(matched, 'ig'); 
-                appText = appText.replace(sRegExInput, '<i> [end of fragment'+wit+'] </i>');
+                var sRegExInputEnd = new RegExp(matchedEnd, 'ig'); 
+                appText = appText.replace(sRegExInputEnd, '<i> [end of fragment'+witEnd+'] </i>');
             }
         }
         return appText;

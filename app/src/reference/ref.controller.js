@@ -32,7 +32,7 @@ angular.module('evtviewer.reference')
 				evtCommunication.err('Could not find bibliography referement', '405');
 			}
 		} else { // Generic link
-			var url = vm.target.indexOf("http") < 0 ? "http://" + vm.target : vm.target;
+			var url = vm.target.indexOf('http') < 0 ? 'http://' + vm.target : vm.target;
 			window.open(url, '_blank');
 		}
 	};
