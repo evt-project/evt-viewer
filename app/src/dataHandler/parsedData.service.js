@@ -3,7 +3,6 @@ angular.module('evtviewer.dataHandler')
 .service('parsedData', function($log, config) {
     var parsedData = {};
     var _console = $log.getInstance('dataHandler');
-
     _console.log('parsedData running');
     
     var projectInfo = {
@@ -14,6 +13,11 @@ angular.module('evtviewer.dataHandler')
         revisionHistory     : ''
     };
 
+
+	var bibliographicRefsCollection = {
+        _indexes: []
+    };
+	
     // TODO manage unique value for pages, documents and editions
     var pagesCollection = {
         length: 0
@@ -462,6 +466,25 @@ angular.module('evtviewer.dataHandler')
 
     parsedData.getCriticalEntriesFilterColor = function(filter, value) {
         return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
+    };
+
+    /* ****************** */
+    /* BIBLIOGRAPHIC REFs */
+    /* ****************** */
+    /* TODO: reorganize in EVT general style JSON model */
+    parsedData.addBibliographicRef = function(biblElement) {
+        if ( bibliographicRefsCollection[biblElement.id] === undefined ) {
+            bibliographicRefsCollection[biblElement.id] = biblElement;
+            bibliographicRefsCollection._indexes.push(biblElement.id);
+        }
+    };
+
+	parsedData.getBibliographicRefsCollection = function() {
+		return bibliographicRefsCollection;
+	};
+	
+    parsedData.getBibliographicRefById = function(refId) {
+        return bibliographicRefsCollection[refId];
     };
 
     /* ************ */

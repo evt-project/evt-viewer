@@ -13,7 +13,10 @@ angular.module('evtviewer.interface')
             currentHighlightedZone: undefined,
             isLoading        : true,
             isPinnedAppBoardOpened : false,
-            secondaryContent : ''
+            secondaryContent : '',
+			dialog : {
+				home : ''
+			}
         };
         var properties = {
             indexTitle         : '',
@@ -76,6 +79,23 @@ angular.module('evtviewer.interface')
         /* ********** */
         /* PARAMS GET */
         /* ********** */
+		
+		mainInterface.setTabContainerPanel = function(arr){
+			state.dialog.tabContainerPanel = arr;
+		};
+		
+		mainInterface.getTabContainerPanel = function(){
+			return state.dialog.tabContainerPanel;
+		};
+		
+		mainInterface.setHomePanel = function(string){
+			state.dialog.home = string;
+		};
+		
+		mainInterface.getHomePanel = function(){
+			return state.dialog.home;
+		};
+		
         mainInterface.isLoading = function() {
             return state.isLoading;
         };
@@ -154,7 +174,7 @@ angular.module('evtviewer.interface')
         mainInterface.getSecondaryContentOpened = function(){
             return state.secondaryContent;
         };
-
+		
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */
@@ -180,6 +200,7 @@ angular.module('evtviewer.interface')
         mainInterface.updateSecondaryContentOpened = function(secondaryContent){
             state.secondaryContent = secondaryContent;
         };
+
         
         mainInterface.updateCurrentViewMode = function(viewMode) {
             state.currentViewMode = viewMode;

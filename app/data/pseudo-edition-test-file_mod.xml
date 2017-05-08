@@ -1,0 +1,316 @@
+<TEI xmlns="http://www.tei-c.org/ns/1.0"> 
+  <teiHeader> 
+    <fileDesc> 
+      <titleStmt> 
+        <title>Confessiones [pseudo-edition for testing purpose]</title> 
+        <author>Augustine</author> 
+        <respStmt> 
+          <resp>Text Encoding by</resp> 
+          <name>Marjorie Burghart</name> 
+        </respStmt> 
+      </titleStmt> 
+      <publicationStmt> 
+        <publisher>Marjorie Burghart</publisher> 
+        <availability> 
+          <p>This document is being made available for demonstration and testing purposes 
+            only.</p> 
+        </availability> 
+      </publicationStmt> 
+      <sourceDesc> 
+        <p>The base text is the beginning of Augustines <title>Confessiones</title>, as 
+          found here: http://faculty.georgetown.edu/jod/latinconf/1.html. But please make 
+          notice that the critical apparatus is purely invented for testing purpose and 
+          reflects in no way the tradition of this text. This document is being made 
+          available for demonstration and testing purposes only.</p> 
+        <p/> 
+      </sourceDesc> 
+    </fileDesc> 
+    <encodingDesc> 
+      <editorialDecl> 
+        <p>The apparatus of this document is meant to illustrate various cases, including 
+          some mistakes. Details about each apparatus entry are listed in a note following 
+          each entry.</p> 
+      </editorialDecl> 
+      <variantEncoding method="parallel-segmentation" location="internal"/> 
+    </encodingDesc> 
+  </teiHeader> 
+  <text> 
+    <front> 
+      <div> 
+        <listWit> 
+          <witness xml:id="A">Manuscript A</witness> 
+          <listWit xml:id="group"> 
+            <head>Example of group</head> 
+            <witness xml:id="B">Manuscript B</witness> 
+            <witness xml:id="C">Manuscript C</witness> 
+          </listWit> 
+          <witness xml:id="D">Manuscript D</witness> 
+          <witness xml:id="E">Manuscript E</witness> 
+          <witness xml:id="G">Manuscript G</witness> 
+        </listWit> 
+      </div> 
+    </front> 
+    <body> 
+      <div> 
+ 
+        <pb ed="#A" n="1r" facs="A1r.png"/> 
+        <pb ed="#B" n="2v" facs="B2v.png"/> 
+        <pb ed="#C" n="254r" facs="C254r.png"/> 
+        <pb ed="#D" n="128r" facs="128r.png"/> 
+        <pb ed="#E" n="1v" facs="E1v.png"/> 
+ 
+        <head>Liber I</head> 
+ 
+        <div> 
+          <head>CAPUT 1</head> 
+          <p>Magnus es, domine, et laudabilis valde:  
+ 
+            <app resp="m1"> 
+              <lem wit="#A">magna</lem> 
+              <rdgGrp type="orthographic"> 
+                <rdg wit="#B" hand="user1">magma</rdg> 
+                <rdg wit="#E">maga</rdg> 
+              </rdgGrp> 
+              <rdgGrp type="lessicographic"> 
+                <rdg wit="#C">laudabilis</rdg> 
+                <rdg wit="#D">laudablis</rdg> 
+              </rdgGrp> 
+              <note>In this apparatus entry...</note> 
+            </app> 
+ 
+            virtus 
+            tua, et sapientiae tuae non est numerus et laudare te vult homo, aliqua 
+            portio  
+            <app> 
+              <lem>creature tue</lem> 
+              <rdg wit="#A">creatr ae tuae</rdg> 
+              <rdg wit="B" cause="unknown" hand="user1">creaturas <del>tuas</del></rdg> 
+              <rdg wit="#E #C #D">creaturarum tuarum</rdg> 
+              <note>This is a note</note> 
+            </app> 
+ 
+            , et homo circumferens  
+            <app resp="CDP" cert="high"> 
+              <lem wit="#A #B #C" cert="high" resp="CDP" hand="user1">mortalitem</lem> 
+              <rdg wit="#D #E" type="lessicographic">fragilitatem</rdg> 
+            </app> 
+            <note>In this apparatus entry, the editor has not decided yet which lectio 
+              should be considered the lemma. The app contains only rdg elements. They 
+              are therefore displayed in a different way from the other apparatus 
+              entries.</note> suam, circumferens testimonium peccati sui et 
+            testimonium, quia superbis resistis: et tamen laudare te vult homo,  
+            <app xml:id="app001"> 
+              <lem wit="#B #E" xml:id="app001_lem">aliqua</lem> 
+              <rdg wit="#A #C" hand="user1">aliquando</rdg> 
+              <rdg wit="#D" xml:id="app001_rdg2">aliquo</rdg> 
+              <note>This is a note inside the apparatus</note> 
+            </app> 
+             
+            portio creaturae tuae. Tu excitas, ut laudare te delectet, quia fecisti nos 
+            ad te et inquietum est cor nostrum, donec requiescat <pb ed="#C" n="254v"/>in te. Da  
+            <app> 
+              <lem wit="#A #D">mihi</lem> 
+              <rdg wit="#group" type="lessicographic">nobis</rdg> 
+              <rdg wit="#E" type="omiss"/> 
+            </app> 
+ 
+            <note>A most banal apparatus entry.</note> domine, scire et 
+            intellegere, utrum sit prius invocare te an laudare te, et scire te prius 
+            sit an invocare te. sed quis te invocat nesciens te? Aliud enim  
+            <app> 
+              <lem wit="#A #D #E">pro alio</lem> 
+              <rdg wit="#B #C" type="omiss"/> 
+            </app> 
+            <note>A most banal apparatus entry.</note> potest invocare nesciens. An 
+            potius  
+            <app> 
+              <lem wit="#A #group #E">invocaris</lem> 
+              <rdg wit="#D">invocatis</rdg> 
+            </app> 
+             
+            <note>A most banal apparatus entry.</note> ut sciaris? 
+            <app> 
+              <lem wit="#A #B #C #D" > 
+                In 
+                    <app> 
+                      <lem wit="#C">Quomodo</lem> 
+                      <rdg wit="#B">Qui</rdg> 
+                      <rdg wit="#D">Qua</rdg> 
+                      <rdg wit="#A" type="orthographic"><del>Quando</del></rdg> 
+                      <note>This apparatus entry is nested within the lemma of another apparatus entry.</note> 
+                    </app> 
+                    autem invocabunt, 
+                  in quem non crediderunt? Aut quomodo credent sine praedicante? 
+                 
+              </lem> 
+              <rdg wit="#E"/> 
+              <note>This apparatus entry contains another apparatus entry.</note> 
+            </app> 
+            Et 
+            laudabunt dominum qui requirunt eum. Quaerentes enim inveniunt eum et 
+            invenientes  
+            <app> 
+              <lem>laudabunt</lem> 
+              <rdg>laudabant</rdg> 
+            </app> 
+            <note>In this apparatus entry, all the @wit have been forgotten, so there is 
+              no indication where to find each reading.</note> eum. Quaeram te, 
+            domine, invocans te, et invocem te credens in te: praedicatus enim es nobis. 
+            Invocat te, domine, fides mea, quam dedisti mihi, quam inspirasti mihi per  
+            <app> 
+              <lem wit="#E">humanitatem</lem> 
+              <rdg wit="#A #group #D">humilitatem</rdg> 
+            </app> 
+            <note>In this apparatus entry, I have introduced two mistakes: witness B is 
+              not mentioned, while witness E is mentionned two times, in the @wit of 
+              the lemma and of a reading.</note> filii tui, per <app> 
+              <lem wit="#A #B #C">ministerium</lem> 
+              <rdg wit="#D #E">mysterium</rdg> 
+            </app> 
+            <note>A most banal apparatus entry.</note> 
+            <app> 
+              <lem wit="#A #B" resp="editor1" cert="high">praedicatoris tui</lem> 
+              <rdg wit="#C #D #E">praedicatorum tuorum</rdg> 
+              <rdg wit="#G"><witStart />praedicatorum tuorum</rdg> 
+            </app>. <note>In this apparatus entry, the editor has not decided yet which 
+              lectio should be considered the lemma. The app contains only rdg 
+              elements. They are therefore displayed in a different way from the other 
+              apparatus entries. I have also introduced two mistakes: there is no 
+              mention of witness B, while witness C is mentioned twice.</note> 
+          </p> 
+        </div> 
+        <pb ed="#B" n="3r"/> 
+        <div> 
+          <head>CAPUT 2</head> 
+          <p> 
+            <app> 
+              <lem wit="#A #B #D #E"/> 
+              <rdg wit="#C"><lacunaStart wit="#C"/></rdg> 
+            </app>Et quomodo invocabo deum meum, deum et dominum meum, quoniam utique inme 
+            ipsum eum invocabo, cum invocabo eum? Et quis locus est in me, quoveniat in 
+            me deus meus? quo deus veniat in me, deus, qui fecit caelum et terram? 
+            itane, domine deus meus, est quiquam in me, quod capiat te? An vero caelum 
+            et terra, quae fecisti et in quibus me fecisti, capiuntte? An quia sine te 
+            non esset <pb ed="#A" n="2r"/>  
+            <app> 
+              <lem wit="#A #B #D"/> 
+              <rdg wit="#E"><lacunaStart/></rdg> 
+            </app>quidquid est, fit, ut quidquid est capiat te? 
+            quoniam itaque et ego sum, quid peto, ut venias in me, quinon essem, nisi 
+            esses in me?  
+            <app> 
+              <lem wit="#A #B #D #E"/> 
+              <rdg wit="#C"><lacunaEnd/></rdg> 
+            </app> 
+            Non enim <pb ed="#C" n="255r"/>ego iam in  
+            <app> 
+              <lem wit="#C #D #E">inferis</lem> 
+              <rdg wit="#A #B">infernis</rdg> 
+              <rdg wit="#G">infernis <witEnd/></rdg> 
+            </app>,<note>A most banal apparatus entry</note> et tamen etiam ibi es. Nam 
+            etsi descendero in infernum, ades. non ergo essem, deus meus, non omnino 
+            essem, nisi esses in me. An potius non essem, nisi essem in te, ex quo 
+            omnia, per quem omnia, in quo omnia? 
+            <app> 
+              <lem wit="#A #B #D #E"/> 
+              <rdg wit="#C"><lacunaStart/></rdg> 
+            </app> 
+            <note>A lacuna in witness C starts here.</note> 
+             
+            Etiam sic, domine, etiam sic. quo te 
+            <app> 
+              <lem wit="#A #B #D"/> 
+              <rdg wit="#E"><lacunaEnd/></rdg> 
+            </app> 
+            invoco, cum in te sim? aut unde venias in me? <app> 
+              <lem wit="#A #B #D">Quo</lem> 
+              <rdg wit="#E" type="orthographic">Quomodo</rdg> 
+            </app> 
+            <note>A most banal apparatus entry. Note that since this entry occurs within a lacuna in witness C, this witness is not mentioned in this entry, and this is not an error.</note> enim recedam extra caelum et 
+            terram, ut inde in me veniat deus meus, qui dixit: caelum et terram ego 
+            impleo?</p> 
+        </div> 
+        <pb ed="#B" n="3v"/> 
+        <div> 
+          <head>CAPUT 3</head> 
+          <p>Capiunt ergone te caelum </p> 
+          <p>et terra, quoniam tu imples ea? An imples et restat, 
+            quoniam non te capiunt? et quo refundis quidquid impleto caeloet terra <pb ed="#A" n="2v"/> restat ex te? An non opus habes, ut quoquam 
+            continearis, qui contines omnia, quoniam quae imples continendo  
+            <app> 
+              <lem>imples</lem> 
+              <rdg wit="#E #G "><witStart wit="#G"/>implebis</rdg> 
+            </app> 
+ 
+            ?  
+ 
+            <note>In this apparatus entry, the lemma bears no @wit. This is a 
+              perfectly acceptable form of encoding, implying that all witnesses not 
+              listed in the rdg bear by default the reading of the lemma. But since in 
+              this document the apparatus is elsewhere recorded in a "positive" 
+              fashion, listing each reading of each manuscript explicitly, it might be 
+              useful to point out that this entry does not follow the same practice, 
+              which could be a mistake in the context.</note> Non enim vasa, quae te 
+            plena sunt, stabilem te faciunt, quia etsi frangantur non effunderis. Et cum 
+            effunderis super nos, non tu iaces, sed erigis nos, nec <pb ed="#C" n="255v"/>tu dissiparis, sed colligis nos. sed quae imples omnia, te toto imples 
+            omnia. An quia non possunt te totum capere omnia, partem tui capiunt et 
+            eandem partem simul omnia capiunt?  
+            An singulas singula et maiores maiora, 
+            minores  
+            <app> 
+              <lem wit="#A #E" type="lessicographic">minora</lem> 
+              <rdg wit="#B" type="lessicographic"><del>maio</del> maiora</rdg> 
+              <rdg wit="#G #D">maiora<witEnd wit="#G"/></rdg> 
+            </app> 
+            <note>A most banal apparatus entry</note> capiunt? Ergo est aliqua pars tua 
+            maior, aliqua minor? An ubique totus es et res nulla te totum capit? 
+            <app> 
+              <lem wit="#A #B #D #E"/> 
+              <rdg wit="#C"><lacunaEnd/></rdg> 
+            </app> 
+            <note>A lacuna in witness C ends here.</note> 
+          </p> 
+        </div> 
+ 
+      </div> 
+ 
+ 
+ 
+    </body> 
+  </text> 
+  <biblStruct type="journalArticle" xml:id="LUISELLI_FADDA2003"> 
+            <analytic> 
+              <title level="a">La Croce nella tradizione poetica anglosassone (sec. VIII-IX)</title> 
+              <author><forename>Anna Maria</forename><surname>LUISELLI FADDA</surname></author> 
+            </analytic> 
+            <monogr> 
+              <title level="j">Romanobarbarica: Contributi allo studio dei rapporti culturali tra mondo latino e mondo 
+                barbarico</title> 
+              <imprint> 
+                <biblScope type="vol">17</biblScope> 
+                <biblScope type="pp">333-359</biblScope> 
+                <date>2003</date> 
+              </imprint> 
+            </monogr> 
+            <idno type="ISSN">0391-285X</idno> 
+          </biblStruct> 
+          <biblStruct type="journalArticle" xml:id="Thieme1998"> 
+            <analytic> 
+              <title level="a">Gift Giving as a Vital Element of Salvation in "The Dream of the Rood"</title> 
+              <author><forename>Adelheid L. J.</forename><surname>Thieme</surname></author> 
+            </analytic> 
+            <monogr> 
+              <title level="j">South Atlantic Review</title> 
+              <imprint> 
+                <biblScope type="vol">63</biblScope> 
+                <biblScope type="issue">2</biblScope> 
+                <biblScope type="pp">108-123</biblScope> 
+                <date>1998</date> 
+                <note type="accessed">2011-03-23 13:42:10</note> 
+                <note type="url">http://www.jstor.org/stable/3201041</note> 
+              </imprint> 
+            </monogr> 
+            <idno type="ISSN">0277335X</idno> 
+            <idno type="DOI">10.2307/3201041</idno> 
+          </biblStruct> 
+</TEI>

@@ -4,6 +4,8 @@
 
 .evt-tabs-container {
     padding-top:1px;
+    height:100%;
+    overflow: hidden;
     &.vertical {
         .evt-tabs-container{
             &_headers {
@@ -49,18 +51,24 @@
     }
 
     &_panels{
-        &:not(.closed){
-            padding: 10px 15px;
-        }
-        overflow-x: hidden;
-        overflow-y: auto;
+        
     }
 
     &_panel {
         display: none;
+        padding: 10px 15px;
+        height: 100%;
+
         &.active {
             display: block;
             margin-bottom: 10px;
+            overflow-y: auto;
+        }
+
+        &.noscroll {
+            overflow-y: hidden !important;
+            padding: 0;
+            margin-bottom: 0;
         }
     }
 }

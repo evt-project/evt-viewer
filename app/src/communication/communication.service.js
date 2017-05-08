@@ -7,7 +7,11 @@ angular.module('evtviewer.communication')
         '404' : {
             title : 'File not found',
             msg   : 'Something wrong during loading file'
-        }
+        },
+       '405' : {
+            title : 'Missing referement',
+            msg   : 'Could not find bibliography referement'
+        }		
     }
 })
 
@@ -41,10 +45,10 @@ angular.module('evtviewer.communication')
                     // TODO: JSON? 
                 }
             }, function(error) {
-                if (defaults.errorMsgs[error]) {
-                    communication.err(defaults.errorMsgs[error].msg+' "'+url+'"', error);
+                if (defaults.errorMsgs[error.status]) {
+                    communication.err(defaults.errorMsgs[error.status].msg+' "'+url+'"', error.status);
                 } else {
-                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', error);
+                    communication.err(defaults.errorMsgs['404'].msg+' "'+url+'"', error.status);
                 }
             });
     };

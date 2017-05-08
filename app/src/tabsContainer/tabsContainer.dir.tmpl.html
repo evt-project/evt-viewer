@@ -17,7 +17,8 @@
         
         <div class="evt-tabs-container_panel"
             ng-repeat="tab in tabs._indexes"
-            ng-class="{'active' : subContentOpened == tab}"
+            ng-class="{'active' : subContentOpened == tab,
+                        'noscroll': tabs[tab].scrollDisabled }"
             compile="tabs[tab].content">
         </div>
     </div>

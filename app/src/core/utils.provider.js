@@ -23,13 +23,13 @@ angular.module('evtviewer.core')
                 arguments.callee(destination[property], source[property]);
             } else {
                 if (property === 'dataUrl') {
-                    if ( source[property] !== '' ) {
-                        destination[property] = angular.copy(source[property]); 
+                    if (source[property] !== '') {
+                        destination[property] = angular.copy(source[property]);
                     }
                 } else {
-                    if ( source[property] === 'NONE' || source[property] === 'NULL') {
+                    if (source[property] === 'NONE' || source[property] === 'NULL') {
                         destination[property] = '';
-                    } else if ( source[property] !== '' ) {
+                    } else if (source[property] !== '') {
                         destination[property] = angular.copy(source[property]);
                     }
                 }
@@ -40,28 +40,28 @@ angular.module('evtviewer.core')
 
     // DOM utils (TODO: Decide if move to another service)
     this.getElementsBetweenTree = function(start, end) {
-        var ancestor = this.getCommonAncestor(start, end);
-
-        var before = [];
-        while (start.parentNode!== ancestor) {
-            var elS = start;
-            while (elS.nextSibling) {
-                before.push(elS = elS.nextSibling);
+        var ancestor = this.getCommonAncestor(start, end),
+            el,
+            before = [];
+        while (start.parentNode !== ancestor) {
+            el = start;
+            while (el.nextSibling) {
+                before.push(el = el.nextSibling);
             }
             start = start.parentNode;
         }
 
         var after = [];
-        while (end.parentNode!== ancestor) {
-            var elE = end;
-            while (elE.previousSibling) {
-                after.push(elE = elE.previousSibling);
+        while (end.parentNode !== ancestor) {
+            el = end;
+            while (el.previousSibling) {
+                after.push(el = el.previousSibling);
             }
             end = end.parentNode;
         }
         after.reverse();
 
-        while ((start = start.nextSibling)!== end){
+        while ((start = start.nextSibling) !== end) {
             before.push(start);
         }
         return before.concat(after);
@@ -83,11 +83,10 @@ angular.module('evtviewer.core')
     this.$get = function() {
         return {
             deepExtend: this.deepExtend,
-            DOMutils : {
+            DOMutils: {
                 getElementsBetweenTree: this.getElementsBetweenTree,
                 getCommonAncestor: this.getCommonAncestor
             }
         };
     };
-
 });

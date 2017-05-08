@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        
+
         <!-- build:css(.) styles/vendor.css -->
         <!-- bower:css -->
         <!-- endbower -->
@@ -22,7 +22,7 @@
         <!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
         <!-- endbuild -->
-        
+
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <link rel="stylesheet" href="styles/tei.css">
@@ -30,8 +30,8 @@
         <!-- endbuild -->
 
     </head>
-    <body ng-app="evtviewer" 
-        ng-controller="InterfaceCtrl" 
+    <body ng-app="evtviewer"
+        ng-controller="InterfaceCtrl"
         ng-keydown="handleKeydownEvent($event)"
         ng-click="handleGenericClick($event)">
     <!--[if lt IE 7]>
@@ -39,12 +39,12 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    
+
 
     <header>
         {{ getProperty('indexTitle') }}
         <div class="globalMenu">
-            <button-switch 
+            <button-switch
                     title="{{mode.label}}"
                     class="mode-view"
                     data-label=""
@@ -54,37 +54,37 @@
                     ng-repeat="mode in getAvailableViewModes()"
                     ng-if="mode.visible">
             </button-switch>
-            <!-- <button-switch 
+            <!-- <button-switch
                     title="Witnesses"
                     data-icon="witnesses"
                     data-type="openGlobalDialogWitnesses">
             </button-switch> -->
-            <button-switch 
+            <button-switch
                     class="smaller"
                     title="Info"
                     data-icon="info"
                     data-type="openGlobalDialogInfo">
             </button-switch>
-            <button-switch 
+            <button-switch
                     title="Bookmark"
-                    data-icon="bookmark"                    
+                    data-icon="bookmark"
                     data-type="bookmark">
             </button-switch>
-            <!-- <button-switch 
+            <!-- <button-switch
                     class="noPadding"
                     title="Menu"
-                    data-icon="menu-vert"                    
+                    data-icon="menu-vert"
                     data-type="openMenu">
             </button-switch> -->
         </div>
     </header>
-    <section 
-        class="secondary-container" 
-        ng-show="getSecondaryContentOpened() !== ''"  
+    <section
+        class="secondary-container"
+        ng-show="getSecondaryContentOpened() !== ''"
         ng-if="!isLoading()">
         <evt-dialog data-type="globalInfo" data-title="Project Info">
-            <evt-tabs-container 
-                data-type="projectInfo" 
+            <evt-tabs-container
+                data-type="projectInfo"
                 data-orientation="vertical">
             </evt-tabs-container>
         </evt-dialog>
@@ -95,10 +95,10 @@
             <div compile="getBookmark()"></div>
         </evt-dialog>
     </section>
-    
+
     <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
         <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
-        
+
         <!-- READING TEXT -->
         <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
             <box data-type="text"
@@ -106,7 +106,7 @@
                  id="mainText"
                  ng-class="{'centered': !isPinnedAppBoardOpened(),
                             'half-centered': isPinnedAppBoardOpened()}"></box>
-            <button-switch 
+            <button-switch
                     title="Show pinned apparatus entries"
                     data-label=""
                     data-icon="pin"
@@ -117,12 +117,12 @@
                                'half-centered': isPinnedAppBoardOpened()}">
             </button-switch>
 
-            <box data-type="pinnedBoard" 
+            <box data-type="pinnedBoard"
                 ng-show="!isLoading() && isPinnedAppBoardOpened()">
                  <span ng-if="!isLoading() && getPinnedEntries().length <= 0">
                     <!--No apparatus entries pinned.--></span>
-                 <evt-critical-apparatus-entry 
-                    class="in_critical_apparatus" 
+                 <evt-critical-apparatus-entry
+                    class="in_critical_apparatus"
                     ng-class="{'active': getCurrentAppEntry() === entry}"
                     ng-if="getPinnedEntries().length > 0 && entry !== ''"
                     ng-click="updateCurrentAppEntry(entry);"
@@ -130,7 +130,7 @@
                     data-type="pinned"
                     data-app-id="{{entry}}"></evt-critical-apparatus-entry>
             </box>
-        </section> 
+        </section>
 
         <!-- COLLAZIONE -->
         <section id="main-container" class="viewMode" ng-switch-when="collation">
@@ -138,7 +138,7 @@
                  data-edition="{{getCurrentEdition()}}"
                  id="mainText"
                  ng-show="existCriticalText()"></box>
-            <!-- <div 
+            <!-- <div
                 compile="printCriticalApparatus()"
                 style="position: absolute; background: rgb(255, 255, 255) none repeat scroll 0% 0%;"> -->
 
@@ -150,7 +150,7 @@
                      data-witpage="{{getCurrentWitnessPage(witness)}}"
                      ng-repeat="witness in getCurrentWitnesses()" ></box>
             </div>
-            <button-switch 
+            <button-switch
                     title="Add Witness"
                     data-label="Add Witness"
                     data-icon="add"
@@ -160,16 +160,16 @@
                                 'floatRight': (!existCriticalText() && getCurrentWitnesses().length > 1) || (existCriticalText() && getCurrentWitnesses().length > 0)}">
             </button-switch>
 
-            <div 
+            <div
                 ng-if="isWitnessSelectorActive()"
                 class="availableWitnesses-selector witnessSelector"
                 ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
-                <span 
-                    ng-click="addWitness(witness)" 
+                <span
+                    ng-click="addWitness(witness)"
                     ng-repeat="witness in getAvailableWitnesses()">{{getWitness(witness)}}</span>
             </div>
 
-        </section>       
+        </section>
 
         <!-- TXT TXT -->
         <section id="main-container" class="viewMode" ng-switch-when="txtTxt">
@@ -197,31 +197,31 @@
         <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
     </section>
 
-    <section class="global-msg-container" 
-            ng-if="!isLoading() && getErrorMsg() !== undefined && getErrorMsg().title !== ''">
-        <div class="global-msg"> 
+    <section class="global-msg-container"
+            ng-if="!isLoading() && getErrorMsg() !== undefined && getErrorMsg().code === 404">
+        <div class="global-msg">
             <h1>EVT Viewer</h1>
             <h2>{{getErrorMsg().title}}</h2>
             <p>{{ getErrorMsg().msg }}</p>
         </div>
     </section>
 
-    <section class="global-loading-container" 
+    <section class="global-loading-container"
             ng-hide="!isLoading()">
         <!-- LOADING... -->
         <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     </section>
-    
-    <evt-dialog 
+
+    <evt-dialog
         data-id="errorMsg"
-        data-type="error" 
+        data-type="error"
         data-title="ERROR" ></evt-dialog>
     <footer>Footer</footer>
 
 
     <!-- TODO: change route system -->
     <!-- <div ng-view=""></div> -->
-    
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--
     <script>
@@ -273,17 +273,33 @@
 
     <script src="/src/dataHandler/dataHandler.js"></script>
     <script src="/src/dataHandler/baseData.service.js"></script>
+
     <script src="/src/dataHandler/parsedData.service.js"></script>
     <script src="/src/dataHandler/parser.service.js"></script>
     <script src="/src/dataHandler/criticalParser.service.js"></script>
     <script src="/src/dataHandler/criticalApparatus.service.js"></script>
     <script src="/src/dataHandler/primarySourcesParser.service.js"></script>
     <script src="/src/dataHandler/projectInfoParser.service.js"></script>
+    <script src="/src/dataHandler/bibliographyParser.service.js"></script>
+    
+	
+	
+	<script src="/src/bibliography/bibliography.js"></script>
+	<script src="/src/bibliography/scrollif.directive.js"></script>
+	<script src="/src/bibliography/highlight.service.js"></script>
+	<script src="/src/bibliography/bibliography.controller.js"></script>
+	<script src="/src/bibliography/bibliography.directive.js"></script>
 
     <script src="/src/interface/interface.js"></script>
     <script src="/src/interface/interface.configuration.js"></script>
     <script src="/src/interface/interface.controller.js"></script>
     <script src="/src/interface/interface.service.js"></script>
+
+    <script src="/src/reference/ref.js"></script>
+    <script src="/src/reference/ref.configuration.js"></script>
+    <script src="/src/reference/ref.provider.js"></script>
+    <script src="/src/reference/ref.controller.js"></script>
+    <script src="/src/reference/ref.directive.js"></script>
 
     <script src="/src/communication/communication.js"></script>
     <script src="/src/communication/communication.service.js"></script>

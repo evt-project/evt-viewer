@@ -5,7 +5,8 @@ angular.module('evtviewer.popover')
         restrict: 'E',
         scope: {
             trigger: '@',
-            tooltip: '@'
+            tooltip: '@',
+			parentRef : '@'
         },
         transclude: true,
         templateUrl: 'src/popover/popover.directive.tmpl.html',
@@ -42,7 +43,9 @@ angular.module('evtviewer.popover')
             scope.vm.resizeTooltip = function(e, settings){
                 e.stopPropagation();
                 var parentRef = scope.vm.parentRef;
-
+				if ( typeof scope.parentRef !== 'undefined' ) {
+					parentRef = scope.parentRef;
+				}
                 var trigger = element,
                     tooltip = angular.element(element).find('span.popover_tooltip').last(),
                     before  = angular.element(tooltip).find('.popover__tooltip__before');
@@ -58,7 +61,6 @@ angular.module('evtviewer.popover')
 
                 // Prendere altezza, larghezza e offset superiore e sinistro del trigger 
                 // [NB: vanno gestiti trigger spezzati su piu righe]
-                var triggerHeightSingleLine;
                 var triggerHeight           = trigger.height(),
                     triggerHeightSingleLine = trigger.css('font-size').substr(0,2)*1+1,
                     triggerWidth            = trigger.width(),
@@ -68,7 +70,6 @@ angular.module('evtviewer.popover')
                 // Prendere larghezza, altezza e offset superiore e sinistro del tooltip
                 // Mi servono la larghezza e l'altezza reali, quindi devo mettere il tooltip in posizione relativa
                 // L'offset superiore 
-                var tooltipTop, tooltipRealWidth, tooltipRealHeight;
                 var tooltipTop        = tooltip.offset().top,
                     tooltipRealWidth  = tooltip.outerWidth(),
                     tooltipRealHeight = tooltip.outerHeight();
@@ -96,6 +97,12 @@ angular.module('evtviewer.popover')
                 // Spostare il tooltip, prima allineando la metà al punto in cui si è verificato il click
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
+				var parent = element.parents(parentRef);
+				/*Se element.parents(parentRef) e non viene passato come attributo della direttiva un parentRef,
+				allora prendiamo come parentRef l'elemento che contiene la direttiva popover stessa */
+				if ( parent.length === 0 && typeof scope.parentRef === 'undefined' ) {
+					parentRef = element.parent();
+				}
                 var boxOffsetLeft     = element.parents(parentRef).offset().left,
                     boxContainerWidth = element.parents(parentRef).innerWidth();
                 

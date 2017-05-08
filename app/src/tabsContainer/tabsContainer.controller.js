@@ -1,11 +1,11 @@
 angular.module('evtviewer.tabsContainer')
 
-.controller('TabsContainerCtrl', function($log, $scope, parsedData) {
+.controller('TabsContainerCtrl', function($log, $scope, parsedData,evtInterface) {
     $scope.subContentOpened = '';
     $scope.tabs = {
         _indexes : []
     };
-    
+
     $scope.toggleSubContent = function(subContentName) {
         if ($scope.subContentOpened !== subContentName) {
             $scope.subContentOpened = subContentName;
@@ -13,7 +13,16 @@ angular.module('evtviewer.tabsContainer')
             $scope.subContentOpened = '';
         }
     };
-
+	
+	$scope.service=evtInterface;
+	$scope.$watch('service.getHomePanel()', function(newVal) {
+		if(newVal !== ''){
+			$scope.toggleSubContent(newVal);
+		}
+	});
+	
+	$scope.service.setTabContainerPanel($scope.tabs);
+	
     if ($scope.type === 'projectInfo') {
         var noContent = '<span>No content</span>';
 
@@ -71,9 +80,23 @@ angular.module('evtviewer.tabsContainer')
             };
             $scope.tabs._indexes.push('revisionHistory');
         }
+
+        /* Bibliography */
+		if (Object.keys(parsedData.getBibliographicRefsCollection()).length > 0) {
+			var bibliographyContent = '<evt-bibliography></evt-bibliography>';
+			if (bibliographyContent !== '') {
+				$scope.tabs.bibliography = {
+					label   : 'Bibliography',
+					name    : 'bibliography',
+					content : bibliographyContent || noContent,
+					scrollDisabled: true
+				};
+				$scope.tabs._indexes.push('bibliography');
+			}
+		}
     }
 
-    
+
     $scope.subContentOpened = $scope.tabs._indexes[0] || '';
     var _console = $log.getInstance('tabsContainer');
 
