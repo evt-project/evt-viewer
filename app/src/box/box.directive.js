@@ -275,17 +275,37 @@ angular.module('evtviewer.box')
                 }, true); 
             }
 
-            //Added by CM
+            /*Watchers for box of type "source"*/
+            /*@author: CM*/
             if (currentBox.type === 'source') {
+                
+                /*Watcher to intialize the sources texts, by parsing them.     */
+                /*The watcher checks if the source to parse has been loaded,   */
+                /*then updates the content of the box with current source text.*/
+                scope.$watch(function() {
+                    return evtInterface.isSourceLoading();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        if (!newItem) {
+                            scope.vm.source = evtInterface.getCurrentSourceText();
+                            currentBox.updateContent();
+                        }
+                    }
+                });
+
+                /*Watch to change the source text.                              */
+                /*Checks if the current Source text has changed and then updates*/
+                /*the content of the box.                                       */
                 scope.$watch(function() {
                     return evtInterface.getCurrentSourceText();
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
-                        scope.vm.source = newItem;
-                        currentBox.updateContent();
-                        console.log('content updated')
+                        if (evtInterface.getParsedSourcesTexts().indexOf(newItem) >= 0) {
+                            scope.vm.source = newItem;
+                            currentBox.updateContent();
+                        }
                     }
-                })
+                });
             }
 
             // Garbage collection

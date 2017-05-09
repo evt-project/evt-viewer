@@ -21,7 +21,7 @@ angular.module('evtviewer.interface')
             currentAnalogue  : undefined,
             currentSource    : undefined,
             currentSourceText : undefined,
-            sourcesTextsLoading : [ ]
+            
             /*Poi da ridefinire a false, quando si aprirà alla selezione di un elemento critico*/
             //TODO: aggiungere fonte, cit e passo parallelo corrente
         };
@@ -30,7 +30,9 @@ angular.module('evtviewer.interface')
             availableViewModes : [ ],
             availableWitnesses : [ ],
             witnessSelector    : false,
-            availableSourcesTexts : [ ]
+            availableSourcesTexts : [ ],
+            isSourceLoading : false,
+            parsedSourcesTexts : [ ]
         };
 
         var tools = {
@@ -288,7 +290,7 @@ angular.module('evtviewer.interface')
         //Available Sources Texts
         mainInterface.getAvailableSourcesTexts = function() {
             return properties.availableSourcesTexts;
-        }
+        };
 
         //Current source text
         mainInterface.getCurrentSourceText = function() {
@@ -300,20 +302,27 @@ angular.module('evtviewer.interface')
             if (isTextAvailable) {
                 var isTextParsed = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
                 if (!isTextParsed) {
-                    state.sourcesTextsLoading.push(sourceId);
+                    properties.isSourceLoading = !properties.isSourceLoading;
                     evtCommunication.getSourceTextFile('../../data/sources/'+sourceId+'.xml', sourceId).then(function() {
-                        console.log('text parsed', sourceId);
-                        state.sourcesTextsLoading.splice(state.sourcesTextsLoading.indexOf(sourceId));
+                        properties.isSourceLoading = !properties.isSourceLoading;
+                        properties.parsedSourcesTexts.push(sourceId);
                     });
                 }
             }
             state.currentSourceText = sourceId;
         };
 
-        //Array of sources texts that are loading
-        mainInterface.getSourcesTextsLoading = function() {
-            return state.getSourcesTextsLoading;
-        }
+        //Method to check if the source has been loaded, returns a boolean
+        mainInterface.isSourceLoading = function() {
+            return properties.isSourceLoading;
+        };
+        
+        //Method to get the list of the parsed sources texts
+        mainInterface.getParsedSourcesTexts = function() {
+            return properties.parsedSourcesTexts;
+        };
+
+        /** End of addition **/
 
         // WITNESS
         mainInterface.removeAvailableWitness = function(witness) {

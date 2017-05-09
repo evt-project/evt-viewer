@@ -414,46 +414,35 @@ angular.module('evtviewer.box')
 
                     bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
                     
-                    updateContent = function(){
+                    updateContent = function() {
                         scope.vm.isLoading = true;
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
                             noTextAvailableMsg = 'Text of source '+scope.vm.source+' is not available.';
                         
                         // Main content
                         var newContent = parsedData.getSource(scope.vm.source).text || undefined;
+                        
                         if ( Object.keys(parsedData.getSource(scope.vm.source).text).length === 0 || newContent === undefined ) {
-                            //if per non fare due volte il parsing del documento esterno
+                            
                             var sourceDoc = parsedData.getSourceDocument(scope.vm.source);
-                            if (sourceDoc === undefined) {
-                                //Prima volta che viene eseguito, non funziona. Funziona la seconda volta.
-                                evtCommunication.getSourceTextFile('../../data/sources/'+scope.vm.source+'.xml', scope.vm.source).then(function() {
-                                    sourceDoc = parsedData.getSourceDocument(scope.vm.source);
-                                    console.log(parsedData.getSourceDocuments());
-                                    try {
-                                        var promises = [];
-                                        promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, scope.vm.source).promise);
-                                        $q.all(promises).then(function(){
-                                            scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
-                                            scope.vm.isLoading = false;
-                                        });
-                                    } catch(err) {
-                                        scope.vm.content = errorMsg;
+                           
+                            if (sourceDoc !== undefined) {
+                                try {
+                                    var promises = [];
+                                    promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, scope.vm.source).promise);
+                                    $q.all(promises).then(function(){
+                                        scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
                                         scope.vm.isLoading = false;
-                                    }
-                                });
+                                    });
+                                } catch(err) {
+                                    scope.vm.content = errorMsg;
+                                    scope.vm.isLoading = false;
+                                }
                             } else {
-                            try {
-                            var promises = [];
-                            promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, scope.vm.source).promise);
-                            $q.all(promises).then(function(){
-                                scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
-                                scope.vm.isLoading = false;
-                                });
-                            } catch(err) {
                                 scope.vm.content = errorMsg;
                                 scope.vm.isLoading = false;
                             }
-                            }
+                            
                         } else {
                             scope.vm.content = newContent;
                             scope.vm.isLoading = false;
