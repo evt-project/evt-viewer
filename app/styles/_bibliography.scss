@@ -470,3 +470,7 @@
 .biblRef[pubblicationtype=u] .titleMonogr[data-style=mla]:after{
 	content: '. '
 }
+
+.unstructuredBibl .emph {
+	font-style: italic;
+}
