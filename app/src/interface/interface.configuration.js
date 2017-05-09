@@ -1,6 +1,7 @@
 angular.module('evtviewer.interface')
 
-.config(function($routeProvider) {
+.config(function($routeProvider, $locationProvider) {   
+    $locationProvider.hashPrefix('');
     $routeProvider
         .when('/:viewMode', {
             template: 'index.html',
