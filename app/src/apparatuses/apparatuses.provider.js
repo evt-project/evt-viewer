@@ -19,14 +19,13 @@ angular.module('evtviewer.apparatuses')
         apparatuses.build = function(scope) {
             var currentId = idx++;
 
-            if (typeof(collection[currentId]) !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return;
             }
             //Aggiungere l'apparato da aprire per configurazione
             //Aggiungere nella configurazione, un array con l'ordine degli apparati
             //E la struttura dei tabs
-            var scopeHelper = {},
-                currentApparatus = scope.currentApparatus || 'Critical Apparatus',//l'apparato selezionato nell'interfaccia
+            var currentApparatus = scope.currentApparatus || 'Critical Apparatus',//l'apparato selezionato nell'interfaccia
                 apparatuses = [],
                 appStructure = 'tabs'
                 appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
@@ -49,7 +48,7 @@ angular.module('evtviewer.apparatuses')
                 apparatuses.push({label: 'Analogues', list: analoguesList});
             }
 
-            scopeHelper = {
+            var scopeHelper = {
                 uid : currentId,
                 currentApparatus : currentApparatus,
                 apparatuses : apparatuses,
@@ -65,9 +64,7 @@ angular.module('evtviewer.apparatuses')
         }
 
         apparatuses.setCurrentApparatus = function(app) {
-            if (evtInterface.getCurrentApparatus() !== app) {
-                evtInterface.updateCurrentApparatus(app);
-            }
+            evtInterface.updateCurrentApparatus(app);
             angular.forEach(collection, function(currentApparatuses){
                 currentApparatuses.currentApparatus = app;
             });

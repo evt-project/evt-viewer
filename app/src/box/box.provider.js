@@ -393,7 +393,6 @@ angular.module('evtviewer.box')
                     }
                     //method to update the current apparatus inside of interface
                     vm.updateApparatus = function(app) {
-                        evtInterface.updateCurrentApparatus(app);
                         evtApparatuses.setCurrentApparatus(app);
                     }
                     //The updateContent function loads the evt-apparatuses directive

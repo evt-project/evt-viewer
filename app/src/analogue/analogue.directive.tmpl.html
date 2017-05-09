@@ -3,7 +3,7 @@
     ng-mouseover="vm.toggleOverAnalogues($event)"
     ng-mouseout="vm.toggleOverAnalogues($event)"
     ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
-                'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
+                'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
                 'over'     : vm.over,
                 'blurred'  : $parent.vm.state.topBoxOpened}">
     <span

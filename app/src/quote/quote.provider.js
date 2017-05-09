@@ -20,13 +20,11 @@ angular.module('evtviewer.quote')
             var currentId = idx++,
             entryId = scope.quoteId || undefined;
 
-            if (typeof(collection[currentId]) !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return;
             }
 
-            var scopeHelper = {}
-
-            scopeHelper = {
+            var scopeHelper = {
                 uid: currentId,
                 scopeWit : scope.scopeWit || '',
                 quoteId : entryId,
@@ -53,7 +51,7 @@ angular.module('evtviewer.quote')
         };
 
         quote.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };

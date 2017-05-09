@@ -76,13 +76,17 @@
                 <div ng-switch-when="moreInfo">
 
                 </div>
-                 <div ng-switch-when="xmlSource">
+                <div ng-switch-when="xmlSource">
                      XML Source for Quote
                      <pre>{{ vm.xml | prettyXml}}</pre>
                      XML Source for <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
                      <pre>{{ vm.src_list[vm._activeSource]._xmlSource | prettyXml }}</pre>
                      <div ng-if=""></div>
-                 </div>
+                </div>
+                <div
+                    ng-switch-default
+                    ng-if="vm.src_list[vm._activeSource].bibl !== ''"
+                    compile="vm.src_list[vm._activeSource].bibl"></div>
             </div>
         </div>
     </div>

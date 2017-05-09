@@ -1188,6 +1188,11 @@ angular.module('evtviewer.dataHandler')
         }
         var quoteContent = quote.content;
 
+        var quoteOpen = document.createElement('i');
+        quoteOpen.setAttribute('class', 'fa fa-quote-left');
+        quoteOpen.setAttribute('aria-hidden', 'true');
+        spanElement.appendChild(quoteOpen);
+
         var link = ['link', 'ptr', 'linkGrp'];
 
         for (var i in quoteContent) {

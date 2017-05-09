@@ -21,12 +21,11 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 entryId = scope.quoteId || undefined,
                 scopeWit = scope.scopeWit || '';
 
-            if (typeof(collection[currentId]) !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return;
             }
 
-            var scopeHelper = {},
-                content,
+            var content,
                 firstSubContentOpened = '',
                 /*src_list will be used to dynamically change the tabs
                   and the contents depending on the  activeSource*/
@@ -101,7 +100,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             }
 
-            scopeHelper = {
+            var scopeHelper = {
                 uid               : currentId,
                 quoteId           : scope.quoteId,
                 head              : head,
@@ -126,7 +125,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
 
         sourceEntry.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };

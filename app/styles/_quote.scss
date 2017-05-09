@@ -8,6 +8,10 @@ $quote-background-selected:rgb(255, 102, 102);
     
     .quote__text {
         background-color: $quote-background-default !important;
+        &.fa-quote-left {
+            font-size: 0.1 em !important;
+            color: lightgrey !important;
+        }
     }
 
     &.over,

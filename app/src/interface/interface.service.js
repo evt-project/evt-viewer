@@ -21,6 +21,7 @@ angular.module('evtviewer.interface')
             currentAnalogue  : undefined,
             currentSource    : undefined,
             currentSourceText : undefined,
+            sourcesTextsLoading : [ ]
             /*Poi da ridefinire a false, quando si aprirà alla selezione di un elemento critico*/
             //TODO: aggiungere fonte, cit e passo parallelo corrente
         };
@@ -295,17 +296,24 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.updateCurrentSourceText = function(sourceId) {
-            var isTextAvailable = parsedData.getSource(sourceId)._textAvailable
+            var isTextAvailable = parsedData.getSource(sourceId)._textAvailable;
             if (isTextAvailable) {
-                var isTextLoaded = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
-                if (!isTextLoaded) {
+                var isTextParsed = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
+                if (!isTextParsed) {
+                    state.sourcesTextsLoading.push(sourceId);
                     evtCommunication.getSourceTextFile('../../data/sources/'+sourceId+'.xml', sourceId).then(function() {
                         console.log('text parsed', sourceId);
+                        state.sourcesTextsLoading.splice(state.sourcesTextsLoading.indexOf(sourceId));
                     });
                 }
             }
             state.currentSourceText = sourceId;
         };
+
+        //Array of sources texts that are loading
+        mainInterface.getSourcesTextsLoading = function() {
+            return state.getSourcesTextsLoading;
+        }
 
         // WITNESS
         mainInterface.removeAvailableWitness = function(witness) {

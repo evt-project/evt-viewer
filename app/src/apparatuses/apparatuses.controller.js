@@ -7,6 +7,10 @@ angular.module('evtviewer.apparatuses')
         evtApparatuses.setCurrentApparatus(app);
     };
 
+    this.getCurrentApparatus = function() {
+        evtApparatuses.getCurrentApparatus();
+    };
+ 
     this.toggleAppStructure = function(appStructure) {
         if (vm.appStructure !== appStructure) {
             vm.appStructure = appStructure;

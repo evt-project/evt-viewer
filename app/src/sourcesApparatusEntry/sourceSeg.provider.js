@@ -18,7 +18,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 quoteId, //= scope.quoteId || undefined,
                 sourceId = scope.sourceId || undefined;
             
-            if (typeof(collection[currentId]) !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return;
             }
 
@@ -61,7 +61,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
 
         sourceSeg.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };

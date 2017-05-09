@@ -21,13 +21,11 @@ angular.module('evtviewer.analogue')
             var currentId = idx++,
                 entryId = scope.analogueId || undefined;
             
-            if (typeof(collection[currentId]) !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return;
             }
 
-            var scopeHelper = {};
-
-            scopeHelper = {
+            var scopeHelper = {
                 uid : currentId,
                 scopeWit : scope.scopeWit || '',
                 analogueId : entryId,
@@ -53,7 +51,7 @@ angular.module('evtviewer.analogue')
         };
 
         analogue.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };

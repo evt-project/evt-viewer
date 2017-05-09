@@ -21,11 +21,9 @@ angular.module('evtviewer.analoguesApparatusEntry')
                 entryId = scope.analogueId || undefined,
                 scopeWit = scope.scopeWit || '';
             
-            if (typeof(collection[currentId]) !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return;
             }
-
-            var scopeHelper = {};
 
             var content,
                 header,
@@ -109,7 +107,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
                 _activeSource = undefined;
             }
 
-            scopeHelper = {
+            var scopeHelper = {
                 uid              : currentId,
                 analogueId       : scope.analogueId,
                 header           : header,
@@ -134,7 +132,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
         }
 
         analoguesAppEntry.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
+            if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };

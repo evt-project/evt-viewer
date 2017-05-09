@@ -58,10 +58,10 @@
                       ng-if="vm.src_list[vm._activeSource].bibl !== ''"
                       compile="vm.src_list[vm._activeSource].bibl">
                 </div>
-                <div ng-switch-when="moreInfo">
-
-                </div>
-                 <div ng-switch-when="xmlSource">
+                <!--div ng-switch-when="moreInfo">
+                    TODO
+                </div-->
+                <div ng-switch-when="xmlSource">
                      <span class="xml-title">XML Source for Analogue</span>
                      <pre>{{ vm.xml | prettyXml}}</pre>
                      <span class="xml-title">
@@ -69,7 +69,11 @@
                          <span compile="vm.getActiveSourceAbbr(vm._activeSource)">
                      </span>
                      <pre>{{ vm.src_list[vm._activeSource]._xmlSource | prettyXml }}</pre>
-                 </div>
+                </div>
+                <div
+                    ng-switch-default
+                    ng-if="vm.src_list[vm._activeSource].bibl !== ''"
+                    compile="vm.src_list[vm._activeSource].bibl"></div>
             </div>
         </div>
     </div>
