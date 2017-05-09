@@ -34,6 +34,14 @@ angular.module('evtviewer.interface')
                 properties.indexTitle         = config.indexTitle;
                 properties.availableViewModes = config.availableViewModes;
                 evtCommunication.getData(config.dataUrl).then(function () {
+                    // Remove Collation View Mode if Witnesses List Empty
+                    if (parsedData.getWitnessesList().length === 0 ) { 
+                        for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
+                            if (properties.availableViewModes[i].viewMode === 'collation') {
+                                properties.availableViewModes[i].visible = false;
+                            }
+                        }
+                    }
                     mainInterface.updateParams($routeParams);
                     
                     // Parse critical text and entries
@@ -282,6 +290,14 @@ angular.module('evtviewer.interface')
             state.currentAppEntry = appEntryId;
         };
 
+        mainInterface.isViewModeAvailable = function(viewMode) {
+            for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
+                if (properties.availableViewModes[i].viewMode === viewMode) {
+                    return properties.availableViewModes[i].visible;
+                }
+            }
+        };
+
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,
@@ -294,8 +310,10 @@ angular.module('evtviewer.interface')
 
             // VIEW MODE 
             if (params.viewMode !== undefined) {
-                viewMode = params.viewMode;
-                //TODO: remove collation view mode if there are no witnesses
+                // Check if view mode is available
+                if (mainInterface.isViewModeAvailable(params.viewMode)) {
+                    viewMode = params.viewMode;
+                } 
             }
 
             // EDITION 
