@@ -141,6 +141,12 @@ button-switch {
     &.half-centered {
         left: 62.5%;
     }
+    &.half-left {
+        left: 50%;
+    }
+    &.left {
+        left: 37.5%;
+    }
     .buttonSwitch {
         transform: translate(-50%, 0px);
         border-radius: 100px;

@@ -107,7 +107,8 @@
                  id="mainText"
                  ng-class="{'centered': !isPinnedAppBoardOpened(),
                             'half-centered': isPinnedAppBoardOpened(),
-                            'left': isApparatusBoxOpen()}"></box>
+                            'half-left': isApparatusBoxOpen(),
+                            'smaller-left': isApparatusBoxOpen() && isPinnedAppBoardOpened() }"></box>
             <button-switch 
                     title="Show pinned apparatus entries"
                     data-label=""
@@ -115,12 +116,15 @@
                     data-type="togglePinned"
                     ng-if="isToolAvailable('toolPinAppEntries') && getPinnedEntries().length > 0 && entry !== ''"
                     class="togglePinned_btn"
-                    ng-class="{'centered': !isPinnedAppBoardOpened(),
-                               'half-centered': isPinnedAppBoardOpened()}">
+                    ng-class="{'centered': !isPinnedAppBoardOpened() && !isApparatusBoxOpen(),
+                               'half-centered': isPinnedAppBoardOpened() && !isApparatusBoxOpen(),
+                               'left': isPinnedAppBoardOpened() && isApparatusBoxOpen(),
+                               'half-left': !isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
             </button-switch>
 
             <box data-type="pinnedBoard" 
-                ng-show="!isLoading() && isPinnedAppBoardOpened()">
+                 ng-show="!isLoading() && isPinnedAppBoardOpened()"
+                 ng-class="{ 'pin-centered': isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
                  <span ng-if="!isLoading() && getPinnedEntries().length <= 0">
                     <!--No apparatus entries pinned.--></span>
                  <evt-critical-apparatus-entry 
@@ -136,7 +140,8 @@
             <box
                 ng-if="getCurrentEdition() === 'critical'"
                 data-type="apparatuses"
-                id="apparatuses">
+                id="apparatuses"
+                ng-class="{ 'smaller' : isPinnedAppBoardOpened() && isApparatusBoxOpen() }">
             </box>
         </section> 
 

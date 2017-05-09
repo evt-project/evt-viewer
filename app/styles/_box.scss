@@ -312,11 +312,30 @@
     }
 }
 
-.left {
+.half-left {
     .box {
         left: 0%
     }
 }
+/*Classes added to handle the position of the pin board and the pin button*/
+/*@author --> CM*/
+.smaller-left{
+    .box {
+        left: 0%;
+        width: 37.5%;
+    }
+}
+.smaller {
+    .box {
+        width: 37.5%;
+    }
+}
+.pin-centered {
+    .box {
+        //left: 37.5%;
+    }
+}
+/*End of the addition by CM*/
 // Temporary
 // .viewMode .box:last-child{
     // margin: 0px 0px 0px 0.5px;
