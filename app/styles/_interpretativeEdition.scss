@@ -36,22 +36,36 @@
 			content: " ";
 		}
 
-		.orig {
+		.corr, .orig {
 			font-size: 80%;
-			position: absolute;
+			position: absolute;  
 			line-height: 16px;
 			display: none;
 			border: 2.5px solid black;
 			border-radius: 3px;
 			@include set(box-shadow, 2px 2px 2px #7e7067);
 			padding: 0.4%;
-			margin-top: 30px; 
+			margin-top: 30px;
 
 			&:before {
-				content: url("../images/popup_before.png");
 				left: 15%;
 				position: absolute;
 				top: -13px;
+			}
+		}
+		.corr {
+			&:before {
+				content: url("../images/popup_before_corr.png");
+			}
+		}
+
+		.corr, .corr * {
+			background: #f99069 !important;
+		}
+
+		.orig {
+			&:before {
+				content: url("../images/popup_before.png");
 			}
 		}
 		
@@ -66,16 +80,23 @@
 			}
 		}
 		&:hover, &.hover {
-			.orig {
+			.orig, .corr {
 				display: inline;
-				min-width: 20px;
+				min-width: 30px;
 				text-align: center; 
+			}
+			.corr {
+				@include set(transform, translate(-80%, 0));
 			}
 
 			.reg { 
 				text-decoration: underline; 
 			}
 		} 
+
+		.sic {
+		   color: #934d4d; 
+		}
 
 		.sup {
 		    line-height: 20px;
