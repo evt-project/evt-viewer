@@ -613,11 +613,12 @@ angular.module('evtviewer.dataHandler')
                     if (getPages(newBiblElement)) {
                         string += '<span data-style="chicago" class="pp">' + getPages(newBiblElement) + '</span>';
                     }
+					/*/
                     angular.forEach(newBiblElement.idno, function(el, key) {
                         if (key === 'DOI') {
-                            string += '<span data-style="chicago" class="idno" data-type="' + key + '">' + el.textContent + '</span>';
+                            string += '<span data-style="chicago" class="idno" data-type="' + key + '">' + el + '</span>';
                         }
-                    });
+                    });/*/
                 } else {
                     //else if(isMonograph(newBiblElement) ){
                     if (getDate(newBiblElement)) {
@@ -642,11 +643,11 @@ angular.module('evtviewer.dataHandler')
                     if (getUrl(newBiblElement)) {
                         string += '<span data-style="chicago" class="url">' + getUrl(newBiblElement) + '</span>';
                     }
-                    angular.forEach(newBiblElement.idno, function(el, key) {
+                    /*/angular.forEach(newBiblElement.idno, function(el, key) {
                         if (key === 'ISSN') {
-                            string += '<span data-style="chicago" class="idno" data-type="' + key + '">' + el.textContent + '</span>';
+                            string += '<span data-style="chicago" class="idno" data-type="' + key + '">' + el + '</span>';
                         }
-                    });
+                    });/*/
                 }
             }
 
