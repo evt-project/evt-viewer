@@ -3,227 +3,246 @@
 /* *************************** */
 
 .interpretativeEdition {
-	// Abbreviations and Their Expansions 
-	.choice {
-		.abbr {
-			display: none;
-		}
-		.expan { }
-	}
+    // Abbreviations and Their Expansions
+    .choice {
+        .abbr {
+            display: none;
+        }
 
-	// Additions, Deletions, and Omissions
-	.add { 
-		&[data-place='above'] { }
-	}
+        .expan {}
+    }
 
+    // Additions, Deletions, and Omissions
+    .add {
+        &[data-place='above'] {}
+    }
 
-	//TEMP. TODO: creare direttiva apposita per GLYPHs
-	.glyph {
-		.glyphname, .mapping {
-			display: none;
-		}
+    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+    .glyph {
+        .glyphname, .mapping {
+            display: none;
+        }
 
-		.mapping[data-type="interpretative"] {
-			display: inline;
-		}
-	}
+        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+            display: inline;
+        }
+    }
 
+    .char {
+        .charname, .mapping {
+            display: none;
+        }
 
-	.choice {
-		display: inline;
-		
-		&:before, &:after {
-			content: " ";
-		}
+        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+            display: inline;
+        }
+    }
 
-		.corr, .orig {
-			font-size: 80%;
-			position: absolute;  
-			line-height: 16px;
-			display: none;
-			border: 2.5px solid black;
-			border-radius: 3px;
-			@include set(box-shadow, 2px 2px 2px #7e7067);
-			padding: 0.4%;
-			margin-top: 30px;
+    .choice {
+        display: inline;
 
-			&:before {
-				left: 15%;
-				position: absolute;
-				top: -13px;
-			}
-		}
-		.corr {
-			&:before {
-				content: url("../images/popup_before_corr.png");
-			}
-		}
+        &:before, &:after {
+            content: " ";
+        }
 
-		.corr, .corr * {
-			background: #f99069 !important;
-		}
+        .corr, .orig {
+            font-size: 80%;
+            position: absolute;
+            line-height: 16px;
+            display: none;
+            border: 2.5px solid black;
+            border-radius: 3px;
 
-		.orig {
-			&:before {
-				content: url("../images/popup_before.png");
-			}
-		}
-		
-		.orig, .orig * {
-			background: #e5dac4 !important;
-		}
+            @include set(box-shadow, 2px 2px 2px #7e7067);
 
-		.reg { 
-			color: #69513a;
-			&:hover, &.hover {
-				color: #561c0a;
-			}
-		}
-		&:hover, &.hover {
-			.orig, .corr {
-				display: inline;
-				min-width: 30px;
-				text-align: center; 
-			}
-			.corr {
-				@include set(transform, translate(-80%, 0));
-			}
+            padding: 0.4%;
+            margin-top: 30px;
 
-			.reg { 
-				text-decoration: underline; 
-			}
-		} 
+            &:before {
+                left: 15%;
+                position: absolute;
+                top: -13px;
+            }
+        }
 
-		.sic {
-		   color: #934d4d; 
-		}
+        .corr {
+            &:before {
+                content: url("../images/popup_before_corr.png");
+            }
+        }
 
-		.sup {
-		    line-height: 20px;
-			vertical-align: 20%; 
-		}
+        .corr, .corr * {
+            background: #f99069 !important;
+        }
 
-		.under {
-		    line-height: 20px;
-			vertical-align: -20%; 
-		}
-	}
+        .orig {
+            &:before {
+                content: url("../images/popup_before.png");
+            }
+        }
 
-	.sic  {
-		display: inline-table;
-		
-		&:before, &:after {
-			content: " ";
-		}
+        .orig, .orig * {
+            background: #e5dac4 !important;
+        }
 
-		.corr {
-			font-size: 80%;
-			position: absolute;
-			line-height: 16px;
-			display: none;
-			background: #f99069;
-			border: 2.5px solid black;
-			border-radius: 3px;
-			@include set(box-shadow, 2px 2px 2px #7e7067);
-			padding: 0.4%;
-			margin-top: 30px; 
-			
-			&:before {
-				content: url("../images/popup_before_corr.png");
-			 	left: 15%;
-			 	position: absolute;
-			 	top: -13px;
-			} 
-		}
+        .reg {
+            color: #69513a;
 
-		.sic { 
-			color: #934d4d;
-			&:hover, &.hover {
-				color: #561c0a;
-			}
-		}
+            &:hover, &.hover {
+                color: #561c0a;
+            }
+        }
 
-		&:hover, &.hover {
-			.corr {
-				display: inline;
-				min-width: 20px;
-				text-align: center; 
-			}
+        &:hover, &.hover {
+            .orig, .corr {
+                display: inline;
+                min-width: 30px;
+                text-align: center;
+            }
 
-			.sic { 
-				text-decoration: underline; 
-			}
-		} 
-	}
+            .corr {
+                @include set(transform, translate(-80%, 0));
+            }
 
-	//TODO: reorder
-	.attachment{
-	    border: 1px solid black;
-	    padding: 5px 0px 0px 10px;
-	}
+            .reg {
+                text-decoration: underline;
+            }
+        }
 
-	.ex { 
-		font-style: italic; 
-	}
+        .sic {
+            color: #934d4d;
+        }
 
-	.lineN {
-		color: grey;
-		font-size: 0.8em; 
-	}
+        .sup {
+            line-height: 20px;
+            vertical-align: 20%;
+        }
 
-	.resp { 
-		font-weight: bold; 
-	}
+        .under {
+            line-height: 20px;
+            vertical-align: -20%;
+        }
+    }
 
-	.red { 
-		color: red; 
-	}
+    .sic {
+        display: inline-table;
 
-	.hi {
-		&[data-rend="7init"] {
-			font-size: 140% 
-		}
+        &:before, &:after {
+            content: " ";
+        }
 
-		&[data-rend="init3.1"] { 
-			font-size: 120%; /*font-weight: bold;*/ 
-		}
+        .corr {
+            font-size: 80%;
+            position: absolute;
+            line-height: 16px;
+            display: none;
+            background: #f99069;
+            border: 2.5px solid black;
+            border-radius: 3px;
 
-		&[data-rend="cap"] { 
-			text-transform: uppercase; 
-		}
+            @include set(box-shadow, 2px 2px 2px #7e7067);
 
-		&[data-rend="double"] { 
-			font-size: 120%; 
-		}
-	}
+            padding: 0.4%;
+            margin-top: 30px;
 
-	.ex { 
-		font-style: italic; 
-	}
+            &:before {
+                content: url("../images/popup_before_corr.png");
+                left: 15%;
+                position: absolute;
+                top: -13px;
+            }
+        }
 
+        .sic {
+            color: #934d4d;
 
-	.zone{
-		margin-bottom: 5px; 
-	}
-	.p {
-		display: block;
-	}
-	
+            &:hover, &.hover {
+                color: #561c0a;
+            }
+        }
 
-	.center, [rend="center"] {
-		text-align: center;
-	    width: 92%;
-	    display: inline-table;
-	    background:#FFF;
-	}
+        &:hover, &.hover {
+            .corr {
+                display: inline;
+                min-width: 20px;
+                text-align: center;
+            }
 
-	.right, [rend="right"] {
-		text-align: right;
-	    display: inline-table;
-	    background:#FFF; 
-	}
+            .sic {
+                text-decoration: underline;
+            }
+        }
+    }
 
-	.left, [rend="left"]{
-	    display: inline-table;
-	}
+    //TODO: reorder
+    .attachment {
+        border: 1px solid black;
+        padding: 5px 0px 0px 10px;
+    }
+
+    .ex {
+        font-style: italic;
+    }
+
+    .lineN {
+        color: grey;
+        font-size: 0.8em;
+    }
+
+    .resp {
+        font-weight: bold;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .hi {
+        &[data-rend="7init"] {
+            font-size: 140%;
+        }
+
+        &[data-rend="init3.1"] {
+            font-size: 120%;
+
+            /*font-weight: bold;*/
+        }
+
+        &[data-rend="cap"] {
+            text-transform: uppercase;
+        }
+
+        &[data-rend="double"] {
+            font-size: 120%;
+        }
+    }
+
+    .ex {
+        font-style: italic;
+    }
+
+    .zone {
+        margin-bottom: 5px;
+    }
+
+    .p {
+        display: block;
+    }
+
+    .center, [rend="center"] {
+        text-align: center;
+        width: 92%;
+        display: inline-table;
+        background: #FFF;
+    }
+
+    .right, [rend="right"] {
+        text-align: right;
+        display: inline-table;
+        background: #FFF;
+    }
+
+    .left, [rend="left"] {
+        display: inline-table;
+    }
 }

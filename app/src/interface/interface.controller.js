@@ -154,4 +154,31 @@ angular.module('evtviewer.interface')
 	};
 
 	_console.log('InterfaceCtrl running');
+})
+
+//TODO: Move this directive in a proper file 
+.directive('g', function (parsedData) { 
+    return { 
+        restrict: 'E', 
+        scope: { 
+            ref : '@' 
+        }, 
+        template: '<span class="glyph" compile="content"></span>', 
+        replace: true, 
+        link: function (scope, iElement, iAttrs) { 
+          var sRef = scope.ref, 
+            sContent = '['+scope.ref+']'; 
+            if (sRef && sRef !== '') { 
+                sRef = sRef.replace('#', ''); 
+                var glyphObj = parsedData.getGlyph(sRef); 
+                if (glyphObj && glyphObj.parsedXml !== '') { 
+                    sContent = glyphObj.parsedXml; 
+                } 
+            } 
+          // TODO: Decide if simply use html content to be compiled  
+          // (in this case the same HTML will be used for each occurrence of glyph) 
+          // or if parse the glyph content deeperand use only the character needed  
+            scope.content = sContent; 
+        } 
+    }; 
 });

@@ -523,7 +523,9 @@ angular.module('evtviewer.dataHandler')
     parsedData.getGlyph = function(glyphId) {
         return glyphsCollection[glyphId];
     };
-
+    parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) { 
+        return glyphsCollection[glyphId].mapping[editionLevel] || undefined; 
+    };
 
     /* ***************** */
     /* DIGITAL FACSIMILE */
