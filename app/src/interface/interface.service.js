@@ -317,8 +317,8 @@ angular.module('evtviewer.interface')
             }
 
             // EDITION 
-            if (params.edition !== undefined ) {
-                edition = params.edition;
+            if (params.e !== undefined ) {
+                edition = params.e;
             } else {
                 if (viewMode === 'readingTxt' && parsedData.isCriticalEditionAvailable()) {
                     edition = 'critical';
@@ -326,8 +326,8 @@ angular.module('evtviewer.interface')
             }
 
             // PAGE
-            if ( params.pageId !== undefined ) {
-                pageId = params.pageId;
+            if ( params.p !== undefined ) {
+                pageId = params.p;
             } else {
                 var pages = parsedData.getPages();
                 if (pages.length > 0) {
