@@ -7,10 +7,11 @@
     .choice {
         .abbr {
             color: purple;
-            display: none;
         }
 
-        .expan {}
+        .expan {
+            display: none;
+        }
     }
 
     // 3.3.2 Emphasis, Foreign Words, and Unusual Language
