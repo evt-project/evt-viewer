@@ -30,6 +30,12 @@ angular.module('evtviewer.sourcesApparatusEntry')
         }
     };
 
+    //Method to reset the selected quote and the quote over.
+    this.unselectQuote = function() {
+        vm.panel._quoteOver = '';
+        vm.panel._quoteSelected = '';
+    };
+
     this.toggleOverSeg = function($event, segId) {
         $event.stopPropagation();
         if (vm.over === false) {
@@ -72,7 +78,6 @@ angular.module('evtviewer.sourcesApparatusEntry')
     };
 
     this.destroy = function() {
-        var tempId = this.uid;
-        evtSourceSeg.destroy(tempId);
+        evtSourceSeg.destroy(this.uid);
     }
 });

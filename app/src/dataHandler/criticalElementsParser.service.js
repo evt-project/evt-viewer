@@ -352,7 +352,7 @@ angular.module('evtviewer.dataHandler')
     /*handleAppEntry(app, parentEntryId)*/
     /********************************** */
     parser.handleAppEntry = function(app, parentEntryId) {
-        // if (app.getAttribute('type') || app.getAttribute('type') !== 'note') {
+        // if (!app.getAttribute('type') || app.getAttribute('type') !== 'note' || app.getAttribute('type') !== 'recensio') {
             var entry = parseAppEntry(app) || undefined;
 
             // controllo testimoni mancanti
@@ -403,7 +403,7 @@ angular.module('evtviewer.dataHandler')
         // }
     };
 
-        /* ******************************************* */
+    /* ****************************************/
     /* getEntryWitnessReadingText(entry, wit) */
     /* ******************************************************************************************************* */
     /* Function to get the text of the reading for a particular witness in a specific critical apparatus entry */

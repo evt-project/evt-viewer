@@ -97,8 +97,6 @@ angular.module('evtviewer.analogue')
     };
     
     this.destroy = function() {
-        var tempId = this.uid;
-
-        evtAnalogue.destroy(tempId);
+        evtAnalogue.destroy(this.uid);
     }
 });

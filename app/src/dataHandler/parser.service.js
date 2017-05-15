@@ -336,30 +336,49 @@ angular.module('evtviewer.dataHandler')
         console.log('## External Documents ##');
     };
 
-    /*createRegExpr(string)*/
-    /*Takes a string, used in the config file to define a critical elements and return a string */
+    /********************/
+    /*createRegExpr(def)*/
+    /************************************************************************/
+    /*Takes a string, used in the config file to define a critical elements,*/
+    /*and returns a string that will be used to search the XML elements.    */
+    /*@author --> CM                                                        */
+    /*@def --> string of the element definition, contained in config file   */
+    /************************************************************************/
     parser.createRegExpr = function(def) {
             var match = '(',
+                //def may contain more than one definition separated by commas
+                //Save all the definition contained in def in aDef array
                 aDef = def.split(",");
             
             for (var i = 0; i < aDef.length; i++) {
+                //Checks if there is an attribute, itroduced by a "["
                 if (aDef[i].indexOf("[") < 0) {
+                    //If there isn't a square bracket, it adds the element name in the match string
                     match += aDef[i].replace(/[>]/g, '');
                 } else {
-                var bracketOpen = aDef[i].indexOf("[");
-                if(aDef[i].substring(1, bracketOpen) !== "[") {
-                    match += aDef[i].substring(0, bracketOpen)
-                }
-                match += '[^<>]*?';
-                var bracketClose = aDef[i].indexOf("]");
-                var equal = aDef[i].indexOf("=");
-                match += aDef[i].substring(bracketOpen + 1, equal);
-                match += '\\s*?=\\s*?[\'\"]\\s*?';
-                match += aDef[i].substring(equal + 1, bracketClose);
+                    //Otherwise it saves the name of the element marked by the "<" and the "["
+                    var bracketOpen = aDef[i].indexOf("[");
+                    if(aDef[i].substring(1, bracketOpen) !== "[") {
+                        match += aDef[i].substring(0, bracketOpen)
+                    }
+                    //Adds regular expression operators to the match string
+                    match += '[^<>]*?';
+                    //Looks for the closing square bracket
+                    var bracketClose = aDef[i].indexOf("]");
+                    //...and for the equals sign
+                    var equal = aDef[i].indexOf("=");
+                    //Adds the name of the attribute...
+                    match += aDef[i].substring(bracketOpen + 1, equal);
+                    //...reg expr operators
+                    match += '\\s*?=\\s*?[\'\"]\\s*?';
+                    //...and the value of the attribute
+                    match += aDef[i].substring(equal + 1, bracketClose);
                 }
                 if (i < aDef.length -1) {
+                //Adds operator or to add a new definition contained in aDef
                 match+='|';
             } else if ( i = aDef.length - 1) {
+                //Closes the regular expression
                 match+=')';
             }
         }

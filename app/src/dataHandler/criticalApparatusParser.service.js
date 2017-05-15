@@ -127,6 +127,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
             function(element) {
+                //TODO: if-else per handleRecensioEntry
                 evtCriticalElementsParser.handleAppEntry(element);
         });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));

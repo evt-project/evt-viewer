@@ -24,15 +24,16 @@ angular.module('evtviewer.apparatuses')
     }
 
     this.getList = function(app){
+        var list = [];
         for (var i in vm.apparatuses) {
             if (vm.apparatuses[i].label === app){
-                return vm.apparatuses[i].list;
+                list = vm.apparatuses[i].list;
             }
         }
+        return list;
     }
 
     this.destroy = function() {
-        var tempId = this.uid;
-        evtApparatuses.destroy(tempId);
+        evtApparatuses.destroy(this.uid);
     }
 });

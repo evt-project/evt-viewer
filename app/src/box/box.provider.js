@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtApparatuses, evtCommunication) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtApparatuses, evtCommunication, evtSourcesApparatus) {
         var box        = {},
             collection = {},
             list       = [],
@@ -434,6 +434,8 @@ angular.module('evtviewer.box')
                                         scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
                                         scope.vm.isLoading = false;
                                     });
+                                    var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
+                                    updateTopBoxContent(sourceBibl);
                                 } catch(err) {
                                     scope.vm.content = errorMsg;
                                     scope.vm.isLoading = false;
@@ -442,7 +444,7 @@ angular.module('evtviewer.box')
                                 scope.vm.content = errorMsg;
                                 scope.vm.isLoading = false;
                             }
-                            
+
                         } else {
                             scope.vm.content = newContent;
                             scope.vm.isLoading = false;

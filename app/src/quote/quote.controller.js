@@ -108,11 +108,6 @@ angular.module('evtviewer.quote')
     };
     
     this.destroy = function() {
-        var tempId = this.uid;
-        // TODO: remove from list and collection
-         //this.$destroy();
-        evtQuote.destroy(tempId);
-        // _console.log('vm - destroy ' + tempId);
+        evtQuote.destroy(this.uid);
     };
-    // _console.log('QuoteCtrl running');
 });

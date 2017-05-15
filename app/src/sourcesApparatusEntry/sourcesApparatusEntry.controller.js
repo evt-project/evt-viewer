@@ -83,13 +83,13 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     this.toggleOverSourcesEntries = function($event) {
         $event.stopPropagation();
-        if (vm.over === false) {
+        if (vm.over) {
+            evtSourcesApparatusEntry.mouseOutAll();
+        } else {
             evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
             if (vm.currentViewMode === 'readingTxt') {
                 evtQuote.mouseOverByQuoteId(vm.quoteId);
             }
-        } else {
-            evtSourcesApparatusEntry.mouseOutAll();
         }
     };
 
@@ -120,9 +120,6 @@ angular.module('evtviewer.sourcesApparatusEntry')
     }
 
     this.destroy = function() {
-        var tempId = this.uid;
-        // TODO: remove from list and collection
-        // this.$destroy();
-        evtSourcesApparatusEntry.destroy(tempId);
+        evtSourcesApparatusEntry.destroy(this.uid);
     };
 });
