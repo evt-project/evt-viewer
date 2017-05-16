@@ -99,6 +99,7 @@ angular.module('evtviewer.criticalApparatusEntry')
                 over              : false,
                 selected          : false,
                 tabs              : tabs,
+                exponent          : scope.exponent,
                 witnessesGroups   : witnessesGroups,
                 currentViewMode   : scope.scopeViewMode
             };

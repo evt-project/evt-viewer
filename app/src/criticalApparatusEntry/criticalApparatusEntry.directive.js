@@ -8,7 +8,8 @@ angular.module('evtviewer.criticalApparatusEntry')
             readingId   : '@',
             scopeWit    : '@',
             type        : '@',
-            visible     : '@'
+            visible     : '@',
+            exponent    : '@'
         },
         transclude: true,
         templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.directive.tmpl.html',

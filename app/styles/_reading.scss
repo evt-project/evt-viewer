@@ -61,6 +61,20 @@ $reading-background-selected : rgb(208, 220, 255);
                 background: $reading-background-hover;
             }
         }
+
+        .reading_exponent{
+            margin: 0;
+            position: relative;
+            bottom: 0.3em;
+            background-color: $base-color-light;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            font-color: $base-color-middle;
+            word-spacing: -0.25em;
+            padding: 0.05em;
+            font-size: 0.7em;
+        }
     }
 
     &.invisible {
