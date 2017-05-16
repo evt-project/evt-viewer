@@ -65,7 +65,11 @@ angular.module('evtviewer.core')
     
 
     dataUrl          : '../../data/Phibor_Esempio_codifica.xml',
+    /*sourcesUrl*/
+    /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
     sourcesUrl       : '',
+    /*analoguesUrl*/
+    /*Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.*/
     analoguesUrl     : '../../data/analogues.xml',
     preferredWitness : 'A',
     skipWitnesses    : '',
@@ -82,6 +86,12 @@ angular.module('evtviewer.core')
                                 label    : 'Reading Text',
                                 icon     : 'reading-txt',
                                 viewMode : 'readingTxt',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Versions',
+                                icon     : 'mode-versions',
+                                viewMode : 'versions',
                                 visible  : true
                             },
                             {
@@ -121,18 +131,31 @@ angular.module('evtviewer.core')
     possibleLemmaFilters       : 'resp, cert',
     notSignificantVariant      : '<orig>, <sic>, [type=orthographic]',
 
+    /*Versions*/
+    /*Array to encode cases of double or multiple redactions of the text*/
+    /*The array collects the id used inside of the XML file as values of*/
+    /*the @ana attribute on the rdgGrp element.                         */
+    /*The first id will correspond to the default version.              */
+    versions : ["rec_1", "rec_2", "rec_3"],
+
+    /*witnessesGroups*/
+    /*Used to divide the readings of all critical apparatus entries into groups.*/
+    /*The witnesses property is required in order to have the partition.        */
+    /*The groupName is optional: if set the name will be displayed.             */
     witnessesGroups: [
         {
-            groupName : "witGrp_1",
+            groupName : "Grp_1",
             witnesses : ["V", "P", "N", "M", "G", "C", "R"]
         },
         {
-            groupName : "witGrp_2",
+            groupName : "Grp_2",
             witnesses : ["F", "D", "O", "W", "M5mg", "B", "U"]
         }
     ],
 
+    /*Definition of the element used within the XML file to encode quotes for the sources apparatus.*/
     quoteDef    : '<quote>',
+    /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
     analogueDef : '',
     
     loadCriticalEntriesImmediately : true,
