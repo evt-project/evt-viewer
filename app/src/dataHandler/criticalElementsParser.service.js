@@ -403,6 +403,42 @@ angular.module('evtviewer.dataHandler')
         // }
     };
 
+    /**************************/
+    /* parseVersionEntry(app) */
+    /************************************************************************************/
+    /* Function to parse the content and the information within an app of type recensio */
+    /* @app --> app element to parse    |   @author --> CM                              */
+    /************************************************************************************/
+    parser.parseVersionEntry = function(app) {
+        var entry = {
+            type : 'recensioApp',
+            id : '',
+            attributes : [],
+            lemma : '',
+            note : '',
+            content : {
+                //GROUPS
+                    //lem
+                    //rdg*
+            },
+            _xmlSource : app.outerHTML || '' 
+
+        }
+    };
+
+    /***************************/
+    /* handleVersionEntry(app) */
+    /*************************************************************************************/
+    /* Function to parse an app element that encodes the differences between two or more */
+    /* versions of the text in a certain passage.                                        */
+    /* @app --> app element containing the info about the variants between versions      */
+    /* @author --> CM                                                                    */
+    /*************************************************************************************/
+    parser.handleVersionEntry = function(app) {
+        var entry = parseVersionEntry(app);
+        return entry;
+    };
+
     /* ****************************************/
     /* getEntryWitnessReadingText(entry, wit) */
     /* ******************************************************************************************************* */
@@ -1231,7 +1267,7 @@ angular.module('evtviewer.dataHandler')
     /*ANALOGUES*/
     /***********/
 
-        /****************************/
+    /****************************/
     /*parseAnalogueContent(elem)*/
     /******************************************************************************/
     /*Creates a new object of type 'analogueContent' that is added to the analogue*/

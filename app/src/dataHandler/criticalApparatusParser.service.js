@@ -128,14 +128,39 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
             function(element) {
                 //TODO: if-else per handleRecensioEntry
-                evtCriticalElementsParser.handleAppEntry(element);
-        });
+                if (!element.hasAttribute('type') || (element.getAttribute('type') !== 'recensio')){
+                    evtCriticalElementsParser.handleAppEntry(element);
+                }
+            });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));
         parsedData.setCriticalEntriesLoaded(config.loadCriticalEntriesImmediately);
         console.log('## Critical entries ##', parsedData.getCriticalEntries());
         deferred.resolve('success');
         return deferred;
     };
+
+    /****************************/
+    /* parseVersionEntries(doc) */
+    /****************************************************************************/
+    /* Function to parse the critical entries that contain passages that differ */
+    /* in two or more versions of the text.                                     */
+    /* @doc --> XML file encoded by the editor    |     @author --> CM          */
+    /****************************************************************************/
+    parser.parseVersionEntries = function(doc) {
+        var deferred = $q.defer(),
+            currentDocument = angular.element(doc);
+        
+        angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), function(element) {
+            if (element.hasAttribute('type') && (element.getAttribute('type') === 'recensio')) {
+                evtCriticalElementsParser.handleVersionEntry(element);
+            }
+        });
+        
+        console.log('## Version Entries ##', parsedData.getVersionEntries());
+        
+        deferred.resolve('success');
+        return deferred;
+    }
 
     /* ******* */
     /* WITNESS */
