@@ -403,13 +403,89 @@ angular.module('evtviewer.dataHandler')
         // }
     };
 
+    /****************************************/
+    /* parseVersionGroupReading(group, lem) */
+    /*****************************************************************************/
+    /* Function to parse the content of the lem inside of a version group.       */
+    /* The text inside of the lem element will be displayed in the version text. */
+    /* @elem --> lem to be parsed | @author --> CM */
+    /*****************************************************************************/
+    var parseVersionGroupReading = function(elem) {
+        var reading = {
+            id : '',
+            attributes : [],
+            content : {},
+            _xmlTagName : elem.tagName,
+            _xmlSource : elem.outerHTML
+        }
+
+        if (elem.hasAttribute('xml:id')) {
+            reading.id = elem.getAttribute('xml:id');
+        } else {
+            reading.id = evtParser.xpath(elem).substr(1);
+        }
+
+        for (var i = 0; i < elem.attributes.length; i++) {
+            var attrib = elem.attributes[i];
+        }
+        return reading;
+    };
+
+    /****************************/
+    /* parseVersionGroup(group) */
+    /***************************************************************/
+    /* Function to parse the reading groups inside of version app. */
+    /* @group --> reading group to parse    |  @author --> CM      */
+    /***************************************************************/
+    var parseVersionGroup = function(entry, group) {
+        var groupObj = {
+            versionId : '',
+            attributes : [],
+            content : {},
+            lem : ''
+        },
+        id = '';
+
+        if (group.attributes) {
+            for (var i = 0; i < group.attributes.length; i++) {
+                var attrib = group.attributes[i];
+                if (attrib.specified) {
+                    groupObj.attributes[attrib.name] = attrib.value;
+                    groupObj.attributes.length++;
+                    if (attrib.name === 'ana') {
+                        id = attrib.value.replace('#', '');
+                        var index = config.versions.indexOf(attrib.value);
+                        if (index >= 0) {
+                            groupObj.versionId = '&#'+(index+65)+';';
+                        }
+                    }
+                }
+            }
+        }
+
+        angular.forEach(group.childNodes, function(child) {
+            if (child.nodeType === 1) {
+                if (child.tagName === 'lem') {
+                    var lem = parseVersionGroupReading(child);
+                    groupObj.lem = lem.id;
+                    groupObj.content[lem.id] = lem;
+                } else if (child.tagName === 'rdg') {
+                    var rdg = parseVersionGroupReading(child);
+                    groupObj.content[rdg.id] = rdg;
+                }
+            }
+        });
+
+        entry.content[id] = groupObj;
+    };
+
     /**************************/
     /* parseVersionEntry(app) */
     /************************************************************************************/
     /* Function to parse the content and the information within an app of type recensio */
     /* @app --> app element to parse    |   @author --> CM                              */
     /************************************************************************************/
-    parser.parseVersionEntry = function(app) {
+    var parseVersionEntry = function(app) {
         var entry = {
             type : 'recensioApp',
             id : '',
@@ -421,9 +497,38 @@ angular.module('evtviewer.dataHandler')
                     //lem
                     //rdg*
             },
-            _xmlSource : app.outerHTML || '' 
-
+            _xmlSource : app.outerHTML || ''
         }
+
+        if (app.hasAttribute('xml:id')) {
+            entry.id = app.getAttribute('xml:id');
+        } else {
+            entry.id = evtParser.xpath(app).substr(1);
+        }
+
+        if (app.attributes) {
+            for (var i = 0; i < app.attributes.length; i++) {
+                var attrib = app.attributes[i];
+                if (attrib.specified) {
+                    entry.attributes[attrib.name] = attrib.value;
+                    entry.attributes.length++;
+                }
+            }
+        }
+
+        angular.forEach(app.childNodes, function(child) {
+            if (child.nodeType === 1) {
+                if (child.tagName === 'note') {
+                    entry.note = child.innerHTML;
+                } else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    parseVersionGroup(entry, child);
+                }
+            }
+        });
+
+        console.log(entry);
+
+        return entry;
     };
 
     /***************************/
@@ -436,6 +541,8 @@ angular.module('evtviewer.dataHandler')
     /*************************************************************************************/
     parser.handleVersionEntry = function(app) {
         var entry = parseVersionEntry(app);
+
+        parsedData.addVersionEntry(entry);
         return entry;
     };
 

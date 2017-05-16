@@ -17,6 +17,12 @@
                                 "visible"  : true
                             },
                             {
+                                "label"    : "Versions",
+                                "icon"     : "mode-versions",
+                                "viewMode" : "versions",
+                                "visible"  : true
+                            },
+                            {
                                 "label"    : "Image Text",
                                 "icon"     : "mode-imgTxt",
                                 "viewMode" : "imgTxt",

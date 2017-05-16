@@ -21,9 +21,7 @@ angular.module('evtviewer.interface')
             currentAnalogue  : undefined,
             currentSource    : undefined,
             currentSourceText : undefined,
-            
-            /*Poi da ridefinire a false, quando si aprirà alla selezione di un elemento critico*/
-            //TODO: aggiungere fonte, cit e passo parallelo corrente
+            currentVersions  : undefined,
         };
         var properties = {
             indexTitle         : '',
@@ -31,8 +29,10 @@ angular.module('evtviewer.interface')
             availableWitnesses : [ ],
             witnessSelector    : false,
             availableSourcesTexts : [ ],
-            isSourceLoading : false,
-            parsedSourcesTexts : [ ]
+            isSourceLoading    : false,
+            parsedSourcesTexts : [ ],
+            availableVersions  : [ ],
+            versionSelector    : false,
         };
 
         var tools = {
@@ -44,11 +44,13 @@ angular.module('evtviewer.interface')
                 properties.indexTitle         = config.indexTitle;
                 properties.availableViewModes = config.availableViewModes;
                 
-                //TO DO: oggetto di file esterni in globaldefault, su cui ciclare
-                //Parse the external Sources file, if defined (@author: CM)
+                //TODO: object containing all the external files in globaldefault
+                
+                // Parse the external Sources file, if defined (@author: CM)
                 if (config.sourcesUrl !== "") {
                         evtCommunication.getExternalData(config.sourcesUrl);
                     }
+                // Parse the external Analogues file, if defined (@author: CM)
                 if (config.analoguesUrl !== "") {
                         evtCommunication.getExternalData(config.analoguesUrl);
                 }
@@ -324,6 +326,66 @@ angular.module('evtviewer.interface')
         //Method to get the list of the parsed sources texts
         mainInterface.getParsedSourcesTexts = function() {
             return properties.parsedSourcesTexts;
+        };
+
+        /************/
+        /* VERSIONS */
+        /************/
+
+        // Method to get the array of the available versions
+        mainInterface.getAvailableVersions = function() {
+            return properties.availableVersions;
+        };
+
+        // Method to remove a version from the available versions list
+        // @version --> id of the version that has to be removed
+        // returns void
+        mainInterface.removeAvailableVersion = function(version) {
+            var index = properties.availableVersions.indexOf(version);
+            if (index !== undefined) {
+                properties.availableVersions.splice(index, 1);
+            }
+        };
+
+        // Method to add a version box in the interface
+        // @version --> id of the version to add
+        // @index --> index of the position, if undefined the version is added at the end of the array
+        mainInterface.addVersion = function(version, index) {
+            if (index === undefined) {
+                state.currentVersions.push(version);
+            } else {
+                state.currentVersion.splice(index, 0, version);
+            }
+            mainInterface.removeAvailableVersion(version);
+        };
+
+        // Method to remove a vesion box from the interface
+        // @version --> id of the version to remove
+        mainInterface.removeVersion = function(version) {
+            var index = state.currentVersions.indexOf(version);
+            if (index >= 0) {
+                state.currentVersions.splice(index, 1);
+            }
+            if (properties.availableVersions.indexOf(version) < 0) {
+                properties.availableVersions.push(version);
+            }
+        };
+
+        // Method to change the version viewed inside of a version box
+        // @oldVer --> the old version to change
+        // @newVer --> the new version to view
+        mainInterface.switchVersions = function(oldVer, newVer) {
+            var newVerOldIndex = state.currentVersions.indexOf(newVer),
+                oldVerOldIndex = state.currentVersions.indexOf(oldVer);
+            if (vewVerOldIndex >= 0) {
+                state.currentVersions[newVerOldIndex] = newVer;
+            }
+            state.currentVersions[oldVerOldIndex] = newVer;
+        };
+
+        // Method to get how many different versions have been encoded by the editor
+        mainInterface.getAllVersionsNumber = function() {
+            return config.versions.length;
         };
 
         /** End of addition **/

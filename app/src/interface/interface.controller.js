@@ -65,17 +65,6 @@ angular.module('evtviewer.interface')
         return evtInterface.getCurrentAppEntry();
     };
 
-    //Added by CM: available sources texts
-    $scope.getAvailableSourcesTexts = function() {
-        return evtInterface.getAvailableSourcesTexts();
-    };
-
-    $scope.getCurrentSourceText = function() {
-        return evtInterface.getCurrentSourceText();
-    }
-
-    //TODO: aggiungere metodi per la fonte, la cit e il passo parallelo corrente?
-
     $scope.updateCurrentAppEntry = function(entry) {
         evtInterface.updateCurrentAppEntry(entry);
         if (evtInterface.getCurrentViewMode() === 'readingTxt') {
@@ -99,12 +88,6 @@ angular.module('evtviewer.interface')
 
     $scope.isPinnedAppBoardOpened = function(){
         return evtInterface.isPinnedAppBoardOpened();
-    };
-
-    //Added by CM
-    //Apparatus open
-    $scope.isApparatusBoxOpen = function() {
-        return evtInterface.isApparatusBoxOpen();
     };
 
     $scope.isToolAvailable = function(toolName){
@@ -166,7 +149,41 @@ angular.module('evtviewer.interface')
 
     $scope.getErrorMsg = function(){
         return evtCommunication.getError();
-    }
+    };
+
+    /* METHODS ADDED BY CM */
+
+    // Method to get available sources texts
+    $scope.getAvailableSourcesTexts = function() {
+        return evtInterface.getAvailableSourcesTexts();
+    };
+
+    // Method to get the id the source text viewed in the interface
+    $scope.getCurrentSourceText = function() {
+        return evtInterface.getCurrentSourceText();
+    };
+
+    //TODO: add methods for source, quote and analogue?
+
+    // Method to check if the apparatuses box is open
+    $scope.isApparatusBoxOpen = function() {
+        return evtInterface.isApparatusBoxOpen();
+    };
+
+    $scope.getAvailableVersions = function() {
+        return evtInterface.getAvailableVersions();
+    };
+
+    // Method to check if the selector for the versions is active
+    $scope.isVersionSelectorActive = function() {
+        return evtInterface.getProperty('versionSelector');
+    };
+
+    $scope.getVersion = function(ver) {
+        
+    };
+
+    /* END OF ADDITION */
     _console.log('InterfaceCtrl running');
 })
 

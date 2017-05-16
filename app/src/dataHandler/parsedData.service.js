@@ -67,6 +67,13 @@ angular.module('evtviewer.dataHandler')
 
 	var criticalTexts = {};
 
+	// Object to save the versions readings (@author --> CM)
+	var versionAppCollection = {
+		_indexes: {
+			encodingStructure : []
+		}
+	};
+
 	// TODO: Gestire edizioni
 	var mockEditions = [{
 		value: 'critical',
@@ -94,7 +101,7 @@ angular.module('evtviewer.dataHandler')
 
 	/*****************************/
 	/*QUOTES & SOURCES collection*/
-	/*(author: CM)               */
+	/*(@author --> CM)           */
 	/*****************************/
 
 	var quotesCollection = {
@@ -212,9 +219,9 @@ angular.module('evtviewer.dataHandler')
 		return documentsCollection[docId];
 	};
 
-	/********************************************************/
-	/*Metodi aggiunti da CM, per la gestione di file esterni*/
-	/********************************************************/
+	/*******************************************************************/
+	/*Methods added to handle and save external files (@author --> CM) */
+	/*******************************************************************/
 
 	parsedData.addExternalDocument = function(extDoc) {
 		var docId = extDoc.value;
@@ -239,8 +246,7 @@ angular.module('evtviewer.dataHandler')
 		return externalDocsCollection[extDocId];
 	};
 
-	/*Methods to store sources XML documents*/
-	/*@author: CM*/
+	// Method to store sources XML documents
 	parsedData.addSourceDocument = function(extDoc, id) {
 		var docId = extDoc.value;
 		if (sourcesDocsCollection.length === undefined) {
@@ -263,6 +269,8 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getSourceDocument = function(extDocId) {
 		return sourcesDocsCollection[extDocId];
 	};
+
+	/**** End of methods for external files ****/
 
 	/* EDITION */
 	parsedData.setCriticalEditionAvailability = function(isAvailable) {
@@ -555,6 +563,26 @@ angular.module('evtviewer.dataHandler')
 		return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
 	};
 
+	/*******************/
+	/* VERSION ENTRIES */
+	/*******************/
+
+	parsedData.addVersionEntry = function(entry) {
+		if (versionAppCollection[entry.id] === undefined) {
+			versionAppCollection._indexes.encodingStructure.push(entry.id);
+			versionAppCollection[entry.id] = entry;
+		}
+	};
+
+	parsedData.getVersionEntries = function() {
+		return versionAppCollection;
+	};
+
+	// @entryId --> id of the version app entry | returns the parsed entry or undefined
+	parsedData.getVersionEntry = function(entryId) {
+		return versionAppCollection[entryId];
+	};
+
 	/* ************ */
 	/* PROJECT INFO */
 	/* ************ */
@@ -618,10 +646,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getZone = function(zoneId) {
 		return zonesCollection[zoneId];
 	};
-
-	/******************************************************************/
-	/*Metodi aggiunti da CM, per la gestione dell'apparato delle fonti*/
-	/******************************************************************/
 
 	/*******************/
 	/*SOURCES APPARATUS*/
