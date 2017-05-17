@@ -74,7 +74,12 @@ angular.module('evtviewer.interface')
 
                         // Parse critical text
                         if (config.editionType === "critical" && parsedData.isCriticalEditionAvailable()) {
-                            promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                            if (config.versions.length > 0 && config.versions[0] !== undefined) {
+                                promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc, config.versions[0]).promise);
+                            } else {
+                                promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                            }
+                            
                         }
                         
                         $q.all(promises).then(function() {

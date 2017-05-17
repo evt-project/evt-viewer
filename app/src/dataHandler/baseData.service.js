@@ -51,7 +51,7 @@ angular.module('evtviewer.dataHandler')
 
     /********************************************************/
     /*Method to store the external XML files and parse them */
-    /*@author: CM                                           */
+    /*@author -> CM                                         */
     /********************************************************/
 
     baseData.addXMLExtDocument = function(extDoc, type) {
@@ -73,8 +73,10 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    /*Method to store XML documents for Source-Text view*/
-    /*@author: CM*/
+    /******************************************************/
+    /* Method to store XML documents for Source-Text view */
+    /*@author -> CM                                       */
+    /******************************************************/
     baseData.addXMLSrcDocument = function (srcDoc, id) {
         var docElements = xmlParser.parse(srcDoc);
         try {

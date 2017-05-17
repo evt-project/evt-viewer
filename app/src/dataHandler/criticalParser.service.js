@@ -11,7 +11,7 @@ angular.module('evtviewer.dataHandler')
         analogueDef       = '<seg>,<ref[type=parallelPassage]>',
         analogueRegExpr   = evtParser.createRegExpr(analogueDef); 
 
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+','+analogueDef+',<evt-quote>,<evt-analogue>', //Da aggiungere anche <evt-source>, quando lo avrai creato.
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef+','+quoteDef+','+analogueDef+',<evt-quote>,<evt-analogue>,<evt-version-reading>',
         skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
 
 
@@ -43,24 +43,38 @@ angular.module('evtviewer.dataHandler')
                     } else {
                         id = evtParser.xpath(appNode).substr(1);
                     }
-                    var spanElement;
-                    var entry = parsedData.getCriticalEntryById(id);
+                    var spanElement, entry;
+
+                    if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
+                        entry = parsedData.getVersionEntry(id);
+                    } else {
+                        entry = parsedData.getCriticalEntryById(id);
+                    }
                     // If I've already parsed all critical entries,
                     // or I've alreafy parsed the current entry...
                     // ...I can simply access the model to get the right output
                     // ... otherwise I parse the DOM and save the entry in the model
                     if (!config.loadCriticalEntriesImmediately && entry === undefined) {
-                        evtCriticalElementsParser.handleAppEntry(appNode);
-                        var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-                        if (subApps.length > 0){
-                            for (var z = 0; z < subApps.length; z++) {
-                                evtCriticalElementsParser.handleAppEntry(subApps[z]);
+                        if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
+                            evtCriticalElementsParser.handleVersionEntry(appNode);
+                            entry = parsedData.getVersionEntry(id);
+                        } else {
+                            evtCriticalElementsParser.handleAppEntry(appNode);
+                            var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
+                            if (subApps.length > 0){
+                                for (var z = 0; z < subApps.length; z++) {
+                                    evtCriticalElementsParser.handleAppEntry(subApps[z]);
+                                }
                             }
-                        }
-                        entry = parsedData.getCriticalEntryById(id);
+                            entry = parsedData.getCriticalEntryById(id);
+                        }                        
                     }
                     if (entry !== undefined) {
-                        spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
+                        if (entry.type === 'recensioApp') {
+                            spanElement = evtCriticalElementsParser.getVersionEntryReading(entry, wit);
+                        } else {
+                            spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
+                        }                        
                     } else {
                         spanElement = document.createElement('span');
                         spanElement.className = 'encodingError';
@@ -183,8 +197,9 @@ angular.module('evtviewer.dataHandler')
     /* Function to parse the XML of the document and generate the critical text */
     /* @doc -> XML to be parsed                                                 */
     /* @docID -> ID of current DOC                                              */
+    /* @scopeVersion -> version of the text that has to be parsed               */
     /* ************************************************************************ */
-    parser.parseCriticalText = function(doc, docId) {
+    parser.parseCriticalText = function(doc, docId, scopeVersion) {
         // console.log('parseCriticalText');
         var deferred = $q.defer();
         var criticalText;
@@ -211,25 +226,39 @@ angular.module('evtviewer.dataHandler')
                         } else {
                             id = evtParser.xpath(appNode).substr(1);
                         }
-                        var spanElement;
-                        var entry = parsedData.getCriticalEntryById(id);
+                        var spanElement, entry;
+                        
+                        if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
+                            entry = parsedData.getVersionEntry(id);
+                        } else {
+                            entry = parsedData.getCriticalEntryById(id);
+                        }
                         
                         // If I've already parsed all critical entries,
                         // or I've already parsed the current entry...
                         // ...I can simply access the model to get the right output
                         // ... otherwise I parse the DOM and save the entry in the model
                         if (!config.loadCriticalEntriesImmediately || entry === undefined) {
-                            evtCriticalElementsParser.handleAppEntry(appNode);
-                            var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-                            if (subApps.length > 0){
-                                for (var z = 0; z < subApps.length; z++) {
-                                    evtCriticalElementsParser.handleAppEntry(subApps[z]);
+                            if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
+                                evtCriticalElementsParser.handleVersionEntry(appNode);
+                                entry = parsedData.getVersionEntry(id);
+                            } else {
+                                evtCriticalElementsParser.handleAppEntry(appNode);
+                                var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
+                                if (subApps.length > 0){
+                                    for (var z = 0; z < subApps.length; z++) {
+                                        evtCriticalElementsParser.handleAppEntry(subApps[z]);
+                                    }   
                                 }
+                                entry = parsedData.getCriticalEntryById(id);
                             }
-                            entry = parsedData.getCriticalEntryById(id);
                         }
                         if (entry !== undefined) {
-                            spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, '');
+                            if (entry.type === 'recensioApp') {
+                                spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, scopeVersion);
+                            } else {
+                                spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, '');
+                            }
                         } else {
                             spanElement = document.createElement('span');
                             spanElement.className = 'errorMsg';

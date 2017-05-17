@@ -158,8 +158,13 @@ angular.module('evtviewer.dataHandler')
                 } else if ( apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0 ) {
                     // Sub apparatus
                     var entryApp = parser.handleAppEntry(child, entry.id);
-                    reading.content.push({id: entryApp.id, type: 'subApp'});
-                    entry._indexes.subApps.push(entryApp.id);
+                    // Check if the app is inside a recensioApp or not (@author: CM)
+                    if (entry.type === 'recensioApp' && elem.parentNode.tagName === 'rdgGrp') {
+                        reading.content.push(entryApp);
+                    } else {
+                        reading.content.push({id: entryApp.id, type: 'subApp'});
+                        entry._indexes.subApps.push(entryApp.id);
+                    }
                 } else {
                     var subst = '',
                         childXml = '';
@@ -403,34 +408,6 @@ angular.module('evtviewer.dataHandler')
         // }
     };
 
-    /****************************************/
-    /* parseVersionGroupReading(group, lem) */
-    /*****************************************************************************/
-    /* Function to parse the content of the lem inside of a version group.       */
-    /* The text inside of the lem element will be displayed in the version text. */
-    /* @elem --> lem to be parsed | @author --> CM */
-    /*****************************************************************************/
-    var parseVersionGroupReading = function(elem) {
-        var reading = {
-            id : '',
-            attributes : [],
-            content : {},
-            _xmlTagName : elem.tagName,
-            _xmlSource : elem.outerHTML
-        }
-
-        if (elem.hasAttribute('xml:id')) {
-            reading.id = elem.getAttribute('xml:id');
-        } else {
-            reading.id = evtParser.xpath(elem).substr(1);
-        }
-
-        for (var i = 0; i < elem.attributes.length; i++) {
-            var attrib = elem.attributes[i];
-        }
-        return reading;
-    };
-
     /****************************/
     /* parseVersionGroup(group) */
     /***************************************************************/
@@ -439,10 +416,11 @@ angular.module('evtviewer.dataHandler')
     /***************************************************************/
     var parseVersionGroup = function(entry, group) {
         var groupObj = {
+            id : '',
             versionId : '',
             attributes : [],
             content : {},
-            lem : ''
+            lemma : ''
         },
         id = '';
 
@@ -454,6 +432,7 @@ angular.module('evtviewer.dataHandler')
                     groupObj.attributes.length++;
                     if (attrib.name === 'ana') {
                         id = attrib.value.replace('#', '');
+                        groupObj.id = id;
                         var index = config.versions.indexOf(attrib.value);
                         if (index >= 0) {
                             groupObj.versionId = '&#'+(index+65)+';';
@@ -466,36 +445,42 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(group.childNodes, function(child) {
             if (child.nodeType === 1) {
                 if (child.tagName === 'lem') {
-                    var lem = parseVersionGroupReading(child);
-                    groupObj.lem = lem.id;
+                    var lem = parseAppReading(entry, child);
+                    groupObj.lemma = lem.id;
                     groupObj.content[lem.id] = lem;
                 } else if (child.tagName === 'rdg') {
-                    var rdg = parseVersionGroupReading(child);
+                    var rdg = parseAppReading(entry, child);
                     groupObj.content[rdg.id] = rdg;
                 }
             }
         });
 
         entry.content[id] = groupObj;
+
+        return groupObj;
     };
 
-    /**************************/
-    /* parseVersionEntry(app) */
-    /************************************************************************************/
-    /* Function to parse the content and the information within an app of type recensio */
-    /* @app --> app element to parse    |   @author --> CM                              */
-    /************************************************************************************/
-    var parseVersionEntry = function(app) {
+    /***************************/
+    /* handleVersionEntry(app) */
+    /*************************************************************************************/
+    /* Function to parse an app element that encodes the differences between two or more */
+    /* versions of the text in a certain passage.                                        */
+    /* @app --> app element containing the info about the variants between versions      */
+    /* @author --> CM                                                                    */
+    /*************************************************************************************/
+    parser.handleVersionEntry = function(app) {
         var entry = {
             type : 'recensioApp',
             id : '',
             attributes : [],
             lemma : '',
-            note : '',
             content : {
                 //GROUPS
                     //lem
                     //rdg*
+            },
+            _indexes : {
+                witMap : {},
             },
             _xmlSource : app.outerHTML || ''
         }
@@ -521,26 +506,13 @@ angular.module('evtviewer.dataHandler')
                 if (child.tagName === 'note') {
                     entry.note = child.innerHTML;
                 } else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    parseVersionGroup(entry, child);
+                    var ver = parseVersionGroup(entry, child);
+                    if (ver.id === config.versions[0] && ver.lemma !== '') {
+                        entry.lemma = ver.lemma;
+                    }
                 }
             }
         });
-
-        console.log(entry);
-
-        return entry;
-    };
-
-    /***************************/
-    /* handleVersionEntry(app) */
-    /*************************************************************************************/
-    /* Function to parse an app element that encodes the differences between two or more */
-    /* versions of the text in a certain passage.                                        */
-    /* @app --> app element containing the info about the variants between versions      */
-    /* @author --> CM                                                                    */
-    /*************************************************************************************/
-    parser.handleVersionEntry = function(app) {
-        var entry = parseVersionEntry(app);
 
         parsedData.addVersionEntry(entry);
         return entry;
@@ -783,6 +755,16 @@ angular.module('evtviewer.dataHandler')
         
         return spanElement;
     };
+    
+    /*********************************************/
+    /* getVersionEntryLemma(entry, scopeVersion) */
+    /************************************************************************************/
+    /* Function to get the text of the lemma of a specific version encoded in a version */
+    /* apparatus entry.                                                                 */
+    /* @entry -> version apparatus entry |  @scopeVersion -> the version to display     */
+    /* @author -> CM                                                                    */
+    /************************************************************************************/
+    parser.getVersionEntryLemma = function(entry, scopeVersion) {};
 
     /******************/
     /*QUOTES & SOURCES*/
