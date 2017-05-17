@@ -136,7 +136,7 @@
 
                     /*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
                     span:last-child:after {
-                        content: '';
+                        content: '.';
                     }
                 }
 
