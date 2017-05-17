@@ -922,6 +922,10 @@ angular.module('evtviewer.dataHandler')
                 resultString += '.';
             }
         }
+		var l = resultString.length;
+		if (resultString[l-1] === '.') {
+			resultString = resultString.substr(0,l-1);
+		}
         return resultString;
     };
 
