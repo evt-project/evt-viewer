@@ -59,7 +59,7 @@
     "possibleLemmaFilters"       : "resp",
     "notSignificantVariant"      : "<orig>, <sic>, [type=orthographic]",
     
-    "versions" : ["rec_1", "rec_2", "rec_3"],
+    "versions" : ["rec2", "rec1", "rec3"],
     
     "witnessesGroups": [
         {

@@ -383,7 +383,7 @@ angular.module('evtviewer.dataHandler')
             }
         }
 
-        var sRegExpInput = new RegExp(match, 'ig');
+        var sRegExpInput = new RegExp(match, 'i');
 
         return sRegExpInput;
     };

@@ -172,7 +172,7 @@ angular.module('evtviewer.dataHandler')
                     if (angular.element(child)["0"].innerHTML !== undefined){
                         subst = angular.element(child)["0"].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
                         childXml = angular.element(child)["0"].outerHTML.replace(subst, '');
-                    }                  
+                    }       
                     
                     if (reading._significant) {
                         if (config.notSignificantVariant.indexOf('<'+child.tagName+'>') >= 0) {
@@ -669,6 +669,77 @@ angular.module('evtviewer.dataHandler')
             }
         }
 
+        return spanElement;
+    };
+
+    /******************************************/
+    /* getVersionEntryReadingText(entry, wit) */
+    /********************************************************************/
+    /* Function to get the text of a reading inside of a version entry. */
+    /* @entry -> version entry to parse | @wit -> current witness       */
+    /* @author -> CM                                                    */
+    /********************************************************************/
+    parser.getVersionEntryReadingText = function(entry, wit) {
+        var spanElement,
+            rdgId = '',
+            rdgContent = [];
+        if (entry !== null) {
+            spanElement = document.createElement('evt-recensio-reading');
+            if (Object.keys(entry._indexes.witMap).length !== 0) {
+                rdgId = entry._indexes.witMap[wit];
+                if (rdgId !== '') {
+                    for (var i in entry.content) {
+                        for (var j in entry.content[i].content) {
+                            if (j === rdgId) {
+                                rdgContent = entry.content[i].content[j].content;
+                            }
+                        }
+                    }
+                }
+                if (rdgContent !== undefined && rdgContent.length > 0) {
+                    for (var k in rdgContent) {
+                        if (typeof(rdgContent[k]) === 'string') {
+                            spanElement.appendChild(document.createTextNode(rdgContent[k]));
+                        } else {
+                            //TODO: get recensioApp text
+                            if (rdgContent[k].type === 'app') {
+                                var appEntry = parsedData.getCriticalEntryById(rdgContent[k].id);
+                                var appEntryElem = parser.getEntryWitnessReadingText(appEntry, wit);
+                                if (appEntryElem !== null) {
+                                    spanElement.appendChild(appEntryElem);
+                                }
+                            } else if (rdgContent[k].type === 'quote') {
+                                var quoteElement = parser.getQuoteText(rdgContent[k], wit);
+                                spanElement.appendChild(quoteElement);
+                            } else if (rdgContent[k].type === 'analogue') {
+                                var analogueElement = parser.getAnalogueText(rdgContent[k], wit);
+                                spanElement.appendChild(analogueElement);
+                            } else if (rdgContent[k].type === 'genericElement') {
+                                var genericElem = getGenericElementText(rdgContent[k], wit);
+                                spanElement.appendChild(genericElem);
+                            } else if (rdgContent[k].type === 'recensioApp') {
+                                var versionAppElem = parser.getVersionEntryReadingText(rdgContent[k], wit);
+                                spanElement.appendChild(versionAppElem);
+                            }else {
+                                spanElement.appendChild(rdgContent[k]);
+                            }
+                        }
+                    }
+                }
+            } else {
+                // TODO
+            }
+            spanElement.setAttribute('data-app-id', entry.id);
+            spanElement.setAttribute('data-reading-id', rdgId);
+            spanElement.setAttribute('data-scope-wit', wit);
+            console.log(spanElement);
+        } else {
+            var errorElement = document.createElement('span');
+            errorElement.className = 'encodingError';
+            errorElement.setAttribute('title', 'General error');
+            spanElement.appendChild(errorElement);
+        }
+        spanElement.setAttribute('data-type', 'variant');
         return spanElement;
     };
 

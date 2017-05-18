@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
                     if (entry !== undefined) {
                         // If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
                         if (entry.type === 'recensioApp') {
-                            spanElement = evtCriticalElementsParser.getVersionEntryReading(entry, wit);
+                            spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
                         // Otherwise it is transformed in a evt-reading directive 
                         } else {
                             spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
