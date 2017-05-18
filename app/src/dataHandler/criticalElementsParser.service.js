@@ -160,7 +160,8 @@ angular.module('evtviewer.dataHandler')
                     var entryApp = parser.handleAppEntry(child, entry.id);
                     // Check if the app is inside a recensioApp or not (@author: CM)
                     if (entry.type === 'recensioApp' && elem.parentNode.tagName === 'rdgGrp') {
-                        reading.content.push(entryApp);
+                        var entryAppInRecensio = parser.handleAppEntry(child, elem);
+                        reading.content.push(entryAppInRecensio);
                     } else {
                         reading.content.push({id: entryApp.id, type: 'subApp'});
                         entry._indexes.subApps.push(entryApp.id);
@@ -170,7 +171,7 @@ angular.module('evtviewer.dataHandler')
                         childXml = '';
                     if (angular.element(child)["0"].innerHTML !== undefined){
                         subst = angular.element(child)["0"].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-                        var childXml = angular.element(child)["0"].outerHTML.replace(subst, '');
+                        childXml = angular.element(child)["0"].outerHTML.replace(subst, '');
                     }                  
                     
                     if (reading._significant) {
@@ -183,11 +184,11 @@ angular.module('evtviewer.dataHandler')
                         child.setAttribute('wit', fragmentSigla);
                     }
 
-                    if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                    else if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                         var lacunaSigla = elem.getAttribute('wit');                        
                         child.setAttribute('wit', lacunaSigla);
                     }
-                    if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    else if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                         reading.content.push(parser.parseQuote(child));
                     }
                     else if (analogueRegExpr.test(childXml)) {
@@ -316,7 +317,14 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-        entry._subApp = evtParser.isNestedInElem(app, apparatusEntryDef.replace(/[<>]/g, ''));
+
+        // Check if the app is nested in an app of type recensio.
+        // If not, it is not considered as a subApp, but as a standard app (@author -> CM)
+        if (app.parentNode.parentNode.parentNode.tagName === 'app' && app.parentNode.parentNode.parentNode.getAttribute('type') === 'recensio') {
+            entry._subApp = false;
+        } else {
+            entry._subApp = evtParser.isNestedInElem(app, apparatusEntryDef.replace(/[<>]/g, ''));
+        }
         angular.forEach(app.childNodes, function(child){
             if (child.nodeType === 1) {
                 if (readingDef.indexOf('<'+child.tagName+'>') >= 0) {
@@ -507,6 +515,7 @@ angular.module('evtviewer.dataHandler')
                     entry.note = child.innerHTML;
                 } else if (readingGroupDef.indexOf('<'+child.tagName+'>') >= 0) {
                     var ver = parseVersionGroup(entry, child);
+                    var bo = ver.lemma !== '';
                     if (ver.id === config.versions[0] && ver.lemma !== '') {
                         entry.lemma = ver.lemma;
                     }
@@ -764,7 +773,62 @@ angular.module('evtviewer.dataHandler')
     /* @entry -> version apparatus entry |  @scopeVersion -> the version to display     */
     /* @author -> CM                                                                    */
     /************************************************************************************/
-    parser.getVersionEntryLemma = function(entry, scopeVersion) {};
+    parser.getVersionEntryLemma = function(entry, wit, scopeVersion) {
+        var spanElement,
+            errorElement;
+        if (entry !== null) {
+            spanElement = document.createElement('evt-version-reading');
+            spanElement.setAttribute('data-app-id', entry.id);
+            spanElement.setAttribute('data-type', 'recensioLemma');
+            spanElement.setAttribute('data-scope-version', scopeVersion);
+
+            if (entry.lemma !== undefined && entry.lemma !== '') {
+                spanElement.setAttribute('data-reading-id', entry.lemma);
+                var lemmaContent = entry.content[scopeVersion].content[entry.lemma].content;
+                for (var i in lemmaContent) {
+                    if (typeof(lemmaContent[i]) === 'string') {
+                        spanElement.appendChild(document.createTextNode(lemmaContent[i]));
+                    } else {
+                        if (lemmaContent[i].type === 'app') {
+                            var appEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
+                            var appEntryElem = parser.getEntryLemmaText(appEntry, '');
+                            if (appEntryElem !== null) {
+                                spanElement.appendChild(appEntryElem);
+                            }
+                        } else if (lemmaContent[i].type === 'quote') {
+                            var quoteElement = parser.getQuoteText(lemmaContent[i], wit);
+                            spanElement.appendChild(quoteElement);
+                        } else if (lemmaContent[i].type === 'analogue') {
+                            var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
+                            spanElement.appendChild(analogueElement);
+                        }
+                    }
+                }
+            } else {
+                errorElement = document.createElement('span');
+                errorElement.className = 'encodingError';
+                errorElement.setAttribute('title', 'Lem missing inside of a version rdgGrp OR wrong version id');
+                spanElement.appendChild(errorElement);
+            }
+            if (spanElement !== null) {
+                var attribKeys = Object.keys(entry.attributes);
+                for (var key in attribKeys) {
+                    var attrib = attribKeys[key];
+                    var value = entry.attributes[attrib];
+                    if (attrib !== 'xml:id') {
+                        spanElement.setAttribute('data-'+attrib.replace(':','-'), value);
+                    }
+                }
+            }
+        } else {
+            errorElement = document.createElement('span');
+            errorElement.className = 'encodingError';
+            errorElement.setAttribute('title', 'General error');
+            spanElement.appendChild(errorElement);
+        }
+
+        return spanElement;
+    };
 
     /******************/
     /*QUOTES & SOURCES*/
@@ -993,6 +1057,8 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         });
+
+        parsedData.addQuote(quote);
 
         return quote;
     }

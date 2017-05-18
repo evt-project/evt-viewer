@@ -70,8 +70,10 @@ angular.module('evtviewer.dataHandler')
                         }                        
                     }
                     if (entry !== undefined) {
+                        // If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
                         if (entry.type === 'recensioApp') {
                             spanElement = evtCriticalElementsParser.getVersionEntryReading(entry, wit);
+                        // Otherwise it is transformed in a evt-reading directive 
                         } else {
                             spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
                         }                        
@@ -255,7 +257,7 @@ angular.module('evtviewer.dataHandler')
                         }
                         if (entry !== undefined) {
                             if (entry.type === 'recensioApp') {
-                                spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, scopeVersion);
+                                spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, '', scopeVersion);
                             } else {
                                 spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, '');
                             }
