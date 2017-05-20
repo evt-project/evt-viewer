@@ -2,72 +2,75 @@ angular.module('evtviewer.search')
 
 .provider('evtSearchBox', function () {
 
-    var defaults =  this.defaults;
+   var defaults =  this.defaults;
 
-    this.setDefaults = function(_defaults) {
-        defaults = _defaults;
-    };
+   this.setDefaults = function(_defaults) {
+      defaults = _defaults;
+   };
 
-    this.$get = function(config, evtDialog) {
-		var currentPosition = config.searchBoxPosition,
-			searchBox = {},
-            collection = {};
+   this.$get = function($log, config, baseData, evtSearchParser) {
+      var currentPosition = config.searchBoxPosition,
+         searchBox = {},
+         collection = {},
+         check = true;
+      var _console = $log.getInstance('search');
 
-        //
-        // Search Box builder
-        //
-        searchBox.build = function(scope, vm) {
-            var currentPosition = config.searchBoxPosition;
+      //
+      // Search Box builder
+      //
+      searchBox.build = function(scope, vm) {
+         var currentPosition = config.searchBoxPosition;
+         var status = {
+            searchBtn   : false
+         };
+         var searchBoxBtn = [
+            {title: 'Show Results', label: '', icon: 'search-results-show', type: ''},
+            {title: 'Advanced Search', label: '', icon: 'search-advanced', type: ''},
+            {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
+            {title: 'Previous', label: '', icon: 'previous', type: ''},
+            {title: 'Next', label: '', icon: 'next', type: ''},
+            {title: 'Search', label: '', icon: 'search', type: ''}
+         ];
+         var scopeHelper;
 
-            var status = {
-                searchBtn   : false
-            };
+         scopeHelper = {
+            status          : status,
+            searchBoxBtn    : searchBoxBtn
+         };
 
-            var searchBoxBtn = [
-                {title: 'Show Results', label: '', icon: 'search-results-show', type: ''},
-                {title: 'Advanced Search', label: '', icon: 'search-advanced', type: ''},
-                {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
-                {title: 'Previous', label: '', icon: 'previous', type: ''},
-                {title: 'Next', label: '', icon: 'next', type: ''},
-                {title: 'Search', label: '', icon: 'search', type: ''}
-            ];
+         collection = angular.extend(vm, scopeHelper);
+         return collection;
+      };
 
-            var scopeHelper = {};
+      //
+      // Service function
+      //
+      searchBox.getDefaults = function(key) {
+         return defaults[key];
+      };
 
-            scopeHelper = {
-                // expansion
-                //defaults        : angular.copy(defaults),
+      searchBox.getCurrentPosition = function() {
+         return collection.getPosition();
+      };
 
-                // model
-                status          : status,
-                searchBoxBtn    : searchBoxBtn
-            };
+      searchBox.getStatus = function(key) {
+         return collection.status[key];
+      };
 
-            collection = angular.extend(vm, scopeHelper);
-            return collection;
-        };
+      searchBox.openBox = function(key) {
+         var btnStatus = collection.updateState(key),
+             doc;
 
-        //
-        // Service function
-        //
-        searchBox.getDefaults = function(key) {
-            return defaults[key];
-        };
-		
-		searchBox.getCurrentPosition = function() {
-			return collection.getPosition();
-		};
-		
-        searchBox.getStatus = function(key) {
-            return collection.status[key];
-        };
+         if(btnStatus && check) {
+            check = false;
+            doc = baseData.getXML();
+            evtSearchParser.parseWords(doc);
+         }
+         
+         collection.status[key] = btnStatus;
+         return btnStatus;
+      };
 
-        searchBox.openBox = function(key) {
-            var btnStatus = collection.updateState(key);
-            collection.status[key] = btnStatus;
-            return btnStatus;
-        };
-		
-        return searchBox;
-    };
+      return searchBox;
+   };
 });

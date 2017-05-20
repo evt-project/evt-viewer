@@ -18,7 +18,8 @@ angular.module('evtviewer.dataHandler')
             //Added by CM to save references to sources text documents
             XMLSrcDocuments: [],
             XMLStrings: []
-        };
+        },
+        docElements;
 
     var _console = $log.getInstance('baseData');
 
@@ -27,6 +28,10 @@ angular.module('evtviewer.dataHandler')
         var promises = [];
         promises.push(addXMLDocument(xmlString).promise);
         return $q.all(promises);
+    };
+
+    baseData.getXML = function() {
+      return docElements;
     };
 
     baseData.getXMLDocuments = function() {
@@ -39,7 +44,7 @@ angular.module('evtviewer.dataHandler')
     
     var addXMLDocument = function(doc) {
         var deferred = $q.defer();
-        var docElements = xmlParser.parse(doc);
+        docElements = xmlParser.parse(doc);
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
             loadXIinclude(docElements).promise.then(function(){

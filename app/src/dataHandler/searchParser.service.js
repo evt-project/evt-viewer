@@ -7,102 +7,23 @@ angular.module('evtviewer.dataHandler')
    let parser  =  {};
    console.log("SEARCH PARSER RUNNING");
 
-   let glyph = '',
-       glyphId = '',
-       glyphNode,
-       sRef = '',
+   let text = '',
        str = '',
-       text = '';
 
-  function nsResolver() {
-    return "http://www.tei-c.org/ns/1.0";
-  }
+       nodes,
+       node,
+       mainNode,
+       currentGlyph,
+       currentEdition,
 
-  let getGlyph = function(node) {
-     let map = node.getElementsByTagName('mapping');
-     for(let i = 0; i < map.length; i++) {
-        if(map[i].getAttribute('type') === 'codepoint') {
-           glyph = String.fromCharCode(map[i].textContent);
-        }
-     }
-     return glyph;
-  };
-
-  let getGlyphNode = function(doc) {
-     let path = "//charDecl/node()[not(self::comment())]";
-
-     let nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
-     let node = nodes.iterateNext();
-
-     while(node) {
-        if (node.tagName === 'glyph' || node.tagName === 'char') {
-           glyphId = node.getAttribute('xml:id');
-           if (glyphId === sRef) {
-              glyphNode = node;
-              return glyphNode;
-           }
-           else {
-              node = nodes.iterateNext();
-           }
-        }
-        else {
-           node = nodes.iterateNext();
-        }
-     }
-     return glyphNode;
-  };
-
-  let containOnlySpace = function() {
-     return jQuery.trim(str).length === 0;
-  };
-
-  let getText = function(doc) {
-     let path = "//body//node()[not(self::comment())]";
-
-     /*var xpathResult = document.evaluate( xpathExpression, contextNode, namespaceResolver, resultType, result );*/
-     let nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
-
-     let node = nodes.iterateNext();
-     str = node.nodeValue;
-
-     while (node || node.nodeValue === null || containOnlySpace()) {
-        if (node.tagName !== 'g' || !containOnlySpace()) {
-           str = node.nodeValue;
-
-           if (str !== null && !containOnlySpace()) {
-              text += str;
-           }
-           node = nodes.iterateNext();
-
-           if (node !== null) {
-              str = node.nodeValue;
-           }
-           else {
-              console.log("S: " + text);
-              /*let test = document.getElementById('test');
-              test.innerHTML = text;*/
-              return text;
-           }
-        }
-        else {
-           sRef = node.getAttribute('ref');
-           sRef = sRef.replace('#', '');
-
-           glyphNode = getGlyphNode(doc);
-           let g = getGlyph(glyphNode);
-           text += g;
-           node = nodes.iterateNext();
-        }
-
-        /*while(s.match(/\s\s/)){
-         let replace = s.replace(/\s\s/, " ");
-         s = replace;
-         }*/
-     }
-  };
+       glyphs = [],
+       editionWords = [],
+       glyphNode,
+       glyphId = '',
+       sRef = '';
 
    parser.parseWords = function (doc) {
-     let text = getText(doc);
+     text = getText(doc);
 
      /*let tokenize = new JsSearch.SimpleTokenizer();
      let words = tokenize.tokenize(text);
@@ -113,8 +34,169 @@ angular.module('evtviewer.dataHandler')
      //var c = searchApi.indexDocument(doc);
      /*let c = searchApi.indexDocument('foo', 'Text describing an Object identified as "foo"');
      let d = searchApi.indexDocument('bar', 'Text describing an Object identified as "bar"');*/
-
      //const promise = searchApi.search('describing');
+   };
+
+   let nsResolver = function() {
+      return "http://www.tei-c.org/ns/1.0";
+   };
+
+   let getText = function(doc) {
+      let path = "//body//node()[not(self::comment())]";
+
+      nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
+      node = nodes.iterateNext();
+      str = node.nodeValue;
+
+      while (node || str === null || containOnlySpace()) {
+         if (node.tagName !== 'g' || !containOnlySpace()) {
+            str = node.nodeValue;
+            checkCurrentEdition(node);
+
+            if (str !== null && !containOnlySpace()) {
+               text += str;
+            }
+            node = nodes.iterateNext();
+            checkNodeName(node);
+
+            if (node === null) {
+               console.log(text);
+               return text;
+            }
+            str = node.nodeValue;
+         }
+         else {
+            sRef = node.getAttribute('ref');
+            sRef = sRef.replace('#', '');
+            glyphNode = getGlyphNode(doc);
+            currentGlyph = getGlyph(glyphNode);
+            checkGlyphEdition(currentGlyph);
+            node = nodes.iterateNext();
+         }
+         cleanText();
+      }
+   };
+
+   let getGlyphNode = function(doc) {
+      let path = "//charDecl/node()[not(self::comment())]",
+          nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null),
+          node = nodes.iterateNext();
+
+      while(node) {
+         if (node.tagName === 'glyph' || node.tagName === 'char') {
+            glyphId = node.getAttribute('xml:id');
+            if (glyphId === sRef) {
+               glyphNode = node;
+               return glyphNode;
+            }
+            node = nodes.iterateNext();
+         }
+         node = nodes.iterateNext();
+      }
+      return glyphNode;
+   };
+
+   let getGlyph = function(node) {
+      let map = node.getElementsByTagName('mapping');
+      let glyph = {},
+          type;
+
+      glyph.id = glyphId;
+      for(let i = 0; i < map.length; i++) {
+         type = map[i].getAttribute('type');
+         switch (type) {
+            case 'diplomatic':
+            case 'normalized':
+               glyph[type] = map[i].textContent;
+               break;
+         }
+      }
+      /*if(glyphs.length === 0) {
+         glyphs.push(glyph);
+      }
+      for(let i = 0;  i < glyphs.length;i++) {
+         if(glyphs[i].id !== glyph.id) {
+            glyphs.push(glyph);
+         }
+      }*/
+      glyphs.push(glyph);
+      return glyph;
+   };
+
+   let checkGlyphEdition = function(currentGlyph) {
+      currentEdition = mainNode.dataset.edition;
+      switch (currentEdition) {
+         case 'diplomatic':
+            text += currentGlyph.diplomatic;
+            break;
+         case 'interpretative':
+            text += currentGlyph.normalized;
+            break;
+         default:
+            text += currentGlyph;
+      }
+   };
+
+   let checkCurrentEdition = function(node) {
+      let nodeName = node.nodeName;
+
+      mainNode = document.getElementById('mainText');
+      currentEdition = mainNode.dataset.edition;
+
+      if(currentEdition === 'diplomatic') {
+         switch (nodeName) {
+            case 'corr':case 'reg':case 'expan':case 'ex':
+            node = nodes.iterateNext();
+            node = nodes.iterateNext();
+         }
+      }
+      if(currentEdition === 'interpretative') {
+         switch (nodeName) {
+            case 'sic':case 'orig':case 'abbr':case 'am':
+            node = nodes.iterateNext();
+            node = nodes.iterateNext();
+         }
+      }
+   };
+
+   let checkNodeName = function (node) {
+      if(node !== null && node.nodeName === 'choice') {
+         let word = {},
+             children = node.children,
+             childNodeName;
+
+         for(let i = 0; i < children.length; i++) {
+            childNodeName = children[i].nodeName;
+            switch(childNodeName) {
+               case 'sic':case 'orig':case 'abbr':case 'am':
+                  word.diplomatic = children[i].textContent;
+                  break;
+               case 'corr':case 'reg':case 'expan':case 'ex':
+                  word.interpretative = children[i].textContent;
+                  break;
+            }
+         }
+         editionWords.push(word);
+      }
+   };
+
+   let containOnlySpace = function() {
+      return jQuery.trim(str).length === 0;
+   };
+
+   let cleanText = function () {
+      let replace,
+          choice = document.getElementsByClassName('choice'),
+          regExp = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+
+      while(text.match(regExp)) {
+         replace = text.replace(regExp, "");
+         text = replace;
+      }
+      while(text.match(/\s\s/)){
+         replace = text.replace(/\s\s/, " ");
+         text = replace;
+      }
    };
 
    return parser;
