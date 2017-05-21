@@ -105,13 +105,13 @@ angular.module('evtviewer.dataHandler')
         evtParser.analyzeEncoding(docElements);
         // Parse pages
         // evtParser.parsePages(docElements);
-        
+
         // Parse Glyphs
         evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
-        
+
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
-        
+
         // Parse documents
         evtParser.parseDocuments(docElements);
 
