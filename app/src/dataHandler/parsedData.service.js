@@ -70,7 +70,8 @@ angular.module('evtviewer.dataHandler')
 	// Object to save the versions readings (@author --> CM)
 	var versionAppCollection = {
 		_indexes: {
-			encodingStructure : []
+			encodingStructure : [],
+			versionWitMap : {}
 		}
 	};
 
@@ -582,6 +583,18 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getVersionEntry = function(entryId) {
 		return versionAppCollection[entryId];
 	};
+
+	parsedData.addVersionWitness = function(ver, wit) {
+		witMap = versionAppCollection._indexes.versionWitMap;
+		if (witMap[ver] === undefined) {
+			witMap[ver] = [];
+			witMap[ver].push(wit);
+		} else {
+			if (witMap[ver].indexOf(wit) < 0) {
+				witMap[ver].push(wit);
+			}			
+		}
+	}
 
 	/* ************ */
 	/* PROJECT INFO */

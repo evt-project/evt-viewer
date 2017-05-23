@@ -43,6 +43,17 @@ angular.module('evtviewer.dataHandler')
             _group  : undefined,
             text    : {}
         };
+
+        // Added to handle the listWit of a version (@author -> CM)
+        var ver;
+        if (config.versions !== undefined && config.versions.length > 1) {
+            if (listWit.hasAttribute('ana')) {
+                var anaVal = listWit.getAttribute('ana').replace('#', '');
+                if (config.versions.indexOf(anaVal) >= 0 ) {
+                    ver = anaVal;
+                }
+            }
+        }
         
         angular.forEach(listWit.childNodes, function(child){
             if (child.nodeType === 1) {
@@ -65,6 +76,10 @@ angular.module('evtviewer.dataHandler')
                     if (skipWitnesses.indexOf(witnessElem.id) < 0){
                         parsedData.addElementInWitnessCollection(witnessElem);
                         list.content.push(witnessElem.id);
+                        // Add the witness to the witMap of the versionEntries collection (@author -> CM)
+                        if (ver !== undefined) {
+                            parsedData.addVersionWitness(ver, witnessElem.id);
+                        }                        
                     }
                 }
             }
