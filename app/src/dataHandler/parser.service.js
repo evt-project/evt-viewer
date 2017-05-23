@@ -45,12 +45,12 @@ angular.module('evtviewer.dataHandler')
 	parser.parseXMLElement = function(doc, element, skip) {
 		var newElement;
 		if (element.nodeType === 3) { // Text
-			// newElement = document.createElement('span');
-			// newElement.className = 'textNode';
-			// if (element.textContent.trim() !== '') {
-			// 	newElement.appendChild(element);
-			// }
-            newElement = element;
+			newElement = document.createElement('span');
+			newElement.className = 'textNode';
+			//if (element.textContent.trim() !== '') {
+				newElement.textContent = element.textContent;
+			//}
+            //newElement = element;
 		} else if (element.tagName !== undefined && skip.indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = element;
 		} else {
