@@ -62,20 +62,7 @@ angular.module('evtviewer.dataHandler')
 
 	var criticalTexts = {};
 
-	// TODO: Gestire edizioni
-	var mockEditions = [{
-		value: 'critical',
-		label: 'Critical',
-		title: 'Critical edition'
-	}, {
-		value: 'interpretative',
-		label: 'Interpretative',
-		title: 'Interpretative edition'
-	}, {
-		value: 'diplomatic',
-		label: 'Diplomatic',
-		title: 'Diplomatic edition'
-	}];
+	var editionLevels = [];
 
 	var criticalEdition = false;
 
@@ -198,24 +185,23 @@ angular.module('evtviewer.dataHandler')
 		return criticalEdition;
 	};
 
-	parsedData.addEditions = function() {
-		// var mock = {
-		//     value: 'edition3',
-		//     label: 'edition3 label',
-		//     title: 'edition3 title'
-		// };
-		// mockEditions.push(mock);
+    parsedData.setEditions = function(editions) {
+        editionLevels = editions;
+    };
+
+	parsedData.addEdition = function(edition) {
+		editionLevels.push(mock);
 	};
 	parsedData.getEditions = function() {
-		return mockEditions;
+		return editionLevels;
 	};
 	parsedData.getEdition = function(editionId) {
 		//TODO: Rifare
 		var i = 0,
 			edition;
-		while (i < mockEditions.length && edition === undefined) {
-			if (mockEditions[i].value === editionId) {
-				edition = mockEditions[i];
+		while (i < editionLevels.length && edition === undefined) {
+			if (editionLevels[i].value === editionId) {
+				edition = editionLevels[i];
 			}
 			i++;
 		}

@@ -219,10 +219,12 @@ angular.module('evtviewer.box')
                     //TODO: Differentiate main text from second one
                     topMenuList.selectors.push({ id:'document_'+currentId, type: 'document', initValue: evtInterface.getCurrentDocument() });
                     if (!parsedData.isCriticalEditionAvailable()) {
-                        topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() },
-                                                   { id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
+                        topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
                     } else {
                         topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
+                    }
+                    if (config.editionLevelSelector && config.availableEditionLevel.length > 0) {
+                        topMenuList.selectors.push({ id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     }
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {

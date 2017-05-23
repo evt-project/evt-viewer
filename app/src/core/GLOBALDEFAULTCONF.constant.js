@@ -73,8 +73,24 @@ angular.module('evtviewer.core')
     
     editionType        : 'critical',
 
-    defaultViewMode    : 'readingTxt',
     defaultEdition     : 'critical',
+    
+    editionLevelSelector : true,
+    availableEditionLevel: [{
+        value: 'critical',
+        label: 'Critical',
+        title: 'Critical edition'
+    }, {
+        value: 'interpretative',
+        label: 'Interpretative',
+        title: 'Interpretative edition'
+    }, {
+        value: 'diplomatic',
+        label: 'Diplomatic',
+        title: 'Diplomatic edition'
+    }],
+
+    defaultViewMode    : 'readingTxt',
     availableViewModes : [
                             {
                                 label    : 'Reading text',

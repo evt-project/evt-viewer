@@ -42,6 +42,11 @@ angular.module('evtviewer.interface')
                             }
                         }
                     }
+
+                    if (config.availableEditionLevel) {
+                        parsedData.setEditions(config.availableEditionLevel);
+                    }
+
                     mainInterface.updateParams($routeParams);
                     
                     // Parse critical text and entries
