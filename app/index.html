@@ -111,7 +111,7 @@
                     data-label=""
                     data-icon="pin"
                     data-type="togglePinned"
-                    ng-if="isToolAvailable('toolPinAppEntries') && getPinnedEntries().length > 0 && entry !== ''"
+                    ng-if="isToolAvailable('toolPinAppEntries') && entry !== ''"
                     class="togglePinned_btn"
                     ng-class="{'centered': !isPinnedAppBoardOpened(),
                                'half-centered': isPinnedAppBoardOpened()}">
@@ -119,8 +119,9 @@
 
             <box data-type="pinnedBoard"
                 ng-show="!isLoading() && isPinnedAppBoardOpened()">
-                 <span ng-if="!isLoading() && getPinnedEntries().length <= 0">
-                    <!--No apparatus entries pinned.--></span>
+                 <span ng-if="!isLoading() && getPinnedEntries().length <= 0" class="italic">
+                    Selected apparatus entries will be shown here
+                </span>
                  <evt-critical-apparatus-entry
                     class="in_critical_apparatus"
                     ng-class="{'active': getCurrentAppEntry() === entry}"
