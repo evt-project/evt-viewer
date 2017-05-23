@@ -227,7 +227,7 @@ angular.module('evtviewer.dataHandler')
 		var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
 			return el.length !== 0;
 		});
-		if (skipWitnesses.indexOf(element.id) < 0) {
+		if (element && element.id && skipWitnesses.indexOf(element.id) < 0) {
 			if (witnessesCollection[element.id] === undefined) {
 				witnessesCollection[element.id] = element;
 
@@ -321,7 +321,8 @@ angular.module('evtviewer.dataHandler')
 				content += '<li>';
 				content += '<strong>#' + element.id + '</strong><br /><div>' + element.name + '</div>';
 				content += '<ul>';
-				for (var j = 0; j < element.content.length; j++) {
+                var elementContentLength = element.content ? element.content.length : 0;
+				for (var j = 0; j < elementContentLength; j++) {
 					var subElement = witnessesCollection[element.content[j]];
 					if (subElement._type === 'witness') {
 						content += '<li>';

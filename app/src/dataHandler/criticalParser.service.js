@@ -27,7 +27,7 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     var parseListWit = function(doc, listWit) {
         var list = {
-            id      : listWit.getAttribute('xml:id'),
+            id      : listWit.getAttribute('xml:id') || evtParser.xpath(listWit).substr(1),
             name    : '',
             content : [],
             _type   : 'group',
@@ -809,7 +809,7 @@ angular.module('evtviewer.dataHandler')
                 }
                 j--;
             }
-            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
+            //docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
             
             angular.forEach(docDOM.children, function(elem){
                 var skip = skipFromBeingParsed+','+config.lacunaMilestone+','+config.fragmentMilestone;

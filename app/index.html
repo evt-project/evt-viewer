@@ -147,6 +147,7 @@
                             'span18of18': !existCriticalText()}">
                 <box data-type="witness"
                      data-witness="{{witness}}"
+                     ng-if="witness"
                      data-witpage="{{getCurrentWitnessPage(witness)}}"
                      ng-repeat="witness in getCurrentWitnesses()" ></box>
             </div>
@@ -166,6 +167,7 @@
                 ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
                 <span
                     ng-click="addWitness(witness)"
+                    ng-if="witness"
                     ng-repeat="witness in getAvailableWitnesses()">{{getWitness(witness)}}</span>
             </div>
 

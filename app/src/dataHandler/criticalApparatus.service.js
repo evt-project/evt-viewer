@@ -187,14 +187,14 @@ angular.module('evtviewer.dataHandler')
         var witnesses  = '';
         if (reading.wits !== undefined && reading.wits.length > 0) {
             for (var wit in reading.wits) {
-                if (skipWitnesses.indexOf(wit) < 0){
+                if (wit && reading.wits[wit] && skipWitnesses.indexOf(wit) < 0){
                     witnesses += '<evt-witness-ref witness="'+reading.wits[wit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
                 }
             }
         } else if (elemType === 'lem') {
             if (reading.autoWits !== undefined && reading.autoWits.length > 0) {
                 for (var autoWit in reading.autoWits) {
-                    if (skipWitnesses.indexOf(autoWit) < 0){
+                    if (autoWit && reading.autoWits[autoWit] && skipWitnesses.indexOf(autoWit) < 0){
                         witnesses += '<evt-witness-ref witness="'+reading.autoWits[autoWit]+'" data-scope-wit="'+scopeWit+'"></evt-witness-ref>';
                     }
                 }
