@@ -20,7 +20,7 @@
          title="{{::option.title}}" 
          data-value="{{::option.value}}"
          data-wit="{{::option.ed}}"
-         ng-repeat="option in vm.optionList" 
+         ng-repeat="option in ::vm.optionList" 
          ng-click="vm.callback(vm.optionSelected, option);"
          ng-class="{'selected': vm.isOptionSelected(option)}">
          {{::option.label}}

@@ -21,21 +21,22 @@ angular.module('evtviewer.buttonSwitch')
                 if (evtInterface.getAvailableWitnesses().length === 0) {
                     scope.vm.disabled = true;
                     scope.vm.title = 'No more witnesses available';
+                } else {
+                    scope.$watch(function() {
+                        return evtInterface.getAvailableWitnesses();
+                    }, function(newItem, oldItem) {
+                        if (newItem !== oldItem) {
+                            if (newItem.length === 0) {
+                                scope.vm.disabled = true;
+                                scope.vm.title = 'No more witnesses available';
+                            } else {
+                                scope.vm.disabled = false;
+                                scope.vm.title = 'Add witness';
+                            }
+                        }
+                    }, true);
                 }
 
-                scope.$watch(function() {
-                    return evtInterface.getAvailableWitnesses();
-                }, function(newItem, oldItem) {
-                    if (newItem !== oldItem) {
-                        if (newItem.length === 0) {
-                            scope.vm.disabled = true;
-                            scope.vm.title = 'No more witnesses available';
-                        } else {
-                            scope.vm.disabled = false;
-                            scope.vm.title = 'Add witness';
-                        }
-                    }
-                }, true);
             }
 
             // TODO:  RIFARE!

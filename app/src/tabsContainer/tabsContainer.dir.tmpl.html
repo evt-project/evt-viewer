@@ -5,7 +5,7 @@
         
         <span 
             class="evt-tabs-container_header"
-            ng-repeat="tab in tabs._indexes"
+            ng-repeat="tab in ::tabs._indexes"
             ng-click="toggleSubContent(tab)"
             ng-class="{'active' : subContentOpened == tab }">
             {{ ::tabs[tab].label }}
@@ -16,7 +16,7 @@
         ng-class="{'closed': subContentOpened === ''}">
         
         <div class="evt-tabs-container_panel"
-            ng-repeat="tab in tabs._indexes"
+            ng-repeat="tab in ::tabs._indexes"
             ng-class="{'active' : subContentOpened == tab,
                         'noscroll': tabs[tab].scrollDisabled }"
             compile="::tabs[tab].content">

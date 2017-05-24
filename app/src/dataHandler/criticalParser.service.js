@@ -686,6 +686,7 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             spanElement.setAttribute('data-app-id', entry.id);
+            
             /* 
                 IMPORTANT: data-app-id should be the first attribute added to the element
                 otherwise the parser for fragmentary witnesses will not work.

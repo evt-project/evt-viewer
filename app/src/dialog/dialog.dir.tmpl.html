@@ -1,6 +1,6 @@
 <div class="evt-dialog"
     ng-show="vm.opened"
-    ng-class="{'evt-dialog-error': vm.type === 'error',
+    ng-class="::{'evt-dialog-error': vm.type === 'error',
                'evt-dialog-small': vm.type === 'bookmark' }">
     <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
 
@@ -23,7 +23,6 @@
             <div 
                 ng-switch-default
                 class="evt-dialog-container-content" ng-transclude></div>
-            
         </div>
     </div>
 </div>
