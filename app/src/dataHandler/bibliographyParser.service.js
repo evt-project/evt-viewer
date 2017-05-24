@@ -1066,7 +1066,7 @@ angular.module('evtviewer.dataHandler')
 
     var getUrl = function(newBiblElement) {
         if (typeof newBiblElement.note.url !== 'undefined') {
-            return newBiblElement.note.url;
+            return '<a href="'+newBiblElement.note.url+'" target="_blank">'+newBiblElement.note.url+'</a>';
         }
     };
 
