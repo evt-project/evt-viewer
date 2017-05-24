@@ -23,19 +23,19 @@ angular.module('evtviewer.box')
             var vm        = this;
             vm.state[key] = value;
             return vm.state[key];
-        }
+        };
 
         var getState = function(key) {
             var vm = this;
             return vm.state[key];
-        }
+        };
 
         var destroy = function() {
             var tempId = this.uid;
             // this.$destroy();
             delete collection[tempId];
             // _console.log('vm - destroy ' + tempId);
-        }
+        };
 
         // Critical edition control
         var toggleCriticalAppFilter = function(filter, value){
@@ -77,14 +77,14 @@ angular.module('evtviewer.box')
             }
 
             filters[filter].any = (filters[filter].totActive === 0);
-        }
+        };
 
         var clearFilter = function(filter){
             var vm = this;
             vm.state.filters[filter].values    = { length: 0 };
             vm.state.filters._totActive       -= vm.state.filters[filter].totActive;
             vm.state.filters[filter].totActive = 0;
-        }
+        };
 
 
         var toggleTopBox = function() {
@@ -92,48 +92,48 @@ angular.module('evtviewer.box')
             if (vm.state.topBoxOpened !== undefined) {
                 vm.state.topBoxOpened = !vm.state.topBoxOpened;
             }
-        }
+        };
 
         var toggleFilterBox = function() {
             var vm = this;
             if (vm.state.filterBox !== undefined) {
                 vm.state.filterBox = !vm.state.filterBox;
             }
-        }
+        };
 
         var updateTopBoxContent = function(newContent) {
             var vm = this;
             vm.topBoxContent = newContent;
-        }
+        };
 
         var fontSize = function() {
             var vm = this;
             return 'font-size:'+vm.state.fontSize+'%' || '';
-        }
+        };
 
         var fontSizeIncrease = function() {
             var vm = this;
             vm.state.fontSize = parseInt(vm.state.fontSize)+4;
-        }
+        };
 
         var fontSizeDecrease = function() {
             var vm = this;
             vm.state.fontSize = parseInt(vm.state.fontSize)-4;
 
-        }
+        };
 
         var fontSizeReset = function() {
             var vm = this;
             vm.state.fontSize = '100';
-        }
+        };
 
         var toggleBtnGroup = function(groupState){
             groupState = !groupState;
-        }
+        };
 
         var isITLactive = function() { //TEMP
             return evtInterface.getToolState('ITL') === 'active';
-        }
+        };
 
         //
         // Box builder

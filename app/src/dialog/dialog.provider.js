@@ -22,29 +22,29 @@ angular.module('evtviewer.dialog')
 		var open = function() {
 			var vm = this;
 			vm.opened = true;
-		}
+		};
 
 		var close = function() {
 			var vm = this;
 			vm.opened = false;
-		}
+		};
 
 		var setTitle = function(newTitle) {
 			var vm = this;
 			vm.title = newTitle;
-		}
+		};
 
 		var updateContent = function(newContent) {
 			var vm = this;
 			vm.content = newContent;
-		}
+		};
 
 		var destroy = function() {
 			var tempId = this.uid;
 			// this.$destroy();
 			delete collection[tempId];
 			// _console.log('vm - destroy ' + tempId);
-		}
+		};
 
 		// 
 		// Dialog builder

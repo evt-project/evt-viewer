@@ -74,9 +74,10 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(encodingDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var variantEncodingEl = angular.element(element).find('variantEncoding')[0];
+                    var encodingDescContent = '',
+                        variantEncodingEl = angular.element(element).find('variantEncoding')[0];
                     if (variantEncodingEl){
-                        var encodingDescContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                        encodingDescContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
                         encodingDescContent += '<span class="variantEncoding">This edition is using <i>';
                         encodingDescContent += variantEncodingEl.getAttribute('method');
                         encodingDescContent +=' method</i> to encode text-critical variants.</span>';

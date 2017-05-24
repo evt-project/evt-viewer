@@ -213,7 +213,7 @@ angular.module('evtviewer.dataHandler')
 				glyph.mapping = {};
 				angular.forEach(angular.element(element).find('mapping'),
 					function(mapping) {
-						var sType = mapping.getAttribute("type");
+						var sType = mapping.getAttribute('type');
 						glyph.mapping[sType] = {
 							element: mapping.outerHTML,
 							content: mapping.innerHTML,

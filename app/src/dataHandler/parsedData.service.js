@@ -190,8 +190,9 @@ angular.module('evtviewer.dataHandler')
     };
 
 	parsedData.addEdition = function(edition) {
-		editionLevels.push(mock);
+		editionLevels.push(edition);
 	};
+	
 	parsedData.getEditions = function() {
 		return editionLevels;
 	};

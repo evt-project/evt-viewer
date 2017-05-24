@@ -95,7 +95,7 @@ angular.module('evtviewer.box')
                 } catch (err) {} // Helping IE11
                 xhttp.send('');
                 return xhttp.responseXML;
-            }
+            };
 
             var displayResult = function(sc, xsltUrl) {
                 if (xsltUrl !== '') {
@@ -114,7 +114,7 @@ angular.module('evtviewer.box')
                         scope.vm.content = resultDocument;
                     }
                 }
-            }
+            };
             /* ****************** */
             /* XSL TRANSFORMATION */
             /* ****************** */

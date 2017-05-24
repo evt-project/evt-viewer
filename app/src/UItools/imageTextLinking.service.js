@@ -15,11 +15,11 @@ angular.module('evtviewer.UItools')
                 lbId = lbs[i].id;
                 while (nextElem && (nextElem.nodeType === 3 || (nextElem.className && nextElem.className.indexOf('inLine') < 0))) {
                     if (nextElem.nodeType === 3) {
-                        var newTextNode = document.createElement("span");
-                        newTextNode.className = 'textNode';
-                        newTextNode.textContent = nextElem.textContent;
-                        nextElem.parentElement.replaceChild(newTextNode, nextElem);
-                        nextElem = newTextNode;
+                        var newNextTextNode = document.createElement('span');
+                        newNextTextNode.className = 'textNode';
+                        newNextTextNode.textContent = nextElem.textContent;
+                        nextElem.parentElement.replaceChild(newNextTextNode, nextElem);
+                        nextElem = newNextTextNode;
                     }
                     this.preapareElementInLine(nextElem, lbId);
                     nextElem = nextElem.nextSibling || lbs[i].parentNode.nextSibling || undefined;
@@ -35,7 +35,7 @@ angular.module('evtviewer.UItools')
                         for (var el in elems) {
                             var elementInLine = elems[el];
                             if (elementInLine.nodeType === 3) {
-                                var newTextNode = document.createElement("span");
+                                var newTextNode = document.createElement('span');
                                 newTextNode.className = 'textNode';
                                 newTextNode.textContent = elementInLine.textContent;
                                 elementInLine.parentElement.replaceChild(newTextNode, elementInLine);
@@ -85,7 +85,7 @@ angular.module('evtviewer.UItools')
     };
 
     ITLutils.uninitLines = function() {
-        var textNodes = document.getElementsByClassName("textNode");
+        var textNodes = document.getElementsByClassName('textNode');
         for (var i in textNodes) {
             var element = textNodes[i];
             if (element.textContent) {
