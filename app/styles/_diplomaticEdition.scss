@@ -61,6 +61,7 @@
         &:hover .orig, &.hover .orig {
             color: #561c0a;
             text-decoration: underline;
+            z-index: 9;
         }
 
         .corr {

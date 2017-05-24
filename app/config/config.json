@@ -50,6 +50,7 @@
 
     "toolHeatMap"       : true,
     "toolPinAppEntries" : true,
+    "toolImageTextLinking" : true,
 
     "listDef"                    : "listWit, listChange",
     "versionDef"                 : "witness, change",

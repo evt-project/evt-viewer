@@ -11,11 +11,18 @@ angular.module('evtviewer.UItools')
             //TODO: handle <lb> with _reg and _orig
             if (i === lbs.length - 1) {
                 // Ultima linea da gestire con riferimento diverso
-                var nextElem = lbs[i].nextElementSibling;
+                var nextElem = lbs[i].nextSibling;
                 lbId = lbs[i].id;
-                while (nextElem && nextElem.className.indexOf('inLine') < 0) {
+                while (nextElem && (nextElem.nodeType === 3 || (nextElem.className && nextElem.className.indexOf('inLine') < 0))) {
+                    if (nextElem.nodeType === 3) {
+                        var newTextNode = document.createElement("span");
+                        newTextNode.className = 'textNode';
+                        newTextNode.textContent = nextElem.textContent;
+                        nextElem.parentElement.replaceChild(newTextNode, nextElem);
+                        nextElem = newTextNode;
+                    }
                     this.preapareElementInLine(nextElem, lbId);
-                    nextElem = nextElem.nextElementSibling || lbs[i].parentNode.nextElementSibling || undefined;
+                    nextElem = nextElem.nextSibling || lbs[i].parentNode.nextSibling || undefined;
                 }
             } else {
                 var lbStart = lbs[i],
@@ -26,7 +33,15 @@ angular.module('evtviewer.UItools')
                     if (lbStart && lbEnd) {
                         var elems = Utils.DOMutils.getElementsBetweenTree(lbStart, lbEnd);
                         for (var el in elems) {
-                            this.preapareElementInLine(elems[el], lbId);
+                            var elementInLine = elems[el];
+                            if (elementInLine.nodeType === 3) {
+                                var newTextNode = document.createElement("span");
+                                newTextNode.className = 'textNode';
+                                newTextNode.textContent = elementInLine.textContent;
+                                elementInLine.parentElement.replaceChild(newTextNode, elementInLine);
+                                elementInLine = newTextNode;
+                            }
+                            this.preapareElementInLine(elementInLine, lbId);
                         }
                     }
                 }
@@ -66,6 +81,17 @@ angular.module('evtviewer.UItools')
                     evtInterface.updateCurrentHighlightZone(undefined);
                 }
             };
+        }
+    };
+
+    ITLutils.uninitLines = function() {
+        var textNodes = document.getElementsByClassName("textNode");
+        for (var i in textNodes) {
+            var element = textNodes[i];
+            if (element.textContent) {
+                var newTextNode = document.createTextNode(element.textContent);
+                element.parentElement.replaceChild(newTextNode, element);
+            }
         }
     };
 

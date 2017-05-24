@@ -163,7 +163,7 @@ angular.module('evtviewer.interface')
         scope: { 
             ref : '@' 
         }, 
-        template: '<span class="glyph" compile="content"></span>', 
+        template: '<span class="glyph" compile="::content"></span>', 
         replace: true, 
         link: function (scope, iElement, iAttrs) { 
           var sRef = scope.ref, 

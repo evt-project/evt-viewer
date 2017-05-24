@@ -119,6 +119,7 @@ angular.module('evtviewer.core')
 
     toolHeatMap : true,
     toolPinAppEntries : false,
+    toolImageTextLinking: true,
     
     listDef                    : 'listWit, listChange',
     versionDef                 : 'witness, change',

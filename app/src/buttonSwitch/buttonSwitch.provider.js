@@ -281,6 +281,7 @@ angular.module('evtviewer.buttonSwitch')
 							if (currentHzone) {
 								evtImageTextLinking.changeLinesHighlightStatus(currentHzone.id, 'unselect');
 							}
+                            evtImageTextLinking.uninitLines();
 							evtInterface.setToolState('ITL', 'inactive');
 							evtInterface.updateCurrentHighlightZone(undefined);
 							// TODO: Deactivate interactions with lines

@@ -82,7 +82,7 @@ angular.module('evtviewer.box')
             /* ****************** */
             /* XSL TRANSFORMATION */
             /* ****************** */
-            function loadXMLDoc(filename) {
+            var loadXMLDoc = function(filename) {
                 var xhttp;
                 if (window.ActiveXObject) {
                     xhttp = new ActiveXObject('Msxml2.XMLHTTP');
@@ -97,7 +97,7 @@ angular.module('evtviewer.box')
                 return xhttp.responseXML;
             }
 
-            function displayResult(sc, xsltUrl) {
+            var displayResult = function(sc, xsltUrl) {
                 if (xsltUrl !== '') {
                     var xml = xmlParser.parse(scope.vm.content),
                         xsl = loadXMLDoc(xsltUrl);

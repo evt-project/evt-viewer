@@ -1,11 +1,11 @@
 <div class="selector" 
-     data-parent="{{::vm.parent}}"
+     data-parent="{{ ::vm.parent }}"
      ng-show="::vm.optionList.length > 0">
    <span 
       class="label_selected" 
-      title="{{::vm.getOptionSelected().title}}"
-      data-value="{{::vm.getOptionSelected().value}}">
-      {{::vm.getOptionSelected().label}}
+      title="{{ vm.getOptionSelected().title }}"
+      data-value="{{ vm.getOptionSelected().value }}">
+      {{ vm.getOptionSelected().label }}
    </span>
    <div 
       class="open_options" 
@@ -23,7 +23,7 @@
          ng-repeat="option in ::vm.optionList" 
          ng-click="vm.callback(vm.optionSelected, option);"
          ng-class="{'selected': vm.isOptionSelected(option)}">
-         {{::option.label}}
+         {{ ::option.label }}
       </div>
    </div>
 </div>

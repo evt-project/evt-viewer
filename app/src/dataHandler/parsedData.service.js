@@ -553,5 +553,9 @@ angular.module('evtviewer.dataHandler')
 		return zonesCollection[zoneId];
 	};
 
+	parsedData.isITLAvailable = function() {
+		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
+	};
+
 	return parsedData;
 });

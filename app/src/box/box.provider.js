@@ -18,19 +18,19 @@ angular.module('evtviewer.box')
         //
         // Control function
         //
-        function updateState(key, value) {
+        var updateState = function(key, value) {
             // _console.log('vm - updating state '+key+': '+value);
             var vm        = this;
             vm.state[key] = value;
             return vm.state[key];
         }
 
-        function getState(key) {
+        var getState = function(key) {
             var vm = this;
             return vm.state[key];
         }
 
-        function destroy() {
+        var destroy = function() {
             var tempId = this.uid;
             // this.$destroy();
             delete collection[tempId];
@@ -38,7 +38,7 @@ angular.module('evtviewer.box')
         }
 
         // Critical edition control
-        function toggleCriticalAppFilter(filter, value){
+        var toggleCriticalAppFilter = function(filter, value){
             var vm      = this,
                 filters = vm.state.filters;
             if (filters[filter] === undefined ) {
@@ -79,7 +79,7 @@ angular.module('evtviewer.box')
             filters[filter].any = (filters[filter].totActive === 0);
         }
 
-        function clearFilter(filter){
+        var clearFilter = function(filter){
             var vm = this;
             vm.state.filters[filter].values    = { length: 0 };
             vm.state.filters._totActive       -= vm.state.filters[filter].totActive;
@@ -87,51 +87,51 @@ angular.module('evtviewer.box')
         }
 
 
-        function toggleTopBox() {
+        var toggleTopBox = function() {
             var vm = this;
             if (vm.state.topBoxOpened !== undefined) {
                 vm.state.topBoxOpened = !vm.state.topBoxOpened;
             }
         }
 
-        function toggleFilterBox() {
+        var toggleFilterBox = function() {
             var vm = this;
             if (vm.state.filterBox !== undefined) {
                 vm.state.filterBox = !vm.state.filterBox;
             }
         }
 
-        function updateTopBoxContent(newContent) {
+        var updateTopBoxContent = function(newContent) {
             var vm = this;
             vm.topBoxContent = newContent;
         }
 
-        function fontSize() {
+        var fontSize = function() {
             var vm = this;
             return 'font-size:'+vm.state.fontSize+'%' || '';
         }
 
-        function fontSizeIncrease() {
+        var fontSizeIncrease = function() {
             var vm = this;
             vm.state.fontSize = parseInt(vm.state.fontSize)+4;
         }
 
-        function fontSizeDecrease() {
+        var fontSizeDecrease = function() {
             var vm = this;
             vm.state.fontSize = parseInt(vm.state.fontSize)-4;
 
         }
 
-        function fontSizeReset() {
+        var fontSizeReset = function() {
             var vm = this;
             vm.state.fontSize = '100';
         }
 
-        function toggleBtnGroup(groupState){
+        var toggleBtnGroup = function(groupState){
             groupState = !groupState;
         }
 
-        function isITLactive() { //TEMP
+        var isITLactive = function() { //TEMP
             return evtInterface.getToolState('ITL') === 'active';
         }
 
@@ -180,12 +180,15 @@ angular.module('evtviewer.box')
                     topMenuList.selectors.push({id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
 
                     topMenuList.buttons.push({title:'Thumbnails', label: 'Thumbs', icon: 'thumbnails', type: 'thumbs' });
-                    topMenuList.buttons.push({title: 'Image Text Linking', label: '', icon: 'itl', type: 'itl'});
+                    if (parsedData.isITLAvailable()) {
+                        topMenuList.buttons.push({title: 'Image Text Linking', label: '', icon: 'itl', type: 'itl'});
+                    }
 
                     updateContent = function(){
                         scope.vm.isLoading = true;
                         var currentPage = evtInterface.getCurrentPage(),
-                            pageSource   = parsedData.getPage(currentPage).source || '';
+                            currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
+                            pageSource   = currentPageObj ?  currentPageObj.source : '';
                         pageSource = pageSource === '' ? 'data/images/'+currentPage+'.png' : pageSource;
                         scope.vm.content = '<img src="'+pageSource+'" alt="Image of page '+currentPage+' of '+evtInterface.getCurrentDocument()+'" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
 

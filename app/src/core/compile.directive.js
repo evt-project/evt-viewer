@@ -11,6 +11,7 @@ angular.module('evtviewer.core')
                 function(value) {
                     element.html(value);
                     $compile(element.contents())(scope);
+                    console.log('Compile');
                 });
         };
     });
