@@ -11,11 +11,11 @@ angular.module('evtviewer.buttonSwitch')
             value : '@'
         },
         templateUrl: 'src/buttonSwitch/buttonSwitch.dir.tmpl.html',
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
             // Add attributes in vm
             scope.vm = {};
 
-            var currentButton = evtButtonSwitch.build(scope);
+            var currentButton = evtButtonSwitch.build(scope, scope.vm);
             
             if (scope.type === 'addWit') {
                 if (evtInterface.getAvailableWitnesses().length === 0) {

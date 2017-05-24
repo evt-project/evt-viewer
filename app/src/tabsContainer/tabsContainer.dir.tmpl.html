@@ -1,4 +1,4 @@
-<div class="evt-tabs-container {{ orientation }}">
+<div class="evt-tabs-container {{ ::orientation }}">
     <div 
         class="evt-tabs-container_headers"
         ng-class="{'closed': subContentOpened === ''}">
@@ -8,7 +8,7 @@
             ng-repeat="tab in tabs._indexes"
             ng-click="toggleSubContent(tab)"
             ng-class="{'active' : subContentOpened == tab }">
-            {{ tabs[tab].label }}
+            {{ ::tabs[tab].label }}
         </span>
     </div>
     <div 
@@ -19,7 +19,7 @@
             ng-repeat="tab in tabs._indexes"
             ng-class="{'active' : subContentOpened == tab,
                         'noscroll': tabs[tab].scrollDisabled }"
-            compile="tabs[tab].content">
+            compile="::tabs[tab].content">
         </div>
     </div>
 </div>

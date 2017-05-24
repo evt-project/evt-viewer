@@ -51,6 +51,6 @@ angular.module('evtviewer.reading')
 })
 
 .config(function(evtReadingProvider, configProvider, READINGDEFAULTS) {
-    var defaults = configProvider.makeDefaults('popover', READINGDEFAULTS);
+    var defaults = configProvider.makeDefaults('reading', READINGDEFAULTS);
     evtReadingProvider.setDefaults(defaults);
 });

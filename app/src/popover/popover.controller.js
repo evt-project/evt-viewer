@@ -61,5 +61,9 @@ angular.module('evtviewer.popover')
         // _console.log('vm - destroy ' + tempId);
     };
 
+    this.toggleMouseHover = function() { };
+    this.toggleTooltipHover = function() { };
+    this.triggerClick = function() { };
+    this.resizeTooltip = function() { };
     // _console.log('PopoverCtrl running');
 });

@@ -279,3 +279,14 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 .app_reading_content {
     margin-bottom: 20px !important;
 }
+
+[data-type="pinnedBoard"] {
+    .critical-apparatus-entry {
+        &_tools {
+            position: absolute;
+            top: -3px;
+            right: 0;
+            bottom: auto;
+        }
+    }
+}

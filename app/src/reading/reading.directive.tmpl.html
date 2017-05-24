@@ -1,24 +1,21 @@
-<span 
-    class="reading"
-    ng-mouseover="vm.toggleOverAppEntries($event);"
-    ng-mouseout="vm.toggleOverAppEntries($event)"
-    ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
-                'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
-                'over'     : vm.over, 
-                'invisible': !vm.fitFilters(),
-                'blurred'  : $parent.vm.state.topBoxOpened}">
-    <span 
-        class="reading__text"
-        style="{{vm.backgroundColor()}}"
-        title="{{vm.attributes}}"
-        ng-click="vm.callbackClick($event);"
-        ng-transclude></span>
-
-    <evt-critical-apparatus-entry 
-      ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
-      ng-if="vm.apparatus._loaded"
-      ng-show="vm.isApparatusOpened() && vm.fitFilters()"
-      data-app-id="{{vm.appId}}"
-      data-reading-id="{{vm.readingId}}"
-      data-scope-wit="{{vm.scopeWit}}"></evt-critical-apparatus-entry>
+<span class="reading"
+		ng-mouseover="vm.toggleOverAppEntries($event);"
+		ng-mouseout="vm.toggleOverAppEntries($event)"
+		ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
+			'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
+			'over'     : vm.over,
+			'invisible': !vm.fitFilters(),
+			'blurred'  : $parent.vm.state.topBoxOpened}">
+	<span class="reading__text"
+		style="{{vm.backgroundColor()}}"
+		title="{{ ::vm.attributes}}"
+		ng-click="vm.callbackClick($event);"
+		ng-transclude></span>
+	<evt-critical-apparatus-entry
+		ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
+		ng-if="vm.apparatus._loaded"
+		ng-show="vm.isApparatusOpened() && vm.fitFilters()"
+		data-app-id="{{ ::vm.appId}}"
+		data-reading-id="{{ ::vm.readingId}}"
+		data-scope-wit="{{ ::vm.scopeWit}}"></evt-critical-apparatus-entry>
 </span>

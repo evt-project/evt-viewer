@@ -49,7 +49,7 @@
                             }],
 
     "toolHeatMap"       : true,
-    "toolPinAppEntries" : false,
+    "toolPinAppEntries" : true,
 
     "listDef"                    : "listWit, listChange",
     "versionDef"                 : "witness, change",

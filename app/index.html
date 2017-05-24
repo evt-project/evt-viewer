@@ -45,14 +45,14 @@
         {{ getProperty('indexTitle') }}
         <div class="globalMenu">
             <button-switch
-                    title="{{mode.label}}"
+                    title="{{::mode.label}}"
                     class="mode-view"
                     data-label=""
-                    data-icon="{{mode.icon}}"
-                    data-value="{{mode.viewMode}}"
+                    data-icon="{{::mode.icon}}"
+                    data-value="{{::mode.viewMode}}"
                     data-type="changeViewMode"
                     ng-repeat="mode in getAvailableViewModes()"
-                    ng-if="mode.visible">
+                    ng-if="::mode.visible">
             </button-switch>
             <!-- <button-switch
                     title="Witnesses"
@@ -117,7 +117,7 @@
                                'half-centered': isPinnedAppBoardOpened()}">
             </button-switch>
 
-            <box data-type="pinnedBoard"
+            <box data-type="pinnedBoard" data-edition="{{getCurrentEdition()}}"
                 ng-show="!isLoading() && isPinnedAppBoardOpened()">
                  <span ng-if="!isLoading() && getPinnedEntries().length <= 0" class="italic">
                     Selected apparatus entries will be shown here
@@ -129,7 +129,7 @@
                     ng-click="updateCurrentAppEntry(entry);"
                     ng-repeat="entry in getPinnedEntries()"
                     data-type="pinned"
-                    data-app-id="{{entry}}"></evt-critical-apparatus-entry>
+                    data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
             </box>
         </section>
 
@@ -147,7 +147,7 @@
                  ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
                             'span18of18': !existCriticalText()}">
                 <box data-type="witness"
-                     data-witness="{{witness}}"
+                     data-witness="{{::witness}}"
                      ng-if="witness"
                      data-witpage="{{getCurrentWitnessPage(witness)}}"
                      ng-repeat="witness in getCurrentWitnesses()" ></box>
@@ -168,8 +168,8 @@
                 ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
                 <span
                     ng-click="addWitness(witness)"
-                    ng-if="witness"
-                    ng-repeat="witness in getAvailableWitnesses()">{{getWitness(witness)}}</span>
+                    ng-if="::witness"
+                    ng-repeat="witness in getAvailableWitnesses()">{{::getWitness(witness)}}</span>
             </div>
 
         </section>
@@ -219,6 +219,7 @@
         data-id="errorMsg"
         data-type="error"
         data-title="ERROR" ></evt-dialog>
+
     <footer>Footer</footer>
 
 

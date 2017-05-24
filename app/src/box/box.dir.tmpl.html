@@ -1,5 +1,5 @@
-<section class="box box-{{vm.type}}" 
-         id="{{vm.uid}}"
+<section class="box box-{{::vm.type}}" 
+         id="{{::vm.uid}}"
          data-position="left"
          data-getTotElementsOfType="{{vm.getTotElementsOfType('witness')}}"
          ng-class="{'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
@@ -12,31 +12,31 @@
     <div 
         class="box-menu" 
         data-position="top"
-        ng-if="vm.type !== 'critical_apparatus'">
+        ng-if="::vm.type !== 'critical_apparatus'">
         <evt-select 
-            data-id="{{selector.id}}"
-            data-type="{{selector.type}}"
-            data-init="{{selector.initValue}}"
+            data-id="{{::selector.id}}"
+            data-type="{{::selector.type}}"
+            data-init="{{::selector.initValue}}"
             ng-repeat="selector in vm.topMenuList.selectors">
         </evt-select>
         <button-switch 
-            title="{{button.title}}"
-            data-label="{{button.label}}"
-            data-icon="{{button.icon}}"
-            data-type="{{button.type}}"
+            title="{{::button.title}}"
+            data-label="{{::button.label}}"
+            data-icon="{{::button.icon}}"
+            data-type="{{::button.type}}"
             ng-repeat="button in vm.topMenuList.buttons">
         </button-switch>
     </div>
     <div 
         class="box-top-box"
         ng-class="{'open': vm.state.topBoxOpened}"
-        compile="vm.topBoxContent">
+        compile="::vm.topBoxContent">
     </div>
-    <div class="box-body {{vm.edition}}Edition" 
+    <div class="box-body {{::vm.edition}}Edition" 
          style="{{vm.fontSize();}}"
          ng-class="{ 'noBottomMenu' : vm.bottomMenuList.buttons.length <= 0 && vm.bottomMenuList.selectors.length <= 0}"
-         id="box_body_{{vm.uid}}" 
-         compile="vm.content" ng-transclude></div>
+         id="box_body_{{::vm.uid}}" 
+         compile="::vm.content" ng-transclude></div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     <div class="filters-in-box" 
@@ -50,22 +50,22 @@
                 ng-repeat="value in filter.values"
                 ng-if="filter.values[value].active"
                 ng-click="vm.toggleCriticalAppFilter(filter.name, filter.values[value].name);"
-                style="background:{{filter.values[value].color}}"
-                title="Remove ''{{filter.values[value].name}}''">
-                {{filter.values[value].name}}
+                style="background:{{::filter.values[value].color}}"
+                title="Remove ''{{::filter.values[value].name}}''">
+                {{::filter.values[value].name}}
             </span>
         </span>
     </div>
     <!-- <div class="box-bottom-box"> </div> -->
     <div 
         class="filters-box"
-        ng-if="vm.type=='witness' || vm.type=='text'"
+        ng-if="::vm.type=='witness' || vm.type=='text'"
         ng-class="{'open': vm.state.filterBox}">
         
         <div class="filter-group"
              ng-repeat="filter in vm.appFilters"
-             ng-if="(vm.type=='witness' && filter.possibleFor.variant) || (vm.type=='text' && filter.possibleFor.lemma)">
-            <div class="filters-section-title">{{filter.name}}</div>
+             ng-if="::(vm.type=='witness' && filter.possibleFor.variant) || (vm.type=='text' && filter.possibleFor.lemma)">
+            <div class="filters-section-title">{{::filter.name}}</div>
             <div class="filter-value-outer">
                 <div 
                     class="filter-value">
@@ -78,14 +78,14 @@
             </div>
             <div class="filter-value-outer" ng-repeat="value in filter.values" >
                 <div 
-                    style="background:{{value.color}}" 
+                    style="background:{{::value.color}}" 
                     class="filter-value">
                     <span 
                         class="filter-value-label"
-                        title="Toggle ''{{value.name}}''"
+                        title="Toggle ''{{::value.name}}''"
                         ng-class="{'active': vm.state.filters[filter.name].values[value.name].active !== undefined && vm.state.filters[filter.name].values[value.name].active}"
                         ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);"> 
-                        {{value.name}}</span>
+                        {{::value.name}}</span>
                 </div>
             </div>
         </div>
@@ -93,16 +93,16 @@
 
     <div 
         class="tools-group-box"
-        ng-if="vm.type=='text' || vm.type=='witness'"
+        ng-if="::vm.type=='text' || vm.type=='witness'"
         ng-class="{'open': vm.getState('fontSizeBtn')}">
         <div 
             class="fontSizeBtnGroup">
             <button-switch 
                 class="no-background"
-                title="{{button.title}}"
-                data-label="{{button.label}}"
-                data-icon="{{button.icon}}"
-                data-type="{{button.type}}"
+                title="{{::button.title}}"
+                data-label="{{::button.label}}"
+                data-icon="{{::button.icon}}"
+                data-type="{{::button.type}}"
                 ng-repeat="button in vm.genericTools.fontSizeBtn">
             </button-switch>
         </div>
@@ -111,12 +111,12 @@
     <div 
         class="box-menu" 
         data-position="bottom"
-        ng-if="vm.bottomMenuList.buttons.length > 0 || vm.bottomMenuList.selectors.length > 0">
+        ng-if="::vm.bottomMenuList.buttons.length > 0 || vm.bottomMenuList.selectors.length > 0">
         <button-switch 
-            title="{{button.title}}"
-            data-label="{{button.label}}"
-            data-icon="{{button.icon}}"
-            data-type="{{button.type}}"
+            title="{{::button.title}}"
+            data-label="{{::button.label}}"
+            data-icon="{{::button.icon}}"
+            data-type="{{::button.type}}"
             ng-repeat="button in vm.bottomMenuList.buttons"
             ng-show="button.show()">
         </button-switch>

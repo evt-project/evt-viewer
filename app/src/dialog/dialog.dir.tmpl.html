@@ -7,7 +7,7 @@
 
     <div class="evt-dialog-container">
         <div class="evt-dialog-container-top">
-            <span class="evt-dialog-container-top-title">{{ vm.title }}</span>
+            <span class="evt-dialog-container-top-title">{{ ::vm.title }}</span>
             <button-switch 
                     class="noPadding"
                     title="Close"
@@ -19,7 +19,7 @@
             <div 
                 ng-switch-when="error"
                 class="evt-dialog-container-content"
-                compile="vm.content"></div>
+                compile="::vm.content"></div>
             <div 
                 ng-switch-default
                 class="evt-dialog-container-content" ng-transclude></div>
