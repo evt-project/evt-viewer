@@ -58,9 +58,8 @@ angular.module('evtviewer.dataHandler')
             str = node.nodeValue;
             checkCurrentEdition(node);
 
-            if (str !== null && !containOnlySpace()) {
-               text += str;
-            }
+            str != null && !containOnlySpace() ? text += str : text;
+
             node = nodes.iterateNext();
             checkNodeName(node);
 
@@ -150,14 +149,20 @@ angular.module('evtviewer.dataHandler')
 
       if(currentEdition === 'diplomatic') {
          switch (nodeName) {
-            case 'corr':case 'reg':case 'expan':case 'ex':
+            case 'corr':
+            case 'reg':
+            case 'expan':
+            case 'ex':
             node = nodes.iterateNext();
             node = nodes.iterateNext();
          }
       }
       if(currentEdition === 'interpretative') {
          switch (nodeName) {
-            case 'sic':case 'orig':case 'abbr':case 'am':
+            case 'sic':
+            case 'orig':
+            case 'abbr':
+            case 'am':
             node = nodes.iterateNext();
             node = nodes.iterateNext();
          }
@@ -173,10 +178,16 @@ angular.module('evtviewer.dataHandler')
          for(let i = 0; i < children.length; i++) {
             childNodeName = children[i].nodeName;
             switch(childNodeName) {
-               case 'sic':case 'orig':case 'abbr':case 'am':
+               case 'sic':
+               case 'orig':
+               case 'abbr':
+               case 'am':
                   word.diplomatic = children[i].textContent;
                   break;
-               case 'corr':case 'reg':case 'expan':case 'ex':
+               case 'corr':
+               case 'reg':
+               case 'expan':
+               case 'ex':
                   word.interpretative = children[i].textContent;
                   break;
             }
