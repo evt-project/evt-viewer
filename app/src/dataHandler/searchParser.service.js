@@ -37,14 +37,19 @@ angular.module('evtviewer.dataHandler')
      //const promise = searchApi.search('describing');
    };
 
-   let nsResolver = function() {
-      return "http://www.tei-c.org/ns/1.0";
-   };
-
    let getText = function(doc) {
-      let path = "//body//node()[not(self::comment())]";
+      let nsResolver = {
+         lookupNamespaceURI: function (prefix) {
+            prefix = 'ns';
+            let namespace = doc.documentElement.namespaceURI;
+            return namespace;
+         }
+      };
+      let path;
 
+      doc.documentElement.namespaceURI == null ? path = '//body//node()[not(self::comment())]' : path = '//ns:body//node()[not(self::comment())]';
       nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
+
       node = nodes.iterateNext();
       str = node.nodeValue;
 
@@ -79,7 +84,7 @@ angular.module('evtviewer.dataHandler')
 
    let getGlyphNode = function(doc) {
       let path = "//charDecl/node()[not(self::comment())]",
-          nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null),
+          nodes = doc.evaluate(path, doc, null, XPathResult.ANY_TYPE, null),
           node = nodes.iterateNext();
 
       while(node) {
