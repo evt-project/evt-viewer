@@ -35,5 +35,6 @@ angular
 		'evtviewer.tabsContainer',
 		'evtviewer.bibliography',
 		'evtviewer.reference',
+		'evtviewer.list',
 		'evtviewer.UItools'
 	]);
