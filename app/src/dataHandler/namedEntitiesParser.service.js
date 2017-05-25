@@ -657,24 +657,26 @@ angular.module('evtviewer.dataHandler')
 		var data = $(element).find('listPlace > place');
 		angular.forEach(data, function(el) {
 			var res = listPlaceHelper.parseInfo(el);
-			listManager.addItemToList('place', res.id.substr(0, 1).toLowerCase(), res);
+			parsedData.addNamedEntityInCollection('place', res, res.id.substr(0, 1).toLowerCase());
 		});
 
 		//List org
 		data = $(element).find('listOrg > org');
 		angular.forEach(data, function(el) {
 			var res = listOrgHelper.parseInfo(el);
-			listManager.addItemToList('org', res.id.substr(0, 1).toLowerCase(), res);
+			parsedData.addNamedEntityInCollection('org', res, res.id.substr(0, 1).toLowerCase());
 		});
 
 		//List name
 		data = $(element).find('listPerson > person');
 		angular.forEach(data, function(el) {
-			var res = listPersonHelper.parseInfo(el);
-			listManager.addItemToList('person', res.id.substr(0, 1).toLowerCase(), res);
+		 	var res = listPersonHelper.parseInfo(el);
+		 	parsedData.addNamedEntityInCollection('person', res, res.id.substr(0, 1).toLowerCase());
 		});
 
 		console.log('## parseEntities ##', listManager.getAllLists());
+		//console.log('## parseEntities ##', listManager.getAllLists());
+		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
 	};
 	
 	var isObject = function(obj) {

@@ -74,6 +74,40 @@ angular.module('evtviewer.dataHandler')
 		_indexes: []
 	};
 
+	var namedEntities = {
+		_indexes: []
+	};
+
+	parsedData.addNamedEntitiesCollection = function(collectionName) {
+		if (namedEntities[collectionName] === undefined) {
+			namedEntities[collectionName] = {
+				_indexes: [],
+				_listKeys: []
+			};
+			namedEntities._indexes.push(collectionName);
+		}
+	};
+
+	parsedData.addNamedEntityInCollection = function(collectionName, namedEntity, listKey) {
+		if (namedEntities[collectionName] === undefined) {
+			this.addNamedEntitiesCollection(collectionName);
+		}
+		if (namedEntities[collectionName][listKey] === undefined) {
+			namedEntities[collectionName][listKey] = {
+				_indexes: []
+			};
+			namedEntities[collectionName]._listKeys.push(listKey);
+		}
+		var entityId = namedEntity.id;
+		namedEntities[collectionName][listKey][entityId] = namedEntity;
+		namedEntities[collectionName]._indexes.push(entityId);
+		namedEntities[collectionName][listKey]._indexes.push(entityId);
+	};
+
+	parsedData.getNamedEntitiesCollection = function() {
+		return namedEntities;
+	};
+
 	/* PAGES */
 	// TODO: add attribute for the original xml reference
 	parsedData.addPage = function(page, docId) {
