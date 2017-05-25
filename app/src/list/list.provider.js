@@ -39,6 +39,12 @@ angular.module('evtviewer.list')
             return [];
         };
 
+        var getElementContent = function(element) {
+            var vm = this;
+            var namedEntity = parsedData.getNamedEntityInCollection(vm.name, element, vm.selectedLetter);
+            return namedEntity.output;
+        };
+
         list.build = function(id, scope) {
             var currentId = id; //ID is listName
 
@@ -61,7 +67,8 @@ angular.module('evtviewer.list')
                 //functions
                 getElementContent  : getElementContent,
                 selectLetter       : selectLetter,
-                getVisibleElements : getVisibleElements
+                getVisibleElements : getVisibleElements,
+                getElementContent  : getElementContent
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

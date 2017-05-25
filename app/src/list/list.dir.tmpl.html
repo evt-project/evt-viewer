@@ -3,13 +3,14 @@
         <div class="evt-list__listLetters">
             <span class="evt-list__listLetters__letter" 
                 ng-class="{'active': letter === vm.selectedLetter }"
-                ng-repeat="letter in ::vm.listKeys" ng-click="vm.selectLetter(letter)">
+                ng-repeat="letter in ::vm.listKeys | orderBy" ng-click="vm.selectLetter(letter)">
                 {{ ::letter }}
             </span>
         </div>
         <div class="evt-list__content">
-            <div ng-repeat="element in vm.getVisibleElements()">
-                {{ ::element }}
+            <div ng-repeat="element in vm.getVisibleElements() | orderBy "><!-- TODO: Create separate directive -->
+                <span style="font-variant: small-caps; font-weight: bold;">#{{ ::element }}: </span>
+                <span compile="::vm.getElementContent(element)"> </span>
             </div>
         </div>
     </div>

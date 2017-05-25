@@ -116,7 +116,7 @@ angular.module('evtviewer.dataHandler')
 		return namedEntities[listName][listKey];
 	};
 
-	parsedData.agetNamedEntityInCollection = function(collectionName, namedEntity, listKey) {
+	parsedData.getNamedEntityInCollection = function(collectionName, namedEntity, listKey) {
 		return namedEntities[collectionName][listKey][namedEntity];
 	};
 
