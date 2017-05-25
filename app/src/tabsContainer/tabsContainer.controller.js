@@ -82,7 +82,7 @@ angular.module('evtviewer.tabsContainer')
         }
 
         /* Bibliography */
-		if (Object.keys(parsedData.getBibliographicRefsCollection()).length > 0) {
+		if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
 			var bibliographyContent = '<evt-bibliography></evt-bibliography>';
 			if (bibliographyContent !== '') {
 				$scope.tabs.bibliography = {
