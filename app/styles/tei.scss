@@ -210,7 +210,7 @@
     .item {
         display: block;
         &:before{
-            content : "•";
+            content : "\2022";
             margin-right: 10px;
             margin-left: 10px;
         }
