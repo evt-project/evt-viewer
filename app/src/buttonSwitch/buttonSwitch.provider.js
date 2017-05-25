@@ -302,6 +302,13 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				case 'openGlobalDialogLists':
+					callback = function() {
+						var vm = this;
+						evtInterface.updateSecondaryContentOpened('entitiesList');
+						evtDialog.openByType('entitiesList');
+						vm.active = !vm.active;
+					};
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':

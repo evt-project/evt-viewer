@@ -1,6 +1,6 @@
 angular.module('evtviewer.tabsContainer')
 
-.controller('TabsContainerCtrl', function($log, $scope, parsedData,evtInterface) {
+.controller('TabsContainerCtrl', function($log, $scope, parsedData, evtInterface) {
     $scope.subContentOpened = '';
     $scope.tabs = {
         _indexes : []
@@ -94,6 +94,18 @@ angular.module('evtviewer.tabsContainer')
 				$scope.tabs._indexes.push('bibliography');
 			}
 		}
+    } else if ($scope.type === 'entitiesList') {
+        var entitiesCollection = parsedData.getNamedEntitiesCollection();
+        $scope.tabs._indexes = entitiesCollection._indexes;
+        for (var i = 0; i < entitiesCollection._indexes.length; i++) {
+            var listName = entitiesCollection._indexes[i];
+            $scope.tabs[listName] = {
+                label   : listName,
+                name    : listName,
+                content : '<evt-list data-name="'+listName+'"></evt-list>',
+                scrollDisabled: true
+            };
+        }
     }
 
 

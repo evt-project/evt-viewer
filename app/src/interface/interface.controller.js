@@ -108,6 +108,10 @@ angular.module('evtviewer.interface')
 		return parsedData.getWitnessesListFormatted();
 	};
 
+    $scope.getAvailableLists = function() {
+        return parsedData.getNamedEntitiesCollection()._indexes;
+    };
+
 	$scope.getProperty = function(name) {
 		return evtInterface.getProperty(name);
 	};

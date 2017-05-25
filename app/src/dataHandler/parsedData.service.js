@@ -108,6 +108,18 @@ angular.module('evtviewer.dataHandler')
 		return namedEntities;
 	};
 
+	parsedData.getNamedEntitiesCollectionByName = function(listName) {
+		return namedEntities[listName];
+	};
+
+	parsedData.getNamedEntitiesCollectionByNameAndPos = function(listName, listKey) {
+		return namedEntities[listName][listKey];
+	};
+
+	parsedData.agetNamedEntityInCollection = function(collectionName, namedEntity, listKey) {
+		return namedEntities[collectionName][listKey][namedEntity];
+	};
+
 	/* PAGES */
 	// TODO: add attribute for the original xml reference
 	parsedData.addPage = function(page, docId) {

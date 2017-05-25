@@ -60,6 +60,11 @@
                     data-type="openGlobalDialogWitnesses">
             </button-switch> -->
             <button-switch
+                title="List"
+                data-icon="list"
+                data-type="openGlobalDialogLists">
+            </button-switch> 
+            <button-switch
                     class="smaller"
                     title="Info"
                     data-icon="info"
@@ -90,6 +95,12 @@
         </evt-dialog>
         <evt-dialog data-type="witnessesList" data-title="Witnesses">
             <div compile="getWitnessesListFormatted()"></div>
+        </evt-dialog>
+        <evt-dialog data-type="entitiesList" data-title="Witnesses">
+            <evt-tabs-container
+                data-type="entitiesList"
+                data-orientation="vertical">
+            </evt-tabs-container>
         </evt-dialog>
         <evt-dialog data-type="bookmark" data-title="Bookmark">
             <div compile="getBookmark()"></div>
@@ -332,6 +343,10 @@
     <script src="/src/popover/popover.provider.js"></script>
     <script src="/src/popover/popover.controller.js"></script>
     <script src="/src/popover/popover.directive.js"></script>
+
+    <script src="/src/list/list.js"></script>
+    <script src="/src/list/list.provider.js"></script>
+    <script src="/src/list/list.directive.js"></script>
 
     <script src="/src/mobile/mobile.js"></script>
     <script src="/src/mobile/mobile.dir.js"></script>
