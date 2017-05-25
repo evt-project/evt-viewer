@@ -32,7 +32,7 @@
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
-    <div class="box-body {{::vm.edition}}Edition" 
+    <div class="box-body {{vm.edition}}Edition" 
          style="{{vm.fontSize();}}"
          ng-class="{ 'noBottomMenu' : vm.bottomMenuList.buttons.length <= 0 && vm.bottomMenuList.selectors.length <= 0}"
          id="box_body_{{::vm.uid}}" 
