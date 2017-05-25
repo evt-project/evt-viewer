@@ -3,8 +3,38 @@ angular.module('evtviewer.UItools')
 .service('evtImageTextLinking', function(evtInterface, Utils, parsedData) {
     var ITLutils = {};
 
+    ITLutils.turnOnITL = function() {
+        this.activateITL();
+        evtInterface.setToolState('ITL', 'active');
+    };
+
+    ITLutils.turnOffITL = function() {
+        this.deactivateITL();
+        evtInterface.setToolState('ITL', 'inactive');
+        evtInterface.updateCurrentHighlightZone(undefined);
+    }
+
+    ITLutils.activateITL = function() {
+        this.prepareLines();
+        this.prepareZoneInImgInteractions();
+    };
+
+    ITLutils.deactivateITL = function() {
+        var currentHzone = evtInterface.getCurrentHighlightZone();
+        // Deselect current selected
+        if (currentHzone) {
+            this.changeLinesHighlightStatus(currentHzone.id, 'unselect');
+        }
+        resetTextNodes();
+    };
+
+    /* ***************************************************************************
+     * Prepare Lines for Image text linking to work properly                     *
+     * Find elements between two different <lb/>s and add info about line.       *
+     * Text Node are tranformed into <span class="textNode"> in order to be able *
+     * to add/remove "lineHover" and "lineSelected" classes                      *
+     * ************************************************************************* */
     ITLutils.prepareLines = function() {
-        //TODO: Move function in proper service
         var lbs = document.getElementsByClassName('lb');
         for (var i = 0; i < lbs.length; i++) {
             var lbId;
@@ -21,7 +51,7 @@ angular.module('evtviewer.UItools')
                         nextElem.parentElement.replaceChild(newNextTextNode, nextElem);
                         nextElem = newNextTextNode;
                     }
-                    this.preapareElementInLine(nextElem, lbId);
+                    preapareElementInLine(nextElem, lbId);
                     nextElem = nextElem.nextSibling || lbs[i].parentNode.nextSibling || undefined;
                 }
             } else {
@@ -41,7 +71,7 @@ angular.module('evtviewer.UItools')
                                 elementInLine.parentElement.replaceChild(newTextNode, elementInLine);
                                 elementInLine = newTextNode;
                             }
-                            this.preapareElementInLine(elementInLine, lbId);
+                            preapareElementInLine(elementInLine, lbId);
                         }
                     }
                 }
@@ -49,7 +79,11 @@ angular.module('evtviewer.UItools')
         }
     };
 
-    ITLutils.preapareElementInLine = function(elementInLine, lineId) {
+    /* **************************************************************** *
+     * Prepare Element that appear in a particular line by adding       *
+     * class "inLine" and an attribute data-line with line ID reference *
+     * **************************************************************** */
+    var preapareElementInLine = function(elementInLine, lineId) {
         if (elementInLine.className && elementInLine.className.indexOf('inLine') < 0) {
             elementInLine.className += ' inLine';
             elementInLine.setAttribute('data-line', lineId);
@@ -84,7 +118,10 @@ angular.module('evtviewer.UItools')
         }
     };
 
-    ITLutils.uninitLines = function() {
+    /* *********************************************************** *
+     * Transform back <span class="textNode"> into actual textNode *
+     * *********************************************************** */
+    var resetTextNodes = function() {
         var textNodes = document.getElementsByClassName('textNode');
         for (var i in textNodes) {
             var element = textNodes[i];
@@ -95,9 +132,14 @@ angular.module('evtviewer.UItools')
         }
     };
 
+    /* ********************************************************* *
+     * Change status of elements in a particupar line            *
+     * possible statuses are 'over', 'out', 'select', 'unselect' *
+     * ********************************************************* */
     ITLutils.changeLinesHighlightStatus = function(lineId, statusToSet) {
-        var ITLactive = evtInterface.getToolState('ITL') === 'active';
-        if (ITLactive) {
+        var ITLactive = evtInterface.getToolState('ITL') === 'active',
+            currentViewMode = evtInterface.getCurrentViewMode();
+        if (ITLactive && currentViewMode === 'imgTxt') {
             var elemsInLine = document.querySelectorAll('[data-line=\'' + lineId + '\']');
             for (var i = 0; i < elemsInLine.length; i++) {
                 switch (statusToSet) {
@@ -120,6 +162,11 @@ angular.module('evtviewer.UItools')
         }
     };
 
+    /* ***************************************************************************************** *
+     * Prepare Zone in image that hase to be selected when user interacts with a particupar line *
+     * possible statuses are 'over', 'out', 'select', 'unselect'                                 *
+     * TO BE FINISHED WHEN WE HAVE A REAL VIEWER                                                 *
+     * ***************************************************************************************** */
     ITLutils.prepareZoneInImgInteractions = function() {
         var zones = document.getElementsByClassName('zoneInImg');
         for (var i = 0; i < zones.length; i++) {

@@ -170,6 +170,13 @@ angular.module('evtviewer.buttonSwitch')
 						if (vm.value !== undefined) {
 							evtInterface.updateCurrentViewMode(vm.value);
 							evtInterface.updateUrl();
+							if (evtInterface.getToolState('ITL') === 'active') {
+								if (vm.value === 'imgTxt') {
+									evtImageTextLinking.activateITL();
+								} else {
+									evtImageTextLinking.deactivateITL();
+								}
+							}
 						}
 					};
 					break;
@@ -269,22 +276,13 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'itl':
 					btnType = 'standAlone';
+					active = evtInterface.getToolState('ITL') === 'active';
 					callback = function() {
 						var vm = this;
-						if (vm.active) {
-							evtImageTextLinking.prepareLines();
-							evtImageTextLinking.prepareZoneInImgInteractions();
-							evtInterface.setToolState('ITL', 'active');
-						} else {
-							var currentHzone = evtInterface.getCurrentHighlightZone();
-							// Deselect current selected
-							if (currentHzone) {
-								evtImageTextLinking.changeLinesHighlightStatus(currentHzone.id, 'unselect');
-							}
-                            evtImageTextLinking.uninitLines();
-							evtInterface.setToolState('ITL', 'inactive');
-							evtInterface.updateCurrentHighlightZone(undefined);
-							// TODO: Deactivate interactions with lines
+						if (vm.active) { // Activate ITL
+							evtImageTextLinking.turnOnITL();
+						} else { // Deactivate ITL
+							evtImageTextLinking.turnOffITL();
 						}
 					};
 					break;
