@@ -28,6 +28,7 @@ angular.module('evtviewer.dataHandler')
     var parseListWit = function(doc, listWit) {
         var list = {
             id      : listWit.getAttribute('xml:id') || evtParser.xpath(listWit).substr(1),
+            attributes: evtParser.parseElementAttributes(listWit),
             name    : '',
             content : [],
             _type   : 'group',
@@ -49,6 +50,7 @@ angular.module('evtviewer.dataHandler')
                 else if (config.versionDef.indexOf(child.tagName) >= 0){ //witness
                     var witnessElem = {
                         id          : child.getAttribute('xml:id'),
+                        attributes  : evtParser.parseElementAttributes(child),
                         description : evtParser.parseXMLElement(doc, child, ''),
                         _group      : list.id,
                         _type       : 'witness'

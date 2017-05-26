@@ -4,7 +4,6 @@ angular.module('evtviewer.reading')
     var vm = this;
     
     var _console = $log.getInstance('reading');
-
     // 
     // Control function
     // 
@@ -134,7 +133,14 @@ angular.module('evtviewer.reading')
         
         var possibleVariantFilters = config.possibleVariantFilters, 
             possibleLemmaFilters   = config.possibleLemmaFilters;
-        if (vm.appId !== undefined){
+        
+        var parentStatusOver = false;
+        if (vm.parentAppId) {
+            var parentRef = evtReading.getById(vm.parentAppId);
+            parentStatusOver = parentRef ? parentRef.over || parentRef.isSelect() : false;
+        }
+
+        if (vm.appId !== undefined) {
             app     = parsedData.getCriticalEntryById(vm.appId);
             reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
             if (reading !== undefined){
@@ -145,7 +151,7 @@ angular.module('evtviewer.reading')
                 possibleFilters = $scope.$parent.vm.type === 'witness' ? possibleVariantFilters : possibleLemmaFilters;
                 if (Object.keys(readingAttributes).length > 0) {
                     var colors = '';
-                    var opacity = (vm.over || vm.isSelect()) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
+                    var opacity = (vm.over || vm.isSelect() || parentStatusOver) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
                     for (var label in filterLabels) {
                         var filterLabel = filterLabels[label].name;
                         if (possibleFilters.indexOf(filterLabel) >= 0) {
@@ -178,7 +184,7 @@ angular.module('evtviewer.reading')
         }
         if (background === undefined) {
             if (!$scope.$parent.vm.state.topBoxOpened) {
-                if (vm.over || vm.isSelect()) {
+                if (vm.over || vm.isSelect() || parentStatusOver) {
                     background = 'background: '+config.variantColorDark;
                 } else {
                     background = 'background: '+config.variantColorLight;

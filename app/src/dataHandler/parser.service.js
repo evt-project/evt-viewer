@@ -106,6 +106,21 @@ angular.module('evtviewer.dataHandler')
 		return newElement;
 	};
 
+	parser.parseElementAttributes = function(element) {
+		var attributes = { _indexes: [] };
+		if (element && element.attributes) {
+            for (var i = 0; i < element.attributes.length; i++) {
+                var attrib = element.attributes[i];
+                if (attrib.specified) {
+                    var attribName = attrib.name.replace(':', '_');
+                    attributes[attribName] = attrib.value;
+                    attributes._indexes.push(attribName);
+                }
+            }
+        }
+        return attributes
+	};
+
 	/* ********************* */
 	/* balanceXHTML(XHTMLstring) */
 	/* ********************* */

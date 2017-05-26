@@ -8,10 +8,12 @@ $selector-shadow-color: rgba(0, 0, 0, 0.4);
 
 $selector-open-option-border-color: #b0bec5;
 $selector-open-option-background: #b0bec5;
+$selector-open-option-width: 24px;
 
 $selector-option-background-color: $selector-background-color;
 $selector-option-color: $selector-color;
 $selector-option-background-color-hover: $base-color-middle;
+
 
 
 .selector{
@@ -38,11 +40,12 @@ $selector-option-background-color-hover: $base-color-middle;
 		position: relative;	
 	    top: 3.5px;
 	    margin: 0 4px;
+	    padding-right: $selector-open-option-width;
 	}
 
 	.open_options{
 		height: 28px;
-		width: 24px;
+		width: $selector-open-option-width;
 		
 		position: absolute;
 		right: 0;

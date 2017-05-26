@@ -48,6 +48,7 @@ angular.module('evtviewer.reading')
             if (appObj._subApp) {
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
+
             scopeHelper = {
                 // expansion
                 uid              : currentId,
@@ -74,7 +75,8 @@ angular.module('evtviewer.reading')
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({
-                id: currentId
+                id: currentId,
+                entryId: entryId
             });
 
             return collection[currentId];
@@ -84,10 +86,14 @@ angular.module('evtviewer.reading')
         //
         // Service function
         // 
-        reading.getById = function(currentId) {
-            if (collection[currentId] !== 'undefined') {
-                return collection[currentId];
-            }
+        reading.getById = function(appId) {
+            var foundReading;
+            angular.forEach(collection, function(currentReading) {
+                if (currentReading.appId === appId) {
+                    foundReading = currentReading;
+                }
+            });  
+            return foundReading;
         };
 
         reading.getList = function() {

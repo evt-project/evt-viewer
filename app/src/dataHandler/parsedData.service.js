@@ -302,18 +302,33 @@ angular.module('evtviewer.dataHandler')
 			var element = witnessesCollection[structure[i]];
 			if (element._type === 'witness') {
 				content += '<li>';
-				content += '<strong>#' + element.id + '</strong><br /><div>' + element.description.innerHTML + '</div>';
+				if (element.attributes && element.attributes.n) {
+					content += '<strong>' + element.attributes.n + '</strong>'
+				} else {
+					content += '<strong>#' + element.id + '</strong>';
+				}
+				content += '<br /><div>' + element.description.innerHTML + '</div>';	
 				content += '</li>';
 			} else {
 				content += '<li>';
-				content += '<strong>#' + element.id + '</strong><br /><div>' + element.name + '</div>';
+				if (element.attributes && element.attributes.n) {
+					content += '<strong>' + element.attributes.n + '</strong>'
+				} else {
+					content += '<strong>#' + element.id + '</strong>';
+				}
+				content += '<br /><div>' + element.name + '</div>';
 				content += '<ul>';
                 var elementContentLength = element.content ? element.content.length : 0;
 				for (var j = 0; j < elementContentLength; j++) {
 					var subElement = witnessesCollection[element.content[j]];
 					if (subElement._type === 'witness') {
 						content += '<li>';
-						content += '<strong>#' + subElement.id + '</strong><br /><div>' + subElement.description.innerHTML + '</div>';
+						if (subElement.attributes && subElement.attributes.n) {
+							content += '<strong>' + subElement.attributes.n + '</strong>'
+						} else {
+							content += '<strong>#' + subElement.id + '</strong>';
+						}
+						content += '<br /><div>' + subElement.description.innerHTML + '</div>';
 						content += '</li>';
 					}
 					//TO DO RICORSIVA!!!            
@@ -375,6 +390,10 @@ angular.module('evtviewer.dataHandler')
 			attributes = criticalAppCollection[appId].content[readingId].attributes;
 		}
 		return attributes;
+	};
+
+	parsedData.isSubApp = function(appId) {
+		return criticalAppCollection[appId]._subApp;
 	};
 
 	/* CRITICAL ENTRIES FILTERS */
