@@ -44,7 +44,12 @@ angular.module('evtviewer.interface')
                     }
 
                     if (config.availableEditionLevel) {
-                        parsedData.setEditions(config.availableEditionLevel);
+                        for (var e = 0; e < config.availableEditionLevel.length; e++) {
+                            var edition = config.availableEditionLevel[e];
+                            if (edition.visible) {
+                                parsedData.addEdition(edition);    
+                            }
+                        }
                     }
 
                     mainInterface.updateParams($routeParams);
@@ -322,11 +327,24 @@ angular.module('evtviewer.interface')
             }
 
             // EDITION 
+            var availableEditionLevel = parsedData.getEditions(); 
             if (params.e !== undefined ) {
-                edition = params.e;
+                if (parsedData.getEdition(params.e)) {
+                    edition = params.e;
+                } else {
+                    if (availableEditionLevel && availableEditionLevel.length > 0) {
+                        edition = availableEditionLevel[0].value
+                    }
+                }
             } else {
                 if (viewMode === 'readingTxt' && parsedData.isCriticalEditionAvailable()) {
-                    edition = 'critical';
+                    if (parsedData.getEdition('critical')) {
+                        edition = 'critical';
+                    }
+                } else {
+                    if (availableEditionLevel && availableEditionLevel.length > 0) {
+                        edition = availableEditionLevel[0].value
+                    }
                 }
             }
 

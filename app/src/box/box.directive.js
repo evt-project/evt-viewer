@@ -173,6 +173,13 @@ angular.module('evtviewer.box')
                         scope.vm.state.docId = newItem;
                         scope.vm.isLoading = true;
                         currentBox.updateContent();
+                        if (scope.vm.currentType === 'text') {
+                            var docObj = parsedData.getDocument(newItem),
+                                docFront = docObj ? docObj.front : undefined;
+
+                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+                                scope.vm.updateTopBoxContent(newTopBoxContent);
+                        }
                     }
                 }, true);
 

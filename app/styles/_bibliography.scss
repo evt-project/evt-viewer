@@ -39,20 +39,27 @@
 	content: '';
 } */
 
-.biblRef {
+.biblRef, .evtBiblRef {
     background-color: initial;
 
     @include set(transition-property, background-color);
     @include set(transition-duration, 2s);
 }
 
-.biblRef[highlight=true] {
+.biblRef[highlight=true], .evtBiblRef[highlight=true] {
     background-color: antiquewhite;
 }
 
-.biblRef {
+.biblRef * {
     color: #666;
     font-size: 90%;
+}
+.front .evtBiblRef {
+    text-indent: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.biblRef, .evtBiblRef {
 
     &:before {
         content: ' ';
@@ -61,9 +68,7 @@
     .titleAnalytic, .author, .titleMonogr, .biblscope
     .pubPlace, .date, .note, .idno, .edition, .accessed, .url
     .vol, .pp, .editors, .date, .publisher {
-        color: #666;
-        font-size: 90%;
-
+        
         &:before {
             content: ' ';
         }

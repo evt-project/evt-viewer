@@ -23,12 +23,13 @@
             title="{{::button.title}}"
             data-label="{{::button.label}}"
             data-icon="{{::button.icon}}"
+            data-icon-pos="{{::button.iconPos}}"
             data-type="{{::button.type}}"
             ng-repeat="button in ::vm.topMenuList.buttons">
         </button-switch>
     </div>
     <div 
-        class="box-top-box"
+        class="box-top-box avoidBlur"
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
@@ -102,6 +103,7 @@
                 title="{{::button.title}}"
                 data-label="{{::button.label}}"
                 data-icon="{{::button.icon}}"
+                data-icon-pos="{{::button.iconPos}}"
                 data-type="{{::button.type}}"
                 ng-repeat="button in vm.genericTools.fontSizeBtn">
             </button-switch>
@@ -116,6 +118,7 @@
             title="{{::button.title}}"
             data-label="{{::button.label}}"
             data-icon="{{::button.icon}}"
+            data-icon-pos="{{::button.iconPos}}"
             data-type="{{::button.type}}"
             ng-repeat="button in vm.bottomMenuList.buttons"
             ng-show="button.show()">

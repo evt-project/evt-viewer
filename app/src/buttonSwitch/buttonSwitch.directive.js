@@ -8,7 +8,8 @@ angular.module('evtviewer.buttonSwitch')
             label : '@',
             icon  : '@',
             type  : '@',
-            value : '@'
+            value : '@',
+            iconPos : '@'
         },
         templateUrl: 'src/buttonSwitch/buttonSwitch.dir.tmpl.html',
         link: function(scope, element) {
@@ -16,7 +17,6 @@ angular.module('evtviewer.buttonSwitch')
             scope.vm = {};
 
             var currentButton = evtButtonSwitch.build(scope, scope.vm);
-            
             if (scope.type === 'addWit') {
                 if (evtInterface.getAvailableWitnesses().length === 0) {
                     scope.vm.disabled = true;

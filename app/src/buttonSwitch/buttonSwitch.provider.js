@@ -23,6 +23,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'add':
 					evtIcon = 'icon-evt_add';
 					break;
+				case 'bookmark':
+					evtIcon = 'icon-evt_bookmark';
+					break;
 				case 'color-legend':
 					evtIcon = 'icon-evt_color-legend';
 					break;
@@ -47,6 +50,9 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'info':
 					evtIcon = 'icon-evt_info';
+					break;
+				case 'info-alt':
+					evtIcon = 'icon-evt_info-alt';
 					break;
 				case 'itl':
 					evtIcon = 'icon-evt_link';
@@ -87,14 +93,14 @@ angular.module('evtviewer.buttonSwitch')
 				case 'search':
 					evtIcon = 'icon-evt_search';
 					break;
-				case 'bookmark':
-					evtIcon = 'icon-evt_bookmark';
-					break;
 				case 'thumb':
 				case 'thumbs':
 				case 'thumbnail':
 				case 'thumbnails':
 					evtIcon = 'icon-evt_thumbnails';
+					break;
+				case 'txt':
+					evtIcon = 'icon-evt_txt';
 					break;
 				case 'v-align':
 					evtIcon = 'icon-evt_align';
@@ -135,6 +141,7 @@ angular.module('evtviewer.buttonSwitch')
 				title = scope.title || '',
 				label = scope.label || '',
 				icon = getIcon(scope.icon) || '',
+				iconPos = scope.iconPos || 'right',
 				type = scope.type || '',
 				value = scope.value || '',
 				active = scope.active || false,
@@ -265,6 +272,36 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					fakeCallback = function() {
 						scope.$parent.vm.updateState('fontSizeBtn', false);
+					};
+					break;
+				case 'front':
+					btnType = 'toggler';
+					callback = function() {
+						var parentBox = scope.$parent.vm;
+						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'front') {
+							parentBox.toggleTopBox();
+						} else {
+							var content;
+							var currentDocument = evtInterface.getCurrentDocument();
+							if (currentDocument) {
+								var docObj = parsedData.getDocument(currentDocument),
+									docFront = docObj ? docObj.front : undefined;
+
+								var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+								scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+								scope.$parent.vm.toggleTopBox();
+							}
+							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							parentBox.updateTopBoxContent(newTopBoxContent);
+							parentBox.updateState('topBoxContent', 'front');
+							if (!parentBox.getState('topBoxOpened')) {
+								parentBox.toggleTopBox();
+							}
+						}
+					};
+					fakeCallback = function() {
+						var parentBox = scope.$parent.vm;
+						parentBox.updateState('topBoxOpened', false);
 					};
 					break;
 				case 'heatmap':
@@ -399,6 +436,7 @@ angular.module('evtviewer.buttonSwitch')
 				title: title,
 				label: label,
 				icon: icon,
+				iconPos: iconPos,
 				type: type,
 				value: value,
 				active: active,

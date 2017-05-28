@@ -321,6 +321,9 @@ angular.module('evtviewer.dataHandler')
 			defContentEdition = 'div';
 		}
 
+		var frontDef = '<front>',
+			biblDef = '<biblStruct>';
+
 		parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0);
 
 		angular.forEach(currentDocument.find(defDocElement),
@@ -330,8 +333,32 @@ angular.module('evtviewer.dataHandler')
 					label: element.getAttribute('n') || 'Doc ' + (parsedData.getDocuments()._indexes.length + 1),
 					title: element.getAttribute('n') || 'Document ' + (parsedData.getDocuments()._indexes.length + 1),
 					content: element,
+					front: undefined,
 					pages: [] // Pages will be added later
 				};
+				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
+				if (docFront && docFront[0]) {
+					var frontElem = docFront[0].cloneNode(true),
+						biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
+					if (biblRefs) {
+						for (var i = biblRefs.length-1; i >= 0 ; i--) {
+							var evtBiblElem = document.createElement('evt-bibl-elem'),
+								biblElem = biblRefs[i],
+								biblId = biblElem.getAttribute("xml:id") || parser.xpath(biblElem).substr(1);
+
+							evtBiblElem.setAttribute('data-bibl-id', biblId);
+							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
+						}
+					}
+					var parsedContent = parser.parseXMLElement(element, frontElem, biblDef+'<evt-bibl-elem>'),
+					 	frontAttributes = parser.parseElementAttributes(frontElem);
+					newDoc.front = {
+						attributes: frontAttributes,
+						parsedContent: parsedContent ? parsedContent.outerHTML.trim() : '',
+						originalContent: frontElem.outerHTML
+					}
+				}
+
 				for (var i = 0; i < element.attributes.length; i++) {
 					var attrib = element.attributes[i];
 					if (attrib.specified) {

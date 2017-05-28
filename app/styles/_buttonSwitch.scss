@@ -23,9 +23,15 @@ button-switch {
 
         font-size: 1em;
         text-align: left;
+
         &.only-icon {
             text-align: center;
         }
+        &.only-text {
+            padding-right: 10px;
+            text-align: center;
+        }
+
         background: $buttonSwitch-background-color;
         color: $buttonSwitch-color;
 
@@ -63,6 +69,17 @@ button-switch {
             right: 0px;
             top: 9px;
             font-size: 1.4em
+
+        }
+        &.iconLeft {
+            .buttonSwitch-icon {
+                top: 8px;
+            }
+
+            .buttonSwitch-label {
+                margin-left: 0;
+                margin-right: 4px;
+            }
         }
     }
 

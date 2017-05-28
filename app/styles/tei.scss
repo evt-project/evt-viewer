@@ -58,6 +58,30 @@
         font-size: 90%;
     }
 }
+.front {
+    .titlepage {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 110%;
+            display: block;
+    }
+    [data-subtype="intro"] {
+        &::before {
+            content: "Intro";
+            font-weight: bold;
+            display: block;
+        }
+    }
+
+    [data-subtype="references"] {
+        &::before {
+            content: "References";
+            font-weight: bold;
+            display: block;
+        }
+    }
+}
 .head {
     display: block;
     font-weight: bold;

@@ -177,7 +177,6 @@ angular.module('evtviewer.dataHandler')
 	};
 	/* EDITION */
 	parsedData.setCriticalEditionAvailability = function(isAvailable) {
-		console.log('setCriticalEditionAvailability', isAvailable);
 		criticalEdition = isAvailable;
 	};
 
@@ -196,6 +195,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getEditions = function() {
 		return editionLevels;
 	};
+	
 	parsedData.getEdition = function(editionId) {
 		//TODO: Rifare
 		var i = 0,

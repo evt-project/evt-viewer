@@ -226,9 +226,14 @@ angular.module('evtviewer.box')
                     } else {
                         topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
                     }
+
+                    
                     if (config.editionLevelSelector && config.availableEditionLevel.length > 0) {
                         topMenuList.selectors.push({ id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     }
+
+                    topMenuList.buttons.push({title: 'Information about this text', label: 'Info', icon: 'info-alt', type: 'front'});
+                    
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {
                         topMenuList.buttons.push({title: 'Color key', label: '', icon: 'color-legend', type: 'colorLegend'});

@@ -6,7 +6,7 @@ angular.module('evtviewer.reference')
 	var _console = $log.getInstance('reference');
 
 	vm.handleRefClick = function(oEvent) {
-		if (vm.type === 'biblRef') {
+		if (vm.type === 'biblRef' || vm.target.substr(0, 1) === '#') {
 			/*/
 			Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
 				passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)

@@ -5,6 +5,10 @@ $reading-background-default: rgb(208, 220, 255);
 $reading-background-hover: rgb(101, 138, 255);
 $reading-background-selected: rgb(208, 220, 255);
 
+evt-reading + evt-reading {
+    margin-left: 2px;
+}
+
 .filterNotActive {
     .autoLemma {
         .reading:not(.blurred) {
