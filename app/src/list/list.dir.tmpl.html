@@ -8,10 +8,14 @@
             </span>
         </div>
         <div class="evt-list__content">
-            <div ng-repeat="element in vm.getVisibleElements() | orderBy "><!-- TODO: Create separate directive -->
+            <evt-named-entity 
+                data-entity-id="{{::element}}" data-entity-list-id="{{vm.listId}}"
+                data-entity-type="{{::vm.listType}}" data-entity-list-pos="{{vm.selectedLetter}}"
+                ng-repeat="element in vm.getVisibleElements() | orderBy ">
+                <!-- TODO: Create separate directive
                 <span style="font-variant: small-caps; font-weight: bold;">#{{ ::element }}: </span>
-                <span compile="::vm.getElementContent(element)"> </span>
-            </div>
+                <span compile="::vm.getElementContent(element)"> </span> -->
+            </evt-named-entity>
         </div>
     </div>
     <div ng-if="::vm.elements.length <= 0">

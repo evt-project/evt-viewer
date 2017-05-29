@@ -87,6 +87,12 @@
         class="secondary-container"
         ng-show="getSecondaryContentOpened() !== ''"
         ng-if="!isLoading()">
+        <evt-dialog data-type="entitiesList" data-title="Named Entities">
+            <evt-tabs-container
+                data-type="entitiesList"
+                data-orientation="vertical">
+            </evt-tabs-container>
+        </evt-dialog>
         <evt-dialog data-type="globalInfo" data-title="Project Info">
             <evt-tabs-container
                 data-type="projectInfo"
@@ -95,12 +101,6 @@
         </evt-dialog>
         <evt-dialog data-type="witnessesList" data-title="Witnesses">
             <div compile="getWitnessesListFormatted()"></div>
-        </evt-dialog>
-        <evt-dialog data-type="entitiesList" data-title="Witnesses">
-            <evt-tabs-container
-                data-type="entitiesList"
-                data-orientation="vertical">
-            </evt-tabs-container>
         </evt-dialog>
         <evt-dialog data-type="bookmark" data-title="Bookmark">
             <div compile="getBookmark()"></div>
@@ -349,6 +349,10 @@
     <script src="/src/list/list.js"></script>
     <script src="/src/list/list.provider.js"></script>
     <script src="/src/list/list.directive.js"></script>
+
+    <script src="/src/namedEntity/namedEntity.js"></script>
+    <script src="/src/namedEntity/namedEntity.provider.js"></script>
+    <script src="/src/namedEntity/namedEntity.directive.js"></script>
 
     <script src="/src/mobile/mobile.js"></script>
     <script src="/src/mobile/mobile.dir.js"></script>

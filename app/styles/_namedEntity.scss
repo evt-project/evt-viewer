@@ -1,0 +1,69 @@
+/* *************************** */
+/* NAMED ENTITY                */
+/* *************************** */
+
+.namedEntity {
+	display: block;
+	background: inherit;
+	padding: 5px;
+    border-bottom: 1px solid rgba($base-color-middle, .3);
+
+    &__header {
+    	display: block;
+    	
+    	&:hover {
+    		cursor: pointer;
+    		text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+    	}
+    }
+
+	&__details {
+		display: block;
+		padding-left: 16px;
+		font-size: 90%;
+	}
+
+	&__occurrences, &__moreInfo {
+		display: none;
+
+		&.opened {
+			display: block;
+			> span {
+				display: block;
+			}
+		}
+
+		padding-left: 16px;
+
+		&-toggler {
+			display: block;
+			font-variant: small-caps;
+    		padding-top: 5px;
+			cursor: pointer;
+
+			&:hover {
+				text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+			}
+		}
+	}
+
+	&__occurrences {
+
+		&-occurrence {
+			cursor: pointer;
+			border-radius: 4px;
+			padding: 3px 6px;
+			display: inline-block;
+			border: 1px solid rgba($base-color-middle, .3);
+			margin-right: 3px;
+			font-size: 85%;
+			margin-bottom: 3px;
+			display: inline-block !important;
+
+			&:hover {
+				text-shadow: 0px 0px 1px #000;
+				background: rgba($base-color-middle, .2);
+			}
+		}
+	}
+}

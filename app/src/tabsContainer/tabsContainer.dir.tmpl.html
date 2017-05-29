@@ -8,6 +8,7 @@
             ng-repeat="tab in ::tabs._indexes"
             ng-click="toggleSubContent(tab)"
             ng-class="{'active' : subContentOpened == tab }">
+            <i ng-if="::tabs[tab].icon" class="fa {{::tabs[tab].icon}} evt-tabs-container_header-icon"></i>
             {{ ::tabs[tab].label }}
         </span>
     </div>

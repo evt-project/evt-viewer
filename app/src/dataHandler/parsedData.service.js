@@ -78,46 +78,54 @@ angular.module('evtviewer.dataHandler')
 		_indexes: []
 	};
 
-	parsedData.addNamedEntitiesCollection = function(collectionName) {
-		if (namedEntities[collectionName] === undefined) {
-			namedEntities[collectionName] = {
+	parsedData.addNamedEntitiesCollection = function(collection) {
+		var collectionId = collection.id;
+		if (namedEntities[collectionId] === undefined) {
+			namedEntities[collectionId] = {
 				_indexes: [],
-				_listKeys: []
+				_listKeys: [],
+				_title : collection && collection.title ? collection.title : '',
+				_type : collection && collection.type ? collection.type : 'generic'
 			};
-			namedEntities._indexes.push(collectionName);
+			namedEntities._indexes.push(collectionId);
 		}
 	};
 
-	parsedData.addNamedEntityInCollection = function(collectionName, namedEntity, listKey) {
-		if (namedEntities[collectionName] === undefined) {
-			this.addNamedEntitiesCollection(collectionName);
+	parsedData.addNamedEntityInCollection = function(collection, namedEntity, listKey) {
+		var collectionId = collection.id;
+		if (namedEntities[collectionId] === undefined) {
+			this.addNamedEntitiesCollection(collection);
 		}
-		if (namedEntities[collectionName][listKey] === undefined) {
-			namedEntities[collectionName][listKey] = {
+		if (namedEntities[collectionId][listKey] === undefined) {
+			namedEntities[collectionId][listKey] = {
 				_indexes: []
 			};
-			namedEntities[collectionName]._listKeys.push(listKey);
+			namedEntities[collectionId]._listKeys.push(listKey);
 		}
 		var entityId = namedEntity.id;
-		namedEntities[collectionName][listKey][entityId] = namedEntity;
-		namedEntities[collectionName]._indexes.push(entityId);
-		namedEntities[collectionName][listKey]._indexes.push(entityId);
+		namedEntities[collectionId][listKey][entityId] = namedEntity;
+		namedEntities[collectionId]._indexes.push(entityId);
+		namedEntities[collectionId][listKey]._indexes.push(entityId);
 	};
 
 	parsedData.getNamedEntitiesCollection = function() {
 		return namedEntities;
 	};
 
-	parsedData.getNamedEntitiesCollectionByName = function(listName) {
-		return namedEntities[listName];
+	parsedData.getNamedEntitiesCollectionByName = function(collectionId) {
+		return namedEntities[collectionId];
 	};
 
-	parsedData.getNamedEntitiesCollectionByNameAndPos = function(listName, listKey) {
-		return namedEntities[listName][listKey];
+	parsedData.getNamedEntitiesCollectionByNameAndPos = function(collectionId, listKey) {
+		return namedEntities[collectionId][listKey];
 	};
 
-	parsedData.getNamedEntityInCollection = function(collectionName, namedEntity, listKey) {
-		return namedEntities[collectionName][listKey][namedEntity];
+	parsedData.getNamedEntityInCollection = function(collectionId, namedEntityId, listKey) {
+		if (collectionId && listKey && namedEntityId && namedEntities[collectionId] && namedEntities[collectionId][listKey]) {
+			return namedEntities[collectionId][listKey][namedEntityId];
+		} else {
+			return '';
+		}
 	};
 
 	/* PAGES */

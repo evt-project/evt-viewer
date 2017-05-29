@@ -43,6 +43,10 @@
     margin:15px 0;
     background: inherit;
 }
+.emph {
+    font-style: italic;
+    font-weight: bolder;
+}
 .encodingError {
     font-variant: small-caps;
     background: url('../images/encodingError.png') repeat-x;

@@ -36,5 +36,17 @@
         overflow: auto;
         position: absolute;
         padding: 10px;
+
+        > *:nth-child(odd) {
+		    background: rgba($base-color-middle, .1);
+		}
+
+		> *:nth-child(even) {
+		    background: #fff;
+		}
+
+		> *:hover {
+		    background: rgba($base-color-middle, .2);
+		}
     }
 }

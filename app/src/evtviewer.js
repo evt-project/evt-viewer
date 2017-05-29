@@ -29,6 +29,7 @@ angular
 		'evtviewer.buttonSwitch',
 		'evtviewer.popover',
 		'evtviewer.mobile',
+		'evtviewer.namedEntity',
 		'evtviewer.criticalApparatusEntry',
 		'evtviewer.reading',
 		'evtviewer.dialog',

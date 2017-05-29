@@ -4,16 +4,18 @@ angular.module('evtviewer.list')
     return {
         restrict: 'E',
         scope: {
-            name : '@'
+            listId : '@',
+            listType: '@'
         },
         transclude: true,
         templateUrl: 'src/list/list.dir.tmpl.html',
         link: function(scope, element, attrs){
             // Initialize list
             scope.vm = {
-                name: scope.name
+                listId: scope.listId,
+                listType: scope.listType
             };
-            var currentList = evtList.build(scope.name, scope);
+            var currentList = evtList.build(scope.listId, scope);
             
             // Garbage collection
             scope.$on('$destroy', function() {

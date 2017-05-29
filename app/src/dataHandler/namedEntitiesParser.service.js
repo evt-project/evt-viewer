@@ -17,20 +17,27 @@ angular.module('evtviewer.dataHandler')
 	var listManagerMainIstance;
 	//funzioni generali
 	var extractNote = function(whereToFind, whereToPutInfoArray) {
-		whereToFind = angular.element(whereToFind);
-		angular.forEach(whereToFind.find('note'), function(el) {
+		//whereToFind = angular.element(whereToFind);
+		var c = 1;
+		//angular.forEach(whereToFind.find('note'), function(el) {
 			//salviamo le note dentro imprint che è dentro monogr
-			var type = el.getAttribute('type');
-			if (type === null) {
+			var type = whereToFind.getAttribute('type');
+			if (type === null || type === undefined) {
 				//se il tag note non ha specificato l'attributo type allora la chiave è note + <numero-nota>
-				var c = 1;
 				type = 'note-' + c;
-				while (type in whereToPutInfoArray.note) {
+				while (type in whereToPutInfoArray.notes) {
 					type = 'note' + (++c);
 				}
 			}
-			whereToPutInfoArray.note[type] = el.textContent;
-		});
+			var noteElement = document.createElement('span');
+			noteElement.className = 'namedEntityNote';
+			noteElement.innerHTML = whereToFind.innerHTML;
+			var parsedNote = evtParser.parseXMLElement(noteElement, noteElement, '');
+			whereToPutInfoArray.notes.push({
+				type: type,
+				content:  parsedNote ? parsedNote.innerHTML : ''
+			});
+		//});
 	};
 	/*/HELPER   /*/
 	//questo oggetto ritorna o dei dati estratti oppure espone dei metodi accessori per 
@@ -46,7 +53,7 @@ angular.module('evtviewer.dataHandler')
 				'region': [],
 				'placeName': [],
 				'district': [],
-				'note': {},
+				'notes': [],
 				'settlement': [],
 				'geogName': [],
 				'ref': [],
@@ -249,7 +256,7 @@ angular.module('evtviewer.dataHandler')
 				'orgName': [],
 				'desc': [],
 				'ref': [],
-				'note': {},
+				'notes': [],
 				'plainText': '',
 				'output': ''
 			};
@@ -277,8 +284,9 @@ angular.module('evtviewer.dataHandler')
 					if (attributes) {
 						currentDescEl.attributes = attributes;
 					}
-					currentDescEl.textContent = el.textContent;
-					listOrg.orgName.push(currentDescEl);
+					var parsedDesc = evtParser.parseXMLElement(el, el, '');
+					currentDescEl.content = parsedDesc ? parsedDesc.innerHTML : ''; 
+					listOrg.desc.push(currentDescEl);
 				});
 
 				angular.forEach(currentElement.find('ref'), function(el) {
@@ -359,7 +367,7 @@ angular.module('evtviewer.dataHandler')
 
 	var parsePersonInfo = function(whereToPutInfoArray, elemento, lastRelevantParent, attributes) {
 		if (elemento.nodeType === 3) {
-			var text = (elemento.textContent.substr(0, 1).toUpperCase() + elemento.textContent.substr(1)).trim();
+			var text = elemento.textContent.trim();
 			if (lastRelevantParent) {
 				switch (lastRelevantParent.tagName) {
 					case 'name':
@@ -411,7 +419,7 @@ angular.module('evtviewer.dataHandler')
 		var attributes = {};
 		var attrs = element.attributes ? element.attributes : 0;
 		for (var c = 0; c < attrs.length; c++) {
-			attributes[attrs[c].nodeName] = attrs[c].nodeValue;
+			attributes[attrs[c].nodeName] = attrs[c].nodeValue.replace(/_+/g, ' ').replace(/-+/g, '/');
 		}
 		if (Object.keys(attributes).length > 0) {
 			return attributes;
@@ -428,7 +436,7 @@ angular.module('evtviewer.dataHandler')
 				'forename': {},
 				'sex': '',
 				'occupation': [],
-				'note': {},
+				'notes': [],
 				'ref': [],
 				'plainText': '',
 				'output': ''
@@ -639,10 +647,73 @@ angular.module('evtviewer.dataHandler')
 		return new parser.listManager();
 	};
 
+	//TEMP
+	var parseCollectionData = function(el, collection) {
+		if (el.previousElementSibling && el.previousElementSibling.tagName === 'head') {
+			collection.id = el.previousElementSibling.textContent.trim().replace(/\s/g, '');
+			collection.title = el.previousElementSibling.textContent.trim();
+		} else {
+			var parentNode = el.parentNode,
+				listId;
+			if (parentNode && parentNode.getAttribute('xml:id')) {
+				listId = parentNode.getAttribute('xml:id').trim().replace(/\s/g, '');
+				collection.id = listId;
+				collection.title = listId;
+			}
+			if (parentNode && parentNode.getAttribute('type')) {
+				listTitle = parentNode.getAttribute('type').trim();
+				if (!listId || listId === undefined) {
+					collection.id = listTitle;
+				}
+				listTitle = camelToSpace(listTitle);
+				collection.title = (listTitle.substr(0, 1).toUpperCase() + listTitle.substr(1));
+			}
+		}
+	};
+	//TEMP 
+	var camelToSpace = function(str) {
+		return str.replace(/\W+/g, ' ')
+					.replace(/([a-z\d])([A-Z])/g, '$1 $2');
+	}
+	var getPageIdFromHTMLString = function(HTMLstring) {
+		var matchPbIdAttr = 'xml:id=".*"',
+			sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
+			pbHTMLString = HTMLstring.match(sRegExPbIdAttr);
+		sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
+		var idAttr = pbHTMLString[0].match(sRegExPbIdAttr),
+			pageId = idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') || '';
+		return pageId;
+	};
+
+	parser.parseEntitiesOccurrences = function(docObj, refId) {
+		var doc = docObj && docObj.content ? docObj.content : undefined,
+			docHTML = doc ? doc.outerHTML : undefined,
+			pages = [];
+		if (docHTML && refId && refId !== '') {
+			var match = '<pb(.|[\r\n])*?(?!<pb)(?=#' + refId + ')',
+				sRegExInput = new RegExp(match, 'ig'),
+				matches = docHTML.match(sRegExInput),
+				totMatches = matches ? matches.length : 0;
+			for (var i = 0; i < totMatches; i++) {
+				var pageId = getPageIdFromHTMLString(matches[i]);
+				if (pageId) {
+					var pageObj = parsedData.getPage(pageId);
+					pages.push({ 
+						pageId: pageId, 
+						pageLabel: pageObj ? pageObj.label : pageId,
+						docId: docObj ? docObj.value : '',
+						docLabel: docObj ? docObj.label : '' 
+					});
+				}
+			}
+		}
+		return pages;
+	};
+
 	//istanziamo il listManager principale
 	listManagerMainIstance = new parser.listManager();
 
-	parser.parseEntities = function(document, listManager) {
+	parser.parseEntities = function(doc, listManager) {
 		/*/parseEntities lavora sull'istanza principale di listManager di default, quella che può essere comune a tutti.
 		Oppure si può passare noi l'istanza su cui operare
 		/*/
@@ -651,30 +722,69 @@ angular.module('evtviewer.dataHandler')
 		var listPlaceHelper = new parser.listPlaceHelper();
 		var listOrgHelper = new parser.listOrgHelper();
 		var listPersonHelper = new parser.listPersonHelper();
-		var element = angular.element(document);
+		var element = angular.element(doc);
 
 		//List place
-		var data = $(element).find('listPlace > place');
+		var collection = {
+			id : 'place',
+			type : 'place',
+			title : 'List of places'
+		};
+		var data = $(element).find('sourceDesc > listPlace > place');
 		angular.forEach(data, function(el) {
+			parseCollectionData(el, collection);
 			var res = listPlaceHelper.parseInfo(el);
-			parsedData.addNamedEntityInCollection('place', res, res.id.substr(0, 1).toLowerCase());
+			//parseOccurrences(doc, el, res.id);
+			parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
 		});
 
 		//List org
-		data = $(element).find('listOrg > org');
+		collection = {
+			id : 'org',
+			type : 'org',
+			title : 'List of organizations'
+		};
+		data = $(element).find('sourceDesc > listOrg > org');
 		angular.forEach(data, function(el) {
+			parseCollectionData(el, collection);
 			var res = listOrgHelper.parseInfo(el);
-			parsedData.addNamedEntityInCollection('org', res, res.id.substr(0, 1).toLowerCase());
+			// parseOccurrences(doc, el, res.id);
+			parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
 		});
 
 		//List name
-		data = $(element).find('listPerson > person');
+		collection = {
+			id : 'person',
+			type : 'person',
+			title : 'List of persons'
+		};
+		data = $(element).find('sourceDesc > listPerson > person');
 		angular.forEach(data, function(el) {
+			parseCollectionData(el, collection);
 		 	var res = listPersonHelper.parseInfo(el);
-		 	parsedData.addNamedEntityInCollection('person', res, res.id.substr(0, 1).toLowerCase());
+			// parseOccurrences(doc, el, res.id);
+		 	parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
 		});
 
-		console.log('## parseEntities ##', listManager.getAllLists());
+		collection = {
+			id : 'list',
+			type : 'generic',
+			title : 'Lista generica'
+		};
+		data = $(element).find('sourceDesc > list > item');
+		angular.forEach(data, function(el) {
+			parseCollectionData(el, collection);
+		 	var itemId = el.getAttribute("xml:id") || evtParser.xpath(element),
+		 		parsedItem = evtParser.parseXMLElement(el, el, '');
+		 	var res = {
+		 		id: itemId,
+		 		label: el.getAttribute('n') || camelToSpace(itemId.replace(/_/g, ' ')),
+		 		details: parsedItem ? parsedItem.innerHTML : undefined 
+		 	};
+			// parseOccurrences(doc, el, res.id);
+		 	parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
+		});
+
 		//console.log('## parseEntities ##', listManager.getAllLists());
 		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
 	};

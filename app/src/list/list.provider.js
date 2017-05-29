@@ -19,11 +19,6 @@ angular.module('evtviewer.list')
         // 
         // List builder
         // 
-        var getElementContent = function(element) {
-            var vm = this;
-            var parsedElement = parsedData.agetNamedEntityInCollection(vm.name, element.id, element.listKey);
-        };
-
         var selectLetter = function(letter) {
             var vm = this;
             vm.selectedLetter = letter;
@@ -32,21 +27,16 @@ angular.module('evtviewer.list')
         var getVisibleElements = function() {
             var vm = this;
             if (vm.selectedLetter) {
-                var visibleElements = parsedData.getNamedEntitiesCollectionByNameAndPos(vm.name, vm.selectedLetter);
+                var visibleElements = parsedData.getNamedEntitiesCollectionByNameAndPos(vm.listId, vm.selectedLetter);
                 visibleElements = visibleElements ? visibleElements._indexes : [];
                 return visibleElements;
             }
             return [];
         };
 
-        var getElementContent = function(element) {
-            var vm = this;
-            var namedEntity = parsedData.getNamedEntityInCollection(vm.name, element, vm.selectedLetter);
-            return namedEntity.output;
-        };
-
         list.build = function(id, scope) {
-            var currentId = id; //ID is listName
+            var currentId = id, //ID is listName
+                listType = scope.listType || 'generic';
 
             var scopeHelper = {};
             
@@ -59,16 +49,15 @@ angular.module('evtviewer.list')
             scopeHelper = {
                 // expansion
                 uid      : currentId,
+                listType : listType,
                 listKeys : parsedElements ? parsedElements._listKeys : [],
                 elements : parsedElements ? parsedElements._indexes  : [],
 
                 selectedLetter: selectedLetter,
 
                 //functions
-                getElementContent  : getElementContent,
                 selectLetter       : selectLetter,
-                getVisibleElements : getVisibleElements,
-                getElementContent  : getElementContent
+                getVisibleElements : getVisibleElements
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

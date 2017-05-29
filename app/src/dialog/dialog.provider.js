@@ -122,6 +122,14 @@ angular.module('evtviewer.dialog')
 			}
 		};
 
+		dialog.closeByType = function(type) {
+			for (var i in collection) {
+				if (collection[i].type === type) {
+					collection[i].close();
+				}
+			}
+		};
+
 		dialog.closeAll = function() {
 			for (var i in collection) {
 				if (collection[i].close() !== undefined) {

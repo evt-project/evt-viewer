@@ -98,11 +98,29 @@ angular.module('evtviewer.tabsContainer')
         var entitiesCollection = parsedData.getNamedEntitiesCollection();
         $scope.tabs._indexes = entitiesCollection._indexes;
         for (var i = 0; i < entitiesCollection._indexes.length; i++) {
-            var listName = entitiesCollection._indexes[i];
-            $scope.tabs[listName] = {
-                label   : listName,
-                name    : listName,
-                content : '<evt-list data-name="'+listName+'"></evt-list>',
+            var listIcon,
+                listId = entitiesCollection._indexes[i],
+                listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
+                listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title? entitiesCollection[listId]._title : listId;
+            switch(listType) {
+                case 'place':
+                    listIcon = 'fa-map-marker';
+                    break;
+                case 'person':
+                    listIcon = 'fa-user';
+                    break;
+                case 'org':
+                    listIcon = 'fa-users';
+                    break;
+                default:
+                    listIcon = 'fa-list-ul';
+                    break;
+            };
+            $scope.tabs[listId] = {
+                label   : listTitle,
+                icon    : listIcon,
+                name    : listId,
+                content : '<evt-list data-list-id="'+listId+'" data-list-type="'+listType+'"></evt-list>',
                 scrollDisabled: true
             };
         }
