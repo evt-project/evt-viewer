@@ -10,7 +10,7 @@
 
     &__header {
     	display: block;
-    	
+
     	&:hover {
     		cursor: pointer;
     		text-shadow: 0px 0px 1px rgba(0,0,0,.7);
@@ -64,6 +64,31 @@
 				text-shadow: 0px 0px 1px #000;
 				background: rgba($base-color-middle, .2);
 			}
+		}
+	}
+
+
+}
+
+.namedEntityRef {
+	&-person, &-pers {
+		&.active, &:hover {
+			background-color: #ffcdd2;
+			cursor:pointer;
+		}
+	}
+
+	&-place {
+		&.active, &:hover {
+			background-color: #c8e6c9;
+			cursor:pointer;
+		}
+	}
+
+	&-org {
+		&.active, &:hover {
+			background-color: #ffb74d;    
+			cursor:pointer;
 		}
 	}
 }

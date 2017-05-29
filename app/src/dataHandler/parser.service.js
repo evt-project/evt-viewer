@@ -5,7 +5,8 @@ angular.module('evtviewer.dataHandler')
 	var idx = 0;
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
-	var defPageElement = 'pb';
+	var defPageElement = 'pb',
+		possibleNamedEntitiesDef = '<placeName>, <persName>, <orgName>';
 
 	/* ********* */
 	/* UTILITIES */
@@ -70,6 +71,9 @@ angular.module('evtviewer.dataHandler')
 				// } else 
 				if (tagName === 'note' && skip !== 'evtNote') {
 					newElement = parser.parseNote(element);
+				} else if (possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
+					element.getAttribute("ref") !== undefined) { //TODO: Rivedere
+					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
 					newElement.className = tagName;
@@ -192,6 +196,34 @@ angular.module('evtviewer.dataHandler')
 		popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
 		popoverElem.innerHTML = '<i class="icon-evt_note"></i>';
 		return popoverElem;
+	};
+
+	/* ******************* */
+	/* parseEntity(docDOM) */
+	/* **************************************************************************** */
+	/* Function to parse an XML element representing a note (<note> in XMLT-TEI P5) */
+	/* and transform it into an evtPopover directive                                */
+	/* @docDOM -> XML to be parsed                                                  */
+	/* **************************************************************************** */
+	// It will look for every element representing a note
+	// and replace it with a new evt-popover element
+	parser.parseNamedEntity = function(doc, entityNode, skip) {
+		var entityElem = document.createElement('evt-named-entity-ref');
+		var entityId = entityNode.getAttribute('ref').replace('#', '');
+		if (entityId && entityId !== '') {
+			entityElem.setAttribute('data-entity-id', entityId);
+			entityElem.setAttribute('data-entity-list-pos', entityId.substr(0, 1).toLowerCase());
+		}
+		var listType = entityNode.tagName ? entityNode.tagName.replace('Name', '') : 'generic';
+		entityElem.setAttribute('data-entity-type', listType);
+
+		var entityContent = '';
+		for (var i = 0; i < entityNode.childNodes.length; i++) {
+			var childElement = entityNode.childNodes[i].cloneNode(true),
+				parsedXmlElem = parser.parseXMLElement(doc, childElement, skip);
+			entityElem.appendChild(parsedXmlElem);
+		}
+		return entityElem;
 	};
 
 	parser.parseLines = function(docDOM) {
