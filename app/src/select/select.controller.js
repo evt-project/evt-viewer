@@ -26,7 +26,6 @@ angular.module('evtviewer.select')
 
     vm.getOptionSelected = function() {
         var selectedOption;
-        console.log(vm.currentType, vm.optionSelected);
         if (vm.optionSelected && vm.optionSelected.length > 0)  {
             if (vm.optionSelected.length === 1) {
                 selectedOption = vm.optionSelected[0];

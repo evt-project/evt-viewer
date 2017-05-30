@@ -5,9 +5,7 @@ angular.module('evtviewer.namedEntity')
         restrict: 'E',
         scope: {
             entityId   : '@',
-            entityListId : '@',
-            entityType : '@',
-            entityListPos : '@'
+            entityType : '@'
         },
         transclude: true,
         templateUrl: 'src/namedEntity/namedEntity.directive.tmpl.html',
@@ -15,9 +13,7 @@ angular.module('evtviewer.namedEntity')
             // Initialize namedEntity
             scope.vm = {
                 entityId: scope.entityId,
-                entityListId: scope.entityListId,
-                entityType: scope.entityType,
-                entityListPos: scope.entityListPos
+                entityType: scope.entityType
             };
             var currentNamedEntity = evtNamedEntity.build(scope.entityId, scope);
             

@@ -74,25 +74,60 @@ $personColor : #ffcdd2;
 $placeColor  : #c8e6c9;
 $orgColor    : #ffb74d; 
 .namedEntityRef {
+	color: $base-color-middle;
+    cursor: pointer;
+
 	&-person, &-pers, &-persName {
-		&:hover {
+		&.active, &:hover {
 			background-color: $personColor;
-			cursor:pointer;
 		}
 	}
 
 	&-place, &-placeName {
-		&:hover {
+		&.active, &:hover {
 			background-color: $placeColor;
-			cursor:pointer;
 		}
 	}
 
 	&-org, &-orgName {
-		&:hover {
+		&.active, &:hover {
 			background-color: $orgColor;    
-			cursor:pointer;
 		}
+	}
+
+	&__details {
+		font-size: 90%;
+		position: absolute;
+		line-height: 100%;
+		display: block;
+		background: rgba($base-color-light, .9);
+		border: 1.5px solid $base-color-dark;
+		border-radius: 3px;
+		@include set(box-shadow, 2px 2px 2px rgbs($base-color-dark, .6));
+		padding: 5px;
+		z-index: 99;
+		text-align: left;
+		cursor: text !important;
+		min-width: 30px;
+		margin-top: 10px;
+
+		&-before {
+            &:before {
+	            @include tooltipBeforeAfter();
+	            top: -10px;
+	            content:"\f0d8";
+	            text-shadow: 0px -3px 0px #000;
+	            height:0px;
+            }
+            position: absolute;
+            top: 0;
+        }
+		&.open-up {
+			.namedEntityRef__details-before::before {
+	            content:"\f0d7";
+	            text-shadow: 0px 3px 0px #000;
+	        }
+    	}
 	}
 }
 

@@ -16,7 +16,7 @@ angular.module('evtviewer.namedEntity')
         
         var getElementContent = function() {
             var vm = this;
-            var namedEntity = parsedData.getNamedEntityInCollection(vm.entityType, vm.entityId, vm.entityListPos);
+            var namedEntity = parsedData.getNamedEntity(vm.entityId);
             return namedEntity.output;
         };
 
@@ -50,9 +50,7 @@ angular.module('evtviewer.namedEntity')
         namedEntity.build = function(id, scope) {
             var currentId  = idx++,
                 entityId   = id || undefined,
-                entityListId = scope.entityListId || 'generic',
                 entityType = scope.entityType || 'generic',
-                entityListPos = scope.entityListPos || '',
                 attributes = '';
 
             var scopeHelper = {};
@@ -61,7 +59,7 @@ angular.module('evtviewer.namedEntity')
                 return;
             }
 
-            var namedEntity = parsedData.getNamedEntityInCollection(entityListId, entityId, entityListPos);
+            var namedEntity = parsedData.getNamedEntity(entityId);
             var moreInfoAvailable = true;
 
             // Handle More info about entity
@@ -87,9 +85,7 @@ angular.module('evtviewer.namedEntity')
                 // expansion
                 uid           : currentId,
                 entityId      : entityId,
-                entityListId  : entityListId,
                 entityType    : entityType,
-                entityListPos : entityListPos,
                 
                 entity        : namedEntity ? namedEntity : {},
                 occurrences   : occurrences,

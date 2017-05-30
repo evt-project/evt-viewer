@@ -75,57 +75,70 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	var namedEntities = {
+		_collections: {
+			_indexes: []	
+		},
 		_indexes: []
 	};
 
 	parsedData.addNamedEntitiesCollection = function(collection) {
 		var collectionId = collection.id;
-		if (namedEntities[collectionId] === undefined) {
-			namedEntities[collectionId] = {
+		if (namedEntities._collections[collectionId] === undefined) {
+			namedEntities._collections[collectionId] = {
 				_indexes: [],
 				_listKeys: [],
 				_title : collection && collection.title ? collection.title : '',
 				_type : collection && collection.type ? collection.type : 'generic'
 			};
-			namedEntities._indexes.push(collectionId);
+			namedEntities._collections._indexes.push(collectionId);
 		}
 	};
 
 	parsedData.addNamedEntityInCollection = function(collection, namedEntity, listKey) {
 		var collectionId = collection.id;
-		if (namedEntities[collectionId] === undefined) {
+		if (namedEntities._collections[collectionId] === undefined) {
 			this.addNamedEntitiesCollection(collection);
 		}
-		if (namedEntities[collectionId][listKey] === undefined) {
-			namedEntities[collectionId][listKey] = {
+		if (namedEntities._collections[collectionId][listKey] === undefined) {
+			namedEntities._collections[collectionId][listKey] = {
 				_indexes: []
 			};
-			namedEntities[collectionId]._listKeys.push(listKey);
+			namedEntities._collections[collectionId]._listKeys.push(listKey);
 		}
 		var entityId = namedEntity.id;
-		namedEntities[collectionId][listKey][entityId] = namedEntity;
-		namedEntities[collectionId]._indexes.push(entityId);
-		namedEntities[collectionId][listKey]._indexes.push(entityId);
+		namedEntities._collections[collectionId][listKey][entityId] = namedEntity;
+		namedEntities[entityId] = {
+			collectionId : collectionId,
+			listKey: listKey
+		};
+		namedEntities._indexes.push(entityId);
+		namedEntities._collections[collectionId]._indexes.push(entityId);
+		namedEntities._collections[collectionId][listKey]._indexes.push(entityId);
 	};
 
 	parsedData.getNamedEntitiesCollection = function() {
-		return namedEntities;
+		return namedEntities._collections;
 	};
 
 	parsedData.getNamedEntitiesCollectionByName = function(collectionId) {
-		return namedEntities[collectionId];
+		return namedEntities._collections[collectionId];
 	};
 
 	parsedData.getNamedEntitiesCollectionByNameAndPos = function(collectionId, listKey) {
-		return namedEntities[collectionId][listKey];
+		return namedEntities._collections[collectionId][listKey];
 	};
 
-	parsedData.getNamedEntityInCollection = function(collectionId, namedEntityId, listKey) {
-		if (collectionId && listKey && namedEntityId && namedEntities[collectionId] && namedEntities[collectionId][listKey]) {
-			return namedEntities[collectionId][listKey][namedEntityId];
-		} else {
-			return '';
+	parsedData.getNamedEntity = function(namedEntityId) {
+		var namedEntity;
+		if (namedEntityId) {
+			var namedEntityRefs = namedEntities[namedEntityId];
+			if (namedEntityRefs.collectionId && namedEntityRefs.listKey && 
+				namedEntities._collections[namedEntityRefs.collectionId] && 
+				namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey]) {
+				namedEntity = namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey][namedEntityId];
+			}
 		}
+		return namedEntity;
 	};
 
 	/* PAGES */

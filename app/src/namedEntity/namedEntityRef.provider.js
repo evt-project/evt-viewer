@@ -8,17 +8,27 @@ angular.module('evtviewer.namedEntity')
         defaults = _defaults;
     };
 
-    this.$get = function(parsedData, evtNamedEntitiesParser, baseData) {
+    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData) {
         var namedEntityRef    = {},
             collection = {},
             collectionByEntity = {},
             list       = [],
             idx        = 0,
+            activeEntityRef = undefined,
             activeEntityTypes = [];
         
-        var goToEntityInList = function() {
+        var goToEntityInList = function(e) {
             var vm = this;
-            console.log('# TODO # Go to entity '+vm.entityId+' at pos '+vm.entityListPos);
+            vm.active = !vm.active;
+
+            if (vm.active) {
+                namedEntityRef.setActiveEntity(vm.uid);
+            } else {
+                namedEntityRef.setActiveEntity(undefined);
+            }
+            $timeout(function(){
+                vm.updateDetailsPosition(e, vm);
+            }, 20);
         };
 
         // 
@@ -28,8 +38,7 @@ angular.module('evtviewer.namedEntity')
         namedEntityRef.build = function(id, scope) {
             var currentId  = idx++,
                 entityId   = id || undefined,
-                entityType = scope.entityType || 'generic',
-                entityListPos = scope.entityListPos || '',
+                entityType = scope.entityType || 'generic'
                 attributes = '';
 
             var scopeHelper = {};
@@ -37,14 +46,24 @@ angular.module('evtviewer.namedEntity')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-            //TODO: retrieve list id from parsed data
+            
+            switch (entityType) {
+                case 'persName':
+                    entityType = 'person';
+                    break;
+                case 'placeName': 
+                case 'orgName':
+                    entityType = entityType.replace('Name', '');
+                    break;
+                default:
+                    entityType = entityType;
+            }
 
             scopeHelper = {
                 // expansion
                 uid           : currentId,
                 entityId      : entityId,
                 entityType    : entityType,
-                entityListPos : entityListPos,
                 
                 highlight     : false,
 
@@ -90,6 +109,21 @@ angular.module('evtviewer.namedEntity')
         namedEntityRef.highlightByEntityId = function(entityId) {
             //TODO
             console.log('# TODO # ', collectionByEntity[entityId]);
+        };
+
+        namedEntityRef.getActiveEntity = function() {
+            return activeEntityRef;
+        };
+
+        namedEntityRef.setActiveEntity = function(entityRefId) {
+            namedEntityRef.deactivateEntity(activeEntityRef);
+            activeEntityRef = entityRefId;
+        };
+
+        namedEntityRef.deactivateEntity = function(entityRefId) {
+            if (entityRefId !== undefined && collection[entityRefId] !== undefined) {
+                collection[entityRefId].active = false;
+            }
         };
 
         namedEntityRef.getById = function(appId) {
