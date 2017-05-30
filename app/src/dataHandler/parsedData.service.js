@@ -132,9 +132,10 @@ angular.module('evtviewer.dataHandler')
 		var namedEntity;
 		if (namedEntityId) {
 			var namedEntityRefs = namedEntities[namedEntityId];
-			if (namedEntityRefs.collectionId && namedEntityRefs.listKey && 
-				namedEntities._collections[namedEntityRefs.collectionId] && 
-				namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey]) {
+			if (namedEntityRefs !== undefined && namedEntityRefs.collectionId !== undefined && 
+				namedEntityRefs.listKey !== undefined && 
+				namedEntities._collections[namedEntityRefs.collectionId] !== undefined && 
+				namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey] !== undefined) {
 				namedEntity = namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey][namedEntityId];
 			}
 		}

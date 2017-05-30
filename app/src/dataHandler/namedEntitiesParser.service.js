@@ -681,8 +681,8 @@ angular.module('evtviewer.dataHandler')
 			sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
 			pbHTMLString = HTMLstring.match(sRegExPbIdAttr);
 		sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
-		var idAttr = pbHTMLString[0].match(sRegExPbIdAttr),
-			pageId = idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') || '';
+		var idAttr = pbHTMLString ? pbHTMLString[0].match(sRegExPbIdAttr) : undefined,
+			pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
 		return pageId;
 	};
 

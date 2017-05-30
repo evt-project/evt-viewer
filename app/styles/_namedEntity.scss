@@ -15,13 +15,21 @@
     		cursor: pointer;
     		text-shadow: 0px 0px 1px rgba(0,0,0,.7);
     	}
+	    .opener:before {
+			content: "\f0da";
+		}
     }
 
 	&__details {
-		display: block;
+		display: none;
 		padding-left: 16px;
 		font-size: 90%;
+
+		.opener:before {
+			content: "\f0da";
+		}
 	}
+
 
 	&__occurrences, &__moreInfo {
 		display: none;
@@ -44,8 +52,10 @@
 			&:hover {
 				text-shadow: 0px 0px 1px rgba(0,0,0,.7);
 			}
+
 		}
 	}
+
 
 	&__occurrences {
 
@@ -67,7 +77,35 @@
 		}
 	}
 
+	&.opened {
+		.namedEntity__header .opener:before {
+			content: "\f0d7";
+		}
 
+		.namedEntity__details {
+			display: block;
+		}
+	}
+
+	&__details {
+		&.moreInfoOpened {
+			.namedEntity__moreInfo  {
+				display: block;
+				&-toggler .opener:before {
+					content: "\f0d7";
+				}
+			}
+		}
+
+		&.occurrencesOpened {
+			.namedEntity__occurrences {
+				display: block;
+				&-toggler .opener:before {
+					content: "\f0d7";
+				}
+			}
+		}
+	}
 }
 
 $personColor : #ffcdd2;
@@ -99,7 +137,7 @@ $orgColor    : #ffb74d;
 		font-size: 90%;
 		position: absolute;
 		line-height: 100%;
-		display: block;
+		display: none;
 		background: rgba($base-color-light, .9);
 		border: 1.5px solid $base-color-dark;
 		border-radius: 3px;
@@ -110,6 +148,10 @@ $orgColor    : #ffb74d;
 		cursor: text !important;
 		min-width: 30px;
 		margin-top: 10px;
+
+		&.active {
+			display: block;
+		}
 
 		&-before {
             &:before {

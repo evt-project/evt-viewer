@@ -17,6 +17,19 @@ angular.module('evtviewer.namedEntity')
             };
             var currentNamedEntity = evtNamedEntityRef.build(scope.entityId, scope);
             
+            var entityElement = element.find('.namedEntityRef'),
+                detailsElement = element.find('.namedEntityRef__details');
+            
+            scope.vm.toggleActive = function() {
+                if (scope.vm.active) {
+                    entityElement.addClass('active');
+                    detailsElement.addClass('active');
+                } else {
+                    entityElement.removeClass('active');
+                    detailsElement.removeClass('active');
+                }
+            };
+
             scope.vm.updateDetailsPosition = function(e, vm) {
                 if (vm.active) {
                     e.stopPropagation();
@@ -176,7 +189,7 @@ angular.module('evtviewer.namedEntity')
                         });
                     }
                 }
-            }
+            };
 
             // Garbage collection
             scope.$on('$destroy', function() {

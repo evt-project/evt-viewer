@@ -23,6 +23,7 @@ angular.module('evtviewer.namedEntity')
         var toggle = function() {
             var vm = this;
             vm.opened = !vm.opened;
+            vm.toggleState();
         };
 
         var toggleOccurrences = function() {
@@ -31,11 +32,13 @@ angular.module('evtviewer.namedEntity')
                 vm.occurrences = namedEntity.getOccurrences(vm.entityId);
             } 
             vm.occurrencesOpened = !vm.occurrencesOpened;
+            vm.toggleSection('occurrencesOpened');
         };
 
         var toggleMoreInfo = function() {
             var vm = this;
             vm.moreInfoOpened = !vm.moreInfoOpened;
+            vm.toggleSection('moreInfoOpened');
         };
 
         var goToOccurrence = function(occurrence) {
@@ -64,7 +67,7 @@ angular.module('evtviewer.namedEntity')
 
             // Handle More info about entity
             // generic
-            moreInfoAvailable = namedEntity.notes !== undefined && namedEntity.notes.length > 0;
+            moreInfoAvailable = namedEntity !== undefined && namedEntity.notes !== undefined && namedEntity.notes.length > 0;
             // specific
             if (entityType === 'org') {
                 moreInfoAvailable = moreInfoAvailable || namedEntity.desc !== undefined;

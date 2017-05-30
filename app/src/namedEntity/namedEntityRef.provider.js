@@ -14,19 +14,19 @@ angular.module('evtviewer.namedEntity')
             collectionByEntity = {},
             list       = [],
             idx        = 0,
-            activeEntityRef = undefined,
+            activeEntityRef,
             activeEntityTypes = [];
         
         var goToEntityInList = function(e) {
             var vm = this;
             vm.active = !vm.active;
-
             if (vm.active) {
                 namedEntityRef.setActiveEntity(vm.uid);
             } else {
                 namedEntityRef.setActiveEntity(undefined);
             }
             $timeout(function(){
+                vm.toggleActive();
                 vm.updateDetailsPosition(e, vm);
             }, 20);
         };
@@ -38,8 +38,7 @@ angular.module('evtviewer.namedEntity')
         namedEntityRef.build = function(id, scope) {
             var currentId  = idx++,
                 entityId   = id || undefined,
-                entityType = scope.entityType || 'generic'
-                attributes = '';
+                entityType = scope.entityType || 'generic';
 
             var scopeHelper = {};
             
@@ -123,6 +122,7 @@ angular.module('evtviewer.namedEntity')
         namedEntityRef.deactivateEntity = function(entityRefId) {
             if (entityRefId !== undefined && collection[entityRefId] !== undefined) {
                 collection[entityRefId].active = false;
+                collection[entityRefId].toggleActive();
             }
         };
 
