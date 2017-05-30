@@ -11,13 +11,16 @@ angular.module('evtviewer.namedEntity')
     this.$get = function(parsedData, evtNamedEntitiesParser, baseData) {
         var namedEntityRef    = {},
             collection = {},
+            collectionByEntity = {},
             list       = [],
-            idx        = 0;
+            idx        = 0,
+            activeEntityTypes = [];
         
         var goToEntityInList = function() {
             var vm = this;
-            console.log("# TODO # Go to entity "+vm.entityId+" at pos "+vm.entityListPos);
+            console.log('# TODO # Go to entity '+vm.entityId+' at pos '+vm.entityListPos);
         };
+
         // 
         // NamedEntityRef builder
         // 
@@ -43,7 +46,6 @@ angular.module('evtviewer.namedEntity')
                 entityType    : entityType,
                 entityListPos : entityListPos,
                 
-                active        : false,
                 highlight     : false,
 
                 defaults      : angular.copy(defaults),
@@ -58,6 +60,11 @@ angular.module('evtviewer.namedEntity')
                 entityId: entityId
             });
 
+            if (!collectionByEntity[entityId]) {
+                collectionByEntity[entityId] = [];
+            } 
+            collectionByEntity[entityId].push(currentId);
+            
             return collection[currentId];
         };
 
@@ -65,16 +72,24 @@ angular.module('evtviewer.namedEntity')
         //
         // Service function
         // 
-        namedEntityRef.highlightByEntityId = function(entityId) {
-            angular.forEach(collection, function(currentNamedEntityRef) {
-                foundNamedEntityRef.highlight = (currentNamedEntityRef.entityId === entityId);
-            });
+        namedEntityRef.getActiveEntityTypes = function() {
+            return activeEntityTypes;
         };
 
-        namedEntityRef.setActiveByType = function(entityType) {
-            angular.forEach(collection, function(currentNamedEntityRef) {
-                foundNamedEntityRef.active = (currentNamedEntityRef.entityType === entityType);
-            });
+        namedEntityRef.addActiveType = function(entityType) {
+            if (activeEntityTypes.indexOf(entityType) < 0) {
+                activeEntityTypes.push(entityType);
+            }
+        };
+
+        namedEntityRef.removeActiveType = function(entityType) {
+            var indexType = activeEntityTypes.indexOf(entityType);
+            activeEntityTypes.splice(indexType, 1);
+        };
+
+        namedEntityRef.highlightByEntityId = function(entityId) {
+            //TODO
+            console.log('# TODO # ', collectionByEntity[entityId]);
         };
 
         namedEntityRef.getById = function(appId) {

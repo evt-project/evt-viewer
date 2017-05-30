@@ -71,7 +71,7 @@ $selector-option-background-color-hover: $base-color-middle;
 		}
 	}
 
-	.option_container{
+	.option_container {
 		display: none;
 		height:auto;
 		max-height: 170px;
@@ -89,8 +89,16 @@ $selector-option-background-color-hover: $base-color-middle;
 		
 		@include set(box-shadow, 0 2px 5px $selector-shadow-color);
 
-		&.expanded{
+		&.expanded {
 			display: block;
+
+			&.openUp {
+				display: grid;
+				margin-top: -100%;
+				bottom: 0px;
+				position: absolute;
+				@include set(box-shadow, 0px 0px 5px $selector-shadow-color);
+			}
 		}
 		.option{
 			height:100%;

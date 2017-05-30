@@ -14,7 +14,9 @@
    </div>
    <div 
       class="option_container"
-      ng-class="{'expanded':vm.expanded}" >
+      style="{{ ::vm.marginTop }}"
+      ng-class="{ 'expanded':vm.expanded,
+                  'openUp': vm.openUp }" >
       <div 
          class="option" 
          title="{{::option.title}}" 

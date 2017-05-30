@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
 				if (tagName === 'note' && skip !== 'evtNote') {
 					newElement = parser.parseNote(element);
 				} else if (possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
-					element.getAttribute("ref") !== undefined) { //TODO: Rivedere
+					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
@@ -122,7 +122,7 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-        return attributes
+        return attributes;
 	};
 
 	/* ********************* */
@@ -215,7 +215,7 @@ angular.module('evtviewer.dataHandler')
 			entityElem.setAttribute('data-entity-id', entityId);
 			entityElem.setAttribute('data-entity-list-pos', entityId.substr(0, 1).toLowerCase());
 		}
-		var listType = entityNode.tagName ? entityNode.tagName.replace('Name', '') : 'generic';
+		var listType = entityNode.tagName ? entityNode.tagName : 'generic';
 		entityElem.setAttribute('data-entity-type', listType);
 
 		var entityContent = '';
@@ -377,7 +377,7 @@ angular.module('evtviewer.dataHandler')
 						for (var i = biblRefs.length-1; i >= 0 ; i--) {
 							var evtBiblElem = document.createElement('evt-bibl-elem'),
 								biblElem = biblRefs[i],
-								biblId = biblElem.getAttribute("xml:id") || parser.xpath(biblElem).substr(1);
+								biblId = biblElem.getAttribute('xml:id') || parser.xpath(biblElem).substr(1);
 
 							evtBiblElem.setAttribute('data-bibl-id', biblId);
 							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
@@ -389,11 +389,11 @@ angular.module('evtviewer.dataHandler')
 						attributes: frontAttributes,
 						parsedContent: parsedContent ? parsedContent.outerHTML.trim() : '',
 						originalContent: frontElem.outerHTML
-					}
+					};
 				}
 
-				for (var i = 0; i < element.attributes.length; i++) {
-					var attrib = element.attributes[i];
+				for (var j = 0; j < element.attributes.length; j++) {
+					var attrib = element.attributes[j];
 					if (attrib.specified) {
 						newDoc[attrib.name] = attrib.value;
 					}

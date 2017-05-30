@@ -12,7 +12,7 @@ angular.module('evtviewer.UItools')
         this.deactivateITL();
         evtInterface.setToolState('ITL', 'inactive');
         evtInterface.updateCurrentHighlightZone(undefined);
-    }
+    };
 
     ITLutils.activateITL = function() {
         this.prepareLines();

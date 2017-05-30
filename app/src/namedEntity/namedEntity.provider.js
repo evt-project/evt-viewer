@@ -40,7 +40,7 @@ angular.module('evtviewer.namedEntity')
 
         var goToOccurrence = function(occurrence) {
             //TODO
-            console.log("# TODO: # Go to occurrence ", occurrence);
+            console.log('# TODO: # Go to occurrence ', occurrence);
         };
 
         // 

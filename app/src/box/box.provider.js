@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef) {
         var box        = {},
             collection = {},
             list       = [],
@@ -135,6 +135,14 @@ angular.module('evtviewer.box')
             return evtInterface.getToolState('ITL') === 'active';
         };
 
+        var getNamedEntitiesActiveTypes = function() {
+            var activeNamedEntityTypes = evtNamedEntityRef.getActiveEntityTypes(),
+                newClassValue = '';
+            for (var i = 0; i < activeNamedEntityTypes.length; i++) {
+                newClassValue += activeNamedEntityTypes[i] + '-active ';
+            }
+            return newClassValue;
+        };
         //
         // Box builder
         //
@@ -240,6 +248,12 @@ angular.module('evtviewer.box')
                         bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }});
                         appFilters = appFilters.filters;
                     }
+
+                    if (config.namedEntitiesSelector) {
+                        //TODO: Check if there are Named Entities available in config.namedEntitiesToHandle
+                        bottomMenuList.selectors.push({ id:'namedEntities_'+currentId, type: 'named-entities', initValue: 'NONE', multiselect: true });
+                    }
+
                     state.filters = {
                         _totActive : 0
                     };
@@ -416,6 +430,7 @@ angular.module('evtviewer.box')
                 fontSizeDecrease        : fontSizeDecrease,
                 fontSizeReset           : fontSizeReset,
                 toggleBtnGroup          : toggleBtnGroup,
+                getNamedEntitiesActiveTypes : getNamedEntitiesActiveTypes,
 
                 isITLactive             : isITLactive //TEMP
             };

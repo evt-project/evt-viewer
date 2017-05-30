@@ -357,7 +357,7 @@ angular.module('evtviewer.dataHandler')
 			if (element._type === 'witness') {
 				content += '<li>';
 				if (element.attributes && element.attributes.n) {
-					content += '<strong>' + element.attributes.n + '</strong>'
+					content += '<strong>' + element.attributes.n + '</strong>';
 				} else {
 					content += '<strong>#' + element.id + '</strong>';
 				}
@@ -366,7 +366,7 @@ angular.module('evtviewer.dataHandler')
 			} else {
 				content += '<li>';
 				if (element.attributes && element.attributes.n) {
-					content += '<strong>' + element.attributes.n + '</strong>'
+					content += '<strong>' + element.attributes.n + '</strong>';
 				} else {
 					content += '<strong>#' + element.id + '</strong>';
 				}
@@ -378,7 +378,7 @@ angular.module('evtviewer.dataHandler')
 					if (subElement._type === 'witness') {
 						content += '<li>';
 						if (subElement.attributes && subElement.attributes.n) {
-							content += '<strong>' + subElement.attributes.n + '</strong>'
+							content += '<strong>' + subElement.attributes.n + '</strong>';
 						} else {
 							content += '<strong>#' + subElement.id + '</strong>';
 						}

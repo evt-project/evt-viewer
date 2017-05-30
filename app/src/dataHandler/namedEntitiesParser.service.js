@@ -661,7 +661,7 @@ angular.module('evtviewer.dataHandler')
 				collection.title = listId;
 			}
 			if (parentNode && parentNode.getAttribute('type')) {
-				listTitle = parentNode.getAttribute('type').trim();
+				var listTitle = parentNode.getAttribute('type').trim();
 				if (!listId || listId === undefined) {
 					collection.id = listTitle;
 				}
@@ -674,7 +674,8 @@ angular.module('evtviewer.dataHandler')
 	var camelToSpace = function(str) {
 		return str.replace(/\W+/g, ' ')
 					.replace(/([a-z\d])([A-Z])/g, '$1 $2');
-	}
+	};
+
 	var getPageIdFromHTMLString = function(HTMLstring) {
 		var matchPbIdAttr = 'xml:id=".*"',
 			sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
@@ -774,7 +775,7 @@ angular.module('evtviewer.dataHandler')
 		data = $(element).find('sourceDesc > list > item');
 		angular.forEach(data, function(el) {
 			parseCollectionData(el, collection);
-		 	var itemId = el.getAttribute("xml:id") || evtParser.xpath(element),
+		 	var itemId = el.getAttribute('xml:id') || evtParser.xpath(element),
 		 		parsedItem = evtParser.parseXMLElement(el, el, '');
 		 	var res = {
 		 		id: itemId,

@@ -287,8 +287,8 @@ angular.module('evtviewer.buttonSwitch')
 								var docObj = parsedData.getDocument(currentDocument),
 									docFront = docObj ? docObj.front : undefined;
 
-								var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
-								scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+								scope.$parent.vm.updateTopBoxContent(content);
 								scope.$parent.vm.toggleTopBox();
 							}
 							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
@@ -346,6 +346,7 @@ angular.module('evtviewer.buttonSwitch')
 						evtDialog.openByType('entitiesList');
 						vm.active = !vm.active;
 					};
+					break;
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':

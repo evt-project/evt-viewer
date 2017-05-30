@@ -115,7 +115,7 @@ angular.module('evtviewer.tabsContainer')
                 default:
                     listIcon = 'fa-list-ul';
                     break;
-            };
+            }
             $scope.tabs[listId] = {
                 label   : listTitle,
                 icon    : listIcon,

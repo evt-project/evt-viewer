@@ -11,8 +11,7 @@ angular.module('evtviewer.list')
     var currentList = '';
 
     this.$get = function(parsedData) {
-        var list    = {},
-            collection = {},
+        var collection = {},
             list       = [];
         
 

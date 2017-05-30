@@ -70,25 +70,53 @@
 
 }
 
+$personColor : #ffcdd2;
+$placeColor  : #c8e6c9;
+$orgColor    : #ffb74d; 
 .namedEntityRef {
-	&-person, &-pers {
-		&.active, &:hover {
-			background-color: #ffcdd2;
+	&-person, &-pers, &-persName {
+		&:hover {
+			background-color: $personColor;
 			cursor:pointer;
 		}
 	}
 
-	&-place {
-		&.active, &:hover {
-			background-color: #c8e6c9;
+	&-place, &-placeName {
+		&:hover {
+			background-color: $placeColor;
 			cursor:pointer;
 		}
 	}
 
-	&-org {
-		&.active, &:hover {
-			background-color: #ffb74d;    
+	&-org, &-orgName {
+		&:hover {
+			background-color: $orgColor;    
 			cursor:pointer;
+		}
+	}
+}
+
+
+.person-active, .pers-active, .persName-active {
+	.namedEntityRef {
+		&-person, &-pers, &-persName {
+			background-color: $personColor;
+		}
+	}
+}
+
+.place-active, .placeName-active {
+	.namedEntityRef {
+		&-place, &-placeName {
+			background-color: $placeColor;
+		}
+	}
+}
+
+.org-active, .orgName-active {
+	.namedEntityRef {
+		&-org, &-orgName {
+			background-color: $orgColor;    
 		}
 	}
 }

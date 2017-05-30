@@ -337,7 +337,7 @@ angular.module('evtviewer.interface')
                     edition = params.e;
                 } else {
                     if (availableEditionLevel && availableEditionLevel.length > 0) {
-                        edition = availableEditionLevel[0].value
+                        edition = availableEditionLevel[0].value;
                     }
                 }
             } else {
@@ -347,7 +347,7 @@ angular.module('evtviewer.interface')
                     }
                 } else {
                     if (availableEditionLevel && availableEditionLevel.length > 0) {
-                        edition = availableEditionLevel[0].value
+                        edition = availableEditionLevel[0].value;
                     }
                 }
             }

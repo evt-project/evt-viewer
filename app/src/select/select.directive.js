@@ -6,7 +6,9 @@ angular.module('evtviewer.select')
         scope: {
             id: '@',
             type: '@',
-            init: '@'
+            init: '@',
+            openUp: '@',
+            multiselect: '@'
         },
         templateUrl: 'src/select/select.directive.tmpl.html',
         controllerAs: 'vm',

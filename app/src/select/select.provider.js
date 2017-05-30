@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData, evtInterface) {
+    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef) {
         var select     = {},
             collection = {},
             list       = [],
@@ -24,12 +24,15 @@ angular.module('evtviewer.select')
             var currentId   = scope.id   || idx++,
                 currentType = scope.type || 'default',
                 initValue   = scope.init || undefined,
+                openUp      = scope.openUp || false,
+                multiselect = scope.multiselect || false,
                 optionList  = [],
                 optionSelected,
                 optionSelectedValue,
                 callback,
                 formatOptionList,
-                formatOption;
+                formatOption,
+                marginTop = 0; //Needed for selector that open up
             
             var scopeHelper = {};
 
@@ -104,6 +107,76 @@ angular.module('evtviewer.select')
                     };
                     optionList = formatOptionList(parsedData.getEditions());         
                     break;
+                case 'named-entities': 
+                    optionSelectedValue = initValue;
+                    var optionSelectAll = {
+                            value : 'ALL',
+                            label : 'Select All',
+                            title : 'Select All Named Entities'
+                        };
+                    callback = function(oldOption, newOption) {
+                        if (newOption !== undefined){
+                            _console.log('Named Entities select callback ', newOption);
+                            vm.selectOption(newOption);
+                            if (newOption.value === 'ALL') {
+                                // SELECT ALL OPTIONS
+                                var optionListLength = optionList && optionList.length > 3 ? optionList.length-2 : 0; 
+                                for (var i = 0; i < optionListLength; i++) {
+                                    var optionToSelect = optionList[i];
+                                    if (!vm.isOptionSelected(optionToSelect)) {
+                                        vm.selectOption(optionToSelect);
+                                        evtNamedEntityRef.addActiveType(optionToSelect.value);
+                                    }
+                                }
+                                vm.selectOption(newOption);
+                            } else if (newOption.value === 'NONE') {
+                                // CLEAR SELECTION
+                                var optionSelected = vm.optionSelected ? vm.optionSelected : []; 
+                                for (var j = 0; j < optionSelected.length; j++) {
+                                    var option = optionList[j];
+                                    if (option.value !== 'ALL') {
+                                        evtNamedEntityRef.removeActiveType(option.value);
+                                    }
+                                }
+                                vm.optionSelected = [];
+                                vm.selectOption(newOption);
+                            } else {
+                                if (vm.isOptionSelected(newOption)) {
+                                    evtNamedEntityRef.addActiveType(newOption.value);
+                                } else {
+                                    evtNamedEntityRef.removeActiveType(newOption.value);
+                                }
+                            }
+                        }
+                    };
+
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++ ) {
+                            var currentOption = optionList[i];
+                            if (currentOption.available) {
+                                var option = {
+                                        value : currentOption.tagName,
+                                        label : currentOption.label,
+                                        title : currentOption.label
+                                    };
+                                formattedList.push(option);
+                            }
+                        }
+                        formattedList.push(optionSelectAll);
+                        formattedList.push({
+                            value : 'NONE',
+                            label : 'Clear',
+                            title : 'Clear Selection'
+                        });
+                        return formattedList;
+                    };
+
+                    formatOption = function(option) {
+                        return option;
+                    };
+                    optionList = formatOptionList(config.namedEntitiesToHandle);
+                    break;
                 case 'witness':
                     optionSelectedValue = initValue;
                     callback = function(oldOption, newOption) {
@@ -168,6 +241,13 @@ angular.module('evtviewer.select')
                     break;
             }
 
+            if (openUp) {
+                marginTop = optionList.length * 34; //34px is the height of each option
+                marginTop += 28; //28px is the height of the selector itself when closed
+                marginTop += 4; //4px is the margin I want between selector and option list 
+                marginTop = -marginTop;
+            }
+
             scopeHelper = {
                 // expansion
                 uid                    : currentId,
@@ -175,7 +255,9 @@ angular.module('evtviewer.select')
                 callback               : callback,
                 initValue              : initValue,
                 currentType            : currentType,
-
+                multiselect            : multiselect,
+                openUp                 : openUp,
+                marginTop              : 'margin-top:'+marginTop+'px',
                 // model
                 optionList             : optionList,
                 optionSelected         : optionSelected,
