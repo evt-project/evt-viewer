@@ -22,7 +22,8 @@ angular.module('evtviewer.interface')
             indexTitle         : '',
             availableViewModes : [ ],
             availableWitnesses : [ ],
-            witnessSelector    : false
+            witnessSelector    : false,
+            namedEntitiesLists : false
         };
 
         var tools = {
@@ -42,6 +43,9 @@ angular.module('evtviewer.interface')
                             }
                         }
                     }
+
+                    // Remove Named Entities Lists button if Named Entities Lists Collection is Empty
+                    properties.namedEntitiesLists = parsedData.getNamedEntitiesCollection()._indexes.length > 0;
 
                     if (config.availableEditionLevel) {
                         for (var e = 0; e < config.availableEditionLevel.length; e++) {

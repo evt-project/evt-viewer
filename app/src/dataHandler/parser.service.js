@@ -208,8 +208,9 @@ angular.module('evtviewer.dataHandler')
 	// It will look for every element representing a note
 	// and replace it with a new evt-popover element
 	parser.parseNamedEntity = function(doc, entityNode, skip) {
-		var entityElem = document.createElement('evt-named-entity-ref');
-		var entityId = entityNode.getAttribute('ref').replace('#', '');
+		var entityElem = document.createElement('evt-named-entity-ref'),
+			entityRef = entityNode.getAttribute('ref'),
+			entityId = entityRef ? entityRef.replace('#', '') : undefined;
 		if (entityId && entityId !== '') {
 			entityElem.setAttribute('data-entity-id', entityId);
 			entityElem.setAttribute('data-entity-list-pos', entityId.substr(0, 1).toLowerCase());
