@@ -96,10 +96,6 @@ angular.module('evtviewer.interface')
 		return evtInterface.getSecondaryContentOpened();
 	};
 
-	$scope.updateSecondaryContentOpened = function(val) {
-		return evtInterface.updateSecondaryContentOpened(val);
-	};
-
 	$scope.getProjectInfo = function() {
 		return parsedData.getProjectInfo();
 	};

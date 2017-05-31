@@ -213,7 +213,6 @@ angular.module('evtviewer.dataHandler')
 			entityId = entityRef ? entityRef.replace('#', '') : undefined;
 		if (entityId && entityId !== '') {
 			entityElem.setAttribute('data-entity-id', entityId);
-			entityElem.setAttribute('data-entity-list-pos', entityId.substr(0, 1).toLowerCase());
 		}
 		var listType = entityNode.tagName ? entityNode.tagName : 'generic';
 		entityElem.setAttribute('data-entity-type', listType);
@@ -338,7 +337,7 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addPage(newPage, docId);
 			});
-		console.log('## Pages ##', parsedData.getPages());
+		//console.log('## Pages ##', parsedData.getPages());
 	};
 
 	parser.parseDocuments = function(doc) {

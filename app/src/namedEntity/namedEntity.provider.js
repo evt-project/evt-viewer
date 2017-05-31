@@ -70,9 +70,9 @@ angular.module('evtviewer.namedEntity')
             moreInfoAvailable = namedEntity !== undefined && namedEntity.notes !== undefined && namedEntity.notes.length > 0;
             // specific
             if (entityType === 'org') {
-                moreInfoAvailable = moreInfoAvailable || namedEntity.desc !== undefined;
+                moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.desc !== undefined);
             } else if (entityType === 'generic') {
-                moreInfoAvailable = moreInfoAvailable || namedEntity.details !== undefined;
+                moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.details !== undefined);
             }
 
             // Handle entity occurrences

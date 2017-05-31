@@ -53,7 +53,7 @@ angular.module('evtviewer.dialog')
 			var currentId = scope.id || idx++,
 				currentType = scope.type || 'default',
 				title = scope.title || '',
-				opened = false,
+				opened = scope.opened || false,
 				content;
 
 			var scopeHelper = {};

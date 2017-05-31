@@ -1,5 +1,5 @@
 <div class="evt-list">
-    <div ng-if="::vm.elements.length > 0">
+    <div ng-if="vm.elements.length > 0">
         <div class="evt-list__listLetters">
             <span class="evt-list__listLetters__letter" 
                 ng-class="{'active': letter === vm.selectedLetter }"
@@ -10,11 +10,11 @@
         <div class="evt-list__content">
             <evt-named-entity 
                 data-entity-id="{{::element}}" data-entity-type="{{::vm.listType}}"
-                ng-repeat="element in vm.getVisibleElements() | orderBy ">
+                ng-repeat="element in vm.visibleElements | orderBy ">
             </evt-named-entity>
         </div>
     </div>
-    <div ng-if="::vm.elements.length <= 0">
+    <div ng-if="vm.elements.length <= 0">
         No elements in this list
     </div>
 </div>

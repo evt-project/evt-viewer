@@ -7,7 +7,8 @@ angular.module('evtviewer.dialog')
         scope: {
             id      : '@',
             type    : '@',
-            title   : '@'
+            title   : '@',
+            opened  : '@'
         },
         replace: true,
         transclude : true,
@@ -18,6 +19,7 @@ angular.module('evtviewer.dialog')
                 id      : scope.id,
                 type    : scope.type,
                 title   : scope.title,
+                opened  : scope.opened
             };
 			//if (scope.vm.title === 'Project Info' && evtInterface.getDialog().allowProgrammaticOpenings){
 				//evtInterface.showDialog(true);
