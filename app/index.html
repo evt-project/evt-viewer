@@ -51,7 +51,7 @@
                     data-icon="{{::mode.icon}}"
                     data-value="{{::mode.viewMode}}"
                     data-type="changeViewMode"
-                    ng-repeat="mode in getAvailableViewModes()"
+                    ng-repeat="mode in getAvailableViewModes() track by $index"
                     ng-if="::mode.visible">
             </button-switch>
             <!-- <button-switch
@@ -84,145 +84,145 @@
             </button-switch> -->
         </div>
     </header>
-    <section
-        class="secondary-container"
-        ng-show="getSecondaryContentOpened() !== ''"
-        ng-if="!isLoading()">
-        <evt-dialog data-type="entitiesList" data-title="Named Entities">
-            <evt-tabs-container
-                data-type="entitiesList"
-                data-orientation="vertical">
-            </evt-tabs-container>
-        </evt-dialog>
-        <evt-dialog data-type="globalInfo" data-title="Project Info">
-            <evt-tabs-container
-                data-type="projectInfo"
-                data-orientation="vertical">
-            </evt-tabs-container>
-        </evt-dialog>
-        <evt-dialog data-type="witnessesList" data-title="Witnesses">
-            <div compile="getWitnessesListFormatted()"></div>
-        </evt-dialog>
-        <evt-dialog data-type="bookmark" data-title="Bookmark">
-            <div compile="getBookmark()"></div>
-        </evt-dialog>
-    </section>
-
-    <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
-        <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
-
-        <!-- READING TEXT -->
-        <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
-            <box data-type="text"
-                 data-edition="{{getCurrentEdition()}}"
-                 id="mainText"
-                 ng-class="{'centered': !isPinnedAppBoardOpened(),
-                            'half-centered': isPinnedAppBoardOpened()}"></box>
-            <button-switch
-                    title="Show pinned apparatus entries"
-                    data-label=""
-                    data-icon="pin"
-                    data-type="togglePinned"
-                    ng-if="isToolAvailable('toolPinAppEntries') && entry !== ''"
-                    class="togglePinned_btn"
-                    ng-class="{'centered': !isPinnedAppBoardOpened(),
-                               'half-centered': isPinnedAppBoardOpened()}">
-            </button-switch>
-
-            <box data-type="pinnedBoard" data-edition="{{getCurrentEdition()}}"
-                ng-show="!isLoading() && isPinnedAppBoardOpened()">
-                 <span ng-if="!isLoading() && getPinnedEntries().length <= 0" class="italic">
-                    Selected apparatus entries will be shown here
-                </span>
-                 <evt-critical-apparatus-entry
-                    class="in_critical_apparatus"
-                    ng-class="{'active': getCurrentAppEntry() === entry}"
-                    ng-if="getPinnedEntries().length > 0 && entry !== ''"
-                    ng-click="updateCurrentAppEntry(entry);"
-                    ng-repeat="entry in getPinnedEntries()"
-                    data-type="pinned"
-                    data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
-            </box>
+    <div id="global-container-ext" ng-show="!isLoading()">
+        <section
+            class="secondary-container"
+            ng-show="getSecondaryContentOpened() !== ''">
+            <evt-dialog data-type="entitiesList" data-title="Named Entities" 
+                ng-if="getProperty('namedEntitiesLists')">
+                <evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
+                    data-type="entitiesList"
+                    data-orientation="vertical">
+                </evt-tabs-container>
+            </evt-dialog>
+            <evt-dialog data-type="globalInfo" data-title="Project Info">
+                <evt-tabs-container
+                    data-type="projectInfo"
+                    data-orientation="vertical">
+                </evt-tabs-container>
+            </evt-dialog>
+            <evt-dialog data-type="witnessesList" data-title="Witnesses">
+                <div compile="getWitnessesListFormatted()"></div>
+            </evt-dialog>
+            <evt-dialog data-type="bookmark" data-title="Bookmark">
+                <div compile="getBookmark()"></div>
+            </evt-dialog>
         </section>
 
-        <!-- COLLAZIONE -->
-        <section id="main-container" class="viewMode" ng-switch-when="collation">
-            <box data-type="text"
-                 data-edition="{{getCurrentEdition()}}"
-                 id="mainText"
-                 ng-show="existCriticalText()"></box>
-            <!-- <div
-                compile="printCriticalApparatus()"
-                style="position: absolute; background: rgb(255, 255, 255) none repeat scroll 0% 0%;"> -->
+        <section id="global-container" ng-switch="getCurrentViewMode()">
+            <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
 
-            <div class="compareWits_box" id="compareWits_box"
-                 ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
-                            'span18of18': !existCriticalText()}">
-                <box data-type="witness"
-                     data-witness="{{::witness}}"
-                     ng-if="witness"
-                     data-witpage="{{getCurrentWitnessPage(witness)}}"
-                     ng-repeat="witness in getCurrentWitnesses()" ></box>
+            <!-- READING TEXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"
+                     ng-class="{'centered': !isPinnedAppBoardOpened(),
+                                'half-centered': isPinnedAppBoardOpened()}"></box>
+                <button-switch
+                        title="Show pinned apparatus entries"
+                        data-label=""
+                        data-icon="pin"
+                        data-type="togglePinned"
+                        ng-if="::isToolAvailable('toolPinAppEntries')"
+                        class="togglePinned_btn"
+                        ng-class="{'centered': !isPinnedAppBoardOpened(),
+                                   'half-centered': isPinnedAppBoardOpened()}">
+                </button-switch>
+
+                <box data-type="pinnedBoard" 
+                    ng-if="isPinnedAppBoardOpened()">
+                     <span ng-if="getPinnedEntries().length <= 0" class="italic">
+                        Selected apparatus entries will be shown here
+                    </span>
+                     <evt-critical-apparatus-entry
+                        class="in_critical_apparatus"
+                        ng-class="{'active': getCurrentAppEntry() === entry}"
+                        ng-if="getPinnedEntries().length > 0 && entry !== ''"
+                        ng-click="updateCurrentAppEntry(entry);"
+                        ng-repeat="entry in getPinnedEntries() track by $index"
+                        data-type="pinned"
+                        data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
+                </box>
+            </section>
+
+            <!-- COLLAZIONE -->
+            <section id="main-container" class="viewMode" ng-switch-when="collation">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"
+                     ng-if="existCriticalText()"></box>
+                <!-- <div
+                    compile="printCriticalApparatus()"
+                    style="position: absolute; background: rgb(255, 255, 255) none repeat scroll 0% 0%;"> -->
+
+                <div class="compareWits_box" id="compareWits_box"
+                     ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
+                                'span18of18': !existCriticalText()}">
+                    <box data-type="witness"
+                         data-witness="{{::witness}}"
+                         ng-if="witness"
+                         data-witpage="{{getCurrentWitnessPage(witness)}}"
+                         ng-repeat="witness in getCurrentWitnesses()" ></box>
+                </div>
+                <button-switch
+                        title="Add Witness"
+                        data-label="Add Witness"
+                        data-icon="add"
+                        data-type="addWit"
+                        class="compareWits_box--buttonAddWit inverted-color witnessSelector"
+                        ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0),
+                                    'floatRight': (!existCriticalText() && getCurrentWitnesses().length > 1) || (existCriticalText() && getCurrentWitnesses().length > 0)}">
+                </button-switch>
+
+                <div
+                    ng-if="isWitnessSelectorActive()"
+                    class="availableWitnesses-selector witnessSelector"
+                    ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
+                    <span
+                        ng-click="addWitness(witness)"
+                        ng-if="::witness"
+                        ng-repeat="witness in getAvailableWitnesses() track by $index">{{::getWitness(witness)}}</span>
+                </div>
+
+            </section>
+
+            <!-- TXT TXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="txtTxt">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText1"></box>
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText2"></box>
+            </section>
+
+            <!-- IMG TXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="imgTxt">
+                <box data-type="image"
+                     id="mainImage"></box>
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"></box>
+            </section>
+
+            <!-- LOADING... -->
+            <section id="main-container" class="viewMode" ng-switch-default>
+                <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+            </section>
+            <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
+        </section>
+
+        <section class="global-msg-container"
+                ng-if="getErrorMsg() !== undefined && getErrorMsg().code === 404">
+            <div class="global-msg">
+                <h1>EVT Viewer</h1>
+                <h2>{{getErrorMsg().title}}</h2>
+                <p>{{ getErrorMsg().msg }}</p>
             </div>
-            <button-switch
-                    title="Add Witness"
-                    data-label="Add Witness"
-                    data-icon="add"
-                    data-type="addWit"
-                    class="compareWits_box--buttonAddWit inverted-color witnessSelector"
-                    ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0),
-                                'floatRight': (!existCriticalText() && getCurrentWitnesses().length > 1) || (existCriticalText() && getCurrentWitnesses().length > 0)}">
-            </button-switch>
-
-            <div
-                ng-if="isWitnessSelectorActive()"
-                class="availableWitnesses-selector witnessSelector"
-                ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
-                <span
-                    ng-click="addWitness(witness)"
-                    ng-if="::witness"
-                    ng-repeat="witness in getAvailableWitnesses()">{{::getWitness(witness)}}</span>
-            </div>
-
         </section>
-
-        <!-- TXT TXT -->
-        <section id="main-container" class="viewMode" ng-switch-when="txtTxt">
-            <box data-type="text"
-                 data-edition="{{getCurrentEdition()}}"
-                 id="mainText1"></box>
-            <box data-type="text"
-                 data-edition="{{getCurrentEdition()}}"
-                 id="mainText2"></box>
-        </section>
-
-        <!-- IMG TXT -->
-        <section id="main-container" class="viewMode" ng-switch-when="imgTxt">
-            <box data-type="image"
-                 id="mainImage"></box>
-            <box data-type="text"
-                 data-edition="{{getCurrentEdition()}}"
-                 id="mainText"></box>
-        </section>
-
-        <!-- LOADING... -->
-        <section id="main-container" class="viewMode" ng-switch-default>
-            <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
-        </section>
-        <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
-    </section>
-
-    <section class="global-msg-container"
-            ng-if="!isLoading() && getErrorMsg() !== undefined && getErrorMsg().code === 404">
-        <div class="global-msg">
-            <h1>EVT Viewer</h1>
-            <h2>{{getErrorMsg().title}}</h2>
-            <p>{{ getErrorMsg().msg }}</p>
-        </div>
-    </section>
-
-    <section class="global-loading-container"
-            ng-hide="!isLoading()">
+    </div>
+    <section class="global-loading-container" ng-show="isLoading()">
         <!-- LOADING... -->
         <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     </section>
@@ -271,6 +271,7 @@
     <script src="bower_components/angular-xml/angular-xml.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
+    <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -304,7 +305,7 @@
 	<script src="/src/bibliography/bibliography.js"></script>
 	<script src="/src/bibliography/scrollif.directive.js"></script>
 	<script src="/src/bibliography/highlight.service.js"></script>
-	<script src="/src/bibliography/bibliography.controller.js"></script>
+    <script src="/src/bibliography/bibliography.controller.js"></script>
 	<script src="/src/bibliography/bibliography.directive.js"></script>
     <script src="/src/bibliography/biblElem.controller.js"></script>
     <script src="/src/bibliography/biblElem.directive.js"></script>

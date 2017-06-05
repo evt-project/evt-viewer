@@ -71,7 +71,7 @@ angular.module('evtviewer.dataHandler')
 				// } else 
 				if (tagName === 'note' && skip !== 'evtNote') {
 					newElement = parser.parseNote(element);
-				} else if (possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
+				} else if (config.namedEntitiesSelector && possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
 					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {

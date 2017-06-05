@@ -25,6 +25,19 @@ angular.module('evtviewer.list')
             // _console.log('vm - destroy ' + tempId);
         };
 
+        var loadMoreElements = function() {
+            var vm = this,
+                last = vm.visibleElements.length,
+                i = 0; 
+            while (i < 10 && i < vm.elementsInListKey.length) {
+                var newElement = vm.elementsInListKey[last+i];
+                if (newElement && vm.visibleElements.indexOf(newElement) <= 0) {
+                    vm.visibleElements.push(newElement);                    
+                }
+                i++;
+            }
+        };
+
         var getVisibleElements = function(listId, letter) {
             var visibleElements = [];
             if (letter) {
@@ -37,7 +50,8 @@ angular.module('evtviewer.list')
         var selectLetter = function(letter) {
             var vm = this;
             vm.selectedLetter = letter;
-            vm.visibleElements = getVisibleElements(vm.uid, letter);
+            vm.elementsInListKey = getVisibleElements(vm.uid, letter);
+            vm.visibleElements = vm.elementsInListKey ? vm.elementsInListKey.slice(0, 20) : [];
         };
 
 
@@ -53,17 +67,21 @@ angular.module('evtviewer.list')
             
             var parsedElements = parsedData.getNamedEntitiesCollectionByName(currentId),
                 selectedLetter = parsedElements ? parsedElements._listKeys[0] : undefined,
-                visibleElements = getVisibleElements(currentId, selectedLetter);
+                elementsInListKey = getVisibleElements(currentId, selectedLetter),
+                visibleElements = elementsInListKey ? elementsInListKey.slice(0, 20) : [];
+
             scopeHelper = {
                 // expansion
                 uid      : currentId,
                 listType : listType,
                 listKeys : parsedElements ? parsedElements._listKeys : [],
                 elements : parsedElements ? parsedElements._indexes  : [],
+                elementsInListKey: elementsInListKey,
                 visibleElements : visibleElements,
                 selectedLetter: selectedLetter,
 
                 //functions
+                loadMoreElements : loadMoreElements,
                 selectLetter : selectLetter,
                 destroy      : destroy
             };

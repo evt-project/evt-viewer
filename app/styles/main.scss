@@ -53,6 +53,10 @@ footer{
 	display: setVisibility($base-footer);
 }
 
+#global-container-ext {
+    height: 100%;
+}
+
 #global-container{
 	@include calc(height, #{setGlobalFrameHeight()} + 1px);
 	padding:1px 0 0;

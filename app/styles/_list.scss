@@ -35,17 +35,21 @@
         width: 100%;
         overflow: auto;
         position: absolute;
-        padding: 10px;
+        
+        > div  {
+        	width: 100%;
+        	padding-left: 10px;
+        }
 
-        > *:nth-child(odd) {
+        > div > *:nth-child(odd) {
 		    background: rgba($base-color-middle, .1);
 		}
 
-		> *:nth-child(even) {
+		> div > *:nth-child(even) {
 		    background: #fff;
 		}
 
-		> *:hover {
+		> div > *:hover {
 		    background: rgba($base-color-middle, .2);
 		}
     }

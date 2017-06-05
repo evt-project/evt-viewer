@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -73,12 +73,12 @@ angular.module('evtviewer.interface')
                         $q.all(promises).then(function(){
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
-                                parsedData.getCriticalEntryById(state.currentAppEntry) === undefined){
+                                parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {
                                 mainInterface.updateCurrentAppEntry('');
-                                mainInterface.updateUrl();
                             }
-                            state.isLoading = false;
-
+                            mainInterface.updateUrl();
+                            $rootScope.$applyAsync(state.isLoading = false);
+                            
                             // Update Pinned entries
                             var cookies = document.cookie.split(';');
                             for (var i in cookies) {

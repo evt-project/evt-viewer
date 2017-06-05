@@ -1,7 +1,7 @@
 <span class="namedEntityRef namedEntityRef-{{ ::vm.entityType }}" 
 	ng-click="vm.goToEntityInList($event)" ng-transclude></span>
 
-<span class="namedEntityRef__details">
+<span class="namedEntityRef__details" ng-if="vm.active">
 	<!-- ng-class="{'active': vm.active}" -->
 	<span class="namedEntityRef__details-before"></span>
 	<evt-named-entity data-entity-id="{{::vm.entityId}}" data-entity-type="{{::vm.entityType}}"></evt-named-entity>
