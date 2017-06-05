@@ -197,3 +197,21 @@ $orgColor    : #ffb74d;
 		}
 	}
 }
+
+[data-value="person"], [data-value="pers"], [data-value="persName"] {
+	.option-icon-label {
+		color: $personColor;
+	}
+}
+
+[data-value="place"], [data-value="placeName"] {
+	.option-icon-label {
+		color: $placeColor;
+	}
+}
+
+[data-value="org"], [data-value="orgName"] {
+	.option-icon-label {
+		color: $orgColor;    
+	}
+}

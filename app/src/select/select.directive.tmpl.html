@@ -25,6 +25,7 @@
          ng-repeat="option in ::vm.optionList" 
          ng-click="vm.callback(vm.optionSelected, option);"
          ng-class="{'selected': vm.isOptionSelected(option)}">
+         <i class="fa {{::option.icon}} option-icon-label" ng-if="::option.icon"></i>
          {{ ::option.label }}
       </div>
    </div>

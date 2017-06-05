@@ -156,6 +156,7 @@ angular.module('evtviewer.select')
                             var currentOption = optionList[i];
                             if (currentOption.available) {
                                 var option = {
+                                        icon  : 'fa-circle',
                                         value : currentOption.tagName,
                                         label : currentOption.label,
                                         title : currentOption.label
