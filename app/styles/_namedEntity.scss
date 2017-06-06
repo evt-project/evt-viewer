@@ -105,7 +105,7 @@
 	&__occurrences, &__moreInfo {
 		display: none;
 
-		&.opened {
+		&.opened, &.location-mainText {
 			display: block;
 			
 			> span {
@@ -149,7 +149,7 @@
 		}
 	}
 
-	&.opened {
+	&.opened, &.location-mainText {
 		margin-top: 1px;
 		.namedEntity__header .opener:before {
 			content: "\f0d7";
@@ -280,25 +280,38 @@ $orgColor: #ffb74d;
 .namedEntityRef {
 	color: $base-color-middle;
 	cursor: pointer;
-
+	
+	&.active {
+		border-bottom: 5px solid #fff;
+	}
+	
 	&-person, &-pers, &-persName {
-		&.active, &:hover {
+		&:hover {
 			background-color: $personColor;
-			border-bottom: 5px solid rgba($personColor, .3);
+		}
+		&.active {
+			background-color: rgba($personColor, .3);
+			border-bottom-color: rgba($personColor, .3);
 		}
 	}
 
 	&-place, &-placeName {
-		&.active, &:hover {
+		&:hover {
 			background-color: $placeColor;
-			border-bottom: 5px solid rgba($placeColor, .3);
+		}
+		&.active {
+			background-color: rgba($placeColor, .3);
+			border-bottom-color: rgba($placeColor, .3);
 		}
 	}
 
 	&-org, &-orgName {
-		&.active, &:hover {
+		&:hover {
 			background-color: $orgColor;
-			border-bottom: 5px solid rgba($orgColor, .3);
+		}
+		&.active {
+			background-color: rgba($orgColor, .3);
+			border-bottom-color: rgba($orgColor, .3);
 		}
 	}
 
@@ -347,6 +360,9 @@ $orgColor: #ffb74d;
 	.namedEntityRef {
 		&-person, &-pers, &-persName {
 			background-color: $personColor;
+			&:hover:not(.active) {
+				background-color: rgba($personColor, .5);
+			}
 		}
 	}
 }
@@ -355,6 +371,9 @@ $orgColor: #ffb74d;
 	.namedEntityRef {
 		&-place, &-placeName {
 			background-color: $placeColor;
+			&:hover:not(.active) {
+				background-color: rgba($placeColor, .5);
+			}
 		}
 	}
 }
@@ -362,7 +381,10 @@ $orgColor: #ffb74d;
 .org-active, .orgName-active {
 	.namedEntityRef {
 		&-org, &-orgName {
-			background-color: $orgColor;    
+			background-color: $orgColor;
+			&:hover:not(.active) {
+				background-color: rgba($orgColor, .5);
+			}
 		}
 	}
 }

@@ -22,10 +22,12 @@ angular.module('evtviewer.namedEntity')
 
         var toggle = function() {
             var vm = this;
-            vm.toggleSubContent(vm._firstSubContentOpened);
-            
-            vm.opened = !vm.opened;
-            vm.toggleState();
+            if (vm.location !== 'mainText') {
+                vm.toggleSubContent(vm._firstSubContentOpened);
+                
+                vm.opened = !vm.opened;
+                vm.toggleState();
+            }
         };
 
         var toggleOccurrences = function() {
