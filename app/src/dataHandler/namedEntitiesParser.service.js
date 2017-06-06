@@ -736,6 +736,7 @@ angular.module('evtviewer.dataHandler')
 			parseCollectionData(el, collection);
 			var res = listPlaceHelper.parseInfo(el);
 			//parseOccurrences(doc, el, res.id);
+			res._xmlSource = el.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 			parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
 		});
 
@@ -750,6 +751,7 @@ angular.module('evtviewer.dataHandler')
 			parseCollectionData(el, collection);
 			var res = listOrgHelper.parseInfo(el);
 			// parseOccurrences(doc, el, res.id);
+			res._xmlSource = el.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 			parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
 		});
 
@@ -764,6 +766,7 @@ angular.module('evtviewer.dataHandler')
 			parseCollectionData(el, collection);
 		 	var res = listPersonHelper.parseInfo(el);
 			// parseOccurrences(doc, el, res.id);
+			res._xmlSource = el.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 		 	parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());
 		});
 
@@ -780,7 +783,8 @@ angular.module('evtviewer.dataHandler')
 		 	var res = {
 		 		id: itemId,
 		 		label: el.getAttribute('n') || camelToSpace(itemId.replace(/_/g, ' ')),
-		 		details: parsedItem ? parsedItem.innerHTML : undefined 
+		 		details: parsedItem ? parsedItem.innerHTML : undefined,
+		 		_xmlSource: el.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '')
 		 	};
 			// parseOccurrences(doc, el, res.id);
 		 	parsedData.addNamedEntityInCollection(collection, res, res.id.substr(0, 1).toLowerCase());

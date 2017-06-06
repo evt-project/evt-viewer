@@ -18,6 +18,7 @@ angular.module('evtviewer.namedEntity')
             activeEntityTypes = [];
         
         var goToEntityInList = function(e) {
+            e.stopPropagation();
             var vm = this;
             vm.active = !vm.active;
             if (vm.active) {
@@ -25,10 +26,12 @@ angular.module('evtviewer.namedEntity')
             } else {
                 namedEntityRef.setActiveEntity(undefined);
             }
-            $timeout(function(){
                 vm.toggleActive();
-                vm.updateDetailsPosition(e, vm);
-            }, 20);
+                if (vm.detailsInPopup) {
+                    $timeout(function(){
+                        vm.updateDetailsPosition(e, vm);
+                    }, 20);
+                }
         };
 
         // 
@@ -38,7 +41,8 @@ angular.module('evtviewer.namedEntity')
         namedEntityRef.build = function(id, scope) {
             var currentId  = idx++,
                 entityId   = id || undefined,
-                entityType = scope.entityType || 'generic';
+                entityType = scope.entityType || 'generic',
+                detailsInPopup = false; //TODO: differentiate depending on type
 
             var scopeHelper = {};
             
@@ -63,7 +67,8 @@ angular.module('evtviewer.namedEntity')
                 uid           : currentId,
                 entityId      : entityId,
                 entityType    : entityType,
-                
+                detailsInPopup : detailsInPopup,
+
                 highlight     : false,
 
                 defaults      : angular.copy(defaults),

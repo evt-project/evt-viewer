@@ -5,26 +5,97 @@
 .namedEntity {
 	display: block;
 	background: inherit;
-	padding: 5px;
-    border-bottom: 1px solid rgba($base-color-middle, .3);
+	font-size: 95%;
+	//padding: 5px;
+	border-bottom: 1px solid rgba($base-color-middle, .3);
+	
+	&.location-mainText {
+		&.opened {
+			margin-bottom: 10px;
+		}
+	}
 
-    &__header {
-    	display: block;
+	&__icon {
+		margin-right: 5px;
+	}
 
-    	&:hover {
-    		cursor: pointer;
-    		text-shadow: 0px 0px 1px rgba(0,0,0,.7);
-    	}
-	    .opener:before {
+	&__header {
+		display: block;
+		padding: 7px;
+		padding-bottom: 4px;
+		&:hover {
+			cursor: pointer;
+			//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+		}
+		.opener:before {
 			content: "\f0da";
 		}
-    }
+	}
 
 	&__details {
 		display: none;
-		padding-left: 16px;
-		font-size: 90%;
+		//padding-left: 16px;
+		font-size: 85%;
 
+		border-top: 3px double $critical-apparatus-entry-border-color;
+		// width:90%;
+		p {
+			padding: 0 10px;
+		}
+
+		&-headers {
+			&:not(.closed){
+				@include set(box-shadow, 0px 9px 5px -4px $critical-apparatus-entry-background-color-darker);
+			}
+			z-index: 2;
+			position: relative;
+			span {
+				padding: 5px;
+				display: inline-block;
+				font-size: 90%;
+				cursor: pointer;
+				border-left: 1px solid $critical-apparatus-entry-background-color-darker;
+				&:first-child {
+					border-left: none;
+				}
+				&:hover {
+					//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+				}
+				&.active{
+					@include set(box-shadow, inset 0 2px 2px -1px $critical-apparatus-entry-border-color);
+					background-color: $critical-apparatus-entry-background-color-darker;
+					border-right: 1px solid $critical-apparatus-entry-background-color-darker;
+					&:not(:first-child) {
+						border-left: 1px solid $critical-apparatus-entry-background-color-darker;
+					}
+					+ span {
+						border-left: none;
+					}
+				}
+			}
+		}
+
+		&-panels{
+			&:not(.closed){
+				padding: 10px 15px;
+			}
+			max-height: 150px;
+			overflow-x: hidden;
+			overflow-y: auto;
+			background-color: $critical-apparatus-entry-background-color-darker;
+
+		}
+
+		&-panel {
+			display: block;
+			ul {
+				padding-left: 10px;
+				list-style-type: none;
+				margin: 5px 0px;
+			}
+		}
+
+		//For popup
 		.opener:before {
 			content: "\f0da";
 		}
@@ -36,6 +107,7 @@
 
 		&.opened {
 			display: block;
+			
 			> span {
 				display: block;
 			}
@@ -46,7 +118,7 @@
 		&-toggler {
 			display: block;
 			font-variant: small-caps;
-    		padding-top: 5px;
+			padding-top: 5px;
 			cursor: pointer;
 
 			&:hover {
@@ -71,13 +143,14 @@
 			display: inline-block !important;
 
 			&:hover {
-				text-shadow: 0px 0px 1px #000;
+				//text-shadow: 0px 0px 1px #000;
 				background: rgba($base-color-middle, .2);
 			}
 		}
 	}
 
 	&.opened {
+		margin-top: 1px;
 		.namedEntity__header .opener:before {
 			content: "\f0d7";
 		}
@@ -108,28 +181,124 @@
 	}
 }
 
-$personColor : #ffcdd2;
-$placeColor  : #c8e6c9;
-$orgColor    : #ffb74d; 
+$personColor: #ffcdd2;
+$placeColor: #c8e6c9;
+$orgColor: #ffb74d; 
+
+@mixin namedEntityColors($color) {
+	$color-base: rgba($color, .3);
+	$color-darker: rgba($color, .5);
+	
+	&.location-mainText {
+		background: $color-base;
+	}
+
+	border-bottom-color: rgba($color, .7);
+
+	.namedEntity__details {
+		border-top-color: $color-darker;
+
+		&-headers {
+			&:not(.closed){
+				@include set(box-shadow, 0px 9px 5px -4px $color-base);
+			}
+			span {
+				border-left-color: $color-darker;
+				&.active{
+					@include set(box-shadow, inset 0 2px 2px -1px $color-base);
+					background-color: $color-base;
+					border-right-color: $color-darker;
+					&:not(:first-child) {
+						border-left-color: $color-darker;
+					}
+				}
+				&:hover {
+					background-color: $color-base;
+				}
+			}
+		}
+
+		&-panels{
+			background-color: $color-base;
+		}
+	}
+
+
+	.namedEntity__occurrences {
+		&-occurrence {
+			background: rgba(255, 255, 255, 0.5);
+			border-color: $color-darker;
+			&:hover {
+				background: rgba(255, 255, 255, 1);
+			}
+		}
+	}
+}
+
+.namedEntity {
+	&-person, &-pers, &-persName {
+		@include namedEntityColors($personColor);
+	}
+
+	&-place, &-placeName {
+		@include namedEntityColors($placeColor);
+	}
+
+	&-org, &-orgName {
+		@include namedEntityColors($orgColor);
+	}
+}
+
+@mixin listColors($color) {
+	.evt-list__content {
+        > div > *:nth-child(odd) {
+		    background: rgba($color, .2);
+		}
+
+		> div > *:nth-child(even) {
+		     background: rgba($color, .1);
+		}
+
+		> div > *:hover {
+		    background: rgba($color, .4);
+		}
+		.namedEntity.opened {
+			background: rgba($color, .5);
+		}
+    }
+}
+[data-list-type=person] {
+	@include listColors($personColor);
+}
+[data-list-type=place] {
+	@include listColors($placeColor);
+}
+[data-list-type=org] {
+	@include listColors($orgColor);
+}
+
 .namedEntityRef {
 	color: $base-color-middle;
-    cursor: pointer;
+	cursor: pointer;
 
 	&-person, &-pers, &-persName {
 		&.active, &:hover {
 			background-color: $personColor;
+			border-bottom: 5px solid rgba($personColor, .3);
 		}
 	}
 
 	&-place, &-placeName {
 		&.active, &:hover {
 			background-color: $placeColor;
+			border-bottom: 5px solid rgba($placeColor, .3);
 		}
 	}
 
 	&-org, &-orgName {
 		&.active, &:hover {
-			background-color: $orgColor;    
+			background-color: $orgColor;
+			border-bottom: 5px solid rgba($orgColor, .3);
 		}
 	}
 
@@ -154,22 +323,22 @@ $orgColor    : #ffb74d;
 		}
 
 		&-before {
-            &:before {
-	            @include tooltipBeforeAfter();
-	            top: -10px;
-	            content:"\f0d8";
-	            text-shadow: 0px -3px 0px #000;
-	            height:0px;
-            }
-            position: absolute;
-            top: 0;
-        }
+			&:before {
+				@include tooltipBeforeAfter();
+				top: -10px;
+				content:"\f0d8";
+				text-shadow: 0px -3px 0px #000;
+				height:0px;
+			}
+			position: absolute;
+			top: 0;
+		}
 		&.open-up {
 			.namedEntityRef__details-before::before {
-	            content:"\f0d7";
-	            text-shadow: 0px 3px 0px #000;
-	        }
-    	}
+				content:"\f0d7";
+				text-shadow: 0px 3px 0px #000;
+			}
+		}
 	}
 }
 

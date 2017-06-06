@@ -1,7 +1,11 @@
-<span class="namedEntity namedEntity-{{ ::vm.entityType }}">
+<span class="namedEntity namedEntity-{{ ::vm.entityType }} location-{{::vm.location}}"
+     ng-class="::{'opened': vm.location === 'mainText'}">
 	<span class="namedEntity__header" ng-switch="::vm.entityType" ng-click="vm.toggle()">
         <!-- HEADER -->
-        <i class="fa opener"></i>
+        <i class="fa opener" ng-if="::vm.location !== 'mainText'"></i>
+        
+        <i class="fa namedEntity__icon {{::vm.entityTypeIcon}}" ng-if="::vm.location === 'mainText'"></i>
+
         <span ng-switch-when="place">
             <span ng-if="::vm.entity.settlement" 
                 ng-repeat="settlement in ::vm.entity.settlement track by $index">
@@ -34,6 +38,60 @@
     </span>
 
     <span class="namedEntity__details">
+        <div class="namedEntity__details-headers">
+            <span ng-repeat="tab in ::vm.tabs._indexes track by $index"
+                    ng-click="vm.toggleSubContent(tab)"
+                    class="namedEntity__details-header namedEntity__details-header-{{::tab}}">
+                {{ ::vm.tabs[tab].label }}
+            </span>
+          </div>
+
+          <div class="namedEntity__details-panels closed">
+                  <div class="namedEntity__details-panel"
+                        ng-switch="vm._subContentOpened">
+                        <div ng-switch-when="moreInfo">
+                            <span ng-if="::vm.entity.notes && vm.entity.notes.length > 0" 
+                                class="{{ ::note.type }}"
+                                ng-repeat="note in ::vm.entity.notes track by $index"
+                                compile="::note.content">
+                            </span>
+
+                            <span ng-if="::vm.entity.desc" 
+                                ng-repeat="desc in ::vm.entity.desc track by $index"
+                                compile="::desc.content">
+                            </span>
+
+                            <span ng-if="::vm.entity.details" 
+                                compile="::vm.entity.details">
+                            </span>            
+
+                            <span ng-if="::vm.noMoreInfo">
+                                No more information available.
+                            </span>
+                        </div>
+                        <div ng-switch-when="occurrences">
+                            <span ng-if="::vm.occurrences && vm.occurrences.length > 0"
+                                class="namedEntity__occurrences-occurrence"
+                                ng-repeat="occurrence in ::vm.occurrences track by $index"
+                                ng-click="vm.goToOccurrence(occurrence)">
+                                {{ ::occurrence.docLabel }} - Fol. {{ ::occurrence.pageLabel }} 
+                            </span>
+                            <span class="italic" ng-if="::vm.occurrences && vm.occurrences.length <= 0">
+                                No result found.
+                            </span>
+                            <span class="italic" ng-if="::!vm.occurrences">
+                                Loading occurrences...
+                            </span>
+                        </div>
+                        <div ng-switch-when="xmlSource">
+                          <pre>{{ ::vm.entity._xmlSource | prettyXml }}</pre>
+                        </div>
+                  </div>
+              </div>
+          </div>
+    </span>
+
+    <!-- <span class="namedEntity__details">
         <span class="namedEntity__moreInfo-toggler" ng-click="vm.toggleMoreInfo()">
             <i class="fa opener"></i> About
         </span>
@@ -56,7 +114,7 @@
 
             <span ng-if="::vm.noMoreInfo">
                 No more information available.
-            </span>
+            </span> -->
 
             <!-- <span ng-switch="::vm.entityType">
                 <span ng-switch-when="place">
@@ -71,7 +129,7 @@
                 <span ng-switch-default>
                 </span>        
             </span> -->
-        </span>
+        <!-- </span>
 
         <span class="namedEntity__occurrences-toggler" ng-click="vm.toggleOccurrences()">
             <i class="fa opener"></i> Occurrences
@@ -87,5 +145,5 @@
                 No result found.
             </span>
         </span>
-    </span>
+    </span> -->
 </span>

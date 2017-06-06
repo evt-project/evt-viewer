@@ -5,7 +5,8 @@ angular.module('evtviewer.namedEntity')
         restrict: 'E',
         scope: {
             entityId   : '@',
-            entityType : '@'
+            entityType : '@',
+            location   : '@'
         },
         transclude: true,
         templateUrl: 'src/namedEntity/namedEntity.directive.tmpl.html',
@@ -13,7 +14,8 @@ angular.module('evtviewer.namedEntity')
             // Initialize namedEntity
             scope.vm = {
                 entityId: scope.entityId,
-                entityType: scope.entityType
+                entityType: scope.entityType,
+                location: scope.location
             };
             var currentNamedEntity = evtNamedEntity.build(scope.entityId, scope);
             
@@ -33,6 +35,21 @@ angular.module('evtviewer.namedEntity')
                     entityDetails.addClass(section);
                 } else {
                     entityDetails.removeClass(section);
+                }
+            };
+
+            var panelsElement = element.find('.namedEntity__details-panels');
+            scope.vm.toggleSubContentClass = function() {
+                var subContent = scope.vm._subContentOpened;
+                var elementToRemoveClass = element.find('.namedEntity__details-header.active');
+                elementToRemoveClass.removeClass('active');
+
+                if (subContent !== '') {
+                    var elementToAddClass = element.find('.namedEntity__details-header-'+subContent);
+                    elementToAddClass.addClass('active');
+                    panelsElement.removeClass('closed');
+                } else {
+                    panelsElement.addClass('closed');
                 }
             };
 

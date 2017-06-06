@@ -22,6 +22,8 @@ angular.module('evtviewer.namedEntity')
 
         var toggle = function() {
             var vm = this;
+            vm.toggleSubContent(vm._firstSubContentOpened);
+            
             vm.opened = !vm.opened;
             vm.toggleState();
         };
@@ -46,6 +48,19 @@ angular.module('evtviewer.namedEntity')
             console.log('# TODO: # Go to occurrence ', occurrence);
         };
 
+        var toggleSubContent = function(subContentName) {
+            var vm = this;
+            if (subContentName === 'occurrences' && !vm.occurrences) {
+                vm.occurrences = namedEntity.getOccurrences(vm.entityId);
+            }
+            if (vm._subContentOpened !== subContentName) {
+                vm._subContentOpened = subContentName;
+            } else {
+                vm._subContentOpened = '';
+            }
+
+            vm.toggleSubContentClass();
+        };
         // 
         // NamedEntity builder
         // 
@@ -54,26 +69,40 @@ angular.module('evtviewer.namedEntity')
             var currentId  = idx++,
                 entityId   = id || undefined,
                 entityType = scope.entityType || 'generic',
+                location = scope.location || 'list',
                 attributes = '';
-
+                
             var scopeHelper = {};
             
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
 
-            var namedEntity = parsedData.getNamedEntity(entityId);
-            var moreInfoAvailable = true;
-
-            // Handle More info about entity
-            // generic
+            var namedEntity = parsedData.getNamedEntity(entityId),
+                moreInfoAvailable = true,
+                entityTypeIcon = '';
+            
             moreInfoAvailable = namedEntity !== undefined && namedEntity.notes !== undefined && namedEntity.notes.length > 0;
-            // specific
-            if (entityType === 'org') {
-                moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.desc !== undefined);
-            } else if (entityType === 'generic') {
-                moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.details !== undefined);
-            }
+            switch (entityType) {
+                case 'place':
+                case 'placeName':
+                    entityTypeIcon = 'fa-map-marker';
+                    break;
+                case 'person':
+                case 'pers':
+                case 'persName':
+                    entityTypeIcon = 'fa-user';
+                    break;
+                case 'org':
+                case 'orgName':
+                    entityTypeIcon = 'fa-users';
+                    moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.desc !== undefined);
+                    break;
+                default:
+                    entityTypeIcon = 'fa-list-ul';
+                    moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.details !== undefined);
+                    break;
+            };
 
             // Handle entity occurrences
             var occurrences;
@@ -83,13 +112,27 @@ angular.module('evtviewer.namedEntity')
                 // Ask interface to calculate occurrences for entity
                 //occurrences = [{ pageId: "fol_214v", pageLabel: "214v", docId: "CI_118", docLabel: "CI (118)" }];
             }
-
+            var tabs = {
+                    moreInfo: {
+                        label: 'More Info'
+                    },
+                    occurrences: {
+                        label: 'Occurrences',
+                    },
+                    xmlSource: {
+                        label: 'XML'
+                    },
+                    _indexes : ['moreInfo', 'occurrences', 'xmlSource']
+                };
+            var firstSubContentOpened = tabs && tabs._indexes && tabs._indexes.length > 0 ? tabs._indexes[0] : '';
             scopeHelper = {
                 // expansion
                 uid           : currentId,
                 entityId      : entityId,
                 entityType    : entityType,
-                
+                entityTypeIcon : entityTypeIcon,
+                location      : location,
+
                 entity        : namedEntity ? namedEntity : {},
                 occurrences   : occurrences,
 
@@ -97,6 +140,10 @@ angular.module('evtviewer.namedEntity')
                 moreInfoOpened : moreInfoAvailable,
                 occurrencesOpened : false,
                 noMoreInfo    :  !moreInfoAvailable,
+                _firstSubContentOpened : firstSubContentOpened,
+                _subContentOpened : '',
+                over              : false,
+                tabs              : tabs,
 
                 defaults      : angular.copy(defaults),
 
@@ -105,7 +152,8 @@ angular.module('evtviewer.namedEntity')
                 toggle            : toggle,
                 toggleMoreInfo    : toggleMoreInfo,
                 toggleOccurrences : toggleOccurrences,
-                goToOccurrence    : goToOccurrence
+                goToOccurrence    : goToOccurrence,
+                toggleSubContent  : toggleSubContent
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
