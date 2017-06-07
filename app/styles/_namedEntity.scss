@@ -7,13 +7,7 @@
 	background: inherit;
 	font-size: 95%;
 	//padding: 5px;
-	border-bottom: 1px solid rgba($base-color-middle, .3);
-	
-	&.location-mainText {
-		&.opened {
-			margin-bottom: 10px;
-		}
-	}
+
 
 	&__icon {
 		margin-right: 5px;
@@ -23,6 +17,7 @@
 		display: block;
 		padding: 7px;
 		padding-bottom: 4px;
+		
 		&:hover {
 			cursor: pointer;
 			//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
@@ -37,16 +32,14 @@
 		//padding-left: 16px;
 		font-size: 85%;
 
-		border-top: 3px double $critical-apparatus-entry-border-color;
+		border-top: 3px double $base-color-middle;
+		
 		// width:90%;
 		p {
 			padding: 0 10px;
 		}
 
 		&-headers {
-			&:not(.closed){
-				@include set(box-shadow, 0px 9px 5px -4px $critical-apparatus-entry-background-color-darker);
-			}
 			z-index: 2;
 			position: relative;
 			span {
@@ -179,47 +172,66 @@
 			}
 		}
 	}
+
+	&.location-mainText {
+		border-left: 1px solid $base-color-middle;
+		border-right: 1px solid $base-color-middle;
+
+		&.opened {
+			margin-bottom: 10px;
+		}
+
+		.namedEntity__header {
+		 	border-top: 1px solid $base-color-middle;
+		 	cursor: default;
+		}
+		.namedEntity__details {
+			border-bottom: 1px solid $base-color-middle;
+		}
+	}
 }
 
-$personColor: #ffcdd2;
-$placeColor: #c8e6c9;
-$orgColor: #ffb74d; 
+$personColor: #FFF0F1;
+$personColor-darker: #ffcdd2;
 
-@mixin namedEntityColors($color) {
-	$color-base: rgba($color, .3);
-	$color-darker: rgba($color, .5);
-	
+$placeColor: #EEF7EF;
+$placeColor-darker: #c8e6c9;
+
+$orgColor: #FFE9C9;
+$orgColor-darker: #ffb74d; 
+
+@mixin namedEntityColors($color-base, $color-darker) {
 	&.location-mainText {
 		background: $color-base;
 	}
 
-	border-bottom-color: rgba($color, .7);
+	border-bottom-color: $color-darker;
 
 	.namedEntity__details {
-		border-top-color: $color-darker;
-
 		&-headers {
-			&:not(.closed){
-				@include set(box-shadow, 0px 9px 5px -4px $color-base);
-			}
 			span {
-				border-left-color: $color-darker;
 				&.active{
-					@include set(box-shadow, inset 0 2px 2px -1px $color-base);
-					background-color: $color-base;
+					@include set(box-shadow, inset 0 2px 3px -1px rgba(0,0,0,0.4) );
+					background-color: $color-darker;
 					border-right-color: $color-darker;
 					&:not(:first-child) {
 						border-left-color: $color-darker;
 					}
 				}
 				&:hover {
-					background-color: $color-base;
+					background-color: $color-darker;
+				}
+			}
+			&:not(.closed) {
+				span {
+					margin-bottom: -3px;
 				}
 			}
 		}
 
 		&-panels{
-			background-color: $color-base;
+			@include set(box-shadow, inset 0 2px 3px -2px rgba(0, 0, 0, 0.4));
+			background-color: $color-darker;
 		}
 	}
 
@@ -237,26 +249,26 @@ $orgColor: #ffb74d;
 
 .namedEntity {
 	&-person, &-pers, &-persName {
-		@include namedEntityColors($personColor);
+		@include namedEntityColors($personColor, $personColor-darker);
 	}
 
 	&-place, &-placeName {
-		@include namedEntityColors($placeColor);
+		@include namedEntityColors($placeColor, $placeColor-darker);
 	}
 
 	&-org, &-orgName {
-		@include namedEntityColors($orgColor);
+		@include namedEntityColors($orgColor, $orgColor-darker);
 	}
 }
 
 @mixin listColors($color) {
 	.evt-list__content {
         > div > *:nth-child(odd) {
-		    background: rgba($color, .2);
+		    background: rgba($color, .5);
 		}
 
 		> div > *:nth-child(even) {
-		     background: rgba($color, .1);
+		     background: rgba($color, .2);
 		}
 
 		> div > *:hover {
@@ -268,13 +280,13 @@ $orgColor: #ffb74d;
     }
 }
 [data-list-type=person] {
-	@include listColors($personColor);
+	@include listColors($personColor-darker);
 }
 [data-list-type=place] {
-	@include listColors($placeColor);
+	@include listColors($placeColor-darker);
 }
 [data-list-type=org] {
-	@include listColors($orgColor);
+	@include listColors($orgColor-darker);
 }
 
 .namedEntityRef {
@@ -282,6 +294,7 @@ $orgColor: #ffb74d;
 	cursor: pointer;
 	
 	&.active {
+		border: 1px solid #000;
 		border-bottom: 5px solid #fff;
 	}
 	
@@ -290,8 +303,8 @@ $orgColor: #ffb74d;
 			background-color: $personColor;
 		}
 		&.active {
-			background-color: rgba($personColor, .3);
-			border-bottom-color: rgba($personColor, .3);
+			background-color: $personColor;
+			border-bottom-color: $personColor;
 		}
 	}
 
@@ -300,8 +313,8 @@ $orgColor: #ffb74d;
 			background-color: $placeColor;
 		}
 		&.active {
-			background-color: rgba($placeColor, .3);
-			border-bottom-color: rgba($placeColor, .3);
+			background-color: $placeColor;
+			border-bottom-color: $placeColor;
 		}
 	}
 
@@ -310,8 +323,8 @@ $orgColor: #ffb74d;
 			background-color: $orgColor;
 		}
 		&.active {
-			background-color: rgba($orgColor, .3);
-			border-bottom-color: rgba($orgColor, .3);
+			background-color: $orgColor;
+			border-bottom-color: $orgColor;
 		}
 	}
 
@@ -359,9 +372,9 @@ $orgColor: #ffb74d;
 .person-active, .pers-active, .persName-active {
 	.namedEntityRef {
 		&-person, &-pers, &-persName {
-			background-color: $personColor;
+			background-color: $personColor-darker;
 			&:hover:not(.active) {
-				background-color: rgba($personColor, .5);
+				background-color: $personColor;
 			}
 		}
 	}
@@ -370,9 +383,9 @@ $orgColor: #ffb74d;
 .place-active, .placeName-active {
 	.namedEntityRef {
 		&-place, &-placeName {
-			background-color: $placeColor;
+			background-color: $placeColor-darker;
 			&:hover:not(.active) {
-				background-color: rgba($placeColor, .5);
+				background-color: $placeColor;
 			}
 		}
 	}
@@ -381,9 +394,9 @@ $orgColor: #ffb74d;
 .org-active, .orgName-active {
 	.namedEntityRef {
 		&-org, &-orgName {
-			background-color: $orgColor;
+			background-color: $orgColor-darker;
 			&:hover:not(.active) {
-				background-color: rgba($orgColor, .5);
+				background-color: $orgColor;
 			}
 		}
 	}
@@ -391,18 +404,18 @@ $orgColor: #ffb74d;
 
 [data-value="person"], [data-value="pers"], [data-value="persName"] {
 	.option-icon-label {
-		color: $personColor;
+		color: $personColor-darker;
 	}
 }
 
 [data-value="place"], [data-value="placeName"] {
 	.option-icon-label {
-		color: $placeColor;
+		color: $placeColor-darker;
 	}
 }
 
 [data-value="org"], [data-value="orgName"] {
 	.option-icon-label {
-		color: $orgColor;    
+		color: $orgColor-darker;    
 	}
 }

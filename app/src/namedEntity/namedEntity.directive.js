@@ -38,7 +38,8 @@ angular.module('evtviewer.namedEntity')
                 }
             };
 
-            var panelsElement = element.find('.namedEntity__details-panels');
+            var headersElement = element.find('.namedEntity__details-headers'),
+                panelsElement = element.find('.namedEntity__details-panels');
             scope.vm.toggleSubContentClass = function() {
                 var subContent = scope.vm._subContentOpened;
                 var elementToRemoveClass = element.find('.namedEntity__details-header.active');
@@ -47,8 +48,10 @@ angular.module('evtviewer.namedEntity')
                 if (subContent !== '') {
                     var elementToAddClass = element.find('.namedEntity__details-header-'+subContent);
                     elementToAddClass.addClass('active');
+                    headersElement.removeClass('closed');
                     panelsElement.removeClass('closed');
                 } else {
+                    headersElement.addClass('closed');
                     panelsElement.addClass('closed');
                 }
             };
