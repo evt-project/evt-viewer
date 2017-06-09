@@ -1,38 +1,12 @@
 <span class="namedEntity namedEntity-{{ ::vm.entityType }} location-{{::vm.location}}"
      ng-class="::{'opened': vm.location === 'mainText'}">
-	<span class="namedEntity__header" ng-switch="::vm.entityType" ng-click="vm.toggle()">
+	<span class="namedEntity__header" ng-click="vm.toggle()">
         <!-- HEADER -->
         <i class="fa opener" ng-if="::vm.location !== 'mainText'"></i>
         
         <i class="fa namedEntity__icon {{::vm.entityTypeIcon}}" ng-if="::vm.location === 'mainText'"></i>
 
-        <span ng-switch-when="place">
-            <span ng-if="::vm.entity.settlement" 
-                ng-repeat="settlement in ::vm.entity.settlement track by $index">
-                {{::settlement.textContent}}<span ng-if="::settlement.attributes.type">, {{::settlement.attributes.type}}</span>
-            </span>
-        </span>
-
-        <span ng-switch-when="person">
-    		<span ng-if="::vm.entity.name">
-    			{{::vm.entity.name.textContent}}
-    		</span>
-            <span ng-if="::vm.entity.forename">
-                {{::vm.entity.forename.textContent}}
-            </span>
-            <span ng-if="::vm.entity.surname">
-                {{::vm.entity.surname.textContent}}
-            </span>
-        </span>
-
-        <span ng-switch-when="org">
-            <span ng-if="::vm.entity.orgName" 
-                ng-repeat="orgName in ::vm.entity.orgName track by $index">
-                {{::orgName.textContent}}<span ng-if="::orgName.attributes.type">, {{::orgName.attributes.type}}</span>
-            </span>
-        </span>
-
-        <span ng-switch-default>
+        <span>
             {{ ::vm.entity.label }}
         </span>
     </span>
@@ -50,22 +24,47 @@
                   <div class="namedEntity__details-panel"
                         ng-switch="vm._subContentOpened">
                         <div ng-switch-when="moreInfo">
-                            <span ng-if="::vm.entity.notes && vm.entity.notes.length > 0" 
-                                class="{{ ::note.type }}"
-                                ng-repeat="note in ::vm.entity.notes track by $index"
-                                compile="::note.content">
+                            
+                            <span ng-if="::vm.entity.content && vm.entity.content._indexes.length > 0" 
+                                ng-repeat="contentName in ::vm.entity.content._indexes">
+                                <span class="namedEntity__detail" ng-if="::vm.entity.content[contentName].length > 0">
+                                    <!-- SWITCH to get icon -->
+                                    <span ng-switch="contentName">
+                                        <i ng-switch-when="idno"
+                                            class="fa fa-barcode namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="note"
+                                            class="fa fa-sticky-note namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="settlement"
+                                            class="fa fa-location-arrow namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="occupation"
+                                            class="fa fa-briefcase namedEntity__detail-icon"></i>                                        
+                                        <i ng-switch-when="persName"
+                                            class="fa fa-user namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="sex"
+                                            class="fa fa-venus-mars namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="birth"
+                                            class="fa fa-birthday-cake namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="death"
+                                            class="fa fa-times fa-rotate-45 namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="orgName"
+                                            class="fa fa-users namedEntity__detail-icon"></i>
+                                        <i ng-switch-default
+                                            class="fa fa-info-circle namedEntity__detail-icon"></i>
+                                    </span>
+
+                                    <span class="namedEntity__detail-text"
+                                        ng-repeat="contentObj in ::vm.entity.content[contentName] track by $index">
+                                            <span compile="::contentObj.text"></span>
+                                            <span class="namedEntity__detail-text-attributes">
+                                                <span class="namedEntity__detail-text-attribute" 
+                                                    ng-repeat="attribute in ::contentObj.attributes._indexes track by $index"
+                                                >{{::contentObj.attributes[attribute]}}</span>
+                                            </span>
+                                        </span>
+                                </span>
                             </span>
 
-                            <span ng-if="::vm.entity.desc" 
-                                ng-repeat="desc in ::vm.entity.desc track by $index"
-                                compile="::desc.content">
-                            </span>
-
-                            <span ng-if="::vm.entity.details" 
-                                compile="::vm.entity.details">
-                            </span>            
-
-                            <span ng-if="::vm.noMoreInfo">
+                            <span ng-if="::vm.entity.content._indexes.length <= 0">
                                 No more information available.
                             </span>
                         </div>
@@ -84,7 +83,8 @@
                             </span>
                         </div>
                         <div ng-switch-when="xmlSource">
-                          <pre>{{ ::vm.entity._xmlSource | prettyXml }}</pre>
+                          <pre ng-if="::vm.entity._xmlSource">{{ ::vm.entity._xmlSource | prettyXml }}</pre>
+                          <span ng-if="::!vm.entity._xmlSource">No source found.</span>
                         </div>
                   </div>
               </div>

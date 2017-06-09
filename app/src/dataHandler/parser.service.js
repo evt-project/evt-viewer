@@ -33,6 +33,10 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	parser.camelToSpace = function(str) {
+		return str.replace(/\W+/g, ' ')
+					.replace(/([a-z\d])([A-Z])/g, '$1 $2');
+	};
 	/* ************************ */
 	/* parseXMLElement(element) */
 	/* ********************************************************** */
@@ -71,6 +75,22 @@ angular.module('evtviewer.dataHandler')
 				// } else 
 				if (tagName === 'note' && skip !== 'evtNote') {
 					newElement = parser.parseNote(element);
+				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
+					newElement = document.createElement('span');
+					newElement.className = tagName;
+					var textContent = '';
+					for (var i = 0; i < element.attributes.length; i++) {
+						var attrib = element.attributes[i];
+						if (attrib.specified) {
+							if (attrib.name !== 'xml:id') {
+								var date = new Date(attrib.value);
+								var formattedDate = date && !isNaN(date) ? date.toLocaleDateString() : attrib.value;
+								textContent += parser.camelToSpace(attrib.name.replace(':', '-')).toLowerCase() + ': '+ formattedDate + ', ';
+							}
+						}
+					}
+					newElement.textContent = textContent.slice(0, -1);
+
 				} else if (config.namedEntitiesSelector && possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
 					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);

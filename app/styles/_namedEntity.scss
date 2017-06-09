@@ -94,6 +94,39 @@
 		}
 	}
 
+	&__detail {
+		display: block;
+		&-icon {
+			float: left;
+			margin-top: 3px;
+		}
+		&-text {
+			margin-left: 24px;
+			display: block;
+			&:first-letter {
+				text-transform: uppercase;
+			}
+
+			&-attribute {
+				&:first-of-type {
+					&:before {
+						content: "(";
+					}
+				}
+
+				&:after {
+					content: ", ";
+				}
+
+				&:last-of-type {
+					&:after {
+						content: ")";
+					}
+				}
+			}
+		}
+	}
+
 
 	&__occurrences, &__moreInfo {
 		display: none;
@@ -292,6 +325,10 @@ $orgColor-darker: #ffb74d;
 .namedEntityRef {
 	color: $base-color-middle;
 	cursor: pointer;
+	
+	&.fakeEntity {
+		cursor: default;
+	}
 	
 	&.active {
 		border: 1px solid #000;

@@ -104,7 +104,7 @@ angular.module('evtviewer.namedEntity')
                     entityTypeIcon = 'fa-list-ul';
                     moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.details !== undefined);
                     break;
-            };
+            }
 
             // Handle entity occurrences
             var occurrences;

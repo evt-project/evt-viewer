@@ -64,7 +64,7 @@ angular.module('evtviewer.tabsContainer')
 
 					/* encodingDescription */
 					var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
-					if (textProfileContent && encodingDescriptionContent !== '') {
+					if (encodingDescriptionContent && encodingDescriptionContent !== '') {
 						tabs.encodingDescription = {
 							label: 'Encoding Description',
 							name: 'encodingDescription',
@@ -151,7 +151,7 @@ angular.module('evtviewer.tabsContainer')
 						};
 					}
 					break;
-				};
+			}
 
 			var subContentOpened = tabs._indexes.length > 0 ? tabs._indexes[0] : '';
 

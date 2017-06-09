@@ -41,7 +41,7 @@ angular.module('evtviewer.list')
         var getVisibleElements = function(listId, letter) {
             var visibleElements = [];
             if (letter) {
-                var visibleElements = parsedData.getNamedEntitiesCollectionByNameAndPos(listId, letter);
+                visibleElements = parsedData.getNamedEntitiesCollectionByNameAndPos(listId, letter);
                 visibleElements = visibleElements ? visibleElements._indexes : [];
             }
             return visibleElements;
