@@ -64,13 +64,13 @@ angular.module('evtviewer.dataHandler')
             if (str !== null && !containOnlySpace()) {
                addSpace();
             }
-            //str != null && !containOnlySpace() ? text += str : text;
 
             node = nodes.iterateNext();
             checkNodeName(node);
 
             if (node === null) {
                console.log(text);
+               console.log(glyphs);
                return text;
             }
             str = node.nodeValue;
@@ -117,15 +117,15 @@ angular.module('evtviewer.dataHandler')
                break;
          }
       }
-      /*if(glyphs.length === 0) {
+      if(glyphs.length === 0) {
          glyphs.push(glyph);
       }
-      for(let i = 0;  i < glyphs.length;i++) {
-         if(glyphs[i].id !== glyph.id) {
-            glyphs.push(glyph);
-         }
-      }*/
-      glyphs.push(glyph);
+      let found = glyphs.some(function(el) {
+         return el.id === glyph.id;
+      });
+      if(!found) {
+         glyphs.push(glyph);
+      }
       return glyph;
    };
 
