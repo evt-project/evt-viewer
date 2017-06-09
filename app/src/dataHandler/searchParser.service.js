@@ -69,7 +69,8 @@ angular.module('evtviewer.dataHandler')
             node = nodes.iterateNext();
             if(node !== null && node.nodeName === 'choice') {
                currentChoiceNode = node;
-               checkCurrentNode(node);
+               checkCurrentNode(node, doc);
+               node = currentChoiceNode;
             }
 
             if (node === null) {
@@ -81,7 +82,8 @@ angular.module('evtviewer.dataHandler')
             str = node.nodeValue;
          }
          else {
-            addGlyph(doc);
+            findGlyph(doc);
+            addGlyph(currentGlyph);
             node = nodes.iterateNext();
          }
          cleanText();
@@ -125,8 +127,8 @@ angular.module('evtviewer.dataHandler')
       if(glyphs.length === 0) {
          glyphs.push(glyph);
       }
-      let found = glyphs.some(function(el) {
-         return el.id === glyph.id;
+      let found = glyphs.some(function(element) {
+         return element.id === glyph.id;
       });
       if(!found) {
          glyphs.push(glyph);
@@ -134,16 +136,27 @@ angular.module('evtviewer.dataHandler')
       return glyph;
    };
 
-   let addGlyph = function(doc) {
+   let findGlyph = function(doc) {
       sRef = node.getAttribute('ref');
       sRef = sRef.replace('#', '');
       glyphNode = getGlyphNode(doc);
       currentGlyph = getGlyph(glyphNode);
-      checkGlyphEdition(currentGlyph);
+      return currentGlyph;
    };
 
-   let checkGlyphEdition = function(currentGlyph) {
-      currentEdition = mainNode.dataset.edition;
+   let replaceGlyphTag = function(childNode, innerHtml, innerHtmlChild, doc) {
+      let replaceGTag,
+          toReplace = innerHtmlChild,
+          glyph;
+
+      node = childNode;
+      glyph = findGlyph(doc);
+      replaceGTag = innerHtml.replace(toReplace, glyph.diplomatic);
+      return replaceGTag;
+   };
+
+   let addGlyph = function(currentGlyph) {
+      checkCurrentGlyphEdition();
       switch (currentEdition) {
          case 'diplomatic':
             text += currentGlyph.diplomatic;
@@ -154,6 +167,11 @@ angular.module('evtviewer.dataHandler')
          default:
             text += currentGlyph;
       }
+   };
+
+   let checkCurrentGlyphEdition = function() {
+      currentEdition = mainNode.dataset.edition;
+      return currentEdition;
    };
 
    let checkCurrentEdition = function(node) {
@@ -184,19 +202,32 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   let checkCurrentNode = function (node) {
+   let checkCurrentNode = function (node, doc) {
          let word = {},
              children = node.children,
-             childNodeName;
+             childNode,
+             childNodeName,
+             innerHtml,
+             innerHtmlChild;
 
          for(let i = 0; i < children.length; i++) {
             childNodeName = children[i].nodeName;
+            innerHtml = children[i].innerHTML;
+            for(let j = 0; j < children[i].children.length; j++) {
+               innerHtmlChild = children[i].children[j].outerHTML;
+            }
+            childNode = checkChildNode(node);
             switch(childNodeName) {
                case 'sic':
                case 'orig':
                case 'abbr':
                case 'am':
-                  word.diplomatic = children[i].textContent;
+                  if(childNode && childNode.nodeName === 'g') {
+                    word.diplomatic = replaceGlyphTag(childNode, innerHtml, innerHtmlChild, doc);
+                  }
+                  else {
+                     word.diplomatic = children[i].textContent;
+                  }
                   break;
                case 'corr':
                case 'reg':
@@ -207,6 +238,25 @@ angular.module('evtviewer.dataHandler')
             }
          }
          editionWords.push(word);
+   };
+
+   let checkChildNode = function(node) {
+      let childNode,
+          j;
+
+      for (let i = 0; i < node.children.length; i++) {
+         childNode = node;
+
+         while (childNode.children.length !== 0) {
+            for(let j = 0; j < childNode.children.length; j++) {
+               childNode = childNode.children[j];
+               switch(childNode.nodeName) {
+                  case 'g':
+                     return childNode;
+               }
+            }
+         }
+      }
    };
 
    let containOnlySpace = function() {
