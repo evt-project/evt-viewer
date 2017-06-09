@@ -13,14 +13,17 @@ angular.module('evtviewer.dataHandler')
        nodes,
        node,
        mainNode,
-       currentGlyph,
-       currentEdition,
+
+      currentEdition,
+      currentGlyph,
 
        glyphs = [],
        editionWords = [],
        glyphNode,
        glyphId = '',
-       sRef = '';
+       sRef = '',
+
+       regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
 
    parser.parseWords = function (doc) {
      text = getText(doc);
@@ -58,7 +61,10 @@ angular.module('evtviewer.dataHandler')
             str = node.nodeValue;
             checkCurrentEdition(node);
 
-            str != null && !containOnlySpace() ? text += str : text;
+            if (str !== null && !containOnlySpace()) {
+               addSpace();
+            }
+            //str != null && !containOnlySpace() ? text += str : text;
 
             node = nodes.iterateNext();
             checkNodeName(node);
@@ -200,13 +206,30 @@ angular.module('evtviewer.dataHandler')
       return jQuery.trim(str).length === 0;
    };
 
+   let addSpace = function() {
+      if (node.parentNode.parentNode.nodeName === 'choice' && node.nextSibling !== null && node.previousSibling !== null || node.parentNode.nodeName === 'hi') {
+         text += str;
+      }
+      else if (node.nextSibling === null && node.previousSibling === null) {
+         text += ' ' + str + ' ';
+      }
+      else if (node.nextSibling === null || node.nextSibling.nodeName === 'pb' || node.nextSibling.nodeName === 'lb') {
+         text += str + ' ';
+      }
+      else if (node.previousSibling === null || node.previousSibling.nodeName === 'pb' || node.previousSibling.nodeName === 'lb') {
+         text += ' ' + str;
+      }
+      else {
+         text += str;
+      }
+   };
+
    let cleanText = function () {
       let replace,
-          choice = document.getElementsByClassName('choice'),
-          regExp = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+          choice = document.getElementsByClassName('choice');
 
-      while(text.match(regExp)) {
-         replace = text.replace(regExp, "");
+      while(text.match(regex)) {
+         replace = text.replace(regex, "");
          text = replace;
       }
       while(text.match(/\s\s/)){
