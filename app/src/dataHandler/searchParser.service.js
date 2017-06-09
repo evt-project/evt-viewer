@@ -14,8 +14,9 @@ angular.module('evtviewer.dataHandler')
        node,
        mainNode,
 
-      currentEdition,
-      currentGlyph,
+       currentEdition,
+       currentGlyph,
+       currentChoiceNode,
 
        glyphs = [],
        editionWords = [],
@@ -66,11 +67,15 @@ angular.module('evtviewer.dataHandler')
             }
 
             node = nodes.iterateNext();
-            checkNodeName(node);
+            if(node !== null && node.nodeName === 'choice') {
+               currentChoiceNode = node;
+               checkCurrentNode(node);
+            }
 
             if (node === null) {
                console.log(text);
                console.log(glyphs);
+               console.log(editionWords);
                return text;
             }
             str = node.nodeValue;
@@ -179,8 +184,7 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   let checkNodeName = function (node) {
-      if(node !== null && node.nodeName === 'choice') {
+   let checkCurrentNode = function (node) {
          let word = {},
              children = node.children,
              childNodeName;
@@ -203,7 +207,6 @@ angular.module('evtviewer.dataHandler')
             }
          }
          editionWords.push(word);
-      }
    };
 
    let containOnlySpace = function() {
