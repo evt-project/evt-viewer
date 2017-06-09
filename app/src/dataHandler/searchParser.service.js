@@ -76,11 +76,7 @@ angular.module('evtviewer.dataHandler')
             str = node.nodeValue;
          }
          else {
-            sRef = node.getAttribute('ref');
-            sRef = sRef.replace('#', '');
-            glyphNode = getGlyphNode(doc);
-            currentGlyph = getGlyph(glyphNode);
-            checkGlyphEdition(currentGlyph);
+            addGlyph(doc);
             node = nodes.iterateNext();
          }
          cleanText();
@@ -131,6 +127,14 @@ angular.module('evtviewer.dataHandler')
       }*/
       glyphs.push(glyph);
       return glyph;
+   };
+
+   let addGlyph = function(doc) {
+      sRef = node.getAttribute('ref');
+      sRef = sRef.replace('#', '');
+      glyphNode = getGlyphNode(doc);
+      currentGlyph = getGlyph(glyphNode);
+      checkGlyphEdition(currentGlyph);
    };
 
    let checkGlyphEdition = function(currentGlyph) {
