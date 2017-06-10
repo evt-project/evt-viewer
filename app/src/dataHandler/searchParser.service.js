@@ -63,7 +63,7 @@ angular.module('evtviewer.dataHandler')
             checkCurrentEdition(node);
 
             if (str !== null && !containOnlySpace()) {
-               addSpace();
+               addWord();
             }
 
             node = nodes.iterateNext();
@@ -175,7 +175,8 @@ angular.module('evtviewer.dataHandler')
    };
 
    let checkCurrentEdition = function(node) {
-      let nodeName = node.nodeName;
+      let nodeName = node.nodeName,
+          iterate;
 
       mainNode = document.getElementById('mainText');
       currentEdition = mainNode.dataset.edition;
@@ -186,8 +187,7 @@ angular.module('evtviewer.dataHandler')
             case 'reg':
             case 'expan':
             case 'ex':
-            node = nodes.iterateNext();
-            node = nodes.iterateNext();
+               iterateNode(node);
          }
       }
       if(currentEdition === 'interpretative') {
@@ -196,8 +196,12 @@ angular.module('evtviewer.dataHandler')
             case 'orig':
             case 'abbr':
             case 'am':
-            node = nodes.iterateNext();
-            node = nodes.iterateNext();
+               for(let i = 0; i < node.childNodes.length; i++) {
+                  iterate = nodes.iterateNext();
+                  for(let j = 0; j < node.childNodes[i].childNodes.length; i++) {
+                     iterate = nodes.iterateNext();
+                  }
+               }
          }
       }
    };
@@ -241,8 +245,7 @@ angular.module('evtviewer.dataHandler')
    };
 
    let checkChildNode = function(node) {
-      let childNode,
-          j;
+      let childNode;
 
       for (let i = 0; i < node.children.length; i++) {
          childNode = node;
@@ -259,11 +262,26 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
+   let iterateNode = function(node) {
+      let iterate;
+
+      for (let i = 0; i < node.childNodes.length; i++) {
+         iterate = nodes.iterateNext();
+         while (iterate.childNodes.length !== 0) {
+            for (let j = 0; j < iterate.childNodes.length; j++) {
+               iterate = nodes.iterateNext();
+            }
+         }
+      }
+      node = iterate;
+      return node;
+   };
+
    let containOnlySpace = function() {
       return jQuery.trim(str).length === 0;
    };
 
-   let addSpace = function() {
+   let addWord = function() {
       if (node.parentNode.parentNode.nodeName === 'choice' && node.nextSibling !== null && node.previousSibling !== null || node.parentNode.nodeName === 'hi') {
          text += str;
       }
