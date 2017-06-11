@@ -84,6 +84,7 @@ angular.module('evtviewer.dataHandler')
          else {
             findGlyph(doc);
             addGlyph(currentGlyph);
+            addSpace();
             node = nodes.iterateNext();
          }
          cleanText();
@@ -282,20 +283,39 @@ angular.module('evtviewer.dataHandler')
    };
 
    let addWord = function() {
-      if (node.parentNode.parentNode.nodeName === 'choice' && node.nextSibling !== null && node.previousSibling !== null || node.parentNode.nodeName === 'hi') {
+      let nextSibling = node.nextSibling,
+          previousSibling = node.previousSibling;
+
+
+      if (node.parentNode.parentNode.nodeName === 'choice' && nextSibling !== null && previousSibling !== null || node.parentNode.nodeName === 'hi') {
          text += str;
       }
-      else if (node.nextSibling === null && node.previousSibling === null) {
+      else if (nextSibling === null && previousSibling === null) {
          text += ' ' + str + ' ';
       }
-      else if (node.nextSibling === null || node.nextSibling.nodeName === 'pb' || node.nextSibling.nodeName === 'lb') {
+      else if (nextSibling === null || nextSibling.nodeName === 'pb' || nextSibling.nodeName === 'lb') {
          text += str + ' ';
       }
-      else if (node.previousSibling === null || node.previousSibling.nodeName === 'pb' || node.previousSibling.nodeName === 'lb') {
+      else if (previousSibling === null || previousSibling.nodeName === 'pb' || previousSibling.nodeName === 'lb') {
          text += ' ' + str;
       }
       else {
          text += str;
+      }
+   };
+
+   let addSpace = function() {
+      let nextSibling = node.nextSibling,
+          previousSibling = node.previousSibling;
+
+      if(nextSibling === null && previousSibling !== null) {
+            text += ' ';
+      }
+      else if (nextSibling === null && previousSibling === null) {
+         text += '';
+      }
+      else {
+         text += '';
       }
    };
 
