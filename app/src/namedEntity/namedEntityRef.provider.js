@@ -71,6 +71,7 @@ angular.module('evtviewer.namedEntity')
                 entityId      : entityId,
                 entityType    : entityType,
                 detailsInPopup : detailsInPopup,
+                realNamedEntity : realNamedEntity,
 
                 highlight     : false,
 
