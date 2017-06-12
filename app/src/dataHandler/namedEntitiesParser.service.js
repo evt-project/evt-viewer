@@ -30,7 +30,8 @@ angular.module('evtviewer.dataHandler')
 		relationNameDef	   = 'name',
 		relationActiveDef  = 'active',
 		relationPassiveDef = 'passive',
-		relationMutualDef  = 'mutual';
+		relationMutualDef  = 'mutual',
+		relationTypeDef    = 'type';
 
 	NEparser.parseEntities = function(doc) {
 		var currentDocument = angular.element(doc),
@@ -114,8 +115,10 @@ angular.module('evtviewer.dataHandler')
 			activeRefs = nodeElem.getAttribute(relationActiveDef),
 			mutualRefs = nodeElem.getAttribute(relationMutualDef),
 			passiveRefs = nodeElem.getAttribute(relationPassiveDef),
-			relationName = nodeElem.getAttribute(relationNameDef); 
+			relationName = nodeElem.getAttribute(relationNameDef),
+			relationType = nodeElem.getAttribute(relationTypeDef); 
 
+		relationType = relationType ? '<i>'+relationType+'</i>' : '';
 		var relationText = '<span class="relation">';
 
 
@@ -183,7 +186,7 @@ angular.module('evtviewer.dataHandler')
 					entityActive.content._indexes.push('relations');
 				}	
 				entityActive.content.relations.push({
-					text: 'Active role in a relation: ' + relationText,
+					text: 'Active role in a ' + relationType + ' relation: ' + relationText,
 					attributes: []
 				});
 				entityActive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -199,7 +202,7 @@ angular.module('evtviewer.dataHandler')
 					entityMutual.content._indexes.push('relations');
 				}	
 				entityMutual.content.relations.push({
-					text: 'Mutual role in a relation: ' + relationText,
+					text: 'Mutual role in a ' + relationType + ' relation: ' + relationText,
 					attributes: []
 				});
 				entityMutual._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -215,7 +218,7 @@ angular.module('evtviewer.dataHandler')
 					entityPassive.content._indexes.push('relations');
 				}	
 				entityPassive.content.relations.push({
-					text: 'Passive role in a relation: '+ relationText,
+					text: 'Passive role in a ' + relationType + ' relation: '+ relationText,
 					attributes: []
 				});
 				entityPassive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
