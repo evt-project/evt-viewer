@@ -9,6 +9,6 @@ angular.module('evtviewer.core')
 
 .filter('camelToSpaces', function() {
 	return function(input, all) {
-		return (!!input) ? input.replace(/\W+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1 $2') : '';
+		return (!!input) ? input.replace(/\s+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1 $2') : '';
 	}
 });

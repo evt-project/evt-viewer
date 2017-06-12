@@ -21,12 +21,20 @@ angular.module('evtviewer.dataHandler')
 		contentDef: '<item>',
 		type: 'generic'
 	}];
+
 	var idAttributeDef 	 = 'xml:id',
 		typeAttributeDef = 'type',
-		listHeaderDef 	 = 'head';
+		listHeaderDef 	 = '<head>',
+
+		relationDef 	   = '<relation>'
+		relationNameDef	   = 'name',
+		relationActiveDef  = 'active',
+		relationPassiveDef = 'passive',
+		relationMutualDef  = 'mutual';
 
 	NEparser.parseEntities = function(doc) {
-		var currentDocument = angular.element(doc);
+		var currentDocument = angular.element(doc),
+			relationsInListDef = '';
 
 		for (var i = 0; i < listsToParse.length; i++) {
 			var listDef = listsMainContentDef.replace(/[<>]/g, '') + ' ' + listsToParse[i].listDef.replace(/[<>]/g, ''),
@@ -49,10 +57,11 @@ angular.module('evtviewer.dataHandler')
 					listTitle = 'Lista generica';
 
 			}
+			relationsInListDef += listDef + ' ' + relationDef.replace(/[<>]/g, '') + ', ';
 			angular.forEach(currentDocument.find(listDef), 
 				function(element) {
 					// We consider only first level lists; inset lists will be considered differently
-					if ( !evtParser.isNestedInElem(element, element.tagName) ) { 
+					if ( !evtParser.isNestedInElem(element, element.tagName) ) {
 						var listId = element.getAttribute(idAttributeDef) || undefined;
 						if (listType !== 'generic' || (listType === 'generic' && listId !== undefined)) { //Generic lists only allowed if have an id
 							var defCollection = {
@@ -65,7 +74,10 @@ angular.module('evtviewer.dataHandler')
 									var collection = parseCollectionData(child, defCollection);
 									var el = {};
 									
-									if (contentDef.indexOf(child.tagName) >= 0) { 
+									if (listsToParse[i].listDef.indexOf('<' + child.tagName + '>') >= 0) {
+										// Parse Direct Sub list 
+										NEparser.parseDirectSubList(child, listsToParse[i].contentDef, listsToParse[i].listDef, defCollection);
+									} else if (contentDef.indexOf(child.tagName) >= 0) { 
 										el = parseEntity(child, listsToParse[i].contentDef, listsToParse[i].listDef);
 										parsedData.addNamedEntityInCollection(collection, el, el.id.substr(0, 1).toLowerCase());
 									}
@@ -74,10 +86,141 @@ angular.module('evtviewer.dataHandler')
 						}
 					}
 			});
+
+		}
+		// Parse relations
+		angular.forEach(currentDocument.find(relationsInListDef.slice(0, -2)), function(element) {
+				NEparser.parseRelationsInList(element);
+		});
+
+		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
+	};
+
+	NEparser.parseDirectSubList = function(nodeElem, contentDef, listDef, defCollection) {
+		angular.forEach(nodeElem.childNodes, function(child){
+			if (child.nodeType === 1) {
+				var collection = parseCollectionData(child, defCollection);
+				var el = {};
+				if (contentDef.indexOf(child.tagName) >= 0) { 
+					el = parseEntity(child, contentDef, listDef);
+					parsedData.addNamedEntityInCollection(collection, el, el.id.substr(0, 1).toLowerCase());
+				}
+			}
+		});
+	};
+
+	NEparser.parseRelationsInList = function(nodeElem) {
+		var parsedRelation = evtParser.parseXMLElement(nodeElem, nodeElem, 'evtNote'),
+			activeRefs = nodeElem.getAttribute(relationActiveDef),
+			mutualRefs = nodeElem.getAttribute(relationMutualDef),
+			passiveRefs = nodeElem.getAttribute(relationPassiveDef),
+			relationName = nodeElem.getAttribute(relationNameDef); 
+
+		var relationText = '<span class="relation">';
+
+
+		var activeRefsArray = activeRefs ? activeRefs.split('#').filter(function(el) { return el.length !== 0; }) : [];
+		var mutualRefsArray = mutualRefs ? mutualRefs.split('#').filter(function(el) { return el.length !== 0; }) : []; 
+		var passiveRefsArray = passiveRefs ? passiveRefs.split('#').filter(function(el) { return el.length !== 0; }) : [];
+		if (activeRefs || mutualRefs || passiveRefs || relationName) {
+			var entityElem, entityId, listType;
+			for (var i = 0; i < activeRefsArray.length; i++) { 
+				entityElem = document.createElement('evt-named-entity-ref');
+				entityId = activeRefsArray[i].trim();
+				//listType = parsedData.getNamedEntityType(entityId);
+				
+				if (entityId && entityId !== '') {
+					entityElem.setAttribute('data-entity-id', entityId);
+				}
+				//entityElem.setAttribute('data-entity-type', listType);
+				entityElem.textContent = '#' + entityId;
+				relationText += entityElem.outerHTML + ' ';
+			}
+
+			for (var j = 0; j < mutualRefsArray.length; j++) { 
+				if (j === 0 && activeRefs && activeRefs !== '') {
+					relationText += 'and ';
+				}
+
+				entityElem = document.createElement('evt-named-entity-ref');
+				entityId = mutualRefsArray[j].trim();
+				//listType = parsedData.getNamedEntityType(entityId);
+
+				if (entityId && entityId !== '') {
+					entityElem.setAttribute('data-entity-id', entityId);
+				}
+				//entityElem.setAttribute('data-entity-type', listType);
+				entityElem.textContent = '#' + entityId;
+				relationText += entityElem.outerHTML + ' ';
+			}
+
+			relationText += relationName ? '<span class="relation-name">'+evtParser.camelToSpace(relationName) + ' </span>' : '';
+
+			for (var k = 0; k < passiveRefsArray.length; k++) { 
+				entityElem = document.createElement('evt-named-entity-ref');
+				entityId = passiveRefsArray[k].trim();
+				//listType = parsedData.getNamedEntityType(entityId);
+
+				if (entityId && entityId !== '') {
+					entityElem.setAttribute('data-entity-id', entityId);
+				}
+				//entityElem.setAttribute('data-entity-type', listType);
+				entityElem.textContent = '#' + entityId;
+				relationText += entityElem.outerHTML + ' ';
+			}
+		}
+		relationText += '</span>';
+		relationText += parsedRelation ? parsedRelation.innerHTML : nodeElem.innerHTML;
+		
+		// Update info in pased named entities
+		// Active roles
+		// Add relation info to active elements
+		for (i = 0; i < activeRefsArray.length; i++) {
+			var entityActive = parsedData.getNamedEntity(activeRefsArray[i].trim());
+			if (entityActive && relationText !== '') {
+				if (!entityActive.content.relations) {
+					entityActive.content.relations = [];
+					entityActive.content._indexes.push('relations');
+				}	
+				entityActive.content.relations.push({
+					text: 'Active role in a relation: ' + relationText,
+					attributes: []
+				});
+				entityActive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+			}
 		}
 
-		// TODO: Generalize parser;
-		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
+		// Mutual roles
+		for (j = 0; j < mutualRefsArray.length; j++) {
+			var entityMutual = parsedData.getNamedEntity(mutualRefsArray[j].trim());
+			if (entityMutual && relationText !== '') {
+				if (!entityMutual.content.relations) {
+					entityMutual.content.relations = [];
+					entityMutual.content._indexes.push('relations');
+				}	
+				entityMutual.content.relations.push({
+					text: 'Mutual role in a relation: ' + relationText,
+					attributes: []
+				});
+				entityMutual._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+			}
+		}
+
+		// Passive roles
+		for (k = 0; k < passiveRefsArray.length; k++) {
+			var entityPassive = parsedData.getNamedEntity(passiveRefsArray[k].trim());
+			if (entityPassive && relationText !== '') {
+				if (!entityPassive.content.relations) {
+					entityPassive.content.relations = [];
+					entityPassive.content._indexes.push('relations');
+				}	
+				entityPassive.content.relations.push({
+					text: 'Passive role in a relation: '+ relationText,
+					attributes: []
+				});
+				entityPassive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+			}
+		}
 	};
 
 	var parseEntity = function(nodeElem, contentDef, listDef) {
@@ -190,7 +333,7 @@ angular.module('evtviewer.dataHandler')
 
 	var parseCollectionData = function(el, defCollection) {
 		var collection = defCollection;
-		if (el.previousElementSibling && el.previousElementSibling.tagName === listHeaderDef) {
+		if (el.previousElementSibling && listHeaderDef.indexOf('<' + el.previousElementSibling.tagName + '>') >= 0) {
 			collection.id = el.previousElementSibling.textContent.trim().replace(/\s/g, '');
 			collection.title = el.previousElementSibling.textContent.trim();
 		} else {

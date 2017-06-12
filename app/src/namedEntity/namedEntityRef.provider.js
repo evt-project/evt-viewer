@@ -43,7 +43,7 @@ angular.module('evtviewer.namedEntity')
         namedEntityRef.build = function(id, scope) {
             var currentId  = idx++,
                 entityId   = id || undefined,
-                entityType = scope.entityType || 'generic',
+                entityType = scope.entityType ? scope.entityType : parsedData.getNamedEntityType(entityId),
                 realNamedEntity = entityId !== undefined, 
                 detailsInPopup = false; //TODO: differentiate depending on type
 
@@ -71,6 +71,7 @@ angular.module('evtviewer.namedEntity')
                 entityId      : entityId,
                 entityType    : entityType,
                 detailsInPopup : detailsInPopup,
+                realNamedEntity : realNamedEntity,
 
                 highlight     : false,
 
