@@ -1,6 +1,9 @@
 /* *************************** */
 /* NAMED ENTITY                */
 /* *************************** */
+$named-entities-background-color : $base-color-light;
+$named-entities-background-color-darker : rgb(225, 225, 225);
+$named-entities-border-color : rgb(125, 125, 125);
 
 .namedEntity {
 	display: block;
@@ -47,7 +50,7 @@
 				display: inline-block;
 				font-size: 90%;
 				cursor: pointer;
-				border-left: 1px solid $critical-apparatus-entry-background-color-darker;
+				border-left: 1px solid $named-entities-background-color-darker;
 				&:first-child {
 					border-left: none;
 				}
@@ -55,11 +58,11 @@
 					//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
 				}
 				&.active{
-					@include set(box-shadow, inset 0 2px 2px -1px $critical-apparatus-entry-border-color);
-					background-color: $critical-apparatus-entry-background-color-darker;
-					border-right: 1px solid $critical-apparatus-entry-background-color-darker;
+					@include set(box-shadow, inset 0 2px 2px -1px $named-entities-border-color);
+					background-color: $named-entities-background-color-darker;
+					border-right: 1px solid $named-entities-background-color-darker;
 					&:not(:first-child) {
-						border-left: 1px solid $critical-apparatus-entry-background-color-darker;
+						border-left: 1px solid $named-entities-background-color-darker;
 					}
 					+ span {
 						border-left: none;
@@ -75,7 +78,7 @@
 			max-height: 150px;
 			overflow-x: hidden;
 			overflow-y: auto;
-			background-color: $critical-apparatus-entry-background-color-darker;
+			background-color: $named-entities-background-color-darker;
 
 		}
 
@@ -98,29 +101,54 @@
 		display: block;
 		&-icon {
 			float: left;
-			margin-top: 3px;
 		}
 		&-text {
 			margin-left: 24px;
 			display: block;
-			&:first-letter {
-				text-transform: uppercase;
+			
+			&-content {
+				display: inline-block;
+				&:first-letter {
+					text-transform: uppercase;
+				}
+
+				// 
+				// Specific TEI situations
+				//
+
+				// Nested Lists
+				.place, .person, .org, .item {
+					display: list-item;
+					margin-left: 20px;
+				}
 			}
 
 			&-attribute {
+				font-variant: small-caps;
+				font-size: 90%;
+				vertical-align: top;
+				display: inline-block;
+    			padding-top: 1px;
+				&:first-letter {
+					text-transform: uppercase;
+				}
+
 				&:first-of-type {
 					&:before {
-						content: "(";
+						//content: "(";
 					}
 				}
 
 				&:after {
 					content: ", ";
+					vertical-align: top;
+					margin-right: 0.2em;
 				}
 
 				&:last-of-type {
 					&:after {
-						content: ")";
+						content: ": ";
+						margin-right: 0;
 					}
 				}
 			}
@@ -222,6 +250,16 @@
 			border-bottom: 1px solid $base-color-middle;
 		}
 	}
+
+	// 
+	// Specific TEI situations
+	//
+
+	// Nested Lists
+	.listplace .place, .listperson .person, .listorg .org, .list .item {
+		display: list-item;
+		margin-left: 20px;
+	}
 }
 
 $personColor: #FFF0F1;
@@ -240,8 +278,8 @@ $orgColor-darker: #ffb74d;
 
 	border-bottom-color: $color-darker;
 
-	.namedEntity__details {
-		&-headers {
+	> .namedEntity__details {
+		> .namedEntity__details-headers {
 			span {
 				&.active{
 					@include set(box-shadow, inset 0 2px 3px -1px rgba(0,0,0,0.4) );
@@ -262,7 +300,7 @@ $orgColor-darker: #ffb74d;
 			}
 		}
 
-		&-panels{
+		> .namedEntity__details-panels{
 			@include set(box-shadow, inset 0 2px 3px -2px rgba(0, 0, 0, 0.4));
 			background-color: $color-darker;
 		}
@@ -307,7 +345,7 @@ $orgColor-darker: #ffb74d;
 		> div > *:hover {
 		    background: rgba($color, .4);
 		}
-		.namedEntity.opened {
+		> .namedEntity.opened {
 			background: rgba($color, .5);
 		}
     }
@@ -455,4 +493,9 @@ $orgColor-darker: #ffb74d;
 	.option-icon-label {
 		color: $orgColor-darker;    
 	}
+}
+
+.relation-name {
+	font-weight: bold;
+	font-variant: small-caps;
 }

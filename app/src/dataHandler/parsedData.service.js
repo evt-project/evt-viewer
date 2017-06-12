@@ -142,6 +142,12 @@ angular.module('evtviewer.dataHandler')
 		return namedEntity;
 	};
 
+	parsedData.getNamedEntityType = function(namedEntityId) {
+		var collectionId = namedEntityId && namedEntities[namedEntityId] ? namedEntities[namedEntityId].collectionId : undefined;
+		var collectionObj = parsedData.getNamedEntitiesCollectionByName(collectionId);
+		return collectionObj ? collectionObj._type : 'generic';
+	};
+	
 	/* PAGES */
 	// TODO: add attribute for the original xml reference
 	parsedData.addPage = function(page, docId) {

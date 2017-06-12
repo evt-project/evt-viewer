@@ -6,7 +6,8 @@ angular.module('evtviewer.dataHandler')
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
-		possibleNamedEntitiesDef = '<placeName>, <persName>, <orgName>';
+		possibleNamedEntitiesDef = '<placeName>, <persName>, <orgName>',
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
 	/* ********* */
 	/* UTILITIES */
@@ -31,6 +32,11 @@ angular.module('evtviewer.dataHandler')
 		} else {
 			return false;
 		}
+	};
+
+	parser.capitalize = function(str, all) {
+		var reg = (all) ? /([^\W_]+[^\s-]*) */g : /([^\W_]+[^\s-]*)/;
+		return (!!str) ? str.replace(reg, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
 	};
 
 	parser.camelToSpace = function(str) {
@@ -221,12 +227,14 @@ angular.module('evtviewer.dataHandler')
 	/* ******************* */
 	/* parseEntity(docDOM) */
 	/* **************************************************************************** */
-	/* Function to parse an XML element representing a note (<note> in XMLT-TEI P5) */
-	/* and transform it into an evtPopover directive                                */
-	/* @docDOM -> XML to be parsed                                                  */
+	/* Function to parse an XML element representing a named entity 				*/
+	/* and transform it into an evtNamedEntityRef 	                                */
+	/* @doc -> XML to be parsed                                                  	*/
+	/* @entityNode -> Node to be transformed										*/
+	/* @skip -> names of sub elements to skip from transformation					*/
 	/* **************************************************************************** */
-	// It will look for every element representing a note
-	// and replace it with a new evt-popover element
+	// It will replace the node @entityNode
+	// and replace it with a new evt-named-entity-ref element
 	parser.parseNamedEntity = function(doc, entityNode, skip) {
 		var entityElem = document.createElement('evt-named-entity-ref'),
 			entityRef = entityNode.getAttribute('ref'),
@@ -240,7 +248,9 @@ angular.module('evtviewer.dataHandler')
 		var entityContent = '';
 		for (var i = 0; i < entityNode.childNodes.length; i++) {
 			var childElement = entityNode.childNodes[i].cloneNode(true),
-				parsedXmlElem = parser.parseXMLElement(doc, childElement, skip);
+				parsedXmlElem;
+
+			parsedXmlElem = parser.parseXMLElement(doc, childElement, skip);
 			entityElem.appendChild(parsedXmlElem);
 		}
 		return entityElem;
