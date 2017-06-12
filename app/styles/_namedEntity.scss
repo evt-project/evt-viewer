@@ -103,24 +103,50 @@
 		&-text {
 			margin-left: 24px;
 			display: block;
-			&:first-letter {
-				text-transform: uppercase;
+			
+			&-content {
+				display: inline-block;
+				&:first-letter {
+					text-transform: uppercase;
+				}
+
+				// 
+				// Specific TEI situations
+				//
+
+				// Nested Lists
+				.place, .person, .org, .item {
+					display: list-item;
+					margin-left: 20px;
+				}
 			}
 
 			&-attribute {
+				font-variant: small-caps;
+				font-size: 90%;
+				vertical-align: top;
+				display: inline-block;
+    			padding-top: 1px;
+				&:first-letter {
+					text-transform: uppercase;
+				}
+
 				&:first-of-type {
 					&:before {
-						content: "(";
+						//content: "(";
 					}
 				}
 
 				&:after {
 					content: ", ";
+					vertical-align: top;
+					margin-right: 0.2em;
 				}
 
 				&:last-of-type {
 					&:after {
-						content: ")";
+						content: ": ";
+						margin-right: 0;
 					}
 				}
 			}
@@ -221,6 +247,16 @@
 		.namedEntity__details {
 			border-bottom: 1px solid $base-color-middle;
 		}
+	}
+
+	// 
+	// Specific TEI situations
+	//
+
+	// Nested Lists
+	.listplace .place, .listperson .person, .listorg .org, .list .item {
+		display: list-item;
+		margin-left: 20px;
 	}
 }
 

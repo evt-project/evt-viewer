@@ -46,6 +46,8 @@
                                             class="fa fa-birthday-cake namedEntity__detail-icon"></i>
                                         <i ng-switch-when="death"
                                             class="fa fa-times fa-rotate-45 namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="residence"
+                                            class="fa fa-home namedEntity__detail-icon"></i>
                                         <i ng-switch-when="orgName"
                                             class="fa fa-users namedEntity__detail-icon"></i>
                                         <i ng-switch-default
@@ -54,12 +56,12 @@
 
                                     <span class="namedEntity__detail-text"
                                         ng-repeat="contentObj in ::vm.entity.content[contentName] track by $index">
-                                            <span compile="::contentObj.text"></span>
                                             <span class="namedEntity__detail-text-attributes">
                                                 <span class="namedEntity__detail-text-attribute" 
                                                     ng-repeat="attribute in ::contentObj.attributes._indexes track by $index"
-                                                >{{::contentObj.attributes[attribute]}}</span>
+                                                >{{::contentObj.attributes[attribute] | camelToSpaces }}</span>
                                             </span>
+                                            <span class="namedEntity__detail-text-content" compile="::contentObj.text"></span>
                                         </span>
                                 </span>
                             </span>
