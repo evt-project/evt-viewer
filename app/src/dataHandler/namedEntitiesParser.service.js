@@ -7,18 +7,22 @@ angular.module('evtviewer.dataHandler')
 	var listsToParse = [{
 		listDef: '<listPlace>',
 		contentDef: '<place>',
+		contentForLabelDef: '<placeName>',
 		type: 'place'
 	},{
 		listDef: '<listPerson>',
 		contentDef: '<person>',
+		contentForLabelDef: '<persName>',
 		type: 'person'
 	},{
 		listDef: '<listOrg>',
 		contentDef: '<org>',
+		contentForLabelDef: '<orgName>',
 		type: 'org'
 	}, {
 		listDef: '<list>',
 		contentDef: '<item>',
+		contentForLabelDef: '',
 		type: 'generic'
 	}];
 
@@ -77,9 +81,9 @@ angular.module('evtviewer.dataHandler')
 									
 									if (listsToParse[i].listDef.indexOf('<' + child.tagName + '>') >= 0) {
 										// Parse Direct Sub list 
-										NEparser.parseDirectSubList(child, listsToParse[i].contentDef, listsToParse[i].listDef, defCollection);
+										NEparser.parseDirectSubList(child, listsToParse[i], defCollection);
 									} else if (contentDef.indexOf(child.tagName) >= 0) { 
-										el = parseEntity(child, listsToParse[i].contentDef, listsToParse[i].listDef);
+										el = parseEntity(child, listsToParse[i]);
 										parsedData.addNamedEntityInCollection(collection, el, el.id.substr(0, 1).toLowerCase());
 									}
 								}
@@ -97,13 +101,15 @@ angular.module('evtviewer.dataHandler')
 		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
 	};
 
-	NEparser.parseDirectSubList = function(nodeElem, contentDef, listDef, defCollection) {
+	NEparser.parseDirectSubList = function(nodeElem, listToParse, defCollection) {
+		var contentDef = listToParse.contentDef, 
+			listDef = listsToParse.listDef;
 		angular.forEach(nodeElem.childNodes, function(child){
 			if (child.nodeType === 1) {
 				var collection = parseCollectionData(child, defCollection);
 				var el = {};
 				if (contentDef.indexOf(child.tagName) >= 0) { 
-					el = parseEntity(child, contentDef, listDef);
+					el = parseEntity(child, listToParse);
 					parsedData.addNamedEntityInCollection(collection, el, el.id.substr(0, 1).toLowerCase());
 				}
 			}
@@ -226,7 +232,10 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
-	var parseEntity = function(nodeElem, contentDef, listDef) {
+	var parseEntity = function(nodeElem, listToParse) {
+		var contentDef = listToParse.contentDef, 
+			listDef = listToParse.listDef,
+			contentForLabelDef = listToParse.contentForLabelDef;
 		var elId = nodeElem.getAttribute(idAttributeDef) || evtParser.xpath(nodeElem);
 		var el = {
 			id         : elId,
@@ -237,7 +246,14 @@ angular.module('evtviewer.dataHandler')
 			_listPos   : elId.substr(0, 1).toLowerCase(),
 			_xmlSource : nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '')
 		};
-		el.label = elId; //TEMP
+		
+		var elementForLabel = nodeElem.getElementsByTagName(contentForLabelDef.replace(/[<>]/g, ''));
+		if (elementForLabel && elementForLabel.length > 0) {
+			var parsedLabel = evtParser.parseXMLElement(elementForLabel[0], elementForLabel[0], 'evtNote');
+			el.label = parsedLabel ? parsedLabel.innerHTML : elId;
+		} else {
+			el.label = elId;
+		}
 
 		angular.forEach(nodeElem.childNodes, function(child) {
 			// Each child node of XML node will be saved in a JSON structure that looks like this:
@@ -252,23 +268,35 @@ angular.module('evtviewer.dataHandler')
 			// The generic XML parser will transform the content of each node in an HTML element 
 			// with Tag Name as Class Name
 			if (child.nodeType === 1) {
-				if (el.content[child.tagName] === undefined) {
-					el.content[child.tagName] = [];
-					el.content._indexes.push(child.tagName);
-				}
-				var parsedChild;
-				if (contentDef.indexOf('<'+child.tagName+'>') >= 0) {
-					parsedChild = NEparser.parseSubEntity(child, contentDef, listDef);
+				if (contentForLabelDef.indexOf('<'+child.tagName+'>') >= 0 && child.children && child.children.length > 0) {
+					angular.forEach(child.children, function(subChild) {
+						if (subChild.nodeType === 1) {
+							parseAndAddContentToEntity(el, subChild, contentDef, listDef);
+						}
+					});
 				} else {
-					parsedChild = evtParser.parseXMLElement(child, child, 'evtNote');
+					parseAndAddContentToEntity(el, child, contentDef, listDef);					
 				}
-				el.content[child.tagName].push({
-					text: parsedChild ? parsedChild.innerHTML : child.innerHTML,
-					attributes: evtParser.parseElementAttributes(child) 
-				}); 
 			}
 		});
 		return el;
+	};
+
+	var parseAndAddContentToEntity = function(el, child, contentDef, listDef) {
+		if (el.content[child.tagName] === undefined) {
+			el.content[child.tagName] = [];
+			el.content._indexes.push(child.tagName);
+		}
+		var parsedChild;
+		if (contentDef.indexOf('<'+child.tagName+'>') >= 0) {
+			parsedChild = NEparser.parseSubEntity(child, contentDef, listDef);
+		} else {
+			parsedChild = evtParser.parseXMLElement(child, child, 'evtNote');
+		}
+		el.content[child.tagName].push({
+			text: parsedChild ? parsedChild.innerHTML : child.innerHTML,
+			attributes: evtParser.parseElementAttributes(child) 
+		}); 
 	};
 
 	NEparser.parseSubEntity = function(nodeElem, contentDef, listDef) {

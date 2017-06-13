@@ -11,4 +11,10 @@ angular.module('evtviewer.core')
 	return function(input, all) {
 		return (!!input) ? input.replace(/\s+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1 $2') : '';
 	}
+})
+
+.filter('underscoresToSpaces', function() {
+	return function(input, all) {
+		return (!!input) ? input.replace(/\_+/g, ' ') : '';
+	}
 });

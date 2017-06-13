@@ -6,9 +6,7 @@
         
         <i class="fa namedEntity__icon {{::vm.entityTypeIcon}}" ng-if="::vm.location === 'mainText'"></i>
 
-        <span>
-            {{ ::vm.entity.label }}
-        </span>
+        <span compile="::vm.entity.label"></span>
     </span>
 
     <span class="namedEntity__details">
@@ -34,8 +32,6 @@
                                             class="fa fa-barcode namedEntity__detail-icon"></i>
                                         <i ng-switch-when="note"
                                             class="fa fa-sticky-note namedEntity__detail-icon"></i>
-                                        <i ng-switch-when="settlement"
-                                            class="fa fa-location-arrow namedEntity__detail-icon"></i>
                                         <i ng-switch-when="occupation"
                                             class="fa fa-briefcase namedEntity__detail-icon"></i>                                        
                                         <i ng-switch-when="persName"
@@ -50,6 +46,22 @@
                                             class="fa fa-home namedEntity__detail-icon"></i>
                                         <i ng-switch-when="orgName"
                                             class="fa fa-users namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="geoName"
+                                            class="fa fa-map-marker namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="geogFeat"
+                                            class="fa fa-map-marker namedEntity__detail-icon"></i>
+
+                                        <i ng-switch-when="district"
+                                            class="fa fa-map-marker namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="settlement"
+                                            class="fa fa-location-arrow namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="region"
+                                            class="fa fa-map-marker namedEntity__detail-icon"></i>    
+                                        <i ng-switch-when="country"
+                                            class="fa fa-map-marker namedEntity__detail-icon"></i>
+                                        <i ng-switch-when="bloc"
+                                            class="fa fa-map-marker namedEntity__detail-icon"></i>
+                                        
                                         <i ng-switch-when="relations"
                                             class="fa fa-share-alt namedEntity__detail-icon"></i>
                                         <i ng-switch-default
@@ -61,7 +73,7 @@
                                             <span class="namedEntity__detail-text-attributes">
                                                 <span class="namedEntity__detail-text-attribute" 
                                                     ng-repeat="attribute in ::contentObj.attributes._indexes track by $index"
-                                                >{{::contentObj.attributes[attribute] | camelToSpaces }}</span>
+                                                >{{::contentObj.attributes[attribute] | camelToSpaces | underscoresToSpaces }}</span>
                                             </span>
                                             <span class="namedEntity__detail-text-content" compile="::contentObj.text"></span>
                                         </span>

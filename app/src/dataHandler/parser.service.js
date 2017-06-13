@@ -6,7 +6,7 @@ angular.module('evtviewer.dataHandler')
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
-		possibleNamedEntitiesDef = '<placeName>, <persName>, <orgName>',
+		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
 	/* ********* */
@@ -97,7 +97,8 @@ angular.module('evtviewer.dataHandler')
 					}
 					newElement.textContent = textContent.slice(0, -1);
 
-				} else if (config.namedEntitiesSelector && possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
+				} else if (config.namedEntitiesSelector && 
+					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
 					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
