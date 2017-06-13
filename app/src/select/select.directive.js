@@ -13,11 +13,25 @@ angular.module('evtviewer.select')
         templateUrl: 'src/select/select.directive.tmpl.html',
         controllerAs: 'vm',
         controller: 'SelectCtrl',
-        link: function(scope) {
+        link: function(scope, element) {
             // Initialize select
             var currentSelect = evtSelect.build(scope, scope.vm);
 
             $timeout(function(){
+                if (currentSelect.openUp) {
+                    var optionContainer = element.find('.option_container'),
+                        selector = element.find('.selector'),
+                        labelSelected = element.find('.label_selected');
+                    optionContainer.show();    
+                    optionContainer.css('visibility', 'hidden');
+                    optionContainer.css('position', 'relative');
+                    var newMarginTop = optionContainer.height() + selector.height() + 2; 
+                    optionContainer.css('margin-top', -newMarginTop + 'px')
+                    optionContainer.css('position', 'absolute');
+                    optionContainer.css('visibility', 'visible');
+                    optionContainer.css('display', '');
+                }
+
                 if (currentSelect !== undefined) {
                     if (scope.init !== undefined && scope.init !== '') {
                         currentSelect.selectOptionByValue(scope.init);

@@ -112,20 +112,45 @@ angular.module('evtviewer.select')
                     var optionSelectAll = {
                             value : 'ALL',
                             label : 'Select All',
-                            title : 'Select All Named Entities'
+                            title : 'Select All Named Entities',
+                            additionalClass: 'doubleBorderTop'
                         };
+                    var toggleHighlightElement = function(element, option, highlighted) {
+                        if (highlighted) {
+                            if (option.color) {
+                                angular.element(element).css('background', option.color);
+                            } else {
+                                angular.element(element).addClass('highlighted');
+                            }
+                        } else {
+                            if (option.color) {
+                                angular.element(element).css('background', '');
+                            } else {
+                                angular.element(element).removeClass('highlighted');
+                            }
+                        }
+                    };
+
                     callback = function(oldOption, newOption) {
                         if (newOption !== undefined){
-                            _console.log('Named Entities select callback ', newOption);
+                            //_console.log('Named Entities select callback ', newOption);
                             vm.selectOption(newOption);
                             if (newOption.value === 'ALL') {
                                 // SELECT ALL OPTIONS
                                 var optionListLength = optionList && optionList.length > 3 ? optionList.length-2 : 0; 
                                 for (var i = 0; i < optionListLength; i++) {
                                     var optionToSelect = optionList[i];
+
                                     if (!vm.isOptionSelected(optionToSelect)) {
                                         vm.selectOption(optionToSelect);
-                                        evtNamedEntityRef.addActiveType(optionToSelect.value);
+                                        if (optionToSelect.type === 'namedEntity') {
+                                            evtNamedEntityRef.addActiveType(optionToSelect.value);
+                                        } else {
+                                            var elementsToHighlight = document.getElementsByClassName(optionToSelect.value);
+                                            angular.forEach(elementsToHighlight, function(element) {
+                                                toggleHighlightElement(element, optionToSelect, true);
+                                            })
+                                        }
                                     }
                                 }
                                 vm.selectOption(newOption);
@@ -135,48 +160,86 @@ angular.module('evtviewer.select')
                                 for (var j = 0; j < optionSelected.length; j++) {
                                     var option = optionList[j];
                                     if (option.value !== 'ALL') {
-                                        evtNamedEntityRef.removeActiveType(option.value);
+                                        if (option.type === 'namedEntity') {
+                                            evtNamedEntityRef.removeActiveType(option.value);
+                                        } else {
+                                            var elementsToHighlight = document.getElementsByClassName(option.value);
+                                            angular.forEach(elementsToHighlight, function(element) {
+                                                toggleHighlightElement(element, option, false);
+                                            })
+                                        }
                                     }
                                 }
                                 vm.optionSelected = [];
                                 vm.selectOption(newOption);
-                            } else {
+                            } else if (newOption.type === 'namedEntity') {
                                 if (vm.isOptionSelected(newOption)) {
                                     evtNamedEntityRef.addActiveType(newOption.value);
                                 } else {
                                     evtNamedEntityRef.removeActiveType(newOption.value);
                                 }
+                            } else {
+                                var elementsToHighlight = document.getElementsByClassName(newOption.value);
+                                angular.forEach(elementsToHighlight, function(element) {
+                                    if (vm.isOptionSelected(newOption)) {
+                                        toggleHighlightElement(element, newOption, true);
+                                    } else {
+                                        toggleHighlightElement(element, newOption, false);
+                                    }
+                                });
                             }
                         }
                     };
 
                     formatOptionList = function(optionList) {
                         var formattedList = [];
-                        for (var i = 0; i < optionList.length; i++ ) {
-                            var currentOption = optionList[i];
-                            if (currentOption.available) {
-                                var option = {
-                                        icon  : 'fa-circle',
-                                        value : currentOption.tagName,
-                                        label : currentOption.label,
-                                        title : currentOption.label
-                                    };
-                                formattedList.push(option);
+                        if (optionList) {
+                            for (var i = 0; i < optionList.length; i++ ) {
+                                var currentOption = optionList[i];
+                                if (currentOption.available) {
+                                    var option = {
+                                            icon  : 'fa-circle',
+                                            type  : 'namedEntity',
+                                            value : currentOption.tagName,
+                                            label : currentOption.label,
+                                            title : currentOption.label,
+                                            color : currentOption.color
+                                        };
+                                    formattedList.push(option);
+                                }
                             }
                         }
-                        formattedList.push(optionSelectAll);
-                        formattedList.push({
-                            value : 'NONE',
-                            label : 'Clear',
-                            title : 'Clear Selection'
-                        });
                         return formattedList;
                     };
 
                     formatOption = function(option) {
                         return option;
                     };
-                    optionList = formatOptionList(config.namedEntitiesToHandle);
+                    var namedEntitiesList = formatOptionList(config.namedEntitiesToHandle),
+                        otherEntitiesList = formatOptionList(config.otherEntitiesToHandle);
+                    var optionList = [];
+                    if (namedEntitiesList.length > 0) {
+                        optionList.push({
+                            label : 'Named Entities',
+                            type  : 'groupTitle'
+                        });
+                        optionList = optionList.concat(namedEntitiesList);
+                    }
+                    if (otherEntitiesList.length > 0) {
+                        optionList.push({
+                            label : 'Other Entities',
+                            type  : 'groupTitle'
+                        });
+                        optionList = optionList.concat(otherEntitiesList);
+                    }
+                    if (optionList.length > 0) {
+                        optionList.push(optionSelectAll);
+                        optionList.push({
+                            value : 'NONE',
+                            label : 'Clear',
+                            title : 'Clear Selection'
+                        });
+                    }
                     break;
                 case 'witness':
                     optionSelectedValue = initValue;
@@ -242,13 +305,6 @@ angular.module('evtviewer.select')
                     break;
             }
 
-            if (openUp) {
-                marginTop = optionList.length * 34; //34px is the height of each option
-                marginTop += 28; //28px is the height of the selector itself when closed
-                marginTop += 4; //4px is the margin I want between selector and option list 
-                marginTop = -marginTop;
-            }
-
             scopeHelper = {
                 // expansion
                 uid                    : currentId,
@@ -258,7 +314,6 @@ angular.module('evtviewer.select')
                 currentType            : currentType,
                 multiselect            : multiselect,
                 openUp                 : openUp,
-                marginTop              : 'margin-top:'+marginTop+'px',
                 // model
                 optionList             : optionList,
                 optionSelected         : optionSelected,
