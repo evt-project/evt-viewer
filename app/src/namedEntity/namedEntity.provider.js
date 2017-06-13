@@ -8,7 +8,7 @@ angular.module('evtviewer.namedEntity')
         defaults = _defaults;
     };
 
-    this.$get = function(parsedData, evtNamedEntitiesParser, baseData) {
+    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef) {
         var namedEntity    = {},
             collection = {},
             list       = [],
@@ -46,8 +46,15 @@ angular.module('evtviewer.namedEntity')
         };
 
         var goToOccurrence = function(occurrence) {
+            var vm = this;
+            evtInterface.updateCurrentPage(occurrence.pageId);
+            evtInterface.updateCurrentDocument(occurrence.docId);
+            evtInterface.updateUrl();
             //TODO
             console.log('# TODO: # Go to occurrence ', occurrence);
+            $timeout(function() {
+                evtNamedEntityRef.highlightByEntityId(vm.entityId);
+            }, 500);
         };
 
         var toggleSubContent = function(subContentName) {
@@ -183,10 +190,10 @@ angular.module('evtviewer.namedEntity')
             return totOccurrences;
         };
 
-        namedEntity.getById = function(appId) {
+        namedEntity.getById = function(entityId) {
             var foundNamedEntity;
             angular.forEach(collection, function(currentNamedEntity) {
-                if (currentNamedEntity.appId === appId) {
+                if (currentNamedEntity.entityId === entityId) {
                     foundNamedEntity = currentNamedEntity;
                 }
             });  

@@ -15,12 +15,16 @@ angular.module('evtviewer.namedEntity')
             list       = [],
             idx        = 0,
             activeEntityRef,
-            activeEntityTypes = [];
+            activeEntityTypes = [],
+            currentHighlighted;
         
         var goToEntityInList = function(e) {
             e.stopPropagation();
             var vm = this;
             if (vm.realNamedEntity) {
+                if (namedEntityRef.getCurrentHighlighted() !== vm.entityId) {
+                    namedEntityRef.highlightByEntityId(undefined);
+                }
                 vm.active = !vm.active;
                 if (vm.active) {
                     namedEntityRef.setActiveEntity(vm.uid);
@@ -73,7 +77,7 @@ angular.module('evtviewer.namedEntity')
                 detailsInPopup : detailsInPopup,
                 realNamedEntity : realNamedEntity,
 
-                highlight     : false,
+                initHighlight : (namedEntityRef.getCurrentHighlighted() === entityId),
 
                 defaults      : angular.copy(defaults),
 
@@ -114,11 +118,6 @@ angular.module('evtviewer.namedEntity')
             activeEntityTypes.splice(indexType, 1);
         };
 
-        namedEntityRef.highlightByEntityId = function(entityId) {
-            //TODO
-            console.log('# TODO # ', collectionByEntity[entityId]);
-        };
-
         namedEntityRef.getActiveEntity = function() {
             return activeEntityRef;
         };
@@ -133,6 +132,27 @@ angular.module('evtviewer.namedEntity')
                 collection[entityRefId].active = false;
                 collection[entityRefId].toggleActive();
             }
+        };
+
+        namedEntityRef.highlightByEntityId = function(entityId) {
+            namedEntityRef.setCurrentHighlighted(entityId);
+            angular.forEach(collection, function(currentNamedEntity) {
+                if (currentNamedEntity.toggleHighlight) {
+                    if (currentNamedEntity.entityId === entityId) {
+                        currentNamedEntity.toggleHighlight(true);
+                    } else {
+                        currentNamedEntity.toggleHighlight(false);
+                    }
+                }
+            });  
+        };
+
+        namedEntityRef.getCurrentHighlighted = function() {
+            return currentHighlighted;
+        };
+
+        namedEntityRef.setCurrentHighlighted = function(entityId) {
+            currentHighlighted = entityId;
         };
 
         namedEntityRef.getById = function(appId) {

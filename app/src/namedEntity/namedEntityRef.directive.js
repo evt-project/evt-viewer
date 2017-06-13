@@ -17,16 +17,25 @@ angular.module('evtviewer.namedEntity')
             };
             var currentNamedEntity = evtNamedEntityRef.build(scope.entityId, scope);
             
-            
+
+            var entityElement = element.find('.namedEntityRef'),
+                detailsElement = element.find('.namedEntityRef__details');
+
             scope.vm.toggleActive = function() {
-                var entityElement = element.find('.namedEntityRef'),
-                    detailsElement = element.find('.namedEntityRef__details');
                 if (scope.vm.active) {
                     entityElement.addClass('active');
                     detailsElement.addClass('active');
                 } else {
                     entityElement.removeClass('active');
                     detailsElement.removeClass('active');
+                }
+            };
+
+            scope.vm.toggleHighlight = function(toggle) {
+                if (toggle) {
+                    entityElement.addClass('highlighted');
+                } else {
+                    entityElement.removeClass('highlighted');
                 }
             };
 

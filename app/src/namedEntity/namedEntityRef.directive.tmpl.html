@@ -1,5 +1,6 @@
 <span class="namedEntityRef namedEntityRef-{{ ::vm.entityType }}"
-	ng-class="::{'fakeEntity': !vm.realNamedEntity }" title="{{ ::vm.entityType | capitalize:true }} name"
+	ng-class="::{'fakeEntity': !vm.realNamedEntity,
+				 'highlighted': vm.initHighlight }" title="{{ ::vm.entityType | capitalize:true }} name"
 	ng-click="vm.goToEntityInList($event)" ng-transclude></span>
 
 <evt-named-entity 
