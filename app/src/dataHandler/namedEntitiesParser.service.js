@@ -403,12 +403,17 @@ angular.module('evtviewer.dataHandler')
 			docHTML = doc ? doc.outerHTML : undefined,
 			pages = [];
 		if (docHTML && refId && refId !== '') {
-			var match = '<pb(.|[\r\n])*?(?!<pb)(?=#' + refId + ')',
+			var match = '<pb(.|[\r\n])*?\/>(.|[\r\n])*?(?=#' + refId + ')',
 				sRegExInput = new RegExp(match, 'ig'),
 				matches = docHTML.match(sRegExInput),
 				totMatches = matches ? matches.length : 0;
 			for (var i = 0; i < totMatches; i++) {
-				var pageId = getPageIdFromHTMLString(matches[i]);
+				//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
+				var matchOnlyPb = '<pb(.|[\r\n])*?\/>',
+					sRegExOnlyPb = new RegExp(matchOnlyPb, 'ig'),
+					pbList = matches[i].match(sRegExOnlyPb);
+				pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
+				var pageId = getPageIdFromHTMLString(pbString);
 				if (pageId) {
 					var pageObj = parsedData.getPage(pageId);
 					pages.push({ 
