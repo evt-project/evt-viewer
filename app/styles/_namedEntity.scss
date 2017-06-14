@@ -100,6 +100,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 		display: block;
 		&-icon {
 			float: left;
+		    margin-top: 0.1rem;
 		}
 		&-text {
 			margin-left: 24px;
@@ -127,7 +128,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 				font-size: 90%;
 				vertical-align: top;
 				display: inline-block;
-    			padding-top: 1px;
+    			padding-top: 0.2rem;
 				&:first-letter {
 					text-transform: uppercase;
 				}
