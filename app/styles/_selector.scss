@@ -90,9 +90,13 @@ $selector-option-background-color-hover: $base-color-middle;
 		@include set(box-shadow, 0 2px 5px $selector-shadow-color);
 
 		&.openUp {
+			display: block;
+			visibility: hidden;
 			bottom: 0px;
-			position: absolute;
-			
+			top: 0px;
+			position: relative;
+			float: left;
+			max-height:300px;
 			overflow: auto;
 			@include set(box-shadow, 0px 0px 5px $selector-shadow-color);
 		}
@@ -101,6 +105,7 @@ $selector-option-background-color-hover: $base-color-middle;
 			display: block;
 			&.openUp {
 				display: inline-table;
+				visibility: visible;
 			}
 		}
 		.option{

@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity) {
         var box        = {},
             collection = {},
             list       = [],
@@ -280,6 +280,9 @@ angular.module('evtviewer.box')
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
                                         scope.vm.isLoading = false;
+                                        $timeout(function(){
+                                            evtGenericEntity.highlightActiveTypes();
+                                        });
                                     });
                                 }
                                 catch(err) {
@@ -289,6 +292,9 @@ angular.module('evtviewer.box')
                             } else {
                                 scope.vm.content = newDoc || noTextAvailableMsg;
                                 scope.vm.isLoading = false;
+                                $timeout(function(){
+                                    evtGenericEntity.highlightActiveTypes();
+                                });
                             }
                         } else { // Other edition level
                             // parsedData.getDocument(scope.vm.state.docId).content
@@ -309,6 +315,9 @@ angular.module('evtviewer.box')
                                                 evtImageTextLinking.prepareZoneInImgInteractions();
                                             });
                                         }
+                                        $timeout(function(){
+                                            evtGenericEntity.highlightActiveTypes();
+                                        });
                                     });
                                 }
                                 catch(err) {
@@ -324,6 +333,9 @@ angular.module('evtviewer.box')
                                         evtImageTextLinking.prepareZoneInImgInteractions();
                                     });
                                 }
+                                $timeout(function(){
+                                    evtGenericEntity.highlightActiveTypes();
+                                });
                             }
                             scope.vm.isLoading = false;
                         }

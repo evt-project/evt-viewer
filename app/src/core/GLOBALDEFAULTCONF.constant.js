@@ -175,5 +175,22 @@ angular.module('evtviewer.core')
         tagName: 'orgName',
         label: 'Organizations',
         available: true
+    }],
+
+    otherEntitiesToHandle: [{
+    	tagName: 'rolename',
+        label: 'Role Name',
+        available: true,
+        color: '#cfc'
+    }, {
+    	tagName: 'supplied',
+    	label: 'Supplied',
+    	available: true,
+    	color: '#ccf'
+    },{
+    	tagName: 'measure',
+    	label: 'Measure',
+    	available: true,
+    	color: '#ffecb3'
     }]
 });

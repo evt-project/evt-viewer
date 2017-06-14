@@ -22,14 +22,10 @@ angular.module('evtviewer.select')
                     var optionContainer = element.find('.option_container'),
                         selector = element.find('.selector'),
                         labelSelected = element.find('.label_selected');
-                    optionContainer.show();    
-                    optionContainer.css('visibility', 'hidden');
-                    optionContainer.css('position', 'relative');
-                    var newMarginTop = optionContainer.height() + selector.height() + 2; 
+                    optionContainer.css('position', 'sticky');
+                    var newMarginTop = optionContainer.height() + labelSelected.height(); 
                     optionContainer.css('margin-top', -newMarginTop + 'px')
                     optionContainer.css('position', 'absolute');
-                    optionContainer.css('visibility', 'visible');
-                    optionContainer.css('display', '');
                 }
 
                 if (currentSelect !== undefined) {

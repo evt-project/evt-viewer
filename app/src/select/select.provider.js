@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef) {
+    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity) {
         var select     = {},
             collection = {},
             list       = [],
@@ -115,22 +115,7 @@ angular.module('evtviewer.select')
                             title : 'Select All Named Entities',
                             additionalClass: 'doubleBorderTop'
                         };
-                    var toggleHighlightElement = function(element, option, highlighted) {
-                        if (highlighted) {
-                            if (option.color) {
-                                angular.element(element).css('background', option.color);
-                            } else {
-                                angular.element(element).addClass('highlighted');
-                            }
-                        } else {
-                            if (option.color) {
-                                angular.element(element).css('background', '');
-                            } else {
-                                angular.element(element).removeClass('highlighted');
-                            }
-                        }
-                    };
-
+                    
                     callback = function(oldOption, newOption) {
                         if (newOption !== undefined){
                             //_console.log('Named Entities select callback ', newOption);
@@ -145,11 +130,8 @@ angular.module('evtviewer.select')
                                         vm.selectOption(optionToSelect);
                                         if (optionToSelect.type === 'namedEntity') {
                                             evtNamedEntityRef.addActiveType(optionToSelect.value);
-                                        } else {
-                                            var elementsToHighlight = document.getElementsByClassName(optionToSelect.value);
-                                            angular.forEach(elementsToHighlight, function(element) {
-                                                toggleHighlightElement(element, optionToSelect, true);
-                                            })
+                                        } else if (optionToSelect.type !== 'groupTitle'){
+                                            evtGenericEntity.addActiveType(optionToSelect.value, optionToSelect.color);
                                         }
                                     }
                                 }
@@ -163,10 +145,7 @@ angular.module('evtviewer.select')
                                         if (option.type === 'namedEntity') {
                                             evtNamedEntityRef.removeActiveType(option.value);
                                         } else {
-                                            var elementsToHighlight = document.getElementsByClassName(option.value);
-                                            angular.forEach(elementsToHighlight, function(element) {
-                                                toggleHighlightElement(element, option, false);
-                                            })
+                                            evtGenericEntity.removeActiveType(option.value, option.color);
                                         }
                                     }
                                 }
@@ -179,19 +158,16 @@ angular.module('evtviewer.select')
                                     evtNamedEntityRef.removeActiveType(newOption.value);
                                 }
                             } else {
-                                var elementsToHighlight = document.getElementsByClassName(newOption.value);
-                                angular.forEach(elementsToHighlight, function(element) {
-                                    if (vm.isOptionSelected(newOption)) {
-                                        toggleHighlightElement(element, newOption, true);
-                                    } else {
-                                        toggleHighlightElement(element, newOption, false);
-                                    }
-                                });
+                                if (vm.isOptionSelected(newOption)) {
+                                    evtGenericEntity.addActiveType(newOption.value, newOption.color);
+                                } else {
+                                    evtGenericEntity.removeActiveType(newOption.value, newOption.color);
+                                }
                             }
                         }
                     };
 
-                    formatOptionList = function(optionList) {
+                    formatOptionList = function(optionList, type) {
                         var formattedList = [];
                         if (optionList) {
                             for (var i = 0; i < optionList.length; i++ ) {
@@ -199,7 +175,7 @@ angular.module('evtviewer.select')
                                 if (currentOption.available) {
                                     var option = {
                                             icon  : 'fa-circle',
-                                            type  : 'namedEntity',
+                                            type  : type,
                                             value : currentOption.tagName,
                                             label : currentOption.label,
                                             title : currentOption.label,
@@ -215,8 +191,8 @@ angular.module('evtviewer.select')
                     formatOption = function(option) {
                         return option;
                     };
-                    var namedEntitiesList = formatOptionList(config.namedEntitiesToHandle),
-                        otherEntitiesList = formatOptionList(config.otherEntitiesToHandle);
+                    var namedEntitiesList = formatOptionList(config.namedEntitiesToHandle, 'namedEntity'),
+                        otherEntitiesList = formatOptionList(config.otherEntitiesToHandle, '');
                     var optionList = [];
                     if (namedEntitiesList.length > 0) {
                         optionList.push({
