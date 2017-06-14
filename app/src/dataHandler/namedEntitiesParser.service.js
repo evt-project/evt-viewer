@@ -30,6 +30,7 @@ angular.module('evtviewer.dataHandler')
 		typeAttributeDef = 'type',
 		listHeaderDef 	 = '<head>',
 
+		listRelationDef    = '<listRelation>',
 		relationDef 	   = '<relation>'
 		relationNameDef	   = 'name',
 		relationActiveDef  = 'active',
@@ -132,6 +133,9 @@ angular.module('evtviewer.dataHandler')
 			relationName = nodeElem.getAttribute(relationNameDef),
 			relationType = nodeElem.getAttribute(relationTypeDef); 
 
+		if (!relationType && nodeElem.parentNode && listRelationDef.indexOf('<'+nodeElem.parentNode.tagName+'>') >= 0) {
+			relationType = nodeElem.parentNode.getAttribute(relationTypeDef);			
+		}
 		relationName = relationName ? evtParser.camelToSpace(relationName) : relationName;
 
 		var elId = nodeElem.getAttribute(idAttributeDef) || evtParser.xpath(nodeElem);
@@ -151,7 +155,7 @@ angular.module('evtviewer.dataHandler')
 		relationEl.content._indexes.push('name');
 
 		// Relation Label => NAME (TYPE): TEXT [TEXT is set at the bottom of the function]
-		relationEl.label = relationName ? relationName : '';
+		relationEl.label = relationName ? relationName.toLowerCase() : '';
 		if (relationName) {
 			relationEl.label += ' (';
 		}
@@ -276,7 +280,7 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		// Add details to relation element
-		relationEl.label += ': '+ relationText;
+		relationEl.label = evtParser.capitalize(relationEl.label + ': '+ relationText);
 		relationEl._listPos = relationEl.label.substr(0, 1).toLowerCase();
 
 		if (activeText !== '' || mutualText !== '' || passiveText !== '') {
