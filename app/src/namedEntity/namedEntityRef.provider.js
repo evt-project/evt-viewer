@@ -8,7 +8,7 @@ angular.module('evtviewer.namedEntity')
         defaults = _defaults;
     };
 
-    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData) {
+    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData, Utils) {
         var namedEntityRef    = {},
             collection = {},
             collectionByEntity = {},
@@ -21,7 +21,7 @@ angular.module('evtviewer.namedEntity')
         var goToEntityInList = function($event) {
             $event.stopPropagation();
             var target = $event.target;
-            if (target && target.className.indexOf('namedEntityRef') >= 0) {
+            if (target && !Utils.DOMutils.isNestedInElem(target, 'evt-named-entity')) {
                 var vm = this;
                 if (vm.realNamedEntity) {
                     if (namedEntityRef.getCurrentHighlighted() !== vm.entityId) {
