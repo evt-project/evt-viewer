@@ -97,6 +97,9 @@ angular.module('evtviewer.dataHandler')
             case 'orgName':
                 icon = 'fa-users';
                 break;
+            case 'relation':
+            	icon = 'fa-share-alt';
+            	break;
             default:
                 icon = 'fa-list-ul';
                 break;

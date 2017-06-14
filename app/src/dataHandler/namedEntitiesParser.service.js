@@ -19,7 +19,7 @@ angular.module('evtviewer.dataHandler')
 		contentDef: '<org>',
 		contentForLabelDef: '<orgName>',
 		type: 'org'
-	}, {
+	},{
 		listDef: '<list>',
 		contentDef: '<item>',
 		contentForLabelDef: '',
@@ -94,9 +94,17 @@ angular.module('evtviewer.dataHandler')
 
 		}
 		// Parse relations
-		angular.forEach(currentDocument.find(relationsInListDef.slice(0, -2)), function(element) {
-				NEparser.parseRelationsInList(element);
-		});
+		var relations = currentDocument.find(relationsInListDef.slice(0, -2));
+		if (relations && relations.length > 0) {
+			var defCollection = {
+				id : 'parsedRelations',
+				type : 'relation',
+				title : 'List of Relations'
+			};
+			angular.forEach(relations, function(element) {
+				NEparser.parseRelationsInList(element, defCollection);
+			});
+		}
 
 		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
 	};
@@ -110,13 +118,13 @@ angular.module('evtviewer.dataHandler')
 				var el = {};
 				if (contentDef.indexOf(child.tagName) >= 0) { 
 					el = parseEntity(child, listToParse);
-					parsedData.addNamedEntityInCollection(collection, el, el.id.substr(0, 1).toLowerCase());
+					parsedData.addNamedEntityInCollection(collection, el, el._listPos);
 				}
 			}
 		});
 	};
 
-	NEparser.parseRelationsInList = function(nodeElem) {
+	NEparser.parseRelationsInList = function(nodeElem, defCollection) {
 		var parsedRelation = evtParser.parseXMLElement(nodeElem, nodeElem, 'evtNote'),
 			activeRefs = nodeElem.getAttribute(relationActiveDef),
 			mutualRefs = nodeElem.getAttribute(relationMutualDef),
@@ -124,13 +132,46 @@ angular.module('evtviewer.dataHandler')
 			relationName = nodeElem.getAttribute(relationNameDef),
 			relationType = nodeElem.getAttribute(relationTypeDef); 
 
+		relationName = relationName ? evtParser.camelToSpace(relationName) : relationName;
+
+		var elId = nodeElem.getAttribute(idAttributeDef) || evtParser.xpath(nodeElem);
+		var relationEl = {
+			id         : elId,
+			label      : '',
+			content    : {
+				_indexes: []
+			},
+			_listPos   : '',
+			_xmlSource : nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '')
+		};
+		
+		relationEl.content['name'] = [{
+			attributes: { _indexes: [] },
+			text: relationName }];
+		relationEl.content._indexes.push('name');
+
+		// Relation Label => NAME (TYPE): TEXT [TEXT is set at the bottom of the function]
+		relationEl.label = relationName ? relationName : '';
+		if (relationName) {
+			relationEl.label += ' (';
+		}
+		relationEl.label += relationType ? relationType : 'generic';
+		relationEl.label += ' relation';
+		if (relationName) {
+			relationEl.label += ')';
+		}
+		
+
 		relationType = relationType ? '<i>'+relationType+'</i>' : '';
-		var relationText = '<span class="relation">';
+		var relationText = '<span class="relation">',
+			activeText = '',
+			mutualText = '',
+			passiveText = '';
 
+		var activeRefsArray = activeRefs ? activeRefs.split('#').filter(function(el) { return el.length !== 0; }) : [],
+			mutualRefsArray = mutualRefs ? mutualRefs.split('#').filter(function(el) { return el.length !== 0; }) : [], 
+			passiveRefsArray = passiveRefs ? passiveRefs.split('#').filter(function(el) { return el.length !== 0; }) : [];
 
-		var activeRefsArray = activeRefs ? activeRefs.split('#').filter(function(el) { return el.length !== 0; }) : [];
-		var mutualRefsArray = mutualRefs ? mutualRefs.split('#').filter(function(el) { return el.length !== 0; }) : []; 
-		var passiveRefsArray = passiveRefs ? passiveRefs.split('#').filter(function(el) { return el.length !== 0; }) : [];
 		if (activeRefs || mutualRefs || passiveRefs || relationName) {
 			var entityElem, entityId, listType;
 			for (var i = 0; i < activeRefsArray.length; i++) { 
@@ -144,6 +185,7 @@ angular.module('evtviewer.dataHandler')
 				//entityElem.setAttribute('data-entity-type', listType);
 				entityElem.textContent = '#' + entityId;
 				relationText += entityElem.outerHTML + ' ';
+				activeText +=  entityElem.outerHTML.trim() + ', ';
 			}
 
 			for (var j = 0; j < mutualRefsArray.length; j++) { 
@@ -161,9 +203,10 @@ angular.module('evtviewer.dataHandler')
 				//entityElem.setAttribute('data-entity-type', listType);
 				entityElem.textContent = '#' + entityId;
 				relationText += entityElem.outerHTML + ' ';
+				mutualText +=  entityElem.outerHTML.trim() + ', ';
 			}
 
-			relationText += relationName ? '<span class="relation-name">'+evtParser.camelToSpace(relationName) + ' </span>' : '';
+			relationText += relationName ? '<span class="relation-name">'+relationName + ' </span>' : '';
 
 			for (var k = 0; k < passiveRefsArray.length; k++) { 
 				entityElem = document.createElement('evt-named-entity-ref');
@@ -176,6 +219,7 @@ angular.module('evtviewer.dataHandler')
 				//entityElem.setAttribute('data-entity-type', listType);
 				entityElem.textContent = '#' + entityId;
 				relationText += entityElem.outerHTML + ' ';
+				passiveText +=  entityElem.outerHTML.trim() + ', ';
 			}
 		}
 		relationText += '</span>';
@@ -230,6 +274,44 @@ angular.module('evtviewer.dataHandler')
 				entityPassive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 			}
 		}
+
+		// Add details to relation element
+		relationEl.label += ': '+ relationText;
+		relationEl._listPos = relationEl.label.substr(0, 1).toLowerCase();
+
+		if (activeText !== '' || mutualText !== '' || passiveText !== '') {
+			var actors = [];
+
+			if (activeText !== '') {
+				actors.push({
+					attributes: {
+						type: 'active',
+						_indexes: ['type'] },
+					text: activeText.slice(0, -2) });
+			};
+			
+			if (mutualText !== '') {
+				actors.push({
+					attributes: {
+						type: 'mutual',
+						_indexes: ['type'] },
+					text: mutualText.slice(0, -2) });
+			}
+
+			if (passiveText !== '') {
+				actors.push({
+					attributes: {
+						type: 'passive',
+						_indexes: ['type'] },
+					text: passiveText.slice(0, -2) });
+			}
+
+			relationEl.content['actors'] = actors;
+			relationEl.content._indexes.push('actors');
+		}
+
+
+		parsedData.addNamedEntityInCollection(defCollection, relationEl, relationEl._listPos);
 	};
 
 	var parseEntity = function(nodeElem, listToParse) {

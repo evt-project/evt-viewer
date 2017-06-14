@@ -21,7 +21,7 @@ angular.module('evtviewer.namedEntity')
         var goToEntityInList = function($event) {
             $event.stopPropagation();
             var target = $event.target;
-            if (target && !Utils.DOMutils.isNestedInElem(target, 'evt-named-entity')) {
+            if (target && !Utils.DOMutils.isNestedInElem(target, 'evt-named-entity') || Utils.DOMutils.isNestedInElem(target, 'evt-list')) {
                 var vm = this;
                 if (vm.realNamedEntity) {
                     if (namedEntityRef.getCurrentHighlighted() !== vm.entityId) {

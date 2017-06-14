@@ -117,17 +117,19 @@ angular.module('evtviewer.namedEntity')
                 //occurrences = [{ pageId: "fol_214v", pageLabel: "214v", docId: "CI_118", docLabel: "CI (118)" }];
             }
             var tabs = {
-                    moreInfo: {
-                        label: 'More Info'
-                    },
-                    occurrences: {
-                        label: 'Occurrences',
-                    },
-                    xmlSource: {
-                        label: 'XML'
-                    },
-                    _indexes : ['moreInfo', 'occurrences', 'xmlSource']
-                };
+                _indexes : []
+            };
+            tabs._indexes.push("moreInfo");
+            tabs['moreInfo'] = { label: 'More Info' };
+            
+            if (entityType !== 'relation') {
+                tabs._indexes.push("occurrences");
+                tabs['occurrences'] = { label: 'Occurrences' };
+            }
+            
+            tabs._indexes.push("xmlSource");
+            tabs['xmlSource'] = { label: 'XML' };
+
             var firstSubContentOpened = tabs && tabs._indexes && tabs._indexes.length > 0 ? tabs._indexes[0] : '';
             scopeHelper = {
                 // expansion
