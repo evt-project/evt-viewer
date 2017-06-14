@@ -18,24 +18,27 @@ angular.module('evtviewer.namedEntity')
             activeEntityTypes = [],
             currentHighlighted;
         
-        var goToEntityInList = function(e) {
-            e.stopPropagation();
-            var vm = this;
-            if (vm.realNamedEntity) {
-                if (namedEntityRef.getCurrentHighlighted() !== vm.entityId) {
-                    namedEntityRef.highlightByEntityId(undefined);
-                }
-                vm.active = !vm.active;
-                if (vm.active) {
-                    namedEntityRef.setActiveEntity(vm.uid);
-                } else {
-                    namedEntityRef.setActiveEntity(undefined);
-                }
-                vm.toggleActive();
-                if (vm.detailsInPopup) {
-                    $timeout(function(){
-                        vm.updateDetailsPosition(e, vm);
-                    }, 20);
+        var goToEntityInList = function($event) {
+            $event.stopPropagation();
+            var target = $event.target;
+            if (target && target.className.indexOf('namedEntityRef') >= 0) {
+                var vm = this;
+                if (vm.realNamedEntity) {
+                    if (namedEntityRef.getCurrentHighlighted() !== vm.entityId) {
+                        namedEntityRef.highlightByEntityId(undefined);
+                    }
+                    vm.active = !vm.active;
+                    if (vm.active) {
+                        namedEntityRef.setActiveEntity(vm.uid);
+                    } else {
+                        namedEntityRef.setActiveEntity(undefined);
+                    }
+                    vm.toggleActive();
+                    if (vm.detailsInPopup) {
+                        $timeout(function(){
+                            vm.updateDetailsPosition($event, vm);
+                        }, 20);
+                    }
                 }
             }
         };
