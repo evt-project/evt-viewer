@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtCriticalApparatusEntry, evtReading, evtBox) {
+.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtCriticalApparatusEntry, evtPinnedElements, evtReading, evtBox) {
     $scope.content = {};
     var vm = this;
 
@@ -28,7 +28,7 @@ angular.module('evtviewer.criticalApparatusEntry')
     };
 
     this.isPinned = function(){
-        return evtCriticalApparatusEntry.isPinned(vm.appId);
+        return evtPinnedElements.isPinned(vm.appId)
     };
 
     this.getPinnedState = function() {
@@ -37,12 +37,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 
     this.togglePin = function(){
         if (vm.isPinned()) {
-            console.log('unpin');
-            evtCriticalApparatusEntry.unpin(vm.appId);
+            evtPinnedElements.removeElement({id: vm.appId, type: 'criticalApparatusEntry'});
         } else {
-            evtCriticalApparatusEntry.pin(vm.appId);
+            evtPinnedElements.addElement({id: vm.appId, type: 'criticalApparatusEntry'});
         }
-        document.cookie = 'pinned' + '=' + evtCriticalApparatusEntry.getPinned() + '; 1';
     };
 
     this.alignReadings = function(){

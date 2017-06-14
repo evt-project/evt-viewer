@@ -403,6 +403,9 @@ angular.module('evtviewer.box')
                     isLoading = false;
                     if (currentType === 'pinnedBoard') {
                         topMenuList.buttons.push({title: 'Close Board', label: '', icon: 'remove', type: 'closePinned' });
+                        if (config.toolPinAppEntries) {
+                            bottomMenuList.selectors.push({ id:'pinnedFilter_'+currentId, type: 'pinned-filter', initValue: 'NONE', multiselect: true });
+                        }
                     } else {
                         topMenuList.buttons.push({title: 'Remove Box', label: '', icon: 'remove', type: 'removeBox' });
                     }

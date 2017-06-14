@@ -32,7 +32,8 @@
 
     .box-body {
         @include frameBody();
-
+        overflow: auto;
+        
         &.noBottomMenu {
             @include calc(height, #{setInsideFrameHeight()} + $mainContainer-menu-height);
         }

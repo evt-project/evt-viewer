@@ -8,14 +8,12 @@ angular.module('evtviewer.criticalApparatusEntry')
         defaults = _defaults;
     };
 
-    this.$get = function(parsedData, baseData, evtCriticalParser, evtCriticalApparatus) {
+    this.$get = function(parsedData, baseData, evtCriticalParser, evtCriticalApparatus, evtPinnedElements) {
         var appEntry   = {},
             collection = {},
             list       = [],
-            idx        = 0,
-            pinned     = [];
+            idx        = 0;
         
-
         // 
         // Reading builder
         // 
@@ -123,28 +121,7 @@ angular.module('evtviewer.criticalApparatusEntry')
         };
         
         appEntry.getPinned = function() {
-            return pinned;
-        };
-
-        appEntry.setPinned = function(pinnedArray) {
-            pinned = pinnedArray;
-        };
-
-        appEntry.isPinned = function(appId) {
-            return pinned.indexOf(appId) >= 0;
-        };
-
-        appEntry.pin = function(appId) {
-            if (pinned.indexOf(appId) < 0) {
-                pinned.push(appId);
-            }
-        };
-
-        appEntry.unpin = function(appId) {
-            var index = pinned.indexOf(appId);
-            if (index >= 0) {
-                pinned.splice(index, 1);
-            }
+            return evtPinnedElements.getPinnedByType('criticalApparatusEntry');
         };
 
         return appEntry;

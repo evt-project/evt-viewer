@@ -16,7 +16,7 @@
       class="option_container"
       ng-class="{ 'expanded':vm.expanded,
                   'openUp': vm.openUp }" >
-      <div ng-repeat="option in ::vm.optionList" ng-switch="::option.type">
+      <div ng-repeat="option in vm.optionList" ng-switch="::option.type">
          <div ng-switch-when="groupTitle" class="option groupTitle">
             {{ ::option.label }}
          </div>

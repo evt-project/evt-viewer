@@ -3,12 +3,12 @@ angular.module('evtviewer.namedEntity')
 .provider('evtNamedEntity', function() {
 
     var defaults = this.defaults;
-
+    
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
     };
 
-    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef) {
+    this.$get = function($timeout, config, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef, evtPinnedElements) {
         var namedEntity    = {},
             collection = {},
             list       = [],
@@ -70,6 +70,30 @@ angular.module('evtviewer.namedEntity')
 
             vm.toggleSubContentClass();
         };
+
+        //Pin Tool Functions
+        var isPinAvailable = function(){
+            return config.toolPinAppEntries;
+        };
+        var isPinned = function(){
+            var vm = this;
+            return evtPinnedElements.isPinned(vm.entityId);
+        };
+
+        var getPinnedState = function() {
+            var vm = this;
+            return vm.isPinned() ? 'pin-on' : 'pin-off';
+        };
+
+        var togglePin = function(){
+            var vm = this;
+            if (vm.isPinned()) {
+                evtPinnedElements.removeElement({id: vm.entityId, type: 'namedEntity_'+vm.entityType });
+            } else {
+                evtPinnedElements.addElement({ id: vm.entityId, type: 'namedEntity_'+vm.entityType });
+            }
+        };
+
         // 
         // NamedEntity builder
         // 
@@ -77,7 +101,7 @@ angular.module('evtviewer.namedEntity')
         namedEntity.build = function(id, scope) {
             var currentId  = idx++,
                 entityId   = id || undefined,
-                entityType = scope.entityType || 'generic',
+                entityType = scope.entityType || parsedData.getNamedEntityType(entityId) || 'generic',
                 location = scope.location || 'list',
                 attributes = '';
                 
@@ -159,7 +183,14 @@ angular.module('evtviewer.namedEntity')
                 toggleMoreInfo    : toggleMoreInfo,
                 toggleOccurrences : toggleOccurrences,
                 goToOccurrence    : goToOccurrence,
-                toggleSubContent  : toggleSubContent
+                toggleSubContent  : toggleSubContent,
+
+                // pin tool
+                isPinAvailable : isPinAvailable,
+                isPinned: isPinned,
+                getPinnedState: getPinnedState,
+                togglePin: togglePin
+
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -199,6 +230,10 @@ angular.module('evtviewer.namedEntity')
 
         namedEntity.getList = function() {
             return list;
+        };
+
+        namedEntity.getPinned = function() {
+            return evtPinnedElements.getPinnedByType('namedEntity');
         };
 
         namedEntity.destroy = function(tempId) {

@@ -350,6 +350,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':
+					callback = function() {  };
 					break;
 				case 'removeWit':
 					callback = function() {

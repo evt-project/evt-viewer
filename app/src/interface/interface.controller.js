@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
+.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtPinnedElements, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
 	var _console = $log.getInstance('interface');
 
 
@@ -76,7 +76,19 @@ angular.module('evtviewer.interface')
 	};
 
 	$scope.getPinnedEntries = function() {
-		return evtInterface.getPinnedEntries();
+		return evtPinnedElements.getPinned();
+	};
+
+	$scope.getPinnedElementType = function(entryId) {
+		return evtPinnedElements.getPinnedElementType(entryId);
+	};
+
+	$scope.getAvailablePinnedTypes = function() {
+		return evtPinnedElements.getAvailablePinnedTypes();
+	};
+
+	$scope.getPinnedEntriesByType = function(type) {
+		return evtPinnedElements.getPinnedByType(type);
 	};
 
 	$scope.isLoading = function() {

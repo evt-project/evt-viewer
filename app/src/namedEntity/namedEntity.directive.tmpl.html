@@ -1,12 +1,32 @@
 <span class="namedEntity namedEntity-{{ ::vm.entityType }} location-{{::vm.location}}"
      ng-class="::{'opened': vm.location === 'mainText'}">
-	<span class="namedEntity__header" ng-click="vm.toggle()">
+	<span class="namedEntity__header">
         <!-- HEADER -->
-        <i class="fa opener" ng-if="::vm.location !== 'mainText'"></i>
-        
-        <i class="fa namedEntity__icon {{::vm.entityTypeIcon}}" ng-if="::vm.location === 'mainText'"></i>
+        <div class="namedEntity_tools"
+          ng-if="::vm.isPinAvailable()">
+          <button-switch 
+                title="Remove Pin"
+                ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"
+                data-label=""
+                data-icon="remove"
+                data-type="pin-off"
+                ng-click="vm.togglePin()"></button-switch>
+          <button-switch 
+                title="Toggle Pin"
+                ng-if="::vm.isPinAvailable() && vm.location !== 'pinned'"
+                data-label=""
+                data-icon="pin"
+                data-type="pin"
+                ng-class="{'active' : vm.isPinned()}"
+                ng-click="vm.togglePin()"></button-switch>
+        </div>
+        <div ng-click="vm.toggle()">
+            <i class="fa opener" ng-if="::vm.location !== 'mainText'"></i>
+            
+            <i class="fa namedEntity__icon {{::vm.entityTypeIcon}}" ng-if="::vm.location === 'mainText'"></i>
 
-        <span compile="::vm.entity.label"></span>
+            <span compile="::vm.entity.label"></span>
+        </div>
     </span>
 
     <span class="namedEntity__details">

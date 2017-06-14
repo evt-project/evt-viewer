@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, evtCommunication, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -80,18 +80,9 @@ angular.module('evtviewer.interface')
                             $rootScope.$applyAsync(state.isLoading = false);
                             
                             // Update Pinned entries
-                            var cookies = document.cookie.split(';');
-                            for (var i in cookies) {
-                                var cookie = cookies[i].split('=');
-                                if (cookie[0].trim() === 'pinned') {
-                                    var pinnedCookie = cookie[1].split(',').filter(function(el) {
-                                        return el.length !== 0 && parsedData.getCriticalEntryById(el) !== undefined;
-                                    });
-                                    if (pinnedCookie.length > 0){
-                                        evtCriticalApparatusEntry.setPinned(pinnedCookie);
-                                    }
-                                }
-                            }
+                            $timeout(function() {
+                                evtPinnedElements.getElementsFromCookies();
+                            }, 10);
                         });
                     }
                 });
@@ -187,10 +178,6 @@ angular.module('evtviewer.interface')
 
         mainInterface.isPinnedAppBoardOpened = function() {
             return state.isPinnedAppBoardOpened;
-        };
-
-        mainInterface.getPinnedEntries = function() {
-            return evtCriticalApparatusEntry.getPinned();
         };
 
         mainInterface.getSecondaryContentOpened = function(){

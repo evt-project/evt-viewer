@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity) {
+    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements) {
         var select     = {},
             collection = {},
             list       = [],
@@ -282,6 +282,76 @@ angular.module('evtviewer.select')
                         return option;
                     };  
                     optionList = formatOptionList(parsedData.getWitnessPages(witness));                  
+                    break;
+                case 'pinned-filter' : 
+                    optionSelectedValue = initValue;
+                    var optionSelectAll = {
+                            value : 'ALL',
+                            label : 'Select All',
+                            title : 'Select All Types',
+                            additionalClass: 'doubleBorderTop'
+                        };
+                    
+                    callback = function(oldOption, newOption) {
+                        if (newOption !== undefined){
+                            //_console.log('Named Entities select callback ', newOption);
+                            vm.selectOption(newOption);
+                            if (newOption.value === 'ALL') {
+                                // SELECT ALL OPTIONS
+                                var optionListLength = optionList && optionList.length > 3 ? optionList.length-2 : 0; 
+                                for (var i = 0; i < optionListLength; i++) {
+                                    var optionToSelect = optionList[i];
+
+                                    if (!vm.isOptionSelected(optionToSelect)) {
+                                        vm.selectOption(optionToSelect);
+                                    }
+                                }
+                                //TODO: set all pinned visible + Add filters
+                                vm.selectOption(newOption);
+                            } else if (newOption.value === 'NONE') {
+                                // CLEAR SELECTION
+                                vm.optionSelected = [];
+                                vm.selectOption(newOption);
+                                //TODO: set all pinned visible + clear filters
+                            } else {
+                                if (vm.isOptionSelected(newOption)) {
+                                    // TODO: set pinned type visible
+                                } else {
+                                    // TODO: set pinned type invisible
+                                }
+                            }
+                        }
+                    };
+
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        if (optionList) {
+                            for (var i = 0; i < optionList.length; i++ ) {
+                                var currentOption = optionList[i];
+                                var option = {
+                                        value : currentOption,
+                                        label : currentOption,
+                                        title : currentOption
+                                    };
+                                formattedList.push(option);
+                            }
+                        }
+                        if (formattedList.length > 0) {
+                            formattedList.push(optionSelectAll);
+                            formattedList.push({
+                                value : 'NONE',
+                                label : 'Clear',
+                                title : 'Clear Selection'
+                            });
+                        }
+                        return formattedList;
+                    };
+
+                    formatOption = function(option) {
+                        return option;
+                    };
+                    var availablePinnedTypes = evtPinnedElements.getAvailablePinnedTypes(),
+                        optionList = formatOptionList(availablePinnedTypes);
                     break;
             }
 
