@@ -98,24 +98,11 @@ angular.module('evtviewer.tabsContainer')
         var entitiesCollection = parsedData.getNamedEntitiesCollection();
         $scope.tabs._indexes = entitiesCollection._indexes;
         for (var i = 0; i < entitiesCollection._indexes.length; i++) {
-            var listIcon,
-                listId = entitiesCollection._indexes[i],
+            var listId = entitiesCollection._indexes[i],
+                listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
                 listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
                 listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title? entitiesCollection[listId]._title : listId;
-            switch(listType) {
-                case 'place':
-                    listIcon = 'fa-map-marker';
-                    break;
-                case 'person':
-                    listIcon = 'fa-user';
-                    break;
-                case 'org':
-                    listIcon = 'fa-users';
-                    break;
-                default:
-                    listIcon = 'fa-list-ul';
-                    break;
-            }
+            
             $scope.tabs[listId] = {
                 label   : listTitle,
                 icon    : listIcon,

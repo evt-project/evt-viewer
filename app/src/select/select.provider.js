@@ -173,8 +173,12 @@ angular.module('evtviewer.select')
                             for (var i = 0; i < optionList.length; i++ ) {
                                 var currentOption = optionList[i];
                                 if (currentOption.available) {
+                                    var icon = 'fa-circle';
+                                    if (type === 'namedEntity') {
+                                        icon = parsedData.getNamedEntityTypeIcon(currentOption.tagName) || icon;
+                                    };
                                     var option = {
-                                            icon  : 'fa-circle',
+                                            icon  : icon,
                                             type  : type,
                                             value : currentOption.tagName,
                                             label : currentOption.label,

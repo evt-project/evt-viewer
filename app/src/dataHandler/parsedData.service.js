@@ -81,15 +81,44 @@ angular.module('evtviewer.dataHandler')
 		_indexes: []
 	};
 
+	parsedData.getNamedEntityTypeIcon = function(type) { //TODO: Move in Utils provider (?)
+		var icon;
+		switch(type) {
+            case 'place':
+            case 'placeName':
+                icon = 'fa-map-marker';
+                break;
+            case 'person':
+            case 'pers':
+            case 'persName':
+                icon = 'fa-user';
+                break;
+            case 'org':
+            case 'orgName':
+                icon = 'fa-users';
+                break;
+            default:
+                icon = 'fa-list-ul';
+                break;
+        }
+        return icon;
+	};
+
 	parsedData.addNamedEntitiesCollection = function(collection) {
 		var collectionId = collection.id;
 		if (namedEntities._collections[collectionId] === undefined) {
+			var listType = collection && collection.type ? collection.type : 'generic',
+				listIcon = parsedData.getNamedEntityTypeIcon(listType);
+
 			namedEntities._collections[collectionId] = {
 				_indexes: [],
 				_listKeys: [],
 				_title : collection && collection.title ? collection.title : '',
-				_type : collection && collection.type ? collection.type : 'generic'
+				_type : listType,
+				_icon : listIcon 
 			};
+
+
 			namedEntities._collections._indexes.push(collectionId);
 		}
 	};

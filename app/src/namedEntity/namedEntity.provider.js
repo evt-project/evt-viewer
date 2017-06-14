@@ -89,26 +89,21 @@ angular.module('evtviewer.namedEntity')
 
             var namedEntity = parsedData.getNamedEntity(entityId),
                 moreInfoAvailable = true,
-                entityTypeIcon = '';
+                entityTypeIcon = parsedData.getNamedEntityTypeIcon(entityType);
             
             moreInfoAvailable = namedEntity !== undefined && namedEntity.notes !== undefined && namedEntity.notes.length > 0;
             switch (entityType) {
                 case 'place':
                 case 'placeName':
-                    entityTypeIcon = 'fa-map-marker';
-                    break;
                 case 'person':
                 case 'pers':
                 case 'persName':
-                    entityTypeIcon = 'fa-user';
                     break;
                 case 'org':
                 case 'orgName':
-                    entityTypeIcon = 'fa-users';
                     moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.desc !== undefined);
                     break;
                 default:
-                    entityTypeIcon = 'fa-list-ul';
                     moreInfoAvailable = moreInfoAvailable || (namedEntity !== undefined && namedEntity.details !== undefined);
                     break;
             }
