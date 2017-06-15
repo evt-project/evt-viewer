@@ -29,19 +29,24 @@ angular.module('evtviewer.dataHandler')
             evtCriticalApparatusParser.parseWitnesses(docElements);
 
             // Parse the Sources Apparatus entries (@author: CM)
-            evtSourcesParser.parseQuotes(docElements);
-
-            if (config.sourcesUrl === "") {
-                evtSourcesParser.parseSources(docElements);
-            } else {
-                evtSourcesParser.parseSources(docElement, state.XMLExtDocuments["sources"]);
-            }
-            if (config.analoguesUrl === "") {
-                evtAnaloguesParser.parseAnalogues(docElements, '');
-            } else {
-                evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments["analogues"]);
+            if (config.quoteDef !== '') {
+                evtSourcesParser.parseQuotes(docElements);
+                if (config.sourcesUrl === "") {
+                    evtSourcesParser.parseSources(docElements);
+                } else {
+                    evtSourcesParser.parseSources(docElements, state.XMLExtDocuments["sources"]);
+                }
             }
 
+            // Parse the Analogues Apparatus entries (@author: CM)
+            if (config.analogueDef !== '') {
+                if (config.analoguesUrl === "") {
+                    evtAnaloguesParser.parseAnalogues(docElements, '');
+                } else {
+                    evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments["analogues"]);
+                }
+            }
+            
             evtProjectInfoParser.parseProjectInfo(docElements);
             _console.log('XML TEI parsed and stored ', state.XMLDocuments);
         } else {

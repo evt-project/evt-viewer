@@ -253,7 +253,11 @@ angular.module('evtviewer.box')
                                 newDoc = parsedData.getDocument(scope.vm.state.docId);
                                 try {
                                     var promises = [];
-                                    promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+                                    if (config.versions.length > 2) {
+                                        promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, config.versions[0]).promise);
+                                    } else {
+                                        promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+                                    }                                    
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
                                         scope.vm.isLoading = false;

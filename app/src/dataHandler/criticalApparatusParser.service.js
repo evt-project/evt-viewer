@@ -114,6 +114,21 @@ angular.module('evtviewer.dataHandler')
                                         _type       : 'witness',
                                         text        : {}
                                     };
+
+                                    // Added to handle the listWit of a version (@author -> CM)
+                                    var ver;
+                                    if (config.versions !== undefined && config.versions.length > 1) {
+                                        if (child.hasAttribute('ana')) {
+                                            var anaVal = child.getAttribute('ana').replace('#', '');
+                                            if (config.versions.indexOf(anaVal) >= 0 ) {
+                                                ver = anaVal;
+                                            }
+                                        }
+                                    }
+                                    // Add the witness to the witMap of the versionEntries collection (@author -> CM)
+                                    if (ver !== undefined) {
+                                        parsedData.addVersionWitness(ver, el.id);
+                                    }
                                 }
                                 parsedData.addElementInWitnessCollection(el);
                             }
@@ -165,10 +180,8 @@ angular.module('evtviewer.dataHandler')
         var deferred = $q.defer(),
             currentDocument = angular.element(doc);
         
-        angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), function(element) {
-            if (element.hasAttribute('type') && (element.getAttribute('type') === 'recensio')) {
-                evtCriticalElementsParser.handleVersionEntry(element);
-            }
+        angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')+'[type=recensio]'), function(element) {
+            evtCriticalElementsParser.handleVersionEntry(element);
         });
         
         console.log('## Version Entries ##', parsedData.getVersionEntries());

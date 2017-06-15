@@ -324,7 +324,7 @@ angular.module('evtviewer.dataHandler')
         var result = '<span class="'+element.type+' inApparatus">';
         for (var i in content) {
             if (typeof content[i] === 'string') {
-                result += ' '+content[i];
+                result += '<span class="textNode">'+content[i]+'</span>';
             } else {
                 var skip = ['EVT-POPOVER', 'lb', 'ptr', 'link', 'linkGrp', 'pb'];
                 if (skip.indexOf(content[i].tagName) >= 0) {
@@ -354,7 +354,7 @@ angular.module('evtviewer.dataHandler')
         if (content !== undefined) {
             for (var i = 0; i < content.length; i++) {
                 if (typeof content[i] === 'string') {
-                    result += ' '+content[i];
+                    result += '<span class="textNode">'+content[i]+'</span>';
                 } else if (content[i].content !== undefined) {
                     result += apparatus.getText(content[i]);
                 }

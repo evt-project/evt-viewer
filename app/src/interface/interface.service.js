@@ -67,9 +67,9 @@ angular.module('evtviewer.interface')
                         if (config.loadCriticalEntriesImmediately){
                             promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                             // Parse the versions entries
-                            if (config.versions.length > 1) {
-                                promises.push(evtCriticalApparatusParser.parseVersionEntries(currentDocFirstLoad.content).promise);
-                            }
+                        }
+                        if (config.versions.length > 1) {
+                            promises.push(evtCriticalApparatusParser.parseVersionEntries(currentDocFirstLoad.content).promise);
                         }
 
                         // Parse critical text

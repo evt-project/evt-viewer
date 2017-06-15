@@ -7,7 +7,7 @@ angular.module('evtviewer.dataHandler')
         lemmaDef          = '<lem>',
         readingDef        = lemmaDef+', <rdg>',
         readingGroupDef   = '<rdgGrp>',
-        quoteDef          = '<quote>';
+        quoteDef          = '<quote>',
         analogueDef       = '<seg>,<ref[type=parallelPassage]>', 
         analogueRegExpr   = evtParser.createRegExpr(analogueDef);
     
@@ -611,6 +611,20 @@ angular.module('evtviewer.dataHandler')
                     noRdgElement.setAttribute('title', 'noRdg');
                 spanElement.appendChild(noRdgElement);
             }
+        var firstExp,
+            lastEp,
+            exponent,
+            exp,
+            currentId = parsedData.getCriticalEntries()._indexes.encodingStructure.indexOf(entry.id);
+            if (currentId > 25) {
+                firstExp = (Math.floor(currentId/25))+96;
+                lastExp = (currentId%25)+97;
+                exponent='&#'+firstExp+'; &#'+lastExp+';';
+            } else {
+                exp = currentId+97;
+                exponent = '&#'+exp+';';
+            }
+            spanElement.setAttribute('data-exponent', exponent);
         } else {
             var errorElement = document.createElement('span');
                 errorElement.className = 'encodingError';
@@ -684,7 +698,10 @@ angular.module('evtviewer.dataHandler')
             rdgId = '',
             rdgContent = [];
         if (entry !== null) {
-            spanElement = document.createElement('evt-recensio-reading');
+            spanElement = document.createElement('evt-version-reading');
+            spanElement.setAttribute('data-app-id', entry.id);
+            // If there is a variant that belongs to wit in the entry witMap,
+            // it adds the content of the variant to the text
             if (Object.keys(entry._indexes.witMap).length !== 0) {
                 rdgId = entry._indexes.witMap[wit];
                 if (rdgId !== '') {
@@ -695,51 +712,104 @@ angular.module('evtviewer.dataHandler')
                             }
                         }
                     }
-                }
-                if (rdgContent !== undefined && rdgContent.length > 0) {
-                    for (var k in rdgContent) {
-                        if (typeof(rdgContent[k]) === 'string') {
-                            spanElement.appendChild(document.createTextNode(rdgContent[k]));
-                        } else {
-                            //TODO: get recensioApp text
-                            if (rdgContent[k].type === 'app') {
-                                var appEntry = parsedData.getCriticalEntryById(rdgContent[k].id);
-                                var appEntryElem = parser.getEntryWitnessReadingText(appEntry, wit);
-                                if (appEntryElem !== null) {
-                                    spanElement.appendChild(appEntryElem);
+                    if (rdgContent !== undefined && rdgContent.length > 0) {
+                        for (var k in rdgContent) {
+                            if (typeof(rdgContent[k]) === 'string') {
+                                spanElement.appendChild(document.createTextNode(rdgContent[k]));
+                            } else {
+                                if (rdgContent[k].type === 'app') {
+                                    var appEntry = parsedData.getCriticalEntryById(rdgContent[k].id);
+                                    var appEntryElem = parser.getEntryWitnessReadingText(appEntry, wit);
+                                    if (appEntryElem !== null) {
+                                        spanElement.appendChild(appEntryElem);
+                                    }
+                                } else if (rdgContent[k].type === 'quote') {
+                                    var quoteElement = parser.getQuoteText(rdgContent[k], wit);
+                                    spanElement.appendChild(quoteElement);
+                                } else if (rdgContent[k].type === 'analogue') {
+                                    var analogueElement = parser.getAnalogueText(rdgContent[k], wit);
+                                    spanElement.appendChild(analogueElement);
+                                } else if (rdgContent[k].type === 'genericElement') {
+                                    var genericElem = getGenericElementText(rdgContent[k], wit);
+                                    spanElement.appendChild(genericElem);
+                                } else if (rdgContent[k].type === 'recensioApp') {
+                                    var versionAppElem = parser.getVersionEntryReadingText(rdgContent[k], wit);
+                                    spanElement.appendChild(versionAppElem);
+                                } else {
+                                    spanElement.appendChild(rdgContent[k]);
                                 }
-                            } else if (rdgContent[k].type === 'quote') {
-                                var quoteElement = parser.getQuoteText(rdgContent[k], wit);
-                                spanElement.appendChild(quoteElement);
-                            } else if (rdgContent[k].type === 'analogue') {
-                                var analogueElement = parser.getAnalogueText(rdgContent[k], wit);
-                                spanElement.appendChild(analogueElement);
-                            } else if (rdgContent[k].type === 'genericElement') {
-                                var genericElem = getGenericElementText(rdgContent[k], wit);
-                                spanElement.appendChild(genericElem);
-                            } else if (rdgContent[k].type === 'recensioApp') {
-                                var versionAppElem = parser.getVersionEntryReadingText(rdgContent[k], wit);
-                                spanElement.appendChild(versionAppElem);
-                            }else {
-                                spanElement.appendChild(rdgContent[k]);
                             }
                         }
                     }
                 }
+            // If there isn't a variant in the witMap, the text is generated from the lem of the
+            // corresponding version, if defined
             } else {
-                // TODO
+                var ver,
+                    verWitMap = parsedData.getVersionEntries()._indexes.versionWitMap,
+                    verEntry;
+                for (var i in verWitMap) {
+                    if (verWitMap[i].indexOf(wit) >= 0) {
+                        ver = i;
+                    }
+                }
+                // Check if the witness refers to a particular version
+                if (ver !== undefined) {
+                    // if the entry contains a lem for the version the witness belongs to...
+                    if (entry.content[ver] !== undefined) {
+                        var verLemma = entry.content[ver].lemma;
+                        if (verLemma !== undefined) {
+                            var lemmaContent = entry.content[ver].content[verLemma].content;
+                            // it adds the content of the lem to the spanElement
+                            for (var j in lemmaContent) {
+                                if (typeof(lemmaContent[j]) === 'string'){
+                                    spanElement.appendChild(document.createTextNode(lemmaContent[j]));
+                                } else {
+                                    if (lemmaContent[j].type === 'subApp'){
+                                        var subEntry = parsedData.getCriticalEntryById(lemmaContent[j].id);
+                                        var subEntryElem = wit === '' ? parser.getEntryLemmaText(subEntry, wit) : parser.getEntryWitnessReadingText(subEntry, wit);
+                                        var subReadingId = subEntry._indexes.witMap[wit] || '';
+                                        subEntryElem.setAttribute('data-reading-id', subReadingId);
+                                        if (subEntryElem !== null){
+                                            spanElement.appendChild(subEntryElem);
+                                        }
+                                    } else if (lemmaContent[j].type === 'quote') {
+                                        var quoteElement = parser.getQuoteText(lemmaContent[j], wit);
+                                            spanElement.appendChild(quoteElement);
+                                    } else if (lemmaContent[j].type === 'analogue') {
+                                        var analogueElement = parser.getAnalogueText(lemmaContent[j], wit);
+                                        spanElement.appendChild(analogueElement);
+                                    } else if (lemmaContent[j].type === 'genericElement'){
+                                        var genericElement = getGenericElementText(lemmaContent[j], wit);
+                                        spanElement.appendChild(genericElement);
+                                    }
+                                }
+                            }
+                            rdgId = verLemma;
+                        }
+                    // otherwise it returns null and no node is attached to the witness text
+                    } else {
+                        return null;
+                    }
+                // If the witness doesn't refer to a particular version, it creates a specific error message
+                } else {
+                    var warningMsg = document.createTextNode('Warning: no version has been defined for the current witness. Please check your encoded file.');
+                    var errorElement = document.createElement('span');
+                    errorElement.className = 'encodingError';
+                    errorElement.appendChild(warningMsg);
+                    spanElement.appendChild(errorElement);
+                }
             }
-            spanElement.setAttribute('data-app-id', entry.id);
+            
             spanElement.setAttribute('data-reading-id', rdgId);
             spanElement.setAttribute('data-scope-wit', wit);
-            console.log(spanElement);
         } else {
             var errorElement = document.createElement('span');
             errorElement.className = 'encodingError';
             errorElement.setAttribute('title', 'General error');
             spanElement.appendChild(errorElement);
         }
-        spanElement.setAttribute('data-type', 'variant');
+        spanElement.setAttribute('data-type', 'versionVariant');
         return spanElement;
     };
 
@@ -826,6 +896,20 @@ angular.module('evtviewer.dataHandler')
                     // da pesare sulla varianza massima
                 }
             }
+        var firstExp,
+            lastEp,
+            exponent,
+            exp,
+            currentId = parsedData.getCriticalEntries()._indexes.encodingStructure.indexOf(entry.id);
+            if (currentId > 25) {
+                firstExp = (Math.floor(currentId/25))+96;
+                lastExp = (currentId%25)+97;
+                exponent='&#'+firstExp+'; &#'+lastExp+';';
+            } else {
+                exp = currentId+97;
+                exponent = '&#'+exp+';';
+            }
+            spanElement.setAttribute('data-exponent', exponent);
         } else {
             errorElement = document.createElement('span');
             errorElement.className = 'encodingError';
@@ -850,7 +934,7 @@ angular.module('evtviewer.dataHandler')
         if (entry !== null) {
             spanElement = document.createElement('evt-version-reading');
             spanElement.setAttribute('data-app-id', entry.id);
-            spanElement.setAttribute('data-type', 'recensioLemma');
+            spanElement.setAttribute('data-type', 'versionLemma');
             spanElement.setAttribute('data-scope-version', scopeVersion);
 
             if (entry.lemma !== undefined && entry.lemma !== '') {
@@ -872,8 +956,11 @@ angular.module('evtviewer.dataHandler')
                         } else if (lemmaContent[i].type === 'analogue') {
                             var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
                             spanElement.appendChild(analogueElement);
+                        } else if (lemmaContent[i].type === 'recensioApp') {
+                            var versionAppElem = parser.getVersionEntryLemma(lemmaContent[i], wit, scopeVersion);
+                            spanElement.appendChild(versionAppElem);
                         }
-                    }
+                    } 
                 }
             } else {
                 errorElement = document.createElement('span');
@@ -984,12 +1071,12 @@ angular.module('evtviewer.dataHandler')
             attributes: [],
             content: [],
             _indexes: {
-                sourceId: [],//array in cui salvo gli id delle entrate bibliografiche nell'elemento
-                sourceRefId: [],
-                correspId: {}, //array in cui salvo gli id delle fonti cui l'entrata fa riferimento
-                subQuotes: [], //salvo gli id dei quoteDef annidati                
+                sourceId: [],//saves the id of the bibliographic citations that are inside the quote
+                sourceRefId: [], //saves the references to bibliographic citations that are outside the quote
+                correspId: {}, //saves the id of the segments inside of the source text that correspond to the quote
+                subQuotes: [], //saves the id of quotes nested inside of the quote                
             },
-            _subQuote: false, //indica se l'entrata in questione è annidata o meno in un quoteDef
+            _subQuote: false, //boolean is the quote nested in another quote
             _xmlSource: entry.outerHTML
         }
 
@@ -1530,7 +1617,7 @@ angular.module('evtviewer.dataHandler')
                 if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                     contentEl.content.push(evtSourcesParser.parseQuote(child));
                 } else if (apparatusEntryDef.indexOf('<'+child.tagName+'>') >= 0) {
-                    contentEl.content.push(evtCriticalApparatusParser.handleAppEntry(child));
+                    contentEl.content.push(parser.handleAppEntry(child));
                 } else if (evtParser.createRegExpr(analogueDef).test(childXml)) {
                     contentEl.content.push(parser.parseAnalogue(child));
                 }/* else if (child.tagName === 'witDetail') {
@@ -1625,22 +1712,22 @@ angular.module('evtviewer.dataHandler')
                     //...parse the childNodes that are a link or a ptr
                     for (var i = 0; i < child.children.length; i++) {
                         if (biblEl.indexOf(child.children[i].tagName) >= 0) {
-                            var bibl = parser.parseSource(child.children[i], entry);
+                            var bibl = parser.parseAnalogueSource(child.children[i], entry);
                             //...then add their id to the sourceId array.
                             analogue._indexes.sourceId.push(bibl.id);
                             analogue.sources.push(bibl);
-                            analogue.content.push(bibl);
+                            //analogue.content.push(bibl);
                         } else {
                             analogue.content.push(parseAnalogueContent(child.children[i]));
                         }
                     }
                 } // If there is a bibliographic element, parse it as a Source.
                   else if (biblEl.indexOf(child.tagName) >= 0) {
-                    var bib = parser.parseSource(child, entry);
+                    var bib = parser.parseAnalogueSource(child, entry);
                     //Then add its id to the sourceId array.
                     analogue._indexes.sourceId.push(bib.id);
                     analogue.sources.push(bib);
-                    analogue.content.push(bib);
+                    //analogue.content.push(bib);
                 } //If there is a link or pointer or ref...
                   else if (linkEl.indexOf(child.tagName) >= 0) {
                     analogue.content.push(parseAnalogueContent(child));
@@ -1768,11 +1855,11 @@ angular.module('evtviewer.dataHandler')
                 var linkEl = ['ptr', 'ref', 'link'];
 
                 if (entry.tagName === 'cit' && child.tagName === 'quote') {
-                    var contentEl = parseSourceContent(child);
+                    var contentEl = parseAnalogueSourceContent(child);
                     source.text.push(contentEl);
                 } else if (linkEl.indexOf(child.tagName) >= 0) {
                     if (child.tagName === 'ref') {
-                        source.bibl.push(parseSourceContent(child));
+                        source.bibl.push(parseAnalogueSourceContent(child));
                     } else {
                         source.bibl.push(child);
                     }
@@ -1790,7 +1877,7 @@ angular.module('evtviewer.dataHandler')
                     for (var i = 0; i < child.children.length; i++) {
                         if (linkEl.indexOf(child.children[i].tagName) >= 0) {
                             if (child.tagName === 'ref') {
-                                source.bibl.push(parseSourceContent(child));
+                                source.bibl.push(parseAnalogueSourceContent(child));
                             } else {
                                 source.bibl.push(child.children[i]);
                             }
@@ -1809,13 +1896,13 @@ angular.module('evtviewer.dataHandler')
                         source.url.push(child.getAttribute('target'));
                     }
                 } else {
-                    childContent = parseSourceContent(child, entry)
-                    if (childContent.tagName === 'author') {
+                    childContent = parseAnalogueSourceContent(child, entry)
+                    /* FIXME if (childContent.tagName === 'author') {
                         source.author.push(childContent.content);
                     }
                     if (childContent.tagName === 'title') {
                         source.title = childContent.content;
-                    }
+                    }*/
                     source.bibl.push(childContent);
                     for (var i = 0; i < childContent.url.length; i++) {
                         source.url.push(childContent.url[i]);
@@ -1863,10 +1950,10 @@ angular.module('evtviewer.dataHandler')
                     }
                 } else if (child.children.length > 0) {
                     for (var i = 0; i < child.children.length; i++) {
-                        contentEl.content.push(parseSourceContent(child.children[i]));                        
+                        contentEl.content.push(parseAnalogueSourceContent(child.children[i]));                        
                     }
                 } else {
-                    contentEl.content.push(parseSourceContent(child));
+                    contentEl.content.push(parseAnalogueSourceContent(child));
                 }
             }
         });

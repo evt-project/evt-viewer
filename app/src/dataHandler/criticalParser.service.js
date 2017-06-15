@@ -55,6 +55,7 @@ angular.module('evtviewer.dataHandler')
                     // ...I can simply access the model to get the right output
                     // ... otherwise I parse the DOM and save the entry in the model
                     if (!config.loadCriticalEntriesImmediately && entry === undefined) {
+                        // Check if the app is of type recensio
                         if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
                             evtCriticalElementsParser.handleVersionEntry(appNode);
                             entry = parsedData.getVersionEntry(id);
