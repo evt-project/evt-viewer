@@ -1,9 +1,9 @@
 <div class="evt-bibliography">
 	<div class="evt-bibliography__header"
-	ng-show="::vm.biblSortStyleSelectVisibility || vm.biblSortSelectVisibility">
+		ng-if="::vm.biblSortStyleSelectVisibility || vm.biblSortSelectVisibility || vm.biblSortOrderSelectVisibility">
 	
 		<div
-			ng-show="::vm.biblSortStyleSelectVisibility">
+			ng-if="::vm.biblSortStyleSelectVisibility"> 
 			<label for="biblStyleSelect">Style </label>
 			<select id="biblStyleSelect"
 				ng-model="vm.initialSelectedStyle"
@@ -11,7 +11,7 @@
 		</div>
 	
 		<div
-			ng-show="::vm.biblSortSelectVisibility">
+			ng-if="::vm.biblSortSelectVisibility"> 
 			<label for="biblSortingSelect">Sort by </label>
 			<select id="biblSortingSelect"
 				ng-model="vm.selectedSorting"
@@ -19,7 +19,7 @@
 		</div>
 		
 		<div
-			ng-show="::vm.biblSortOrderSelectVisibility">
+			ng-if="::vm.biblSortOrderSelectVisibility"> 
 			<label for="biblSortOrder">Order </label>
 			<select id="biblSortOrder"
 				ng-model="vm.selectedSortOrder"

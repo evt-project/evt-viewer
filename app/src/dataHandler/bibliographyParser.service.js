@@ -1,7 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser, config) {
-    console.log('Bibliography Parser service running');
     const CHICAGO_STYLE = config.allowedBibliographicStyles.Chicago,
         APA_STYLE = config.allowedBibliographicStyles.APA,
         MLA_STYLE = config.allowedBibliographicStyles.MLA;

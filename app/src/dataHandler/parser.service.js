@@ -53,12 +53,15 @@ angular.module('evtviewer.dataHandler')
 	// It will transform a generic XML element into an <span> element
 	// with a data-* attribute for each @attribute of the XML element
 	// It will also transform its children
-	parser.parseXMLElement = function(doc, element, skip) {
+	parser.parseXMLElement = function(doc, element, skip, exclude) {
 		var newElement;
+		
 		if (element.nodeType === 3) { // Text
 			newElement = element;
-		} else if (element.tagName !== undefined && skip.indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = element;
+		} else if (exclude !== undefined && element.tagName !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+			newElement = document.createTextNode('');
 		} else {
 			var tagName = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
 			if (element.attributes !== undefined &&
@@ -73,13 +76,13 @@ angular.module('evtviewer.dataHandler')
 
 				if (copiedElementText) {
 					var copiedElement = angular.element(copiedElementText[0])[0];
-					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip));
+					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip, exclude));
 				}
 			} else {
 				// if (tagName === 'l') {
 				//     newElement = parser.parseLine(element);
 				// } else 
-				if (tagName === 'note' && skip !== 'evtNote') {
+				if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
 					newElement = document.createElement('span');
@@ -117,7 +120,7 @@ angular.module('evtviewer.dataHandler')
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
 							var childElement = element.childNodes[j].cloneNode(true);
-							newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
+							newElement.appendChild(parser.parseXMLElement(doc, childElement, skip, exclude));
 						}
 					} else {
 						newElement.innerHTML = element.innerHTML + ' ';

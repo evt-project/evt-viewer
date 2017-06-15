@@ -1,85 +1,11 @@
 angular.module('evtviewer.bibliography')
 
-.controller('BibliographyCtrl', function($scope, $element, $log, $attrs, parsedData, config, evtBibliographyParser, evtInterface, evtHighlight) {
+.controller('BibliographyCtrl', function($log, $scope) { 
     var _console = $log.getInstance('BibliographyCtrl');
 
     var vm = this;
-    vm.biblSortSelectVisibility = true;
-    vm.biblSortStyleSelectVisibility = true;
-    vm.biblSortOrderSelectVisibility = true;
 
-    //recupero stili bibliografici
-    vm.styles = config.allowedBibliographicStyles;
-    vm.initialSelectedStyle = vm.styles.Chicago;
-    //controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
-    if (!evtBibliographyParser.bibliographicStyleInfoDetected()) {
-        vm.biblSortStyleSelectVisibility = false;
-        vm.initialSelectedStyle = '';
-    }
-
-    //recupero i criteri di ordinamento (le label)
-    vm.sortBy = config.bibliographicEntriesSortBy;
-    //controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
-    if (!evtBibliographyParser.authorInfoDetected()) {
-        delete vm.sortBy.Author;
-    }
-    if (!evtBibliographyParser.yearInfoDetected()) {
-        delete vm.sortBy.Year;
-    }
-    if (!evtBibliographyParser.titleInfoDetected()) {
-        delete vm.sortBy.Title;
-    }
-    if (!evtBibliographyParser.publisherInfoDetected()) {
-        delete vm.sortBy.Publisher;
-    }
-
-    if (Object.keys(vm.sortBy).length > 0) {
-        //setting the first sorting entry (if existing)
-        var firstKey;
-        if (typeof vm.sortBy.Author !== 'undefined') {
-            firstKey = vm.sortBy.Author;
-        } else {
-            firstKey = Object.keys(vm.sortBy)[0];
-        }
-        vm.selectedSorting = vm.sortBy[firstKey];
-    } else {
-        vm.biblSortSelectVisibility = false;
-    }
-
-    //recupero l'ordine per  l'ordinamento (le label)
-    vm.sortOrder = config.bibliographySortOrder;
-    vm.selectedSortOrder = vm.sortOrder.ASC;
-    //se le select per stile/ordinamento sono nascoste, nascondiamo anche quella per il reverse sorting
-    if (!vm.biblSortSelectVisibility) {
-        vm.biblSortOrderSelectVisibility = false;
-    }
-
-    //recupero collezione bibliografica
-    vm.biblRefsCollection = parsedData.getBibliographicRefsCollection();
-
-    vm.getFormattedBibl = function(biblId) {
-        var biblElement = vm.getBibliographicRefById(biblId);
-        if (!biblElement.outputs[vm.initialSelectedStyle]) {
-            evtBibliographyParser.formatResult(vm.initialSelectedStyle, biblElement);
-        }
-        return biblElement.outputs[vm.initialSelectedStyle];
-    };
-    vm.pubblicationType = function(biblId) {
-        var biblElement = vm.getBibliographicRefById(biblId),
-            type = evtBibliographyParser.getType(biblElement);
-        type = type ? type : 'unknown';
-        return type;
-    };
-
-    vm.isEntryHighlighted = function(entryId) {
-        return (evtHighlight.getHighlighted() !== '' && evtHighlight.getHighlighted() === entryId);
-    };
-
-    vm.getBibliographicRefById = function(biblId) {
-        return parsedData.getBibliographicRefById(biblId);
-    };
-
-    vm.myComparator = function(biblId1, biblId2) {
+    this.myComparator = function(biblId1, biblId2) {
         var result1 = '',
             result2 = '';
         switch (vm.selectedSorting) {
@@ -113,16 +39,16 @@ angular.module('evtviewer.bibliography')
             case vm.sortBy.Title:
                 //sorting by analytic title or normale title 
                 if (typeof biblId1.value.titleAnalytic !== 'undefined') {
-                    result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : '';
+                    result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : result1;
                 }
                 if (typeof biblId1.value.titleMonogr !== 'undefined') {
-                    result1 = biblId1.value.titleMonogr !== '' && result1 === '' ? biblId1.value.titleMonogr : '';
+                    result1 = biblId1.value.titleMonogr !== '' && result1 === '' ? biblId1.value.titleMonogr : result1;
                 }
                 if (typeof biblId2.value.titleAnalytic !== 'undefined') {
-                    result2 = biblId2.value.titleAnalytic !== '' && result2 === '' ? biblId2.value.titleAnalytic : '';
+                    result2 = biblId2.value.titleAnalytic !== '' && result2 === '' ? biblId2.value.titleAnalytic : result2;
                 }
                 if (typeof biblId2.value.titleMonogr !== 'undefined') {
-                    result2 = biblId2.value.titleMonogr !== '' && result2 === '' ? biblId2.value.titleMonogr : '';
+                    result2 = biblId2.value.titleMonogr !== '' && result2 === '' ? biblId2.value.titleMonogr : result2;
                 }
                 break;
 

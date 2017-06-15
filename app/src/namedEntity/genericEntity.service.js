@@ -40,7 +40,9 @@ angular.module('evtviewer.namedEntity')
 	genericEntity.highlightActiveTypes = function() {
 		for (var key in activeEntities) {
 			var entity = activeEntities[key];
-			genericEntity.highlightElementsByType(entity.type, entity.color);
+			if (entity) {
+				genericEntity.highlightElementsByType(entity.type, entity.color);
+			}
 		}
 	};
 

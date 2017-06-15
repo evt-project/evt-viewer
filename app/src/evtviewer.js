@@ -35,9 +35,9 @@ angular
 		'evtviewer.criticalApparatusEntry',
 		'evtviewer.reading',
 		'evtviewer.dialog',
-		'evtviewer.tabsContainer',
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
+		'evtviewer.tabsContainer',
 		'evtviewer.UItools'
 	]);

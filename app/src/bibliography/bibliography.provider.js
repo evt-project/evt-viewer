@@ -68,6 +68,10 @@ angular.module('evtviewer.bibliography')
 				sortOrder,
 				selectedSortOrder;
 
+			if (typeof(collection[currentId]) !== 'undefined') {
+                return;
+            }
+
 			//controlliamo quali info possiamo usare, in base a quelli mostriamo/nascondiamo elementi
 			if (!evtBibliographyParser.bibliographicStyleInfoDetected()) {
 				biblSortStyleSelectVisibility = false;
@@ -147,7 +151,7 @@ angular.module('evtviewer.bibliography')
 			list.push({
 				id: currentId
 			});
-			console.log('# BIBLIO # ', currentId, collection[currentId]);
+
 			return collection[currentId];
 		};
 

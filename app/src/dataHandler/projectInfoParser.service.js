@@ -10,6 +10,8 @@ angular.module('evtviewer.dataHandler')
         outsideMetadataDef     = '<xenoData>',
         revisionHistoryDef     = '<revisionDesc>';
 
+    var skipElementsFromParser = '<evtNote>',
+        skipElementsFromInfo   = '<listPlace>,<listPerson>,<listOrg>,<list>, <listRelation>';
     parser.parseProjectInfo = function(doc){
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(projectInfoDef.replace(/[<>]/g, '')), 
@@ -21,6 +23,7 @@ angular.module('evtviewer.dataHandler')
                 parser.parseOutsideMetadata(element);
                 parser.parseRevisionHistory(element);
         });
+        //console.log('## parseProjectInfo ##', parsedData.getProjectInfo());
     };
 
     /* **************** */
@@ -50,6 +53,7 @@ angular.module('evtviewer.dataHandler')
             publisher : publisher ? publisher.textContent : ''
         };
         parsedData.updateProjectInfoContent(reference, 'editionReference');
+        // console.log('## parseEditionReference ##', parsedData.getProjectInfo().editionReference);
     };
 
     parser.parseFileDescription = function(teiHeader){
@@ -57,7 +61,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(fileDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var fileDescContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                    var fileDescContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
                     parsedData.updateProjectInfoContent(fileDescContent, 'fileDescription');
                 }
         });
@@ -77,7 +81,7 @@ angular.module('evtviewer.dataHandler')
                     var encodingDescContent = '',
                         variantEncodingEl = angular.element(element).find('variantEncoding')[0];
                     if (variantEncodingEl){
-                        encodingDescContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                        encodingDescContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
                         encodingDescContent += '<span class="variantEncoding">This edition is using <i>';
                         encodingDescContent += variantEncodingEl.getAttribute('method');
                         encodingDescContent +=' method</i> to encode text-critical variants.</span>';
@@ -100,7 +104,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(textProfileDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var textProfileContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                    var textProfileContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
                     parsedData.updateProjectInfoContent(textProfileContent, 'textProfile');
                 }
         });
@@ -117,7 +121,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(outsideMetadataDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var outsideMetadataContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                    var outsideMetadataContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
                     parsedData.updateProjectInfoContent(outsideMetadataContent, 'outsideMetadata');
                 }
         });
@@ -134,7 +138,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(revisionHistoryDef.replace(/[<>]/g, '')), 
             function(element) {
-                var revisionHistoryContent = evtParser.parseXMLElement(teiHeader, element, 'evtNote').outerHTML;
+                var revisionHistoryContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
                 parsedData.updateProjectInfoContent(revisionHistoryContent, 'revisionHistory');
         });
         // console.log('## parseRevisionHistory ##', parsedData.getProjectInfo().revisionHistory);

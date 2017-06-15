@@ -25,7 +25,7 @@ angular.module('evtviewer.tabsContainer')
             delete collection[tempId];
             // _console.log('vm - destroy ' + tempId);
         };
-
+        
 		var toggleSubContent = function(subContentName) {
 			var vm = this;
 			vm.subContentOpened = vm.subContentOpened !== subContentName ? subContentName : '';
@@ -108,8 +108,7 @@ angular.module('evtviewer.tabsContainer')
 
 					/* Bibliography */
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
-						console.log('BIBLIOOO');
-						var bibliographyContent = '<evt-bibliography></evt-bibliography>';
+						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
 						tabs.bibliography = {
 							label: 'Bibliography',
 							name: 'bibliography',
@@ -118,7 +117,6 @@ angular.module('evtviewer.tabsContainer')
 						};
 						tabs._indexes.push('bibliography');
 					}
-					console.log(tabs);
 					break;
 				case 'entitiesList':
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();

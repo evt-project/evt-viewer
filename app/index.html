@@ -96,7 +96,7 @@
                 </evt-tabs-container>
             </evt-dialog>
             <evt-dialog data-type="globalInfo" data-title="Project Info">
-                <evt-tabs-container
+                <evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
                     data-type="projectInfo"
                     data-orientation="vertical">
                 </evt-tabs-container>
@@ -333,6 +333,7 @@
 	<script src="/src/bibliography/bibliography.js"></script>
 	<script src="/src/bibliography/scrollif.directive.js"></script>
 	<script src="/src/bibliography/highlight.service.js"></script>
+    <script src="/src/bibliography/bibliography.provider.js"></script>
     <script src="/src/bibliography/bibliography.controller.js"></script>
 	<script src="/src/bibliography/bibliography.directive.js"></script>
     <script src="/src/bibliography/biblElem.controller.js"></script>
@@ -420,6 +421,7 @@
     <script src="/src/dialog/dialog.directive.js"></script>
 
     <script src="/src/tabsContainer/tabsContainer.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.provider.js"></script>
     <script src="/src/tabsContainer/tabsContainer.controller.js"></script>
     <script src="/src/tabsContainer/tabsContainer.directive.js"></script>
     <!-- endinjector -->

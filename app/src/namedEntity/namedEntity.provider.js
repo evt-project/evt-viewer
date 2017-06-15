@@ -50,8 +50,6 @@ angular.module('evtviewer.namedEntity')
             evtInterface.updateCurrentPage(occurrence.pageId);
             evtInterface.updateCurrentDocument(occurrence.docId);
             evtInterface.updateUrl();
-            //TODO
-            console.log('# TODO: # Go to occurrence ', occurrence);
             $timeout(function() {
                 evtNamedEntityRef.highlightByEntityId(vm.entityId);
             }, 500);

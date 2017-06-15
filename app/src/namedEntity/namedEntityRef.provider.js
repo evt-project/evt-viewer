@@ -51,7 +51,7 @@ angular.module('evtviewer.namedEntity')
             var currentId  = idx++,
                 entityId   = id || undefined,
                 entityType = scope.entityType ? scope.entityType : parsedData.getNamedEntityType(entityId),
-                realNamedEntity = entityId !== undefined, 
+                realNamedEntity = id !== undefined, 
                 detailsInPopup = false; //TODO: differentiate depending on type
 
             var scopeHelper = {};
@@ -80,7 +80,7 @@ angular.module('evtviewer.namedEntity')
                 detailsInPopup : detailsInPopup,
                 realNamedEntity : realNamedEntity,
 
-                initHighlight : (namedEntityRef.getCurrentHighlighted() === entityId),
+                initHighlight : (realNamedEntity && namedEntityRef.getCurrentHighlighted() === entityId),
 
                 defaults      : angular.copy(defaults),
 
@@ -141,7 +141,7 @@ angular.module('evtviewer.namedEntity')
             namedEntityRef.setCurrentHighlighted(entityId);
             angular.forEach(collection, function(currentNamedEntity) {
                 if (currentNamedEntity.toggleHighlight) {
-                    if (currentNamedEntity.entityId === entityId) {
+                    if (currentNamedEntity.realNamedEntity && currentNamedEntity.entityId === entityId) {
                         currentNamedEntity.toggleHighlight(true);
                     } else {
                         currentNamedEntity.toggleHighlight(false);
