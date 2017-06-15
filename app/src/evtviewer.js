@@ -10,16 +10,18 @@
  */
 angular
 	.module('evtviewer', [
-		'ngAnimate',
-		'ngCookies',
-		'ngMessages',
-		'ngResource',
+// Needed for mobile (temporarily deactivated)
+//		'ngAnimate',
+//		'ngCookies',
+//		'ngMessages',
+//		'ngResource',
+//		'ngSanitize',
+//		'ngTouch',
+//		'templates-main',
 		'ngRoute',
-		'ngSanitize',
-		'ngTouch',
-		'templates-main',
 		'xml',
 		'prettyXml',
+		'infinite-scroll',
 		'evtviewer.core',
 		'evtviewer.communication',
 		'evtviewer.dataHandler',
@@ -27,13 +29,15 @@ angular
 		'evtviewer.box',
 		'evtviewer.select',
 		'evtviewer.buttonSwitch',
+//		'evtviewer.mobile',
 		'evtviewer.popover',
-		'evtviewer.mobile',
+		'evtviewer.namedEntity',
 		'evtviewer.criticalApparatusEntry',
 		'evtviewer.reading',
 		'evtviewer.dialog',
-		'evtviewer.tabsContainer',
 		'evtviewer.bibliography',
 		'evtviewer.reference',
+		'evtviewer.list',
+		'evtviewer.tabsContainer',
 		'evtviewer.UItools'
 	]);

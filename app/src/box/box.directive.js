@@ -1,6 +1,6 @@
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData) {
 
     return {
         restrict: 'E',
@@ -178,7 +178,7 @@ angular.module('evtviewer.box')
                                 docFront = docObj ? docObj.front : undefined;
 
                                 var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
-                                scope.vm.updateTopBoxContent(newTopBoxContent);
+                                scope.vm.updateTopBoxContent(content);
                         }
                     }
                 }, true);

@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData, evtInterface) {
+    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements) {
         var select     = {},
             collection = {},
             list       = [],
@@ -24,12 +24,15 @@ angular.module('evtviewer.select')
             var currentId   = scope.id   || idx++,
                 currentType = scope.type || 'default',
                 initValue   = scope.init || undefined,
+                openUp      = scope.openUp || false,
+                multiselect = scope.multiselect || false,
                 optionList  = [],
                 optionSelected,
                 optionSelectedValue,
                 callback,
                 formatOptionList,
-                formatOption;
+                formatOption,
+                marginTop = 0; //Needed for selector that open up
             
             var scopeHelper = {};
 
@@ -104,6 +107,120 @@ angular.module('evtviewer.select')
                     };
                     optionList = formatOptionList(parsedData.getEditions());         
                     break;
+                case 'named-entities': 
+                    optionSelectedValue = initValue;
+                    var optionSelectAll = {
+                            value : 'ALL',
+                            label : 'Select All',
+                            title : 'Select All Named Entities',
+                            additionalClass: 'doubleBorderTop'
+                        };
+                    
+                    callback = function(oldOption, newOption) {
+                        if (newOption !== undefined){
+                            //_console.log('Named Entities select callback ', newOption);
+                            vm.selectOption(newOption);
+                            if (newOption.value === 'ALL') {
+                                // SELECT ALL OPTIONS
+                                var optionListLength = optionList && optionList.length > 3 ? optionList.length-2 : 0; 
+                                for (var i = 0; i < optionListLength; i++) {
+                                    var optionToSelect = optionList[i];
+
+                                    if (!vm.isOptionSelected(optionToSelect)) {
+                                        vm.selectOption(optionToSelect);
+                                        if (optionToSelect.type === 'namedEntity') {
+                                            evtNamedEntityRef.addActiveType(optionToSelect.value);
+                                        } else if (optionToSelect.type !== 'groupTitle'){
+                                            evtGenericEntity.addActiveType(optionToSelect.value, optionToSelect.color);
+                                        }
+                                    }
+                                }
+                                vm.selectOption(newOption);
+                            } else if (newOption.value === 'NONE') {
+                                // CLEAR SELECTION
+                                var optionSelected = vm.optionSelected ? vm.optionSelected : []; 
+                                for (var j = 0; j < optionSelected.length; j++) {
+                                    var option = optionList[j];
+                                    if (option.value !== 'ALL') {
+                                        if (option.type === 'namedEntity') {
+                                            evtNamedEntityRef.removeActiveType(option.value);
+                                        } else {
+                                            evtGenericEntity.removeActiveType(option.value, option.color);
+                                        }
+                                    }
+                                }
+                                vm.optionSelected = [];
+                                vm.selectOption(newOption);
+                            } else if (newOption.type === 'namedEntity') {
+                                if (vm.isOptionSelected(newOption)) {
+                                    evtNamedEntityRef.addActiveType(newOption.value);
+                                } else {
+                                    evtNamedEntityRef.removeActiveType(newOption.value);
+                                }
+                            } else {
+                                if (vm.isOptionSelected(newOption)) {
+                                    evtGenericEntity.addActiveType(newOption.value, newOption.color);
+                                } else {
+                                    evtGenericEntity.removeActiveType(newOption.value, newOption.color);
+                                }
+                            }
+                        }
+                    };
+
+                    formatOptionList = function(optionList, type) {
+                        var formattedList = [];
+                        if (optionList) {
+                            for (var i = 0; i < optionList.length; i++ ) {
+                                var currentOption = optionList[i];
+                                if (currentOption.available) {
+                                    var icon = 'fa-circle';
+                                    if (type === 'namedEntity') {
+                                        icon = parsedData.getNamedEntityTypeIcon(currentOption.tagName) || icon;
+                                    };
+                                    var option = {
+                                            icon  : icon,
+                                            type  : type,
+                                            value : currentOption.tagName,
+                                            label : currentOption.label,
+                                            title : currentOption.label,
+                                            color : currentOption.color
+                                        };
+                                    formattedList.push(option);
+                                }
+                            }
+                        }
+                        return formattedList;
+                    };
+
+                    formatOption = function(option) {
+                        return option;
+                    };
+                    var namedEntitiesList = formatOptionList(config.namedEntitiesToHandle, 'namedEntity'),
+                        otherEntitiesList = formatOptionList(config.otherEntitiesToHandle, '');
+                    var optionList = [];
+                    if (namedEntitiesList.length > 0) {
+                        optionList.push({
+                            label : 'Named Entities',
+                            type  : 'groupTitle'
+                        });
+                        optionList = optionList.concat(namedEntitiesList);
+                    }
+                    if (otherEntitiesList.length > 0) {
+                        optionList.push({
+                            label : 'Other Entities',
+                            type  : 'groupTitle'
+                        });
+                        optionList = optionList.concat(otherEntitiesList);
+                    }
+                    if (optionList.length > 0) {
+                        optionList.push(optionSelectAll);
+                        optionList.push({
+                            value : 'NONE',
+                            label : 'Clear',
+                            title : 'Clear Selection'
+                        });
+                    }
+                    break;
                 case 'witness':
                     optionSelectedValue = initValue;
                     callback = function(oldOption, newOption) {
@@ -166,6 +283,81 @@ angular.module('evtviewer.select')
                     };  
                     optionList = formatOptionList(parsedData.getWitnessPages(witness));                  
                     break;
+                case 'pinned-filter' : 
+                    optionSelectedValue = initValue;
+                    optionSelected = [];
+                    var optionSelectAll = {
+                            value : 'ALL',
+                            label : 'Select All',
+                            title : 'Select All Types',
+                            additionalClass: 'doubleBorderTop'
+                        };
+                    
+                    callback = function(oldOption, newOption) {
+                        if (newOption !== undefined) {
+                            //_console.log('Named Entities select callback ', newOption);
+                            vm.selectOption(newOption);
+                            if (newOption.value === 'ALL') {
+                                // SELECT ALL OPTIONS
+                                var optionListLength = optionList && optionList.length > 3 ? optionList.length-2 : 0; 
+                                for (var i = 0; i < optionListLength; i++) {
+                                    var optionToSelect = optionList[i];
+
+                                    if (!vm.isOptionSelected(optionToSelect)) {
+                                        vm.selectOption(optionToSelect);
+                                    }
+                                }
+                                //TODO: set all pinned visible + Add filters
+                                evtPinnedElements.setAllTypesVisible();
+                                vm.selectOption(newOption);
+                            } else if (newOption.value === 'NONE') {
+                                // CLEAR SELECTION
+                                vm.optionSelected = [];
+                                vm.selectOption(newOption);
+                                //TODO: set all pinned visible + clear filters
+                                evtPinnedElements.resetVisibleTypes();
+                            } else {
+                                if (vm.isOptionSelected(newOption)) {
+                                    // TODO: set pinned type visible
+                                    evtPinnedElements.addVisibleType(newOption.value);
+                                } else {
+                                    // TODO: set pinned type invisible
+                                    evtPinnedElements.removeVisibleType(newOption.value);
+                                }
+                            }
+                        }
+                    };
+
+                    formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        if (optionList) {
+                            for (var i = 0; i < optionList.length; i++ ) {
+                                var currentOption = optionList[i];
+                                var option = {
+                                        value : currentOption,
+                                        label : currentOption,
+                                        title : currentOption
+                                    };
+                                formattedList.push(option);
+                            }
+                        }
+                        if (formattedList.length > 0) {
+                            formattedList.push(optionSelectAll);
+                            formattedList.push({
+                                value : 'NONE',
+                                label : 'Clear',
+                                title : 'Clear Selection'
+                            });
+                        }
+                        return formattedList;
+                    };
+
+                    formatOption = function(option) {
+                        return option;
+                    };
+                    var availablePinnedTypes = evtPinnedElements.getAvailablePinnedTypes(),
+                        optionList = formatOptionList(availablePinnedTypes);
+                    break;
             }
 
             scopeHelper = {
@@ -175,7 +367,8 @@ angular.module('evtviewer.select')
                 callback               : callback,
                 initValue              : initValue,
                 currentType            : currentType,
-
+                multiselect            : multiselect,
+                openUp                 : openUp,
                 // model
                 optionList             : optionList,
                 optionSelected         : optionSelected,

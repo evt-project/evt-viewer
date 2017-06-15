@@ -74,6 +74,112 @@ angular.module('evtviewer.dataHandler')
 		_indexes: []
 	};
 
+	var namedEntities = {
+		_collections: {
+			_indexes: []	
+		},
+		_indexes: []
+	};
+
+	parsedData.getNamedEntityTypeIcon = function(type) { //TODO: Move in Utils provider (?)
+		var icon;
+		switch(type) {
+            case 'place':
+            case 'placeName':
+                icon = 'fa-map-marker';
+                break;
+            case 'person':
+            case 'pers':
+            case 'persName':
+                icon = 'fa-user';
+                break;
+            case 'org':
+            case 'orgName':
+                icon = 'fa-users';
+                break;
+            case 'relation':
+            	icon = 'fa-share-alt';
+            	break;
+            default:
+                icon = 'fa-list-ul';
+                break;
+        }
+        return icon;
+	};
+
+	parsedData.addNamedEntitiesCollection = function(collection) {
+		var collectionId = collection.id;
+		if (namedEntities._collections[collectionId] === undefined) {
+			var listType = collection && collection.type ? collection.type : 'generic',
+				listIcon = parsedData.getNamedEntityTypeIcon(listType);
+
+			namedEntities._collections[collectionId] = {
+				_indexes: [],
+				_listKeys: [],
+				_title : collection && collection.title ? collection.title : '',
+				_type : listType,
+				_icon : listIcon 
+			};
+
+
+			namedEntities._collections._indexes.push(collectionId);
+		}
+	};
+
+	parsedData.addNamedEntityInCollection = function(collection, namedEntity, listKey) {
+		var collectionId = collection.id;
+		if (namedEntities._collections[collectionId] === undefined) {
+			this.addNamedEntitiesCollection(collection);
+		}
+		if (namedEntities._collections[collectionId][listKey] === undefined) {
+			namedEntities._collections[collectionId][listKey] = {
+				_indexes: []
+			};
+			namedEntities._collections[collectionId]._listKeys.push(listKey);
+		}
+		var entityId = namedEntity.id;
+		namedEntities._collections[collectionId][listKey][entityId] = namedEntity;
+		namedEntities[entityId] = {
+			collectionId : collectionId,
+			listKey: listKey
+		};
+		namedEntities._indexes.push(entityId);
+		namedEntities._collections[collectionId]._indexes.push(entityId);
+		namedEntities._collections[collectionId][listKey]._indexes.push(entityId);
+	};
+
+	parsedData.getNamedEntitiesCollection = function() {
+		return namedEntities._collections;
+	};
+
+	parsedData.getNamedEntitiesCollectionByName = function(collectionId) {
+		return namedEntities._collections[collectionId];
+	};
+
+	parsedData.getNamedEntitiesCollectionByNameAndPos = function(collectionId, listKey) {
+		return namedEntities._collections[collectionId][listKey];
+	};
+
+	parsedData.getNamedEntity = function(namedEntityId) {
+		var namedEntity;
+		if (namedEntityId) {
+			var namedEntityRefs = namedEntities[namedEntityId];
+			if (namedEntityRefs !== undefined && namedEntityRefs.collectionId !== undefined && 
+				namedEntityRefs.listKey !== undefined && 
+				namedEntities._collections[namedEntityRefs.collectionId] !== undefined && 
+				namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey] !== undefined) {
+				namedEntity = namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey][namedEntityId];
+			}
+		}
+		return namedEntity;
+	};
+
+	parsedData.getNamedEntityType = function(namedEntityId) {
+		var collectionId = namedEntityId && namedEntities[namedEntityId] ? namedEntities[namedEntityId].collectionId : undefined;
+		var collectionObj = parsedData.getNamedEntitiesCollectionByName(collectionId);
+		return collectionObj ? collectionObj._type : 'generic';
+	};
+	
 	/* PAGES */
 	// TODO: add attribute for the original xml reference
 	parsedData.addPage = function(page, docId) {
@@ -303,7 +409,7 @@ angular.module('evtviewer.dataHandler')
 			if (element._type === 'witness') {
 				content += '<li>';
 				if (element.attributes && element.attributes.n) {
-					content += '<strong>' + element.attributes.n + '</strong>'
+					content += '<strong>' + element.attributes.n + '</strong>';
 				} else {
 					content += '<strong>#' + element.id + '</strong>';
 				}
@@ -312,7 +418,7 @@ angular.module('evtviewer.dataHandler')
 			} else {
 				content += '<li>';
 				if (element.attributes && element.attributes.n) {
-					content += '<strong>' + element.attributes.n + '</strong>'
+					content += '<strong>' + element.attributes.n + '</strong>';
 				} else {
 					content += '<strong>#' + element.id + '</strong>';
 				}
@@ -324,7 +430,7 @@ angular.module('evtviewer.dataHandler')
 					if (subElement._type === 'witness') {
 						content += '<li>';
 						if (subElement.attributes && subElement.attributes.n) {
-							content += '<strong>' + subElement.attributes.n + '</strong>'
+							content += '<strong>' + subElement.attributes.n + '</strong>';
 						} else {
 							content += '<strong>#' + subElement.id + '</strong>';
 						}

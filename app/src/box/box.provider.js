@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity) {
         var box        = {},
             collection = {},
             list       = [],
@@ -38,6 +38,30 @@ angular.module('evtviewer.box')
         };
 
         // Critical edition control
+        // Critical App Filters look like this:
+        // {
+        //     resp : {
+        //         any: false,
+        //         name: "resp",
+        //         totActive: 2,
+        //         values: {
+        //             0: "m1",
+        //             1: "CDP", 
+        //             CDP: {
+        //                 active: true,
+        //                 color: "rgb(253, 153, 54)",
+        //                 name: "CDP"
+        //             },
+        //             m1: {
+        //                 active: true,
+        //                 color: "rgb(52, 197, 173)",
+        //                 name: "m1"
+        //             },
+        //             length: 2
+        //         }
+        //     },
+        //     _totActive: 2
+        // }
         var toggleCriticalAppFilter = function(filter, value){
             var vm      = this,
                 filters = vm.state.filters;
@@ -135,6 +159,14 @@ angular.module('evtviewer.box')
             return evtInterface.getToolState('ITL') === 'active';
         };
 
+        var getNamedEntitiesActiveTypes = function() {
+            var activeNamedEntityTypes = evtNamedEntityRef.getActiveEntityTypes(),
+                newClassValue = '';
+            for (var i = 0; i < activeNamedEntityTypes.length; i++) {
+                newClassValue += activeNamedEntityTypes[i] + '-active ';
+            }
+            return newClassValue;
+        };
         //
         // Box builder
         //
@@ -240,6 +272,12 @@ angular.module('evtviewer.box')
                         bottomMenuList.buttons.push({title: 'Filters', label: 'Filters', icon: 'filters', type: 'toggleFilterApp', show: function(){ return vm.edition === 'critical'; }});
                         appFilters = appFilters.filters;
                     }
+
+                    if (config.namedEntitiesSelector) {
+                        //TODO: Check if there are Named Entities available in config.namedEntitiesToHandle
+                        bottomMenuList.selectors.push({ id:'namedEntities_'+currentId, type: 'named-entities', initValue: 'NONE', multiselect: true });
+                    }
+
                     state.filters = {
                         _totActive : 0
                     };
@@ -266,6 +304,9 @@ angular.module('evtviewer.box')
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
                                         scope.vm.isLoading = false;
+                                        $timeout(function(){
+                                            evtGenericEntity.highlightActiveTypes();
+                                        });
                                     });
                                 }
                                 catch(err) {
@@ -275,6 +316,9 @@ angular.module('evtviewer.box')
                             } else {
                                 scope.vm.content = newDoc || noTextAvailableMsg;
                                 scope.vm.isLoading = false;
+                                $timeout(function(){
+                                    evtGenericEntity.highlightActiveTypes();
+                                });
                             }
                         } else { // Other edition level
                             // parsedData.getDocument(scope.vm.state.docId).content
@@ -295,6 +339,9 @@ angular.module('evtviewer.box')
                                                 evtImageTextLinking.prepareZoneInImgInteractions();
                                             });
                                         }
+                                        $timeout(function(){
+                                            evtGenericEntity.highlightActiveTypes();
+                                        });
                                     });
                                 }
                                 catch(err) {
@@ -310,6 +357,9 @@ angular.module('evtviewer.box')
                                         evtImageTextLinking.prepareZoneInImgInteractions();
                                     });
                                 }
+                                $timeout(function(){
+                                    evtGenericEntity.highlightActiveTypes();
+                                });
                             }
                             scope.vm.isLoading = false;
                         }
@@ -377,6 +427,9 @@ angular.module('evtviewer.box')
                     isLoading = false;
                     if (currentType === 'pinnedBoard') {
                         topMenuList.buttons.push({title: 'Close Board', label: '', icon: 'remove', type: 'closePinned' });
+                        if (config.toolPinAppEntries) {
+                            bottomMenuList.selectors.push({ id:'pinnedFilter_'+currentId, type: 'pinned-filter', initValue: 'NONE', multiselect: true });
+                        }
                     } else {
                         topMenuList.buttons.push({title: 'Remove Box', label: '', icon: 'remove', type: 'removeBox' });
                     }
@@ -416,6 +469,7 @@ angular.module('evtviewer.box')
                 fontSizeDecrease        : fontSizeDecrease,
                 fontSizeReset           : fontSizeReset,
                 toggleBtnGroup          : toggleBtnGroup,
+                getNamedEntitiesActiveTypes : getNamedEntitiesActiveTypes,
 
                 isITLactive             : isITLactive //TEMP
             };

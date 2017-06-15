@@ -17,7 +17,7 @@
             data-id="{{::selector.id}}"
             data-type="{{::selector.type}}"
             data-init="{{::selector.initValue}}"
-            ng-repeat="selector in ::vm.topMenuList.selectors">
+            ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
         </evt-select>
         <button-switch 
             title="{{::button.title}}"
@@ -25,7 +25,7 @@
             data-icon="{{::button.icon}}"
             data-icon-pos="{{::button.iconPos}}"
             data-type="{{::button.type}}"
-            ng-repeat="button in ::vm.topMenuList.buttons">
+            ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
     </div>
     <div 
@@ -33,7 +33,7 @@
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
-    <div class="box-body {{vm.edition}}Edition" 
+    <div class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}}" 
          style="{{vm.fontSize();}}"
          ng-class="{ 'noBottomMenu' : vm.bottomMenuList.buttons.length <= 0 && vm.bottomMenuList.selectors.length <= 0}"
          id="box_body_{{::vm.uid}}" 
@@ -44,11 +44,11 @@
          ng-if="(vm.type=='witness' || vm.type=='text') && vm.state.filters._totActive > 0">
         <span 
             class="filter-group"
-            ng-repeat="filter in vm.state.filters"
+            ng-repeat="filter in vm.state.filters track by $index"
             ng-if="filter.totActive > 0">
             <span 
                 class="filter-value"
-                ng-repeat="value in filter.values"
+                ng-repeat="value in filter.values track by $index"
                 ng-if="filter.values[value].active"
                 ng-click="vm.toggleCriticalAppFilter(filter.name, filter.values[value].name);"
                 style="background:{{::filter.values[value].color}}"
@@ -64,7 +64,7 @@
         ng-class="{'open': vm.state.filterBox}">
         
         <div class="filter-group"
-             ng-repeat="filter in vm.appFilters"
+             ng-repeat="filter in vm.appFilters track by $index"
              ng-if="::(vm.type=='witness' && filter.possibleFor.variant) || (vm.type=='text' && filter.possibleFor.lemma)">
             <div class="filters-section-title">{{::filter.name}}</div>
             <div class="filter-value-outer">
@@ -77,7 +77,7 @@
                         ng-click="vm.clearFilter(filter.name);"> any </span>
                 </div>
             </div>
-            <div class="filter-value-outer" ng-repeat="value in filter.values" >
+            <div class="filter-value-outer" ng-repeat="value in filter.values track by $index">
                 <div 
                     style="background:{{::value.color}}" 
                     class="filter-value">
@@ -105,7 +105,7 @@
                 data-icon="{{::button.icon}}"
                 data-icon-pos="{{::button.iconPos}}"
                 data-type="{{::button.type}}"
-                ng-repeat="button in vm.genericTools.fontSizeBtn">
+                ng-repeat="button in vm.genericTools.fontSizeBtn track by $index">
             </button-switch>
         </div>
     </div>
@@ -114,14 +114,23 @@
         class="box-menu" 
         data-position="bottom"
         ng-if="::vm.bottomMenuList.buttons.length > 0 || vm.bottomMenuList.selectors.length > 0">
+        <evt-select 
+            data-id="{{::selector.id}}"
+            data-type="{{::selector.type}}"
+            data-init="{{::selector.initValue}}"
+            data-open-up="true"
+            data-multiselect="{{::selector.multiselect}}"
+            ng-repeat="selector in ::vm.bottomMenuList.selectors track by $index">
+        </evt-select>
+        
         <button-switch 
             title="{{::button.title}}"
             data-label="{{::button.label}}"
             data-icon="{{::button.icon}}"
             data-icon-pos="{{::button.iconPos}}"
             data-type="{{::button.type}}"
-            ng-repeat="button in vm.bottomMenuList.buttons"
-            ng-show="button.show()">
+            ng-repeat="button in vm.bottomMenuList.buttons track by $index"
+            ng-if="button.show()">
         </button-switch>
     </div>
 </section>

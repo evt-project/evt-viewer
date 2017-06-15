@@ -53,6 +53,10 @@ footer{
 	display: setVisibility($base-footer);
 }
 
+#global-container-ext {
+    height: 100%;
+}
+
 #global-container{
 	@include calc(height, #{setGlobalFrameHeight()} + 1px);
 	padding:1px 0 0;
@@ -91,6 +95,8 @@ section > div{
 @import "dialog.scss";
 @import "ref.scss";
 @import "tabsContainer.scss";
+@import "list.scss";
+@import "namedEntity.scss";
 
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
@@ -160,6 +166,15 @@ section > div{
         }
     }
 }
+
+.pinnedTypeTitle {
+    display: block;
+    font-variant: small-caps;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
 .alert-msg {
     background: rgba(0,0,0,.1);
     display: block;
@@ -385,4 +400,8 @@ pre {
 
 .italic {
     font-style: italic;
+}
+
+.highlighted {
+    background: #ffc !important;
 }

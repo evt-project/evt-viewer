@@ -1,0 +1,56 @@
+/* *************************** */
+/* LIST                        */
+/* *************************** */
+
+.evt-list {
+	&__listLetters {
+		position: relative;
+		margin: auto;
+		text-align: center;
+
+        background: #FFF;
+        margin-top: 0;
+        padding: 10px;
+        height: 45px;
+        max-height: 45px;
+
+		&__letter {
+			margin-right: 9px;
+			color: #999;
+			font-size: 90%;
+			cursor: pointer;
+			text-transform: uppercase;
+			
+			&.active {
+				color: #000;
+				font-weight: bold;
+				cursor: default;
+			}
+		}
+	}
+
+	&__content {
+        @include calc(height, #{calc(100% - 45px)});
+
+        width: 100%;
+        overflow: auto;
+        position: absolute;
+        
+        > div  {
+        	width: 100%;
+        	padding-left: 10px;
+        }
+
+        > div > *:nth-child(odd) {
+		    background: rgba($base-color-middle, .1);
+		}
+
+		> div > *:nth-child(even) {
+		    background: #fff;
+		}
+
+		> div > *:hover {
+		    background: rgba($base-color-middle, .2);
+		}
+    }
+}

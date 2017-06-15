@@ -5,7 +5,9 @@ angular.module('evtviewer.dataHandler')
 	var idx = 0;
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
-	var defPageElement = 'pb';
+	var defPageElement = 'pb',
+		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
 	/* ********* */
 	/* UTILITIES */
@@ -32,6 +34,15 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	parser.capitalize = function(str, all) {
+		var reg = (all) ? /([^\W_]+[^\s-]*) */g : /([^\W_]+[^\s-]*)/;
+		return (!!str) ? str.replace(reg, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
+	};
+
+	parser.camelToSpace = function(str) {
+		return str.replace(/\W+/g, ' ')
+					.replace(/([a-z\d])([A-Z])/g, '$1 $2');
+	};
 	/* ************************ */
 	/* parseXMLElement(element) */
 	/* ********************************************************** */
@@ -42,12 +53,15 @@ angular.module('evtviewer.dataHandler')
 	// It will transform a generic XML element into an <span> element
 	// with a data-* attribute for each @attribute of the XML element
 	// It will also transform its children
-	parser.parseXMLElement = function(doc, element, skip) {
+	parser.parseXMLElement = function(doc, element, skip, exclude) {
 		var newElement;
+		
 		if (element.nodeType === 3) { // Text
 			newElement = element;
-		} else if (element.tagName !== undefined && skip.indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = element;
+		} else if (exclude !== undefined && element.tagName !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+			newElement = document.createTextNode('');
 		} else {
 			var tagName = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
 			if (element.attributes !== undefined &&
@@ -62,14 +76,34 @@ angular.module('evtviewer.dataHandler')
 
 				if (copiedElementText) {
 					var copiedElement = angular.element(copiedElementText[0])[0];
-					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip));
+					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip, exclude));
 				}
 			} else {
 				// if (tagName === 'l') {
 				//     newElement = parser.parseLine(element);
 				// } else 
-				if (tagName === 'note' && skip !== 'evtNote') {
+				if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
 					newElement = parser.parseNote(element);
+				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
+					newElement = document.createElement('span');
+					newElement.className = tagName;
+					var textContent = '';
+					for (var i = 0; i < element.attributes.length; i++) {
+						var attrib = element.attributes[i];
+						if (attrib.specified) {
+							if (attrib.name !== 'xml:id') {
+								var date = new Date(attrib.value);
+								var formattedDate = date && !isNaN(date) ? date.toLocaleDateString() : attrib.value;
+								textContent += parser.camelToSpace(attrib.name.replace(':', '-')).toLowerCase() + ': '+ formattedDate + ', ';
+							}
+						}
+					}
+					newElement.textContent = textContent.slice(0, -1);
+
+				} else if (config.namedEntitiesSelector && 
+					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
+					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
+					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
 					newElement.className = tagName;
@@ -86,7 +120,7 @@ angular.module('evtviewer.dataHandler')
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
 							var childElement = element.childNodes[j].cloneNode(true);
-							newElement.appendChild(parser.parseXMLElement(doc, childElement, skip));
+							newElement.appendChild(parser.parseXMLElement(doc, childElement, skip, exclude));
 						}
 					} else {
 						newElement.innerHTML = element.innerHTML + ' ';
@@ -118,7 +152,7 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-        return attributes
+        return attributes;
 	};
 
 	/* ********************* */
@@ -192,6 +226,38 @@ angular.module('evtviewer.dataHandler')
 		popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
 		popoverElem.innerHTML = '<i class="icon-evt_note"></i>';
 		return popoverElem;
+	};
+
+	/* ******************* */
+	/* parseEntity(docDOM) */
+	/* **************************************************************************** */
+	/* Function to parse an XML element representing a named entity 				*/
+	/* and transform it into an evtNamedEntityRef 	                                */
+	/* @doc -> XML to be parsed                                                  	*/
+	/* @entityNode -> Node to be transformed										*/
+	/* @skip -> names of sub elements to skip from transformation					*/
+	/* **************************************************************************** */
+	// It will replace the node @entityNode
+	// and replace it with a new evt-named-entity-ref element
+	parser.parseNamedEntity = function(doc, entityNode, skip) {
+		var entityElem = document.createElement('evt-named-entity-ref'),
+			entityRef = entityNode.getAttribute('ref'),
+			entityId = entityRef ? entityRef.replace('#', '') : undefined;
+		if (entityId && entityId !== '') {
+			entityElem.setAttribute('data-entity-id', entityId);
+		}
+		var listType = entityNode.tagName ? entityNode.tagName : 'generic';
+		entityElem.setAttribute('data-entity-type', listType);
+
+		var entityContent = '';
+		for (var i = 0; i < entityNode.childNodes.length; i++) {
+			var childElement = entityNode.childNodes[i].cloneNode(true),
+				parsedXmlElem;
+
+			parsedXmlElem = parser.parseXMLElement(doc, childElement, skip);
+			entityElem.appendChild(parsedXmlElem);
+		}
+		return entityElem;
 	};
 
 	parser.parseLines = function(docDOM) {
@@ -305,7 +371,7 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addPage(newPage, docId);
 			});
-		console.log('## Pages ##', parsedData.getPages());
+		//console.log('## Pages ##', parsedData.getPages());
 	};
 
 	parser.parseDocuments = function(doc) {
@@ -344,7 +410,7 @@ angular.module('evtviewer.dataHandler')
 						for (var i = biblRefs.length-1; i >= 0 ; i--) {
 							var evtBiblElem = document.createElement('evt-bibl-elem'),
 								biblElem = biblRefs[i],
-								biblId = biblElem.getAttribute("xml:id") || parser.xpath(biblElem).substr(1);
+								biblId = biblElem.getAttribute('xml:id') || parser.xpath(biblElem).substr(1);
 
 							evtBiblElem.setAttribute('data-bibl-id', biblId);
 							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
@@ -356,11 +422,11 @@ angular.module('evtviewer.dataHandler')
 						attributes: frontAttributes,
 						parsedContent: parsedContent ? parsedContent.outerHTML.trim() : '',
 						originalContent: frontElem.outerHTML
-					}
+					};
 				}
 
-				for (var i = 0; i < element.attributes.length; i++) {
-					var attrib = element.attributes[i];
+				for (var j = 0; j < element.attributes.length; j++) {
+					var attrib = element.attributes[j];
 					if (attrib.specified) {
 						newDoc[attrib.name] = attrib.value;
 					}

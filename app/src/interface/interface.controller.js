@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
+.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtPinnedElements, evtButtonSwitch, evtBox, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
 	var _console = $log.getInstance('interface');
 
 
@@ -75,9 +75,7 @@ angular.module('evtviewer.interface')
 		evtInterface.updateUrl();
 	};
 
-	$scope.getPinnedEntries = function() {
-		return evtInterface.getPinnedEntries();
-	};
+	$scope.evtPinnedElements = evtPinnedElements;
 
 	$scope.isLoading = function() {
 		var error = evtCommunication.getError();
@@ -96,10 +94,6 @@ angular.module('evtviewer.interface')
 		return evtInterface.getSecondaryContentOpened();
 	};
 
-	$scope.updateSecondaryContentOpened = function(val) {
-		return evtInterface.updateSecondaryContentOpened(val);
-	};
-
 	$scope.getProjectInfo = function() {
 		return parsedData.getProjectInfo();
 	};
@@ -107,6 +101,10 @@ angular.module('evtviewer.interface')
 	$scope.getWitnessesListFormatted = function() {
 		return parsedData.getWitnessesListFormatted();
 	};
+
+    $scope.getAvailableLists = function() {
+        return parsedData.getNamedEntitiesCollection()._indexes;
+    };
 
 	$scope.getProperty = function(name) {
 		return evtInterface.getProperty(name);

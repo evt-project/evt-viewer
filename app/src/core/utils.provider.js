@@ -79,6 +79,19 @@ angular.module('evtviewer.core')
 		}
 		return null;
 	};
+	this.isNestedInElem = function(element, parentTagName) {
+		if (element.parentNode !== null && element.parentNode !== undefined && element.parentNode.tagName) {
+			if (element.parentNode.tagName === 'text') {
+				return false;
+			} else if (element.parentNode.tagName.toLowerCase() === parentTagName.toLowerCase()) {
+				return true;
+			} else {
+				return this.isNestedInElem(element.parentNode, parentTagName);
+			}
+		} else {
+			return false;
+		}
+	};
 
     var hexC = function() {
         var hex = Math.floor(Math.random() * 256).toString(16);
@@ -106,7 +119,8 @@ angular.module('evtviewer.core')
             getRandomColor: this.getRandomColor,
 			DOMutils: {
 				getElementsBetweenTree: this.getElementsBetweenTree,
-				getCommonAncestor: this.getCommonAncestor
+				getCommonAncestor: this.getCommonAncestor,
+				isNestedInElem : this.isNestedInElem
 			}
 		};
 	};

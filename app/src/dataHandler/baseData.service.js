@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser, evtPrimarySourcesParser, evtDialog, evtBibliographyParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser, evtPrimarySourcesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -63,6 +63,9 @@ angular.module('evtviewer.dataHandler')
 
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
+
+        //Parse named entity
+        evtNamedEntitiesParser.parseEntities(docElements);
     };
 
     /* ************************** */

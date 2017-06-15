@@ -1,0 +1,22 @@
+<div class="evt-list">
+    <div ng-if="vm.elements.length > 0">
+        <div class="evt-list__listLetters">
+            <span class="evt-list__listLetters__letter" 
+                ng-class="{'active': letter === vm.selectedLetter }"
+                ng-repeat="letter in ::vm.listKeys | orderBy track by $index" ng-click="vm.selectLetter(letter)">
+                {{ ::letter }}
+            </span>
+        </div>
+        <div class="evt-list__content">
+            <div infinite-scroll="vm.loadMoreElements()" infinite-scroll-distance="2" infinite-scroll-parent="true">
+                <evt-named-entity 
+                    data-entity-id="{{::element}}" data-entity-type="{{::vm.listType}}"
+                    ng-repeat="element in vm.visibleElements | orderBy ">
+                </evt-named-entity>
+            </div>
+        </div>
+    </div>
+    <div ng-if="vm.elements.length <= 0">
+        No elements in this list
+    </div>
+</div>

@@ -6,7 +6,7 @@ angular.module('evtviewer.reference')
 	var _console = $log.getInstance('reference');
 
 	vm.handleRefClick = function(oEvent) {
-		if (vm.type === 'biblRef' || vm.target.substr(0, 1) === '#') {
+		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.target.substr(0, 1) === '#') {
 			/*/
 			Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
 				passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
@@ -16,11 +16,13 @@ angular.module('evtviewer.reference')
 
 			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza 
 			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
-			var target = vm.target.replace('#', '');
-			if (parsedData.getBibliographicRefById(target)) {
+			var target = vm.target.replace('#', ''),
+				bibliographicRef = parsedData.getBibliographicRefById(target),
+				bibliographyPanel = evtInterface.getTabContainerPanel().bibliography;
+			if (bibliographicRef && bibliographyPanel) {
 				evtInterface.updateSecondaryContentOpened(' ');
 				evtDialog.openByType('globalInfo');
-				evtInterface.setHomePanel(evtInterface.getTabContainerPanel().bibliography.name);
+				evtInterface.setHomePanel(bibliographyPanel.name);
 				evtHighlight.setHighlighted(target);
 				//dopo 2s viene rimosso l'attributo highlight
 				$timeout(function() {

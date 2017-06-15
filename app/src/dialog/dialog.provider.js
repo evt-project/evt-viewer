@@ -53,7 +53,7 @@ angular.module('evtviewer.dialog')
 			var currentId = scope.id || idx++,
 				currentType = scope.type || 'default',
 				title = scope.title || '',
-				opened = false,
+				opened = scope.opened || false,
 				content;
 
 			var scopeHelper = {};
@@ -118,6 +118,14 @@ angular.module('evtviewer.dialog')
 			for (var i in collection) {
 				if (collection[i].type === type) {
 					collection[i].open();
+				}
+			}
+		};
+
+		dialog.closeByType = function(type) {
+			for (var i in collection) {
+				if (collection[i].type === type) {
+					collection[i].close();
 				}
 			}
 		};

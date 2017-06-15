@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function(evtCommunication, evtCriticalParser, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, evtCommunication, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -22,7 +22,8 @@ angular.module('evtviewer.interface')
             indexTitle         : '',
             availableViewModes : [ ],
             availableWitnesses : [ ],
-            witnessSelector    : false
+            witnessSelector    : false,
+            namedEntitiesLists : false
         };
 
         var tools = {
@@ -42,6 +43,9 @@ angular.module('evtviewer.interface')
                             }
                         }
                     }
+
+                    // Remove Named Entities Lists button if Named Entities Lists Collection is Empty
+                    properties.namedEntitiesLists = parsedData.getNamedEntitiesCollection()._indexes.length > 0;
 
                     if (config.availableEditionLevel) {
                         for (var e = 0; e < config.availableEditionLevel.length; e++) {
@@ -69,25 +73,16 @@ angular.module('evtviewer.interface')
                         $q.all(promises).then(function(){
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
-                                parsedData.getCriticalEntryById(state.currentAppEntry) === undefined){
+                                parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {
                                 mainInterface.updateCurrentAppEntry('');
-                                mainInterface.updateUrl();
                             }
-                            state.isLoading = false;
-
+                            mainInterface.updateUrl();
+                            $rootScope.$applyAsync(state.isLoading = false);
+                            
                             // Update Pinned entries
-                            var cookies = document.cookie.split(';');
-                            for (var i in cookies) {
-                                var cookie = cookies[i].split('=');
-                                if (cookie[0].trim() === 'pinned') {
-                                    var pinnedCookie = cookie[1].split(',').filter(function(el) {
-                                        return el.length !== 0 && parsedData.getCriticalEntryById(el) !== undefined;
-                                    });
-                                    if (pinnedCookie.length > 0){
-                                        evtCriticalApparatusEntry.setPinned(pinnedCookie);
-                                    }
-                                }
-                            }
+                            $timeout(function() {
+                                evtPinnedElements.getElementsFromCookies();
+                            }, 10);
                         });
                     }
                 });
@@ -183,10 +178,6 @@ angular.module('evtviewer.interface')
 
         mainInterface.isPinnedAppBoardOpened = function() {
             return state.isPinnedAppBoardOpened;
-        };
-
-        mainInterface.getPinnedEntries = function() {
-            return evtCriticalApparatusEntry.getPinned();
         };
 
         mainInterface.getSecondaryContentOpened = function(){
@@ -333,7 +324,7 @@ angular.module('evtviewer.interface')
                     edition = params.e;
                 } else {
                     if (availableEditionLevel && availableEditionLevel.length > 0) {
-                        edition = availableEditionLevel[0].value
+                        edition = availableEditionLevel[0].value;
                     }
                 }
             } else {
@@ -343,7 +334,7 @@ angular.module('evtviewer.interface')
                     }
                 } else {
                     if (availableEditionLevel && availableEditionLevel.length > 0) {
-                        edition = availableEditionLevel[0].value
+                        edition = availableEditionLevel[0].value;
                     }
                 }
             }
