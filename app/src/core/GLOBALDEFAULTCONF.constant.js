@@ -163,34 +163,6 @@ angular.module('evtviewer.core')
 
     // NAMED ENTITIES
     namedEntitiesSelector: true,
-    namedEntitiesToHandle: [{
-        tagName: 'persName',
-        label: 'Persons',
-        available: true
-    },{
-        tagName: 'placeName',
-        label: 'Places',
-        available: true
-    },{
-        tagName: 'orgName',
-        label: 'Organizations',
-        available: true
-    }],
-
-    otherEntitiesToHandle: [{
-    	tagName: 'rolename',
-        label: 'Role Name',
-        available: true,
-        color: '#cfc'
-    }, {
-    	tagName: 'supplied',
-    	label: 'Supplied',
-    	available: true,
-    	color: '#ccf'
-    },{
-    	tagName: 'measure',
-    	label: 'Measure',
-    	available: true,
-    	color: '#ffecb3'
-    }]
+    namedEntitiesToHandle: [],
+    otherEntitiesToHandle: []
 });

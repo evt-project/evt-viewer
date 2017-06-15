@@ -22,7 +22,7 @@
 		"value": "interpretative",
 		"label": "Interpretative",
 		"title": "Interpretative edition",
-		"visible": false
+		"visible": true
 	}],
 
 	"defaultViewMode": "readingTxt",
@@ -85,6 +85,7 @@
 	"heatmapColor": "",
 
     "namedEntitiesSelector": true,
+    
     "namedEntitiesToHandle": [{
         "tagName": "persName",
         "label": "Persons",
@@ -97,5 +98,17 @@
         "tagName": "orgName",
         "label": "Organizations",
         "available": true
+    }],
+
+    "otherEntitiesToHandle": [{
+    	"tagName": "rolename",
+        "label": "Role Name",
+        "available": true,
+        "color": "#cfc"
+    }, {
+    	"tagName": "measure",
+    	"label": "Measure",
+    	"available": true,
+    	"color": "#ffecb3"
     }]
 }
