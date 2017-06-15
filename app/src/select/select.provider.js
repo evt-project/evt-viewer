@@ -285,6 +285,7 @@ angular.module('evtviewer.select')
                     break;
                 case 'pinned-filter' : 
                     optionSelectedValue = initValue;
+                    optionSelected = [];
                     var optionSelectAll = {
                             value : 'ALL',
                             label : 'Select All',
@@ -293,7 +294,7 @@ angular.module('evtviewer.select')
                         };
                     
                     callback = function(oldOption, newOption) {
-                        if (newOption !== undefined){
+                        if (newOption !== undefined) {
                             //_console.log('Named Entities select callback ', newOption);
                             vm.selectOption(newOption);
                             if (newOption.value === 'ALL') {
@@ -307,17 +308,21 @@ angular.module('evtviewer.select')
                                     }
                                 }
                                 //TODO: set all pinned visible + Add filters
+                                evtPinnedElements.setAllTypesVisible();
                                 vm.selectOption(newOption);
                             } else if (newOption.value === 'NONE') {
                                 // CLEAR SELECTION
                                 vm.optionSelected = [];
                                 vm.selectOption(newOption);
                                 //TODO: set all pinned visible + clear filters
+                                evtPinnedElements.resetVisibleTypes();
                             } else {
                                 if (vm.isOptionSelected(newOption)) {
                                     // TODO: set pinned type visible
+                                    evtPinnedElements.addVisibleType(newOption.value);
                                 } else {
                                     // TODO: set pinned type invisible
+                                    evtPinnedElements.removeVisibleType(newOption.value);
                                 }
                             }
                         }

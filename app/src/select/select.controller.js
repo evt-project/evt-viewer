@@ -21,6 +21,9 @@ angular.module('evtviewer.select')
         if (!closeSiblings) {
             evtSelect.closeAll(vm.uid);
         }
+        if (vm.openUp) {
+            vm.updateContainerPosition(vm.currentType);
+        }
         vm.expanded = !vm.expanded;
     };
 
@@ -50,11 +53,11 @@ angular.module('evtviewer.select')
         if (vm.expanded) {
             vm.toggleExpand();
         }
-        if (option.value === 'NONE' && vm.currentType === 'named-entities') {
+        if (option.value === 'NONE' && vm.multiselect ) {
             option = {
                 value: '',
                 label: 'No Selection',
-                title: 'Open to chose which named entities to select'
+                title: 'Open to chose an element to select.'
             };
         }
 
@@ -118,11 +121,11 @@ angular.module('evtviewer.select')
                     option = vm.formatOption(parsedData.getPage(optionValue));
                     break;
                 default:
-                    if (optionValue === 'NONE' && vm.currentType === 'named-entities') {
+                    if (optionValue === 'NONE' && vm.multiselect ) {
                         option = {
                             value: '',
                             label: 'No Selection',
-                            title: 'Open to chose which named entities to select'
+                            title: 'Open to chose an element to select.'
                         };
                     } else {
                         option = vm.optionList[0];
@@ -130,11 +133,11 @@ angular.module('evtviewer.select')
                     break;
             }
         } else {
-            if (optionValue === 'NONE' && vm.currentType === 'named-entities') {
+            if (optionValue === 'NONE' && vm.multiselect ) {
                 option = {
                     value: '',
                     label: 'No Selection',
-                    title: 'Open to chose which named entities to select'
+                    title: 'Open to chose an element to select.'
                 };
             } else {
                 option = vm.optionList[0];

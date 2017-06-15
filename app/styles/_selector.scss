@@ -103,7 +103,7 @@ $selector-option-background-color-hover: $base-color-middle;
 		&.expanded {
 			display: block;
 			&.openUp {
-				display: inline-table;
+				display: inline;
 				visibility: visible;
 			}
 		}

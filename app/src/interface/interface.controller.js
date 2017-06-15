@@ -75,21 +75,7 @@ angular.module('evtviewer.interface')
 		evtInterface.updateUrl();
 	};
 
-	$scope.getPinnedEntries = function() {
-		return evtPinnedElements.getPinned();
-	};
-
-	$scope.getPinnedElementType = function(entryId) {
-		return evtPinnedElements.getPinnedElementType(entryId);
-	};
-
-	$scope.getAvailablePinnedTypes = function() {
-		return evtPinnedElements.getAvailablePinnedTypes();
-	};
-
-	$scope.getPinnedEntriesByType = function(type) {
-		return evtPinnedElements.getPinnedByType(type);
-	};
+	$scope.evtPinnedElements = evtPinnedElements;
 
 	$scope.isLoading = function() {
 		var error = evtCommunication.getError();

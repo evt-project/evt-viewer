@@ -38,6 +38,30 @@ angular.module('evtviewer.box')
         };
 
         // Critical edition control
+        // Critical App Filters look like this:
+        // {
+        //     resp : {
+        //         any: false,
+        //         name: "resp",
+        //         totActive: 2,
+        //         values: {
+        //             0: "m1",
+        //             1: "CDP", 
+        //             CDP: {
+        //                 active: true,
+        //                 color: "rgb(253, 153, 54)",
+        //                 name: "CDP"
+        //             },
+        //             m1: {
+        //                 active: true,
+        //                 color: "rgb(52, 197, 173)",
+        //                 name: "m1"
+        //             },
+        //             length: 2
+        //         }
+        //     },
+        //     _totActive: 2
+        // }
         var toggleCriticalAppFilter = function(filter, value){
             var vm      = this,
                 filters = vm.state.filters;

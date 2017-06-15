@@ -10,6 +10,8 @@ angular.module('evtviewer.UItools')
     	}
     };
 
+    var visibleTypes = [];
+
     pinnedElements.getElementsFromCookies = function() {
     	var cookies = document.cookie.split(';');
         for (var key in cookies) {
@@ -96,6 +98,31 @@ angular.module('evtviewer.UItools')
 
     pinnedElements.isPinned = function(elementId) {
     	return pinned[elementId] !== undefined;
+    };
+
+    pinnedElements.addVisibleType = function(type) {
+    	if (visibleTypes.indexOf(type) < 0) {
+    		visibleTypes.push(type)
+    	}
+    };
+
+    pinnedElements.removeVisibleType = function(type) {
+    	var indexType = visibleTypes.indexOf(type);
+    	if (indexType >= 0) {
+			visibleTypes.splice(indexType, 1);
+    	}
+    };
+
+    pinnedElements.setAllTypesVisible = function() {
+    	visibleTypes = pinnedElements.getAvailablePinnedTypes();
+    };
+
+    pinnedElements.resetVisibleTypes = function() {
+    	visibleTypes = [];
+    };
+
+    pinnedElements.getVisibleTypes = function() {
+    	return visibleTypes;
     };
 
     return pinnedElements;

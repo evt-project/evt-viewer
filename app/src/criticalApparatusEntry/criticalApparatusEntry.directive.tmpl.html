@@ -20,14 +20,14 @@
             ng-if="::vm.isPinAvailable() && vm.type === 'pinned'"
             data-label=""
             data-icon="remove"
-            data-type="pinReading"
+            data-type="pin-off"
             ng-click="vm.togglePin()"></button-switch>
       <button-switch 
             title="Toggle Pin"
             ng-if="::vm.isPinAvailable() && vm.type === 'default'"
             data-label=""
             data-icon="pin"
-            data-type="pinReading"
+            data-type="pin"
             ng-class="{'active' : vm.isPinned()}"
             ng-click="vm.togglePin()"></button-switch>
       <button-switch 

@@ -132,14 +132,14 @@
 
                 <box data-type="pinnedBoard" 
                     ng-if="isPinnedAppBoardOpened()">
-                     <span ng-if="getPinnedEntries().length <= 0" class="italic">
+                     <span ng-if="evtPinnedElements.getPinned().length <= 0" class="italic">
                         Selected apparatus entries will be shown here
                     </span>
-                    <div ng-if="getPinnedEntries().length > 0 && entry !== ''"
-                         ng-repeat="entry in getPinnedEntries()">
+                    <div ng-if="evtPinnedElements.getVisibleTypes().length <= 0 && evtPinnedElements.getPinned().length > 0 && entry !== ''"
+                         ng-repeat="entry in evtPinnedElements.getPinned()">
                         
                         <evt-critical-apparatus-entry
-                            ng-if="::getPinnedElementType(entry) === 'criticalApparatusEntry'"
+                            ng-if="::evtPinnedElements.getPinnedElementType(entry) === 'criticalApparatusEntry'"
                             class="in_critical_apparatus"
                             ng-class="{'active': getCurrentAppEntry() === entry}"
                             ng-click="updateCurrentAppEntry(entry);"
@@ -147,10 +147,28 @@
                             data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
 
                         <evt-named-entity 
-                            ng-if="::getPinnedElementType(entry).indexOf('namedEntity') >= 0"
+                            ng-if="::evtPinnedElements.getPinnedElementType(entry).indexOf('namedEntity') >= 0"
                             data-location="pinned"
                             data-entity-id="{{::entry}}"></evt-named-entity>
-                        
+                    </div>
+
+                    <div ng-if="evtPinnedElements.getVisibleTypes().length > 0"
+                         ng-repeat="type in evtPinnedElements.getVisibleTypes()">
+                            <span class="pinnedTypeTitle">{{ ::type | camelToSpaces | underscoresToSpaces | capitalize }}</span>
+                            <div ng-repeat="entry in evtPinnedElements.getPinnedByType(type)">
+                                <evt-critical-apparatus-entry
+                                    ng-if="::type === 'criticalApparatusEntry'"
+                                    class="in_critical_apparatus"
+                                    ng-class="{'active': getCurrentAppEntry() === entry}"
+                                    ng-click="updateCurrentAppEntry(entry);"
+                                    data-type="pinned"
+                                    data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
+
+                                <evt-named-entity 
+                                    ng-if="::type.indexOf('namedEntity') >= 0"
+                                    data-location="pinned"
+                                    data-entity-id="{{::entry}}"></evt-named-entity>
+                            </div>
                     </div>
                 </box>
             </section>

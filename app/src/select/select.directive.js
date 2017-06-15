@@ -17,31 +17,31 @@ angular.module('evtviewer.select')
             // Initialize select
             var currentSelect = evtSelect.build(scope, scope.vm);
 
-            var updateContainerPosition = function(scope) {
+            scope.vm.updateContainerPosition = function(type) {
                 var optionContainer = element.find('.option_container'),
                     selector = element.find('.selector'),
                     labelSelected = element.find('.label_selected');
-                optionContainer.css('position', 'sticky');
+                //optionContainer.css('position', 'sticky');
+                optionContainer.css('position', 'absolute');
                 var newMarginTop;
                 //TEMP => TODO: understand why the behaviour is different
-                if (scope.type === 'pinned-filter') {
+                //if (type === 'pinned-filter') {
                     newMarginTop = optionContainer.height() + 2; 
-                } else {
-                    newMarginTop = optionContainer.height() + labelSelected.height();
-                }
+                //} else {
+                //    newMarginTop = optionContainer.height() + labelSelected.height();
+                //}
                 optionContainer.css('margin-top', -newMarginTop + 'px')
-                optionContainer.css('position', 'absolute');
                 
             }
             $timeout(function(){
                 if (currentSelect.openUp) {
-                    updateContainerPosition(scope);
+                    currentSelect.updateContainerPosition(scope.type);
                 }
 
                 if (currentSelect !== undefined) {
                     if (scope.init !== undefined && scope.init !== '') {
                         currentSelect.selectOptionByValue(scope.init);
-                    } else {
+                    } else if (!scope.multiselect) {
                         currentSelect.callback(undefined, scope.vm.optionList[0]);
                     }
                 }
@@ -84,8 +84,24 @@ angular.module('evtviewer.select')
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.optionList = currentSelect.formatOptionList(newItem);
+                        var selector = element.find('.selector');                        
+                        if (currentSelect.optionList.length > 0) {
+                            selector.show();
+                        } else {
+                            selector.hide();
+                        }
                         $timeout(function() {
-                            updateContainerPosition(scope);
+                            var currentOptionSelected = currentSelect.getOptionSelected();
+                            if (currentOptionSelected.value === 'ALL' || currentOptionSelected.value === 'MULTI') {
+                                var optionSelectAll = {
+                                    value : 'ALL',
+                                    label : 'Select All',
+                                    title : 'Select All Types',
+                                    additionalClass: 'doubleBorderTop'
+                                };
+                                currentSelect.callback(currentOptionSelected, optionSelectAll);
+                            }
+                            currentSelect.updateContainerPosition(currentSelect.type);
                         });
                     }
                 }, true); 
