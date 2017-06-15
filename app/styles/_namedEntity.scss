@@ -214,7 +214,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 	&__occurrences {
 
 		&-occurrence {
-			cursor: pointer;
 			border-radius: 4px;
 			padding: 3px 6px;
 			display: inline-block;
@@ -223,8 +222,9 @@ $named-entities-border-color : rgb(125, 125, 125);
 			font-size: 85%;
 			margin-bottom: 3px;
 			display: inline-block !important;
+			cursor: pointer;
 
-			&:hover {
+			&:hover, &.active {
 				//text-shadow: 0px 0px 1px #000;
 				background: rgba($base-color-middle, .2);
 			}
@@ -339,7 +339,7 @@ $orgColor-darker: #ffb74d;
 		&-occurrence {
 			background: rgba(255, 255, 255, 0.5);
 			border-color: $color-darker;
-			&:hover {
+			&:hover, &.active {
 				background: rgba(255, 255, 255, 1);
 			}
 		}

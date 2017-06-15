@@ -51,7 +51,7 @@ angular.module('evtviewer.list')
             var vm = this;
             vm.selectedLetter = letter;
             vm.elementsInListKey = getVisibleElements(vm.uid, letter);
-            vm.visibleElements = vm.elementsInListKey ? vm.elementsInListKey.slice(0, 20) : [];
+            vm.visibleElements = vm.elementsInListKey ? vm.elementsInListKey.slice(0, 40) : [];
         };
 
 
@@ -68,7 +68,7 @@ angular.module('evtviewer.list')
             var parsedElements = parsedData.getNamedEntitiesCollectionByName(currentId),
                 selectedLetter = parsedElements ? parsedElements._listKeys[0] : undefined,
                 elementsInListKey = getVisibleElements(currentId, selectedLetter),
-                visibleElements = elementsInListKey ? elementsInListKey.slice(0, 20) : [];
+                visibleElements = elementsInListKey ? elementsInListKey.slice(0, 40) : [];
 
             scopeHelper = {
                 // expansion

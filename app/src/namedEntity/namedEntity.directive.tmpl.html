@@ -110,6 +110,7 @@
                         <div ng-switch-when="occurrences">
                             <span ng-if="::vm.occurrences && vm.occurrences.length > 0"
                                 class="namedEntity__occurrences-occurrence"
+                                ng-class="{'active': vm.isCurrentPageDoc(occurrence) } "
                                 ng-repeat="occurrence in ::vm.occurrences track by $index"
                                 ng-click="vm.goToOccurrence(occurrence)">
                                 {{ ::occurrence.docLabel }} - Fol. {{ ::occurrence.pageLabel }} 

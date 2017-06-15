@@ -50,6 +50,9 @@ angular.module('evtviewer.namedEntity')
             evtInterface.updateCurrentPage(occurrence.pageId);
             evtInterface.updateCurrentDocument(occurrence.docId);
             evtInterface.updateUrl();
+            if (evtInterface.getSecondaryContentOpened() === 'entitiesList') {
+                evtInterface.updateSecondaryContentOpened('');        
+            }
             $timeout(function() {
                 evtNamedEntityRef.highlightByEntityId(vm.entityId);
             }, 500);
@@ -92,6 +95,11 @@ angular.module('evtviewer.namedEntity')
             }
         };
 
+        var isCurrentPageDoc = function(occurrence) {
+            var currentDoc = evtInterface.getCurrentDocument(),
+                currentPage = evtInterface.getCurrentPage();
+            return (currentDoc === occurrence.docId && currentPage === occurrence.pageId);
+        };
         // 
         // NamedEntity builder
         // 
@@ -182,6 +190,7 @@ angular.module('evtviewer.namedEntity')
                 toggleOccurrences : toggleOccurrences,
                 goToOccurrence    : goToOccurrence,
                 toggleSubContent  : toggleSubContent,
+                isCurrentPageDoc  : isCurrentPageDoc,
 
                 // pin tool
                 isPinAvailable : isPinAvailable,
