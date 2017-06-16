@@ -69,7 +69,7 @@ angular.module('evtviewer.dataHandler')
             node = nodes.iterateNext();
             if(node !== null && node.nodeName === 'choice') {
                currentChoiceNode = node;
-               checkCurrentNode(node, doc);
+               checkCurrentChoiceNode(node, doc);
                node = currentChoiceNode;
             }
 
@@ -212,60 +212,82 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   let checkCurrentNode = function (node, doc) {
+   let checkCurrentChoiceNode = function (node, doc) {
          let word = {},
              children = node.children,
              childNode,
              childNodeName,
+             nodeHaveChild,
              innerHtml,
              innerHtmlChild;
 
          for(let i = 0; i < children.length; i++) {
             childNodeName = children[i].nodeName;
             innerHtml = children[i].innerHTML;
-            for(let j = 0; j < children[i].children.length; j++) {
-               innerHtmlChild = children[i].children[j].outerHTML;
+            nodeHaveChild = children[i].children.length !== 0;
+
+            if(nodeHaveChild) {
+               for (let j = 0; j < children[i].children.length; j++) {
+                  innerHtmlChild = children[i].children[j].outerHTML;
+
+                  childNode = checkChildNode(children[i].children[j]);
+                  switch (childNodeName) {
+                     case 'sic':
+                     case 'orig':
+                     case 'abbr':
+                     case 'am':
+                           if (childNode && childNode.nodeName === 'g') {
+                              word.diplomatic = replaceGlyphTag(childNode, innerHtml, innerHtmlChild, doc);
+                              innerHtml = word.diplomatic;
+                           }
+                           else {
+                              innerHtml = innerHtml.replace(innerHtmlChild, children[i].children[j].textContent);
+                              word.diplomatic = children[i].textContent;
+                           }
+                        break;
+                     case 'corr':
+                     case 'reg':
+                     case 'expan':
+                     case 'ex':
+                        word.interpretative = children[i].textContent;
+                        break;
+                  }
+               }
             }
-            childNode = checkChildNode(node);
-            switch(childNodeName) {
-               case 'sic':
-               case 'orig':
-               case 'abbr':
-               case 'am':
-                  if(childNode && childNode.nodeName === 'g') {
-                    word.diplomatic = replaceGlyphTag(childNode, innerHtml, innerHtmlChild, doc);
-                  }
-                  else {
+            else {
+               switch(childNodeName) {
+                  case 'sic':
+                  case 'orig':
+                  case 'abbr':
+                  case 'am':
                      word.diplomatic = children[i].textContent;
-                  }
-                  break;
-               case 'corr':
-               case 'reg':
-               case 'expan':
-               case 'ex':
-                  word.interpretative = children[i].textContent;
-                  break;
+                     break;
+                  case 'corr':
+                  case 'reg':
+                  case 'expan':
+                  case 'ex':
+                     word.interpretative = children[i].textContent;
+                     break;
+               }
             }
          }
          editionWords.push(word);
    };
 
-   let checkChildNode = function(node) {
-      let childNode;
-
-      for (let i = 0; i < node.children.length; i++) {
-         childNode = node;
-
-         while (childNode.children.length !== 0) {
-            for(let j = 0; j < childNode.children.length; j++) {
-               childNode = childNode.children[j];
-               switch(childNode.nodeName) {
-                  case 'g':
-                     return childNode;
-               }
-            }
+   let checkChildNode = function(childNode) {
+      if(childNode.children.length === 0) {
+         switch (childNode.nodeName) {
+            case 'g':
+               return childNode;
          }
       }
+      else {
+         for (let i = 0; i < childNode.children.length; i++) {
+            childNode = childNode.children[i];
+            checkChildNode(childNode);
+         }
+      }
+      return childNode;
    };
 
    let iterateNode = function(node) {
