@@ -427,7 +427,7 @@ angular.module('evtviewer.dataHandler')
                 var elementContentLength = element.content ? element.content.length : 0;
 				for (var j = 0; j < elementContentLength; j++) {
 					var subElement = witnessesCollection[element.content[j]];
-					if (subElement._type === 'witness') {
+					if (subElement && subElement._type === 'witness') {
 						content += '<li>';
 						if (subElement.attributes && subElement.attributes.n) {
 							content += '<strong>' + subElement.attributes.n + '</strong>';

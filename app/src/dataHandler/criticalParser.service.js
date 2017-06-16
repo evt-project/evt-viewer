@@ -7,8 +7,7 @@ angular.module('evtviewer.dataHandler')
         lemmaDef              = '<lem>',
         readingDef            = lemmaDef+', <rdg>',
         readingGroupDef       = '<rdgGrp>';
-    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef,
-        skipWitnesses         = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
+    var skipFromBeingParsed   = '<evt-reading>,<pb>,'+apparatusEntryDef+','+readingDef+','+readingGroupDef;
 
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
@@ -26,6 +25,7 @@ angular.module('evtviewer.dataHandler')
     /* @return a json object containing the list info read        */
     /* ********************************************************** */
     var parseListWit = function(doc, listWit) {
+        var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
         var list = {
             id      : listWit.getAttribute('xml:id') || evtParser.xpath(listWit).substr(1),
             attributes: evtParser.parseElementAttributes(listWit),
@@ -42,10 +42,12 @@ angular.module('evtviewer.dataHandler')
                     list.name = child.innerHTML;
                 }
                 else if (config.listDef.indexOf(child.tagName) >= 0) { //group
-                    var subList = parseListWit(doc, child);
-                    subList._group = list.id;
-                    parsedData.addElementInWitnessCollection(subList);
-                    list.content.push(subList.id);
+                    if (skipWitnesses.indexOf(list.id) < 0){
+                        var subList = parseListWit(doc, child);
+                        subList._group = list.id;
+                        parsedData.addElementInWitnessCollection(subList);
+                        list.content.push(subList.id);
+                    }
                 } 
                 else if (config.versionDef.indexOf(child.tagName) >= 0){ //witness
                     var witnessElem = {
@@ -73,6 +75,7 @@ angular.module('evtviewer.dataHandler')
     /* @doc document -> XML to be parsed                          */
     /* ********************************************************** */
     parser.parseWitnesses = function(doc) {
+        var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
         var currentDocument = angular.element(doc);
         if (currentDocument.find(config.listDef).length > 0) {
             angular.forEach(currentDocument.find(config.listDef), 
@@ -81,19 +84,21 @@ angular.module('evtviewer.dataHandler')
                         angular.forEach(element.childNodes, function(child){
                             if (child.nodeType === 1) {
                                 var el = {};
-                                
-                                if (config.listDef.indexOf(child.tagName) >= 0) { // group
-                                    el = parseListWit(doc, child);
-                                } else if (config.versionDef.indexOf(child.tagName) >= 0) { // witness
-                                    el = {
-                                        id          : child.getAttribute('xml:id'),
-                                        description : evtParser.parseXMLElement(doc, child, ''),
-                                        _group      : undefined,
-                                        _type       : 'witness',
-                                        text        : {}
-                                    };
+                                el.id = child.getAttribute('xml:id');
+                                if (skipWitnesses.indexOf(el.id) < 0) {
+                                    if (config.listDef.indexOf(child.tagName) >= 0) { // group
+                                        el = parseListWit(doc, child);
+                                    } else if (config.versionDef.indexOf(child.tagName) >= 0) { // witness
+                                        el = {
+                                            id          : child.getAttribute('xml:id'),
+                                            description : evtParser.parseXMLElement(doc, child, ''),
+                                            _group      : undefined,
+                                            _type       : 'witness',
+                                            text        : {}
+                                        };
+                                    }
+                                    parsedData.addElementInWitnessCollection(el);
                                 }
-                                parsedData.addElementInWitnessCollection(el);
                             }
                         });
                     }
