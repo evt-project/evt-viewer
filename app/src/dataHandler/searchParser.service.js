@@ -153,6 +153,11 @@ angular.module('evtviewer.dataHandler')
       node = childNode;
       glyph = findGlyph(doc);
       replaceGTag = innerHtml.replace(toReplace, glyph.diplomatic);
+
+      while(replaceGTag.includes(toReplace)) {
+         replaceGTag = replaceGTag.replace(toReplace, glyph.diplomatic);
+      }
+
       return replaceGTag;
    };
 
