@@ -154,7 +154,7 @@ angular.module('evtviewer.core')
     ],
 
     /*Definition of the element used within the XML file to encode quotes for the sources apparatus.*/
-    quoteDef    : '<quote>',
+    quoteDef    : '',
     /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
     analogueDef : '',
     

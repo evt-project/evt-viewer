@@ -34,7 +34,8 @@
                     ng-click="vm.toggleSource(source.id)"
                     compile="source.abbr">
                 </li>
-                <span class="compareLabel" ng-repeat-end>
+                <span class="compareLabel" ng-class="{'invisible' : vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)}"
+                ng-repeat-end>
                     <evt-source-ref
                         data-source-id="{{source.id}}"
                         ng-if="vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)">

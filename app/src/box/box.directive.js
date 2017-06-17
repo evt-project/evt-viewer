@@ -24,7 +24,8 @@ angular.module('evtviewer.box')
                 witness : scope.witness,
                 witPage : scope.witpage,
                 edition : scope.edition,
-                source  : scope.source
+                source  : scope.source,
+                version : scope.version
             };
 
             // Initialize box

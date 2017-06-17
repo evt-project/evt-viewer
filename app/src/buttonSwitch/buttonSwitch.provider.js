@@ -381,9 +381,9 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     //TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
                     break;
-                /*Case added by CM*/
-                /*Button to show/hide the bibliographic reference of the source
-                currently shown in the source-text view*/
+                /* Case toggleInfoSrc */
+                /* Button to show/hide the bibliographic reference of the source */
+                /* currently shown in the source-text view | @author --> CM      */
                 case 'toggleInfoSrc':
                     btnType = 'toggler';
                     callback = function(){
@@ -396,6 +396,15 @@ angular.module('evtviewer.buttonSwitch')
                     };
                     fakeCallback = function(){
                         scope.$parent.vm.updateState('topBoxOpened', false);
+                    };
+                    break;
+                /* Case addVer */
+                /* It shows the versions available in the versions selector | @author --> CM */
+                case 'addVer':
+                    btnType = 'standAlone';
+                    callback  = function() {
+                        evtInterface.updateProperty('versionSelector', true);
+                        scope.vm.active = false;
                     };
                     break;
                 case 'cropText':

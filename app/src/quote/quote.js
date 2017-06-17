@@ -1,7 +1,7 @@
 /**
  * @ngdoc module
- * @name evtviewer.reading
- * @module evtviewer.reading
+ * @name evtviewer.quote
+ * @module evtviewer.quote
  * @description ...
 **/
 angular.module('evtviewer.quote', []);

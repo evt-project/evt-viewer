@@ -66,8 +66,9 @@ angular.module('evtviewer.interface')
                         // Parse critical entries
                         if (config.loadCriticalEntriesImmediately){
                             promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
-                            // Parse the versions entries
                         }
+
+                        // Parse the versions entries
                         if (config.versions.length > 1) {
                             promises.push(evtCriticalApparatusParser.parseVersionEntries(currentDocFirstLoad.content).promise);
                         }
@@ -89,14 +90,30 @@ angular.module('evtviewer.interface')
                                 mainInterface.updateCurrentAppEntry('');
                                 mainInterface.updateUrl();
                             }
-
-                             sourcesTexts = parsedData.getSources()._indexes.availableTexts;
-                             if (Object.keys(sourcesTexts).length !== 0) {
-                                 for (var i in sourcesTexts) {
+                            
+                            /** Temp | TODO: add to updateParams? **/
+                            // Prepare the sources texts available and the source text to show as default
+                            // in the src-Txt view
+                            sourcesTexts = parsedData.getSources()._indexes.availableTexts;
+                            if (Object.keys(sourcesTexts).length !== 0) {
+                                for (var i in sourcesTexts) {
                                     properties.availableSourcesTexts.push(sourcesTexts[i].id);
                                 }
                                 state.currentSourceText = properties.availableSourcesTexts[0];
-                             }
+                            }
+
+                            /** Temp | TODO: add to updateParams? **/
+                            // Prepare version to show as default in the versions view if there
+                            // are only two versions of the text, and available versions
+                            state.currentVersions = [];
+                            if (config.versions.length === 2) {
+                                state.currentVersions.push(config.versions[1]);
+                            } else {
+                                for (var i = 1; i < config.versions.length; i++) {
+                                    properties.availableVersions.push(config.versions[i]);
+                                }
+                            }
+                            
                             state.isLoading = false;
 
                             // Update Pinned entries
@@ -359,7 +376,7 @@ angular.module('evtviewer.interface')
             if (index === undefined) {
                 state.currentVersions.push(version);
             } else {
-                state.currentVersion.splice(index, 0, version);
+                state.currentVersions.splice(index, 0, version);
             }
             mainInterface.removeAvailableVersion(version);
         };
@@ -391,6 +408,10 @@ angular.module('evtviewer.interface')
         // Method to get how many different versions have been encoded by the editor
         mainInterface.getAllVersionsNumber = function() {
             return config.versions.length;
+        };
+
+        mainInterface.getCurrentVersions = function(){
+            return state.currentVersions;
         };
 
         /** End of addition **/

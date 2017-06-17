@@ -441,9 +441,9 @@ angular.module('evtviewer.dataHandler')
                     if (attrib.name === 'ana') {
                         id = attrib.value.replace('#', '');
                         groupObj.id = id;
-                        var index = config.versions.indexOf(attrib.value);
+                        var index = config.versions.indexOf(id);
                         if (index >= 0) {
-                            groupObj.versionId = '&#'+(index+65)+';';
+                            groupObj.versionId = 'Version &#'+(index+65)+';';
                         }
                     }
                 }

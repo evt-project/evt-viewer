@@ -150,7 +150,7 @@
             <box data-type="text"
                  id="mainText"
                  ng-if="existCriticalText() && (getCurrentEdition() === 'critical')"
-                 data-edition="getCurrentEdition()"></box>
+                 data-edition="{{getCurrentEdition()}}"></box>
 
             <div class="compareVer_box" id="compareVer_box"
                  ng-class="{'span9of18': (existCriticalText() && getCurrentVersions().length <= 1),
@@ -166,17 +166,20 @@
                 data-label="Add Version"
                 data-icon="add"
                 data-type="addVer"
-                class="compareVer_box--buttonAddVer verSelector"
+                class="compareVer_box--buttonAddVer inverted-color verSelector"
                 ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0),
-                           'floatRight': (!existCriticalText() && getCurrentversions().length > 1) || (existCriticalText() && getCurrentVersions().length > 0)}"></button-switch>
+                           'floatRight': (!existCriticalText() && getCurrentVersions().length > 1) || (existCriticalText() && getCurrentVersions().length > 0)}">
+            </button-switch>
             
             <div 
                 ng-if="isVersionSelectorActive()"
                 class="availableVersions-selector versionSelector"
-                ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
+                ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0),
+                           'floatRight': (!existCriticalText() && getCurrentVersions().length > 2) || (existCriticalText() && getCurrentVersions().length > 0)}">
                 <span 
                     ng-click="addVersion(version)" 
-                    ng-repeat="version in getAvailableVersions()">{{getVersion(version)}}</span>
+                    ng-repeat="version in getAvailableVersions()"
+                    compile="getVersion(version)"></span>
             </div>
         </section>
 
@@ -453,6 +456,8 @@
     <script src="/src/apparatuses/apparatuses.controller.js"></script>
     <script src="/src/apparatuses/apparatuses.dir.tmpl.html"></script>
     <script src="/src/apparatuses/apparatuses.directive.js"></script>
+
+    <script src="/src/versions/versions.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

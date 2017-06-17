@@ -170,6 +170,10 @@ angular.module('evtviewer.interface')
         return evtInterface.isApparatusBoxOpen();
     };
 
+    $scope.getCurrentVersions = function() {
+        return evtInterface.getCurrentVersions();
+    };
+
     $scope.getAvailableVersions = function() {
         return evtInterface.getAvailableVersions();
     };
@@ -179,8 +183,24 @@ angular.module('evtviewer.interface')
         return evtInterface.getProperty('versionSelector');
     };
 
+    $scope.getAllVersionsNumber = function() {
+        return evtInterface.getAllVersionsNumber();
+    };
+
     $scope.getVersion = function(ver) {
-        
+        //CHECKME
+        return parsedData.getVersionEntries()._indexes.versionId[ver];
+    };
+
+    $scope.addVersion = function(ver) {
+        if (ver !== undefined) {
+            evtInterface.addVersion(ver);
+        }
+        $timeout(function(){
+            var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
+            document.getElementById('compareVer_box').scrollLeft = singleBoxWidth*(evtInterface.getCurrentVersions().length+1);
+        });
+        evtInterface.updateProperty('versionSelector', false);
     };
 
     /* END OF ADDITION */

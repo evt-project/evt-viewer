@@ -38,5 +38,6 @@ angular
     'evtviewer.sourcesApparatusEntry',
     'evtviewer.analogue',
     'evtviewer.analoguesApparatusEntry',
-    'evtviewer.apparatuses'
+    'evtviewer.apparatuses',
+    'evtviewer.versions'
   ]);

@@ -341,7 +341,7 @@
     // margin: 0px 0px 0px 0.5px;
 // }
 
-.compareWits_box {
+.compareWits_box, .compareVer_box {
     @include span(isolate 12 of 18);
     overflow-x: auto;
     overflow-y: hidden; 
@@ -371,7 +371,7 @@
     }
 }
 
-.compareWits_box--buttonAddWit {
+.compareWits_box--buttonAddWit, .compareVer_box--buttonAddVer {
     position: absolute;
     top: 50%;
     left: 50%;

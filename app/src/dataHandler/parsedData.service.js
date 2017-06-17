@@ -71,7 +71,8 @@ angular.module('evtviewer.dataHandler')
 	var versionAppCollection = {
 		_indexes: {
 			encodingStructure : [],
-			versionWitMap : {}
+			versionWitMap : {},
+			versionId : {}
 		}
 	};
 
@@ -585,7 +586,7 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parsedData.addVersionWitness = function(ver, wit) {
-		witMap = versionAppCollection._indexes.versionWitMap;
+		var witMap = versionAppCollection._indexes.versionWitMap;
 		if (witMap[ver] === undefined) {
 			witMap[ver] = [];
 			witMap[ver].push(wit);
@@ -593,6 +594,12 @@ angular.module('evtviewer.dataHandler')
 			if (witMap[ver].indexOf(wit) < 0) {
 				witMap[ver].push(wit);
 			}			
+		}
+
+		var versionId = versionAppCollection._indexes.versionId;
+		if (versionId[ver] === undefined) {
+			var index = config.versions.indexOf(ver); 
+			versionId[ver] = 'Version &#'+(65+index)+';';
 		}
 	}
 

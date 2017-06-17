@@ -9,7 +9,8 @@ angular.module('evtviewer.reading')
             readingType : '@',
             variance    : '@',
             scopeWit    : '@',
-            type        : '@'
+            type        : '@',
+            exponent    : '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',

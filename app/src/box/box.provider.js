@@ -370,11 +370,11 @@ angular.module('evtviewer.box')
                     };
                     break;
                 /**************** */
-                /*Case added by CM*/
+                /*Case apparatuses*/
                 /************************************************************ */
                 /*It creates the labels for every type of apparatus available.*/
                 /*It updates the currentApparatus inside of Interface.        */
-                /*Then it loads the apparatuses directive.                    */
+                /*Then it loads the apparatuses directive. | @author --> CM   */
                 /************************************************************ */
                 case 'apparatuses':
                     isLoading = true;
@@ -405,13 +405,13 @@ angular.module('evtviewer.box')
                     };
                     isLoading = false;
                     break;
-                /**************** */
-                /*Case added by CM*/
-                /************************************************************ */
-                /**/
-                /**/
-                /**/
-                /************************************************************ */
+                /*************/
+                /*Case source*/
+                /****************************************************************************/
+                /* It loads the parsed text of the current source text. Available a selector*/
+                /* to choose the source to show, a button for bibliographic reference and a */
+                /* button to change font size. | @author --> CM                             */
+                /****************************************************************************/
                 case 'source':
                     topMenuList.selectors.push({id:'sources_'+currentId, type: 'source', initValue: evtInterface.getCurrentSourceText() });
                     topMenuList.buttons.push({title: 'Bibliographic Reference', label: 'Bibl', icon: 'bibl', type: 'toggleInfoSrc' });
@@ -452,6 +452,30 @@ angular.module('evtviewer.box')
                         } else {
                             scope.vm.content = newContent;
                             scope.vm.isLoading = false;
+                        }
+                    };
+                    break;
+                    /**************/
+                    /*Case version*/
+                    /************************************************************ */
+                    /**/
+                    /**/
+                    /* @author --> CM*/
+                    /************************************************************ */
+                    case 'version':
+                    var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
+                    topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: versionId});
+                    if (evtInterface.getAllVersionsNumber() > 2) {
+                        topMenuList.buttons.push({title: 'Remove Version', label: '', type: 'removeVer'})
+                    }
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+
+                    updateContent = function() {
+                        scope.vm.isLoading = true;
+                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                            noTextAvailableMsg = 'Text of version '+vm.version+' is not available.';
+                        if (vm.version !== undefined) {
+                            //
                         }
                     };
                     break;
