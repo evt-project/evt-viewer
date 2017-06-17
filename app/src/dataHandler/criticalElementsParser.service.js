@@ -937,9 +937,9 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-type', 'versionLemma');
             spanElement.setAttribute('data-scope-version', scopeVersion);
 
-            if (entry.lemma !== undefined && entry.lemma !== '') {
+            if (entry.lemma !== undefined && entry.lemma !== '' && entry.content[scopeVersion] !== undefined) {
                 spanElement.setAttribute('data-reading-id', entry.lemma);
-                var lemmaContent = entry.content[scopeVersion].content[entry.lemma].content;
+                var lemmaContent = entry.content[scopeVersion].content[entry.content[scopeVersion].lemma].content;
                 for (var i in lemmaContent) {
                     if (typeof(lemmaContent[i]) === 'string') {
                         spanElement.appendChild(document.createTextNode(lemmaContent[i]));

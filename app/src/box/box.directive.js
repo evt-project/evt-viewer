@@ -11,7 +11,8 @@ angular.module('evtviewer.box')
             witness : '@',
             witpage : '@',
             edition : '@',
-            source  : '@'
+            source  : '@',
+            version : '@'
         },
         transclude : true,
         templateUrl: 'src/box/box.dir.tmpl.html',

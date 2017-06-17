@@ -227,7 +227,7 @@
             border-color: $box-witness-structure-color-dark;
         }
     }
-    &.box-text, &.box-witness {
+    &.box-text, &.box-witness, &.box-version {
         .box-body {
             position: relative;
             overflow-x: hidden;
@@ -276,6 +276,29 @@
     &.box-source {
         .box-body {
             overflow-y: scroll;
+        }
+    }
+    &.box-version {
+        @include span(isolate 5 of 12);
+        float: none;
+        
+        &.span6of12 {
+            @include span(isolate 6 of 12);
+        }
+        &.span9of9 {
+            @include span(isolate 9 of 9);
+        }
+
+        .box-body {
+            overflow-y: scroll;
+            border-color: $box-witness-structure-color-dark;
+            background: $box-witness-background-color;
+        }
+        .box-menu {
+            @include colors($box-witness-structure-color-light, $box-witness-structure-color-dark);
+        }
+        .filters-box, .tools-group-box {
+            border-color: $box-witness-structure-color-dark;
         }
     }
     // BODY
@@ -356,7 +379,7 @@
     }
     &.span18of18 { //no Critical Text
         width: span(18 of 18);
-        .box-witness {
+        .box-witness, .box-version {
             @include span(isolate 5 of 18);
             float: none;
 

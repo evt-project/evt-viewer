@@ -366,6 +366,11 @@ angular.module('evtviewer.dataHandler')
              criticalText = errorMsg;
         }
         parsedData.addCriticalText(criticalText, docId);
+
+        // If scopeVersion is defined it adds it to VersionTexts in parsedData
+        if (scopeVersion !== undefined) {
+            parsedData.addVersionText(criticalText, docId, scopeVersion);
+        }
         
         deferred.resolve('success');
         return deferred;

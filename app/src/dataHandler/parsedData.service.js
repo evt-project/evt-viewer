@@ -76,6 +76,8 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	var versionTexts = {};
+
 	// TODO: Gestire edizioni
 	var mockEditions = [{
 		value: 'critical',
@@ -601,7 +603,27 @@ angular.module('evtviewer.dataHandler')
 			var index = config.versions.indexOf(ver); 
 			versionId[ver] = 'Version &#'+(65+index)+';';
 		}
-	}
+	};
+
+	// Adds the parsed text of a version
+	// @text --> parsed text | @docId --> id of the current document | @ver --> id of the version
+	// @author --> CM
+	parsedData.addVersionText = function(text, docId, ver) {
+		if (versionTexts[docId] === undefined) {
+			versionTexts[docId] = {};
+			versionTexts[docId][ver] = text;
+		} else {
+			if (versionTexts[docId][ver] === undefined) {
+				versionTexts[docId][ver] = text;
+			}
+		}
+	};
+
+	// @ver --> id of the version | @docId --> id of the currentDocument
+	// Returns the parsed text of the version. | @author --> CM
+	parsedData.getVersionText = function(ver, docId) {
+		return versionTexts[docId][ver];
+	};
 
 	/* ************ */
 	/* PROJECT INFO */
