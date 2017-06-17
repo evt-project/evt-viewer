@@ -60,6 +60,7 @@ angular.module('evtviewer.dataHandler')
       while (node || str === null || containOnlySpace(str)) {
          if (node.tagName !== 'g' || !containOnlySpace(str)) {
             str = node.nodeValue;
+            checkNodeIteration(node);
             checkCurrentEditionIteration(node);
 
             if (str !== null && !containOnlySpace(str)) {
@@ -213,8 +214,8 @@ angular.module('evtviewer.dataHandler')
       return currentEdition;
    };
 
-   /* ************************************ */
-   /* BEGIN checkCurrentEditionIteration() */
+   /* **************************************** */
+   /* BEGIN checkCurrentEditionIteration(node) */
    /* ************************************************************* */
    /* Function to iterate node that don't belong to current edition */
    /* @node -> current node                                         */
@@ -248,6 +249,21 @@ angular.module('evtviewer.dataHandler')
                   }
                }
          }
+      }
+   };
+
+   /* ****************************** */
+   /* BEGIN checkNodeIteration(node) */
+   /* ********************************** */
+   /* Function to iterate specific nodes */
+   /* @node -> current node              */
+   /* ********************************** */
+   let checkNodeIteration = function(node) {
+      let nodeName = node.nodeName;
+
+      switch(nodeName) {
+         case 'note':
+            iterateNode(node);
       }
    };
 
