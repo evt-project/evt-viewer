@@ -65,6 +65,9 @@ angular.module('evtviewer.select')
                     }
                     option = vm.formatOption(source);
                     break;
+                case 'version':
+                    option = vm.formatOption(optionValue);
+                    break;
                 default:
                     option = vm.optionList[0];
                     break;

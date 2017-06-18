@@ -457,16 +457,16 @@ angular.module('evtviewer.box')
                     break;
                     /**************/
                     /*Case version*/
-                    /************************************************************ */
-                    /**/
-                    /**/
-                    /* @author --> CM*/
-                    /************************************************************ */
+                    /*********************************************************************/
+                    /* It loads the parsed texts of the main text different versions.    */
+                    /* There are a selector to choose the version, a button to remove    */
+                    /* the version and a button to handle the font size. | @author --> CM*/
+                    /*********************************************************************/
                     case 'version':
                     var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
-                    //topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: versionId});
+                    topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: vm.version});
                     if (evtInterface.getAllVersionsNumber() > 2) {
-                        topMenuList.buttons.push({title: 'Remove Version', label: '', type: 'removeVer'})
+                        topMenuList.buttons.push({title: 'Remove Version', label: '', icon: 'remove', type: 'removeVer'})
                     }
                     bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
 

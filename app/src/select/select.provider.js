@@ -191,6 +191,45 @@ angular.module('evtviewer.select')
                     }
                     optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
                     break;
+                    /* @author --> CM */
+                    case 'version':
+                    optionSelectedValue = initValue;
+                    callback = function(oldOption, newOption) {
+                        vm.collapse();
+                        if (oldOption !== undefined) {
+                            if (newOption !== undefined) {
+                                evtInterface.switchVersions(oldOption.value, newOption.value);
+                            }
+                        } else if (newOption !== undefined) {
+                            evtInterface.addVersion(newOption.value);
+                        }
+                    };
+                    formatOptionList = function(optionList) {
+                        var formattedList = [],
+                            versions     = optionList._indexes.versionId;
+                        for (var i in versions) {
+                            //FIXME : no first version!
+                            var currentOption = versions[i];
+                            var option = {
+                                    value : i,
+                                    label : currentOption,
+                                    title : 'See version text'
+                                };
+                            formattedList.push(option);
+                        }
+                        return formattedList;
+                    };
+                    formatOption = function(option) {
+                        var formattedOption = {};
+                        formattedOption = {
+                            value : option,
+                            label : parsedData.getVersionEntries()._indexes.versionId[option],
+                            title : 'See version text'
+                        };
+                        return formattedOption;
+                    };  
+                    optionList = formatOptionList(parsedData.getVersionEntries());
+                    break;
             }
 
             scopeHelper = {

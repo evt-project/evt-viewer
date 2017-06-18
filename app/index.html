@@ -174,8 +174,7 @@
             <div 
                 ng-if="isVersionSelectorActive()"
                 class="availableVersions-selector versionSelector"
-                ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0),
-                           'floatRight': (!existCriticalText() && getCurrentVersions().length > 2) || (existCriticalText() && getCurrentVersions().length > 0)}">
+                ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0)}">
                 <span 
                     ng-click="addVersion(version)" 
                     ng-repeat="version in getAvailableVersions()"
