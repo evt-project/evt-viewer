@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, parsedData, evtInterface, evtSourcesApparatus) {
+    this.$get = function($log, parsedData, evtInterface, evtSourcesApparatus, config) {
         var select     = {},
             collection = {},
             list       = [],
@@ -209,13 +209,14 @@ angular.module('evtviewer.select')
                             versions     = optionList._indexes.versionId;
                         for (var i in versions) {
                             //FIXME : no first version!
+                            if (i !== config.versions[0]){
                             var currentOption = versions[i];
                             var option = {
                                     value : i,
                                     label : currentOption,
                                     title : 'See version text'
                                 };
-                            formattedList.push(option);
+                            formattedList.push(option);}
                         }
                         return formattedList;
                     };

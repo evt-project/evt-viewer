@@ -938,35 +938,43 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-type', 'versionLemma');
             spanElement.setAttribute('data-scope-version', scopeVersion);
 
-            if (entry.lemma !== undefined && entry.lemma !== '' && entry.content[scopeVersion] !== undefined) {
-                spanElement.setAttribute('data-reading-id', entry.lemma);
-                var lemmaContent = entry.content[scopeVersion].content[entry.content[scopeVersion].lemma].content;
-                for (var i in lemmaContent) {
-                    if (typeof(lemmaContent[i]) === 'string') {
-                        spanElement.appendChild(document.createTextNode(lemmaContent[i]));
-                    } else {
-                        if (lemmaContent[i].type === 'app') {
-                            var appEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
-                            var appEntryElem = parser.getEntryLemmaText(appEntry, '');
-                            if (appEntryElem !== null) {
-                                spanElement.appendChild(appEntryElem);
+            if (entry.content[scopeVersion] !== undefined) {
+                var scopeVerLem = entry.content[scopeVersion].lemma;
+                if (scopeVerLem !== undefined && scopeVerLem !== '') {
+                    spanElement.setAttribute('data-reading-id', scopeVerLem);
+                    var lemmaContent = entry.content[scopeVersion].content[entry.content[scopeVersion].lemma].content;
+                    for (var i in lemmaContent) {
+                        if (typeof(lemmaContent[i]) === 'string') {
+                            spanElement.appendChild(document.createTextNode(lemmaContent[i]));
+                        } else {
+                            if (lemmaContent[i].type === 'app') {
+                                var appEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
+                                var appEntryElem = parser.getEntryLemmaText(appEntry, '');
+                                if (appEntryElem !== null) {
+                                    spanElement.appendChild(appEntryElem);
+                                }
+                            } else if (lemmaContent[i].type === 'quote') {
+                                var quoteElement = parser.getQuoteText(lemmaContent[i], wit);
+                                spanElement.appendChild(quoteElement);
+                            } else if (lemmaContent[i].type === 'analogue') {
+                                var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
+                                spanElement.appendChild(analogueElement);
+                            } else if (lemmaContent[i].type === 'recensioApp') {
+                                var versionAppElem = parser.getVersionEntryLemma(lemmaContent[i], wit, scopeVersion);
+                                spanElement.appendChild(versionAppElem);
                             }
-                        } else if (lemmaContent[i].type === 'quote') {
-                            var quoteElement = parser.getQuoteText(lemmaContent[i], wit);
-                            spanElement.appendChild(quoteElement);
-                        } else if (lemmaContent[i].type === 'analogue') {
-                            var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
-                            spanElement.appendChild(analogueElement);
-                        } else if (lemmaContent[i].type === 'recensioApp') {
-                            var versionAppElem = parser.getVersionEntryLemma(lemmaContent[i], wit, scopeVersion);
-                            spanElement.appendChild(versionAppElem);
-                        }
-                    } 
-                }
+                        } 
+                    }
+                } else {
+                    errorElement = document.createElement('span');
+                    errorElement.className = 'encodingError';
+                    errorElement.setAttribute('title', 'lem missing inside of the version rdgGrp');
+                    spanElement.appendChild(errorElement);
+                } 
             } else {
                 errorElement = document.createElement('span');
                 errorElement.className = 'encodingError';
-                errorElement.setAttribute('title', 'Lem missing inside of a version rdgGrp OR wrong version id');
+                errorElement.setAttribute('title', 'Wrong version id');
                 spanElement.appendChild(errorElement);
             }
             if (spanElement !== null) {
@@ -1537,11 +1545,6 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-scope-wit', wit);
         }
         var quoteContent = quote.content;
-
-        var quoteOpen = document.createElement('i');
-        quoteOpen.setAttribute('class', 'fa fa-quote-left');
-        quoteOpen.setAttribute('aria-hidden', 'true');
-        spanElement.appendChild(quoteOpen);
 
         var link = ['link', 'ptr', 'linkGrp'];
 

@@ -407,6 +407,12 @@ angular.module('evtviewer.buttonSwitch')
                         scope.vm.active = false;
                     };
                     break;
+                case 'removeVer':
+                    callback = function(){
+                        var ver = scope.$parent.vm.version;
+                        evtInterface.removeVersion(ver);
+                    };
+                    break;
                 case 'cropText':
                     btnType = 'toggler';
                     callback = function() {

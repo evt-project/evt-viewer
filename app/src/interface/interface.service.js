@@ -369,6 +369,13 @@ angular.module('evtviewer.interface')
             }
         };
 
+        mainInterface.addAvailableVersion = function(version) {
+            var index = properties.availableVersions.indexOf(version);
+            if (index === -1) {
+                properties.availableVersions.push(version);
+            }
+        };
+
         // Method to add a version box in the interface
         // @version --> id of the version to add
         // @index --> index of the position, if undefined the version is added at the end of the array
@@ -399,10 +406,13 @@ angular.module('evtviewer.interface')
         mainInterface.switchVersions = function(oldVer, newVer) {
             var newVerOldIndex = state.currentVersions.indexOf(newVer),
                 oldVerOldIndex = state.currentVersions.indexOf(oldVer);
-            if (vewVerOldIndex >= 0) {
-                state.currentVersions[newVerOldIndex] = newVer;
+            if (newVerOldIndex >= 0) {
+                state.currentVersions[newVerOldIndex] = oldVer;
+            } else {
+                mainInterface.addAvailableVersion(oldVer);
             }
             state.currentVersions[oldVerOldIndex] = newVer;
+            mainInterface.removeAvailableVersion(newVer);            
         };
 
         // Method to get how many different versions have been encoded by the editor
