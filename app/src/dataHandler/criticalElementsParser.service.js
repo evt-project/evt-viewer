@@ -755,6 +755,7 @@ angular.module('evtviewer.dataHandler')
                 }
                 // Check if the witness refers to a particular version
                 if (ver !== undefined) {
+                    spanElement.setAttribute('data-scope-version', ver);
                     // if the entry contains a lem for the version the witness belongs to...
                     if (entry.content[ver] !== undefined) {
                         var verLemma = entry.content[ver].lemma;
