@@ -328,9 +328,13 @@ angular.module('evtviewer.interface')
                     }
                 }
             } else {
-                if (viewMode === 'readingTxt' && parsedData.isCriticalEditionAvailable()) {
-                    if (parsedData.getEdition('critical')) {
-                        edition = 'critical';
+                if (parsedData.getEdition(edition)) {
+                    if (viewMode === 'readingTxt' && edition === 'critical' && parsedData.isCriticalEditionAvailable()) {
+                        if (parsedData.getEdition('critical')) {
+                            edition = 'critical';
+                        } else {
+                            edition = availableEditionLevel[0].value;
+                        }
                     }
                 } else {
                     if (availableEditionLevel && availableEditionLevel.length > 0) {

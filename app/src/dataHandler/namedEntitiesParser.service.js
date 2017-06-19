@@ -126,7 +126,7 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	NEparser.parseRelationsInList = function(nodeElem, defCollection) {
-		var parsedRelation = evtParser.parseXMLElement(nodeElem, nodeElem, 'evtNote'),
+		var parsedRelation = evtParser.parseXMLElement(nodeElem, nodeElem, '<evtNote>'),
 			activeRefs = nodeElem.getAttribute(relationActiveDef),
 			mutualRefs = nodeElem.getAttribute(relationMutualDef),
 			passiveRefs = nodeElem.getAttribute(relationPassiveDef),
@@ -335,7 +335,7 @@ angular.module('evtviewer.dataHandler')
 		
 		var elementForLabel = nodeElem.getElementsByTagName(contentForLabelDef.replace(/[<>]/g, ''));
 		if (elementForLabel && elementForLabel.length > 0) {
-			var parsedLabel = evtParser.parseXMLElement(elementForLabel[0], elementForLabel[0], 'evtNote');
+			var parsedLabel = evtParser.parseXMLElement(elementForLabel[0], elementForLabel[0], '<evtNote>');
 			el.label = parsedLabel ? parsedLabel.innerHTML : elId;
 		} else {
 			el.label = elId;
@@ -377,7 +377,7 @@ angular.module('evtviewer.dataHandler')
 		if (contentDef.indexOf('<'+child.tagName+'>') >= 0) {
 			parsedChild = NEparser.parseSubEntity(child, contentDef, listDef);
 		} else {
-			parsedChild = evtParser.parseXMLElement(child, child, 'evtNote');
+			parsedChild = evtParser.parseXMLElement(child, child, '<evtNote>');
 		}
 		el.content[child.tagName].push({
 			text: parsedChild ? parsedChild.innerHTML : child.innerHTML,
@@ -401,9 +401,9 @@ angular.module('evtviewer.dataHandler')
 				parsedXmlElem;
 
 			if (childElement.nodeType === 1 && listDef.toLowerCase().indexOf('<' + childElement.tagName.toLowerCase() + '>') >= 0 ) {
-				parsedXmlElem = NEparser.parseNamedEntitySubList(childElement, childElement, 'evtNote');
+				parsedXmlElem = NEparser.parseNamedEntitySubList(childElement, childElement, '<evtNote>');
 			} else {
-				parsedXmlElem = evtParser.parseXMLElement(childElement, childElement, 'evtNote');
+				parsedXmlElem = evtParser.parseXMLElement(childElement, childElement, '<evtNote>');
 			} 
 			newNodeElem.appendChild(parsedXmlElem);
 		}
