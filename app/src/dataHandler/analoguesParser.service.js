@@ -58,7 +58,7 @@ angular.module('evtviewer.dataHandler')
                         parser.handleAnalogue(element);
                 });
                 parser.updateAnalogues();
-            } else {
+            } else if (extDoc !== undefined) {
                 parser.parseExternalAnalogues(extDoc);
             }
         }
