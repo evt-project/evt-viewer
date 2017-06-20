@@ -1,0 +1,51 @@
+<div
+    class="version-apparatus-entry"
+    ng-class="{ 'noTools' : (scopeViewMode !== 'collation' && scopeViewMode !== 'readingTxt' && scopeViewMode !== 'versions') && !vm.isPinAvailable()}">
+    <div
+        class="version-apparatus-entry_main-content">
+        <div
+            class="versions-lemmas">
+            <span
+                ng-repeat="version in vm.content.versions">
+                <!--TODO: change to evt-ref-->
+                <span
+                    class="version-label"
+                    compile="version.id"></span>
+                <span
+                    class="version-lem"
+                    compile="version.lem"></span>
+            </span>
+        </div>
+        <div
+            class="version-apparatus-entry_tools"
+            ng-if="(scopeViewMode === 'collation' || scopeViewMode === 'readingTxt' || scopeViewMode === 'versions')">
+            <!--|| vm.isPinAvailable() ADD HERE-->
+            <!--button-switch 
+                title="Remove Pin"
+                ng-if="vm.isPinAvailable() && vm.type === 'pinned'"
+                data-label=""
+                data-icon="remove"
+                data-type="pinReading"
+                ng-click="vm.togglePin()"></button-switch>
+            <button-switch 
+                title="Toggle Pin"
+                ng-if="vm.isPinAvailable() && vm.type === 'default'"
+                data-label=""
+                data-icon="pin"
+                data-type="pinReading"
+                ng-class="{'active' : vm.isPinned()}"
+                ng-click="vm.togglePin()"></button-switch-->
+            <button-switch 
+                title="Align Version Readings"
+                ng-if="scopeViewMode === 'collation' || scopeViewMode === 'versions'"
+                data-label=""
+                data-icon="v-align"
+                data-type="alignReadings"
+                ng-click="vm.alignReadings()"></button-switch>
+        </div>
+    </div>
+    <div
+        class="version-apparatus-entry_other-content_headers"
+        ng-class="{ 'closed' : vm._subContentOpened === ''}">
+    </div>
+</div>

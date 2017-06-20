@@ -3,7 +3,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 .directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface) {
     return {
         restrict: 'E',
-        require: '^evtCriticalApparatusEntry',
+        require: '^?evtCriticalApparatusEntry',
         scope: {
             witness  : '@',
             scopeWit : '@'

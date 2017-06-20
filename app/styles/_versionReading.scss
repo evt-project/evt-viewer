@@ -1,5 +1,7 @@
 .version-reading {
-    display: inline-block;
-    border-left: 1px dotted $box-witness-structure-color-dark;
-    padding-left: 0.5em;
+    &_text{
+        display: inline-block;
+        border-left: 1px dotted $box-witness-structure-color-dark;
+        padding-left: 0.5em;
+    }
 }

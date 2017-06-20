@@ -11,6 +11,9 @@ angular.module('evtviewer.versionReading')
         versionReading.build = function(scope) {
             var currentId = idx++,
                 entryId = scope.appId || undefined;
+            if (collection[currentId] !== undefined) {
+                return;
+            }
             var scopeHelper = {
                 uid : currentId,
                 appId : entryId,

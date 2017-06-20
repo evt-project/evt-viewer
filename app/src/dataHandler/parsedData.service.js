@@ -72,7 +72,9 @@ angular.module('evtviewer.dataHandler')
 		_indexes: {
 			encodingStructure : [],
 			versionWitMap : {},
-			versionId : {}
+			versionId : {
+				_name: {}
+			}
 		}
 	};
 
@@ -598,10 +600,13 @@ angular.module('evtviewer.dataHandler')
 			}			
 		}
 
-		var versionId = versionAppCollection._indexes.versionId;
+		var versionId = versionAppCollection._indexes.versionId,
+			name = versionAppCollection._indexes.versionId._name;
 		if (versionId[ver] === undefined) {
 			var index = config.versions.indexOf(ver); 
-			versionId[ver] = 'Version &#'+(65+index)+';';
+			var v = 'Version &#'+(65+index)+';';
+			versionId[ver] = v
+			name[v] = ver;
 		}
 	};
 
