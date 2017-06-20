@@ -45,7 +45,129 @@
         </div>
     </div>
     <div
-        class="version-apparatus-entry_other-content_headers"
-        ng-class="{ 'closed' : vm._subContentOpened === ''}">
+        class="version-apparatus-entry_other-content"
+        ng-if="vm.tabs._indexes.length > 0">
+        <div
+            class="version-apparatus-entry_other-content_headers"
+            ng-class="{ 'closed' : vm._subContentOpened === ''}">
+            <span ng-repeat="tab in vm.tabs._indexes"
+                ng-click="vm.toggleSubContent(tab)"
+                ng-class="{ 'active' : vm._subContentOpened == tab }">
+                {{ vm.tabs[tab].label }}
+            </span>
+        </div>
+        <div
+            class="version-apparatus-entry_other-content_panels"
+            ng-class="{ 'closed' : vm._subContentOpened === ''}">
+            <div
+                class="version-apparatus-entry_other-content_panel"
+                ng-repeat="tab in vm.tabs._indexes"
+                ng-class="{ 'active' : vm._subContentOpened == tab}"
+                ng-switch="tab">
+                <div ng-switch-when="criticalNote"
+                    compile="vm.content.note">
+                </div>
+                <div ng-switch-when="readings">
+                    <div
+                        ng-repeat="version in vm.content.versions"
+                        ng-if="vm.content._readings">
+                        <span compile="version.id"></span>
+                        <span
+                            ng-if="version.significantReadings.length > 0"
+                            class="significant-readings_label"> Significant Variants</span>
+                        <ul ng-if="version.significantReadings.length > 0">
+                            <li ng-repeat="reading in version.significantReadings"
+                                compile="reading.content"></li>
+                        </ul>
+                        <span
+                            ng-if="version.notSignificantReadings.length > 0"
+                            class="not-significant-readings_label"> Orthographic Variants</span>
+                        <ul ng-if="version.notSignificantReadings.length > 0">
+                            <li ng-repeat="reading in version.notSignificantReadings"
+                                compile="reading.content"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-switch-when="moreInfo">
+                    <!--BEGIN MORE INFO-->
+                    <span class="app_lemma">
+                    Metadata for lemma "<em 
+                        ng-if="vm.content.lemma.content !== ''"
+                        compile="vm.content.lemma.content"></em>"
+                  </span>
+                  <ul ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
+                      <li ng-repeat="attr in vm.content.attributes._keys"
+                          ng-if="attr !== 'xml:id'">
+                          <span class="moreInfo-label">{{attr}}</span> {{vm.content.attributes.values[attr]}}
+                      </li>
+                  </ul>
+                  <ul ng-if="(vm.content.attributes._keys.length <= 0 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') > 0)">
+                    <li><em>No data available</em></li></ul>
+                  
+                  <span class="moreInfo-metadataTitle">More info about the apparatus entry</span>
+                  <ul>
+                      <li 
+                        class="app_lemma"
+                        class="app_reading_content"
+                        ng-if="(vm.content.lemma.attributes._keys.length > 1 || vm.content.lemma.attributes._keys.length === 1 && vm.content.lemma.attributes._keys.indexOf('xml:id') < 0)">
+                          <span>
+                            Metadata for 
+                            <em 
+                                ng-if="vm.content.lemma.content !== ''"
+                                compile="vm.content.lemma.content"></em> 
+                          </span>
+                          <ul>
+                            <li ng-repeat="attr in vm.content.lemma.attributes._keys"
+                                ng-if="attr !== 'xml:id'">
+                                <span class="moreInfo-label">{{attr}}</span> {{vm.content.lemma.attributes.values[attr]}}
+                            </li>
+                          </ul>
+                      </li>
+
+                      <li 
+                        class="app_reading_content"
+                        ng-repeat="reading in vm.content.significantReadings"
+                        ng-if="(reading.attributes._keys.length > 1 || reading.attributes._keys.length === 1 && reading.attributes._keys.indexOf('xml:id') < 0)">
+                          <span>
+                            Metadata for 
+                            <em 
+                                class="app_reading"
+                                compile="reading.content"></em> 
+                          </span>
+                          <ul>
+                            <li ng-repeat="attr in reading.attributes._keys"
+                                ng-if="attr !== 'xml:id'">
+                                <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
+                            </li>
+                          </ul>
+                      </li>
+
+                      <li 
+                        class="app_reading_content"
+                        ng-repeat="reading in vm.content.notSignificantReadings"
+                        ng-if="(reading.attributes._keys.length > 1 || reading.attributes._keys.length === 1 && reading.attributes._keys.indexOf('xml:id') < 0)">
+                          <span>
+                            Metadata for 
+                            <em 
+                                class="app_reading"
+                                compile="reading.content"></em> 
+                          </span>
+                          <ul>
+                            <li ng-repeat="attr in reading.attributes._keys">
+                                <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
+                            </li>
+                          </ul>
+                      </li>
+                  </ul>
+                  <!--END MORE INFO-->
+                </div>
+                <div ng-switch-when="xmlSource">
+                    <pre>{{ vm.content._xmlSource | prettyXml }}</pre>
+                </div>
+                <div ng-switch-default
+                    compile="vm.content[tab]">
+                </div>
+            </div>
+        </div>
     </div>
 </div>

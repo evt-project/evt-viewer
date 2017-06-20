@@ -452,14 +452,20 @@ angular.module('evtviewer.dataHandler')
 
         angular.forEach(group.childNodes, function(child) {
             if (child.nodeType === 1) {
-                if (child.tagName === 'lem') {
-                    var lem = parseAppReading(entry, child);
-                    groupObj.lemma = lem.id;
-                    groupObj.content[lem.id] = lem;
-                } else if (child.tagName === 'rdg') {
-                    var rdg = parseAppReading(entry, child);
-                    groupObj.content[rdg.id] = rdg;
+                var rdg = parseAppReading(entry, child);
+                if (rdg.wits === undefined) {
+                    var witnesses = parsedData.getVersionEntries()._indexes.versionWitMap[id];
+                    if (witnesses !== undefined && witnesses.length > 0) {
+                        rdg.wits = [];
+                        for (var j = 0; j < witnesses.length; j++) {
+                            rdg.wits.push(witnesses[j]);
+                        }
+                    }
                 }
+                if (child.tagName === 'lem') {
+                    groupObj.lemma = rdg.id;
+                }
+                groupObj.content[rdg.id] = rdg;
             }
         });
 

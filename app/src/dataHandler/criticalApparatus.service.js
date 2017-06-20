@@ -337,7 +337,7 @@ angular.module('evtviewer.dataHandler')
                 } else if (content[i].type === 'quote') {
                     result += apparatus.getCriticalElementContent(content[i], scopeWit);
                 } else if (content[i].content !== undefined) {
-                    result += getText(content[i]);
+                    result += apparatus.getText(content[i]);
                 }
             }
         }
@@ -348,7 +348,7 @@ angular.module('evtviewer.dataHandler')
     
     /*getText(entry)*/
     /*Method added by CM*/
-    var getText = function(entry) {
+    apparatus.getText = function(entry) {
         var result = '';
         var content = entry.content;
         if (content !== undefined) {

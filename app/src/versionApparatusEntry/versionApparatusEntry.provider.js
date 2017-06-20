@@ -39,7 +39,7 @@ angular.module('evtviewer.versionApparatusEntry')
                         label: 'Version Readings'
                     }
                 }
-                if (entryContent.attributes._keys.lenght > 0) {
+                if (entryContent.attributes._keys.length > 0) {
                     tabs._indexes.push('moreInfo');
                     tabs.moreInfo = {
                         label: 'More Info'
@@ -49,7 +49,7 @@ angular.module('evtviewer.versionApparatusEntry')
                     tabs._indexes.push('xmlSource');
                     tabs.xmlSource = {
                         label: 'XML'
-                    }
+                    };
                 }
                 if (tabs._indexes.length > 0) {
                     firstSubContentOpened = tabs._indexes[0];

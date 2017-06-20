@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtVersionApparatus', function(config, parsedData, evtCriticalApparatus) {
+.service('evtVersionApparatus', function(config, parsedData, evtCriticalApparatus, evtParser) {
     var apparatus = {};
 
     apparatus.getContent = function(entry, scopeWit, scopeVer) {
@@ -24,11 +24,13 @@ angular.module('evtviewer.dataHandler')
         for (var i in entry.content) {
             var verId = entry.content[i].versionId;
             appContent.versions[verId] = apparatus.getVersionContent(entry.content[i], scopeWit, scopeVer);
-            if (appContent.versions[verId].significantReadings.length > 0 && appContent.versions[verId].notSignificantReadings.length > 0) {
+            if (appContent.versions[verId].significantReadings.length > 0 || appContent.versions[verId].notSignificantReadings.length > 0) {
                 appContent._readings = true;
             }
         }
-        appContent.note += entry.note;
+        if (entry.note !== undefined && entry.note !== '') {
+            appContent.note += entry.note;
+        }        
         return appContent;
     };
 
@@ -41,7 +43,17 @@ angular.module('evtviewer.dataHandler')
         };
         var lemma = ver.content[ver.lemma];
         if (lemma !== undefined) {
-            version.lem += '<span class="versionApp_lemma_content">'+evtCriticalApparatus.getLemma(lemma, scopeWit)+'</span>';
+            var lem = evtCriticalApparatus.getLemma(lemma, scopeWit),
+                lemTxt = evtCriticalApparatus.getText(lemma).replace(/<span class="textNode">|<\/span>/g, ''),
+                lemLength = lemTxt.length;
+            if (lemLength <= 70) {
+                version.lem += '<span class="versionApp_lemma_content">'+lem+'</span>';
+            } else {
+                var lemNoWits = lem.substring(0, (lem.indexOf('<span class="witnesses'))),
+                    lemWits = lem.substring((lem.indexOf('<span class="witnesses')), lem.length);
+                version.lem = evtParser.createAbbreviation(lemNoWits, 70)+lemWits;
+            }
+            
         }
         for (var i in ver.content) {
             if (i !== ver.lemma) {

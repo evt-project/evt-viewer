@@ -8,4 +8,6 @@ angular.module('evtviewer.versionApparatusEntry')
     };
 
     this.alignReadings = function() {};
+
+    this.toggleSubContent = function(tab) {};
 });

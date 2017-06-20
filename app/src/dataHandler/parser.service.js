@@ -387,6 +387,27 @@ angular.module('evtviewer.dataHandler')
 
         return sRegExpInput;
     };
+
+    /*****************************************/
+    /* createAbbreviation(string, maxLength) */
+    /*******************************************************************************/
+    /* Takes a string and transforms it into an abbreviated textNode span element. */
+    /* @string --> string to abbreviate | @maxLenght --> maximum length of the     */
+    /* string to show | @author --> CM                                             */
+    /*******************************************************************************/
+    parser.createAbbreviation = function(string, maxLength) {
+        var length = maxLength/2
+            stringBegin = string.substring(0, length),
+            stringEnd = string.substring((string.length-length-1), (string.length-1)),
+            wslastIndexBegin = stringBegin.lastIndexOf('', (stringBegin.length-1)),
+            wsfirstIndexEnd = stringEnd.indexOf('', 1),
+            begin = stringBegin.substring(0, wslastIndexBegin),
+            blurredBegin = stringBegin.substring(wslastIndexBegin, stringBegin.length),
+            end = stringEnd.substring(wsfirstIndexEnd, stringEnd.length),
+            blurredEnd = stringEnd.substring(0, wsfirstIndexEnd);
+        var result = '<span class="textNode">'+begin+'<span class="blurredText">'+blurredBegin+'</span> [...] <span class="blurredText">'+blurredEnd+'</span>'+end+'</span>';
+        return result;
+    };
     
     parser.splitLineBreaks = function(docElement, defContentEdition) {
         var splittedHTML = '';
