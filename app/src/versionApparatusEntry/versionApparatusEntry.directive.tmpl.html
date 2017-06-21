@@ -90,73 +90,59 @@
                 </div>
                 <div ng-switch-when="moreInfo">
                     <!--BEGIN MORE INFO-->
-                    <span class="app_lemma">
-                    Metadata for lemma "<em 
-                        ng-if="vm.content.lemma.content !== ''"
-                        compile="vm.content.lemma.content"></em>"
-                  </span>
-                  <ul ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
-                      <li ng-repeat="attr in vm.content.attributes._keys"
-                          ng-if="attr !== 'xml:id'">
-                          <span class="moreInfo-label">{{attr}}</span> {{vm.content.attributes.values[attr]}}
-                      </li>
-                  </ul>
-                  <ul ng-if="(vm.content.attributes._keys.length <= 0 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') > 0)">
-                    <li><em>No data available</em></li></ul>
-                  
-                  <span class="moreInfo-metadataTitle">More info about the apparatus entry</span>
-                  <ul>
-                      <li 
-                        class="app_lemma"
-                        class="app_reading_content"
-                        ng-if="(vm.content.lemma.attributes._keys.length > 1 || vm.content.lemma.attributes._keys.length === 1 && vm.content.lemma.attributes._keys.indexOf('xml:id') < 0)">
-                          <span>
-                            Metadata for 
-                            <em 
-                                ng-if="vm.content.lemma.content !== ''"
-                                compile="vm.content.lemma.content"></em> 
-                          </span>
-                          <ul>
-                            <li ng-repeat="attr in vm.content.lemma.attributes._keys"
-                                ng-if="attr !== 'xml:id'">
-                                <span class="moreInfo-label">{{attr}}</span> {{vm.content.lemma.attributes.values[attr]}}
-                            </li>
-                          </ul>
-                      </li>
-
-                      <li 
-                        class="app_reading_content"
-                        ng-repeat="reading in vm.content.significantReadings"
-                        ng-if="(reading.attributes._keys.length > 1 || reading.attributes._keys.length === 1 && reading.attributes._keys.indexOf('xml:id') < 0)">
-                          <span>
-                            Metadata for 
-                            <em 
-                                class="app_reading"
-                                compile="reading.content"></em> 
-                          </span>
-                          <ul>
-                            <li ng-repeat="attr in reading.attributes._keys"
-                                ng-if="attr !== 'xml:id'">
-                                <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
-                            </li>
-                          </ul>
-                      </li>
-
-                      <li 
-                        class="app_reading_content"
-                        ng-repeat="reading in vm.content.notSignificantReadings"
-                        ng-if="(reading.attributes._keys.length > 1 || reading.attributes._keys.length === 1 && reading.attributes._keys.indexOf('xml:id') < 0)">
-                          <span>
-                            Metadata for 
-                            <em 
-                                class="app_reading"
-                                compile="reading.content"></em> 
-                          </span>
-                          <ul>
-                            <li ng-repeat="attr in reading.attributes._keys">
-                                <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
-                            </li>
-                          </ul>
+                    <span
+                        class="app_generic-info"
+                        ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
+                        Metadata for the apparatus entry
+                    </span>
+                    <ul ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
+                        <li ng-repeat="attr in vm.content.attributes._keys"
+                            ng-if="attr !== 'xml:id'">
+                            <span class="moreInfo-label">{{attr}}</span> {{vm.content.attributes.values[attr]}}
+                        </li>
+                    </ul>
+                    
+                    <span class="moreInfo-metadataTitle">More info about the versions</span>
+                    <ul>
+                        <li 
+                            class="app_version"
+                            ng-repeat="version in vm.content.versions"
+                            ng-if="version.attributes._keys.length > 0  && version.attributes._keys.indexOf('xml:id') < 0">
+                            <span>
+                                Metadata for 
+                                <em 
+                                    compile="version.id"></em> 
+                            </span>
+                            <ul>
+                                <li ng-repeat="attr in version.attributes._keys"
+                                    ng-if="attr !== 'xml:id'">
+                                    <span class="moreInfo-label">{{attr}}</span> {{version.attributes.values[attr]}}
+                                </li>
+                            </ul>
+                            <span
+                                ng-if="version.significantReadings.length > 0"
+                                ng-repeat-start="reading in version.significantReadings">Metadata for significant reading:
+                                <em compile="reading.content"></em>
+                            </span>
+                            <ul ng-repeat-end
+                                ng-if="version.significantReadings.length > 0">
+                                <li ng-repeat="attr in reading.attributes._keys"
+                                    ng-if="attr !== 'xml:id'">
+                                    <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
+                                </li>
+                            </ul>
+                            <span
+                                ng-if="version.notSignificantReadings.length > 0"
+                                ng-repeat-start="reading in version.notSignificantReadings">Metadata for orthographic reading:
+                                <em compile="reading.content"></em>
+                            </span>
+                            <ul ng-repeat-end
+                                ng-if="version.notSignificantReadings.length > 0">
+                                <li ng-repeat="attr in reading.attributes._keys"
+                                    ng-if="attr !== 'xml:id'">
+                                    <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
+                                </li>
+                            </ul>
                       </li>
                   </ul>
                   <!--END MORE INFO-->

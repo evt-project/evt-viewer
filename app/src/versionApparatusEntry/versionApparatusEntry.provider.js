@@ -76,7 +76,9 @@ angular.module('evtviewer.versionApparatusEntry')
             return collection[currentId];
         };
 
-        //
+        versionEntry.destroy = function(tempId) {
+            delete collection[tempId];
+        };
         
         return versionEntry;
     };

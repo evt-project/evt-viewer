@@ -1,13 +1,28 @@
 angular.module('evtviewer.versionApparatusEntry')
 
-.controller('versionApparatusEntryCtrl', function(config) {
+.controller('versionApparatusEntryCtrl', function(config, evtBox, evtVersionApparatusEntry) {
     var vm = this;
     
-    this.isPinAvailable = function() {
-        return config.toolPinAppEntries;
+     this.toggleSubContent = function(subContentName) {
+        if (vm._subContentOpened !== subContentName) {
+            vm._subContentOpened = subContentName;
+        } else {
+            vm._subContentOpened = '';
+        }
     };
 
-    this.alignReadings = function() {};
+    this.isPinAvailable = function(){
+        return config.toolPinAppEntries;
+    };
+    
+    this.alignReadings = function(){
+        evtBox.alignScrollToApp(vm.appId);
+    };
 
-    this.toggleSubContent = function(tab) {};
+    this.destroy = function() {
+        var tempId = this.uid;
+        // TODO: remove from list and collection
+        // this.$destroy();
+        evtVersionApparatusEntry.destroy(tempId);
+    };
 });

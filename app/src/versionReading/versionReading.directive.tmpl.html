@@ -9,6 +9,8 @@
         ng-transclude>
     </span>
     <evt-version-apparatus-entry
+        ng-if="vm.isScopeRecensioAvailable()"
+        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
         data-app-id="{{vm.appId}}"
         data-reading-id="{{vm.readingId}}"
         data-scope-wit="{{vm.scopeWit}}"

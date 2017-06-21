@@ -202,7 +202,7 @@ angular.module('evtviewer.box')
 
 
             //Added by CM
-            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'apparatuses') {
+            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'apparatuses' || currentBox.type === 'version') {
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find("[data-app-id='"+appId+"']");

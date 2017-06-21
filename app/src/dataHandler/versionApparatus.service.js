@@ -39,7 +39,11 @@ angular.module('evtviewer.dataHandler')
             id : ver.versionId,
             lem : '',
             significantReadings : [],
-            notSignificantReadings : []
+            notSignificantReadings : [],
+            attributes: {
+                values : ver.attributes || {},
+                _keys : Object.keys(ver.attributes) || []
+            }
         };
         var lemma = ver.content[ver.lemma];
         if (lemma !== undefined) {
