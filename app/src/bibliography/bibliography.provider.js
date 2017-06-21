@@ -29,10 +29,14 @@ angular.module('evtviewer.bibliography')
 		var getFormattedBibl = function(biblId) {
 			var vm = this;
 			var biblElement = vm.getBibliographicRefById(biblId);
-			if (!biblElement.outputs[vm.initialSelectedStyle]) {
-				evtBibliographyParser.formatResult(vm.initialSelectedStyle, biblElement);
+			console.log(vm.initialSelectedStyle);
+			if (vm.initialSelectedStyle) {
+				if (!biblElement.outputs[vm.initialSelectedStyle.label]) {
+					evtBibliographyParser.formatResult(vm.initialSelectedStyle.label, biblElement);
+				}
+				return biblElement.outputs[vm.initialSelectedStyle.label];
 			}
-			return biblElement.outputs[vm.initialSelectedStyle];
+			return '';
 		};
 
 		var pubblicationType = function(biblId) {
@@ -58,8 +62,8 @@ angular.module('evtviewer.bibliography')
 			var currentId = scope.id || idx++,
 				biblRefsCollection,
 				//recupero stili bibliografici
-				styles = config.allowedBibliographicStyles,
-				initialSelectedStyle = styles.Chicago,
+				styles = config.allowedBibliographicStyles || {},
+				initialSelectedStyle, 
 				selectedSorting,
 				biblSortSelectVisibility = true,
 				biblSortStyleSelectVisibility = true,
@@ -68,6 +72,15 @@ angular.module('evtviewer.bibliography')
 				sortOrder,
 				selectedSortOrder;
 
+			if (config.defaultBibliographicStyle !== '' && styles[config.defaultBibliographicStyle] !== undefined) {
+				initialSelectedStyle = styles[config.defaultBibliographicStyle]
+			} else {
+				for (var key in styles) {
+					if (styles[key].enabled && !initialSelectedStyle) {
+						initialSelectedStyle = styles[key];
+					}
+				}
+			}
 			if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }

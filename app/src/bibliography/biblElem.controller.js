@@ -7,8 +7,8 @@ angular.module('evtviewer.bibliography')
 
     //recupero stili bibliografici
     vm.styles = config.allowedBibliographicStyles;
-    vm.initialSelectedStyle = vm.styles.Chicago; //TODO: get preferred style from config
-
+    vm.initialSelectedStyle = config.defaultBibliographicStyle;
+    _console.log(vm.initialSelectedStyle);
     vm.getFormattedBibl = function() {
         _console.log($scope.biblId);
         var biblElement = parsedData.getBibliographicRefById($scope.biblId);

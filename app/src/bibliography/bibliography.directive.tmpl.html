@@ -7,7 +7,7 @@
 			<label for="biblStyleSelect">Style </label>
 			<select id="biblStyleSelect"
 				ng-model="vm.initialSelectedStyle"
-				ng-options="value as value for (key , value) in vm.styles"/>
+				ng-options="value.label disable when !value.enabled for (key, value) in vm.styles"/>
 		</div>
 	
 		<div

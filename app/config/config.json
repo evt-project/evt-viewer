@@ -110,5 +110,21 @@
     	"label": "Measure",
     	"available": true,
     	"color": "#ffecb3"
-    }]
+    }],
+
+    "defaultBibliographicStyle": "Chicago",
+	"allowedBibliographicStyles": {
+		"Chicago": {
+			"label": "Chicago",
+			"enabled": true
+		},
+		"APA": {
+			"label": "APA",
+			"enabled": false
+		},
+		"MLA": {
+			"label": "MLA",
+			"enabled": true
+		}
+	}
 }

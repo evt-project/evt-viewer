@@ -145,10 +145,20 @@ angular.module('evtviewer.core')
 	xsltUrl: '',
 
 	// BIBLIOGRAPHY
+	defaultBibliographicStyle: 'Chicago',
 	allowedBibliographicStyles: {
-		Chicago: 'Chicago',
-		APA: 'APA',
-		MLA: 'MLA'
+		Chicago: {
+			label: 'Chicago',
+			enabled: true
+		},
+		APA: {
+			label: 'APA',
+			enabled: false
+		},
+		MLA: {
+			label: 'MLA',
+			enabled: true
+		}
 	},
 	bibliographicEntriesSortBy: {
 		Author: 'Author',

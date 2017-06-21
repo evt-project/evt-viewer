@@ -1,11 +1,11 @@
 angular.module('evtviewer.dataHandler')
 
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser, config) {
-    const CHICAGO_STYLE = config.allowedBibliographicStyles.Chicago,
-        APA_STYLE = config.allowedBibliographicStyles.APA,
-        MLA_STYLE = config.allowedBibliographicStyles.MLA;
+    const CHICAGO_STYLE = config.allowedBibliographicStyles.Chicago.label,
+        APA_STYLE = config.allowedBibliographicStyles.APA.label,
+        MLA_STYLE = config.allowedBibliographicStyles.MLA.label;
 
-    var STYLE_SELECTED = CHICAGO_STYLE;
+    var STYLE_SELECTED = config.defaultBibliographicStyle;
     //tengono conto di quali info il parser mette a disposizione per l'output finale
     var yearTagDetected = false,
         authorTagDetected = false,
@@ -494,6 +494,7 @@ angular.module('evtviewer.dataHandler')
 
     //genera una stringa html in base alle informazioni estratte e a un certo stile bibliografico
     parser.formatResult = function(styleCode, newBiblElement) {
+        console.log(styleCode);
         if (!newBiblElement.outputs[styleCode]) {
             var string = '';
             var firstAuthor, firstName, firstSurname;
