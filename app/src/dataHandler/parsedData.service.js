@@ -231,11 +231,12 @@ angular.module('evtviewer.dataHandler')
 				pageObj.text[docId] = {};
 				pageObj.text[docId][editionLevel] = HTMLtext;
 			}
+			
+			if (pageObj.docs && pageObj.docs.indexOf(docId) < 0) {
+				pageObj.docs.push(docId);
+			}
 		}
 
-		if (pageObj.docs && pageObj.docs.indexOf(docId) < 0) {
-			pageObj.docs.push(docId);
-		}
 	};
 
 	parsedData.getPageText = function(pageId, docId, editionLevel) {

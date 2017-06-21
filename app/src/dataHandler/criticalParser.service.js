@@ -41,7 +41,7 @@ angular.module('evtviewer.dataHandler')
                 if (child.tagName === 'head') {
                     list.name = child.innerHTML;
                 }
-                else if (config.listDef.indexOf(child.tagName) >= 0) { //group
+                else if (config.listDef.indexOf('<'+child.tagName+'>') >= 0) { //group
                     if (skipWitnesses.indexOf(list.id) < 0){
                         var subList = parseListWit(doc, child);
                         subList._group = list.id;
@@ -49,7 +49,7 @@ angular.module('evtviewer.dataHandler')
                         list.content.push(subList.id);
                     }
                 } 
-                else if (config.versionDef.indexOf(child.tagName) >= 0){ //witness
+                else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0){ //witness
                     var witnessElem = {
                         id          : child.getAttribute('xml:id'),
                         attributes  : evtParser.parseElementAttributes(child),
@@ -77,8 +77,8 @@ angular.module('evtviewer.dataHandler')
     parser.parseWitnesses = function(doc) {
         var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
         var currentDocument = angular.element(doc);
-        if (currentDocument.find(config.listDef).length > 0) {
-            angular.forEach(currentDocument.find(config.listDef), 
+        if (currentDocument.find(config.listDef.replace(/[<>]/g, '')).length > 0) {
+            angular.forEach(currentDocument.find(config.listDef.replace(/[<>]/g, '')), 
                 function(element) {
                     if ( !evtParser.isNestedInElem(element, element.tagName) ) {
                         angular.forEach(element.childNodes, function(child){
@@ -86,9 +86,9 @@ angular.module('evtviewer.dataHandler')
                                 var el = {};
                                 el.id = child.getAttribute('xml:id');
                                 if (skipWitnesses.indexOf(el.id) < 0) {
-                                    if (config.listDef.indexOf(child.tagName) >= 0) { // group
+                                    if (config.listDef.indexOf('<'+child.tagName+'>') >= 0) { // group
                                         el = parseListWit(doc, child);
-                                    } else if (config.versionDef.indexOf(child.tagName) >= 0) { // witness
+                                    } else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0) { // witness
                                         el = {
                                             id          : child.getAttribute('xml:id'),
                                             description : evtParser.parseXMLElement(doc, child, ''),

@@ -120,8 +120,8 @@ angular.module('evtviewer.core')
 	toolPinAppEntries: false,
 	toolImageTextLinking: true,
 
-	listDef: 'listWit, listChange',
-	versionDef: 'witness, change',
+	listDef: '<listWit>, <listChange>',
+	versionDef: '<witness>, <change>',
 	fragmentMilestone: '<witStart>, <witEnd>',
 	lacunaMilestone: '<lacunaStart>, <lacunaEnd>',
 	skipCriticalEntriesFilters: 'wit, target, corresp',

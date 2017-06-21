@@ -390,7 +390,7 @@ angular.module('evtviewer.dataHandler')
 		var frontDef = '<front>',
 			biblDef = '<biblStruct>';
 
-		parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef).length > 0);
+		parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef.replace(/[<>]/g, '')).length > 0);
 
 		angular.forEach(currentDocument.find(defDocElement),
 			function(element) {
@@ -499,8 +499,8 @@ angular.module('evtviewer.dataHandler')
 				sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
 				pbHTMLString = matches[i].match(sRegExPbIdAttr);
 			sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
-			var idAttr = pbHTMLString[0].match(sRegExPbIdAttr),
-				pageId = idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') || '';
+			var idAttr = pbHTMLString ? pbHTMLString[0].match(sRegExPbIdAttr) : undefined,
+				pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
 			if (pageId && pageId !== '') {
 				parsedData.setPageText(pageId, docId, 'original', matches[i]);
 			}
