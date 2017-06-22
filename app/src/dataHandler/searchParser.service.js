@@ -17,6 +17,7 @@ angular.module('evtviewer.dataHandler')
        currentEdition,
        currentGlyph,
        currentChoiceNode,
+       currentAppNode,
 
        glyphs = [],
        editionWords = [],
@@ -41,7 +42,7 @@ angular.module('evtviewer.dataHandler')
      //const promise = searchApi.search('describing');
    };
 
-   let getText = function(doc) {
+   let nsResolver = function() {
       let nsResolver = {
          lookupNamespaceURI: function (prefix) {
             prefix = 'ns';
@@ -49,6 +50,11 @@ angular.module('evtviewer.dataHandler')
             return namespace;
          }
       };
+   };
+
+   let getText = function(doc) {
+      nsResolver();
+
       let path;
 
       doc.documentElement.namespaceURI == null ? path = '//body//node()[not(self::comment())]' : path = '//ns:body//node()[not(self::comment())]';
@@ -68,10 +74,20 @@ angular.module('evtviewer.dataHandler')
             }
 
             node = nodes.iterateNext();
-            if(node !== null && node.nodeName === 'choice') {
-               currentChoiceNode = node;
-               checkCurrentChoiceNode(node, doc);
-               node = currentChoiceNode;
+
+            if(node !== null) {
+               switch(node.nodeName) {
+                  case 'choice':
+                     currentChoiceNode = node;
+                     checkCurrentChoiceNode(node, doc);
+                     node = currentChoiceNode;
+                     break;
+                  case 'app':
+                     currentAppNode = node;
+                     checkCurrentAppNode(node, doc);
+                     node = currentAppNode;
+                     break;
+               }
             }
 
             if (node === null) {
@@ -121,7 +137,8 @@ angular.module('evtviewer.dataHandler')
    let getGlyph = function(node) {
       let map = node.getElementsByTagName('mapping');
       let glyph = {},
-          type;
+          type,
+          found;
 
       glyph.id = glyphId;
       for(let i = 0; i < map.length; i++) {
@@ -136,7 +153,7 @@ angular.module('evtviewer.dataHandler')
       if(glyphs.length === 0) {
          glyphs.push(glyph);
       }
-      let found = glyphs.some(function(element) {
+      found = glyphs.some(function(element) {
          return element.id === glyph.id;
       });
       if(!found) {
@@ -221,8 +238,7 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                         */
    /* ************************************************************* */
    let checkCurrentEditionIteration = function(node) {
-      let nodeName = node.nodeName,
-          iterate;
+      let nodeName = node.nodeName;
 
       mainNode = document.getElementById('mainText');
       currentEdition = mainNode.dataset.edition;
@@ -242,12 +258,7 @@ angular.module('evtviewer.dataHandler')
             case 'orig':
             case 'abbr':
             case 'am':
-               for(let i = 0; i < node.childNodes.length; i++) {
-                  iterate = nodes.iterateNext();
-                  for(let j = 0; j < node.childNodes[i].childNodes.length; i++) {
-                     iterate = nodes.iterateNext();
-                  }
-               }
+               iterateNode(node);
          }
       }
    };
@@ -275,55 +286,39 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                                     */
    /* @doc -> current xml document                                              */
    /* ************************************************************************* */
-   let checkCurrentChoiceNode = function (node, doc) {
-         let word = {},
-             children = node.children,
-             childNode,
-             childNodeName,
-             nodeHaveChild,
-             innerHtml,
-             outerHtmlChild;
+   let checkCurrentChoiceNode = function(node, doc) {
+      let word = {},
+         children = node.children,
+         childNode,
+         childNodeName,
+         nodeHaveChild,
+         innerHtml,
+         outerHtmlChild;
 
-         for(let i = 0; i < children.length; i++) {
-            childNodeName = children[i].nodeName;
-            innerHtml = children[i].innerHTML;
-            nodeHaveChild = children[i].children.length !== 0;
+      for(let i = 0; i < children.length; i++) {
+         childNodeName = children[i].nodeName;
+         innerHtml = children[i].innerHTML;
+         nodeHaveChild = children[i].children.length !== 0;
 
-            if(nodeHaveChild) {
-               for (let j = 0; j < children[i].children.length; j++) {
-                  outerHtmlChild = children[i].children[j].outerHTML;
+         if(nodeHaveChild) {
+            for (let j = 0; j < children[i].children.length; j++) {
+               outerHtmlChild = children[i].children[j].outerHTML;
 
-                  childNode = checkChildNode(children[i].children[j]);
-                  switch (childNodeName) {
-                     case 'sic':
-                     case 'orig':
-                     case 'abbr':
-                     case 'am':
-                           if (childNode && childNode.nodeName === 'g') {
-                              word.diplomatic = replaceGlyphTag(childNode, innerHtml, outerHtmlChild, doc);
-                              innerHtml = word.diplomatic;
-                           }
-                           else {
-                              innerHtml = innerHtml.replace(outerHtmlChild, children[i].children[j].textContent);
-                              word.diplomatic = children[i].textContent;
-                           }
-                        break;
-                     case 'corr':
-                     case 'reg':
-                     case 'expan':
-                     case 'ex':
-                        word.interpretative = children[i].textContent;
-                        break;
-                  }
-               }
-            }
-            else {
-               switch(childNodeName) {
+               childNode = checkChildNode(children[i].children[j]);
+
+               switch (childNodeName) {
                   case 'sic':
                   case 'orig':
                   case 'abbr':
                   case 'am':
-                     word.diplomatic = children[i].textContent;
+                     if (childNode && childNode.nodeName === 'g') {
+                        word.diplomatic = replaceGlyphTag(childNode, innerHtml, outerHtmlChild, doc);
+                        innerHtml = word.diplomatic;
+                     }
+                     else {
+                        innerHtml = innerHtml.replace(outerHtmlChild, children[i].children[j].textContent);
+                        word.diplomatic = children[i].textContent;
+                     }
                      break;
                   case 'corr':
                   case 'reg':
@@ -334,7 +329,39 @@ angular.module('evtviewer.dataHandler')
                }
             }
          }
-         editionWords.push(word);
+         else {
+            switch(childNodeName) {
+               case 'sic':
+               case 'orig':
+               case 'abbr':
+               case 'am':
+                     word.diplomatic = children[i].textContent;
+                     break;
+               case 'corr':
+               case 'reg':
+               case 'expan':
+               case 'ex':
+                  word.interpretative = children[i].textContent;
+                  break;
+            }
+         }
+      }
+      editionWords.push(word);
+   };
+
+   let checkCurrentAppNode = function(node, doc) {
+      let word = {},
+          children = node.children,
+          childNodeName;
+
+      for(let i = 0; i < children.length; i++) {
+         childNodeName = children[i].nodeName;
+
+         switch(childNodeName) {
+            case 'lem':
+               word.critical = {A: children[i].textContent};
+         }
+      }
    };
 
    /* ******************************* */
@@ -380,16 +407,6 @@ angular.module('evtviewer.dataHandler')
       return node;
    };
 
-   /* *************************** */
-   /* BEGIN containOnlySpace(str) */
-   /* *************************** */
-   /* Function to check if string (str) contains only spaces */
-   /* @str -> string to check                                */
-   /* ****************************************************** */
-   let containOnlySpace = function(str) {
-      return jQuery.trim(str).length === 0;
-   };
-
    /* *************** */
    /* BEGIN addWord() */
    /* *************************************** */
@@ -398,7 +415,6 @@ angular.module('evtviewer.dataHandler')
    let addWord = function() {
       let nextSibling = node.nextSibling,
           previousSibling = node.previousSibling;
-
 
       if (node.parentNode.parentNode.nodeName === 'choice' && nextSibling !== null && previousSibling !== null || node.parentNode.nodeName === 'hi') {
          text += str;
@@ -435,6 +451,16 @@ angular.module('evtviewer.dataHandler')
       else {
          text += '';
       }
+   };
+
+   /* *************************** */
+   /* BEGIN containOnlySpace(str) */
+   /* *************************** */
+   /* Function to check if string (str) contains only spaces */
+   /* @str -> string to check                                */
+   /* ****************************************************** */
+   let containOnlySpace = function(str) {
+      return jQuery.trim(str).length === 0;
    };
 
    /* ***************** */
