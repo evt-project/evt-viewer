@@ -68,6 +68,9 @@ angular.module('evtviewer.core')
     /*sourcesUrl*/
     /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
     sourcesUrl       : '',
+    /* sourcesTextsUrl */
+    /* Path of the folder containing the xml files of the sources texts */
+    sourcesTextsUrl : '../../data/sources/',
     /*analoguesUrl*/
     /*Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.*/
     analoguesUrl     : '../../data/analogues.xml',

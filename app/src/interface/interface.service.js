@@ -331,7 +331,7 @@ angular.module('evtviewer.interface')
                 var isTextParsed = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
                 if (!isTextParsed) {
                     properties.isSourceLoading = !properties.isSourceLoading;
-                    evtCommunication.getSourceTextFile('../../data/sources/'+sourceId+'.xml', sourceId).then(function() {
+                    evtCommunication.getSourceTextFile(config.sourcesTextsUrl+sourceId+'.xml', sourceId).then(function() {
                         properties.isSourceLoading = !properties.isSourceLoading;
                         properties.parsedSourcesTexts.push(sourceId);
                     });
