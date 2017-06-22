@@ -37,6 +37,7 @@ angular.module('evtviewer.dataHandler')
     apparatus.getVersionContent = function(ver, scopeWit, scopeVer) {
         var version = {
             id : ver.versionId,
+            value : ver.id,
             lem : '',
             significantReadings : [],
             notSignificantReadings : [],

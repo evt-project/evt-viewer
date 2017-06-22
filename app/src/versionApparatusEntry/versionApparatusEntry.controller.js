@@ -1,6 +1,6 @@
 angular.module('evtviewer.versionApparatusEntry')
 
-.controller('versionApparatusEntryCtrl', function(config, evtBox, evtVersionApparatusEntry) {
+.controller('versionApparatusEntryCtrl', function(config, evtBox, evtVersionApparatusEntry, $scope) {
     var vm = this;
     
      this.toggleSubContent = function(subContentName) {

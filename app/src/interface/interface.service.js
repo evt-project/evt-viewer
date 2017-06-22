@@ -16,12 +16,13 @@ angular.module('evtviewer.interface')
             secondaryContent : '',
             /*ADDED BY CM*/
             isApparatusBoxOpen : true,
-            currentApparatus : undefined,
-            currentQuote     : undefined,
-            currentAnalogue  : undefined,
-            currentSource    : undefined,
-            currentSourceText : undefined,
-            currentVersions  : undefined,
+            currentApparatus   : undefined,
+            currentQuote       : undefined,
+            currentAnalogue    : undefined,
+            currentSource      : undefined,
+            currentSourceText  : undefined,
+            currentVersions    : undefined,
+            currentVersionEntry: undefined,
         };
         var properties = {
             indexTitle         : '',
@@ -422,6 +423,16 @@ angular.module('evtviewer.interface')
 
         mainInterface.getCurrentVersions = function(){
             return state.currentVersions;
+        };
+
+        mainInterface.getCurrentVersionEntry = function() {
+            return state.currentVersionEntry;
+        };
+
+        mainInterface.updateCurrentVersionEntry = function(appId) {
+            if (appId !== undefined) {
+                state.currentVersionEntry = appId;
+            }
         };
 
         /** End of addition **/

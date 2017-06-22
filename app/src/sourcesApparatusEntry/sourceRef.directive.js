@@ -3,7 +3,6 @@ angular.module('evtviewer.sourcesApparatusEntry')
 .directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg) {
     return {
         restrict: 'E',
-        //require: '^evtSourcesApparatusEntry',
         scope: {
             sourceId : '@',
             sourceAbbr: '@'

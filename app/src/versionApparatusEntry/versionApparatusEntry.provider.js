@@ -2,7 +2,7 @@ angular.module('evtviewer.versionApparatusEntry')
 
 .provider('evtVersionApparatusEntry', function() {
     
-    this.$get = function(parsedData, evtVersionApparatus) {
+    this.$get = function(parsedData, evtVersionApparatus, config) {
         
         var versionEntry = {},
             collection = {},
@@ -13,7 +13,11 @@ angular.module('evtviewer.versionApparatusEntry')
             var currentId = idx++,
                 entryId = scope.appId || undefined,
                 scopeWit = scope.scopeWit || '',
-                scopeVer = scope.scopeVer || '';
+                scopeVer = scope.scopeVer || '',
+                currentVer = scope.$parent.$parent.$parent.vm.version || '';
+            if (currentVer === '' && scope.$parent.$parent.$parent.type === 'text') {
+                currentVer = config.versions[0];
+            }
             
             if (collection[currentId] !== undefined) {
                 return;
@@ -65,7 +69,8 @@ angular.module('evtviewer.versionApparatusEntry')
                 content : entryContent,
                 _subContentOpened : firstSubContentOpened,
                 tabs : tabs,
-                currentViewMode : scope.scopeViewMode
+                currentViewMode : scope.scopeViewMode,
+                currentVer : currentVer
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

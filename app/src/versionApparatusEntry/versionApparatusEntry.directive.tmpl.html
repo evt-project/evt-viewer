@@ -8,9 +8,11 @@
             <span
                 ng-repeat="version in vm.content.versions">
                 <!--TODO: change to evt-ref-->
-                <span
-                    class="version-label"
-                    compile="version.id"></span>
+                <evt-version-ref
+                    data-target="{{version.value}}"
+                    data-type="version"
+                    data-el-id="{{vm.currentVer}}"
+                    class="version-label"></evt-version-ref>
                 <span
                     class="version-lem"
                     compile="version.lem"></span>

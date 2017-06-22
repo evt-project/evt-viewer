@@ -214,7 +214,7 @@ angular.module('evtviewer.interface')
         scope: {
             target : '@'
         },
-        template: '<a href="{{target}}" ng-transclude></a>',
+        template: '<a href="{{target}}" target="_blank" ng-transclude></a>',
         replace: true,
         transclude: true,
         link: function (scope, iElement, iAttrs) {
