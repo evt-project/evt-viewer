@@ -4,45 +4,48 @@ import * as JsSearch from 'js-search';
 angular.module('evtviewer.dataHandler')
 
 .service('evtSearchParser', function () {
-   let parser  =  {};
+   let parser = {};
    console.log("SEARCH PARSER RUNNING");
 
    let text = '',
-       str = '',
+      str = '',
 
-       nodes,
-       node,
-       mainNode,
+      nodes,
+      node,
+      mainNode,
 
-       currentEdition,
-       currentGlyph,
-       currentChoiceNode,
-       currentAppNode,
+      currentEdition,
+      currentGlyph,
+      currentChoiceNode,
+      currentAppNode,
 
-       glyphs = [],
-       editionWords = [],
-       glyphNode,
-       glyphId = '',
-       sRef = '',
+      glyphs = [],
+      editionWords = [],
+      glyphNode,
+      glyphId = '',
+      sRef = '',
 
-       regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
+      witnesses = {},
+
+      regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
 
    parser.parseWords = function (doc) {
-     text = getText(doc);
+      text = getText(doc);
 
-     /*let tokenize = new JsSearch.SimpleTokenizer();
-     let words = tokenize.tokenize(text);
-     console.log(words);*/
+      /*let tokenize = new JsSearch.SimpleTokenizer();
+       let words = tokenize.tokenize(text);
+       console.log(words);*/
 
-     //const searchApi = new SearchApi();
+      //const searchApi = new SearchApi();
 
-     //var c = searchApi.indexDocument(doc);
-     /*let c = searchApi.indexDocument('foo', 'Text describing an Object identified as "foo"');
-     let d = searchApi.indexDocument('bar', 'Text describing an Object identified as "bar"');*/
-     //const promise = searchApi.search('describing');
+      //var c = searchApi.indexDocument(doc);
+      /*let c = searchApi.indexDocument('foo', 'Text describing an Object identified as "foo"');
+       let d = searchApi.indexDocument('bar', 'Text describing an Object identified as "bar"');*/
+      //const promise = searchApi.search('describing');
    };
 
-   let nsResolver = function() {
+   let getText = function (doc) {
+      let path;
       let nsResolver = {
          lookupNamespaceURI: function (prefix) {
             prefix = 'ns';
@@ -50,12 +53,6 @@ angular.module('evtviewer.dataHandler')
             return namespace;
          }
       };
-   };
-
-   let getText = function(doc) {
-      nsResolver();
-
-      let path;
 
       doc.documentElement.namespaceURI == null ? path = '//body//node()[not(self::comment())]' : path = '//ns:body//node()[not(self::comment())]';
       nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
@@ -75,24 +72,24 @@ angular.module('evtviewer.dataHandler')
 
             node = nodes.iterateNext();
 
-            if(node !== null) {
-               switch(node.nodeName) {
+            if (node !== null) {
+               switch (node.nodeName) {
                   case 'choice':
                      currentChoiceNode = node;
                      checkCurrentChoiceNode(node, doc);
                      node = currentChoiceNode;
                      break;
                   case 'app':
-                     currentAppNode = node;
-                     checkCurrentAppNode(node, doc);
-                     node = currentAppNode;
-                     break;
+                currentAppNode = node;
+                checkCurrentAppNode(node, doc);
+                node = currentAppNode;
+                break;
                }
             }
 
             if (node === null) {
                console.log(text);
-               console.log(glyphs);
+               //console.log(glyphs);
                console.log(editionWords);
                return text;
             }
@@ -112,12 +109,12 @@ angular.module('evtviewer.dataHandler')
    /* BEGIN getGlyphNode(doc)      */
    /* @doc -> current xml document */
    /* **************************** */
-   let getGlyphNode = function(doc) {
+   let getGlyphNode = function (doc) {
       let path = "//charDecl/node()[not(self::comment())]",
-          nodes = doc.evaluate(path, doc, null, XPathResult.ANY_TYPE, null),
-          node = nodes.iterateNext();
+         nodes = doc.evaluate(path, doc, null, XPathResult.ANY_TYPE, null),
+         node = nodes.iterateNext();
 
-      while(node) {
+      while (node) {
          if (node.tagName === 'glyph' || node.tagName === 'char') {
             glyphId = node.getAttribute('xml:id');
             if (glyphId === sRef) {
@@ -134,14 +131,14 @@ angular.module('evtviewer.dataHandler')
    /* ******************** */
    /* BEGIN getGlyph(node) */
    /* ******************** */
-   let getGlyph = function(node) {
+   let getGlyph = function (node) {
       let map = node.getElementsByTagName('mapping');
       let glyph = {},
-          type,
-          found;
+         type,
+         found;
 
       glyph.id = glyphId;
-      for(let i = 0; i < map.length; i++) {
+      for (let i = 0; i < map.length; i++) {
          type = map[i].getAttribute('type');
          switch (type) {
             case 'diplomatic':
@@ -150,13 +147,13 @@ angular.module('evtviewer.dataHandler')
                break;
          }
       }
-      if(glyphs.length === 0) {
+      if (glyphs.length === 0) {
          glyphs.push(glyph);
       }
-      found = glyphs.some(function(element) {
+      found = glyphs.some(function (element) {
          return element.id === glyph.id;
       });
-      if(!found) {
+      if (!found) {
          glyphs.push(glyph);
       }
       return glyph;
@@ -168,7 +165,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to find a glyph in xml document  */
    /* @doc -> current xml document              */
    /* ***************************************** */
-   let findGlyph = function(doc) {
+   let findGlyph = function (doc) {
       sRef = node.getAttribute('ref');
       sRef = sRef.replace('#', '');
       glyphNode = getGlyphNode(doc);
@@ -185,16 +182,16 @@ angular.module('evtviewer.dataHandler')
    /* @outerHtmlChild -> code to replace in innerHtml    */
    /* @doc -> current xml doc                            */
    /* ************************************************** */
-   let replaceGlyphTag = function(childNode, innerHtml, outerHtmlChild, doc) {
+   let replaceGlyphTag = function (childNode, innerHtml, outerHtmlChild, doc) {
       let replaceGTag,
-          toReplace = outerHtmlChild,
-          glyph;
+         toReplace = outerHtmlChild,
+         glyph;
 
       node = childNode;
       glyph = findGlyph(doc);
       replaceGTag = innerHtml.replace(toReplace, glyph.diplomatic);
 
-      while(replaceGTag.includes(toReplace)) {
+      while (replaceGTag.includes(toReplace)) {
          replaceGTag = replaceGTag.replace(toReplace, glyph.diplomatic);
       }
 
@@ -207,7 +204,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to add the current glyph in text (string)  */
    /* @currentGlyph -> current glyph                      */
    /* *************************************************** */
-   let addGlyph = function(currentGlyph) {
+   let addGlyph = function (currentGlyph) {
       checkCurrentEdition();
       switch (currentEdition) {
          case 'diplomatic':
@@ -226,7 +223,7 @@ angular.module('evtviewer.dataHandler')
    /* *************************************************** */
    /* Function to check current Edition                   */
    /* *************************************************** */
-   let checkCurrentEdition = function() {
+   let checkCurrentEdition = function () {
       currentEdition = mainNode.dataset.edition;
       return currentEdition;
    };
@@ -237,13 +234,13 @@ angular.module('evtviewer.dataHandler')
    /* Function to iterate node that don't belong to current edition */
    /* @node -> current node                                         */
    /* ************************************************************* */
-   let checkCurrentEditionIteration = function(node) {
+   let checkCurrentEditionIteration = function (node) {
       let nodeName = node.nodeName;
 
       mainNode = document.getElementById('mainText');
       currentEdition = mainNode.dataset.edition;
 
-      if(currentEdition === 'diplomatic') {
+      if (currentEdition === 'diplomatic') {
          switch (nodeName) {
             case 'corr':
             case 'reg':
@@ -252,12 +249,19 @@ angular.module('evtviewer.dataHandler')
                iterateNode(node);
          }
       }
-      if(currentEdition === 'interpretative') {
+      if (currentEdition === 'interpretative') {
          switch (nodeName) {
             case 'sic':
             case 'orig':
             case 'abbr':
             case 'am':
+               iterateNode(node);
+         }
+      }
+      if(currentEdition === 'critical') {
+         switch(nodeName) {
+            case 'rdgGrp':
+            case 'rdg':
                iterateNode(node);
          }
       }
@@ -269,10 +273,10 @@ angular.module('evtviewer.dataHandler')
    /* Function to iterate specific nodes */
    /* @node -> current node              */
    /* ********************************** */
-   let checkNodeIteration = function(node) {
+   let checkNodeIteration = function (node) {
       let nodeName = node.nodeName;
 
-      switch(nodeName) {
+      switch (nodeName) {
          case 'note':
             iterateNode(node);
       }
@@ -286,21 +290,21 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                                     */
    /* @doc -> current xml document                                              */
    /* ************************************************************************* */
-   let checkCurrentChoiceNode = function(node, doc) {
+   let checkCurrentChoiceNode = function (node, doc) {
       let word = {},
-         children = node.children,
-         childNode,
-         childNodeName,
-         nodeHaveChild,
-         innerHtml,
-         outerHtmlChild;
+          children = node.children,
+          childNode,
+          childNodeName,
+          nodeHaveChild,
+          innerHtml,
+          outerHtmlChild;
 
-      for(let i = 0; i < children.length; i++) {
+      for (let i = 0; i < children.length; i++) {
          childNodeName = children[i].nodeName;
          innerHtml = children[i].innerHTML;
          nodeHaveChild = children[i].children.length !== 0;
 
-         if(nodeHaveChild) {
+         if (nodeHaveChild) {
             for (let j = 0; j < children[i].children.length; j++) {
                outerHtmlChild = children[i].children[j].outerHTML;
 
@@ -330,13 +334,13 @@ angular.module('evtviewer.dataHandler')
             }
          }
          else {
-            switch(childNodeName) {
+            switch (childNodeName) {
                case 'sic':
                case 'orig':
                case 'abbr':
                case 'am':
-                     word.diplomatic = children[i].textContent;
-                     break;
+                  word.diplomatic = children[i].textContent;
+                  break;
                case 'corr':
                case 'reg':
                case 'expan':
@@ -349,19 +353,73 @@ angular.module('evtviewer.dataHandler')
       editionWords.push(word);
    };
 
-   let checkCurrentAppNode = function(node, doc) {
+   let getCurrentWitness = function (node) {
+      if(node.getAttribute('wit')) {
+         let wit = node.getAttribute('wit');
+         wit = wit.replace('#', '');
+         return wit;
+      }
+      else {
+         return false;
+      }
+   };
+
+   /* ******************************* */
+   /* BEGIN checkCurrentAppNode(node) */
+   /* ********************************************************************** */
+   /* Function to check current app node and create an array (EditionWords), */
+   /* that contain critical lectio                                           */
+   /* @node -> current node                                                  */
+   /* ********************************************************************** */
+   let checkCurrentAppNode = function (node) {
       let word = {},
           children = node.children,
-          childNodeName;
+          child,
+          childNodeName,
+          nodeHaveChild,
+          witness,
+          nodeHaveWit,
+          witnessText;
 
-      for(let i = 0; i < children.length; i++) {
-         childNodeName = children[i].nodeName;
+      for (let i = 0; i < children.length; i++) {
+         child = children[i];
+         childNodeName = child.nodeName;
 
-         switch(childNodeName) {
-            case 'lem':
-               word.critical = {A: children[i].textContent};
+         if(childNodeName !== 'note') {
+            witnessText = child.textContent;
+            nodeHaveChild = children[i].children.length !== 0;
+
+            if (nodeHaveChild) {
+               for (let j = 0; j < child.children.length; j++) {
+                  witness = getCurrentWitness(child.children[j]);
+                  childNodeName = child.children[j].nodeName;
+                  witnessText = child.children[j].textContent;
+
+                  if(Object.keys(word).length === 0) {
+                     word.critical = {[witness]: witnessText};
+                  }
+                  else {
+                     word.critical[witness] = witnessText;
+                  }
+               }
+            }
+            else {
+               witness = getCurrentWitness(child);
+               witnessText = child.textContent;
+
+               nodeHaveWit = witness;
+               if(nodeHaveWit) {
+                  if(Object.keys(word).length === 0) {
+                     word.critical = {[witness]: witnessText};
+                  }
+                  else {
+                     word.critical[witness] = witnessText;
+                  }
+               }
+            }
          }
       }
+      editionWords.push(word);
    };
 
    /* ******************************* */
@@ -373,7 +431,7 @@ angular.module('evtviewer.dataHandler')
    let checkChildNode = function(childNode) {
       if(childNode.children.length === 0) {
          switch (childNode.nodeName) {
-            case 'g':
+            case 'g', 'rdg':
                return childNode;
          }
       }
