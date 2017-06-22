@@ -55,9 +55,6 @@ angular.module('evtviewer.versionApparatusEntry')
                         label: 'XML'
                     };
                 }
-                if (tabs._indexes.length > 0) {
-                    firstSubContentOpened = tabs._indexes[0];
-                }
             }
 
             var scopeHelper = {

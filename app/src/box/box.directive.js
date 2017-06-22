@@ -232,6 +232,13 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
+
+                scope.vm.scrollToVersionApparatus = function(appId) {
+                    $timeout(function() {
+                        var appEntryElem = $('#'+currentBox.uid).find("evt-version-apparatus-entry[data-app-id='"+appId+"']"),
+                            height = angular.element(appEntryElem).height();
+                    })
+                }
             }
 
             if (currentBox.type === 'source') {

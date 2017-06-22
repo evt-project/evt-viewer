@@ -1,15 +1,22 @@
 <span
-    class="version-reading">
+    class="version-reading"
+    ng-mouseover="vm.toggleOverAppEntries($event)"
+    ng-mouseout="vm.toggleOverAppEntries($event)"
+    ng-class="{ 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
+                'blurred'  : $parent.vm.state.topBoxOpened,
+                'over'     : vm.over,
+                'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}">
     <!--
     <i>
         <evt-version-apparatus-entry></evt-version-apparatus-entry>
     </i>-->
     <span
         class="version-reading_text"
+        ng-click="vm.callbackClick($event);"
         ng-transclude>
     </span>
     <evt-version-apparatus-entry
-        ng-if="vm.isScopeRecensioAvailable()"
+        ng-if="vm.isScopeRecensioAvailable() && vm.apparatus.opened"
         ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
         data-app-id="{{vm.appId}}"
         data-reading-id="{{vm.readingId}}"
