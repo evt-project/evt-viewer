@@ -207,6 +207,10 @@ angular.module('evtviewer.box')
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find("[data-app-id='"+appId+"']");
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (currentBox.type === 'apparatuses') {
+                            var apparatusesElem = $('#'+currentBox.uid).find("evt-apparatuses")[0];
+                            padding += apparatusesElem.offsetTop;
+                        }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;
                         }
@@ -217,6 +221,10 @@ angular.module('evtviewer.box')
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find("[data-quote-id='"+quoteId+"']");
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (currentBox.type === 'apparatuses') {
+                            var apparatusesElem = $('#'+currentBox.uid).find("evt-apparatuses")[0];
+                            padding += apparatusesElem.offsetTop;
+                        }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;
                         }
@@ -227,17 +235,32 @@ angular.module('evtviewer.box')
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find("[data-analogue-id='"+analogueId+"']");
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (currentBox.type === 'apparatuses') {
+                            var apparatusesElem = $('#'+currentBox.uid).find("evt-apparatuses")[0];
+                            padding += apparatusesElem.offsetTop;
+                        }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;
                         }
                     });
                 };
 
+                // If the version apparatus entry isn't visible, the box scrolls in order to show the apparatus completely
                 scope.vm.scrollToVersionApparatus = function(appId) {
                     $timeout(function() {
-                        var appEntryElem = $('#'+currentBox.uid).find("evt-version-apparatus-entry[data-app-id='"+appId+"']"),
-                            height = angular.element(appEntryElem).height();
-                    })
+                        var appEntryElem = $('#'+currentBox.uid).find("evt-version-apparatus-entry[data-app-id="+appId+"]"),
+                            padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (appEntryElem.length > 0 && appEntryElem[0] !== undefined) {
+                            var elementPosition = angular.element(appEntryElem[0]).position().top,
+                                clientHeight = appEntryElem[0].offsetParent.clientHeight,
+                                elemDiv = $('#'+currentBox.uid).find("div[class=version-apparatus-entry]"),
+                                elementHeight = angular.element(elemDiv).outerHeight() || 0;
+                            if ((elementPosition + elementHeight) > clientHeight) {
+                                boxBody.scrollTop += (elementPosition - clientHeight) + elementHeight;
+                            }
+                            console.log(elementHeight);
+                        }
+                    });
                 }
             }
 
