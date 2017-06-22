@@ -71,15 +71,19 @@ angular.module('evtviewer.bibliography')
 				sortOrder,
 				selectedSortOrder;
 
-			if (config.defaultBibliographicStyle !== '' && styles[config.defaultBibliographicStyle] !== undefined) {
+			if (config.defaultBibliographicStyle !== '' && styles[config.defaultBibliographicStyle] !== undefined && styles[config.defaultBibliographicStyle].enabled) {
 				initialSelectedStyle = styles[config.defaultBibliographicStyle]
-			} else {
-				for (var key in styles) {
-					if (styles[key].enabled && !initialSelectedStyle) {
-						initialSelectedStyle = styles[key];
-					}
+			}
+			
+			for (var key in styles) {
+				if (!initialSelectedStyle && styles[key].enabled && !initialSelectedStyle) {
+					initialSelectedStyle = styles[key];
+				}
+				if (!styles[key].enabled) {
+					delete styles[key];
 				}
 			}
+			
 			if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
