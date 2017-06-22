@@ -29,7 +29,6 @@ angular.module('evtviewer.bibliography')
 		var getFormattedBibl = function(biblId) {
 			var vm = this;
 			var biblElement = vm.getBibliographicRefById(biblId);
-			console.log(vm.initialSelectedStyle);
 			if (vm.initialSelectedStyle) {
 				if (!biblElement.outputs[vm.initialSelectedStyle.label]) {
 					evtBibliographyParser.formatResult(vm.initialSelectedStyle.label, biblElement);

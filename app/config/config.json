@@ -52,8 +52,8 @@
 	"toolPinAppEntries": true,
 	"toolImageTextLinking": true,
 
-	"listDef": "listWit, listChange",
-	"versionDef": "witness, change",
+	"listDef": "<listWit>, <listChange>",
+	"versionDef": "<witness>, <change>",
 	"fragmentMilestone": "<witStart>, <witEnd>",
 	"lacunaMilestone": "<lacunaStart>, <lacunaEnd>",
 	"skipCriticalEntriesFilters": "wit, target, corresp",
