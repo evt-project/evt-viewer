@@ -9,24 +9,23 @@ angular.module('evtviewer.dataHandler')
                 values : entry.attributes || {},
                 _keys : Object.keys(entry.attributes) || []
             },
-            versions: {
+            /*versions: {
                 // versionId : {
                     // id
                     // lem
                     // significantReadings
                     // notSignificantReadings
                 // }
-            },
+            },*/
+            versions: [],
             note: '',
             _readings : false,
             _xmlSource: entry._xmlSource.replace('xmlns="http://www.tei-c.org/ns/1.0"', '')
         };
         for (var i in entry.content) {
-            var verId = entry.content[i].versionId;
-            appContent.versions[verId] = apparatus.getVersionContent(entry.content[i], scopeWit, scopeVer);
-            if (appContent.versions[verId].significantReadings.length > 0 || appContent.versions[verId].notSignificantReadings.length > 0) {
-                appContent._readings = true;
-            }
+            var ver = apparatus.getVersionContent(entry.content[i], scopeWit, scopeVer),
+                verPos = config.versions.indexOf(ver.value);
+            appContent.versions.splice(verPos, 0, ver);
         }
         if (entry.note !== undefined && entry.note !== '') {
             appContent.note += entry.note;
