@@ -414,7 +414,7 @@ angular.module('evtviewer.box')
                 /****************************************************************************/
                 case 'source':
                     topMenuList.selectors.push({id:'sources_'+currentId, type: 'source', initValue: evtInterface.getCurrentSourceText() });
-                    topMenuList.buttons.push({title: 'Bibliographic Reference', label: 'Bibl', icon: 'bibl', type: 'toggleInfoSrc' });
+                    topMenuList.buttons.push({title: 'Bibliographic Reference', label: '', icon: 'info', type: 'toggleInfoSrc' });
 
                     bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
                     

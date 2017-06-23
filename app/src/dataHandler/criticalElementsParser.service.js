@@ -1546,7 +1546,12 @@ angular.module('evtviewer.dataHandler')
 
         spanElement = document.createElement('evt-quote');
         spanElement.setAttribute('data-quote-id', quote.id);
-        spanElement.setAttribute('data-type', 'quote');
+        if (quote._subQuote) {
+            spanElement.setAttribute('data-type', 'subquote');
+        } else {
+            spanElement.setAttribute('data-type', 'quote');
+        }
+        
         if (wit !== '' && wit !== undefined){
             spanElement.setAttribute('data-scope-wit', wit);
         }

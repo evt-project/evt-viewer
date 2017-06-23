@@ -6,6 +6,7 @@ angular.module('evtviewer.quote')
         scope: {
             quoteId  : '@',
             scopeWit : '@',
+            type: '@'
         },
         transclude: true,
         templateUrl: 'src/quote/quote.directive.tmpl.html',

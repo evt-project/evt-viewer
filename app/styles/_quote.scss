@@ -1,24 +1,53 @@
-$quote-background-default: rgb(255, 179, 179);
-$quote-background-over:rgb(255, 102, 102);
-$quote-background-selected:rgb(255, 102, 102);
-
 .quote {
     padding: 0;
     cursor: pointer;
+
+    sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
+        //@include setIcon();
+        font-size: 0.5em;
+        color: $base-color-dark;
+        margin: 0;
+        padding: 0;
+    }
+    sup.iconbis-evt_quote-left::after {
+        white-space: nowrap;
+    }
+    sup.iconbis-evt_quote-right::before {
+        white-space: nowrap;
+    }
     
     .quote__text {
-        background-color: $quote-background-default !important;
-        &.fa-quote-left {
-            font-size: 0.1 em !important;
-            color: lightgrey !important;
-        }
+        //background-color: $quote-background-default !important;
+        border-bottom: 1px dotted $base-color-dark;
     }
 
-    &.over,
-    &.over .quote,
+    &.over  {
+        sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
+            font-size: 0.65em;
+            color: $base-color-dark;
+        }
+        .quote__text {
+            background-color: $critical-element-highlight !important;
+        }
+    }
     &.selected {
+        sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
+            font-size: 0.65em;
+            color: $base-color-dark;
+        }
         .quote__text{
-            background-color: $quote-background-over !important;
+            border-bottom: 1px solid $base-color-dark;
         }        
+    }
+
+    //FIXME
+    &.subquote {
+        border-bottom: 1px dashed $base-color-dark;
+        
+        &.noquotes {
+            sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
+                display: none;
+            }
+        }
     }
 }
