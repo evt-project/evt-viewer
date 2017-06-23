@@ -3,5 +3,20 @@
         display: inline-block;
         border-left: 1px dotted $box-witness-structure-color-dark;
         padding-left: 0.5em;
+        cursor: pointer;
+        &.highlighted {
+            background-color: $critical-element-highlight;
+        }
+
+        &.selected {
+            border-left: 2px solid $box-witness-structure-color-dark;
+        }
+    }
+
+    &.blurred, &.blurred *{
+        color: transparent !important;
+        text-shadow: 0 0 5px #000 !important;
+        background: transparent !important;
+        border: none;
     }
 }

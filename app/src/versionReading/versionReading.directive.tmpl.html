@@ -2,8 +2,7 @@
     class="version-reading"
     ng-mouseover="vm.toggleOverAppEntries($event)"
     ng-mouseout="vm.toggleOverAppEntries($event)"
-    ng-class="{ 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened),
-                'blurred'  : $parent.vm.state.topBoxOpened,
+    ng-class="{ 'blurred'  : $parent.vm.state.topBoxOpened,
                 'over'     : vm.over,
                 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}">
     <!--
@@ -13,6 +12,11 @@
     <span
         class="version-reading_text"
         ng-click="vm.callbackClick($event);"
+        ng-mouseover="vm.highlightOn()"
+        ng-mouseout="vm.highlightOff()"
+        ng-class="{ 'over'     : vm.over,
+                    'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
+                    'highlighted' : vm.highlightedText}"
         ng-transclude>
     </span>
     <evt-version-apparatus-entry

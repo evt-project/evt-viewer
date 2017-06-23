@@ -258,7 +258,6 @@ angular.module('evtviewer.box')
                             if ((elementPosition + elementHeight) > clientHeight) {
                                 boxBody.scrollTop += (elementPosition - clientHeight) + elementHeight;
                             }
-                            console.log(elementHeight);
                         }
                     });
                 }

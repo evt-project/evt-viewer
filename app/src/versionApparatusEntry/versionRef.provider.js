@@ -2,7 +2,7 @@ angular.module('evtviewer.versionApparatusEntry')
 
 .provider('evtVersionRef', function() {
 
-    this.$get = function(evtInterface, evtBox, parsedData) {
+    this.$get = function(evtInterface, evtBox, parsedData, config) {
         var ref = {},
             collection = {},
             list = [],
@@ -21,13 +21,13 @@ angular.module('evtviewer.versionApparatusEntry')
             /* SET CALLBACK */
             switch(type) {
                 case 'version':
-                    if (currentElId !== target) {
+                    if (currentElId !== target && target !== config.versions[0]) {
                         title = 'Open version text';
                     }
                     id = parsedData.getVersionEntries()._indexes.versionId[target];
                     callback = function() {
                         var vm = this;
-                        if (currentElId !== target) {
+                        if (currentElId !== target && target !== config.versions[0]) {
                             var versions = evtInterface.getCurrentVersions(),
                                 scopeVersionIndex = versions.indexOf(currentElId);
                             if (versions.indexOf(target) >= 0 && versions.length > 1) {
@@ -39,7 +39,7 @@ angular.module('evtviewer.versionApparatusEntry')
                             }
                             var currentVersionAppId = evtInterface.getCurrentVersionEntry() || '';
                             if (currentVersionAppId !== '') {
-                                var newBox = evtBox.getElementsByValueOfParameter('version', target);
+                                var newBox = evtBox.getElementByValueOfParameter('version', target);
                                 if (newBox !== undefined) {
                                     newBox.scrollToAppEntry(currentVersionAppId);
                                 }

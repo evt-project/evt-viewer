@@ -28,7 +28,8 @@ angular.module('evtviewer.versionReading')
                 apparatus : {
                     opened : false,
                     _subContentOpened : '',
-                }
+                },
+                highlightedText : false
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

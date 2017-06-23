@@ -11,6 +11,14 @@ angular.module('evtviewer.versionReading')
         vm.over = false;
     };
 
+    this.highlightOn = function() {
+        vm.highlightedText = true;
+    };
+
+    this.highlightOff = function() {
+        vm.highlightedText = false;
+    };
+
     this.setSelected = function() {
         vm.selected = true;
     };

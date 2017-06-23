@@ -15,7 +15,7 @@ angular.module('evtviewer.versionApparatusEntry')
             var currentRef = evtVersionRef.build(scope);
             scope.$on('$destroy', function() {
                 if (currentRef) {
-                    currentRef.destroy();
+                    evtVersionRef.destroy(currentRef.uid);
                 }
             });
         }

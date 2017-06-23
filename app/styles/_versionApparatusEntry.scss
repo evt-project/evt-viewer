@@ -11,7 +11,7 @@
     
     cursor: text !important;
 
-    span:not(.app_lemma), span:not(.app_lemma_content) {
+    span {
         background: transparent;
         display: inline-block;
     }
@@ -21,6 +21,7 @@
         color: transparent !important;
         text-shadow: 0 0 5px #000;
     }
+
     &_tools{
         padding: 0;
         float: right;
@@ -49,46 +50,8 @@
     
     &_main-content {
         padding: 5px;
-        // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
-        ul {
-            display: inline;
-            margin: 0;
-            padding: 0;
-            li {
-                display: inline-block;
-                margin-right: 5px;
-                &:not(:last-child)::after {
-                    content:"; ";
-                }
-
-            }
-        }
-        ul.app_reading_list {
-                display: block;
-                list-style-type: initial !important;
-                -webkit-margin-before: 1em;
-                -webkit-margin-after: 1em;
-                -webkit-margin-start: 0px;
-                -webkit-margin-end: 0px;
-                -webkit-padding-start: 40px;
-                li {
-                    display: list-item;
-                    &:not(:last-child)::after {
-                    content: none;
-                }
-                    span.witGrp_name {
-                        display: inline;
-                        font-weight: bold;
-                        font-style: italic;
-                        font-variant: small-caps;
-                    }
-                    span.witGrp_content {
-                        display: inline;
-                    }
-                }
-        }
     }
 
     &_other-content{
@@ -292,4 +255,23 @@
 
 .app_reading_content {
     margin-bottom: 20px !important;
+}
+
+/* VERSION REF */
+.evt-version-ref {
+    margin: 0 3px;
+    text-decoration: underline !important;
+    display: block;
+    
+    &:hover {
+        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+        cursor: pointer;
+    }
+    &::after {
+        text-decoration: none !important;
+    }
+    &.selected {
+        cursor: default !important;
+        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+    }
 }
