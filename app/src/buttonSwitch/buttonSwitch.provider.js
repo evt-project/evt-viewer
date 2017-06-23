@@ -61,10 +61,16 @@ angular.module('evtviewer.buttonSwitch')
                     evtIcon = 'icon-evt_imgtxt';
                     break;
                 case 'mode-txttxt':
-                    evtIcon = 'icon-evt_txttxt';
+                    evtIcon = 'iconbis-evt_txttxt';
                     break;
                 case 'reading-txt':
                     evtIcon = 'icon-evt_txt';
+                    break;
+                case 'mode-versions':
+                    evtIcon = 'iconbis-evt_versions';
+                    break;
+                case 'mode-srctxt':
+                    evtIcon = 'iconbis-evt_srctxt';
                     break;
                 case 'mode-collation':
                     evtIcon = 'icon-evt_collation';
