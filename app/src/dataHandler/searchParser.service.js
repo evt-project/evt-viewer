@@ -353,10 +353,20 @@ angular.module('evtviewer.dataHandler')
       editionWords.push(word);
    };
 
+   /* ******************************* */
+   /* BEGIN getCurrentWitness(node) */
+   /* ********************************************************************** */
+   /* Function to get the current witness                                    */
+   /* @node -> current node                                                  */
+   /* ********************************************************************** */
    let getCurrentWitness = function (node) {
       if(node.getAttribute('wit')) {
          let wit = node.getAttribute('wit');
-         wit = wit.replace('#', '');
+
+         while(wit.includes('#')) {
+            wit = wit.replace('#', '');
+         }
+
          return wit;
       }
       else {
@@ -378,6 +388,7 @@ angular.module('evtviewer.dataHandler')
           childNodeName,
           nodeHaveChild,
           witness,
+          witnesses = [],
           nodeHaveWit,
           witnessText;
 
@@ -389,31 +400,24 @@ angular.module('evtviewer.dataHandler')
             witnessText = child.textContent;
             nodeHaveChild = children[i].children.length !== 0;
 
-            if (nodeHaveChild) {
+            if (nodeHaveChild && childNodeName !== 'rdg') {
                for (let j = 0; j < child.children.length; j++) {
                   witness = getCurrentWitness(child.children[j]);
                   childNodeName = child.children[j].nodeName;
                   witnessText = child.children[j].textContent;
 
-                  if(Object.keys(word).length === 0) {
-                     word.critical = {[witness]: witnessText};
-                  }
-                  else {
-                     word.critical[witness] = witnessText;
-                  }
+                  Object.keys(word).length === 0 ? word.critical = {[witness]: witnessText} : word.critical[witness] = witnessText;
                }
             }
             else {
                witness = getCurrentWitness(child);
                witnessText = child.textContent;
-
                nodeHaveWit = witness;
+
                if(nodeHaveWit) {
-                  if(Object.keys(word).length === 0) {
-                     word.critical = {[witness]: witnessText};
-                  }
-                  else {
-                     word.critical[witness] = witnessText;
+                  witnesses = witness.split(' ');
+                  for(let z = 0; z < witnesses.length; z++) {
+                     Object.keys(word).length === 0 ? word.critical = {[witnesses[z]]: witnessText} : word.critical[witnesses[z]] = witnessText;
                   }
                }
             }
