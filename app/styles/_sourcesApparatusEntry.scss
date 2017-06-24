@@ -26,7 +26,7 @@ sup.iconbis-evt_quote-left {
     
     cursor: text !important;
 
-    span:not(.app_lemma), span:not(.app_lemma_content) {
+    span {
         background: transparent;
         display: inline-block;
     }
@@ -47,6 +47,13 @@ sup.iconbis-evt_quote-left {
         -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
         -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
         box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+    }
+    &:hover {
+        &:not(.selected) {
+            -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+            -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+            box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        }
     }
     &.selected {
         background-color: $sources-apparatus-entry-selected-background-color;

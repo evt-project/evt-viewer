@@ -25,8 +25,8 @@
             <li
                 ng-repeat="source in vm.sources"
                 class="source-id"
-                ng-class="{ 'selected' : (vm.over || vm.selected) && vm.sources.length > 1 && source.id == vm._activeSource,
-                            'over'   : (vm.selected) && vm.sources.length > 1 && source.id == vm._overSource}"
+                ng-class="{ 'selected' : vm.selected && vm.sources.length > 1 && source.id == vm._activeSource,
+                            'over'   : (vm.over || vm.selected) && vm.sources.length > 1 && source.id == vm._overSource}"
                 ng-mouseover="vm.toggleOverSource($event, source.id)"
                 ng-mouseout="vm.toggleOverSource($event, source.id)"
                 ng-click="vm.toggleSource(source.id)"

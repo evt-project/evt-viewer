@@ -192,7 +192,7 @@ angular.module('evtviewer.select')
                     optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
                     break;
                     /* @author --> CM */
-                    case 'version':
+                case 'version':
                     optionSelectedValue = initValue;
                     callback = function(oldOption, newOption) {
                         vm.collapse();
@@ -209,14 +209,15 @@ angular.module('evtviewer.select')
                             versions     = optionList._indexes.versionId;
                         for (var i in versions) {
                             //FIXME : no first version!
-                            if (i !== config.versions[0]){
-                            var currentOption = versions[i];
-                            var option = {
+                            if (i !== config.versions[0] && i !== '_name') {
+                                var currentOption = versions[i];
+                                var option = {
                                     value : i,
                                     label : currentOption,
                                     title : 'See version text'
                                 };
-                            formattedList.push(option);}
+                                formattedList.push(option);
+                            }
                         }
                         return formattedList;
                     };

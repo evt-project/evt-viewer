@@ -5,7 +5,7 @@ angular.module('evtviewer.versionReading')
     var currentVersionEntry = '';
 
     this.$get = function() {
-        var versionReading = {}
+        var versionReading = {},
             collection = {},
             list = [],
             idx = 0;
@@ -91,6 +91,10 @@ angular.module('evtviewer.versionReading')
                     currentReading.closeApparatus();
                 }
             });
+        };
+
+        versionReading.destroy = function(tempId) {
+            delete collection[tempId];
         };
         
         return versionReading;

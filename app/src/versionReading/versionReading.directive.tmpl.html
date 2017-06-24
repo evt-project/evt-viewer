@@ -15,8 +15,7 @@
         ng-mouseover="vm.highlightOn()"
         ng-mouseout="vm.highlightOff()"
         ng-class="{ 'over'     : vm.over,
-                    'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
-                    'highlighted' : vm.highlightedText}"
+                    'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}"
         ng-transclude>
     </span>
     <evt-version-apparatus-entry

@@ -37,13 +37,11 @@ angular.module('evtviewer.versionReading')
 
     this.toggleOverAppEntries = function($event) {
         $event.stopPropagation();
-        if ( !vm.hidden ) {
-            if ( vm.over === false ) {
+        if ( vm.over === false ) {
                 evtVersionReading.mouseOverByAppId(vm.appId);
             } else {
                 evtVersionReading.mouseOutAll();
             }
-        }
     };
 
     this.toggleSelectAppEntries = function($event) {

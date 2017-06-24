@@ -26,9 +26,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
     }
 
     this.toggleOverSource = function($event, sourceId) {
-        $event.stopPropagation();
-        //Provoca uno sfarfallio
-        vm.over = !vm.over;
+        //$event.stopPropagation();
         if (vm._overSource !== sourceId) {
             vm._overSource = sourceId;
         } else {
