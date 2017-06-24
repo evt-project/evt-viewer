@@ -20,12 +20,12 @@ angular.module('evtviewer.dataHandler')
       currentAppNode,
 
       glyphs = [],
-      editionWords = [],
       glyphNode,
       glyphId = '',
       sRef = '',
 
-      witnesses = {},
+      word = {},
+      editionWords = [],
 
       regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
 
@@ -76,14 +76,18 @@ angular.module('evtviewer.dataHandler')
                switch (node.nodeName) {
                   case 'choice':
                      currentChoiceNode = node;
-                     checkCurrentChoiceNode(node, doc);
+                     word = checkCurrentChoiceNode(node);
+                     editionWords.push(word);
                      node = currentChoiceNode;
                      break;
                   case 'app':
-                currentAppNode = node;
-                checkCurrentAppNode(node, doc);
-                node = currentAppNode;
-                break;
+                     if(node.parentNode.nodeName !== 'lem') {
+                        currentAppNode = node;
+                        word = checkCurrentAppNode(node);
+                        editionWords.push(word);
+                        node = currentAppNode;
+                     }
+                      break;
                }
             }
 
@@ -101,7 +105,7 @@ angular.module('evtviewer.dataHandler')
             addSpace();
             node = nodes.iterateNext();
          }
-         cleanText();
+         text = cleanText(text);
       }
    };
 
@@ -290,7 +294,7 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                                     */
    /* @doc -> current xml document                                              */
    /* ************************************************************************* */
-   let checkCurrentChoiceNode = function (node, doc) {
+   let checkCurrentChoiceNode = function (node) {
       let word = {},
           children = node.children,
           childNode,
@@ -350,10 +354,10 @@ angular.module('evtviewer.dataHandler')
             }
          }
       }
-      editionWords.push(word);
+      return word;
    };
 
-   /* ******************************* */
+   /* ***************************** */
    /* BEGIN getCurrentWitness(node) */
    /* ********************************************************************** */
    /* Function to get the current witness                                    */
@@ -372,6 +376,40 @@ angular.module('evtviewer.dataHandler')
       else {
          return false;
       }
+   };
+
+   /* ******************************* */
+   /* BEGIN handleNestedApp(node, word) */
+   /* ********************************************************************** */
+   /* Function to handle nested apparatus                                    */
+   /* @node -> current node                                                  */
+   /* @word -> object containing the different lectio
+   /* ********************************************************************** */
+   let handleNestedApp = function(node, word) {
+      let innerHtml = node.innerHTML,
+          nestedEl,
+          nestedElInner,
+          toReplace;
+
+      for(let i = 0; i < node.children.length; i++) {
+         nestedEl = node.children[i];
+
+         switch(nestedEl.nodeName) {
+            case 'app':
+               toReplace = cleanSpace(nestedEl.outerHTML);
+               nestedElInner = cleanSpace(nestedEl.innerHTML);
+               innerHtml = cleanSpace(innerHtml);
+               innerHtml = innerHtml.replace(toReplace, nestedElInner);
+
+               word = checkCurrentAppNode(node);
+               for(let j = 0; j < Object.keys(word.critical).length; j++) {
+                  let wit = Object.keys(word.critical)[j];
+                  let repl = innerHtml.replace(nestedElInner, word.critical[wit]);
+                  word.critical[wit] = repl;
+               }
+         }
+      }
+      return word;
    };
 
    /* ******************************* */
@@ -401,12 +439,26 @@ angular.module('evtviewer.dataHandler')
             nodeHaveChild = children[i].children.length !== 0;
 
             if (nodeHaveChild && childNodeName !== 'rdg') {
-               for (let j = 0; j < child.children.length; j++) {
-                  witness = getCurrentWitness(child.children[j]);
-                  childNodeName = child.children[j].nodeName;
-                  witnessText = child.children[j].textContent;
+               if(childNodeName === 'lem' && nodeHaveChild) {
+                  witness = getCurrentWitness(child);
+                  word = handleNestedApp(child, word);
+               }
+               else {
+                  for (let j = 0; j < child.children.length; j++) {
+                     witness = getCurrentWitness(child.children[j]);
+                     childNodeName = child.children[j].nodeName;
 
-                  Object.keys(word).length === 0 ? word.critical = {[witness]: witnessText} : word.critical[witness] = witnessText;
+                     if (childNodeName !== 'note') {
+                        witnessText = child.children[j].textContent;
+
+                        if (Object.keys(word).length === 0) {
+                           word.critical = {[witness]: witnessText}
+                        }
+                        else {
+                           word.critical[witness] = witnessText;
+                        }
+                     }
+                  }
                }
             }
             else {
@@ -423,7 +475,7 @@ angular.module('evtviewer.dataHandler')
             }
          }
       }
-      editionWords.push(word);
+      return word;
    };
 
    /* ******************************* */
@@ -525,23 +577,43 @@ angular.module('evtviewer.dataHandler')
       return jQuery.trim(str).length === 0;
    };
 
-   /* ***************** */
-   /* BEGIN cleanText() */
+   /* ******************** */
+   /* BEGIN cleanText(str) */
    /* **************************************************************** */
    /* Function to clean text (string) from spaces and some punctuation */
    /* **************************************************************** */
-   let cleanText = function () {
-      let replace,
-          choice = document.getElementsByClassName('choice');
+   let cleanText = function (str) {
+      str = cleanSpace(str);
+      str = cleanPunctuation(str);
+      return str;
+   };
 
-      while(text.match(regex)) {
-         replace = text.replace(regex, "");
-         text = replace;
+   /* ********************* */
+   /* BEGIN cleanSpace(str) */
+   /* **************************************************************** */
+   /* Function to clean text (string) from spaces                      */
+   /* **************************************************************** */
+   let cleanSpace = function(str) {
+      let replace;
+      while(str.match(/\s\s/)){
+         replace = str.replace(/\s\s/, " ");
+         str = replace;
       }
-      while(text.match(/\s\s/)){
-         replace = text.replace(/\s\s/, " ");
-         text = replace;
+      return str;
+   };
+
+   /* *************************** */
+   /* BEGIN cleanPunctuation(str) */
+   /* **************************************************************** */
+   /* Function to clean text (string) from some punctuation            */
+   /* **************************************************************** */
+   let cleanPunctuation = function(str) {
+      let replace;
+      while(str.match(regex)) {
+         replace = str.replace(regex, "");
+         str = replace;
       }
+      return str;
    };
 
    return parser;
