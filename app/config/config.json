@@ -1,6 +1,7 @@
 {
     "dataUrl"          : "",
     "sourcesUrl"       : "",
+    "sourcesTextsUrl" : "",
     "analoguesUrl"     : "../../data/analogues.xml",
     "preferredWitness" : "",
     "skipWitnesses"    : "",

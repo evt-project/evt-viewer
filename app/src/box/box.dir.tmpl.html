@@ -106,7 +106,7 @@
 
     <div 
         class="tools-group-box"
-        ng-if="vm.type=='text' || vm.type=='witness' || vm.type=='source'"
+        ng-if="vm.type!=='image'"
         ng-class="{'open': vm.getState('fontSizeBtn')}">
         <div 
             class="fontSizeBtnGroup">

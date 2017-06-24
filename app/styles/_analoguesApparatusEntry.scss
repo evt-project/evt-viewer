@@ -127,9 +127,6 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         }
 
         &_headers {
-            &:not(.closed){
-                @include set(box-shadow, 0px 9px 5px -4px $analogues-apparatus-entry-background-color-darker);
-            }
             z-index: 2;
             position: relative;
             span {
@@ -250,29 +247,4 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     color: transparent !important;
     text-shadow: 0 0 5px #000 !important;
     background: transparent !important
-}
-
-//Temp
-.moreInfo{
-    &-label{
-        font-weight: bold;
-        font-variant: small-caps;
-        &:after {
-            content: ": ";
-        }
-    }
-    &-metadataTitle{
-        border-top: 1px solid #999;
-        padding-top: 10px;
-        text-align: center;
-        width: 100%;
-        font-variant: small-caps;
-        font-size: 95%;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-}
-
-.app_reading_content {
-    margin-bottom: 20px !important;
 }

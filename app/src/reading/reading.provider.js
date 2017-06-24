@@ -49,16 +49,6 @@ angular.module('evtviewer.reading')
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
-            var firstExp, lastEp, exponent, exp;
-            if (currentId > 25) {
-                firstExp = (Math.floor(currentId/25))+96;
-                lastExp = (currentId%25)+97;
-                exponent='&#'+firstExp+'; &#'+lastExp+';';
-            } else {
-                exp = currentId+97;
-                exponent = '&#'+exp+';';
-            }
-
             scopeHelper = {
                 // expansion
                 uid              : currentId,
@@ -70,7 +60,7 @@ angular.module('evtviewer.reading')
                 variance         : scope.variance,
                 type             : scope.type,
                 attributes       : attributes,
-                exponent : exponent,
+                exponent         : scope.exponent,
 
                 over             : false,
                 apparatus        : {

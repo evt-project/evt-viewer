@@ -5,45 +5,47 @@
     ng-mouseover="vm.toggleOverSourcesEntries($event)"
     ng-mouseout="vm.toggleOverSourcesEntries($event)"
     ng-click="vm.callbackClick($event)">
-    <div class="sources-apparatus-entry_main-content">
-        <div class="sources-apparatus-entry_main-content_header"
-             ng-if="vm.currentViewMode !== 'srcTxt'"
-             compile="vm.head">
+    
+    <div class="sources-apparatus-entry_main-content"
+        ng-if="vm.currentViewMode !== 'srcTxt'">
+        <sup
+            class="iconbis-evt_quote-left">
+        </sup>
+        <span class="sources-apparatus-entry_main-content_header" compile="vm.head"></span>
+        <div class="sources-apparatus-entry_tools">
+            <button-switch
+                title="Align Quotes"
+                ng-if="vm.currentViewMode !== 'imgTxt' && vm.currentViewMode !== 'srcTxt'"
+                data-label=""
+                data-icon="v-align"
+                data-type="alignReadings"
+                ng-click="vm.alignQuotes()"></button-switch>
         </div>
-        <div
-            class="sources-apparatus-entry_tools">
-            <button-switch 
-            title="Align Quotes"
-            ng-if="vm.currentViewMode === 'readingTxt' || vm.currentViewMode === 'collation'"
-            data-label=""
-            data-icon="v-align"
-            data-type="alignReadings"
-            ng-click="vm.alignQuotes()"></button-switch>
-        </div>
-        <div class="sources-apparatus-entry_main-content_list">
-            <span class="sources-apparatus-entry_main-content_list-label">Quoted Sources</span>
-            <ul
-                ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1}">
-                <li 
-                    ng-repeat-start="source in vm.sources"
-                    class="source-id"
-                    ng-class="{ 'selected' : (vm.over || vm.selected) && vm.sources.length > 1 && source.id == vm._activeSource,
-                                  'over'   : vm.selected && vm.sources.length > 1 && source.id == vm._overSource}"
-                    ng-mouseover="vm.toggleOverSource($event, source.id)"
-                    ng-mouseout="vm.toggleOverSource($event, source.id)"
-                    ng-click="vm.toggleSource(source.id)"
-                    compile="source.abbr">
-                </li>
-                <span class="compareLabel" ng-class="{'invisible' : vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)}"
+    </div>
+    
+    <div class="sources-apparatus-entry_main-content_list">
+        <span class="sources-apparatus-entry_main-content_list-label">Quoted Sources</span>
+        <ul
+            ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1}">
+            <li
+                ng-repeat-start="source in vm.sources"
+                class="source-id"
+                ng-class="{ 'selected' : (vm.over || vm.selected) && vm.sources.length > 1 && source.id == vm._activeSource,
+                            'over'   : vm.selected && vm.sources.length > 1 && source.id == vm._overSource}"
+                ng-mouseover="vm.toggleOverSource($event, source.id)"
+                ng-mouseout="vm.toggleOverSource($event, source.id)"
+                ng-click="vm.toggleSource(source.id)"
+                compile="source.abbr">
+            </li>
+            <span class="compareLabel"
+                ng-if="vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)"
                 ng-repeat-end>
-                    <evt-source-ref
-                        data-source-id="{{source.id}}"
-                        ng-if="vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)">
-                        Compare texts
-                    </evt-source-ref>
-                </span>
-            </ul>
-        </div>
+                <evt-source-ref
+                    data-source-id="{{source.id}}">
+                    Compare texts
+                </evt-source-ref>
+            </span>
+        </ul>
     </div>
     <div class="sources-apparatus-entry_other-content"
          ng-if="vm.tabs._indexes.length > 0 && vm.currentViewMode !== 'srcTxt'">

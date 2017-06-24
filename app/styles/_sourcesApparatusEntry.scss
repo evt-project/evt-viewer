@@ -5,6 +5,14 @@ $sources-apparatus-entry-border-color : rgb(125, 125, 125);
 $sources-apparatus-entry-selected-background-color: rgb(195, 207, 213);
 $sources-apparatus-entry-selected-content-color: rgb(180, 195, 203);
 $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
+sup.iconbis-evt_quote-left {
+        //@include setIcon();
+        font-size: 0.5em;
+        color: $base-color-dark;
+        margin: 0;
+        padding: 0;
+        display: inline;
+    }
 
 .sources-apparatus-entry {
     margin:0;
@@ -43,6 +51,7 @@ $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     &.selected {
         background-color: $sources-apparatus-entry-selected-background-color;
     }
+
     &_tools{
         padding: 0;
         float: right;
@@ -70,10 +79,9 @@ $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     }
     &_main-content{
         padding: 5px;
-        // width:90%;
-        font-size:105%;
-        border-top: 1px solid $sources-apparatus-entry-border-color;
-        
+            font-size:105%;
+            border-top: 1px solid $sources-apparatus-entry-border-color;
+            
         &_header {
             .textNode {
                 margin-right: 0.2em;
@@ -81,13 +89,14 @@ $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         }
         
         &_list {
+            padding: 5px;
+            font-size:105%;
             border-top: 1px solid $sources-apparatus-entry-border-color;
             padding: 0;
             &-label {
                 width: 100%;
                 font-variant: small-caps;
                 font-size: 95%;
-                margin-top: 5px;
             }
             ul {
                 &.pointer {
@@ -200,7 +209,7 @@ $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     }
 }
 .sources-apparatus-entry.noTools{
-    .sources-apparatus-entry_main-content, .sources-apparatus-entry_other-content {
+    .sources-apparatus-entry_main-content_header, .sources-apparatus-entry_other-content {
         width: 100%;
     }
     border-right: 1px solid $sources-apparatus-entry-border-color;
@@ -246,27 +255,3 @@ $sources-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     background: transparent !important
 }
 
-//Temp
-.moreInfo{
-    &-label{
-        font-weight: bold;
-        font-variant: small-caps;
-        &:after {
-            content: ": ";
-        }
-    }
-    &-metadataTitle{
-        border-top: 1px solid #999;
-        padding-top: 10px;
-        text-align: center;
-        width: 100%;
-        font-variant: small-caps;
-        font-size: 95%;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-}
-
-.app_reading_content {
-    margin-bottom: 20px !important;
-}

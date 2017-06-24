@@ -22,10 +22,6 @@
     }
 
     &.over  {
-        sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
-            font-size: 0.65em;
-            color: $base-color-dark;
-        }
         .quote__text {
             background-color: $critical-element-highlight !important;
         }
