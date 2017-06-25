@@ -7,8 +7,9 @@
              'selected': vm.isSelect() && scopeViewMode === 'readingTxt',
              'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
-      <span class="exponent"
-            compile="vm.exponent">{{vm.exponent}}</span>
+      <span class="apparatus_exponent"
+            ng-if="!vm.inline"
+            compile="vm.exponent"></span>
 
       <span 
         class="app_lemma"

@@ -6,6 +6,11 @@
                 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
                 'over'     : vm.over,
                 'blurred'  : $parent.vm.state.topBoxOpened}">
+    <i
+        class="iconbis-evt_analogue"
+        title="analogue"
+        ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
+    </i>
     <span
         class="analogue__text"
         ng-click="vm.callbackClick($event)"

@@ -19,6 +19,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             scope.scopeViewMode = evtInterface.getCurrentViewMode();
             var currentAppEntry = evtCriticalApparatusEntry.build(scope.appId, scope);
             
+            
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentAppEntry){

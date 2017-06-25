@@ -64,16 +64,15 @@ $reading-background-selected : rgb(208, 220, 255);
 
         .reading_exponent{
             margin: 0;
+            padding: 2px;
             position: relative;
             bottom: 0.3em;
-            background-color: $base-color-light;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            font-color: $base-color-middle;
+            background-color: transparent;
             word-spacing: -0.25em;
             padding: 0.05em;
             font-size: 0.7em;
+            color: $base-color-dark;
+            left: -4px;
         }
     }
 

@@ -1,21 +1,13 @@
-$analogues-apparatus-entry-background-color : $base-color-light;
-$analogues-apparatus-entry-background-color-darker : rgb(225, 225, 225);
-$analogues-apparatus-entry-border-color : rgb(125, 125, 125);
-
-$analogues-apparatus-entry-selected-background-color: rgb(195, 207, 213);
-$analogues-apparatus-entry-selected-content-color: rgb(180, 195, 203);
-$analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
-
 .analogues-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
     position: relative;
     z-index:0;
-    background: $analogues-apparatus-entry-background-color;
+    background: $critical-apparatus-entry-background-color;
     color: $base-color-dark;
     font-size: 90%;
-    border-left: 1px solid $analogues-apparatus-entry-border-color;
-    border-right: 1px solid $analogues-apparatus-entry-border-color;
+    border-left: 1px solid $critical-apparatus-entry-border-color;
+    border-right: 1px solid $critical-apparatus-entry-border-color;
     
     cursor: text !important;
 
@@ -49,7 +41,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         }
     }
     &.selected {
-        background-color: $analogues-apparatus-entry-selected-background-color;
+        background-color: $critical-apparatus-entry-selected-background-color;
     }
 
     &_tools{
@@ -66,13 +58,13 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             font-size: 70%;
             .buttonSwitch {
                 box-shadow: none;
-                border: 1px solid $analogues-apparatus-entry-background-color;
+                border: 1px solid $critical-apparatus-entry-background-color;
             }
             &.active, &:hover {
                 .buttonSwitch {
                     @include set(box-shadow, inset 0 1px 2px 0 rgba(0,0,0,.1));
-                    background-color: $analogues-apparatus-entry-background-color-darker;
-                    border: 1px solid $analogues-apparatus-entry-border-color;
+                    background-color: $critical-apparatus-entry-background-color-darker;
+                    border: 1px solid $critical-apparatus-entry-border-color;
                 }
             }
         }
@@ -81,7 +73,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         padding: 5px;
         // width:90%;
         font-size:105%;
-        border-top: 1px solid $analogues-apparatus-entry-border-color;
+        border-top: 1px solid $critical-apparatus-entry-border-color;
 
         &_header {
             .textNode {
@@ -94,7 +86,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         }
 
         &_list {
-            border-top: 1px solid $analogues-apparatus-entry-border-color;
+            border-top: 1px solid $critical-apparatus-entry-border-color;
             padding: 0;
             &-label {
                 width: 100%;
@@ -126,8 +118,8 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         }
     }
     &_other-content{
-        border-top: 3px double $analogues-apparatus-entry-border-color;
-        border-bottom: 1px solid $analogues-apparatus-entry-border-color;
+        border-top: 3px double $critical-apparatus-entry-border-color;
+        border-bottom: 1px solid $critical-apparatus-entry-border-color;
         // width:90%;
         p {
             padding: 0 10px;
@@ -141,7 +133,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
                 display: inline-block;
                 font-size: 90%;
                 cursor: pointer;
-                border-left: 1px solid $analogues-apparatus-entry-background-color-darker;
+                border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                 &:first-child {
                     border-left: none;
                 }
@@ -149,11 +141,11 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
                     text-shadow: 0px 0px 1px rgba(0,0,0,.7);
                 }
                 &.active{
-                    @include set(box-shadow, inset 0 2px 2px -1px $analogues-apparatus-entry-border-color);
-                    background-color: $analogues-apparatus-entry-background-color-darker;
-                    border-right: 1px solid $analogues-apparatus-entry-background-color-darker;
+                    @include set(box-shadow, inset 0 2px 2px -1px $critical-apparatus-entry-border-color);
+                    background-color: $critical-apparatus-entry-background-color-darker;
+                    border-right: 1px solid $critical-apparatus-entry-background-color-darker;
                     &:not(:first-child) {
-                        border-left: 1px solid $analogues-apparatus-entry-background-color-darker;
+                        border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                     }
                     + span {
                         border-left: none;
@@ -169,7 +161,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             max-height: 150px;
             overflow-x: hidden;
             overflow-y: auto;
-            background-color: $analogues-apparatus-entry-background-color-darker;
+            background-color: $critical-apparatus-entry-background-color-darker;
 
         }
 
@@ -213,7 +205,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     .analogues-apparatus-entry_main-content, .analogues-apparatus-entry_other-content {
         width: 100%;
     }
-    border-right: 1px solid $analogues-apparatus-entry-border-color;
+    border-right: 1px solid $critical-apparatus-entry-border-color;
 }
 .in_analogues_apparatus {
     .analogues-apparatus-entry {
@@ -221,9 +213,9 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         border: 0;
         background: transparent;
         &:hover{
-            background: $analogues-apparatus-entry-background-color;
+            background: $critical-apparatus-entry-background-color;
             > * {
-                background: $analogues-apparatus-entry-background-color;
+                background: $critical-apparatus-entry-background-color;
             }
         }
         &_tools{
@@ -244,7 +236,7 @@ $analogues-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     }
     &.active {
         .analogues-apparatus-entry {
-            background: $analogues-apparatus-entry-background-color;
+            background: $critical-apparatus-entry-background-color;
         }
     }
 }

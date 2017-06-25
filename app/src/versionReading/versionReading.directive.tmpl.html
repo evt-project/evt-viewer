@@ -5,16 +5,12 @@
     ng-class="{ 'blurred'  : $parent.vm.state.topBoxOpened,
                 'over'     : vm.over,
                 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}">
-    <!--
-    <i>
-        <evt-version-apparatus-entry></evt-version-apparatus-entry>
-    </i>-->
     <span
         class="version-reading_text"
         ng-click="vm.callbackClick($event);"
         ng-mouseover="vm.highlightOn()"
         ng-mouseout="vm.highlightOff()"
-        ng-class="{ 'over'     : vm.over,
+        ng-class="{ 'over'     : vm.over && !vm.isSelect(),
                     'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}"
         ng-transclude>
     </span>

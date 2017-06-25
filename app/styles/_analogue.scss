@@ -1,20 +1,34 @@
-$analogue-background-default: rgb(173, 235, 173);
-$analogue-background-hover:rgb(111, 220, 111);
-$analogue-background-selected:rgb(111, 220, 111);
-
 .analogue {
     padding: 0;
     cursor: pointer;
+
+    i.iconbis-evt_analogue {
+        font-size: 0.8em;
+        color: $base-color-dark;
+        margin: 0;
+        padding: 0;
+        margin-right: -6px;
+    }
+    i.iconbis-evt_analogue:after {
+        white-space: nowrap;
+    }
     
     .analogue__text {
-        background-color: $analogue-background-default;
+        border-bottom: 1px dotted $base-color-dark;
     }
 
-    &.over,
-    &.over .analogue,
+    &.over  {
+        .analogue__text {
+            background-color: $critical-element-highlight !important;
+        }
+    }
     &.selected {
+        i.iconbis-evt_analogue {
+            font-size: 1em;
+            color: $base-color-dark;
+        }
         .analogue__text{
-            background-color: $analogue-background-hover;
+            border-bottom: 1px solid $base-color-dark;
         }        
     }
 }

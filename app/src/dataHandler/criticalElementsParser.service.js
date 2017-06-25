@@ -617,20 +617,6 @@ angular.module('evtviewer.dataHandler')
                     noRdgElement.setAttribute('title', 'noRdg');
                 spanElement.appendChild(noRdgElement);
             }
-        var firstExp,
-            lastEp,
-            exponent,
-            exp,
-            currentId = parsedData.getCriticalEntries()._indexes.encodingStructure.indexOf(entry.id);
-            if (currentId > 25) {
-                firstExp = (Math.floor(currentId/25))+96;
-                lastExp = (currentId%25)+97;
-                exponent='&#'+firstExp+'; &#'+lastExp+';';
-            } else {
-                exp = currentId+97;
-                exponent = '&#'+exp+';';
-            }
-            spanElement.setAttribute('data-exponent', exponent);
         } else {
             var errorElement = document.createElement('span');
                 errorElement.className = 'encodingError';
@@ -708,6 +694,11 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-app-id', entry.id);
             // If there is a variant that belongs to wit in the entry witMap,
             // it adds the content of the variant to the text
+            iconElement = document.createElement('i');
+            iconElement.className = 'iconbis-evt_fork';
+            iconElement.setAttribute('title', 'There are alternative versions of this part of text');
+            spanElement.appendChild(iconElement);
+            
             if (Object.keys(entry._indexes.witMap).length !== 0) {
                 rdgId = entry._indexes.witMap[wit];
                 if (rdgId !== '') {
@@ -903,20 +894,6 @@ angular.module('evtviewer.dataHandler')
                     // da pesare sulla varianza massima
                 }
             }
-        var firstExp,
-            lastEp,
-            exponent,
-            exp,
-            currentId = parsedData.getCriticalEntries()._indexes.encodingStructure.indexOf(entry.id);
-            if (currentId > 25) {
-                firstExp = (Math.floor(currentId/25))+96;
-                lastExp = (currentId%25)+97;
-                exponent='&#'+firstExp+'; &#'+lastExp+';';
-            } else {
-                exp = currentId+97;
-                exponent = '&#'+exp+';';
-            }
-            spanElement.setAttribute('data-exponent', exponent);
         } else {
             errorElement = document.createElement('span');
             errorElement.className = 'encodingError';
@@ -943,6 +920,11 @@ angular.module('evtviewer.dataHandler')
             spanElement.setAttribute('data-app-id', entry.id);
             spanElement.setAttribute('data-type', 'versionLemma');
             spanElement.setAttribute('data-scope-version', scopeVersion);
+
+            iconElement = document.createElement('i');
+            iconElement.className = 'iconbis-evt_fork';
+            iconElement.setAttribute('title', 'There are alternative versions of this part of text');
+            spanElement.appendChild(iconElement);
 
             if (entry.content[scopeVersion] !== undefined) {
                 var scopeVerLem = entry.content[scopeVersion].lemma;

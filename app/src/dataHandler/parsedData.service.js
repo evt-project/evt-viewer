@@ -61,7 +61,8 @@ angular.module('evtviewer.dataHandler')
 		_maxVariance: 0,
 		_indexes: {
 			encodingStructure: [],
-			appEntries: []
+			appEntries: [],
+			exponents: [],
 		}
 	};
 

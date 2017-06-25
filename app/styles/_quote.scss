@@ -3,16 +3,15 @@
     cursor: pointer;
 
     sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
-        //@include setIcon();
         font-size: 0.5em;
         color: $base-color-dark;
         margin: 0;
         padding: 0;
     }
-    sup.iconbis-evt_quote-left::after {
+    sup.iconbis-evt_quote-left:after {
         white-space: nowrap;
     }
-    sup.iconbis-evt_quote-right::before {
+    sup.iconbis-evt_quote-right:before {
         white-space: nowrap;
     }
     

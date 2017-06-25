@@ -89,6 +89,18 @@ angular.module('evtviewer.versionReading')
             if (availableVer[boxVersion] === undefined) {
                 isAvailable = false;
             }
+        } else if (boxVersion === '' && $scope.$parent.vm.type === 'witness') {
+            var scopeWit = $scope.$parent.vm.witness,
+                witMap = parsedData.getVersionEntries()._indexes.versionWitMap,
+                ver = '';
+            for (var i in witMap) {
+                if (witMap[i].indexOf(scopeWit) >= 0) {
+                    ver = i;
+                }
+            }
+            if (ver === '' || availableVer[ver] === undefined) {
+                isAvailable = false;
+            }
         } else {
             if (availableVer[defaultVer] === undefined) {
                 isAvailable = false;

@@ -10,7 +10,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
     var currentAppEntry = '';
 
-    this.$get = function(parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus) {
+    this.$get = function(parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtReading) {
         var appEntry   = {},
             collection = {},
             list       = [],
@@ -87,6 +87,18 @@ angular.module('evtviewer.criticalApparatusEntry')
                 }
             }
 
+            var exponent,
+                exps = parsedData.getCriticalEntries()._indexes.exponents;
+            if (scope.exponent === undefined) {
+                for (var i in exps) {
+                    if (exps[i].appId === scope.appId) {
+                        exponent = exps[i].exponent;
+                    }
+                }
+            } else {
+                exponent = scope.exponent;
+            }
+
             scopeHelper = {
                 // expansion
                 uid               : currentId,
@@ -99,7 +111,7 @@ angular.module('evtviewer.criticalApparatusEntry')
                 over              : false,
                 selected          : false,
                 tabs              : tabs,
-                exponent          : scope.exponent,
+                exponent          : exponent,
                 witnessesGroups   : witnessesGroups,
                 currentViewMode   : scope.scopeViewMode
             };

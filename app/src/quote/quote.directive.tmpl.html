@@ -10,6 +10,7 @@
                 'noquotes' : $parent.vm.selected}">
     <sup
         class="iconbis-evt_quote-left"
+        title="quote"
         ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
     </sup>
     <span 
@@ -18,7 +19,8 @@
         ng-transclude></span>
     <sup
         class="iconbis-evt_quote-right"
-        ng-if="vm.type !== 'subquote' || (vm.over && vm.type === 'subquote')">
+        title="quote"
+        ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
     </sup>
 
     <evt-sources-apparatus-entry
