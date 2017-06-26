@@ -75,7 +75,7 @@ angular.module('evtviewer.criticalApparatusEntry')
     };
 
     this.isSelect = function() {
-        if (evtInterface.getCurrentAppEntry() === vm.appId) {
+        if (evtCriticalApparatusEntry.getCurrentAppEntry() === vm.appId) {
             return true;
         } else {
             return vm.selected;

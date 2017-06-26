@@ -32,22 +32,31 @@ angular.module('evtviewer.reading')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-
-            number++;
-            var firstExp,
-            lastExp,
-            exponent;
-            if (number > 26) {
-                firstExp = (Math.floor(number/26))+96;
-                if (number%26 === 0) {
-                    exponent = '&#'+(firstExp-1)+'; z';
-                } else {
-                lastExp = (number%26)+96;
-                exponent='&#'+firstExp+'; &#'+lastExp+';'; }
-            } else {
-                exponent = '&#'+(number+96)+';';
+            
+            var exponents = parsedData.getCriticalEntries()._indexes.exponents,
+                exponent;
+            for (var i = 0; i < exponents.length; i++) {
+                var expAppId = exponents[i].appId;
+                if (expAppId !== undefined && expAppId === scope.appId) {
+                    exponent = exponents[i].exponent;
+                }
             }
-            parsedData.getCriticalEntries()._indexes.exponents.push({appId: scope.appId, exponent: exponent});
+            if (exponent === undefined) {
+                number++;
+                var firstExp,
+                lastExp;
+                if (number > 26) {
+                    firstExp = (Math.floor(number/26))+96;
+                    if (number%26 === 0) {
+                        exponent = '&#'+(firstExp-1)+'; z';
+                    } else {
+                    lastExp = (number%26)+96;
+                    exponent='&#'+firstExp+'; &#'+lastExp+';'; }
+                } else {
+                    exponent = '&#'+(number+96)+';';
+                }
+                parsedData.getCriticalEntries()._indexes.exponents.push({appId: scope.appId, exponent: exponent});
+            }            
 
             if (scope.readingId !== undefined){
                 var aAttributes = parsedData.getReadingAttributes(scope.readingId, id) || [];
@@ -165,7 +174,6 @@ angular.module('evtviewer.reading')
 
         reading.destroy = function(tempId) {
             delete collection[tempId];
-            number--;
         };
 
         return reading;

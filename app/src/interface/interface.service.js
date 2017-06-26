@@ -590,16 +590,29 @@ angular.module('evtviewer.interface')
                 }
             } else {
                 if (viewMode === 'collation'){
-                    witIds = parsedData.getWitnessesList();
-                    if (witIds.length > config.maxWitsLoadTogether) {
-                        properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
-                        witIds = witIds.slice(0, config.maxWitsLoadTogether);
+                    // Check if there are multiple versions of the text
+                    if (config.versions.length > 1) {
+                        witIds = parsedData.getVersionEntries()._indexes.versionWitMap[config.versions[0]];
                     } else {
-                        properties.availableWitnesses = []    
-                    }
+                        witIds = parsedData.getWitnessesList();
+                        if (witIds !== undefined && witIds.length > config.maxWitsLoadTogether) {
+                            properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
+                            witIds = witIds.slice(0, config.maxWitsLoadTogether);
+                        } else {
+                            properties.availableWitnesses = []    
+                        }
+                    }                    
                 } else {
-                    var totWits = parsedData.getWitnessesList();
-                    properties.availableWitnesses = totWits.slice(0, totWits.length);
+                    if (config.versions.length > 1) {
+                        // Check if the main version of the text refers to some particular witnesses
+                        var mainVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[config.versions[0]];
+                        if (mainVerWits!== undefined && mainVerWits.length > 0) {
+                            properties.availableWitnesses = mainVerWits.slice(0, mainVerWits.length);
+                        }
+                    } else {
+                        var totWits = parsedData.getWitnessesList();
+                        properties.availableWitnesses = totWits.slice(0, totWits.length);
+                    }
                 }
             }
             // APP ENTRY

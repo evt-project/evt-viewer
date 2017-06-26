@@ -120,7 +120,11 @@ angular.module('evtviewer.select')
                                     label : currentOption.id,
                                     title : currentOption.description
                                 };
-                            formattedList.push(option);
+                            if (config.versions.length > 0 && evtInterface.getAvailableWitnesses().indexOf(witnesses[i]) >= 0) {
+                                formattedList.push(option);
+                            } else if (config.versions.length <= 0) {
+                                formattedList.push(option);
+                            }                            
                         }
                         return formattedList;
                     };

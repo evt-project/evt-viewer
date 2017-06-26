@@ -763,7 +763,7 @@ angular.module('evtviewer.dataHandler')
                                 if (typeof(lemmaContent[j]) === 'string'){
                                     spanElement.appendChild(document.createTextNode(lemmaContent[j]));
                                 } else {
-                                    if (lemmaContent[j].type === 'subApp'){
+                                    if (lemmaContent[j].type === 'subApp' || lemmaContent[j].type === 'app'){
                                         var subEntry = parsedData.getCriticalEntryById(lemmaContent[j].id);
                                         var subEntryElem = wit === '' ? parser.getEntryLemmaText(subEntry, wit) : parser.getEntryWitnessReadingText(subEntry, wit);
                                         var subReadingId = subEntry._indexes.witMap[wit] || '';

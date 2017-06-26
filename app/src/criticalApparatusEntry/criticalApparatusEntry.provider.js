@@ -197,6 +197,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.unselect();
             });
+            appEntry.setCurrentAppEntry('');
         };
 
         appEntry.selectById = function(appId) {
@@ -205,7 +206,6 @@ angular.module('evtviewer.criticalApparatusEntry')
                     currentEntry.setSelected();
                 } else {
                     currentEntry.unselect();
-                    //currentEntry.closeSubContent();
                 }
             });
             appEntry.setCurrentAppEntry(appId);
