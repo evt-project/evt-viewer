@@ -1,4 +1,8 @@
 <span class="source-seg">
+    <sup
+        class="iconbis-evt_quote-left"
+        title="Quoted in the main text">
+    </sup>
     <span
         class="source-seg_text"
         data-quote-id="{{vm.quoteId}}"
@@ -8,6 +12,10 @@
         ng-class="{ 'over': vm.over,
                     'selected': vm.selected }"
         ng-transclude></span>
+    <sup
+        class="iconbis-evt_quote-right"
+        title="Quoted in the main text">
+    </sup>
     <div
         class="source-seg_panel"
         ng-if="vm.selected">

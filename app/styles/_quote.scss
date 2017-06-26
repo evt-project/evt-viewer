@@ -28,11 +28,16 @@
     &.selected {
         sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
             font-size: 0.65em;
-            color: $base-color-dark;
         }
         .quote__text{
             border-bottom: 1px solid $base-color-dark;
         }        
+    }
+    
+    &.highlight {
+        .quote__text {
+            background-color: $apparatus-label;
+        }
     }
 
     //FIXME

@@ -97,6 +97,11 @@ sup.iconbis-evt_quote-left {
                 width: 100%;
                 font-variant: small-caps;
                 font-size: 95%;
+                position: relative;
+                left: 1em;
+                padding-top: 0.2em;
+                padding-bottom: 0;
+                margin-bottom: 0;
             }
             ul {
                 &.pointer {
@@ -119,6 +124,9 @@ sup.iconbis-evt_quote-left {
                     }
                 }
             }
+            &.srctxt {
+            border-bottom: 1px solid $critical-apparatus-entry-border-color;
+        }
         }
     }
     &_other-content{

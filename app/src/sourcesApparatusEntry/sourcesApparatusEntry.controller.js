@@ -115,7 +115,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             }
         }
         return isAvailable;
-    }
+    };
 
     this.destroy = function() {
         evtSourcesApparatusEntry.destroy(this.uid);

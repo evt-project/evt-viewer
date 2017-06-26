@@ -1,6 +1,6 @@
 angular.module('evtviewer.quote')
 
-.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry, evtSourceSeg) {
+.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry, evtSourceSeg, parsedData) {
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -107,6 +107,16 @@ angular.module('evtviewer.quote')
         vm.apparatus._subContentOpened = subContent;
     };
     
+    this.hasScopeSource = function() {
+        var quotesRef = parsedData.getSources()._indexes.quotesRef[vm.quoteId] || undefined,
+            currentSourceText = evtInterface.getCurrentSourceText();
+        if (quotesRef !== undefined && quotesRef.indexOf(currentSourceText) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     this.destroy = function() {
         evtQuote.destroy(this.uid);
     };

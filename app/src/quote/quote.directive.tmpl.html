@@ -7,7 +7,8 @@
                 'over'     : vm.over,
                 'blurred'  : $parent.vm.state.topBoxOpened,
                 'subquote' : vm.type === 'subquote',
-                'noquotes' : $parent.vm.selected}">
+                'noquotes' : $parent.vm.selected,
+                'highlight': vm.hasScopeSource() && vm.scopeViewMode === 'srcTxt'}">
     <sup
         class="iconbis-evt_quote-left"
         title="quote"

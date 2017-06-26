@@ -51,8 +51,11 @@ $critical-apparatus-entry-background-color-darker : rgb(225, 225, 225);
 $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
 $critical-element-highlight : #d2dbe0;
+$critical-element-highlight-border: #999;
 
 $apparatus-label : #7893a1;
+
+$source-text-color: rgba(165, 183, 192, .8);
 
 $critical-apparatus-entry-selected-background-color: $critical-element-highlight;
 $critical-apparatus-entry-selected-content-color: $base-color-light;
