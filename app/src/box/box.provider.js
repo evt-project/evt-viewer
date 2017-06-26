@@ -225,6 +225,11 @@ angular.module('evtviewer.box')
                                                    { id:'editionLevel_'+currentId, type: 'edition', initValue: evtInterface.getCurrentEdition() });
                     } else {
                         topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
+                        if (evtInterface.getCurrentViewMode() === 'collation' && config.versions.length > 1
+                            && Object.keys(parsedData.getVersionEntries()._indexes.versionWitMap > 0)) {
+                            evtInterface.updateCurrentVersion(config.versions[0]);
+                            topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: evtInterface.getCurrentVersion()});
+                        }
                     }
                     appFilters = parsedData.getCriticalEntriesFiltersCollection();
                     if (appFilters.forLemmas > 0) {

@@ -46,6 +46,16 @@ angular.module('evtviewer.select')
                 }, true);
             }
 
+            if (scope.type === 'version' && evtInterface.getCurrentViewMode() === 'collation') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentVersion();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true);
+            }
+
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentSelect){

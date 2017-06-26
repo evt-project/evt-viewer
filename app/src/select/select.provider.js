@@ -196,27 +196,46 @@ angular.module('evtviewer.select')
                     optionSelectedValue = initValue;
                     callback = function(oldOption, newOption) {
                         vm.collapse();
-                        if (oldOption !== undefined) {
-                            if (newOption !== undefined) {
-                                evtInterface.switchVersions(oldOption.value, newOption.value);
+                        if (evtInterface.getCurrentViewMode() !== 'collation') {
+                            if (oldOption !== undefined) {
+                                if (newOption !== undefined) {
+                                    evtInterface.switchVersions(oldOption.value, newOption.value);
+                                }
+                            } else if (newOption !== undefined) {
+                                evtInterface.addVersion(newOption.value);
                             }
-                        } else if (newOption !== undefined) {
-                            evtInterface.addVersion(newOption.value);
+                        } else {
+                            if (newOption !== undefined) {
+                                evtInterface.updateCurrentVersion(newOption.value);
+                                evtInterface.updateAvailableWitnessesByVersion(newOption.value);
+                            }
                         }
                     };
                     formatOptionList = function(optionList) {
                         var formattedList = [],
                             versions     = optionList._indexes.versionId;
                         for (var i in versions) {
-                            //FIXME : no first version!
-                            if (i !== config.versions[0] && i !== '_name') {
-                                var currentOption = versions[i];
-                                var option = {
-                                    value : i,
-                                    label : currentOption,
-                                    title : 'See version text'
-                                };
-                                formattedList.push(option);
+                            if (evtInterface.getCurrentViewMode() !== 'collation') {
+                                if (i !== config.versions[0] && i !== '_name') {
+                                    var currentOption = versions[i];
+                                    var option = {
+                                        value : i,
+                                        label : currentOption,
+                                        title : 'See version text'
+                                    };
+                                    formattedList.push(option);
+                                }
+                            } else {
+                                var verWits = parsedData.getVersionEntries()._indexes.versionWitMap[i];
+                                if (verWits !== undefined && verWits.length > 0) {
+                                    var currentOption = versions[i];
+                                    var option = {
+                                        value : i,
+                                        label : currentOption,
+                                        title : 'See witnesses'
+                                    };
+                                    formattedList.push(option);
+                                }
                             }
                         }
                         return formattedList;

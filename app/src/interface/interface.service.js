@@ -23,6 +23,7 @@ angular.module('evtviewer.interface')
             currentSourceText  : undefined,
             currentVersions    : undefined,
             currentVersionEntry: undefined,
+            currentVersion     : undefined
         };
         var properties = {
             indexTitle         : '',
@@ -435,6 +436,16 @@ angular.module('evtviewer.interface')
             }
         };
 
+        mainInterface.getCurrentVersion = function() {
+            return state.currentVersion;
+        };
+
+        mainInterface.updateCurrentVersion = function(ver) {
+            if (ver !== undefined && config.versions.indexOf(ver) !== -1) {
+                state.currentVersion = ver;
+            }
+        };
+
         /** End of addition **/
 
         // WITNESS
@@ -487,6 +498,23 @@ angular.module('evtviewer.interface')
             }
             state.currentWits[oldWitOldIndex] = newWit;
             //TODO: update box scroll to page on switching...
+        };
+
+        mainInterface.updateAvailableWitnessesByVersion = function(scopeVer) {
+            var scopeVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[scopeVer];
+            state.currentWits = [];
+            if (scopeVerWits !== undefined && scopeVerWits.length > 0) {
+                properties.availableWitnesses = [];
+                for (var i in scopeVerWits) {
+                    properties.availableWitnesses.push(scopeVerWits[i]);
+                }
+            } else if (scopeVer === config.versions[0]) {
+                properties.availableWitnesses = [];
+                var allWits = parsedData.getWitnessesList();
+                for (var h in allWits) {
+                    properties.availableWitness.push(allWits[h]);
+                }
+            }
         };
         
         // app entry
