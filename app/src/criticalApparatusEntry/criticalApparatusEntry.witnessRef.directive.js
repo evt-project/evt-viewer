@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface) {
+.directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {
     return {
         restrict: 'E',
         require: '^?evtCriticalApparatusEntry',
@@ -21,6 +21,23 @@ angular.module('evtviewer.criticalApparatusEntry')
                     scopeWit = scope.scopeWit;
                 
                 if (newWit !== scopeWit) {
+                    // Check if there are more than one version of the text (@author --> CM)
+                    if (config.versions.length > 0) {
+                        var currentVersion = evtInterface.getCurrentVersion(),
+                            versionWitMap = parsedData.getVersionEntries()._indexes.versionWitMap,
+                            versionOfSelectedWit;
+                        for (var i in versionWitMap) {
+                            if (versionWitMap[i].indexOf(newWit) >= 0) {
+                                versionOfSelectedWit = i;
+                            }
+                        }
+                        if (currentVersion !== versionOfSelectedWit) {
+                            evtInterface.updateCurrentVersion(versionOfSelectedWit);
+                            evtInterface.resetCurrentWitnesses();
+                            evtInterface.updateAvailableWitnessesByVersion(versionOfSelectedWit);
+                        }
+
+                    }
                     var witnesses = evtInterface.getCurrentWitnesses(),
                         scopeWitnessIndex = witnesses.indexOf(scopeWit);
                     if ( witnesses.indexOf(newWit) >= 0 ) {
@@ -41,7 +58,6 @@ angular.module('evtviewer.criticalApparatusEntry')
                         }
                     }
                 }
-
             };
         }
     };

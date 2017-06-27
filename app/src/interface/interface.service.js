@@ -500,6 +500,10 @@ angular.module('evtviewer.interface')
             //TODO: update box scroll to page on switching...
         };
 
+        mainInterface.resetCurrentWitnesses = function() {
+            state.currentWits = [];
+        };
+
         mainInterface.updateAvailableWitnessesByVersion = function(scopeVer) {
             var scopeVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[scopeVer];
             state.currentWits = [];

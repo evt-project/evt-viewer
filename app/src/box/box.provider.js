@@ -512,7 +512,7 @@ angular.module('evtviewer.box')
                         var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
                             noTextAvailableMsg = 'Text of version '+vm.version+' is not available.';
                         if (vm.version !== undefined) {
-                            var 
+                            var currentDocId = evtInterface.getCurrentDocument(),
                                 newContent = parsedData.getVersionText(vm.version, currentDocId) || undefined;
                             if (newContent === undefined) {
                                 var documents  = parsedData.getDocuments(),

@@ -742,7 +742,7 @@ angular.module('evtviewer.dataHandler')
 					} else {
 						if (sourcesCorresp[newSource][entryCorresp[newSource][j]] === undefined) {
 							sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id]
-						} else {
+						} else if (sourcesCorresp[newSource][entryCorresp[newSource][j]].indexOf(entry.id) < 0) {
 							sourcesCorresp[newSource][entryCorresp[newSource][j]].push(entry.id);
 						}
 					}
