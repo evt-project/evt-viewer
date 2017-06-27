@@ -325,6 +325,12 @@ angular.module('evtviewer.dataHandler')
         } else {
             entry._subApp = evtParser.isNestedInElem(app, apparatusEntryDef.replace(/[<>]/g, ''));
         }
+
+        // Check if the app is in the main version of the text
+        if (config.versions.length > 0) {
+            entry._isInMainVersion = evtParser.isInMainVersion(app);
+        }
+
         angular.forEach(app.childNodes, function(child){
             if (child.nodeType === 1) {
                 if (readingDef.indexOf('<'+child.tagName+'>') >= 0) {
@@ -1086,6 +1092,11 @@ angular.module('evtviewer.dataHandler')
         }
         quote.id = id;
 
+        // Check if is in the main version
+        if (config.versions.length > 0) {
+            quote._isInMainVersion = evtParser.isInMainVersion(entry);
+        }
+
         //Parsing the attributes
         if (entry.attributes) {
             for (var i = 0; i < entry.attributes.length; i++) {
@@ -1660,6 +1671,11 @@ angular.module('evtviewer.dataHandler')
         //Parsing the id or creating it with the evtParser.xpath method
         var id = entry.getAttribute('xml:id') || evtParser.xpath(entry).substr(1);
         analogue.id = id;
+
+        // Check if the analogue is in the main version of the text
+        if (config.versions.length > 0) {
+            analogue._isInMainVersion = evtParser.isInMainVersion(entry);
+        }
 
         //Parsing the attributes
         if (entry.attributes) {

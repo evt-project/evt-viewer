@@ -31,6 +31,33 @@ angular.module('evtviewer.dataHandler')
             return false;
         }
     };
+
+    /* ************************ */
+    /* isInMainVersion(element) */
+    /* ************************************************************************ */
+    /* Function to check if an element belongs to the main version of the text. */
+    /* @element to check                                                        */
+    /* @return boolean | @author --> CM                                         */
+    /* ************************************************************************ */
+    parser.isInMainVersion = function(element) {
+        if (element.parentNode !== null) {
+            if (element.parentNode.tagName === 'text' ) {
+                return true;
+            } else if (element.parentNode.tagName === 'rdgGrp') {
+                if (element.parentNode.hasAttribute('ana')) {
+                    if (element.parentNode.getAttribute('ana').replace(/#/, '') === config.versions[0]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return parser.isInMainVersion(element.parentNode);
+            }
+        }
+    };
     
     /* ************************ */
     /* parseXMLElement(element) */

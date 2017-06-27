@@ -101,13 +101,15 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         ul.app_reading_list {
                 display: block;
                 list-style-type: initial !important;
-                -webkit-margin-before: 1em;
-                -webkit-margin-after: 1em;
-                -webkit-margin-start: 0px;
-                -webkit-margin-end: 0px;
-                -webkit-padding-start: 40px;
+                position: relative;
+                left: 1em;
+                margin-top: 0.7em;
+                margin-bottom: 0.4em;
+                margin-left: 0.4em;
+                margin-right: 0.4em;
                 li {
                     display: list-item;
+                    margin-bottom: 0.2em;
                     &:not(:last-child)::after {
                     content: none;
                 }

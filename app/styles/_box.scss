@@ -289,6 +289,9 @@
             &.selected {
                 background-color: $box-witness-structure-color-dark;
             }
+            &:hover{
+                background-color: $box-witness-structure-color-dark;
+            }
 
         }
         .box-body {

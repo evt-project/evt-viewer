@@ -10,7 +10,7 @@ angular.module('evtviewer.apparatuses')
 
     var currentApparatuses = '';
 
-    this.$get = function(parsedData, evtInterface) {
+    this.$get = function(parsedData, evtInterface, evtVersionReading, evtReading) {
         var apparatuses = {},
             collection = {},
             list = [],
@@ -28,9 +28,30 @@ angular.module('evtviewer.apparatuses')
             var currentApparatus = scope.currentApparatus || 'Critical Apparatus',//l'apparato selezionato nell'interfaccia
                 apparatuses = [],
                 appStructure = 'tabs'
-                appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
-                quotesList = parsedData.getQuotes()._indexes.encodingStructure,
-                analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;//tutti gli apparati disponibili
+                appList = [],
+                quotesList = [],
+                analoguesList = [],
+                appEntries = parsedData.getCriticalEntries(),
+                quotesEntries = parsedData.getQuotes(),
+                analoguesEntries = parsedData.getAnalogues();//tutti gli apparati disponibili
+            
+            for (var i in appEntries) {
+                if (appEntries[i]._isInMainVersion) {
+                    appList.push(appEntries[i].id);
+                }
+            }
+
+            for (var j in quotesEntries) {
+                if (quotesEntries[j]._isInMainVersion) {
+                    quotesList.push(quotesEntries[j].id);
+                }
+            }
+
+            for (var h in analoguesEntries) {
+                if (analoguesEntries[h]._isInMainVersion) {
+                    analoguesList.push(analoguesEntries[h].id);
+                }
+            }
 
             if (currentApparatus === 'Critical Apparatus') {
                 evtInterface.updateCurrentApparatus('Critical Apparatus');
@@ -77,6 +98,10 @@ angular.module('evtviewer.apparatuses')
         apparatuses.destroy = function(tempId) {
             delete collection[tempId];
         };
+
+        apparatuses.unselectAllCriticalElements = function() {
+            //
+        }
 
         return apparatuses;
     };

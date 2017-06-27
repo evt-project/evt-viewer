@@ -32,6 +32,13 @@ $reading-background-selected : rgb(208, 220, 255);
                 }
             }
         }
+
+        &.blurred {
+            .reading_exponent {
+                color: transparent !important;
+                text-shadow: 0 0 5px #000 !important;
+            }
+        }
         
         &.expansed:not(.invisible) {
             > .reading__text{

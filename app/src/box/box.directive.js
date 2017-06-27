@@ -338,6 +338,15 @@ angular.module('evtviewer.box')
                     }
                 });
             }
+            
+            if (currentBox.type === 'text' && evtInterface.getCurrentViewMode() === 'collation') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentVersion();
+                }, function (newItem, oldItem) {
+                    scope.vm.version = newItem;
+                    currentBox.updateContent();
+                });
+            }
 
             // Garbage collection
             scope.$on('$destroy', function() {

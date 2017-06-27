@@ -365,7 +365,10 @@ angular.module('evtviewer.dataHandler')
              var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
              criticalText = errorMsg;
         }
-        parsedData.addCriticalText(criticalText, docId);
+        
+        if (scopeVersion === '' || scopeVersion === undefined || scopeVersion === config.versions[0]) {
+            parsedData.addCriticalText(criticalText, docId);
+        }
 
         // If scopeVersion is defined it adds it to VersionTexts in parsedData
         if (scopeVersion !== undefined) {

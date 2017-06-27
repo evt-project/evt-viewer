@@ -92,7 +92,11 @@
                 width: 100%;
                 font-variant: small-caps;
                 font-size: 95%;
-                margin-top: 5px;
+                position: relative;
+                left: 1em;
+                padding-top: 0.2em;
+                padding-bottom: 0;
+                margin-bottom: 0;
             }
             ul {
                 &.pointer {
