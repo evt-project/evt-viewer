@@ -25,7 +25,7 @@
         </span>
         <ul>
             <li
-                ng-repeat="quote in vm.panel.quotes"
+                ng-repeat="quote in ::vm.panel.quotes"
                 class="quoteText inSourceSeg"
                 ng-class="{ 'over' : vm.panel._quoteOver == quote.id,
                             'selected' : vm.panel._quoteSelected == quote.id}"

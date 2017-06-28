@@ -20,7 +20,7 @@
         ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
         ng-if="vm.apparatus._loaded && vm.apparatus.inline"
         ng-show="vm.isApparatusOpened()"
-        data-analogue-id="{{vm.analogueId}}"
-        data-scope-wit="{{vm.scopeWit}}">
+        data-analogue-id="{{::vm.analogueId}}"
+        data-scope-wit="{{::vm.scopeWit}}">
     </evt-analogues-apparatus-entry>
 </span>

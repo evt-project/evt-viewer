@@ -15,7 +15,7 @@
         ng-if="vm.type !== 'critical_apparatus'">
         
         <!--Headers for the apparatuses added by CM-->
-        <div ng-if="vm.type == 'apparatuses'">
+        <div ng-if="::vm.type == 'apparatuses'">
             <span
                 class="appLabel"
                 ng-repeat="appLabel in vm.topMenuList.appLabels"

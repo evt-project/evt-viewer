@@ -28,7 +28,7 @@
         ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
         ng-if="vm.apparatus._loaded && vm.apparatus.inline"
         ng-show="vm.isApparatusOpened()"
-        data-quote-id="{{vm.quoteId}}"
-        data-scope-wit="{{vm.scopeWit}}">
+        data-quote-id="{{::vm.quoteId}}"
+        data-scope-wit="{{::vm.scopeWit}}">
     </evt-sources-apparatus-entry>
 </span>
