@@ -328,7 +328,8 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.updateCurrentSourceText = function(sourceId) {
-            var isTextAvailable = parsedData.getSource(sourceId)._textAvailable;
+            var source = parsedData.getSource(sourceId),
+                isTextAvailable = source !== undefined && source._textAvailable;
             if (isTextAvailable) {
                 var isTextParsed = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
                 if (!isTextParsed) {

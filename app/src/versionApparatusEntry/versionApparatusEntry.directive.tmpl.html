@@ -6,10 +6,10 @@
         <div
             class="versions-lemmas">
             <span
-                ng-repeat="version in vm.content.versions">
+                ng-repeat="version in ::vm.content.versions">
                 <!--TODO: change to evt-ref-->
                 <evt-version-ref
-                    data-target="{{version.value}}"
+                    data-target="{{::version.value}}"
                     data-type="version"
                     data-el-id="{{vm.currentVer}}"
                     class="version-label"></evt-version-ref>
@@ -52,10 +52,10 @@
         <div
             class="version-apparatus-entry_other-content_headers"
             ng-class="{ 'closed' : vm._subContentOpened === ''}">
-            <span ng-repeat="tab in vm.tabs._indexes"
+            <span ng-repeat="tab in ::vm.tabs._indexes"
                 ng-click="vm.toggleSubContent(tab)"
                 ng-class="{ 'active' : vm._subContentOpened == tab }">
-                {{ vm.tabs[tab].label }}
+                {{ ::vm.tabs[tab].label }}
             </span>
         </div>
         <div
@@ -63,29 +63,29 @@
             ng-class="{ 'closed' : vm._subContentOpened === ''}">
             <div
                 class="version-apparatus-entry_other-content_panel"
-                ng-repeat="tab in vm.tabs._indexes"
+                ng-repeat="tab in ::vm.tabs._indexes"
                 ng-class="{ 'active' : vm._subContentOpened == tab}"
-                ng-switch="tab">
+                ng-switch="::tab">
                 <div ng-switch-when="criticalNote"
                     compile="vm.content.note">
                 </div>
                 <div ng-switch-when="readings">
                     <div
-                        ng-repeat="version in vm.content.versions"
-                        ng-if="vm.content._readings">
+                        ng-repeat="version in ::vm.content.versions"
+                        ng-if="::vm.content._readings">
                         <span compile="version.id"></span>
                         <span
-                            ng-if="version.significantReadings.length > 0"
+                            ng-if="::version.significantReadings.length > 0"
                             class="significant-readings_label"> Significant Variants</span>
-                        <ul ng-if="version.significantReadings.length > 0">
-                            <li ng-repeat="reading in version.significantReadings"
+                        <ul ng-if="::version.significantReadings.length > 0">
+                            <li ng-repeat="reading in ::version.significantReadings"
                                 compile="reading.content"></li>
                         </ul>
                         <span
-                            ng-if="version.notSignificantReadings.length > 0"
+                            ng-if="::version.notSignificantReadings.length > 0"
                             class="not-significant-readings_label"> Orthographic Variants</span>
-                        <ul ng-if="version.notSignificantReadings.length > 0">
-                            <li ng-repeat="reading in version.notSignificantReadings"
+                        <ul ng-if="::version.notSignificantReadings.length > 0">
+                            <li ng-repeat="reading in ::version.notSignificantReadings"
                                 compile="reading.content"></li>
                         </ul>
                     </div>
@@ -98,9 +98,9 @@
                         Metadata for the apparatus entry
                     </span>
                     <ul ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
-                        <li ng-repeat="attr in vm.content.attributes._keys"
-                            ng-if="attr !== 'xml:id'">
-                            <span class="moreInfo-label">{{attr}}</span> {{vm.content.attributes.values[attr]}}
+                        <li ng-repeat="attr in ::vm.content.attributes._keys"
+                            ng-if="::attr !== 'xml:id'">
+                            <span class="moreInfo-label">{{::attr}}</span> {{::vm.content.attributes.values[attr]}}
                         </li>
                     </ul>
                     
@@ -108,41 +108,41 @@
                     <ul>
                         <li 
                             class="app_version"
-                            ng-repeat="version in vm.content.versions"
-                            ng-if="version.attributes._keys.length > 0  && version.attributes._keys.indexOf('xml:id') < 0">
+                            ng-repeat="version in ::vm.content.versions"
+                            ng-if="::version.attributes._keys.length > 0  && version.attributes._keys.indexOf('xml:id') < 0">
                             <span>
                                 Metadata for 
                                 <em 
                                     compile="version.id"></em> 
                             </span>
                             <ul>
-                                <li ng-repeat="attr in version.attributes._keys"
-                                    ng-if="attr !== 'xml:id'">
-                                    <span class="moreInfo-label">{{attr}}</span> {{version.attributes.values[attr]}}
+                                <li ng-repeat="attr in ::version.attributes._keys"
+                                    ng-if="::attr !== 'xml:id'">
+                                    <span class="moreInfo-label">{{::attr}}</span> {{::version.attributes.values[attr]}}
                                 </li>
                             </ul>
                             <span
-                                ng-if="version.significantReadings.length > 0"
-                                ng-repeat-start="reading in version.significantReadings">Metadata for significant reading:
+                                ng-if="::version.significantReadings.length > 0"
+                                ng-repeat-start="reading in ::version.significantReadings">Metadata for significant reading:
                                 <em compile="reading.content"></em>
                             </span>
                             <ul ng-repeat-end
-                                ng-if="version.significantReadings.length > 0">
-                                <li ng-repeat="attr in reading.attributes._keys"
-                                    ng-if="attr !== 'xml:id'">
-                                    <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
+                                ng-if="::version.significantReadings.length > 0">
+                                <li ng-repeat="attr in ::reading.attributes._keys"
+                                    ng-if="::attr !== 'xml:id'">
+                                    <span class="moreInfo-label">{{::attr}}</span> {{::reading.attributes.values[attr]}}
                                 </li>
                             </ul>
                             <span
-                                ng-if="version.notSignificantReadings.length > 0"
-                                ng-repeat-start="reading in version.notSignificantReadings">Metadata for orthographic reading:
+                                ng-if="::version.notSignificantReadings.length > 0"
+                                ng-repeat-start="reading in ::version.notSignificantReadings">Metadata for orthographic reading:
                                 <em compile="reading.content"></em>
                             </span>
                             <ul ng-repeat-end
-                                ng-if="version.notSignificantReadings.length > 0">
-                                <li ng-repeat="attr in reading.attributes._keys"
-                                    ng-if="attr !== 'xml:id'">
-                                    <span class="moreInfo-label">{{attr}}</span> {{reading.attributes.values[attr]}}
+                                ng-if="::version.notSignificantReadings.length > 0">
+                                <li ng-repeat="attr in ::reading.attributes._keys"
+                                    ng-if="::attr !== 'xml:id'">
+                                    <span class="moreInfo-label">{{::attr}}</span> {{::reading.attributes.values[attr]}}
                                 </li>
                             </ul>
                       </li>
@@ -150,7 +150,7 @@
                   <!--END MORE INFO-->
                 </div>
                 <div ng-switch-when="xmlSource">
-                    <pre>{{ vm.content._xmlSource | prettyXml }}</pre>
+                    <pre>{{ ::vm.content._xmlSource | prettyXml }}</pre>
                 </div>
                 <div ng-switch-default
                     compile="vm.content[tab]">
