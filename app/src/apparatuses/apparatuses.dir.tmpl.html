@@ -1,0 +1,75 @@
+<!--BUTTONS TO SWITCH THE VIEW MODE OF THE APPARATUSES-->
+<!--div
+    class="apparatuses_switch-mode-buttons">
+    <button
+        type="button"
+        ng-click="vm.toggleAppStructure('tabs')"
+        class="tabs-button">
+        Switch to tab mode
+    </button>
+    <button
+        type="button"
+        ng-click="vm.toggleAppStructure('subBoxes')"
+        class="subBoxes-button">
+        Switch to boxes mode
+    </button>
+</div-->
+
+<div
+    class="apparatuses_main"
+    ng-switch="vm.appStructure">
+
+    <div
+        class="apparatuses_tabs"
+        ng-switch-when="tabs">
+        <div
+            class="apparatuses_tabs_body"
+            ng-repeat="apparatus in ::vm.apparatuses"
+            ng-switch="::apparatus.label">
+            <div
+                class="active-apparatus"
+                ng-show="apparatus.label === vm.currentApparatus"
+                ng-switch-when="Critical Apparatus">
+                <evt-critical-apparatus-entry
+                    ng-repeat="app in ::vm.getList('Critical Apparatus')"
+                    data-app-id="{{::app}}">
+                    </evt-critical-apparatus-entry>
+            </div>
+            <div
+                class="active-apparatus"
+                ng-show="apparatus.label === vm.currentApparatus"
+                ng-switch-when="Sources">
+                <evt-sources-apparatus-entry
+                    ng-repeat="quote in ::vm.getList('Sources')"
+                    data-quote-id="{{::quote}}">
+                </evt-sources-apparatus-entry>
+            </div>
+            <div
+                class="active-apparatus"
+                ng-show="apparatus.label === vm.currentApparatus"
+                ng-switch-when="Analogues">
+                <evt-analogues-apparatus-entry
+                    ng-repeat="analogue in ::vm.getList('Analogues')"
+                    data-analogue-id="{{::analogue}}">
+                </evt-analogues-apparatus-entry>
+            </div>
+            <div
+                ng-show="!vm.currentApparatus || vm.currentApparatus === ''"
+                ng-switch-default>
+                <span>Select an apparatus or a critical element inside the critical text.</span>
+            </div>
+            <!--div
+                ng-switch-when="Commentary Notes">
+            </div-->
+        </div>
+    </div>
+    
+    <div
+        class="apparatuses_sub-boxes"
+        ng-switch-when="subBoxes">
+        <div class="apparatuses_sub-boxes_body">
+            <span>BOXES :)</span>
+        </div>
+    </div>
+    
+</div>

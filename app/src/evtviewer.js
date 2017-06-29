@@ -38,6 +38,13 @@ angular
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
-		'evtviewer.tabsContainer',
-		'evtviewer.UItools'
-	]);
+        'evtviewer.quote',
+        'evtviewer.tabsContainer',
+        'evtviewer.sourcesApparatusEntry',
+        'evtviewer.analogue',
+        'evtviewer.analoguesApparatusEntry',
+        'evtviewer.apparatuses',
+        'evtviewer.versionReading',
+        'evtviewer.versionApparatusEntry',
+        'evtviewer.UItools'
+    ]);

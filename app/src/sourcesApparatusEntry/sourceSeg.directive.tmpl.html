@@ -1,0 +1,45 @@
+<span class="source-seg">
+    <sup
+        class="iconbis-evt_quote-left"
+        title="Quoted in the main text">
+    </sup>
+    <span
+        class="source-seg_text"
+        data-quote-id="{{vm.quoteId}}"
+        ng-mouseover="vm.toggleOverSeg($event, vm.segId)"
+        ng-mouseout="vm.toggleOverSeg($event, vm.segId)"
+        ng-click="vm.callbackClick($event, vm.segId)"
+        ng-class="{ 'over': vm.over,
+                    'selected': vm.selected }"
+        ng-transclude></span>
+    <sup
+        class="iconbis-evt_quote-right"
+        title="Quoted in the main text">
+    </sup>
+    <div
+        class="source-seg_panel"
+        ng-if="vm.selected">
+        <span
+            class="source-seg_panel_label">
+            Related quotes:
+        </span>
+        <ul>
+            <li
+                ng-repeat="quote in ::vm.panel.quotes"
+                class="quoteText inSourceSeg"
+                ng-class="{ 'over' : vm.panel._quoteOver == quote.id,
+                            'selected' : vm.panel._quoteSelected == quote.id}"
+                ng-mouseover="vm.toggleQuoteOver($event, quote.id)"
+                ng-mouseout="vm.toggleQuoteOver($event, quote.id)"
+                ng-click="vm.selectQuote($event, quote.id)"
+                title="Compare texts"
+                compile="quote.text">
+                <!--button-switch
+                    title="Expand text"
+                    data-label="..."
+                    data-type="cropText"
+                    class="cropText_btn"></button-switch-->
+            </li>
+        </ul>
+    </div>
+</span>

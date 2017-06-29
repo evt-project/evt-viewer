@@ -56,6 +56,14 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
             padding: 0 5px;
         }
 
+
+        &.blurred {
+            .reading_exponent {
+                color: transparent !important;
+                text-shadow: 0 0 5px #000 !important;
+            }
+        }
+        
         &.expansed:not(.invisible) {
             > .reading__text {
                 // background: $reading-background-selected;
@@ -86,6 +94,19 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
             .reading__text {
                 background: $reading-background-hover;
             }
+        }
+
+        .reading_exponent{
+            margin: 0;
+            padding: 2px;
+            position: relative;
+            bottom: 0.3em;
+            background-color: transparent;
+            word-spacing: -0.25em;
+            padding: 0.05em;
+            font-size: 0.7em;
+            color: $base-color-dark;
+            left: -4px;
         }
     }
 

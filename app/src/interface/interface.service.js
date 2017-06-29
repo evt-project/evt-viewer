@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtCommunication, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -16,14 +16,30 @@ angular.module('evtviewer.interface')
             secondaryContent : '',
 			dialog : {
 				home : ''
-			}
+			},
+            /*ADDED BY CM*/
+            isApparatusBoxOpen : true,
+            currentApparatus   : undefined,
+            currentQuote       : undefined,
+            currentAnalogue    : undefined,
+            currentSource      : undefined,
+            currentSourceText  : undefined,
+            currentVersions    : undefined,
+            currentVersionEntry: undefined,
+            currentVersion     : undefined
         };
+
         var properties = {
             indexTitle         : '',
             availableViewModes : [ ],
             availableWitnesses : [ ],
             witnessSelector    : false,
-            namedEntitiesLists : false
+            namedEntitiesLists : false,
+            availableSourcesTexts : [ ],
+            isSourceLoading    : false,
+            parsedSourcesTexts : [ ],
+            availableVersions  : [ ],
+            versionSelector    : false
         };
 
         var tools = {
@@ -34,6 +50,18 @@ angular.module('evtviewer.interface')
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
                 properties.indexTitle         = config.indexTitle;
                 properties.availableViewModes = config.availableViewModes;
+                
+                //TODO: object containing all the external files in globaldefault
+                
+                // Parse the external Sources file, if defined (@author: CM)
+                if (config.sourcesUrl !== "") {
+                        evtCommunication.getExternalData(config.sourcesUrl);
+                    }
+                // Parse the external Analogues file, if defined (@author: CM)
+                if (config.analoguesUrl !== "") {
+                        evtCommunication.getExternalData(config.analoguesUrl);
+                }
+
                 evtCommunication.getData(config.dataUrl).then(function () {
                     // Remove Collation View Mode if Witnesses List Empty
                     if (parsedData.getWitnessesList().length === 0 ) { 
@@ -57,28 +85,66 @@ angular.module('evtviewer.interface')
                     }
 
                     mainInterface.updateParams($routeParams);
+
+                    var promises = [];
                     
-                    // Parse critical text and entries
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                     if (currentDocFirstLoad !== undefined){
-                        var promises = [];
+                        
                         // Parse critical entries
                         if (config.loadCriticalEntriesImmediately){
-                            promises.push(evtCriticalParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
+                            promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                         }
+
+                        // Parse the versions entries
+                        if (config.versions.length > 1) {
+                            promises.push(evtCriticalApparatusParser.parseVersionEntries(currentDocFirstLoad.content).promise);
+                        }
+
                         // Parse critical text
                         if ((config.editionType === 'critical' || config.editionType === 'multiple') && parsedData.isCriticalEditionAvailable()) {
-                            promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                            if (config.versions.length > 0 && config.versions[0] !== undefined) {
+                                promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc, config.versions[0]).promise);
+                            } else {
+                                promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
+                            }
                         }
-                        $q.all(promises).then(function(){
+                        
+                        $q.all(promises).then(function() {
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
                                 parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {
                                 mainInterface.updateCurrentAppEntry('');
                             }
+                            
+                            /** Temp | TODO: add to updateParams? **/
+                            // Prepare the sources texts available and the source text to show as default
+                            // in the src-Txt view
+                            sourcesTexts = parsedData.getSources()._indexes.availableTexts;
+                            if (Object.keys(sourcesTexts).length !== 0) {
+                                for (var i in sourcesTexts) {
+                                    properties.availableSourcesTexts.push(sourcesTexts[i].id);
+                                }
+                                state.currentSourceText = properties.availableSourcesTexts[0];
+                            }
+
+                            /** Temp | TODO: add to updateParams? **/
+                            // Prepare version to show as default in the versions view if there
+                            // are only two versions of the text, and available versions
+                            state.currentVersions = [];
+                            if (config.versions.length === 2) {
+                                state.currentVersions.push(config.versions[1]);
+                            } else {
+                                for (var i = 1; i < config.versions.length; i++) {
+                                    properties.availableVersions.push(config.versions[i]);
+                                }
+                            }
+                            
+                            state.isLoading = false;
+
                             mainInterface.updateUrl();
                             $rootScope.$applyAsync(state.isLoading = false);
-                            
+
                             // Update Pinned entries
                             $timeout(function() {
                                 evtPinnedElements.getElementsFromCookies();
@@ -234,6 +300,187 @@ angular.module('evtviewer.interface')
             }
         };
 
+        /*************/
+        /*Added by CM*/
+        /*************/
+
+        //ApparatusBoxOpen
+        mainInterface.toggleApparatusBoxOpen = function() {
+            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
+        };
+
+        mainInterface.isApparatusBoxOpen = function() {
+            return state.isApparatusBoxOpen;
+        };
+        
+        //currentApparatus
+        mainInterface.getCurrentApparatus = function() {
+            return state.currentApparatus;
+        };
+
+        mainInterface.updateCurrentApparatus = function(apparatus) {
+            state.currentApparatus = apparatus;
+        };
+
+        //Quote
+        mainInterface.getCurrentQuote = function() {
+            return state.currentQuote;
+        };
+
+        mainInterface.updateCurrentQuote = function(quoteId) {
+            state.currentQuote = quoteId;
+        };
+
+        //Analogue
+        mainInterface.getCurrentAnalogue = function() {
+            return state.currentAnalogue;
+        };
+
+        mainInterface.updateCurrentAnalogue = function(analogueId) {
+            state.currentAnalogue = analogueId;
+        };
+
+        //Source
+        mainInterface.getCurrentSource = function() {
+            return state.currentSource;
+        };
+
+        mainInterface.updateCurrentSource = function(sourceId) {
+            state.currentSource = sourceId;
+        };
+
+        //Available Sources Texts
+        mainInterface.getAvailableSourcesTexts = function() {
+            return properties.availableSourcesTexts;
+        };
+
+        //Current source text
+        mainInterface.getCurrentSourceText = function() {
+            return state.currentSourceText;
+        };
+
+        mainInterface.updateCurrentSourceText = function(sourceId) {
+            var source = parsedData.getSource(sourceId),
+                isTextAvailable = source !== undefined && source._textAvailable;
+            if (isTextAvailable) {
+                var isTextParsed = (Object.keys(parsedData.getSource(sourceId).text).length > 0);
+                if (!isTextParsed) {
+                    properties.isSourceLoading = !properties.isSourceLoading;
+                    evtCommunication.getSourceTextFile(config.sourcesTextsUrl+sourceId+'.xml', sourceId).then(function() {
+                        properties.isSourceLoading = !properties.isSourceLoading;
+                        properties.parsedSourcesTexts.push(sourceId);
+                    });
+                }
+            }
+            state.currentSourceText = sourceId;
+        };
+
+        //Method to check if the source has been loaded, returns a boolean
+        mainInterface.isSourceLoading = function() {
+            return properties.isSourceLoading;
+        };
+        
+        //Method to get the list of the parsed sources texts
+        mainInterface.getParsedSourcesTexts = function() {
+            return properties.parsedSourcesTexts;
+        };
+
+        /************/
+        /* VERSIONS */
+        /************/
+
+        // Method to get the array of the available versions
+        mainInterface.getAvailableVersions = function() {
+            return properties.availableVersions;
+        };
+
+        // Method to remove a version from the available versions list
+        // @version --> id of the version that has to be removed
+        // returns void
+        mainInterface.removeAvailableVersion = function(version) {
+            var index = properties.availableVersions.indexOf(version);
+            if (index !== undefined) {
+                properties.availableVersions.splice(index, 1);
+            }
+        };
+
+        mainInterface.addAvailableVersion = function(version) {
+            var index = properties.availableVersions.indexOf(version);
+            if (index === -1) {
+                properties.availableVersions.push(version);
+            }
+        };
+
+        // Method to add a version box in the interface
+        // @version --> id of the version to add
+        // @index --> index of the position, if undefined the version is added at the end of the array
+        mainInterface.addVersion = function(version, index) {
+            if (index === undefined) {
+                state.currentVersions.push(version);
+            } else {
+                state.currentVersions.splice(index, 0, version);
+            }
+            mainInterface.removeAvailableVersion(version);
+        };
+
+        // Method to remove a vesion box from the interface
+        // @version --> id of the version to remove
+        mainInterface.removeVersion = function(version) {
+            var index = state.currentVersions.indexOf(version);
+            if (index >= 0) {
+                state.currentVersions.splice(index, 1);
+            }
+            if (properties.availableVersions.indexOf(version) < 0) {
+                properties.availableVersions.push(version);
+            }
+        };
+
+        // Method to change the version viewed inside of a version box
+        // @oldVer --> the old version to change
+        // @newVer --> the new version to view
+        mainInterface.switchVersions = function(oldVer, newVer) {
+            var newVerOldIndex = state.currentVersions.indexOf(newVer),
+                oldVerOldIndex = state.currentVersions.indexOf(oldVer);
+            if (newVerOldIndex >= 0) {
+                state.currentVersions[newVerOldIndex] = oldVer;
+            } else {
+                mainInterface.addAvailableVersion(oldVer);
+            }
+            state.currentVersions[oldVerOldIndex] = newVer;
+            mainInterface.removeAvailableVersion(newVer);            
+        };
+
+        // Method to get how many different versions have been encoded by the editor
+        mainInterface.getAllVersionsNumber = function() {
+            return config.versions.length;
+        };
+
+        mainInterface.getCurrentVersions = function(){
+            return state.currentVersions;
+        };
+
+        mainInterface.getCurrentVersionEntry = function() {
+            return state.currentVersionEntry;
+        };
+
+        mainInterface.updateCurrentVersionEntry = function(appId) {
+            if (appId !== undefined) {
+                state.currentVersionEntry = appId;
+            }
+        };
+
+        mainInterface.getCurrentVersion = function() {
+            return state.currentVersion;
+        };
+
+        mainInterface.updateCurrentVersion = function(ver) {
+            if (ver !== undefined && config.versions.indexOf(ver) !== -1) {
+                state.currentVersion = ver;
+            }
+        };
+
+        /** End of addition **/
+
         // WITNESS
         mainInterface.removeAvailableWitness = function(witness) {
             var index = properties.availableWitnesses.indexOf(witness);
@@ -285,6 +532,27 @@ angular.module('evtviewer.interface')
             state.currentWits[oldWitOldIndex] = newWit;
             //TODO: update box scroll to page on switching...
         };
+
+        mainInterface.resetCurrentWitnesses = function() {
+            state.currentWits = [];
+        };
+
+        mainInterface.updateAvailableWitnessesByVersion = function(scopeVer) {
+            var scopeVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[scopeVer];
+            state.currentWits = [];
+            if (scopeVerWits !== undefined && scopeVerWits.length > 0) {
+                properties.availableWitnesses = [];
+                for (var i in scopeVerWits) {
+                    properties.availableWitnesses.push(scopeVerWits[i]);
+                }
+            } else if (scopeVer === config.versions[0]) {
+                properties.availableWitnesses = [];
+                var allWits = parsedData.getWitnessesList();
+                for (var h in allWits) {
+                    properties.availableWitness.push(allWits[h]);
+                }
+            }
+        };
         
         // app entry
         mainInterface.updateCurrentAppEntry = function(appEntryId) {
@@ -307,7 +575,13 @@ angular.module('evtviewer.interface')
                 witnesses,
                 witIds = [],
                 witPageIds = {},
-                appId;
+                appId,
+                quoteId,
+                analogueId,
+                sourceId,
+                apparatusId;
+
+            //TODO: aggiungere q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
 
             // VIEW MODE 
             if (params.viewMode !== undefined) {
@@ -381,16 +655,29 @@ angular.module('evtviewer.interface')
                 }
             } else {
                 if (viewMode === 'collation'){
-                    witIds = parsedData.getWitnessesList();
-                    if (witIds.length > config.maxWitsLoadTogether) {
-                        properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
-                        witIds = witIds.slice(0, config.maxWitsLoadTogether);
+                    // Check if there are multiple versions of the text
+                    if (config.versions.length > 1) {
+                        witIds = parsedData.getVersionEntries()._indexes.versionWitMap[config.versions[0]];
                     } else {
-                        properties.availableWitnesses = [];
-                    }
+                        witIds = parsedData.getWitnessesList();
+                        if (witIds !== undefined && witIds.length > config.maxWitsLoadTogether) {
+                            properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
+                            witIds = witIds.slice(0, config.maxWitsLoadTogether);
+                        } else {
+                            properties.availableWitnesses = []    
+                        }
+                    }                    
                 } else {
-                    totWits = parsedData.getWitnessesList();
-                    properties.availableWitnesses = totWits.slice(0, totWits.length);
+                    if (config.versions.length > 1) {
+                        // Check if the main version of the text refers to some particular witnesses
+                        var mainVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[config.versions[0]];
+                        if (mainVerWits!== undefined && mainVerWits.length > 0) {
+                            properties.availableWitnesses = mainVerWits.slice(0, mainVerWits.length);
+                        }
+                    } else {
+                        var totWits = parsedData.getWitnessesList();
+                        properties.availableWitnesses = totWits.slice(0, totWits.length);
+                    }
                 }
             }
             // APP ENTRY

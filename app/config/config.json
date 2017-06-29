@@ -1,5 +1,10 @@
 {
-	"dataUrl": "",
+	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
+    "sourcesUrl"       : "",
+    
+    "sourcesTextsUrl" : "",
+    "analoguesUrl"     : "",
+
 	"preferredWitness": "",
 	"skipWitnesses": "",
 
@@ -27,26 +32,41 @@
 
 	"defaultViewMode": "readingTxt",
 	"availableViewModes": [{
-		"label": "Reading Text",
-		"icon": "reading-txt",
-		"viewMode": "readingTxt",
-		"visible": true
-	}, {
-		"label": "Image Text",
-		"icon": "mode-imgTxt",
-		"viewMode": "imgTxt",
-		"visible": true
-	}, {
-		"label": "Text Text",
-		"icon": "mode-txtTxt",
-		"viewMode": "txtTxt",
-		"visible": false
-	}, {
-		"label": "Collation",
-		"icon": "mode-collation",
-		"viewMode": "collation",
-		"visible": true
-	}],
+                                "label"    : "Reading Text",
+                                "icon"     : "reading-txt",
+                                "viewMode" : "readingTxt",
+                                "visible"  : true
+                            },
+                            {
+                                "label"    : "Versions",
+                                "icon"     : "mode-versions",
+                                "viewMode" : "versions",
+                                "visible"  : true
+                            },
+                            {
+                                "label"    : "Image Text",
+                                "icon"     : "mode-imgTxt",
+                                "viewMode" : "imgTxt",
+                                "visible"  : true
+                            },
+                            {
+                                "label"    : "Text Text",
+                                "icon"     : "mode-txtTxt",
+                                "viewMode" : "txtTxt",
+                                "visible"  : false
+                            },
+                            {
+                                "label"    : "Collation",
+                                "icon"     : "mode-collation",
+                                "viewMode" : "collation",
+                                "visible"  : true
+                            },
+                            {
+                                "label"    : "Source Text",
+                                "icon"     : "mode-srcTxt",
+                                "viewMode" : "srcTxt",
+                                "visible"  : true
+                            }],
 
 	"toolHeatMap": true,
 	"toolPinAppEntries": true,
@@ -62,6 +82,14 @@
 	"notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
 
 	"maxWitsLoadTogether": 5,
+    
+    "versions" : ["rec2", "rec1", "rec3"],
+    "witnessesGroups": [
+        
+    ],
+
+    "quoteDef"              : "<quote>",
+    "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
 	"variantColors": {
 		"type": {

@@ -79,6 +79,7 @@ angular.module('evtviewer.core')
 		}
 		return null;
 	};
+
 	this.isNestedInElem = function(element, parentTagName) {
 		if (element.parentNode !== null && element.parentNode !== undefined && element.parentNode.tagName) {
 			if (element.parentNode.tagName === 'text') {
@@ -93,10 +94,10 @@ angular.module('evtviewer.core')
 		}
 	};
 
-    var hexC = function() {
-        var hex = Math.floor(Math.random() * 256).toString(16);
-        return ('0' + String(hex)).substr(-2); // pad with zero 
-    };
+	var hexC = function() {
+		var hex = Math.floor(Math.random() * 256).toString(16);
+		return ('0' + String(hex)).substr(-2); // pad with zero 
+	};
 
 	this.getRandomColor = function(type) {
 		if (type === 'hex') {
@@ -113,14 +114,29 @@ angular.module('evtviewer.core')
 		}
 	};
 
+	this.decodeHTMLEntities = function(str) {
+		var element = document.createElement('div');
+		if (str && typeof str === 'string') {
+			// strip script/html tags
+			str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+			str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+			element.innerHTML = str;
+			str = element.textContent;
+			element.textContent = '';
+		}
+		element = undefined;
+		return str;
+	};
+
 	this.$get = function() {
 		return {
 			deepExtend: this.deepExtend,
-            getRandomColor: this.getRandomColor,
+			getRandomColor: this.getRandomColor,
 			DOMutils: {
 				getElementsBetweenTree: this.getElementsBetweenTree,
 				getCommonAncestor: this.getCommonAncestor,
-				isNestedInElem : this.isNestedInElem
+				isNestedInElem: this.isNestedInElem,
+				decodeHTMLEntities: this.decodeHTMLEntities
 			}
 		};
 	};

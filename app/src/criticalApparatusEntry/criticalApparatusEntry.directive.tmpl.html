@@ -2,19 +2,22 @@
   class="critical-apparatus-entry"
   ng-mouseover="vm.toggleOverAppEntries($event);"
   ng-mouseout="vm.toggleOverAppEntries($event)"
-  ng-class="::{'noTools': scopeViewMode !== 'collation' && !vm.isPinAvailable()}">
+  ng-click="vm.callbackClick($event)"
+  ng-class="{'noTools': (scopeViewMode !== 'collation' && scopeViewMode !== 'readingTxt') && !vm.isPinAvailable(),
+             'selected': vm.isSelect() && scopeViewMode === 'readingTxt',
+             'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
+      <span class="apparatus_exponent"
+            ng-if="!vm.inline"
+            compile="vm.exponent"></span>
+
       <span 
         class="app_lemma"
         ng-if="::vm.content.lemma.content !== ''"
-        compile="::vm.content.lemma.content"></span> 
-      <span 
-        class="app_reading"
-        ng-repeat="reading in ::vm.content.significantReadings track by $index" 
-        compile="::reading.content"></span> 
+        compile="::vm.content.lemma.content"></span>      
     
     <div class="critical-apparatus-entry_tools"
-      ng-if="::scopeViewMode === 'collation' || vm.isPinAvailable()">
+      ng-if="::(scopeViewMode === 'collation' || scopeVieMode === 'readingTxt') || vm.isPinAvailable()">
       <button-switch 
             title="Remove Pin"
             ng-if="::vm.isPinAvailable() && vm.type === 'pinned'"
@@ -32,12 +35,33 @@
             ng-click="vm.togglePin()"></button-switch>
       <button-switch 
             title="Align Readings"
-            ng-if="::vm.type === 'default' && scopeViewMode === 'collation'"
+            ng-if="::vm.type === 'default' && (scopeViewMode === 'collation' || scopeViewMode === 'readingTxt')"
             data-label=""
             data-icon="v-align"
             data-type="alignReadings"
             ng-click="vm.alignReadings()"></button-switch>
     </div>
+    <div class="critical-apparatus-entry_main-content_list">
+            <span 
+              class="app_reading"
+              ng-if="::vm.witnessesGroups.length === 0"
+              ng-repeat="reading in ::vm.content.significantReadings track by $index" 
+              compile="reading.content">
+              </span>
+              <ul 
+                class="app_reading_list"
+                ng-if="::vm.witnessesGroups.length > 0">
+                <li ng-repeat="group in ::vm.witnessesGroups"
+                  ng-if="::group.significantText !== undefined">
+                    <span
+                      class="witGrp_name"
+                      ng_if="::group.groupName !== '' && group.significantText !== undefined">{{group.groupName}}:</span>
+                    <span
+                      class="witGrp_content"
+                      compile="group.significantText"></span>
+                </li>
+             </ul>
+        </div>
   </div>
   <div class="critical-apparatus-entry_other-content"
        ng-if="::vm.tabs._indexes.length > 0">
@@ -57,12 +81,24 @@
           <div class="critical-apparatus-entry_other-content_panel"
                 ng-repeat="tab in ::vm.tabs._indexes track by $index"
                 ng-class="{'active' : vm._subContentOpened == tab}"
-                ng-switch="tab">
+                ng-switch="::tab">
                 <div ng-switch-when="notSignificantReadings">
-                  <ul>
+                  <ul ng-if="::vm.witnessesGroups.length <= 0">
                       <li ng-repeat="reading in ::vm.content.notSignificantReadings track by $index" 
-                        compile="::reading.content"></li>
+                          compile="::reading.content"></li>
                   </ul>
+                  <div
+                    ng-if="::vm.witnessesGroups.length > 0"
+                    ng-repeat="group in ::vm.witnessesGroups">
+                    <span 
+                      class="critical-apparatus-entry_other-content_panel_orthographic_title"
+                      ng-if="::group.notSignificantText !== undefined">
+                      Orthographic Variants for {{::group.groupName}}</span>
+                    <span 
+                      class="critical-apparatus-entry_other-content_panel_orthographic_text"
+                      ng-if="::group.notSignificantText !== undefined"
+                      compile="group.notSignificantText"></span>
+                  </div>
                 </div>
                 <div ng-switch-when="moreInfo">
                   <span class="app_lemma">

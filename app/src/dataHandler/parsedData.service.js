@@ -3,6 +3,7 @@ angular.module('evtviewer.dataHandler')
 .service('parsedData', function($log, config, Utils) {
 	var parsedData = {};
 	var _console = $log.getInstance('dataHandler');
+
 	_console.log('parsedData running');
 
 	var projectInfo = {
@@ -23,7 +24,17 @@ angular.module('evtviewer.dataHandler')
 		length: 0
 	};
 	var documentsCollection = {
-		_indexes: []
+		_indexes: [],
+		length: 0
+	};
+
+	//Collezione aggiunta da CM
+	var externalDocsCollection = {
+		length: 0
+	};
+
+	var sourcesDocsCollection = {
+		length: 0
 	};
 
 	// var pagesCollectionTexts = []; 
@@ -56,13 +67,26 @@ angular.module('evtviewer.dataHandler')
 		_maxVariance: 0,
 		_indexes: {
 			encodingStructure: [],
-			appEntries: []
+			appEntries: [],
+			exponents: [],
 		}
 	};
 
 	var criticalTexts = {};
 
 	var editionLevels = [];
+	// Object to save the versions readings (@author --> CM)
+	var versionAppCollection = {
+		_indexes: {
+			encodingStructure : [],
+			versionWitMap : {},
+			versionId : {
+				_name: {}
+			}
+		}
+	};
+
+	var versionTexts = {};
 
 	var criticalEdition = false;
 
@@ -179,7 +203,41 @@ angular.module('evtviewer.dataHandler')
 		var collectionObj = parsedData.getNamedEntitiesCollectionByName(collectionId);
 		return collectionObj ? collectionObj._type : 'generic';
 	};
-	
+
+	/*****************************/
+	/*QUOTES & SOURCES collection*/
+	/*(@author --> CM)           */
+	/*****************************/
+
+	var quotesCollection = {
+		_indexes: {
+			encodingStructure: [],
+			sourcesRef: {
+				_id: [],
+			}
+		},
+	};
+
+	var sourcesCollection = {
+		_indexes: {
+			encodingStructure: [],
+			quotesRef: {
+				_id: [],
+			},
+			availableTexts : [],
+			correspId: {}
+		},
+	}
+
+	var analoguesCollection = {
+		_indexes: {
+			encodingStructure: [],
+		},
+		_refId: {
+			_indexes: []
+		}
+	}
+
 	/* PAGES */
 	// TODO: add attribute for the original xml reference
 	parsedData.addPage = function(page, docId) {
@@ -222,7 +280,6 @@ angular.module('evtviewer.dataHandler')
 				pageObj.text = {};
 			}
 			var pageDocObj = pageObj.text[docId];
-
 			if (pageDocObj !== undefined && pageDocObj[editionLevel] !== undefined) {
 				pageDocObj[editionLevel] += HTMLtext;
 			} else if (pageDocObj !== undefined) {
@@ -231,12 +288,10 @@ angular.module('evtviewer.dataHandler')
 				pageObj.text[docId] = {};
 				pageObj.text[docId][editionLevel] = HTMLtext;
 			}
-			
 			if (pageObj.docs && pageObj.docs.indexOf(docId) < 0) {
 				pageObj.docs.push(docId);
 			}
 		}
-
 	};
 
 	parsedData.getPageText = function(pageId, docId, editionLevel) {
@@ -261,7 +316,6 @@ angular.module('evtviewer.dataHandler')
 	/* DOCUMENTS */
 	parsedData.addDocument = function(doc) {
 		var docId = doc.value;
-
 		if (doc.value === '') {
 			docId = doc.value = 'doc_' + (documentsCollection._indexes.length + 1);
 		}
@@ -282,6 +336,60 @@ angular.module('evtviewer.dataHandler')
 		var previousId = documentsCollection._indexes[currentDocIndex - 1];
 		return documentsCollection[previousId];
 	};
+
+	/*******************************************************************/
+	/*Methods added to handle and save external files (@author --> CM) */
+	/*******************************************************************/
+
+	parsedData.addExternalDocument = function(extDoc) {
+		var docId = extDoc.value;
+		if (externalDocsCollection.length === undefined) {
+			externalDocsCollection.length = 0;
+		}
+		if (extDoc.value === '') {
+			docId = doc.value = 'extDoc_' + (externalDocsCollection.length + 1);
+		}
+		if (externalDocsCollection[docId] === undefined) {
+			externalDocsCollection[externalDocsCollection.length] = docId;
+			externalDocsCollection[docId] = extDoc;
+			externalDocsCollection.length++;
+		}
+	};
+
+	parsedData.getExternalDocuments = function() {
+		return externalDocsCollection;
+	};
+
+	parsedData.getExternalDocument = function(extDocId) {
+		return externalDocsCollection[extDocId];
+	};
+
+	// Method to store sources XML documents
+	parsedData.addSourceDocument = function(extDoc, id) {
+		var docId = extDoc.value;
+		if (sourcesDocsCollection.length === undefined) {
+			sourcesDocsCollection.length = 0;
+		}
+		if (extDoc.value === '') {
+			docId = doc.value = id;
+		}
+		if (sourcesDocsCollection[docId] === undefined) {
+			sourcesDocsCollection[sourcesDocsCollection.length] = docId;
+			sourcesDocsCollection[docId] = extDoc;
+			sourcesDocsCollection.length++;
+		}
+	};
+
+	parsedData.getSourceDocuments = function() {
+		return sourcesDocsCollection;
+	};
+
+	parsedData.getSourceDocument = function(extDocId) {
+		return sourcesDocsCollection[extDocId];
+	};
+
+	/**** End of methods for external files ****/
+
 	/* EDITION */
 	parsedData.setCriticalEditionAvailability = function(isAvailable) {
 		criticalEdition = isAvailable;
@@ -302,7 +410,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getEditions = function() {
 		return editionLevels;
 	};
-	
+
 	parsedData.getEdition = function(editionId) {
 		//TODO: Rifare
 		var i = 0,
@@ -560,7 +668,7 @@ angular.module('evtviewer.dataHandler')
 				if (color) {
                     filtersCollection.colors.push(color);
                 }
-                
+
 				var valueObj = {
 					name: value,
 					color: color
@@ -612,6 +720,67 @@ angular.module('evtviewer.dataHandler')
 		return bibliographicRefsCollection[refId];
 	};
 
+	/*******************/
+	/* VERSION ENTRIES */
+	/*******************/
+
+	parsedData.addVersionEntry = function(entry) {
+		if (versionAppCollection[entry.id] === undefined) {
+			versionAppCollection._indexes.encodingStructure.push(entry.id);
+			versionAppCollection[entry.id] = entry;
+		}
+	};
+
+	parsedData.getVersionEntries = function() {
+		return versionAppCollection;
+	};
+
+	// @entryId --> id of the version app entry | returns the parsed entry or undefined
+	parsedData.getVersionEntry = function(entryId) {
+		return versionAppCollection[entryId];
+	};
+
+	parsedData.addVersionWitness = function(ver, wit) {
+		var witMap = versionAppCollection._indexes.versionWitMap;
+		if (witMap[ver] === undefined) {
+			witMap[ver] = [];
+			witMap[ver].push(wit);
+		} else {
+			if (witMap[ver].indexOf(wit) < 0) {
+				witMap[ver].push(wit);
+			}			
+		}
+
+		var versionId = versionAppCollection._indexes.versionId,
+			name = versionAppCollection._indexes.versionId._name;
+		if (versionId[ver] === undefined) {
+			var index = config.versions.indexOf(ver); 
+			var v = 'Version &#'+(65+index)+';';
+			versionId[ver] = v
+			name[v] = ver;
+		}
+	};
+
+	// Adds the parsed text of a version
+	// @text --> parsed text | @docId --> id of the current document | @ver --> id of the version
+	// @author --> CM
+	parsedData.addVersionText = function(text, docId, ver) {
+		if (versionTexts[docId] === undefined) {
+			versionTexts[docId] = {};
+			versionTexts[docId][ver] = text;
+		} else {
+			if (versionTexts[docId][ver] === undefined) {
+				versionTexts[docId][ver] = text;
+			}
+		}
+	};
+
+	// @ver --> id of the version | @docId --> id of the currentDocument
+	// Returns the parsed text of the version. | @author --> CM
+	parsedData.getVersionText = function(ver, docId) {
+		return versionTexts[docId][ver];
+	};
+
 	/* ************ */
 	/* PROJECT INFO */
 	/* ************ */
@@ -622,6 +791,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
 	};
+
 
 	/* ****** */
 	/* GLYPHS */
@@ -642,12 +812,15 @@ angular.module('evtviewer.dataHandler')
 			// _console.log('parsedData - addGlyph ', glyph);
 		}
 	};
+
 	parsedData.getGlyphs = function() {
 		return glyphsCollection;
 	};
+
 	parsedData.getGlyph = function(glyphId) {
 		return glyphsCollection[glyphId];
 	};
+
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
 		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
 	};
@@ -683,6 +856,144 @@ angular.module('evtviewer.dataHandler')
 	parsedData.isITLAvailable = function() {
 		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
 	};
+
+	/*******************/
+	/*SOURCES APPARATUS*/
+	/*******************/
+	parsedData.addQuote = function(entry) {
+		//Adding the quote object to the collection...
+		if (quotesCollection[entry.id] === undefined) {
+			quotesCollection[entry.id] = entry;
+			//and its id to the encoding structure
+			//if (quotesCollection._indexes.encodingStructure.indexOf(entry.id) < 0) {
+			quotesCollection._indexes.encodingStructure.push(entry.id);
+			//}
+		}
+
+		var entryRef = entry._indexes.sourceRefId;
+		var entrySource = entry._indexes.sourceId;
+		var quotesRef = parsedData.getQuotes()._indexes.sourcesRef;
+
+		if (entryRef.length > 0) {
+			for (var i = 0; i < entryRef.length; i++) {
+				//If the array of quotes id for that source hasn't been created yet, create a new one...
+				if (quotesRef[entryRef[i]] === undefined && quotesRef._id.indexOf(entryRef[i]) < 0) {
+					quotesRef[entryRef[i]] = [];
+					//and add the entry id to it.
+					quotesRef[entryRef[i]].push(entry.id)
+						//Then add the id of the source to the general ids array.
+					quotesRef._id.push(entryRef[i]);
+				} else if (quotesRef[entryRef[i]].indexOf(entry.id) < 0) {
+					//If an array for that source already exists, just add the quote id to the array of the source
+					quotesRef[entryRef[i]].push(entry.id);
+				}
+			}
+		}
+
+		//Adding the correspId object to the SourcesCollection
+		var entryCorresp = entry._indexes.correspId;
+		var sourcesCorresp = sourcesCollection._indexes.correspId;
+
+		if (Object.keys(entryCorresp).length > 0) {
+			for (var i = 0; i < Object.keys(entryCorresp).length; i++) {
+				var newSource = Object.keys(entryCorresp)[i];
+				for (var j = 0; j < entryCorresp[newSource].length; j++) {
+					if (sourcesCorresp[newSource] === undefined) {
+						sourcesCorresp[newSource] = {};
+						sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id];
+					} else {
+						if (sourcesCorresp[newSource][entryCorresp[newSource][j]] === undefined) {
+							sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id]
+						} else if (sourcesCorresp[newSource][entryCorresp[newSource][j]].indexOf(entry.id) < 0) {
+							sourcesCorresp[newSource][entryCorresp[newSource][j]].push(entry.id);
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	parsedData.getQuotes = function() {
+		return quotesCollection;
+	}
+
+	parsedData.getQuote = function(entryId) {
+		return quotesCollection[entryId];
+	}
+
+	parsedData.addSource = function(entry) {
+		if (sourcesCollection[entry.id] === undefined) {
+			sourcesCollection[entry.id] = entry;
+			sourcesCollection._indexes.encodingStructure.push(entry.id);
+		}
+
+		var entryRef = entry.quotesEntriesId;
+		var sourcesRef = parsedData.getSources()._indexes.quotesRef;
+
+		if (entryRef.length > 0) {
+			for (var i = 0; i < entryRef.length; i++) {
+				//If the array of quotes id for that source hasn't been created yet, create a new one...
+				if (sourcesRef[entryRef[i]] === undefined && sourcesRef._id.indexOf(entryRef[i]) < 0) {
+					sourcesRef[entryRef[i]] = [];
+					//and add the entry id to it.
+					sourcesRef[entryRef[i]].push(entry.id)
+						//Then add the id of the source to the general ids array.
+					sourcesRef._id.push(entryRef[i]);
+				} else if (sourcesRef[entryRef[i]].indexOf(entry.id) < 0) {
+					//If an array for that source already exists, just add the quote id to the array of the source
+					sourcesRef[entryRef[i]].push(entry.id);
+				}
+			}
+		}
+
+		if (entry._textAvailable) {
+			sourcesCollection._indexes.availableTexts.push({id: entry.id, abbr: entry.abbr});
+		}
+
+	}
+
+	parsedData.getSources = function() {
+		return sourcesCollection;
+	}
+
+	parsedData.getSource = function(entryId) {
+		return sourcesCollection[entryId];
+	}
+
+	/***********/
+	/*ANALOGUES*/
+	/***********/
+
+	parsedData.getAnalogue = function(analogueId) {
+		return analoguesCollection[analogueId];
+	}
+
+	parsedData.getAnalogues = function() {
+		return analoguesCollection;
+	}
+
+	parsedData.addAnalogue = function(entry) {
+		if (analoguesCollection[entry.id] === undefined) {
+			analoguesCollection[entry.id] = entry;
+			analoguesCollection._indexes.encodingStructure.push(entry.id);
+
+			//Adding the entry sourceRef array to the refId array of the collection
+			var entryRef = entry._indexes.sourceRefId,
+				collectionRef = analoguesCollection._refId;
+			for (var i = 0; i < entryRef.length; i++) {
+				if (collectionRef._indexes.indexOf(entryRef[i]) < 0) {
+					collectionRef._indexes.push(entryRef[i]);
+					collectionRef[entryRef[i]] = [];
+					collectionRef[entryRef[i]].push(entry.id);
+				} else {
+					if (collectionRef[entryRef[i]].indexOf(entry.id) < 0) {
+						collectionRef[entryRef[i]].push(entry.id);
+					}
+				}
+			}
+		}
+	}
 
 	return parsedData;
 });

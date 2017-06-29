@@ -1,0 +1,34 @@
+<span 
+    class="quote"
+    ng-mouseover="vm.toggleOverQuotes($event)"
+    ng-mouseout="vm.toggleOverQuotes($event)"
+    ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
+                'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
+                'over'     : vm.over,
+                'blurred'  : $parent.vm.state.topBoxOpened,
+                'subquote' : vm.type === 'subquote',
+                'noquotes' : $parent.vm.selected,
+                'highlight': vm.hasScopeSource() && vm.scopeViewMode === 'srcTxt'}">
+    <sup
+        class="iconbis-evt_quote-left"
+        title="quote"
+        ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
+    </sup>
+    <span 
+        class="quote__text"
+        ng-click="vm.callbackClick($event);"
+        ng-transclude></span>
+    <sup
+        class="iconbis-evt_quote-right"
+        title="quote"
+        ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
+    </sup>
+
+    <evt-sources-apparatus-entry
+        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
+        ng-if="vm.apparatus._loaded && vm.apparatus.inline"
+        ng-show="vm.isApparatusOpened()"
+        data-quote-id="{{::vm.quoteId}}"
+        data-scope-wit="{{::vm.scopeWit}}">
+    </evt-sources-apparatus-entry>
+</span>

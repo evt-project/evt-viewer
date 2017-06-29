@@ -64,8 +64,18 @@ angular.module('evtviewer.core')
 	configUrl: '../../config/config.json',
 
 
-	dataUrl: '../../data/pseudo-edition-test-file_mod.xml',
-	preferredWitness: 'A',
+	dataUrl: '',
+    /*sourcesUrl*/
+    /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
+    sourcesUrl       : '',
+    /* sourcesTextsUrl */
+    /* Path of the folder containing the xml files of the sources texts */
+    sourcesTextsUrl : '',
+    /*analoguesUrl*/
+    /*Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.*/
+    analoguesUrl     : '',
+
+    preferredWitness: 'A',
 	skipWitnesses: '',
 
 	indexTitle: 'EVT Critical Viewer',
@@ -95,26 +105,41 @@ angular.module('evtviewer.core')
 
 	defaultViewMode: 'readingTxt',
 	availableViewModes: [{
-		label: 'Reading text',
-		icon: 'reading-txt',
-		viewMode: 'readingTxt',
-		visible: true
-	}, {
-		label: 'Image Text',
-		icon: 'mode-imgTxt',
-		viewMode: 'imgTxt',
-		visible: true
-	}, {
-		label: 'Text Text',
-		icon: 'mode-txtTxt',
-		viewMode: 'txtTxt',
-		visible: false
-	}, {
-		label: 'Collation',
-		icon: 'mode-collation',
-		viewMode: 'collation',
-		visible: true
-	}],
+                                label    : 'Reading Text',
+                                icon     : 'reading-txt',
+                                viewMode : 'readingTxt',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Versions',
+                                icon     : 'mode-versions',
+                                viewMode : 'versions',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Image Text',
+                                icon     : 'mode-imgTxt',
+                                viewMode : 'imgTxt',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Text Text',
+                                icon     : 'mode-txtTxt',
+                                viewMode : 'txtTxt',
+                                visible  : false
+                            },
+                            {
+                                label    : 'Collation',
+                                icon     : 'mode-collation',
+                                viewMode : 'collation',
+                                visible  : true
+                            },
+                            {
+                                label    : 'Source Text',
+                                icon     : 'mode-srcTxt',
+                                viewMode : 'srcTxt',
+                                visible  : true
+                            }],
 
 	toolHeatMap: true,
 	toolPinAppEntries: false,
@@ -128,6 +153,33 @@ angular.module('evtviewer.core')
 	possibleVariantFilters: 'type, cause, hand',
 	possibleLemmaFilters: 'resp, cert',
 	notSignificantVariant: '<orig>, <sic>, [type=orthographic]',
+
+    /*Versions*/
+    /*Array to encode cases of double or multiple redactions of the text*/
+    /*The array collects the id used inside of the XML file as values of*/
+    /*the @ana attribute on the rdgGrp element.                         */
+    /*The first id will correspond to the default version.              */
+    versions : ["rec_1", "rec_2", "rec_3"],
+
+    /*witnessesGroups*/
+    /*Used to divide the readings of all critical apparatus entries into groups.*/
+    /*The witnesses property is required in order to have the partition.        */
+    /*The groupName is optional: if set the name will be displayed.             */
+    witnessesGroups: [
+        {
+            groupName : "Grp_1",
+            witnesses : ["V", "P", "N", "M", "G", "C", "R"]
+        },
+        {
+            groupName : "Grp_2",
+            witnesses : ["F", "D", "O", "W", "M5mg", "B", "U"]
+        }
+    ],
+
+    /*Definition of the element used within the XML file to encode quotes for the sources apparatus.*/
+    quoteDef    : '',
+    /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
+    analogueDef : '',
 
 	loadCriticalEntriesImmediately: true,
 	maxWitsLoadTogether: 5,

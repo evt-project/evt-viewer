@@ -8,7 +8,7 @@ angular.module('evtviewer.box')
         defaults = _defaults;
     };
 
-    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity) {
+    this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus) {
         var box        = {},
             collection = {},
             list       = [],
@@ -175,7 +175,8 @@ angular.module('evtviewer.box')
                 currentType = vm.type || 'default',
                 topMenuList = {
                     selectors : [],
-                    buttons   : []
+                    buttons   : [],
+                    appLabels : []
                 },
                 bottomMenuList = {
                     selectors : [],
@@ -257,6 +258,13 @@ angular.module('evtviewer.box')
                         topMenuList.selectors.push({ id:'page_'+currentId, type: 'page', initValue: evtInterface.getCurrentPage() });
                     } else {
                         topMenuList.buttons.push({title: 'Witnesses List', label: '', icon: 'witnesses', type: 'witList'});
+                        if (evtInterface.getCurrentViewMode() === 'collation' && config.versions.length > 1 && Object.keys(parsedData.getVersionEntries()._indexes.versionWitMap > 0)) {
+                            /*if (scope.vm.version === undefined || scope.vm.version === '') {
+                                evtInterface.updateCurrentVersion(config.versions[0]);
+                                scope.vm.version = evtInterface.getCurrentVersion();
+                            }  */                          
+                            topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: evtInterface.getCurrentVersion()});
+                        }
                     }
 
                     
@@ -295,12 +303,17 @@ angular.module('evtviewer.box')
                             isITLon  = evtInterface.getToolState('ITL') === 'active',
                             errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
                             noTextAvailableMsg = '<span class="alert-msg alert-msg-error">Text is not available.</span>';
-                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical') { // Critical edition
+
+                        if ( scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (vm.version === '' || vm.version === undefined)) { // Critical edition
                             newDoc = parsedData.getCriticalText(scope.vm.state.docId);
                             if (newDoc === undefined) {
                                 newDoc = parsedData.getDocument(scope.vm.state.docId);
                                 try {
-                                    promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+                                    if (config.versions.length > 2) {
+                                        promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, config.versions[0]).promise);
+                                    } else {
+                                        promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+                                    }                                    
                                     $q.all(promises).then(function(){
                                         scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
                                         scope.vm.isLoading = false;
@@ -319,6 +332,36 @@ angular.module('evtviewer.box')
                                 $timeout(function(){
                                     evtGenericEntity.highlightActiveTypes();
                                 });
+                            }
+                        } else if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (scope.vm.version !== '' && scope.vm.version !== undefined)) {
+                            var currentDocId = evtInterface.getCurrentDocument(),
+                                newDoc;
+                            if (scope.vm.version === config.versions[0]) {
+                                newDoc = parsedData.getCriticalText(currentDocId) || undefined;
+                            } else {
+                                newDoc = parsedData.getVersionText(vm.version, currentDocId) || undefined;
+                            }
+                            if (newDoc === undefined) {
+                                newDoc = parsedData.getDocument(scope.vm.state.docId);
+                                try {
+                                    var promises = [];
+                                    promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, scope.vm.version).promise);
+                                    $q.all(promises).then(function(){
+                                        if (config.versions[0] === scope.vm.version) {
+                                            scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
+                                        } else {
+                                            scope.vm.content = parsedData.getVersionText(vm.version, currentDocId) || noTextAvailableMsg;
+                                        }                                        
+                                        scope.vm.isLoading = false;
+                                    });
+                                }
+                                catch(err) {
+                                    newContent = errorMsg;
+                                    scope.vm.isLoading = false;
+                                }
+                            } else {
+                                scope.vm.content = newDoc || noTextAvailableMsg;
+                                scope.vm.isLoading = false;
                             }
                         } else { // Other edition level
                             // parsedData.getDocument(scope.vm.state.docId).content
@@ -409,6 +452,144 @@ angular.module('evtviewer.box')
                                         });
                                     }
                                     catch(err) {
+                                        scope.vm.content = errorMsg;
+                                        scope.vm.isLoading = false;
+                                    }
+                                } else {
+                                    scope.vm.content = noTextAvailableMsg;
+                                    scope.vm.isLoading = false;
+                                }
+                            } else {
+                                scope.vm.content = newContent;
+                                scope.vm.isLoading = false;
+                            }
+                        }
+                    };
+                    break;
+                /**************** */
+                /*Case apparatuses*/
+                /************************************************************ */
+                /*It creates the labels for every type of apparatus available.*/
+                /*It updates the currentApparatus inside of Interface.        */
+                /*Then it loads the apparatuses directive. | @author --> CM   */
+                /************************************************************ */
+                case 'apparatuses':
+                    isLoading = true;
+                    var appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
+                        quotesList = parsedData.getQuotes()._indexes.encodingStructure,
+                        analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;
+                    
+                    if (appList.length > 0) {
+                        topMenuList.appLabels.push({label: 'Critical Apparatus'});
+                    }
+                    if (quotesList.length > 0) {
+                        topMenuList.appLabels.push({label: 'Sources'});
+                    }
+                    if (analoguesList.length > 0) {
+                        topMenuList.appLabels.push({label: 'Analogues'});
+                    }
+                    //method to get the currentApparatus inside of Interface, to initialize or change the apparatuses directive
+                    vm.getCurrentApparatus = function() {
+                        return evtInterface.getCurrentApparatus();
+                    }
+                    //method to update the current apparatus inside of interface
+                    vm.updateApparatus = function(app) {
+                        evtApparatuses.setCurrentApparatus(app);
+                    }
+                    //The updateContent function loads the evt-apparatuses directive
+                    updateContent = function() {
+                        scope.vm.content = '<evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>'
+                    };
+                    isLoading = false;
+                    break;
+                /*************/
+                /*Case source*/
+                /****************************************************************************/
+                /* It loads the parsed text of the current source text. Available a selector*/
+                /* to choose the source to show, a button for bibliographic reference and a */
+                /* button to change font size. | @author --> CM                             */
+                /****************************************************************************/
+                case 'source':
+                    topMenuList.selectors.push({id:'sources_'+currentId, type: 'source', initValue: evtInterface.getCurrentSourceText() });
+                    topMenuList.buttons.push({title: 'Bibliographic Reference', label: '', icon: 'info', type: 'toggleInfoSrc' });
+
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+                    
+                    updateContent = function() {
+                        scope.vm.isLoading = true;
+                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                            noTextAvailableMsg = 'Text of source '+scope.vm.source+' is not available.';
+                        
+                        // Main content
+                        var sourceObj = parsedData.getSource(scope.vm.source),
+                            newContent = sourceObj ? sourceObj.text : undefined;
+                        
+                        if ( !sourceObj || Object.keys(sourceObj.text).length === 0 || newContent === undefined ) {
+                            
+                            var sourceDoc = parsedData.getSourceDocument(scope.vm.source);
+                           
+                            if (sourceDoc !== undefined) {
+                                try {
+                                    var promises = [];
+                                    promises.push(evtCriticalParser.parseSourceText(sourceDoc.content, scope.vm.source).promise);
+                                    $q.all(promises).then(function(){
+                                        scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
+                                        scope.vm.isLoading = false;
+                                    });
+                                    var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
+                                    updateTopBoxContent(sourceBibl);
+                                } catch(err) {
+                                    scope.vm.content = errorMsg;
+                                    scope.vm.isLoading = false;
+                                }
+                            } else {
+                                scope.vm.content = errorMsg;
+                                scope.vm.isLoading = false;
+                            }
+
+                        } else {
+                            scope.vm.content = newContent;
+                            scope.vm.isLoading = false;
+                        }
+                    };
+                    break;
+                    /**************/
+                    /*Case version*/
+                    /*********************************************************************/
+                    /* It loads the parsed texts of the main text different versions.    */
+                    /* There are a selector to choose the version, a button to remove    */
+                    /* the version and a button to handle the font size. | @author --> CM*/
+                    /*********************************************************************/
+                    case 'version':
+                    var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
+                    topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: vm.version});
+                    if (evtInterface.getAllVersionsNumber() > 2) {
+                        topMenuList.buttons.push({title: 'Remove Version', label: '', icon: 'remove', type: 'removeVer'})
+                    }
+                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+
+                    updateContent = function() {
+                        scope.vm.isLoading = true;
+                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                            noTextAvailableMsg = 'Text of version '+vm.version+' is not available.';
+                        if (vm.version !== undefined) {
+                            var currentDocId = evtInterface.getCurrentDocument(),
+                                newContent = parsedData.getVersionText(vm.version, currentDocId) || undefined;
+                            if (newContent === undefined) {
+                                var documents  = parsedData.getDocuments(),
+                                    currentDoc = '';
+                                if (documents.length > 0) {
+                                    currentDoc = documents[currentDocId];
+                                }
+                                if (currentDoc !== undefined) {
+                                    try {
+                                        var promises = [];
+                                        promises.push(evtCriticalParser.parseCriticalText(currentDoc.content, currentDocId, vm.version).promise);
+                                        $q.all(promises).then(function(){
+                                            scope.vm.content = parsedData.getVersionText(vm.version, currentDocId) || noTextAvailableMsg;
+                                            scope.vm.isLoading = false;
+                                        });
+                                    } catch(err) {
                                         scope.vm.content = errorMsg;
                                         scope.vm.isLoading = false;
                                     }
@@ -521,6 +702,28 @@ angular.module('evtviewer.box')
             for (var i in collection) {
                 if (collection[i].scrollToAppEntry !== undefined){
                     collection[i].scrollToAppEntry(appId);
+                }
+            }
+        };
+
+        /*Methods added by CM*/
+        /*For the alignment of the apparatuses panel, with the other boxes*/
+        box.alignScrollToQuote = function (quoteId, segId) {
+            for (var i in collection) {
+                if (collection[i].scrollToQuotesEntry !== undefined) {
+                    if (collection[i].type === 'source') {
+                        collection[i].scrollToQuotesEntry(segId);
+                    } else {
+                        collection[i].scrollToQuotesEntry(quoteId);
+                    }                    
+                }
+            }
+        };
+
+        box.alignScrollToAnalogue = function (analogueId) {
+            for (var i in collection) {
+                if (collection[i].scrollToAnaloguesEntry !== undefined) {
+                    collection[i].scrollToAnaloguesEntry(analogueId);
                 }
             }
         };

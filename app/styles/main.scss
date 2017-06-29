@@ -91,12 +91,19 @@ section > div{
 @import "box.scss";
 @import "popover.scss";
 @import "criticalApparatusEntry.scss";
+@import "sourcesApparatusEntry.scss";
+@import "analoguesApparatusEntry.scss";
 @import "reading.scss";
+@import "quote.scss";
+@import "analogue.scss";
 @import "dialog.scss";
 @import "ref.scss";
 @import "tabsContainer.scss";
 @import "list.scss";
 @import "namedEntity.scss";
+@import "sourceSeg.scss";
+@import "versionReading.scss";
+@import "versionApparatusEntry";
 
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
@@ -235,6 +242,11 @@ section > div{
                 }
                 &-icon {
                     font-size: 1.4em;
+                    margin-right: 3px;
+                }
+                .iconbis-evt_versions, .iconbis-evt_srctxt {
+                    font-size: 1em;
+                    top: 2px;
                 }
             }
         }
@@ -310,7 +322,7 @@ pre {
     }
 }
 
-.availableWitnesses-selector {
+.availableWitnesses-selector, .availableVersions-selector {
     position: absolute;
     z-index: 9999;
     display: block;

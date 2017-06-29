@@ -18,25 +18,44 @@ angular.module('evtviewer.buttonSwitch')
 
             var currentButton = evtButtonSwitch.build(scope, scope.vm);
             if (scope.type === 'addWit') {
-                if (evtInterface.getAvailableWitnesses().length === 0) {
+                 if (evtInterface.getAvailableWitnesses().length === 0) {
                     scope.vm.disabled = true;
                     scope.vm.title = 'No more witnesses available';
-                } else {
-                    scope.$watch(function() {
-                        return evtInterface.getAvailableWitnesses();
-                    }, function(newItem, oldItem) {
-                        if (newItem !== oldItem) {
-                            if (newItem.length === 0) {
-                                scope.vm.disabled = true;
-                                scope.vm.title = 'No more witnesses available';
-                            } else {
-                                scope.vm.disabled = false;
-                                scope.vm.title = 'Add witness';
-                            }
+                } 
+                scope.$watch(function() {
+                    return evtInterface.getAvailableWitnesses();
+                }, function(newItem, oldItem) {
+                    if (newItem !== oldItem) {
+                        if (newItem.length === 0) {
+                            scope.vm.disabled = true;
+                            scope.vm.title = 'No more witnesses available';
+                        } else {
+                            scope.vm.disabled = false;
+                            scope.vm.title = 'Add witness';
                         }
-                    }, true);
+                    }
+                }, true);
+            }
+
+            if (scope.type === 'addVer') {
+                if (evtInterface.getAvailableVersions().length === 0) {
+                    scope.vm.disabled = true;
+                    scope.vm.title = 'No more versions available';
                 }
 
+                scope.$watch(function() {
+                    return evtInterface.getAvailableVersions();
+                }, function(newItem, oldItem) {
+                    if (newItem !== oldItem) {
+                        if (newItem.length === 0) {
+                            scope.vm.disabled = true;
+                            scope.vm.title = 'No more versions available';
+                        } else {
+                            scope.vm.disabled = false;
+                            scope.vm.title = 'Add version';
+                        }
+                    }
+                }, true);
             }
 
             // TODO:  RIFARE!

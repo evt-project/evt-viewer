@@ -16,7 +16,7 @@ angular.module('evtviewer.reading')
             list       = [],
             idx        = 0;
         
-
+        var number = 0;
         // 
         // Reading builder
         // 
@@ -32,6 +32,31 @@ angular.module('evtviewer.reading')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
+            
+            var exponents = parsedData.getCriticalEntries()._indexes.exponents,
+                exponent;
+            for (var i = 0; i < exponents.length; i++) {
+                var expAppId = exponents[i].appId;
+                if (expAppId !== undefined && expAppId === scope.appId) {
+                    exponent = exponents[i].exponent;
+                }
+            }
+            if (exponent === undefined) {
+                number++;
+                var firstExp,
+                lastExp;
+                if (number > 26) {
+                    firstExp = (Math.floor(number/26))+96;
+                    if (number%26 === 0) {
+                        exponent = '&#'+(firstExp-1)+'; z';
+                    } else {
+                    lastExp = (number%26)+96;
+                    exponent='&#'+firstExp+'; &#'+lastExp+';'; }
+                } else {
+                    exponent = '&#'+(number+96)+';';
+                }
+                parsedData.getCriticalEntries()._indexes.exponents.push({appId: scope.appId, exponent: exponent});
+            }            
 
             if (scope.readingId !== undefined){
                 var aAttributes = parsedData.getReadingAttributes(scope.readingId, id) || [];
@@ -45,7 +70,7 @@ angular.module('evtviewer.reading')
                 }
             }
             var appObj = parsedData.getCriticalEntryById(entryId);
-            if (appObj._subApp) {
+            if (appObj && appObj._subApp) {
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
@@ -60,13 +85,15 @@ angular.module('evtviewer.reading')
                 variance         : scope.variance,
                 type             : scope.type,
                 attributes       : attributes,
+                exponent         : exponent,
 
                 over             : false,
                 apparatus        : {
                     opened            : false,
                     content           : {},
                     _loaded           : false,
-                    _subContentOpened : 'criticalNote'
+                    _subContentOpened : 'criticalNote',
+                    inline            : scope.currentViewMode !== 'readingTxt'
                 },
                 selected         : entryId === reading.getCurrentAppEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
@@ -146,7 +173,7 @@ angular.module('evtviewer.reading')
                 } else {
                     currentReading.unselect();
                 }
-            });  
+            }); 
             reading.setCurrentAppEntry(appId);
         };
 

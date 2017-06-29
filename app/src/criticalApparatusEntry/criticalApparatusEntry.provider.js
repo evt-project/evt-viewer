@@ -8,7 +8,9 @@ angular.module('evtviewer.criticalApparatusEntry')
         defaults = _defaults;
     };
 
-    this.$get = function(parsedData, baseData, evtCriticalParser, evtCriticalApparatus, evtPinnedElements) {
+    var currentAppEntry = '';
+
+    this.$get = function(parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements) {
         var appEntry   = {},
             collection = {},
             list       = [],
@@ -31,7 +33,8 @@ angular.module('evtviewer.criticalApparatusEntry')
             }
             
             // Get Apparatus Entry content 
-            var content,
+            var content
+                witnessesGroups = '',
                 firstSubContentOpened = '',
                 tabs = { 
                     _indexes : []
@@ -40,13 +43,14 @@ angular.module('evtviewer.criticalApparatusEntry')
             if (criticalEntry === undefined) {
                 var XMLdocument = baseData.getXMLDocuments()[0];
                 XMLdocument = XMLdocument.cloneNode(true);
-                evtCriticalParser.findCriticalEntryById(XMLdocument, id);
+                evtCriticalApparatusParser.findCriticalEntryById(XMLdocument, id);
                 // delete XMLdocument;
                 criticalEntry = parsedData.getCriticalEntryById(id);
             }
 
             if (criticalEntry !== undefined) {
                 content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
+                witnessesGroups = content.witnessesGroups;
                 if (content.criticalNote !== '' ){
                     tabs._indexes.push('criticalNote');
                     tabs.criticalNote = {
@@ -81,6 +85,18 @@ angular.module('evtviewer.criticalApparatusEntry')
                 }
             }
 
+            var exponent,
+                exps = parsedData.getCriticalEntries()._indexes.exponents;
+            if (scope.exponent === undefined) {
+                for (var i in exps) {
+                    if (exps[i].appId === scope.appId) {
+                        exponent = exps[i].exponent;
+                    }
+                }
+            } else {
+                exponent = scope.exponent;
+            }
+
             scopeHelper = {
                 // expansion
                 uid               : currentId,
@@ -91,7 +107,11 @@ angular.module('evtviewer.criticalApparatusEntry')
                 type              : type,
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
-                tabs              : tabs
+                selected          : false,
+                tabs              : tabs,
+                exponent          : exponent,
+                witnessesGroups   : witnessesGroups,
+                currentViewMode   : scope.scopeViewMode
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -122,6 +142,50 @@ angular.module('evtviewer.criticalApparatusEntry')
         
         appEntry.getPinned = function() {
             return evtPinnedElements.getPinnedByType('criticalApparatusEntry');
+        };
+
+        appEntry.setCurrentAppEntry = function(appId) {
+            if (currentAppEntry !== appId) {
+                currentAppEntry = appId;
+            }
+        };
+
+        appEntry.getCurrentAppEntry = function() {
+            return currentAppEntry;
+        };
+
+        appEntry.mouseOutAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.mouseOut();
+            });
+        };
+
+        appEntry.mouseOverByAppId = function(appId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.appId === appId) {
+                    currentEntry.mouseOver();
+                } else {
+                    currentEntry.mouseOut();
+                }
+            });
+        };
+
+        appEntry.unselectAll = function() {
+            angular.forEach(collection, function(currentEntry) {
+                currentEntry.unselect();
+            });
+            appEntry.setCurrentAppEntry('');
+        };
+
+        appEntry.selectById = function(appId) {
+            angular.forEach(collection, function(currentEntry) {
+                if (currentEntry.appId === appId) {
+                    currentEntry.setSelected();
+                } else {
+                    currentEntry.unselect();
+                }
+            });
+            appEntry.setCurrentAppEntry(appId);
         };
 
         return appEntry;

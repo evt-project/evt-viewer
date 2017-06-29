@@ -1,6 +1,6 @@
 angular.module('evtviewer.reading')
 
-.directive('evtReading', function(evtReading, parsedData) {
+.directive('evtReading', function(evtReading, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -9,7 +9,7 @@ angular.module('evtviewer.reading')
             readingType : '@',
             variance    : '@',
             scopeWit    : '@',
-            type        : '@'
+            type        : '@',
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',
@@ -17,6 +17,7 @@ angular.module('evtviewer.reading')
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){
             // Initialize reading
+            scope.currentViewMode = evtInterface.getCurrentViewMode();
             var currentReading = evtReading.build(scope.appId, scope);
             
             // Garbage collection

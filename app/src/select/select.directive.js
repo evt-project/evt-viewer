@@ -68,9 +68,29 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
+            if (scope.type === 'source') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentSource();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
             if (scope.type === 'document') {
                 scope.$watch(function() {
                     return evtInterface.getCurrentDocument();
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
+            if (scope.type === 'version' && evtInterface.getCurrentViewMode() === 'collation') {
+                scope.$watch(function() {
+                    return evtInterface.getCurrentVersion();
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);

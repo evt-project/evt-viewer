@@ -2,9 +2,9 @@
          id="{{::vm.uid}}"
          data-position="left"
          data-getTotElementsOfType="{{vm.getTotElementsOfType('witness')}}"
-         ng-class="{'span9of9' : vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1,
-                    'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2,
-                    'span6of18': (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 3) || (vm.type === 'text' && vm.getTotElementsOfType('witness') > 1) || (vm.type === 'critical_apparatus'),
+         ng-class="{'span9of9' : (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 1) || (vm.type === 'version' && vm.getTotElementsOfType('version') === 1),
+                    'span6of12': vm.type === 'witness' && vm.getTotElementsOfType('witness') === 2 || (vm.type === 'version' && vm.getTotElementsOfType('version') === 2),
+                    'span6of18': (vm.type === 'witness' && vm.getTotElementsOfType('witness') === 3) || (vm.type === 'version' && vm.getTotElementsOfType('version') === 3) || (vm.type === 'text' && vm.getTotElementsOfType('version') > 1) || (vm.type === 'text' && vm.getTotElementsOfType('witness') > 1) || (vm.type === 'critical_apparatus'),
                     'topBoxOpened': vm.state.topBoxOpened,
                     'filterNotActive': vm.state.filters._totActive <= 0,
                     'ITLactive': vm.isITLactive()}">
@@ -13,6 +13,19 @@
         class="box-menu" 
         data-position="top"
         ng-if="::vm.type !== 'critical_apparatus'">
+        
+        <!--Headers for the apparatuses added by CM-->
+        <div ng-if="::vm.type == 'apparatuses'">
+            <span
+                class="appLabel"
+                ng-repeat="appLabel in vm.topMenuList.appLabels"
+                compile="appLabel.label"
+                ng-click="vm.updateApparatus(appLabel.label)"
+                ng-class="{'selected': appLabel.label == vm.getCurrentApparatus()}">
+            </span>
+        </div>
+        <!--End of addition-->
+        
         <evt-select 
             data-id="{{::selector.id}}"
             data-type="{{::selector.type}}"
@@ -94,7 +107,7 @@
 
     <div 
         class="tools-group-box"
-        ng-if="::vm.type=='text' || vm.type=='witness'"
+        ng-if="::vm.type!=='image'"
         ng-class="{'open': vm.getState('fontSizeBtn')}">
         <div 
             class="fontSizeBtnGroup">

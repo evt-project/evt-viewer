@@ -1,9 +1,13 @@
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalParser, evtProjectInfoParser, evtPrimarySourcesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
+            //Added by CM to save references to external documents
+            XMLExtDocuments: [],
+            //Added by CM to save references to sources text documents
+            XMLSrcDocuments: [],
             XMLStrings: []
         };
 
@@ -42,6 +46,47 @@ angular.module('evtviewer.dataHandler')
         return deferred;
     };
 
+    /********************************************************/
+    /*Method to store the external XML files and parse them */
+    /*@author -> CM                                         */
+    /********************************************************/
+
+    baseData.addXMLExtDocument = function(extDoc, type) {
+        var docElements = xmlParser.parse(extDoc);
+        try {
+            state.XMLStrings.push(extDoc);
+            state.XMLExtDocuments[type] = docElements;
+            state.XMLExtDocuments.length++;
+            var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
+            
+            /*if (type === 'sources') {
+                evtSourcesParser.parseExternalSources(docElements);
+            } else if (type === 'analogues') {
+                evtAnaloguesParser.parseExternalAnalogues(docElements);
+            }*/
+            _console.log('External Files parsed and stored', state.XMLExtDocuments);
+        } catch (e) {
+            _console.log('Something wrong with the supplementary XML files '+e);
+        }
+    };
+
+    /******************************************************/
+    /* Method to store XML documents for Source-Text view */
+    /*@author -> CM                                       */
+    /******************************************************/
+    baseData.addXMLSrcDocument = function (srcDoc, id) {
+        var docElements = xmlParser.parse(srcDoc);
+        try {
+            state.XMLStrings.push(srcDoc);
+            state.XMLSrcDocuments[id] = docElements;
+            state.XMLSrcDocuments.length++;
+            var parsedDocuments = evtParser.parseExternalDocuments(docElements, id);
+            _console.log('Source file parsed and stored', state.XMLSrcDocuments);
+        } catch (e) {
+            _console.log('Something wrong with the supplementary XML files '+e);
+        }
+    }
+
     var launchXMLParsers = function(docElements) {
         // Parse pages
         // evtParser.parsePages(docElements);
@@ -56,8 +101,27 @@ angular.module('evtviewer.dataHandler')
         evtParser.parseDocuments(docElements);
 
         // Parse witnesses list
-        evtCriticalParser.parseWitnesses(docElements);
+        evtCriticalApparatusParser.parseWitnesses(docElements);
         
+        // Parse the Sources Apparatus entries (@author: CM)
+        if (config.quoteDef !== '') {
+            evtSourcesParser.parseQuotes(docElements);
+            if (config.sourcesUrl === "") {
+                evtSourcesParser.parseSources(docElements);
+            } else {
+                evtSourcesParser.parseSources(docElements, state.XMLExtDocuments["sources"]);
+            }
+        }
+
+        // Parse the Analogues Apparatus entries (@author: CM)
+        if (config.analogueDef !== '') {
+            if (config.analoguesUrl === "") {
+                evtAnaloguesParser.parseAnalogues(docElements, '');
+            } else {
+                evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments["analogues"]);
+            }
+        }
+
         // Parse projet info 
         evtProjectInfoParser.parseProjectInfo(docElements);
 

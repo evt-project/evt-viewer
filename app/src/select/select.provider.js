@@ -8,7 +8,7 @@ angular.module('evtviewer.select')
         defaults = _defaults;
     };
 
-    this.$get = function($log, config, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements) {
+    this.$get = function($log, config, Utils, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements, evtSourcesApparatus) {
         var select     = {},
             collection = {},
             list       = [],
@@ -245,7 +245,11 @@ angular.module('evtviewer.select')
                                     label : currentOption.id,
                                     title : currentOption.description
                                 };
-                            formattedList.push(option);
+                            if (config.versions.length > 0 && evtInterface.getAvailableWitnesses().indexOf(witnesses[i]) >= 0) {
+                                formattedList.push(option);
+                            } else if (config.versions.length <= 0) {
+                                formattedList.push(option);
+                            }                            
                         }
                         return formattedList;
                     };
@@ -357,6 +361,101 @@ angular.module('evtviewer.select')
                     };
                     var availablePinnedTypes = evtPinnedElements.getAvailablePinnedTypes(),
                         optionList = formatOptionList(availablePinnedTypes);
+                    break;
+                /*Case added By CM*/
+                case 'source':
+                    callback = function(oldOption, newOption) {
+                        if (newOption !== undefined) {
+                            vm.selectOption(newOption);
+                            evtInterface.updateCurrentSourceText(newOption.value);
+                            evtInterface.updateCurrentSource(newOption.value);
+                        }
+                    }
+                     formatOptionList = function(optionList) {
+                        var formattedList = [];
+                        for (var i = 0; i < optionList.length; i++) {
+                            var currentOption = optionList[i];
+                            var option = {
+                                value : currentOption.id,
+                                label : evtSourcesApparatus.getSourceAbbr(currentOption),
+                                title : 'See full text'
+                            };
+                            formattedList.push(option);
+                        }
+                        return formattedList;
+                    }
+                    formatOption = function(option) {
+                        var formattedOption = {};
+                        formattedOption = {
+                            value : option.id,
+                            label : evtSourcesApparatus.getSourceAbbr(option),
+                            title : 'See full text'
+                        };
+                        return formattedOption;
+                    }
+                    optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
+                    break;
+                    /* @author --> CM */
+                case 'version':
+                    optionSelectedValue = initValue;
+                    callback = function(oldOption, newOption) {
+                        vm.collapse();
+                        if (evtInterface.getCurrentViewMode() !== 'collation') {
+                            if (oldOption !== undefined) {
+                                if (newOption !== undefined) {
+                                    evtInterface.switchVersions(oldOption.value, newOption.value);
+                                }
+                            } else if (newOption !== undefined) {
+                                evtInterface.addVersion(newOption.value);
+                            }
+                        } else {
+                            if (newOption !== undefined) {
+                                evtInterface.updateCurrentVersion(newOption.value);
+                                evtInterface.updateAvailableWitnessesByVersion(newOption.value);
+                            }
+                        }
+                    };
+                    formatOptionList = function(optionList) {
+                        var formattedList = [],
+                            versions     = optionList._indexes.versionId;
+                        for (var i in versions) {
+                            if (evtInterface.getCurrentViewMode() !== 'collation') {
+                                if (i !== config.versions[0] && i !== '_name') {
+                                    var currentOption = versions[i];
+                                    var option = {
+                                        value : i,
+                                        label : currentOption,
+                                        title : 'See version text'
+                                    };
+                                    formattedList.push(option);
+                                }
+                            } else {
+                                var verWits = parsedData.getVersionEntries()._indexes.versionWitMap[i];
+                                if (verWits !== undefined && verWits.length > 0) {
+                                    var currentOption = versions[i];
+                                    var option = {
+                                        value : i,
+                                        label : Utils.DOMutils.decodeHTMLEntities(currentOption),
+                                        title : 'See witnesses'
+                                    };
+                                    formattedList.push(option);
+                                }
+                            }
+                        }
+                        console.log(formattedList)
+                        return formattedList;
+                    };
+                    formatOption = function(option) {
+                        var formattedOption = {};
+                        var optionLabel = parsedData.getVersionEntries()._indexes.versionId[option];
+                        formattedOption = {
+                            value : option,
+                            label : Utils.DOMutils.decodeHTMLEntities(optionLabel),
+                            title : 'See version text'
+                        };
+                        return formattedOption;
+                    };  
+                    optionList = formatOptionList(parsedData.getVersionEntries());
                     break;
             }
 

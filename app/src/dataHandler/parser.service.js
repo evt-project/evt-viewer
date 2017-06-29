@@ -1,63 +1,94 @@
 angular.module('evtviewer.dataHandler')
 
 .service('evtParser', function($q, xmlParser, parsedData, config) {
-	var parser = {};
-	var idx = 0;
-	// TODO: create module provider and add default configuration
-	// var defAttributes = ['n', 'n', 'n'];
+    var parser = { };
+    var idx = 0;
+    // TODO: create module provider and add default configuration
+    // var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
-	/* ********* */
-	/* UTILITIES */
-	/* ********* */
-	/* ************************************** */
-	/* isNestedInElem(element, parentTagName) */
-	/* *************************************************************************** */
-	/* Function to check if an element is nested into another particular element   */
-	/* @element element to be checked                                              */
-	/* @parentTagName tagName of the element that does not be a parent of @element */
-	/* @return boolean                                                             */
-	/* *************************************************************************** */
-	parser.isNestedInElem = function(element, parentTagName) {
-		if (element.parentNode !== null) {
-			if (element.parentNode.tagName === 'text') {
-				return false;
-			} else if (element.parentNode.tagName === parentTagName) {
-				return true;
-			} else {
-				return parser.isNestedInElem(element.parentNode, parentTagName);
-			}
-		} else {
-			return false;
-		}
-	};
+    /* ********* */
+    /* UTILITIES */
+    /* ********* */
+    /* ************************************** */
+    /* isNestedInElem(element, parentTagName) */
+    /* *************************************************************************** */
+    /* Function to check if an element is nested into another particular element   */
+    /* @element element to be checked                                              */
+    /* @parentTagName tagName of the element that does not be a parent of @element */
+    /* @return boolean                                                             */
+    /* *************************************************************************** */
+    parser.isNestedInElem = function(element, parentTagName) {
+        if (element.parentNode !== null) {
+            if (element.parentNode.tagName === 'text') {
+                return false;
+            } else if (element.parentNode.tagName === parentTagName) {
+                return true;
+            } else {
+                return parser.isNestedInElem(element.parentNode, parentTagName);
+            }
+        } else {
+            return false;
+        }
+    };
 
-	parser.capitalize = function(str, all) {
-		var reg = (all) ? /([^\W_]+[^\s-]*) */g : /([^\W_]+[^\s-]*)/;
-		return (!!str) ? str.replace(reg, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
-	};
+    parser.capitalize = function(str, all) {
+        var reg = (all) ? /([^\W_]+[^\s-]*) */g : /([^\W_]+[^\s-]*)/;
+        return (!!str) ? str.replace(reg, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
+    };
 
-	parser.camelToSpace = function(str) {
-		return str.replace(/\W+/g, ' ')
-					.replace(/([a-z\d])([A-Z])/g, '$1 $2');
-	};
-	/* ************************ */
-	/* parseXMLElement(element) */
-	/* ********************************************************** */
-	/* Function to parse a generic XML element                    */
-	/* @element XML element to be parsed                          */
-	/* @return an html with the same data as the XML element read */
-	/* ********************************************************** */
-	// It will transform a generic XML element into an <span> element
-	// with a data-* attribute for each @attribute of the XML element
-	// It will also transform its children
+    parser.camelToSpace = function(str) {
+        return str.replace(/\W+/g, ' ')
+                    .replace(/([a-z\d])([A-Z])/g, '$1 $2');
+    };
+
+    /* ************************ */
+    /* isInMainVersion(element) */
+    /* ************************************************************************ */
+    /* Function to check if an element belongs to the main version of the text. */
+    /* @element to check                                                        */
+    /* @return boolean | @author --> CM                                         */
+    /* ************************************************************************ */
+    parser.isInMainVersion = function(element) {
+        if (element.parentNode !== null) {
+            if (element.parentNode.tagName === 'text' ) {
+                return true;
+            } else if (element.parentNode.tagName === 'rdgGrp') {
+                if (element.parentNode.hasAttribute('ana')) {
+                    if (element.parentNode.getAttribute('ana').replace(/#/, '') === config.versions[0]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return parser.isInMainVersion(element.parentNode);
+            }
+        }
+    };
+    
+    /* ************************ */
+    /* parseXMLElement(element) */
+    /* ********************************************************** */
+    /* Function to parse a generic XML element                    */
+    /* @element XML element to be parsed                          */
+    /* @return an html with the same data as the XML element read */
+    /* ********************************************************** */
+    // It will transform a generic XML element into an <span> element
+    // with a data-* attribute for each @attribute of the XML element
+    // It will also transform its children
 	parser.parseXMLElement = function(doc, element, skip, exclude) {
 		var newElement;
 		
 		if (element.nodeType === 3) { // Text
 			newElement = element;
+            // newElement = document.createElement('span');
+            // newElement.className = "textNode";
+            // newElement.appendChild(element);
 		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = element;
 		} else if (exclude !== undefined && element.tagName !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
@@ -153,7 +184,125 @@ angular.module('evtviewer.dataHandler')
             }
         }
         return attributes;
-	};
+    };
+
+    /***********************************************************/
+    /*Method to parse external files and add them to parsedData*/
+    /*@author: CM                                              */
+    /***********************************************************/
+    parser.parseExternalDocuments = function(doc, type) {
+        var newExtDoc = {
+            value: type,
+            content: doc,
+        }
+        if (type !== 'analogues' && type !== 'sources') {
+            parsedData.addSourceDocument(newExtDoc, type);
+        } else {
+            parsedData.addExternalDocument(newExtDoc, type);
+        }        
+        console.log('## External Documents ##');
+    };
+
+    /********************/
+    /*createRegExpr(def)*/
+    /************************************************************************/
+    /*Takes a string, used in the config file to define a critical elements,*/
+    /*and returns a string that will be used to search the XML elements.    */
+    /*@author --> CM                                                        */
+    /*@def --> string of the element definition, contained in config file   */
+    /************************************************************************/
+    parser.createRegExpr = function(def) {
+            var match = '(',
+                //def may contain more than one definition separated by commas
+                //Save all the definition contained in def in aDef array
+                aDef = def.split(",");
+            
+            for (var i = 0; i < aDef.length; i++) {
+                //Checks if there is an attribute, itroduced by a "["
+                if (aDef[i].indexOf("[") < 0) {
+                    //If there isn't a square bracket, it adds the element name in the match string
+                    match += aDef[i].replace(/[>]/g, '');
+                } else {
+                    //Otherwise it saves the name of the element marked by the "<" and the "["
+                    var bracketOpen = aDef[i].indexOf("[");
+                    if(aDef[i].substring(1, bracketOpen) !== "[") {
+                        match += aDef[i].substring(0, bracketOpen)
+                    }
+                    //Adds regular expression operators to the match string
+                    match += '[^<>]*?';
+                    //Looks for the closing square bracket
+                    var bracketClose = aDef[i].indexOf("]");
+                    //...and for the equals sign
+                    var equal = aDef[i].indexOf("=");
+                    //Adds the name of the attribute...
+                    match += aDef[i].substring(bracketOpen + 1, equal);
+                    //...reg expr operators
+                    match += '\\s*?=\\s*?[\'\"]\\s*?';
+                    //...and the value of the attribute
+                    match += aDef[i].substring(equal + 1, bracketClose);
+                }
+                if (i < aDef.length -1) {
+                //Adds operator or to add a new definition contained in aDef
+                match+='|';
+            } else if ( i = aDef.length - 1) {
+                //Closes the regular expression
+                match+=')';
+            }
+        }
+
+        var sRegExpInput = new RegExp(match, 'i');
+
+        return sRegExpInput;
+    };
+
+    /*****************************************/
+    /* createAbbreviation(string, maxLength) */
+    /*******************************************************************************/
+    /* Takes a string and transforms it into an abbreviated textNode span element. */
+    /* @string --> string to abbreviate | @maxLenght --> maximum length of the     */
+    /* string to show | @author --> CM                                             */
+    /*******************************************************************************/
+    parser.createAbbreviation = function(string, maxLength) {
+        var length = maxLength/2
+            stringBegin = string.substring(0, length),
+            stringEnd = string.substring((string.length-length-1), (string.length-1)),
+            wslastIndexBegin = stringBegin.lastIndexOf('', (stringBegin.length-1)),
+            wsfirstIndexEnd = stringEnd.indexOf('', 1),
+            begin = stringBegin.substring(0, wslastIndexBegin),
+            blurredBegin = stringBegin.substring(wslastIndexBegin, stringBegin.length),
+            end = stringEnd.substring(wsfirstIndexEnd, stringEnd.length),
+            blurredEnd = stringEnd.substring(0, wsfirstIndexEnd);
+        var result = '<span class="textNode">'+begin+'<span class="blurredText">'+blurredBegin+'</span> [...] <span class="blurredText">'+blurredEnd+'</span>'+end+'</span>';
+        return result;
+    };
+    
+    parser.splitLineBreaks = function(docElement, defContentEdition) {
+        var splittedHTML = '';
+        // First Line Breaks (intended as text before first <lb>)
+        var contentEditionMatch = '<' + defContentEdition + '(.|[\r\n])*?>',
+            firstLineMatch = contentEditionMatch + '(.|[\r\n])*?<lb(.|[\r\n])*?\/>',
+            sRegExFirstLine = new RegExp(firstLineMatch, 'ig'),
+            matchesFirstLine = docElement.outerHTML.match(sRegExFirstLine);
+        if (matchesFirstLine && matchesFirstLine.length > 0) {
+            var sRegExContentEdition = new RegExp(contentEditionMatch, 'ig'),
+                firstLineHTML = matchesFirstLine[0].replace(sRegExContentEdition, '');
+            firstLineHTML = parser.balanceXHTML(firstLineHTML);
+            splittedHTML += '<evtLB>'+firstLineHTML+'</evtLB>';
+        }
+            // var sRegExLbElem = new RegExp(/<lb(.|[\r\n])*?\/>/, 'ig');
+            // var lbHTMLString = matches[i].match(sRegExLbElem);
+        
+        // Other Line Breaks 
+        var lineMatch = '<lb(.|[\r\n])*?(?=(<lb|<\/' + defContentEdition + '>))',
+            sRegExLine = new RegExp(lineMatch, 'ig'),
+            matches = docElement.outerHTML.match(sRegExLine);
+        var totMatches = matches ? matches.length : 0;
+        for (var i = 0; i < totMatches; i++) {
+            var lineHTML = parser.balanceXHTML(matches[i]);
+            splittedHTML += '<evtLB>'+lineHTML+'</evtLB>';
+        }
+        return splittedHTML;
+    };
 
 	/* ********************* */
 	/* balanceXHTML(XHTMLstring) */
@@ -448,6 +597,7 @@ angular.module('evtviewer.dataHandler')
 		console.log('## Documents ##', parsedData.getDocuments());
 		return parsedData.getDocuments();
 	};
+
 
 	parser.splitLineBreaks = function(docElement, defContentEdition) {
 		var splittedHTML = '';

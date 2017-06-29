@@ -228,7 +228,31 @@
             border-color: $box-witness-structure-color-dark;
         }
     }
-    &.box-text, &.box-witness {
+    // VERSION
+    &.box-version {
+        @include span(isolate 5 of 12);
+        float: none;
+        
+        &.span6of12 {
+            @include span(isolate 6 of 12);
+        }
+        &.span9of9 {
+            @include span(isolate 9 of 9);
+        }
+
+        .box-body {
+            //overflow-y: scroll;
+            border-color: $box-witness-structure-color-dark;
+            background: $box-witness-background-color;
+        }
+        .box-menu {
+            @include colors($box-witness-structure-color-light, $box-witness-structure-color-dark);
+        }
+        .filters-box, .tools-group-box {
+            border-color: $box-witness-structure-color-dark;
+        }
+    }
+    &.box-text, &.box-witness, &.box-version {
         .box-body {
             position: relative;
             overflow-x: hidden;
@@ -245,6 +269,42 @@
     &.box-pinnedBoard {
         width: 25%;
         left: 12.5%;
+    }
+
+    &.box-apparatuses {
+        .box-menu {
+            background-color: $base-color-light;
+            padding: 0;            
+        }
+        .appLabel {
+            @include span(1 of 3);
+            cursor: pointer;
+            height: 42px;
+            padding: 6px;
+            background-color: $apparatus-label;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 18px;
+            border-left: 1px solid $base-color-light;
+            border-radius: 2px 2px 0 0;
+            &.selected {
+                background-color: $box-witness-structure-color-dark;
+            }
+            &:hover{
+                background-color: $box-witness-structure-color-dark;
+            }
+
+        }
+        .box-body {
+            overflow-y: scroll;
+            border-color: $box-witness-structure-color-dark;
+        }
+        padding : 0;
+    }
+    &.box-source {
+        .box-body {
+            overflow-y: scroll;
+        }
     }
     // BODY
     &.topBoxOpened {
@@ -279,12 +339,37 @@
         left: 12.5%;
     }
 }
+
+.half-left {
+    .box {
+        left: 0%
+    }
+}
+/*Classes added to handle the position of the pin board and the pin button*/
+/*@author --> CM*/
+.smaller-left{
+    .box {
+        left: 0%;
+        width: 37.5%;
+    }
+}
+.smaller {
+    .box {
+        width: 37.5%;
+    }
+}
+.pin-centered {
+    .box {
+        left: 0%;
+    }
+}
+/*End of the addition by CM*/
 // Temporary
 // .viewMode .box:last-child{
     // margin: 0px 0px 0px 0.5px;
 // }
 
-.compareWits_box {
+.compareWits_box, .compareVer_box {
     @include span(isolate 12 of 18);
     overflow-x: auto;
     overflow-y: hidden; 
@@ -299,7 +384,7 @@
     }
     &.span18of18 { //no Critical Text
         width: span(18 of 18);
-        .box-witness {
+        .box-witness, .box-version {
             @include span(isolate 5 of 18);
             float: none;
 
@@ -314,7 +399,7 @@
     }
 }
 
-.compareWits_box--buttonAddWit {
+.compareWits_box--buttonAddWit, .compareVer_box--buttonAddVer {
     position: absolute;
     top: 50%;
     left: 50%;

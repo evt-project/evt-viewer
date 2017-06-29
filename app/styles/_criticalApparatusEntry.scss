@@ -2,6 +2,10 @@ $critical-apparatus-entry-background-color : $base-color-light;
 $critical-apparatus-entry-background-color-darker : rgb(225, 225, 225);
 $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
+$critical-apparatus-entry-selected-background-color: rgb(195, 207, 213);
+$critical-apparatus-entry-selected-content-color: rgb(180, 195, 203);
+$critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
+
 .critical-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
@@ -33,6 +37,23 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         background: transparent !important;
     }
 
+    /*Styles added for the highlighting of the selected box within the appratuses panel*/
+    /*@author --> CM*/
+    &.over {
+        -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1); 
+    }
+
+    &.selected {
+        background-color: $critical-apparatus-entry-selected-background-color;
+        border-color: $critical-apparatus-entry-border-color;
+        .critical-apparatus-entry-panels {
+            background-color: $critical-apparatus-entry-selected-content-color;
+        }
+    }
+    /*--End of addition--*/
+
     &_tools{
         padding: 0;
         float: right;
@@ -58,12 +79,12 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             }
         }
     }
-    &_main-content{
+    
+    &_main-content {
         padding: 5px;
         // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
-        
         ul {
             display: inline;
             margin: 0;
@@ -77,6 +98,32 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
             }
         }
+        ul.app_reading_list {
+                display: block;
+                list-style-type: initial !important;
+                position: relative;
+                left: 1em;
+                margin-top: 0.7em;
+                margin-bottom: 0.4em;
+                margin-left: 0.4em;
+                margin-right: 0.4em;
+                li {
+                    display: list-item;
+                    margin-bottom: 0.2em;
+                    &:not(:last-child)::after {
+                    content: none;
+                }
+                    span.witGrp_name {
+                        display: inline;
+                        font-weight: bold;
+                        font-style: italic;
+                        font-variant: small-caps;
+                    }
+                    span.witGrp_content {
+                        display: inline;
+                    }
+                }
+        }
         .app_lemma::after {
             content: "]";
         }
@@ -87,6 +134,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             margin: 0 5px;
         }
     }
+
     &_other-content{
         border-top: 3px double $critical-apparatus-entry-border-color;
         border-bottom: 1px solid $critical-apparatus-entry-border-color;
@@ -166,8 +214,17 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
                     display: none;
                 }
             }
+            &_orthographic_title{
+                text-align: center;
+                width: 100%;
+                font-variant: small-caps;
+                font-size: 95%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
         }
     }
+
     .witnesses {
         display: inline;
         .wit {
@@ -188,6 +245,7 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
             }
         }
     }
+    
     .attributes {
         &::before {
             content: " – ";
@@ -290,3 +348,22 @@ $critical-apparatus-entry-border-color : rgb(125, 125, 125);
         }
     }
 }
+// Style for exponent
+// @author --> CM
+.apparatus_exponent{
+            margin: 0;
+            position: relative;
+            bottom: 0.3em;
+            border: 1px solid $box-background-color;
+            background-color: $box-background-color !important;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            word-spacing: -0.25em;
+            padding: 0.05em;
+            font-size: 0.7em;
+            color: $base-color-dark;
+            text-align: center;
+            vertical-align: center;
+            width: 20px;
+        }
