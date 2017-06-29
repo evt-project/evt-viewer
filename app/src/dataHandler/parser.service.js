@@ -200,7 +200,8 @@ angular.module('evtviewer.dataHandler')
         } else {
             parsedData.addExternalDocument(newExtDoc, type);
         }        
-        console.log('## External Documents ##');
+        console.log('## Source Documents ##', parsedData.getSourceDocuments());
+        console.log('## External Documents ##', parsedData.getExternalDocuments());
     };
 
     /********************/

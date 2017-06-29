@@ -125,7 +125,7 @@ angular.module('evtviewer.interface')
                                 for (var i in sourcesTexts) {
                                     properties.availableSourcesTexts.push(sourcesTexts[i].id);
                                 }
-                                state.currentSourceText = properties.availableSourcesTexts[0];
+                                mainInterface.updateCurrentSourceText(properties.availableSourcesTexts[0]);
                             }
 
                             /** Temp | TODO: add to updateParams? **/
