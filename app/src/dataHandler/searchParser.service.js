@@ -8,26 +8,26 @@ angular.module('evtviewer.dataHandler')
    console.log("SEARCH PARSER RUNNING");
 
    let text = '',
-      str = '',
+       str = '',
 
-      nodes,
-      node,
-      mainNode,
+       nodes,
+       node,
+       mainNode,
 
-      currentEdition,
-      currentGlyph,
-      currentChoiceNode,
-      currentAppNode,
+       currentEdition,
+       currentGlyph,
+       currentChoiceNode,
+       currentAppNode,
 
-      glyphs = [],
-      glyphNode,
-      glyphId = '',
-      sRef = '',
+       glyphs = [],
+       glyphNode,
+       glyphId = '',
+       sRef = '',
 
-      word = {},
-      editionWords = [],
+       word = {},
+       editionWords = [],
 
-      regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
+       regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
 
    parser.parseWords = function (doc) {
       text = getText(doc);
@@ -83,7 +83,7 @@ angular.module('evtviewer.dataHandler')
                   case 'app':
                      if(node.parentNode.nodeName !== 'lem') {
                         currentAppNode = node;
-                        word = checkCurrentAppNode(node);
+                        word = checkCurrentAppNode(node, doc);
                         editionWords.push(word);
                         node = currentAppNode;
                      }
@@ -115,8 +115,8 @@ angular.module('evtviewer.dataHandler')
    /* **************************** */
    let getGlyphNode = function (doc) {
       let path = "//charDecl/node()[not(self::comment())]",
-         nodes = doc.evaluate(path, doc, null, XPathResult.ANY_TYPE, null),
-         node = nodes.iterateNext();
+          nodes = doc.evaluate(path, doc, null, XPathResult.ANY_TYPE, null),
+          node = nodes.iterateNext();
 
       while (node) {
          if (node.tagName === 'glyph' || node.tagName === 'char') {
@@ -359,11 +359,13 @@ angular.module('evtviewer.dataHandler')
 
    /* ***************************** */
    /* BEGIN getCurrentWitness(node) */
-   /* ********************************************************************** */
-   /* Function to get the current witness                                    */
-   /* @node -> current node                                                  */
-   /* ********************************************************************** */
-   let getCurrentWitness = function (node) {
+   /* ************************************ */
+   /* Function to get the current witness  */
+   /* @node -> current node                */
+   /* ************************************ */
+   let getCurrentWitness = function (node, doc) {
+      let witList = {};
+
       if(node.getAttribute('wit')) {
          let wit = node.getAttribute('wit');
 
@@ -371,6 +373,12 @@ angular.module('evtviewer.dataHandler')
             wit = wit.replace('#', '');
          }
 
+         if(wit === 'group') {
+            witList = getCurrentWitList(doc);
+            for (let i = 0; i < witList.group.length-1; i++) {
+               wit = witList.group[i] + ' ' + witList.group[i+1];
+            }
+         }
          return wit;
       }
       else {
@@ -378,13 +386,63 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   /* ******************************* */
+   /* **************************** */
+   /* BEGIN getCurrentWitList(doc) */
+   /* ****************************************** */
+   /* Function to get the current witnesses List */
+   /* @doc -> current xml document               */
+   /* ****************************************** */
+   let getCurrentWitList = function (doc) {
+      let nsResolver = {
+         lookupNamespaceURI: function (prefix) {
+            prefix = 'ns';
+            let namespace = doc.documentElement.namespaceURI;
+            return namespace;
+         }
+      };
+
+      let path,
+          id,
+          listWit = {},
+          witnesses = [],
+          group = [];
+
+      doc.documentElement.namespaceURI == null ? path = '//listWit//node()[not(self::comment())][not(self::text())]' : path = '//ns:listWit//node()[not(self::comment())][not(self::text())]';
+      nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
+
+      node = nodes.iterateNext();
+
+      while (node) {
+         id = node.getAttribute('xml:id');
+         if(node.nodeName === 'listWit' && id === 'group') {
+               node = nodes.iterateNext();
+               while (node.nodeName === 'head') {
+                  node = nodes.iterateNext();
+               }
+               id = node.getAttribute('xml:id');
+               group.push(id);
+            }
+         else {
+            let prevElSibling = node.previousElementSibling;
+            if(prevElSibling !== null && prevElSibling.nodeName === 'witness' && node.parentNode.attributes.length !== 0) {
+               group.push(id);
+            }
+            witnesses.push(id);
+            node = nodes.iterateNext();
+         }
+      }
+      listWit.witnesses = witnesses;
+      listWit.group = group;
+      return listWit;
+   };
+
+   /* ********************************* */
    /* BEGIN handleNestedApp(node, word) */
-   /* ********************************************************************** */
-   /* Function to handle nested apparatus                                    */
-   /* @node -> current node                                                  */
-   /* @word -> object containing the different lectio
-   /* ********************************************************************** */
+   /* *********************************************** */
+   /* Function to handle nested apparatus             */
+   /* @node -> current node                           */
+   /* @word -> object containing the different lectio */
+   /* *********************************************** */
    let handleNestedApp = function(node, word) {
       let innerHtml = node.innerHTML,
           nestedEl,
@@ -419,7 +477,7 @@ angular.module('evtviewer.dataHandler')
    /* that contain critical lectio                                           */
    /* @node -> current node                                                  */
    /* ********************************************************************** */
-   let checkCurrentAppNode = function (node) {
+   let checkCurrentAppNode = function (node, doc) {
       let word = {},
           children = node.children,
           child,
@@ -462,7 +520,7 @@ angular.module('evtviewer.dataHandler')
                }
             }
             else {
-               witness = getCurrentWitness(child);
+               witness = getCurrentWitness(child, doc);
                witnessText = child.textContent;
                nodeHaveWit = witness;
 
@@ -502,10 +560,10 @@ angular.module('evtviewer.dataHandler')
 
    /* ************************ */
    /* BEGIN iterateNode(node)  */
-   /* **************************/
-   /* Function to iterate node */
-   /* @node -> current node    */
-   /* **************************/
+   /* *************************** */
+   /* Function to iterate node    */
+   /* @node -> current node       */
+   /* *************************** */
    let iterateNode = function(node) {
       let iterate;
 
@@ -523,9 +581,9 @@ angular.module('evtviewer.dataHandler')
 
    /* *************** */
    /* BEGIN addWord() */
-   /* *************************************** */
+   /* ************************************* */
    /* Function to add word in text (string) */
-   /* *************************************** */
+   /* ************************************* */
    let addWord = function() {
       let nextSibling = node.nextSibling,
           previousSibling = node.previousSibling;
@@ -547,7 +605,7 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   /* *************** */
+   /* **************** */
    /* BEGIN addSpace() */
    /* ************************************* */
    /* Function to add space where necessary */
@@ -569,7 +627,7 @@ angular.module('evtviewer.dataHandler')
 
    /* *************************** */
    /* BEGIN containOnlySpace(str) */
-   /* *************************** */
+   /* ****************************************************** */
    /* Function to check if string (str) contains only spaces */
    /* @str -> string to check                                */
    /* ****************************************************** */
@@ -590,9 +648,9 @@ angular.module('evtviewer.dataHandler')
 
    /* ********************* */
    /* BEGIN cleanSpace(str) */
-   /* **************************************************************** */
-   /* Function to clean text (string) from spaces                      */
-   /* **************************************************************** */
+   /* ******************************************* */
+   /* Function to clean text (string) from spaces */
+   /* ******************************************* */
    let cleanSpace = function(str) {
       let replace;
       while(str.match(/\s\s/)){
@@ -604,9 +662,9 @@ angular.module('evtviewer.dataHandler')
 
    /* *************************** */
    /* BEGIN cleanPunctuation(str) */
-   /* **************************************************************** */
-   /* Function to clean text (string) from some punctuation            */
-   /* **************************************************************** */
+   /* ***************************************************** */
+   /* Function to clean text (string) from some punctuation */
+   /* ***************************************************** */
    let cleanPunctuation = function(str) {
       let replace;
       while(str.match(regex)) {
