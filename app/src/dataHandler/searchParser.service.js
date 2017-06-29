@@ -76,7 +76,7 @@ angular.module('evtviewer.dataHandler')
                switch (node.nodeName) {
                   case 'choice':
                      currentChoiceNode = node;
-                     word = checkCurrentChoiceNode(node);
+                     word = checkCurrentChoiceNode(node, doc);
                      editionWords.push(word);
                      node = currentChoiceNode;
                      break;
@@ -294,7 +294,7 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                                     */
    /* @doc -> current xml document                                              */
    /* ************************************************************************* */
-   let checkCurrentChoiceNode = function (node) {
+   let checkCurrentChoiceNode = function (node, doc) {
       let word = {},
           children = node.children,
           childNode,
