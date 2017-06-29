@@ -561,48 +561,48 @@ angular.module('evtviewer.box')
                     /* the version and a button to handle the font size. | @author --> CM*/
                     /*********************************************************************/
                     case 'version':
-                    var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
-                    topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: vm.version});
-                    if (evtInterface.getAllVersionsNumber() > 2) {
-                        topMenuList.buttons.push({title: 'Remove Version', label: '', icon: 'remove', type: 'removeVer'})
-                    }
-                    bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
+                        var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
+                        topMenuList.selectors.push({id: 'version_'+currentId, type: 'version', initValue: vm.version});
+                        if (evtInterface.getAllVersionsNumber() > 2) {
+                            topMenuList.buttons.push({title: 'Remove Version', label: '', icon: 'remove', type: 'removeVer'})
+                        }
+                        bottomMenuList.buttons.push({title: 'Change font size', label: '', icon: 'font-size', type: 'fontSizeTools', show: function(){ return true; }});
 
-                    updateContent = function() {
-                        scope.vm.isLoading = true;
-                        var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
-                            noTextAvailableMsg = 'Text of version '+vm.version+' is not available.';
-                        if (vm.version !== undefined) {
-                            var currentDocId = evtInterface.getCurrentDocument(),
-                                newContent = parsedData.getVersionText(vm.version, currentDocId) || undefined;
-                            if (newContent === undefined) {
-                                var documents  = parsedData.getDocuments(),
-                                    currentDoc = '';
-                                if (documents.length > 0) {
-                                    currentDoc = documents[currentDocId];
-                                }
-                                if (currentDoc !== undefined) {
-                                    try {
-                                        var promises = [];
-                                        promises.push(evtCriticalParser.parseCriticalText(currentDoc.content, currentDocId, vm.version).promise);
-                                        $q.all(promises).then(function(){
-                                            scope.vm.content = parsedData.getVersionText(vm.version, currentDocId) || noTextAvailableMsg;
+                        updateContent = function() {
+                            scope.vm.isLoading = true;
+                            var errorMsg           = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
+                                noTextAvailableMsg = 'Text of version '+vm.version+' is not available.';
+                            if (vm.version !== undefined) {
+                                var currentDocId = evtInterface.getCurrentDocument(),
+                                    newContent = parsedData.getVersionText(vm.version, currentDocId) || undefined;
+                                if (newContent === undefined) {
+                                    var documents  = parsedData.getDocuments(),
+                                        currentDoc = '';
+                                    if (documents._indexes.length > 0) {
+                                        currentDoc = documents[currentDocId];
+                                    }
+                                    if (currentDoc !== undefined) {
+                                        try {
+                                            var promises = [];
+                                            promises.push(evtCriticalParser.parseCriticalText(currentDoc.content, currentDocId, vm.version).promise);
+                                            $q.all(promises).then(function(){
+                                                scope.vm.content = parsedData.getVersionText(vm.version, currentDocId) || noTextAvailableMsg;
+                                                scope.vm.isLoading = false;
+                                            });
+                                        } catch(err) {
+                                            scope.vm.content = errorMsg;
                                             scope.vm.isLoading = false;
-                                        });
-                                    } catch(err) {
-                                        scope.vm.content = errorMsg;
+                                        }
+                                    } else {
+                                        scope.vm.content = noTextAvailableMsg;
                                         scope.vm.isLoading = false;
                                     }
                                 } else {
-                                    scope.vm.content = noTextAvailableMsg;
+                                    scope.vm.content = newContent;
                                     scope.vm.isLoading = false;
                                 }
-                            } else {
-                                scope.vm.content = newContent;
-                                scope.vm.isLoading = false;
                             }
-                        }
-                    };
+                        };
                     break;
                 default:
                     isLoading = false;
