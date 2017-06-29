@@ -184,11 +184,12 @@ angular.module('evtviewer.dataHandler')
                         child.setAttribute('wit', fragmentSigla);
                     }
 
-                    else if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
+                    if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
                         var lacunaSigla = elem.getAttribute('wit');                        
                         child.setAttribute('wit', lacunaSigla);
                     }
-                    else if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
+                    
+                    if (quoteDef.indexOf('<'+child.tagName+'>') >= 0) {
                         reading.content.push(parser.parseQuote(child));
                     }
                     else if (analogueRegExpr.test(childXml)) {
