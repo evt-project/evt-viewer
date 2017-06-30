@@ -56,14 +56,18 @@ angular.module('evtviewer.dataHandler')
             if (element.parentNode.tagName === 'text' ) {
                 return true;
             } else if (element.parentNode.tagName === 'rdgGrp') {
-                if (element.parentNode.hasAttribute('ana')) {
-                    if (element.parentNode.getAttribute('ana').replace(/#/, '') === config.versions[0]) {
-                        return true;
+                if (config.versions && config.versions.length > 0) {
+                    if (element.parentNode.hasAttribute('ana')) {
+                        if (element.parentNode.getAttribute('ana').replace(/#/, '') === config.versions[0]) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
                         return false;
                     }
                 } else {
-                    return false;
+                    return true;
                 }
             } else {
                 return parser.isInMainVersion(element.parentNode);

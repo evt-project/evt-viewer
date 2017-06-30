@@ -1817,11 +1817,11 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	/******************* */
-	/*parseSource(source)*/
+	/*parseAnalogueSource(entry)*/
 	/*************************************************************************** */
 	/*Parses the source element in order to then push it inside the corresponding*/
 	/*analogue array                                                             */
-	/* @source --> XML element to be parsed                                      */
+	/* @entry --> XML element to be parsed                                       */
 	/*************************************************************************** */
 	parser.parseAnalogueSource = function(entry) {
 		var source = {
@@ -1949,8 +1949,8 @@ angular.module('evtviewer.dataHandler')
 		return source;
 	};
 
-	/************************ */
-	/*parseSourceContent(elem)*/
+	/******************************** */
+	/*parseAnalogueSourceContent(elem)*/
 	/*******************************************************************/
 	/* Function to parse the element contained inside a source element.*/
 	/* @ elem --> element to be parsed                                 */

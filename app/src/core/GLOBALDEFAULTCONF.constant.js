@@ -159,7 +159,7 @@ angular.module('evtviewer.core')
     /*The array collects the id used inside of the XML file as values of*/
     /*the @ana attribute on the rdgGrp element.                         */
     /*The first id will correspond to the default version.              */
-    versions : ['rec_1', 'rec_2', 'rec_3'],
+    versions : [],
 
     /*witnessesGroups*/
     /*Used to divide the readings of all critical apparatus entries into groups.*/

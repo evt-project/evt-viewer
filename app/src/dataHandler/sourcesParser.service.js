@@ -124,7 +124,9 @@ angular.module('evtviewer.dataHandler')
                 //Delete the source entries from the collection, if they don't correspond to a source
                 updateQuotes();
             } else {
-                parser.parseExternalSources(extDoc);
+                if (extDoc) {
+                    parser.parseExternalSources(extDoc);
+                }
             }
         }        
         

@@ -105,12 +105,15 @@ angular.module('evtviewer.dataHandler')
         
         // Parse the Sources Apparatus entries (@author: CM)
         if (config.quoteDef !== '') {
-            evtSourcesParser.parseQuotes(docElements);
-            if (config.sourcesUrl === '') {
-                evtSourcesParser.parseSources(docElements);
-            } else {
-                evtSourcesParser.parseSources(docElements, state.XMLExtDocuments.sources);
-            }
+            var promiseQuote = [];
+            promiseQuote.push(evtSourcesParser.parseQuotes(docElements));
+            $q.all(promiseQuote).then(function() {
+                if (config.sourcesUrl === '') {
+                    evtSourcesParser.parseSources(docElements);
+                } else {
+                    evtSourcesParser.parseSources(docElements, state.XMLExtDocuments.sources);
+                }
+            });
         }
 
         // Parse the Analogues Apparatus entries (@author: CM)

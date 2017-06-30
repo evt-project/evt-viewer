@@ -52,7 +52,7 @@
                     data-value="{{::mode.viewMode}}"
                     data-type="changeViewMode"
                     ng-repeat="mode in getAvailableViewModes() track by $index"
-                    ng-if="::mode.visible">
+                    ng-if="mode.visible">
             </button-switch>
             <!-- <button-switch
                     title="Witnesses"
@@ -233,7 +233,7 @@
                      ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
                                 'span18of18': !existCriticalText()}">
                     <box data-type="witness"
-                         data-witness="{{::witness}}"
+                         data-witness="{{witness}}"
                          ng-if="witness"
                          data-witpage="{{getCurrentWitnessPage(witness)}}"
                          ng-repeat="witness in getCurrentWitnesses()" ></box>
@@ -285,6 +285,7 @@
                      id="mainText"
                      ng-show="existCriticalText()"></box>
                 <box data-type="source"
+                     ng-if="getCurrentSourceText()"
                      data-source={{getCurrentSourceText()}}
                      id="srcText"></box>
             </section>

@@ -64,11 +64,16 @@ angular.module('evtviewer.interface')
 
                 evtCommunication.getData(config.dataUrl).then(function () {
                     // Remove Collation View Mode if Witnesses List Empty
-                    if (parsedData.getWitnessesList().length === 0 ) { 
-                        for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
-                            if (properties.availableViewModes[i].viewMode === 'collation') {
-                                properties.availableViewModes[i].visible = false;
-                            }
+                    for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
+                        var viewModeName = properties.availableViewModes[i].viewMode;
+                        if (viewModeName === 'collation' && parsedData.getWitnessesList().length === 0) {
+                            properties.availableViewModes[i].visible = false;
+                        }
+                        if (viewModeName === 'versions' && mainInterface.getAllVersionsNumber() < 2) {
+                            properties.availableViewModes[i].visible = false;
+                        }
+                        if (viewModeName === 'srcTxt' && (!parsedData.getSources()._indexes.availableTexts || parsedData.getSources()._indexes.availableTexts.length === 0)) {
+                            properties.availableViewModes[i].visible = false;   
                         }
                     }
 
@@ -140,8 +145,6 @@ angular.module('evtviewer.interface')
                                 }
                             }
                             
-                            state.isLoading = false;
-
                             mainInterface.updateUrl();
                             $rootScope.$applyAsync(state.isLoading = false);
 
@@ -223,6 +226,7 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.getCurrentWitnesses = function(){
+            console.log(state.currentWits)
             return state.currentWits;
         };
 
@@ -539,19 +543,41 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateAvailableWitnessesByVersion = function(scopeVer) {
             var scopeVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[scopeVer];
-            state.currentWits = [];
+            var currentWits = [],
+                availableWitnesses = [];
             if (scopeVerWits !== undefined && scopeVerWits.length > 0) {
-                properties.availableWitnesses = [];
-                for (var i in scopeVerWits) {
-                    properties.availableWitnesses.push(scopeVerWits[i]);
+                // Remove from current wits those that are not in current version
+                for (var i = 0; i < state.currentWits.length; i++) {
+                    if (scopeVerWits.indexOf(state.currentWits[i]) >= 0) {
+                        currentWits.push(state.currentWits[i]);
+                    }
                 }
+                state.currentWits = currentWits;
+                // Set available witnesses depending on those in current version that are not selected yet
+                for (var j = 0; j < scopeVerWits.length; j++) {
+                    if (currentWits.indexOf(scopeVerWits[j]) < 0) {
+                        availableWitnesses.push(scopeVerWits[j]);
+                    }
+                }
+                properties.availableWitnesses = availableWitnesses;
             } else if (scopeVer === config.versions[0]) {
-                properties.availableWitnesses = [];
                 var allWits = parsedData.getWitnessesList();
-                for (var h in allWits) {
-                    properties.availableWitness.push(allWits[h]);
+                // Remove from current wits those that are not in current version
+                for (var i = 0; i < state.currentWits.length; i++) {
+                    if (allWits.indexOf(state.currentWits[i]) >= 0) {
+                        currentWits.push(state.currentWits[i]);
+                    }
                 }
+                state.currentWits = currentWits;
+                // Set available witnesses depending on those in current version that are not selected yet
+                for (var h = 0; h < allWits.length; h++) {
+                    if (currentWits.indexOf(allWits[h]) < 0) {
+                        availableWitness.push(allWits[h]);
+                    }
+                }
+                properties.availableWitnesses = availableWitnesses;
             }
+            mainInterface.updateUrl();
         };
         
         // app entry

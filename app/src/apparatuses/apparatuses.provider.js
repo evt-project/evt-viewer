@@ -31,13 +31,16 @@ angular.module('evtviewer.apparatuses')
                 appList = [],
 				quotesList = [],
 				analoguesList = [],
-				appEntries = parsedData.getCriticalEntries(),
+				appEntriesCollection = parsedData.getCriticalEntries(),
 				quotesEntries = parsedData.getQuotes(),
 				analoguesEntries = parsedData.getAnalogues(); //tutti gli apparati disponibili
 
-			for (var i in appEntries) {
-				if (appEntries[i]._isInMainVersion) {
-					appList.push(appEntries[i].id);
+			if (appEntriesCollection._indexes.appEntries) {
+				for (var i = 0; i < appEntriesCollection._indexes.appEntries.length; i++) {
+					var entryId = appEntriesCollection._indexes.appEntries[i];
+					if (appEntriesCollection[entryId] && (appEntriesCollection[entryId]._isInMainVersion === undefined || appEntriesCollection[entryId]._isInMainVersion === true)) {
+						appList.push(entryId);
+					}
 				}
 			}
 
@@ -84,7 +87,7 @@ angular.module('evtviewer.apparatuses')
 				apparatuses: apparatuses,
 				appStructure: appStructure
 			};
-
+			console.log(apparatuses)
 			collection[currentId] = angular.extend(scope.vm, scopeHelper);
 			list.push({
 				id: currentId
