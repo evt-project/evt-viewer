@@ -71,21 +71,21 @@ angular.module('evtviewer.apparatuses')
 			if (appList.length > 0) {
 				apparatuses.push({
 					label: 'Critical Apparatus',
-					visibleList: appList.splice(0, 10),
+					visibleList: appList.slice(0, 10),
 					list: appList
 				});
 			}
 			if (quotesList.length > 0) {
 				apparatuses.push({
 					label: 'Sources',
-					visibleList: quotesList.splice(0, 10),
+					visibleList: quotesList.slice(0, 10),
 					list: quotesList
 				});
 			}
 			if (analoguesList.length > 0) {
 				apparatuses.push({
 					label: 'Analogues',
-					visibleList: analoguesList.splice(0, 10),
+					visibleList: analoguesList.slice(0, 10),
 					list: analoguesList
 				});
 			}
