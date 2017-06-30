@@ -51,7 +51,7 @@ angular.module('evtviewer.box')
                                 docViewBottom = docViewTop + angular.element(boxElem).height();
                             id = pbElems[i].getAttribute('data-id');
 
-                            var elemOffset = $("span.pb[data-id='"+id+"']").offset();
+                            var elemOffset = $('span.pb[data-id=\''+id+'\']').offset();
                             var elemTop;
                             if (elemOffset) {
                                 elemTop =  elemOffset.top;
@@ -212,10 +212,10 @@ angular.module('evtviewer.box')
             if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'apparatuses' || currentBox.type === 'version') {
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find("[data-app-id='"+appId+"']");
+                        var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (currentBox.type === 'apparatuses') {
-                            var apparatusesElem = $('#'+currentBox.uid).find("evt-apparatuses")[0];
+                            var apparatusesElem = $('#'+currentBox.uid).find('evt-apparatuses')[0];
                             padding += apparatusesElem.offsetTop;
                         }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
@@ -226,10 +226,10 @@ angular.module('evtviewer.box')
 
                 scope.vm.scrollToQuotesEntry = function(quoteId) {
                     $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find("[data-quote-id='"+quoteId+"']");
+                        var appElem = $('#'+currentBox.uid).find('[data-quote-id=\''+quoteId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (currentBox.type === 'apparatuses') {
-                            var apparatusesElem = $('#'+currentBox.uid).find("evt-apparatuses")[0];
+                            var apparatusesElem = $('#'+currentBox.uid).find('evt-apparatuses')[0];
                             padding += apparatusesElem.offsetTop;
                         }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
@@ -240,10 +240,10 @@ angular.module('evtviewer.box')
 
                 scope.vm.scrollToAnaloguesEntry = function(analogueId) {
                     $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find("[data-analogue-id='"+analogueId+"']");
+                        var appElem = $('#'+currentBox.uid).find('[data-analogue-id=\''+analogueId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (currentBox.type === 'apparatuses') {
-                            var apparatusesElem = $('#'+currentBox.uid).find("evt-apparatuses")[0];
+                            var apparatusesElem = $('#'+currentBox.uid).find('evt-apparatuses')[0];
                             padding += apparatusesElem.offsetTop;
                         }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
@@ -255,25 +255,25 @@ angular.module('evtviewer.box')
                 // If the version apparatus entry isn't visible, the box scrolls in order to show the apparatus completely
                 scope.vm.scrollToVersionApparatus = function(appId) {
                     $timeout(function() {
-                        var appEntryElem = $('#'+currentBox.uid).find("evt-version-apparatus-entry[data-app-id="+appId+"]"),
+                        var appEntryElem = $('#'+currentBox.uid).find('evt-version-apparatus-entry[data-app-id=\''+appId+'\']'),
                             padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appEntryElem.length > 0 && appEntryElem[0] !== undefined) {
                             var elementPosition = angular.element(appEntryElem[0]).position().top,
                                 clientHeight = appEntryElem[0].offsetParent.clientHeight,
-                                elemDiv = $('#'+currentBox.uid).find("div[class=version-apparatus-entry]"),
+                                elemDiv = $('#'+currentBox.uid).find('div[class=\'version-apparatus-entry\']'),
                                 elementHeight = angular.element(elemDiv).outerHeight() || 0;
                             if ((elementPosition + elementHeight) > clientHeight) {
                                 boxBody.scrollTop += (elementPosition - clientHeight) + elementHeight;
                             }
                         }
                     });
-                }
+                };
             }
 
             if (currentBox.type === 'source') {
                 scope.vm.scrollToQuotesEntry = function(segId) {
                     $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find("[data-seg-id='"+segId+"']");
+                        var appElem = $('#'+currentBox.uid).find('[data-seg-id=\''+segId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;

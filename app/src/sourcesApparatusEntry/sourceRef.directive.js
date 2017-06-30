@@ -49,7 +49,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     //evtSourceSeg.updateCurrentQuote(currentQuote);
                     evtBox.alignScrollToQuote(quoteToAlign, segToAlign);
                 }
-            }
+            };
         }
     };
 });

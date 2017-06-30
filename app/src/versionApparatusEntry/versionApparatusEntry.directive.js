@@ -22,7 +22,7 @@ angular.module('evtviewer.versionApparatusEntry')
                 if (currentVersionAppEntry) {
                     currentVersionAppEntry.destroy();
                 }
-            })
+            });
         }
-    }
-})
+    };
+});

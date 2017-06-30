@@ -35,7 +35,7 @@ angular.module('evtviewer.namedEntity')
         angular.forEach(elementsToHighlight, function(element) {
             toggleHighlightElement(element, color, false);
         });
-	}
+	};
 
 	genericEntity.highlightActiveTypes = function() {
 		for (var key in activeEntities) {

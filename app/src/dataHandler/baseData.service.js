@@ -85,7 +85,7 @@ angular.module('evtviewer.dataHandler')
         } catch (e) {
             _console.log('Something wrong with the supplementary XML files '+e);
         }
-    }
+    };
 
     var launchXMLParsers = function(docElements) {
         // Parse pages
@@ -106,19 +106,19 @@ angular.module('evtviewer.dataHandler')
         // Parse the Sources Apparatus entries (@author: CM)
         if (config.quoteDef !== '') {
             evtSourcesParser.parseQuotes(docElements);
-            if (config.sourcesUrl === "") {
+            if (config.sourcesUrl === '') {
                 evtSourcesParser.parseSources(docElements);
             } else {
-                evtSourcesParser.parseSources(docElements, state.XMLExtDocuments["sources"]);
+                evtSourcesParser.parseSources(docElements, state.XMLExtDocuments.sources);
             }
         }
 
         // Parse the Analogues Apparatus entries (@author: CM)
         if (config.analogueDef !== '') {
-            if (config.analoguesUrl === "") {
+            if (config.analoguesUrl === '') {
                 evtAnaloguesParser.parseAnalogues(docElements, '');
             } else {
-                evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments["analogues"]);
+                evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments.analogues);
             }
         }
 

@@ -473,7 +473,8 @@ angular.module('evtviewer.buttonSwitch')
                     callback = function() {
                         var s = scope.$parent.vm;
                         return s;
-                    }
+                    };
+                    break;
 				default:
 					break;
 			}

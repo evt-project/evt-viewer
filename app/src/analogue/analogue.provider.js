@@ -1,125 +1,125 @@
 angular.module('evtviewer.analogue')
 
 .provider('evtAnalogue', function() {
-    
-    var defaults = this.defaults;
 
-    this.setDefaults = function(_defaults) {
-        defaults = _defaults;
-    };
+	var defaults = this.defaults;
 
-    var currentAnaloguesEntry = '';
+	this.setDefaults = function(_defaults) {
+		defaults = _defaults;
+	};
 
-    this.$get = function(parsedData, evtInterface) {
-        var analogue   = {},
-            collection = {},
-            list       = [],
-            idx        = 0;
-        
-        // Analogue builder
-        analogue.build = function(scope) {
-            var currentId = idx++,
-                entryId = scope.analogueId || undefined;
-            
-            if (collection[currentId] !== undefined) {
-                return;
-            }
+	var currentAnaloguesEntry = '';
 
-            var scopeHelper = {
-                uid : currentId,
-                scopeWit : scope.scopeWit || '',
-                analogueId : entryId,
-                scopeViewMode : evtInterface.getCurrentViewMode(),
+	this.$get = function(parsedData, evtInterface) {
+		var analogue = {},
+			collection = {},
+			list = [],
+			idx = 0;
 
-                over : false,
-                selected : entryId === analogue.getCurrentAnaloguesEntry(),
-                apparatus : {
-                    opened : false,
-                    content: {},
-                    _loaded : false,
-                    inline : evtInterface.getCurrentViewMode() !== 'readingTxt'
-                },
-                openTriggerEvent : angular.copy(defaults.openTriggerEvent),
-                defaults: angular.copy(defaults)
-            }
+		// Analogue builder
+		analogue.build = function(scope) {
+			var currentId = idx++,
+				entryId = scope.analogueId || undefined;
 
-            collection[currentId] = angular.extend(scope.vm, scopeHelper);
-            list.push({
-                id: currentId
-            });
-            return collection[currentId];
-        };
+			if (collection[currentId] !== undefined) {
+				return;
+			}
 
-        analogue.getById = function(currentId) {
-            if (collection[currentId] !== undefined) {
-                return collection[currentId];
-            }
-        };
+			var scopeHelper = {
+				uid: currentId,
+				scopeWit: scope.scopeWit || '',
+				analogueId: entryId,
+				scopeViewMode: evtInterface.getCurrentViewMode(),
 
-        analogue.getList = function() {
-            return list;
-        };
+				over: false,
+				selected: entryId === analogue.getCurrentAnaloguesEntry(),
+				apparatus: {
+					opened: false,
+					content: {},
+					_loaded: false,
+					inline: evtInterface.getCurrentViewMode() !== 'readingTxt'
+				},
+				openTriggerEvent: angular.copy(defaults.openTriggerEvent),
+				defaults: angular.copy(defaults)
+			};
 
-        analogue.setCurrentAnaloguesEntry = function(analogueId) {
-            if (evtInterface.getCurrentAnalogue() !== analogueId) {
-                evtInterface.updateCurrentAnalogue(analogueId)
-            }
-            currentAnaloguesEntry = analogueId;
-        };
+			collection[currentId] = angular.extend(scope.vm, scopeHelper);
+			list.push({
+				id: currentId
+			});
+			return collection[currentId];
+		};
 
-        analogue.getCurrentAnaloguesEntry = function() {
-            return currentAnaloguesEntry;
-        };
+		analogue.getById = function(currentId) {
+			if (collection[currentId] !== undefined) {
+				return collection[currentId];
+			}
+		};
 
-        analogue.mouseOutAll = function() {
-            angular.forEach(collection, function(currentAnalogue) {
-                currentAnalogue.mouseOut();
-            });
-        };
+		analogue.getList = function() {
+			return list;
+		};
 
-        analogue.mouseOverByAnalogueId = function(analogueId) {
-            angular.forEach(collection, function(currentAnalogue) {
-                if (currentAnalogue.analogueId === analogueId) {
-                    currentAnalogue.mouseOver();
-                } else {
-                    currentAnalogue.mouseOut();
-                }
-            });
-        };
+		analogue.setCurrentAnaloguesEntry = function(analogueId) {
+			if (evtInterface.getCurrentAnalogue() !== analogueId) {
+				evtInterface.updateCurrentAnalogue(analogueId);
+			}
+			currentAnaloguesEntry = analogueId;
+		};
 
-        analogue.unselectAll = function() {
-            angular.forEach(collection, function(currentAnalogue) {
-                currentAnalogue.unselect();
-            });
-            evtInterface.updateCurrentAnalogue('');
-        };
+		analogue.getCurrentAnaloguesEntry = function() {
+			return currentAnaloguesEntry;
+		};
 
-        analogue.closeAllApparatus = function(skipId) {
-            angular.forEach(collection, function(currentAnalogue) {
-                if (skipId === undefined) {
-                    currentAnalogue.closeApparatus();
-                } else if (currentAnalogue.uid !== skipId) {
-                    currentAnalogue.closeApparatus();
-                }
-            });
-        };
+		analogue.mouseOutAll = function() {
+			angular.forEach(collection, function(currentAnalogue) {
+				currentAnalogue.mouseOut();
+			});
+		};
 
-        analogue.selectById = function(analogueId) {
-            angular.forEach(collection, function(currentAnalogue) {
-                if (currentAnalogue.analogueId === analogueId) {
-                    currentAnalogue.setSelected();
-                } else {
-                    currentAnalogue.unselect();
-                }
-            });
-            evtInterface.updateCurrentAnalogue(analogueId);
-            analogue.setCurrentAnaloguesEntry(analogueId);
-        };
+		analogue.mouseOverByAnalogueId = function(analogueId) {
+			angular.forEach(collection, function(currentAnalogue) {
+				if (currentAnalogue.analogueId === analogueId) {
+					currentAnalogue.mouseOver();
+				} else {
+					currentAnalogue.mouseOut();
+				}
+			});
+		};
 
-        analogue.destroy = function(tempId) {
-            delete collection[tempId];
-        };
+		analogue.unselectAll = function() {
+			angular.forEach(collection, function(currentAnalogue) {
+				currentAnalogue.unselect();
+			});
+			evtInterface.updateCurrentAnalogue('');
+		};
 
-        return analogue;
-    };
+		analogue.closeAllApparatus = function(skipId) {
+			angular.forEach(collection, function(currentAnalogue) {
+				if (skipId === undefined) {
+					currentAnalogue.closeApparatus();
+				} else if (currentAnalogue.uid !== skipId) {
+					currentAnalogue.closeApparatus();
+				}
+			});
+		};
+
+		analogue.selectById = function(analogueId) {
+			angular.forEach(collection, function(currentAnalogue) {
+				if (currentAnalogue.analogueId === analogueId) {
+					currentAnalogue.setSelected();
+				} else {
+					currentAnalogue.unselect();
+				}
+			});
+			evtInterface.updateCurrentAnalogue(analogueId);
+			analogue.setCurrentAnaloguesEntry(analogueId);
+		};
+
+		analogue.destroy = function(tempId) {
+			delete collection[tempId];
+		};
+
+		return analogue;
+	};
 });

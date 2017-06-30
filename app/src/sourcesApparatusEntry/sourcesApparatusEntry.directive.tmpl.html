@@ -68,15 +68,15 @@
                  ng-switch="::tab">
                  <div ng-switch-when="text">
                       <span
-                        ng-if="::vm.src_list[vm._activeSource].text != ''"
-                        compile="vm.src_list[vm._activeSource].text"></span>
+                        ng-if="::vm.srcList[vm._activeSource].text != ''"
+                        compile="vm.srcList[vm._activeSource].text"></span>
                       <span
-                        ng-if="::vm.src_list[vm._activeSource].url != ''"
-                        compile="vm.src_list[vm._activeSource].url"></span>
+                        ng-if="::vm.srcList[vm._activeSource].url != ''"
+                        compile="vm.srcList[vm._activeSource].url"></span>
                  </div>
                  <div ng-switch-when="biblRef"
-                      ng-if="::vm.src_list[vm._activeSource].bibl !== ''"
-                      compile="vm.src_list[vm._activeSource].bibl">
+                      ng-if="::vm.srcList[vm._activeSource].bibl !== ''"
+                      compile="vm.srcList[vm._activeSource].bibl">
                 </div>
                 <div ng-switch-when="moreInfo">
 
@@ -85,12 +85,12 @@
                      XML Source for Quote
                      <pre>{{ ::vm.xml | prettyXml}}</pre>
                      XML Source for <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
-                     <pre>{{ ::vm.src_list[vm._activeSource]._xmlSource | prettyXml }}</pre>
+                     <pre>{{ ::vm.srcList[vm._activeSource]._xmlSource | prettyXml }}</pre>
                 </div>
                 <div
                     ng-switch-default
-                    ng-if="::vm.src_list[vm._activeSource].bibl !== ''"
-                    compile="vm.src_list[vm._activeSource].bibl"></div>
+                    ng-if="::vm.srcList[vm._activeSource].bibl !== ''"
+                    compile="vm.srcList[vm._activeSource].bibl"></div>
             </div>
         </div>
     </div>

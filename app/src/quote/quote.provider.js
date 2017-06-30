@@ -6,7 +6,7 @@ angular.module('evtviewer.quote')
 
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
-    }
+    };
 
     var currentSourcesEntry = '';
 
@@ -41,7 +41,7 @@ angular.module('evtviewer.quote')
                 selected         : entryId === quote.getCurrentSourcesEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
                 defaults         : angular.copy(defaults)
-            }
+            };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({

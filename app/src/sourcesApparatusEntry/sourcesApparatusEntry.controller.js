@@ -17,14 +17,14 @@ angular.module('evtviewer.sourcesApparatusEntry')
             _indexes : []
             };
             //Copy the source tabs into the directive tabs
-            var currentTabs = vm.src_list[vm._activeSource].tabs;
+            var currentTabs = vm.srcList[vm._activeSource].tabs;
             for (var i = 0; i < currentTabs._indexes.length; i++) {
                 var value = currentTabs._indexes[i];
                 vm.tabs._indexes.push(currentTabs._indexes[i]);
                 vm.tabs[value] = currentTabs[value];
             }
         }
-    }
+    };
 
     this.toggleOverSource = function($event, sourceId) {
         //$event.stopPropagation();
@@ -107,8 +107,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
     };
 
     this.isSourceTextAvailable = function(sourceId) {
-        availableTexts = parsedData.getSources()._indexes.availableTexts;
-        var isAvailable = false;
+        var availableTexts = parsedData.getSources()._indexes.availableTexts,
+            isAvailable = false;
         for (var i = 0; i < availableTexts.length; i++) {
             if (availableTexts[i].id === sourceId) {
                 isAvailable = true;

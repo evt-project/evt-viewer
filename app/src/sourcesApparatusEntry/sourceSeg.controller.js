@@ -79,5 +79,5 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     this.destroy = function() {
         evtSourceSeg.destroy(this.uid);
-    }
+    };
 });

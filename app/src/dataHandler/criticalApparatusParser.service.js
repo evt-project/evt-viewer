@@ -195,7 +195,7 @@ angular.module('evtviewer.dataHandler')
         
         deferred.resolve('success');
         return deferred;
-    }
+    };
 
     /* ******* */
     /* WITNESS */
@@ -304,10 +304,10 @@ angular.module('evtviewer.dataHandler')
     /* ********************************************************** */
     parser.isFragmentaryWitness = function(docDOM, wit){
         try {
-            if (docDOM.querySelectorAll("witStart[wit*='#"+wit+"']").length > 0) {
+            if (docDOM.querySelectorAll('witStart[wit*=\'#'+wit+'\']').length > 0) {
                 return true;
-            } else if (docDOM.querySelectorAll("rdg[wit*='#"+wit+"'] witStart:not([wit]").length > 0 || 
-                       docDOM.querySelectorAll("lem[wit*='#"+wit+"'] witStart:not([wit]").length > 0 ) {
+            } else if (docDOM.querySelectorAll('rdg[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 || 
+                       docDOM.querySelectorAll('lem[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 ) {
                 return true;
             } else {
                 return false;

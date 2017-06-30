@@ -41,13 +41,13 @@ angular.module('evtviewer.versionApparatusEntry')
                     tabs._indexes.push('readings');
                     tabs.readings = {
                         label: 'Version Readings'
-                    }
+                    };
                 }
                 if (entryContent.attributes._keys.length > 0) {
                     tabs._indexes.push('moreInfo');
                     tabs.moreInfo = {
                         label: 'More Info'
-                    }
+                    };
                 }
                 if (entryContent._xmlSource !== '') {
                     tabs._indexes.push('xmlSource');

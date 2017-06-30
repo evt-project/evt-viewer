@@ -102,7 +102,7 @@ angular.module('evtviewer.UItools')
 
     pinnedElements.addVisibleType = function(type) {
     	if (visibleTypes.indexOf(type) < 0) {
-    		visibleTypes.push(type)
+    		visibleTypes.push(type);
     	}
     };
 

@@ -31,7 +31,7 @@ angular.module('evtviewer.dataHandler')
 		listHeaderDef 	 = '<head>',
 
 		listRelationDef    = '<listRelation>',
-		relationDef 	   = '<relation>'
+		relationDef 	   = '<relation>',
 		relationNameDef	   = 'name',
 		relationActiveDef  = 'active',
 		relationPassiveDef = 'passive',
@@ -92,7 +92,6 @@ angular.module('evtviewer.dataHandler')
 						}
 					}
 			});
-
 		}
 		// Parse relations
 		var relations = currentDocument.find(relationsInListDef.slice(0, -2));
@@ -149,7 +148,7 @@ angular.module('evtviewer.dataHandler')
 			_xmlSource : nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '')
 		};
 		
-		relationEl.content['name'] = [{
+		relationEl.content.name = [{
 			attributes: { _indexes: [] },
 			text: relationName }];
 		relationEl.content._indexes.push('name');
@@ -232,8 +231,8 @@ angular.module('evtviewer.dataHandler')
 		// Update info in pased named entities
 		// Active roles
 		// Add relation info to active elements
-		for (i = 0; i < activeRefsArray.length; i++) {
-			var entityActive = parsedData.getNamedEntity(activeRefsArray[i].trim());
+		for (var x = 0; x < activeRefsArray.length; x++) {
+			var entityActive = parsedData.getNamedEntity(activeRefsArray[x].trim());
 			if (entityActive && relationText !== '') {
 				if (!entityActive.content.relations) {
 					entityActive.content.relations = [];
@@ -248,8 +247,8 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		// Mutual roles
-		for (j = 0; j < mutualRefsArray.length; j++) {
-			var entityMutual = parsedData.getNamedEntity(mutualRefsArray[j].trim());
+		for (var y = 0; y < mutualRefsArray.length; y++) {
+			var entityMutual = parsedData.getNamedEntity(mutualRefsArray[y].trim());
 			if (entityMutual && relationText !== '') {
 				if (!entityMutual.content.relations) {
 					entityMutual.content.relations = [];
@@ -264,8 +263,8 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		// Passive roles
-		for (k = 0; k < passiveRefsArray.length; k++) {
-			var entityPassive = parsedData.getNamedEntity(passiveRefsArray[k].trim());
+		for (var z = 0; z < passiveRefsArray.length; z++) {
+			var entityPassive = parsedData.getNamedEntity(passiveRefsArray[z].trim());
 			if (entityPassive && relationText !== '') {
 				if (!entityPassive.content.relations) {
 					entityPassive.content.relations = [];
@@ -292,7 +291,7 @@ angular.module('evtviewer.dataHandler')
 						type: 'active',
 						_indexes: ['type'] },
 					text: activeText.slice(0, -2) });
-			};
+			}
 			
 			if (mutualText !== '') {
 				actors.push({
@@ -310,7 +309,7 @@ angular.module('evtviewer.dataHandler')
 					text: passiveText.slice(0, -2) });
 			}
 
-			relationEl.content['actors'] = actors;
+			relationEl.content.actors = actors;
 			relationEl.content._indexes.push('actors');
 		}
 
@@ -440,8 +439,8 @@ angular.module('evtviewer.dataHandler')
 			newNodeElem.appendChild(entityHeadElem);
 		}
 
-		for (var i = 0; i < entityNode.childNodes.length; i++) {
-			var childElement = entityNode.childNodes[i].cloneNode(true),
+		for (var j = 0; j < entityNode.childNodes.length; j++) {
+			var childElement = entityNode.childNodes[j].cloneNode(true),
 				parsedXmlElem = evtParser.parseXMLElement(doc, childElement, skip);
 			newNodeElem.appendChild(parsedXmlElem);
 		}
@@ -497,8 +496,8 @@ angular.module('evtviewer.dataHandler')
 				//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
 				var matchOnlyPb = '<pb(.|[\r\n])*?\/>',
 					sRegExOnlyPb = new RegExp(matchOnlyPb, 'ig'),
-					pbList = matches[i].match(sRegExOnlyPb);
-				pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
+					pbList = matches[i].match(sRegExOnlyPb),
+					pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
 				var pageId = getPageIdFromHTMLString(pbString);
 				if (pageId) {
 					var pageObj = parsedData.getPage(pageId);

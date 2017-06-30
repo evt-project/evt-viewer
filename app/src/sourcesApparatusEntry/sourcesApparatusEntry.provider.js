@@ -6,7 +6,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
-    }
+    };
 
     var currentSourcesEntry = '';
     
@@ -27,16 +27,19 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             var content,
                 firstSubContentOpened = '',
-                /*src_list will be used to dynamically change the tabs
+                /*srcList will be used to dynamically change the tabs
                   and the contents depending on the  activeSource*/
-                src_list = {
+                srcList = {
                     _indexes : []
                 },
                 tabs = {
                     _indexes: []
                 };
 
-            var quoteEntry = parsedData.getQuote(scope.quoteId);
+            var quoteEntry = parsedData.getQuote(scope.quoteId),
+                head,
+                sources,
+                xml;
 
             if (quoteEntry !== undefined) {
                 
@@ -44,41 +47,41 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 content = evtSourcesApparatus.getContent(quoteEntry, scopeWit);
                 
                 //Apparatus header
-                var head = content.quote;
+                head = content.quote;
                 
                 //Array of sources objects
-                var sources = content.sources;
+                sources = content.sources;
                 sources.length = content.sources.length;
                 
-                //Adding infromation to the src_list
+                //Adding infromation to the srcList
                 for (var i in sources) {
-                    src_list._indexes.push(sources[i].id);
-                    src_list[sources[i].id] = sources[i];
-                    src_list[sources[i].id].tabs = {
+                    srcList._indexes.push(sources[i].id);
+                    srcList[sources[i].id] = sources[i];
+                    srcList[sources[i].id].tabs = {
                         _indexes: []
-                    }
-                    if (src_list[sources[i].id].text !== '' || src_list[sources[i].id].url !== '') {
-                        src_list[sources[i].id].tabs._indexes.push('text');
-                        src_list[sources[i].id].tabs.text = {
+                    };
+                    if (srcList[sources[i].id].text !== '' || srcList[sources[i].id].url !== '') {
+                        srcList[sources[i].id].tabs._indexes.push('text');
+                        srcList[sources[i].id].tabs.text = {
                             label: 'Text'
-                        }
+                        };
                     }
-                    if (src_list[sources[i].id].bibl !== '') {
-                        src_list[sources[i].id].tabs._indexes.push('biblRef');
-                        src_list[sources[i].id].tabs.biblRef = {
+                    if (srcList[sources[i].id].bibl !== '') {
+                        srcList[sources[i].id].tabs._indexes.push('biblRef');
+                        srcList[sources[i].id].tabs.biblRef = {
                             label: 'Bibliographic Reference'
-                        }
+                        };
                     }
                     //TO DO: More Info a partire dagli attributes di quote e di source
-                    if (src_list[sources[i].id]._xmlSource !== '') {
-                        src_list[sources[i].id].tabs._indexes.push('xmlSource');
-                        src_list[sources[i].id].tabs.xmlSource = {
+                    if (srcList[sources[i].id]._xmlSource !== '') {
+                        srcList[sources[i].id].tabs._indexes.push('xmlSource');
+                        srcList[sources[i].id].tabs.xmlSource = {
                             label: 'XML'
-                        }
+                        };
                     }
                 }
                 
-                var currentTabs = src_list[sources[0].id].tabs;
+                var currentTabs = srcList[sources[0].id].tabs;
                 for (var j = 0; j < currentTabs._indexes.length; j++) {
                     var value = currentTabs._indexes[j];
                     tabs._indexes.push(currentTabs._indexes[j]);
@@ -87,7 +90,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
                 //Adding the xmlSource tab and variable
                 if (quoteEntry._xmlSource !== '') {
-                    var xml = content._xmlSource;
+                    xml = content._xmlSource;
                 }
 
                 if (tabs._indexes.length > 0 && defaults.firstSubContentOpened !== ''){
@@ -106,7 +109,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 head              : head,
                 xml               : xml,
                 sources           : sources,
-                src_list          : src_list,
+                srcList          : srcList,
                 _activeSource     : sources[0].id, /*By default the active Source is the first (and maybe only one) source inserted inside the sources array*/
                 _overSource       : '',
                 tabs              : tabs,
@@ -114,7 +117,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 over              : false,
                 selected          : false,
                 currentViewMode   : evtInterface.getCurrentViewMode()
-            }
+            };
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({
@@ -122,7 +125,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });
             
             return collection[currentId];
-        }
+        };
 
         sourceEntry.getById = function(currentId) {
             if (collection[currentId] !== undefined) {

@@ -30,7 +30,7 @@ angular.module('evtviewer.criticalApparatusEntry')
     };
 
     this.isPinned = function(){
-        return evtPinnedElements.isPinned(vm.appId)
+        return evtPinnedElements.isPinned(vm.appId);
     };
 
     this.getPinnedState = function() {

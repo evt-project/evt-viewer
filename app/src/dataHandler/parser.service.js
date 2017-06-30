@@ -139,11 +139,11 @@ angular.module('evtviewer.dataHandler')
 					newElement = document.createElement('span');
 					newElement.className = tagName;
 					if (element.attributes) {
-						for (var i = 0; i < element.attributes.length; i++) {
-							var attrib = element.attributes[i];
-							if (attrib.specified) {
-								if (attrib.name !== 'xml:id') {
-									newElement.setAttribute('data-' + attrib.name.replace(':', '-'), attrib.value);
+						for (var k = 0; k < element.attributes.length; k++) {
+							var attribK = element.attributes[k];
+							if (attribK.specified) {
+								if (attribK.name !== 'xml:id') {
+									newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
 								}
 							}
 						}
@@ -194,7 +194,7 @@ angular.module('evtviewer.dataHandler')
         var newExtDoc = {
             value: type,
             content: doc,
-        }
+        };
         if (type !== 'analogues' && type !== 'sources') {
             parsedData.addSourceDocument(newExtDoc, type);
         } else {
@@ -216,25 +216,25 @@ angular.module('evtviewer.dataHandler')
             var match = '(',
                 //def may contain more than one definition separated by commas
                 //Save all the definition contained in def in aDef array
-                aDef = def.split(",");
+                aDef = def.split(',');
             
             for (var i = 0; i < aDef.length; i++) {
-                //Checks if there is an attribute, itroduced by a "["
-                if (aDef[i].indexOf("[") < 0) {
+                //Checks if there is an attribute, itroduced by a '['
+                if (aDef[i].indexOf('[') < 0) {
                     //If there isn't a square bracket, it adds the element name in the match string
                     match += aDef[i].replace(/[>]/g, '');
                 } else {
-                    //Otherwise it saves the name of the element marked by the "<" and the "["
-                    var bracketOpen = aDef[i].indexOf("[");
-                    if(aDef[i].substring(1, bracketOpen) !== "[") {
-                        match += aDef[i].substring(0, bracketOpen)
+                    //Otherwise it saves the name of the element marked by the '<' and the '['
+                    var bracketOpen = aDef[i].indexOf('[');
+                    if(aDef[i].substring(1, bracketOpen) !== '[') {
+                        match += aDef[i].substring(0, bracketOpen);
                     }
                     //Adds regular expression operators to the match string
                     match += '[^<>]*?';
                     //Looks for the closing square bracket
-                    var bracketClose = aDef[i].indexOf("]");
+                    var bracketClose = aDef[i].indexOf(']');
                     //...and for the equals sign
-                    var equal = aDef[i].indexOf("=");
+                    var equal = aDef[i].indexOf('=');
                     //Adds the name of the attribute...
                     match += aDef[i].substring(bracketOpen + 1, equal);
                     //...reg expr operators
@@ -245,7 +245,7 @@ angular.module('evtviewer.dataHandler')
                 if (i < aDef.length -1) {
                 //Adds operator or to add a new definition contained in aDef
                 match+='|';
-            } else if ( i = aDef.length - 1) {
+            } else if ( i === aDef.length - 1) {
                 //Closes the regular expression
                 match+=')';
             }
@@ -264,7 +264,7 @@ angular.module('evtviewer.dataHandler')
     /* string to show | @author --> CM                                             */
     /*******************************************************************************/
     parser.createAbbreviation = function(string, maxLength) {
-        var length = maxLength/2
+        var length = maxLength/2,
             stringBegin = string.substring(0, length),
             stringEnd = string.substring((string.length-length-1), (string.length-1)),
             wslastIndexBegin = stringBegin.lastIndexOf('', (stringBegin.length-1)),

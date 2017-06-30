@@ -58,7 +58,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });
 
             return collection[currentId];
-        }
+        };
 
         sourceSeg.getById = function(currentId) {
             if (collection[currentId] !== undefined) {
@@ -109,8 +109,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 angular.forEach(collection, function(currentEntry) {
                     var quotes = currentEntry.panel.quotes;
                     for (var i = 0; i < quotes.length; i++) {
-                        if (quotes[i].id === quoteId
-                            && currentEntry.getQuoteId() !== quoteId) {
+                        if (quotes[i].id === quoteId && currentEntry.getQuoteId() !== quoteId) {
                             currentEntry.setQuoteId(quoteId);
                             currentQuote = quoteId;
                         }

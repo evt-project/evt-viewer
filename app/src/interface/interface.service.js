@@ -54,11 +54,11 @@ angular.module('evtviewer.interface')
                 //TODO: object containing all the external files in globaldefault
                 
                 // Parse the external Sources file, if defined (@author: CM)
-                if (config.sourcesUrl !== "") {
+                if (config.sourcesUrl !== '') {
                         evtCommunication.getExternalData(config.sourcesUrl);
                     }
                 // Parse the external Analogues file, if defined (@author: CM)
-                if (config.analoguesUrl !== "") {
+                if (config.analoguesUrl !== '') {
                         evtCommunication.getExternalData(config.analoguesUrl);
                 }
 
@@ -120,7 +120,7 @@ angular.module('evtviewer.interface')
                             /** Temp | TODO: add to updateParams? **/
                             // Prepare the sources texts available and the source text to show as default
                             // in the src-Txt view
-                            sourcesTexts = parsedData.getSources()._indexes.availableTexts;
+                            var sourcesTexts = parsedData.getSources()._indexes.availableTexts;
                             if (Object.keys(sourcesTexts).length !== 0) {
                                 for (var i in sourcesTexts) {
                                     properties.availableSourcesTexts.push(sourcesTexts[i].id);
@@ -135,8 +135,8 @@ angular.module('evtviewer.interface')
                             if (config.versions.length === 2) {
                                 state.currentVersions.push(config.versions[1]);
                             } else {
-                                for (var i = 1; i < config.versions.length; i++) {
-                                    properties.availableVersions.push(config.versions[i]);
+                                for (var v = 1; v < config.versions.length; v++) {
+                                    properties.availableVersions.push(config.versions[v]);
                                 }
                             }
                             
@@ -664,7 +664,7 @@ angular.module('evtviewer.interface')
                             properties.availableWitnesses = witIds.slice(config.maxWitsLoadTogether);
                             witIds = witIds.slice(0, config.maxWitsLoadTogether);
                         } else {
-                            properties.availableWitnesses = []    
+                            properties.availableWitnesses = [];
                         }
                     }                    
                 } else {
@@ -675,7 +675,7 @@ angular.module('evtviewer.interface')
                             properties.availableWitnesses = mainVerWits.slice(0, mainVerWits.length);
                         }
                     } else {
-                        var totWits = parsedData.getWitnessesList();
+                        totWits = parsedData.getWitnessesList();
                         properties.availableWitnesses = totWits.slice(0, totWits.length);
                     }
                 }

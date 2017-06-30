@@ -43,8 +43,8 @@ angular.module('evtviewer.dataHandler')
                 }
             }
             else if (elem.childNodes.length > 0) {
-                for (var i = 0; i < elem.childNodes.length; i++) {
-                    handleSource(elem.childNodes[i]);
+                for (var j = 0; j < elem.childNodes.length; j++) {
+                    handleSource(elem.childNodes[j]);
                 }
             }
         }
@@ -89,10 +89,10 @@ angular.module('evtviewer.dataHandler')
                 sourcesEntriesId.splice(i, 1);
             }
         }
-        for (var i = 0; i < missing.length; i++) {
-            delete parsedData.getQuotes()[missing[i]];
+        for (var j = 0; j < missing.length; j++) {
+            delete parsedData.getQuotes()[missing[j]];
         }
-    }
+    };
 
     /***************** */
     /*parseSources(doc)*/
@@ -106,7 +106,7 @@ angular.module('evtviewer.dataHandler')
         var deferred = $q.defer();
 
         if (parsedData.getQuotes()._indexes.sourcesRef._id.length > 0) {
-            if (config.sourcesUrl === "") {
+            if (config.sourcesUrl === '') {
                 var currentDocument = angular.element(doc),
                 defDocElement;
                 if ( currentDocument.find('text group text').length > 0 ) {
@@ -152,7 +152,7 @@ angular.module('evtviewer.dataHandler')
         
         deferred.resolve('success');
         return deferred;
-    }
+    };
 
     return parser;
 });

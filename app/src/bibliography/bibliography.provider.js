@@ -72,7 +72,7 @@ angular.module('evtviewer.bibliography')
 				selectedSortOrder;
 
 			if (config.defaultBibliographicStyle !== '' && styles[config.defaultBibliographicStyle] !== undefined && styles[config.defaultBibliographicStyle].enabled) {
-				initialSelectedStyle = styles[config.defaultBibliographicStyle]
+				initialSelectedStyle = styles[config.defaultBibliographicStyle];
 			}
 			
 			for (var key in styles) {

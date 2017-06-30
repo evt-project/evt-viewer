@@ -30,9 +30,8 @@ angular.module('evtviewer.select')
                 //} else {
                 //    newMarginTop = optionContainer.height() + labelSelected.height();
                 //}
-                optionContainer.css('margin-top', -newMarginTop + 'px')
-                
-            }
+                optionContainer.css('margin-top', -newMarginTop + 'px');
+            };
             $timeout(function(){
                 if (currentSelect.openUp) {
                     currentSelect.updateContainerPosition(scope.type);

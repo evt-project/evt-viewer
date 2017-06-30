@@ -98,5 +98,5 @@ angular.module('evtviewer.versionReading')
         };
         
         return versionReading;
-    }
+    };
 });

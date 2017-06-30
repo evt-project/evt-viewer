@@ -227,7 +227,7 @@ angular.module('evtviewer.dataHandler')
 			availableTexts : [],
 			correspId: {}
 		},
-	}
+	};
 
 	var analoguesCollection = {
 		_indexes: {
@@ -236,7 +236,7 @@ angular.module('evtviewer.dataHandler')
 		_refId: {
 			_indexes: []
 		}
-	}
+	};
 
 	/* PAGES */
 	// TODO: add attribute for the original xml reference
@@ -347,7 +347,7 @@ angular.module('evtviewer.dataHandler')
 			externalDocsCollection.length = 0;
 		}
 		if (extDoc.value === '') {
-			docId = doc.value = 'extDoc_' + (externalDocsCollection.length + 1);
+			docId = extDoc.value = 'extDoc_' + (externalDocsCollection.length + 1);
 		}
 		if (externalDocsCollection[docId] === undefined) {
 			externalDocsCollection[externalDocsCollection.length] = docId;
@@ -371,7 +371,7 @@ angular.module('evtviewer.dataHandler')
 			sourcesDocsCollection.length = 0;
 		}
 		if (extDoc.value === '') {
-			docId = doc.value = id;
+			docId = extDoc.value = id;
 		}
 		if (sourcesDocsCollection[docId] === undefined) {
 			sourcesDocsCollection[sourcesDocsCollection.length] = docId;
@@ -756,7 +756,7 @@ angular.module('evtviewer.dataHandler')
 		if (versionId[ver] === undefined) {
 			var index = config.versions.indexOf(ver); 
 			var v = 'Version &#'+(65+index)+';';
-			versionId[ver] = v
+			versionId[ver] = v;
 			name[v] = ver;
 		}
 	};
@@ -880,7 +880,7 @@ angular.module('evtviewer.dataHandler')
 				if (quotesRef[entryRef[i]] === undefined && quotesRef._id.indexOf(entryRef[i]) < 0) {
 					quotesRef[entryRef[i]] = [];
 					//and add the entry id to it.
-					quotesRef[entryRef[i]].push(entry.id)
+					quotesRef[entryRef[i]].push(entry.id);
 						//Then add the id of the source to the general ids array.
 					quotesRef._id.push(entryRef[i]);
 				} else if (quotesRef[entryRef[i]].indexOf(entry.id) < 0) {
@@ -895,15 +895,15 @@ angular.module('evtviewer.dataHandler')
 		var sourcesCorresp = sourcesCollection._indexes.correspId;
 
 		if (Object.keys(entryCorresp).length > 0) {
-			for (var i = 0; i < Object.keys(entryCorresp).length; i++) {
-				var newSource = Object.keys(entryCorresp)[i];
+			for (var k = 0; k < Object.keys(entryCorresp).length; k++) {
+				var newSource = Object.keys(entryCorresp)[k];
 				for (var j = 0; j < entryCorresp[newSource].length; j++) {
 					if (sourcesCorresp[newSource] === undefined) {
 						sourcesCorresp[newSource] = {};
 						sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id];
 					} else {
 						if (sourcesCorresp[newSource][entryCorresp[newSource][j]] === undefined) {
-							sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id]
+							sourcesCorresp[newSource][entryCorresp[newSource][j]] = [entry.id];
 						} else if (sourcesCorresp[newSource][entryCorresp[newSource][j]].indexOf(entry.id) < 0) {
 							sourcesCorresp[newSource][entryCorresp[newSource][j]].push(entry.id);
 						}
@@ -911,16 +911,15 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-
-	}
+	};
 
 	parsedData.getQuotes = function() {
 		return quotesCollection;
-	}
+	};
 
 	parsedData.getQuote = function(entryId) {
 		return quotesCollection[entryId];
-	}
+	};
 
 	parsedData.addSource = function(entry) {
 		if (sourcesCollection[entry.id] === undefined) {
@@ -937,7 +936,7 @@ angular.module('evtviewer.dataHandler')
 				if (sourcesRef[entryRef[i]] === undefined && sourcesRef._id.indexOf(entryRef[i]) < 0) {
 					sourcesRef[entryRef[i]] = [];
 					//and add the entry id to it.
-					sourcesRef[entryRef[i]].push(entry.id)
+					sourcesRef[entryRef[i]].push(entry.id);
 						//Then add the id of the source to the general ids array.
 					sourcesRef._id.push(entryRef[i]);
 				} else if (sourcesRef[entryRef[i]].indexOf(entry.id) < 0) {
@@ -950,16 +949,15 @@ angular.module('evtviewer.dataHandler')
 		if (entry._textAvailable) {
 			sourcesCollection._indexes.availableTexts.push({id: entry.id, abbr: entry.abbr});
 		}
-
-	}
+	};
 
 	parsedData.getSources = function() {
 		return sourcesCollection;
-	}
+	};
 
 	parsedData.getSource = function(entryId) {
 		return sourcesCollection[entryId];
-	}
+	};
 
 	/***********/
 	/*ANALOGUES*/
@@ -967,11 +965,11 @@ angular.module('evtviewer.dataHandler')
 
 	parsedData.getAnalogue = function(analogueId) {
 		return analoguesCollection[analogueId];
-	}
+	};
 
 	parsedData.getAnalogues = function() {
 		return analoguesCollection;
-	}
+	};
 
 	parsedData.addAnalogue = function(entry) {
 		if (analoguesCollection[entry.id] === undefined) {
@@ -993,7 +991,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-	}
+	};
 
 	return parsedData;
 });
