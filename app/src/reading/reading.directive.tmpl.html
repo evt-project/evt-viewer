@@ -13,7 +13,9 @@
         title="{{vm.attributes}}"
         ng-click="vm.callbackClick($event);"
         ng-transclude></span>
+    
     <span
+        ng-if="::vm.showExponent"
         class="reading_exponent"
         ng-click="vm.callbackClick($event);"
         compile="::vm.exponent"></span>

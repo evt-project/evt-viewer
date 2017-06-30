@@ -594,19 +594,22 @@ angular.module('evtviewer.box')
 						quotesList = parsedData.getQuotes()._indexes.encodingStructure,
 						analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;
 
-					if (appList.length > 0) {
+					if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
 						topMenuList.appLabels.push({
-							label: 'Critical Apparatus'
+							label: 'Critical Apparatus',
+							id: 'criticalApparatus'
 						});
 					}
-					if (quotesList.length > 0) {
+					if (!evtInterface.isSourcesInline() && quotesList.length > 0) {
 						topMenuList.appLabels.push({
-							label: 'Sources'
+							label: 'Sources',
+							id: 'sources'
 						});
 					}
-					if (analoguesList.length > 0) {
+					if (!evtInterface.isAnaloguesInline() && analoguesList.length > 0) {
 						topMenuList.appLabels.push({
-							label: 'Analogues'
+							label: 'Analogues',
+							id: 'analogues'
 						});
 					}
 					//method to get the currentApparatus inside of Interface, to initialize or change the apparatuses directive

@@ -36,7 +36,7 @@ angular.module('evtviewer.quote')
                     opened  : false,
                     content : {},
                     _loaded : false,
-                    inline  : evtInterface.getCurrentViewMode() !== 'readingTxt'
+                    inline  : scope.inlineApparatus
                 },
                 selected         : entryId === quote.getCurrentSourcesEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),

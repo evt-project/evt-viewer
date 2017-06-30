@@ -20,8 +20,8 @@
                 class="appLabel"
                 ng-repeat="appLabel in vm.topMenuList.appLabels"
                 compile="appLabel.label"
-                ng-click="vm.updateApparatus(appLabel.label)"
-                ng-class="{'selected': appLabel.label == vm.getCurrentApparatus()}">
+                ng-click="vm.updateApparatus(appLabel.id)"
+                ng-class="{'selected': appLabel.id === vm.getCurrentApparatus()}">
             </span>
         </div>
         <!--End of addition-->

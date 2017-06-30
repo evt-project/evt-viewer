@@ -146,6 +146,9 @@ angular.module('evtviewer.interface')
                             }
                             
                             mainInterface.updateUrl();
+                            
+                            state.isApparatusBoxOpen = (!config.showInlineCriticalApparatus || !config.showInlineSources || !config.showInlineAnalogues);
+
                             $rootScope.$applyAsync(state.isLoading = false);
 
                             // Update Pinned entries
@@ -253,7 +256,18 @@ angular.module('evtviewer.interface')
         mainInterface.getSecondaryContentOpened = function(){
             return state.secondaryContent;
         };
-		
+
+        mainInterface.isCriticalApparatusInline = function() {
+            return config.showInlineCriticalApparatus || mainInterface.getCurrentViewMode() !== 'readingTxt';
+        };
+
+		mainInterface.isSourcesInline = function() {
+            return config.showInlineSources || mainInterface.getCurrentViewMode() !== 'readingTxt';
+        };
+
+        mainInterface.isAnaloguesInline = function() {
+            return config.showInlineAnalogues || mainInterface.getCurrentViewMode() !== 'readingTxt';
+        };
         /* ************** */
         /* PARAMS UPDATES */
         /* ************** */

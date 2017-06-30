@@ -16,6 +16,7 @@ angular.module('evtviewer.quote')
             
             //scope.scopeViewMode = evtInterface.getCurrentViewMode();
             // Initialize quote
+            scope.inlineApparatus = evtInterface.isSourcesInline();
             var currentQuote = evtQuote.build(scope);
             
             // Garbage collection

@@ -181,6 +181,11 @@ angular.module('evtviewer.core')
     /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
     analogueDef : '',
 
+    showReadingExponent: true,
+    showInlineCriticalApparatus: true,
+    showInlineSources: false,
+    showInlineAnalogues: false,
+
 	loadCriticalEntriesImmediately: true,
 	maxWitsLoadTogether: 5,
 

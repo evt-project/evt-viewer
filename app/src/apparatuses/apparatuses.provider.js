@@ -26,7 +26,9 @@ angular.module('evtviewer.apparatuses')
 			//Aggiungere nella configurazione, un array con l'ordine degli apparati
 			//E la struttura dei tabs
 			var currentApparatus = scope.currentApparatus || 'Critical Apparatus', //l'apparato selezionato nell'interfaccia
-				apparatuses = [],
+				apparatuses = {
+					_indexes: []
+				},
 				appStructure = 'tabs',
                 appList = [],
 				quotesList = [],
@@ -62,41 +64,45 @@ angular.module('evtviewer.apparatuses')
 				}
 			}
 
-			if (currentApparatus === 'Critical Apparatus') {
-				evtInterface.updateCurrentApparatus('Critical Apparatus');
-			}
 			/*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
 
 
-			if (appList.length > 0) {
-				apparatuses.push({
+			if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
+				apparatuses.criticalApparatus = {
 					label: 'Critical Apparatus',
 					visibleList: appList.slice(0, 10),
 					list: appList
-				});
+				};
+				apparatuses._indexes.push('criticalApparatus');
 			}
-			if (quotesList.length > 0) {
-				apparatuses.push({
+			if (!evtInterface.isSourcesInline() && quotesList.length > 0) {
+				apparatuses.sources = {
 					label: 'Sources',
 					visibleList: quotesList.slice(0, 10),
 					list: quotesList
-				});
+				};
+				apparatuses._indexes.push('sources');
 			}
-			if (analoguesList.length > 0) {
-				apparatuses.push({
+			if (!evtInterface.isAnaloguesInline() && analoguesList.length > 0) {
+				apparatuses.analogues = {
 					label: 'Analogues',
 					visibleList: analoguesList.slice(0, 10),
 					list: analoguesList
-				});
+				};
+				apparatuses._indexes.push('analogues');
+			}
+
+			if (apparatuses._indexes.length > 0) {
+				console.log(apparatuses._indexes[0])
+				evtInterface.updateCurrentApparatus(apparatuses._indexes[0]);
 			}
 
 			var scopeHelper = {
 				uid: currentId,
-				currentApparatus: currentApparatus,
+				currentApparatus: apparatuses._indexes.length > 0 ? apparatuses._indexes[0] : '',
 				apparatuses: apparatuses,
 				appStructure: appStructure
 			};
-			console.log(apparatuses)
 			collection[currentId] = angular.extend(scope.vm, scopeHelper);
 			list.push({
 				id: currentId
@@ -106,6 +112,7 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		apparatuses.setCurrentApparatus = function(app) {
+			console.log(app)
 			evtInterface.updateCurrentApparatus(app);
 			angular.forEach(collection, function(currentApparatuses) {
 				currentApparatuses.currentApparatus = app;
@@ -117,7 +124,6 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		apparatuses.alignScrollToApp = function(appId) {
-			console.log('alignScrollToApp', appId);
 			for (var i in collection) {
 				if (collection[i].scrollToAppEntry !== undefined) {
 					collection[i].scrollToAppEntry(appId);

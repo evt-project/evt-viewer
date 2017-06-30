@@ -18,6 +18,7 @@ angular.module('evtviewer.reading')
         link: function(scope, element, attrs){
             // Initialize reading
             scope.currentViewMode = evtInterface.getCurrentViewMode();
+            scope.inlineApparatus = evtInterface.isCriticalApparatusInline();
             var currentReading = evtReading.build(scope.appId, scope);
             
             // Garbage collection

@@ -10,7 +10,7 @@ angular.module('evtviewer.reading')
 
     var currentAppEntry = '';
 
-    this.$get = function(parsedData) {
+    this.$get = function(config, parsedData) {
         var reading    = {},
             collection = {},
             list       = [],
@@ -25,8 +25,8 @@ angular.module('evtviewer.reading')
             var currentId  = idx++,
                 entryId    = id || undefined,
                 attributes = '',
-                parentEntryId;
-
+                parentEntryId,
+                showExponent = config.showReadingExponent;
             var scopeHelper = {};
             
             if (typeof(collection[currentId]) !== 'undefined') {
@@ -86,6 +86,7 @@ angular.module('evtviewer.reading')
                 type             : scope.type,
                 attributes       : attributes,
                 exponent         : exponent,
+                showExponent     : showExponent,
 
                 over             : false,
                 apparatus        : {
@@ -93,7 +94,7 @@ angular.module('evtviewer.reading')
                     content           : {},
                     _loaded           : false,
                     _subContentOpened : 'criticalNote',
-                    inline            : scope.currentViewMode !== 'readingTxt'
+                    inline            : scope.inlineApparatus
                 },
                 selected         : entryId === reading.getCurrentAppEntry(),
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),

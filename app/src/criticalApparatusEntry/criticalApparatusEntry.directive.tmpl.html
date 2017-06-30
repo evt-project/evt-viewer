@@ -8,7 +8,7 @@
              'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
       <span class="apparatus_exponent"
-            ng-if="!vm.inline"
+            ng-if="::vm.showExponent"
             compile="vm.exponent"></span>
 
       <span 

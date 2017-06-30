@@ -10,7 +10,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 	var currentAppEntry = '';
 
-	this.$get = function(parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements) {
+	this.$get = function(config, parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements) {
 		var appEntry = {},
 			collection = {},
 			list = [],
@@ -24,7 +24,8 @@ angular.module('evtviewer.criticalApparatusEntry')
 			var currentId = idx++,
 				entryId = id || undefined,
 				scopeWit = scope.scopeWit || '',
-				type = scope.type || 'default';
+				type = scope.type || 'default',
+				showExponent = config.showReadingExponent;
 
 			var scopeHelper = {};
 
@@ -110,6 +111,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 				selected: false,
 				tabs: tabs,
 				exponent: exponent,
+				showExponent: showExponent,
 				witnessesGroups: witnessesGroups,
 				currentViewMode: scope.scopeViewMode
 			};

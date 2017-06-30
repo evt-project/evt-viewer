@@ -83,8 +83,8 @@ angular.module('evtviewer.reading')
         evtPopover.closeAll();
         if ( !vm.hidden && vm.over ) {
             if (!vm.apparatus.inline) {
-                if (evtApparatuses.getCurrentApparatus() !== 'Critical Apparatus') {
-                    evtApparatuses.setCurrentApparatus('Critical Apparatus');
+                if (evtApparatuses.getCurrentApparatus() !== 'criticalApparatus') {
+                    evtApparatuses.setCurrentApparatus('criticalApparatus');
                 }
                 evtApparatuses.alignScrollToApp(vm.appId);
                 evtCriticalApparatusEntry.selectById(vm.appId);

@@ -67,8 +67,8 @@ angular.module('evtviewer.analogue')
 		evtPopover.closeAll();
 		if (vm.over) {
 			if (!vm.apparatus.inline) {
-				if (evtApparatuses.getCurrentApparatus() !== 'Analogues') {
-					evtApparatuses.setCurrentApparatus('Analogues');
+				if (evtApparatuses.getCurrentApparatus() !== 'analogues') {
+					evtApparatuses.setCurrentApparatus('analogues');
 				}
 				evtAnaloguesApparatusEntry.selectById(vm.analogueId);
 				evtApparatuses.alignScrollToAnalogue(vm.analogueId);

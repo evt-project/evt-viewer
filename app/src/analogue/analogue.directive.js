@@ -1,6 +1,6 @@
 angular.module('evtviewer.analogue')
 
-.directive('evtAnalogue', function(evtAnalogue) {
+.directive('evtAnalogue', function(evtAnalogue, evtInterface) {
 	return {
 		restrict: 'E',
 		scope: {
@@ -13,6 +13,8 @@ angular.module('evtviewer.analogue')
 		controller: 'AnalogueCtrl',
 		link: function(scope, element, attrs) {
 			//Initialize analogue
+			scope.inlineApparatus = evtInterface.isAnaloguesInline();
+
 			var currentAnalogue = evtAnalogue.build(scope);
 
 			//Garbage collection

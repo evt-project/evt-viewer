@@ -91,6 +91,12 @@
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
+    "showReadingExponent": true,
+    
+    "showInlineCriticalApparatus": false,
+    "showInlineSources": false,
+    "showInlineAnalogues": false,
+
 	"variantColors": {
 		"type": {
 			"lessicographic": "rgb(108, 145, 207)",

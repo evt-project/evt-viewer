@@ -174,7 +174,7 @@
                     </div>
                 </box>
                 <box
-                    ng-if="getCurrentEdition() === 'critical'"
+                    ng-if="isApparatusBoxOpen()"
                     data-type="apparatuses"
                     id="apparatuses"
                     ng-class="{ 'smaller' : isPinnedAppBoardOpened() && isApparatusBoxOpen() }">

@@ -74,8 +74,8 @@ angular.module('evtviewer.quote')
         evtPopover.closeAll();
         if (vm.over) {
             if(!vm.apparatus.inline) {
-                if (evtApparatuses.getCurrentApparatus() !== 'Sources') {
-                    evtApparatuses.setCurrentApparatus('Sources');
+                if (evtApparatuses.getCurrentApparatus() !== 'sources') {
+                    evtApparatuses.setCurrentApparatus('sources');
                 }                    
                 //Dopo l'avvio ancora non è stato creato alcun apparato, non c'è un apparato corrente
                 evtSourcesApparatusEntry.selectById(vm.quoteId);

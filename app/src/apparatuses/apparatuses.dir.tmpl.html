@@ -29,7 +29,7 @@
             ng-switch="vm.currentApparatus">
             <div
                 class="active-apparatus"
-                ng-switch-when="Critical Apparatus">
+                ng-switch-when="criticalApparatus">
                 <evt-critical-apparatus-entry
                     ng-repeat="app in vm.getVisibleList('Critical Apparatus')"
                     data-app-id="{{::app}}">
@@ -37,7 +37,7 @@
             </div>
             <div
                 class="active-apparatus"
-                ng-switch-when="Sources">
+                ng-switch-when="sources">
                 <evt-sources-apparatus-entry
                     ng-repeat="quote in vm.getVisibleList('Sources')"
                     data-quote-id="{{::quote}}">
@@ -45,7 +45,7 @@
             </div>
             <div
                 class="active-apparatus"
-                ng-switch-when="Analogues">
+                ng-switch-when="analogues">
                 <evt-analogues-apparatus-entry
                     ng-repeat="analogue in vm.getVisibleList('Analogues')"
                     data-analogue-id="{{::analogue}}">

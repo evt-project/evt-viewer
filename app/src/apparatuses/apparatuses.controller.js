@@ -34,28 +34,13 @@ angular.module('evtviewer.apparatuses')
 	};
 
 	this.getAppList = function(app) {
-		var list;
-		for (var i in vm.apparatuses) {
-			if (vm.apparatuses[i].label === app) {
-				list = vm.apparatuses[i];
-			}
-		}
+		var list = vm.apparatuses[app] ? vm.apparatuses[app].list : [];
 		return list;
-	};
-
-	this.getAppIndex = function(app) {
-		var index;
-		for (var i in vm.apparatuses) {
-			if (vm.apparatuses[i].label === app) {
-				index = i;
-			}
-		}
-		return index;
 	};
 
 	this.loadMoreElements = function() {
 		var vm = this,
-        	appIndex = vm.getAppIndex(vm.currentApparatus),
+        	appIndex = vm.currentApparatus,
             last = vm.apparatuses[appIndex].visibleList.length,
             i = 0; 
             console.log('loadMoreElements', vm.currentApparatus);

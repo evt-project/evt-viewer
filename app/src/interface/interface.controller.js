@@ -173,6 +173,10 @@ angular.module('evtviewer.interface')
 			return evtInterface.isApparatusBoxOpen();
 		};
 
+		$scope.showApparatusesBox = function() {
+			return evtInterface.isApparatusBoxOpen() && evtInterface.getCurrentEdition() === 'critical';
+		};
+
 		$scope.getCurrentVersions = function() {
 			return evtInterface.getCurrentVersions();
 		};

@@ -37,7 +37,7 @@ angular.module('evtviewer.analogue')
 					opened: false,
 					content: {},
 					_loaded: false,
-					inline: evtInterface.getCurrentViewMode() !== 'readingTxt'
+					inline: scope.inlineApparatus
 				},
 				openTriggerEvent: angular.copy(defaults.openTriggerEvent),
 				defaults: angular.copy(defaults)
