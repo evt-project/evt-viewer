@@ -85,6 +85,7 @@ section > div{
 	@include mainNavArrow();
 }
 
+@import "apparatuses.scss";
 @import "selector.scss";
 @import "bibliography.scss";
 @import "buttonSwitch.scss";

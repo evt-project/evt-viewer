@@ -1,6 +1,6 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg) {
+.directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {
     return {
         restrict: 'E',
         scope: {
@@ -48,6 +48,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 if (quoteToAlign !== '' && segToAlign !== '') {
                     //evtSourceSeg.updateCurrentQuote(currentQuote);
                     evtBox.alignScrollToQuote(quoteToAlign, segToAlign);
+                    evtApparatuses.alignScrollToQuote(quoteToAlign, segToAlign);
                 }
             };
         }

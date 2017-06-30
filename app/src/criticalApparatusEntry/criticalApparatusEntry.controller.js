@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtCriticalApparatusEntry, evtReading, evtBox, evtPinnedElements) {
+.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtCriticalApparatusEntry, evtReading, evtBox, evtApparatuses, evtPinnedElements) {
     $scope.content = {};
     var vm = this;
 
@@ -47,6 +47,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
     this.alignReadings = function(){
         evtBox.alignScrollToApp(vm.appId);
+        evtApparatuses.alignScrollToApp(vm.appId);
     };
 
     this.destroy = function() {

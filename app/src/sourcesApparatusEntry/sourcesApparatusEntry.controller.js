@@ -1,6 +1,6 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox, evtInterface, parsedData) {
+.controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox, evtApparatuses, evtInterface, parsedData) {
     $scope.content = {};
     var vm = this;
     
@@ -103,6 +103,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     this.alignQuotes = function() {
         evtBox.alignScrollToQuote(vm.quoteId);
+        evtApparatuses.alignScrollToQuote(vm.quoteId);
         evtQuote.selectById(vm.quoteId);
     };
 

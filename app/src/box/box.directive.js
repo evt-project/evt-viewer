@@ -209,15 +209,11 @@ angular.module('evtviewer.box')
 
 
             //Added by CM
-            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'apparatuses' || currentBox.type === 'version') {
+            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (currentBox.type === 'apparatuses') {
-                            var apparatusesElem = $('#'+currentBox.uid).find('evt-apparatuses')[0];
-                            padding += apparatusesElem.offsetTop;
-                        }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;
                         }
@@ -228,10 +224,6 @@ angular.module('evtviewer.box')
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-quote-id=\''+quoteId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (currentBox.type === 'apparatuses') {
-                            var apparatusesElem = $('#'+currentBox.uid).find('evt-apparatuses')[0];
-                            padding += apparatusesElem.offsetTop;
-                        }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;
                         }
@@ -242,10 +234,6 @@ angular.module('evtviewer.box')
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-analogue-id=\''+analogueId+'\']');
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (currentBox.type === 'apparatuses') {
-                            var apparatusesElem = $('#'+currentBox.uid).find('evt-apparatuses')[0];
-                            padding += apparatusesElem.offsetTop;
-                        }
                         if (appElem.length > 0 && appElem[0] !== undefined) {
                             boxBody.scrollTop = appElem[0].offsetTop-padding;
                         }

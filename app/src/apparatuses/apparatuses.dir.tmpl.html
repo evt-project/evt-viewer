@@ -17,39 +17,37 @@
 
 <div
     class="apparatuses_main"
+    id="apparatuses_{{::vm.uid}}"
     ng-switch="vm.appStructure">
 
     <div
         class="apparatuses_tabs"
+        infinite-scroll="vm.loadMoreElements()" infinite-scroll-distance="2" infinite-scroll-parent='true'
         ng-switch-when="tabs">
         <div
             class="apparatuses_tabs_body"
-            ng-repeat="apparatus in ::vm.apparatuses"
-            ng-switch="::apparatus.label">
+            ng-switch="vm.currentApparatus">
             <div
                 class="active-apparatus"
-                ng-show="apparatus.label === vm.currentApparatus"
                 ng-switch-when="Critical Apparatus">
                 <evt-critical-apparatus-entry
-                    ng-repeat="app in ::vm.getList('Critical Apparatus')"
+                    ng-repeat="app in vm.getVisibleList('Critical Apparatus')"
                     data-app-id="{{::app}}">
-                    </evt-critical-apparatus-entry>
+                </evt-critical-apparatus-entry>
             </div>
             <div
                 class="active-apparatus"
-                ng-show="apparatus.label === vm.currentApparatus"
                 ng-switch-when="Sources">
                 <evt-sources-apparatus-entry
-                    ng-repeat="quote in ::vm.getList('Sources')"
+                    ng-repeat="quote in vm.getVisibleList('Sources')"
                     data-quote-id="{{::quote}}">
                 </evt-sources-apparatus-entry>
             </div>
             <div
                 class="active-apparatus"
-                ng-show="apparatus.label === vm.currentApparatus"
                 ng-switch-when="Analogues">
                 <evt-analogues-apparatus-entry
-                    ng-repeat="analogue in ::vm.getList('Analogues')"
+                    ng-repeat="analogue in vm.getVisibleList('Analogues')"
                     data-analogue-id="{{::analogue}}">
                 </evt-analogues-apparatus-entry>
             </div>

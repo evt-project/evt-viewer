@@ -71,7 +71,7 @@ angular.module('evtviewer.analogue')
 					evtApparatuses.setCurrentApparatus('Analogues');
 				}
 				evtAnaloguesApparatusEntry.selectById(vm.analogueId);
-				evtBox.getById('apparatuses').scrollToAnaloguesEntry(vm.analogueId);
+				evtApparatuses.alignScrollToAnalogue(vm.analogueId);
 			} else if (!vm.apparatus._loaded) {
 				vm.apparatus._loaded = true;
 			}

@@ -296,7 +296,8 @@
 
         }
         .box-body {
-            overflow-y: scroll;
+            overflow: hidden;
+            padding : 0;
             border-color: $box-witness-structure-color-dark;
         }
         padding : 0;

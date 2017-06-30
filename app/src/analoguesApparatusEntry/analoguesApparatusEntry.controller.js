@@ -1,6 +1,6 @@
 angular.module('evtviewer.analoguesApparatusEntry')
 
-.controller('analoguesApparatusEntryCtrl', function(evtAnaloguesApparatusEntry, evtInterface, evtAnalogue, evtBox, parsedData) {
+.controller('analoguesApparatusEntryCtrl', function(evtAnaloguesApparatusEntry, evtInterface, evtAnalogue, evtBox, evtApparatuses, parsedData) {
 	var vm = this;
 
 	/**********************/
@@ -101,6 +101,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 	this.alignAnalogues = function() {
 		evtBox.alignScrollToAnalogue(vm.analogueId);
+		evtApparatuses.alignScrollToAnalogue(vm.analogueId);
 		evtAnalogue.selectById(vm.analogueId);
 	};
 

@@ -79,7 +79,7 @@ angular.module('evtviewer.quote')
                 }                    
                 //Dopo l'avvio ancora non è stato creato alcun apparato, non c'è un apparato corrente
                 evtSourcesApparatusEntry.selectById(vm.quoteId);
-                evtBox.getById('apparatuses').scrollToQuotesEntry(vm.quoteId);
+                evtApparatuses.alignScrollToQuote(vm.quoteId);
             } else if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 

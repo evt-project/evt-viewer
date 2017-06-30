@@ -1,6 +1,6 @@
 angular.module('evtviewer.versionApparatusEntry')
 
-.controller('versionApparatusEntryCtrl', function(config, evtBox, evtVersionApparatusEntry, $scope) {
+.controller('versionApparatusEntryCtrl', function(config, evtBox, evtApparatuses, evtVersionApparatusEntry, $scope) {
     var vm = this;
     
      this.toggleSubContent = function(subContentName) {
@@ -17,6 +17,7 @@ angular.module('evtviewer.versionApparatusEntry')
     
     this.alignReadings = function(){
         evtBox.alignScrollToApp(vm.appId);
+        evtApparatuses.alignScrollToApp(vm.appId);
     };
 
     this.destroy = function() {
