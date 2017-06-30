@@ -143,8 +143,7 @@
                         
                         <evt-critical-apparatus-entry
                             ng-if="::evtPinnedElements.getPinnedElementType(entry) === 'criticalApparatusEntry'"
-                            class="in_critical_apparatus"
-                            ng-class="{'active': getCurrentAppEntry() === entry}"
+                            class="in_critical_apparatus active"
                             ng-click="updateCurrentAppEntry(entry);"
                             data-type="pinned"
                             data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
