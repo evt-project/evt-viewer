@@ -8,7 +8,7 @@ angular.module('evtviewer.buttonSwitch')
 		defaults = _defaults;
 	};
 
-    this.$get = function($timeout, $log, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
+    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
         var button    = {},
             collection = {},
             list       = [],
@@ -52,6 +52,12 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'color-legend':
 					evtIcon = 'icon-evt_color-legend';
+					break;
+				case 'download':
+					evtIcon = 'fa fa-download'; //TODO: add icon in EVT font
+					break;
+				case 'download-xml':
+					evtIcon = 'fa fa-file-code-o'; //TODO: add icon in EVT font
 					break;
 				case 'filter':
 				case 'filters':
@@ -254,6 +260,11 @@ angular.module('evtviewer.buttonSwitch')
 				case 'closePinned':
                     callback = function() {
 						evtInterface.togglePinnedAppBoardOpened();
+					};
+					break;
+				case 'download-xml': 
+					callback = function() {
+						window.open(config.dataUrl, '_blank');
 					};
 					break;
 				case 'fontSizeDecrease':

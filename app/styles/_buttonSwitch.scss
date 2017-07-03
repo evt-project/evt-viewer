@@ -68,8 +68,11 @@ button-switch {
             position: relative;
             right: 0px;
             top: 9px;
-            font-size: 1.4em
+            font-size: 1.4em;
 
+            &.fa {
+                font-size: 1.1em !important;
+            }
         }
         &.iconLeft {
             .buttonSwitch-icon {

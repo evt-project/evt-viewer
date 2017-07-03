@@ -4,6 +4,7 @@
     
     "sourcesTextsUrl" : "",
     "logoUrl": "",
+    "enableXMLdownload" : true,
     "analoguesUrl"     : "",
 
 	"preferredWitness": "",

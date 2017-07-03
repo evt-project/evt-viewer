@@ -32,6 +32,7 @@ angular.module('evtviewer.interface')
         var properties = {
             indexTitle         : '',
             logoUrl            : '',
+            enableXMLdownload  : false,
             availableViewModes : [ ],
             availableWitnesses : [ ],
             witnessSelector    : false,
@@ -51,6 +52,7 @@ angular.module('evtviewer.interface')
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
                 properties.indexTitle         = config.indexTitle;
                 properties.logoUrl            = config.logoUrl;
+                properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
                 
                 //TODO: object containing all the external files in globaldefault
