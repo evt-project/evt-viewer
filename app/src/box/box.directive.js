@@ -144,7 +144,7 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
-
+                
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
@@ -169,11 +169,11 @@ angular.module('evtviewer.box')
                 // scope.$watch(function() {
                 //     return evtInterface.getCurrentAppEntry();
                 // }, function(newItem, oldItem) {
-                    // if (oldItem !== newItem) {
-                        // if (evtInterface.getCurrentViewMode() === 'collation' && evtInterface.getCurrentWitnesses().length > 0){
-                            // scope.vm.scrollToAppEntry(newItem);
-                        // }
-                    // }
+                //     if (oldItem !== newItem) {
+                //         if (evtInterface.getCurrentViewMode() === 'collation' && evtInterface.getCurrentWitnesses().length > 0){
+                //             scope.vm.scrollToAppEntry(newItem);
+                //         }
+                //     }
                 // }, true);
                 
                 scope.$watch(function() {
@@ -210,16 +210,6 @@ angular.module('evtviewer.box')
 
             //Added by CM
             if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
-                scope.vm.scrollToAppEntry = function(appId) {
-                    $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (appElem.length > 0 && appElem[0] !== undefined) {
-                            boxBody.scrollTop = appElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-
                 scope.vm.scrollToQuotesEntry = function(quoteId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-quote-id=\''+quoteId+'\']');

@@ -35,7 +35,7 @@
             ng-click="vm.togglePin()"></button-switch>
       <button-switch 
             title="Align Readings"
-            ng-if="::vm.type === 'default' && (scopeViewMode === 'collation' || scopeViewMode === 'readingTxt')"
+            ng-if="::vm.type === 'default' && (scopeViewMode === 'collation' || !vm.showInlineCriticalApparatus())"
             data-label=""
             data-icon="v-align"
             data-type="alignReadings"

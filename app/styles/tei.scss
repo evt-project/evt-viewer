@@ -110,11 +110,19 @@
         display: block;
     }
 
-    &[data-rend='indent'] {
+    &[data-rend='indent']:not(.l-hasLineN),
+    &-hasLineN[data-rend='indent'] .lineContent {
         text-indent: 1.5rem;
     }
+    .lineContent {
+        display: inline-block;
+    }
 
-    &-indent {
+    &-hasLineN[data-rend='indent'] {
+        text-indent: 0 !important;
+    }
+
+    &-indent:not(.l-hasLineN){
         margin-left: 34px;
     }
 

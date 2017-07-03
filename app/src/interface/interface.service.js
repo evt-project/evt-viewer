@@ -325,6 +325,10 @@ angular.module('evtviewer.interface')
             }
         };
 
+        mainInterface.updateCurrentAppEntry = function(appId){
+            state.currentAppEntry = appId;
+        };
+
         /*************/
         /*Added by CM*/
         /*************/

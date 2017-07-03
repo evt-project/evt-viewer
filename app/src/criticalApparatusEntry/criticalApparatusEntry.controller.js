@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtCriticalApparatusEntry, evtReading, evtBox, evtApparatuses, evtPinnedElements) {
+.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtInterface, evtCriticalApparatusEntry, evtReading, evtBox, evtApparatuses, evtPinnedElements) {
     $scope.content = {};
     var vm = this;
 
@@ -90,7 +90,13 @@ angular.module('evtviewer.criticalApparatusEntry')
                 evtCriticalApparatusEntry.unselectAll();
                 evtCriticalApparatusEntry.selectById(vm.appId);
                 evtReading.selectById(vm.appId);
+                evtInterface.updateCurrentAppEntry(vm.appId);
+                evtBox.alignScrollToApp(vm.appId);
             }
         }
+    };
+
+    this.showInlineCriticalApparatus = function() {
+        return config.showInlineCriticalApparatus;
     };
 });

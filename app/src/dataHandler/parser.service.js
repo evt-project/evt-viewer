@@ -450,7 +450,9 @@ angular.module('evtviewer.dataHandler')
             var lineNumElem = document.createElement('span');
             lineNumElem.className = 'lineN';
             lineNumElem.textContent = lineNum;
-            newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
+            newElement.className += ' l-hasLineN';
+            newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">'+newElement.innerHTML+'</span>';
+            //newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
         } else  if (parsedData.getEncodingDetail('lineNums')) {
             newElement.className += ' l-indent';
         }
