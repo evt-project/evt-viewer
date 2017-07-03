@@ -65,6 +65,8 @@ angular.module('evtviewer.core')
 
 
 	dataUrl: '',
+	logoUrl: '',
+
     /*sourcesUrl*/
     /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
     sourcesUrl       : '',
@@ -104,7 +106,7 @@ angular.module('evtviewer.core')
 	}],
 
 	showDocumentSelector: true,
-	
+
 	defaultViewMode: 'readingTxt',
 	availableViewModes: [{
                                 label    : 'Reading Text',

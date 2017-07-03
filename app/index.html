@@ -42,6 +42,7 @@
 
 
     <header>
+        <img class="logo" src="{{ :: getProperty('logoUrl') }}" ng-if="getProperty('logoUrl') !== ''"/>
         {{ getProperty('indexTitle') }}
         <div class="globalMenu">
             <button-switch

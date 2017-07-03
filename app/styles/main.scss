@@ -44,9 +44,15 @@ body{
 	> header, 
 	> footer{
 		height:54px;
-		padding: 10px 30px;
+		padding: 10px;
 		@include colors($base-color-light, $base-color-dark);
 	}
+
+    > header .logo {
+        height: 34px;
+        float: left;
+        margin-right: 1rem;
+    }
 }
 
 footer{

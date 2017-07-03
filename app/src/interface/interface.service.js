@@ -31,6 +31,7 @@ angular.module('evtviewer.interface')
 
         var properties = {
             indexTitle         : '',
+            logoUrl            : '',
             availableViewModes : [ ],
             availableWitnesses : [ ],
             witnessSelector    : false,
@@ -49,6 +50,7 @@ angular.module('evtviewer.interface')
         mainInterface.boot = function() {  
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
                 properties.indexTitle         = config.indexTitle;
+                properties.logoUrl            = config.logoUrl;
                 properties.availableViewModes = config.availableViewModes;
                 
                 //TODO: object containing all the external files in globaldefault
