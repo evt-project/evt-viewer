@@ -441,7 +441,7 @@ angular.module('evtviewer.dataHandler')
         for (var i = 0; i < lineNode.attributes.length; i++) {
             var attrib = lineNode.attributes[i];
             if (attrib.specified) {
-                newElement.setAttribute('data-' + attrib.name, attrib.value);
+                newElement.setAttribute('data-' + attrib.name.replace(':', '-'), attrib.value);
             }
         }
         newElement.innerHTML = lineNode.innerHTML;
