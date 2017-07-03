@@ -224,11 +224,11 @@ angular.module('evtviewer.select')
 					break;
 				case 'witness':
 					optionSelectedValue = initValue;
-					callback = function(oldOption, newOption) {
+					callback = function(optionSelected, newOption) {
 						vm.collapse();
-						if (oldOption !== undefined) {
+						if (optionSelected !== undefined && optionSelected[0] !== undefined) {
 							if (newOption !== undefined) {
-								evtInterface.switchWitnesses(oldOption.value, newOption.value);
+								evtInterface.switchWitnesses(optionSelected[0].value, newOption.value);
 								evtInterface.updateUrl();
 							}
 						} else if (newOption !== undefined) {
