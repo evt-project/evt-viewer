@@ -266,6 +266,13 @@
         }
     }
 }
+
+.listchange {
+    .change {
+        display: list-item;
+        margin-left: 1.5rem;
+    }
+}
 .msDesc {
     ::before {
         font-weight: bold;
