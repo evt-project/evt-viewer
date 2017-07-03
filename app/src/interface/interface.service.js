@@ -229,7 +229,6 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.getCurrentWitnesses = function(){
-            console.log(state.currentWits)
             return state.currentWits;
         };
 

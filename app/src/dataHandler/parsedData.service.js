@@ -6,6 +6,8 @@ angular.module('evtviewer.dataHandler')
 
 	_console.log('parsedData running');
 
+	var encodingDetails = {	};
+
 	var projectInfo = {
 		fileDescription: '',
 		encodingDescription: '',
@@ -103,6 +105,14 @@ angular.module('evtviewer.dataHandler')
 			_indexes: []	
 		},
 		_indexes: []
+	};
+
+	parsedData.getEncodingDetail = function(detailName) {
+		return encodingDetails[detailName];
+	};
+
+	parsedData.setEncodingDetail = function(detailName, value) {
+		return encodingDetails[detailName] = value;
 	};
 
 	parsedData.getNamedEntityTypeIcon = function(type) { //TODO: Move in Utils provider (?)

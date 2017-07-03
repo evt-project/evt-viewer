@@ -105,6 +105,28 @@
             content:" // ";
         }
     }
+
+    &-block {
+        display: block;
+    }
+
+    &[data-rend='indent'] {
+        text-indent: 1.5rem;
+    }
+
+    &-indent {
+        margin-left: 34px;
+    }
+
+    .lineN {
+        text-align: right;
+        color: grey;
+        font-size: 0.8em;
+        margin-right: 10px;
+        height: 100%;
+        width: 24px !important;
+        display: inline-block;
+    }
 }
 
 .lacuna, .fragment {

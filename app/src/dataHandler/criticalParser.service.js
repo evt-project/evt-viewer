@@ -160,6 +160,13 @@ angular.module('evtviewer.dataHandler')
 
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
+			angular.forEach(docDOM.querySelectorAll('[exclude]'), function(elem) {
+				var excludeAttr = elem.getAttribute('exclude');
+				if (excludeAttr && excludeAttr.indexOf('#' + wit) >= 0) {
+					elem.parentNode.removeChild(elem);
+				}
+			});
+
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + ',' + config.lacunaMilestone + ',' + config.fragmentMilestone;
 				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);

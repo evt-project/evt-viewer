@@ -88,6 +88,7 @@ angular.module('evtviewer.dataHandler')
     };
 
     var launchXMLParsers = function(docElements) {
+        evtParser.analyzeEncoding(docElements);
         // Parse pages
         // evtParser.parsePages(docElements);
         

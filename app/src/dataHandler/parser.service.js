@@ -6,6 +6,8 @@ angular.module('evtviewer.dataHandler')
     // TODO: create module provider and add default configuration
     // var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
+        defLineBreak = '<lb>',
+        defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
@@ -114,10 +116,9 @@ angular.module('evtviewer.dataHandler')
 					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip, exclude));
 				}
 			} else {
-				// if (tagName === 'l') {
-				//     newElement = parser.parseLine(element);
-				// } else 
-				if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
+				if (!parsedData.getEncodingDetail('usesLineBreaks') && tagName === 'l') {
+				     newElement = parser.parseLine(element);
+				} else if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
 					newElement = document.createElement('span');
@@ -364,6 +365,16 @@ angular.module('evtviewer.dataHandler')
 		return (XHTMLstring);
 	};
 
+    parser.analyzeEncoding = function(doc) {
+        // Check if uses line breaks to divide lines
+        var currentDocument = angular.element(doc);
+        var lineBreaks = currentDocument.find(defLineBreak.replace(/[<>]/g, ''));
+        parsedData.setEncodingDetail('usesLineBreaks', lineBreaks.length > 0);
+
+        var lineNums = currentDocument.find(defLine.replace(/[<>]/g, '')+'[n]');
+        parsedData.setEncodingDetail('lineNums', lineNums.length > 0);
+    };
+
 	/* ************************ */
 	/* parseNote(docDOM) */
 	/* **************************************************************************** */
@@ -415,30 +426,39 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parser.parseLines = function(docDOM) {
-		var lines = docDOM.getElementsByTagName('l');
-		var n = 0;
-		while (n < lines.length) {
-			var lineNode = lines[n],
-				newElement = parser.parseLine(lineNode);
-			lineNode.parentNode.replaceChild(newElement, lineNode);
-		}
-	};
+        var lines = docDOM.getElementsByTagName('l');
+        var n = 0;
+        while (n < lines.length) {
+            var lineNode = lines[n],
+                newElement = parser.parseLine(lineNode);
+            lineNode.parentNode.replaceChild(newElement, lineNode);
+        }
+    };
 
-	parser.parseLine = function(lineNode) {
-		var newElement = document.createElement('div');
-		newElement.className = 'l';
-		newElement.className = lineNode.tagName;
-		for (var i = 0; i < lineNode.attributes.length; i++) {
-			var attrib = lineNode.attributes[i];
-			if (attrib.specified) {
-				newElement.setAttribute('data-' + attrib.name, attrib.value);
-			}
-		}
-		newElement.innerHTML = lineNode.innerHTML;
+    parser.parseLine = function(lineNode) {
+        var newElement = document.createElement('div');
+        newElement.className = lineNode.tagName + ' l-block';
+        for (var i = 0; i < lineNode.attributes.length; i++) {
+            var attrib = lineNode.attributes[i];
+            if (attrib.specified) {
+                newElement.setAttribute('data-' + attrib.name, attrib.value);
+            }
+        }
+        newElement.innerHTML = lineNode.innerHTML;
+        var lineNum = lineNode.getAttribute('n');
+        if (lineNum && lineNum !== '') {
+            var lineNumElem = document.createElement('span');
+            lineNumElem.className = 'lineN';
+            lineNumElem.textContent = lineNum;
+            newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
+        } else  if (parsedData.getEncodingDetail('lineNums')) {
+            newElement.className += ' l-indent';
+        }
+
 		return newElement;
 	};
-
-	parser.parseGlyphs = function(doc) {
+    
+    parser.parseGlyphs = function(doc) {
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.find('glyph, char'),
 			function(element) {
