@@ -85,7 +85,7 @@ angular.module('evtviewer.core')
 
 	defaultEdition: 'critical',
 
-	editionLevelSelector: true,
+	showEditionLevelSelector: true,
 	availableEditionLevel: [{
 		value: 'critical',
 		label: 'Critical',
@@ -103,6 +103,8 @@ angular.module('evtviewer.core')
 		visible: true
 	}],
 
+	showDocumentSelector: true,
+	
 	defaultViewMode: 'readingTxt',
 	availableViewModes: [{
                                 label    : 'Reading Text',

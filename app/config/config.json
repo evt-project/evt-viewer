@@ -12,7 +12,7 @@
 	"webSite": "",
 
 	"defaultEdition": "critical",
-	"editionLevelSelector": true,
+	"showEditionLevelSelector": true,
 	"availableEditionLevel": [{
 		"value": "critical",
 		"label": "Critical",
@@ -29,6 +29,8 @@
 		"title": "Interpretative edition",
 		"visible": true
 	}],
+
+    "showDocumentSelector": false,
 
 	"defaultViewMode": "readingTxt",
 	"availableViewModes": [{

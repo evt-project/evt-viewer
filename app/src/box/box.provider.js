@@ -282,11 +282,13 @@ angular.module('evtviewer.box')
 					break;
 				case 'text':
 					//TODO: Differentiate main text from second one
-					topMenuList.selectors.push({
-						id: 'document_' + currentId,
-						type: 'document',
-						initValue: evtInterface.getCurrentDocument()
-					});
+					if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
+						topMenuList.selectors.push({
+							id: 'document_' + currentId,
+							type: 'document',
+							initValue: evtInterface.getCurrentDocument()
+						});
+					};
 					if (!parsedData.isCriticalEditionAvailable()) {
 						topMenuList.selectors.push({
 							id: 'page_' + currentId,
@@ -314,7 +316,7 @@ angular.module('evtviewer.box')
 					}
 
 
-					if (config.editionLevelSelector && config.availableEditionLevel.length > 0) {
+					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
 						topMenuList.selectors.push({
 							id: 'editionLevel_' + currentId,
 							type: 'edition',
@@ -411,6 +413,7 @@ angular.module('evtviewer.box')
 										});
 									});
 								} catch (err) {
+									_console.log(err);
 									newContent = errorMsg;
 									scope.vm.isLoading = false;
 								}
@@ -441,6 +444,7 @@ angular.module('evtviewer.box')
 										scope.vm.isLoading = false;
 									});
 								} catch (err) {
+									_console.log(err);
 									newContent = errorMsg;
 									scope.vm.isLoading = false;
 								}
@@ -472,6 +476,7 @@ angular.module('evtviewer.box')
 										});
 									});
 								} catch (err) {
+									_console.log(err);
 									newContent = errorMsg;
 									scope.vm.isLoading = false;
 								}
@@ -567,6 +572,7 @@ angular.module('evtviewer.box')
 											scope.vm.isLoading = false;
 										});
 									} catch (err) {
+										_console.log(err);
 										scope.vm.content = errorMsg;
 										scope.vm.isLoading = false;
 									}
@@ -680,6 +686,7 @@ angular.module('evtviewer.box')
 									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
 									updateTopBoxContent(sourceBibl);
 								} catch (err) {
+									_console.log(err);
 									scope.vm.content = errorMsg;
 									scope.vm.isLoading = false;
 								}
@@ -748,6 +755,7 @@ angular.module('evtviewer.box')
 											scope.vm.isLoading = false;
 										});
 									} catch (err) {
+										_console.log(err);
 										scope.vm.content = errorMsg;
 										scope.vm.isLoading = false;
 									}

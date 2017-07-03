@@ -547,7 +547,9 @@ angular.module('evtviewer.interface')
             if (newWitOldIndex >= 0) {
                 state.currentWits[newWitOldIndex] = oldWit;
             }
-            state.currentWits[oldWitOldIndex] = newWit;
+            if (oldWitOldIndex >= 0) {
+                state.currentWits[oldWitOldIndex] = newWit;
+            }
             //TODO: update box scroll to page on switching...
         };
 
