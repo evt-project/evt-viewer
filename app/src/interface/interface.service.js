@@ -151,7 +151,11 @@ angular.module('evtviewer.interface')
                             
                             mainInterface.updateUrl();
                             
-                            state.isApparatusBoxOpen = (!config.showInlineCriticalApparatus || !config.showInlineSources || !config.showInlineAnalogues);
+                            var quotesList = parsedData.getQuotes()._indexes.encodingStructure || [],
+                                quotesInBox = !config.showInlineSources && quotesList.length > 0
+                                analoguesList = parsedData.getAnalogues()._indexes.encodingStructure || [],
+                                analoguesInBox = !config.showInlineAnalogues && analoguesList.length > 0;
+                            state.isApparatusBoxOpen = (!config.showInlineCriticalApparatus || quotesInBox || analoguesInBox);
 
                             $rootScope.$applyAsync(state.isLoading = false);
 
