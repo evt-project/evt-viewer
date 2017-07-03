@@ -641,6 +641,9 @@ angular.module('evtviewer.dataHandler')
 			spanElement.appendChild(errorElement);
 		}
 		spanElement.setAttribute('data-type', 'variant');
+		if (spanElement.childNodes.length <= 0) {
+			spanElement.innerHTML = '<span class="emptyText"></span>';
+		}
 		return spanElement;
 	};
 
@@ -921,6 +924,9 @@ angular.module('evtviewer.dataHandler')
 			spanElement.appendChild(errorElement);
 		}
 
+		if (spanElement.childNodes.length <= 0) {
+			spanElement.innerHTML = '<span class="emptyText"></span>';
+		}
 		return spanElement;
 	};
 
