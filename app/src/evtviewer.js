@@ -10,14 +10,13 @@
  */
 angular
 	.module('evtviewer', [
-// Needed for mobile (temporarily deactivated)
-//		'ngAnimate',
-//		'ngCookies',
-//		'ngMessages',
-//		'ngResource',
-//		'ngSanitize',
-//		'ngTouch',
-//		'templates-main',
+		'ngAnimate',
+		'ngCookies',
+		'ngMessages',
+		'ngResource',
+		'ngSanitize',
+		'ngTouch',
+		'templates-main',
 		'ngRoute',
 		'xml',
 		'prettyXml',
@@ -29,7 +28,7 @@ angular
 		'evtviewer.box',
 		'evtviewer.select',
 		'evtviewer.buttonSwitch',
-//		'evtviewer.mobile',
+		'evtviewer.mobile',
 		'evtviewer.popover',
 		'evtviewer.namedEntity',
 		'evtviewer.criticalApparatusEntry',
