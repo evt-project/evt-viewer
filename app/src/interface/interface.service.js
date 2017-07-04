@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, $translate, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -55,6 +55,13 @@ angular.module('evtviewer.interface')
                 properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
                 
+                // Setting available languages and defaults
+                evtTranslation.setLanguages(config.languages);
+                var userLangKey = evtTranslation.getUserLanguage(),
+                    fallbackLangKey = evtTranslation.getFallbackLanguage();
+                $translate.fallbackLanguage(fallbackLangKey);
+                $translate.use(userLangKey);
+
                 //TODO: object containing all the external files in globaldefault
                 
                 // Parse the external Sources file, if defined (@author: CM)

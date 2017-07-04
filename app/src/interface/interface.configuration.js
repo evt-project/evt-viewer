@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.config(function($routeProvider, $locationProvider) {   
+.config(function($routeProvider, $locationProvider, $translateProvider) {   
     $locationProvider.hashPrefix('');
     $routeProvider
         .when('/:viewMode', {
@@ -31,6 +31,15 @@ angular.module('evtviewer.interface')
         //     template: 'index.html',
         //     controller: 'InterfaceCtrl'
         // });
+
+        $translateProvider.useStaticFilesLoader({
+            prefix: 'i18n/',
+            suffix: '.json'
+        });
+        
+        $translateProvider 
+            .fallbackLanguage('en')
+            .preferredLanguage('en');
 })
 
 .run(function($injector, config) {
