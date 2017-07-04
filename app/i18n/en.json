@@ -1,13 +1,59 @@
 {
+	"ANALOGUES": {
+		"XML_SOURCE_FOR": "XML Source for ",
+		"ANALOGUE": "Analogue"
+	},
+	"APPARATUSES": {
+		"CRITICAL_APPARATUS": "Critical Apparatus",
+		"SOURCES": "Sources",
+		"ANALOGUES": "Analogues"
+	},
 	"BUTTONS": {
+		"ALIGN_READINGS": "Align Readings",
 		"ADD_VERSION": "Add Version",
 		"ADD_WITNESS": "Add Witness",
+		"BOARD_CLOSE": "Close Board",
+		"BOX_CLOSE": "Close Box",
+		"BIBLIOGRAPHIC_REF": "Bibliographic Reference",
 		"BOOKMARK": "Bookmark",
 		"CHANGE_LANGUAGE": "Change Language",
+		"COLOR_KEY": "Color keys",
 		"DOWNLOAD_XML": "Download XML",
+		"FILTERS": "Filters",
+		"FONT_CHANGE": "Change font size",
+		"FONT_DECREASE": "Decrease font size",
+		"FONT_INCREASE": "Increase font size",
+		"FONT_RESET": "Reset font size",
+		"HEAT_MAP": "Heat Map",
 		"INFO": "Info",
+		"INFO_ABOUT_TEXT": "Information about this text",
+		"IMAGE_TEXT_LINKING": "Image-Text Linking",
 		"LIST": "Lists",
-		"SHOW_PINNED_APP_ENTRIES": "Show pinned apparatus entries"
+		"NO_VERSION_AVAILABLE": "No more versions available",
+		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+		"PIN_REMOVE": "Remove Pin",
+		"PIN_TOGGLE": "Toggle Pin",
+		"SHOW_PINNED_APP_ENTRIES": "Show pinned apparatus entries",
+		"THUMBS": "Thumbs",
+		"THUMBNAILS": "Thumbnails",
+		"VERSION_CLOSE": "Close version",
+		"WITNESS_CLOSE": "Close witness",
+		"WITNESSES_LIST": "Witnesses List"
+	},
+	"CRITICAL_APPARATUS": {
+		"METADATA_FOR": "Metadata for ",
+		"METADATA_FOR_LEMMA": "Metadata for lemma ",
+		"MORE_INFO": "More info about the apparatus entry",
+		"NO_DATA": "No data available",
+		"ORTHOGRAPHIC_VARIANTS_FOR": "Orthographic Variants for ",
+		"TABS": {
+			"CRITICAL_NOTE": "Critical Note",
+			"MORE_INFO": "More Info",
+			"ORTHOGRAPHIC_VARIANTS": "Orthographic Variants",
+			"XML": "XML"
+		},
+		"WITNESS_REF_CURRENT": "{{witness}} is the current witness",
+		"WITNESS_REF_OPEN": "Open witness {{witness}} next to this box"
 	},
 	"DIALOGS": {
 		"BOOKMARK": "Bookmark to share",
@@ -17,7 +63,27 @@
 		"WITNESSES": "Witnesses"
 	},
 	"MESSAGES" : {
-		"PINNED_ELEMENTS_SHOWN_HERE": "Selected elements will be shown here."
+		"ERROR_IN_PARSING_TEXT": "There was an error in the parsing of the text.",
+		"FRONT_NOT_AVAILABLE": "Front is not available.",
+		"GENERIC_ERROR": "There was an error.",
+		"PINNED_ELEMENTS_SHOWN_HERE": "Selected elements will be shown here.",
+		"SELECT_AN_APPARATUS": "Select an apparatus or a critical element inside the critical text.",
+		"TEXT_NOT_AVAILABLE": "Text is not available.",
+		"TEXT_OF_SOURCE_NOT_AVAILABLE": "Text of source {{source}} is not available.",
+		"TEXT_OF_VERSION_NOT_AVAILABLE": "Text of version {{version}} is not available.",
+		"TEXT_OF_WITNESS_NOT_AVAILABLE": "Text of witness {{witness}} is not available.",
+		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Try a different browser or contact the developers."
+	},
+	"BIBLIOGRAPHY": {
+		"STYLE": "Style",
+		"SORT_BY": "Sort by",
+			"AUTHOR": "Author",
+			"YEAR" : "Year",
+			"TITLE": "Title",
+			"PUBLISHER": "Publisher",
+		"ORDER": "Order",
+			"ASC": "Ascendent",
+			"DESC": "Descendent"
 	},
 	"ERROR" : "Error"
 }

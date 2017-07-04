@@ -1,13 +1,59 @@
 {
+	"ANALOGUES": {
+		"XML_SOURCE_FOR": "Codice XML per ",
+		"ANALOGUE": "Analogo"
+	},
+	"APPARATUSES": {
+		"CRITICAL_APPARATUS": "Apparato Critico",
+		"SOURCES": "Fonti",
+		"ANALOGUES": "Analoghi"
+	},
 	"BUTTONS": {
+		"ALIGN_READINGS": "Allinea lezioni",
 		"ADD_VERSION": "Aggiungi Versione",
 		"ADD_WITNESS": "Aggiungi Testimone",
+		"BOARD_CLOSE": "Chiudi",
+		"BOX_CLOSE": "Chiudi",
+		"BIBLIOGRAPHIC_REF": "Riferimento bibliografico",
 		"BOOKMARK": "Segnalibro",
 		"CHANGE_LANGUAGE": "Cambia lingua",
+		"COLOR_KEY": "Legenda colori",
 		"DOWNLOAD_XML": "Scarica XML",
+		"FONT_CHANGE": "Modifica dimensione carattere",
+		"FONT_DECREASE": "Riduci dimensione carattere",
+		"FONT_INCREASE": "Aumenta dimensione carattere",
+		"FONT_RESET": "Reimposta dimensione carattere",
+		"FILTERS": "Filtri",
+		"HEAT_MAP": "Mappa di variabilità",
 		"INFO": "Info",
+		"INFO_ABOUT_TEXT": "Informazioni su questo testo",
+		"IMAGE_TEXT_LINKING": "Collegamento Testo Immagine",
 		"LIST": "Liste",
-		"SHOW_PINNED_APP_ENTRIES": "Mostra entrate critiche \"pinnate\""
+		"NO_VERSION_AVAILABLE": "Nessun altra versione disponibile",
+		"NO_WITNESSES_AVAILABLE": "Nessun altro testimone disponibile",
+		"PIN_REMOVE": "Rimuovi Pin",
+		"PIN_TOGGLE": "Aggiungi Pin",
+		"SHOW_PINNED_APP_ENTRIES": "Mostra entrate critiche \"pinnate\"",
+		"THUMBS": "Miniature",
+		"THUMBNAILS": "Miniature",
+		"VERSION_CLOSE": "Chiudi versione",
+		"WITNESS_CLOSE": "Chiudi testimone",
+		"WITNESSES_LIST": "Lista testimoni"
+	},
+	"CRITICAL_APPARATUS": {
+		"METADATA_FOR": "Metadata per ",
+		"METADATA_FOR_LEMMA": "Metadata per il lemma ",
+		"MORE_INFO": "Maggiori informazioni circa l'entrata d'apparato",
+		"NO_DATA": "Nessuna informazione aggiuntiva.",
+		"ORTHOGRAPHIC_VARIANTS_FOR": "Varianti ortografiche per ",
+		"TABS": {
+			"CRITICAL_NOTE": "Nota critica",
+			"MORE_INFO": "Info aggiuntive",
+			"ORTHOGRAPHIC_VARIANTS": "Varianti ortografiche",
+			"XML": "XML"
+		},
+		"WITNESS_REF_CURRENT": "{{witness}} è il testimone corrente",
+		"WITNESS_REF_OPEN": "Apri il testimone {{witness}} a fianco del box corrente"
 	},
 	"DIALOGS": {
 		"BOOKMARK": "Segnalibro da condividere",
@@ -17,7 +63,27 @@
 		"WITNESSES": "Testimoni"
 	},
 	"MESSAGES" : {
-		"PINNED_ELEMENTS_SHOWN_HERE": "Gli elementi selezionati verranno visualizzati qui."
+		"ERROR_IN_PARSING_TEXT": "Si è verificato un errore nell'analisi del testo.",
+		"FRONT_NOT_AVAILABLE": "Nessuna informazione introduttiva disponibile.",
+		"GENERIC_ERROR": "Si è verificato un problema.",
+		"PINNED_ELEMENTS_SHOWN_HERE": "Gli elementi selezionati verranno visualizzati qui.",
+		"SELECT_AN_APPARATUS": "Selezionare un apparato o un elemento critico all'interno del testo critico.",
+		"TEXT_NOT_AVAILABLE": "Il testo non è disponibile.",
+		"TEXT_OF_SOURCE_NOT_AVAILABLE": "Il testo della fonte {{sources}} non è disponibile.",
+		"TEXT_OF_VERSION_NOT_AVAILABLE": "Il testo della versione {{version}} non è disponibile.",
+		"TEXT_OF_WITNESS_NOT_AVAILABLE": "Il testo del testimone {{witness}} non è disponibile.",
+		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Prova ad utilizzare un browser differente oppure contatta gli sviluppatori."
+	},
+	"BILIOGRAPHY": {
+		"STYLE": "Stile",
+		"SORT_BY": "Ordina per",
+			"AUTHOR": "Autore",
+			"YEAR" : "Anno",
+			"TITLE": "Titolo",
+			"PUBLISHER": "Editore",
+		"ORDER": "Ordine",
+			"ASC": "Crescente",
+			"DESC": "Decrescente"
 	},
 	"ERROR" : "Errore"
 }

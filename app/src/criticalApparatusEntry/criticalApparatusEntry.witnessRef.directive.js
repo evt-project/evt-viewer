@@ -11,10 +11,13 @@ angular.module('evtviewer.criticalApparatusEntry')
 		transclude: true,
 		templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.tmpl.html',
 		link: function(scope, element, attrs) {
+			scope.translationData = {
+				witness: scope.witness
+			}
 			if (scope.scopeWit === scope.witness) {
-				scope.title = scope.witness + ' is the current witness';
+				scope.title = 'CRITICAL_APPARATUS.WITNESS_REF_CURRENT'; 
 			} else {
-				scope.title = 'Open witness ' + scope.witness + ' next to this box';
+				scope.title = 'CRITICAL_APPARATUS.WITNESS_REF_OPEN';
 			}
 			scope.openWit = function() {
 				var newWit = scope.witness,

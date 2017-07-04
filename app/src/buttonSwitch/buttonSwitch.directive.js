@@ -20,7 +20,7 @@ angular.module('evtviewer.buttonSwitch')
             if (scope.type === 'addWit') {
                  if (evtInterface.getAvailableWitnesses().length === 0) {
                     scope.vm.disabled = true;
-                    scope.vm.title = 'No more witnesses available';
+                    scope.vm.title = 'BUTTONS.NO_WITNESSES_AVAILABLE';
                 } 
                 scope.$watch(function() {
                     return evtInterface.getAvailableWitnesses();
@@ -28,10 +28,10 @@ angular.module('evtviewer.buttonSwitch')
                     if (newItem !== oldItem) {
                         if (newItem.length === 0) {
                             scope.vm.disabled = true;
-                            scope.vm.title = 'No more witnesses available';
+                            scope.vm.title = 'BUTTONS.NO_WITNESSES_AVAILABLE';
                         } else {
                             scope.vm.disabled = false;
-                            scope.vm.title = 'Add witness';
+                            scope.vm.title = 'BUTTONS.ADD_WITNESS';
                         }
                     }
                 }, true);
@@ -40,7 +40,7 @@ angular.module('evtviewer.buttonSwitch')
             if (scope.type === 'addVer') {
                 if (evtInterface.getAvailableVersions().length === 0) {
                     scope.vm.disabled = true;
-                    scope.vm.title = 'No more versions available';
+                    scope.vm.title = 'BUTTONS.NO_VERSION_AVAILABLE';
                 }
 
                 scope.$watch(function() {
@@ -49,10 +49,10 @@ angular.module('evtviewer.buttonSwitch')
                     if (newItem !== oldItem) {
                         if (newItem.length === 0) {
                             scope.vm.disabled = true;
-                            scope.vm.title = 'No more versions available';
+                            scope.vm.title = 'BUTTONS.NO_VERSION_AVAILABLE';
                         } else {
                             scope.vm.disabled = false;
-                            scope.vm.title = 'Add version';
+                            scope.vm.title = 'BUTTONS.ADD_VERSION';
                         }
                     }
                 }, true);

@@ -223,14 +223,14 @@ angular.module('evtviewer.core')
 		}
 	},
 	bibliographicEntriesSortBy: {
-		Author: 'Author',
-		Year: 'Year',
-		Title: 'Title',
-		Publisher: 'Publisher'
+		Author: 'BIBLIOGRAPHY.AUTHOR',
+		Year: 'BIBLIOGRAPHY.YEAR',
+		Title: 'BIBLIOGRAPHY.TITLE',
+		Publisher: 'BIBLIOGRAPHY.PUBLISHER'
 	},
 	bibliographySortOrder: {
-		ASC: 'Ascendent',
-		DESC: 'Descendent'
+		ASC: 'BIBLIOGRAPHY.ASC',
+		DESC: 'BIBLIOGRAPHY.DESC'
 	},
 
     // NAMED ENTITIES

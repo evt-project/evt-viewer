@@ -198,17 +198,17 @@ angular.module('evtviewer.box')
 
 			var genericTools = {
 				fontSizeBtn: [{
-					title: 'Reset font size',
+					title: 'BUTTONS.FONT_RESET',
 					label: '',
 					icon: 'font-size-reset',
 					type: 'fontSizeReset'
 				}, {
-					title: 'Decrease font size',
+					title: 'BUTTONS.FONT_DECREASE',
 					label: '',
 					icon: 'font-size-minus',
 					type: 'fontSizeDecrease'
 				}, {
-					title: 'Increase font size',
+					title: 'BUTTONS.FONT_INCREASE',
 					label: '',
 					icon: 'font-size-plus',
 					type: 'fontSizeIncrease'
@@ -230,16 +230,16 @@ angular.module('evtviewer.box')
 						type: 'page',
 						initValue: evtInterface.getCurrentPage()
 					});
-
+					
 					topMenuList.buttons.push({
-						title: 'Thumbnails',
-						label: 'Thumbs',
+						title: 'BUTTONS.THUMBNAILS',
+						label: 'BUTTONS.THUMBS',
 						icon: 'thumbnails',
 						type: 'thumbs'
 					});
 					if (parsedData.isITLAvailable()) {
 						topMenuList.buttons.push({
-							title: 'Image Text Linking',
+							title: 'BUTTONS.IMAGE_TEXT_LINKING',
 							label: '',
 							icon: 'itl',
 							type: 'itl'
@@ -253,7 +253,7 @@ angular.module('evtviewer.box')
 							pageSource = currentPageObj ? currentPageObj.source : '';
 						pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
 						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getCurrentDocument() + '" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
-
+						// TODO: Add translation for alt text
 						// TEMP... TODO: creare direttiva per gestire le zone sull'immagine
 						var zonesHTML = '',
 							zones = parsedData.getZones();
@@ -297,7 +297,7 @@ angular.module('evtviewer.box')
 						});
 					} else {
 						topMenuList.buttons.push({
-							title: 'Witnesses List',
+							title: 'BUTTONS.WITNESSES_LIST',
 							label: '',
 							icon: 'witnesses',
 							type: 'witList'
@@ -325,8 +325,8 @@ angular.module('evtviewer.box')
 					}
 
 					topMenuList.buttons.push({
-						title: 'Information about this text',
-						label: 'Info',
+						title: 'BUTTONS.INFO_ABOUT_TEXT',
+						label: 'BUTTONS.INFO',
 						icon: 'info-alt',
 						type: 'front'
 					});
@@ -334,14 +334,14 @@ angular.module('evtviewer.box')
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
-							title: 'Color key',
+							title: 'BUTTONS.COLOR_KEY',
 							label: '',
 							icon: 'color-legend',
 							type: 'colorLegend'
 						});
 						bottomMenuList.buttons.push({
-							title: 'Filters',
-							label: 'Filters',
+							title: 'BUTTONS.FILTERS',
+							label: 'BUTTONS.FILTERS',
 							icon: 'filters',
 							type: 'toggleFilterApp',
 							show: function() {
@@ -368,8 +368,8 @@ angular.module('evtviewer.box')
 					state.docId = evtInterface.getCurrentDocument();
 					if (config.toolHeatMap) {
 						bottomMenuList.buttons.push({
-							title: 'Heat Map',
-							label: 'Heat Map',
+							title: 'BUTTONS.HEAT_MAP',
+							label: 'BUTTONS.HEAT_MAP',
 							icon: 'heatmap',
 							type: 'heatmap',
 							show: function() {
@@ -378,7 +378,7 @@ angular.module('evtviewer.box')
 						});
 					}
 					bottomMenuList.buttons.push({
-						title: 'Change font size',
+						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
 						icon: 'font-size',
 						type: 'fontSizeTools',
@@ -392,8 +392,8 @@ angular.module('evtviewer.box')
 						var newDoc,
 							promises = [],
 							isITLon = evtInterface.getToolState('ITL') === 'active',
-							errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">Text is not available.</span>';
+							errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_NOT_AVAILABLE\' | translate }}</span>';
 
 						if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (vm.version === '' || vm.version === undefined)) { // Critical edition
 							newDoc = parsedData.getCriticalText(scope.vm.state.docId);
@@ -510,12 +510,12 @@ angular.module('evtviewer.box')
 					});
 
 					topMenuList.buttons.push({
-						title: 'Info',
-						label: 'Info',
+						title: 'BUTTONS.INFO_ABOUT_TEXT',
+						label: 'BUTTONS.INFO',
 						icon: 'info-alt',
 						type: 'toggleInfoWit'
 					}, {
-						title: 'Remove Witness',
+						title: 'BUTTONS.WITNESS_CLOSE',
 						label: '',
 						icon: 'remove',
 						type: 'removeWit'
@@ -524,8 +524,8 @@ angular.module('evtviewer.box')
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forVariants > 0) {
 						bottomMenuList.buttons.push({
-							title: 'Filters',
-							label: 'Filters',
+							title: 'BUTTONS.FILTERS',
+							label: 'BUTTONS.FILTERS',
 							icon: 'filters',
 							type: 'toggleFilterApp',
 							show: function() {
@@ -540,7 +540,7 @@ angular.module('evtviewer.box')
 					state.filterBox = false;
 
 					bottomMenuList.buttons.push({
-						title: 'Change font size',
+						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
 						icon: 'font-size',
 						type: 'fontSizeTools',
@@ -550,8 +550,8 @@ angular.module('evtviewer.box')
 					});
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
-							noTextAvailableMsg = 'Text of witness ' + vm.witness + ' is not available.';
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "'+vm.witness+'" }\' }}</span>';
 
 						if (vm.witness !== undefined) {
 							// Main content
@@ -602,19 +602,19 @@ angular.module('evtviewer.box')
 
 					if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
 						topMenuList.appLabels.push({
-							label: 'Critical Apparatus',
+							label: 'APPARATUSES.CRITICAL_APPARATUS',
 							id: 'criticalApparatus'
 						});
 					}
 					if (!evtInterface.isSourcesInline() && quotesList.length > 0) {
 						topMenuList.appLabels.push({
-							label: 'Sources',
+							label: 'APPARATUSES.SOURCES',
 							id: 'sources'
 						});
 					}
 					if (!evtInterface.isAnaloguesInline() && analoguesList.length > 0) {
 						topMenuList.appLabels.push({
-							label: 'Analogues',
+							label: 'APPARATUSES.ANALOGUES',
 							id: 'analogues'
 						});
 					}
@@ -646,14 +646,14 @@ angular.module('evtviewer.box')
 						initValue: evtInterface.getCurrentSourceText()
 					});
 					topMenuList.buttons.push({
-						title: 'Bibliographic Reference',
+						title: 'BUTTONS.BIBLIOGRAPHIC_REF',
 						label: '',
 						icon: 'info',
 						type: 'toggleInfoSrc'
 					});
 
 					bottomMenuList.buttons.push({
-						title: 'Change font size',
+						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
 						icon: 'font-size',
 						type: 'fontSizeTools',
@@ -664,8 +664,8 @@ angular.module('evtviewer.box')
 
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
-							noTextAvailableMsg = 'Text of source ' + scope.vm.source + ' is not available.';
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "'+scope.vm.source+'" }\' }}</span>';
 
 						// Main content
 						var sourceObj = parsedData.getSource(scope.vm.source),
@@ -717,14 +717,14 @@ angular.module('evtviewer.box')
 					});
 					if (evtInterface.getAllVersionsNumber() > 2) {
 						topMenuList.buttons.push({
-							title: 'Remove Version',
+							title: 'BUTTONS.VERSION_CLOSE',
 							label: '',
 							icon: 'remove',
 							type: 'removeVer'
 						});
 					}
 					bottomMenuList.buttons.push({
-						title: 'Change font size',
+						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
 						icon: 'font-size',
 						type: 'fontSizeTools',
@@ -735,8 +735,9 @@ angular.module('evtviewer.box')
 
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>',
-							noTextAvailableMsg = 'Text of version ' + vm.version + ' is not available.';
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "'+vm.version+'" }\' }}</span>';
+
 						if (vm.version !== undefined) {
 							var currentDocId = evtInterface.getCurrentDocument(),
 								newContent = parsedData.getVersionText(vm.version, currentDocId) || undefined;
@@ -774,7 +775,7 @@ angular.module('evtviewer.box')
 					isLoading = false;
 					if (currentType === 'pinnedBoard') {
 						topMenuList.buttons.push({
-							title: 'Close Board',
+							title: 'BUTTONS.BOARD_CLOSE',
 							label: '',
 							icon: 'remove',
 							type: 'closePinned'
@@ -789,7 +790,7 @@ angular.module('evtviewer.box')
 						}
 					} else {
 						topMenuList.buttons.push({
-							title: 'Remove Box',
+							title: 'BUTTONS.BOX_CLOSE',
 							label: '',
 							icon: 'remove',
 							type: 'removeBox'

@@ -187,7 +187,7 @@ angular.module('evtviewer.box')
                             var docObj = parsedData.getDocument(newItem),
                                 docFront = docObj ? docObj.front : undefined;
 
-                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                                 scope.vm.updateTopBoxContent(content);
                         }
                     }

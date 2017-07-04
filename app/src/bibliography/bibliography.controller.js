@@ -8,8 +8,10 @@ angular.module('evtviewer.bibliography')
     this.myComparator = function(biblId1, biblId2) {
         var result1 = '',
             result2 = '';
+        _console.log(vm.selectedSorting);
         switch (vm.selectedSorting) {
             case vm.sortBy.Author:
+                _console.log('AUTHOR');
                 //sorting by author
                 if (typeof biblId1.value.author !== 'undefined' && biblId1.value.author.length > 0) {
                     //first try to compare according to author's name, then surname if provided
@@ -24,6 +26,7 @@ angular.module('evtviewer.bibliography')
                 break;
 
             case vm.sortBy.Year:
+                _console.log('YEAR');
                 //sorting by year
                 if (typeof biblId1.value.date !== 'undefined') {
                     /*/If Number() returns Nan, whe must must be sure to assign empty string to result variable in order to 
@@ -37,6 +40,7 @@ angular.module('evtviewer.bibliography')
                 break;
 
             case vm.sortBy.Title:
+                _console.log('TITLE');
                 //sorting by analytic title or normale title 
                 if (typeof biblId1.value.titleAnalytic !== 'undefined') {
                     result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : result1;
@@ -53,6 +57,7 @@ angular.module('evtviewer.bibliography')
                 break;
 
             case vm.sortBy.Publisher:
+                _console.log('PUBLISHER');
                 if (typeof biblId1.value.publisher !== 'undefined') {
                     result1 = biblId1.value.publisher !== '' ? biblId1.value.publisher : '';
                 }

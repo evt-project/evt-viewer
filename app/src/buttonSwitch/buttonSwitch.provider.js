@@ -189,6 +189,7 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					break;
 				case 'changeLanguage':
+					btnType = 'standAlone';
 					callback = function() {
 						var availableLangKeys = config.languages;
 						var currentLangKey = $translate.proposedLanguage();
@@ -249,7 +250,7 @@ angular.module('evtviewer.buttonSwitch')
 							} else {
 								content = '<span>No filters available</span>';
 							}
-							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'colorLegend');
 							if (!parentBox.getState('topBoxOpened')) {
@@ -329,11 +330,11 @@ angular.module('evtviewer.buttonSwitch')
 								var docObj = parsedData.getDocument(currentDocument),
 									docFront = docObj ? docObj.front : undefined;
 
-								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
 								scope.$parent.vm.updateTopBoxContent(content);
 								scope.$parent.vm.toggleTopBox();
 							}
-							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'front');
 							if (!parentBox.getState('topBoxOpened')) {
@@ -449,7 +450,7 @@ angular.module('evtviewer.buttonSwitch')
 							parentBox.toggleTopBox();
 						} else {
 							var content = parsedData.getWitnessesListFormatted();
-							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'witList');
 							if (!parentBox.getState('topBoxOpened')) {
