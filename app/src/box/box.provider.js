@@ -511,8 +511,8 @@ angular.module('evtviewer.box')
 
 					topMenuList.buttons.push({
 						title: 'Info',
-						label: '',
-						icon: 'info',
+						label: 'Info',
+						icon: 'info-alt',
 						type: 'toggleInfoWit'
 					}, {
 						title: 'Remove Witness',
