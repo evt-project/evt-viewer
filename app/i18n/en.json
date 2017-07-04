@@ -1,0 +1,23 @@
+{
+	"BUTTONS": {
+		"ADD_VERSION": "Add Version",
+		"ADD_WITNESS": "Add Witness",
+		"BOOKMARK": "Bookmark",
+		"CHANGE_LANGUAGE": "Change Language",
+		"DOWNLOAD_XML": "Download XML",
+		"INFO": "Info",
+		"LIST": "Lists",
+		"SHOW_PINNED_APP_ENTRIES": "Show pinned apparatus entries"
+	},
+	"DIALOGS": {
+		"BOOKMARK": "Bookmark to share",
+		"CLOSE": "Close",
+		"NAMED_ENTITIES": "Named Entities",
+		"PROJECT_INFO": "Project Info",
+		"WITNESSES": "Witnesses"
+	},
+	"MESSAGES" : {
+		"PINNED_ELEMENTS_SHOWN_HERE": "Selected elements will be shown here."
+	},
+	"ERROR" : "Error"
+}
