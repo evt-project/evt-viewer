@@ -44,6 +44,7 @@
     <header>
         <img class="logo" ng-if="getProperty('logoUrl') !== ''" ng-src="{{getProperty('logoUrl')}}" />
         {{ getProperty('indexTitle') }}
+        <span translate title="TITLE">FOO</span>
         <div class="globalMenu">
             <button-switch
                     title="{{::mode.label}}"
