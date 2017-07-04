@@ -8,13 +8,13 @@ angular.module('evtviewer.buttonSwitch')
 		defaults = _defaults;
 	};
 
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
+    this.$get = function($timeout, $log, $translate, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
         var button    = {},
             collection = {},
             list       = [],
             idx        = 0;
         
-        var _console = $log.getInstance('box');
+        var _console = $log.getInstance('buttonSwitch');
 
         
         var toggleActive = function() {
@@ -86,6 +86,9 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'itl':
 					evtIcon = 'icon-evt_link';
+					break;
+				case 'language':
+					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
 					break;
 				case 'list':
 					evtIcon = 'icon-evt_list';
@@ -165,7 +168,7 @@ angular.module('evtviewer.buttonSwitch')
                 callback = function() { console.log('TODO ' + type); },
                 fakeCallback = function() {};
 			var scopeHelper = {};
-
+			
 			/* SET CALLBACK */
 			switch (type) {
 				case 'addWit':
@@ -183,6 +186,19 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateSecondaryContentOpened('bookmark');
 						evtDialog.openByType('bookmark');
 						vm.active = !vm.active;
+					};
+					break;
+				case 'changeLanguage':
+					callback = function() {
+						var availableLangKeys = config.languages;
+						var currentLangKey = $translate.proposedLanguage();
+						var indexOfCurrent = availableLangKeys.indexOf(currentLangKey);
+						var newLangKey = availableLangKeys[0];
+						if (indexOfCurrent >= 0 && indexOfCurrent < availableLangKeys.length-1) {
+							newLangKey = availableLangKeys[indexOfCurrent+1];
+						}
+						_console.log('Setting Lang ', newLangKey);
+						$translate.use(newLangKey);
 					};
 					break;
 				case 'changeViewMode':

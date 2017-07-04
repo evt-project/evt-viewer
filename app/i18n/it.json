@@ -1,0 +1,23 @@
+{
+	"BUTTONS": {
+		"ADD_VERSION": "Aggiungi Versione",
+		"ADD_WITNESS": "Aggiungi Testimone",
+		"BOOKMARK": "Segnalibro",
+		"CHANGE_LANGUAGE": "Cambia lingua",
+		"DOWNLOAD_XML": "Scarica XML",
+		"INFO": "Info",
+		"LIST": "Liste",
+		"SHOW_PINNED_APP_ENTRIES": "Mostra entrate critiche \"pinnate\""
+	},
+	"DIALOGS": {
+		"BOOKMARK": "Segnalibro da condividere",
+		"CLOSE": "Chiudi",
+		"NAMED_ENTITIES": "Named Entities",
+		"PROJECT_INFO": "Informazioni sul progetto",
+		"WITNESSES": "Testimoni"
+	},
+	"MESSAGES" : {
+		"PINNED_ELEMENTS_SHOWN_HERE": "Gli elementi selezionati verranno visualizzati qui."
+	},
+	"ERROR" : "Errore"
+}

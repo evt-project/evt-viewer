@@ -7,10 +7,10 @@
 
     <div class="evt-dialog-container">
         <div class="evt-dialog-container-top">
-            <span class="evt-dialog-container-top-title">{{ ::vm.title }}</span>
+            <span class="evt-dialog-container-top-title">{{ vm.title | translate }}</span>
             <button-switch 
                     class="noPadding"
-                    title="Close"
+                    title="{{ 'DIALOGS.CLOSE' | translate }}"
                     data-icon="remove"
                     data-type="closeDialog">
             </button-switch>
