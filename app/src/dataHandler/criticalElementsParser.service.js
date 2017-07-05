@@ -718,7 +718,7 @@ angular.module('evtviewer.dataHandler')
 			// it adds the content of the variant to the text
 			var iconElement = document.createElement('i');
 			iconElement.className = 'iconbis-evt_fork';
-			iconElement.setAttribute('title', 'There are alternative versions of this part of text');
+			iconElement.setAttribute('title', 'There are alternative versions of this part of text'); //TODO: Add translation
 			spanElement.appendChild(iconElement);
 
 			var quoteElement, analogueElement, genericElement;
@@ -814,7 +814,7 @@ angular.module('evtviewer.dataHandler')
 					}
 					// If the witness doesn't refer to a particular version, it creates a specific error message
 				} else {
-					var warningMsg = document.createTextNode('Warning: no version has been defined for the current witness. Please check your encoded file.');
+					var warningMsg = document.createTextNode('Warning: no version has been defined for the current witness. Please check your encoded file.'); //TODO: Add translation
 					errorElement = document.createElement('span');
 					errorElement.className = 'encodingError';
 					errorElement.appendChild(warningMsg);
@@ -949,7 +949,7 @@ angular.module('evtviewer.dataHandler')
 
 			var iconElement = document.createElement('i');
 			iconElement.className = 'iconbis-evt_fork';
-			iconElement.setAttribute('title', 'There are alternative versions of this part of text');
+			iconElement.setAttribute('title', 'There are alternative versions of this part of text');//TODO: add translation
 			spanElement.appendChild(iconElement);
 
 			if (entry.content[scopeVersion] !== undefined) {
@@ -982,13 +982,13 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					errorElement = document.createElement('span');
 					errorElement.className = 'encodingError';
-					errorElement.setAttribute('title', 'lem missing inside of the version rdgGrp');
+					errorElement.setAttribute('title', 'lem missing inside of the version rdgGrp');//TODO: add translation
 					spanElement.appendChild(errorElement);
 				}
 			} else {
 				errorElement = document.createElement('span');
 				errorElement.className = 'encodingError';
-				errorElement.setAttribute('title', 'Wrong version id');
+				errorElement.setAttribute('title', 'Wrong version id');//TODO: add translation
 				spanElement.appendChild(errorElement);
 			}
 			if (spanElement !== null) {
@@ -1004,7 +1004,7 @@ angular.module('evtviewer.dataHandler')
 		} else {
 			errorElement = document.createElement('span');
 			errorElement.className = 'encodingError';
-			errorElement.setAttribute('title', 'General error');
+			errorElement.setAttribute('title', 'General error');//TODO: add translation
 			spanElement.appendChild(errorElement);
 		}
 

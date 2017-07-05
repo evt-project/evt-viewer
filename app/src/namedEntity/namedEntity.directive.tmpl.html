@@ -5,14 +5,14 @@
         <div class="namedEntity_tools"
           ng-if="::vm.isPinAvailable()">
           <button-switch 
-                title="Remove Pin"
+                title="BUTTONS.PIN_REMOVE"
                 ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"
                 data-label=""
                 data-icon="remove"
                 data-type="pin-off"
                 ng-click="vm.togglePin()"></button-switch>
           <button-switch 
-                title="Toggle Pin"
+                title="BUTTONS.PIN_TOGGLE"
                 ng-if="::vm.isPinAvailable() && vm.location !== 'pinned'"
                 data-label=""
                 data-icon="pin"
@@ -34,7 +34,7 @@
             <span ng-repeat="tab in ::vm.tabs._indexes track by $index"
                     ng-click="vm.toggleSubContent(tab)"
                     class="namedEntity__details-header namedEntity__details-header-{{::tab}}">
-                {{ ::vm.tabs[tab].label }}
+                {{ ::vm.tabs[tab].label | translate }}
             </span>
           </div>
 
@@ -96,7 +96,7 @@
                                             <span class="namedEntity__detail-text-attributes">
                                                 <span class="namedEntity__detail-text-attribute" 
                                                     ng-repeat="attribute in ::contentObj.attributes._indexes track by $index"
-                                                >{{::contentObj.attributes[attribute] | camelToSpaces | underscoresToSpaces }}</span>
+                                                >{{::contentObj.attributes[attribute] | translate | camelToSpaces | underscoresToSpaces }}</span>
                                             </span>
                                             <span class="namedEntity__detail-text-content" compile="::contentObj.text"></span>
                                         </span>
@@ -104,7 +104,7 @@
                             </span>
 
                             <span ng-if="::vm.entity.content._indexes.length <= 0">
-                                No more information available.
+                                {{ 'MESSAGES.NO_MORE_INFO_AVAILABLE' | translate }}
                             </span>
                         </div>
                         <div ng-switch-when="occurrences">
@@ -113,18 +113,18 @@
                                 ng-class="{'active': vm.isCurrentPageDoc(occurrence) } "
                                 ng-repeat="occurrence in ::vm.occurrences track by $index"
                                 ng-click="vm.goToOccurrence(occurrence)">
-                                {{ ::occurrence.docLabel }} - Fol. {{ ::occurrence.pageLabel }} 
+                                {{ 'LISTS.OCCURRENCE' | translate:occurrence }}
                             </span>
                             <span class="italic" ng-if="::vm.occurrences && vm.occurrences.length <= 0">
-                                No result found.
+                                {{ 'MESSAGES.NO_RESULT_FOUND' | translate }}
                             </span>
                             <span class="italic" ng-if="::!vm.occurrences">
-                                Loading occurrences...
+                                {{ 'MESSAGES.LOADING_OCCURRENCES' | translate }}
                             </span>
                         </div>
                         <div ng-switch-when="xmlSource">
                           <pre ng-if="::vm.entity._xmlSource">{{ ::vm.entity._xmlSource | prettyXml }}</pre>
-                          <span ng-if="::!vm.entity._xmlSource">No source found.</span>
+                          <span ng-if="::!vm.entity._xmlSource">{{ 'MESSAGES.NO_XML_SOURCE' | translate }}</span>
                         </div>
                   </div>
               </div>

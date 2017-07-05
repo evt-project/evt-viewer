@@ -293,7 +293,7 @@ angular.module('evtviewer.dataHandler')
                 docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
             }
         } else {
-            docDOM.innerHTML = '<span class="error">There was a problem in loading lacuna for this witness.</span>';
+            docDOM.innerHTML = '<span class="error">{{ \'MESSAGES.ERROR_IN_PARSING_LACUNA\' | translate }}</span>';
         }
     };
 
@@ -365,7 +365,7 @@ angular.module('evtviewer.dataHandler')
             }
             return fragmentaryText;
         } else {
-            return '<span class="error">There was a problem in loading fragmentary witness.</span>';
+            return '<span class="error">{{ \'MESSAGES.ERROR_IN_PARSING_FRAGMENTARY_TEXT\' | translate }}</span>';
         }
     };
 

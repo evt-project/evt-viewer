@@ -423,8 +423,8 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	apparatus.transformCriticalEntryLacunaMilestones = function(appText) {
-		appText = appText.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i>beginning of a lacuna in </i>');
-		appText = appText.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i>end of a lacuna in </i>');
+		appText = appText.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i> {{ \'CRITICAL_APPARATUS.LACUNA_START\' | translate }} </i>');
+		appText = appText.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i> {{ \'CRITICAL_APPARATUS.LACUNA_END\' | translate }} </i>');
 		return appText;
 	};
 

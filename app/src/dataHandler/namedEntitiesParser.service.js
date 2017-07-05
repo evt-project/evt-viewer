@@ -46,23 +46,8 @@ angular.module('evtviewer.dataHandler')
 			var listDef = listsMainContentDef.replace(/[<>]/g, '') + ' ' + listsToParse[i].listDef.replace(/[<>]/g, ''),
 				contentDef = listsToParse[i].contentDef.replace(/[<>]/g, ''),
 				listType = listsToParse[i].type || 'generic',
-				listTitle = 'Lista';
+				listTitle = 'LISTS.'+listType.toUpperCase();
 			
-			// TEMP
-			switch (listType) {
-				case 'place':
-					listTitle = 'List of Places';
-					break;
-				case 'person':
-					listTitle = 'List of Persons';
-					break;
-				case 'org':
-					listTitle = 'List of Organizations';
-					break;
-				default:
-					listTitle = 'Lista generica';
-
-			}
 			relationsInListDef += listDef + ' ' + relationDef.replace(/[<>]/g, '') + ', ';
 			angular.forEach(currentDocument.find(listDef), 
 				function(element) {
@@ -99,7 +84,7 @@ angular.module('evtviewer.dataHandler')
 			var defCollection = {
 				id : 'parsedRelations',
 				type : 'relation',
-				title : 'List of Relations'
+				title : 'LISTS.RELATION'
 			};
 			angular.forEach(relations, function(element) {
 				NEparser.parseRelationsInList(element, defCollection);
@@ -165,7 +150,7 @@ angular.module('evtviewer.dataHandler')
 		}
 		
 
-		relationType = relationType ? '<i>'+relationType+'</i>' : '';
+		//relationType = relationType ? '<i>'+relationType+'</i>' : '';
 		var relationText = '<span class="relation">',
 			activeText = '',
 			mutualText = '',
@@ -193,7 +178,7 @@ angular.module('evtviewer.dataHandler')
 
 			for (var j = 0; j < mutualRefsArray.length; j++) { 
 				if (j === 0 && activeRefs && activeRefs !== '') {
-					relationText += 'and ';
+					relationText += '{{ \'AND\' | translate}} ';
 				}
 
 				entityElem = document.createElement('evt-named-entity-ref');
@@ -239,7 +224,7 @@ angular.module('evtviewer.dataHandler')
 					entityActive.content._indexes.push('relations');
 				}	
 				entityActive.content.relations.push({
-					text: 'Active role in a ' + relationType + ' relation: ' + relationText,
+					text: '{{ \'LISTS.RELATION_ACTIVE_ROLE \' | translate:\'{relationType:"'+relationType+'"}\'}}: '+ relationText,
 					attributes: []
 				});
 				entityActive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -255,7 +240,7 @@ angular.module('evtviewer.dataHandler')
 					entityMutual.content._indexes.push('relations');
 				}	
 				entityMutual.content.relations.push({
-					text: 'Mutual role in a ' + relationType + ' relation: ' + relationText,
+					text: '{{ \'LISTS.RELATION_MUTUAL_ROLE \' | translate:\'{relationType:"'+relationType+'"}\'}}: '+ relationText,
 					attributes: []
 				});
 				entityMutual._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -271,7 +256,7 @@ angular.module('evtviewer.dataHandler')
 					entityPassive.content._indexes.push('relations');
 				}	
 				entityPassive.content.relations.push({
-					text: 'Passive role in a ' + relationType + ' relation: '+ relationText,
+					text: '{{ \'LISTS.RELATION_PASSIVE_ROLE \' | translate:\'{relationType:"'+relationType+'"}\'}}: '+ relationText,
 					attributes: []
 				});
 				entityPassive._xmlSource += nodeElem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -288,7 +273,7 @@ angular.module('evtviewer.dataHandler')
 			if (activeText !== '') {
 				actors.push({
 					attributes: {
-						type: 'active',
+						type: 'LISTS.RELATION_ACTIVE',
 						_indexes: ['type'] },
 					text: activeText.slice(0, -2) });
 			}
@@ -296,7 +281,7 @@ angular.module('evtviewer.dataHandler')
 			if (mutualText !== '') {
 				actors.push({
 					attributes: {
-						type: 'mutual',
+						type: 'LISTS.RELATION_MUTUAL',
 						_indexes: ['type'] },
 					text: mutualText.slice(0, -2) });
 			}
@@ -304,7 +289,7 @@ angular.module('evtviewer.dataHandler')
 			if (passiveText !== '') {
 				actors.push({
 					attributes: {
-						type: 'passive',
+						type: 'LISTS.RELATION_PASSIVE',
 						_indexes: ['type'] },
 					text: passiveText.slice(0, -2) });
 			}

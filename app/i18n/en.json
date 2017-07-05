@@ -41,6 +41,8 @@
 		"WITNESSES_LIST": "Witnesses List"
 	},
 	"CRITICAL_APPARATUS": {
+		"LACUNA_START": "beginning of a lacuna in",
+		"LACUNA_END": "end of a lacuna in",
 		"METADATA_FOR": "Metadata for ",
 		"METADATA_FOR_LEMMA": "Metadata for lemma ",
 		"MORE_INFO": "More info about the apparatus entry",
@@ -62,10 +64,37 @@
 		"PROJECT_INFO": "Project Info",
 		"WITNESSES": "Witnesses"
 	},
+	"LISTS": {
+		"ENTITY_TYPE_": "Name",
+		"ENTITY_TYPE_ORG": "Organization name",
+		"ENTITY_TYPE_PERSON": "Person name",
+		"ENTITY_TYPE_PLACE": "Place name",
+		"ENTITY_TYPE_RELATION": "Relation name",
+		"GENERIC": "Generic List",
+		"LIST": "List",
+		"NO_ELEMENTS": "No elements in this list",
+		"OCCURRENCE": "{{docLabel}} - Fol. {{pageLabel}}",
+		"ORG": "List of Organization",
+		"PERSON": "List of Persons",
+		"PLACE": "List of Places",
+		"RELATION": "List of Relations",
+		"RELATION_ACTIVE": "Active",
+		"RELATION_MUTUAL": "Mutual",
+		"RELATION_PASSIVE": "Passive",
+		"RELATION_ACTIVE_ROLE": "Active role in a \"{{relationType}}\" relation",
+		"RELATION_MUTUAL_ROLE": "Mutual role in a \"{{relationType}}\" relation",
+		"RELATION_PASSIVE_ROLE": "Passive role in a \"{{relationType}}\" relation"
+	},
 	"MESSAGES" : {
 		"ERROR_IN_PARSING_TEXT": "There was an error in the parsing of the text.",
+		"ERROR_IN_PARSING_LACUNA": "There was a problem in loading lacuna for this witness.",
+		"ERROR_IN_PARSING_FRAGMENTARY_TEXT":"There was a problem in loading fragmentary witness.",
 		"FRONT_NOT_AVAILABLE": "Front is not available.",
 		"GENERIC_ERROR": "There was an error.",
+		"LOADING_OCCURRENCES": "Loading occurrences...",
+		"NO_MORE_INFO_AVAILABLE": "No more information available.",
+		"NO_RESULT_FOUND": "No result found.",
+		"NO_XML_SOURCE": "No XML available.",
 		"PINNED_ELEMENTS_SHOWN_HERE": "Selected elements will be shown here.",
 		"SELECT_AN_APPARATUS": "Select an apparatus or a critical element inside the critical text.",
 		"TEXT_NOT_AVAILABLE": "Text is not available.",
@@ -85,5 +114,6 @@
 			"ASC": "Ascendent",
 			"DESC": "Descendent"
 	},
+	"AND": "and",
 	"ERROR" : "Error"
 }
