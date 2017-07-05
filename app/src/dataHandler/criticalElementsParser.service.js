@@ -1497,13 +1497,13 @@ angular.module('evtviewer.dataHandler')
 						spanElement = newPbElem;
 					}
 				} else {
-					spanElement = evtParser.parseXMLElement(doc, el, '');
+					spanElement = evtParser.parseXMLElement(doc, el, {skip: ''});
 				}
 			} else if (elem.content.length === 1 && typeof elem.content[0] === 'string') {
 				//spanElement = document.createTextNode('FATTO!!!');
 				var xmlE = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
 				var e = xmlE.children[0];
-				spanElement = evtParser.parseXMLElement(doc, e, '');
+				spanElement = evtParser.parseXMLElement(doc, e, {skip: ''});
 			} else {
 				spanElement = document.createElement('span');
 				spanElement.className = elem.tagName;
@@ -2029,12 +2029,12 @@ angular.module('evtviewer.dataHandler')
 						spanElement = newPbElem;
 					}
 				} else {
-					spanElement = evtParser.parseXMLElement(doc, el, '');
+					spanElement = evtParser.parseXMLElement(doc, el, {skip: ''});
 				}
 			} else if (elem.content.length === 1 && typeof elem.content[0] === 'string') {
 				var xmlE = xmlParser.parse(elem._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''));
 				var e = xmlE.children[0];
-				spanElement = evtParser.parseXMLElement(doc, e, '');
+				spanElement = evtParser.parseXMLElement(doc, e, {skip: ''});
 			} else {
 				spanElement = document.createElement('span');
 				spanElement.className = elem.tagName;

@@ -61,7 +61,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(fileDescriptionDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var fileDescContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
+                    var fileDescContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                     parsedData.updateProjectInfoContent(fileDescContent, 'fileDescription');
                 }
         });
@@ -81,7 +81,7 @@ angular.module('evtviewer.dataHandler')
                     var encodingDescContent = '',
                         variantEncodingEl = angular.element(element).find('variantEncoding')[0];
                     if (variantEncodingEl){
-                        encodingDescContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
+                        encodingDescContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                         encodingDescContent += '<span class="variantEncoding">{{ \'PROJECT_INFO.ENCODING_METHOD_USED\' | translate:\'{ method:  "'+variantEncodingEl.getAttribute('method')+'" }\' }}</span>';
                     }
                     parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
@@ -102,7 +102,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(textProfileDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var textProfileContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
+                    var textProfileContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                     parsedData.updateProjectInfoContent(textProfileContent, 'textProfile');
                 }
         });
@@ -119,7 +119,7 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(outsideMetadataDef.replace(/[<>]/g, '')), 
             function(element) {
                 if (element.children.length > 0){
-                    var outsideMetadataContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
+                    var outsideMetadataContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                     parsedData.updateProjectInfoContent(outsideMetadataContent, 'outsideMetadata');
                 }
         });
@@ -136,7 +136,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(teiHeader);
         angular.forEach(currentDocument.find(revisionHistoryDef.replace(/[<>]/g, '')), 
             function(element) {
-                var revisionHistoryContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
+                var revisionHistoryContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, {skip: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                 parsedData.updateProjectInfoContent(revisionHistoryContent, 'revisionHistory');
         });
         // console.log('## parseRevisionHistory ##', parsedData.getProjectInfo().revisionHistory);

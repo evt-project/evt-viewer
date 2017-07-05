@@ -11,6 +11,12 @@ angular.module('evtviewer.dataHandler')
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
+    var projectInfoDefs = {
+        sectionHeaders: '<projectDesc>, <refsDecl>, <notesStmt>, <seriesStmt>, <sourceDesc>, <publicationStmt>, <respStmt>, <funder>, <sponsor>, <principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>',
+        blockLabels: '<publisher>, <availability>, <edition>, <correction>',
+        inlineLabels: '<idno>, <date>'
+    };
+
     /* ********* */
     /* UTILITIES */
     /* ********* */
@@ -44,6 +50,11 @@ angular.module('evtviewer.dataHandler')
     parser.camelToSpace = function(str) {
         return str.replace(/\W+/g, ' ')
                     .replace(/([a-z\d])([A-Z])/g, '$1 $2');
+    };
+
+    parser.camelToUnderscore = function(str) {
+        return str.replace(/\W+/g, ' ')
+                    .replace(/([a-z\d])([A-Z])/g, '$1_$2');
     };
 
     /* ************************ */
@@ -87,9 +98,11 @@ angular.module('evtviewer.dataHandler')
     // It will transform a generic XML element into an <span> element
     // with a data-* attribute for each @attribute of the XML element
     // It will also transform its children
-	parser.parseXMLElement = function(doc, element, skip, exclude) {
+	parser.parseXMLElement = function(doc, element, options) {
 		var newElement;
-		
+		var skip = options.skip || '',
+            exclude = options.exclude || undefined;
+
 		if (element.nodeType === 3) { // Text
 			newElement = element;
             // newElement = document.createElement('span');
@@ -113,7 +126,7 @@ angular.module('evtviewer.dataHandler')
 
 				if (copiedElementText) {
 					var copiedElement = angular.element(copiedElementText[0])[0];
-					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip, exclude));
+					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, options));
 				}
 			} else {
 				if (!parsedData.getEncodingDetail('usesLineBreaks') && tagName === 'l') {
@@ -137,32 +150,54 @@ angular.module('evtviewer.dataHandler')
 					newElement.textContent = textContent.slice(0, -1);
 
 				} else if (config.namedEntitiesSelector && 
-					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
+					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName + '>') >= 0 && 
 					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
 					newElement.className = tagName;
-					if (element.attributes) {
-						for (var k = 0; k < element.attributes.length; k++) {
-							var attribK = element.attributes[k];
-							if (attribK.specified) {
-								if (attribK.name !== 'xml:id') {
-									newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
-								}
-							}
-						}
-					}
-					if (element.childNodes) {
-						for (var j = 0; j < element.childNodes.length; j++) {
-							var childElement = element.childNodes[j].cloneNode(true);
-							newElement.appendChild(parser.parseXMLElement(doc, childElement, skip, exclude));
-						}
-					} else {
-						newElement.innerHTML = element.innerHTML + ' ';
-					}
 
-					if (tagName === 'lb') {
+
+
+                    if (element.attributes) {
+                        for (var k = 0; k < element.attributes.length; k++) {
+                            var attribK = element.attributes[k];
+                            if (attribK.specified) {
+                                if (attribK.name !== 'xml:id') {
+                                    newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
+                                }
+                            }
+                        }
+                    }
+                    if (element.childNodes) {
+                        for (var j = 0; j < element.childNodes.length; j++) {
+                            var childElement = element.childNodes[j].cloneNode(true);
+                            newElement.appendChild(parser.parseXMLElement(doc, childElement, options));
+                        }
+                    } else {
+                        newElement.innerHTML = element.innerHTML + ' ';
+                    }
+
+                    if (options.context && options.context === 'projectInfo') {
+                        var labelElement = document.createElement('span'),
+                            addLabel = false;
+                        if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                            labelElement.className = 'projectInfo-sectionHeader';
+                            addLabel = true;
+                        } else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                            labelElement.className = 'projectInfo-blockLabel';
+                            addLabel = true;
+                        } else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                            labelElement.className = 'projectInfo-inlineLabel';
+                            addLabel = true;
+                        }
+                        if (addLabel) {
+                            labelElement.innerHTML = '{{ \'PROJECT_INFO.'+parser.camelToUnderscore(element.tagName).toUpperCase()+'\' | translate }}';
+                            newElement.insertBefore(labelElement, newElement.childNodes[0]);
+                        }
+                    }
+
+                    if (tagName === 'lb') {
 						newElement.id = element.getAttribute('xml:id');
 						newElement.appendChild(document.createElement('br'));
 						var lineN = document.createElement('span');
@@ -419,7 +454,7 @@ angular.module('evtviewer.dataHandler')
 			var childElement = entityNode.childNodes[i].cloneNode(true),
 				parsedXmlElem;
 
-			parsedXmlElem = parser.parseXMLElement(doc, childElement, skip);
+			parsedXmlElem = parser.parseXMLElement(doc, childElement, {skip: skip});
 			entityElem.appendChild(parsedXmlElem);
 		}
 		return entityElem;
@@ -486,7 +521,7 @@ angular.module('evtviewer.dataHandler')
 							}
 						}
 					});
-				var parsedXmlElem = parser.parseXMLElement(doc, element, '');
+				var parsedXmlElem = parser.parseXMLElement(doc, element, {skip: ''});
 				glyph.parsedXml = parsedXmlElem ? parsedXmlElem.outerHTML : '';
 				//TODO: decide how to structure content
 				parsedData.addGlyph(glyph);
@@ -592,7 +627,7 @@ angular.module('evtviewer.dataHandler')
 							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
 						}
 					}
-					var parsedContent = parser.parseXMLElement(element, frontElem, biblDef+'<evt-bibl-elem>'),
+					var parsedContent = parser.parseXMLElement(element, frontElem, {skip: biblDef+'<evt-bibl-elem>'}),
 					 	frontAttributes = parser.parseElementAttributes(frontElem);
 					newDoc.front = {
 						attributes: frontAttributes,
@@ -752,7 +787,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = '<pb>,<g>';
-				elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 			editionText = docDOM.outerHTML;
 		} else {

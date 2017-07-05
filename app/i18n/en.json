@@ -120,7 +120,28 @@
 		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Try a different browser or contact the developers."
 	},
 	"PROJECT_INFO": {
-		"ENCODING_METHOD_USED": "This edition is using \"{{method}} method\" to encode text-critical variants."
+		"AVAILABILITY": "Availability: ",
+		"CORRECTION": "Correction principles",
+		"DATE": "Date: ",
+		"EDITION": "Edition: ",
+		"EDITORIAL_DECL": "Editorial principles and practices",
+		"ENCODING_METHOD_USED": "This edition is using \"{{method}} method\" to encode text-critical variants.",
+		"FUNDER": "Funder",
+		"IDNO": "idno: ",
+		"LANG_USAGE": "Language usage",
+		"NOTES_STMT": "Notes",
+		"PARTIC_DESC": "Participation description",
+		"PRINCIPAL": "Principal researcher",
+		"PROJECT_DESC": "Project description",
+		"PUBLICATION_STMT": "About the publication",
+		"PUBLISHER": "Publisher: ",
+		"REFS_DECL": "References declaration",
+		"RESP_STMT": "Responsable: ",
+		"SERIES_STMT": "Series",
+		"SOURCE_DESC": "Source description",
+		"SPONSOR": "Sponsor",
+		"TEXT_CLASS": "Text classification",
+		"VARIANT_ENCODING": "Variant encoding"
 	},
 	"BIBLIOGRAPHY": {
 		"STYLE": "Style",

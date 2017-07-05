@@ -120,7 +120,30 @@
 		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Prova ad utilizzare un browser differente oppure contatta gli sviluppatori."
 	},
 	"PROJECT_INFO": {
-		"ENCODING_METHOD_USED": "Questa edizione è stato utilizzato il metodo \"{{method}}\" per la codifica delle varianti critiche."
+	},
+	"PROJECT_INFO": {
+		"AVAILABILITY": "Disponibilità: ",
+		"CORRECTION": "Principi di correzione",
+		"DATE": "Data: ",
+		"EDITION": "Edizione: ",
+		"EDITORIAL_DECL": "Principi e pratiche editoriali",
+		"ENCODING_METHOD_USED": "Questa edizione è stato utilizzato il metodo \"{{method}}\" per la codifica delle varianti critiche.",
+		"FUNDER": "Finanziatore",
+		"IDNO": "idno: ",
+		"LANG_USAGE": "Utilizzo della lingua",
+		"NOTES_STMT": "Annotazioni",
+		"PARTIC_DESC": "Partecipazione",
+		"PRINCIPAL": "Ricercatore principale",
+		"PROJECT_DESC": "Descrizione del progetto",
+		"PUBLICATION_STMT": "Informazioni sulla pubblicazione",
+		"PUBLISHER": "Editore: ",
+		"REFS_DECL": "Dichiarazione di riferimenti",
+		"RESP_STMT": "Responsabile: ",
+		"SERIES_STMT": "Serie",
+		"SOURCE_DESC": "Descrizione della fonte",
+		"SPONSOR": "Sponsor",
+		"TEXT_CLASS": "Classificazione testuale",
+		"VARIANT_ENCODING": "Codifica delle varianti"
 	},
 	"BILIOGRAPHY": {
 		"STYLE": "Stile",

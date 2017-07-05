@@ -169,7 +169,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + ',' + config.lacunaMilestone + ',' + config.fragmentMilestone;
-				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 
 			//parse <pb>
@@ -363,7 +363,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + ',' + config.lacunaMilestone + ',' + config.fragmentMilestone;
-				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 			criticalText = docDOM.outerHTML;
 			// } else {
@@ -436,7 +436,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + '<evt-source-seg>';
-				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 			sourceText = docDOM.outerHTML;
 		} else {

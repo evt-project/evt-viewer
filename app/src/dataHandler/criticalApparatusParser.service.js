@@ -73,7 +73,7 @@ angular.module('evtviewer.dataHandler')
                     var witnessElem = {
                         id          : child.getAttribute('xml:id'),
                          attributes  : evtParser.parseElementAttributes(child),
-                        description : evtParser.parseXMLElement(doc, child, ''),
+                        description : evtParser.parseXMLElement(doc, child, {skip: ''}),
                         _group      : list.id,
                         _type       : 'witness'
                     };
@@ -115,7 +115,7 @@ angular.module('evtviewer.dataHandler')
                                     } else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0) { // witness
                                         el = {
                                             id          : child.getAttribute('xml:id'),
-                                            description : evtParser.parseXMLElement(doc, child, ''),
+                                            description : evtParser.parseXMLElement(doc, child, {skip: ''}),
                                             _group      : undefined,
                                             _type       : 'witness',
                                             text        : {}

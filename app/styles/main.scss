@@ -11,42 +11,38 @@
 
 @include border-box-sizing;
 
-$large:(
-	columns: 18,
-	container-position: center,
-	global-box-sizing: content-box,
-	gutter-position: inside,
-    gutters:.03,
-	debug:(image:show)
-	);
+$large: (columns: 18, container-position: center, global-box-sizing: content-box, gutter-position: inside, gutters: 0.03, debug: (image: show));
 
 @include layout($large);
 
-body{
-	@include container();
-	font-family: Junicode, Times, serif;
-	background: $base-backgroundImage;
-	margin:0;
-	padding:0;
-	min-height: $base-minHeight;
-	overflow:hidden;
-	position:absolute;
-	font-size: $base-fontSize;
-	height:100%;
-	width:100%;
-    min-width: 800px;
-	> header, 
-	> footer, 
-	> section {
-		@include span(20 of 20);
-	}
+body {
+    @include container;
 
-	> header, 
-	> footer{
-		height:54px;
-		padding: 10px;
-		@include colors($base-color-light, $base-color-dark);
-	}
+    font-family: Junicode, Times, serif;
+    background: $base-backgroundImage;
+    margin: 0;
+    padding: 0;
+    min-height: $base-minHeight;
+    overflow: hidden;
+    position: absolute;
+    font-size: $base-fontSize;
+    height: 100%;
+    width: 100%;
+    min-width: 800px;
+
+    > header,
+    > footer,
+    > section {
+        @include span(20 of 20);
+    }
+
+    > header,
+    > footer {
+        height: 54px;
+        padding: 10px;
+
+        @include colors($base-color-light, $base-color-dark);
+    }
 
     > header .logo {
         height: 34px;
@@ -55,40 +51,45 @@ body{
     }
 }
 
-footer{
-	display: setVisibility($base-footer);
+footer {
+    display: setVisibility($base-footer);
 }
 
 #global-container-ext {
     height: 100%;
 }
 
-#global-container{
-	@include calc(height, #{setGlobalFrameHeight()} + 1px);
-	padding:1px 0 0;
-    overflow:hidden;
-    width:100%;
-}
-section > div{
-	height:100%;
-	display: block;
-  	vertical-align: middle;
+#global-container {
+    @include calc(height, unquote("#{setGlobalFrameHeight()} + 1px"));
+
+    padding: 1px 0 0;
+    overflow: hidden;
+    width: 100%;
 }
 
-#left-nav{
-	@include mainNavArrow();
+section > div {
+    height: 100%;
+    display: block;
+    vertical-align: middle;
 }
-#main-container{
-	@include main-frame();
-	//@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
-	// @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+
+#left-nav {
+    @include mainNavArrow;
 }
+
+#main-container {
+    @include main-frame;
+
+    //@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+    // @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
+}
+
 #main-container > div {
     white-space: nowrap;
 }
 
-#right-nav{
-	@include mainNavArrow();
+#right-nav {
+    @include mainNavArrow;
 }
 
 @import "apparatuses.scss";
@@ -119,11 +120,13 @@ section > div{
 .secondary-container {
     position: absolute;
 }
+
 .btnGroup {
     display: inline;
+
     .fontSizeBtnGroup {
         position: absolute;
-        font-size:1.6em; 
+        font-size: 1.6em;
         float: left;
         bottom: 45px;
         left: 147px;
@@ -145,16 +148,21 @@ section > div{
     right: 2px;
     width: calc(100% - 21px);
     background: #fff;
+
     @include set(box-shadow, 0px -7px 6px -4px #fff);
+
     span.filter-group {
         display: inline;
-        &::after{
+
+        &::after {
             content: "-";
         }
-        &:last-child::after{
+
+        &:last-child::after {
             content: "";
         }
-        span.filter-value{
+
+        span.filter-value {
             display: inline-block;
             background: #CF00FF;
             border-radius: 2px;
@@ -165,11 +173,14 @@ section > div{
             cursor: pointer;
             min-width: 50px;
             text-align: center;
+
             @include set(box-shadow, 0px 1px 3px rgba(0, 0, 0, 0.3));
-            &:hover{
+
+            &:hover {
                 opacity: 0.9;
             }
-            &::after{
+
+            &::after {
                 content: "x";
                 color: #333;
                 font-weight: lighter;
@@ -190,15 +201,15 @@ section > div{
 }
 
 .alert-msg {
-    background: rgba(0,0,0,.1);
+    background: rgba(0, 0, 0, 0.1);
     display: block;
     font-size: 90%;
     text-align: center;
     padding: 10px;
-    &-error{
-        background: rgba(255,0,0,.1);
-    }
 
+    &-error {
+        background: rgba(255, 0, 0, 0.1);
+    }
 }
 
 .globalMenu {
@@ -210,8 +221,10 @@ section > div{
     height: 54px;
     padding: 10px;
     font-size: 100%;
+
     button-switch {
-        margin:0px;
+        margin: 0px;
+
         .buttonSwitch {
             height: auto;
             padding: 0 3px;
@@ -219,54 +232,65 @@ section > div{
             box-shadow: none;
             border-radius: 0;
             width: 0px;
-            &-label{
+
+            &-label {
                 font-variant: small-caps;
                 font-size: 80%;
                 top: 0;
                 color: $base-color-light;
             }
-            &-icon{
+
+            &-icon {
                 color: $base-color-light;
                 font-size: 1em;
                 top: .1rem;
             }
-            &:hover, &:hover > *{
+
+            &:hover, &:hover > * {
                 color: $buttonSwitch-active-background-color;
             }
         }
+
         &.mode-view {
-            margin:0px 1px;
-            &[data-icon='reading-txt']{
-                margin-right:-2px;
+            margin: 0px 1px;
+
+            &[data-icon='reading-txt'] {
+                margin-right: -2px;
             }
-            .buttonSwitch{
+
+            .buttonSwitch {
                 width: auto;
-                padding:0;
-                &-active, &:hover{
+                padding: 0;
+
+                &-active, &:hover {
                     .icon {
-                        color:$base-color-active-background;
+                        color: $base-color-active-background;
                     }
                 }
+
                 &-icon {
                     font-size: 1.3em;
                     margin-right: 3px;
                     top: 0.4rem;
                 }
+
                 .iconbis-evt_versions, .iconbis-evt_srctxt {
                     font-size: .9em;
                     top: 0.1rem;
                 }
             }
         }
-        &:last-child{
-            margin-right: 0;
 
+        &:last-child {
+            margin-right: 0;
         }
     }
+
     .viewModeMenu {
-        display:inline;
+        display: inline;
     }
 }
+
 .global-loading-container,
 .global-msg-container {
     position: absolute;
@@ -277,21 +301,26 @@ section > div{
     z-index: 9999;
     background: #e5e5e5;
     font-size: 60%;
+
     .global-msg {
         h1 {
-            font-size:2.5em; 
+            font-size: 2.5em;
         }
+
         height: auto;
         text-align: center;
         padding: 20px;
     }
 }
+
 .global-loading-container {
     display: block;
 }
+
 .viewMode, .global-loading-container {
     .loading {
-        background: rgba(0,0,0,.1);
+        background: rgba(0, 0, 0, 0.1);
+
         .loader {
             font-size: 2.5em;
             color: $base-color-dark;
@@ -302,17 +331,19 @@ section > div{
         }
     }
 
-    box:last-child .box{
+    box:last-child .box {
         margin: 0;
     }
 }
+
 pre {
     white-space: pre-wrap;
-    font-size: 80%; 
+    font-size: 80%;
 }
 
 .colorLegend {
     padding: 15px;
+
     &-filter {
         &-name {
             display: block;
@@ -321,9 +352,11 @@ pre {
             font-variant: small-caps;
             text-transform: uppercase;
         }
+
         &-value {
             display: block;
         }
+
         &-color {
             display: inline-block;
             min-height: 15px;
@@ -348,16 +381,20 @@ pre {
     max-height: 80%;
     overflow-x: hidden;
     overflow-y: auto;
-    @include set(box-shadow, 0px 0px 4px 0px rgba(0,0,0,0.6));
+
+    @include set(box-shadow, 0px 0px 4px 0px rgba(0, 0, 0, 0.6));
+
     > span {
         display: block;
         padding: 10px;
         border-bottom: 1px solid #f0f0f0;
         cursor: pointer;
-        &:hover{
+
+        &:hover {
             background: #f0f0f0;
         }
     }
+
     &.left75 {
         position: absolute;
         right: auto;
@@ -377,6 +414,7 @@ pre {
     border-radius: 3px;
     top: $base-header-height;
     right: 4px;
+
     @include set(box-shadow, "0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)");
 
     ul {
@@ -397,15 +435,17 @@ pre {
                 cursor: pointer;
                 box-sizing: border-box;
                 white-space: nowrap;
-                
+
                 .icon {
                     margin-right: 14px;
                 }
             }
+
             &:hover {
                 background-color: #f4f5f5;
                 cursor: pointer;
             }
+
             &.inactive * {
                 background-color: #f5f5f5;
                 color: #ccc;
@@ -430,18 +470,46 @@ pre {
             cursor: default;
             opacity: 1;
         }
-         &:hover {
+
+        &:hover {
             opacity: 1;
         }
     }
 }
-// Generic style 
+
+.projectInfo {
+    &-sectionHeader {
+        display: block;
+        border-bottom: 1px dotted #666;
+        margin-bottom: 5px;
+        font-variant: small-caps;
+        color: #666;
+        font-size: 90%;
+        display:block;
+        margin-top: 14px;
+    }
+
+    &-blockLabel, &-inlineLabel {
+        font-variant: small-caps;
+        color: #666;
+        font-size: 90%;
+    }
+    &-blockLabel {
+        display: block;
+    }
+    &-inlineLabel {
+        display: inline;
+    }
+}
+
+// Generic style
 .hidden {
     display: none;
 }
 
 .noPadding {
     padding: 0 !important;
+
     > * {
         padding: 0 !important;
     }
@@ -449,6 +517,7 @@ pre {
 
 .evtlb {
     display: block;
+
     .l {
         display: inline !important;
     }
@@ -462,6 +531,7 @@ pre {
         background-color: #c67261 !important;
         opacity: 0.4;
     }
+
     &.lineSelected, &.lineSelected.lineHover {
         border: 1px solid #4c2f2f !important;
         background-color: #9c4837 !important;
@@ -474,6 +544,7 @@ pre {
         img {
             display: none;
         }
+
         .zoneInImg {
             display: block;
         }
@@ -481,13 +552,13 @@ pre {
 
     .lineHover, .lineHover:after {
         cursor: pointer;
-        background-color: rgba(230,206,160,0.8) !important;
+        background-color: rgba(230, 206, 160, 0.8) !important;
         color: #000000;
     }
 
     .lineSelected, .lineSelected:after {
         cursor: pointer;
-        background-color: rgba(213,177,125,0.9) !important;
+        background-color: rgba(213, 177, 125, 0.9) !important;
         color: #000000;
     }
 }

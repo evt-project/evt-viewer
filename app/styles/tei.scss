@@ -441,13 +441,6 @@
 .encodingdesc {
     .editorialdecl {
         display:block;
-        margin-top: 14px;
-        &:before{
-            content: "Editorial principles and practices";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-        }
         &:before, > *:before {
             font-variant: small-caps;
             color: #666;
@@ -455,9 +448,6 @@
         }
         .correction {
             display: block;
-            &:before {
-                content: "Correction principles: ";
-            }
         }
         .hyphenation {
             display: block;
@@ -506,29 +496,11 @@
     .projectdesc {
         display:block;
         margin-top: 14px;
-        &:before{
-            content: "Project description";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        } 
     }
 
     .refsdecl {
         display:block;
         margin-top: 14px;
-        &:before{
-            content: "References declaration";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
     }
 }
 
@@ -552,15 +524,6 @@
     }
     .notesstmt {
         display:block;
-        &:before{
-            content: "Notes";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
         .note {
             display: block;
             margin-top: 10px;
@@ -568,75 +531,27 @@
     }
     .publicationstmt{
         display:block;
-        margin-top: 14px;
         > * {
             display:block;
-        }
-        &:before{
-            content: "About the publication";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
         }
         &:before, > *:before{
             font-variant: small-caps;
             color: #666;
             font-size:90%;
         }
-        .publisher {
-            &:before{
-                content: "Publisher: ";
-                display: block;
-            }
-        }
-        .availability{
-            &:before{
-                content: "Availability: ";
-                display:block;
-            }
-        }
-        .idno {
-            &:before {
-                content: "idno: ";
-            }
-        }
-        .date {
-            &:before {
-                content: "Date: ";
-            }
-        }
+        .publisher { }
+        .availability{ }
+        .idno { }
+        .date { }
     }
     .respstmt {
         display:block;
-        &:before{
-            content: "Responsable: ";
-        }
     }
     .seriesstmt {
         display:block;
-        margin-top: 14px;
-        &:before{
-            content: "Series";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
     }
     .sourcedesc {
         display:block;
-        margin-top: 14px;
-        &:before{
-            content: "Source description";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
         .listwit, .listbibl {
             display:none;
         }
@@ -656,14 +571,7 @@
         }
     }
     .editionstmt {
-        .edition {
-            &:before{
-                content: "Edition: ";
-                font-variant: small-caps;
-                color: #666;
-                font-size:90%;
-            }
-        }
+        .edition { }
     }
 }
 .funder, .sponsor, .principal {
@@ -679,45 +587,25 @@
     }
 }
 .funder {
-    &:before{
-        content: "Funder";
-    }
+    &:before{ }
 }
 .sponsor {
-    &:before{
-        content: "Sponsor";
-    }
+    &:before{ }
 }
 .principal {
-    &:before{
-        content: "Principal researcher: ";
-    }
+    &:before{ }
 }
 
 .profiledesc {
-    .langusage, .particdesc, .textclass{
-        &:before{
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            margin-top:5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
-    }
+    .langusage, .particdesc, .textclass{ }
     .langusage {
-        &:before{
-            content: "Language usage";
-        }
+        &:before{ }
         .language {
             display: block;
         }
     }
     .particdesc {
-        &:before{
-            content: "Participation description";
-        }
+        &:before{ }
         .listperson, .person {
             display: block;
             * {
@@ -749,9 +637,7 @@
         }
     }
     .textclass{ 
-        &:before{
-            content: "Text classification";
-        }
+        &:before{  }
     }
 }
 
@@ -774,16 +660,6 @@
 }
 .variantEncoding {
     display:block;
-    margin-top: 14px;
-    &:before{
-        content: "Variant encoding";
-        display:block;
-        border-bottom: 1px dotted #666;
-        margin-bottom: 5px;
-        font-variant: small-caps;
-        color: #666;
-        font-size:90%;
-    } 
 }
 //Temp
 .filedesc .listwit,

@@ -21,7 +21,7 @@
                 ng-repeat="appLabel in vm.topMenuList.appLabels"
                 ng-click="vm.updateApparatus(appLabel.id)"
                 ng-class="{'selected': appLabel.id === vm.getCurrentApparatus()}"
-                >{{ ::appLabel.label | translate }}</span>
+                >{{ appLabel.label | translate }}</span>
         </div>
         <!--End of addition-->
         

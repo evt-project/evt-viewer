@@ -90,7 +90,7 @@
                 data-icon="menu"
                 data-type="mainMenu">
             </button-switch>
-            <div class="mainMenu" ng-if="getState('mainMenu')">
+            <div class="mainMenu" ng-if="getState('mainMenu') === true">
                 <ul>
                     <li>
                         <span ng-click="openGlobalDialogInfo()">
@@ -120,7 +120,8 @@
                             <i class="icon fa fa-language"></i>
                             {{'MAIN_MENU.LANGUAGES' | translate}}
                             <img ng-repeat="langKey in getAvailableLanguages()" 
-                                src="images/{{langKey}}.png" 
+                                ng-if="langKey && langKey !== ''"
+                                ng-src="images/{{langKey}}.png" 
                                 ng-class="{ 'active': langKey === getCurrentLanguage() }"
                                 class="flag" 
                                 ng-click="setLanguage(langKey)"
