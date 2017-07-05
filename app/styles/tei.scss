@@ -762,11 +762,7 @@
     }
 }
 .respstmt {
-    .resp {
-        &:after{
-            content: ': ';
-        }
-    }
+    .resp {}
     .name, .persname {
         &:not(:last-child):after{
             content: ', ';

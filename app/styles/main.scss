@@ -227,8 +227,8 @@ section > div{
             }
             &-icon{
                 color: $base-color-light;
-                font-size: 1.3em;
-                top:7px;
+                font-size: 1em;
+                top: .1rem;
             }
             &:hover, &:hover > *{
                 color: $buttonSwitch-active-background-color;
@@ -248,18 +248,23 @@ section > div{
                     }
                 }
                 &-icon {
-                    font-size: 1.4em;
+                    font-size: 1.3em;
                     margin-right: 3px;
+                    top: 0.4rem;
                 }
                 .iconbis-evt_versions, .iconbis-evt_srctxt {
-                    font-size: 1em;
-                    top: 2px;
+                    font-size: .9em;
+                    top: 0.1rem;
                 }
             }
         }
         &:last-child{
             margin-right: 0;
+
         }
+    }
+    .viewModeMenu {
+        display:inline;
     }
 }
 .global-loading-container,
@@ -358,6 +363,76 @@ pre {
         right: auto;
         left: 75%;
         transform: translate(-50%, -45%);
+    }
+}
+
+.mainMenu {
+    position: absolute;
+    text-align: left;
+    background-color: white;
+    padding: 9px 0px;
+    z-index: 10000;
+    max-width: 340px;
+    overflow: hidden;
+    border-radius: 3px;
+    top: $base-header-height;
+    right: 4px;
+    @include set(box-shadow, "0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)");
+
+    ul {
+        margin: 0;
+        list-style: none;
+        padding: 0;
+        color: #4b4b4b;
+
+        li {
+            > span {
+                color: #444444;
+                font-size: 1.1rem;
+                height: 40px;
+                padding-top: 13px;
+                padding-right: 58px;
+                padding-left: 20px;
+                display: block;
+                cursor: pointer;
+                box-sizing: border-box;
+                white-space: nowrap;
+                
+                .icon {
+                    margin-right: 14px;
+                }
+            }
+            &:hover {
+                background-color: #f4f5f5;
+                cursor: pointer;
+            }
+            &.inactive * {
+                background-color: #f5f5f5;
+                color: #ccc;
+                cursor: default;
+            }
+        }
+    }
+
+    img.flag {
+        height: 18px;
+        width: 18px;
+        border-radius: 100px;
+        border: 1px solid #4E443C;
+        display: inline-block;
+        margin: 0px 4px;
+        position: relative;
+        top: 2px;
+        cursor: pointer;
+        opacity: .5;
+
+        &.active {
+            cursor: default;
+            opacity: 1;
+        }
+         &:hover {
+            opacity: 1;
+        }
     }
 }
 // Generic style 

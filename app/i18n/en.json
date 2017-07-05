@@ -18,7 +18,6 @@
 		"BOOKMARK": "Bookmark",
 		"CHANGE_LANGUAGE": "Change Language",
 		"COLOR_KEY": "Color keys",
-		"DOWNLOAD_XML": "Download XML",
 		"FILTERS": "Filters",
 		"FONT_CHANGE": "Change font size",
 		"FONT_DECREASE": "Decrease font size",
@@ -29,10 +28,12 @@
 		"INFO_ABOUT_TEXT": "Information about this text",
 		"IMAGE_TEXT_LINKING": "Image-Text Linking",
 		"LIST": "Lists",
+		"MENU": "Open Menu",
 		"NO_VERSION_AVAILABLE": "No more versions available",
 		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
+		"SHOW_PINNED_ENTRIES": "Show pinned elements",
 		"SHOW_PINNED_APP_ENTRIES": "Show pinned apparatus entries",
 		"THUMBS": "Thumbs",
 		"THUMBNAILS": "Thumbnails",
@@ -48,6 +49,9 @@
 		"MORE_INFO": "More info about the apparatus entry",
 		"NO_DATA": "No data available",
 		"ORTHOGRAPHIC_VARIANTS_FOR": "Orthographic Variants for ",
+		"QUOTE_START": "Quote start",
+		"QUOTE_END": "Quote end",
+		"SEE_FULL_SOURCE": "See full text in the \"Text-Source\" view",
 		"TABS": {
 			"CRITICAL_NOTE": "Critical Note",
 			"MORE_INFO": "More Info",
@@ -63,6 +67,10 @@
 		"NAMED_ENTITIES": "Named Entities",
 		"PROJECT_INFO": "Project Info",
 		"WITNESSES": "Witnesses"
+	},
+	"LANGUAGES": {
+		"EN": "English",
+		"IT": "Italian"
 	},
 	"LISTS": {
 		"ENTITY_TYPE_": "Name",
@@ -85,6 +93,14 @@
 		"RELATION_MUTUAL_ROLE": "Mutual role in a \"{{relationType}}\" relation",
 		"RELATION_PASSIVE_ROLE": "Passive role in a \"{{relationType}}\" relation"
 	},
+	"MAIN_MENU": {
+		"GENERATE_BOOKMARK": "Get Bookmark",
+		"DOWNLOAD_XML": "Download XML",
+		"KEYBOARD_SHORT_CUTS": "Keyboard short cuts",
+		"LANGUAGES": "Languages",
+		"OPEN_LISTS": "Open Lists",
+		"PROJECT_INFO": "Project Info"
+	},
 	"MESSAGES" : {
 		"ERROR_IN_PARSING_TEXT": "There was an error in the parsing of the text.",
 		"ERROR_IN_PARSING_LACUNA": "There was a problem in loading lacuna for this witness.",
@@ -103,6 +119,9 @@
 		"TEXT_OF_WITNESS_NOT_AVAILABLE": "Text of witness {{witness}} is not available.",
 		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Try a different browser or contact the developers."
 	},
+	"PROJECT_INFO": {
+		"ENCODING_METHOD_USED": "This edition is using \"{{method}} method\" to encode text-critical variants."
+	},
 	"BIBLIOGRAPHY": {
 		"STYLE": "Style",
 		"SORT_BY": "Sort by",
@@ -115,5 +134,6 @@
 			"DESC": "Descendent"
 	},
 	"AND": "and",
-	"ERROR" : "Error"
+	"ERROR" : "Error",
+	"PUBLISHED_BY": "Published by"
 }

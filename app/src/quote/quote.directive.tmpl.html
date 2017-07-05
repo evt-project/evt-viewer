@@ -11,7 +11,7 @@
                 'highlight': vm.hasScopeSource() && vm.scopeViewMode === 'srcTxt'}">
     <sup
         class="iconbis-evt_quote-left"
-        title="quote"
+        title="{{ 'CRITICAL_APPARATUS.QUOTE_START' | translate}}"
         ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
     </sup>
     <span 
@@ -20,7 +20,7 @@
         ng-transclude></span>
     <sup
         class="iconbis-evt_quote-right"
-        title="quote"
+        title="{{ 'CRITICAL_APPARATUS.QUOTE_END' | translate}}"
         ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
     </sup>
 

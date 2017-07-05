@@ -8,7 +8,7 @@ angular.module('evtviewer.buttonSwitch')
 		defaults = _defaults;
 	};
 
-    this.$get = function($timeout, $log, $translate, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
+    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
         var button    = {},
             collection = {},
             list       = [],
@@ -93,6 +93,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'list':
 					evtIcon = 'icon-evt_list';
 					break;
+				case 'menu':
 				case 'menu-vert':
 					evtIcon = 'icon-evt_more-vert';
 					break;
@@ -186,20 +187,6 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateSecondaryContentOpened('bookmark');
 						evtDialog.openByType('bookmark');
 						vm.active = !vm.active;
-					};
-					break;
-				case 'changeLanguage':
-					btnType = 'standAlone';
-					callback = function() {
-						var availableLangKeys = config.languages;
-						var currentLangKey = $translate.proposedLanguage();
-						var indexOfCurrent = availableLangKeys.indexOf(currentLangKey);
-						var newLangKey = availableLangKeys[0];
-						if (indexOfCurrent >= 0 && indexOfCurrent < availableLangKeys.length-1) {
-							newLangKey = availableLangKeys[indexOfCurrent+1];
-						}
-						_console.log('Setting Lang ', newLangKey);
-						$translate.use(newLangKey);
 					};
 					break;
 				case 'changeViewMode':
@@ -363,6 +350,13 @@ angular.module('evtviewer.buttonSwitch')
 						} else { // Deactivate ITL
 							evtImageTextLinking.turnOffITL();
 						}
+					};
+					break;
+				case 'mainMenu':
+					btnType = 'standAlone';
+					callback = function() {
+						var mainMenuState = evtInterface.getState('mainMenu');
+						evtInterface.updateState('mainMenu', !mainMenuState);
 					};
 					break;
 				case 'openGlobalDialogInfo':

@@ -4,18 +4,32 @@ angular.module('evtviewer.translation')
 
 })
 
-.service('evtTranslation', function(TRANSLATIONDEFAULTS) {
+.service('evtTranslation', function(TRANSLATIONDEFAULTS, $translate) {
 	var translation = {},
 		defaults = TRANSLATIONDEFAULTS,
-		languages = ['en', 'it'];
+		languages = ['en', 'it'],
+        current;
+
+    translation.setLanguage = function(langKey) {
+        current = langKey;
+        $translate.use(langKey);
+    };
 
 	translation.setLanguages = function(data) {
 		languages = data;
 	};
 
+    translation.setFallbackLanguage = function(fallbackLangKey) {
+        $translate.fallbackLanguage(fallbackLangKey);
+    };
+
 	translation.getLanguages = function(data) {
 		return languages;
 	};
+
+    translation.getCurrentLanguage = function() {
+        return current;
+    };
 
     translation.getUserLanguage = function() {
         var userLang,

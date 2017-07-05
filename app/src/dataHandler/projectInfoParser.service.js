@@ -82,9 +82,7 @@ angular.module('evtviewer.dataHandler')
                         variantEncodingEl = angular.element(element).find('variantEncoding')[0];
                     if (variantEncodingEl){
                         encodingDescContent = evtParser.parseXMLElement(teiHeader, element, skipElementsFromParser, skipElementsFromInfo).outerHTML;
-                        encodingDescContent += '<span class="variantEncoding">This edition is using <i>';
-                        encodingDescContent += variantEncodingEl.getAttribute('method');
-                        encodingDescContent +=' method</i> to encode text-critical variants.</span>';
+                        encodingDescContent += '<span class="variantEncoding">{{ \'PROJECT_INFO.ENCODING_METHOD_USED\' | translate:\'{ method:  "'+variantEncodingEl.getAttribute('method')+'" }\' }}</span>';
                     }
                     parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
                 }

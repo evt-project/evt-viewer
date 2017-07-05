@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
+	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
 		var _console = $log.getInstance('interface');
 
 		$scope.getCurrentViewMode = function() {
@@ -113,6 +113,10 @@ angular.module('evtviewer.interface')
 			return evtInterface.getProperty(name);
 		};
 
+		$scope.getState = function(name) {
+			return evtInterface.getState(name);
+		};		
+		
 		$scope.handleGenericClick = function($event) {
 			var target = $event.target;
 			if ($(target).parents('evt-select').length === 0) {
@@ -121,6 +125,7 @@ angular.module('evtviewer.interface')
 			if ($(target).parents('button-switch').length === 0) {
 				var skipBtnTypes = ['standAlone', 'toggler'];
 				evtButtonSwitch.unselectAllSkipByBtnType('', skipBtnTypes);
+				evtInterface.updateState('mainMenu', false);
 			}
 			if ($(target).parents('evt-popover').length === 0) {
 				evtPopover.closeAll();
@@ -131,6 +136,7 @@ angular.module('evtviewer.interface')
 					evtInterface.updateProperty('witnessSelector', false);
 				}
 			}
+
 		};
 
 		$scope.handleKeydownEvent = function($event) {
@@ -144,7 +150,7 @@ angular.module('evtviewer.interface')
 			var output = '<div class="bookmark">';
 			output += projectRef.author ? projectRef.author + '. ' : '';
 			output += projectRef.title ? '<em>' + projectRef.title + '</em>. ' : '';
-			output += projectRef.publisher ? 'Published by ' + projectRef.publisher + '. ' : '';
+			output += projectRef.publisher ? '{{ \'PUBLISHED_BY\' | translate }} ' + projectRef.publisher + '. ' : '';
 			output += '<<a href="' + window.location + '" target="blank">' + window.location + '</a>>';
 			output += '</div>';
 			return output;
@@ -211,6 +217,39 @@ angular.module('evtviewer.interface')
 		};
 
 		/* END OF ADDITION */
+		
+		// MAIN MANU ACTIONS
+		$scope.openGlobalDialogInfo = function() {
+			evtInterface.updateSecondaryContentOpened('globalInfo');
+			evtDialog.openByType('globalInfo');
+		};
+		
+		$scope.openGlobalDialogLists = function() {
+			evtInterface.updateSecondaryContentOpened('entitiesList');
+			evtDialog.openByType('entitiesList');
+		};
+
+		$scope.generateBookmark = function() {
+			evtInterface.updateSecondaryContentOpened('bookmark');
+			evtDialog.openByType('bookmark');
+		};
+
+		$scope.downloadXML = function() {
+			window.open(evtInterface.getProperty('dataUrl'), '_blank');
+		};
+
+		// UI Translation
+		$scope.getAvailableLanguages = function() {
+			return evtTranslation.getLanguages();
+		};
+
+		$scope.getCurrentLanguage = function() {
+			return evtTranslation.getCurrentLanguage();
+		};
+
+		$scope.setLanguage = function(langKey) {
+			evtTranslation.setLanguage(langKey);
+		};
 
 		_console.log('InterfaceCtrl running');
 	})

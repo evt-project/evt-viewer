@@ -45,21 +45,23 @@
         <img class="logo" ng-if="getProperty('logoUrl') !== ''" ng-src="{{getProperty('logoUrl')}}" />
         {{ getProperty('indexTitle') }}
         <div class="globalMenu">
-            <button-switch
-                    title="{{::mode.label}}"
-                    class="mode-view"
-                    data-label=""
-                    data-icon="{{::mode.icon}}"
-                    data-value="{{::mode.viewMode}}"
-                    data-type="changeViewMode"
-                    ng-repeat="mode in getAvailableViewModes() track by $index"
-                    ng-if="mode.visible">
-            </button-switch>
+            <div class="viewModeMenu">
+                <button-switch
+                        title="{{::mode.label}}"
+                        class="mode-view"
+                        data-label=""
+                        data-icon="{{::mode.icon}}"
+                        data-value="{{::mode.viewMode}}"
+                        data-type="changeViewMode"
+                        ng-repeat="mode in getAvailableViewModes() track by $index"
+                        ng-if="mode.visible">
+                </button-switch>
+            </div>
             <!-- <button-switch
                     title="Witnesses"
                     data-icon="witnesses"
                     data-type="openGlobalDialogWitnesses">
-            </button-switch> -->
+            </button-switch>
             <button-switch
                 title="BUTTONS.LIST"
                 ng-if="getProperty('namedEntitiesLists')"
@@ -82,12 +84,55 @@
                 title="BUTTONS.DOWNLOAD_XML"
                 data-icon="download"
                 data-type="download-xml">
-            </button-switch>
+            </button-switch> -->
             <button-switch
-                title="BUTTONS.CHANGE_LANGUAGE"
-                data-icon="language"
-                data-type="changeLanguage">
+                title="BUTTONS.MENU"
+                data-icon="menu"
+                data-type="mainMenu">
             </button-switch>
+            <div class="mainMenu" ng-if="getState('mainMenu')">
+                <ul>
+                    <li ng-if="getProperty('namedEntitiesLists')">
+                        <span ng-click="openGlobalDialogInfo()">
+                            <i class="icon icon-evt_info-alt"></i>
+                            {{'MAIN_MENU.PROJECT_INFO' | translate}}</span>
+                    </li>
+                    <li ng-if="getProperty('namedEntitiesLists')">
+                        <span ng-click="openGlobalDialogLists()">
+                            <i class="icon icon-evt_list"></i>
+                            {{'MAIN_MENU.OPEN_LISTS' | translate}}</span>
+                    </li>
+                    <li>
+                        <span ng-click="generateBookmark()">
+                            <i class="icon icon-evt_bookmark"></i>
+                            {{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
+                    </li>
+                    <li ng-if="getProperty('enableXMLdownload')">
+                        <span ng-click="downloadXML()">
+                            <i class="icon fa fa-download"></i>
+                            {{'MAIN_MENU.DOWNLOAD_XML' | translate}}</span>
+                    </li>
+                </ul>
+                <hr/>
+                <ul>
+                    <li>
+                        <span>
+                            <i class="icon fa fa-language"></i>
+                            {{'MAIN_MENU.LANGUAGES' | translate}}
+                            <img ng-repeat="langKey in getAvailableLanguages()" 
+                                src="images/{{langKey}}.png" 
+                                ng-class="{ 'active': langKey === getCurrentLanguage() }"
+                                class="flag" 
+                                ng-click="setLanguage(langKey)"
+                                title="{{ 'LANGUAGES.'+langKey | uppercase | translate }}" alt="{{ ::langKey | uppercase}}">
+                        </span>
+                    </li>
+                    <li class="inactive">
+                        <span>
+                            <i class="icon fa fa-keyboard-o"></i>
+                            {{ 'MAIN_MENU.KEYBOARD_SHORT_CUTS' | translate }}</span></li>
+                </ul>
+            </div>
             <!-- <button-switch
                     class="noPadding"
                     title="Menu"
@@ -132,7 +177,7 @@
                                 'half-left': isApparatusBoxOpen(),
                                 'smaller-left': isApparatusBoxOpen() && isPinnedAppBoardOpened() }"></box>
                 <button-switch
-                        title="BUTTONS.SHOW_PINNED_APP_ENTRIES"
+                        title="BUTTONS.SHOW_PINNED_ENTRIES"
                         data-label=""
                         data-icon="pin"
                         data-type="togglePinned"

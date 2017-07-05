@@ -760,7 +760,7 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		if (editionText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+            var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 			editionText = errorMsg;
 		}
 
