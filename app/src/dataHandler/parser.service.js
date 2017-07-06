@@ -12,11 +12,18 @@ angular.module('evtviewer.dataHandler')
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
     var projectInfoDefs = {
-        sectionHeaders: '<projectDesc>, <refsDecl>, <notesStmt>, <seriesStmt>, <sourceDesc>, <publicationStmt>, <respStmt>, <funder>, <sponsor>, <principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>',
-        blockLabels: '<publisher>, <availability>, <edition>, <correction>',
-        inlineLabels: '<idno>, <date>'
+        sectionHeaders: '<sourceDesc>, ',
+        sectionSubHeaders: '',
+        blockLabels: '',
+        inlineLabels: '<authority>, <settlement>, <publisher>, <pubPlace>, <availability>, <author>, <editor>, <idno>, <date>, <repository>, <msName>, <textLang>',
+        changeDef: '<change>',
+        changeWhenDef: '[when]',
+        changeByDef: '[who]'
     };
-
+    projectInfoDefs.sectionSubHeaders += '<projectDesc>, <refsDecl>, <notesStmt>, <seriesStmt>, <publicationStmt>, <respStmt>, <funder>, <sponsor>, <msContents>, <revisionDesc>, ';
+    projectInfoDefs.sectionSubHeaders += '<principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>, <msIdentifier>, <physDesc>, <history>, <extent>, <editionStmt>';
+    projectInfoDefs.blockLabels += '<edition>, <correction>, <hyphenation>, <interpretation>, <normalization>, <punctuation>, <interpGrp>';
+    projectInfoDefs.blockLabels += '<quotation>, <segmentation>, <stdVals>, <colophon>, <handDesc>, <decoDesc>, <supportDesc>, <origin>';
     /* ********* */
     /* UTILITIES */
     /* ********* */
@@ -48,13 +55,11 @@ angular.module('evtviewer.dataHandler')
     };
 
     parser.camelToSpace = function(str) {
-        return str.replace(/\W+/g, ' ')
-                    .replace(/([a-z\d])([A-Z])/g, '$1 $2');
+        return (!!str) ? str.replace(/\W+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1 $2') : '';
     };
 
     parser.camelToUnderscore = function(str) {
-        return str.replace(/\W+/g, ' ')
-                    .replace(/([a-z\d])([A-Z])/g, '$1_$2');
+        return (!!str) ? str.replace(/\W+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1_$2') : '';
     };
 
     /* ************************ */
@@ -110,15 +115,15 @@ angular.module('evtviewer.dataHandler')
             // newElement.appendChild(element);
 		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = element;
-		} else if (exclude !== undefined && element.tagName !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
-			newElement = document.createTextNode('');
+        } else if (element.tagName !== undefined && exclude !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+            newElement = document.createTextNode('');
 		} else {
 			var tagName = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
 			if (element.attributes !== undefined &&
 				element.attributes.copyOf !== undefined &&
 				element.attributes.copyOf.value !== '') {
 				newElement = document.createElement('span');
-				newElement.className = tagName + ' copy';
+				newElement.className = element.tagName + ' copy';
 				var copyOfId = element.attributes.copyOf.value.replace('#', '');
 				var match = '<' + element.tagName + ' xml:id="' + copyOfId + '.*<\/' + element.tagName + '>';
 				var sRegExInput = new RegExp(match, 'ig');
@@ -135,7 +140,7 @@ angular.module('evtviewer.dataHandler')
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
 					newElement = document.createElement('span');
-					newElement.className = tagName;
+					newElement.className = element.tagName;
 					var textContent = '';
 					for (var i = 0; i < element.attributes.length; i++) {
 						var attrib = element.attributes[i];
@@ -155,7 +160,7 @@ angular.module('evtviewer.dataHandler')
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
-					newElement.className = tagName;
+					newElement.className = element.tagName !== undefined ? element.tagName : '';;
 
 
 
@@ -179,21 +184,42 @@ angular.module('evtviewer.dataHandler')
                     }
 
                     if (options.context && options.context === 'projectInfo') {
-                        var labelElement = document.createElement('span'),
-                            addLabel = false;
-                        if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-                            labelElement.className = 'projectInfo-sectionHeader';
-                            addLabel = true;
-                        } else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-                            labelElement.className = 'projectInfo-blockLabel';
-                            addLabel = true;
-                        } else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-                            labelElement.className = 'projectInfo-inlineLabel';
-                            addLabel = true;
-                        }
-                        if (addLabel) {
+                        if (newElement.innerHTML.replace(/\s/g,'') !== '') {
+                            var labelElement = document.createElement('span'),
+                                addLabel = false;
+                            labelElement.className = 'label-'+element.tagName;
                             labelElement.innerHTML = '{{ \'PROJECT_INFO.'+parser.camelToUnderscore(element.tagName).toUpperCase()+'\' | translate }}';
-                            newElement.insertBefore(labelElement, newElement.childNodes[0]);
+                            if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-sectionHeader';
+                                addLabel = true;
+                            } else if (projectInfoDefs.sectionSubHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-sectionSubHeader';
+                                addLabel = true;
+                            } else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-blockLabel';
+                                addLabel = true;
+                            } else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-inlineLabel';
+                                labelElement.innerHTML += ': ';
+                                addLabel = true;
+                            }
+                            if (projectInfoDefs.changeDef.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                var changeText = '';
+                                var changeWhen = element.getAttribute(projectInfoDefs.changeWhenDef.replace(/[\[\]]/g, ''));
+                                if (changeWhen) {
+                                    changeText += changeWhen + ' ';
+                                }
+                                var changeBy = element.getAttribute(projectInfoDefs.changeByDef.replace(/[\[\]]/g, ''));
+                                if (changeBy) {
+                                    changeText += '['+changeBy+']';
+                                }
+                                if (changeText !== '') {
+                                    newElement.innerHTML = changeText + ' - ' + newElement.innerHTML;
+                                }
+                            }
+                            if (addLabel) {
+                                newElement.insertBefore(labelElement, newElement.childNodes[0]);
+                            }
                         }
                     }
 
@@ -208,7 +234,11 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-		return newElement;
+        if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g,'') !== '')) {
+		  return newElement;
+        } else {
+            return document.createTextNode('');
+        }
 	};
 
 	parser.parseElementAttributes = function(element) {
@@ -791,7 +821,7 @@ angular.module('evtviewer.dataHandler')
 			});
 			editionText = docDOM.outerHTML;
 		} else {
-			editionText = '<span>Text not available.</span>';
+			editionText = '<span> {{ \'TEXT_NOT_AVAILABLE\' | translate }}</span>';
 		}
 
 		if (editionText === undefined) {

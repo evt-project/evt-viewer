@@ -408,7 +408,7 @@ pre {
     text-align: left;
     background-color: white;
     padding: 9px 0px;
-    z-index: 10000;
+    z-index: 9999;
     max-width: 340px;
     overflow: hidden;
     border-radius: 3px;
@@ -479,6 +479,13 @@ pre {
 
 .projectInfo {
     &-sectionHeader {
+        font-weight: bold;
+        display: block;
+        margin: 15px 0 5px;
+        font-variant: small-caps;
+        text-align: center;
+    }
+    &-sectionSubHeader {
         display: block;
         border-bottom: 1px dotted #666;
         margin-bottom: 5px;
@@ -496,10 +503,17 @@ pre {
     }
     &-blockLabel {
         display: block;
+        margin-bottom: 2px;
     }
     &-inlineLabel {
         display: inline;
+        + .p {
+            display: inline;
+        }
     }
+}
+.p {
+    .projectInfo-inlineLabel { display: none; } 
 }
 
 // Generic style

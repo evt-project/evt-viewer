@@ -111,7 +111,6 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		apparatuses.setCurrentApparatus = function(app) {
-			console.log(app)
 			evtInterface.updateCurrentApparatus(app);
 			angular.forEach(collection, function(currentApparatuses) {
 				currentApparatuses.currentApparatus = app;

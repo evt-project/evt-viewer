@@ -125,6 +125,8 @@ angular.module('evtviewer.dataHandler')
                 evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments.analogues);
             }
         }
+        //Parse named entity
+        evtNamedEntitiesParser.parseEntities(docElements);
 
         // Parse projet info 
         evtProjectInfoParser.parseProjectInfo(docElements);
@@ -132,8 +134,6 @@ angular.module('evtviewer.dataHandler')
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
 
-        //Parse named entity
-        evtNamedEntitiesParser.parseEntities(docElements);
     };
 
     /* ************************** */

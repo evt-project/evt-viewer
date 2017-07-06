@@ -43,11 +43,10 @@ angular.module('evtviewer.dataHandler')
 			relationsInListDef = '';
 
 		for (var i = 0; i < listsToParse.length; i++) {
-			var listDef = listsMainContentDef.replace(/[<>]/g, '') + ' ' + listsToParse[i].listDef.replace(/[<>]/g, ''),
+			var listDef = listsMainContentDef.replace(/[<>]/g, '') + ' > ' + listsToParse[i].listDef.replace(/[<>]/g, ''),
 				contentDef = listsToParse[i].contentDef.replace(/[<>]/g, ''),
 				listType = listsToParse[i].type || 'generic',
 				listTitle = 'LISTS.'+listType.toUpperCase();
-			
 			relationsInListDef += listDef + ' ' + relationDef.replace(/[<>]/g, '') + ', ';
 			angular.forEach(currentDocument.find(listDef), 
 				function(element) {
@@ -74,6 +73,7 @@ angular.module('evtviewer.dataHandler')
 									}
 								}
 							});
+							element.parentNode.removeChild(element);
 						}
 					}
 			});

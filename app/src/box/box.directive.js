@@ -34,7 +34,7 @@ angular.module('evtviewer.box')
             var boxElem = angular.element(element).find('.box')[0],
                 boxBody = angular.element(element).find('.box-body')[0];
 
-            $timeout(function(){        
+            $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
                 

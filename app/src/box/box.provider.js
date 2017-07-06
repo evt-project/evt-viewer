@@ -169,6 +169,15 @@ angular.module('evtviewer.box')
 			}
 			return newClassValue;
 		};
+
+		var getAdditionalClass = function() {
+			var vm = this;
+			var classNames = '';
+			if (vm.bottomMenuList.buttons.length === 0 && vm.bottomMenuList.selectors.length === 0) {
+				classNames = 'noBottomMenu';
+			}
+			return classNames;
+		}
 		//
 		// Box builder
 		//
@@ -833,6 +842,7 @@ angular.module('evtviewer.box')
 				fontSizeReset: fontSizeReset,
 				toggleBtnGroup: toggleBtnGroup,
 				getNamedEntitiesActiveTypes: getNamedEntitiesActiveTypes,
+				getAdditionalClass: getAdditionalClass,
 
 				isITLactive: isITLactive //TEMP
 			};
