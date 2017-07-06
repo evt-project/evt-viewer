@@ -661,7 +661,7 @@ angular.module('evtviewer.dataHandler')
 					 	frontAttributes = parser.parseElementAttributes(frontElem);
 					newDoc.front = {
 						attributes: frontAttributes,
-						parsedContent: parsedContent ? parsedContent.outerHTML.trim() : '',
+						parsedContent: parsedContent && parsedContent.outerHTML ? parsedContent.outerHTML.trim() : '',
 						originalContent: frontElem.outerHTML
 					};
 				}
