@@ -3,7 +3,7 @@ import * as JsSearch from 'js-search';
 
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchParser', function () {
+.service('evtSearchParser', function (parsedData) {
    let parser = {};
    console.log("SEARCH PARSER RUNNING");
 
@@ -20,7 +20,6 @@ angular.module('evtviewer.dataHandler')
        currentAppNode,
 
        glyphs = [],
-       glyphNode,
        glyphId = '',
        sRef = '',
 
@@ -73,34 +72,19 @@ angular.module('evtviewer.dataHandler')
             node = nodes.iterateNext();
 
             if (node !== null) {
-               switch (node.nodeName) {
-                  case 'choice':
-                     currentChoiceNode = node;
-                     word = checkCurrentChoiceNode(node, doc);
-                     editionWords.push(word);
-                     node = currentChoiceNode;
-                     break;
-                  case 'app':
-                     if(node.parentNode.nodeName !== 'lem') {
-                        currentAppNode = node;
-                        word = checkCurrentAppNode(node, doc);
-                        editionWords.push(word);
-                        node = currentAppNode;
-                     }
-                      break;
-               }
+               checkCurrentNode(node);
             }
 
             if (node === null) {
                console.log(text);
-               //console.log(glyphs);
+               console.log(glyphs);
                console.log(editionWords);
                return text;
             }
             str = node.nodeValue;
          }
          else {
-            findGlyph(doc);
+            currentGlyph = getGlyph(doc);
             addGlyph(currentGlyph);
             addSpace();
             node = nodes.iterateNext();
@@ -109,48 +93,38 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   /* **************************** */
-   /* BEGIN getGlyphNode(doc)      */
-   /* @doc -> current xml document */
-   /* **************************** */
-   let getGlyphNode = function (doc) {
-      let path = "//charDecl/node()[not(self::comment())]",
-          nodes = doc.evaluate(path, doc, null, XPathResult.ANY_TYPE, null),
-          node = nodes.iterateNext();
+   /*** GLYPHS ***/
 
-      while (node) {
-         if (node.tagName === 'glyph' || node.tagName === 'char') {
-            glyphId = node.getAttribute('xml:id');
-            if (glyphId === sRef) {
-               glyphNode = node;
-               return glyphNode;
-            }
-            node = nodes.iterateNext();
-         }
-         node = nodes.iterateNext();
-      }
-      return glyphNode;
+   /* *************************** */
+   /* BEGIN getCurrentGlyph(node) */
+   /* ***************************************** */
+   /* Function to find a glyph in xml document  */
+   /* @doc -> current xml document              */
+   /* ***************************************** */
+   let getCurrentGlyph = function () {
+      let glyphs = parsedData.getGlyphs();
+
+      sRef = node.getAttribute('ref');
+      sRef = sRef.replace('#', '');
+      glyphId = sRef;
+
+      currentGlyph = glyphs[sRef].mapping;
+      return currentGlyph;
    };
 
-   /* ******************** */
-   /* BEGIN getGlyph(node) */
-   /* ******************** */
-   let getGlyph = function (node) {
-      let map = node.getElementsByTagName('mapping');
+   /* *************************** */
+   /* BEGIN getGlyph(node)        */
+   /* *************************** */
+   let getGlyph = function () {
       let glyph = {},
-         type,
-         found;
+          found;
+
+      currentGlyph = getCurrentGlyph();
 
       glyph.id = glyphId;
-      for (let i = 0; i < map.length; i++) {
-         type = map[i].getAttribute('type');
-         switch (type) {
-            case 'diplomatic':
-            case 'normalized':
-               glyph[type] = map[i].textContent;
-               break;
-         }
-      }
+      currentGlyph.diplomatic !== undefined ? glyph.diplomatic = currentGlyph.diplomatic.content : glyph.diplomatic = '';
+      currentGlyph.normalized !== undefined ? glyph.interpretative = currentGlyph.normalized.content: glyph.interpretative = '';
+
       if (glyphs.length === 0) {
          glyphs.push(glyph);
       }
@@ -163,18 +137,23 @@ angular.module('evtviewer.dataHandler')
       return glyph;
    };
 
-   /* ********************* */
-   /* BEGIN findGlyph(node) */
-   /* ***************************************** */
-   /* Function to find a glyph in xml document  */
-   /* @doc -> current xml document              */
-   /* ***************************************** */
-   let findGlyph = function (doc) {
-      sRef = node.getAttribute('ref');
-      sRef = sRef.replace('#', '');
-      glyphNode = getGlyphNode(doc);
-      currentGlyph = getGlyph(glyphNode);
-      return currentGlyph;
+   /* **************************** */
+   /* BEGIN addGlyph(currentGlyph) */
+   /* *************************************************** */
+   /* Function to add the current glyph in text (string)  */
+   /* @currentGlyph -> current glyph                      */
+   /* *************************************************** */
+   let addGlyph = function (currentGlyph) {
+      getCurrentEdition();
+
+      switch (currentEdition) {
+         case 'diplomatic':
+            text += currentGlyph.diplomatic;
+            break;
+         case 'interpretative':
+            text += currentGlyph.normalized;
+            break;
+      }
    };
 
    /* **************************************************************** */
@@ -186,13 +165,13 @@ angular.module('evtviewer.dataHandler')
    /* @outerHtmlChild -> code to replace in innerHtml    */
    /* @doc -> current xml doc                            */
    /* ************************************************** */
-   let replaceGlyphTag = function (childNode, innerHtml, outerHtmlChild, doc) {
+   let replaceGlyphTag = function (childNode, innerHtml, outerHtmlChild) {
       let replaceGTag,
-         toReplace = outerHtmlChild,
-         glyph;
+          toReplace = outerHtmlChild,
+          glyph;
 
       node = childNode;
-      glyph = findGlyph(doc);
+      glyph = getGlyph();
       replaceGTag = innerHtml.replace(toReplace, glyph.diplomatic);
 
       while (replaceGTag.includes(toReplace)) {
@@ -202,32 +181,15 @@ angular.module('evtviewer.dataHandler')
       return replaceGTag;
    };
 
-   /* **************************** */
-   /* BEGIN addGlyph(currentGlyph) */
-   /* *************************************************** */
-   /* Function to add the current glyph in text (string)  */
-   /* @currentGlyph -> current glyph                      */
-   /* *************************************************** */
-   let addGlyph = function (currentGlyph) {
-      checkCurrentEdition();
-      switch (currentEdition) {
-         case 'diplomatic':
-            text += currentGlyph.diplomatic;
-            break;
-         case 'interpretative':
-            text += currentGlyph.normalized;
-            break;
-         default:
-            text += currentGlyph;
-      }
-   };
 
-   /* *************************** */
-   /* BEGIN checkCurrentEdition() */
-   /* *************************************************** */
-   /* Function to check current Edition                   */
-   /* *************************************************** */
-   let checkCurrentEdition = function () {
+   /*** EDITION ***/
+
+   /* ************************* */
+   /* BEGIN getCurrentEdition() */
+   /* ******************************* */
+   /* Function to get current Edition */
+   /* ******************************* */
+   let getCurrentEdition = function () {
       currentEdition = mainNode.dataset.edition;
       return currentEdition;
    };
@@ -271,20 +233,8 @@ angular.module('evtviewer.dataHandler')
       }
    };
 
-   /* ****************************** */
-   /* BEGIN checkNodeIteration(node) */
-   /* ********************************** */
-   /* Function to iterate specific nodes */
-   /* @node -> current node              */
-   /* ********************************** */
-   let checkNodeIteration = function (node) {
-      let nodeName = node.nodeName;
 
-      switch (nodeName) {
-         case 'note':
-            iterateNode(node);
-      }
-   };
+   /*** DIPLOMATIC/INTERPRETATIVE EDITION ***/
 
    /* *************************************** */
    /* BEGIN checkCurrentChoiceNode(node, doc) */
@@ -294,14 +244,14 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                                     */
    /* @doc -> current xml document                                              */
    /* ************************************************************************* */
-   let checkCurrentChoiceNode = function (node, doc) {
+   let checkCurrentChoiceNode = function (node) {
       let word = {},
-          children = node.children,
-          childNode,
-          childNodeName,
-          nodeHaveChild,
-          innerHtml,
-          outerHtmlChild;
+         children = node.children,
+         childNode,
+         childNodeName,
+         nodeHaveChild,
+         innerHtml,
+         outerHtmlChild;
 
       for (let i = 0; i < children.length; i++) {
          childNodeName = children[i].nodeName;
@@ -320,7 +270,7 @@ angular.module('evtviewer.dataHandler')
                   case 'abbr':
                   case 'am':
                      if (childNode && childNode.nodeName === 'g') {
-                        word.diplomatic = replaceGlyphTag(childNode, innerHtml, outerHtmlChild, doc);
+                        word.diplomatic = replaceGlyphTag(childNode, innerHtml, outerHtmlChild);
                         innerHtml = word.diplomatic;
                      }
                      else {
@@ -351,6 +301,75 @@ angular.module('evtviewer.dataHandler')
                case 'ex':
                   word.interpretative = children[i].textContent;
                   break;
+            }
+         }
+      }
+      return word;
+   };
+
+
+   /*** CRITICAL EDITION ***/
+
+   /* ******************************* */
+   /* BEGIN checkCurrentAppNode(node) */
+   /* ********************************************************************** */
+   /* Function to check current app node and create an array (EditionWords), */
+   /* that contain critical lectio                                           */
+   /* @node -> current node                                                  */
+   /* ********************************************************************** */
+   let checkCurrentAppNode = function (node, doc) {
+      let word = {},
+         children = node.children,
+         child,
+         childNodeName,
+         nodeHaveChild,
+         witness,
+         witnesses = [],
+         nodeHaveWit,
+         witnessText;
+
+      for (let i = 0; i < children.length; i++) {
+         child = children[i];
+         childNodeName = child.nodeName;
+
+         if(childNodeName !== 'note') {
+            witnessText = child.textContent;
+            nodeHaveChild = children[i].children.length !== 0;
+
+            if (nodeHaveChild && childNodeName !== 'rdg') {
+               if(childNodeName === 'lem' && nodeHaveChild) {
+                  witness = getCurrentWitness(child);
+                  word = handleNestedApp(child, word);
+               }
+               else {
+                  for (let j = 0; j < child.children.length; j++) {
+                     witness = getCurrentWitness(child.children[j]);
+                     childNodeName = child.children[j].nodeName;
+
+                     if (childNodeName !== 'note') {
+                        witnessText = child.children[j].textContent;
+
+                        if (Object.keys(word).length === 0) {
+                           word.critical = {[witness]: witnessText};
+                        }
+                        else {
+                           word.critical[witness] = witnessText;
+                        }
+                     }
+                  }
+               }
+            }
+            else {
+               witness = getCurrentWitness(child, doc);
+               witnessText = child.textContent;
+               nodeHaveWit = witness;
+
+               if(nodeHaveWit) {
+                  witnesses = witness.split(' ');
+                  for(let z = 0; z < witnesses.length; z++) {
+                     Object.keys(word).length === 0 ? word.critical = {[witnesses[z]]: witnessText} : word.critical[witnesses[z]] = witnessText;
+                  }
+               }
             }
          }
       }
@@ -402,10 +421,10 @@ angular.module('evtviewer.dataHandler')
       };
 
       let path,
-          id,
-          listWit = {},
-          witnesses = [],
-          group = [];
+         id,
+         listWit = {},
+         witnesses = [],
+         group = [];
 
       doc.documentElement.namespaceURI == null ? path = '//listWit//node()[not(self::comment())][not(self::text())]' : path = '//ns:listWit//node()[not(self::comment())][not(self::text())]';
       nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
@@ -415,13 +434,13 @@ angular.module('evtviewer.dataHandler')
       while (node) {
          id = node.getAttribute('xml:id');
          if(node.nodeName === 'listWit' && id === 'group') {
+            node = nodes.iterateNext();
+            while (node.nodeName === 'head') {
                node = nodes.iterateNext();
-               while (node.nodeName === 'head') {
-                  node = nodes.iterateNext();
-               }
-               id = node.getAttribute('xml:id');
-               group.push(id);
             }
+            id = node.getAttribute('xml:id');
+            group.push(id);
+         }
          else {
             let prevElSibling = node.previousElementSibling;
             if(prevElSibling !== null && prevElSibling.nodeName === 'witness' && node.parentNode.attributes.length !== 0) {
@@ -445,9 +464,9 @@ angular.module('evtviewer.dataHandler')
    /* *********************************************** */
    let handleNestedApp = function(node, word) {
       let innerHtml = node.innerHTML,
-          nestedEl,
-          nestedElInner,
-          toReplace;
+         nestedEl,
+         nestedElInner,
+         toReplace;
 
       for(let i = 0; i < node.children.length; i++) {
          nestedEl = node.children[i];
@@ -470,70 +489,68 @@ angular.module('evtviewer.dataHandler')
       return word;
    };
 
-   /* ******************************* */
-   /* BEGIN checkCurrentAppNode(node) */
-   /* ********************************************************************** */
-   /* Function to check current app node and create an array (EditionWords), */
-   /* that contain critical lectio                                           */
-   /* @node -> current node                                                  */
-   /* ********************************************************************** */
-   let checkCurrentAppNode = function (node, doc) {
-      let word = {},
-          children = node.children,
-          child,
-          childNodeName,
-          nodeHaveChild,
-          witness,
-          witnesses = [],
-          nodeHaveWit,
-          witnessText;
 
-      for (let i = 0; i < children.length; i++) {
-         child = children[i];
-         childNodeName = child.nodeName;
+   /*** NODE ***/
 
-         if(childNodeName !== 'note') {
-            witnessText = child.textContent;
-            nodeHaveChild = children[i].children.length !== 0;
-
-            if (nodeHaveChild && childNodeName !== 'rdg') {
-               if(childNodeName === 'lem' && nodeHaveChild) {
-                  witness = getCurrentWitness(child);
-                  word = handleNestedApp(child, word);
-               }
-               else {
-                  for (let j = 0; j < child.children.length; j++) {
-                     witness = getCurrentWitness(child.children[j]);
-                     childNodeName = child.children[j].nodeName;
-
-                     if (childNodeName !== 'note') {
-                        witnessText = child.children[j].textContent;
-
-                        if (Object.keys(word).length === 0) {
-                           word.critical = {[witness]: witnessText}
-                        }
-                        else {
-                           word.critical[witness] = witnessText;
-                        }
-                     }
-                  }
-               }
+   /* **************************** */
+   /* BEGIN checkCurrentNode(node) */
+   /* **************************** */
+   /* Function to check the current node name and add word to editionWords */
+   /* @node -> current node                                                */
+   /* ******************************************************************** */
+   let checkCurrentNode = function(node) {
+      switch (node.nodeName) {
+         case 'choice':
+            currentChoiceNode = node;
+            word = checkCurrentChoiceNode(node);
+            editionWords.push(word);
+            node = currentChoiceNode;
+            break;
+         case 'app':
+            if(node.parentNode.nodeName !== 'lem') {
+               currentAppNode = node;
+               word = checkCurrentAppNode(node, doc);
+               editionWords.push(word);
+               node = currentAppNode;
             }
-            else {
-               witness = getCurrentWitness(child, doc);
-               witnessText = child.textContent;
-               nodeHaveWit = witness;
+            break;
+      }
+   };
 
-               if(nodeHaveWit) {
-                  witnesses = witness.split(' ');
-                  for(let z = 0; z < witnesses.length; z++) {
-                     Object.keys(word).length === 0 ? word.critical = {[witnesses[z]]: witnessText} : word.critical[witnesses[z]] = witnessText;
-                  }
-               }
+   /* ************************ */
+   /* BEGIN iterateNode(node)  */
+   /* *************************** */
+   /* Function to iterate node    */
+   /* @node -> current node       */
+   /* *************************** */
+   let iterateNode = function(node) {
+      let iterate;
+
+      for (let i = 0; i < node.childNodes.length; i++) {
+         iterate = nodes.iterateNext();
+         while (iterate.childNodes.length !== 0) {
+            for (let j = 0; j < iterate.childNodes.length; j++) {
+               iterate = nodes.iterateNext();
             }
          }
       }
-      return word;
+      node = iterate;
+      return node;
+   };
+
+   /* ****************************** */
+   /* BEGIN checkNodeIteration(node) */
+   /* ********************************** */
+   /* Function to iterate specific nodes */
+   /* @node -> current node              */
+   /* ********************************** */
+   let checkNodeIteration = function (node) {
+      let nodeName = node.nodeName;
+
+      switch (nodeName) {
+         case 'note':
+            iterateNode(node);
+      }
    };
 
    /* ******************************* */
@@ -558,26 +575,8 @@ angular.module('evtviewer.dataHandler')
       return childNode;
    };
 
-   /* ************************ */
-   /* BEGIN iterateNode(node)  */
-   /* *************************** */
-   /* Function to iterate node    */
-   /* @node -> current node       */
-   /* *************************** */
-   let iterateNode = function(node) {
-      let iterate;
 
-      for (let i = 0; i < node.childNodes.length; i++) {
-         iterate = nodes.iterateNext();
-         while (iterate.childNodes.length !== 0) {
-            for (let j = 0; j < iterate.childNodes.length; j++) {
-               iterate = nodes.iterateNext();
-            }
-         }
-      }
-      node = iterate;
-      return node;
-   };
+
 
    /* *************** */
    /* BEGIN addWord() */
