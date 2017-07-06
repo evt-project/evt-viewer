@@ -42,7 +42,7 @@
         display: inline;
 
         &:before, &:after {
-            content: " ";
+            content: "";
         }
 
         .corr, .orig {
@@ -50,7 +50,7 @@
             position: absolute;
             line-height: 16px;
             display: none;
-            border: 2.5px solid black;
+            border: 1.5px solid black;
             border-radius: 3px;
 
             @include set(box-shadow, 2px 2px 2px #7e7067);
@@ -138,7 +138,7 @@
             line-height: 16px;
             display: none;
             background: #f99069;
-            border: 2.5px solid black;
+            border: 1.5px solid black;
             border-radius: 3px;
 
             @include set(box-shadow, 2px 2px 2px #7e7067);

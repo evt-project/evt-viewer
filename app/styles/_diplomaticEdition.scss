@@ -44,7 +44,7 @@
         position: relative;
 
         &:before, &:after {
-            content: " ";
+            content: "";
         }
 
         &:hover .reg, &.hover .reg {
@@ -74,7 +74,7 @@
         position: absolute;
         line-height: 16px;
         display: none;
-        border: 2.5px solid black;
+        border: 1.5px solid black;
         border-radius: 3px;
         padding: 0.4%;
         margin-top: 30px;
