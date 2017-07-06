@@ -52,15 +52,15 @@ angular.module('evtviewer.dataHandler')
     };
 
     var handleBibliographyDef = function(key, currentDocument) {
-    	var listBibl = currentDocument.find(listBiblDef.replace(/[<>]/g, ''));
-        var resultsSet = listBibl.find(bibliographyDef[key].replace(/[<>]/g, ''));
+    	var listBibl = currentDocument.find(sourceDescDef.replace(/[<>]/g, '') + ' ' +listBiblDef.replace(/[<>]/g, ''));
+        var resultsSet = listBibl.find('>' + bibliographyDef[key].replace(/[<>]/g, ''));
         /*Non vogliamo i tag annidati ma solo quelli top, 
         il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
-        resultsSet = $(resultsSet).filter(function() {
+        //resultsSet = $(resultsSet).filter(function() {
             //non vogliamo niente che sia dentro sourceDesc ne che sia annidato dentro un altro bibl,
             //scartiamo i bibl annidati per poter lavorare direttamente con il bibl genitore dei sotto-bibl
-            return $(this).parents(sourceDescDef.replace(/[<>]/g, '') + ',' + bibliographyDef[key].replace(/[<>]/g, '')).length === 0;
-        });
+        //    return $(this).parents(sourceDescDef.replace(/[<>]/g, '') + ',' + bibliographyDef[key].replace(/[<>]/g, '')).length === 0;
+        //});
         angular.forEach(resultsSet,
             function(element) {
                 var newBiblElement = parser.extractInfo(element);
@@ -212,7 +212,7 @@ angular.module('evtviewer.dataHandler')
                 var type = el.getAttribute('type');
                 if (type !== null) {
                     //non si può salvare un <idno> se non si conosce l'attributo type, è essenziale
-                    newBiblElement.idno[type] = el.textContent;
+                    newBiblElement.idno[type] = el.textContent || '';
                 }
 
             });
@@ -301,7 +301,7 @@ angular.module('evtviewer.dataHandler')
     var extractTitleandTitleLevel = function(whereToFind, whereToPutInfoArray) {
         var titleEl = whereToFind.find('title');
         if (titleEl && titleEl.length > 0) {
-            var titleLevel = titleEl[0].getAttribute('level');
+            var titleLevel = titleEl[0].getAttribute('level') || '';
             titleLevel = titleLevel !== null ? titleLevel.substr(0, 1) : '';
             if (whereToFind[0].tagName === monographDef.replace(/[<>]/g, '')) {
                 //se @title non è dato possiamo assumere che sia m perchè <title> è contenuto dentro <monograph>, uguale per gli altri

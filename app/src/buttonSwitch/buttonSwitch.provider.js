@@ -14,7 +14,7 @@ angular.module('evtviewer.buttonSwitch')
             list       = [],
             idx        = 0;
         
-        var _console = $log.getInstance('box');
+        var _console = $log.getInstance('buttonSwitch');
 
         
         var toggleActive = function() {
@@ -87,9 +87,13 @@ angular.module('evtviewer.buttonSwitch')
 				case 'itl':
 					evtIcon = 'icon-evt_link';
 					break;
+				case 'language':
+					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
+					break;
 				case 'list':
 					evtIcon = 'icon-evt_list';
 					break;
+				case 'menu':
 				case 'menu-vert':
 					evtIcon = 'icon-evt_more-vert';
 					break;
@@ -165,7 +169,7 @@ angular.module('evtviewer.buttonSwitch')
                 callback = function() { console.log('TODO ' + type); },
                 fakeCallback = function() {};
 			var scopeHelper = {};
-
+			
 			/* SET CALLBACK */
 			switch (type) {
 				case 'addWit':
@@ -233,7 +237,7 @@ angular.module('evtviewer.buttonSwitch')
 							} else {
 								content = '<span>No filters available</span>';
 							}
-							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'colorLegend');
 							if (!parentBox.getState('topBoxOpened')) {
@@ -313,11 +317,11 @@ angular.module('evtviewer.buttonSwitch')
 								var docObj = parsedData.getDocument(currentDocument),
 									docFront = docObj ? docObj.front : undefined;
 
-								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
 								scope.$parent.vm.updateTopBoxContent(content);
 								scope.$parent.vm.toggleTopBox();
 							}
-							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'front');
 							if (!parentBox.getState('topBoxOpened')) {
@@ -346,6 +350,13 @@ angular.module('evtviewer.buttonSwitch')
 						} else { // Deactivate ITL
 							evtImageTextLinking.turnOffITL();
 						}
+					};
+					break;
+				case 'mainMenu':
+					btnType = 'standAlone';
+					callback = function() {
+						var mainMenuState = evtInterface.getState('mainMenu');
+						evtInterface.updateState('mainMenu', !mainMenuState);
 					};
 					break;
 				case 'openGlobalDialogInfo':
@@ -433,7 +444,7 @@ angular.module('evtviewer.buttonSwitch')
 							parentBox.toggleTopBox();
 						} else {
 							var content = parsedData.getWitnessesListFormatted();
-							var newTopBoxContent = content || '<span class="errorMsg">There was an error</span>';
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'witList');
 							if (!parentBox.getState('topBoxOpened')) {

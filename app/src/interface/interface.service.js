@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
         var state = {
             currentViewMode  : undefined,
@@ -26,11 +26,14 @@ angular.module('evtviewer.interface')
             currentSourceText  : undefined,
             currentVersions    : undefined,
             currentVersionEntry: undefined,
-            currentVersion     : undefined
+            currentVersion     : undefined,
+
+            mainMenu           : false
         };
 
         var properties = {
             indexTitle         : '',
+            dataUrl            : '',
             logoUrl            : '',
             enableXMLdownload  : false,
             availableViewModes : [ ],
@@ -55,6 +58,13 @@ angular.module('evtviewer.interface')
                 properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
                 
+                // Setting available languages and defaults
+                evtTranslation.setLanguages(config.languages);
+                var userLangKey = evtTranslation.getUserLanguage(),
+                    fallbackLangKey = evtTranslation.getFallbackLanguage();
+                evtTranslation.setFallbackLanguage(fallbackLangKey)
+                evtTranslation.setLanguage(userLangKey);
+
                 //TODO: object containing all the external files in globaldefault
                 
                 // Parse the external Sources file, if defined (@author: CM)
@@ -66,6 +76,7 @@ angular.module('evtviewer.interface')
                         evtCommunication.getExternalData(config.analoguesUrl);
                 }
 
+                mainInterface.updateProperty('dataUrl', config.dataUrl);
                 evtCommunication.getData(config.dataUrl).then(function () {
                     // Remove Collation View Mode if Witnesses List Empty
                     for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
@@ -208,6 +219,14 @@ angular.module('evtviewer.interface')
             return properties[name];
         };
 
+        mainInterface.getStates = function(){
+            return state;
+        };
+        
+        mainInterface.getState = function(name){
+            return state[name];
+        };
+
         mainInterface.getAvailableViewModes = function() {
             return properties.availableViewModes;
         };
@@ -295,6 +314,10 @@ angular.module('evtviewer.interface')
 
         mainInterface.updateProperty = function(property, value){
             properties[property] = value;
+        };
+
+        mainInterface.updateState = function(property, value){
+            state[property] = value;
         };
 
         mainInterface.updateSecondaryContentOpened = function(secondaryContent){

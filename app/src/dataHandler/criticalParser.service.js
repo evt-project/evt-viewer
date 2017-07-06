@@ -169,7 +169,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + ',' + config.lacunaMilestone + ',' + config.fragmentMilestone;
-				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 
 			//parse <pb>
@@ -190,7 +190,7 @@ angular.module('evtviewer.dataHandler')
 			witnessText = evtParser.balanceXHTML(witnessText);
 			//TODO: Split witness into pages
 		} else {
-			witnessText = '<span>Text not available.</span>';
+			witnessText = '<span> {{ \'MESSAGES.TEXT_NOT_AVAILABLE\' | translate }}</span>';
 		}
 
 		//save witness text
@@ -277,7 +277,7 @@ angular.module('evtviewer.dataHandler')
 					} else {
 						spanElement = document.createElement('span');
 						spanElement.className = 'errorMsg';
-						spanElement.textContent = 'ERROR';
+						spanElement.textContent = 'ERROR';//TODO: Add translation
 					}
 					if (spanElement !== null) {
 						appNode.parentNode.replaceChild(spanElement, appNode);
@@ -363,7 +363,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + ',' + config.lacunaMilestone + ',' + config.fragmentMilestone;
-				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 			criticalText = docDOM.outerHTML;
 			// } else {
@@ -374,7 +374,7 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		if (criticalText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+			var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 			criticalText = errorMsg;
 		}
 
@@ -436,7 +436,7 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = skipFromBeingParsed + '<evt-source-seg>';
-				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(evtParser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 			sourceText = docDOM.outerHTML;
 		} else {
@@ -444,7 +444,7 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		if (sourceText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+			var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 			sourceText = errorMsg;
 		}
 

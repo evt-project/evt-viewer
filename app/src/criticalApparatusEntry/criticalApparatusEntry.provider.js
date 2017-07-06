@@ -55,25 +55,25 @@ angular.module('evtviewer.criticalApparatusEntry')
 				if (content.criticalNote !== '') {
 					tabs._indexes.push('criticalNote');
 					tabs.criticalNote = {
-						label: 'Critical Note'
+						label: 'CRITICAL_APPARATUS.TABS.CRITICAL_NOTE'
 					};
 				}
 				if (content.notSignificantReadings.length > 0) {
 					tabs._indexes.push('notSignificantReadings');
 					tabs.notSignificantReadings = {
-						label: 'Orthographic Variants'
+						label: 'CRITICAL_APPARATUS.TABS.ORTHOGRAPHIC_VARIANTS'
 					};
 				}
 				// if (content.attributes._keys.length > 0 ){
 				tabs._indexes.push('moreInfo');
 				tabs.moreInfo = {
-					label: 'More Info'
+					label: 'CRITICAL_APPARATUS.TABS.MORE_INFO'
 				};
 				// }
 				if (criticalEntry._xmlSource !== '') {
 					tabs._indexes.push('xmlSource');
 					tabs.xmlSource = {
-						label: 'XML'
+						label: 'CRITICAL_APPARATUS.TABS.XML'
 					};
 					content.xmlSource = criticalEntry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 				}

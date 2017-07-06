@@ -81,7 +81,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     }
                 }
                 
-                var currentTabs = srcList[sources[0].id].tabs;
+                var currentTabs = sources && sources[0] && srcList[sources[0].id] ? srcList[sources[0].id].tabs : { _indexes: [] };
                 for (var j = 0; j < currentTabs._indexes.length; j++) {
                     var value = currentTabs._indexes[j];
                     tabs._indexes.push(currentTabs._indexes[j]);
@@ -110,7 +110,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 xml               : xml,
                 sources           : sources,
                 srcList          : srcList,
-                _activeSource     : sources[0].id, /*By default the active Source is the first (and maybe only one) source inserted inside the sources array*/
+                _activeSource     : sources[0] ? sources[0].id : undefined, /*By default the active Source is the first (and maybe only one) source inserted inside the sources array*/
                 _overSource       : '',
                 tabs              : tabs,
                 _subContentOpened : firstSubContentOpened,

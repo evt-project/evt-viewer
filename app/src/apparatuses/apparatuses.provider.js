@@ -93,7 +93,6 @@ angular.module('evtviewer.apparatuses')
 			}
 
 			if (apparatuses._indexes.length > 0) {
-				console.log(apparatuses._indexes[0])
 				evtInterface.updateCurrentApparatus(apparatuses._indexes[0]);
 			}
 
@@ -112,7 +111,6 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		apparatuses.setCurrentApparatus = function(app) {
-			console.log(app)
 			evtInterface.updateCurrentApparatus(app);
 			angular.forEach(collection, function(currentApparatuses) {
 				currentApparatuses.currentApparatus = app;

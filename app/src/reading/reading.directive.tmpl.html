@@ -10,7 +10,7 @@
     <span 
         class="reading__text"
         style="{{vm.backgroundColor()}}"
-        title="{{vm.attributes}}"
+        title="{{vm.attributes | translate}}"
         ng-click="vm.callbackClick($event);"
         ng-transclude></span>
     

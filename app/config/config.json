@@ -164,5 +164,7 @@
 			"label": "MLA",
 			"enabled": true
 		}
-	}
+	},
+
+    "languages": ["en", "it"]
 }

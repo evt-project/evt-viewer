@@ -45,44 +45,95 @@
         <img class="logo" ng-if="getProperty('logoUrl') !== ''" ng-src="{{getProperty('logoUrl')}}" />
         {{ getProperty('indexTitle') }}
         <div class="globalMenu">
-            <button-switch
-                    title="{{::mode.label}}"
-                    class="mode-view"
-                    data-label=""
-                    data-icon="{{::mode.icon}}"
-                    data-value="{{::mode.viewMode}}"
-                    data-type="changeViewMode"
-                    ng-repeat="mode in getAvailableViewModes() track by $index"
-                    ng-if="mode.visible">
-            </button-switch>
+            <div class="viewModeMenu">
+                <button-switch
+                        title="{{::mode.label}}"
+                        class="mode-view"
+                        data-label=""
+                        data-icon="{{::mode.icon}}"
+                        data-value="{{::mode.viewMode}}"
+                        data-type="changeViewMode"
+                        ng-repeat="mode in getAvailableViewModes() track by $index"
+                        ng-if="mode.visible">
+                </button-switch>
+            </div>
             <!-- <button-switch
                     title="Witnesses"
                     data-icon="witnesses"
                     data-type="openGlobalDialogWitnesses">
-            </button-switch> -->
+            </button-switch>
             <button-switch
-                title="List"
+                title="BUTTONS.LIST"
                 ng-if="getProperty('namedEntitiesLists')"
                 data-icon="list"
                 data-type="openGlobalDialogLists">
             </button-switch> 
             <button-switch
-                    class="smaller"
-                    title="Info"
-                    data-icon="info"
-                    data-type="openGlobalDialogInfo">
+                class="smaller"
+                title="BUTTONS.INFO"
+                data-icon="info"
+                data-type="openGlobalDialogInfo">
             </button-switch>
             <button-switch
-                    title="Bookmark"
-                    data-icon="bookmark"
-                    data-type="bookmark">
+                title="BUTTONS.BOOKMARK"
+                data-icon="bookmark"
+                data-type="bookmark">
             </button-switch>
             <button-switch
                 ng-if="getProperty('enableXMLdownload')"
-                title="Download XML"
+                title="BUTTONS.DOWNLOAD_XML"
                 data-icon="download"
                 data-type="download-xml">
+            </button-switch> -->
+            <button-switch
+                title="BUTTONS.MENU"
+                data-icon="menu"
+                data-type="mainMenu">
             </button-switch>
+            <div class="mainMenu" ng-if="getState('mainMenu') === true">
+                <ul>
+                    <li>
+                        <span ng-click="openGlobalDialogInfo()">
+                            <i class="icon icon-evt_info-alt"></i>
+                            {{'MAIN_MENU.PROJECT_INFO' | translate}}</span>
+                    </li>
+                    <li ng-if="getProperty('namedEntitiesLists')">
+                        <span ng-click="openGlobalDialogLists()">
+                            <i class="icon icon-evt_list"></i>
+                            {{'MAIN_MENU.OPEN_LISTS' | translate}}</span>
+                    </li>
+                    <li>
+                        <span ng-click="generateBookmark()">
+                            <i class="icon icon-evt_bookmark"></i>
+                            {{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
+                    </li>
+                    <li ng-if="getProperty('enableXMLdownload')">
+                        <span ng-click="downloadXML()">
+                            <i class="icon fa fa-download"></i>
+                            {{'MAIN_MENU.DOWNLOAD_XML' | translate}}</span>
+                    </li>
+                </ul>
+                <hr/>
+                <ul>
+                    <li>
+                        <span>
+                            <i class="icon fa fa-language"></i>
+                            {{'MAIN_MENU.LANGUAGES' | translate}}
+                            <img ng-repeat="langKey in getAvailableLanguages()" 
+                                ng-if="langKey && langKey !== ''"
+                                ng-src="images/{{langKey}}.png" 
+                                ng-class="{ 'active': langKey === getCurrentLanguage() }"
+                                class="flag" 
+                                ng-click="setLanguage(langKey)"
+                                title="{{ 'LANGUAGES.'+langKey | uppercase | translate }}" alt="{{ ::langKey | uppercase}}">
+                        </span>
+                    </li>
+                    <li class="inactive">
+                        <span>
+                            <i class="icon fa fa-keyboard-o"></i>
+                            {{ 'MAIN_MENU.KEYBOARD_SHORT_CUTS' | translate }}</span></li>
+                </ul>
+            </div>
             <!-- <button-switch
                     class="noPadding"
                     title="Menu"
@@ -95,23 +146,23 @@
         <section
             class="secondary-container"
             ng-show="getSecondaryContentOpened() !== ''">
-            <evt-dialog data-type="entitiesList" data-title="Named Entities" 
+            <evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES" 
                 ng-if="getProperty('namedEntitiesLists')">
                 <evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
                     data-type="entitiesList"
                     data-orientation="vertical">
                 </evt-tabs-container>
             </evt-dialog>
-            <evt-dialog data-type="globalInfo" data-title="Project Info">
+            <evt-dialog data-type="globalInfo" data-title="DIALOGS.PROJECT_INFO">
                 <evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
                     data-type="projectInfo"
                     data-orientation="vertical">
                 </evt-tabs-container>
             </evt-dialog>
-            <evt-dialog data-type="witnessesList" data-title="Witnesses">
+            <evt-dialog data-type="witnessesList" data-title="DIALOGS.WITNESSES">
                 <div compile="getWitnessesListFormatted()"></div>
             </evt-dialog>
-            <evt-dialog data-type="bookmark" data-title="Bookmark">
+            <evt-dialog data-type="bookmark" data-title="DIALOGS.BOOKMARK">
                 <div compile="getBookmark()"></div>
             </evt-dialog>
         </section>
@@ -127,7 +178,7 @@
                                 'half-left': isApparatusBoxOpen(),
                                 'smaller-left': isApparatusBoxOpen() && isPinnedAppBoardOpened() }"></box>
                 <button-switch
-                        title="Show pinned apparatus entries"
+                        title="BUTTONS.SHOW_PINNED_ENTRIES"
                         data-label=""
                         data-icon="pin"
                         data-type="togglePinned"
@@ -143,7 +194,7 @@
                     ng-if="!isLoading() && isPinnedAppBoardOpened()"
                     ng-class="{ 'pin-centered': isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
                      <span ng-if="evtPinnedElements.getPinned().length <= 0" class="italic">
-                        Selected apparatus entries will be shown here
+                        {{ 'MESSAGES.PINNED_ELEMENTS_SHOWN_HERE' | translate }}
                     </span>
                     <div ng-if="evtPinnedElements.getVisibleTypes().length <= 0 && evtPinnedElements.getPinned().length > 0 && entry !== ''"
                          ng-repeat="entry in evtPinnedElements.getPinned()">
@@ -163,7 +214,7 @@
 
                     <div ng-if="evtPinnedElements.getVisibleTypes().length > 0"
                          ng-repeat="type in evtPinnedElements.getVisibleTypes()">
-                            <span class="pinnedTypeTitle">{{ ::type | camelToSpaces | underscoresToSpaces | capitalize }}</span>
+                            <span class="pinnedTypeTitle">{{ ::type | camelToSpaces | underscoresToSpaces | capitalize  }}</span><!-- TODO: Add translation -->
                             <div ng-repeat="entry in evtPinnedElements.getPinnedByType(type)">
                                 <evt-critical-apparatus-entry
                                     ng-if="::type === 'criticalApparatusEntry'"
@@ -205,7 +256,7 @@
 
                 <button-switch
                     ng-if="getAllVersionsNumber() > 2"
-                    title="Add Version"
+                    title="BUTTONS.ADD_VERSION"
                     data-label="Add Version"
                     data-icon="add"
                     data-type="addVer"
@@ -245,8 +296,8 @@
                          ng-repeat="witness in getCurrentWitnesses()" ></box>
                 </div>
                 <button-switch
-                        title="Add Witness"
-                        data-label="Add Witness"
+                        title="BUTTONS.ADD_WITNESS"
+                        data-label="BUTTONS.ADD_WITNESS"
                         data-icon="add"
                         data-type="addWit"
                         class="compareWits_box--buttonAddWit inverted-color witnessSelector"
@@ -307,8 +358,8 @@
                 ng-if="getErrorMsg() !== undefined && getErrorMsg().code === 404">
             <div class="global-msg">
                 <h1>EVT Viewer</h1>
-                <h2>{{getErrorMsg().title}}</h2>
-                <p>{{ getErrorMsg().msg }}</p>
+                <h2>{{getErrorMsg().title | translate }}</h2><!-- TODO: Add translation -->
+                <p>{{ getErrorMsg().msg | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
     </div>
@@ -321,7 +372,7 @@
     <evt-dialog
         data-id="errorMsg"
         data-type="error"
-        data-title="ERROR" ></evt-dialog>
+        data-title="ERROR"></evt-dialog>
 
     <footer>Footer</footer>
 
@@ -363,6 +414,8 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -421,6 +474,9 @@
 
     <script src="/src/communication/communication.js"></script>
     <script src="/src/communication/communication.service.js"></script>
+
+    <script src="/src/translation/translation.js"></script>
+    <script src="/src/translation/translation.service.js"></script>
 
     <script src="/src/UItools/UItools.service.js"></script>
     <script src="/src/UItools/imageTextLinking.service.js"></script>

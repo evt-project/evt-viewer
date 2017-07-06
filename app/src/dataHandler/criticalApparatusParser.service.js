@@ -73,7 +73,7 @@ angular.module('evtviewer.dataHandler')
                     var witnessElem = {
                         id          : child.getAttribute('xml:id'),
                          attributes  : evtParser.parseElementAttributes(child),
-                        description : evtParser.parseXMLElement(doc, child, ''),
+                        description : evtParser.parseXMLElement(doc, child, {skip: ''}),
                         _group      : list.id,
                         _type       : 'witness'
                     };
@@ -115,7 +115,7 @@ angular.module('evtviewer.dataHandler')
                                     } else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0) { // witness
                                         el = {
                                             id          : child.getAttribute('xml:id'),
-                                            description : evtParser.parseXMLElement(doc, child, ''),
+                                            description : evtParser.parseXMLElement(doc, child, {skip: ''}),
                                             _group      : undefined,
                                             _type       : 'witness',
                                             text        : {}
@@ -293,7 +293,7 @@ angular.module('evtviewer.dataHandler')
                 docDOM.innerHTML = evtParser.balanceXHTML(docDOM.innerHTML);
             }
         } else {
-            docDOM.innerHTML = '<span class="error">There was a problem in loading lacuna for this witness.</span>';
+            docDOM.innerHTML = '<span class="error">{{ \'MESSAGES.ERROR_IN_PARSING_LACUNA\' | translate }}</span>';
         }
     };
 
@@ -365,7 +365,7 @@ angular.module('evtviewer.dataHandler')
             }
             return fragmentaryText;
         } else {
-            return '<span class="error">There was a problem in loading fragmentary witness.</span>';
+            return '<span class="error">{{ \'MESSAGES.ERROR_IN_PARSING_FRAGMENTARY_TEXT\' | translate }}</span>';
         }
     };
 

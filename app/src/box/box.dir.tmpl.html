@@ -19,10 +19,9 @@
             <span
                 class="appLabel"
                 ng-repeat="appLabel in vm.topMenuList.appLabels"
-                compile="appLabel.label"
                 ng-click="vm.updateApparatus(appLabel.id)"
-                ng-class="{'selected': appLabel.id === vm.getCurrentApparatus()}">
-            </span>
+                ng-class="{'selected': appLabel.id === vm.getCurrentApparatus()}"
+                >{{ appLabel.label | translate }}</span>
         </div>
         <!--End of addition-->
         
@@ -42,13 +41,12 @@
         </button-switch>
     </div>
     <div 
-        class="box-top-box avoidBlur"
+        class="box-top-box avoidBlur" 
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
-    <div class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}}" 
+    <div class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
          style="{{vm.fontSize();}}"
-         ng-class="{ 'noBottomMenu' : vm.bottomMenuList.buttons.length <= 0 && vm.bottomMenuList.selectors.length <= 0}"
          id="box_body_{{::vm.uid}}" 
          compile="::vm.content" ng-transclude></div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->

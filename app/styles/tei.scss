@@ -63,27 +63,12 @@
     }
 }
 .front {
-    .titlepage {
+    .titlePage {
             text-align: center;
             font-weight: bold;
             margin-bottom: 20px;
             font-size: 110%;
             display: block;
-    }
-    [data-subtype="intro"] {
-        &::before {
-            content: "Intro";
-            font-weight: bold;
-            display: block;
-        }
-    }
-
-    [data-subtype="references"] {
-        &::before {
-            content: "References";
-            font-weight: bold;
-            display: block;
-        }
     }
 }
 .head {
@@ -275,7 +260,7 @@
     }
 }
 
-.listchange {
+.listChange {
     .change {
         display: list-item;
         margin-left: 1.5rem;
@@ -286,75 +271,44 @@
         font-weight: bold;
     }
 
+    .handDesc, .decoDesc {
+        display: block;
+        margin-bottom: 8px; 
+    }
+
+    
     .msIdentifier {
         display: block;
         margin-bottom: 8px;
-        &::before {
-            content: 'Ms Identifier';
-            font-size: 110%;
-            display: block;
-            font-variant: small-caps;
-        }
+        
         .settlement {
             display: block;
-            &::before {
-                content: 'Settlement: ';
-            }
         }
         .repository {
             display: block;
-            &::before {
-                content: 'Repository: ';
-            }
         }
         .idno{
             display: block;
-            &::before {
-                content: 'IDNO: ';
-            }
-        }
-        .altIdentifier .idno::before {
-            content: 'Alternative IDNO: ';
         }
     }
 
     .msContents {
         .msItem {
-            .author { 
+            .author, .title, .textLang, .colophon {
                 display: block;
-                &::before {
-                    content: 'Author: ';
-                }
             }
-            .title {
-                display: block;
-                &::before {
-                    content: 'Title: ';
-                }
-            }
+
         }
     }
 
     .physDesc {
         display: block;
         margin-top:8px;
-        &::before {
-            content: 'Physical Description';
-            font-size: 110%;
-            display: block;
-            font-variant: small-caps;
-        }
     }
 
     .history {
         display: block;
         margin-top:8px;
-        &::before {
-            content: 'History';
-            font-size: 110%;
-            display: block;
-            font-variant: small-caps;
-        }
     }
     
     .quote {
@@ -441,98 +395,22 @@
 .encodingdesc {
     .editorialdecl {
         display:block;
-        margin-top: 14px;
-        &:before{
-            content: "Editorial principles and practices";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-        }
         &:before, > *:before {
             font-variant: small-caps;
             color: #666;
             font-size:90%;
         }
-        .correction {
+        .correction, .hyphenation, .interpretation, .normalization, .punctuation, .quotation, .segmentation, .stdVals {
             display: block;
-            &:before {
-                content: "Correction principles: ";
-            }
-        }
-        .hyphenation {
-            display: block;
-            &:before {
-                content: "Hyphenation principles: ";
-            }
-        }
-        .interpretation {
-            display: block;
-            &:before {
-                content: "Interpretive information: ";
-            }
-        }
-        .normalization {
-            display: block;
-            &:before {
-                content: "Normalization or regularization principles: ";
-            }   
-        }
-        .punctuation {
-            display: block;
-            &:before {
-                content: "Punctuation marks principles: ";
-            }      
-        }
-        .quotation {
-            display: block;
-            &:before {
-                content: "Quotation marks principles: ";
-            }      
-        }
-        .segmentation {
-            display: block;
-            &:before {
-                content: "Segmentation principles: ";
-            }      
-        }
-        .stdvals {
-            display: block;
-            &:before {
-                content: "Standard values: ";
-            }      
         }
     }
-
-    .projectdesc {
+    .projectDesc, .refsDecl {
         display:block;
         margin-top: 14px;
-        &:before{
-            content: "Project description";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        } 
-    }
-
-    .refsdecl {
-        display:block;
-        margin-top: 14px;
-        &:before{
-            content: "References declaration";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
     }
 }
 
-.filedesc {
+.fileDesc {
     *:before{
         font-variant: small-caps;
         color: #666;
@@ -541,110 +419,45 @@
     .author {
         display:block;
         &:before{
-            content: "Author: ";
+            content: "";
         }
     }
     .editor {
         display:block;
-        &:before{
-            content: "Editor: ";
-        }
     }
-    .notesstmt {
+    .notesStmt {
         display:block;
-        &:before{
-            content: "Notes";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
         .note {
             display: block;
             margin-top: 10px;
         }
     }
-    .publicationstmt{
+    .publicationStmt{
         display:block;
-        margin-top: 14px;
         > * {
             display:block;
-        }
-        &:before{
-            content: "About the publication";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
         }
         &:before, > *:before{
             font-variant: small-caps;
             color: #666;
             font-size:90%;
         }
-        .publisher {
-            &:before{
-                content: "Publisher: ";
-                display: block;
-            }
-        }
-        .availability{
-            &:before{
-                content: "Availability: ";
-                display:block;
-            }
-        }
-        .idno {
-            &:before {
-                content: "idno: ";
-            }
-        }
-        .date {
-            &:before {
-                content: "Date: ";
-            }
-        }
+        .publisher, .availability, .idno, .date { }
     }
-    .respstmt {
+    .respStmt, .seriesStmt {
         display:block;
-        &:before{
-            content: "Responsable: ";
-        }
     }
-    .seriesstmt {
+    .sourceDesc {
         display:block;
-        margin-top: 14px;
-        &:before{
-            content: "Series";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
-    }
-    .sourcedesc {
-        display:block;
-        margin-top: 14px;
-        &:before{
-            content: "Source description";
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
         .listwit, .listbibl {
             display:none;
         }
     }
-    .titlestmt {
+    .titleStmt {
         margin-bottom: 10px;
         .title {
             display: block;
+            text-align: center;
             font-weight: bold;
             font-size: 1.2em;
             margin-bottom: 10px;
@@ -655,15 +468,8 @@
             font-size: 1em;   
         }
     }
-    .editionstmt {
-        .edition {
-            &:before{
-                content: "Edition: ";
-                font-variant: small-caps;
-                color: #666;
-                font-size:90%;
-            }
-        }
+    .editionStmt {
+        .edition { }
     }
 }
 .funder, .sponsor, .principal {
@@ -678,47 +484,27 @@
         display: block;
     }
 }
-.funder {
-    &:before{
-        content: "Funder";
-    }
-}
-.sponsor {
-    &:before{
-        content: "Sponsor";
-    }
-}
-.principal {
-    &:before{
-        content: "Principal researcher: ";
-    }
+.funder, .sponsor, .principal {
+    &:before { }
 }
 
-.profiledesc {
-    .langusage, .particdesc, .textclass{
-        &:before{
-            display:block;
-            border-bottom: 1px dotted #666;
-            margin-bottom: 5px;
-            margin-top:5px;
-            font-variant: small-caps;
-            color: #666;
-            font-size:90%;
-        }
+.interpGrp {
+    .interp {
+        display: list-item;
+        margin-left: 25px;
     }
-    .langusage {
-        &:before{
-            content: "Language usage";
-        }
+}
+.profiledesc {
+    .langUsage, .particDesc, .textClass { }
+    .langUsage {
+        &:before{ }
         .language {
             display: block;
         }
     }
-    .particdesc {
-        &:before{
-            content: "Participation description";
-        }
-        .listperson, .person {
+    .particDesc {
+        &:before{ }
+        .listPerson, .person {
             display: block;
             * {
                 margin: 0;
@@ -730,7 +516,7 @@
                 margin: 10px 0 5px 0;
             }
         }
-        .person, .persongrp {
+        .person, .personGrp {
             margin-bottom: 10px;
             display: block;
             .state {
@@ -748,26 +534,21 @@
             }
         }
     }
-    .textclass{ 
-        &:before{
-            content: "Text classification";
-        }
+    .textClass{ 
+        &:before{  }
     }
 }
 
-.revisiondesc {
+.revisionDesc {
     .change {
-        display: block;
+        display: list-item;
         margin-bottom: 10px;
+        margin-left: 25px;
     }
 }
-.respstmt {
-    .resp {
-        &:after{
-            content: ': ';
-        }
-    }
-    .name, .persname {
+.respStmt {
+    .resp {}
+    .name, .persName {
         &:not(:last-child):after{
             content: ', ';
         }
@@ -778,20 +559,10 @@
 }
 .variantEncoding {
     display:block;
-    margin-top: 14px;
-    &:before{
-        content: "Variant encoding";
-        display:block;
-        border-bottom: 1px dotted #666;
-        margin-bottom: 5px;
-        font-variant: small-caps;
-        color: #666;
-        font-size:90%;
-    } 
 }
 //Temp
-.filedesc .listwit,
-.filedesc .listperson{
+.fileDesc .listWit,
+.fileDesc .listPerson{
     display:none;
 }
 .gi, .val{

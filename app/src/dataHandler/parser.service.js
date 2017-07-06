@@ -11,6 +11,19 @@ angular.module('evtviewer.dataHandler')
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
+    var projectInfoDefs = {
+        sectionHeaders: '<sourceDesc>, ',
+        sectionSubHeaders: '',
+        blockLabels: '',
+        inlineLabels: '<authority>, <settlement>, <publisher>, <pubPlace>, <availability>, <author>, <editor>, <idno>, <date>, <repository>, <msName>, <textLang>',
+        changeDef: '<change>',
+        changeWhenDef: '[when]',
+        changeByDef: '[who]'
+    };
+    projectInfoDefs.sectionSubHeaders += '<projectDesc>, <refsDecl>, <notesStmt>, <seriesStmt>, <publicationStmt>, <respStmt>, <funder>, <sponsor>, <msContents>, <revisionDesc>, ';
+    projectInfoDefs.sectionSubHeaders += '<principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>, <msIdentifier>, <physDesc>, <history>, <extent>, <editionStmt>';
+    projectInfoDefs.blockLabels += '<edition>, <correction>, <hyphenation>, <interpretation>, <normalization>, <punctuation>, <interpGrp>';
+    projectInfoDefs.blockLabels += '<quotation>, <segmentation>, <stdVals>, <colophon>, <handDesc>, <decoDesc>, <supportDesc>, <origin>';
     /* ********* */
     /* UTILITIES */
     /* ********* */
@@ -42,8 +55,11 @@ angular.module('evtviewer.dataHandler')
     };
 
     parser.camelToSpace = function(str) {
-        return str.replace(/\W+/g, ' ')
-                    .replace(/([a-z\d])([A-Z])/g, '$1 $2');
+        return (!!str) ? str.replace(/\W+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1 $2') : '';
+    };
+
+    parser.camelToUnderscore = function(str) {
+        return (!!str) ? str.replace(/\W+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1_$2') : '';
     };
 
     /* ************************ */
@@ -87,9 +103,11 @@ angular.module('evtviewer.dataHandler')
     // It will transform a generic XML element into an <span> element
     // with a data-* attribute for each @attribute of the XML element
     // It will also transform its children
-	parser.parseXMLElement = function(doc, element, skip, exclude) {
+	parser.parseXMLElement = function(doc, element, options) {
 		var newElement;
-		
+		var skip = options.skip || '',
+            exclude = options.exclude || undefined;
+
 		if (element.nodeType === 3) { // Text
 			newElement = element;
             // newElement = document.createElement('span');
@@ -97,15 +115,15 @@ angular.module('evtviewer.dataHandler')
             // newElement.appendChild(element);
 		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = element;
-		} else if (exclude !== undefined && element.tagName !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
-			newElement = document.createTextNode('');
+        } else if (element.tagName !== undefined && exclude !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+            newElement = document.createTextNode('');
 		} else {
 			var tagName = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
 			if (element.attributes !== undefined &&
 				element.attributes.copyOf !== undefined &&
 				element.attributes.copyOf.value !== '') {
 				newElement = document.createElement('span');
-				newElement.className = tagName + ' copy';
+				newElement.className = element.tagName + ' copy';
 				var copyOfId = element.attributes.copyOf.value.replace('#', '');
 				var match = '<' + element.tagName + ' xml:id="' + copyOfId + '.*<\/' + element.tagName + '>';
 				var sRegExInput = new RegExp(match, 'ig');
@@ -113,7 +131,7 @@ angular.module('evtviewer.dataHandler')
 
 				if (copiedElementText) {
 					var copiedElement = angular.element(copiedElementText[0])[0];
-					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, skip, exclude));
+					newElement.appendChild(parser.parseXMLElement(doc, copiedElement, options));
 				}
 			} else {
 				if (!parsedData.getEncodingDetail('usesLineBreaks') && tagName === 'l') {
@@ -122,7 +140,7 @@ angular.module('evtviewer.dataHandler')
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
 					newElement = document.createElement('span');
-					newElement.className = tagName;
+					newElement.className = element.tagName;
 					var textContent = '';
 					for (var i = 0; i < element.attributes.length; i++) {
 						var attrib = element.attributes[i];
@@ -137,32 +155,75 @@ angular.module('evtviewer.dataHandler')
 					newElement.textContent = textContent.slice(0, -1);
 
 				} else if (config.namedEntitiesSelector && 
-					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName.toLowerCase() + '>') >= 0 && 
+					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName + '>') >= 0 && 
 					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
-					newElement.className = tagName;
-					if (element.attributes) {
-						for (var k = 0; k < element.attributes.length; k++) {
-							var attribK = element.attributes[k];
-							if (attribK.specified) {
-								if (attribK.name !== 'xml:id') {
-									newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
-								}
-							}
-						}
-					}
-					if (element.childNodes) {
-						for (var j = 0; j < element.childNodes.length; j++) {
-							var childElement = element.childNodes[j].cloneNode(true);
-							newElement.appendChild(parser.parseXMLElement(doc, childElement, skip, exclude));
-						}
-					} else {
-						newElement.innerHTML = element.innerHTML + ' ';
-					}
+					newElement.className = element.tagName !== undefined ? element.tagName : '';;
 
-					if (tagName === 'lb') {
+
+
+                    if (element.attributes) {
+                        for (var k = 0; k < element.attributes.length; k++) {
+                            var attribK = element.attributes[k];
+                            if (attribK.specified) {
+                                if (attribK.name !== 'xml:id') {
+                                    newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
+                                }
+                            }
+                        }
+                    }
+                    if (element.childNodes) {
+                        for (var j = 0; j < element.childNodes.length; j++) {
+                            var childElement = element.childNodes[j].cloneNode(true);
+                            newElement.appendChild(parser.parseXMLElement(doc, childElement, options));
+                        }
+                    } else {
+                        newElement.innerHTML = element.innerHTML + ' ';
+                    }
+
+                    if (options.context && options.context === 'projectInfo') {
+                        if (newElement.innerHTML.replace(/\s/g,'') !== '') {
+                            var labelElement = document.createElement('span'),
+                                addLabel = false;
+                            labelElement.className = 'label-'+element.tagName;
+                            labelElement.innerHTML = '{{ \'PROJECT_INFO.'+parser.camelToUnderscore(element.tagName).toUpperCase()+'\' | translate }}';
+                            if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-sectionHeader';
+                                addLabel = true;
+                            } else if (projectInfoDefs.sectionSubHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-sectionSubHeader';
+                                addLabel = true;
+                            } else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-blockLabel';
+                                addLabel = true;
+                            } else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                labelElement.className += ' projectInfo-inlineLabel';
+                                labelElement.innerHTML += ': ';
+                                addLabel = true;
+                            }
+                            if (projectInfoDefs.changeDef.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+                                var changeText = '';
+                                var changeWhen = element.getAttribute(projectInfoDefs.changeWhenDef.replace(/[\[\]]/g, ''));
+                                if (changeWhen) {
+                                    changeText += changeWhen + ' ';
+                                }
+                                var changeBy = element.getAttribute(projectInfoDefs.changeByDef.replace(/[\[\]]/g, ''));
+                                if (changeBy) {
+                                    changeText += '['+changeBy+']';
+                                }
+                                if (changeText !== '') {
+                                    newElement.innerHTML = changeText + ' - ' + newElement.innerHTML;
+                                }
+                            }
+                            if (addLabel) {
+                                newElement.insertBefore(labelElement, newElement.childNodes[0]);
+                            }
+                        }
+                    }
+
+                    if (tagName === 'lb') {
 						newElement.id = element.getAttribute('xml:id');
 						newElement.appendChild(document.createElement('br'));
 						var lineN = document.createElement('span');
@@ -173,7 +234,11 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-		return newElement;
+        if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g,'') !== '')) {
+		  return newElement;
+        } else {
+            return document.createTextNode('');
+        }
 	};
 
 	parser.parseElementAttributes = function(element) {
@@ -419,7 +484,7 @@ angular.module('evtviewer.dataHandler')
 			var childElement = entityNode.childNodes[i].cloneNode(true),
 				parsedXmlElem;
 
-			parsedXmlElem = parser.parseXMLElement(doc, childElement, skip);
+			parsedXmlElem = parser.parseXMLElement(doc, childElement, {skip: skip});
 			entityElem.appendChild(parsedXmlElem);
 		}
 		return entityElem;
@@ -486,7 +551,7 @@ angular.module('evtviewer.dataHandler')
 							}
 						}
 					});
-				var parsedXmlElem = parser.parseXMLElement(doc, element, '');
+				var parsedXmlElem = parser.parseXMLElement(doc, element, {skip: ''});
 				glyph.parsedXml = parsedXmlElem ? parsedXmlElem.outerHTML : '';
 				//TODO: decide how to structure content
 				parsedData.addGlyph(glyph);
@@ -592,11 +657,11 @@ angular.module('evtviewer.dataHandler')
 							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
 						}
 					}
-					var parsedContent = parser.parseXMLElement(element, frontElem, biblDef+'<evt-bibl-elem>'),
+					var parsedContent = parser.parseXMLElement(element, frontElem, {skip: biblDef+'<evt-bibl-elem>'}),
 					 	frontAttributes = parser.parseElementAttributes(frontElem);
 					newDoc.front = {
 						attributes: frontAttributes,
-						parsedContent: parsedContent ? parsedContent.outerHTML.trim() : '',
+						parsedContent: parsedContent && parsedContent.outerHTML ? parsedContent.outerHTML.trim() : '',
 						originalContent: frontElem.outerHTML
 					};
 				}
@@ -752,15 +817,15 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = '<pb>,<g>';
-				elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, skip), elem);
+				elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {skip: skip}), elem);
 			});
 			editionText = docDOM.outerHTML;
 		} else {
-			editionText = '<span>Text not available.</span>';
+			editionText = '<span> {{ \'TEXT_NOT_AVAILABLE\' | translate }}</span>';
 		}
 
 		if (editionText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">There was an error in the parsing of the text. <br />Try a different browser or contact the developers.</span>';
+            var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 			editionText = errorMsg;
 		}
 

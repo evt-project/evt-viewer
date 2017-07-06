@@ -32,7 +32,7 @@ angular.module('evtviewer.dataHandler')
 			var noteElement = document.createElement('span');
 			noteElement.className = 'namedEntityNote';
 			noteElement.innerHTML = whereToFind.innerHTML;
-			var parsedNote = evtParser.parseXMLElement(noteElement, noteElement, '');
+			var parsedNote = evtParser.parseXMLElement(noteElement, noteElement, {skip: ''});
 			whereToPutInfoArray.notes.push({
 				type: type,
 				content:  parsedNote ? parsedNote.innerHTML : ''
@@ -284,7 +284,7 @@ angular.module('evtviewer.dataHandler')
 					if (attributes) {
 						currentDescEl.attributes = attributes;
 					}
-					var parsedDesc = evtParser.parseXMLElement(el, el, '');
+					var parsedDesc = evtParser.parseXMLElement(el, el, {skip: ''});
 					currentDescEl.content = parsedDesc ? parsedDesc.innerHTML : ''; 
 					listOrg.desc.push(currentDescEl);
 				});
@@ -779,7 +779,7 @@ angular.module('evtviewer.dataHandler')
 		angular.forEach(data, function(el) {
 			parseCollectionData(el, collection);
 		 	var itemId = el.getAttribute('xml:id') || evtParser.xpath(element),
-		 		parsedItem = evtParser.parseXMLElement(el, el, '');
+		 		parsedItem = evtParser.parseXMLElement(el, el, {skip: ''});
 		 	var res = {
 		 		id: itemId,
 		 		label: el.getAttribute('n') || camelToSpace(itemId.replace(/_/g, ' ')),

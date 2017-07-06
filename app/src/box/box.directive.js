@@ -34,7 +34,7 @@ angular.module('evtviewer.box')
             var boxElem = angular.element(element).find('.box')[0],
                 boxBody = angular.element(element).find('.box-body')[0];
 
-            $timeout(function(){        
+            $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
                 
@@ -187,7 +187,7 @@ angular.module('evtviewer.box')
                             var docObj = parsedData.getDocument(newItem),
                                 docFront = docObj ? docObj.front : undefined;
 
-                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">Front is not available</div>';
+                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                                 scope.vm.updateTopBoxContent(content);
                         }
                     }

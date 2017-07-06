@@ -17,4 +17,10 @@ angular.module('evtviewer.core')
 	return function(input, all) {
 		return (!!input && input.replace) ? input.replace(/\_+/g, ' ') : '';
 	};
+})
+
+.filter('uppercase', function() {
+	return function(input, all) {
+		return (!!input && input.toUpperCase) ? input.toUpperCase() : '';
+	};
 });

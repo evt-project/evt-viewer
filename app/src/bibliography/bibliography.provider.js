@@ -33,9 +33,13 @@ angular.module('evtviewer.bibliography')
 				if (!biblElement.outputs[vm.initialSelectedStyle.label]) {
 					evtBibliographyParser.formatResult(vm.initialSelectedStyle.label, biblElement);
 				}
-				return biblElement.outputs[vm.initialSelectedStyle.label];
+				if (biblElement.outputs[vm.initialSelectedStyle.label]) {
+					return biblElement.outputs[vm.initialSelectedStyle.label];
+				} else {
+					return biblElement.plainText;
+				}
 			}
-			return '';
+			return biblElement.plainText;
 		};
 
 		var pubblicationType = function(biblId) {
