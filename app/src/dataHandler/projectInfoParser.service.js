@@ -85,7 +85,6 @@ angular.module('evtviewer.dataHandler')
                         encodingDescContent = encodingDescParsedElement ? encodingDescParsedElement : '';
                         encodingDescContent += '<span class="variantEncoding">{{ \'PROJECT_INFO.ENCODING_METHOD_USED\' | translate:\'{ method:  "'+variantEncodingEl.getAttribute('method')+'" }\' }}</span>';
                     }
-                    console.log(encodingDescContent)
                     parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
                 }
         });
