@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
             node = nodes.iterateNext();
 
             if (node !== null) {
-               checkCurrentNode(node);
+               checkCurrentNode(node, doc);
             }
 
             if (node === null) {
@@ -360,7 +360,7 @@ angular.module('evtviewer.dataHandler')
                }
             }
             else {
-               witness = getCurrentWitness(child, doc);
+               witness = getCurrentWitness(child);
                witnessText = child.textContent;
                nodeHaveWit = witness;
 
@@ -382,8 +382,9 @@ angular.module('evtviewer.dataHandler')
    /* Function to get the current witness  */
    /* @node -> current node                */
    /* ************************************ */
-   let getCurrentWitness = function (node, doc) {
-      let witList = {};
+   let getCurrentWitness = function (node) {
+      let witList = {},
+          group = [];
 
       if(node.getAttribute('wit')) {
          let wit = node.getAttribute('wit');
@@ -393,9 +394,11 @@ angular.module('evtviewer.dataHandler')
          }
 
          if(wit === 'group') {
-            witList = getCurrentWitList(doc);
-            for (let i = 0; i < witList.group.length-1; i++) {
-               wit = witList.group[i] + ' ' + witList.group[i+1];
+            wit = '';
+            witList = parsedData.getWitnesses();
+            group = witList.group.content;
+            for (let i = 0; i < group.length; i++) {
+               i !== group.length-1 ? wit += group[i] + ' ' : wit += group[i];
             }
          }
          return wit;
@@ -403,56 +406,6 @@ angular.module('evtviewer.dataHandler')
       else {
          return false;
       }
-   };
-
-   /* **************************** */
-   /* BEGIN getCurrentWitList(doc) */
-   /* ****************************************** */
-   /* Function to get the current witnesses List */
-   /* @doc -> current xml document               */
-   /* ****************************************** */
-   let getCurrentWitList = function (doc) {
-      let nsResolver = {
-         lookupNamespaceURI: function (prefix) {
-            prefix = 'ns';
-            let namespace = doc.documentElement.namespaceURI;
-            return namespace;
-         }
-      };
-
-      let path,
-         id,
-         listWit = {},
-         witnesses = [],
-         group = [];
-
-      doc.documentElement.namespaceURI == null ? path = '//listWit//node()[not(self::comment())][not(self::text())]' : path = '//ns:listWit//node()[not(self::comment())][not(self::text())]';
-      nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
-
-      node = nodes.iterateNext();
-
-      while (node) {
-         id = node.getAttribute('xml:id');
-         if(node.nodeName === 'listWit' && id === 'group') {
-            node = nodes.iterateNext();
-            while (node.nodeName === 'head') {
-               node = nodes.iterateNext();
-            }
-            id = node.getAttribute('xml:id');
-            group.push(id);
-         }
-         else {
-            let prevElSibling = node.previousElementSibling;
-            if(prevElSibling !== null && prevElSibling.nodeName === 'witness' && node.parentNode.attributes.length !== 0) {
-               group.push(id);
-            }
-            witnesses.push(id);
-            node = nodes.iterateNext();
-         }
-      }
-      listWit.witnesses = witnesses;
-      listWit.group = group;
-      return listWit;
    };
 
    /* ********************************* */
@@ -498,7 +451,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to check the current node name and add word to editionWords */
    /* @node -> current node                                                */
    /* ******************************************************************** */
-   let checkCurrentNode = function(node) {
+   let checkCurrentNode = function(node, doc) {
       switch (node.nodeName) {
          case 'choice':
             currentChoiceNode = node;
