@@ -580,6 +580,25 @@ angular.module('evtviewer.dataHandler')
 		return criticalTexts[docId];
 	};
 
+	parsedData.resetCriticalEntries = function() {
+		criticalAppCollection = {
+			filtersCollection: {
+				filters: {},
+				length: 0,
+				forLemmas: 0,
+				forVariants: 0,
+				colors: []
+			},
+			__allLoaded: false,
+			_maxVariance: 0,
+			_indexes: {
+				encodingStructure: [],
+				appEntries: [],
+				exponents: [],
+			}
+		};
+	};
+
 	parsedData.addCriticalEntry = function(entry) {
 		if (criticalAppCollection[entry.id] === undefined) {
 			criticalAppCollection[entry.id] = entry;

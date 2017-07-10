@@ -160,6 +160,7 @@ angular.module('evtviewer.dataHandler')
     // it calls the function handleAppEntry(element)
     // and add the json object generated into parsedData with the function parsedData.addCriticalEntry();
     parser.parseCriticalEntries = function(doc) {
+        parsedData.resetCriticalEntries();
         var deferred = $q.defer();
         var currentDocument = angular.element(doc);
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
