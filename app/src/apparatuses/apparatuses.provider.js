@@ -97,6 +97,7 @@ angular.module('evtviewer.apparatuses')
 			}
 
 			var scopeHelper = {
+				loading: true,
 				uid: currentId,
 				currentApparatus: apparatuses._indexes.length > 0 ? apparatuses._indexes[0] : '',
 				apparatuses: apparatuses,
@@ -112,8 +113,9 @@ angular.module('evtviewer.apparatuses')
 
 		apparatuses.setCurrentApparatus = function(app) {
 			evtInterface.updateCurrentApparatus(app);
+			currentApparatuses.currentApparatus = app;
 			angular.forEach(collection, function(currentApparatuses) {
-				currentApparatuses.currentApparatus = app;
+				currentApparatuses.setCurrentApparatus(app);
 			});
 		};
 

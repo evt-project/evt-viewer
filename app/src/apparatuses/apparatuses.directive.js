@@ -80,6 +80,7 @@
             scope.vm.scrollToAppEntry(currentAppId);
             $timeout(function(){ 
                 evtCriticalApparatusEntry.selectById(currentAppId);
+                currentApparatuses.loading = false;
             }, 200);
         }
     };

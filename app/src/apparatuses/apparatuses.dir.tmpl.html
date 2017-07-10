@@ -24,6 +24,7 @@
         class="apparatuses_tabs"
         infinite-scroll="vm.loadMoreElements()" infinite-scroll-distance="2" infinite-scroll-parent='true' infinite-scroll-immediate-check="false"
         ng-switch-when="tabs">
+        <div class="loading" ng-if="vm.loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
         <div
             class="apparatuses_tabs_body"
             ng-switch="vm.currentApparatus">

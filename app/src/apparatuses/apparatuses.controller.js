@@ -1,10 +1,17 @@
 angular.module('evtviewer.apparatuses')
 
-.controller('apparatusesCtrl', function(evtApparatuses, $scope) {
+.controller('apparatusesCtrl', function($timeout, evtApparatuses, $scope) {
 	var vm = this;
 
-	this.setCurrentApparatus = function(app) {
-		evtApparatuses.setCurrentApparatus(app);
+	this.setCurrentApparatus = function(appId) {
+		if (appId !== vm.currentApparatus && vm.apparatuses[appId]) {
+			vm.loading = true;
+			vm.currentApparatus = appId;
+			vm.apparatuses[appId].visibleList = vm.apparatuses[appId].list.slice(0, 10);
+			$timeout(function() {
+				vm.loading = false;
+			});
+		}
 	};
 
 	this.getCurrentApparatus = function() {
@@ -39,15 +46,13 @@ angular.module('evtviewer.apparatuses')
 	};
 
 	this.loadMoreElements = function() {
-		var vm = this,
-        	appIndex = vm.currentApparatus,
-            last = vm.apparatuses[appIndex].visibleList.length,
+		var appId = vm.currentApparatus,
+            last = vm.apparatuses[appId].visibleList.length,
             i = 0; 
-            console.log('loadMoreElements', vm.currentApparatus);
-        while (i < 10 && i < vm.apparatuses[appIndex].list.length) {
-            var newElement = vm.apparatuses[appIndex].list[last+i];
-            if (newElement && vm.apparatuses[appIndex].visibleList.indexOf(newElement) <= 0) {
-                vm.apparatuses[appIndex].visibleList.push(newElement);                    
+        while (i < 10 && i < vm.apparatuses[appId].list.length) {
+            var newElement = vm.apparatuses[appId].list[last+i];
+            if (newElement && vm.apparatuses[appId].visibleList.indexOf(newElement) <= 0) {
+                vm.apparatuses[appId].visibleList.push(newElement);                    
             }
             i++;
         }

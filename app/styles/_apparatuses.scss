@@ -6,4 +6,10 @@
 	height: 100%;
 	overflow-y: auto;
 	padding: 4%;
+
+	.loading {
+		height: 100%;
+		z-index: 999;
+		background: rgba(0,0,0,.3);
+	}
 }
