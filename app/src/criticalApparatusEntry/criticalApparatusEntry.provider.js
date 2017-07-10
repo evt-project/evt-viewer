@@ -86,17 +86,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 				}
 			}
 
-			var exponent,
-				exps = parsedData.getCriticalEntries()._indexes.exponents;
-			if (scope.exponent === undefined) {
-				for (var i in exps) {
-					if (exps[i].appId === scope.appId) {
-						exponent = exps[i].exponent;
-					}
-				}
-			} else {
-				exponent = scope.exponent;
-			}
+			var exponent = scope.exponent === undefined ? parsedData.getCriticalEntryExponent(scope.appId) : scope.exponent;
 
 			scopeHelper = {
 				// expansion

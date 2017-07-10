@@ -33,30 +33,7 @@ angular.module('evtviewer.reading')
                 return;
             }
             
-            var exponents = parsedData.getCriticalEntries()._indexes.exponents,
-                exponent;
-            for (var i = 0; i < exponents.length; i++) {
-                var expAppId = exponents[i].appId;
-                if (expAppId !== undefined && expAppId === scope.appId) {
-                    exponent = exponents[i].exponent;
-                }
-            }
-            if (exponent === undefined) {
-                number++;
-                var firstExp,
-                lastExp;
-                if (number > 26) {
-                    firstExp = (Math.floor(number/26))+96;
-                    if (number%26 === 0) {
-                        exponent = '&#'+(firstExp-1)+'; z';
-                    } else {
-                    lastExp = (number%26)+96;
-                    exponent='&#'+firstExp+'; &#'+lastExp+';'; }
-                } else {
-                    exponent = '&#'+(number+96)+';';
-                }
-                parsedData.getCriticalEntries()._indexes.exponents.push({appId: scope.appId, exponent: exponent});
-            }            
+            var exponent = parsedData.getCriticalEntryExponent(scope.appId);
 
             if (scope.readingId !== undefined){
                 var aAttributes = parsedData.getReadingAttributes(scope.readingId, id) || [];

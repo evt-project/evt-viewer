@@ -599,6 +599,23 @@ angular.module('evtviewer.dataHandler')
 		};
 	};
 
+	var generateAlphabeticExponent = function() {
+		var number = criticalAppCollection._indexes.appEntries.length,
+			exponent;
+		var firstExp, lastExp;
+        if (number > 26) {
+            firstExp = (Math.floor(number/26))+96;
+            if (number%26 === 0) {
+                exponent = '&#'+(firstExp-1)+'; z';
+            } else {
+            lastExp = (number%26)+96;
+            exponent='&#'+firstExp+'; &#'+lastExp+';'; }
+        } else {
+            exponent = '&#'+(number+96)+';';
+        }
+        return exponent;
+	}
+
 	parsedData.addCriticalEntry = function(entry) {
 		if (criticalAppCollection[entry.id] === undefined) {
 			criticalAppCollection[entry.id] = entry;
@@ -606,6 +623,9 @@ angular.module('evtviewer.dataHandler')
 			if (!entry._subApp) {
 				criticalAppCollection._indexes.encodingStructure.push(entry.id);
 			}
+        	var exponent = generateAlphabeticExponent();
+        	criticalAppCollection._indexes.exponents.push({appId: entry.id, exponent: exponent});
+        	criticalAppCollection[entry.id].exponent = exponent;
 		}
 		if (entry._variance > criticalAppCollection._maxVariance) {
 			criticalAppCollection._maxVariance = entry._variance;
@@ -620,8 +640,13 @@ angular.module('evtviewer.dataHandler')
 		return criticalAppCollection;
 	};
 
-	parsedData.getCriticalEntryById = function(entryPos) {
-		return criticalAppCollection[entryPos];
+	parsedData.getCriticalEntryById = function(entryId) {
+		return criticalAppCollection[entryId];
+	};
+
+	parsedData.getCriticalEntryExponent = function(entryId) {
+		var entry = parsedData.getCriticalEntryById(entryId);
+		return (entry ? entry.exponent : '');
 	};
 
 	parsedData.getCriticalEntriesMaxVariance = function() {
