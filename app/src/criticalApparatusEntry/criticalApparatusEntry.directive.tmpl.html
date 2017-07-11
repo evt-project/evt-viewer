@@ -4,7 +4,7 @@
   ng-mouseout="vm.toggleOverAppEntries($event)"
   ng-click="vm.callbackClick($event)"
   ng-class="{'noTools': (scopeViewMode !== 'collation' && scopeViewMode !== 'readingTxt') && !vm.isPinAvailable(),
-             'selected': vm.isSelect() && scopeViewMode === 'readingTxt',
+             'selected': vm.isSelected() && !vm.isInline() && scopeViewMode === 'readingTxt',
              'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
       <span class="apparatus_exponent"

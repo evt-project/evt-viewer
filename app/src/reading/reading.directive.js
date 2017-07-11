@@ -20,7 +20,10 @@ angular.module('evtviewer.reading')
             scope.currentViewMode = evtInterface.getCurrentViewMode();
             scope.inlineApparatus = evtInterface.isCriticalApparatusInline();
             var currentReading = evtReading.build(scope.appId, scope);
-            
+            if (scope.inlineApparatus && evtInterface.getCurrentAppEntry() === scope.appId) {
+                console.log('openApparatus')
+                currentReading.openApparatus();
+            }
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentReading){

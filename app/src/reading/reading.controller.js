@@ -43,6 +43,7 @@ angular.module('evtviewer.reading')
 
     this.openApparatus = function() {
         vm.apparatus.opened = true;
+        vm.apparatus._loaded = true;
     };
 
     this.toggleTooltipOver = function() {
@@ -65,15 +66,17 @@ angular.module('evtviewer.reading')
     this.toggleSelectAppEntries = function($event) {
         if ( !vm.hidden ) {
             if (vm.selected === false) {
-                if (!vm.apparatus.opened){
-                    evtReading.selectById(vm.appId);
-                    evtInterface.updateCurrentAppEntry(vm.appId);
-                }
+                evtReading.selectById(vm.appId);
+                evtCriticalApparatusEntry.selectById(vm.appId);
+                if (!vm.apparatus.inline) {
+                    evtApparatuses.setCurrentApparatus('criticalApparatus');
+                    evtApparatuses.alignScrollToApp(vm.appId);
+                } 
+                evtInterface.updateCurrentAppEntry(vm.appId);
             } else {
-                if (vm.apparatus.opened){
-                    evtReading.unselectAll();
-                    evtInterface.updateCurrentAppEntry('');
-                }
+                evtInterface.updateCurrentAppEntry('');
+                evtReading.unselectAll();
+                evtCriticalApparatusEntry.unselectAll();
             }
         }
         evtInterface.updateUrl();
@@ -82,13 +85,7 @@ angular.module('evtviewer.reading')
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
         if ( !vm.hidden && vm.over ) {
-            if (!vm.apparatus.inline) {
-                if (evtApparatuses.getCurrentApparatus() !== 'criticalApparatus') {
-                    evtApparatuses.setCurrentApparatus('criticalApparatus');
-                }
-                evtApparatuses.alignScrollToApp(vm.appId);
-                evtCriticalApparatusEntry.selectById(vm.appId);
-            } else if ( !vm.apparatus._loaded) {
+            if ( !vm.apparatus._loaded) {
                 vm.apparatus._loaded = true;
             } 
             
@@ -101,7 +98,7 @@ angular.module('evtviewer.reading')
         $event.stopPropagation();
         if (vm.over) {
             vm.toggleSelectAppEntries($event);
-            if (!vm.isSelect() || !vm.apparatus.opened){
+            if (!vm.isSelect() || (vm.apparatus.inline && !vm.apparatus.opened)){
                 vm.toggleApparatus($event);
             }
         }

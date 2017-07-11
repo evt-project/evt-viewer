@@ -349,6 +349,7 @@ angular.module('evtviewer.interface')
         };
 
         mainInterface.updateCurrentAppEntry = function(appId){
+            console.log('updateCurrentAppEntry', appId)
             state.currentAppEntry = appId;
         };
 
@@ -628,11 +629,6 @@ angular.module('evtviewer.interface')
                 properties.availableWitnesses = availableWitnesses;
             }
             mainInterface.updateUrl();
-        };
-        
-        // app entry
-        mainInterface.updateCurrentAppEntry = function(appEntryId) {
-            state.currentAppEntry = appEntryId;
         };
 
         mainInterface.isViewModeAvailable = function(viewMode) {

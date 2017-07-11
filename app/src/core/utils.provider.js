@@ -94,6 +94,20 @@ angular.module('evtviewer.core')
 		}
 	};
 
+	this.isNestedInClassElem = function(element, parentClassName) {
+		if (element.parentNode !== null && element.parentNode !== undefined && element.parentNode.className) {
+			if (element.parentNode.className === '') {
+				return false;
+			} else if (element.parentNode.className.indexOf(parentClassName) >= 0) {
+				return true;
+			} else {
+				return this.isNestedInElem(element.parentNode, parentClassName);
+			}
+		} else {
+			return false;
+		}
+	};
+
 	var hexC = function() {
 		var hex = Math.floor(Math.random() * 256).toString(16);
 		return ('0' + String(hex)).substr(-2); // pad with zero 
@@ -136,6 +150,7 @@ angular.module('evtviewer.core')
 				getElementsBetweenTree: this.getElementsBetweenTree,
 				getCommonAncestor: this.getCommonAncestor,
 				isNestedInElem: this.isNestedInElem,
+				isNestedInClassElem: this.isNestedInClassElem,
 				decodeHTMLEntities: this.decodeHTMLEntities
 			}
 		};

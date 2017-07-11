@@ -1,6 +1,6 @@
 angular.module('evtviewer.criticalApparatusEntry')
 
-.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, evtInterface, evtCriticalApparatusEntry, evtReading, evtBox, evtApparatuses, evtPinnedElements) {
+.controller('CriticalApparatusEntryCtrl', function($log, $scope, config, Utils, evtInterface, evtCriticalApparatusEntry, evtInterface, evtReading, evtBox, evtApparatuses, evtPinnedElements) {
     $scope.content = {};
     var vm = this;
 
@@ -73,26 +73,35 @@ angular.module('evtviewer.criticalApparatusEntry')
         vm.selected = false;
     };
 
-    this.isSelect = function() {
-        if (evtCriticalApparatusEntry.getCurrentAppEntry() === vm.appId) {
-            return true;
-        } else {
-            return vm.selected;
-        }
+    this.isSelected = function() {
+        return vm.selected;
+    };
+
+    this.isInline = function() {
+        return evtInterface.isCriticalApparatusInline();
     };
 
     this.callbackClick = function($event) {
         $event.stopPropagation();
+        var target = $event.target;
+        
         if (vm.currentViewMode === 'readingTxt') {
-            if (this.isSelect()) {
-                evtCriticalApparatusEntry.unselectAll();
+            if (vm.isSelected()) {
+                if (target && target.className.indexOf('critical-apparatus-entry_other-content_headers') < 0 &&
+                    !Utils.DOMutils.isNestedInClassElem(target, 'critical-apparatus-entry_other-content_headers')) {
+                    evtCriticalApparatusEntry.unselectAll();
+                    evtReading.unselectAll();
+                    evtInterface.updateCurrentAppEntry('');
+                }
             } else {
-                evtCriticalApparatusEntry.unselectAll();
-                evtCriticalApparatusEntry.selectById(vm.appId);
                 evtReading.selectById(vm.appId);
                 evtInterface.updateCurrentAppEntry(vm.appId);
-                evtBox.alignScrollToApp(vm.appId);
+                evtCriticalApparatusEntry.selectById(vm.appId);
+                if (!vm.isInline()) {
+                    evtBox.alignScrollToApp(vm.appId);
+                }
             }
+            evtInterface.updateUrl();
         }
     };
 
