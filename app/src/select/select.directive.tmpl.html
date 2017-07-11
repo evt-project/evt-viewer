@@ -18,7 +18,7 @@
                   'openUp': vm.openUp }" >
       <div ng-repeat="option in vm.optionList" ng-switch="::option.type">
          <div ng-switch-when="groupTitle" class="option groupTitle">
-            {{ ::option.label }}
+            {{ ::option.label | camelToSpaces | underscoresToSpaces | capitalize }}
          </div>
          <div 
             ng-switch-default

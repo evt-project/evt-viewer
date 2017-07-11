@@ -123,6 +123,8 @@
 		"NO_RESULT_FOUND": "No result found.",
 		"NO_XML_SOURCE": "No XML available.",
 		"PINNED_ELEMENTS_SHOWN_HERE": "Selected elements will be shown here.",
+		"SEE_VERSION_TEXT": "See version text",
+		"SEE_WITNESS": "See witnesses",
 		"SELECT_AN_APPARATUS": "Select an apparatus or a critical element inside the critical text.",
 		"TEXT_NOT_AVAILABLE": "Text is not available.",
 		"TEXT_OF_SOURCE_NOT_AVAILABLE": "Text of source {{source}} is not available.",

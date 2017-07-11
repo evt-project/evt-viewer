@@ -404,7 +404,7 @@ angular.module('evtviewer.select')
 						if (evtInterface.getCurrentViewMode() !== 'collation') {
 							if (oldOption !== undefined) {
 								if (newOption !== undefined) {
-									evtInterface.switchVersions(oldOption.value, newOption.value);
+									evtInterface.switchVersions(oldOption[0].value, newOption.value);
 								}
 							} else if (newOption !== undefined) {
 								evtInterface.addVersion(newOption.value);
@@ -426,8 +426,8 @@ angular.module('evtviewer.select')
 									currentOption = versions[i];
 									option = {
 										value: i,
-										label: currentOption,
-										title: 'See version text'
+										label: Utils.DOMutils.decodeHTMLEntities(currentOption),
+										title: 'MESSAGES.SEE_VERSION_TEXT'
 									};
 									formattedList.push(option);
 								}
@@ -438,7 +438,7 @@ angular.module('evtviewer.select')
 									option = {
 										value: i,
 										label: Utils.DOMutils.decodeHTMLEntities(currentOption),
-										title: 'See witnesses'
+										title: 'MESSAGES.SEE_WITNESS'
 									};
 									formattedList.push(option);
 								}
@@ -452,7 +452,7 @@ angular.module('evtviewer.select')
 						formattedOption = {
 							value: option,
 							label: Utils.DOMutils.decodeHTMLEntities(optionLabel),
-							title: 'See version text'
+							title: 'MESSAGES.SEE_VERSION_TEXT'
 						};
 						return formattedOption;
 					};

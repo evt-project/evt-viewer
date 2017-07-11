@@ -123,6 +123,8 @@
 		"NO_RESULT_FOUND": "Nessun risultato trovato.",
 		"NO_XML_SOURCE": "La codifica XML non è disponibile.",
 		"PINNED_ELEMENTS_SHOWN_HERE": "Gli elementi selezionati verranno visualizzati qui.",
+		"SEE_VERSION_TEXT": "Visualizza il testo della versione",
+		"SEE_WITNESS": "Visualizza il testimone",
 		"SELECT_AN_APPARATUS": "Selezionare un apparato o un elemento critico all'interno del testo critico.",
 		"TEXT_NOT_AVAILABLE": "Il testo non è disponibile.",
 		"TEXT_OF_SOURCE_NOT_AVAILABLE": "Il testo della fonte {{sources}} non è disponibile.",
