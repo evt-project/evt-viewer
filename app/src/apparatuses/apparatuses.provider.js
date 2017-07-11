@@ -10,7 +10,7 @@ angular.module('evtviewer.apparatuses')
 
 	var currentApparatuses = '';
 
-	this.$get = function(parsedData, evtInterface, evtVersionReading, evtReading) {
+	this.$get = function(parsedData, evtInterface) {
 		var apparatuses = {},
 			collection = {},
 			list = [],
@@ -25,11 +25,11 @@ angular.module('evtviewer.apparatuses')
 			//Aggiungere l'apparato da aprire per configurazione
 			//Aggiungere nella configurazione, un array con l'ordine degli apparati
 			//E la struttura dei tabs
-			var currentApparatus = scope.currentApparatus || 'Critical Apparatus', //l'apparato selezionato nell'interfaccia
+			var currentApparatus = scope.currentApparatus || 'criticalApparatus', //l'apparato selezionato nell'interfaccia
 				apparatuses = {
 					_indexes: []
 				},
-				appStructure = 'tabs',
+				appStructure = defaults.appStructure,
                 appList = [],
 				quotesList = [],
 				analoguesList = [],
@@ -69,7 +69,7 @@ angular.module('evtviewer.apparatuses')
 
 			if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
 				apparatuses.criticalApparatus = {
-					label: 'Critical Apparatus',
+					label: 'APPARATUSES.CRITICAL_APPARATUS',
 					visibleList: appList.slice(0, 10),
 					list: appList
 				};
@@ -77,7 +77,7 @@ angular.module('evtviewer.apparatuses')
 			}
 			if (!evtInterface.isSourcesInline() && quotesList.length > 0) {
 				apparatuses.sources = {
-					label: 'Sources',
+					label: 'APPARATUSES.SOURCES',
 					visibleList: quotesList.slice(0, 10),
 					list: quotesList
 				};
@@ -85,7 +85,7 @@ angular.module('evtviewer.apparatuses')
 			}
 			if (!evtInterface.isAnaloguesInline() && analoguesList.length > 0) {
 				apparatuses.analogues = {
-					label: 'Analogues',
+					label: 'APPARATUSES.ANALOGUES',
 					visibleList: analoguesList.slice(0, 10),
 					list: analoguesList
 				};
@@ -97,7 +97,7 @@ angular.module('evtviewer.apparatuses')
 			}
 
 			var scopeHelper = {
-				loading: true,
+				isLoading: true,
 				uid: currentId,
 				currentApparatus: apparatuses._indexes.length > 0 ? apparatuses._indexes[0] : '',
 				apparatuses: apparatuses,

@@ -18,7 +18,8 @@ angular.module('evtviewer.reference')
 			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
 			var target = vm.target.replace('#', ''),
 				bibliographicRef = parsedData.getBibliographicRefById(target),
-				bibliographyPanel = evtInterface.getTabContainerPanel().bibliography;
+				tabContainerPanel = evtInterface.getTabContainerPanel(),
+				bibliographyPanel = tabContainerPanel ? tabContainerPanel.bibliography : undefined;
 			if (bibliographicRef && bibliographyPanel) {
 				evtInterface.updateSecondaryContentOpened(' ');
 				evtDialog.openByType('globalInfo');

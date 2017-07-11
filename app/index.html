@@ -233,9 +233,9 @@
                 </box>
                 <box
                     ng-if="isApparatusBoxOpen()"
-                    data-type="apparatuses"
-                    id="apparatuses"
+                    data-type="empty" id="empty"
                     ng-class="{ 'smaller' : isPinnedAppBoardOpened() && isApparatusBoxOpen() }">
+                    <evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses> 
                 </box>
             </section>
             

@@ -18,20 +18,29 @@
                 }
             });
 
-            var mainContainer = angular.element(element).find('.apparatuses_main')[0];
             scope.vm.scrollToAppEntry = function(appId) {
                 var appIndex = 'criticalApparatus';
-                if (scope.vm.apparatuses[appIndex]) {
+                if (currentApparatuses.apparatuses[appIndex]) {
+                    var appElem = $('#apparatuses_'+currentApparatuses.uid).find('[data-app-id=\''+appId+'\']');
+                    if (appElem.length <= 0) {
+                        currentApparatuses.isLoading = true;
+                    }
                     $timeout(function(){
-                        var appElem = $('#apparatuses_'+currentApparatuses.uid).find('[data-app-id=\''+appId+'\']');
+                        var mainContainer = angular.element(element).find('.apparatuses_content_body')[0];
                         var padding = window.getComputedStyle(mainContainer, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appElem.length <= 0) {
-                            if (scope.vm.apparatuses[appIndex].list.indexOf(appId) >= 0) {
-                                currentApparatuses.loadMoreElements('Critical Apparatus');
-                                currentApparatuses.scrollToAppEntry(appId);
+                            currentApparatuses.isLoading = true;
+                            if (currentApparatuses.apparatuses[appIndex].list.indexOf(appId) >= 0) {
+                                if (appIndex === currentApparatuses.currentApparatus) {
+                                    currentApparatuses.loadMoreElements('criticalApparatus');
+                                    currentApparatuses.scrollToAppEntry(appId);
+                                } else {
+                                    currentApparatuses.isLoading = false;
+                                }
                             }
                         } else if (appElem[0] !== undefined) {
-                            mainContainer.scrollTop = appElem[0].offsetTop - (padding*2);
+                            mainContainer.scrollTop = appElem[0].offsetTop - (padding*3);
+                            currentApparatuses.isLoading = false;
                         }
                     });
                 }
@@ -39,17 +48,27 @@
 
             scope.vm.scrollToQuotesEntry = function(quoteId) {
                 var appIndex = 'sources';
-                if (scope.vm.apparatuses[appIndex]) {
+                if (currentApparatuses.apparatuses[appIndex]) {
+                    var appElem = $('#apparatuses_'+currentApparatuses.uid).find('[data-quote-id=\''+quoteId+'\']');
+                    if (appElem.length <= 0) {
+                        currentApparatuses.isLoading = true;
+                    }
                     $timeout(function(){
-                        var appElem = $('#apparatuses_'+currentApparatuses.uid).find('[data-quote-id=\''+quoteId+'\']');
+                        var mainContainer = angular.element(element).find('.apparatuses_content_body')[0];
                         var padding = window.getComputedStyle(mainContainer, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appElem.length <= 0) {
-                            if (scope.vm.apparatuses[appIndex].list.indexOf(quoteId) >= 0) {
-                                currentApparatuses.loadMoreElements('Sources');
-                                currentApparatuses.scrollToQuotesEntry(quoteId);
+                            currentApparatuses.isLoading = true;
+                            if (currentApparatuses.apparatuses[appIndex].list.indexOf(quoteId) >= 0) {
+                                if (appIndex === currentApparatuses.currentApparatus) {
+                                    currentApparatuses.loadMoreElements('sources');
+                                    currentApparatuses.scrollToQuotesEntry(quoteId);
+                                } else {
+                                    currentApparatuses.isLoading = false;
+                                }
                             }
                         } else if (appElem[0] !== undefined) {
-                            mainContainer.scrollTop = appElem[0].offsetTop - (padding*2);
+                            mainContainer.scrollTop = appElem[0].offsetTop - (padding*3);
+                            currentApparatuses.isLoading = false;
                         }
                     });
                 }
@@ -58,16 +77,26 @@
             scope.vm.scrollToAnaloguesEntry = function(analogueId) {
                 var appIndex = 'analogues';
                 if (scope.vm.apparatuses[appIndex]) {
+                    var appElem = $('#apparatuses_'+currentApparatuses.uid).find('[data-analogue-id=\''+analogueId+'\']');
+                    if (appElem.length <= 0) {
+                        currentApparatuses.isLoading = true;
+                    }
                     $timeout(function(){
-                        var appElem = $('#apparatuses_'+currentApparatuses.uid).find('[data-analogue-id=\''+analogueId+'\']');
+                        var mainContainer = angular.element(element).find('.apparatuses_content_body')[0];
                         var padding = window.getComputedStyle(mainContainer, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (appElem.length <= 0) {
-                            if (scope.vm.apparatuses[appIndex].list.indexOf(analogueId) >= 0) {
-                                currentApparatuses.loadMoreElements('Analogues');
-                                currentApparatuses.scrollToAnaloguesEntry(analogueId);
+                            currentApparatuses.isLoading = true;
+                            if (currentApparatuses.apparatuses[appIndex].list.indexOf(analogueId) >= 0) {
+                                if (appIndex === currentApparatuses.currentApparatus) {
+                                    currentApparatuses.loadMoreElements('analogues');
+                                    currentApparatuses.scrollToAnaloguesEntry(analogueId);
+                                } else {
+                                    currentApparatuses.isLoading = false;
+                                }
                             }
                         } else if (appElem[0] !== undefined) {
-                            mainContainer.scrollTop = appElem[0].offsetTop - (padding*2);
+                            mainContainer.scrollTop = appElem[0].offsetTop - (padding*3);
+                            currentApparatuses.isLoading = false;
                         }
                     });
                 }
@@ -75,13 +104,17 @@
 
             // Necessary for first load page/app entry alignment
             // TODO: Distinguish among current app / source / analogue
-            var pageId, 
-                currentAppId = evtInterface.getCurrentAppEntry();
-            scope.vm.scrollToAppEntry(currentAppId);
-            $timeout(function(){ 
-                evtCriticalApparatusEntry.selectById(currentAppId);
-                currentApparatuses.loading = false;
-            }, 200);
+            if (currentApparatuses.currentApparatus === 'criticalApparatus') {
+                var currentAppId = evtInterface.getCurrentAppEntry();
+                scope.vm.scrollToAppEntry(currentAppId);
+                $timeout(function(){ 
+                    evtCriticalApparatusEntry.selectById(currentAppId);
+                }, 200);
+            } else {
+                $timeout(function(){ 
+                    currentApparatuses.isLoading = false;
+                }, 200);
+            }
         }
     };
 });

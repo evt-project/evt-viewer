@@ -596,58 +596,13 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-					/**************** */
-					/*Case apparatuses*/
-					/************************************************************ */
-					/*It creates the labels for every type of apparatus available.*/
-					/*It updates the currentApparatus inside of Interface.        */
-					/*Then it loads the apparatuses directive. | @author --> CM   */
-					/************************************************************ */
-				case 'apparatuses':
-					isLoading = true;
-					var appList = parsedData.getCriticalEntries()._indexes.encodingStructure,
-						quotesList = parsedData.getQuotes()._indexes.encodingStructure,
-						analoguesList = parsedData.getAnalogues()._indexes.encodingStructure;
-
-					if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
-						topMenuList.appLabels.push({
-							label: 'APPARATUSES.CRITICAL_APPARATUS',
-							id: 'criticalApparatus'
-						});
-					}
-					if (!evtInterface.isSourcesInline() && quotesList.length > 0) {
-						topMenuList.appLabels.push({
-							label: 'APPARATUSES.SOURCES',
-							id: 'sources'
-						});
-					}
-					if (!evtInterface.isAnaloguesInline() && analoguesList.length > 0) {
-						topMenuList.appLabels.push({
-							label: 'APPARATUSES.ANALOGUES',
-							id: 'analogues'
-						});
-					}
-					//method to get the currentApparatus inside of Interface, to initialize or change the apparatuses directive
-					vm.getCurrentApparatus = function() {
-						return evtInterface.getCurrentApparatus();
-					};
-					//method to update the current apparatus inside of interface
-					vm.updateApparatus = function(app) {
-						evtApparatuses.setCurrentApparatus(app);
-					};
-					//The updateContent function loads the evt-apparatuses directive
-					updateContent = function() {
-						scope.vm.content = '<evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>';
-					};
-					isLoading = false;
-					break;
-					/*************/
-					/*Case source*/
-					/****************************************************************************/
-					/* It loads the parsed text of the current source text. Available a selector*/
-					/* to choose the source to show, a button for bibliographic reference and a */
-					/* button to change font size. | @author --> CM                             */
-					/****************************************************************************/
+				/*************/
+				/*Case source*/
+				/****************************************************************************/
+				/* It loads the parsed text of the current source text. Available a selector*/
+				/* to choose the source to show, a button for bibliographic reference and a */
+				/* button to change font size. | @author --> CM                             */
+				/****************************************************************************/
 				case 'source':
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,

@@ -12,18 +12,7 @@
     <div 
         class="box-menu" 
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus'">
-        
-        <!--Headers for the apparatuses added by CM-->
-        <div ng-if="::vm.type == 'apparatuses'">
-            <span
-                class="appLabel"
-                ng-repeat="appLabel in vm.topMenuList.appLabels"
-                ng-click="vm.updateApparatus(appLabel.id)"
-                ng-class="{'selected': appLabel.id === vm.getCurrentApparatus()}"
-                >{{ appLabel.label | translate }}</span>
-        </div>
-        <!--End of addition-->
+        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'"">
         
         <evt-select 
             data-id="{{::selector.id}}"

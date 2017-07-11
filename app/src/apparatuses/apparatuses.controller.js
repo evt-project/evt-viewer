@@ -15,7 +15,7 @@ angular.module('evtviewer.apparatuses')
 	};
 
 	this.getCurrentApparatus = function() {
-		evtApparatuses.getCurrentApparatus();
+		return vm.currentApparatus;
 	};
 
 	this.toggleAppStructure = function(appStructure) {
@@ -31,25 +31,18 @@ angular.module('evtviewer.apparatuses')
 	};
 
 	this.getVisibleList = function(app) {
-		var list = [];
-		for (var i in vm.apparatuses) {
-			if (vm.apparatuses[i].label === app) {
-				list = vm.apparatuses[i].visibleList;
-			}
-		}
-		return list;
+		return vm.apparatuses[app] ? vm.apparatuses[app].visibleList : [];
 	};
 
 	this.getAppList = function(app) {
-		var list = vm.apparatuses[app] ? vm.apparatuses[app].list : [];
-		return list;
+		return vm.apparatuses[app] ? vm.apparatuses[app].list : [];
 	};
 
 	this.loadMoreElements = function() {
 		var appId = vm.currentApparatus,
             last = vm.apparatuses[appId].visibleList.length,
             i = 0; 
-        while (i < 10 && i < vm.apparatuses[appId].list.length) {
+        while (i < 5 && i < vm.apparatuses[appId].list.length) {
             var newElement = vm.apparatuses[appId].list[last+i];
             if (newElement && vm.apparatuses[appId].visibleList.indexOf(newElement) <= 0) {
                 vm.apparatuses[appId].visibleList.push(newElement);                    

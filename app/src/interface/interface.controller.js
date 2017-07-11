@@ -78,6 +78,9 @@ angular.module('evtviewer.interface')
 			evtInterface.updateCurrentQuote(quote);
 		};
 
+		$scope.getCurrentApparatus = function() { 
+			return evtInterface.getCurrentApparatus(); 
+		};
 		$scope.evtPinnedElements = evtPinnedElements;
 
 		$scope.isLoading = function() {
