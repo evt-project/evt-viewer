@@ -2,7 +2,7 @@
     class="quote"
     ng-mouseover="vm.toggleOverQuotes($event)"
     ng-mouseout="vm.toggleOverQuotes($event)"
-    ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
+    ng-class="{ 'selected' : vm.isSelected() && !$parent.vm.state.topBoxOpened,
                 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
                 'over'     : vm.over,
                 'blurred'  : $parent.vm.state.topBoxOpened,

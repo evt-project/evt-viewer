@@ -25,7 +25,7 @@ angular.module('evtviewer.quote')
         vm.selected = false;
     };
 
-    this.isSelect = function() {
+    this.isSelected = function() {
         return vm.selected;
     };
 
@@ -39,48 +39,43 @@ angular.module('evtviewer.quote')
 
     this.openApparatus = function() {
         vm.apparatus.opened = true;
+        vm.apparatus._loaded = true;
     };
 
     this.toggleOverQuotes = function($event) {
         $event.stopPropagation();
-            if ( vm.over === false ) {
-                evtQuote.mouseOverByQuoteId(vm.quoteId);
-                evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
-                /*if (vm.scopeViewMode === 'srcTxt') {
-                    evtSourceSeg.mouseOverByQuoteId(vm.quoteId)
-                }*/
-            } else {
-                evtQuote.mouseOutAll();
-                evtSourcesApparatusEntry.mouseOutAll();
-            }
+        if ( vm.over === false ) {
+            evtQuote.mouseOverByQuoteId(vm.quoteId);
+            evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);           
+        } else {
+            evtQuote.mouseOutAll();
+            evtSourcesApparatusEntry.mouseOutAll();
+        }
     };
 
     this.toggleSelectQuotes = function($event) {
         //TODO: aggiungere controllo per gli altri elementi critici
         if (vm.selected === false) {
-            if (!vm.apparatus.opened){
-                evtQuote.selectById(vm.quoteId);
-            }
+            evtQuote.selectById(vm.quoteId);
+            evtSourcesApparatusEntry.selectById(vm.quoteId);
+            if (!vm.apparatus.inline) {
+                evtApparatuses.setCurrentApparatus('sources');
+                evtApparatuses.alignScrollToQuote(vm.quoteId);
+            } 
+            evtInterface.updateCurrentQuote(vm.quoteId);
         } else {
-            if (vm.apparatus.opened){
-                evtQuote.unselectAll();
-                evtInterface.updateCurrentQuote('');
-            }
+            evtQuote.unselectAll();
+            evtInterface.updateCurrentQuote('');
+            evtSourcesApparatusEntry.unselectAll();
         }
+
         evtInterface.updateUrl();
     };
 
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
         if (vm.over) {
-            if(!vm.apparatus.inline) {
-                if (evtApparatuses.getCurrentApparatus() !== 'sources') {
-                    evtApparatuses.setCurrentApparatus('sources');
-                }                    
-                //Dopo l'avvio ancora non è stato creato alcun apparato, non c'è un apparato corrente
-                evtSourcesApparatusEntry.selectById(vm.quoteId);
-                evtApparatuses.alignScrollToQuote(vm.quoteId);
-            } else if ( !vm.apparatus._loaded) {
+            if ( !vm.apparatus._loaded ) {
                 vm.apparatus._loaded = true;
             } 
             
@@ -93,7 +88,7 @@ angular.module('evtviewer.quote')
         $event.stopPropagation();
         if (vm.over) {
             vm.toggleSelectQuotes($event);
-            if (!vm.isSelect() || !vm.apparatus.opened){
+            if (!vm.isSelected() || (vm.apparatus.inline && !vm.apparatus.opened)){
                 vm.toggleApparatus($event);
             }
         }

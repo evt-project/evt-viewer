@@ -64,6 +64,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 	this.unselect = function() {
 		vm.selected = false;
+		vm.closeSubContent();
 	};
 
 	this.isSelect = function() {
@@ -80,13 +81,16 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 	this.toggleOverAnaloguesEntries = function($event) {
 		$event.stopPropagation();
-		if (vm.over === false) {
+		if (vm.over) {
+			evtAnaloguesApparatusEntry.mouseOutAll();
+			if (vm.currentViewMode === 'readingTxt') {
+				evtAnalogue.mouseOutAll();
+			}
+		} else {
 			evtAnaloguesApparatusEntry.mouseOverByAnalogueId(vm.analogueId);
 			if (vm.currentViewMode === 'readingTxt') {
 				evtAnalogue.mouseOverByAnalogueId(vm.analogueId);
 			}
-		} else {
-			evtAnaloguesApparatusEntry.mouseOutAll();
 		}
 	};
 

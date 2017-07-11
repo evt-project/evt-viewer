@@ -30,7 +30,6 @@ angular.module('evtviewer.reading')
         } else {
             return vm.selected;
         }
-        
     };
 
     this.isApparatusOpened = function() {

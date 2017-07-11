@@ -71,6 +71,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
     this.unselect = function() {
         vm.selected = false;
+        vm.closeSubContent();
     };
 
     this.isSelected = function() {
@@ -79,6 +80,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 
     this.isInline = function() {
         return evtInterface.isCriticalApparatusInline();
+    };
+
+    this.closeSubContent = function() {
+        vm._subContentOpened = '';
     };
 
     this.callbackClick = function($event) {

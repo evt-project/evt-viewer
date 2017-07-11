@@ -57,6 +57,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     this.unselect = function() {
         vm.selected = false;
+        vm.closeSubContent();
     };
 
     this.isSelect = function() {
@@ -83,6 +84,9 @@ angular.module('evtviewer.sourcesApparatusEntry')
         $event.stopPropagation();
         if (vm.over) {
             evtSourcesApparatusEntry.mouseOutAll();
+            if (vm.currentViewMode === 'readingTxt') {
+                evtQuote.mouseOutAll();
+            }
         } else {
             evtSourcesApparatusEntry.mouseOverByQuoteId(vm.quoteId);
             if (vm.currentViewMode === 'readingTxt') {
