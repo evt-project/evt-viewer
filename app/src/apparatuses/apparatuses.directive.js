@@ -106,10 +106,14 @@
             // TODO: Distinguish among current app / source / analogue
             if (currentApparatuses.currentApparatus === 'criticalApparatus') {
                 var currentAppId = evtInterface.getCurrentAppEntry();
-                scope.vm.scrollToAppEntry(currentAppId);
-                $timeout(function(){ 
-                    evtCriticalApparatusEntry.selectById(currentAppId);
-                }, 200);
+                if (currentAppId) {
+                    scope.vm.scrollToAppEntry(currentAppId);
+                    $timeout(function(){ 
+                        evtCriticalApparatusEntry.selectById(currentAppId);
+                    }, 200);
+                } else {
+                    currentApparatuses.isLoading = false;
+                }
             } else {
                 $timeout(function(){ 
                     currentApparatuses.isLoading = false;

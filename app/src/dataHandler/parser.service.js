@@ -165,7 +165,7 @@ angular.module('evtviewer.dataHandler')
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
-					newElement.className = element.tagName !== undefined ? element.tagName : '';;
+					newElement.className = element.tagName !== undefined ? element.tagName : '';
 
 
 

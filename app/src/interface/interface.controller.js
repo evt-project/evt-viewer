@@ -69,7 +69,7 @@ angular.module('evtviewer.interface')
 			evtInterface.updateCurrentAppEntry(entry);
 			if (evtInterface.getCurrentViewMode() === 'readingTxt') {
 				evtBox.alignScrollToApp(entry);
-				evtApparatuses.alignScrollToApp(vm.appId);
+				evtApparatuses.alignScrollToApp(entry);
 			}
 			evtInterface.updateUrl();
 		};

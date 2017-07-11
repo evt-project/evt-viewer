@@ -13,7 +13,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 		link: function(scope, element, attrs) {
 			scope.translationData = {
 				witness: scope.witness
-			}
+			};
 			if (scope.scopeWit === scope.witness) {
 				scope.title = 'CRITICAL_APPARATUS.WITNESS_REF_CURRENT'; 
 			} else {

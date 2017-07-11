@@ -112,7 +112,7 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parsedData.setEncodingDetail = function(detailName, value) {
-		return encodingDetails[detailName] = value;
+		encodingDetails[detailName] = value;
 	};
 
 	parsedData.getNamedEntityTypeIcon = function(type) { //TODO: Move in Utils provider (?)
@@ -614,7 +614,7 @@ angular.module('evtviewer.dataHandler')
             exponent = '&#'+(number+96)+';';
         }
         return exponent;
-	}
+	};
 
 	parsedData.addCriticalEntry = function(entry) {
 		if (criticalAppCollection[entry.id] === undefined) {

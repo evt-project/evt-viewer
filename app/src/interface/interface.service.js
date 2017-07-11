@@ -62,7 +62,7 @@ angular.module('evtviewer.interface')
                 evtTranslation.setLanguages(config.languages);
                 var userLangKey = evtTranslation.getUserLanguage(),
                     fallbackLangKey = evtTranslation.getFallbackLanguage();
-                evtTranslation.setFallbackLanguage(fallbackLangKey)
+                evtTranslation.setFallbackLanguage(fallbackLangKey);
                 evtTranslation.setLanguage(userLangKey);
 
                 //TODO: object containing all the external files in globaldefault
@@ -163,7 +163,7 @@ angular.module('evtviewer.interface')
                             mainInterface.updateUrl();
                             
                             var quotesList = parsedData.getQuotes()._indexes.encodingStructure || [],
-                                quotesInBox = !config.showInlineSources && quotesList.length > 0
+                                quotesInBox = !config.showInlineSources && quotesList.length > 0,
                                 analoguesList = parsedData.getAnalogues()._indexes.encodingStructure || [],
                                 analoguesInBox = !config.showInlineAnalogues && analoguesList.length > 0;
                             state.isApparatusBoxOpen = (!config.showInlineCriticalApparatus || quotesInBox || analoguesInBox);
@@ -613,16 +613,16 @@ angular.module('evtviewer.interface')
             } else if (scopeVer === config.versions[0]) {
                 var allWits = parsedData.getWitnessesList();
                 // Remove from current wits those that are not in current version
-                for (var i = 0; i < state.currentWits.length; i++) {
-                    if (allWits.indexOf(state.currentWits[i]) >= 0) {
-                        currentWits.push(state.currentWits[i]);
+                for (var k = 0; k < state.currentWits.length; k++) {
+                    if (allWits.indexOf(state.currentWits[k]) >= 0) {
+                        currentWits.push(state.currentWits[k]);
                     }
                 }
                 state.currentWits = currentWits;
                 // Set available witnesses depending on those in current version that are not selected yet
                 for (var h = 0; h < allWits.length; h++) {
                     if (currentWits.indexOf(allWits[h]) < 0) {
-                        availableWitness.push(allWits[h]);
+                        availableWitnesses.push(allWits[h]);
                     }
                 }
                 properties.availableWitnesses = availableWitnesses;

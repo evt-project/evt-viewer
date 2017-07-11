@@ -177,7 +177,7 @@ angular.module('evtviewer.box')
 				classNames = 'noBottomMenu';
 			}
 			return classNames;
-		}
+		};
 		//
 		// Box builder
 		//
@@ -297,7 +297,7 @@ angular.module('evtviewer.box')
 							type: 'document',
 							initValue: evtInterface.getCurrentDocument()
 						});
-					};
+					}
 					if (!parsedData.isCriticalEditionAvailable()) {
 						topMenuList.selectors.push({
 							id: 'page_' + currentId,
