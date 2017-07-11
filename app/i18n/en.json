@@ -8,6 +8,17 @@
 		"SOURCES": "Sources",
 		"ANALOGUES": "Analogues"
 	},
+	"BIBLIOGRAPHY": {
+		"STYLE": "Style",
+		"SORT_BY": "Sort by",
+			"AUTHOR": "Author",
+			"YEAR" : "Year",
+			"TITLE": "Title",
+			"PUBLISHER": "Publisher",
+		"ORDER": "Order",
+			"ASC": "Ascendent",
+			"DESC": "Descendent"
+	},
 	"BUTTONS": {
 		"ALIGN_READINGS": "Align Readings",
 		"ADD_VERSION": "Add Version",
@@ -173,16 +184,13 @@
 		"TEXT_LANG": "Language",
 		"VARIANT_ENCODING": "Variant encoding"
 	},
-	"BIBLIOGRAPHY": {
-		"STYLE": "Style",
-		"SORT_BY": "Sort by",
-			"AUTHOR": "Author",
-			"YEAR" : "Year",
-			"TITLE": "Title",
-			"PUBLISHER": "Publisher",
-		"ORDER": "Order",
-			"ASC": "Ascendent",
-			"DESC": "Descendent"
+	"VIEW_MODES": {
+		"READING_TEXT": "Reading Text",
+		"MULTIPLE_RECENSIONS": "Multiple recensions",
+		"IMAGE_TEXT": "Image Text",
+		"TEXT_TEXT": "Text Text",
+		"COLLATION": "Collation",
+		"SOURCE_TEXT": "Source Text"
 	},
 	"AND": "and",
 	"ERROR" : "Error",

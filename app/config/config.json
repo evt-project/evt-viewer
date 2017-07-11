@@ -34,39 +34,39 @@
 
     "showDocumentSelector": false,
 
-	"defaultViewMode": "readingTxt",
+    "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
-                                "label"    : "Reading Text",
+                                "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
                                 "viewMode" : "readingTxt",
                                 "visible"  : true
                             },
                             {
-                                "label"    : "Versions",
+                                "label"    : "MULTIPLE_RECENSIONS",
                                 "icon"     : "mode-versions",
                                 "viewMode" : "versions",
                                 "visible"  : true
                             },
                             {
-                                "label"    : "Image Text",
+                                "label"    : "IMAGE_TEXT",
                                 "icon"     : "mode-imgTxt",
                                 "viewMode" : "imgTxt",
                                 "visible"  : true
                             },
                             {
-                                "label"    : "Text Text",
+                                "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
                                 "visible"  : false
                             },
                             {
-                                "label"    : "Collation",
+                                "label"    : "COLLATION",
                                 "icon"     : "mode-collation",
                                 "viewMode" : "collation",
                                 "visible"  : true
                             },
                             {
-                                "label"    : "Source Text",
+                                "label"    : "SOURCE_TEXT",
                                 "icon"     : "mode-srcTxt",
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
