@@ -34,9 +34,16 @@
                 color: $apparatus-label-selected-text;
                 background-color: $apparatus-label-selected;
             	@include set(box-shadow, inset 0 2px 2px -1px #7d7d7d);
+            	cursor: default;
             }
         }
-
+        &_header {
+			display: block;
+			width: 100%;
+			position: relative;
+			height:  $apparatus-label-height;
+			background: $apparatus-label;
+        }
 		&_body {
 			@include calc(height, 100% - #{$apparatus-label-height});
 			padding: 4%;

@@ -23,11 +23,13 @@
     <div
         class="apparatuses_tabs"
         ng-switch-when="tabs">
-        <span class="appLabel" 
-            ng-repeat="apparatusId in vm.apparatuses._indexes" 
-            ng-click="vm.setCurrentApparatus(apparatusId)" 
-            ng-class="{'selected': apparatusId === vm.getCurrentApparatus()}" 
-            >{{ vm.apparatuses[apparatusId].label | translate }}</span> 
+        <div class="apparatuses_tabs_header">
+            <span class="appLabel" 
+                ng-repeat="apparatusId in vm.apparatuses._indexes" 
+                ng-click="vm.setCurrentApparatus(apparatusId)" 
+                ng-class="{'selected': apparatusId === vm.getCurrentApparatus()}" 
+                >{{ vm.apparatuses[apparatusId].label | translate }}</span> 
+        </div>
         <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
         <div class="apparatuses_tabs_fakeTopSpace"></div>
         <div class="apparatuses_tabs_body apparatuses_content_body">
