@@ -212,7 +212,7 @@
 	"SOURCES": {
 		"BIBLIOGRAPHIC_REFERENCE": "Riferimento Bibliografico",
 		"COMPARE_TEXTS": "Confronta testi",
-		"QUOTED_SOURCE": "Fonti citate",
+		"QUOTED_SOURCES": "Fonti citate",
 		"TEXT": "Testo",
 		"XML": "XML",
 		"XML_SOURCE_QUOTE": "Codice XML della fonte",

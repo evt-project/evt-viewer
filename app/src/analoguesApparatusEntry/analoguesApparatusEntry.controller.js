@@ -96,10 +96,13 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 	this.callbackClick = function($event) {
 		$event.stopPropagation();
+		//var targetClass = $event.target && $event.target.className ? $event.target.className : '';
+
 		if (vm.currentViewMode === 'readingTxt') {
-			evtAnaloguesApparatusEntry.unselectAll();
-			evtAnaloguesApparatusEntry.selectById(vm.analogueId);
-			evtAnalogue.selectById(vm.analogueId);
+			
+				//evtAnaloguesApparatusEntry.unselectAll();
+				evtAnaloguesApparatusEntry.selectById(vm.analogueId);
+				evtAnalogue.selectById(vm.analogueId);
 		}
 	};
 
