@@ -24,11 +24,12 @@
 			"DESC": "Descendent"
 	},
 	"BUTTONS": {
+		"ADD_VERSION": "Add Version",
+		"ADD_WITNESS": "Add Witness",
 		"ALIGN_ANALOGUES": "Align Analogues",
 		"ALIGN_READINGS": "Align Readings",
 		"ALIGN_QUOTES": "Align Quotes",
-		"ADD_VERSION": "Add Version",
-		"ADD_WITNESS": "Add Witness",
+		"ALIGN_VERSION_READINGS": "Align Version Readings",
 		"BOARD_CLOSE": "Close Board",
 		"BOX_CLOSE": "Close Box",
 		"BIBLIOGRAPHIC_REF": "Bibliographic Reference",
@@ -218,6 +219,20 @@
 		"XML_SOURCE_QUOTE": "XML Source for Quote",
 		"XML_SOURCE_FOR": "XML Source for "
 	},
+	"VERSIONS": {
+		"CRITICAL_NOTE": "Critical Note",
+        "METADATA_FOR": "Metadata for ",
+        "METADATA_FOR_APP_ENTRY": "Metadata for the apparatus entry",
+        "METADATA_FOR_ORTHOGRAPHIC_READING": "Metadata for orthographic reading",
+        "METADATA_FOR_SIGNIFICANT_READING": "Metadata for significant reading",
+        "MORE_INFO_ABOUT_VERSION": "More info about the versions",
+        "MORE_INFO": "More Info",
+        "OPEN_TEXT": "Open version text",
+        "ORTHOGRAPHIC_VARIANTS": "Orthographic Variants",
+		"SIGNIFICANT_VARIANTS": "Significant Variants",
+        "VERSION_READING": "Version Readings",
+        "XML": "XML"
+    },
 	"VIEW_MODES": {
 		"READING_TEXT": "Reading Text",
 		"MULTIPLE_RECENSIONS": "Multiple recensions",

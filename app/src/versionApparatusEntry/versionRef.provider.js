@@ -22,7 +22,7 @@ angular.module('evtviewer.versionApparatusEntry')
             switch(type) {
                 case 'version':
                     if (currentElId !== target && target !== config.versions[0]) {
-                        title = 'Open version text';
+                        title = 'VERSIONS.OPEN_TEXT';
                     }
                     id = parsedData.getVersionEntries()._indexes.versionId[target];
                     callback = function() {

@@ -29,30 +29,31 @@ angular.module('evtviewer.versionApparatusEntry')
                 tabs = {
                     _indexes : []
                 };
+            
             if (entry !== undefined) {
                 entryContent = evtVersionApparatus.getContent(entry, scopeWit, scopeVer);
                 if (entryContent.note !== '') {
                     tabs._indexes.push('criticalNote');
                     tabs.criticalNote = {
-                        label : 'Critical Note'
+                        label : 'VERSIONS.CRITICAL_NOTE'
                     };
                 }
                 if (entryContent._readings) {
                     tabs._indexes.push('readings');
                     tabs.readings = {
-                        label: 'Version Readings'
+                        label: 'VERSIONS.VERSION_READING'
                     };
                 }
                 if (entryContent.attributes._keys.length > 0) {
                     tabs._indexes.push('moreInfo');
                     tabs.moreInfo = {
-                        label: 'More Info'
+                        label: 'VERSIONS.MORE_INFO'
                     };
                 }
                 if (entryContent._xmlSource !== '') {
                     tabs._indexes.push('xmlSource');
                     tabs.xmlSource = {
-                        label: 'XML'
+                        label: 'VERSIONS.XML'
                     };
                 }
             }

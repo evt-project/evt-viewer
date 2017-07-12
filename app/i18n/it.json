@@ -24,11 +24,12 @@
 			"DESC": "Decrescente"
 	},
 	"BUTTONS": {
+		"ADD_VERSION": "Aggiungi Versione",
+		"ADD_WITNESS": "Aggiungi Testimone",
 		"ALIGN_ANALOGUES": "Allinea passi paralleli",
 		"ALIGN_READINGS": "Allinea lezioni",
 		"ALIGN_QUOTES": "Allinea citazioni",
-		"ADD_VERSION": "Aggiungi Versione",
-		"ADD_WITNESS": "Aggiungi Testimone",
+		"ALIGN_VERSION_READINGS": "Alinea Versione",
 		"BOARD_CLOSE": "Chiudi",
 		"BOX_CLOSE": "Chiudi",
 		"BIBLIOGRAPHIC_REF": "Riferimento bibliografico",
@@ -218,6 +219,20 @@
 		"XML_SOURCE_QUOTE": "Codice XML della fonte",
 		"XML_SOURCE_FOR": "Codice XML per "
 	},
+	"VERSIONS": {
+		"CRITICAL_NOTE": "Nota critica",
+        "METADATA_FOR": "Metadata per ",
+        "METADATA_FOR_APP_ENTRY": "Metadata per entrata critica",
+        "METADATA_FOR_ORTHOGRAPHIC_READING": "Metadata per variante ortografica",
+        "METADATA_FOR_SIGNIFICANT_READING": "Metadata per variante significativa",
+        "MORE_INFO_ABOUT_READING": "Informazioni aggiuntive sulla versione",
+        "MORE_INFO": "Informazioni aggiuntive",
+        "OPEN_TEXT": "Apri il testo della versione",
+        "ORTHOGRAPHIC_VARIANTS": "Varianti ortografiche",
+		"SIGNIFICANT_VARIANTS": "Varianti significative",
+        "VERSION_READING": "Lezioni della versione",
+        "XML": "XML"
+    },
 	"VIEW_MODES": {
 		"READING_TEXT": "Testo di lettura",
 		"MULTIPLE_RECENSIONS": "Recensione multipla",

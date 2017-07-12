@@ -38,7 +38,7 @@
                 ng-class="{'active' : vm.isPinned()}"
                 ng-click="vm.togglePin()"></button-switch-->
             <button-switch 
-                title="Align Version Readings"
+                title="{{ 'BUTTONS.ALIGN_VERSION_READINGS' | translate }}"
                 ng-if="scopeViewMode === 'collation' || scopeViewMode === 'versions'"
                 data-label=""
                 data-icon="v-align"
@@ -55,7 +55,7 @@
             <span ng-repeat="tab in ::vm.tabs._indexes"
                 ng-click="vm.toggleSubContent(tab)"
                 ng-class="{ 'active' : vm._subContentOpened == tab }">
-                {{ ::vm.tabs[tab].label }}
+                {{ vm.tabs[tab].label | translate }}
             </span>
         </div>
         <div
@@ -76,14 +76,14 @@
                         <span compile="version.id"></span>
                         <span
                             ng-if="::version.significantReadings.length > 0"
-                            class="significant-readings_label"> Significant Variants</span>
+                            class="significant-readings_label"> {{ 'VERSIONS.SIGNIFICANT_VARIANTS' | translate}} </span>
                         <ul ng-if="::version.significantReadings.length > 0">
                             <li ng-repeat="reading in ::version.significantReadings"
                                 compile="reading.content"></li>
                         </ul>
                         <span
                             ng-if="::version.notSignificantReadings.length > 0"
-                            class="not-significant-readings_label"> Orthographic Variants</span>
+                            class="not-significant-readings_label"> {{ 'VERSIONS.ORTHOGRAPHIC_VARIANTS' | translate}} </span>
                         <ul ng-if="::version.notSignificantReadings.length > 0">
                             <li ng-repeat="reading in ::version.notSignificantReadings"
                                 compile="reading.content"></li>
@@ -95,7 +95,7 @@
                     <span
                         class="app_generic-info"
                         ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
-                        Metadata for the apparatus entry
+                        {{ 'VERSIONS.METADATA_FOR_APP_ENTRY' | translate}}
                     </span>
                     <ul ng-if="(vm.content.attributes._keys.length > 1 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') < 0)">
                         <li ng-repeat="attr in ::vm.content.attributes._keys"
@@ -103,15 +103,14 @@
                             <span class="moreInfo-label">{{::attr}}</span> {{::vm.content.attributes.values[attr]}}
                         </li>
                     </ul>
-                    
-                    <span class="moreInfo-metadataTitle">More info about the versions</span>
+                    <span class="moreInfo-metadataTitle">{{ 'VERSIONS.MORE_INFO_ABOUT_READING' | translate}}</span>
                     <ul>
                         <li 
                             class="app_version"
                             ng-repeat="version in ::vm.content.versions"
                             ng-if="::version.attributes._keys.length > 0  && version.attributes._keys.indexOf('xml:id') < 0">
                             <span>
-                                Metadata for 
+                                {{ 'VERSIONS.METADATA_FOR' | translate}} 
                                 <em 
                                     compile="version.id"></em> 
                             </span>
@@ -123,7 +122,7 @@
                             </ul>
                             <span
                                 ng-if="::version.significantReadings.length > 0"
-                                ng-repeat-start="reading in ::version.significantReadings">Metadata for significant reading:
+                                ng-repeat-start="reading in ::version.significantReadings">{{ 'VERSIONS.METADATA_FOR_SIGNIFICANT_READING' | translate}}:
                                 <em compile="reading.content"></em>
                             </span>
                             <ul ng-repeat-end
@@ -135,7 +134,7 @@
                             </ul>
                             <span
                                 ng-if="::version.notSignificantReadings.length > 0"
-                                ng-repeat-start="reading in ::version.notSignificantReadings">Metadata for orthographic reading:
+                                ng-repeat-start="reading in ::version.notSignificantReadings">{{ 'VERSIONS.METADATA_FOR_ORTHOGRAPHIC_READING' | translate}}:
                                 <em compile="reading.content"></em>
                             </span>
                             <ul ng-repeat-end
