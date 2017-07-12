@@ -10,7 +10,7 @@
         <div
             class="analogues-apparatus-entry_tools">
             <button-switch 
-                title="Align Analogues"
+                title="{{ 'BUTTONS.ALIGN_ANALOGUES' | translate }} "
                 ng-if="vm.currentViewMode !== 'imgTxt' && vm.currentViewMode !== 'srcTxt'"
                 data-label=""
                 data-icon="v-align"
@@ -20,7 +20,7 @@
     </div>
     
     <div class="analogues-apparatus-entry_main-content_list">
-        <span class="analogues-apparatus-entry_main-content_list-label">Parallel Passages in</span>
+        <span class="analogues-apparatus-entry_main-content_list-label"> {{'ANALOGUES.PARALLEL_PASSAGES_IN' | translate}} </span>
         <ul ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1}">
             <li
                 ng-repeat="source in ::vm.sources"
@@ -41,7 +41,7 @@
             <span ng-repeat="tab in ::vm.tabs._indexes"
                   ng-click="vm.toggleSubContent(tab)"
                   ng-class="{'active' : vm._subContentOpened == tab }">
-                {{ ::vm.tabs[tab].label}}
+                {{ vm.tabs[tab].label | translate }}
             </span>
         </div>
         <div class="analogues-apparatus-entry_other-content_panels"

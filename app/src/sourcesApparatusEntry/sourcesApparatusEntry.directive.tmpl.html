@@ -15,7 +15,7 @@
         <span class="sources-apparatus-entry_main-content_header" compile="vm.head"></span>
         <div class="sources-apparatus-entry_tools">
             <button-switch
-                title="Align Quotes"
+                title=" {{ 'BUTTONS.ALIGN_QUOTES' | translate }}"
                 ng-if="vm.currentViewMode !== 'imgTxt' && vm.currentViewMode !== 'srcTxt'"
                 data-label=""
                 data-icon="v-align"
@@ -26,7 +26,7 @@
     
     <div class="sources-apparatus-entry_main-content_list"
         ng-class="{ 'srctxt' : vm.currentViewMode === 'srcTxt' }">
-        <span class="sources-apparatus-entry_main-content_list-label">Quoted Sources</span>
+        <span class="sources-apparatus-entry_main-content_list-label"> {{ 'SOURCES.QUOTED_SOURCES' | translate }} </span>
         <ul
             ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1 && vm.currentViewMode !== 'srcTxt'}">
             <li
@@ -44,7 +44,7 @@
                 ng-repeat-end>
                 <evt-source-ref
                     data-source-id="{{::source.id}}">
-                    Compare texts
+                    {{ 'SOURCES.COMPARE_TEXT' | translate }}
                 </evt-source-ref>
             </span>
         </ul>
@@ -57,7 +57,7 @@
             <span ng-repeat="tab in ::vm.tabs._indexes"
                   ng-click="vm.toggleSubContent(tab)"
                   ng-class="{'active' : vm._subContentOpened == tab }">
-                {{ ::vm.tabs[tab].label}}
+                {{ vm.tabs[tab].label | translate}}
             </span>
         </div>
         <div class="sources-apparatus-entry_other-content_panels"
@@ -82,9 +82,9 @@
 
                 </div>
                 <div ng-switch-when="xmlSource">
-                     XML Source for Quote
-                     <pre>{{ ::vm.xml | prettyXml}}</pre>
-                     XML Source for <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
+                    {{ 'SOURCES.XML_SOURCE_QUOTE' | translate }}
+                    <pre>{{ ::vm.xml | prettyXml}}</pre>
+                    {{ 'SOURCES.XML_SOURCE_FOR' | translate }} <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
                      <pre>{{ ::vm.srcList[vm._activeSource]._xmlSource | prettyXml }}</pre>
                 </div>
                 <div

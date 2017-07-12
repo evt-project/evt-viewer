@@ -35,15 +35,15 @@ angular.module('evtviewer.select')
             } else {
                 selectedOption = {
                     value: 'MULTI',
-                    label: 'Multiple Selection',
-                    title: 'Multiple options selected.'
+                    label: 'SELECTS.MULTIPLE_SELECTION',
+                    title: 'SELECTS.MULTIPLE_OPTIONS_SELECTED'
                 };
             }
         } else {
             selectedOption = {
                 value: '',
-                label: 'No Selection',
-                title: 'Open to chose an element to select.'
+                label: 'SELECTS.NO_SELECTION',
+                title: 'SELECTS.OPEN_TO_SELECT_ELEMENT'
             };
         }
         return selectedOption;
@@ -56,8 +56,8 @@ angular.module('evtviewer.select')
         if (option.value === 'NONE' && vm.multiselect ) {
             option = {
                 value: '',
-                label: 'No Selection',
-                title: 'Open to chose an element to select.'
+                label: 'SELECTS.NO_SELECTION',
+                title: 'SELECTS.OPEN_TO_SELECT_ELEMENT'
             };
         }
 
@@ -84,7 +84,7 @@ angular.module('evtviewer.select')
 
         // Set selector visible value
         if (vm.optionSelected && vm.optionSelected.length > 1) {
-            vm.optionSelectedValue = 'Multiple Selection';
+            vm.optionSelectedValue = 'SELECTS.MULTIPLE_SELECTION';
         } else {
             vm.optionSelectedValue = option !== undefined ? option.value : undefined;
         }
@@ -137,8 +137,8 @@ angular.module('evtviewer.select')
                     if (optionValue === 'NONE' && vm.multiselect ) {
                         option = {
                             value: '',
-                            label: 'No Selection',
-                            title: 'Open to chose an element to select.'
+                            label: 'SELECTS.NO_SELECTION',
+                            title: 'SELECTS.OPEN_TO_SELECT_ELEMENT'
                         };
                     } else {
                         option = vm.optionList[0];
@@ -149,8 +149,8 @@ angular.module('evtviewer.select')
             if (optionValue === 'NONE' && vm.multiselect ) {
                 option = {
                     value: '',
-                    label: 'No Selection',
-                    title: 'Open to chose an element to select.'
+                    label: 'SELECTS.NO_SELECTION',
+                    title: 'SELECTS.OPEN_TO_SELECT_ELEMENT'
                 };
             } else {
                 option = vm.optionList[0];

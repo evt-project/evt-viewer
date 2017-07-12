@@ -112,8 +112,8 @@ angular.module('evtviewer.select')
 					optionSelectedValue = initValue;
 					optionSelectAll = {
 						value: 'ALL',
-						label: 'Select All',
-						title: 'Select All Named Entities',
+						label: 'SELECTS.SELECT_ALL',
+						title: 'SELECTS.SELECT_ALL_NAMED_ENTITIES',
 						additionalClass: 'doubleBorderTop'
 					};
 
@@ -201,14 +201,14 @@ angular.module('evtviewer.select')
 					optionList = [];
 					if (namedEntitiesList.length > 0) {
 						optionList.push({
-							label: 'Named Entities',
+							label: 'SELECTS.NAMED_ENTITIES',
 							type: 'groupTitle'
 						});
 						optionList = optionList.concat(namedEntitiesList);
 					}
 					if (otherEntitiesList.length > 0) {
 						optionList.push({
-							label: 'Other Entities',
+							label: 'SELECTS.OTHER_ENTITIES',
 							type: 'groupTitle'
 						});
 						optionList = optionList.concat(otherEntitiesList);
@@ -217,8 +217,8 @@ angular.module('evtviewer.select')
 						optionList.push(optionSelectAll);
 						optionList.push({
 							value: 'NONE',
-							label: 'Clear',
-							title: 'Clear Selection'
+							label: 'SELECTS.CLEAR',
+							title: 'SELECTS.CLEAR_SELECTION'
 						});
 					}
 					break;
@@ -293,8 +293,8 @@ angular.module('evtviewer.select')
 					optionSelected = [];
 					optionSelectAll = {
 						value: 'ALL',
-						label: 'Select All',
-						title: 'Select All Types',
+						label: 'SELECTS.SELECT_ALL',
+						title: 'SELECTS.SELECT_ALL_TYPES',
 						additionalClass: 'doubleBorderTop'
 					};
 
@@ -350,8 +350,8 @@ angular.module('evtviewer.select')
 							formattedList.push(optionSelectAll);
 							formattedList.push({
 								value: 'NONE',
-								label: 'Clear',
-								title: 'Clear Selection'
+								label: 'SELECTS.CLEAR',
+								title: 'SELECTS.CLEAR_SELECTION'
 							});
 						}
 						return formattedList;
@@ -379,7 +379,7 @@ angular.module('evtviewer.select')
 							var option = {
 								value: currentOption.id,
 								label: evtSourcesApparatus.getSourceAbbr(currentOption),
-								title: 'See full text'
+								title: 'SELECTS.SEE_FULL_TEXT'
 							};
 							formattedList.push(option);
 						}
@@ -390,7 +390,7 @@ angular.module('evtviewer.select')
 						formattedOption = {
 							value: option.id,
 							label: evtSourcesApparatus.getSourceAbbr(option),
-							title: 'See full text'
+							title: 'SELECTS.SEE_FULL_TEXT'
 						};
 						return formattedOption;
 					};

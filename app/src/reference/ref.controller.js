@@ -32,7 +32,7 @@ angular.module('evtviewer.reference')
 			}
 			//Se il riferimento non esiste, c'è un errore allora
 			else {
-				evtCommunication.err('Could not find bibliography referement', '405');
+				evtCommunication.err('MESSAGES.REFERENCE_NOT_FOUND', '405');
 			}
 		} else { // Generic link
 			var url = vm.target.indexOf('http') < 0 ? 'http://' + vm.target : vm.target;

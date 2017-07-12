@@ -1,12 +1,16 @@
 {
 	"ANALOGUES": {
-		"XML_SOURCE_FOR": "Codice XML per ",
-		"ANALOGUE": "Analogo"
+		"ANALOGUE": "Passo parallelo",
+		"BIBLIOGRAPHIC_REFERENCE": "Riferimento Bibliografico",
+		"PARALLEL_PASSAGES_IN": "Passo parallelo in",
+		"TEXT": "Testo",
+		"XML": "XML",
+		"XML_SOURCE_FOR": "Codice XML per "
 	},
 	"APPARATUSES": {
 		"CRITICAL_APPARATUS": "Apparato Critico",
 		"SOURCES": "Fonti",
-		"ANALOGUES": "Analoghi"
+		"ANALOGUES": "Passi paralleli"
 	},
 	"BILIOGRAPHY": {
 		"STYLE": "Stile",
@@ -20,7 +24,9 @@
 			"DESC": "Decrescente"
 	},
 	"BUTTONS": {
+		"ALIGN_ANALOGUES": "Allinea passi paralleli",
 		"ALIGN_READINGS": "Allinea lezioni",
+		"ALIGN_QUOTES": "Allinea citazioni",
 		"ADD_VERSION": "Aggiungi Versione",
 		"ADD_WITNESS": "Aggiungi Testimone",
 		"BOARD_CLOSE": "Chiudi",
@@ -53,7 +59,6 @@
 		"WITNESSES_LIST": "Lista testimoni"
 	},
 	"CRITICAL_APPARATUS": {
-		"ANALOGUE": "Analogue",
 		"LACUNA_START": "inizio di una lacuna in ",
 		"LACUNA_END": "fine di una lacuna in ",
 		"METADATA_FOR": "Metadata per ",
@@ -61,8 +66,6 @@
 		"MORE_INFO": "Maggiori informazioni circa l'entrata d'apparato",
 		"NO_DATA": "Nessuna informazione aggiuntiva.",
 		"ORTHOGRAPHIC_VARIANTS_FOR": "Varianti ortografiche per ",
-		"QUOTE_START": "Inizio citazione",
-		"QUOTE_END": "Fine citazione",
 		"SEE_FULL_SOURCE": "Visualizza il testo completo nel testo nella vista \"Testo-Fonte\"",
 		"TABS": {
 			"CRITICAL_NOTE": "Nota critica",
@@ -124,6 +127,7 @@
 		"NO_RESULT_FOUND": "Nessun risultato trovato.",
 		"NO_XML_SOURCE": "La codifica XML non è disponibile.",
 		"PINNED_ELEMENTS_SHOWN_HERE": "Gli elementi selezionati verranno visualizzati qui.",
+		"REFERENCE_NOT_FOUND":"Riferimento bibliografico non trovato.",
 		"SEE_VERSION_TEXT": "Visualizza il testo della versione",
 		"SEE_WITNESS": "Visualizza il testimone",
 		"SELECT_AN_APPARATUS": "Selezionare un apparato o un elemento critico all'interno del testo critico.",
@@ -186,6 +190,33 @@
 		"TEXT_CLASS": "Classificazione testuale",
 		"TEXT_LANG": "Lingua",
 		"VARIANT_ENCODING": "Codifica delle varianti"
+	},
+	"QUOTES" : {
+		"QUOTE_START": "Inizio citazione",
+		"QUOTE_END": "Fine citazione"
+	},
+	"SELECTS": {
+		"CLEAR": "Cancella Selezione",
+		"CLEAR_SELECTION": "Cancella Selezione",
+		"MULTIPLE_OPTIONS_SELECTED": "Più opzioni selezionate",
+		"MULTIPLE_SELECTION": "Selezione Multipla",
+		"NAMED_ENTITIES": "Named Entities",
+		"NO_SELECTION": "Nessuna Selezione",
+		"OPEN_TO_SELECT_ELEMENT": "Apri il selettore per scegliere un elemento da selezionare.",
+		"OTHER_ENTITIES": "Altre Entità",
+		"SEE_FULL_TEXT":"Visualizza il testo intero",
+		"SELECT_ALL": "Seleziona Tutto",
+		"SELECT_ALL_NAMED_ENTITIES": "Seleziona Tutte le Named Entities",
+		"SELECT_ALL_TYPES": "Seleziona tutte le tipologie"
+	},
+	"SOURCES": {
+		"BIBLIOGRAPHIC_REFERENCE": "Riferimento Bibliografico",
+		"COMPARE_TEXTS": "Confronta testi",
+		"QUOTED_SOURCE": "Fonti citate",
+		"TEXT": "Testo",
+		"XML": "XML",
+		"XML_SOURCE_QUOTE": "Codice XML della fonte",
+		"XML_SOURCE_FOR": "Codice XML per "
 	},
 	"VIEW_MODES": {
 		"READING_TEXT": "Testo di lettura",

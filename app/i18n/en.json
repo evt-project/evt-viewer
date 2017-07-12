@@ -1,7 +1,11 @@
 {
 	"ANALOGUES": {
-		"XML_SOURCE_FOR": "XML Source for ",
-		"ANALOGUE": "Analogue"
+		"ANALOGUE": "Analogue",
+		"BIBLIOGRAPHIC_REFERENCE": "Bibliographic Reference",
+		"PARALLEL_PASSAGES_IN": "Parallel Passages in",
+		"TEXT": "Text",
+		"XML": "XML",
+		"XML_SOURCE_FOR": "XML Source for "
 	},
 	"APPARATUSES": {
 		"CRITICAL_APPARATUS": "Critical Apparatus",
@@ -20,7 +24,9 @@
 			"DESC": "Descendent"
 	},
 	"BUTTONS": {
+		"ALIGN_ANALOGUES": "Align Analogues",
 		"ALIGN_READINGS": "Align Readings",
+		"ALIGN_QUOTES": "Align Quotes",
 		"ADD_VERSION": "Add Version",
 		"ADD_WITNESS": "Add Witness",
 		"BOARD_CLOSE": "Close Board",
@@ -53,7 +59,6 @@
 		"WITNESSES_LIST": "Witnesses List"
 	},
 	"CRITICAL_APPARATUS": {
-		"ANALOGUE": "Analogue",
 		"LACUNA_START": "beginning of a lacuna in",
 		"LACUNA_END": "end of a lacuna in",
 		"METADATA_FOR": "Metadata for ",
@@ -61,8 +66,6 @@
 		"MORE_INFO": "More info about the apparatus entry",
 		"NO_DATA": "No data available",
 		"ORTHOGRAPHIC_VARIANTS_FOR": "Orthographic Variants for ",
-		"QUOTE_START": "Quote start",
-		"QUOTE_END": "Quote end",
 		"SEE_FULL_SOURCE": "See full text in the \"Text-Source\" view",
 		"TABS": {
 			"CRITICAL_NOTE": "Critical Note",
@@ -124,6 +127,7 @@
 		"NO_RESULT_FOUND": "No result found.",
 		"NO_XML_SOURCE": "No XML available.",
 		"PINNED_ELEMENTS_SHOWN_HERE": "Selected elements will be shown here.",
+		"REFERENCE_NOT_FOUND":"Could not find bibliography referement.",
 		"SEE_VERSION_TEXT": "See version text",
 		"SEE_WITNESS": "See witnesses",
 		"SELECT_AN_APPARATUS": "Select an apparatus or a critical element inside the critical text.",
@@ -186,6 +190,33 @@
 		"TEXT_CLASS": "Text classification",
 		"TEXT_LANG": "Language",
 		"VARIANT_ENCODING": "Variant encoding"
+	},
+	"QUOTES" : {
+		"QUOTE_START": "Quote start",
+		"QUOTE_END": "Quote end"
+	},
+	"SELECTS": {
+		"CLEAR": "Clear",
+		"CLEAR_SELECTION": "Clear Selection",
+		"MULTIPLE_OPTIONS_SELECTED": "Multiple options selected",
+		"MULTIPLE_SELECTION": "Multiple Selection",
+		"NAMED_ENTITIES": "Named Entities",
+		"NO_SELECTION": "No Selection",
+		"OPEN_TO_SELECT_ELEMENT": "Open to chose an element to select.",
+		"OTHER_ENTITIES": "Other Entities",
+		"SEE_FULL_TEXT":"See full text",
+		"SELECT_ALL": "Select All",
+		"SELECT_ALL_NAMED_ENTITIES": "Select All Named Entities",
+		"SELECT_ALL_TYPES": "Select All Types"
+	},
+	"SOURCES": {
+		"BIBLIOGRAPHIC_REFERENCE": "Bibliographic Reference",
+		"COMPARE_TEXTS": "Compare texts",
+		"QUOTED_SOURCE": "Quoted Sources",
+		"TEXT": "Text",
+		"XML": "XML",
+		"XML_SOURCE_QUOTE": "XML Source for Quote",
+		"XML_SOURCE_FOR": "XML Source for "
 	},
 	"VIEW_MODES": {
 		"READING_TEXT": "Reading Text",

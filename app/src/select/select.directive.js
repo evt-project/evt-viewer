@@ -114,8 +114,8 @@ angular.module('evtviewer.select')
                             if (currentOptionSelected.value === 'ALL' || currentOptionSelected.value === 'MULTI') {
                                 var optionSelectAll = {
                                     value : 'ALL',
-                                    label : 'Select All',
-                                    title : 'Select All Types',
+                                    label : 'SELECTS.SELECTS_ALL',
+                                    title : 'SELECTS.SELECTS_ALL_TYPES',
                                     additionalClass: 'doubleBorderTop'
                                 };
                                 currentSelect.callback(currentOptionSelected, optionSelectAll);
