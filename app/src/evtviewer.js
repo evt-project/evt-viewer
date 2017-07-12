@@ -22,6 +22,7 @@ angular
 		'prettyXml',
 		'infinite-scroll',
 		'pascalprecht.translate',
+		'oc.lazyLoad',
 		'evtviewer.core',
 		'evtviewer.communication',
 		'evtviewer.translation',
@@ -47,5 +48,6 @@ angular
         'evtviewer.apparatuses',
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools'
+        'evtviewer.UItools',
+        'evtviewer.3dhop'
     ]);

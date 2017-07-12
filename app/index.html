@@ -169,6 +169,15 @@
         <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
             <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
             <!-- READING TEXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="3dhop">
+                <box data-type="empty" id="empty">
+                    <div 3dhop data-canvas="draw-canvas" style="height: 100%"></div>
+                </box>
+                <box data-type="generic" id="generic">
+                    <div>Eventuale testo affiancato</div>
+                </box>
+            </section>
+            <!-- READING TEXT -->
             <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
                 <box data-type="text"
                      data-edition="{{getCurrentEdition()}}"
@@ -416,6 +425,7 @@
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -597,6 +607,10 @@
     <script src="/src/versionApparatusEntry/versionApparatusEntry.directive.js"></script>
     <script src="/src/versionApparatusEntry/versionRef.provider.js"></script>
     <script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
+
+    <script src="/src/3dhop/3dhop.js"></script>
+    <script src="/src/3dhop/3dhop.controller.js"></script>
+    <script src="/src/3dhop/3dhop.directive.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 
