@@ -53,6 +53,7 @@
 		"WITNESSES_LIST": "Witnesses List"
 	},
 	"CRITICAL_APPARATUS": {
+		"ANALOGUE": "Analogue",
 		"LACUNA_START": "beginning of a lacuna in",
 		"LACUNA_END": "end of a lacuna in",
 		"METADATA_FOR": "Metadata for ",
