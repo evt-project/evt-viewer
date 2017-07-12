@@ -29,7 +29,10 @@ angular.module('evtviewer.dataHandler')
         }
         if (entry.note !== undefined && entry.note !== '') {
             appContent.note += entry.note;
-        }        
+        }
+        if (ver.significantReadings.length > 0 || ver.notSignificantReadings.length > 0) {
+            appContent._readings = true;
+        }       
         return appContent;
     };
 
