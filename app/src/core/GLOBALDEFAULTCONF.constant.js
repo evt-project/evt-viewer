@@ -63,7 +63,9 @@ angular.module('evtviewer.core')
 	 */
 	configUrl: '../../config/config.json',
 
-	dataUrl: '',
+	//dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
+    dataUrl          : '../../data/DOTR.xml',
+    //dataUrl          : '../../data/Codice Pelavicino.xml',
 	logoUrl: '',
 
 	enableXMLdownload: true,

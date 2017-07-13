@@ -730,7 +730,7 @@ angular.module('evtviewer.dataHandler')
 				if (color) {
                     filtersCollection.colors.push(color);
                 }
-
+                
 				var valueObj = {
 					name: value,
 					color: color
