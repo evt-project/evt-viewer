@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.bibliography
+ * @name BiblElemCtrl
+ * @description ...
+**/
 angular.module('evtviewer.bibliography')
 
 .controller('BiblElemCtrl', function($scope, $log, parsedData, config, evtBibliographyParser) {

@@ -1,3 +1,10 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.analoguesApparatusEntry
+ * @name evtAnaloguesApparatusEntry
+ * @description ...
+ * @usage
+**/
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .directive('evtAnaloguesApparatusEntry', function(evtAnaloguesApparatusEntry, parsedData, evtInterface) {

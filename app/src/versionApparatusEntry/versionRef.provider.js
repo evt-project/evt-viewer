@@ -18,7 +18,7 @@ angular.module('evtviewer.versionApparatusEntry')
                 currentViewMode = evtInterface.getCurrentViewMode(),
                 id = '';
             
-            /* SET CALLBACK */
+            // SET CALLBACK //
             switch(type) {
                 case 'version':
                     if (currentElId !== target && target !== config.versions[0]) {

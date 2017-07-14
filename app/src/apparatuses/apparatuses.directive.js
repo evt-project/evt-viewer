@@ -1,4 +1,11 @@
-    angular.module('evtviewer.apparatuses')
+/**
+ * @ngdoc directive
+ * @module evtviewer.apparatuses
+ * @name evtApparatuses
+ * @description ...
+ * @usage
+**/
+angular.module('evtviewer.apparatuses')
 
 .directive('evtApparatuses', function($timeout, evtApparatuses, evtInterface, evtCriticalApparatusEntry) {
     return {

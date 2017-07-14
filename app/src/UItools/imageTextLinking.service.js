@@ -29,10 +29,16 @@ angular.module('evtviewer.UItools')
     };
 
     /* ***************************************************************************
+     * @ngdoc method                                                             *
+     * @name evtImageTextLinkingService#prepareLines                             *
+     * @param {void}                                                             *
+     *                                                                           *
      * Prepare Lines for Image text linking to work properly                     *
      * Find elements between two different <lb/>s and add info about line.       *
      * Text Node are tranformed into <span class="textNode"> in order to be able *
      * to add/remove "lineHover" and "lineSelected" classes                      *
+     *                                                                           *
+     * @return {void}                                                            *
      * ************************************************************************* */
     ITLutils.prepareLines = function() {
         var lbs = document.getElementsByClassName('lb');
@@ -79,10 +85,15 @@ angular.module('evtviewer.UItools')
         }
     };
 
-    /* **************************************************************** *
-     * Prepare Element that appear in a particular line by adding       *
-     * class "inLine" and an attribute data-line with line ID reference *
-     * **************************************************************** */
+    /* ***********************************************************************
+     * @ngdoc method                                                         *
+     * @name evtImageTextLinkingService#preapareElementInLine                *
+     * @param {element} elementInLine element that rests inside a line       *
+     * @param {string} lineId id of line in qhich element appears            *
+     * Prepare Element that appear in a particular line by adding            *
+     * class "inLine" and an attribute data-line with line ID reference      *
+     * @return {void}                                                        *
+     * ********************************************************************* */
     var preapareElementInLine = function(elementInLine, lineId) {
         if (elementInLine.className && elementInLine.className.indexOf('inLine') < 0) {
             elementInLine.className += ' inLine';
@@ -119,6 +130,9 @@ angular.module('evtviewer.UItools')
     };
 
     /* *********************************************************** *
+     * @ngdoc method                                               *
+     * @name evtImageTextLinkingService#resetTextNodes             *
+     * @param {void}                                               *
      * Transform back <span class="textNode"> into actual textNode *
      * *********************************************************** */
     var resetTextNodes = function() {
@@ -132,10 +146,14 @@ angular.module('evtviewer.UItools')
         }
     };
 
-    /* ********************************************************* *
-     * Change status of elements in a particupar line            *
-     * possible statuses are 'over', 'out', 'select', 'unselect' *
-     * ********************************************************* */
+    /* ************************************************************************************ *
+     * @ngdoc method                                                                        *
+     * @name evtImageTextLinkingService#changeLinesHighlightStatus                          *   
+     * @param {string} lineId id line of line to change                                     *              
+     * @param {string} statusToSet new status of line ['over', 'out', 'select', 'unselect'] *
+     * Change status of elements in a particupar line                                       *
+     * possible statuses are 'over', 'out', 'select', 'unselect'                            *
+     * ************************************************************************************ */
     ITLutils.changeLinesHighlightStatus = function(lineId, statusToSet) {
         var ITLactive = evtInterface.getToolState('ITL') === 'active',
             currentViewMode = evtInterface.getCurrentViewMode();
@@ -163,9 +181,13 @@ angular.module('evtviewer.UItools')
     };
 
     /* ***************************************************************************************** *
+     * @ngdoc method                                                                             *
+     * @name evtImageTextLinkingService#prepareZoneInImgInteractions                             *   
+     * @param {void}                                                                             *
      * Prepare Zone in image that hase to be selected when user interacts with a particupar line *
      * possible statuses are 'over', 'out', 'select', 'unselect'                                 *
      * TO BE FINISHED WHEN WE HAVE A REAL VIEWER                                                 *
+     * @return {void}                                                                            *
      * ***************************************************************************************** */
     ITLutils.prepareZoneInImgInteractions = function() {
         var zones = document.getElementsByClassName('zoneInImg');

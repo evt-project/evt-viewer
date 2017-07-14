@@ -1,3 +1,9 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.apparatuses
+ * @name evtApparatusesProvider
+ * @description ...
+ **/
 angular.module('evtviewer.apparatuses')
 
 .provider('evtApparatuses', function() {
@@ -64,7 +70,7 @@ angular.module('evtviewer.apparatuses')
 				}
 			}
 
-			/*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
+			// JSON.stringify(config.apparatusStructure) --> tabs || boxes
 
 
 			if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
@@ -131,8 +137,8 @@ angular.module('evtviewer.apparatuses')
 			}
 		};
 
-		/*Methods added by CM*/
-		/*For the alignment of the apparatuses panel, with the other boxes*/
+		// Methods added by CM //
+		// For the alignment of the apparatuses panel, with the other boxes
 		apparatuses.alignScrollToQuote = function(quoteId, segId) {
 			for (var i in collection) {
 				if (collection[i].scrollToQuotesEntry !== undefined) {

@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.bibliography
+ * @name BibliographyCtrl
+ * @description ...
+**/
 angular.module('evtviewer.bibliography')
 
 .controller('BibliographyCtrl', function($log, $scope) { 
@@ -26,9 +32,9 @@ angular.module('evtviewer.bibliography')
             case vm.sortBy.Year:
                 //sorting by year
                 if (typeof biblId1.value.date !== 'undefined') {
-                    /*/If Number() returns Nan, whe must must be sure to assign empty string to result variable in order to 
-                    provide the same sorting logic, element with no information are at the top of the final list.
-                    Infact: ''.localeCompare(...) => -1 /*/
+                    // If Number() returns Nan, whe must must be sure to assign empty string to result variable in order to 
+                    // provide the same sorting logic, element with no information are at the top of the final list.
+                    // Infact: ''.localeCompare(...) => -1
                     result1 = biblId1.value.date !== '' && Number(biblId1.value.date) ? Number(biblId1.value.date) : '';
                 }
                 if (typeof biblId2.value.date !== 'undefined') {

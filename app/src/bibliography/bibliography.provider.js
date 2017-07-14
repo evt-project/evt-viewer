@@ -1,3 +1,9 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.bibliography
+ * @name evtBibliographyProvider
+ * @description ...
+**/
 angular.module('evtviewer.bibliography')
 
 .provider('evtBibliography', function() {

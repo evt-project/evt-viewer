@@ -11,10 +11,16 @@ angular.module('evtviewer.communication')
        '405' : {
             title : 'Missing referement',
             msg   : 'Could not find bibliography referement'
-        }		
+        }       
     }
 })
 
+/**
+ * @ngdoc type
+ * @module evtviewer.communication
+ * @name evtCommunication
+ * @description ...
+**/
 .service('evtCommunication', function($http, $log, baseData, config, evtDialog, COMMUNICATIONDEFAULTS) {
     var communication = {},
         defaults      = COMMUNICATIONDEFAULTS;

@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.interface
+ * @name InterfaceController
+ * @description ...
+**/
 angular.module('evtviewer.interface')
 
 	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
@@ -163,7 +169,7 @@ angular.module('evtviewer.interface')
 			return evtCommunication.getError();
 		};
 
-		/* METHODS ADDED BY CM */
+		// METHODS ADDED BY CM //
 
 		// Method to get available sources texts
 		$scope.getAvailableSourcesTexts = function() {
@@ -219,7 +225,7 @@ angular.module('evtviewer.interface')
 			evtInterface.updateProperty('versionSelector', false);
 		};
 
-		/* END OF ADDITION */
+		// END OF ADDITION //
 		
 		// MAIN MANU ACTIONS
 		$scope.openGlobalDialogInfo = function() {

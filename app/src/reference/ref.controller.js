@@ -7,13 +7,12 @@ angular.module('evtviewer.reference')
 
 	vm.handleRefClick = function(oEvent) {
 		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.target.substr(0, 1) === '#') {
-			/*/
-			Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
-				passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
-				apriamo il dialog con tipo globalInfo
-				scegliamo di visualizzare come pannello iniziale quello della bibliografia
-			/*/
-
+			
+			// Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
+			// passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
+			// apriamo il dialog con tipo globalInfo
+			// scegliamo di visualizzare come pannello iniziale quello della bibliografia
+			
 			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza 
 			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
 			var target = vm.target.replace('#', ''),

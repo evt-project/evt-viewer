@@ -51,7 +51,7 @@ angular.module('evtviewer.tabsContainer')
 
 			switch (currentType) {
 				case 'projectInfo':
-					/* fileDescription */
+					// fileDescription //
 					var fileDescriptionContent = parsedData.getProjectInfo().fileDescription || '';
 					if (fileDescriptionContent && fileDescriptionContent !== '') {
 						tabs.fileDescription = {
@@ -62,7 +62,7 @@ angular.module('evtviewer.tabsContainer')
 						tabs._indexes.push('fileDescription');
 					}
 
-					/* encodingDescription */
+					// encodingDescription //
 					var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
 					if (encodingDescriptionContent && encodingDescriptionContent !== '') {
 						tabs.encodingDescription = {
@@ -73,7 +73,7 @@ angular.module('evtviewer.tabsContainer')
 						tabs._indexes.push('encodingDescription');
 					}
 
-					/* textProfile */
+					// textProfile //
 					var textProfileContent = parsedData.getProjectInfo().textProfile || '';
 					if (textProfileContent && textProfileContent !== '') {
 						tabs.textProfile = {
@@ -84,7 +84,7 @@ angular.module('evtviewer.tabsContainer')
 						tabs._indexes.push('textProfile');
 					}
 
-					/* outsideMetadata */
+					// outsideMetadata //
 					var outsideMetadataContent = parsedData.getProjectInfo().outsideMetadata || '';
 					if (outsideMetadataContent && outsideMetadataContent !== '') {
 						tabs.outsideMetadata = {
@@ -95,7 +95,7 @@ angular.module('evtviewer.tabsContainer')
 						tabs._indexes.push('outsideMetadata');
 					}
 
-					/* revisionHistory */
+					// revisionHistory //
 					var revisionHistoryContent = parsedData.getProjectInfo().revisionHistory || '';
 					if (revisionHistoryContent && revisionHistoryContent !== '') {
 						tabs.revisionHistory = {
@@ -106,7 +106,7 @@ angular.module('evtviewer.tabsContainer')
 						tabs._indexes.push('revisionHistory');
 					}
 
-					/* Bibliography */
+					// Bibliography //
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
 						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
 						tabs.bibliography = {

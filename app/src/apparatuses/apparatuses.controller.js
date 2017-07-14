@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.apparatuses
+ * @name apparatusesCtrl
+ * @description ...
+**/
 angular.module('evtviewer.apparatuses')
 
 .controller('apparatusesCtrl', function($timeout, evtApparatuses, $scope) {

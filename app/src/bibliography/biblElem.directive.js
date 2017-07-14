@@ -1,3 +1,10 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.bibliography
+ * @name evtBiblElem
+ * @description ...
+ * @usage
+**/
 angular.module('evtviewer.bibliography')
 
 .directive('evtBiblElem', function() {
