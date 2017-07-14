@@ -1,7 +1,6 @@
 /**
  * @ngdoc module
- * @name evtviewer.Apparatuses
- * @module evtviewer.Apparatuses
+ * @name evtviewer.apparatuses
  * @description ...
 **/
 angular.module('evtviewer.apparatuses', []);

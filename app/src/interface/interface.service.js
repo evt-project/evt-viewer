@@ -1,3 +1,9 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.interface
+ * @name evtInterfaceService
+ * @description ...
+**/
 angular.module('evtviewer.interface')
 
 .service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
@@ -17,7 +23,7 @@ angular.module('evtviewer.interface')
 			dialog : {
 				home : ''
 			},
-            /*ADDED BY CM*/
+            //ADDED BY CM//
             isApparatusBoxOpen : true,
             currentApparatus   : undefined,
             currentQuote       : undefined,
@@ -137,7 +143,7 @@ angular.module('evtviewer.interface')
                                 mainInterface.updateCurrentAppEntry('');
                             }
                             
-                            /** Temp | TODO: add to updateParams? **/
+                            // Temp | TODO: add to updateParams? //
                             // Prepare the sources texts available and the source text to show as default
                             // in the src-Txt view
                             var sourcesTexts = parsedData.getSources()._indexes.availableTexts;
@@ -148,7 +154,7 @@ angular.module('evtviewer.interface')
                                 mainInterface.updateCurrentSourceText(properties.availableSourcesTexts[0]);
                             }
 
-                            /** Temp | TODO: add to updateParams? **/
+                            // Temp | TODO: add to updateParams? //
                             // Prepare version to show as default in the versions view if there
                             // are only two versions of the text, and available versions
                             state.currentVersions = [];
@@ -180,9 +186,9 @@ angular.module('evtviewer.interface')
             });
         };
 
-        /* ********** */
-        /* PARAMS GET */
-        /* ********** */
+        // ////////// //
+        // PARAMS GET //
+        // ////////// //
 		
 		mainInterface.setTabContainerPanel = function(arr){
 			state.dialog.tabContainerPanel = arr;
@@ -294,9 +300,9 @@ angular.module('evtviewer.interface')
         mainInterface.isAnaloguesInline = function() {
             return config.showInlineAnalogues || mainInterface.getCurrentViewMode() !== 'readingTxt';
         };
-        /* ************** */
-        /* PARAMS UPDATES */
-        /* ************** */
+        // ////////////// //
+        // PARAMS UPDATES //
+        // ////////////// //
         mainInterface.setLoading = function(state) {
             state.isLoading = state;
         };
@@ -353,9 +359,9 @@ angular.module('evtviewer.interface')
             state.currentAppEntry = appId;
         };
 
-        /*************/
-        /*Added by CM*/
-        /*************/
+        // /////////// //
+        // Added by CM //
+        // /////////// //
 
         //ApparatusBoxOpen
         mainInterface.toggleApparatusBoxOpen = function() {
@@ -438,9 +444,9 @@ angular.module('evtviewer.interface')
             return properties.parsedSourcesTexts;
         };
 
-        /************/
-        /* VERSIONS */
-        /************/
+        // //////// //
+        // VERSIONS //
+        // //////// //
 
         // Method to get the array of the available versions
         mainInterface.getAvailableVersions = function() {
@@ -532,7 +538,7 @@ angular.module('evtviewer.interface')
             }
         };
 
-        /** End of addition **/
+        // End of addition //
 
         // WITNESS
         mainInterface.removeAvailableWitness = function(witness) {

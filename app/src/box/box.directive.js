@@ -1,3 +1,10 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.box
+ * @name box
+ * @description ...
+ * @usage
+**/
 angular.module('evtviewer.box')
 
 .directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData) {

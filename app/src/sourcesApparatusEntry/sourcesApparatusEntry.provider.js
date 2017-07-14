@@ -27,8 +27,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             var content,
                 firstSubContentOpened = '',
-                /*srcList will be used to dynamically change the tabs
-                  and the contents depending on the  activeSource*/
+                // srcList will be used to dynamically change the tabs
+                // and the contents depending on the  activeSource
                 srcList = {
                     _indexes : []
                 },
@@ -110,7 +110,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 xml               : xml,
                 sources           : sources,
                 srcList          : srcList,
-                _activeSource     : sources[0] ? sources[0].id : undefined, /*By default the active Source is the first (and maybe only one) source inserted inside the sources array*/
+                _activeSource     : sources[0] ? sources[0].id : undefined, //By default the active Source is the first (and maybe only one) source inserted inside the sources array
                 _overSource       : '',
                 tabs              : tabs,
                 _subContentOpened : firstSubContentOpened,

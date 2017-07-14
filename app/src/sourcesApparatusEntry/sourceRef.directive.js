@@ -27,8 +27,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
                 //TODO: evtInterface.updateUrl();
                 
-                /* Checks if the selected quote has a corresponding segment inside of the souce text. */
-                /* If so, it saves the reference inside of the the "segToAlign" variable. */
+                // Checks if the selected quote has a corresponding segment inside of the souce text. //
+                // If so, it saves the reference inside of the the "segToAlign" variable. //
                 var quoteToAlign = '',
                     segToAlign = '',
                     currentQuote = evtInterface.getCurrentQuote() || '',

@@ -1,3 +1,9 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.analogue
+ * @name evtAnalogueProvider
+ * @description ...
+**/
 angular.module('evtviewer.analogue')
 
 .provider('evtAnalogue', function() {

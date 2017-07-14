@@ -363,7 +363,7 @@ angular.module('evtviewer.select')
 					var availablePinnedTypes = evtPinnedElements.getAvailablePinnedTypes();
 					optionList = formatOptionList(availablePinnedTypes);
 					break;
-					/*Case added By CM*/
+				//Case added By CM
 				case 'source':
 					callback = function(oldOption, newOption) {
 						if (newOption !== undefined) {
@@ -396,7 +396,7 @@ angular.module('evtviewer.select')
 					};
 					optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
 					break;
-					/* @author --> CM */
+				// author --> CM //
 				case 'version':
 					optionSelectedValue = initValue;
 					callback = function(oldOption, newOption) {

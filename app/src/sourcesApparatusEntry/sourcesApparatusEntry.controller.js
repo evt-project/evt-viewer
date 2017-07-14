@@ -4,11 +4,11 @@ angular.module('evtviewer.sourcesApparatusEntry')
     $scope.content = {};
     var vm = this;
     
-    /**********************/
-    /*toggleSource(source)*/
-    /***************************/
-    /*Set the new active source*/
-    /***************************/
+    // //////////////////// //
+    // toggleSource(source) //
+    // ///////////////////////// //
+    // Set the new active source //
+    // ///////////////////////// //
     this.toggleSource = function(sourceId) {
         if (vm._activeSource !== sourceId) {
             vm._activeSource = sourceId;

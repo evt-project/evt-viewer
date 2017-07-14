@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.buttonSwitch
+ * @name evtButtonSwitch
+ * @description ...
+**/
 angular.module('evtviewer.buttonSwitch')
 
 .provider('evtButtonSwitch', function() {
@@ -40,7 +46,7 @@ angular.module('evtviewer.buttonSwitch')
             // _console.log('vm - destroy ' + tempId);
         };
 
-		/* GET EVT ICON */
+		// GET EVT ICON //
 		var getIcon = function(icon) {
 			var evtIcon = '';
 			switch (angular.lowercase(icon)) {
@@ -170,7 +176,7 @@ angular.module('evtviewer.buttonSwitch')
                 fakeCallback = function() {};
 			var scopeHelper = {};
 			
-			/* SET CALLBACK */
+			// SET CALLBACK //
 			switch (type) {
 				case 'addWit':
 					btnType = 'standAlone';
@@ -458,9 +464,9 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					//TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
 					break;
-                /* Case toggleInfoSrc */
-                /* Button to show/hide the bibliographic reference of the source */
-                /* currently shown in the source-text view | @author --> CM      */
+                // Case toggleInfoSrc //
+                // Button to show/hide the bibliographic reference of the source //
+                // currently shown in the source-text view | @author --> CM      //
                 case 'toggleInfoSrc':
                     btnType = 'toggler';
                     callback = function(){
@@ -475,8 +481,8 @@ angular.module('evtviewer.buttonSwitch')
                         scope.$parent.vm.updateState('topBoxOpened', false);
                     };
                     break;
-                /* Case addVer */
-                /* It shows the versions available in the versions selector | @author --> CM */
+                // Case addVer //
+                // It shows the versions available in the versions selector | @author --> CM //
                 case 'addVer':
                     btnType = 'standAlone';
                     callback  = function() {

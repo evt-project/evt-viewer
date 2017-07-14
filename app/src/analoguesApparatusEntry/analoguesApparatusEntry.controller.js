@@ -1,13 +1,19 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.analoguesApparatusEntry
+ * @name analoguesApparatusEntryCtrl
+ * @description ...
+**/
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .controller('analoguesApparatusEntryCtrl', function(evtAnaloguesApparatusEntry, evtInterface, evtAnalogue, evtBox, evtApparatuses, parsedData) {
 	var vm = this;
 
-	/**********************/
-	/*toggleSource(source)*/
-	/***************************/
-	/*Set the new active source*/
-	/***************************/
+	// //////////////////// //
+	// toggleSource(source) //
+	// ///////////////////////// //
+	// Set the new active source //
+	// ///////////////////////// //
 	this.toggleSource = function(sourceId) {
 		if (vm._activeSource !== sourceId) {
 			vm._activeSource = sourceId;

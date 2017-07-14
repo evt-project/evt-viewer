@@ -98,8 +98,8 @@ angular.module('evtviewer.popover')
                 // poi spostandolo a sinistra se supera il margine destro del contenitore
                 // o a destra se supera il margine sinistro.
 				var parent = element.parents(parentRef);
-				/*Se element.parents(parentRef) e non viene passato come attributo della direttiva un parentRef,
-				allora prendiamo come parentRef l'elemento che contiene la direttiva popover stessa */
+				// Se element.parents(parentRef) e non viene passato come attributo della direttiva un parentRef,
+                // allora prendiamo come parentRef l'elemento che contiene la direttiva popover stessa
 				if ( parent.length === 0 && typeof scope.parentRef === 'undefined' ) {
 					parentRef = element.parent();
 				}

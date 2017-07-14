@@ -1,3 +1,9 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.bibliography
+ * @name evtScrollIf
+ * @description ...
+**/
 angular.module('evtviewer.bibliography')
 
 .directive('evtScrollIf', function($timeout) {

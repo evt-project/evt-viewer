@@ -1,7 +1,6 @@
 /**
  * @ngdoc module
- * @name evtviewer.Box
- * @module evtviewer.Box
+ * @name evtviewer.box
  * @description ...
 **/
 angular.module('evtviewer.box', []);

@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.analogue
+ * @name AnalogueCrtl
+ * @description ...
+**/
 angular.module('evtviewer.analogue')
 
 .controller('AnalogueCtrl', function($log, $scope, evtAnalogue, evtPopover, evtInterface, evtApparatuses, evtBox, evtAnaloguesApparatusEntry) {

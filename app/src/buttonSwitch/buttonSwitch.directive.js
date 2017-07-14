@@ -1,3 +1,10 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.buttonSwitch
+ * @name buttonSwitch
+ * @description ...
+ * @usage
+**/
 angular.module('evtviewer.buttonSwitch')
 
 .directive('buttonSwitch', function(evtButtonSwitch, evtInterface) {

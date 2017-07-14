@@ -1,3 +1,9 @@
+/**
+ * @ngdoc type
+ * @module evtviewer.box
+ * @name evtBox
+ * @description ...
+**/
 angular.module('evtviewer.box')
 
 .provider('evtBox', function() {
@@ -312,10 +318,10 @@ angular.module('evtviewer.box')
 							type: 'witList'
 						});
 						if (evtInterface.getCurrentViewMode() === 'collation' && config.versions.length > 1 && Object.keys(parsedData.getVersionEntries()._indexes.versionWitMap > 0)) {
-							/*if (scope.vm.version === undefined || scope.vm.version === '') {
-							    evtInterface.updateCurrentVersion(config.versions[0]);
-							    scope.vm.version = evtInterface.getCurrentVersion();
-							}  */
+							// if (scope.vm.version === undefined || scope.vm.version === '') {
+							//     evtInterface.updateCurrentVersion(config.versions[0]);
+							//     scope.vm.version = evtInterface.getCurrentVersion();
+							// }
 							topMenuList.selectors.push({
 								id: 'version_' + currentId,
 								type: 'version',
@@ -596,13 +602,13 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-				/*************/
-				/*Case source*/
-				/****************************************************************************/
-				/* It loads the parsed text of the current source text. Available a selector*/
-				/* to choose the source to show, a button for bibliographic reference and a */
-				/* button to change font size. | @author --> CM                             */
-				/****************************************************************************/
+				// /////////// //
+				// Case source //
+				// ////////////////////////////////////////////////////////////////////////////
+				// It loads the parsed text of the current source text. Available a selector //
+				// to choose the source to show, a button for bibliographic reference and a  //
+				// button to change font size. | author --> CM                               //
+				// ////////////////////////////////////////////////////////////////////////////
 				case 'source':
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,
@@ -665,13 +671,13 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-					/**************/
-					/*Case version*/
-					/*********************************************************************/
-					/* It loads the parsed texts of the main text different versions.    */
-					/* There are a selector to choose the version, a button to remove    */
-					/* the version and a button to handle the font size. | @author --> CM*/
-					/*********************************************************************/
+					// //////////// //
+					// Case version //
+					// /////////////////////////////////////////////////////////////////////
+					// It loads the parsed texts of the main text different versions.     //
+					// There are a selector to choose the version, a button to remove     //
+					// the version and a button to handle the font size. | author --> CM //
+					// /////////////////////////////////////////////////////////////////////
 				case 'version':
 					var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
 					topMenuList.selectors.push({
@@ -853,8 +859,8 @@ angular.module('evtviewer.box')
 			}
 		};
 
-		/*Methods added by CM*/
-		/*For the alignment of the apparatuses panel, with the other boxes*/
+		// Methods added by CM //
+		// For the alignment of the apparatuses panel, with the other boxes
 		box.alignScrollToQuote = function(quoteId, segId) {
 			for (var i in collection) {
 				if (collection[i].scrollToQuotesEntry !== undefined) {

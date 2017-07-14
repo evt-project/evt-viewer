@@ -1,3 +1,10 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.analogue
+ * @name evtAnalogue
+ * @description ...
+ * @usage ...
+**/
 angular.module('evtviewer.analogue')
 
 .directive('evtAnalogue', function(evtAnalogue, evtInterface) {
