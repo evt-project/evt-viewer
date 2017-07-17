@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.reference
+ * @name evtviewer.reference.controller:RefCtrl
+ * @description 
+ * # RefCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.reference.directive:ref ref} directive. 
+**/
 angular.module('evtviewer.reference')
 
 .controller('RefCtrl', function($log, evtRef, parsedData, evtDialog, evtHighlight, evtInterface, $timeout, evtCommunication) {

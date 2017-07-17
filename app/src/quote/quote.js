@@ -1,7 +1,9 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.quote
  * @module evtviewer.quote
- * @description ...
+ * @description 
+ * # evtviewer.quote
+ * TODO: Add Description!
 **/
 angular.module('evtviewer.quote', []);

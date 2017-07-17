@@ -1,3 +1,22 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.reading
+ * @name evtviewer.reading.directive:evtReading
+ * @description 
+ * # evtReading
+ * TODO: Add description!
+ * It uses the {@link evtviewer.reading.controller:ReadingCtrl ReadingCtrl} controller. 
+ *
+ * @scope
+ * @param {string=} appId id of connected critical apparatus
+ * @param {string=} readingId id of reading to be shown
+ * @param {string=} readingType tipology of reading
+ * @param {int=} variance value of variance connected to reading
+ * @param {string=} scopeWit id of scope witness
+ * @param {string=} type of reading element ('variant', 'lemma')
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.reading')
 
 .directive('evtReading', function(evtReading, parsedData, evtInterface) {
@@ -9,7 +28,7 @@ angular.module('evtviewer.reading')
             readingType : '@',
             variance    : '@',
             scopeWit    : '@',
-            type        : '@',
+            type        : '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',

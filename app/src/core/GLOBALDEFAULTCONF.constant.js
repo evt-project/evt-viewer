@@ -4,7 +4,7 @@ angular.module('evtviewer.core')
 
 	// TODO: select doc system 
 	/**
-	 * @module evtviewerCore
+	 * @module evtviewer.core
 	 * @ngdoc object
 	 * @name test
 	 * @description
@@ -24,7 +24,7 @@ angular.module('evtviewer.core')
 	},
 
 	/**
-	 * @module evtviewerCore
+	 * @module evtviewer.core
 	 * @ngdoc object
 	 * @name debugAllModules
 	 * @description
@@ -49,7 +49,7 @@ angular.module('evtviewer.core')
 		}
 	},
 	/**
-	 * @module evtviewerCore
+	 * @module evtviewer.core
 	 * @ngdoc object
 	 * @name configUrl
 	 * @description

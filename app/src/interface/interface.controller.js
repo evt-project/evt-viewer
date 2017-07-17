@@ -1,8 +1,10 @@
 /**
- * @ngdoc type
+ * @ngdoc object
  * @module evtviewer.interface
- * @name InterfaceController
- * @description ...
+ * @name evtviewer.interface.controller:InterfaceCtrl
+ * @description 
+ * # InterfaceCtrl
+ * TODO: Add description and list of dependencies!
 **/
 angular.module('evtviewer.interface')
 

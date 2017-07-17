@@ -1,8 +1,11 @@
 /**
- * @ngdoc type
+ * @ngdoc object
  * @module evtviewer.analoguesApparatusEntry
- * @name analoguesApparatusEntryCtrl
- * @description ...
+ * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
+ * @description 
+ * # analoguesApparatusEntryCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.analoguesApparatusEntry.directive:evtAnaloguesApparatusEntry evtAnaloguesApparatusEntry} directive. 
 **/
 angular.module('evtviewer.analoguesApparatusEntry')
 

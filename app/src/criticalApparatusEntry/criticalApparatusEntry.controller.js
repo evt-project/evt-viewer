@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.criticalApparatusEntry
+ * @name evtviewer.criticalApparatusEntry.controller:CriticalApparatusEntryCtrl
+ * @description 
+ * # CriticalApparatusEntryCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive. 
+**/
 angular.module('evtviewer.criticalApparatusEntry')
 
 .controller('CriticalApparatusEntryCtrl', function($log, $scope, config, Utils, evtInterface, evtCriticalApparatusEntry, evtInterface, evtReading, evtBox, evtApparatuses, evtPinnedElements) {

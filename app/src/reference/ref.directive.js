@@ -1,3 +1,18 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.reference
+ * @name evtviewer.reference.directive:ref
+ * @description 
+ * # ref
+ * TODO: Add description!
+ * It uses the {@link evtviewer.reference.controller:RefCtrl RefCtrl} controller. 
+ *
+ * @scope
+ * @param {string=} target referenced target
+ * @param {string=} type of reference ('', biblRef', 'biblio')
+ *
+ * @restrict C
+**/
 angular.module('evtviewer.reference')
 
 .directive('ref', function(evtRef) {

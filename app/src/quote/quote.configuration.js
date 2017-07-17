@@ -3,7 +3,7 @@ angular.module('evtviewer.quote')
 .constant('QUOTEDEFAULTS', {
     
     /**
-     * @module evtviewerQuote
+     * @module evtviewer.quote
      * @ngdoc property
      * @name openTriggerEvent
      * @description

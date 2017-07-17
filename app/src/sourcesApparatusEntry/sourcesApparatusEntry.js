@@ -1,7 +1,9 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.sourcesApparatusEntry
  * @module evtviewer.sourcesApparatusEntry
- * @description ...
+ * @description
+ * # evtviewer.sourcesApparatusEntry
+ * TODO: Add description!
 **/
 angular.module('evtviewer.sourcesApparatusEntry', []);

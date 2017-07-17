@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.criticalApparatusEntry
+ * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+ * @description 
+ * # evtCriticalApparatusEntry
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.criticalApparatusEntry')
 
 .provider('evtCriticalApparatusEntry', function() {

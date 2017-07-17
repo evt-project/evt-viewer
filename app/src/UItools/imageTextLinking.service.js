@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.UItools
+ * @name evtviewer.UItools.evtImageTextLinking
+ * @description 
+ * # evtImageTextLinking
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.UItools')
 
 .service('evtImageTextLinking', function(evtInterface, Utils, parsedData) {

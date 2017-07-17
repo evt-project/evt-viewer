@@ -1,9 +1,22 @@
 /**
  * @ngdoc directive
  * @module evtviewer.box
- * @name box
- * @description ...
- * @usage
+ * @name evtviewer.box.directive:box
+ * @description 
+ * # box
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} id id of box to be shown
+ * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty')
+ * @param {string=} subtype subtype of box to be shown 
+ * @param {string=} witness scope witness
+ * @param {string=} witpage scope witness page
+ * @param {string=} edition scope edition
+ * @param {string=} source scope source
+ * @param {string=} version scope version
+ *
+ * @restrict E
 **/
 angular.module('evtviewer.box')
 

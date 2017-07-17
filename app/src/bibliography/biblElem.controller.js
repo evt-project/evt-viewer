@@ -1,8 +1,11 @@
 /**
- * @ngdoc type
+ * @ngdoc object
  * @module evtviewer.bibliography
- * @name BiblElemCtrl
- * @description ...
+ * @name evtviewer.bibliography.controller:BiblElemCtrl
+ * @description 
+ * # BiblElemCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.bibliography.directive:evtBiblElem evtBiblElem} directive. 
 **/
 angular.module('evtviewer.bibliography')
 

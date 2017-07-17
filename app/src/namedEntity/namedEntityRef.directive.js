@@ -1,3 +1,17 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.namedEntity
+ * @name evtviewer.namedEntity.directive:evtNamedEntityRef
+ * @description 
+ * # evtNamedEntityRef
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} entityId id of entity to be shown
+ * @param {string=} entityType type of entity ('person', 'place', 'org', 'generic')
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.namedEntity')
 
 .directive('evtNamedEntityRef', function(evtNamedEntityRef) {

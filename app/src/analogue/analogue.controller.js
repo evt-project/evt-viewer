@@ -1,8 +1,11 @@
 /**
- * @ngdoc type
+ * @ngdoc controller
  * @module evtviewer.analogue
- * @name AnalogueCrtl
- * @description ...
+ * @name evtviewer.analogue.controller:AnalogueCtrl
+ * @description 
+ * # AnalogueCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.analogue.directive:evtAnalogue evtAnalogue} directive. 
 **/
 angular.module('evtviewer.analogue')
 

@@ -1,9 +1,16 @@
 /**
  * @ngdoc directive
  * @module evtviewer.apparatuses
- * @name evtApparatuses
- * @description ...
- * @usage
+ * @name evtviewer.apparatuses.directive:evtApparatuses
+ * @description 
+ * # evtApparatuses
+ * TODO: Add description!
+ * It uses the {@link evtviewer.apparatuses.controller:apparatusesCtrl apparatusesCtrl} controller.
+ *
+ * @scope
+ * @param {string=} currentApparatus id of current apparatus shown
+ *
+ * @restrict E
 **/
 angular.module('evtviewer.apparatuses')
 

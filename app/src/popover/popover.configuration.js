@@ -3,7 +3,7 @@ angular.module('evtviewer.popover')
 .constant('POPOVERDEFAULTS', {
 
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.popover
      * @ngdoc property
      * @name expanded
      * @description
@@ -19,7 +19,7 @@ angular.module('evtviewer.popover')
     expanded: false,
 
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.popover
      * @ngdoc property
      * @name tooltipOver
      * @description
@@ -35,7 +35,7 @@ angular.module('evtviewer.popover')
     tooltipOver: false,
     
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.popover
      * @ngdoc property
      * @name tooltipMaxHeight
      * @description
@@ -51,7 +51,7 @@ angular.module('evtviewer.popover')
     tooltipMaxHeight: 170,
 
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.popover
      * @ngdoc property
      * @name tooltipMaxWidth
      * @description
@@ -67,7 +67,7 @@ angular.module('evtviewer.popover')
     tooltipMaxWidth: 200,
 
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.popover
      * @ngdoc property
      * @name openTriggerEvent
      * @description

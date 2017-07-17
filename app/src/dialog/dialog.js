@@ -1,7 +1,9 @@
 /**
- * @ngdoc module
- * @name evtviewer.Dialog
- * @module evtviewer.Dialog
- * @description ...
+ * @ngdoc overview
+ * @name evtviewer.dialog
+ * @module evtviewer.dialog
+ * @description 
+ * # evtviewer.dialog
+ * TODO: Add description!
 **/
 angular.module('evtviewer.dialog', []);

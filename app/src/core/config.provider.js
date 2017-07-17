@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.core
+ * @name evtviewer.core.config
+ * @description 
+ * # config
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.core')
 
 .constant('BASECONFIG', {

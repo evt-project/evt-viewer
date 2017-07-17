@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.namedEntity
+ * @name evtviewer.namedEntity.evtNamedEntityRef
+ * @description 
+ * # evtNamedEntityRef
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.namedEntity')
 
 .provider('evtNamedEntityRef', function() {

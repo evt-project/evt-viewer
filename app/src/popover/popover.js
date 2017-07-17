@@ -1,7 +1,9 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.popover
  * @module evtviewer.popover
- * @description ...
+ * @description 
+ * # evtviewer.popover
+ * TODO: Add Description!
 **/
 angular.module('evtviewer.popover', []);

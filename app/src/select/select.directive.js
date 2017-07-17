@@ -1,3 +1,21 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.select
+ * @name evtviewer.select.directive:evtSelect
+ * @description 
+ * # evtSelect
+ * TODO: Add description!
+ * It uses the {@link evtviewer.select.controller:SelectCtrl SelectCtrl} controller. 
+ *
+ * @scope
+ * @param {string=} id id of select
+ * @param {string=} type type of select ('page', 'document', 'edition', 'named-entities', 'witness', 'witness-page', 'pinned-filter', 'source', 'version')
+ * @param {string=} init initial value selected
+ * @param {boolean=} openUp whether the select should open bottom->up instad of up->bottom
+ * @param {boolean=} multiselect whether of not select should allow multiple values selected
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.select')
 
 .directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements) {

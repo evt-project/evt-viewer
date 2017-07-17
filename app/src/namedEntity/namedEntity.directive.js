@@ -1,3 +1,18 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.namedEntity
+ * @name evtviewer.namedEntity.directive:evtNamedEntity
+ * @description 
+ * # evtNamedEntity
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} entityId id of named entity to be shown
+ * @param {string=} entityType type of named entity ('person', 'place', 'org', 'generic')
+ * @param {string=} location ('list', mainText', 'pinned') [default: 'list']
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.namedEntity')
 
 .directive('evtNamedEntity', function(evtNamedEntity) {

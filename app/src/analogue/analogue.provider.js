@@ -1,8 +1,10 @@
 /**
  * @ngdoc service
  * @module evtviewer.analogue
- * @name evtAnalogueProvider
- * @description ...
+ * @name evtviewer.analogue.evtAnalogueProvider
+ * @description 
+ * # evtAnalogueProvider
+ * TODO: Add description and comments for every method
 **/
 angular.module('evtviewer.analogue')
 

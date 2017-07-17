@@ -1,3 +1,14 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.versionReading
+ * @name evtviewer.versionReading.controller:versionReadingCtrl
+ * @description 
+ * # versionReadingCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.versionReading.directive:evtVersionReading evtVersionReading} directive. 
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.versionReading')
 
 .controller('versionReadingCtrl', function($scope, parsedData, config, evtPopover, evtVersionReading, evtInterface, evtBox) {

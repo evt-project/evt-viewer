@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.versionApparatusEntry
+ * @name evtviewer.versionApparatusEntry.evtVersionRef
+ * @description 
+ * # evtVersionRef
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.versionApparatusEntry')
 
 .provider('evtVersionRef', function() {
