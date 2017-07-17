@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         scripts: ['angular.js', '../src.js'],
         html5Mode: false
       },
-      all: ['app/src/evtviewer.js', 'app/src/**/*.js']
+      all: ['app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js']
     },
 
     // Watches files for changes and runs tasks based on the changed files
