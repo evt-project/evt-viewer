@@ -25,18 +25,17 @@
  * With regard to the graphic style, rules have been defined in SCSS and grouped in an external folder "styles". 
  * {@link http://susy.oddbird.net/ Susy} framework was chosen as a grid-layout engine.
  *
- * @requires ngAnimate
- * @requires ngCookies
- * @requires ngMessages
- * @requires ngResource
- * @requires ngSanitize
- * @requires ngTouch
- * @requires templates-main
- * @requires ngRoute
- * @requires xml
- * @requires prettyXml
- * @requires infinite-scroll
- * @requires pascalprecht.translate
+ * @requires {@link https://docs.angularjs.org/api/ngAnimate ngAnimate}
+ * @requires {@link https://docs.angularjs.org/api/ngCookies ngCookies}
+ * @requires {@link https://docs.angularjs.org/api/ngMessages ngMessages}
+ * @requires {@link https://docs.angularjs.org/api/ngResource ngResource}
+ * @requires {@link https://docs.angularjs.org/api/ngSanitize ngSanitize}
+ * @requires {@link https://docs.angularjs.org/api/ngTouch ngTouch}
+ * @requires {@link https://docs.angularjs.org/api/ngRoute ngRoute}
+ * @requires {@link https://github.com/johngeorgewright/angular-xml xml}
+ * @requires {@link https://github.com/krtnio/angular-pretty-xml prettyXml}
+ * @requires {@link https://sroze.github.io/ngInfiniteScroll/documentation.html infinite-scroll}
+ * @requires {@link https://angular-translate.github.io/docs/#/api pascalprecht.translate}
  * @requires evtviewer.core
  * @requires evtviewer.communication
  * @requires evtviewer.translation
@@ -72,7 +71,6 @@ angular
 		'ngResource',
 		'ngSanitize',
 		'ngTouch',
-		'templates-main',
 		'ngRoute',
 		'xml',
 		'prettyXml',
