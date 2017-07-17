@@ -34,7 +34,10 @@ module.exports = function (grunt) {
         scripts: ['angular.js', '../src.js'],
         html5Mode: false
       },
-      all: ['app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js']
+      api: {
+       src: ['app/index.ngdoc', 'app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js'],
+       title: 'EVT 2 Dev Guide'
+    }
     },
 
     // Watches files for changes and runs tasks based on the changed files
