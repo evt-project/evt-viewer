@@ -1,8 +1,10 @@
 /**
- * @ngdoc directive
+ * @ngdoc service
  * @module evtviewer.bibliography
- * @name evtScrollIf
- * @description ...
+ * @name evtviewer.bibliography.evtScrollIf
+ * @description 
+ * # evtScrollIf
+ * TODO: Add description and comments for every method
 **/
 angular.module('evtviewer.bibliography')
 

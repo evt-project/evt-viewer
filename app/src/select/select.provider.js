@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.select
+ * @name evtviewer.select.evtSelect
+ * @description 
+ * # evtSelect
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.select')
 
 .provider('evtSelect', function() {

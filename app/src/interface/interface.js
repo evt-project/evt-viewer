@@ -1,6 +1,8 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.interface
- * @description ...
+ * @description 
+ * # evtviewer.interface
+ * TODO: Add description!
 **/
 angular.module('evtviewer.interface', []);

@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.parsedData
+ * @description 
+ * # parsedData
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.dataHandler')
 
 .service('parsedData', function($log, config, Utils) {

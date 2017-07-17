@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.evtBibliographyParser
+ * @description 
+ * # evtBibliographyParser
+ * TODO: Add description and comments for every method
+ *
+ * @author Maurizio Ricci
+**/
 angular.module('evtviewer.dataHandler')
 
 .service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser, config) {

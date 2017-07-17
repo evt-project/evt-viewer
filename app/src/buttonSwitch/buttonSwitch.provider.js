@@ -1,8 +1,10 @@
 /**
- * @ngdoc type
+ * @ngdoc service
  * @module evtviewer.buttonSwitch
- * @name evtButtonSwitch
- * @description ...
+ * @name evtviewer.buttonSwitch.evtButtonSwitch
+ * @description 
+ * # evtButtonSwitch
+ * TODO: Add description and comments for every method
 **/
 angular.module('evtviewer.buttonSwitch')
 

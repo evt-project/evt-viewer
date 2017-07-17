@@ -1,9 +1,20 @@
 /**
  * @ngdoc directive
  * @module evtviewer.buttonSwitch
- * @name buttonSwitch
- * @description ...
- * @usage
+ * @name evtviewer.buttonSwitch.directive:buttonSwitch
+ * @description 
+ * # buttonSwitch
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} title title of button
+ * @param {string=} label label of button
+ * @param {string=} icon icon of button
+ * @param {string=} type type of button that will determin the callback
+ * @param {string=} value value of button
+ * @param {string=} iconPos position of icon ('left', 'right'). Default 'right'
+ *
+ * @restrict E
 **/
 angular.module('evtviewer.buttonSwitch')
 

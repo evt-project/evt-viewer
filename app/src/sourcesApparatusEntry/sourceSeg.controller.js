@@ -1,3 +1,14 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
+ * @description 
+ * # sourceSegCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.sourcesApparatusEntry.directive:evtSourceSeg evtSourceSeg} directive. 
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .controller('sourceSegCtrl', function(evtInterface, evtSourceSeg, evtBox, evtQuote, evtApparatuses) {

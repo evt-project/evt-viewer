@@ -1,8 +1,10 @@
 /**
- * @ngdoc type
+ * @ngdoc service
  * @module evtviewer.box
- * @name evtBox
- * @description ...
+ * @name evtviewer.box.evtBox
+ * @description 
+ * # evtBox
+ * TODO: Add description and comments for every method
 **/
 angular.module('evtviewer.box')
 

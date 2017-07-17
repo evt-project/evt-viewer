@@ -1,8 +1,11 @@
 /**
- * @ngdoc type
+ * @ngdoc object
  * @module evtviewer.apparatuses
- * @name apparatusesCtrl
- * @description ...
+ * @name evtviewer.apparatuses.controller:apparatusesCtrl
+ * @description 
+ * # apparatusesCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.apparatuses.directive:evtApparatuses evtApparatuses} directive. 
 **/
 angular.module('evtviewer.apparatuses')
 

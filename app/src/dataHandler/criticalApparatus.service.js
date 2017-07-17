@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.evtCriticalApparatus
+ * @description 
+ * # evtCriticalApparatus
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.dataHandler')
 
 .service('evtCriticalApparatus', function(parsedData, evtParser, config) {

@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.evtNamedEntitiesParser
+ * @description 
+ * # evtNamedEntitiesParser
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Di Pietro
+**/
 angular.module('evtviewer.dataHandler')
 
 .service('evtNamedEntitiesParser', function(parsedData, evtParser, config) {

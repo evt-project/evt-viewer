@@ -2,7 +2,7 @@ angular.module('evtviewer.box')
 
 .constant('BOXDEFAULTS', {
     /**
-     * @module evtviewerBox
+     * @module evtviewer.box
      * @ngdoc property
      * @name menuClosed
      * @description

@@ -1,8 +1,10 @@
 /**
  * @ngdoc service
  * @module evtviewer.interface
- * @name evtInterfaceService
- * @description ...
+ * @name evtviewer.interface.evtInterface
+ * @description 
+ * # evtInterface
+ * TODO: Add description and comments for every method
 **/
 angular.module('evtviewer.interface')
 

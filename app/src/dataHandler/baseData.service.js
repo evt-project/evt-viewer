@@ -1,3 +1,12 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.baseData
+ * @description 
+ * # baseData
+ * TODO: Add description and comments for every method
+ *
+**/
 angular.module('evtviewer.dataHandler')
 
 .service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {

@@ -2,7 +2,7 @@ angular.module('evtviewer.reading')
 
 .constant('READINGDEFAULTS', {
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.reading
      * @ngdoc property
      * @name tooltipMaxHeight
      * @description
@@ -18,7 +18,7 @@ angular.module('evtviewer.reading')
     tooltipMaxHeight: 170,
 
     /**
-     * @module evtviewerPopover
+     * @module evtviewer.reading
      * @ngdoc property
      * @name tooltipMaxWidth
      * @description
@@ -34,7 +34,7 @@ angular.module('evtviewer.reading')
     tooltipMaxWidth: 200,
     
     /**
-     * @module evtviewerReading
+     * @module evtviewer.reading
      * @ngdoc property
      * @name openTriggerEvent
      * @description

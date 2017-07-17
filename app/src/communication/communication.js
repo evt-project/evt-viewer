@@ -1,6 +1,8 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.communication
- * @description ...
+ * @description 
+ * # evtviewer.communication
+ * Module referring to communication operations.
 **/
 angular.module('evtviewer.communication', []);

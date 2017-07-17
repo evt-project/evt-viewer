@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.reading
+ * @name evtviewer.reading.controller:ReadingCtrl
+ * @description 
+ * # ReadingCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.reading.directive:evtReading evtReading} directive. 
+**/
 angular.module('evtviewer.reading')
 
 .controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, config, evtCriticalApparatusEntry, evtApparatuses, evtBox) {

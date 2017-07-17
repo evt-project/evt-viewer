@@ -1,3 +1,19 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.directive:evtSourceRef
+ * @description 
+ * # evtSourceRef
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} sourceId id of source
+ * @param {string=} sourceAbbr abbreviation of source
+ *
+ * @restrict E
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {

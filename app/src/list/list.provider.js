@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.list
+ * @name evtviewer.list.evtList
+ * @description 
+ * # evtList
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.list')
 
 .provider('evtList', function() {

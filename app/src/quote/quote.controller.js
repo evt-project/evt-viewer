@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.quote
+ * @name evtviewer.quote.controller:QuoteCtrl
+ * @description 
+ * # QuoteCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.quote.directive:evtQuote evtQuote} directive. 
+**/
 angular.module('evtviewer.quote')
 
 .controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry, evtSourceSeg, parsedData) {

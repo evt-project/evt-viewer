@@ -1,5 +1,5 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.Mobile
  * @module evtviewer.Mobile
  * @description ...

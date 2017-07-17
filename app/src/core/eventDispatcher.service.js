@@ -1,5 +1,12 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.core
+ * @name evtviewer.core.eventDispatcher
+ * @description 
+ * # eventDispatcher
+ * TODO: Add description and comments for every method
+**/
 /*jshint -W030 */
-
 angular.module('evtviewer.core')
 
 .service('eventDispatcher', function($q) {

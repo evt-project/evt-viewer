@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.quote
+ * @name evtviewer.quote.evtQuote
+ * @description 
+ * # evtQuote
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.reading')
 
 .provider('evtReading', function() {

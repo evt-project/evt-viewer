@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+ * @description 
+ * # evtSourcesApparatusEntry
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .provider('evtSourcesApparatusEntry', function() {

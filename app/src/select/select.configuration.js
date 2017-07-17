@@ -3,7 +3,7 @@ angular.module('evtviewer.select')
 .constant('SELECTORDEFAULTS', {
 
     /**
-     * @module evtviewerSelector
+     * @module evtviewer.select
      * @ngdoc property
      * @name expanded
      * @description
@@ -19,7 +19,7 @@ angular.module('evtviewer.select')
     expanded: false,
 
     /**
-     * @module evtviewerSelector
+     * @module evtviewer.select
      * @ngdoc property
      * @name elementWidth
      * @description
@@ -35,7 +35,7 @@ angular.module('evtviewer.select')
     elementWidth: 150,
 
     /**
-     * @module evtviewerSelector
+     * @module evtviewer.select
      * @ngdoc property
      * @name containerMaxHeight
      * @description

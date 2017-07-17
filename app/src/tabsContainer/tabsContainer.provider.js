@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.tabsContainer
+ * @name evtviewer.tabsContainer.evtTabsContainer
+ * @description 
+ * # evtTabsContainer
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.tabsContainer')
 
 .provider('evtTabsContainer', function() {

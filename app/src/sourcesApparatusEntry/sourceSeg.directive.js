@@ -1,3 +1,20 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.directive:evtSourceSeg
+ * @description 
+ * # evtSourceSeg
+ * TODO: Add description!
+ * It uses the {@link evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl sourceSegCtrl} controller. 
+ *
+ * @scope
+ * @param {string=} segId id of connected segment
+ * @param {string=} sourceId id of connected source
+ *
+ * @restrict E
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .directive('evtSourceSeg', function(evtSourceSeg) {

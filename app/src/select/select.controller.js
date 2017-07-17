@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.select
+ * @name evtviewer.select.controller:SelectCtrl
+ * @description 
+ * # SelectCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.select.directive:evtSelect evtSelect} directive. 
+**/
 angular.module('evtviewer.select')
 
 .controller('SelectCtrl', function($log, evtSelect, parsedData) {    

@@ -1,3 +1,19 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.criticalApparatusEntry
+ * @name evtviewer.criticalApparatusEntry.directive:evtWitnessRef
+ * @description 
+ * # evtWitnessRef
+ * TODO: Add description!
+ * It require the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive.
+ * @scope
+ * @param {string=} witness sigla of witness ref to be shown
+ * @param {string=} scopeWit id of scope witness
+ *
+ * @restrict E
+ * 
+ * @require evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry
+**/
 angular.module('evtviewer.criticalApparatusEntry')
 
 .directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {

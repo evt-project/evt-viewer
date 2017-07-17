@@ -1,3 +1,19 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.popover
+ * @name evtviewer.popover.directive:evtPopover
+ * @description 
+ * # evtPopover
+ * TODO: Add description!
+ * It uses the {@link evtviewer.popover.controller:PopoverCtrl PopoverCtrl} controller. 
+ *
+ * @scope
+ * @param {string=} trigger type of event that triggers the opening of the popover ('over', 'click')
+ * @param {string=} tooltip text that will be compiled in popover
+ * @param {string=} parentRef reference of parent element that is used to adjust popover size and position 
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.popover')
 
 .directive('evtPopover', function(evtPopover) {
