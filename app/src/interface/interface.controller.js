@@ -29,31 +29,73 @@ angular.module('evtviewer.interface')
 
 	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
 		var _console = $log.getInstance('interface');
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentViewMode
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current view mode from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
+         * @return {string} current view mode
+         */
 		$scope.getCurrentViewMode = function() {
 			return evtInterface.getState('currentViewMode');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentPage
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current page from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
+         * @return {string} current page
+         */
 		$scope.getCurrentPage = function() {
 			return evtInterface.getState('currentPage');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentDocument
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current document from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
+         * @return {string} current document
+         */
 		$scope.getCurrentDocument = function() {
 			return evtInterface.getState('currentDoc');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentEdition
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current edition from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
+         * @return {string} current edition
+         */
 		$scope.getCurrentEdition = function() {
 			return evtInterface.getState('currentEdition');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableWitnesses
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get available witnesses from evtInterface properties ({@link evtviewer.interface.evtInterface#getProperty evtInterface.getProperty()})
+         * @return {array} current available witnesses list
+         */
 		$scope.getAvailableWitnesses = function() {
 			return evtInterface.getProperty('availableWitnesses');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isWitnessSelectorActive
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check whether witnesses selector is active or not. Get information from evtInterface properties ({@link evtviewer.interface.evtInterface#getProperty evtInterface.getProperty()})
+         * @return {boolean} whether witnesses selector is active or not
+         */
 		$scope.isWitnessSelectorActive = function() {
 			return evtInterface.getProperty('witnessSelector');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#addWitness
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Add witness among current ones. Update URL. Scroll horizontally to new witness if collation mode is active.
+         * @param {string} wit id of witness to add
+         */
 		$scope.addWitness = function(wit) {
 			if (wit !== undefined) {
 				evtInterface.addWitness(wit);
@@ -65,33 +107,77 @@ angular.module('evtviewer.interface')
 			});
 			evtInterface.updateProperty('witnessSelector', false);
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getWitness
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get witness description. Text will be reduced if longer than 30 characters
+         * @param {string} wit id of witness to get
+         * @returns {string} description of given witness
+         */
 		$scope.getWitness = function(wit) {
 			var desc = wit + ' - ' + parsedData.getWitness(wit).description.textContent.trim() || wit;
 			desc = desc.length > 30 ? desc.substr(0, 30) + '...' : desc;
 			return desc;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentWitnesses
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current witnesses list from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()}).
+         * @returns {array} list of current witnesses
+         */
 		$scope.getCurrentWitnesses = function() {
 			return evtInterface.getState('currentWits');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentWitnessPage
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current page of given witness. Information is stored in evtInterface states property.
+         * @param {string} wit id of witness of whom we want to know the current page
+         * @returns {string} current page of given witness
+         */
 		$scope.getCurrentWitnessPage = function(wit) {
 			return evtInterface.getCurrentWitnessPage(wit);
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableViewModes
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get available view modes from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()}).
+         * @returns {array} list of available view modes
+         */
 		$scope.getAvailableViewModes = function() {
 			return evtInterface.getProperty('availableViewModes');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#existCriticalText
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check whether or not critical text exists.
+         * @returns {boolean} whether or not critical text exists
+         */
 		$scope.existCriticalText = function() {
 			return evtInterface.existCriticalText();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentAppEntry
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current critical apparatus entry from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()}).
+         * @returns {string} id of current critical apparatus entry
+         */
 		$scope.getCurrentAppEntry = function() {
 			return evtInterface.getState('currentAppEntry');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#updateCurrentAppEntry
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Update current critical apparatus entry. Update URL.
+         * @param {string} entry id of critical apparatus entry to be set as current
+         */
 		$scope.updateCurrentAppEntry = function(entry) {
 			evtInterface.updateState('currentAppEntry', entry);
 			if (evtInterface.getState('currentViewMode') === 'readingTxt') {
@@ -100,25 +186,63 @@ angular.module('evtviewer.interface')
 			}
 			evtInterface.updateUrl();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#updateCurrentQuote
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Update current quote entry.
+         * @param {string} quote id of quote entry to be set as current
+         * @todo update url
+         */
 		$scope.updateCurrentQuote = function(quote) {
 			evtInterface.updateState('currentQuote', quote);
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentApparatus
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current apparatus from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()}).
+         * @returns {string} id of current apparatus
+         */
 		$scope.getCurrentApparatus = function() { 
 			return evtInterface.getState('currentApparatus') ; 
 		};
+		/**
+         * @ngdoc property
+         * @name evtviewer.interface.controller:InterfaceCtrl#evtPinnedElements
+         * @propertyOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Copy of ({@link evtviewer.UItool.evtPinnedElements evtPinnedElements}) service.
+         */
 		$scope.evtPinnedElements = evtPinnedElements;
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isLoading
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check whether or not the interface is in loading status.
+         * @returns {boolean} whether or not the interface is in loading status
+         */
 		$scope.isLoading = function() {
 			var error = evtCommunication.getError();
 			return evtInterface.isLoading() && error.title === '';
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isPinnedAppBoardOpened
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check whether or not the pinned entries board is opened.
+         * @returns {boolean} whether or not the pinned entries board is opened
+         */
 		$scope.isPinnedAppBoardOpened = function() {
 			return evtInterface.getState('isPinnedAppBoardOpened');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isToolAvailable
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check whether or a given tool is available or not
+         * @param {string} toolName name of tool to be checked
+         * @returns {boolean} whether or not the given tool is available or not
+         */
 		$scope.isToolAvailable = function(toolName) {
 			return evtInterface.isToolAvailable(toolName);
 		};
