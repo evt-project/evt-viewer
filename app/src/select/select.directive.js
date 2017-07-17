@@ -77,7 +77,7 @@ angular.module('evtviewer.select')
 
             if (scope.type === 'page') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentPage();
+                    return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
@@ -87,7 +87,7 @@ angular.module('evtviewer.select')
 
             if (scope.type === 'source') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentSource();
+                    return evtInterface.getState('currentSource') ;
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
@@ -97,7 +97,7 @@ angular.module('evtviewer.select')
 
             if (scope.type === 'document') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentDocument();
+                    return evtInterface.getState('currentDoc');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
@@ -105,9 +105,9 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
-            if (scope.type === 'version' && evtInterface.getCurrentViewMode() === 'collation') {
+            if (scope.type === 'version' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentVersion();
+                    return evtInterface.getState('currentVersion');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);

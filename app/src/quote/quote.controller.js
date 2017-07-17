@@ -71,10 +71,10 @@ angular.module('evtviewer.quote')
                 evtApparatuses.setCurrentApparatus('sources');
                 evtApparatuses.alignScrollToQuote(vm.quoteId);
             } 
-            evtInterface.updateCurrentQuote(vm.quoteId);
+            evtInterface.updateState('currentQuote', vm.quoteId);
         } else {
             evtQuote.unselectAll();
-            evtInterface.updateCurrentQuote('');
+            evtInterface.updateState('currentQuote', '');
             evtSourcesApparatusEntry.unselectAll();
         }
 
@@ -113,7 +113,7 @@ angular.module('evtviewer.quote')
     
     this.hasScopeSource = function() {
         var quotesRef = parsedData.getSources()._indexes.quotesRef[vm.quoteId] || undefined,
-            currentSourceText = evtInterface.getCurrentSourceText();
+            currentSourceText = evtInterface.getState('currentSourceText') ;
         if (quotesRef !== undefined && quotesRef.indexOf(currentSourceText) >= 0) {
             return true;
         } else {

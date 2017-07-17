@@ -77,7 +77,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 
 	this.isSelect = function() {
-		if (evtInterface.getCurrentAnalogue() === vm.analogueId) {
+		if (evtInterface.getState('currentAnalogue')  === vm.analogueId) {
 			return true;
 		} else {
 			return vm.selected;

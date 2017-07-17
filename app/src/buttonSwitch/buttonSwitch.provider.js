@@ -192,7 +192,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'bookmark':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('bookmark');
+						evtInterface.updateState('secondaryContent', 'bookmark');
 						evtDialog.openByType('bookmark');
 						vm.active = !vm.active;
 					};
@@ -203,10 +203,10 @@ angular.module('evtviewer.buttonSwitch')
                         var vm = this;
                         if (vm.value !== undefined) {
                             if (vm.value === 'srcTxt') {
-                                var sourceId = evtInterface.getCurrentSourceText();
+                                var sourceId = evtInterface.getState('currentSourceText') ;
                                 evtInterface.updateCurrentSourceText(sourceId);
                             }
-                            evtInterface.updateCurrentViewMode(vm.value);
+                            evtInterface.updateState('currentViewMode', vm.value);
                             evtInterface.updateUrl();
 							if (evtInterface.getToolState('ITL') === 'active') {
 								if (vm.value === 'imgTxt') {
@@ -264,14 +264,14 @@ angular.module('evtviewer.buttonSwitch')
 					callback = function() {
                         var vm = this;
                         evtDialog.closeAll();
-                        evtInterface.updateSecondaryContentOpened('');
+                        evtInterface.updateState('secondaryContent', '');
                         vm.active = !vm.active;
                     };
 
                     break;
 				case 'closePinned':
                     callback = function() {
-						evtInterface.togglePinnedAppBoardOpened();
+						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
 				case 'download-xml': 
@@ -320,7 +320,7 @@ angular.module('evtviewer.buttonSwitch')
 							parentBox.toggleTopBox();
 						} else {
 							var content;
-							var currentDocument = evtInterface.getCurrentDocument();
+							var currentDocument = evtInterface.getState('currentDoc');
 							if (currentDocument) {
 								var docObj = parsedData.getDocument(currentDocument),
 									docFront = docObj ? docObj.front : undefined;
@@ -370,7 +370,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openGlobalDialogInfo':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('globalInfo');
+						evtInterface.updateState('secondaryContent', 'globalInfo');
 						evtDialog.openByType('globalInfo');
 						vm.active = !vm.active;
 					};
@@ -378,7 +378,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openGlobalDialogWitnesses':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('witnessesList');
+						evtInterface.updateState('secondaryContent', 'witnessesList');
 						evtDialog.openByType('witnessesList');
 						vm.active = !vm.active;
 					};
@@ -386,7 +386,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openGlobalDialogLists':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('entitiesList');
+						evtInterface.updateState('secondaryContent', 'entitiesList');
 						evtDialog.openByType('entitiesList');
 						vm.active = !vm.active;
 					};
@@ -441,7 +441,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'togglePinned':
 					btnType = 'toggler';
 					callback = function() {
-						evtInterface.togglePinnedAppBoardOpened();
+						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
 				case 'witList':
@@ -472,7 +472,7 @@ angular.module('evtviewer.buttonSwitch')
                 case 'toggleInfoSrc':
                     btnType = 'toggler';
                     callback = function(){
-                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
+                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
                         //Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
                         //TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
                         var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;

@@ -2,9 +2,28 @@
  * @ngdoc object
  * @module evtviewer.interface
  * @name evtviewer.interface.controller:InterfaceCtrl
+ *
  * @description 
  * # InterfaceCtrl
- * TODO: Add description and list of dependencies!
+ * The InterfaceCtrl controller handles the upper level user interface.
+ *
+ * @requires $log
+ * @requires $timeout
+ * @requires $injector
+ * @requires $scope
+ * @requires $route
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.communication.evtCommunication
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.apparatuses.evtApparatuses
+ * @requires evtviewer.buttonSwitch.evtButtonSwitch
+ * @requires evtviewer.box.evtBox
+ * @requires evtviewer.dialog.evtDialog
+ * @requires evtviewer.popover.evtPopover
+ * @requires evtviewer.select.evtSelect
+ * @requires evtviewer.UItools.evtPinnedElements
+ * @requires evtviewer.translationevtTranslation
+ *
 **/
 angular.module('evtviewer.interface')
 
@@ -12,23 +31,23 @@ angular.module('evtviewer.interface')
 		var _console = $log.getInstance('interface');
 
 		$scope.getCurrentViewMode = function() {
-			return evtInterface.getCurrentViewMode();
+			return evtInterface.getState('currentViewMode');
 		};
 
 		$scope.getCurrentPage = function() {
-			return evtInterface.getCurrentPage();
+			return evtInterface.getState('currentPage');
 		};
 
 		$scope.getCurrentDocument = function() {
-			return evtInterface.getCurrentDocument();
+			return evtInterface.getState('currentDoc');
 		};
 
 		$scope.getCurrentEdition = function() {
-			return evtInterface.getCurrentEdition();
+			return evtInterface.getState('currentEdition');
 		};
 
 		$scope.getAvailableWitnesses = function() {
-			return evtInterface.getAvailableWitnesses();
+			return evtInterface.getProperty('availableWitnesses');
 		};
 
 		$scope.isWitnessSelectorActive = function() {
@@ -42,7 +61,7 @@ angular.module('evtviewer.interface')
 			}
 			$timeout(function() {
 				var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
-				document.getElementById('compareWits_box').scrollLeft = singleBoxWidth * (evtInterface.getCurrentWitnesses().length + 1);
+				document.getElementById('compareWits_box').scrollLeft = singleBoxWidth * (evtInterface.getState('currentWits').length + 1);
 			});
 			evtInterface.updateProperty('witnessSelector', false);
 		};
@@ -54,7 +73,7 @@ angular.module('evtviewer.interface')
 		};
 
 		$scope.getCurrentWitnesses = function() {
-			return evtInterface.getCurrentWitnesses();
+			return evtInterface.getState('currentWits');
 		};
 
 		$scope.getCurrentWitnessPage = function(wit) {
@@ -62,7 +81,7 @@ angular.module('evtviewer.interface')
 		};
 
 		$scope.getAvailableViewModes = function() {
-			return evtInterface.getAvailableViewModes();
+			return evtInterface.getProperty('availableViewModes');
 		};
 
 		$scope.existCriticalText = function() {
@@ -70,12 +89,12 @@ angular.module('evtviewer.interface')
 		};
 
 		$scope.getCurrentAppEntry = function() {
-			return evtInterface.getCurrentAppEntry();
+			return evtInterface.getState('currentAppEntry');
 		};
 
 		$scope.updateCurrentAppEntry = function(entry) {
-			evtInterface.updateCurrentAppEntry(entry);
-			if (evtInterface.getCurrentViewMode() === 'readingTxt') {
+			evtInterface.updateState('currentAppEntry', entry);
+			if (evtInterface.getState('currentViewMode') === 'readingTxt') {
 				evtBox.alignScrollToApp(entry);
 				evtApparatuses.alignScrollToApp(entry);
 			}
@@ -83,11 +102,11 @@ angular.module('evtviewer.interface')
 		};
 
 		$scope.updateCurrentQuote = function(quote) {
-			evtInterface.updateCurrentQuote(quote);
+			evtInterface.updateState('currentQuote', quote);
 		};
 
 		$scope.getCurrentApparatus = function() { 
-			return evtInterface.getCurrentApparatus(); 
+			return evtInterface.getState('currentApparatus') ; 
 		};
 		$scope.evtPinnedElements = evtPinnedElements;
 
@@ -97,7 +116,7 @@ angular.module('evtviewer.interface')
 		};
 
 		$scope.isPinnedAppBoardOpened = function() {
-			return evtInterface.isPinnedAppBoardOpened();
+			return evtInterface.getState('isPinnedAppBoardOpened');
 		};
 
 		$scope.isToolAvailable = function(toolName) {
@@ -105,7 +124,7 @@ angular.module('evtviewer.interface')
 		};
 
 		$scope.getSecondaryContentOpened = function() {
-			return evtInterface.getSecondaryContentOpened();
+			return evtInterface.getState('secondaryContent');
 		};
 
 		$scope.getProjectInfo = function() {
@@ -175,31 +194,31 @@ angular.module('evtviewer.interface')
 
 		// Method to get available sources texts
 		$scope.getAvailableSourcesTexts = function() {
-			return evtInterface.getAvailableSourcesTexts();
+			return evtInterface.getProperty('availableSourcesTexts');
 		};
 
 		// Method to get the id the source text viewed in the interface
 		$scope.getCurrentSourceText = function() {
-			return evtInterface.getCurrentSourceText();
+			return evtInterface.getState('currentSourceText') ;
 		};
 
 		//TODO: add methods for source, quote and analogue?
 
 		// Method to check if the apparatuses box is open
 		$scope.isApparatusBoxOpen = function() {
-			return evtInterface.isApparatusBoxOpen();
+			return evtInterface.getState('isApparatusBoxOpen') ;
 		};
 
 		$scope.showApparatusesBox = function() {
-			return evtInterface.isApparatusBoxOpen() && evtInterface.getCurrentEdition() === 'critical';
+			return evtInterface.getState('isApparatusBoxOpen')  && evtInterface.getState('currentEdition') === 'critical';
 		};
 
 		$scope.getCurrentVersions = function() {
-			return evtInterface.getCurrentVersions();
+			return evtInterface.getState('currentVersions');
 		};
 
 		$scope.getAvailableVersions = function() {
-			return evtInterface.getAvailableVersions();
+			return evtInterface.getProperty('availableVersions');
 		};
 
 		// Method to check if the selector for the versions is active
@@ -222,7 +241,7 @@ angular.module('evtviewer.interface')
 			}
 			$timeout(function() {
 				var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
-				document.getElementById('compareVer_box').scrollLeft = singleBoxWidth * (evtInterface.getCurrentVersions().length + 1);
+				document.getElementById('compareVer_box').scrollLeft = singleBoxWidth * (evtInterface.getState('currentVersions').length + 1);
 			});
 			evtInterface.updateProperty('versionSelector', false);
 		};
@@ -231,17 +250,17 @@ angular.module('evtviewer.interface')
 		
 		// MAIN MANU ACTIONS
 		$scope.openGlobalDialogInfo = function() {
-			evtInterface.updateSecondaryContentOpened('globalInfo');
+			evtInterface.updateState('secondaryContent', 'globalInfo');
 			evtDialog.openByType('globalInfo');
 		};
 		
 		$scope.openGlobalDialogLists = function() {
-			evtInterface.updateSecondaryContentOpened('entitiesList');
+			evtInterface.updateState('secondaryContent', 'entitiesList');
 			evtDialog.openByType('entitiesList');
 		};
 
 		$scope.generateBookmark = function() {
-			evtInterface.updateSecondaryContentOpened('bookmark');
+			evtInterface.updateState('secondaryContent', 'bookmark');
 			evtDialog.openByType('bookmark');
 		};
 

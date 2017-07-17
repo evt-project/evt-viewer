@@ -29,7 +29,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
         controllerAs: 'vm',
         controller: 'sourcesApparatusEntryCtrl',
         link: function(scope, element, attrs){
-            scope.scopeViewMode = evtInterface.getCurrentViewMode();
+            scope.scopeViewMode = evtInterface.getState('currentViewMode');
             var currentEntry = evtSourcesApparatusEntry.build(scope);
             
             // Garbage collection

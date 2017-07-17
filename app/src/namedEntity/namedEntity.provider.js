@@ -55,11 +55,11 @@ angular.module('evtviewer.namedEntity')
 
         var goToOccurrence = function(occurrence) {
             var vm = this;
-            evtInterface.updateCurrentPage(occurrence.pageId);
-            evtInterface.updateCurrentDocument(occurrence.docId);
+            evtInterface.updateState('currentPage', occurrence.pageId);
+            evtInterface.updateState('currentDoc', occurrence.docId);
             evtInterface.updateUrl();
-            if (evtInterface.getSecondaryContentOpened() === 'entitiesList') {
-                evtInterface.updateSecondaryContentOpened('');        
+            if (evtInterface.getState('secondaryContent') === 'entitiesList') {
+                evtInterface.updateState('secondaryContent', '');        
             }
             $timeout(function() {
                 evtNamedEntityRef.highlightByEntityId(vm.entityId);
@@ -104,8 +104,8 @@ angular.module('evtviewer.namedEntity')
         };
 
         var isCurrentPageDoc = function(occurrence) {
-            var currentDoc = evtInterface.getCurrentDocument(),
-                currentPage = evtInterface.getCurrentPage();
+            var currentDoc = evtInterface.getState('currentDoc'),
+                currentPage = evtInterface.getState('currentPage');
             return (currentDoc === occurrence.docId && currentPage === occurrence.pageId);
         };
         // 

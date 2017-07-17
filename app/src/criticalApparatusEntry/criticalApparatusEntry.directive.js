@@ -35,10 +35,10 @@ angular.module('evtviewer.criticalApparatusEntry')
         controllerAs: 'vm',
         controller: 'CriticalApparatusEntryCtrl',
         link: function(scope, element, attrs){
-            scope.scopeViewMode = evtInterface.getCurrentViewMode();
+            scope.scopeViewMode = evtInterface.getState('currentViewMode');
             var currentAppEntry = evtCriticalApparatusEntry.build(scope.appId, scope);
             if (!evtInterface.isCriticalApparatusInline()) {
-                currentAppEntry.selected = evtInterface.getCurrentAppEntry() === scope.appId;
+                currentAppEntry.selected = evtInterface.getState('currentAppEntry') === scope.appId;
             }
             // Garbage collection
             scope.$on('$destroy', function() {

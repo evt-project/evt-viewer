@@ -35,7 +35,7 @@ angular.module('evtviewer.versionReading')
         controllerAs: 'vm',
         controller: 'versionReadingCtrl',
         link: function(scope, element, attrs) {
-            scope.currentViewMode = evtInterface.getCurrentViewMode();
+            scope.currentViewMode = evtInterface.getState('currentViewMode');
             var currentVersionReading = evtVersionReading.build(scope);
 
             scope.$on('destroy', function() {

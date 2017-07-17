@@ -31,14 +31,14 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 var newSource = scope.sourceId;
 
                 //Updates the source to show inside of the source text box
-                if (evtInterface.getCurrentSourceText() !== newSource) {
+                if (evtInterface.getState('currentSourceText')  !== newSource) {
                     evtInterface.updateCurrentSourceText(newSource);
-                    evtInterface.updateCurrentSource(newSource);
+                    evtInterface.updateState('currentSource', newSource);
                 }
                 
                 //Switches to the "Source-Text" view
-                if (evtInterface.getCurrentViewMode() !== 'srcTxt') {
-                    evtInterface.updateCurrentViewMode('srcTxt');
+                if (evtInterface.getState('currentViewMode') !== 'srcTxt') {
+                    evtInterface.updateState('currentViewMode', 'srcTxt');
                 }
 
                 //TODO: evtInterface.updateUrl();
@@ -47,7 +47,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 // If so, it saves the reference inside of the the "segToAlign" variable. //
                 var quoteToAlign = '',
                     segToAlign = '',
-                    currentQuote = evtInterface.getCurrentQuote() || '',
+                    currentQuote = evtInterface.getState('currentQuote')  || '',
                     corresp = parsedData.getSources()._indexes.correspId[scope.sourceId] || [];
                 
                 for (var i in Object.keys(corresp)) {

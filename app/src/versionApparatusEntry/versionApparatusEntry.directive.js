@@ -33,7 +33,7 @@ angular.module('evtviewer.versionApparatusEntry')
         controllerAs: 'vm',
         controller: 'versionApparatusEntryCtrl',
         link: function(scope, element, attrs) {
-            scope.scopeViewMode = evtInterface.getCurrentViewMode();
+            scope.scopeViewMode = evtInterface.getState('currentViewMode');
 
             var currentVersionAppEntry = evtVersionApparatusEntry.build(scope);
 

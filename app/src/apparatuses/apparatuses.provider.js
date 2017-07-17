@@ -101,7 +101,7 @@ angular.module('evtviewer.apparatuses')
 			}
 
 			if (apparatuses._indexes.length > 0) {
-				evtInterface.updateCurrentApparatus(apparatuses._indexes[0]);
+				evtInterface.updateState('currentApparatus', apparatuses._indexes[0]);
 			}
 
 			var scopeHelper = {
@@ -120,7 +120,7 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		apparatuses.setCurrentApparatus = function(app) {
-			evtInterface.updateCurrentApparatus(app);
+			evtInterface.updateState('currentApparatus', app);
 			currentApparatuses.currentApparatus = app;
 			angular.forEach(collection, function(currentApparatuses) {
 				currentApparatuses.setCurrentApparatus(app);

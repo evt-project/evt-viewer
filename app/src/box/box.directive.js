@@ -96,12 +96,12 @@ angular.module('evtviewer.box')
                 if ( currentBox.type === 'witness' ) {
                     // Align new witness to selected app entry
                     // scope.$watch(function() {
-                    //     var witnesses = evtInterface.getCurrentWitnesses(),
+                    //     var witnesses = evtInterface.getState('currentWits'),
                     //     scopeWitnessIndex = witnesses.indexOf(scope.vm.witness);
                     //     return scopeWitnessIndex;
                     // }, function(newItem, oldItem) {
                     //     if (oldItem !== newItem) {
-                    //         var appId = evtInterface.getCurrentAppEntry();
+                    //         var appId = evtInterface.getState('currentAppEntry');
                     //         scope.vm.scrollToAppEntry(appId);
                     //     }
                     // }, true);
@@ -177,27 +177,27 @@ angular.module('evtviewer.box')
                 
                 // Necessary for first load page/app entry alignment
                 var pageId, 
-                    currentAppId = evtInterface.getCurrentAppEntry();
+                    currentAppId = evtInterface.getState('currentAppEntry');
                 if ( currentBox.type === 'witness' ) {
                     pageId = scope.vm.witness+'-'+evtInterface.getCurrentWitnessPage(scope.vm.witness);
                 } else if ( currentBox.type === 'text' ) {
-                    pageId = evtInterface.getCurrentPage();
+                    pageId = evtInterface.getState('currentPage');
                 }
                 scope.vm.scrollToPage(pageId);
                 scope.vm.scrollToAppEntry(currentAppId);
                 
                 // scope.$watch(function() {
-                //     return evtInterface.getCurrentAppEntry();
+                //     return evtInterface.getState('currentAppEntry');
                 // }, function(newItem, oldItem) {
                 //     if (oldItem !== newItem) {
-                //         if (evtInterface.getCurrentViewMode() === 'collation' && evtInterface.getCurrentWitnesses().length > 0){
+                //         if (evtInterface.getState('currentViewMode') === 'collation' && evtInterface.getState('currentWits').length > 0){
                 //             scope.vm.scrollToAppEntry(newItem);
                 //         }
                 //     }
                 // }, true);
                 
                 scope.$watch(function() {
-                    return evtInterface.getCurrentDocument();
+                    return evtInterface.getState('currentDoc');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
                         scope.vm.state.docId = newItem;
@@ -284,7 +284,7 @@ angular.module('evtviewer.box')
 
             if (currentBox.type === 'text') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentEdition();
+                    return evtInterface.getState('currentEdition');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem && scope.vm.edition !== newItem) {
                         scope.vm.edition = newItem;
@@ -294,7 +294,7 @@ angular.module('evtviewer.box')
                 }, true);
 
                 scope.$watch(function() {
-                    return evtInterface.getCurrentPage();
+                    return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     currentBox.updateContent();
                 }, true);
@@ -302,7 +302,7 @@ angular.module('evtviewer.box')
 
             if (currentBox.type === 'image') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentPage();
+                    return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
                         scope.vm.state.pageId = newItem;
@@ -319,11 +319,11 @@ angular.module('evtviewer.box')
                 /*The watcher checks if the source to parse has been loaded,   */
                 /*then updates the content of the box with current source text.*/
                 scope.$watch(function() {
-                    return evtInterface.isSourceLoading();
+                    return evtInterface.getProperty('isSourceLoading');
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         if (!newItem) {
-                            scope.vm.source = evtInterface.getCurrentSourceText();
+                            scope.vm.source = evtInterface.getState('currentSourceText') ;
                             currentBox.updateContent();
                         }
                     }
@@ -333,10 +333,10 @@ angular.module('evtviewer.box')
                 /*Checks if the current Source text has changed and then updates*/
                 /*the content of the box.                                       */
                 scope.$watch(function() {
-                    return evtInterface.getCurrentSourceText();
+                    return evtInterface.getState('currentSourceText') ;
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
-                        if (evtInterface.getParsedSourcesTexts().indexOf(newItem) >= 0) {
+                        if (evtInterface.getProperty('parsedSourcesTexts').indexOf(newItem) >= 0) {
                             scope.vm.source = newItem;
                             currentBox.updateContent();
                         }
@@ -344,9 +344,9 @@ angular.module('evtviewer.box')
                 });
             }
             
-            if (currentBox.type === 'text' && evtInterface.getCurrentViewMode() === 'collation') {
+            if (currentBox.type === 'text' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {
-                    return evtInterface.getCurrentVersion();
+                    return evtInterface.getState('currentVersion');
                 }, function (newItem, oldItem) {
                     scope.vm.version = newItem;
                     currentBox.updateContent();

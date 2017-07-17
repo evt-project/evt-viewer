@@ -245,7 +245,7 @@ angular.module('evtviewer.box')
 					topMenuList.selectors.push({
 						id: 'page_' + currentId,
 						type: 'page',
-						initValue: evtInterface.getCurrentPage()
+						initValue: evtInterface.getState('currentPage')
 					});
 					
 					topMenuList.buttons.push({
@@ -265,11 +265,11 @@ angular.module('evtviewer.box')
 
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var currentPage = evtInterface.getCurrentPage(),
+						var currentPage = evtInterface.getState('currentPage'),
 							currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
 							pageSource = currentPageObj ? currentPageObj.source : '';
 						pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
-						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getCurrentDocument() + '" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
+						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
 						// TODO: Add translation for alt text
 						// TEMP... TODO: creare direttiva per gestire le zone sull'immagine
 						var zonesHTML = '',
@@ -303,14 +303,14 @@ angular.module('evtviewer.box')
 						topMenuList.selectors.push({
 							id: 'document_' + currentId,
 							type: 'document',
-							initValue: evtInterface.getCurrentDocument()
+							initValue: evtInterface.getState('currentDoc')
 						});
 					}
 					if (!parsedData.isCriticalEditionAvailable()) {
 						topMenuList.selectors.push({
 							id: 'page_' + currentId,
 							type: 'page',
-							initValue: evtInterface.getCurrentPage()
+							initValue: evtInterface.getState('currentPage')
 						});
 					} else {
 						topMenuList.buttons.push({
@@ -319,15 +319,15 @@ angular.module('evtviewer.box')
 							icon: 'witnesses',
 							type: 'witList'
 						});
-						if (evtInterface.getCurrentViewMode() === 'collation' && config.versions.length > 1 && Object.keys(parsedData.getVersionEntries()._indexes.versionWitMap > 0)) {
+						if (evtInterface.getState('currentViewMode') === 'collation' && config.versions.length > 1 && Object.keys(parsedData.getVersionEntries()._indexes.versionWitMap > 0)) {
 							// if (scope.vm.version === undefined || scope.vm.version === '') {
 							//     evtInterface.updateCurrentVersion(config.versions[0]);
-							//     scope.vm.version = evtInterface.getCurrentVersion();
+							//     scope.vm.version = evtInterface.getState('currentVersion');
 							// }
 							topMenuList.selectors.push({
 								id: 'version_' + currentId,
 								type: 'version',
-								initValue: evtInterface.getCurrentVersion()
+								initValue: evtInterface.getState('currentVersion')
 							});
 						}
 					}
@@ -337,7 +337,7 @@ angular.module('evtviewer.box')
 						topMenuList.selectors.push({
 							id: 'editionLevel_' + currentId,
 							type: 'edition',
-							initValue: evtInterface.getCurrentEdition()
+							initValue: evtInterface.getState('currentEdition')
 						});
 					}
 
@@ -382,7 +382,7 @@ angular.module('evtviewer.box')
 						_totActive: 0
 					};
 					state.filterBox = false;
-					state.docId = evtInterface.getCurrentDocument();
+					state.docId = evtInterface.getState('currentDoc');
 					if (config.toolHeatMap) {
 						bottomMenuList.buttons.push({
 							title: 'BUTTONS.HEAT_MAP',
@@ -442,7 +442,7 @@ angular.module('evtviewer.box')
 								});
 							}
 						} else if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (scope.vm.version !== '' && scope.vm.version !== undefined)) {
-							var currentDocId = evtInterface.getCurrentDocument();
+							var currentDocId = evtInterface.getState('currentDoc');
 							if (scope.vm.version === config.versions[0]) {
 								newDoc = parsedData.getCriticalText(currentDocId) || undefined;
 							} else {
@@ -471,9 +471,9 @@ angular.module('evtviewer.box')
 							}
 						} else { // Other edition level
 							// parsedData.getDocument(scope.vm.state.docId).content
-							var currentPage = evtInterface.getCurrentPage(),
-								currentDoc = evtInterface.getCurrentDocument(),
-								currentEdition = evtInterface.getCurrentEdition();
+							var currentPage = evtInterface.getState('currentPage'),
+								currentDoc = evtInterface.getState('currentDoc'),
+								currentEdition = evtInterface.getState('currentEdition');
 							newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
 							if (newDoc === undefined) {
 								newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
@@ -572,7 +572,7 @@ angular.module('evtviewer.box')
 
 						if (vm.witness !== undefined) {
 							// Main content
-							var currentDocId = evtInterface.getCurrentDocument(),
+							var currentDocId = evtInterface.getState('currentDoc'),
 								newContent = parsedData.getWitnessText(vm.witness, currentDocId) || undefined;
 							if (newContent === undefined) {
 								var documents = parsedData.getDocuments(),
@@ -615,7 +615,7 @@ angular.module('evtviewer.box')
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,
 						type: 'source',
-						initValue: evtInterface.getCurrentSourceText()
+						initValue: evtInterface.getState('currentSourceText') 
 					});
 					topMenuList.buttons.push({
 						title: 'BUTTONS.BIBLIOGRAPHIC_REF',
@@ -655,7 +655,7 @@ angular.module('evtviewer.box')
 										scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
 										scope.vm.isLoading = false;
 									});
-									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
+									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
 									updateTopBoxContent(sourceBibl);
 								} catch (err) {
 									_console.log(err);
@@ -711,7 +711,7 @@ angular.module('evtviewer.box')
 							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "'+vm.version+'" }\' }}</span>';
 
 						if (vm.version !== undefined) {
-							var currentDocId = evtInterface.getCurrentDocument(),
+							var currentDocId = evtInterface.getState('currentDoc'),
 								newContent = parsedData.getVersionText(vm.version, currentDocId) || undefined;
 							if (newContent === undefined) {
 								var documents = parsedData.getDocuments(),

@@ -30,7 +30,7 @@ angular.module('evtviewer.quote')
         controller: 'QuoteCtrl',
         link: function(scope, element, attrs){
             
-            //scope.scopeViewMode = evtInterface.getCurrentViewMode();
+            //scope.scopeViewMode = evtInterface.getState('currentViewMode');
             // Initialize quote
             scope.inlineApparatus = evtInterface.isSourcesInline();
             var currentQuote = evtQuote.build(scope);

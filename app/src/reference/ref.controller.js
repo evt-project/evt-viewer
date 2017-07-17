@@ -29,7 +29,7 @@ angular.module('evtviewer.reference')
 				tabContainerPanel = evtInterface.getTabContainerPanel(),
 				bibliographyPanel = tabContainerPanel ? tabContainerPanel.bibliography : undefined;
 			if (bibliographicRef && bibliographyPanel) {
-				evtInterface.updateSecondaryContentOpened(' ');
+				evtInterface.updateState('secondaryContent', ' ');
 				evtDialog.openByType('globalInfo');
 				evtInterface.setHomePanel(bibliographyPanel.name);
 				evtHighlight.setHighlighted(target);

@@ -32,7 +32,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 return;
             }
 
-            var currentQuoteId = evtInterface.getCurrentQuote() || '';
+            var currentQuoteId = evtInterface.getState('currentQuote')  || '';
 
             var quote,
                 quotes = [],

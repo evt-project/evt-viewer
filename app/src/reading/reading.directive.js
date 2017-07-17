@@ -36,11 +36,10 @@ angular.module('evtviewer.reading')
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){
             // Initialize reading
-            scope.currentViewMode = evtInterface.getCurrentViewMode();
+            scope.currentViewMode = evtInterface.getState('currentViewMode');
             scope.inlineApparatus = evtInterface.isCriticalApparatusInline();
             var currentReading = evtReading.build(scope.appId, scope);
-            if (scope.inlineApparatus && evtInterface.getCurrentAppEntry() === scope.appId) {
-                console.log('openApparatus')
+            if (scope.inlineApparatus && evtInterface.getState('currentAppEntry') === scope.appId) {
                 currentReading.openApparatus();
             }
             // Garbage collection

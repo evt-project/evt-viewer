@@ -37,7 +37,7 @@ angular.module('evtviewer.analogue')
 				uid: currentId,
 				scopeWit: scope.scopeWit || '',
 				analogueId: entryId,
-				scopeViewMode: evtInterface.getCurrentViewMode(),
+				scopeViewMode: evtInterface.getState('currentViewMode'),
 
 				over: false,
 				selected: entryId === analogue.getCurrentAnaloguesEntry(),
@@ -69,8 +69,8 @@ angular.module('evtviewer.analogue')
 		};
 
 		analogue.setCurrentAnaloguesEntry = function(analogueId) {
-			if (evtInterface.getCurrentAnalogue() !== analogueId) {
-				evtInterface.updateCurrentAnalogue(analogueId);
+			if (evtInterface.getState('currentAnalogue')  !== analogueId) {
+				evtInterface.updateState('currentAnalogue', analogueId);
 			}
 			currentAnaloguesEntry = analogueId;
 		};
@@ -99,7 +99,7 @@ angular.module('evtviewer.analogue')
 			angular.forEach(collection, function(currentAnalogue) {
 				currentAnalogue.unselect();
 			});
-			evtInterface.updateCurrentAnalogue('');
+			evtInterface.updateState('currentAnalogue', '');
 		};
 
 		analogue.closeAllApparatus = function(skipId) {
@@ -120,7 +120,7 @@ angular.module('evtviewer.analogue')
 					currentAnalogue.unselect();
 				}
 			});
-			evtInterface.updateCurrentAnalogue(analogueId);
+			evtInterface.updateState('currentAnalogue', analogueId);
 			analogue.setCurrentAnaloguesEntry(analogueId);
 		};
 

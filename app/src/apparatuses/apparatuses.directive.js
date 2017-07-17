@@ -119,7 +119,7 @@ angular.module('evtviewer.apparatuses')
             // Necessary for first load page/app entry alignment
             // TODO: Distinguish among current app / source / analogue
             if (currentApparatuses.currentApparatus === 'criticalApparatus') {
-                var currentAppId = evtInterface.getCurrentAppEntry();
+                var currentAppId = evtInterface.getState('currentAppEntry');
                 if (currentAppId) {
                     scope.vm.scrollToAppEntry(currentAppId);
                     $timeout(function(){ 

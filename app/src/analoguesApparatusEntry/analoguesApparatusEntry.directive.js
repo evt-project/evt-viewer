@@ -27,7 +27,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
         controllerAs: 'vm',
         controller: 'analoguesApparatusEntryCtrl',
         link: function(scope, element, attrs){
-            scope.scopeViewMode = evtInterface.getCurrentViewMode();
+            scope.scopeViewMode = evtInterface.getState('currentViewMode');
             // Initialize apparatus entry
             var currentEntry = evtAnaloguesApparatusEntry.build(scope);
             

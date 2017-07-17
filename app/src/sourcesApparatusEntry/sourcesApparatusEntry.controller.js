@@ -72,7 +72,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     };
 
     this.isSelect = function() {
-        if (evtInterface.getCurrentQuote() === vm.quoteId) {
+        if (evtInterface.getState('currentQuote')  === vm.quoteId) {
             return true;
         } else {
             return vm.selected;

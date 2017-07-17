@@ -126,7 +126,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 _subContentOpened : firstSubContentOpened,
                 over              : false,
                 selected          : false,
-                currentViewMode   : evtInterface.getCurrentViewMode()
+                currentViewMode   : evtInterface.getState('currentViewMode')
             };
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -149,7 +149,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
         sourceEntry.setCurrentSourcesEntry = function(quoteId) {
             if (evtInterface.getCurrentQuote !== quoteId) {
-                evtInterface.updateCurrentQuote(quoteId);
+                evtInterface.updateState('currentQuote', quoteId);
             }
             currentSourcesEntry = quoteId;
         };

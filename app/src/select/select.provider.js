@@ -55,10 +55,10 @@ angular.module('evtviewer.select')
 						_console.log('page select callback ', newOption);
 						if (newOption !== undefined) {
 							vm.selectOption(newOption);
-							var currentDocument = evtInterface.getCurrentDocument();
-							evtInterface.updateCurrentPage(newOption.value);
+							var currentDocument = evtInterface.getState('currentDoc');
+							evtInterface.updateState('currentPage', newOption.value);
 							if (newOption.docs.length > 0 && newOption.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateCurrentDocument(newOption.docs[0]);
+								evtInterface.updateState('currentDoc', newOption.docs[0]);
 							}
 							evtInterface.updateUrl();
 						}
@@ -80,10 +80,10 @@ angular.module('evtviewer.select')
 						// _console.log('document select callback ', newOption);
 						if (newOption !== undefined) {
 							vm.selectOption(newOption);
-							var currentPage = evtInterface.getCurrentPage();
-							evtInterface.updateCurrentDocument(newOption.value);
+							var currentPage = evtInterface.getState('currentPage');
+							evtInterface.updateState('currentDoc', newOption.value);
 							if (newOption.pages.length > 0 && newOption.pages.indexOf(currentPage) < 0) { // The page is not part of the document
-								evtInterface.updateCurrentPage(newOption.pages[0]);
+								evtInterface.updateState('currentPage', newOption.pages[0]);
 							}
 							evtInterface.updateUrl();
 						}
@@ -104,7 +104,7 @@ angular.module('evtviewer.select')
 					callback = function(oldOption, newOption) {
 						if (newOption !== undefined) {
 							vm.selectOption(newOption);
-							evtInterface.updateCurrentEdition(newOption.value);
+							evtInterface.updateState('currentEdition', newOption.value);
 							evtInterface.updateUrl();
 						}
 					};
@@ -254,7 +254,7 @@ angular.module('evtviewer.select')
 								label: currentOption.id,
 								title: currentOption.description
 							};
-							if (config.versions.length > 0 && evtInterface.getAvailableWitnesses().indexOf(witnesses[i]) >= 0) {
+							if (config.versions.length > 0 && evtInterface.getProperty('availableWitnesses').indexOf(witnesses[i]) >= 0) {
 								formattedList.push(option);
 							} else if (config.versions.length <= 0) {
 								formattedList.push(option);
@@ -377,7 +377,7 @@ angular.module('evtviewer.select')
 						if (newOption !== undefined) {
 							vm.selectOption(newOption);
 							evtInterface.updateCurrentSourceText(newOption.value);
-							evtInterface.updateCurrentSource(newOption.value);
+							evtInterface.updateState('currentSource', newOption.value);
 						}
 					};
 					formatOptionList = function(optionList) {
@@ -409,7 +409,7 @@ angular.module('evtviewer.select')
 					optionSelectedValue = initValue;
 					callback = function(oldOption, newOption) {
 						vm.collapse();
-						if (evtInterface.getCurrentViewMode() !== 'collation') {
+						if (evtInterface.getState('currentViewMode') !== 'collation') {
 							if (oldOption !== undefined) {
 								if (newOption !== undefined) {
 									evtInterface.switchVersions(oldOption[0].value, newOption.value);
@@ -429,7 +429,7 @@ angular.module('evtviewer.select')
 							versions = optionList._indexes.versionId;
 						for (var i in versions) {
 							var currentOption, option;
-                            if (evtInterface.getCurrentViewMode() !== 'collation') {
+                            if (evtInterface.getState('currentViewMode') !== 'collation') {
 								if (i !== config.versions[0] && i !== '_name') {
 									currentOption = versions[i];
 									option = {
