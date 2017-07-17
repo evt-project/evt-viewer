@@ -28,54 +28,123 @@ angular.module('evtviewer.interface')
 
 .service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
+    /**
+     * @ngdoc property
+     * @name evtviewer.interface.evtInterface#state
+     * @propertyOf evtviewer.interface.evtInterface
+     * @description [Private] Internal property where information about interface state are stored.
+     * Default:
+     <pre>
         var state = {
-            currentViewMode  : undefined,
-            currentDoc       : undefined,
-            currentPage      : undefined,
-            currentWits      : undefined,
+            currentViewMode : undefined,
+            currentDoc : undefined,
+            currentPage : undefined,
+            currentWits : undefined,
             currentWitsPages : undefined,
-            currentEdition   : undefined,
-            currentAppEntry  : undefined,
-            currentHighlightedZone: undefined,
-            isLoading        : true,
+            currentEdition : undefined,
+            currentAppEntry : undefined,
+            currentHighlightedZone : undefined,
+            isLoading : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
-			dialog : {
-				home : ''
-			},
-            //ADDED BY CM//
+            dialog : { 
+                home : '' 
+            },
             isApparatusBoxOpen : true,
-            currentApparatus   : undefined,
-            currentQuote       : undefined,
-            currentAnalogue    : undefined,
-            currentSource      : undefined,
-            currentSourceText  : undefined,
-            currentVersions    : undefined,
-            currentVersionEntry: undefined,
-            currentVersion     : undefined,
-
-            mainMenu           : false
+            currentApparatus : undefined,
+            currentQuote : undefined,
+            currentAnalogue : undefined,
+            currentSource : undefined,
+            currentSourceText : undefined,
+            currentVersions : undefined,
+            currentVersionEntry : undefined,
+            currentVersion : undefined,
+            mainMenu : false
         };
+     </pre>
+     */
+    var state = {
+        currentViewMode  : undefined,
+        currentDoc       : undefined,
+        currentPage      : undefined,
+        currentWits      : undefined,
+        currentWitsPages : undefined,
+        currentEdition   : undefined,
+        currentAppEntry  : undefined,
+        currentHighlightedZone: undefined,
+        isLoading        : true,
+        isPinnedAppBoardOpened : false,
+        secondaryContent : '',
+		dialog : {
+			home : ''
+		},
+        //ADDED BY CM//
+        isApparatusBoxOpen : true,
+        currentApparatus   : undefined,
+        currentQuote       : undefined,
+        currentAnalogue    : undefined,
+        currentSource      : undefined,
+        currentSourceText  : undefined,
+        currentVersions    : undefined,
+        currentVersionEntry: undefined,
+        currentVersion     : undefined,
 
+        mainMenu           : false
+    };
+    /**
+     * @ngdoc property
+     * @name evtviewer.interface.evtInterface#properties
+     * @propertyOf evtviewer.interface.evtInterface
+     * @description [Private] Internal property where information about interface properties are stored.
+     * Default:
+     <pre>
         var properties = {
-            indexTitle         : '',
-            dataUrl            : '',
-            logoUrl            : '',
-            enableXMLdownload  : false,
+            indexTitle : '',
+            dataUrl : '',
+            logoUrl : '',
+            enableXMLdownload : false,
             availableViewModes : [ ],
             availableWitnesses : [ ],
-            witnessSelector    : false,
+            witnessSelector : false,
             namedEntitiesLists : false,
             availableSourcesTexts : [ ],
-            isSourceLoading    : false,
+            isSourceLoading : false,
             parsedSourcesTexts : [ ],
-            availableVersions  : [ ],
-            versionSelector    : false
+            availableVersions : [ ],
+            versionSelector : false
         };
-
+        </pre>
+     */
+    var properties = {
+        indexTitle         : '',
+        dataUrl            : '',
+        logoUrl            : '',
+        enableXMLdownload  : false,
+        availableViewModes : [ ],
+        availableWitnesses : [ ],
+        witnessSelector    : false,
+        namedEntitiesLists : false,
+        availableSourcesTexts : [ ],
+        isSourceLoading    : false,
+        parsedSourcesTexts : [ ],
+        availableVersions  : [ ],
+        versionSelector    : false
+    };
+    /**
+     * @ngdoc property
+     * @name evtviewer.interface.evtInterface#tools
+     * @propertyOf evtviewer.interface.evtInterface
+     * @description [Private] Internal property where information about interface tools status are stored.
+     * Default:
+     <pre>
         var tools = {
 
         };
+     </pre>
+     */
+    var tools = {
+
+    };
 
         /**
          * @ngdoc method
