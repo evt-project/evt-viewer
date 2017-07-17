@@ -138,6 +138,11 @@
 		"TEXT_OF_WITNESS_NOT_AVAILABLE": "Text of witness {{witness}} is not available.",
 		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Try a different browser or contact the developers."
 	},
+	"NAMED_ENTITIES": {
+		"MORE_INFO": "More Info",
+		"OCCURRENCES": "Occurrences",
+		"XML": "XML"
+	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Author",
 		"AUTHORITY": "Authority",

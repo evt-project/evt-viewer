@@ -138,6 +138,11 @@
 		"TEXT_OF_WITNESS_NOT_AVAILABLE": "Il testo del testimone {{witness}} non è disponibile.",
 		"TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS": "Prova ad utilizzare un browser differente oppure contatta gli sviluppatori."
 	},
+	"NAMED_ENTITIES": {
+		"MORE_INFO": "Informazioni aggiuntive",
+		"OCCURRENCES": "Occorrenze",
+		"XML": "XML"
+	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Autore",
 		"AUTHORITY": "Autorità",

@@ -150,15 +150,15 @@ angular.module('evtviewer.namedEntity')
                 _indexes : []
             };
             tabs._indexes.push('moreInfo');
-            tabs.moreInfo = { label: 'More Info' };
+            tabs.moreInfo = { label: 'NAMED_ENTITIES.MORE_INFO' };
             
             if (entityType !== 'relation') {
                 tabs._indexes.push('occurrences');
-                tabs.occurrences = { label: 'Occurrences' };
+                tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES' };
             }
             
             tabs._indexes.push('xmlSource');
-            tabs.xmlSource = { label: 'XML' };
+            tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
 
             var firstSubContentOpened = tabs && tabs._indexes && tabs._indexes.length > 0 ? tabs._indexes[0] : '';
             scopeHelper = {

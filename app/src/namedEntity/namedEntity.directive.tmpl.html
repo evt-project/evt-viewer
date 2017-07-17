@@ -34,7 +34,7 @@
             <span ng-repeat="tab in ::vm.tabs._indexes track by $index"
                     ng-click="vm.toggleSubContent(tab)"
                     class="namedEntity__details-header namedEntity__details-header-{{::tab}}">
-                {{ ::vm.tabs[tab].label | translate }}
+                {{ vm.tabs[tab].label | translate }}
             </span>
           </div>
 
