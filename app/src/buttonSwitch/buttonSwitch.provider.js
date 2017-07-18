@@ -16,144 +16,13 @@ angular.module('evtviewer.buttonSwitch')
 		defaults = _defaults;
 	};
 
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox) {
-        var button    = {},
-            collection = {},
-            list       = [],
-            idx        = 0;
-        
-        var _console = $log.getInstance('buttonSwitch');
-
-        /* GET EVT ICON */
-        var getIcon = function(icon) {
-            var evtIcon = '';
-            switch(angular.lowercase(icon)) {
-                case 'add':
-                    evtIcon = 'icon-evt_add';
-                    break;
-                case 'color-legend':
-                    evtIcon = 'icon-evt_color-legend';
-                    break;
-                case 'filter':
-                case 'filters':
-                    evtIcon = 'icon-evt_filter';
-                    break;
-                case 'font-size':
-                    evtIcon = 'icon-evt_font-size';
-                    break;
-                case 'font-size-minus':
-                    evtIcon = 'icon-evt_font-size-minus-alt';
-                    break;
-                case 'font-size-plus':
-                    evtIcon = 'icon-evt_font-size-plus-alt';
-                    break;
-                case 'font-size-reset':
-                    evtIcon = 'icon-evt_font-size-reset-alt';
-                    break;
-                case 'heatmap':
-                    evtIcon = 'icon-evt_heatmap-alt';
-                    break;
-                case 'info':
-                    evtIcon = 'icon-evt_info';
-                    break;
-                case 'itl':
-                    evtIcon = 'icon-evt_link';
-                    break;
-                case 'keyboard':
-                    evtIcon = 'icon-evt_keyboard';
-                    break;
-                case 'list':
-                    evtIcon = 'icon-evt_list';
-                    break;
-                case 'menu-vert':
-                    evtIcon = 'icon-evt_more-vert';
-                    break;
-                case 'mode-imgtxt':
-                    evtIcon = 'icon-evt_imgtxt';
-                    break;
-                case 'mode-txttxt':
-                    evtIcon = 'icon-evt_txttxt';
-                    break;
-                case 'reading-txt':
-                    evtIcon = 'icon-evt_txt';
-                    break;
-                case 'mode-collation':
-                    evtIcon = 'icon-evt_collation';
-                    break;
-                case 'mode-bookreader':
-                    evtIcon = 'icon-evt_bookreader';
-                    break;
-                case 'next':
-                    evtIcon = 'icon-evt_next';
-                    break;
-                case 'pin':
-                    evtIcon = 'icon-evt_pin-alt-on';
-                    break;
-                case 'pin-off':
-                    evtIcon = 'icon-evt_pin-off';
-                    break;
-                case 'pin-on':
-                    evtIcon = 'icon-evt_pin-on';
-                    break;
-                case 'previous':
-                    evtIcon = 'icon-evt_previous';
-                    break;
-                case 'remove':
-                    evtIcon = 'icon-evt_close';
-                    break;
-                case 'search':
-                    evtIcon = 'icon-evt_search';
-                    break;
-                case 'search-advanced':
-                    evtIcon = 'icon-evt_advanced-search';
-                    break;
-                case 'search-results-hide':
-                    evtIcon = 'icon-evt_search-results-close';
-                    break;
-                case 'search-results-show':
-                    evtIcon = 'icon-evt_search-results-open';
-                    break;
-                case 'bookmark':
-                    evtIcon = 'icon-evt_bookmark';
-                    break;
-                case 'thumb':
-                case 'thumbs':
-                case 'thumbnail':
-                case 'thumbnails':
-                    evtIcon = 'icon-evt_thumbnails';
-                    break;
-                case 'v-align':
-                    evtIcon = 'icon-evt_align';
-                    break;
-                case 'witnesses':
-                    evtIcon = 'icon-evt_books';
-                    break;
-            }
-            return evtIcon;
-        };
-        
-        var toggleActive = function() {
-            var vm = this;
-            vm.active = !vm.active;
-        };
-        var setActive = function(state) {
-            var vm = this;
-            vm.active = state;
-        };
-        var disable = function() {
-            var vm = this;
-            vm.disabled = true;
-        };
-        var enable = function() {
-            var vm = this;
-            vm.disabled = false;
-        };
-        
-        var destroy = function() {
-            var tempId = this.uid;
-            delete collection[tempId];
-            // _console.log('vm - destroy ' + tempId);
-        };
+	this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox) {
+		var button    = {},
+			collection = {},
+			list       = [],
+			idx        = 0;
+		
+		var _console = $log.getInstance('buttonSwitch');
 
 		// GET EVT ICON //
 		var getIcon = function(icon) {
@@ -202,6 +71,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'itl':
 					evtIcon = 'icon-evt_link';
 					break;
+				case 'keyboard':
+					evtIcon = 'icon-evt_keyboard';
+					break;
 				case 'language':
 					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
 					break;
@@ -224,14 +96,17 @@ angular.module('evtviewer.buttonSwitch')
 				case 'mode-collation':
 					evtIcon = 'icon-evt_collation';
 					break;
-                case 'mode-srctxt':
-                    evtIcon = 'iconbis-evt_srctxt';
-                    break;
-                case 'mode-versions':
-                    evtIcon = 'iconbis-evt_versions';
-                    break;
+				case 'mode-srctxt':
+					evtIcon = 'iconbis-evt_srctxt';
+					break;
+				case 'mode-versions':
+					evtIcon = 'iconbis-evt_versions';
+					break;
 				case 'mode-bookreader':
 					evtIcon = 'icon-evt_bookreader';
+					break;
+				case 'next':
+					evtIcon = 'icon-evt_next';
 					break;
 				case 'pin':
 					evtIcon = 'icon-evt_pin-alt-on';
@@ -242,11 +117,23 @@ angular.module('evtviewer.buttonSwitch')
 				case 'pin-on':
 					evtIcon = 'icon-evt_pin-on';
 					break;
+				case 'previous':
+					evtIcon = 'icon-evt_previous';
+					break;
 				case 'remove':
 					evtIcon = 'icon-evt_close';
 					break;
 				case 'search':
 					evtIcon = 'icon-evt_search';
+					break;
+				case 'search-advanced':
+					evtIcon = 'icon-evt_advanced-search';
+					break;
+				case 'search-results-hide':
+					evtIcon = 'icon-evt_search-results-close';
+					break;
+				case 'search-results-show':
+					evtIcon = 'icon-evt_search-results-open';
 					break;
 				case 'thumb':
 				case 'thumbs':
@@ -266,8 +153,28 @@ angular.module('evtviewer.buttonSwitch')
 			}
 			return evtIcon;
 		};
-
+		var toggleActive = function() {
+			var vm = this;
+			vm.active = !vm.active;
+		};
+		var setActive = function(state) {
+			var vm = this;
+			vm.active = state;
+		};
+		var disable = function() {
+			var vm = this;
+			vm.disabled = true;
+		};
+		var enable = function() {
+			var vm = this;
+			vm.disabled = false;
+		};
 		
+		var destroy = function() {
+			var tempId = this.uid;
+			delete collection[tempId];
+			// _console.log('vm - destroy ' + tempId);
+		};
 
 		button.build = function(scope, vm) {
 			var currentId = scope.id || idx++,
@@ -281,8 +188,8 @@ angular.module('evtviewer.buttonSwitch')
 				active = scope.active || false,
 				disabled = scope.disabled || false,
 				btnType = scope.btnType || '',
-                callback = function() { console.log('TODO ' + type); },
-                fakeCallback = function() {};
+				callback = function() { console.log('TODO ' + type); },
+				fakeCallback = function() {};
 			var scopeHelper = {};
 			
 			// SET CALLBACK //
@@ -306,15 +213,15 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'changeViewMode':
 					btnType = 'standAlone';
-                    callback = function() {
-                        var vm = this;
-                        if (vm.value !== undefined) {
-                            if (vm.value === 'srcTxt') {
-                                var sourceId = evtInterface.getState('currentSourceText') ;
-                                evtInterface.updateCurrentSourceText(sourceId);
-                            }
-                            evtInterface.updateState('currentViewMode', vm.value);
-                            evtInterface.updateUrl();
+					callback = function() {
+						var vm = this;
+						if (vm.value !== undefined) {
+							if (vm.value === 'srcTxt') {
+								var sourceId = evtInterface.getState('currentSourceText') ;
+								evtInterface.updateCurrentSourceText(sourceId);
+							}
+							evtInterface.updateState('currentViewMode', vm.value);
+							evtInterface.updateUrl();
 							if (evtInterface.getToolState('ITL') === 'active') {
 								if (vm.value === 'imgTxt') {
 									evtImageTextLinking.activateITL();
@@ -322,8 +229,8 @@ angular.module('evtviewer.buttonSwitch')
 									evtImageTextLinking.deactivateITL();
 								}
 							}
-                        }
-                    };
+						}
+					};
 					break;
 				case 'colorLegend':
 					btnType = 'toggler';
@@ -369,15 +276,15 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'closeDialog':
 					callback = function() {
-                        var vm = this;
-                        evtDialog.closeAll();
-                        evtInterface.updateState('secondaryContent', '');
-                        vm.active = !vm.active;
-                    };
+						var vm = this;
+						evtDialog.closeAll();
+						evtInterface.updateState('secondaryContent', '');
+						vm.active = !vm.active;
+					};
 
-                    break;
+					break;
 				case 'closePinned':
-                    callback = function() {
+					callback = function() {
 						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
@@ -553,13 +460,13 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'searchTools':
 					callback = function(){
-                        var searchBtnState = evtSearchBox.openBox('searchBtn');
+						var searchBtnState = evtSearchBox.openBox('searchBtn');
 						//evtInterface.toogleSearchBoxOpened();
-                    };
-                    /*fakeCallback = function() {
-                       return callback();
-                    };*/
-                    break;
+					};
+					/*fakeCallback = function() {
+					   return callback();
+					};*/
+					break;
 				case 'witList':
 					btnType = 'toggler';
 					callback = function() {
@@ -582,45 +489,45 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					//TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
 					break;
-                // Case toggleInfoSrc //
-                // Button to show/hide the bibliographic reference of the source //
-                // currently shown in the source-text view | @author --> CM      //
-                case 'toggleInfoSrc':
-                    btnType = 'toggler';
-                    callback = function(){
-                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
-                        //Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
-                        //TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
-                        var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
-                        scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
-                        scope.$parent.vm.toggleTopBox();
-                    };
-                    fakeCallback = function(){
-                        scope.$parent.vm.updateState('topBoxOpened', false);
-                    };
-                    break;
-                // Case addVer //
-                // It shows the versions available in the versions selector | @author --> CM //
-                case 'addVer':
-                    btnType = 'standAlone';
-                    callback  = function() {
-                        evtInterface.updateProperty('versionSelector', true);
-                        scope.vm.active = false;
-                    };
-                    break;
-                case 'removeVer':
-                    callback = function(){
-                        var ver = scope.$parent.vm.version;
-                        evtInterface.removeVersion(ver);
-                    };
-                    break;
-                case 'cropText':
-                    btnType = 'toggler';
-                    callback = function() {
-                        var s = scope.$parent.vm;
-                        return s;
-                    };
-                    break;
+				// Case toggleInfoSrc //
+				// Button to show/hide the bibliographic reference of the source //
+				// currently shown in the source-text view | @author --> CM      //
+				case 'toggleInfoSrc':
+					btnType = 'toggler';
+					callback = function(){
+						var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
+						//Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
+						//TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
+						var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
+						scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+						scope.$parent.vm.toggleTopBox();
+					};
+					fakeCallback = function(){
+						scope.$parent.vm.updateState('topBoxOpened', false);
+					};
+					break;
+				// Case addVer //
+				// It shows the versions available in the versions selector | @author --> CM //
+				case 'addVer':
+					btnType = 'standAlone';
+					callback  = function() {
+						evtInterface.updateProperty('versionSelector', true);
+						scope.vm.active = false;
+					};
+					break;
+				case 'removeVer':
+					callback = function(){
+						var ver = scope.$parent.vm.version;
+						evtInterface.removeVersion(ver);
+					};
+					break;
+				case 'cropText':
+					btnType = 'toggler';
+					callback = function() {
+						var s = scope.$parent.vm;
+						return s;
+					};
+					break;
 				default:
 					break;
 			}

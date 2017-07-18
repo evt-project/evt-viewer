@@ -190,7 +190,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to get current Edition */
    /* ******************************* */
    let getCurrentEdition = function () {
-      currentEdition = mainNode.dataset.edition;
+      currentEdition = mainNode ? mainNode.dataset.edition : '';
       return currentEdition;
    };
 
@@ -204,7 +204,7 @@ angular.module('evtviewer.dataHandler')
       let nodeName = node.nodeName;
 
       mainNode = document.getElementById('mainText');
-      currentEdition = mainNode.dataset.edition;
+      currentEdition = mainNode ? mainNode.dataset.edition : '';
 
       if (currentEdition === 'diplomatic') {
          switch (nodeName) {

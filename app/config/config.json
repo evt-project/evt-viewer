@@ -88,10 +88,8 @@
 
 	"maxWitsLoadTogether": 5,
     
-    "versions" : ["rec2", "rec1", "rec3"],
-    "witnessesGroups": [
-        
-    ],
+    "versions" : [],
+    "witnessesGroups": [],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
