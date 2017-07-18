@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.evtVersionApparatus
+ * @description 
+ * # evtVersionApparatus
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.dataHandler')
 
 .service('evtVersionApparatus', function(config, parsedData, evtCriticalApparatus, evtParser) {

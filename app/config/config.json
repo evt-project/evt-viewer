@@ -2,7 +2,7 @@
 	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
     "sourcesUrl"       : "",
     
-    "sourcesTextsUrl" : "",
+    "sourcesTextsUrl" : "data/sources/",
     "logoUrl": "",
     "enableXMLdownload" : true,
     "analoguesUrl"     : "",

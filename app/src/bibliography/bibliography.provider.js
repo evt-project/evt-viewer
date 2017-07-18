@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.bibliography
+ * @name evtviewer.bibliography.evtBibliographyProvider
+ * @description 
+ * # evtBibliographyProvider
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.bibliography')
 
 .provider('evtBibliography', function() {

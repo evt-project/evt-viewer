@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.namedEntity
+ * @name evtviewer.namedEntity.evtGenericEntity
+ * @description 
+ * # evtGenericEntity
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.namedEntity')
 
 .service('evtGenericEntity', function() {

@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.translation
+ * @name evtviewer.translation.evtTranslation
+ * @description 
+ * # evtTranslation
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.translation')
 
 .constant('TRANSLATIONDEFAULTS', {

@@ -1,3 +1,13 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.core
+ * @name evtviewer.core.directive:compile
+ * @description 
+ * # compile
+ * TODO: Add description!
+ *
+ * @restrict A
+**/
 angular.module('evtviewer.core')
 
 .config(function($compileProvider) {

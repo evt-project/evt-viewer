@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.dialog
+ * @name evtviewer.dialog.evtDialog
+ * @description 
+ * # evtDialog
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.dialog')
 
 .provider('evtDialog', function() {

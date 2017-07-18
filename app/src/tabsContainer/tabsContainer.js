@@ -1,7 +1,9 @@
 /**
- * @ngdoc module
- * @name evtviewer.TabsContainer
- * @module evtviewer.TabsContainer
- * @description ...
+ * @ngdoc overview
+ * @name evtviewer.tabsContainer
+ * @module evtviewer.tabsContainer
+ * @description 
+ * # evtviewer.tabsContainer
+ * TODO: Add description!
 **/
 angular.module('evtviewer.tabsContainer', []);

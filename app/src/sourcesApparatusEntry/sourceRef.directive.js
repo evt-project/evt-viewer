@@ -1,3 +1,19 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.directive:evtSourceRef
+ * @description 
+ * # evtSourceRef
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} sourceId id of source
+ * @param {string=} sourceAbbr abbreviation of source
+ *
+ * @restrict E
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {
@@ -15,23 +31,23 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 var newSource = scope.sourceId;
 
                 //Updates the source to show inside of the source text box
-                if (evtInterface.getCurrentSourceText() !== newSource) {
+                if (evtInterface.getState('currentSourceText')  !== newSource) {
                     evtInterface.updateCurrentSourceText(newSource);
-                    evtInterface.updateCurrentSource(newSource);
+                    evtInterface.updateState('currentSource', newSource);
                 }
                 
                 //Switches to the "Source-Text" view
-                if (evtInterface.getCurrentViewMode() !== 'srcTxt') {
-                    evtInterface.updateCurrentViewMode('srcTxt');
+                if (evtInterface.getState('currentViewMode') !== 'srcTxt') {
+                    evtInterface.updateState('currentViewMode', 'srcTxt');
                 }
 
                 //TODO: evtInterface.updateUrl();
                 
-                /* Checks if the selected quote has a corresponding segment inside of the souce text. */
-                /* If so, it saves the reference inside of the the "segToAlign" variable. */
+                // Checks if the selected quote has a corresponding segment inside of the souce text. //
+                // If so, it saves the reference inside of the the "segToAlign" variable. //
                 var quoteToAlign = '',
                     segToAlign = '',
-                    currentQuote = evtInterface.getCurrentQuote() || '',
+                    currentQuote = evtInterface.getState('currentQuote')  || '',
                     corresp = parsedData.getSources()._indexes.correspId[scope.sourceId] || [];
                 
                 for (var i in Object.keys(corresp)) {

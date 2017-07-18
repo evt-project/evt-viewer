@@ -4,6 +4,7 @@ dist
 .sass-cache
 bower_components
 build
+docs
 app/data
 app/old
 app/data/*

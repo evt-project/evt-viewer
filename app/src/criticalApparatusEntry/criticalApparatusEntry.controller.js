@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.criticalApparatusEntry
+ * @name evtviewer.criticalApparatusEntry.controller:CriticalApparatusEntryCtrl
+ * @description 
+ * # CriticalApparatusEntryCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive. 
+**/
 angular.module('evtviewer.criticalApparatusEntry')
 
 .controller('CriticalApparatusEntryCtrl', function($log, $scope, config, Utils, evtInterface, evtCriticalApparatusEntry, evtInterface, evtReading, evtBox, evtApparatuses, evtPinnedElements) {
@@ -96,11 +105,11 @@ angular.module('evtviewer.criticalApparatusEntry')
                     !Utils.DOMutils.isNestedInClassElem(target, 'critical-apparatus-entry_other-content_headers')) {
                     evtCriticalApparatusEntry.unselectAll();
                     evtReading.unselectAll();
-                    evtInterface.updateCurrentAppEntry('');
+                    evtInterface.updateState('currentAppEntry', '');
                 }
             } else {
                 evtReading.selectById(vm.appId);
-                evtInterface.updateCurrentAppEntry(vm.appId);
+                evtInterface.updateState('currentAppEntry', vm.appId);
                 evtCriticalApparatusEntry.selectById(vm.appId);
                 if (!vm.isInline()) {
                     evtBox.alignScrollToApp(vm.appId);

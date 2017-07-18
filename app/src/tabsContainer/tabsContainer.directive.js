@@ -1,3 +1,20 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.tabsContainer
+ * @name evtviewer.tabsContainer.directive:evtTabsContainer
+ * @description 
+ * # evtTabsContainer
+ * TODO: Add description!
+ * It uses the {@link evtviewer.tabsContainer.controller:TabsContainerCtrl TabsContainerCtrl} controller. 
+ *
+ * @scope
+ * @param {string=} type type of tab container ('projectInfo', 'entitiesList')
+ * @param {string=} orientation orientation of tabs ('vertical', 'horizontal') [default: 'vertical']
+ *
+ * @restrict E
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.tabsContainer')
 
 .directive('evtTabsContainer', function(evtTabsContainer) {

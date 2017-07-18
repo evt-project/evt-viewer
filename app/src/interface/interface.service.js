@@ -1,56 +1,168 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.interface
+ * @name evtviewer.interface.evtInterface
+ * @description 
+ * # evtInterface
+ * The evtInterface service is encharged of storing information about the status of the application, 
+ * and it exposes function to retrieve and change particular status data.
+ *
+ * 
+ * @requires $rootScope
+ * @requires $timeout
+ * @requires $routeParams
+ * @requires $q
+ * @requires evtviewer.core.config
+ * @requires evtviewer.communication.evtCommunication
+ * @requires evtviewer.dataHandler.evtAnaloguesParser
+ * @requires evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.dataHandler.evtCriticalParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.reading.evtReading
+ * @requires evtviewer.UItools.evtPinnedElements
+ * @requires evtviewer.translation.evtTranslation
+ *
+**/
 angular.module('evtviewer.interface')
 
 .service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
+    /**
+     * @ngdoc property
+     * @name evtviewer.interface.evtInterface#state
+     * @propertyOf evtviewer.interface.evtInterface
+     * @description [Private] Internal property where information about interface state are stored.
+     * Default:
+     <pre>
         var state = {
-            currentViewMode  : undefined,
-            currentDoc       : undefined,
-            currentPage      : undefined,
-            currentWits      : undefined,
+            currentViewMode : undefined,
+            currentDoc : undefined,
+            currentPage : undefined,
+            currentWits : undefined,
             currentWitsPages : undefined,
-            currentEdition   : undefined,
-            currentAppEntry  : undefined,
-            currentHighlightedZone: undefined,
-            isLoading        : true,
+            currentEdition : undefined,
+            currentAppEntry : undefined,
+            currentHighlightedZone : undefined,
+            isLoading : true,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
-			dialog : {
-				home : ''
-			},
-            /*ADDED BY CM*/
+            dialog : { 
+                home : '' 
+            },
             isApparatusBoxOpen : true,
-            currentApparatus   : undefined,
-            currentQuote       : undefined,
-            currentAnalogue    : undefined,
-            currentSource      : undefined,
-            currentSourceText  : undefined,
-            currentVersions    : undefined,
-            currentVersionEntry: undefined,
-            currentVersion     : undefined,
-
-            mainMenu           : false
+            currentApparatus : undefined,
+            currentQuote : undefined,
+            currentAnalogue : undefined,
+            currentSource : undefined,
+            currentSourceText : undefined,
+            currentVersions : undefined,
+            currentVersionEntry : undefined,
+            currentVersion : undefined,
+            mainMenu : false
         };
+     </pre>
+     */
+    var state = {
+        currentViewMode  : undefined,
+        currentDoc       : undefined,
+        currentPage      : undefined,
+        currentWits      : undefined,
+        currentWitsPages : undefined,
+        currentEdition   : undefined,
+        currentAppEntry  : undefined,
+        currentHighlightedZone: undefined,
+        isLoading        : true,
+        isPinnedAppBoardOpened : false,
+        secondaryContent : '',
+		dialog : {
+			home : ''
+		},
+        //ADDED BY CM//
+        isApparatusBoxOpen : true,
+        currentApparatus   : undefined,
+        currentQuote       : undefined,
+        currentAnalogue    : undefined,
+        currentSource      : undefined,
+        currentSourceText  : undefined,
+        currentVersions    : undefined,
+        currentVersionEntry: undefined,
+        currentVersion     : undefined,
 
+        mainMenu           : false
+    };
+    /**
+     * @ngdoc property
+     * @name evtviewer.interface.evtInterface#properties
+     * @propertyOf evtviewer.interface.evtInterface
+     * @description [Private] Internal property where information about interface properties are stored.
+     * Default:
+     <pre>
         var properties = {
-            indexTitle         : '',
-            dataUrl            : '',
-            logoUrl            : '',
-            enableXMLdownload  : false,
+            indexTitle : '',
+            dataUrl : '',
+            logoUrl : '',
+            enableXMLdownload : false,
             availableViewModes : [ ],
             availableWitnesses : [ ],
-            witnessSelector    : false,
+            witnessSelector : false,
             namedEntitiesLists : false,
             availableSourcesTexts : [ ],
-            isSourceLoading    : false,
+            isSourceLoading : false,
             parsedSourcesTexts : [ ],
-            availableVersions  : [ ],
-            versionSelector    : false
+            availableVersions : [ ],
+            versionSelector : false
         };
-
+        </pre>
+     */
+    var properties = {
+        indexTitle         : '',
+        dataUrl            : '',
+        logoUrl            : '',
+        enableXMLdownload  : false,
+        availableViewModes : [ ],
+        availableWitnesses : [ ],
+        witnessSelector    : false,
+        namedEntitiesLists : false,
+        availableSourcesTexts : [ ],
+        isSourceLoading    : false,
+        parsedSourcesTexts : [ ],
+        availableVersions  : [ ],
+        versionSelector    : false
+    };
+    /**
+     * @ngdoc property
+     * @name evtviewer.interface.evtInterface#tools
+     * @propertyOf evtviewer.interface.evtInterface
+     * @description [Private] Internal property where information about interface tools status are stored.
+     * Default:
+     <pre>
         var tools = {
 
         };
+     </pre>
+     */
+    var tools = {
 
+    };
+
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#boot
+         * @methodOf evtviewer.interface.evtInterface
+         *
+         * @description
+         * Main interface boot. 
+         * During this phase, after reading the JSON configuration file ({@link evtviewer.communication.evtCommunication#getExternalConfig evtCommunication.getExternalConfig}) 
+         * and updating the appropriate parameters in the internal model, 
+         * the system initiates an Ajax request in order to retrieve the edition data, contained in the file specified by the publisher, 
+         * which can either be a local file or an online resource ({@link evtviewer.communication.evtCommunication#getData evtCommunication.getData}).
+         * If the publisher has indicated a URL for sources and/or analogues, the system initiates one (or more) other Ajax requests in order
+         * to retrive this external material ({@link evtviewer.communication.evtCommunication#getExternalData evtCommunication.getExternalData}).
+         * If no errors are raised, the interface will update its status and available features, 
+         * eventually launch other parser to get data not yet retrieved and update url parameters depending either on previous paramenter set or on the default values.
+         * 
+         */
         mainInterface.boot = function() {  
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
                 properties.indexTitle         = config.indexTitle;
@@ -134,10 +246,10 @@ angular.module('evtviewer.interface')
                             // Update current app entry
                             if (state.currentAppEntry !== undefined && 
                                 parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {
-                                mainInterface.updateCurrentAppEntry('');
+                                mainInterface.updateState('currentAppEntry', '');
                             }
                             
-                            /** Temp | TODO: add to updateParams? **/
+                            // Temp | TODO: add to updateParams? //
                             // Prepare the sources texts available and the source text to show as default
                             // in the src-Txt view
                             var sourcesTexts = parsedData.getSources()._indexes.availableTexts;
@@ -148,7 +260,7 @@ angular.module('evtviewer.interface')
                                 mainInterface.updateCurrentSourceText(properties.availableSourcesTexts[0]);
                             }
 
-                            /** Temp | TODO: add to updateParams? **/
+                            // Temp | TODO: add to updateParams? //
                             // Prepare version to show as default in the versions view if there
                             // are only two versions of the text, and available versions
                             state.currentVersions = [];
@@ -180,238 +292,309 @@ angular.module('evtviewer.interface')
             });
         };
 
-        /* ********** */
-        /* PARAMS GET */
-        /* ********** */
+        // ////////// //
+        // PARAMS GET //
+        // ////////// //
 		
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#setTabContainerPanel
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Set Tab Container active panel
+         * @param {string} arr panel to be set
+         */
 		mainInterface.setTabContainerPanel = function(arr){
 			state.dialog.tabContainerPanel = arr;
 		};
-		
+
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getTabContainerPanel
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get active Tab Container panel
+         * @returns {string} active tab container panel name
+         */
 		mainInterface.getTabContainerPanel = function(){
 			return state.dialog.tabContainerPanel;
 		};
 		
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#setHomePanel
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Set Home Panel
+         * @param {string} string panel to be set
+         */
 		mainInterface.setHomePanel = function(string){
 			state.dialog.home = string;
 		};
 		
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getHomePanel
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get Home Panel
+         * @returns {string} home panel name
+         */
 		mainInterface.getHomePanel = function(){
 			return state.dialog.home;
 		};
 		
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#isLoading
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check if interface is in "loading" status
+         * @returns {boolean} interface loading status 
+         */
         mainInterface.isLoading = function() {
             return state.isLoading;
         };
         
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#isToolAvailable
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check if the tool "toolName" is available or not
+         * @param {string} toolName name of tool to check
+         * @returns {boolean} availability of tool "toolName"
+         */
         mainInterface.isToolAvailable = function(toolName){
             return config[toolName];
         };
+
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getToolState
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get the status of tool "toolName"
+         * @param {string} toolName name of tool to check
+         * @returns {boolean} status of tool "toolName"
+         */
         mainInterface.getToolState = function(toolName) {
             return (tools[toolName] ? tools[toolName].status : undefined);
         };
 
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getProperties
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get the update properties of interface
+         * @returns {object} update properties object. Example:
+         * <pre>
+            var properties = {
+                indexTitle : '',
+                dataUrl : '',
+                logoUrl : '',
+                enableXMLdownload : false,
+                availableViewModes : [ ],
+                availableWitnesses : [ ],
+                witnessSelector : false,
+                namedEntitiesLists : false,
+                availableSourcesTexts : [ ],
+                isSourceLoading : false,
+                parsedSourcesTexts : [ ],
+                availableVersions : [ ],
+                versionSelector : false
+            };
+            </pre>
+         */
         mainInterface.getProperties = function(){
             return properties;
         };
 
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getProperty
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get the updated value of property "name"
+         * @param {string} name name of property to get
+         * @returns {any} value of property "name"
+         */
         mainInterface.getProperty = function(name){
             return properties[name];
         };
 
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getStates
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get the updated statues values of interface
+         * @returns {object} updated status values object. Example:
+         <pre>
+            var state = {
+                currentViewMode : undefined,
+                currentDoc : undefined,
+                currentPage : undefined,
+                currentWits : undefined,
+                currentWitsPages : undefined,
+                currentEdition : undefined,
+                currentAppEntry : undefined,
+                currentHighlightedZone : undefined,
+                isLoading : true,
+                isPinnedAppBoardOpened : false,
+                secondaryContent : '',
+                dialog : { 
+                    home : '' 
+                },
+                isApparatusBoxOpen : true,
+                currentApparatus : undefined,
+                currentQuote : undefined,
+                currentAnalogue : undefined,
+                currentSource : undefined,
+                currentSourceText : undefined,
+                currentVersions : undefined,
+                currentVersionEntry : undefined,
+                currentVersion : undefined,
+                mainMenu : false
+            };
+         </pre>
+         */
         mainInterface.getStates = function(){
             return state;
         };
-        
+
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getState
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get the updated status of property "name"
+         * @param {string} name name of property to get
+         * @returns {any} value of property "name"
+         */
         mainInterface.getState = function(name){
             return state[name];
         };
 
-        mainInterface.getAvailableViewModes = function() {
-            return properties.availableViewModes;
-        };
-
-        mainInterface.getCurrentViewMode = function(){
-            return state.currentViewMode;
-        };
-
-        mainInterface.getCurrentPage = function(){
-            return state.currentPage;
-        };
-
-        mainInterface.getCurrentDocument = function() {
-            return state.currentDoc;
-        };
-
-        mainInterface.getCurrentEdition = function(){
-            return state.currentEdition;
-        };
-
-        mainInterface.getCurrentHighlightZone = function() {
-            return state.currentHighlightedZone;
-        };
-
-        mainInterface.getAvailableWitnesses = function() {
-            return properties.availableWitnesses;
-        };
-
-        mainInterface.getCurrentWitnesses = function(){
-            return state.currentWits;
-        };
-
-        mainInterface.getCurrentWitnessesPages = function(){
-            return state.currentWitsPages;
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getCurrentWitnessPage
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get the current page of witness "wit"
+         * @param {string} wit id of witness
+         * @returns {string} id of current page of witness "wit"
+         */
         mainInterface.getCurrentWitnessPage = function(wit){
             return state.currentWitsPages[wit];
         };
 
-        mainInterface.getCurrentAppEntry = function(){
-            return state.currentAppEntry;
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#existCriticalText
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check if critical text exists for current document
+         * @returns {boolean} availability of critical text for current document
+         */
         mainInterface.existCriticalText = function(){
             return parsedData.getCriticalText(state.currentDoc) !== undefined;
         };
 
-        mainInterface.isPinnedAppBoardOpened = function() {
-            return state.isPinnedAppBoardOpened;
-        };
-
-        mainInterface.getSecondaryContentOpened = function(){
-            return state.secondaryContent;
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#isCriticalApparatusInline
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check if critical apparatus is inline or in a dedicated box
+         * @returns {boolean} whether the critical apparatus is inline or not
+         */
         mainInterface.isCriticalApparatusInline = function() {
-            return config.showInlineCriticalApparatus || mainInterface.getCurrentViewMode() !== 'readingTxt';
+            return config.showInlineCriticalApparatus || mainInterface.getState('currentViewMode') !== 'readingTxt';
         };
 
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#isSourcesInline
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check if sources apparatus is inline or in a dedicated box
+         * @returns {boolean} whether the sources apparatus is inline or not
+         */
 		mainInterface.isSourcesInline = function() {
-            return config.showInlineSources || mainInterface.getCurrentViewMode() !== 'readingTxt';
+            return config.showInlineSources || mainInterface.getState('currentViewMode') !== 'readingTxt';
         };
 
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#isAnaloguesInline
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check if analogues apparatus is inline or in a dedicated box
+         * @returns {boolean} whether the analogues apparatus is inline or not
+         */
         mainInterface.isAnaloguesInline = function() {
-            return config.showInlineAnalogues || mainInterface.getCurrentViewMode() !== 'readingTxt';
-        };
-        /* ************** */
-        /* PARAMS UPDATES */
-        /* ************** */
-        mainInterface.setLoading = function(state) {
-            state.isLoading = state;
-        };
-
-        mainInterface.togglePinnedAppBoardOpened = function() {
-            state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
+            return config.showInlineAnalogues || mainInterface.getState('currentViewMode') !== 'readingTxt';
         };
         
-        mainInterface.setToolState = function(toolName, status) {
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#setToolStatus
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update the status of a given tool
+         * @param {string} toolName name of tool to update
+         * @param {string} status new status of tool
+         */
+        mainInterface.setToolStatus = function(toolName, status) {
             if (!tools[toolName]) {
                 tools[toolName] = {};
             }
             tools[toolName].status = status;
         };
 
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateProperty
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update the value of a given property
+         * @param {string} property name of property to update
+         * @param {any} value new value of property
+         */
         mainInterface.updateProperty = function(property, value){
             properties[property] = value;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateState
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update the value of a given status property
+         * @param {string} property name of property to update
+         * @param {any} value new value of property
+         */
         mainInterface.updateState = function(property, value){
             state[property] = value;
         };
-
-        mainInterface.updateSecondaryContentOpened = function(secondaryContent){
-            state.secondaryContent = secondaryContent;
-        };
-
         
-        mainInterface.updateCurrentViewMode = function(viewMode) {
-            state.currentViewMode = viewMode;
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#toggleState
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Toggle the value of a given property. 
+         * NB: Use this method only with boolean parameters!
+         * @param {string} property name of property to update
+         */
+        mainInterface.toggleState = function(property){
+            state[property] = ! state[property];
         };
 
-        mainInterface.updateCurrentPage = function(pageId) {
-            state.currentPage = pageId;
-        };
-
-        mainInterface.updateCurrentDocument = function(docId) {
-            state.currentDoc = docId;
-        };
-
-        mainInterface.updateCurrentEdition = function(edition){
-            state.currentEdition = edition;
-        };
-
-        mainInterface.updateCurrentHighlightZone = function(zone) {
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateCurrentHighlightedZone
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current highlighted zone if different from current
+         * @todo: Eventually change once the image viewer has been implemented 
+         * @param {object} zone object representing new zone 
+         */
+        mainInterface.updateCurrentHighlightedZone = function(zone) {
             var currentZone = state.currentHighlightedZone;
             if ( !currentZone || !zone || !(currentZone.id === zone.id && currentZone.name === zone.name) ) {
                 state.currentHighlightedZone = zone;
             }
         };
-
-        mainInterface.updateCurrentAppEntry = function(appId){
-            console.log('updateCurrentAppEntry', appId)
-            state.currentAppEntry = appId;
-        };
-
-        /*************/
-        /*Added by CM*/
-        /*************/
-
-        //ApparatusBoxOpen
-        mainInterface.toggleApparatusBoxOpen = function() {
-            state.isApparatusBoxOpen = !state.isApparatusBoxOpen;
-        };
-
-        mainInterface.isApparatusBoxOpen = function() {
-            return state.isApparatusBoxOpen;
-        };
-        
-        //currentApparatus
-        mainInterface.getCurrentApparatus = function() {
-            return state.currentApparatus;
-        };
-
-        mainInterface.updateCurrentApparatus = function(apparatus) {
-            state.currentApparatus = apparatus;
-        };
-
-        //Quote
-        mainInterface.getCurrentQuote = function() {
-            return state.currentQuote;
-        };
-
-        mainInterface.updateCurrentQuote = function(quoteId) {
-            state.currentQuote = quoteId;
-        };
-
-        //Analogue
-        mainInterface.getCurrentAnalogue = function() {
-            return state.currentAnalogue;
-        };
-
-        mainInterface.updateCurrentAnalogue = function(analogueId) {
-            state.currentAnalogue = analogueId;
-        };
-
-        //Source
-        mainInterface.getCurrentSource = function() {
-            return state.currentSource;
-        };
-
-        mainInterface.updateCurrentSource = function(sourceId) {
-            state.currentSource = sourceId;
-        };
-
-        //Available Sources Texts
-        mainInterface.getAvailableSourcesTexts = function() {
-            return properties.availableSourcesTexts;
-        };
-
-        //Current source text
-        mainInterface.getCurrentSourceText = function() {
-            return state.currentSourceText;
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateCurrentSourceText
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current source text. If text of required source has not been parsed yet,
+         * launch {@evtviewer.communication.evtCommunication#getSourceTextFile evtCommunication.getSourceTextFile} to retrieve it.
+         * @param {string} sourceId id of source to set as current source text
+         * @author Chiara Martignano
+         */
         mainInterface.updateCurrentSourceText = function(sourceId) {
             var source = parsedData.getSource(sourceId),
                 isTextAvailable = source !== undefined && source._textAvailable;
@@ -428,45 +611,46 @@ angular.module('evtviewer.interface')
             state.currentSourceText = sourceId;
         };
 
-        //Method to check if the source has been loaded, returns a boolean
-        mainInterface.isSourceLoading = function() {
-            return properties.isSourceLoading;
-        };
-        
-        //Method to get the list of the parsed sources texts
-        mainInterface.getParsedSourcesTexts = function() {
-            return properties.parsedSourcesTexts;
-        };
-
-        /************/
-        /* VERSIONS */
-        /************/
-
-        // Method to get the array of the available versions
-        mainInterface.getAvailableVersions = function() {
-            return properties.availableVersions;
-        };
-
-        // Method to remove a version from the available versions list
-        // @version --> id of the version that has to be removed
-        // returns void
+        // //////// //
+        // VERSIONS //
+        // //////// //
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#removeAvailableVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Remove a version from the available versions list
+         * @param {string} version id of the version that has to be removed
+         * @author Chiara Martignano
+         */
         mainInterface.removeAvailableVersion = function(version) {
             var index = properties.availableVersions.indexOf(version);
             if (index !== undefined) {
                 properties.availableVersions.splice(index, 1);
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#addAvailableVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Add a new version in the available versions list
+         * @param {string} version id of the version that has to be added
+         * @author Chiara Martignano
+         */
         mainInterface.addAvailableVersion = function(version) {
             var index = properties.availableVersions.indexOf(version);
             if (index === -1) {
                 properties.availableVersions.push(version);
             }
         };
-
-        // Method to add a version box in the interface
-        // @version --> id of the version to add
-        // @index --> index of the position, if undefined the version is added at the end of the array
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#addVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Add a version box in the interface
+         * @param {string} version id of the version to add
+         * @param {string} index index of the position, if undefined the version is added at the end of the array
+         * @author Chiara Martignano
+         */
         mainInterface.addVersion = function(version, index) {
             if (index === undefined) {
                 state.currentVersions.push(version);
@@ -475,9 +659,14 @@ angular.module('evtviewer.interface')
             }
             mainInterface.removeAvailableVersion(version);
         };
-
-        // Method to remove a vesion box from the interface
-        // @version --> id of the version to remove
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#removeVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Remove a vesion box from the interface
+         * @param {string} version id of the version to remove
+         * @author Chiara Martignano
+         */
         mainInterface.removeVersion = function(version) {
             var index = state.currentVersions.indexOf(version);
             if (index >= 0) {
@@ -488,9 +677,15 @@ angular.module('evtviewer.interface')
             }
         };
 
-        // Method to change the version viewed inside of a version box
-        // @oldVer --> the old version to change
-        // @newVer --> the new version to view
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#switchVersions
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Change the version viewed inside of a version box
+         * @param {string} oldVer the old version to change
+         * @param {string} newVer the new version to view
+         * @author Chiara Martignano
+         */
         mainInterface.switchVersions = function(oldVer, newVer) {
             var newVerOldIndex = state.currentVersions.indexOf(newVer),
                 oldVerOldIndex = state.currentVersions.indexOf(oldVer);
@@ -502,69 +697,109 @@ angular.module('evtviewer.interface')
             state.currentVersions[oldVerOldIndex] = newVer;
             mainInterface.removeAvailableVersion(newVer);            
         };
-
-        // Method to get how many different versions have been encoded by the editor
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getAllVersionsNumber
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get how many different versions have been encoded by the editor
+         * @author Chiara Martignano
+         */
         mainInterface.getAllVersionsNumber = function() {
-            return config.versions.length;
+            return (config.versions ? config.versions.length : 0);
         };
-
-        mainInterface.getCurrentVersions = function(){
-            return state.currentVersions;
-        };
-
-        mainInterface.getCurrentVersionEntry = function() {
-            return state.currentVersionEntry;
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getAllVersionsNumber
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current version entry if given entry id is not undefined
+         * @param {string} appId id of entry to be set as current version entry
+         * @author Chiara Martignano
+         */
         mainInterface.updateCurrentVersionEntry = function(appId) {
             if (appId !== undefined) {
                 state.currentVersionEntry = appId;
             }
         };
-
-        mainInterface.getCurrentVersion = function() {
-            return state.currentVersion;
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateCurrentVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current version if given version is not undefined and is contained in initial version array
+         * @param {string} ver id of version to be set as current version
+         * @author Chiara Martignano
+         */
         mainInterface.updateCurrentVersion = function(ver) {
             if (ver !== undefined && config.versions.indexOf(ver) !== -1) {
                 state.currentVersion = ver;
             }
         };
-
-        /** End of addition **/
-
         // WITNESS
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#removeAvailableWitness
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Remove given witness from the available witness list, only if given witness is already in the list 
+         * @param {string} witness id of witness to be removed from available witnesses list
+         * @author Chiara Di Pietro
+         */
         mainInterface.removeAvailableWitness = function(witness) {
             var index = properties.availableWitnesses.indexOf(witness);
             if (index !== undefined){
                 properties.availableWitnesses.splice(index, 1);
             }
         };
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateWitnessesPage
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current page of a given witness
+         * @param {string} witness id of witness to be updated
+         * @param {string} pageId id of page to be set as current for given witness
+         * @author Chiara Di Pietro
+         */
         mainInterface.updateWitnessesPage = function(witness, pageId) {
             state.currentWitsPages[witness] = pageId;
         };
-        mainInterface.updateCurrentWitnesses = function(witIds) {
-            state.currentWits = witIds;
-        };
-        mainInterface.updateCurrentWitnessesPages = function(witPages) {
-            state.currentWitsPages = witPages;
-        };
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#addWitness
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Add witness in current witnesses list and remove it from available ones.
+         * @param {string} newWit id of witness to be added
+         * @author Chiara Di Pietro
+         * @todo Decide where to add the new witness: either before or after the others
+         * @todo Add scroll to new box added
+         */
         mainInterface.addWitness = function(newWit) {
-            //TODO: Decide where to add the new witness: either before or after the others
             // if (mainInterface.existCriticalText()) {
             //     state.currentWits.unshift(newWit);
             // } else {
                 state.currentWits.push(newWit);
             // }
             mainInterface.removeAvailableWitness(newWit);
-            //TODO: Add scroll to new box added
         };
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#addWitnessAtIndex
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Add witness at a particular index in in current witnesses list
+         * @param {string} newWit id of witness to be added
+         * @param {string} index where to add new witness
+         * @author Chiara Di Pietro
+         */
         mainInterface.addWitnessAtIndex = function(newWit, index) {
             state.currentWits.splice(index, 0, newWit);
             mainInterface.removeAvailableWitness(newWit);
         };
-        mainInterface.removeWitness = function(wit) {
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#removeWitness
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Remove witness from current witnesses list and add it in available ones
+         * @param {string} wit id of witness to be removed
+         * @author Chiara Di Pietro
+         */
+         mainInterface.removeWitness = function(wit) {
             var witIndex = state.currentWits.indexOf(wit);
             if (witIndex >= 0) {
                 state.currentWits.splice(witIndex, 1);
@@ -574,7 +809,18 @@ angular.module('evtviewer.interface')
                 properties.availableWitnesses.push(wit);
             }
         };
-        mainInterface.switchWitnesses = function(oldWit, newWit) {
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#switchWitnesses
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Switch positions of given witnesses. 
+         * If the witness is already in the current witnesses list, it will be switched with the old one.
+         * @param {string} oldWit the old witness to change
+         * @param {string} newWit the new witness to view
+         * @author Chiara Di Pietro
+         * @todo update box scroll to page on switching...
+         */
+         mainInterface.switchWitnesses = function(oldWit, newWit) {
             // se il testimone che sto selezionando è già visualizzato 
             // lo scambio con il vecchio testimone
             var newWitOldIndex = state.currentWits.indexOf(newWit),
@@ -585,13 +831,19 @@ angular.module('evtviewer.interface')
             if (oldWitOldIndex >= 0) {
                 state.currentWits[oldWitOldIndex] = newWit;
             }
-            //TODO: update box scroll to page on switching...
         };
-
-        mainInterface.resetCurrentWitnesses = function() {
-            state.currentWits = [];
-        };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateAvailableWitnessesByVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update available witness by version.
+         * Remove from current wits those that are not in current version.
+         * Set available witnesses depending on those in current version that are not selected yet.
+         * Remove from current wits those that are not in current version.
+         * Set available witnesses depending on those in current version that are not selected yet
+         * @param {string} scopeVer id of scope version
+         * @author Chiara Martignano
+         */
         mainInterface.updateAvailableWitnessesByVersion = function(scopeVer) {
             var scopeVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[scopeVer];
             var currentWits = [],
@@ -630,7 +882,15 @@ angular.module('evtviewer.interface')
             }
             mainInterface.updateUrl();
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#isViewModeAvailable
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Check whether given viewMode is available or not.
+         * @param {string} viewMode view mode to be checked
+         * @returns {boolean} whether given viewMode is available or not
+         * @author Chiara Di Pietro
+         */
         mainInterface.isViewModeAvailable = function(viewMode) {
             for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
                 if (properties.availableViewModes[i].viewMode === viewMode) {
@@ -638,7 +898,15 @@ angular.module('evtviewer.interface')
                 }
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateParams
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current state values depending on parameters in URL and available parsed data
+         * @param {params} params URL parameters
+         * @author Chiara Di Pietro
+         * @todo Add q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
+         */
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,
@@ -652,8 +920,6 @@ angular.module('evtviewer.interface')
                 analogueId,
                 sourceId,
                 apparatusId;
-
-            //TODO: aggiungere q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
 
             // VIEW MODE 
             if (params.viewMode !== undefined) {
@@ -758,38 +1024,45 @@ angular.module('evtviewer.interface')
             }
 
             if ( viewMode !== undefined ) {
-                mainInterface.updateCurrentViewMode(viewMode);
+                mainInterface.updateState('currentViewMode', viewMode);
             }
 
             if ( edition !== undefined ) {
-                mainInterface.updateCurrentEdition(edition);
+                mainInterface.updateState('currentEdition', edition);
             } else if (viewMode === 'collation'){
-                mainInterface.updateCurrentEdition('critical');
+                mainInterface.updateState('currentEdition', 'critical');
             }
 
             if ( pageId !== undefined ) {
-                mainInterface.updateCurrentPage(pageId);
+                mainInterface.updateState('currentPage', pageId);
             }
 
             if ( docId !== undefined ) {
-                mainInterface.updateCurrentDocument(docId);
+                mainInterface.updateState('currentDoc', docId);
             }
 
             if ( witIds !== undefined) {
-                mainInterface.updateCurrentWitnesses(witIds);
+                mainInterface.updateState('currentWits', witIds);
             }
 
             if ( witPageIds !== {}) {
-                mainInterface.updateCurrentWitnessesPages(witPageIds);
+                mainInterface.updateState('currentWitsPages', witPageIds);
             }
 
             if ( appId !== undefined) {
-                mainInterface.updateCurrentAppEntry(appId);
+                mainInterface.updateState('currentAppEntry', appId);
                 evtReading.setCurrentAppEntry(appId);
             }
             mainInterface.updateUrl();
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateUrl
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update URL depending on current value state
+         * @author Chiara Di Pietro
+         * @todo Add q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
+         */
         mainInterface.updateUrl = function() {
             var viewMode   = state.currentViewMode,
                 searchPath = '';

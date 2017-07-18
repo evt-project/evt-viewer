@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.versionApparatusEntry
+ * @name evtviewer.versionApparatusEntry.evtVersionRef
+ * @description 
+ * # evtVersionRef
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.versionApparatusEntry')
 
 .provider('evtVersionRef', function() {
@@ -15,10 +25,10 @@ angular.module('evtviewer.versionApparatusEntry')
                 target = scope.target || '',
                 title = scope.title || '',
                 callback = function() {console.log('TODO '+type); },
-                currentViewMode = evtInterface.getCurrentViewMode(),
+                currentViewMode = evtInterface.getState('currentViewMode'),
                 id = '';
             
-            /* SET CALLBACK */
+            // SET CALLBACK //
             switch(type) {
                 case 'version':
                     if (currentElId !== target && target !== config.versions[0]) {
@@ -28,16 +38,16 @@ angular.module('evtviewer.versionApparatusEntry')
                     callback = function() {
                         var vm = this;
                         if (currentElId !== target && target !== config.versions[0]) {
-                            var versions = evtInterface.getCurrentVersions(),
+                            var versions = evtInterface.getState('currentVersions'),
                                 scopeVersionIndex = versions.indexOf(currentElId);
                             if (versions.indexOf(target) >= 0 && versions.length > 1) {
                                 evtInterface.removeVersion(target);
                             }
                             evtInterface.addVersion(target, scopeVersionIndex+1);
                             if (currentViewMode !== 'versions') {
-                                evtInterface.updateCurrentViewMode('versions');
+                                evtInterface.updateState('currentViewMode', 'versions');
                             }
-                            var currentVersionAppId = evtInterface.getCurrentVersionEntry() || '';
+                            var currentVersionAppId = evtInterface.getState('currentVersionEntry') || '';
                             if (currentVersionAppId !== '') {
                                 var newBox = evtBox.getElementByValueOfParameter('version', target);
                                 if (newBox !== undefined) {

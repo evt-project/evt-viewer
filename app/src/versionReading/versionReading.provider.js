@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.versionReading
+ * @name evtviewer.versionReading.evtVersionReading
+ * @description 
+ * # evtVersionReading
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.versionReading')
 
 .provider('evtVersionReading', function() {

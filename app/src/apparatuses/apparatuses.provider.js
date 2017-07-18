@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.apparatuses
+ * @name evtviewer.apparatuses.evtApparatusesProvider
+ * @description 
+ * # evtApparatusesProvider
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.apparatuses')
 
 .provider('evtApparatuses', function() {
@@ -64,7 +72,7 @@ angular.module('evtviewer.apparatuses')
 				}
 			}
 
-			/*JSON.stringify(config.apparatusStructure) --> tabs || boxes*/
+			// JSON.stringify(config.apparatusStructure) --> tabs || boxes
 
 
 			if (!evtInterface.isCriticalApparatusInline() && appList.length > 0) {
@@ -93,7 +101,7 @@ angular.module('evtviewer.apparatuses')
 			}
 
 			if (apparatuses._indexes.length > 0) {
-				evtInterface.updateCurrentApparatus(apparatuses._indexes[0]);
+				evtInterface.updateState('currentApparatus', apparatuses._indexes[0]);
 			}
 
 			var scopeHelper = {
@@ -112,7 +120,7 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		apparatuses.setCurrentApparatus = function(app) {
-			evtInterface.updateCurrentApparatus(app);
+			evtInterface.updateState('currentApparatus', app);
 			currentApparatuses.currentApparatus = app;
 			angular.forEach(collection, function(currentApparatuses) {
 				currentApparatuses.setCurrentApparatus(app);
@@ -131,8 +139,8 @@ angular.module('evtviewer.apparatuses')
 			}
 		};
 
-		/*Methods added by CM*/
-		/*For the alignment of the apparatuses panel, with the other boxes*/
+		// Methods added by CM //
+		// For the alignment of the apparatuses panel, with the other boxes
 		apparatuses.alignScrollToQuote = function(quoteId, segId) {
 			for (var i in collection) {
 				if (collection[i].scrollToQuotesEntry !== undefined) {

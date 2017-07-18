@@ -1,7 +1,8 @@
 /**
- * @ngdoc module
- * @name evtviewer.Bibliography
- * @module evtviewer.Bibliography
- * @description ...
+ * @ngdoc overview
+ * @name evtviewer.bibliography
+ * @description 
+ * # evtviewer.bibliography
+ * TODO: Add description!
 **/
 angular.module('evtviewer.bibliography', []);

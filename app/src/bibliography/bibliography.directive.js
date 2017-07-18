@@ -1,3 +1,17 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.bibliography
+ * @name evtviewer.bibliography.directive:evtBibliography
+ * @description 
+ * # evtBibliography
+ * TODO: Add description!
+ * It uses the {@link evtviewer.bibliography.controller:BibliographyCtrl BibliographyCtrl} controller.
+ *
+ * @scope
+ * @param {string=} id id of bibliography to be shown
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.bibliography')
 
 .directive('evtBibliography', function(evtBibliography) { 

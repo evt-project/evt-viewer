@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.popover
+ * @name evtviewer.popover.evtPopover
+ * @description 
+ * # evtPopover
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.popover')
 
 .provider('evtPopover', function() {

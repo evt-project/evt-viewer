@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.quote
+ * @name evtviewer.quote.evtQuote
+ * @description 
+ * # evtQuote
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.quote')
 
 .provider('evtQuote', function(){
@@ -28,7 +36,7 @@ angular.module('evtviewer.quote')
                 uid: currentId,
                 scopeWit : scope.scopeWit || '',
                 quoteId : entryId,
-                scopeViewMode : evtInterface.getCurrentViewMode(),
+                scopeViewMode : evtInterface.getState('currentViewMode'),
                 type : scope.type || '',
                 
                 over             : false,
@@ -62,8 +70,8 @@ angular.module('evtviewer.quote')
         };
 
         quote.setCurrentSourcesEntry = function(quoteId) {
-            if (evtInterface.getCurrentQuote() !== quoteId) {
-                evtInterface.updateCurrentQuote(quoteId);
+            if (evtInterface.getState('currentQuote')  !== quoteId) {
+                evtInterface.updateState('currentQuote', quoteId);
             }
             currentSourcesEntry = quoteId;
         };
@@ -92,7 +100,7 @@ angular.module('evtviewer.quote')
             angular.forEach(collection, function(currentQuote) {
                 currentQuote.unselect();
             });
-            evtInterface.updateCurrentQuote('');
+            evtInterface.updateState('currentQuote', '');
         };
 
         quote.closeAllApparatus = function(skipId) {
@@ -113,7 +121,7 @@ angular.module('evtviewer.quote')
                     currentQuote.unselect();
                 }
             });
-            evtInterface.updateCurrentQuote(quoteId);  
+            evtInterface.updateState('currentQuote', quoteId);  
             quote.setCurrentSourcesEntry(quoteId);
         };
 

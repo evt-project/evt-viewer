@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.popover
+ * @name evtviewer.popover.controller:PopoverCtrl
+ * @description 
+ * # PopoverCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.popover.directive:evtPopover evtPopover} directive. 
+**/
 angular.module('evtviewer.popover')
 
 .controller('PopoverCtrl', function($log, $scope, evtPopover) {

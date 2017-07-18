@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.buttonSwitch
+ * @name evtviewer.buttonSwitch.evtButtonSwitch
+ * @description 
+ * # evtButtonSwitch
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.buttonSwitch')
 
 .provider('evtButtonSwitch', function() {
@@ -40,7 +48,7 @@ angular.module('evtviewer.buttonSwitch')
             // _console.log('vm - destroy ' + tempId);
         };
 
-		/* GET EVT ICON */
+		// GET EVT ICON //
 		var getIcon = function(icon) {
 			var evtIcon = '';
 			switch (angular.lowercase(icon)) {
@@ -170,7 +178,7 @@ angular.module('evtviewer.buttonSwitch')
                 fakeCallback = function() {};
 			var scopeHelper = {};
 			
-			/* SET CALLBACK */
+			// SET CALLBACK //
 			switch (type) {
 				case 'addWit':
 					btnType = 'standAlone';
@@ -184,7 +192,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'bookmark':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('bookmark');
+						evtInterface.updateState('secondaryContent', 'bookmark');
 						evtDialog.openByType('bookmark');
 						vm.active = !vm.active;
 					};
@@ -195,10 +203,10 @@ angular.module('evtviewer.buttonSwitch')
                         var vm = this;
                         if (vm.value !== undefined) {
                             if (vm.value === 'srcTxt') {
-                                var sourceId = evtInterface.getCurrentSourceText();
+                                var sourceId = evtInterface.getState('currentSourceText') ;
                                 evtInterface.updateCurrentSourceText(sourceId);
                             }
-                            evtInterface.updateCurrentViewMode(vm.value);
+                            evtInterface.updateState('currentViewMode', vm.value);
                             evtInterface.updateUrl();
 							if (evtInterface.getToolState('ITL') === 'active') {
 								if (vm.value === 'imgTxt') {
@@ -256,14 +264,14 @@ angular.module('evtviewer.buttonSwitch')
 					callback = function() {
                         var vm = this;
                         evtDialog.closeAll();
-                        evtInterface.updateSecondaryContentOpened('');
+                        evtInterface.updateState('secondaryContent', '');
                         vm.active = !vm.active;
                     };
 
                     break;
 				case 'closePinned':
                     callback = function() {
-						evtInterface.togglePinnedAppBoardOpened();
+						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
 				case 'download-xml': 
@@ -312,7 +320,7 @@ angular.module('evtviewer.buttonSwitch')
 							parentBox.toggleTopBox();
 						} else {
 							var content;
-							var currentDocument = evtInterface.getCurrentDocument();
+							var currentDocument = evtInterface.getState('currentDoc');
 							if (currentDocument) {
 								var docObj = parsedData.getDocument(currentDocument),
 									docFront = docObj ? docObj.front : undefined;
@@ -362,7 +370,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openGlobalDialogInfo':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('globalInfo');
+						evtInterface.updateState('secondaryContent', 'globalInfo');
 						evtDialog.openByType('globalInfo');
 						vm.active = !vm.active;
 					};
@@ -370,7 +378,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openGlobalDialogWitnesses':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('witnessesList');
+						evtInterface.updateState('secondaryContent', 'witnessesList');
 						evtDialog.openByType('witnessesList');
 						vm.active = !vm.active;
 					};
@@ -378,7 +386,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openGlobalDialogLists':
 					callback = function() {
 						var vm = this;
-						evtInterface.updateSecondaryContentOpened('entitiesList');
+						evtInterface.updateState('secondaryContent', 'entitiesList');
 						evtDialog.openByType('entitiesList');
 						vm.active = !vm.active;
 					};
@@ -433,7 +441,7 @@ angular.module('evtviewer.buttonSwitch')
 				case 'togglePinned':
 					btnType = 'toggler';
 					callback = function() {
-						evtInterface.togglePinnedAppBoardOpened();
+						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
 				case 'witList':
@@ -458,13 +466,13 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					//TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
 					break;
-                /* Case toggleInfoSrc */
-                /* Button to show/hide the bibliographic reference of the source */
-                /* currently shown in the source-text view | @author --> CM      */
+                // Case toggleInfoSrc //
+                // Button to show/hide the bibliographic reference of the source //
+                // currently shown in the source-text view | @author --> CM      //
                 case 'toggleInfoSrc':
                     btnType = 'toggler';
                     callback = function(){
-                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getCurrentSourceText()));
+                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
                         //Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
                         //TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
                         var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
@@ -475,8 +483,8 @@ angular.module('evtviewer.buttonSwitch')
                         scope.$parent.vm.updateState('topBoxOpened', false);
                     };
                     break;
-                /* Case addVer */
-                /* It shows the versions available in the versions selector | @author --> CM */
+                // Case addVer //
+                // It shows the versions available in the versions selector | @author --> CM //
                 case 'addVer':
                     btnType = 'standAlone';
                     callback  = function() {

@@ -1,3 +1,14 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.versionApparatusEntry
+ * @name evtviewer.versionApparatusEntry.controller:versionApparatusEntryCtrl
+ * @description 
+ * # versionApparatusEntryCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.versionApparatusEntry.directive:evtVersionApparatusEntry evtVersionApparatusEntry} directive. 
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.versionApparatusEntry')
 
 .controller('versionApparatusEntryCtrl', function(config, evtBox, evtApparatuses, evtVersionApparatusEntry, $scope) {

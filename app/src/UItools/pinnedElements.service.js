@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.UItools
+ * @name evtviewer.UItools.evtPinnedElements
+ * @description 
+ * # evtPinnedElements
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.UItools')
 
 .service('evtPinnedElements', function(Utils, parsedData) {

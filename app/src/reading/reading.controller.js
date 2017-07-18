@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.reading
+ * @name evtviewer.reading.controller:ReadingCtrl
+ * @description 
+ * # ReadingCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.reading.directive:evtReading evtReading} directive. 
+**/
 angular.module('evtviewer.reading')
 
 .controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, config, evtCriticalApparatusEntry, evtApparatuses, evtBox) {
@@ -26,7 +35,7 @@ angular.module('evtviewer.reading')
 
     this.isSelect = function() {
         if (vm.parentAppId !== undefined ) {
-            return vm.selected || (evtInterface.getCurrentAppEntry() === vm.parentAppId);
+            return vm.selected || (evtInterface.getState('currentAppEntry') === vm.parentAppId);
         } else {
             return vm.selected;
         }
@@ -71,9 +80,9 @@ angular.module('evtviewer.reading')
                     evtApparatuses.setCurrentApparatus('criticalApparatus');
                     evtApparatuses.alignScrollToApp(vm.appId);
                 } 
-                evtInterface.updateCurrentAppEntry(vm.appId);
+                evtInterface.updateState('currentAppEntry', vm.appId);
             } else {
-                evtInterface.updateCurrentAppEntry('');
+                evtInterface.updateState('currentAppEntry', '');
                 evtReading.unselectAll();
                 evtCriticalApparatusEntry.unselectAll();
             }

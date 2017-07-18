@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.analoguesApparatusEntry
+ * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+ * @description 
+ * # evtAnaloguesApparatusEntry
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .provider('evtAnaloguesApparatusEntry', function() {
@@ -119,7 +127,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 				_subContentOpened: firstSubContentOpened,
 				over: false,
 				selected: false,
-				currentViewMode: evtInterface.getCurrentViewMode()
+				currentViewMode: evtInterface.getState('currentViewMode')
 			};
 
 			collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -142,7 +150,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 		analoguesAppEntry.setCurrentAnaloguesEntry = function(analogueId) {
 			if (evtInterface.getCurrentAnalogue !== analogueId) {
-				evtInterface.updateCurrentAnalogue(analogueId);
+				evtInterface.updateState('currentAnalogue', analogueId);
 			}
 			currentAnaloguesEntry = analogueId;
 		};

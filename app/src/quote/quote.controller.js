@@ -1,3 +1,12 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.quote
+ * @name evtviewer.quote.controller:QuoteCtrl
+ * @description 
+ * # QuoteCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.quote.directive:evtQuote evtQuote} directive. 
+**/
 angular.module('evtviewer.quote')
 
 .controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry, evtSourceSeg, parsedData) {
@@ -62,10 +71,10 @@ angular.module('evtviewer.quote')
                 evtApparatuses.setCurrentApparatus('sources');
                 evtApparatuses.alignScrollToQuote(vm.quoteId);
             } 
-            evtInterface.updateCurrentQuote(vm.quoteId);
+            evtInterface.updateState('currentQuote', vm.quoteId);
         } else {
             evtQuote.unselectAll();
-            evtInterface.updateCurrentQuote('');
+            evtInterface.updateState('currentQuote', '');
             evtSourcesApparatusEntry.unselectAll();
         }
 
@@ -104,7 +113,7 @@ angular.module('evtviewer.quote')
     
     this.hasScopeSource = function() {
         var quotesRef = parsedData.getSources()._indexes.quotesRef[vm.quoteId] || undefined,
-            currentSourceText = evtInterface.getCurrentSourceText();
+            currentSourceText = evtInterface.getState('currentSourceText') ;
         if (quotesRef !== undefined && quotesRef.indexOf(currentSourceText) >= 0) {
             return true;
         } else {

@@ -1,5 +1,12 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.core
+ * @name evtviewer.core.Utils
+ * @description 
+ * # Utils
+ * TODO: Add description and comments for every method
+**/
 /*jshint -W059 */
-
 angular.module('evtviewer.core')
 
 .provider('Utils', function() {

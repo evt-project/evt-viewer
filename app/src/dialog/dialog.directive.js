@@ -1,3 +1,19 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.dialog
+ * @name evtviewer.dialog.directive:evtDialog
+ * @description 
+ * # evtDialog
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} id id of dialog
+ * @param {string=} type type of dialog ('error', 'bookmark')
+ * @param {string=} title title of dialog
+ * @param {boolean=} opened status of dialog
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.dialog')
 
 .directive('evtDialog', function(evtDialog,evtInterface) {

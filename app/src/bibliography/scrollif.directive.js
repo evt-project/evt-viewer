@@ -1,3 +1,11 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.bibliography
+ * @name evtviewer.bibliography.evtScrollIf
+ * @description 
+ * # evtScrollIf
+ * TODO: Add description and comments for every method
+**/
 angular.module('evtviewer.bibliography')
 
 .directive('evtScrollIf', function($timeout) {

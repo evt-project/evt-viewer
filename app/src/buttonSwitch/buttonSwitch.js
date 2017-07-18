@@ -1,7 +1,8 @@
 /**
- * @ngdoc module
+ * @ngdoc overview
  * @name evtviewer.buttonSwitch
- * @module evtviewer.buttonSwitch
- * @description ...
+ * @description 
+ * # evtviewer.buttonSwitch
+ * TODO: Add description!
 **/
 angular.module('evtviewer.buttonSwitch', []);

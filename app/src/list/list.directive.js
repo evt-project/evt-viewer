@@ -1,3 +1,17 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.list
+ * @name evtviewer.list.directive:evtList
+ * @description 
+ * # evtList
+ * TODO: Add description!
+ *
+ * @scope
+ * @param {string=} listId id of list
+ * @param {string=} listType type of list ('person', 'place', 'org', 'generic')
+ *
+ * @restrict E
+**/
 angular.module('evtviewer.list')
 
 .directive('evtList', function(evtList, parsedData) {

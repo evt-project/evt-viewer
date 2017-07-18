@@ -1,3 +1,19 @@
+/**
+ * @ngdoc directive
+ * @module evtviewer.criticalApparatusEntry
+ * @name evtviewer.criticalApparatusEntry.directive:evtWitnessRef
+ * @description 
+ * # evtWitnessRef
+ * TODO: Add description!
+ * It require the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive.
+ * @scope
+ * @param {string=} witness sigla of witness ref to be shown
+ * @param {string=} scopeWit id of scope witness
+ *
+ * @restrict E
+ * 
+ * @require evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry
+**/
 angular.module('evtviewer.criticalApparatusEntry')
 
 .directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {
@@ -26,7 +42,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 				if (newWit !== scopeWit) {
 					// Check if there are more than one version of the text (@author --> CM)
 					if (config.versions.length > 0) {
-						var currentVersion = evtInterface.getCurrentVersion(),
+						var currentVersion = evtInterface.getState('currentVersion'),
 							versionWitMap = parsedData.getVersionEntries()._indexes.versionWitMap,
 							versionOfSelectedWit;
 						for (var i in versionWitMap) {
@@ -36,12 +52,12 @@ angular.module('evtviewer.criticalApparatusEntry')
 						}
 						if (currentVersion !== versionOfSelectedWit) {
 							evtInterface.updateCurrentVersion(versionOfSelectedWit);
-							evtInterface.resetCurrentWitnesses();
+							evtInterface.updateState('currentWits', []);
 							evtInterface.updateAvailableWitnessesByVersion(versionOfSelectedWit);
 						}
 
 					}
-					var witnesses = evtInterface.getCurrentWitnesses(),
+					var witnesses = evtInterface.getState('currentWits'),
 						scopeWitnessIndex = witnesses.indexOf(scopeWit);
 					if (witnesses.indexOf(newWit) >= 0) {
                         evtInterface.removeWitness(newWit);
@@ -50,10 +66,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 						evtInterface.addWitnessAtIndex(newWit, scopeWitnessIndex + 1);
 					}
 					if (evtInterface.getCurrentView !== 'collation') {
-						evtInterface.updateCurrentViewMode('collation');
+						evtInterface.updateState('currentViewMode', 'collation');
 					}
 					evtInterface.updateUrl();
-					var currentAppId = evtInterface.getCurrentAppEntry() || '';
+					var currentAppId = evtInterface.getState('currentAppEntry') || '';
 					if (currentAppId !== '') {
 						var newBox = evtBox.getElementByValueOfParameter('witness', newWit);
 						if (newBox !== undefined) {

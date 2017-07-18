@@ -1,3 +1,12 @@
+/**
+ * @ngdoc controller
+ * @module evtviewer.analogue
+ * @name evtviewer.analogue.controller:AnalogueCtrl
+ * @description 
+ * # AnalogueCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.analogue.directive:evtAnalogue evtAnalogue} directive. 
+**/
 angular.module('evtviewer.analogue')
 
 .controller('AnalogueCtrl', function($log, $scope, evtAnalogue, evtPopover, evtInterface, evtApparatuses, evtBox, evtAnaloguesApparatusEntry) {

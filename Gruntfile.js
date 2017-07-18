@@ -21,11 +21,25 @@ module.exports = function (grunt) {
     dist: 'build'
   };
 
+  grunt.loadNpmTasks('grunt-ngdocs');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
     // Project settings
     yeoman: appConfig,
+
+    ngdocs: {
+      options: {
+        scripts: ['angular.js', '../src.js'],
+        html5Mode: false,
+        template: '<%= yeoman.app %>/docs_templates/index.tmpl'
+      },
+      api: {
+       src: ['app/index.ngdoc', 'app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js'],
+       title: 'EVT 2 Dev Documentation'
+    }
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -388,6 +402,12 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      docs: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/docs_templates',
+        dest: 'docs',
+        src: []
       }
     },
 
@@ -480,6 +500,8 @@ module.exports = function (grunt) {
     'usemin'
     // 'htmlmin'
   ]);
+
+  grunt.registerTask('docs', ['clean', 'ngdocs', 'copy:docs']);
 
   grunt.registerTask('default', [
     'newer:jshint',

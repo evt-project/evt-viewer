@@ -1,3 +1,13 @@
+/**
+ * @ngdoc service
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.evtSourceSeg
+ * @description 
+ * # evtSourceSeg
+ * TODO: Add description and comments for every method
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .provider('evtSourceSeg', function() {
@@ -22,7 +32,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 return;
             }
 
-            var currentQuoteId = evtInterface.getCurrentQuote() || '';
+            var currentQuoteId = evtInterface.getState('currentQuote')  || '';
 
             var quote,
                 quotes = [],

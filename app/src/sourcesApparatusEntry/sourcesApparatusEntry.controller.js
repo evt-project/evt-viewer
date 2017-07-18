@@ -1,14 +1,25 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.sourcesApparatusEntry
+ * @name evtviewer.sourcesApparatusEntry.controller:sourcesApparatusEntryCtrl
+ * @description 
+ * # sourcesApparatusEntryCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.sourcesApparatusEntry.directive:evtSourcesApparatusEntry evtSourcesApparatusEntry} directive. 
+ *
+ * @author Chiara Martignano
+**/
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .controller('sourcesApparatusEntryCtrl', function($scope, evtSourcesApparatusEntry, evtQuote, evtBox, evtApparatuses, evtInterface, parsedData) {
     $scope.content = {};
     var vm = this;
     
-    /**********************/
-    /*toggleSource(source)*/
-    /***************************/
-    /*Set the new active source*/
-    /***************************/
+    // //////////////////// //
+    // toggleSource(source) //
+    // ///////////////////////// //
+    // Set the new active source //
+    // ///////////////////////// //
     this.toggleSource = function(sourceId) {
         if (vm._activeSource !== sourceId) {
             vm._activeSource = sourceId;
@@ -61,7 +72,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     };
 
     this.isSelect = function() {
-        if (evtInterface.getCurrentQuote() === vm.quoteId) {
+        if (evtInterface.getState('currentQuote')  === vm.quoteId) {
             return true;
         } else {
             return vm.selected;

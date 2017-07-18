@@ -1,13 +1,22 @@
+/**
+ * @ngdoc object
+ * @module evtviewer.analoguesApparatusEntry
+ * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
+ * @description 
+ * # analoguesApparatusEntryCtrl
+ * TODO: Add description and list of dependencies!
+ * The controller for the {@link evtviewer.analoguesApparatusEntry.directive:evtAnaloguesApparatusEntry evtAnaloguesApparatusEntry} directive. 
+**/
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .controller('analoguesApparatusEntryCtrl', function(evtAnaloguesApparatusEntry, evtInterface, evtAnalogue, evtBox, evtApparatuses, parsedData) {
 	var vm = this;
 
-	/**********************/
-	/*toggleSource(source)*/
-	/***************************/
-	/*Set the new active source*/
-	/***************************/
+	// //////////////////// //
+	// toggleSource(source) //
+	// ///////////////////////// //
+	// Set the new active source //
+	// ///////////////////////// //
 	this.toggleSource = function(sourceId) {
 		if (vm._activeSource !== sourceId) {
 			vm._activeSource = sourceId;
@@ -68,7 +77,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 
 	this.isSelect = function() {
-		if (evtInterface.getCurrentAnalogue() === vm.analogueId) {
+		if (evtInterface.getState('currentAnalogue')  === vm.analogueId) {
 			return true;
 		} else {
 			return vm.selected;
