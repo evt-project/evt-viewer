@@ -37,7 +37,7 @@ module.exports = function (grunt) {
       },
       api: {
        src: ['app/index.ngdoc', 'app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js'],
-       title: 'EVT 2 Dev Guide'
+       title: 'EVT 2 Dev Documentation'
     }
     },
 
