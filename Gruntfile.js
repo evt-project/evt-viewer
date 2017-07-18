@@ -32,7 +32,8 @@ module.exports = function (grunt) {
     ngdocs: {
       options: {
         scripts: ['angular.js', '../src.js'],
-        html5Mode: false
+        html5Mode: false,
+        template: '<%= yeoman.app %>/docs_templates/index.tmpl'
       },
       api: {
        src: ['app/index.ngdoc', 'app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js'],
@@ -401,6 +402,12 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      docs: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/docs_templates',
+        dest: 'docs',
+        src: []
       }
     },
 
@@ -494,7 +501,7 @@ module.exports = function (grunt) {
     // 'htmlmin'
   ]);
 
-  grunt.registerTask('docs', ['clean', 'ngdocs']);
+  grunt.registerTask('docs', ['clean', 'ngdocs', 'copy:docs']);
 
   grunt.registerTask('default', [
     'newer:jshint',
