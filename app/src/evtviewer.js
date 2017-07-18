@@ -54,6 +54,7 @@ angular
 		'ngResource',
 		'ngSanitize',
 		'ngTouch',
+		'templates-main', 
 		'ngRoute',
 		'xml',
 		'prettyXml',
