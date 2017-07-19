@@ -4,7 +4,7 @@
  * @name evtviewer.dataHandler.evtAnaloguesParser
  * @description 
  * # evtAnaloguesParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding analogues.
  *
  * @author Chiara Martignano
 **/
