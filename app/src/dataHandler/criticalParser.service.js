@@ -27,12 +27,12 @@ angular.module('evtviewer.dataHandler')
 	// WITNESS //
 	// /////// //
 	/**
-     * @ngdoc function
+     * @ngdoc method
      * @name evtviewer.dataHandler.evtCriticalParser#parseWitnessText
      * @methodOf evtviewer.dataHandler.evtCriticalParser
      *
      * @description
-     * This module will parse the XML of the document and generate the text of a specified witness.
+     * This method will parse the XML of the document and generate the text of a specified witness.
      * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements. 
      * - It will loop over critical apparatus entries (defined as <code>apparatusEntryDef</code>) and get the reading belonging to given witness.
      * - It will parse quotes and replace quotes elements with quotes text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText evtCriticalElementsParser.getQuoteText()}).
@@ -227,12 +227,12 @@ angular.module('evtviewer.dataHandler')
 	// CRITICAL TEXT //
 	// ///////////// //
 	/**
-     * @ngdoc function
+     * @ngdoc method
      * @name evtviewer.dataHandler.evtCriticalParser#parseCriticalText
      * @methodOf evtviewer.dataHandler.evtCriticalParser
      *
      * @description
-     * This module will parse the XML of the document and generate the critical text.
+     * This method will parse the XML of the document and generate the critical text.
      * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements. 
      * - It will loop over critical apparatus entries (defined as <code>apparatusEntryDef</code>) and get the lemma.
      * - It will parse quotes and replace quotes elements with quotes text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText evtCriticalElementsParser.getQuoteText()}).
@@ -431,12 +431,12 @@ angular.module('evtviewer.dataHandler')
 	// SOURCE TEXT //
 	// /////////// //
 	/**
-     * @ngdoc function
+     * @ngdoc method
      * @name evtviewer.dataHandler.evtCriticalParser#parseSourceText
      * @methodOf evtviewer.dataHandler.evtCriticalParser
      *
      * @description
-     * This module will parse the XML a source and save it into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     * This method will parse the XML a source and save it into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
      *
      * @param {element} doc XML element representing the document to be parsed
      * @param {string} sourceId id of source to be parsed
