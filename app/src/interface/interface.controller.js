@@ -211,7 +211,7 @@ angular.module('evtviewer.interface')
          * @ngdoc property
          * @name evtviewer.interface.controller:InterfaceCtrl#evtPinnedElements
          * @propertyOf evtviewer.interface.controller:InterfaceCtrl
-         * @description Copy of ({@link evtviewer.UItool.evtPinnedElements evtPinnedElements}) service.
+         * @description Copy of ({@link evtviewer.UItools.evtPinnedElements evtPinnedElements}) service.
          */
 		$scope.evtPinnedElements = evtPinnedElements;
 		/**
@@ -247,30 +247,80 @@ angular.module('evtviewer.interface')
 			return evtInterface.isToolAvailable(toolName);
 		};
 
-		$scope.getSecondaryContentOpened = function() {
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getSecondaryContentOpened
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get name of secondary content opened
+         * @returns {string} name of secondary content opened
+         */
+        $scope.getSecondaryContentOpened = function() {
 			return evtInterface.getState('secondaryContent');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getProjectInfo
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get project info from {@link evtviewer.dataHandler.parsedData parsedData}
+         * @returns {object} json object containing project info parsed from edition text
+         */
 		$scope.getProjectInfo = function() {
 			return parsedData.getProjectInfo();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getWitnessesListFormatted
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get list of witnesses from {@link evtviewer.dataHandler.parsedData parsedData} properly formatted
+         * @returns {string} HTML string containing the formatted list of parsed witnesses
+         */
 		$scope.getWitnessesListFormatted = function() {
 			return parsedData.getWitnessesListFormatted();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableLists
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get available lists of named entities from {@link evtviewer.dataHandler.parsedData parsedData}
+         * @returns {array} array of indexes referring to lists of named entities parsed from edition text
+         */
 		$scope.getAvailableLists = function() {
 			return parsedData.getNamedEntitiesCollection()._indexes;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getProperty
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get property from {@link evtviewer.interface.evtInterface}
+         * @param {string} name name of property to get
+         * @returns {any} current value of given property
+         */
 		$scope.getProperty = function(name) {
 			return evtInterface.getProperty(name);
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getState
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get state from {@link evtviewer.interface.evtInterface}
+         * @param {string} name name of state property to get
+         * @returns {any} current value of given state property
+         */
 		$scope.getState = function(name) {
 			return evtInterface.getState(name);
 		};		
-		
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#handleGenericClick
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Handle click on page. 
+         * - If target is not a directive evt-select, close all opened selects.
+         * - If target is not a directive evt-buttonSwitch, close all selects that are not switchers, but are "stand alone" buttons.
+         * - If target is not a directive evt-popover, close all opened popover.
+         * - If target is a witness selector (selector appearing in collation view), hide it.
+         * @param {event} $event click event 
+         * @todo: Add more cases
+         */
 		$scope.handleGenericClick = function($event) {
 			var target = $event.target;
 			if ($(target).parents('evt-select').length === 0) {
@@ -290,15 +340,32 @@ angular.module('evtviewer.interface')
 					evtInterface.updateProperty('witnessSelector', false);
 				}
 			}
-
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#handleKeydownEvent
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Handle a key down event on page. 
+         * - If keyCode = 27 [ESC], close all opened dialogs
+         * @param {event} $event keydown event 
+         * @todo: Add more cases. Think about creating a dedicated directive
+         */
 		$scope.handleKeydownEvent = function($event) {
 			if ($event.keyCode === 27) {
 				evtDialog.closeAll();
 			}
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getBookmark
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Generate the bookmark of the current view using information about project 
+         * (author, title and publisher of the edition) and the current URL, 
+         * which can contain info about current document, current page, current edition level, 
+         * current view, current apparatus entry selected and all other data that are saved in the URL during navigation.
+         * Information about the project (or the edition) are retrieved from {@link evtviewer.dataHandler.parsedData parsedData}.
+         * @return {string} HTML of the generated bookmark to be compiled and shown to the user.
+         */
 		$scope.getBookmark = function() {
 			var projectRef = parsedData.getProjectInfo().editionReference || {};
 			var output = '<div class="bookmark">';
@@ -309,56 +376,139 @@ angular.module('evtviewer.interface')
 			output += '</div>';
 			return output;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getErrorMsg
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get the current error generated from the {@link evtviewer.communication.evtCommunication evtCommunication} service.
+         * @return {object} object representing the current communication error:
+         <pre>
+			var currentError = {
+		        code  : '',
+		        title : '',
+		        msg   : ''
+		    }
+         </pre>
+         */
 		$scope.getErrorMsg = function() {
 			return evtCommunication.getError();
 		};
 
-		// METHODS ADDED BY CM //
-
-		// Method to get available sources texts
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableSourcesTexts
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get available sources texts
+         * @return {array} list of available sources texts
+         * @author Chiara Martignano
+         */
+         // Method to get available sources texts
 		$scope.getAvailableSourcesTexts = function() {
 			return evtInterface.getProperty('availableSourcesTexts');
 		};
 
-		// Method to get the id the source text viewed in the interface
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentSourceText
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get the id of the source text shown in the interface.
+         * @return {string} id of the source text shown in the interface
+         * @author Chiara Martignano
+         */
 		$scope.getCurrentSourceText = function() {
 			return evtInterface.getState('currentSourceText') ;
 		};
 
 		//TODO: add methods for source, quote and analogue?
 
-		// Method to check if the apparatuses box is open
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isApparatusBoxOpen
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check if the apparatuses box is open
+         * @return {boolean} whether the apparatuses box is opened or not
+         * @author Chiara Martignano
+         */
 		$scope.isApparatusBoxOpen = function() {
 			return evtInterface.getState('isApparatusBoxOpen') ;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#showApparatusesBox
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check if the apparatuses box should be shown.
+         * @return {boolean} whether the apparatuses box should be shown or not
+         * @author Chiara Martignano
+         */
 		$scope.showApparatusesBox = function() {
-			return evtInterface.getState('isApparatusBoxOpen')  && evtInterface.getState('currentEdition') === 'critical';
+			return evtInterface.getState('isApparatusBoxOpen') && evtInterface.getState('currentEdition') === 'critical';
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentVersions
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current versions selected
+         * @return {string} id of current versions selected
+         * @author Chiara Martignano
+         */
 		$scope.getCurrentVersions = function() {
 			return evtInterface.getState('currentVersions');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableVersions
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get available versions
+         * @return {array} list of available versions
+         * @author Chiara Martignano
+         */
 		$scope.getAvailableVersions = function() {
 			return evtInterface.getProperty('availableVersions');
 		};
-
-		// Method to check if the selector for the versions is active
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isVersionSelectorActive
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Check if the selector for the versions is active
+         * @return {boolean} whether the selector for the versions is active or not
+         * @author Chiara Martignano
+         */
 		$scope.isVersionSelectorActive = function() {
 			return evtInterface.getProperty('versionSelector');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAllVersionsNumber
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get number of total versions available
+         * @return {int} number of versions available
+         * @author Chiara Martignano
+         */
 		$scope.getAllVersionsNumber = function() {
 			return evtInterface.getAllVersionsNumber();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getVersion
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get description of a given version
+         * @param {string} ver id of version to retrieve
+         * @return {string} HTML of given version description to be compiled in UI
+         * @author Chiara Martignano
+         */
 		$scope.getVersion = function(ver) {
-			//CHECKME
-			return parsedData.getVersionEntries()._indexes.versionId[ver];
+			var versionEntries = parsedData.getVersionEntries(),
+				versionIds = versionEntries ? versionEntries._indexes : {}
+			return (versionIds && versionIds.versionId ? versionIds.versionId[ver] : '');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#addVersion
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Add version in comparing box
+         * @param {string} ver id of version to add
+         * @author Chiara Martignano
+         */
 		$scope.addVersion = function(ver) {
 			if (ver !== undefined) {
 				evtInterface.addVersion(ver);
@@ -370,37 +520,76 @@ angular.module('evtviewer.interface')
 			evtInterface.updateProperty('versionSelector', false);
 		};
 
-		// END OF ADDITION //
-		
 		// MAIN MANU ACTIONS
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#openGlobalDialogInfo
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Open Global Dialog containing project info
+         */
 		$scope.openGlobalDialogInfo = function() {
 			evtInterface.updateState('secondaryContent', 'globalInfo');
 			evtDialog.openByType('globalInfo');
 		};
-		
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#openGlobalDialogLists
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Open Global Dialog containing named entities lists
+         */
 		$scope.openGlobalDialogLists = function() {
 			evtInterface.updateState('secondaryContent', 'entitiesList');
 			evtDialog.openByType('entitiesList');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#generateBookmark
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Open Global Dialog containing generated bookmark
+         */
 		$scope.generateBookmark = function() {
 			evtInterface.updateState('secondaryContent', 'bookmark');
 			evtDialog.openByType('bookmark');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#downloadXML
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Open (in new window) path to the edition URL
+         * @todo: create generic function for edition that are not encoded in XML
+         */
 		$scope.downloadXML = function() {
 			window.open(evtInterface.getProperty('dataUrl'), '_blank');
 		};
 
 		// UI Translation
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableLanguages
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get available languages for interface translation
+         * @return {array} list of languages available for interface translation
+         */
 		$scope.getAvailableLanguages = function() {
 			return evtTranslation.getLanguages();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentLanguage
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current selected language
+         * @return {string} id of current selected language
+         */
 		$scope.getCurrentLanguage = function() {
 			return evtTranslation.getCurrentLanguage();
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#setLanguage
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Change interface translation
+         * @param {string} langKey key of new language to set  
+         */
 		$scope.setLanguage = function(langKey) {
 			evtTranslation.setLanguage(langKey);
 		};
@@ -408,7 +597,24 @@ angular.module('evtviewer.interface')
 		_console.log('InterfaceCtrl running');
 	})
 
-//TODO: Move this directive in a proper file 
+/**
+ * @ngdoc directive
+ * @module evtviewer.interface
+ * @name evtviewer.interface.directive:g
+ * @description 
+ * # g
+ * Directive to transform encoded gliph into actual text depending on parsed data about the referenced item
+ *
+ * @scope
+ * @param {string=} ref id of referred element
+ *
+ * @restrict E
+ *
+ * @todo Move this directive in a proper file
+ * @todo Decide if simply use html content to be compiled 
+ * (in this case the same HTML will be used for each occurrence of glyph) 
+ * or if parse the glyph content deeperand use only the character needed.
+**/
 .directive('g', function(parsedData) {
 	return {
 		restrict: 'E',
@@ -427,9 +633,6 @@ angular.module('evtviewer.interface')
 					sContent = glyphObj.parsedXml;
 				}
 			}
-			// TODO: Decide if simply use html content to be compiled  
-			// (in this case the same HTML will be used for each occurrence of glyph) 
-			// or if parse the glyph content deeperand use only the character needed  
 			scope.content = sContent;
 		}
 	};
