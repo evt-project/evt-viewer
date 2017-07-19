@@ -57,7 +57,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatusParser
      *
      * @description
-     * [PRIVATE] This functino will parse the list of witness.
+     * [PRIVATE] This function will parse the list of witness.
      *
      * @param {string} doc string representing the XML to be parsed
      * @param {element} listWit DOM element representing a single witness
