@@ -5,6 +5,10 @@
  * @description 
  * # evtCriticalApparatus
  * TODO: Add description and comments for every method
+ * 
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -14,7 +18,40 @@ angular.module('evtviewer.dataHandler')
 	var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
 		return el.length !== 0;
 	});
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getContent
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {element} entry XML element to parse
+     * @param {boolean} subApp whether the entry is a nested one
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @return {objecy} JSON object representing the content of the entry, that is structured as follows:
+        <pre>
+            var appContent = {
+				attributes: {
+					values: {},
+					_keys: []
+				},
+				lemma: {
+					content: '',
+					attributes: {
+						values: {},
+						_keys: []
+					}
+				},
+				significantReadings: [],
+				notSignificantReadings: [],
+				readingGroups: [],
+				criticalNote: '',
+				witnessesGroups: {}
+			};
+        </pre>
+     */
 	apparatus.getContent = function(entry, subApp, scopeWit) {
 		// console.log('getContent', entry);
 		var appContent = {
@@ -98,9 +135,20 @@ angular.module('evtviewer.dataHandler')
 
 		return appContent;
 	};
-
-	/*getWitnessesGroups(entry, scopeWit, groups)*/
-	/*Method added by CM*/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getWitnessesGroups
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} entry JSON object representing the entry to handle
+     * @param {string} scopeWit id of witness to consider
+     * @param {array} groups groups to handle
+     *
+     * @author Chiara Martignano
+     */
 	apparatus.getWitnessesGroups = function(entry, scopeWit, groups) {
 		for (var h in groups) {
 			groups[h].wits = [];
@@ -188,9 +236,21 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 	};
-
-	/*getReadingForGroup(reading, scopeWit)*/
-	/*Method added by CM*/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getReadingForGroup
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} reading JSON object representing the reading to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} reading text retrieved
+     *
+     * @author Chiara Martignano
+     */
 	apparatus.getReadingForGroup = function(reading, scopeWit) {
 		var readingText = '';
 
@@ -220,7 +280,19 @@ angular.module('evtviewer.dataHandler')
 
 		return readingText;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getGenericContent
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} element JSON object representing the element to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} content text retrieved
+     */
 	apparatus.getGenericContent = function(element, scopeWit) {
 		var genericContentText;
 
@@ -239,7 +311,19 @@ angular.module('evtviewer.dataHandler')
 		genericContentText += '</span>';
 		return genericContentText;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getLemma
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} lemma JSON object representing the lemma to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} text of lemma retrieved
+     */
 	apparatus.getLemma = function(lemma, scopeWit) {
 		var lemmaText = '';
 		// lemma content
@@ -267,7 +351,19 @@ angular.module('evtviewer.dataHandler')
 
 		return lemmaText;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getSubApparatus
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {string} subAppId id of nested apparatus to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} text of nested apparatus retrieved
+     */
 	apparatus.getSubApparatus = function(subAppId, scopeWit) {
 		var subAppText = '';
 		var subApp = parsedData.getCriticalEntryById(subAppId);
@@ -283,7 +379,28 @@ angular.module('evtviewer.dataHandler')
 		subAppText += ')) </span>';
 		return subAppText;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getSignificantReading
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} reading JSON object representing the reading to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {object} JSON object representing the content of the significant reading, that is structured as
+     	<pre>
+			var readingObj = {
+				content: '',
+				attributes: {
+					values: {},
+					_keys: []
+				}
+			};
+     	</pre>
+     */
 	apparatus.getSignificantReading = function(reading, scopeWit) {
 		var readingText = '',
 			readingObj = {};
@@ -327,9 +444,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return readingObj;
 	};
-
-	/*getCriticalElementContent(element, scopeWit)*/
-	/*Method added by CM*/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getCriticalElementContent
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} element JSON object representing the critical entry to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} string representing the generated HTML for the critical element content
+     * 
+     * @author Chiara Martignano
+     */
 	apparatus.getCriticalElementContent = function(element, scopeWit) {
 		var content = element.content || [];
 		var result = '<span class="' + element.type + ' inApparatus">';
@@ -356,9 +485,20 @@ angular.module('evtviewer.dataHandler')
 		result += '</span>';
 		return result;
 	};
-
-	/*getText(entry)*/
-	/*Method added by CM*/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getText
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} element JSON object representing the critical entry to handle
+     *
+     * @returns {string} the text of entry
+     * 
+     * @author Chiara Martignano
+     */
 	apparatus.getText = function(entry) {
 		var result = '';
 		var content = entry.content;
@@ -373,9 +513,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
-	/*getAppText(entry, scopeWit)*/
-	/*Method added by CM*/
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getAppText
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * [PRIVATE] TODO: Add description for function and parameters
+     *
+     * @param {object} element JSON object representing the critical entry to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} the text of apparatus entry
+     * 
+     * @author Chiara Martignano
+     */
 	var getAppText = function(entry, scopeWit) {
 		var result = '';
 		if (scopeWit === '' ||
@@ -389,7 +541,20 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getCriticalEntryWitnesses
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} reading JSON object representing the reading to handle
+     * @param {string} elemType type of element that is being handled
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} string representing the HTML containing the witnesses of a given critical entry
+     */
 	apparatus.getCriticalEntryWitnesses = function(reading, elemType, scopeWit) {
 		var witnesses = '';
 		if (reading.wits !== undefined && reading.wits.length > 0) {
@@ -413,8 +578,19 @@ angular.module('evtviewer.dataHandler')
 		}
 		return witnesses;
 	};
-
-	//TODO: rivedere output raggruppamenti attributi
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#getCriticalEntryAttributes
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} reading JSON object representing the reading to handle
+     * @param {string} elemType type of element that is being handled
+     *
+     * @returns {string} string representing the HTML containing the attributes of a given reading
+     */
 	apparatus.getCriticalEntryAttributes = function(reading, elemType) {
 		var attributes = '';
 		if (reading.attributes !== undefined) {
@@ -429,13 +605,35 @@ angular.module('evtviewer.dataHandler')
 		}
 		return attributes;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#transformCriticalEntryLacunaMilestones
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * This method transform <code>lacunaStart</code> and <code>lacunaEnd</code> elements into simple element that will inform about the start/end of a lacuna.
+     *
+     * @param {string} appText text of the apparatus to handle
+     *
+     * @returns {string} text with <code>lacunaStart</code> and <code>lacunaEnd</code> elements transformed
+     */
 	apparatus.transformCriticalEntryLacunaMilestones = function(appText) {
 		appText = appText.replace(/<lacunaStart(.|[\r\n])*?\/>/ig, '<i> {{ \'CRITICAL_APPARATUS.LACUNA_START\' | translate }} </i>');
 		appText = appText.replace(/<lacunaEnd(.|[\r\n])*?\/>/ig, '<i> {{ \'CRITICAL_APPARATUS.LACUNA_END\' | translate }} </i>');
 		return appText;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalApparatus#transformCriticalEntryFragmentMilestones
+     * @methodOf evtviewer.dataHandler.evtCriticalApparatus
+     *
+     * @description
+     * This method transform <code>witStart</code> and <code>witEnd</code> elements into simple element that will inform about the start/end of a fragment.
+     *
+     * @param {string} appText text of the apparatus to handle
+     *
+     * @returns {string} text with <code>lacunaStart</code> and <code>lacunaEnd</code> elements transformed
+     */
 	apparatus.transformCriticalEntryFragmentMilestones = function(appText) {
 		var fragmentsStarts = appText.match(/<witStart(.|[\r\n])*?\/>/ig);
 		if (fragmentsStarts !== null) {

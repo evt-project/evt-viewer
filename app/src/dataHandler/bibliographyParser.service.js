@@ -6,6 +6,12 @@
  * # evtBibliographyParser
  * TODO: Add description and comments for every method
  *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ *
  * @author Maurizio Ricci
 **/
 angular.module('evtviewer.dataHandler')
@@ -80,6 +86,37 @@ angular.module('evtviewer.dataHandler')
     };
 
     // Bibliographic data container
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#extractInfo
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {element} element XML element to parse
+     *
+     * @returns {object} JSON object representing the extracted data, that is structured as follows:
+        <pre>
+            var newBiblElement = {
+                id: '',
+                type: '',
+                author: [],
+                titleAnalytic: '',
+                titleMonogr: '',
+                editionMonogr: '',
+                date: '',
+                editor: [],
+                publisher: '',
+                pubPlace: '',
+                biblScope: {},
+                note: {},
+                idno: {},
+                outputs: {},
+                plainText: ''
+            };
+        </pre>
+     */
     parser.extractInfo = function(element) {
         var newBiblElement = {
             id: '',
@@ -418,10 +455,6 @@ angular.module('evtviewer.dataHandler')
         });
     };
 
-
-
-
-
     var isObject = function(obj) {
         return obj && ((typeof obj).toLowerCase() === 'object');
     };
@@ -502,9 +535,19 @@ angular.module('evtviewer.dataHandler')
         return res;
     };
 
-    //genera una stringa html in base alle informazioni estratte e a un certo stile bibliografico
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#formatResult
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     * Orig descriptio: genera una stringa html in base alle informazioni estratte e a un certo stile bibliografico
+     *
+     * @param {string} styleCode key of style code to use
+     * @param {object} newBiblElement JSON object representing the bibliographic element
+     */
     parser.formatResult = function(styleCode, newBiblElement) {
-        console.log(styleCode);
         if (!newBiblElement.outputs[styleCode]) {
             var string = '';
             var firstAuthor, firstName, firstSurname;
@@ -973,26 +1016,83 @@ angular.module('evtviewer.dataHandler')
 	Le funzioni che accettano un parametro (per facilità di comprensione chiamato newBiblElement) accedono dei campi di un oggetto definito 
 	nella funzione parser.extractInfo; per una descrizione più completa del modello dei dati estratti, vedere la documentazione di questo file,
 	alla voce newBiblElement. /*/
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#yearInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @returns {object} Add description
+     */
     parser.yearInfoDetected = function() {
         return yearTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#authorInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @returns {object} Add description
+     */
     parser.authorInfoDetected = function() {
         return authorTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#titleInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @returns {object} Add description
+     */
     parser.titleInfoDetected = function() {
         return titleTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#publisherInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @returns {object} Add description
+     */
     parser.publisherInfoDetected = function() {
         return publisherTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#bibliographicStyleInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @returns {object} Add description
+     */
     parser.bibliographicStyleInfoDetected = function() {
         return bibliographicStyleInfoDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#getType
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {object} newBiblElement JSON object representing the bibliographic element to handle
+     *
+     * @returns {object} Add description
+     */
     parser.getType = function(newBiblElement) {
         //parser encapsulates an internal function
         return getPubblicationType(newBiblElement);

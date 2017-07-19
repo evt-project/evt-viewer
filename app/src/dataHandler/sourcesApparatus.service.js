@@ -5,12 +5,49 @@
  * @description 
  * # evtSourcesApparatus
  * TODO: Add description and comments for every method
+ *
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.evtSourcesParser
+ * @requires evtviewer.dataHandler.evtCriticalApparatus
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
 **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtSourcesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatus, evtCriticalApparatusParser) {
 	var apparatus = {};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getContent
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {element} quote XML element to parse
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @return {objecy} JSON object representing the content of the quote, that is structured as follows:
+        <pre>
+            var appContent = {
+				attributes: {
+					values: {},
+					_keys: []
+				},
+				sources: [],
+				quote: '',
+				abbrQuote: {
+					begin: '',
+					end: ''
+				},
+				quoteCorresp: '',
+				_xmlSource: ''
+			};
+        </pre>
+     * @author Chiara Martignano
+     */
 	apparatus.getContent = function(quote, scopeWit) {
 		// console.log('getContent', quote);
 		var appContent = {
@@ -57,7 +94,29 @@ angular.module('evtviewer.dataHandler')
 
 		return appContent;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getSource
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} entry JSON object representing the source
+     *
+     * @return {objecy} JSON object representing the source, that is structured as follows:
+        <pre>
+            var source = {
+				id: '',
+				abbr: '',
+				text: '',
+				bibl: '',
+				url: '',
+				_xmlSource: ''
+			};
+        </pre>
+     * @author Chiara Martignano
+     */
 	apparatus.getSource = function(entry) {
 		var source = {
 			id: entry.id,
@@ -119,7 +178,20 @@ angular.module('evtviewer.dataHandler')
 
 		return source;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getSourceAbbr
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} entry JSON object representing the source
+     *
+     * @return {string} generated abbreviation of the source
+     *
+     * @author Chiara Martignano
+     */
 	apparatus.getSourceAbbr = function(entry) {
 		var abbr = '';
 		if (entry.abbr.msId.length > 0) {
@@ -146,7 +218,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return abbr;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getQuote
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} quote JSON object representing the quote
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @return {string} the text of the quote
+     *
+     * @author Chiara Martignano
+     */
 	apparatus.getQuote = function(quote, scopeWit) {
 		var content = quote.content || [];
 		var result = '';
@@ -172,8 +258,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
-	//Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getText
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} entry JSON object representing the entry to handle
+     *
+     * @return {string} the text of the entry
+     *
+     * @author Chiara Martignano
+	 * @todo Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+     */
 	apparatus.getText = function(entry) {
 		var result = '';
 		var content = entry.content;
@@ -188,7 +287,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getAppText
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * TODO: Add description for function and parameters
+     *
+     * @param {object} entry JSON object representing the entry to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @return {string} the text of the entry
+     *
+     * @author Chiara Martignano
+     */
 	apparatus.getAppText = function(entry, scopeWit) {
 		var result = '';
 		if (scopeWit === '' || scopeWit === undefined || entry._indexes.witMap[scopeWit] === undefined) {

@@ -5,6 +5,10 @@
  * @description 
  * # parsedData
  * TODO: Add description and comments for every method
+ * 
+ * @requires $log
+ * @requires evtviewer.core.config
+ * @requires evtviewer.core.Utils
 **/
 angular.module('evtviewer.dataHandler')
 

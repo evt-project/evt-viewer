@@ -5,12 +5,44 @@
  * @description 
  * # evtAnaloguesApparatus
  * TODO: Add description and comments for every method
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.evtSourcesParser
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.dataHandler.evtAnaloguesParser
+ * @requires evtviewer.dataHandler.evtSourcesApparatus
+ *
+ * @author Chiara Martignano
 **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtAnaloguesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatusParser, evtAnaloguesParser, evtSourcesApparatus) {
 	var apparatus = {};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtAnaloguesApparatus#getContent
+     * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {object} analogue JSON object representing the analogue to handle
+     * @param {string} scopeWit id of witness to handle
+     *
+     * @returns {object} JSON object representing the content of the analogue apparatus, that is structured as follows:
+        <pre>
+            var appContent = {
+				attributes: {
+					values: {},
+					_keys: []
+				},
+				sources: [],
+				header: '',
+				_xmlSource:''
+			};
+        </pre>
+     */
 	apparatus.getContent = function(analogue, scopeWit) {
 		// console.log('getContent', analogue);
 		var appContent = {
@@ -34,7 +66,28 @@ angular.module('evtviewer.dataHandler')
 
 		return appContent;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtAnaloguesApparatus#getSource
+     * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {object} entry JSON object representing the entry to handle
+     *
+     * @returns {object} JSON object representing the content of the source, that is structured as follows:
+        <pre>
+            var source = {
+				id: '',
+				abbr: '',
+				text: '',
+				bibl: '',
+				url: '',
+				_xmlSource: '',
+			};
+        </pre>
+     */
 	apparatus.getSource = function(entry) {
 		var source = {
 			id: entry.id,
@@ -84,7 +137,19 @@ angular.module('evtviewer.dataHandler')
 		}
 		return source;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtAnaloguesApparatus#getHeader
+     * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {object} analogue JSON object representing the analogue to handle
+     * @param {string} scopeWit id of witness to handle
+     *
+     * @returns {string} string representing the HTML of the transformed analogue header content
+     */
 	apparatus.getHeader = function(analogue, scopeWit) {
 		var content = analogue.content || [];
 		var result = '<span class="analogue-header">';
@@ -112,8 +177,19 @@ angular.module('evtviewer.dataHandler')
 		result += '</span>';
 		return result;
 	};
-
-	//Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtAnaloguesApparatus#getText
+     * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {object} entry JSON object representing the entry to handle
+     *
+     * @returns {string} string representing the HTML of the retrieved entry text
+     * @todo Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+     */
 	apparatus.getText = function(entry) {
 		var result = '',
 			content = entry.content;
@@ -128,7 +204,19 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtAnaloguesApparatus#getAppText
+     * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
+     *
+     * @description
+     * TODO: Add description of method and parameters!
+     *
+     * @param {object} entry JSON object representing the entry to handle
+     * @param {string} scopeWit id of witness to handle
+     *
+     * @returns {string} string representing the HTML of the retrieved apparatus entry text
+     */
 	apparatus.getAppText = function(entry, scopeWit) {
 		var result = '';
 		if (scopeWit === '' || scopeWit === undefined || entry._indexes.witMap[scopeWit] === undefined) {
