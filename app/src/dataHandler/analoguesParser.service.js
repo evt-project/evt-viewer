@@ -1,9 +1,9 @@
 /**
  * @ngdoc service
  * @module evtviewer.dataHandler
- * @name evtviewer.dataHandler.evtAnaloguesApparatus
+ * @name evtviewer.dataHandler.evtAnaloguesParser
  * @description 
- * # evtAnaloguesApparatus
+ * # evtAnaloguesParser
  * TODO: Add description and comments for every method
  *
  * @author Chiara Martignano
