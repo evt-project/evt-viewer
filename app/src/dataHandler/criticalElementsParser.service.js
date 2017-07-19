@@ -19,9 +19,9 @@ angular.module('evtviewer.dataHandler')
 		analogueDef = '<seg>,<ref[type=parallelPassage]>',
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 
-	/**************** */
-	/*CRITICAL ENTRIES*/
-	/**************** */
+	// /////////////// //
+	// CRITICAL ENTRIES//
+	// /////////////// //
 
 	/**
      * @ngdoc function
