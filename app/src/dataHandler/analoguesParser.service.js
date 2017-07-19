@@ -37,7 +37,7 @@ angular.module('evtviewer.dataHandler')
 	 * @param {string} doc string representing the XML document to be parsed
 	 * @param {element=} extDoc external XML document that contains the analogues
 	 *
-	 * @returns {promise} promise that the parser ended
+	 * @returns {promise} promise that the parser will end
 	 *
 	 * @author Chiara Martignano
      */
