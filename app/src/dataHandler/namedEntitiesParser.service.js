@@ -6,6 +6,10 @@
  * # evtNamedEntitiesParser
  * Service containing methods to parse data regarding named entities and relations among them
  *
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.parsedData
+ *
  * @author Chiara Di Pietro
 **/
 angular.module('evtviewer.dataHandler')

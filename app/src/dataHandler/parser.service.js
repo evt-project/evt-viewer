@@ -4,7 +4,12 @@
  * @name evtviewer.dataHandler.evtParser
  * @description 
  * # evtParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data
+ *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.dataHandler')
 

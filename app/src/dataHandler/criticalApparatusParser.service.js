@@ -5,6 +5,13 @@
  * @description 
  * # evtCriticalApparatusParser
  * Service containing methods to parse data regarding critical apparatus.
+ *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.evtCriticalElementsParser
 **/
 angular.module('evtviewer.dataHandler')
 

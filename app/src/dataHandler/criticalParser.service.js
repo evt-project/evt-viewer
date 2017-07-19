@@ -5,6 +5,16 @@
  * @description 
  * # evtCriticalParser
  * Service containing methods to parse data regarding critical edition (critical text, witness text, etc.).
+ *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.dataHandler.evtSourcesParser
+ * @requires evtviewer.dataHandler.evtAnaloguesParser
+ * @requires evtviewer.dataHandler.evtCriticalElementsParser
+ * @requires evtviewer.core.config
 **/
 angular.module('evtviewer.dataHandler')
 

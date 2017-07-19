@@ -5,7 +5,12 @@
  * @description 
  * # evtCriticalElementsParser
  * Service containing methods to parse data regarding critical apparatuses (critical entries, sources, analogues).
-**/
+ *
+ * @requires xmlParser
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.core.config
+ **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtCriticalElementsParser', function(evtParser, parsedData, config, xmlParser) {

@@ -6,6 +6,13 @@
  * # evtAnaloguesParser
  * Service containing methods to parse data regarding analogues.
  *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtCriticalElementsParser
+ * @requires evtviewer.core.config
+ *
  * @author Chiara Martignano
 **/
 angular.module('evtviewer.dataHandler')
