@@ -32,17 +32,24 @@ angular.module('evtviewer.dataHandler')
 	projectInfoDefs.sectionSubHeaders += '<principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>, <msIdentifier>, <physDesc>, <history>, <extent>, <editionStmt>';
 	projectInfoDefs.blockLabels += '<edition>, <correction>, <hyphenation>, <interpretation>, <normalization>, <punctuation>, <interpGrp>';
 	projectInfoDefs.blockLabels += '<quotation>, <segmentation>, <stdVals>, <colophon>, <handDesc>, <decoDesc>, <supportDesc>, <origin>';
-	/* ********* */
-	/* UTILITIES */
-	/* ********* */
-	/* ************************************** */
-	/* isNestedInElem(element, parentTagName) */
-	/* *************************************************************************** */
-	/* Function to check if an element is nested into another particular element   */
-	/* @element element to be checked                                              */
-	/* @parentTagName tagName of the element that does not be a parent of @element */
-	/* @return boolean                                                             */
-	/* *************************************************************************** */
+	// ///////// //
+	// UTILITIES //
+	// ///////// //
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#isNestedInElem
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will check if an element is nested into another particular element.
+     *
+     * @param {element} element XML element to be checked  
+     * @param {string} parentTagName tagName of the element that does not be a parent of @element
+     *
+     * @returns {boolean} whether the element is nested in the given other element or not
+     * 
+     * @author Chiara Di Pietro
+     */
 	parser.isNestedInElem = function(element, parentTagName) {
 		if (element.parentNode !== null) {
 			if (element.parentNode.tagName === 'text') {
@@ -71,14 +78,20 @@ angular.module('evtviewer.dataHandler')
 	parser.camelToUnderscore = function(str) {
 		return (!!str) ? str.replace(/\W+/g, ' ').replace(/([a-z\d])([A-Z])/g, '$1_$2') : '';
 	};
-
-	/* ************************ */
-	/* isInMainVersion(element) */
-	/* ************************************************************************ */
-	/* Function to check if an element belongs to the main version of the text. */
-	/* @element to check                                                        */
-	/* @return boolean | @author --> CM                                         */
-	/* ************************************************************************ */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#isInMainVersion
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will check if an element belongs to the main version of the text.
+     *
+     * @param {element} element XML element to be checked  
+     *
+     * @returns {boolean} whether the element belongs to the main version of the text or not
+     * 
+     * @author Chiara Martignano
+     */
 	parser.isInMainVersion = function(element) {
 		if (element.parentNode !== null) {
 			if (element.parentNode.tagName === 'text') {
@@ -102,17 +115,33 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 	};
-
-	/* ************************ */
-	/* parseXMLElement(element) */
-	/* ********************************************************** */
-	/* Function to parse a generic XML element                    */
-	/* @element XML element to be parsed                          */
-	/* @return an html with the same data as the XML element read */
-	/* ********************************************************** */
-	// It will transform a generic XML element into an <span> element
-	// with a data-* attribute for each @attribute of the XML element
-	// It will also transform its children
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseXMLElement
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will a generic XML element in a quite generic way
+     * - It will transform a generic XML element into an <code>span</code> element 
+     *  - with a data-* attribute for each @attribute of the XML element
+     *  - and a class name that is equal to the tag name of the original XML element
+	 * - It will also transform its children
+	 * - It will treat in a particular way notes, dates, named entities reference and line breaks.
+	 * - When transforming a text node, every <code>__SPACE__</code> string will be converted back to single spaces.
+	 * (They were transformed in <code>__SPACE__</code> because when parsing XML single spaces between two elements are deleted).
+	 *
+     * @param {element} doc XML element of global document to be parsed
+     * @param {element} element XML element to be parsed
+     * @param {object} options object indicating some specifig options, 
+     * e.g. skip (which elements to skip from being transformed), 
+     * exclude (which elements to exclude from final result),
+     * context (in which context the parser was called). 
+     * This parameter is ready to be used for further options needed when expanding the generic parser.
+     *
+     * @returns {element} XHTML element with the same data as the XML element read.
+     * 
+     * @author Chiara Di Pietro
+     */
 	parser.parseXMLElement = function(doc, element, options) {
 		var newElement;
 		var skip = options.skip || '',
@@ -256,7 +285,27 @@ angular.module('evtviewer.dataHandler')
 			return document.createTextNode('');
 		}
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseElementAttributes
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse all the attributes (and their values) of a given element into a structured JSON object
+     *
+     * @param {element} element XML element to be parsed
+     *
+     * @returns {object} JSON object representing the attributes parsed, structured as follows:
+     	<pre>
+			var attributes = {
+				attriName1: 'attrib value 1',
+				attriName2: 'attrib value 2',
+				_indexes: ['attribName1', 'attribName2']
+			}
+     	</pre>
+     * 
+     * @author Chiara Di Pietro
+     */
 	parser.parseElementAttributes = function(element) {
 		var attributes = {
 			_indexes: []
@@ -273,11 +322,19 @@ angular.module('evtviewer.dataHandler')
 		}
 		return attributes;
 	};
-
-	/***********************************************************/
-	/*Method to parse external files and add them to parsedData*/
-	/*@author: CM                                              */
-	/***********************************************************/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseElementAttributes
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse external files and add them to {@link evtviewer.dataHandler.parsedData parsedData}.
+     *
+     * @param {element} doc XML element to be parsed
+     * @param {string} type type of external resources being parsed
+     *
+     * @author Chiara Martignano
+     */
 	parser.parseExternalDocuments = function(doc, type) {
 		var newExtDoc = {
 			value: type,
@@ -291,23 +348,35 @@ angular.module('evtviewer.dataHandler')
 		console.log('## Source Documents ##', parsedData.getSourceDocuments());
 		console.log('## External Documents ##', parsedData.getExternalDocuments());
 	};
-
-	/********************/
-	/*createRegExpr(def)*/
-	/************************************************************************/
-	/*Takes a string, used in the config file to define a critical elements,*/
-	/*and returns a string that will be used to search the XML elements.    */
-	/*@author --> CM                                                        */
-	/*@def --> string of the element definition, contained in config file   */
-	/************************************************************************/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#createRegExpr
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will take a string, used in the config file to define a critical elements,
+     * and returns a string that will be used to search the XML elements.
+     * - It checks if there is an attribute, introduced by a '['
+     *  - If there isn't a square bracket, it adds the element name in the match string
+     * - Otherwise it saves the name of the element marked by the '<' and the '['
+     * - Adds regular expression operators to the match string
+     * - Looks for the closing square bracket and for the equals sign
+     * - Adds the name of the attribute , the regular expression operators and and the value of the attribute
+     *
+     * @param {string} def string of the element definition, contained in config file. 
+     * It may contain more than one definition separated by commas
+     *
+     * @returns {RegExp} the regular expression created
+     *
+     * @author Chiara Martignano
+     */
 	parser.createRegExpr = function(def) {
 		var match = '(',
-			//def may contain more than one definition separated by commas
 			//Save all the definition contained in def in aDef array
 			aDef = def.split(',');
 
 		for (var i = 0; i < aDef.length; i++) {
-			//Checks if there is an attribute, itroduced by a '['
+			//Checks if there is an attribute, introduced by a '['
 			if (aDef[i].indexOf('[') < 0) {
 				//If there isn't a square bracket, it adds the element name in the match string
 				match += aDef[i].replace(/[>]/g, '');
@@ -344,13 +413,21 @@ angular.module('evtviewer.dataHandler')
 		return sRegExpInput;
 	};
 
-	/*****************************************/
-	/* createAbbreviation(string, maxLength) */
-	/*******************************************************************************/
-	/* Takes a string and transforms it into an abbreviated textNode span element. */
-	/* @string --> string to abbreviate | @maxLenght --> maximum length of the     */
-	/* string to show | @author --> CM                                             */
-	/*******************************************************************************/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#createAbbreviation
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will take a string and transforms it into an abbreviated <code>textNode</code> contained in a <code>span</code> element.
+     *
+     * @param {string} string string to abbreviate 
+     * @param {int} maxLength maximum length of the string to show
+     *
+     * @returns {string} the abbreviated string
+     *
+     * @author Chiara Martignano
+     */
 	parser.createAbbreviation = function(string, maxLength) {
 		var length = maxLength / 2,
 			stringBegin = string.substring(0, length),
@@ -364,11 +441,34 @@ angular.module('evtviewer.dataHandler')
 		var result = '<span class="textNode">' + begin + '<span class="blurredText">' + blurredBegin + '</span> [...] <span class="blurredText">' + blurredEnd + '</span>' + end + '</span>';
 		return result;
 	};
-
-	/* ********************* */
-	/* balanceXHTML(XHTMLstring) */
-	/* ********************* */
-	// balance takes an excerpted or truncated XHTML string and returns a well-balanced XHTML string
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#balanceXHTML
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will an excerpted or truncated XHTML string and returns a well-balanced XHTML string
+     * - It checks for broken tags, e.g. <code>&lt;stro</code> [a <code>&lt;</code> after the last <code>&gt;</code> indicates a broken tag]
+	 *  - It eventually truncates broken tags
+	 * - It checks for broken elements, e.g. <code>&lt;strong&gt;Hello, w</code>
+	 *  - It gets an array of all tags (start, end, and self-closing)
+	 *  - It prepares an empty array where to store broken tags (<code>stack</code>)
+	 *  - It loops over all tags
+	 *    - when it founds an end tag, it pops it off of the stack
+	 *    - when it founds a start tag, it push it onto the stack
+	 *    - then it founds a self-closing tag, it do nothing
+	 *  - At the end of the loop, <code>stack</code> should contain only the start tags of the broken elements, most deeply-nested at the top
+	 *  - It loops over stack array 
+	 *    - pops the unmatched tag off the stack
+	 *    - gets just the tag name
+	 *    - and appends the end tag
+	 *
+     * @param {string} XHTMLstring string to balanced 
+     *
+     * @returns {string} well-balanced XHTML string
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.balanceXHTML = function(XHTMLstring) {
 		// Check for broken tags, e.g. <stro
 		// Check for a < after the last >, indicating a broken tag
@@ -421,7 +521,22 @@ angular.module('evtviewer.dataHandler')
 		// Return the well-balanced XHTML string
 		return (XHTMLstring ? XHTMLstring : '');
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#analyzeEncoding
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will analyze the encoding and save the encoding details in 
+     * {@link evtviewer.dataHandler.parsedData parsedData}.
+     * Details handled are:
+     * - whether the edition uses line breaks of not
+     * - whether the edition has line numbers encoded or not
+	 *
+     * @param {string} XHTMLstring string to balanced 
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.analyzeEncoding = function(doc) {
 		// Check if uses line breaks to divide lines
 		var currentDocument = angular.element(doc);
@@ -431,16 +546,21 @@ angular.module('evtviewer.dataHandler')
 		var lineNums = currentDocument.find(defLine.replace(/[<>]/g, '') + '[n]');
 		parsedData.setEncodingDetail('lineNums', lineNums.length > 0);
 	};
-
-	/* ************************ */
-	/* parseNote(docDOM) */
-	/* **************************************************************************** */
-	/* Function to parse an XML element representing a note (<note> in XMLT-TEI P5) */
-	/* and transform it into an evtPopover directive                                */
-	/* @docDOM -> XML to be parsed                                                  */
-	/* **************************************************************************** */
-	// It will look for every element representing a note
-	// and replace it with a new evt-popover element
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseNote
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse an XML element representing a note (<code>note</code> in XMLT-TEI P5)
+     * and transform it into an <code>evt-popover</code> element.
+	 *
+     * @param {element} noteNode element to be parsed
+     *
+     * @returns {element} <code>evt-popover</code> generated
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parseNote = function(noteNode) {
 		var popoverElem = document.createElement('evt-popover');
 
@@ -449,18 +569,23 @@ angular.module('evtviewer.dataHandler')
 		popoverElem.innerHTML = '<i class="icon-evt_note"></i>';
 		return popoverElem;
 	};
-
-	/* ******************* */
-	/* parseEntity(docDOM) */
-	/* **************************************************************************** */
-	/* Function to parse an XML element representing a named entity 				*/
-	/* and transform it into an evtNamedEntityRef 	                                */
-	/* @doc -> XML to be parsed                                                  	*/
-	/* @entityNode -> Node to be transformed										*/
-	/* @skip -> names of sub elements to skip from transformation					*/
-	/* **************************************************************************** */
-	// It will replace the node @entityNode
-	// and replace it with a new evt-named-entity-ref element
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseNamedEntity
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse an XML element representing a named entity
+     * and transform it into an <code>evt-named-entity-ref</code> element.
+	 *
+     * @param {element} doc XML element to be parsed
+     * @param {element} entityNode node to be transformed
+     * @param {string} skip names of sub elements to skip from transformation
+     * 
+     * @returns {element} <code>evt-named-entity-ref</code> generated
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parseNamedEntity = function(doc, entityNode, skip) {
 		var entityElem = document.createElement('evt-named-entity-ref'),
 			entityRef = entityNode.getAttribute('ref'),
@@ -483,7 +608,18 @@ angular.module('evtviewer.dataHandler')
 		}
 		return entityElem;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseLines
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse all line elements inside an XML document.
+	 *
+     * @param {element} docDOM XML document to be parsed
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parseLines = function(docDOM) {
 		var lines = docDOM.getElementsByTagName('l');
 		var n = 0;
@@ -493,7 +629,22 @@ angular.module('evtviewer.dataHandler')
 			lineNode.parentNode.replaceChild(newElement, lineNode);
 		}
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseLine
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse an XML element representing a line
+     * and transform it in a <code>div</code> element with specific data-* attributes 
+     * indicating some specific properties of the line and line number.
+	 *
+     * @param {element} lineNode XML element to be parsed
+     *
+     * @returns {element} <code>div</code> representing the parsed line
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parseLine = function(lineNode) {
 		var newElement = document.createElement('div');
 		newElement.className = lineNode.tagName + ' l-block';
@@ -518,7 +669,19 @@ angular.module('evtviewer.dataHandler')
 
 		return newElement;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseGlyphs
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse an XML element representing a glyph and its mappings
+     * and save it in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+     * @param {string} doc string representing the XML document to be parsed
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parseGlyphs = function(doc) {
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.find('glyph, char'),
@@ -554,7 +717,21 @@ angular.module('evtviewer.dataHandler')
 			});
 		console.log('# GLYPHS #', parsedData.getGlyphs());
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#xpath
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will generate a string representing the xpath of the given element.
+     * This string can be use as a unique identifier, since every element as a different xpath.
+	 *
+     * @param {element} el XML element to analyze
+     *
+     * @returns {string} calculated xpath of the given element
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.xpath = function(el) {
 		try {
 			if (typeof el === 'string') {
@@ -579,7 +756,20 @@ angular.module('evtviewer.dataHandler')
 			return '-id' + idx;
 		}
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parsePages
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the pages of a given edition document in a given XML document
+     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+     * @param {string} doc string representing the XML element to parse
+     * @param {string} docId id of the document to analyze and to whom add parsed pages
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parsePages = function(doc, docId) {
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.find(defPageElement),
@@ -610,7 +800,19 @@ angular.module('evtviewer.dataHandler')
 			});
 		//console.log('## Pages ##', parsedData.getPages());
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseDocuments
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the documents of a given XML document
+     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+     * @param {string} doc string representing the XML element to parse
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.parseDocuments = function(doc) {
 		var currentDocument = angular.element(doc),
 			defDocElement,
@@ -687,8 +889,23 @@ angular.module('evtviewer.dataHandler')
 		console.log('## Documents ##', parsedData.getDocuments());
 		return parsedData.getDocuments();
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#splitLineBreaks
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse a given XML document and split it into lines.
+     * It will uses regular expression to divide the XML into pieces 
+     * and then balance the generated XHTML in order to handle the last line break.
+	 *
+     * @param {element} docElement XML element to parse
+     * @param {string} defContentEdition string representing the definition of the starting point of the edition
 
-
+     * @returns {string} string representing the HTML with content divided into lines
+     *
+     * @author Chiara Di Pietro
+     */
 	parser.splitLineBreaks = function(docElement, defContentEdition) {
 		var splittedHTML = '';
 		// First Line Breaks (intended as text before first <lb>)
@@ -716,7 +933,23 @@ angular.module('evtviewer.dataHandler')
 		}
 		return splittedHTML;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#splitPages
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse a given XML document and split it into pages.
+     * It will uses regular expression to divide the XML into pieces 
+     * and then balance the generated XHTML in order to handle the last page break.
+     * Finally it stores the result into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+     * @param {element} docElement XML element to parse
+     * @param {string} docId id of the current edition document being parsed (used to store data)
+     * @param {string} defContentEdition string representing the definition of the starting point of the edition
 
+     * @author Chiara Di Pietro
+     */
 	parser.splitPages = function(docElement, docId, defContentEdition) {
 		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
 			sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
@@ -746,7 +979,29 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseTextForEditionLevel
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the text of a given XML document on the basis of the page, document and edition level.
+     * - It balances the given XHTML
+     * - It replaces single spaces between elements into <code>__SPACE__</code>, otherwise they will be ignored from loop on childNode.
+     * - It removes <code>pb</code> and <code>lb</code> elements since they where already handled differently
+     * - It tranforms the <code>g</code> element into the text mapped in the referenced glyph for the specific edition level.
+     * - It parses all <code>childNodes</code> with {@link evtviewer.dataHandler.evtParser#parseXMLElement parseXMLElement()}
+     * - Finally it stores the result into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+	 * @param {string} pageId id of the page being parsed
+	 * @param {string} docId id of the edition document being parsed
+	 * @param {string} editionLevel id of the edition level being parsed
+     * @param {string} docHTML string representing the original XML of the edition
+	 *
+	 * @returns {promise} promise that the parser will end
+	 *
+     * @author Chiara Di Pietro
+     */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
 	   var balancedHTMLString = parser.balanceXHTML(docHTML);
         balancedHTMLString = balancedHTMLString.replace(/> </g, '>__SPACE__<');
