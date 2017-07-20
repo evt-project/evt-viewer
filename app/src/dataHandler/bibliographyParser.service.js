@@ -4,7 +4,13 @@
  * @name evtviewer.dataHandler.evtBibliographyParser
  * @description 
  * # evtBibliographyParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding bibliographic references.
+ * The modules can be divided into parsers and getters.
+ * - Parsers: they will extract the information from the XML original source document and save them in 
+ * {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+ * - Getters: they will return a certain value regarding a specific biliographic entrance. 
+ * The functions without parameters return the value of variables defined inside the service itself.
+ * The functions with parameters, instead, will access to the fields of a particular object defined during main parsing.
  *
  * @requires $q
  * @requires xmlParser
@@ -49,14 +55,19 @@ angular.module('evtviewer.dataHandler')
     };
 
     var parser = {};
-    /*/
-    Questo file si compone sostanzialmente di 3 funzioni principali:
-    	- parseBiblInfo: ricerca nel documento i tag, in cui cercare le info bibliografiche
-    	- extractInfo: serve a estrarre le informazioni contenute dentro un certo tag. Per rendere più modulare la funzione,
-    				al suo interno sono oontenute altre funzioni ausiliarie, ciascuna con il compito di estrarre un certo tipo di informazioni
-    	- formatResult: ha il compito di usare le informazioni estratte in precedenza per creare una stringa html secondo un certo stile bibliografico,
-    				mediante CSS, viene curato lo stile, aggiungendo eventuali punti/virgole
-    /*/
+   
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#parseBiblInfo
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will parse the XML source document in order to find information about bibliographic references.
+     *
+     * @param {string} doc string representing the XML element to parse
+     *
+     * @author Maurizio Ricci
+     */
     parser.parseBiblInfo = function(doc) {
         var currentDocument = angular.element(doc);
 
@@ -92,7 +103,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtBibliographyParser
      *
      * @description
-     * TODO: Add description of method and parameters!
+     * This method will parse the information contained in a given tag. 
+     * In order to make the function more modular, other auxiliary private functions were defined externally,
+     * each one with the task of extracting a certain type of data.
      *
      * @param {element} element XML element to parse
      *
@@ -116,6 +129,8 @@ angular.module('evtviewer.dataHandler')
                 plainText: ''
             };
         </pre>
+     *
+     * @author Maurizio Ricci
      */
     parser.extractInfo = function(element) {
         var newBiblElement = {
@@ -541,11 +556,17 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtBibliographyParser
      *
      * @description
-     * TODO: Add description of method and parameters!
-     * Orig descriptio: genera una stringa html in base alle informazioni estratte e a un certo stile bibliografico
+     * This method will use the information about bibliographic references previously parsed
+     * in order to generate an HTML output string that respects a specific bibliographic style.
+     * The style, and the eventual add of points and commas, is handled with CSS style rules.
+     * The generated HTML style output is then saved in the stored reference of each bibliographic entry
+     * in order to be retrieved every time that is neede, without generating it again.
+     * The styles handled at the moment are Chicago, APA and MLA.
      *
      * @param {string} styleCode key of style code to use
      * @param {object} newBiblElement JSON object representing the bibliographic element
+     *
+     * @author Maurizio Ricci
      */
     parser.formatResult = function(styleCode, newBiblElement) {
         if (!newBiblElement.outputs[styleCode]) {
@@ -940,11 +961,10 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    /*/serve a estrarre nome/cognome da una stringa con un certo pattern:
-    	<cognome>+\s*,\s*<nome>* dove <cognome> e <nome> sono stringhe di testo rappresentanti un cognome/nome
-    	Esempio: Rossi, Mario -> cognome= Rossi, nome= Mario
-    			 Rossi, Mario, Luigi -> stringa non riconosciuta come valida
-    /*/
+    // serve a estrarre nome/cognome da una stringa con un certo pattern:
+    //	<cognome>+\s*,\s*<nome>* dove <cognome> e <nome> sono stringhe di testo rappresentanti un cognome/nome
+    //	Esempio: Rossi, Mario -> cognome= Rossi, nome= Mario
+    //			 Rossi, Mario, Luigi -> stringa non riconosciuta come valida
     var extractSurnameNameFromString = function(string) {
         var author = {
             surname: '',
@@ -1011,11 +1031,6 @@ angular.module('evtviewer.dataHandler')
         return string1 + string2;
     };
 
-    /*/Getters, ritornano il valore richiesto relativo a una entrata bibliografica estratta, oppure undefined.
-	Le funzioni senza argomenti ritornano il valore di variabili definite dentro al servizio (chiamato parser).
-	Le funzioni che accettano un parametro (per facilità di comprensione chiamato newBiblElement) accedono dei campi di un oggetto definito 
-	nella funzione parser.extractInfo; per una descrizione più completa del modello dei dati estratti, vedere la documentazione di questo file,
-	alla voce newBiblElement. /*/
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtBibliographyParser#yearInfoDetected
