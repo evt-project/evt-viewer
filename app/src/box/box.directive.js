@@ -4,7 +4,53 @@
  * @name evtviewer.box.directive:box
  * @description 
  * # box
- * TODO: Add description!
+ * <p>Container with an header with tools (optional), a body and a footer with tools (optional). 
+ * The content of the body will depend on box type. </p>
+ * <p>Available types are:<ul>
+ * <li> **image**: <ul>
+ *  <li>Header: Page selector, Thumbnails button</li>
+ *  <li>Body: Image viewer (to be implemented)</li>
+ *  <li>Footer: hidden </li></ul></li>
+ *
+ * <li> **text**: <ul>
+ *  <li>Header: Page selector, Document selector, Edition level selector&#8727;, Version selector&#8727;, Witnesses list button&#8727;,
+ * info button&#8727;, Color legend keys button&#8727;</li>
+ *  <li>Body: Text of the edition, updated to current document, page and edition level</li>
+ *  <li>Footer: Critical entries filters and heat map buttons&#8727;, Entities selector&#8727;, Font size change buttons</li></ul></li>
+ *
+ * <li> **witness** <ul>
+ *  <li>Header: Witnesses selector, Selected witness pages selector, Witness info button&#8727;, Witness close button</li>
+ *  <li>Body: Text of selected witness, aligned to current page or current critical entry selected</li>
+ *  <li>Footer: Critical entries filters buttons&#8727;, Font size change buttons</li></ul></li>
+ *
+ * <li> **source** <ul>
+ *  <li>Header: Sources selector&#8727;, Source bibliographic reference button</li>
+ *  <li>Body: Text of the current source text</li>
+ *  <li>Footer: Font size change buttons</li></ul></li>
+ *
+ * <li> **version** <ul>
+ *  <li>Header: Version selector&#8727;, Version close button</li>
+ *  <li>Body: Text of the current selected version aligned to main text</li>
+ *  <li>Footer: Font size change buttons</li></ul></li>
+ *
+ * <li> **pinnedBoard** <ul>
+ *  <li>Header: Close button</li>
+ *  <li>Body: Transcluded content (it will be a list of pinned elements)</li>
+ *  <li>Footer: Pinned elements filter selector&#8727;</li></ul></li>
+ *
+ * <li> **empty** <ul>
+ *  <li>Header: hidden</li>
+ *  <li>Body: Transcluded content</li>
+ *  <li>Footer: hidden</li></ul></li>
+ *
+ * <li> *no type* <ul>
+ *  <li>Header: Close button</li>
+ *  <li>Body: Transcluded content</li>
+ *  <li>Footer: hidden</li></ul></li>
+ * </ul>
+ * <br/>&#8727; if available</p>
+ * <p>Since each instance of box must be controlled in different 
+ * ways depending on type, the controller for this directive is dynamically defined inside the {@link evtviewer.box.evtBox evtBox} provider.</p>
  *
  * @scope
  * @param {string=} id id of box to be shown
