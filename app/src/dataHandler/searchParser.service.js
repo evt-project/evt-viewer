@@ -63,7 +63,7 @@ angular.module('evtviewer.dataHandler')
          if (node.tagName !== 'g' || !containOnlySpace(str)) {
             str = node.nodeValue;
             checkNodeIteration(node);
-            checkCurrentEditionIteration(node);
+            node = checkCurrentEditionIteration(node);
 
             if (str !== null && !containOnlySpace(str)) {
                addWord();
@@ -211,7 +211,7 @@ angular.module('evtviewer.dataHandler')
             case 'reg':
             case 'expan':
             case 'ex':
-               iterateNode(node);
+               node = iterateNode(node);
          }
       }
       if (currentEdition === 'interpretative') {
@@ -220,16 +220,17 @@ angular.module('evtviewer.dataHandler')
             case 'orig':
             case 'abbr':
             case 'am':
-               iterateNode(node);
+               node = iterateNode(node);
          }
       }
       if(currentEdition === 'critical') {
          switch(nodeName) {
             case 'rdgGrp':
             case 'rdg':
-               iterateNode(node);
+               node = iterateNode(node);
          }
       }
+      return node;
    };
 
 
@@ -477,23 +478,16 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node       */
    /* *************************** */
    let iterateNode = function(node) {
-      let iterate;
-
-      if(node.childNodes.length > 0) {
-         for (let i = 0; i < node.childNodes.length; i++) {
-            iterate = nodes.iterateNext();
-            while (iterate.childNodes.length !== 0) {
-               for (let j = 0; j < iterate.childNodes.length; j++) {
-                  iterate = nodes.iterateNext();
-               }
+         if (node.childNodes.length > 0) {
+            for (let i = 0; i < node.childNodes.length; i++) {
+                  node = nodes.iterateNext();
+                  node = iterateNode(node);
             }
          }
-      }
-      else {
-         iterate = nodes.iterateNext();
-      }
-      node = iterate;
-      return node;
+         else {
+            node = nodes.iterateNext();
+         }
+         return node;
    };
 
    /* ****************************** */
