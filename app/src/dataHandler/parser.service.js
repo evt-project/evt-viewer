@@ -749,7 +749,7 @@ angular.module('evtviewer.dataHandler')
 
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
 		var balancedHTMLString = parser.balanceXHTML(docHTML);
-		balancedHTMLString = balancedHTMLString.replace(/>\s*</g, '>__SPACE__<');
+		balancedHTMLString = balancedHTMLString.replace(/>\s+</g, '>__SPACE__<');
 		var deferred = $q.defer(),
 			editionText = balancedHTMLString, //TEMP
 
