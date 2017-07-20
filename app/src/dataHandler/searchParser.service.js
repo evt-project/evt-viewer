@@ -478,16 +478,18 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node       */
    /* *************************** */
    let iterateNode = function(node) {
+      let child;
+
          if (node.childNodes.length > 0) {
             for (let i = 0; i < node.childNodes.length; i++) {
-                  node = nodes.iterateNext();
-                  node = iterateNode(node);
+               child = nodes.iterateNext();
+               child = iterateNode(child);
             }
          }
          else {
-            node = nodes.iterateNext();
+            child = nodes.iterateNext();
          }
-         return node;
+         return child;
    };
 
    /* ****************************** */
