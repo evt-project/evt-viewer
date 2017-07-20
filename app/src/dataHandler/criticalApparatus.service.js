@@ -143,7 +143,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} entry JSON object representing the entry to handle
+     * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to consider
      * @param {array} groups groups to handle
      *
@@ -244,7 +244,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} reading JSON object representing the reading to handle
+     * @param {Object} reading JSON object representing the reading to handle
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} reading text retrieved
@@ -288,7 +288,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} element JSON object representing the element to handle
+     * @param {Object} element JSON object representing the element to handle
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} content text retrieved
@@ -319,7 +319,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} lemma JSON object representing the lemma to handle
+     * @param {Object} lemma JSON object representing the lemma to handle
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} text of lemma retrieved
@@ -387,10 +387,10 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} reading JSON object representing the reading to handle
+     * @param {Object} reading JSON object representing the reading to handle
      * @param {string} scopeWit id of witness to consider
      *
-     * @returns {object} JSON object representing the content of the significant reading, that is structured as
+     * @returns {Object} JSON object representing the content of the significant reading, that is structured as
      	<pre>
 			var readingObj = {
 				content: '',
@@ -452,7 +452,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} element JSON object representing the critical entry to handle
+     * @param {Object} element JSON object representing the critical entry to handle
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} string representing the generated HTML for the critical element content
@@ -493,7 +493,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} element JSON object representing the critical entry to handle
+     * @param {Object} element JSON object representing the critical entry to handle
      *
      * @returns {string} the text of entry
      * 
@@ -521,7 +521,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] TODO: Add description for function and parameters
      *
-     * @param {object} element JSON object representing the critical entry to handle
+     * @param {Object} element JSON object representing the critical entry to handle
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} the text of apparatus entry
@@ -549,7 +549,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} reading JSON object representing the reading to handle
+     * @param {Object} reading JSON object representing the reading to handle
      * @param {string} elemType type of element that is being handled
      * @param {string} scopeWit id of witness to consider
      *
@@ -586,7 +586,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} reading JSON object representing the reading to handle
+     * @param {Object} reading JSON object representing the reading to handle
      * @param {string} elemType type of element that is being handled
      *
      * @returns {string} string representing the HTML containing the attributes of a given reading

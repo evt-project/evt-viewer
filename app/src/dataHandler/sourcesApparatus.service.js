@@ -102,7 +102,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} entry JSON object representing the source
+     * @param {Object} entry JSON object representing the source
      *
      * @return {objecy} JSON object representing the source, that is structured as follows:
         <pre>
@@ -186,7 +186,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} entry JSON object representing the source
+     * @param {Object} entry JSON object representing the source
      *
      * @return {string} generated abbreviation of the source
      *
@@ -226,7 +226,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} quote JSON object representing the quote
+     * @param {Object} quote JSON object representing the quote
      * @param {string} scopeWit id of witness to consider
      *
      * @return {string} the text of the quote
@@ -266,7 +266,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} entry JSON object representing the entry to handle
+     * @param {Object} entry JSON object representing the entry to handle
      *
      * @return {string} the text of the entry
      *
@@ -295,7 +295,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} entry JSON object representing the entry to handle
+     * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to consider
      *
      * @return {string} the text of the entry

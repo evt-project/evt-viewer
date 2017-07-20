@@ -129,7 +129,7 @@ angular.module('evtviewer.dataHandler')
      * 
      * @param {element} element XML element to parse
      *
-     * @returns {object} JSON object representing the extracted data, that is structured as follows:
+     * @returns {Object} JSON object representing the extracted data, that is structured as follows:
         <pre>
             var newBiblElement = {
                 id: '',
@@ -607,7 +607,7 @@ angular.module('evtviewer.dataHandler')
      * The styles handled at the moment are Chicago, APA and MLA.
      *
      * @param {string} styleCode key of style code to use
-     * @param {object} newBiblElement JSON object representing the bibliographic element
+     * @param {Object} newBiblElement JSON object representing the bibliographic element
      *
      * @author Maurizio Ricci
      */
@@ -1151,7 +1151,7 @@ angular.module('evtviewer.dataHandler')
      * This metod will returnthe type of the given bibliographic reference. 
      * This method encapsulates an internal function
      *
-     * @param {object} newBiblElement JSON object representing the bibliographic element to handle
+     * @param {Object} newBiblElement JSON object representing the bibliographic element to handle
      */
     parser.getType = function(newBiblElement) {
         return getPubblicationType(newBiblElement);

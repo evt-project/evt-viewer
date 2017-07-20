@@ -27,10 +27,10 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description of method and parameters!
      *
-     * @param {object} analogue JSON object representing the analogue to handle
+     * @param {Object} analogue JSON object representing the analogue to handle
      * @param {string} scopeWit id of witness to handle
      *
-     * @returns {object} JSON object representing the content of the analogue apparatus, that is structured as follows:
+     * @returns {Object} JSON object representing the content of the analogue apparatus, that is structured as follows:
         <pre>
             var appContent = {
 				attributes: {
@@ -74,9 +74,9 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description of method and parameters!
      *
-     * @param {object} entry JSON object representing the entry to handle
+     * @param {Object} entry JSON object representing the entry to handle
      *
-     * @returns {object} JSON object representing the content of the source, that is structured as follows:
+     * @returns {Object} JSON object representing the content of the source, that is structured as follows:
         <pre>
             var source = {
 				id: '',
@@ -145,7 +145,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description of method and parameters!
      *
-     * @param {object} analogue JSON object representing the analogue to handle
+     * @param {Object} analogue JSON object representing the analogue to handle
      * @param {string} scopeWit id of witness to handle
      *
      * @returns {string} string representing the HTML of the transformed analogue header content
@@ -185,7 +185,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description of method and parameters!
      *
-     * @param {object} entry JSON object representing the entry to handle
+     * @param {Object} entry JSON object representing the entry to handle
      *
      * @returns {string} string representing the HTML of the retrieved entry text
      * @todo Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
@@ -212,7 +212,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description of method and parameters!
      *
-     * @param {object} entry JSON object representing the entry to handle
+     * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to handle
      *
      * @returns {string} string representing the HTML of the retrieved apparatus entry text

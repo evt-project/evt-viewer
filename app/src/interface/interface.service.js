@@ -380,7 +380,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.evtInterface#getProperties
          * @methodOf evtviewer.interface.evtInterface
          * @description Get the update properties of interface
-         * @returns {object} update properties object. Example:
+         * @returns {Object} update properties object. Example:
          * <pre>
             var properties = {
                 indexTitle : '',
@@ -420,7 +420,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.evtInterface#getStates
          * @methodOf evtviewer.interface.evtInterface
          * @description Get the updated statues values of interface
-         * @returns {object} updated status values object. Example:
+         * @returns {Object} updated status values object. Example:
          <pre>
             var state = {
                 currentViewMode : undefined,
@@ -578,7 +578,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Update current highlighted zone if different from current
          * @todo: Eventually change once the image viewer has been implemented 
-         * @param {object} zone object representing new zone 
+         * @param {Object} zone object representing new zone 
          */
         mainInterface.updateCurrentHighlightedZone = function(zone) {
             var currentZone = state.currentHighlightedZone;

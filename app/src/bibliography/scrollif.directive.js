@@ -1,10 +1,12 @@
 /**
  * @ngdoc service
  * @module evtviewer.bibliography
- * @name evtviewer.bibliography.evtScrollIf
+ * @name evtviewer.bibliography.directive:evtScrollIf
  * @description 
  * # evtScrollIf
- * TODO: Add description and comments for every method
+ * Scrolls the element on which it's assigned into the visible area of the browser window.
+ * 
+ * @author Maurizio Ricci
 **/
 angular.module('evtviewer.bibliography')
 

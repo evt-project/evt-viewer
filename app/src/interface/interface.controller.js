@@ -262,7 +262,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getProjectInfo
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get project info from {@link evtviewer.dataHandler.parsedData parsedData}
-         * @returns {object} json object containing project info parsed from edition text
+         * @returns {Object} json object containing project info parsed from edition text
          */
 		$scope.getProjectInfo = function() {
 			return parsedData.getProjectInfo();
@@ -381,7 +381,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getErrorMsg
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get the current error generated from the {@link evtviewer.communication.evtCommunication evtCommunication} service.
-         * @return {object} object representing the current communication error:
+         * @return {Object} object representing the current communication error:
          <pre>
 			var currentError = {
 		        code  : '',

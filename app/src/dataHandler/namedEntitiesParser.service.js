@@ -142,7 +142,7 @@ angular.module('evtviewer.dataHandler')
      * {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
      *
      * @param {element} nodeElem XML element representing the entity to be parsed
-     * @param {object} listToParse JSON object representing the list that is being parsed; this object is structured as follows:
+     * @param {Object} listToParse JSON object representing the list that is being parsed; this object is structured as follows:
      	<pre>
 		var listToParse = {
 			listDef: '', // tagName of list
@@ -151,7 +151,7 @@ angular.module('evtviewer.dataHandler')
 			type: '' // typology of list
 		}
      	</pre>
-     * @param {object} defCollection JSON object representing the collection where to store data about relations;
+     * @param {Object} defCollection JSON object representing the collection where to store data about relations;
      * this object is structured as follows
      	<pre>
 			var defCollection = {
@@ -189,7 +189,7 @@ angular.module('evtviewer.dataHandler')
      * - Finaly, it will store all data extracted in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
      *
      * @param {element} nodeElem XML element representing the entity to be parsed
-     * @param {object} defCollection JSON object representing the collection where to store data about relations. 
+     * @param {Object} defCollection JSON object representing the collection where to store data about relations. 
      * This object is structured as follows
      	<pre>
 			var defCollection = {
@@ -415,7 +415,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} nodeElem XML element representing the entity to parse
      * @param {string} listToParse encoding definitions of the list to which the entity belongs
      *
-     * @returns {object} JSON element representing the entity, structure as follows:
+     * @returns {Object} JSON element representing the entity, structure as follows:
      	<pre>
 			var el = {
 				id         : '',
@@ -578,9 +578,9 @@ angular.module('evtviewer.dataHandler')
      * [PRIVATE] This is a very generic function that will parse the information about an collection of entities.
      *
      * @param {element} el XML element representing the collection to be parsed
-     * @param {object} defCollection JSON object representing the parsed collection and containing data already retrieved. 
+     * @param {Object} defCollection JSON object representing the parsed collection and containing data already retrieved. 
      *
-     * @returns {object} JSON object representing a collection of entities, structured as follows:
+     * @returns {Object} JSON object representing a collection of entities, structured as follows:
      	<pre>
 			var defCollection = {
 				id : ''

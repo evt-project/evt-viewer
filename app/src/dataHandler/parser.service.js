@@ -137,7 +137,7 @@ angular.module('evtviewer.dataHandler')
 	 *
      * @param {element} doc XML element of global document to be parsed
      * @param {element} element XML element to be parsed
-     * @param {object} options object indicating some specifig options, 
+     * @param {Object} options object indicating some specifig options, 
      * e.g. skip (which elements to skip from being transformed), 
      * exclude (which elements to exclude from final result),
      * context (in which context the parser was called). 
@@ -300,7 +300,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} element XML element to be parsed
      *
-     * @returns {object} JSON object representing the attributes parsed, structured as follows:
+     * @returns {Object} JSON object representing the attributes parsed, structured as follows:
      	<pre>
 			var attributes = {
 				attriName1: 'attrib value 1',

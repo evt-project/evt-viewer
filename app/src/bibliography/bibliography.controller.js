@@ -4,16 +4,38 @@
  * @name evtviewer.bibliography.controller:BibliographyCtrl
  * @description 
  * # BibliographyCtrl
- * TODO: Add description and list of dependencies!
- * The controller for the {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive. 
-**/
+ * <p>This is controller for the {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive. </p>
+ * <p>The majority of the methods of this controller are defined in the 
+ * {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider 
+ * where the scope of the directive is extended with all the necessary properties and methods.</p>
+ *
+ * @requires $log
+ * @reuires $scope
+ * @requires evtviewer.bibliography.evtBibliography
+ **/
 angular.module('evtviewer.bibliography')
 
-.controller('BibliographyCtrl', function($log, $scope) { 
+.controller('BibliographyCtrl', function($log, $scope, evtBibliography) { 
     var _console = $log.getInstance('BibliographyCtrl');
 
     var vm = this;
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.bibliography.controller:BibliographyCtrl#myComparator
+     * @methodOf evtviewer.bibliography.controller:BibliographyCtrl
+     *
+     * @description
+     * Custom compare function used to order the list of bibliographic entryes
+     * depending on selected parameters.
+     *
+     * @param {string} biblId1 id of first bibliographic reference to handle
+     * @param {string} biblId2 id of second bibliographic reference to handle
+     *
+     * @returns {int}  number indicating whether a bibliographic reference comes before 
+     * or after or is the same as the given bibliographic reference in sort order.
+     *
+     * @author Maurizio Ricci
+     */
     this.myComparator = function(biblId1, biblId2) {
         var result1 = '',
             result2 = '';
@@ -72,4 +94,17 @@ angular.module('evtviewer.bibliography')
         }
         return result1.toString().localeCompare(result2.toString());
     };
+    /**
+     * @ngdoc method
+     * @name evtviewer.bibliography.controller:BibliographyCtrl#destroy
+     * @methodOf evtviewer.bibliography.controller:BibliographyCtrl
+     *
+     * @description
+     * Remove instance from saved instances in {@link evtviewer.bibliography.evtBibliography evtBibliography} provider.
+     *
+     * @author Maurizio Ricci
+     */
+    this.destroy = function() {
+        evtBibliography.destroy(this.uid);
+    }
 });

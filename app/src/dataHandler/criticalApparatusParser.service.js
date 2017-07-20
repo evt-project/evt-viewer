@@ -69,7 +69,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} doc string representing the XML to be parsed
      * @param {element} listWit DOM element representing a single witness
      *
-     * @returns {object} JSON object containing the information about witnesses list read from <code>doc</code>:
+     * @returns {Object} JSON object containing the information about witnesses list read from <code>doc</code>:
          <pre>
             var list = {
                 id      : '',
@@ -277,7 +277,7 @@ angular.module('evtviewer.dataHandler')
      * This method will check is a particular element should be considered belongin to a specific witness or group of witnesses.
      *
      * @param {string} attr attribute containing the list of witnesses or group of witnesses siglas, each one preceded by a <code>#</code>, and eventually divided by a space.
-     * @param {object} witObj JSON object representing the the witness or the group of witnesses
+     * @param {Object} witObj JSON object representing the the witness or the group of witnesses
      *
      * @returns {boolean} whether the element belongs to the specific witness(es) or not
      * @author Chiara Di Pietro
@@ -301,7 +301,7 @@ angular.module('evtviewer.dataHandler')
      * - otherwise they will be removed
      *
      * @param {element} docDOM XML element to be parsed
-     * @param {object} witObj JSON object representing the the witness or the group of witnesses
+     * @param {Object} witObj JSON object representing the the witness or the group of witnesses
      *
      * @author Chiara Di Pietro
      */

@@ -4,8 +4,8 @@
  * @name evtviewer.bibliography.directive:evtBiblElem
  * @description 
  * # evtBiblElem
- * TODO: Add description!
- * It uses the {@link evtviewer.bibliography.controller:BiblElemCtrl BiblElemCtrl} controller.
+ * <p>Show a single bibliography element formatted according to a specific, globally selected style.</p>
+ * <p>It uses the {@link evtviewer.bibliography.controller:BiblElemCtrl BiblElemCtrl} controller.</p>
  *
  * @scope
  * @param {string=} biblId id of bibliographic entry to be shown

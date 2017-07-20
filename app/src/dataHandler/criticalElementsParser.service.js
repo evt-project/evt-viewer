@@ -38,7 +38,7 @@ angular.module('evtviewer.dataHandler')
      * 
      * @param {element} elem XML element to be parsed
      *
-     * @returns {object} JSON object representing the generic element
+     * @returns {Object} JSON object representing the generic element
      	<pre>
 			var genericElement = {
 				tagName: '',
@@ -120,10 +120,10 @@ angular.module('evtviewer.dataHandler')
      * [PRIVATE] This function will parse the XML element representing an apparatus reading
      * (<code>lem</code> or <code>rdg</code> in XML-TEI P5).
      * 
-     * @param {object} entry JSON object representing the critical entry to which the reading belongs
+     * @param {Object} entry JSON object representing the critical entry to which the reading belongs
      * @param {element} elem XML element to be parsed
      *
-     * @returns {object} JSON object representing the apparatus reading
+     * @returns {Object} JSON object representing the apparatus reading
      	<pre>
 			var reading = {
 				id: '',
@@ -276,7 +276,7 @@ angular.module('evtviewer.dataHandler')
      * For each reading contained in the group it will call the function 
      * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppReading parseAppReading}
      * 
-     * @param {object} entry JSON object representing the critical entry to which the reading belongs
+     * @param {Object} entry JSON object representing the critical entry to which the reading belongs
      * @param {element} elem XML element to be parsed
      *
      * @author Chiara Di Pietro
@@ -344,7 +344,7 @@ angular.module('evtviewer.dataHandler')
      * 
      * @param {element} app XML element representing the apparatus entry or group to be parsed 
      *
-     * @returns {object} JSON object representing the apparatus entry parsed
+     * @returns {Object} JSON object representing the apparatus entry parsed
      	<pre>
 			var entry = {
 				type: 'app',
@@ -482,7 +482,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} app XML element representing the apparatus entry or group to be parsed 
      * @param {string=} parentEntryId id of the parent apparatus entry in which the current one is nested 
      *
-     * @returns {object} JSON object representing the apparatus entry parsed
+     * @returns {Object} JSON object representing the apparatus entry parsed
      	<pre>
 			var entry = {
 				type: 'app',
@@ -572,10 +572,10 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] This function will parse the reading group inside of version app.
      *
-     * @param {object} entry JSON object representing the critical entry to which the reading belongs
+     * @param {Object} entry JSON object representing the critical entry to which the reading belongs
      * @param {element} group XML element representing the reading group to parse
      *
-     * @returns {object} JSON object representing the reading group inside of version app
+     * @returns {Object} JSON object representing the reading group inside of version app
      	<pre>
 			var groupObj = {
 				id: '',
@@ -650,7 +650,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} app XML element containing the info about the variants between versions
      *
-     * @returns {object} JSON object representing the entry parsed
+     * @returns {Object} JSON object representing the entry parsed
      	<pre>
 			var entry = {
 				type: 'recensioApp',
@@ -729,7 +729,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will get the text of the reading for a particular witness in a specific critical apparatus entry.
      *
-     * @param {object} entry JSON object representing the critical entry to handle
+     * @param {Object} entry JSON object representing the critical entry to handle
      * @param {string} wit id of witness to handle
      *
      * @returns {element} <code>evt-reading</code> element representing the reading of the given witness for the given critical apparatus entry
@@ -889,7 +889,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will get the text of a reading inside of a version entry.
      *
-     * @param {object} entry JSON object representing the version entry to handle
+     * @param {Object} entry JSON object representing the version entry to handle
      * @param {string=} wit id of witness to handle
      *
      * @returns {element} <code>evt-version-reading</code> element representing the reading of the given witness for the given version entry
@@ -1036,7 +1036,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will get the text of the lemma in a specific critical apparatus entry.
      *
-     * @param {object} entry JSON object representing the critical apparatus entry to handle
+     * @param {Object} entry JSON object representing the critical apparatus entry to handle
      * @param {string=} wit id of witness to handle that will be used as the scope witness for the <code>evt-reading</code> returned.
      *
      * @returns {element} <code>evt-reading</code> element representing the lemma of the given critical apparatus entry
@@ -1133,7 +1133,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will get the text of the lemma of a specific version encoded in a version.
      *
-     * @param {object} entry JSON object representing the version apparatus entry to handle
+     * @param {Object} entry JSON object representing the version apparatus entry to handle
      * @param {string} wit id of witness to handle that will be used as the scope witness for the <code>evt-reading</code> returned.
      * @param {string} scopeVersion id of the version to display
      *
@@ -1232,7 +1232,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} elem XML element to be parsed
      *
-     * @returns {object} JSON object representing the quote content parsed
+     * @returns {Object} JSON object representing the quote content parsed
 	     <pre>
 			var contentEl = {
 				tagName: '',
@@ -1308,7 +1308,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} entry XML element to be parsed
      *
-     * @returns {object} JSON object representing the quote element parsed
+     * @returns {Object} JSON object representing the quote element parsed
 	     <pre>
 			var quote = {
 				type: 'quote',
@@ -1507,7 +1507,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} elem XML element that is inside the source
      * @param {element=} source XML element representing the source
      *
-     * @returns {object} JSON object representing the source content parsed
+     * @returns {Object} JSON object representing the source content parsed
 	     <pre>
 			var contentEl = {
 				tagName: '',
@@ -1572,7 +1572,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} entry XML element to parse
      * @param {element=} quote XML element representing the quote that contains the parsed source
      *
-     * @returns {object} JSON object representing the source element parsed
+     * @returns {Object} JSON object representing the source element parsed
 	     <pre>
 			var source = {
 				id: '',
@@ -1924,7 +1924,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} elem XML element nested in an <code>AnalogueDef</code> that has to be parsed 
      *
-     * @returns {object} JSON object representing the analogue content
+     * @returns {Object} JSON object representing the analogue content
      	<pre>
 			var contentEl = {
 				tagName: '',
@@ -1999,7 +1999,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} entry XML element to be parsed
      *
-     * @returns {object} JSON object representing the analogue entry
+     * @returns {Object} JSON object representing the analogue entry
      	<pre>
 			var analogue = {
 				id: '',
@@ -2173,7 +2173,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} entry XML element to be parsed
      *
-     * @returns {object} JSON object representing the analogue source entry
+     * @returns {Object} JSON object representing the analogue source entry
      	<pre>
 			var source = {
 				id: '',
@@ -2327,7 +2327,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} elem XML element to be parsed
      *
-     * @returns {object} JSON object representing the analogue source content parsed
+     * @returns {Object} JSON object representing the analogue source content parsed
      	<pre>
 			var contentEl = {
 				tagName: elem.tagName,

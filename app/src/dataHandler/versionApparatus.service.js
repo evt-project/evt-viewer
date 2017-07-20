@@ -84,7 +84,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * TODO: Add description for function and parameters
      *
-     * @param {object} ver JSON object representing a version of the text
+     * @param {Object} ver JSON object representing a version of the text
      * @param {string} scopeWit id of witness to consider
      * @param {string} scopeVer id of version to consider
      *
