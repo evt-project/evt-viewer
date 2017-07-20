@@ -31,7 +31,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} facsimile XML element to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseZones = function(facsimile) {
 		var currentFacsimile = angular.element(facsimile);

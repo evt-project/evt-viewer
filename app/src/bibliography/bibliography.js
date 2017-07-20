@@ -3,7 +3,7 @@
  * @name evtviewer.bibliography
  * @description 
  * # evtviewer.bibliography
- * <p>Module referring bibliography references and lists.</p>
+ * Module referring to bibliography references and lists.
  * 
  * ## Services
  * - {@link evtviewer.bibliography.evtBibliography evtBibliography} where the scope of 

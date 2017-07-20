@@ -18,7 +18,7 @@
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
  *
- * @author Maurizio Ricci
+ * @author MR
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -71,7 +71,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {string} doc string representing the XML element to parse
      *
-     * @author Maurizio Ricci
+     * @author MR
      */
     parser.parseBiblInfo = function(doc) {
         var currentDocument = angular.element(doc);
@@ -175,7 +175,7 @@ angular.module('evtviewer.dataHandler')
      * - **outputs:** associative array that contains HTML strings formatted according to a  specific citation style; the name of the style is the <code>key</code> 
      * of the array. In this way, once the output for a specific style is generated it is saved an will be easily retrieved without any further computation;
      * - **plainText:** non-formatted HTML output that is generated when the bibliographic reference does not present any structured or encoded data.
-     * @author Maurizio Ricci
+     * @author MR
      */
     parser.extractInfo = function(element) {
         var newBiblElement = {
@@ -609,7 +609,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} styleCode key of style code to use
      * @param {Object} newBiblElement JSON object representing the bibliographic element
      *
-     * @author Maurizio Ricci
+     * @author MR
      */
     parser.formatResult = function(styleCode, newBiblElement) {
         if (!newBiblElement.outputs[styleCode]) {

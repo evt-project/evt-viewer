@@ -13,7 +13,7 @@
  * @requires evtviewer.dataHandler.evtCriticalElementsParser
  * @requires evtviewer.core.config
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -46,7 +46,7 @@ angular.module('evtviewer.dataHandler')
 	 *
 	 * @returns {promise} promise that the parser will end
 	 *
-	 * @author Chiara Martignano
+	 * @author CM
      */
 	parser.parseAnalogues = function(doc, extDoc) {
 		var deferred = $q.defer(),
@@ -106,7 +106,7 @@ angular.module('evtviewer.dataHandler')
 	 *
 	 * @param {element} elem element to be parsed inside the document
 	 *
-	 * @author Chiara Martignano
+	 * @author CM
      */
 	parser.handleAnalogue = function(elem) {
 		var ref = parsedData.getAnalogues()._refId;
@@ -144,7 +144,7 @@ angular.module('evtviewer.dataHandler')
      * This method deletes all the analogues that have an empty sources array.
      * It retrieve the parsed analogues from {@link evtviewer.dataHandler.parsedData parsedData} service.
 	 *
-	 * @author Chiara Martignano
+	 * @author CM
      */
 	parser.updateAnalogues = function() {
 		var analogues = parsedData.getAnalogues();
@@ -168,7 +168,7 @@ angular.module('evtviewer.dataHandler')
 	 *
 	 * @param {element} doc external XML document that contains the analogues
 	 *
-	 * @author Chiara Martignano
+	 * @author CM
      */
 	parser.parseExternalAnalogues = function(doc) {
 		var deferred = $q.defer();

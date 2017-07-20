@@ -10,7 +10,7 @@
  * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.dataHandler.parsedData
  *
- * @author Chiara Di Pietro
+ * @author CDP
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -75,7 +75,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {string} doc string representing the XML document to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	NEparser.parseEntities = function(doc) {
 		var currentDocument = angular.element(doc),
@@ -161,7 +161,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	NEparser.parseDirectSubList = function(nodeElem, listToParse, defCollection) {
 		var contentDef = listToParse.contentDef, 
@@ -199,7 +199,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	NEparser.parseRelationsInList = function(nodeElem, defCollection) {
 		var parsedRelation = evtParser.parseXMLElement(nodeElem, nodeElem, {skip: '<evtNote>'}),
@@ -428,7 +428,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	var parseEntity = function(nodeElem, listToParse) {
 		var contentDef = listToParse.contentDef, 
@@ -499,7 +499,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-named-entity-ref</code> pointing to given entity reference
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	NEparser.parseSubEntity = function(nodeElem, contentDef, listDef) {
 		var newNodeElem = document.createElement('evt-named-entity-ref'),
@@ -541,7 +541,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} new element created from entity node
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	NEparser.parseNamedEntitySubList = function(doc, entityNode, skip) {
 		var newNodeElem = document.createElement('span'),
@@ -589,7 +589,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	var parseCollectionData = function(el, defCollection) {
 		var collection = defCollection;
@@ -651,7 +651,7 @@ angular.module('evtviewer.dataHandler')
 			}
      	</pre>
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	NEparser.parseEntitiesOccurrences = function(docObj, refId) {
 		var doc = docObj && docObj.content ? docObj.content : undefined,

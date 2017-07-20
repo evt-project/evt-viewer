@@ -46,7 +46,7 @@ angular.module('evtviewer.dataHandler')
 				_xmlSource: ''
 			};
         </pre>
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getContent = function(quote, scopeWit) {
 		// console.log('getContent', quote);
@@ -115,7 +115,7 @@ angular.module('evtviewer.dataHandler')
 				_xmlSource: ''
 			};
         </pre>
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getSource = function(entry) {
 		var source = {
@@ -190,7 +190,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @return {string} generated abbreviation of the source
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getSourceAbbr = function(entry) {
 		var abbr = '';
@@ -231,7 +231,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @return {string} the text of the quote
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getQuote = function(quote, scopeWit) {
 		var content = quote.content || [];
@@ -270,7 +270,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @return {string} the text of the entry
      *
-     * @author Chiara Martignano
+     * @author CM
 	 * @todo Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
      */
 	apparatus.getText = function(entry) {
@@ -300,7 +300,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @return {string} the text of the entry
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getAppText = function(entry, scopeWit) {
 		var result = '';

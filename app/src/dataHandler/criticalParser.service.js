@@ -59,8 +59,8 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {promise} promise that the parser will end
      *
-     * @author Chiara Di Pietro
-     * @author Chiara Martignano
+     * @author CDP
+     * @author CM
      */
 	parser.parseWitnessText = function(doc, docId, wit) {
 		var deferred = $q.defer();
@@ -257,8 +257,8 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {promise} promise that the parser will end
      *
-     * @author Chiara Di Pietro
-     * @author Chiara Martignano
+     * @author CDP
+     * @author CM
      */
     parser.parseCriticalText = function(doc, docId, scopeVersion) {
 		// console.log('parseCriticalText');
@@ -453,7 +453,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {promise} promise that the parser will end
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.parseSourceText = function(doc, sourceId) {
 		var deferred = $q.defer();

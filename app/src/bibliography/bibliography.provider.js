@@ -12,7 +12,7 @@
  * @requires evtviewer.dataHandler.evtBibliographyParser
  * @requires evtviewer.bibliography.evtHighlight
  *
- * @author Maurizio Ricci
+ * @author MR
 **/
 angular.module('evtviewer.bibliography')
 
@@ -53,7 +53,7 @@ angular.module('evtviewer.bibliography')
 		 *
 		 * @returns {string} HTML string representing the output of the bibliographic referenec
 		 *
-		 * @author Maurizio Ricci
+		 * @author MR
 	     */
 		var getFormattedBibl = function(biblId) {
 			var vm = this;
@@ -86,7 +86,7 @@ angular.module('evtviewer.bibliography')
 		 *
 		 * @returns {string} type of given entry
 		 *
-		 * @author Maurizio Ricci
+		 * @author MR
 	     */
 		var pubblicationType = function(biblId) {
 			var vm = this;
@@ -109,7 +109,7 @@ angular.module('evtviewer.bibliography')
 		 *
 		 * @returns {boolean} whether the entry should be highlighted or not
 		 *
-		 * @author Maurizio Ricci
+		 * @author MR
 	     */
 		var isEntryHighlighted = function(entryId) {
 			return (evtHighlight.getHighlighted() !== '' && evtHighlight.getHighlighted() === entryId);
@@ -147,7 +147,7 @@ angular.module('evtviewer.bibliography')
 	            };
 	        </pre>
 		 * For more information about this object, please see {@ evtviewer.dataHandler.evtBibliographyParser#extractInfo extractInfo}.
-		 * @author Maurizio Ricci
+		 * @author MR
 	     */
 		var getBibliographicRefById = function(biblId) {
 			return parsedData.getBibliographicRefById(biblId);
@@ -201,7 +201,7 @@ angular.module('evtviewer.bibliography')
 				};
 		 	</pre>
 		 *
-		 * @author Maurizio Ricci
+		 * @author MR
 	     */
 		bibliography.build = function(scope) {
 			var currentId = scope.id || idx++,
@@ -328,7 +328,7 @@ angular.module('evtviewer.bibliography')
 	     * @description
 	     * Delete the reference of the instance of a particular <code>&lt;evt-bibliography&gt;</code>
 		 *
-		 * @author Maurizio Ricci
+		 * @author MR
 	     */
 		bibliography.destroy = function(tempId) {
 			delete collection[tempId];

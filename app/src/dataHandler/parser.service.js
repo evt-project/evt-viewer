@@ -53,7 +53,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {boolean} whether the element is nested in the given other element or not
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.isNestedInElem = function(element, parentTagName) {
 		if (element.parentNode !== null) {
@@ -95,7 +95,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {boolean} whether the element belongs to the main version of the text or not
      * 
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.isInMainVersion = function(element) {
 		if (element.parentNode !== null) {
@@ -145,7 +145,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} XHTML element with the same data as the XML element read.
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseXMLElement = function(doc, element, options) {
 		var newElement;
@@ -309,7 +309,7 @@ angular.module('evtviewer.dataHandler')
 			}
      	</pre>
      * 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseElementAttributes = function(element) {
 		var attributes = {
@@ -338,7 +338,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} doc XML element to be parsed
      * @param {string} type type of external resources being parsed
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.parseExternalDocuments = function(doc, type) {
 		var newExtDoc = {
@@ -373,7 +373,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {RegExp} the regular expression created
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.createRegExpr = function(def) {
 		var match = '(',
@@ -431,7 +431,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} the abbreviated string
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.createAbbreviation = function(string, maxLength) {
 		var length = maxLength / 2,
@@ -472,7 +472,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} well-balanced XHTML string
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.balanceXHTML = function(XHTMLstring) {
 		// Check for broken tags, e.g. <stro
@@ -540,7 +540,7 @@ angular.module('evtviewer.dataHandler')
 	 *
      * @param {string} XHTMLstring string to balanced 
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.analyzeEncoding = function(doc) {
 		// Check if uses line breaks to divide lines
@@ -564,7 +564,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-popover</code> generated
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseNote = function(noteNode) {
 		var popoverElem = document.createElement('evt-popover');
@@ -589,7 +589,7 @@ angular.module('evtviewer.dataHandler')
      * 
      * @returns {element} <code>evt-named-entity-ref</code> generated
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseNamedEntity = function(doc, entityNode, skip) {
 		var entityElem = document.createElement('evt-named-entity-ref'),
@@ -623,7 +623,7 @@ angular.module('evtviewer.dataHandler')
 	 *
      * @param {element} docDOM XML document to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseLines = function(docDOM) {
 		var lines = docDOM.getElementsByTagName('l');
@@ -648,7 +648,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>div</code> representing the parsed line
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseLine = function(lineNode) {
 		var newElement = document.createElement('div');
@@ -685,7 +685,7 @@ angular.module('evtviewer.dataHandler')
 	 *
      * @param {string} doc string representing the XML document to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseGlyphs = function(doc) {
 		var currentDocument = angular.element(doc);
@@ -735,7 +735,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} calculated xpath of the given element
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.xpath = function(el) {
 		try {
@@ -773,7 +773,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} doc string representing the XML element to parse
      * @param {string} docId id of the document to analyze and to whom add parsed pages
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parsePages = function(doc, docId) {
 		var currentDocument = angular.element(doc);
@@ -816,7 +816,7 @@ angular.module('evtviewer.dataHandler')
 	 *
      * @param {string} doc string representing the XML element to parse
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseDocuments = function(doc) {
 		var currentDocument = angular.element(doc),
@@ -909,7 +909,7 @@ angular.module('evtviewer.dataHandler')
 
      * @returns {string} string representing the HTML with content divided into lines
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.splitLineBreaks = function(docElement, defContentEdition) {
 		var splittedHTML = '';
@@ -953,7 +953,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} docId id of the current edition document being parsed (used to store data)
      * @param {string} defContentEdition string representing the definition of the starting point of the edition
 
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.splitPages = function(docElement, docId, defContentEdition) {
 		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
@@ -1005,7 +1005,7 @@ angular.module('evtviewer.dataHandler')
 	 *
 	 * @returns {promise} promise that the parser will end
 	 *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
 	   var balancedHTMLString = parser.balanceXHTML(docHTML);

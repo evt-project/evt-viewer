@@ -11,7 +11,7 @@
  * @requires evtviewer.dataHandler.evtCriticalApparatus
  * @requires evtviewer.dataHandler.evtParser
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -42,7 +42,7 @@ angular.module('evtviewer.dataHandler')
                 _xmlSource: ''
             };
         </pre>
-     * @author Chiara Martignano
+     * @author CM
      */
     apparatus.getContent = function(entry, scopeWit, scopeVer) {
         var appContent = {
@@ -102,7 +102,7 @@ angular.module('evtviewer.dataHandler')
                 }
             };
         </pre>
-     * @author Chiara Martignano
+     * @author CM
      */
     apparatus.getVersionContent = function(ver, scopeWit, scopeVer) {
         var version = {

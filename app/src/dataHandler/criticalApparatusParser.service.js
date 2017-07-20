@@ -46,7 +46,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} doc XML of the edition
      * @param {string} appId id of critical entry to be found
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.findCriticalEntryById = function(doc, appId){
         if ( doc !== undefined ) {
@@ -81,7 +81,7 @@ angular.module('evtviewer.dataHandler')
             };
          </pre>
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     var parseListWit = function(doc, listWit) {
         var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
@@ -150,7 +150,7 @@ angular.module('evtviewer.dataHandler')
      * 
      * @param {string} doc string representing the XML to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseWitnesses = function(doc) {
         var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
@@ -218,7 +218,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} doc string representing the XML to be parsed
      *
      * @returns {promise} promise when parsed will end
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseCriticalEntries = function(doc) {
         parsedData.resetCriticalEntries();
@@ -249,7 +249,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} doc string representing the XML to be parsed
      *
      * @returns {promise} promise when parsed will end
-     * @author Chiara Martignano
+     * @author CM
      */
      parser.parseVersionEntries = function(doc) {
         var deferred = $q.defer(),
@@ -280,7 +280,7 @@ angular.module('evtviewer.dataHandler')
      * @param {Object} witObj JSON object representing the the witness or the group of witnesses
      *
      * @returns {boolean} whether the element belongs to the specific witness(es) or not
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.containsWitnessElement = function(att, witObj) {
         if (attr === null) {
@@ -303,7 +303,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} docDOM XML element to be parsed
      * @param {Object} witObj JSON object representing the the witness or the group of witnesses
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseWitnessPageBreaks = function(docDOM, witObj) {
         var pbs = docDOM.getElementsByTagName('pb'),
@@ -351,7 +351,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} docDOM XML element to be parsed
      * @param {string} wit id of witness to be considered
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseWitnessLacunas = function(docDOM, wit) {
         var startLacunas = docDOM.getElementsByTagName('lacunaStart'),
@@ -413,7 +413,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} wit id of witness to be considered
      *
      * @returns {boolean} whether the given witness is fragmentary or not
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.isFragmentaryWitness = function(docDOM, wit){
         try {
@@ -453,7 +453,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} docDOM XML element to be parsed
      * @param {string} wit id of witness to be considered
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseFragmentaryWitnessText = function(docDOM, wit) {
         var starts = docDOM.getElementsByTagName('witStart'),

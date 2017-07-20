@@ -6,7 +6,7 @@
  * # evtSourceSeg
  * TODO: Add description and comments for every method
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 

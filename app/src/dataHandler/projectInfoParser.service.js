@@ -57,7 +57,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseEditionReference = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
@@ -87,7 +87,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseFileDescription = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
@@ -112,7 +112,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseEncodingDescription = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
@@ -145,7 +145,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseTextProfile = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
@@ -171,7 +171,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseOutsideMetadata = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
@@ -197,7 +197,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.parseRevisionHistory = function(teiHeader){
         var currentDocument = angular.element(teiHeader);

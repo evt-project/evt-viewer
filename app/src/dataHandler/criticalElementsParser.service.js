@@ -47,7 +47,7 @@ angular.module('evtviewer.dataHandler')
 				content: []
 			}
      	</pre>
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	var parseGenericElement = function(elem) {
 		if (config.lacunaMilestone.indexOf('<' + elem.tagName + '>') < 0 && config.fragmentMilestone.indexOf('<' + elem.tagName + '>') < 0) {
@@ -140,7 +140,7 @@ angular.module('evtviewer.dataHandler')
 				_xmlSource: ''
 			};
      	</pre>
-     * @author Chiara Di Pietro
+     * @author CDP
      */
 	var parseAppReading = function(entry, elem) {
 		var reading = {
@@ -279,7 +279,7 @@ angular.module('evtviewer.dataHandler')
      * @param {Object} entry JSON object representing the critical entry to which the reading belongs
      * @param {element} elem XML element to be parsed
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     var parseGroupReading = function(entry, elem) {
 		var groupObj = {
@@ -372,7 +372,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     var parseAppEntry = function(app) {
 		var entry = {
@@ -510,7 +510,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.handleAppEntry = function(app, parentEntryId) {
 		// if (!app.getAttribute('type') || app.getAttribute('type') !== 'note' || app.getAttribute('type') !== 'recensio') {
@@ -586,7 +586,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     var parseVersionGroup = function(entry, group) {
 		var groupObj = {
@@ -669,7 +669,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.handleVersionEntry = function(app) {
 		var entry = {
@@ -734,7 +734,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-reading</code> element representing the reading of the given witness for the given critical apparatus entry
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.getEntryWitnessReadingText = function(entry, wit) {
 		var spanElement;
@@ -838,7 +838,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>span</code> element representing the text of the given element belonging to given
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	var getGenericElementText = function(element, wit) {
 		var spanElement = document.createElement('span');
@@ -894,7 +894,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-version-reading</code> element representing the reading of the given witness for the given version entry
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.getVersionEntryReadingText = function(entry, wit) {
 		var spanElement,
@@ -1041,7 +1041,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-reading</code> element representing the lemma of the given critical apparatus entry
      *
-     * @author Chiara Di Pietro
+     * @author CDP
      */
     parser.getEntryLemmaText = function(entry, wit) {
 		var spanElement,
@@ -1139,7 +1139,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-version-reading</code> element representing the lemma of the given version apparatus entry
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.getVersionEntryLemma = function(entry, wit, scopeVersion) {
 		var spanElement,
@@ -1243,7 +1243,7 @@ angular.module('evtviewer.dataHandler')
 			};
 	     </pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	var parseQuoteContent = function(elem) {
 		var contentEl = {
@@ -1326,7 +1326,7 @@ angular.module('evtviewer.dataHandler')
 			};
 	     </pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.parseQuote = function(entry) {
 		var quote = {
@@ -1518,7 +1518,7 @@ angular.module('evtviewer.dataHandler')
 			};
 	     </pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     var parseSourceContent = function(elem, source) {
 		var contentEl = {
@@ -1592,7 +1592,7 @@ angular.module('evtviewer.dataHandler')
 			};
 	     </pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.parseSource = function(entry, quote) {
 		var source = {
@@ -1762,7 +1762,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} DOM element representing the textual content of quote content
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	var getQuoteContentText = function(elem, wit, doc) {
 		var spanElement;
@@ -1856,7 +1856,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-quote</code> element representing the textual content of quote
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	parser.getQuoteText = function(quote, wit, doc) {
 		var spanElement,
@@ -1935,7 +1935,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	var parseAnalogueContent = function(elem) {
 		var contentEl = {
@@ -2017,7 +2017,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.parseAnalogue = function(entry) {
 		var analogue = {
@@ -2190,7 +2190,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.parseAnalogueSource = function(entry) {
 		var source = {
@@ -2338,7 +2338,7 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	var parseAnalogueSourceContent = function(elem) {
 		var contentEl = {
@@ -2394,7 +2394,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} DOM element representing the analogue content element parsed
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	var getAnalogueContentText = function(elem, wit, doc) {
 		var spanElement;
@@ -2483,7 +2483,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {element} <code>evt-analogue</code> element representing the analogue element parsed
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.getAnalogueText = function(analogue, wit, doc) {
 		var spanElement,

@@ -13,7 +13,7 @@
  * @requires evtviewer.dataHandler.evtAnaloguesParser
  * @requires evtviewer.dataHandler.evtSourcesApparatus
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 

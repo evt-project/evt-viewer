@@ -400,7 +400,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get available sources texts
          * @return {array} list of available sources texts
-         * @author Chiara Martignano
+         * @author CM
          */
          // Method to get available sources texts
 		$scope.getAvailableSourcesTexts = function() {
@@ -413,7 +413,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get the id of the source text shown in the interface.
          * @return {string} id of the source text shown in the interface
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.getCurrentSourceText = function() {
 			return evtInterface.getState('currentSourceText') ;
@@ -427,7 +427,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check if the apparatuses box is open
          * @return {boolean} whether the apparatuses box is opened or not
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.isApparatusBoxOpen = function() {
 			return evtInterface.getState('isApparatusBoxOpen') ;
@@ -438,7 +438,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check if the apparatuses box should be shown.
          * @return {boolean} whether the apparatuses box should be shown or not
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.showApparatusesBox = function() {
 			return evtInterface.getState('isApparatusBoxOpen') && evtInterface.getState('currentEdition') === 'critical';
@@ -449,7 +449,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current versions selected
          * @return {string} id of current versions selected
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.getCurrentVersions = function() {
 			return evtInterface.getState('currentVersions');
@@ -460,7 +460,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get available versions
          * @return {array} list of available versions
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.getAvailableVersions = function() {
 			return evtInterface.getProperty('availableVersions');
@@ -471,7 +471,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check if the selector for the versions is active
          * @return {boolean} whether the selector for the versions is active or not
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.isVersionSelectorActive = function() {
 			return evtInterface.getProperty('versionSelector');
@@ -482,7 +482,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get number of total versions available
          * @return {int} number of versions available
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.getAllVersionsNumber = function() {
 			return evtInterface.getAllVersionsNumber();
@@ -494,7 +494,7 @@ angular.module('evtviewer.interface')
          * @description Get description of a given version
          * @param {string} ver id of version to retrieve
          * @return {string} HTML of given version description to be compiled in UI
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.getVersion = function(ver) {
 			var versionEntries = parsedData.getVersionEntries(),
@@ -507,7 +507,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Add version in comparing box
          * @param {string} ver id of version to add
-         * @author Chiara Martignano
+         * @author CM
          */
 		$scope.addVersion = function(ver) {
 			if (ver !== undefined) {

@@ -593,7 +593,7 @@ angular.module('evtviewer.interface')
          * @description Update current source text. If text of required source has not been parsed yet,
          * launch {@evtviewer.communication.evtCommunication#getSourceTextFile evtCommunication.getSourceTextFile} to retrieve it.
          * @param {string} sourceId id of source to set as current source text
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.updateCurrentSourceText = function(sourceId) {
             var source = parsedData.getSource(sourceId),
@@ -620,7 +620,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Remove a version from the available versions list
          * @param {string} version id of the version that has to be removed
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.removeAvailableVersion = function(version) {
             var index = properties.availableVersions.indexOf(version);
@@ -634,7 +634,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Add a new version in the available versions list
          * @param {string} version id of the version that has to be added
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.addAvailableVersion = function(version) {
             var index = properties.availableVersions.indexOf(version);
@@ -649,7 +649,7 @@ angular.module('evtviewer.interface')
          * @description Add a version box in the interface
          * @param {string} version id of the version to add
          * @param {string} index index of the position, if undefined the version is added at the end of the array
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.addVersion = function(version, index) {
             if (index === undefined) {
@@ -665,7 +665,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Remove a vesion box from the interface
          * @param {string} version id of the version to remove
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.removeVersion = function(version) {
             var index = state.currentVersions.indexOf(version);
@@ -684,7 +684,7 @@ angular.module('evtviewer.interface')
          * @description Change the version viewed inside of a version box
          * @param {string} oldVer the old version to change
          * @param {string} newVer the new version to view
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.switchVersions = function(oldVer, newVer) {
             var newVerOldIndex = state.currentVersions.indexOf(newVer),
@@ -702,7 +702,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.evtInterface#getAllVersionsNumber
          * @methodOf evtviewer.interface.evtInterface
          * @description Get how many different versions have been encoded by the editor
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.getAllVersionsNumber = function() {
             return (config.versions ? config.versions.length : 0);
@@ -713,7 +713,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Update current version entry if given entry id is not undefined
          * @param {string} appId id of entry to be set as current version entry
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.updateCurrentVersionEntry = function(appId) {
             if (appId !== undefined) {
@@ -726,7 +726,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Update current version if given version is not undefined and is contained in initial version array
          * @param {string} ver id of version to be set as current version
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.updateCurrentVersion = function(ver) {
             if (ver !== undefined && config.versions.indexOf(ver) !== -1) {
@@ -740,7 +740,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Remove given witness from the available witness list, only if given witness is already in the list 
          * @param {string} witness id of witness to be removed from available witnesses list
-         * @author Chiara Di Pietro
+         * @author CDP
          */
         mainInterface.removeAvailableWitness = function(witness) {
             var index = properties.availableWitnesses.indexOf(witness);
@@ -755,7 +755,7 @@ angular.module('evtviewer.interface')
          * @description Update current page of a given witness
          * @param {string} witness id of witness to be updated
          * @param {string} pageId id of page to be set as current for given witness
-         * @author Chiara Di Pietro
+         * @author CDP
          */
         mainInterface.updateWitnessesPage = function(witness, pageId) {
             state.currentWitsPages[witness] = pageId;
@@ -766,7 +766,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Add witness in current witnesses list and remove it from available ones.
          * @param {string} newWit id of witness to be added
-         * @author Chiara Di Pietro
+         * @author CDP
          * @todo Decide where to add the new witness: either before or after the others
          * @todo Add scroll to new box added
          */
@@ -785,7 +785,7 @@ angular.module('evtviewer.interface')
          * @description Add witness at a particular index in in current witnesses list
          * @param {string} newWit id of witness to be added
          * @param {string} index where to add new witness
-         * @author Chiara Di Pietro
+         * @author CDP
          */
         mainInterface.addWitnessAtIndex = function(newWit, index) {
             state.currentWits.splice(index, 0, newWit);
@@ -797,7 +797,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Remove witness from current witnesses list and add it in available ones
          * @param {string} wit id of witness to be removed
-         * @author Chiara Di Pietro
+         * @author CDP
          */
          mainInterface.removeWitness = function(wit) {
             var witIndex = state.currentWits.indexOf(wit);
@@ -817,7 +817,7 @@ angular.module('evtviewer.interface')
          * If the witness is already in the current witnesses list, it will be switched with the old one.
          * @param {string} oldWit the old witness to change
          * @param {string} newWit the new witness to view
-         * @author Chiara Di Pietro
+         * @author CDP
          * @todo update box scroll to page on switching...
          */
          mainInterface.switchWitnesses = function(oldWit, newWit) {
@@ -842,7 +842,7 @@ angular.module('evtviewer.interface')
          * Remove from current wits those that are not in current version.
          * Set available witnesses depending on those in current version that are not selected yet
          * @param {string} scopeVer id of scope version
-         * @author Chiara Martignano
+         * @author CM
          */
         mainInterface.updateAvailableWitnessesByVersion = function(scopeVer) {
             var scopeVerWits = parsedData.getVersionEntries()._indexes.versionWitMap[scopeVer];
@@ -889,7 +889,7 @@ angular.module('evtviewer.interface')
          * @description Check whether given viewMode is available or not.
          * @param {string} viewMode view mode to be checked
          * @returns {boolean} whether given viewMode is available or not
-         * @author Chiara Di Pietro
+         * @author CDP
          */
         mainInterface.isViewModeAvailable = function(viewMode) {
             for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
@@ -904,7 +904,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          * @description Update current state values depending on parameters in URL and available parsed data
          * @param {params} params URL parameters
-         * @author Chiara Di Pietro
+         * @author CDP
          * @todo Add q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
          */
         mainInterface.updateParams = function(params) {
@@ -1060,7 +1060,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.evtInterface#updateUrl
          * @methodOf evtviewer.interface.evtInterface
          * @description Update URL depending on current value state
-         * @author Chiara Di Pietro
+         * @author CDP
          * @todo Add q(citazione), s(fonte), an(passo parallelo) e ap(apparato)
          */
         mainInterface.updateUrl = function() {

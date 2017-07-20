@@ -34,7 +34,7 @@ angular.module('evtviewer.bibliography')
      * @returns {int}  number indicating whether a bibliographic reference comes before 
      * or after or is the same as the given bibliographic reference in sort order.
      *
-     * @author Maurizio Ricci
+     * @author MR
      */
     this.myComparator = function(biblId1, biblId2) {
         var result1 = '',
@@ -102,7 +102,7 @@ angular.module('evtviewer.bibliography')
      * @description
      * Remove instance from saved instances in {@link evtviewer.bibliography.evtBibliography evtBibliography} provider.
      *
-     * @author Maurizio Ricci
+     * @author MR
      */
     this.destroy = function() {
         evtBibliography.destroy(this.uid);

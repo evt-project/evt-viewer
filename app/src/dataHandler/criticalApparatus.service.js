@@ -147,7 +147,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} scopeWit id of witness to consider
      * @param {array} groups groups to handle
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getWitnessesGroups = function(entry, scopeWit, groups) {
 		for (var h in groups) {
@@ -249,7 +249,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} reading text retrieved
      *
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getReadingForGroup = function(reading, scopeWit) {
 		var readingText = '';
@@ -457,7 +457,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} string representing the generated HTML for the critical element content
      * 
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getCriticalElementContent = function(element, scopeWit) {
 		var content = element.content || [];
@@ -497,7 +497,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} the text of entry
      * 
-     * @author Chiara Martignano
+     * @author CM
      */
 	apparatus.getText = function(entry) {
 		var result = '';
@@ -526,7 +526,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @returns {string} the text of apparatus entry
      * 
-     * @author Chiara Martignano
+     * @author CM
      */
 	var getAppText = function(entry, scopeWit) {
 		var result = '';

@@ -7,7 +7,7 @@
  * Service that will store information abotu the bibliographic entry that should be highlighted
  * once the user as followed an internal link to that entry.
  *
- * @author Maurizio Ricci
+ * @author MR
  **/
 angular.module('evtviewer.bibliography')
 
@@ -24,7 +24,7 @@ angular.module('evtviewer.bibliography')
 	 *
 	 * @param {string} id id of entry to be highlighted
 	 *
-	 * @author Maurizio Ricci
+	 * @author MR
 	 */
 	evtHighlight.setHighlighted = function(id) {
 		highlighted = id;
@@ -39,7 +39,7 @@ angular.module('evtviewer.bibliography')
 	 *
 	 * @returns {string} id of highlighted entry
 	 *
-	 * @author Maurizio Ricci
+	 * @author MR
 	 */
 	evtHighlight.getHighlighted = function() {
 		return highlighted;

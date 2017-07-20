@@ -7,7 +7,7 @@
  * TODO: Add description and list of dependencies!
  * The controller for the {@link evtviewer.versionReading.directive:evtVersionReading evtVersionReading} directive. 
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.versionReading')
 

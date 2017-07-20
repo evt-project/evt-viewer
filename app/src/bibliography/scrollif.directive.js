@@ -6,7 +6,7 @@
  * # evtScrollIf
  * Scrolls the element on which it's assigned into the visible area of the browser window.
  * 
- * @author Maurizio Ricci
+ * @author MR
 **/
 angular.module('evtviewer.bibliography')
 

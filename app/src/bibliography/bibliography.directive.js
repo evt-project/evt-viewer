@@ -22,7 +22,7 @@
  *
  * @restrict E
  *
- * @author Maurizio Ricci
+ * @author MR
 **/
 angular.module('evtviewer.bibliography')
 

@@ -16,7 +16,7 @@
  *
  * @restrict E
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.versionReading')
 

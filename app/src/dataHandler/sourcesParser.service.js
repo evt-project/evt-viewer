@@ -13,7 +13,7 @@
  * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.dataHandler.evtCriticalElementsParser
  *
- * @author Chiara Martignano
+ * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -38,7 +38,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} elem XML element to analyze
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     var handleSource = function(elem){
         //Get the ids saved in quotesCollection
@@ -79,7 +79,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} doc XML element to parse
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.parseQuotes = function(doc) {
         var deferred = $q.defer();
@@ -126,7 +126,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} doc XML element to parse
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.parseSources = function(doc, extDoc) {
         var deferred = $q.defer();
@@ -170,7 +170,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {element} doc external XML document to parse
      *
-     * @author Chiara Martignano
+     * @author CM
      */
     parser.parseExternalSources = function(doc) {
         //TODO: risolvere problema di childNodes[0]
