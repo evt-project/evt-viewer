@@ -749,7 +749,7 @@ angular.module('evtviewer.dataHandler')
 
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
 		var balancedHTMLString = parser.balanceXHTML(docHTML);
-		balancedHTMLString = balancedHTMLString.replace(/> </g, '>__SPACE__<');
+		balancedHTMLString = balancedHTMLString.replace(/>\s*</g, '>__SPACE__<');
 		var deferred = $q.defer(),
 			editionText = balancedHTMLString, //TEMP
 
@@ -829,7 +829,7 @@ angular.module('evtviewer.dataHandler')
 				var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 				editionText = errorMsg;
 			}
-
+			editionText = editionText.replace(/__SPACE__/g, ' ');
 			parsedData.setPageText(pageId, docId, editionLevel, editionText);
 
 			deferred.resolve('success');
