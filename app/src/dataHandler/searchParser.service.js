@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
             node = nodes.iterateNext();
 
             if (node !== null) {
-               checkCurrentNode(node, doc);
+               node = checkCurrentNode(node, doc);
             }
 
             if (node === null) {
@@ -151,7 +151,7 @@ angular.module('evtviewer.dataHandler')
             text += currentGlyph.diplomatic;
             break;
          case 'interpretative':
-            text += currentGlyph.normalized;
+            text += currentGlyph.interpretative;
             break;
       }
    };
@@ -467,6 +467,7 @@ angular.module('evtviewer.dataHandler')
             }
             break;
       }
+      return node;
    };
 
    /* ************************ */
@@ -478,13 +479,18 @@ angular.module('evtviewer.dataHandler')
    let iterateNode = function(node) {
       let iterate;
 
-      for (let i = 0; i < node.childNodes.length; i++) {
-         iterate = nodes.iterateNext();
-         while (iterate.childNodes.length !== 0) {
-            for (let j = 0; j < iterate.childNodes.length; j++) {
-               iterate = nodes.iterateNext();
+      if(node.childNodes.length > 0) {
+         for (let i = 0; i < node.childNodes.length; i++) {
+            iterate = nodes.iterateNext();
+            while (iterate.childNodes.length !== 0) {
+               for (let j = 0; j < iterate.childNodes.length; j++) {
+                  iterate = nodes.iterateNext();
+               }
             }
          }
+      }
+      else {
+         iterate = nodes.iterateNext();
       }
       node = iterate;
       return node;
