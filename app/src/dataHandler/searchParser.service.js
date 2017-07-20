@@ -3,7 +3,7 @@ import * as JsSearch from 'js-search';
 
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchParser', function (parsedData) {
+.service('evtSearchParser', function (parsedData, evtInterface) {
    let parser = {};
    console.log("SEARCH PARSER RUNNING");
 
@@ -190,7 +190,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to get current Edition */
    /* ******************************* */
    let getCurrentEdition = function () {
-      currentEdition = mainNode ? mainNode.dataset.edition : '';
+      currentEdition = evtInterface.getState('currentEdition');
       return currentEdition;
    };
 
@@ -203,8 +203,7 @@ angular.module('evtviewer.dataHandler')
    let checkCurrentEditionIteration = function (node) {
       let nodeName = node.nodeName;
 
-      mainNode = document.getElementById('mainText');
-      currentEdition = mainNode ? mainNode.dataset.edition : '';
+      currentEdition = getCurrentEdition();
 
       if (currentEdition === 'diplomatic') {
          switch (nodeName) {

@@ -2,14 +2,14 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.baseData
- * @description 
+ * @description
  * # baseData
  * TODO: Add description and comments for every method
  *
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearchParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -41,7 +41,7 @@ angular.module('evtviewer.dataHandler')
     baseData.getXMLStrings = function() {
         return state.XMLStrings;
     };
-    
+
     var addXMLDocument = function(doc) {
         var deferred = $q.defer();
         docElements = xmlParser.parse(doc);
@@ -72,7 +72,7 @@ angular.module('evtviewer.dataHandler')
             state.XMLExtDocuments[type] = docElements;
             state.XMLExtDocuments.length++;
             var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
-            
+
             /*if (type === 'sources') {
                 evtSourcesParser.parseExternalSources(docElements);
             } else if (type === 'analogues') {
@@ -117,7 +117,7 @@ angular.module('evtviewer.dataHandler')
 
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);
-        
+
         // Parse the Sources Apparatus entries (@author: CM)
         if (config.quoteDef !== '') {
             var promiseQuote = [];
@@ -142,14 +142,11 @@ angular.module('evtviewer.dataHandler')
         //Parse named entity
         evtNamedEntitiesParser.parseEntities(docElements);
 
-        // Parse projet info 
+        // Parse projet info
         evtProjectInfoParser.parseProjectInfo(docElements);
 
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
-
-        // Test search parser
-        evtSearchParser.parseWords(docElements);
     };
 
     /* ************************** */
