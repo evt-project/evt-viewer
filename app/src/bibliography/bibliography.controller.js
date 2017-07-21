@@ -31,7 +31,7 @@ angular.module('evtviewer.bibliography')
      * @param {string} biblId1 id of first bibliographic reference to handle
      * @param {string} biblId2 id of second bibliographic reference to handle
      *
-     * @returns {int}  number indicating whether a bibliographic reference comes before 
+     * @returns {number}  number indicating whether a bibliographic reference comes before 
      * or after or is the same as the given bibliographic reference in sort order.
      *
      * @author MR

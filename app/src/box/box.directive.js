@@ -207,7 +207,7 @@ angular.module('evtviewer.box')
              *
              * @param {string} type type of <code>&lt;box&gt;</code> to handle
              *
-             * @returns {int} number of instances of <code>&lt;box&gt;</code>s of a particular type
+             * @returns {number} number of instances of <code>&lt;box&gt;</code>s of a particular type
              */
             scope.vm.getTotElementsOfType = function(type){
                 return evtBox.getListByType(type).length;

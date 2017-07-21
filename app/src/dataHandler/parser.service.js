@@ -427,7 +427,7 @@ angular.module('evtviewer.dataHandler')
      * This method will take a string and transforms it into an abbreviated <code>textNode</code> contained in a <code>span</code> element.
      *
      * @param {string} string string to abbreviate 
-     * @param {int} maxLength maximum length of the string to show
+     * @param {number} maxLength maximum length of the string to show
      *
      * @returns {string} the abbreviated string
      *

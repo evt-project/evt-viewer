@@ -481,7 +481,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getAllVersionsNumber
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get number of total versions available
-         * @return {int} number of versions available
+         * @return {number} number of versions available
          * @author CM
          */
 		$scope.getAllVersionsNumber = function() {

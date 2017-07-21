@@ -4,7 +4,9 @@
  * @name evtviewer.core.config
  * @description 
  * # config
- * TODO: Add description and comments for every method
+ * Provider used to handle configurations of evtviewer modules.
+ * It exposes useful methods that helps to extend base configuration 
+ * with external one. 
 **/
 angular.module('evtviewer.core')
 
@@ -25,7 +27,22 @@ angular.module('evtviewer.core')
     if (typeof(window.GLOBALCONFIG) === 'undefined') {
         window.GLOBALCONFIG = config;
     }
-
+    /**
+    * @ngdoc method
+    * @name evtviewer.core.config#makeDefaults
+    * @methodOf evtviewer.core.config
+    *
+    * @description
+    * Retrieve extended configurations for a particular module.
+    *  - It will extend the very basic defaults with given options.
+    *  - Try to see if there's a provided configuration for the given module, and use it to extend base options
+    *  - Save the built configuration into the Config with given name.
+    *
+    * @param {string} name name of module
+    * @param {Object} options configuration extension
+    *
+    * @returns {Objects} configurations build from base configs extended with given options
+    */
     this.makeDefaults = function(name, options) {
         var defaults = angular.copy(BASECONFIG);
 
@@ -46,16 +63,46 @@ angular.module('evtviewer.core')
 
         return defaults;
     };
-
+    /**
+    * @ngdoc method
+    * @name evtviewer.core.config#isValid
+    * @methodOf evtviewer.core.config
+    *
+    * @description
+    * Check if configs are valid
+    *
+    * @returns {boolean} whether the configs are valid or not
+    *
+    * @todo set the rules for checking
+    */
     this.isValid = function() {
-        // TODO: set the rules for checking
         return true;
     };
-
+    /**
+    * @ngdoc method
+    * @name evtviewer.core.config#isModuleActive
+    * @methodOf evtviewer.core.config
+    *
+    * @description
+    * Check if given module is active.
+    *
+    * @param {string} moduleName name of module to check
+    *
+    * @returns {boolean} whether the module is active or not
+    */
     this.isModuleActive = function(moduleName) {
         return angular.isObject(config.modules[moduleName]) && config.modules[moduleName].active === true;
     };
-
+    /**
+    * @ngdoc method
+    * @name evtviewer.core.config#extendDefault
+    * @methodOf evtviewer.core.config
+    *
+    * @description
+    * Extend default configuration with new values
+    *
+    * @param {Object} json JSON object containing new configuration values
+    */
     this.extendDefault = function(json){
         UtilsProvider.deepExtendSkipDefault(config, json);
     };
@@ -66,5 +113,4 @@ angular.module('evtviewer.core')
         config.extendDefault  = this.extendDefault;
         return config;
     };
-
 });
