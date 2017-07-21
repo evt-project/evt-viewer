@@ -3,7 +3,7 @@ import * as JsSearch from 'js-search';
 
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchParser', function (parsedData, evtInterface) {
+.service('evtSearchParser', function (parsedData, evtInterface, evtGlyph) {
    let parser = {};
    console.log("SEARCH PARSER RUNNING");
 
@@ -12,7 +12,6 @@ angular.module('evtviewer.dataHandler')
 
        nodes,
        node,
-       mainNode,
 
        currentEdition,
        currentGlyph,
@@ -20,8 +19,6 @@ angular.module('evtviewer.dataHandler')
        currentAppNode,
 
        glyphs = [],
-       glyphId = '',
-       sRef = '',
 
        word = {},
        editionWords = [],
@@ -84,103 +81,15 @@ angular.module('evtviewer.dataHandler')
             str = node.nodeValue;
          }
          else {
-            currentGlyph = getGlyph(doc);
-            addGlyph(currentGlyph);
+            currentGlyph = evtGlyph.getGlyph(node);
+            glyphs = evtGlyph.addGlyphs(currentGlyph);
+            text = evtGlyph.addGlyph(currentGlyph, text);
             addSpace();
             node = nodes.iterateNext();
          }
          text = cleanText(text);
       }
    };
-
-   /*** GLYPHS ***/
-
-   /* *************************** */
-   /* BEGIN getCurrentGlyph(node) */
-   /* ***************************************** */
-   /* Function to find a glyph in xml document  */
-   /* @doc -> current xml document              */
-   /* ***************************************** */
-   let getCurrentGlyph = function () {
-      let glyphs = parsedData.getGlyphs();
-
-      sRef = node.getAttribute('ref');
-      sRef = sRef.replace('#', '');
-      glyphId = sRef;
-
-      currentGlyph = glyphs[sRef].mapping;
-      return currentGlyph;
-   };
-
-   /* *************************** */
-   /* BEGIN getGlyph(node)        */
-   /* *************************** */
-   let getGlyph = function () {
-      let glyph = {},
-          found;
-
-      currentGlyph = getCurrentGlyph();
-
-      glyph.id = glyphId;
-      currentGlyph.diplomatic !== undefined ? glyph.diplomatic = currentGlyph.diplomatic.content : glyph.diplomatic = '';
-      currentGlyph.normalized !== undefined ? glyph.interpretative = currentGlyph.normalized.content: glyph.interpretative = '';
-
-      if (glyphs.length === 0) {
-         glyphs.push(glyph);
-      }
-      found = glyphs.some(function (element) {
-         return element.id === glyph.id;
-      });
-      if (!found) {
-         glyphs.push(glyph);
-      }
-      return glyph;
-   };
-
-   /* **************************** */
-   /* BEGIN addGlyph(currentGlyph) */
-   /* *************************************************** */
-   /* Function to add the current glyph in text (string)  */
-   /* @currentGlyph -> current glyph                      */
-   /* *************************************************** */
-   let addGlyph = function (currentGlyph) {
-      getCurrentEdition();
-
-      switch (currentEdition) {
-         case 'diplomatic':
-            text += currentGlyph.diplomatic;
-            break;
-         case 'interpretative':
-            text += currentGlyph.interpretative;
-            break;
-      }
-   };
-
-   /* **************************************************************** */
-   /* BEGIN replaceGlyphTag(childNode, innerHtml, innerHtmlChild, doc) */
-   /* **************************************************************** */
-   /* Function to replace current glyph tag with glyph   */
-   /* @childNode -> current childNode                    */
-   /* @innerHtml -> code in which replace outerHtmlChild */
-   /* @outerHtmlChild -> code to replace in innerHtml    */
-   /* @doc -> current xml doc                            */
-   /* ************************************************** */
-   let replaceGlyphTag = function (childNode, innerHtml, outerHtmlChild) {
-      let replaceGTag,
-          toReplace = outerHtmlChild,
-          glyph;
-
-      node = childNode;
-      glyph = getGlyph();
-      replaceGTag = innerHtml.replace(toReplace, glyph.diplomatic);
-
-      while (replaceGTag.includes(toReplace)) {
-         replaceGTag = replaceGTag.replace(toReplace, glyph.diplomatic);
-      }
-
-      return replaceGTag;
-   };
-
 
    /*** EDITION ***/
 
@@ -270,7 +179,7 @@ angular.module('evtviewer.dataHandler')
                   case 'abbr':
                   case 'am':
                      if (childNode && childNode.nodeName === 'g') {
-                        word.diplomatic = replaceGlyphTag(childNode, innerHtml, outerHtmlChild);
+                        word.diplomatic = evtGlyph.replaceGlyphTag(node, childNode, innerHtml, outerHtmlChild);
                         innerHtml = word.diplomatic;
                      }
                      else {
