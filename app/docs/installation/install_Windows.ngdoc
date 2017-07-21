@@ -1,0 +1,62 @@
+@ngdoc overview
+@name Windows
+@description
+
+# EVT 2 - Development Enviroment Preparation
+Short instructions to install and configure the development framework for EVT 2.0 (evt-viewer) on Windows devices.
+
+## Windows
+
+* GIT 
+Install GIT (if not already available in your system) <https://git-scm.com/downloads>.
+
+* RUBY
+Install the latest Ruby version <http://rubyinstaller.org/>.
+[**IMPORTANT**: in the installer window select the "Add Ruby executables" options].
+Open a shell as administrator, then typ
+<pre> 
+  gem install compass
+  gem install susy 
+</pre>
+
+* NODEJS
+Install nodejs from https://nodejs.org/ or https://nodejs.org/en/download/package­manager
+
+* BOWER AT SYSTEM LEVEL
+<pre> npm install -g bower  </pre>
+
+* GRUNT AT SYSTEM LEVEL
+<pre> npm install -g grunt-cli </pre>
+
+* CLONE REPOSITORY FROM GITHUB
+<pre> git clone https://github.com/evt-project/evt-viewer.git </pre>
+
+* GO INTO THE REPOSITORY FOLDER
+<pre> cd evt-viewer </pre>
+
+* NPM
+<pre> 
+  npm install 
+  npm install bower 
+</pre>
+[ignore any WARN message, they are harmless] 
+
+* BOWER 
+<pre> bower install </pre>
+[choose the angular.js version recommended for evt-viewer]
+
+* START GRUNT DEV
+<pre> grunt dev </pre>
+[most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the develop branch]
+
+* SWITCH TO THE DEVELOP GIT BRANCH 
+<pre> git checkout develop </pre>
+
+* TO UPDATE THE REPOSITORY
+<pre> git pull </pre>
+
+* START GRUNT DEV
+<pre> grunt dev </pre>
+
+* IN CASE OF VISUALIZATION PROBLEMS
+<pre> grunt dev --force </pre>

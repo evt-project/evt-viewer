@@ -18,7 +18,9 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'build'
+    dist: 'build',
+    docs: '<%= yeoman.app %>/docs',
+    distDocs: 'devDocs'
   };
 
   grunt.loadNpmTasks('grunt-ngdocs');
@@ -33,12 +35,18 @@ module.exports = function (grunt) {
       options: {
         scripts: ['angular.js', '../src.js'],
         html5Mode: false,
-        template: '<%= yeoman.app %>/docs_templates/index.tmpl'
+        template: '<%= yeoman.docs %>/templates/index.tmpl',
+        startPage: '/api',
+        dest: '<%= yeoman.distDocs %>'
       },
+      installation: {
+        src: ['<%= yeoman.docs %>/installation/*.ngdoc'],
+        title: 'Development Enviroment Preparation'
+      }, 
       api: {
-       src: ['app/index.ngdoc', 'app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js'],
-       title: 'EVT 2 Dev Documentation'
-    }
+        src: ['<%= yeoman.docs %>/index.ngdoc', '<%= yeoman.app %>/src/evtviewer.js', '<%= yeoman.app %>/src/**/*.js', '!<%= yeoman.app %>/src/mobile/*.js'],
+        title: 'EVT 2 Dev Documentation'
+      }
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -163,6 +171,16 @@ module.exports = function (grunt) {
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
             '!<%= yeoman.dist %>/.git{,*/}*'
+          ]
+        }]
+      },
+      docs: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.distDocs %>/{,*/}*',
+            '!<%= yeoman.distDocs %>/.git{,*/}*'
           ]
         }]
       },
@@ -405,8 +423,8 @@ module.exports = function (grunt) {
       },
       docs: {
         expand: true,
-        cwd: '<%= yeoman.app %>/docs_templates',
-        dest: 'docs',
+        cwd: '<%= yeoman.docs %>',
+        dest: '<%= yeoman.distDocs %>',
         src: []
       }
     },

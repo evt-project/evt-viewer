@@ -5,6 +5,9 @@
 # EVT 2 Dev Guide
 Welcome to the developers guide of EVT 2.
 
+Before starting you have to prepare the development environment by installing all the needed dependencies,
+as explained in **Development Enviroment Preparation**.
+
 The documentation is organized into modules which contain the different components of EVT 2.
 These components are directives, services, filters, providers and controllers.
 

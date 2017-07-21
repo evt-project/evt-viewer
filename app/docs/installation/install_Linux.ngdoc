@@ -1,0 +1,74 @@
+@ngdoc overview
+@name Linux
+@description
+
+# EVT 2 - Development Enviroment Preparation
+Short instructions to install and configure the development framework for EVT 2.0 (evt-viewer) on Linux devices.
+
+## Linux
+
+* UPDATE THE PACKAGE DATABASE [to do just to be sure that everything's ok]
+<pre> sudo apt-get update </pre>
+
+* GIT [to do only if you haven't already installed git]
+<pre> sudo apt-get install git </pre>
+
+* RUBY
+<pre> 
+  sudo apt-get install ruby-compass build-essential curl 
+  sudo gem install compass 
+</pre>
+[to do in any case to avoid CSS compilation problems]
+
+* NODE JS
+<pre> 
+  curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash
+  sudo apt-get install -y nodejs 
+</pre>
+
+* BOWER AT SYSTEM LEVEL
+<pre> sudo npm install -g bower </pre>
+
+* GRUNT AT SYSTEM LEVEL
+<pre> sudo npm install -g grunt-cli  </pre>
+
+* CLONE THE EVT REPOSITORY FROM GITHUB
+<pre> git clone https://github.com/evt-project/evt-viewer.git </pre>
+
+* GO INTO THE REPOSITORY FOLDER
+<pre> cd evt-viewer </pre>
+
+* NPM
+<pre> 
+  npm install 
+  npm install bower 
+</pre>
+[ignore any WARN message, they are harmless]
+
+* BOWER 
+<pre> bower install </pre>
+[choose the angular.js version recommended for evt-viewer] 
+
+* START GRUNT DEV
+<pre> grunt dev </pre>
+[most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to the develop branch]
+
+* SWITCH TO THE DEVELOP GIT BRANCH
+<pre> git checkout develop </pre>
+
+* TO UPDATE THE REPOSITORY
+<pre> git pull </pre>
+
+* START GRUNT DEV
+<pre> grunt dev </pre>
+
+* IN CASE OF CSS COMPILATION ERRORS
+<pre> 
+  sudo gem install rubygems-update 
+  sudo update_rubygems 
+  sudo apt-get install ruby-dev
+  sudo gem install compass susy 
+</pre>
+
+* IN CASE OF VISUALIZATION PROBLEMS
+<pre> grunt dev --force </pre>
