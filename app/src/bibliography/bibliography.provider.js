@@ -1,9 +1,9 @@
 /**
  * @ngdoc service
  * @module evtviewer.bibliography
- * @name evtviewer.bibliography.evtBibliographyProvider
+ * @name evtviewer.bibliography.evtBibliography
  * @description 
- * # evtBibliographyProvider
+ * # evtBibliography
  * Provider that will manage all instances of {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive.
  *
  * @requires $log
@@ -47,7 +47,7 @@ angular.module('evtviewer.bibliography')
 	     * If the output for the selected style has not been generated yet, it will use
 	     * {@link evtviewer.dataHandler.evtBibliographyParser#formatResult formatResult} to generate it.</p>
 		 * <p>This method is defined and attached to controller scope in the 
-		 * {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider file.</p>
+		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
 		 * 
 		 * @param {string} biblId id of bibliographic reference to handle
 		 *
@@ -80,7 +80,7 @@ angular.module('evtviewer.bibliography')
 	     * {@link evtviewer.dataHandler.evtBibliographyParser#getType getType} defined in 
 	     * {@link evtviewer.dataHandler.evtBibliographyParser evtBibliographyParser} service.</p>
 		 * <p>This method is defined and attached to controller scope in the 
-		 * {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider file.</p>
+		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
 		 * 
 		 * @param {string} biblId id of bibliographic reference to handle
 		 *
@@ -103,7 +103,7 @@ angular.module('evtviewer.bibliography')
 	     * @description
 	     * <p>This method will check whether the given entry should be highlighted or not.</p>
 		 * <p>This method is defined and attached to controller scope in the 
-		 * {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider file.</p>
+		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
 		 * 
 		 * @param {string} entryId id of bibliographic reference to handle
 		 *
@@ -122,7 +122,7 @@ angular.module('evtviewer.bibliography')
 	     * @description
 	     * <p>This method will retrieve the bibliographic entry from {@link evtviewer.dataHandler.parsedData parsedData}.</p>
 		 * <p>This method is defined and attached to controller scope in the 
-		 * {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider file.</p>
+		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
 		 * 
 		 * @param {string} entryId id of bibliographic reference to handle
 		 *
@@ -158,8 +158,8 @@ angular.module('evtviewer.bibliography')
 		// 
 		/**
 	     * @ngdoc method
-	     * @name evtviewer.bibliography.evtBibliographyProvider#build
-	     * @methodOf evtviewer.bibliography.evtBibliographyProvider
+	     * @name evtviewer.bibliography.evtBibliography#build
+	     * @methodOf evtviewer.bibliography.evtBibliography
 	     *
 	     * @description
 	     * <p>This method will extend the scope of {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive 
@@ -322,8 +322,8 @@ angular.module('evtviewer.bibliography')
 		// 
 		/**
 	     * @ngdoc method
-	     * @name evtviewer.bibliography.evtBibliographyProvider#destroy
-	     * @methodOf evtviewer.bibliography.evtBibliographyProvider
+	     * @name evtviewer.bibliography.evtBibliography#destroy
+	     * @methodOf evtviewer.bibliography.evtBibliography
 	     *
 	     * @description
 	     * Delete the reference of the instance of a particular <code>&lt;evt-bibliography&gt;</code>

@@ -12,9 +12,9 @@
  * <p>The view is updated using the method {@link evtviewer.bibliography.controller:BibliographyCtrl#getFormattedBibl getFormattedBibl()},
  * that returns an HTML string containing the formatted output of the entry.</p>
  * <p>It uses the {@link evtviewer.bibliography.controller:BibliographyCtrl BibliographyCtrl} controller.</p>
- * <p>It is connected to {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider 
+ * <p>It is connected to {@link evtviewer.bibliography.evtBibliography evtBibliography} provider 
  * that allows to handle programmatically the configuration of the directive itself. 
- * The majority of the methods of controller are defined in the {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider 
+ * The majority of the methods of controller are defined in the {@link evtviewer.bibliography.evtBibliography evtBibliography} provider 
  * where the scope of the directive is extended with all the necessary properties and methods.</p>
  *
  * @scope

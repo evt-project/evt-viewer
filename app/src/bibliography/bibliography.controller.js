@@ -6,7 +6,7 @@
  * # BibliographyCtrl
  * <p>This is controller for the {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive. </p>
  * <p>The majority of the methods of this controller are defined in the 
- * {@link evtviewer.bibliography.evtBibliographyProvider evtBibliographyProvider} provider 
+ * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider 
  * where the scope of the directive is extended with all the necessary properties and methods.</p>
  *
  * @requires $log
