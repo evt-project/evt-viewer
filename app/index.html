@@ -199,7 +199,7 @@
 						</span>
 						<div ng-if="evtPinnedElements.getVisibleTypes().length <= 0 && evtPinnedElements.getPinned().length > 0 && entry !== ''"
 							ng-repeat="entry in evtPinnedElements.getPinned()">
-							
+
 							<evt-critical-apparatus-entry
 								ng-if="::evtPinnedElements.getPinnedElementType(entry) === 'criticalApparatusEntry'"
 								class="in_critical_apparatus active"
@@ -236,7 +236,7 @@
 						<evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>
 						</box>
 					</section>
-					
+
 					<!-- VERSIONS -->
 					<section id="main-container" class="viewMode" ng-switch-when="versions">
 						<box data-type="text"
@@ -260,7 +260,7 @@
 							ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0),
 									'floatRight': (!existCriticalText() && getCurrentVersions().length > 1) || (existCriticalText() && getCurrentVersions().length > 0)}">
 						</button-switch>
-						
+
 						<div
 							ng-if="isVersionSelectorActive()"
 							class="availableVersions-selector versionSelector"
@@ -307,9 +307,9 @@
 								ng-if="::witness"
 							ng-repeat="witness in getAvailableWitnesses() track by $index">{{::getWitness(witness)}}</span>
 						</div>
-						<evt-search-box 
+						<evt-search-box
 							ng-controller="SearchBoxCtrl as searchBox"
-							ng-show="searchBox.getPosition()=='external'"> 
+							ng-show="searchBox.getPosition()=='external'">
 						</evt-search-box>
 					</section>
 					<!-- TXT TXT -->
@@ -328,9 +328,9 @@
 						<box data-type="text"
 							data-edition="{{getCurrentEdition()}}"
 							id="mainText"></box>
-						<evt-search-box 
+						<evt-search-box
 							ng-controller="SearchBoxCtrl as searchBox"
-							ng-show="searchBox.getPosition()=='external'"> 
+							ng-show="searchBox.getPosition()=='external'">
 						</evt-search-box>
 					</section>
 					<!-- SRC TXT -->
@@ -359,7 +359,7 @@
 					</div>
 				</section>
 			</div>
-				
+
 			<section class="global-loading-container" ng-show="isLoading()">
 				<!-- LOADING... -->
 				<div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
@@ -417,7 +417,7 @@
 		<script src="/src/core/log.enhance.js"></script>
 		<script src="/src/core/eventDispatcher.service.js"></script>
 		<script src="/src/core/compile.directive.js"></script>
-		<script src="/src/core/filters.js"></script> 
+		<script src="/src/core/filters.js"></script>
 
 		<script src="/src/dataHandler/dataHandler.js"></script>
 		<script src="/src/dataHandler/baseData.service.js"></script>
@@ -436,7 +436,8 @@
 		<script src="/src/dataHandler/criticalElementsParser.service.js"></script>
 		<script src="/src/dataHandler/versionApparatus.service.js"></script>
 		<script src="/src/dataHandler/bibliographyParser.service.js"></script>
-		
+		<script src="/src/dataHandler/glyph.service.js"></script>
+
 		<script src="/dist/searchParser.service.js"></script>
 
 		<script src="/src/bibliography/bibliography.js"></script>
@@ -536,7 +537,7 @@
 		<script src="/src/tabsContainer/tabsContainer.provider.js"></script>
 		<script src="/src/tabsContainer/tabsContainer.controller.js"></script>
 		<script src="/src/tabsContainer/tabsContainer.directive.js"></script>
-		
+
 		<script src="/src/quote/quote.js"></script>
 		<script src="/src/quote/quote.configuration.js"></script>
 		<script src="/src/quote/quote.provider.js"></script>
@@ -584,7 +585,7 @@
 		<script src="/src/versionApparatusEntry/versionApparatusEntry.directive.js"></script>
 		<script src="/src/versionApparatusEntry/versionRef.provider.js"></script>
 		<script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
-		
+
 		<script src="/src/search/search.js"></script>
 		<script src="/src/search/searchBox.configuration.js"></script>
 		<script src="/src/search/searchBox.directive.js"></script>
