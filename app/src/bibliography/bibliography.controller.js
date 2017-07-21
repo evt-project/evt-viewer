@@ -10,7 +10,7 @@
  * where the scope of the directive is extended with all the necessary properties and methods.</p>
  *
  * @requires $log
- * @reuires $scope
+ * @requires $scope
  * @requires evtviewer.bibliography.evtBibliography
  **/
 angular.module('evtviewer.bibliography')
