@@ -41,7 +41,7 @@ angular.module('evtviewer.box')
 	 * @description 
 	 * # BoxCtrl
 	 * <p>This is controller for the {@link evtviewer.box.directive:evtBox evtBox} directive. </p>
-	 * <p>It is no defined in reality and its methods are defined in the 
+	 * <p>It is not actually implemented separately but its methods are defined in the 
 	 * {@link evtviewer.box.evtBox evtBox} provider 
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
@@ -62,7 +62,7 @@ angular.module('evtviewer.box')
 	     * @methodOf evtviewer.box.controller:BoxCtrl
 	     *
 	     * @description
-	     * <p>This method will update a property of the box state.</p>
+	     * <p>Update a property of the box state.</p>
 		 * <p>This method is defined and attached to controller scope in the 
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 		 * 
@@ -82,7 +82,7 @@ angular.module('evtviewer.box')
 	     * @methodOf evtviewer.box.controller:BoxCtrl
 	     *
 	     * @description
-	     * <p>This method retrieve a property of the box state.</p>
+	     * <p>Retrieve a property of the box state.</p>
 		 * <p>This method is defined and attached to controller scope in the 
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 		 * 

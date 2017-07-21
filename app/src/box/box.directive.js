@@ -50,7 +50,8 @@
  * </ul>
  * <br/>&#8727; if available</p>
  * <p>Since each instance of box must be controlled in different 
- * ways depending on type, the controller for this directive is dynamically defined inside the {@link evtviewer.box.evtBox evtBox} provider.</p>
+ * ways depending on type, the {@link evtviewer.box.controller:BoxCtrl controller} for this directive is dynamically defined inside the 
+ * {@link evtviewer.box.evtBox evtBox} provider.</p>
  *
  * @scope
  * @param {string=} id id of box to be shown
