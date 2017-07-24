@@ -4,7 +4,7 @@
  * @name evtviewer.UItools.evtImageTextLinking
  * @description 
  * # evtImageTextLinking
- * TODO: Add description and comments for every method
+ * In this service are defined and exposed methods to handle image-text linking tool.
 **/
 angular.module('evtviewer.UItools')
 
