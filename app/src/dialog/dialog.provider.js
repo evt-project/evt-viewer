@@ -4,7 +4,7 @@
  * @name evtviewer.dialog.evtDialog
  * @description 
  * # evtDialog
- * This provider expand the scope of the
+ * This provider expands the scope of the
  * {@link evtviewer.dialog.directive:evtDialog evtDialog} directive 
  * is expanded and stored untill the directive remains instantiated.
  * @requires $log

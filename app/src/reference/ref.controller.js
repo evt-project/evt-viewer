@@ -22,7 +22,7 @@ angular.module('evtviewer.reference')
 	var vm = this;
 
 	var _console = $log.getInstance('reference');
-	 /**
+	/**
      * @ngdoc method
      * @name evtviewer.reference.controller:RefCtrl#handleRefClick
      * @methodOf evtviewer.reference.controller:RefCtrl
@@ -85,8 +85,6 @@ angular.module('evtviewer.reference')
 	 *
 	 * @description
 	 * <p>Remove instance from saved instances in {@link evtviewer.reference.evtRef evtRef} provider.</p>
-	 * <p>This method is defined and attached to controller scope in the 
-	 * {@link evtviewer.reference.evtRef evtRef} provider file.</p>
 	 */
 	vm.destroy = function() {
         var tempId = vm.uid;

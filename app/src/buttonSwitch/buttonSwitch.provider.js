@@ -4,7 +4,7 @@
  * @name evtviewer.buttonSwitch.evtButtonSwitch
  * @description 
  * # evtButtonSwitch
- * This provider expand the scope of the
+ * This provider expands the scope of the
  * {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive 
  * is expanded and stored untill the directive remains instantiated.
  *
@@ -340,8 +340,8 @@ angular.module('evtviewer.buttonSwitch')
 					setActive,
 					disable,
 					enable,
-					destroy,
-				};;
+					destroy
+				};
 		 	</pre>
 	     */
 		button.build = function(scope, vm) {
@@ -774,7 +774,7 @@ angular.module('evtviewer.buttonSwitch')
 	     * @methodOf evtviewer.buttonSwitch.evtButtonSwitch
 	     *
 	     * @description
-	     * Get the list of all the instance of <code>&lt;button-sSwitch&gt;</code>.
+	     * Get the list of all the instance of <code>&lt;button-switch&gt;</code>.
 		 *
 		 * @returns {array} array of ids of all the instance of <code>&lt;button-switch&gt;</code>.
 	     */

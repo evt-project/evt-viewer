@@ -4,7 +4,7 @@
  * @name evtviewer.box.evtBox
  * @description 
  * # evtBox
- * This provider expand the scope of the
+ * This provider expands the scope of the
  * {@link evtviewer.box.directive:box box} directive 
  * is expanded and stored untill the directive remains instantiated.
  *

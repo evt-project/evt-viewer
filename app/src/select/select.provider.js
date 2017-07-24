@@ -4,7 +4,20 @@
  * @name evtviewer.select.evtSelect
  * @description 
  * # evtSelect
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.select.directive:evtSelect evtSelect} directive 
+ * is expanded and stored untill the directive remains instantiated.
+ * It also add some modules to controller, according to <code>&lt;evt-select&gt;</code> type.
+ *
+ * @requires $log
+ * @requires evtviewer.core.config
+ * @requires evtviewer.core.Utils
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.namedEntity.evtNamedEntityRef
+ * @requires evtviewer.namedEntity.evtGenericEntity
+ * @requires evtviewer.UItools.evtPinnedElements
+ * @requires evtviewer.dataHandler.evtSourcesApparatus
 **/
 angular.module('evtviewer.select')
 
@@ -27,7 +40,89 @@ angular.module('evtviewer.select')
 		// 
 		// Select builder
 		// 
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#build
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * <p>This method will extend the scope of {@link evtviewer.select.directive:evtSelect evtSelect} directive 
+	     * according to selected configurations and parsed data.</p>
+	     * <p>According to <code>type</code> it will set the methods **callback**, **formatOptionList** and **formatOption**
+	     * and it will set the available options list.
+		 * <p>Handled types are: <ul>
+		 * <li>"**page:**"<ul> 
+		 * 		<li>option list will contain all available pages;</li>
+		 * 		<li>callback will update the current page on interface, 
+		 * 			updating eventually the current document too.</li></ul></li>
+		 * <li>"**document:**"<ul> 
+		 * 		<li>option list will contain all available documents;</li>
+		 * 		<li>callback will update the current document on interface, 
+		 * 			updating eventually the current page too.</li></ul></li>
+		 * <li>"**edition:**"<ul> 
+		 * 		<li>option list will contain all available editions;</li>
+		 * 		<li>callback will update the current edition level on interface.</li>
+		 * <li>"**named-entities<ul>:
+		 * 		<li>**" option list will contain all available (named) entities, 
+		 * 		divided in "*named entitites*" and "*generic entities";</li>
+		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option 
+		 * 			and a "*Clear*" option;</li>
+		 * 		<li>callback will (de)active the selected (named) entities type
+		 * 			in order to (de)highilight them. </li>
+		 * <li>"**witness:**"<ul> 
+		 * 		<li>option list will contain all available witnesses;</li>
+		 * 		<li>callback will update the selected witnesses (and URL) in collation view mode.</li>
+		 * <li>"**witness-page<ul>:
+		 * 		<li>**" option list will contain all available pages for a given witness;</li>
+		 * 		<li>callback will update current page for given witness and will eventally 
+		 * 			scroll the main text to selected page anchor.</li>
+		 * <li>"**pinned-filter<ul>:
+		 * 		<li>**" option list will contain all available pinned filters;</li>
+		 * 		<li>callback will decide which pinned elements to show;</li>
+		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option 
+		 * 			and a "*Clear*" option.</li>
+		 * <li>"**source:**"<ul> 
+		 * 		<li>option list will contain all available sources;</li>
+		 * 		<li>callback will update current source on interface.</li>
+		 * <li>"**version:**"<ul> 
+		 * 		<li>option list will contain all available versions;</li>
+		 * 		<li>callback will update current version on interface.</li></ul></li>
+		 * </ul></p>
+		 * <p>To see details of callback function just open the file and read.</p>
+		 * <p>You can add your own type of select, if the same select used in different places 
+		 * should always have the same behaviour.</p>
+		 *
+		 * @param {Object} scope initial scope of the directive:
+		 	<pre>
+				var scope: {
+		            id: '@',
+		            type: '@',
+		            init: '@',
+		            openUp: '@',
+		            multiselect: '@'
+		        };
+		 	</pre>
+		 *
+		 * @returns {Object} extended scope:
+		 	<pre>
+				var scopeHelper = {
+					// expansion
+					uid: currentId,
+					defaults: angular.copy(defaults),
+					callback: callback,
+					initValue: initValue,
+					currentType: currentType,
+					multiselect: multiselect,
+					openUp: openUp,
+					// model
+					optionList: optionList,
+					optionSelected: optionSelected,
+					optionSelectedValue: optionSelectedValue,
+					formatOptionList: formatOptionList,
+					formatOption: formatOption
+				};
+		 	</pre>
+	     */
 		select.build = function(scope, vm) {
 			var currentId = scope.id || idx++,
 				currentType = scope.type || 'default',
@@ -498,17 +593,49 @@ angular.module('evtviewer.select')
 		//
 		// Service function
 		// 
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#getById
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * Get the reference of the instance of a particular <code>&lt;evt-select&gt;</code>.
+		 * 
+		 * @param {string} currentId id of select to retrieve
+		 *
+		 * @returns {Object} reference of the instance of <code>&lt;evt-select&gt;</code> with given id
+	     */
 		select.getById = function(currentId) {
 			if (collection[currentId] !== undefined) {
 				return collection[currentId];
 			}
 		};
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#getList
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * Get the list of all the instance of <code>&lt;evt-select&gt;</code>.
+		 *
+		 * @returns {array} array of ids of all the instance of <code>&lt;evt-select&gt;</code>.
+	     */
 		select.getList = function() {
 			return list;
 		};
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#expandById
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * <p>Expand select with a certain id.</p>
+	     * <p>This function is useful if we want to trigger the expansion from an external service/controller.</p>
+	     * <p> It eventually collapse all other <code>&lt;evt-select&gt;</code>.</p>
+	     *
+	     * @param {string} currentId id of select to expand
+	     * @param {boolean=} closeSiblings whether or not to collapse all other expanded selectors.
+	     */
 		select.expandById = function(currentId, closeSiblings) {
 			if (collection[currentId] !== 'undefined') {
 				collection[currentId].expand();
@@ -517,7 +644,17 @@ angular.module('evtviewer.select')
 				}
 			}
 		};
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#closeAll
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * <p>Collapse all instantiated <code>&lt;evt-select&gt;</code>,
+	     * expect that with given id.</p>
+	     *
+	     * @param {string} skipId id of select to skip from closing
+	     */
 		select.closeAll = function(skipId) {
 			angular.forEach(collection, function(currentSelect, currentId) {
 				if (currentId !== skipId) {
@@ -525,19 +662,55 @@ angular.module('evtviewer.select')
 				}
 			});
 		};
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#addOption
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * <p>Add option to list.</p>
+	     *
+	     * @param {string} currentId id of select to which add a new option
+	     * @param {Object} add new option, structured as follows
+	     	<pre>
+	            var selectedOption = {
+	                value,
+	                label,
+	                title
+	            };
+	        </pre>
+	     */
 		select.addOption = function(currentId, option) {
 			if (collection[currentId] !== 'undefined') {
 				collection[currentId].optionList.push(option);
 			}
 		};
-
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.select.evtSelect#setCallback
+	     * @methodOf evtviewer.select.evtSelect
+	     *
+	     * @description
+	     * <p>Set new callback to select.</p>
+	     *
+	     * @param {string} currentId id of select to handle
+	     * @param {function} callback new function to use as callback
+	     */
 		select.setCallback = function(currentId, callback) {
 			if (collection[currentId] !== 'undefined') {
 				collection[currentId].callback = callback;
 			}
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.select.evtSelect#destroy
+         * @methodOf evtviewer.select.evtSelect
+         *
+         * @description
+         * Delete the select of the instance of a particular <code>&lt;evt-select&gt;</code>
+         * 
+         * @param {string} tempId id of <code>&lt;evt-select&gt;</code> to destroy
+         */
 		select.destroy = function(tempId) {
 			delete collection[tempId];
 		};

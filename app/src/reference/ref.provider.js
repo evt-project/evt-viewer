@@ -4,7 +4,7 @@
  * @name evtviewer.reference.evtRef
  * @description 
  * # evtRef
- * This provider expand the scope of the
+ * This provider expands the scope of the
  * {@link evtviewer.reference.directive:ref ref} directive 
  * is expanded and stored untill the directive remains instantiated.
  *
