@@ -4,8 +4,17 @@
  * @name evtviewer.reference.controller:RefCtrl
  * @description 
  * # RefCtrl
- * TODO: Add description and list of dependencies!
- * The controller for the {@link evtviewer.reference.directive:ref ref} directive. 
+ * This is controller for the {@link evtviewer.reference.directive:ref ref} directive.
+ *
+ * @requires $log
+ * @requires $timeout
+ * @requires evtviewer.reference.evtRef
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dialog.evtDialog
+ * @requires evtviewer.bibliography.evtHighlight
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.communication.evtCommunication
+
 **/
 angular.module('evtviewer.reference')
 
@@ -13,12 +22,33 @@ angular.module('evtviewer.reference')
 	var vm = this;
 
 	var _console = $log.getInstance('reference');
-
+	 /**
+     * @ngdoc method
+     * @name evtviewer.reference.controller:RefCtrl#handleRefClick
+     * @methodOf evtviewer.reference.controller:RefCtrl
+     *
+     * @description
+     * Check the value of **type**; <ul>
+     * <li>if it is a bibliographic reference and the referring entry appear in parsed data,
+     * it will open the bibliography 
+     * panel whitin the global info dialog. Since the id of referring bibliography entry is given
+     * to the service {@link evtviewer.bibliography.evtHighlight} the panel will scroll to the element and
+     * highlight it for few seconds;</li>
+     * <li>if it is a bibliographic reference, but the entry does not appear in extracted data, 
+     * an error message will be shown;</li>
+     * <li> if it is an external target, it will opena a new window at given URL</li></ul>
+     *
+     * @param {event} oEvent click event to handle
+     *
+     * @author MR
+     * @author CDP
+     */
 	vm.handleRefClick = function(oEvent) {
 		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.target.substr(0, 1) === '#') {
 			
 			// Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
-			// passiamo a evtHighlight l'id dell'entrata da evidenziare (ci penserà il template della bibliografia al resto)
+			// passiamo a evtHighlight l'id dell'entrata da evidenziare 
+			// (ci penserà il template della bibliografia al resto)
 			// apriamo il dialog con tipo globalInfo
 			// scegliamo di visualizzare come pannello iniziale quello della bibliografia
 			
@@ -48,6 +78,16 @@ angular.module('evtviewer.reference')
 		}
 	};
 
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.reference.controller:RefCtrl#destroy
+	 * @methodOf evtviewer.reference.controller:RefCtrl
+	 *
+	 * @description
+	 * <p>Remove instance from saved instances in {@link evtviewer.reference.evtRef evtRef} provider.</p>
+	 * <p>This method is defined and attached to controller scope in the 
+	 * {@link evtviewer.reference.evtRef evtRef} provider file.</p>
+	 */
 	vm.destroy = function() {
         var tempId = vm.uid;
         // this.$destroy();

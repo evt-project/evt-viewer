@@ -1,10 +1,14 @@
 /**
  * @ngdoc service
- * @module evtviewer.quote
- * @name evtviewer.quote.evtQuote
+ * @module evtviewer.reference
+ * @name evtviewer.reference.evtRef
  * @description 
- * # evtQuote
- * TODO: Add description and comments for every method
+ * # evtRef
+ * This provider expand the scope of the
+ * {@link evtviewer.reference.directive:ref ref} directive 
+ * is expanded and stored untill the directive remains instantiated.
+ *
+ * @requires $log
 **/
 angular.module('evtviewer.reference')
 
@@ -26,7 +30,37 @@ angular.module('evtviewer.reference')
 
         // 
         // Dialog builder
-        // 
+        //
+        /**
+         * @ngdoc method
+         * @name evtviewer.reference.evtRef#build
+         * @methodOf evtviewer.reference.evtRef
+         *
+         * @description
+         * <p>This method will extend the scope of {@link evtviewer.reference.directive:ref ref} directive 
+         * according to selected configurations and parsed data.</p>
+         * 
+         * @param {Object} scope initial scope of the directive:
+            <pre>
+                var scope: {
+                    target: '@',
+                    type: '@'
+                };
+            </pre>
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    // expansion
+                    uid,
+                    defaults,
+
+                    // model
+                    type,
+                    target
+                };
+            </pre>
+         */
         reference.build = function(scope) {
             var currentId   = scope.id    || idx++,
                 currentType = scope.type  || 'link',
@@ -59,21 +93,54 @@ angular.module('evtviewer.reference')
 
         //
         // Service function
-        // 
+        //
+        /**
+         * @ngdoc method
+         * @name evtviewer.reference.evtRef#destroy
+         * @methodOf evtviewer.reference.evtRef
+         *
+         * @description
+         * Delete the reference of the instance of a particular <code>&lt;ref&gt;</code>
+         * 
+         * @param {string} tempId id of <code>&lt;ref&gt;</code> to destroy
+         */
         reference.destroy = function(tempId) {
             delete collection[tempId];
         };
-
-        reference.getByType = function(uid) {
-            var refOfType = [];
-            angular.forEach(collection, function(currentRef) {
-                if (currentRef.uid === uid) {
-                    refOfType.push(currentRef);
+        /**
+         * @ngdoc method
+         * @name evtviewer.reference.evtRef#getListByType
+         * @methodOf evtviewer.reference.evtRef
+         *
+         * @description
+         * Get the references of the instance of a all <code>&lt;ref&gt;</code>s of a particular type.
+         *
+         * @param {string} type type of dialogs to retrieve
+         *
+         * @returns {array} array of references of the instance of <code>&lt;ref&gt;</code>s of given type
+         *
+         */
+        reference.getListByType = function(type) {
+            var listType = [];
+            for (var i in collection) {
+                if (collection[i].type === type) {
+                    listType.push(collection[i]);
                 }
-            });
-            return refOfType;
+            }
+            return listType;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reference.evtRef#getById
+         * @methodOf evtviewer.reference.evtRef
+         *
+         * @description
+         * Get the reference of the instance of a particular <code>&lt;ref&gt;</code>.
+         *
+         * @param {string} uid id of reference to retrieve
+         *
+         * @returns {Object} reference of the instance of <code>&lt;ref&gt;</code> with given id
+         */ 
         reference.getById = function(uid) {
             angular.forEach(collection, function(currentRef) {
                 if (currentRef.uid === uid) {
@@ -84,5 +151,4 @@ angular.module('evtviewer.reference')
 
         return reference;
     };
-
 });
