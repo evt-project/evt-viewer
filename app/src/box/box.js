@@ -3,7 +3,7 @@
  * @name evtviewer.box
  * @description 
  * # evtviewer.box
- * Module referring Module referring to box, intended as a single content of text, image, other content, etc.
+ * Module referring to box, intended as a single content of text, image, other content, etc.
  * 
  * ## Services
  * - {@link evtviewer.box.evtBox evtBox} where the scope of 

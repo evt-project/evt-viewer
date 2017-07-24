@@ -7,7 +7,7 @@
  * <p>Container that simulates a button. This is used to uniformize the layout of buttons
  * to all different operating system and browser. </p>
  * <p>Buttons can have icon and/or text and will trigger a callback function whem users click on it.</p>
- * <p>Since each instance of buttonSwithc must be controlled in different 
+ * <p>Since each instance of buttonSwitch must be controlled in different 
  * ways depending on type, the {@link evtviewer.buttonSwitch.controller:ButtonSwitchCtrl controller} for this directive is dynamically defined 
  * inside the {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
  *

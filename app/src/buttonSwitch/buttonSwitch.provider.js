@@ -8,16 +8,16 @@
  * {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive 
  * is expanded and stored untill the directive remains instantiated.
  *
- * @reuires $timeout
- * @reuires $log
- * @reuires evtviewer.core.config
- * @reuires evtviewer.dataHandler.parsedData
- * @reuires evtviewer.interface.evtInterface
- * @reuires evtviewer.dialog.evtDialog
- * @reuires evtviewer.select.evtSelect
- * @reuires evtviewer.core.Utils
- * @reuires evtviewer.UItools.evtImageTextLinking
- * @reuires evtviewer.dataHandler.evtSourcesApparatus
+ * @requires $timeout
+ * @requires $log
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.dialog.evtDialog
+ * @requires evtviewer.select.evtSelect
+ * @requires evtviewer.core.Utils
+ * @requires evtviewer.UItools.evtImageTextLinking
+ * @requires evtviewer.dataHandler.evtSourcesApparatus
 **/
 angular.module('evtviewer.buttonSwitch')
 
