@@ -50,7 +50,6 @@ angular.module('evtviewer.dialog')
 	     * <p>Open the dialog.</p>
 	     * <p>This method is defined and attached to controller scope in the 
 		 * {@link evtviewer.dialog.evtDialog evtDialog} provider file.</p>
-		 *
 	     */
 		var open = function() {
 			var vm = this;
@@ -65,7 +64,6 @@ angular.module('evtviewer.dialog')
 	     * <p>Close the dialog.</p>
 	     * <p>This method is defined and attached to controller scope in the 
 		 * {@link evtviewer.dialog.evtDialog evtDialog} provider file.</p>
-		 *
 	     */
 		var close = function() {
 			var vm = this;
@@ -105,7 +103,7 @@ angular.module('evtviewer.dialog')
 		};
 		/**
 	     * @ngdoc method
-	     * @name evtviewer.dialog.controller:DialogCtrl#updateContent
+	     * @name evtviewer.dialog.controller:DialogCtrl#destroy
 	     * @methodOf evtviewer.dialog.controller:DialogCtrl
 	     *
 	     * @description
@@ -123,6 +121,47 @@ angular.module('evtviewer.dialog')
 		// 
 		// Dialog builder
 		// 
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.dialog.evtDialog#build
+	     * @methodOf evtviewer.dialog.evtDialog
+	     *
+	     * @description
+	     * <p>This method will extend the scope of {@link evtviewer.dialog.directive:evtDialog evtDialog} directive 
+	     * according to selected configurations and parsed data.</p>
+		 * 
+		 * @param {Object} scope initial scope of the directive:
+		 	<pre>
+				var scope: {
+		            id      : '@',
+		            type    : '@',
+		            title   : '@',
+		            opened  : '@'
+		        };
+		 	</pre>
+		 *
+		 * @returns {Object} extended scope:
+		 	<pre>
+				var scopeHelper = {
+					// expansion
+					uid,
+					defaults,
+
+					// model
+					type,
+					content,
+					title,
+					opened,
+
+					// function
+					open,
+					close,
+					setTitle,
+					updateContent,
+					destroy
+				};
+		 	</pre>
+	     */
 		dialog.build = function(scope) {
 			var currentId = scope.id || idx++,
 				currentType = scope.type || 'default',

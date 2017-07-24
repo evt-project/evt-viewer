@@ -18,6 +18,6 @@
  * The content shown can be added as transcluded content.
  * The general layout and colors will depend on dialog type. 
  * The controller for this directive is dynamically defined inside the {@link evtviewer.dialog.evtDialog evtDialog} provider.
-
+ *
 **/
 angular.module('evtviewer.dialog', []);

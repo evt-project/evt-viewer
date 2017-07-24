@@ -328,6 +328,8 @@ angular.module('evtviewer.bibliography')
 	     * @description
 	     * Delete the reference of the instance of a particular <code>&lt;evt-bibliography&gt;</code>
 		 *
+         * @param {string} tempId id of <code>&lt;evt-bibliography&gt;</code> to destroy
+		 *
 		 * @author MR
 	     */
 		bibliography.destroy = function(tempId) {
