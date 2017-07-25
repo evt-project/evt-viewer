@@ -4,8 +4,10 @@
  * @name evtviewer.popover.directive:evtPopover
  * @description 
  * # evtPopover
- * TODO: Add description!
- * It uses the {@link evtviewer.popover.controller:PopoverCtrl PopoverCtrl} controller. 
+ * <p>Element is a small pop-up box that appears when the user clicks on an element (or passes over it with the mouse) and 
+ * can contain different content.</p>
+ * <p>It uses the {@link evtviewer.popover.controller:PopoverCtrl PopoverCtrl} controller.</p>
+ * <p>The initial scope is extended in {@link evtviewer.popover.evtPopover evtPopover} provider.</p>
  *
  * @scope
  * @param {string=} trigger type of event that triggers the opening of the popover ('over', 'click')
@@ -29,11 +31,29 @@ angular.module('evtviewer.popover')
         controllerAs: 'vm',
         controller: 'PopoverCtrl',
         link: function(scope, element) {
+            /**
+             * @ngdoc method
+             * @name evtviewer.popover.controller:PopoverCtrl#toggleTooltipHover
+             * @methodOf evtviewer.popover.controller:PopoverCtrl
+             *
+             * @description
+             * Stop propagation of event and trigger 
+             * {@link evtviewer.popover.controller:PopoverCtrl#toggleTooltipOver toggleTooltipOver} method.
+             */
             scope.vm.toggleTooltipHover = function(e, vm) {
                 e.stopPropagation();
                 vm.toggleTooltipOver();
             };
-            
+            /**
+             * @ngdoc method
+             * @name evtviewer.popover.controller:PopoverCtrl#toggleMouseHover
+             * @methodOf evtviewer.popover.controller:PopoverCtrl
+             *
+             * @description
+             * Stop propagation of event, eventually resize the tooltip 
+             * ({@link evtviewer.popover.controller:PopoverCtrl#resizeTooltip resizeTooltip}) 
+             * and trigger {@link evtviewer.popover.controller:PopoverCtrl#toggleOver toggleOver} method.
+             */
             scope.vm.toggleMouseHover = function(e, vm){
                 e.stopPropagation();
                 if ( vm.trigger === 'over' && !vm.over && !vm.expanded) {
@@ -44,7 +64,16 @@ angular.module('evtviewer.popover')
                     vm.toggleOver();
                 }
             };
-
+            /**
+             * @ngdoc method
+             * @name evtviewer.popover.controller:PopoverCtrl#triggerClick
+             * @methodOf evtviewer.popover.controller:PopoverCtrl
+             *
+             * @description
+             * Stop propagation of event, eventually resize the tooltip 
+             * ({@link evtviewer.popover.controller:PopoverCtrl#resizeTooltip resizeTooltip}) 
+             * and trigger {@link evtviewer.popover.controller:PopoverCtrl#toggleExpand toggleExpand} method.
+             */
             scope.vm.triggerClick = function(e, vm) {
                 e.stopPropagation();
                 if ( vm.trigger !== 'over' && !vm.expanded) {
@@ -55,7 +84,17 @@ angular.module('evtviewer.popover')
                     vm.toggleExpand();
                 }
             };
-
+            /**
+             * @ngdoc method
+             * @name evtviewer.popover.controller:PopoverCtrl#resizeTooltip
+             * @methodOf evtviewer.popover.controller:PopoverCtrl
+             *
+             * @description
+             * Stop propagation of event and calculate size and position of tooltip depending
+             * on mouse click coordinates and content to be shown. It avoid the pop-up to open in an hidden position.
+             * @author: CDP
+             * @todo: Fix problems
+             */
             scope.vm.resizeTooltip = function(e, settings){
                 e.stopPropagation();
                 var parentRef = scope.vm.parentRef;
