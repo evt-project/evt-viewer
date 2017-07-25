@@ -19,7 +19,7 @@
  * divided by letter and initialized as the scrolling occurs. 
  * The list of elements itself depend on the type of list; elements are retrieved from 
  * {@link evtviewer.dataHandler.parsedData}.
- * The controller for this directive is dynamically defined inside the 
+ * The {@link evtviewer.list.controller:ListCtrl controller} for this directive is dynamically defined inside the 
  * {@link evtviewer.list.evtList evtList} provider.
 **/
 angular.module('evtviewer.list', []);

@@ -4,7 +4,14 @@
  * @name evtviewer.tabsContainer.evtTabsContainer
  * @description 
  * # evtTabsContainer
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive 
+ * is expanded and stored untill the directive remains instantiated.
+ * It also add some modules to controller, according to <code>&lt;evt-tabs-container&gt;</code> type.
+ *
+ * @requires $log
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.interface.evtInterface
 **/
 angular.module('evtviewer.tabsContainer')
 
@@ -27,13 +34,35 @@ angular.module('evtviewer.tabsContainer')
 		// 
 		// Control function
 		// 
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.evtviewer.tabsContainer.controller:TabsContainerCtrl#destroy
+	     * @methodOf evtviewer.tabsContainer.controller:TabsContainerCtrl
+	     *
+	     * @description
+	     * <p>Remove instance from saved instances in {@link evtviewer.tabsContainer.evtTabsContainer evtTabsContainer} provider.</p>
+         * <p>This method is defined and attached to controller scope in the 
+         * {@link evtviewer.tabsContainer.evtTabsContainer evtTabsContainer} provider file.</p>
+	     */
 		var destroy = function() {
             var tempId = this.uid;
             // this.$destroy();
             delete collection[tempId];
             // _console.log('vm - destroy ' + tempId);
         };
-        
+        /**
+	     * @ngdoc method
+	     * @name evtviewer.evtviewer.tabsContainer.controller:TabsContainerCtrl#toggleSubContent
+	     * @methodOf evtviewer.tabsContainer.controller:TabsContainerCtrl
+	     *
+	     * @description
+	     * Open/close a given tab.
+	     * <p>This method is defined and attached to controller scope in the 
+         * {@link evtviewer.tabsContainer.evtTabsContainer evtTabsContainer} provider file
+         * and differs according to scope <code>type</code>.</p>
+		 *
+         * @param {string} subContentName name of tab to open/close
+	     */
 		var toggleSubContent = function(subContentName) {
 			var vm = this;
 			vm.subContentOpened = vm.subContentOpened !== subContentName ? subContentName : '';
@@ -42,6 +71,49 @@ angular.module('evtviewer.tabsContainer')
 		// 
 		// TabsContainer builder
 		// 
+		/**
+	     * @ngdoc method
+	     * @name evtviewer.tabsContainer.evtTabsContainer#build
+	     * @methodOf evtviewer.tabsContainer.evtTabsContainer
+	     *
+	     * @description
+	     * <p>This method will extend the scope of 
+	     * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive 
+	     * according to selected configurations and parsed data.</p>
+	     * <p>According to <code>type</code> it will set the list of tabs and relative content.
+		 * <p>Handled types are: <ul>
+		 * <li> **projectInfo**: tabs will be header propject/edition information section labels (e.g. 'File Description', 'Encoding Description', 'Text Profile', 'Outside Metadata',
+		 * 'Revision History' and 'Bibliography');</li>
+		 * <li> **entitiesList**: tabs will be all available lists of named entities.</li>
+		 * </ul></p>
+		 * <p>You can add your own type of select, if the same select used in different places 
+		 * should always have the same behaviour and content.</p>
+		 *
+		 * @param {Object} scope initial scope of the directive:
+		 	<pre>
+				var scope: {
+		            type: '@',
+		            orientation: '@'
+		        };
+		 	</pre>
+		 *
+		 * @returns {Object} extended scope:
+		 	<pre>
+				var scopeHelper = {
+					// expansion
+					uid,
+					type,
+					orientation,
+					defaults,
+					tabs,
+					// model
+					subContentOpened,
+					// function
+					toggleSubContent,
+					destroy,
+				};
+		 	</pre>
+	     */
 		tabsContainer.build = function(scope) {
 			var currentId 	= scope.id || idx++,
 				currentType = scope.type || '',

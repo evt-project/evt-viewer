@@ -51,40 +51,40 @@ angular.module('evtviewer.select')
 	     * <p>According to <code>type</code> it will set the methods **callback**, **formatOptionList** and **formatOption**
 	     * and it will set the available options list.
 		 * <p>Handled types are: <ul>
-		 * <li>"**page:**"<ul> 
+		 * <li>"**page**":<ul> 
 		 * 		<li>option list will contain all available pages;</li>
 		 * 		<li>callback will update the current page on interface, 
 		 * 			updating eventually the current document too.</li></ul></li>
-		 * <li>"**document:**"<ul> 
+		 * <li>"**document**":<ul> 
 		 * 		<li>option list will contain all available documents;</li>
 		 * 		<li>callback will update the current document on interface, 
 		 * 			updating eventually the current page too.</li></ul></li>
-		 * <li>"**edition:**"<ul> 
+		 * <li>"**edition**":<ul> 
 		 * 		<li>option list will contain all available editions;</li>
-		 * 		<li>callback will update the current edition level on interface.</li>
-		 * <li>"**named-entities<ul>:
+		 * 		<li>callback will update the current edition level on interface.</li></ul>/li>
+		 * <li>"**named-entities**":<ul>
 		 * 		<li>**" option list will contain all available (named) entities, 
 		 * 		divided in "*named entitites*" and "*generic entities";</li>
 		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option 
 		 * 			and a "*Clear*" option;</li>
 		 * 		<li>callback will (de)active the selected (named) entities type
-		 * 			in order to (de)highilight them. </li>
-		 * <li>"**witness:**"<ul> 
+		 * 			in order to (de)highilight them. </li></ul>/li>
+		 * <li>"**witness**":<ul> 
 		 * 		<li>option list will contain all available witnesses;</li>
-		 * 		<li>callback will update the selected witnesses (and URL) in collation view mode.</li>
-		 * <li>"**witness-page<ul>:
+		 * 		<li>callback will update the selected witnesses (and URL) in collation view mode.</li></ul>/li>
+		 * <li>"**witness-page**":<ul>
 		 * 		<li>**" option list will contain all available pages for a given witness;</li>
 		 * 		<li>callback will update current page for given witness and will eventally 
-		 * 			scroll the main text to selected page anchor.</li>
-		 * <li>"**pinned-filter<ul>:
+		 * 			scroll the main text to selected page anchor.</li></ul>/li>
+		 * <li>"**pinned-filter**"<ul>
 		 * 		<li>**" option list will contain all available pinned filters;</li>
 		 * 		<li>callback will decide which pinned elements to show;</li>
 		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option 
-		 * 			and a "*Clear*" option.</li>
-		 * <li>"**source:**"<ul> 
+		 * 			and a "*Clear*" option.</li></ul>/li>
+		 * <li>"**source**":<ul> 
 		 * 		<li>option list will contain all available sources;</li>
-		 * 		<li>callback will update current source on interface.</li>
-		 * <li>"**version:**"<ul> 
+		 * 		<li>callback will update current source on interface.</li></ul>/li>
+		 * <li>"**version**":<ul> 
 		 * 		<li>option list will contain all available versions;</li>
 		 * 		<li>callback will update current version on interface.</li></ul></li>
 		 * </ul></p>
@@ -132,10 +132,64 @@ angular.module('evtviewer.select')
 				optionList = [],
 				optionSelected,
 				optionSelectedValue,
-				callback,
-				formatOptionList,
-				formatOption,
 				marginTop = 0; //Needed for selector that open up
+			/**
+		     * @ngdoc method
+		     * @name evtviewer.select.controller:SelectCtrl#callback
+		     * @methodOf evtviewer.select.controller:SelectCtrl
+		     *
+		     * @description
+		     * Callback fired when user clicks on select. It depends on select type:<ul>
+			 * <li>"**page**": it will update the current page on interface, 
+			 * 			updating eventually the current document too.</li>
+			 * <li>"**document**": it will update the current document on interface, 
+			 * 			updating eventually the current page too.</li>
+			 * <li>"**edition**": it will update the current edition level on interface.</li>
+			 * <li>"**named-entities**": it will (de)active the selected (named) entities type
+			 * 			in order to (de)highilight them. </li>
+			 * <li>"**witness**": it will update the selected witnesses (and URL) in collation view mode.</li>
+			 * <li>"**witness-page**": it will update current page for given witness and will eventally 
+			 * 			scroll the main text to selected page anchor.</li>
+			 * <li>"**pinned-filter**": it will decide which pinned elements to show;</li>
+			 * <li>"**source**": it will update current source on interface.</li>
+			 * <li>"**version**": it will update current version on interface.</li>
+		     * </ul>
+		     */
+			var callback;
+			/**
+		     * @ngdoc method
+		     * @name evtviewer.select.controller:SelectCtrl#formatOptionList
+		     * @methodOf evtviewer.select.controller:SelectCtrl
+		     *
+		     * @description
+		     * Prepare option list objects in order to reflects generic model:
+			     <pre>
+					var optionList = [{
+						value: '',
+						label: '',
+						title: '',
+						additionalClass: ''
+					}];
+			     </pre>
+		     */
+		    var formatOptionList;
+			/**
+		     * @ngdoc method
+		     * @name evtviewer.select.controller:SelectCtrl#formatOption
+		     * @methodOf evtviewer.select.controller:SelectCtrl
+		     *
+		     * @description
+		     * Prepare single option object in order to reflects generic model:
+			     <pre>
+					var option = {
+						value: '',
+						label: '',
+						title: '',
+						additionalClass: ''
+					};
+			     </pre>
+		     */
+		    var formatOption;
 
 			var optionSelectAll;
 			var scopeHelper = {};
