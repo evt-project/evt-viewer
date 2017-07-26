@@ -6,6 +6,16 @@
  * # QuoteCtrl
  * TODO: Add description and list of dependencies!
  * The controller for the {@link evtviewer.quote.directive:evtQuote evtQuote} directive. 
+ * @requires $log
+ * @requires $scope
+ * @requires evtviewer.quote.evtQuote
+ * @requires evtviewer.popover.evtPopover
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.apparatuses.evtApparatuses
+ * @requires evtviewer.box.evtBox
+ * @requires evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+ * @requires evtviewer.sourcesApparatusEntry.evtSourceSeg
+ * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.quote')
 

@@ -4,15 +4,21 @@
  * @name evtviewer.criticalApparatusEntry.directive:evtWitnessRef
  * @description 
  * # evtWitnessRef
- * TODO: Add description!
- * It require the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive.
+ * Custom element that identifies the sigla of a witness to be used whithin the critical apparatus entry as an "access point"
+ * to the context of a specific reading.
+ *
  * @scope
- * @param {string=} witness sigla of witness ref to be shown
- * @param {string=} scopeWit id of scope witness
+ * @param {string} witness sigla of witness ref to be shown
+ * @param {string} scopeWit id of scope witness
  *
  * @restrict E
  * 
- * @require evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry
+ * @requires evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry
+ * @requires evtviewer.core.config
+ * @requires evtviewer.box.evtBox
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.interface.evtInterface
+ *
 **/
 angular.module('evtviewer.criticalApparatusEntry')
 
@@ -35,12 +41,29 @@ angular.module('evtviewer.criticalApparatusEntry')
 			} else {
 				scope.title = 'CRITICAL_APPARATUS.WITNESS_REF_OPEN';
 			}
+			/**
+		     * @ngdoc method
+		     * @name evtviewer.criticalApparatusEntry.directive:evtWitnessRef#openWit
+		     * @methodOf evtviewer.criticalApparatusEntry.directive:evtWitnessRef
+		     *
+		     * @description
+		     * <p>Open the context of a reading of a particular witness, in a particular version of the text.</p>
+		     * <p>It checks if there is more than one version of the text, 
+		     * and eventually updates the list of visible and available witnesses in version mode.</p>
+		     * <p>It opens the "*Collation View Mode*"" and add the selected witness to the list of collated ones,
+		     * scrolling the text until the current selected critical apparatus entry and updating the global URL
+		     * with information about the new added witness.</p>
+		     * <p>It updates the list of visibile and available witnesses for the "*Collation View mode*".</p>
+		     *
+		     * @author CDP
+		     * @author CM
+		     */
 			scope.openWit = function() {
 				var newWit = scope.witness,
 					scopeWit = scope.scopeWit;
 
 				if (newWit !== scopeWit) {
-					// Check if there are more than one version of the text (@author --> CM)
+					// Check if there is more than one version of the text (@author --> CM)
 					if (config.versions.length > 0) {
 						var currentVersion = evtInterface.getState('currentVersion'),
 							versionWitMap = parsedData.getVersionEntries()._indexes.versionWitMap,

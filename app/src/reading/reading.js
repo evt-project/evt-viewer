@@ -11,8 +11,8 @@
  * is expanded and stored untill the directive remains instantiated.
  *
  * ## Directives
- * - {@link evtviewer.reading.directive:evtReading evtReading}: custom directive that handle the click
- * event on elements pointing to internal or external resources. 
+ * - {@link evtviewer.reading.directive:evtReading evtReading}: custom directive that 
+ * identify a critical reading connected to a specific critical apparatus. 
  * The scope of the directive is expanded and stored inside the 
  * {@link evtviewer.reading.evtReading evtReading} provider.
  *

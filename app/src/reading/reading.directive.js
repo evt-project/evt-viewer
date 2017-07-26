@@ -11,6 +11,7 @@
  * <p>When the user clicks on it, the connected critical apparatus with all the information retrieved 
  * from the source encoded text (and stored in {@link evtviewer.dataHandler.parsedData parsedData}) will be shown</p>
  * <p>It uses the {@link evtviewer.reading.controller:ReadingCtrl ReadingCtrl} controller.</p>
+ * <p>The initial scope is expanded in {@link evtviewer.reading.evtReading evtReading} provider.</p>
  *
  * @scope
  * @param {string} appId id of connected critical apparatus

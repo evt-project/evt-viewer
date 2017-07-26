@@ -5,10 +5,22 @@
  * @description 
  * # ReadingCtrl
  * This is the controller for the {@link evtviewer.reading.directive:evtReading evtReading} directive. 
+ * @requires $log
+ * @requires $scope
+ * @requires evtviewer.core.config
+ * @requires evtviewer.reading.evtReading
+ * @requires evtviewer.popover.evtPopover
+ * @requires evtviewer.dataHandler.baseData
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+ * @requires evtviewer.apparatuses.evtApparatuses
+ * @requires evtviewer.box.evtBox
 **/
 angular.module('evtviewer.reading')
 
-.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, config, evtCriticalApparatusEntry, evtApparatuses, evtBox) {
+.controller('ReadingCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, evtCriticalApparatusEntry, evtApparatuses, evtBox) {
     var vm = this;
     
     var _console = $log.getInstance('reading');
@@ -121,6 +133,7 @@ angular.module('evtviewer.reading')
      *
      * @description
      * Simulate the "over" event on all the critical readings connected to the same critical apparatus entry.
+     * @param {event} $event mouseover/mouseout event
      */
     this.toggleOverAppEntries = function($event) {
         $event.stopPropagation();
@@ -145,6 +158,7 @@ angular.module('evtviewer.reading')
      * current apparatus entry.</p> 
      * <p>If the critical apparatus is not in inline mode, open the critical apparatus tab 
      * in the current {@link evtviewer.apparatuses.directive:evtApparatuses evtApparatuses}.</p>    
+     * @param {event} $event click event
      */
     this.toggleSelectAppEntries = function($event) {
         if ( !vm.hidden ) {
@@ -172,6 +186,7 @@ angular.module('evtviewer.reading')
      * @description
      * Open/close the critical apparatus connected to the current reading 
      * (do the same for readings connected to the same critical apparatus).  
+     * @param {event} $event click event
      */
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
@@ -197,6 +212,7 @@ angular.module('evtviewer.reading')
      * <li>If the apparatus is in inline mode and is not yet opened, toggle the state of the 
      * connected critical apparatus entry ({@link evtviewer.reading.controller:ReadingCtrl#toggleApparatus toggleApparatus()})</li>
      * </ul>
+     * @param {event} $event click event
      */
     this.callbackClick = function($event) {
         $event.stopPropagation();

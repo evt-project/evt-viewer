@@ -5,7 +5,9 @@
  * @description 
  * # evtPinnedElements
  * In this service are defined and exposed methods to handle pinned elements.
-**/
+ * @requires evtviewer.core.Utils
+ * @requires evtviewer.dataHandler.parsedData
+ **/
 angular.module('evtviewer.UItools')
 
 .service('evtPinnedElements', function(Utils, parsedData) {

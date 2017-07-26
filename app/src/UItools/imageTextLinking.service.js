@@ -5,6 +5,9 @@
  * @description 
  * # evtImageTextLinking
  * In this service are defined and exposed methods to handle image-text linking tool.
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.core.Utils
+ * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.UItools')
 

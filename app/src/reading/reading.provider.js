@@ -42,9 +42,8 @@ angular.module('evtviewer.reading')
          * <p>This method will extend the scope of {@link evtviewer.reading.directive:evtReading evtReading} directive 
          * according to selected configurations.</p>
          *
-         * @param {string} triggerText string representing the HTML to be compiled and used as trigger element
-         * @param {string} tooltipText strin representing the HTML to be compile and used as the content of the pop-up box
-         * @param {Object} vm initial scope of the directive
+         * @param {string} id string representing the id of scope reading
+         * @param {Object} scope initial scope of the directive
          *
          * @returns {Object} extended scope:
             <pre>
@@ -157,7 +156,7 @@ angular.module('evtviewer.reading')
          * 
          * @param {string} appId id of critical apparatus entry ti handle
          *
-         * @returns {array} array of references of of <code>&lt;evt-reading&gt;</code>s connected 
+         * @returns {array} array of references of <code>&lt;evt-reading&gt;</code>s connected 
          * to given critical apparatus entry 
          */
         reading.getById = function(appId) {

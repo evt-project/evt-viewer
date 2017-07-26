@@ -5,7 +5,10 @@
  * @description 
  * # PopoverCtrl
  * This is the controller for the {@link evtviewer.popover.directive:evtPopover evtPopover} directive. 
-**/
+  * @requires $log
+  * @requires $scope
+  * @requires evtviewer.popover.evtPopover
+ **/
 angular.module('evtviewer.popover')
 
 .controller('PopoverCtrl', function($log, $scope, evtPopover) {
