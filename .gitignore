@@ -8,3 +8,6 @@ devDocs
 app/data
 app/old
 app/data/*
+.idea
+.DS_STORE
+package
