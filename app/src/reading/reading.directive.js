@@ -16,9 +16,9 @@
  * @param {string} appId id of connected critical apparatus
  * @param {string} readingId id of reading to be shown
  * @param {string} type of reading element ('variant', 'lemma')
+ * @param {string} scopeWit id of scope witness
  * @param {string=} readingType tipology of reading
  * @param {number=} variance value of variance connected to reading
- * @param {string=} scopeWit id of scope witness
  *
  * @restrict E
 **/
