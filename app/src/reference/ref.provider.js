@@ -6,7 +6,7 @@
  * # evtRef
  * This provider expands the scope of the
  * {@link evtviewer.reference.directive:ref ref} directive 
- * is expanded and stored untill the directive remains instantiated.
+ * and stores its reference untill the directive remains instantiated.
  *
  * @requires $log
 **/

@@ -1,9 +1,9 @@
 /**
  * @ngdoc service
  * @module evtviewer.apparatuses
- * @name evtviewer.apparatuses.evtApparatusesProvider
+ * @name evtviewer.apparatuses.evtApparatuses
  * @description 
- * # evtApparatusesProvider
+ * # evtApparatuses
  * TODO: Add description and comments for every method
 **/
 angular.module('evtviewer.apparatuses')

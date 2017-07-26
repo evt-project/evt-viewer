@@ -4,16 +4,21 @@
  * @name evtviewer.reading.directive:evtReading
  * @description 
  * # evtReading
- * TODO: Add description!
- * It uses the {@link evtviewer.reading.controller:ReadingCtrl ReadingCtrl} controller. 
+ * <p>Element that identify a critical reading connected to a specific critical apparatus. </p>
+ * <p>It can be used both in the critical and in witnesses text: in the first case it will show the lemma,
+ * in the second case it will show the reading for the specific scope witness.</p>
+ * <p>It is used in features like critical variant linking or filtering and heat map.</p>
+ * <p>When the user clicks on it, the connected critical apparatus with all the information retrieved 
+ * from the source encoded text (and stored in {@link evtviewer.dataHandler.parsedData parsedData}) will be shown</p>
+ * <p>It uses the {@link evtviewer.reading.controller:ReadingCtrl ReadingCtrl} controller.</p>
  *
  * @scope
- * @param {string=} appId id of connected critical apparatus
- * @param {string=} readingId id of reading to be shown
+ * @param {string} appId id of connected critical apparatus
+ * @param {string} readingId id of reading to be shown
+ * @param {string} type of reading element ('variant', 'lemma')
  * @param {string=} readingType tipology of reading
- * @param {int=} variance value of variance connected to reading
+ * @param {number=} variance value of variance connected to reading
  * @param {string=} scopeWit id of scope witness
- * @param {string=} type of reading element ('variant', 'lemma')
  *
  * @restrict E
 **/

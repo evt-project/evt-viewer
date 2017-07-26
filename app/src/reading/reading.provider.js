@@ -1,10 +1,15 @@
 /**
  * @ngdoc service
- * @module evtviewer.quote
- * @name evtviewer.quote.evtQuote
+ * @module evtviewer.reading
+ * @name evtviewer.reading.evtReading
  * @description 
- * # evtQuote
- * TODO: Add description and comments for every method
+ * # evtReading
+ * This provider expands the scope of the
+ * {@link evtviewer.reading.directive:evtReading evtReading} directive 
+ * and stores its reference untill the directive remains instantiated.
+ *
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.reading')
 
@@ -28,7 +33,49 @@ angular.module('evtviewer.reading')
         // 
         // Reading builder
         // 
-        
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#build
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * <p>This method will extend the scope of {@link evtviewer.reading.directive:evtReading evtReading} directive 
+         * according to selected configurations.</p>
+         *
+         * @param {string} triggerText string representing the HTML to be compiled and used as trigger element
+         * @param {string} tooltipText strin representing the HTML to be compile and used as the content of the pop-up box
+         * @param {Object} vm initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    // expansion
+                    uid,
+                    scopeWit,
+                    appId,
+                    parentAppId,
+                    readingId,
+                    readingType,
+                    variance,
+                    type,
+                    attributes,
+                    exponent,
+                    showExponent,
+
+                    over,
+                    apparatus: {
+                        opened,
+                        content,
+                        _loaded,
+                        _subContentOpened,
+                        inline
+                    },
+                    selected,
+                    openTriggerEvent,
+                    defaults
+                };
+            </pre>
+         */
         reading.build = function(id, scope) {
             var currentId  = idx++,
                 entryId    = id || undefined,
@@ -99,6 +146,20 @@ angular.module('evtviewer.reading')
         //
         // Service function
         // 
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#getById
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Get the references of the instances of <code>&lt;evt-reading&gt;</code> connected 
+         * to a particular critical apparatus entry.
+         * 
+         * @param {string} appId id of critical apparatus entry ti handle
+         *
+         * @returns {array} array of references of of <code>&lt;evt-reading&gt;</code>s connected 
+         * to given critical apparatus entry 
+         */
         reading.getById = function(appId) {
             var foundReading;
             angular.forEach(collection, function(currentReading) {
@@ -108,25 +169,66 @@ angular.module('evtviewer.reading')
             });  
             return foundReading;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#getList
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Get the list of all the instance of <code>&lt;evt-reading&gt;</code>.
+         *
+         * @returns {array} array of ids of all the instance of <code>&lt;evt-reading&gt;</code>.
+         */
         reading.getList = function() {
             return list;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#setCurrentAppEntry
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Set current critical apparatus entry.
+         * @param {string} appId id of critical apparatus entry to be set as current one
+         */
         reading.setCurrentAppEntry = function(appId) {
             currentAppEntry = appId;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#getCurrentAppEntry
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Retrieve current critical apparatus entry.
+         * @returns {string} id of current critical apparatus entry
+         */
         reading.getCurrentAppEntry = function(){
             return currentAppEntry;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#mouseOutAll
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Simulate a "*mouseout*" event on all instances of <code>&lt;evt-reading&gt;</code>
+         */
         reading.mouseOutAll = function() {
             angular.forEach(collection, function(currentReading) {
                 currentReading.mouseOut();
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#mouseOverByAppId
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-reading&gt;</code> 
+         * connected to a given critical apparatus entry
+         * @param {string} appId id of critical apparatus entry to handle
+         */
         reading.mouseOverByAppId = function(appId) {
             angular.forEach(collection, function(currentReading) {
                 if (currentReading.appId === appId) {
@@ -136,13 +238,30 @@ angular.module('evtviewer.reading')
                 }
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#unselectAll
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Unselect all instances of <code>&lt;evt-reading&gt;</code>
+         */
         reading.unselectAll = function() {
             angular.forEach(collection, function(currentReading) {
                 currentReading.unselect();
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#closeAllApparatus
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * <p>Close critical apparatus for all <code>&lt;evt-reading&gt;</code>s.</p>
+         * <p>If a <code>skipId</code> is given, do not peform this action on
+         * <code>&lt;evt-reading&gt;</code> with given id</p>
+         * @param {string=} skipId id of reading to be skipped
+         */
         reading.closeAllApparatus = function(skipId) {
             angular.forEach(collection, function(currentReading) {
                 if (skipId === undefined) {
@@ -152,6 +271,17 @@ angular.module('evtviewer.reading')
                 }
             });
         };
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#selectById
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * <p>Select all <code>&lt;evt-reading&gt;</code>s connected to a given critical apparatus entry.</p>
+         * <p>Set given <code>appId</code> as current one 
+         * ({@link evtviewer.reading.evtReading#setCurrentAppEntry setCurrentAppEntry()}).</p>
+         * @param {string} appId id of critical apparatus entry to handle
+         */
         reading.selectById = function(appId) {
             angular.forEach(collection, function(currentReading) {
                 if (currentReading.appId === appId) {
@@ -162,7 +292,16 @@ angular.module('evtviewer.reading')
             }); 
             reading.setCurrentAppEntry(appId);
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.reading.evtReading#destroy
+         * @methodOf evtviewer.reading.evtReading
+         *
+         * @description
+         * Delete the reading of the instance of a particular <code>&lt;evt-reading&gt;</code>
+         * 
+         * @param {string} tempId id of <code>&lt;evt-reading&gt;</code> to destroy
+         */
         reading.destroy = function(tempId) {
             delete collection[tempId];
         };

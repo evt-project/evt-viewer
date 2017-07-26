@@ -4,8 +4,7 @@
  * @name evtviewer.reading.controller:ReadingCtrl
  * @description 
  * # ReadingCtrl
- * TODO: Add description and list of dependencies!
- * The controller for the {@link evtviewer.reading.directive:evtReading evtReading} directive. 
+ * This is the controller for the {@link evtviewer.reading.directive:evtReading evtReading} directive. 
 **/
 angular.module('evtviewer.reading')
 
@@ -16,23 +15,63 @@ angular.module('evtviewer.reading')
     // 
     // Control function
     // 
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#mouseOver
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Set *over* property to true (this property is used to simulate the over event on
+     * different reading instances connected to the same critical apparatus when the uses passes over one of them).
+     */
     this.mouseOver = function() {
         vm.over = true;
     };
-    
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#mouseOut
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Set *over* property to false (this property is used to simulate the over event on
+     * different reading instances connected to the same critical apparatus when the uses passes over one of them).
+     */
     this.mouseOut = function() {
         vm.over = false;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#setSelected
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Set *selected* property to true (this property is used to simulate the selection on
+     * different reading instances connected to the same critical apparatus when the uses clicks on one of them).
+     */
     this.setSelected = function() {
         vm.selected = true;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#unselect
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Set *selected* property to false (this property is used to simulate the selection on
+     * different reading instances connected to the same critical apparatus when the uses clicks on one of them).
+     */
     this.unselect = function() {
         vm.selected = false;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#isSelect
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Check if the reading can be considered "*selected*" (for nested readings, this will depend also on parent state).
+     * @returns {boolean} whether the reading can be considered "*selected*" or not
+     */
     this.isSelect = function() {
         if (vm.parentAppId !== undefined ) {
             return vm.selected || (evtInterface.getState('currentAppEntry') === vm.parentAppId);
@@ -40,24 +79,49 @@ angular.module('evtviewer.reading')
             return vm.selected;
         }
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#isApparatusOpened
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Check if the connected critical apparatus is opened.
+     * @returns {boolean} whether the connected critical apparatus is opened or not
+     */
     this.isApparatusOpened = function() {
         return (vm.apparatus.opened && !$scope.$parent.vm.state.topBoxOpened);
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#closeApparatus
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Close the connected critical apparatus.
+     */
     this.closeApparatus = function() {
         vm.apparatus.opened = false;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#openApparatus
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Open the connected critical apparatus.
+     */
     this.openApparatus = function() {
         vm.apparatus.opened = true;
         vm.apparatus._loaded = true;
     };
-
-    this.toggleTooltipOver = function() {
-        vm.tooltipOver = !vm.tooltipOver;
-    };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#toggleOverAppEntries
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Simulate the "over" event on all the critical readings connected to the same critical apparatus entry.
+     */
     this.toggleOverAppEntries = function($event) {
         $event.stopPropagation();
         if ( !vm.hidden ) {
@@ -70,7 +134,18 @@ angular.module('evtviewer.reading')
             }
         }
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#toggleSelectAppEntries
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * <p>Simulate the "selection" event on all the critical readings connected to the same critical apparatus entry.</p>
+     * <p>Update the state of {@link evtviewer.interface.evtInterface evtInterface} by setting/unsetting the
+     * current apparatus entry.</p> 
+     * <p>If the critical apparatus is not in inline mode, open the critical apparatus tab 
+     * in the current {@link evtviewer.apparatuses.directive:evtApparatuses evtApparatuses}.</p>    
+     */
     this.toggleSelectAppEntries = function($event) {
         if ( !vm.hidden ) {
             if (vm.selected === false) {
@@ -89,7 +164,15 @@ angular.module('evtviewer.reading')
         }
         evtInterface.updateUrl();
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#toggleApparatus
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Open/close the critical apparatus connected to the current reading 
+     * (do the same for readings connected to the same critical apparatus).  
+     */
     this.toggleApparatus = function($event) {
         evtPopover.closeAll();
         if ( !vm.hidden && vm.over ) {
@@ -101,7 +184,20 @@ angular.module('evtviewer.reading')
             vm.apparatus.opened = !vm.apparatus.opened;
         }
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#callbackClick
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Callback fired when user clicks on a reading. It will:<ul>
+     * <li>Stop event propagation</li>
+     * <li>Toggle the "select" state on readings connected to the same critical apparatus entry 
+     * ({@link evtviewer.reading.controller:ReadingCtrl#toggleSelectAppEntries toggleSelectAppEntries()})</li>
+     * <li>If the apparatus is in inline mode and is not yet opened, toggle the state of the 
+     * connected critical apparatus entry ({@link evtviewer.reading.controller:ReadingCtrl#toggleApparatus toggleApparatus()})</li>
+     * </ul>
+     */
     this.callbackClick = function($event) {
         $event.stopPropagation();
         if (vm.over) {
@@ -111,15 +207,29 @@ angular.module('evtviewer.reading')
             }
         }
     };
-
-    this.isApparatusOpened = function(){
-        return vm.apparatus.opened;
-    };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#openApparatusSubContent
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Open a specific tab on critical apparatus entry sub content.
+     * @param {string} subContent name of tab to open
+     */
     this.openApparatusSubContent = function(subContent) {
         vm.apparatus._subContentOpened = subContent;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#backgroundColor
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * Get background color for reading. This method is needed in order to handle
+     * the heat map (that will balance the darkness of color on critical entry variance),
+     * to handle the critical entries filters and to allow custom color for readings.
+     * @returns {string} style rules to customize the background color
+     */
     this.backgroundColor = function(){
         if (vm.type === 'variant') {
             return colorFilters();
@@ -206,7 +316,47 @@ angular.module('evtviewer.reading')
         }
         return background;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#fitFilters
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     * <p>Check if the current reading fits the selected filters.</p>
+     * <p>Currently the check is performed by putting all filters in **OR**
+     * (so the reading must fit *at least one of them*); however, 
+     * the function is ready to perform the checking by putting all filters in **AND** 
+     * (so that the reading must fit *all filters at once*). </p>
+     * <p>Filters are retrieved from parent scope (parent should be a {@link evtviewer.box.directive:box box}
+     * and are organized as follows:
+        <pre>
+                var filters = {
+                    resp : {
+                        any: false,
+                        name: "resp",
+                        totActive: 2,
+                        values: {
+                            0: "m1",
+                            1: "CDP", 
+                            CDP: {
+                                active: true,
+                                color: "rgb(253, 153, 54)",
+                                name: "CDP"
+                            },
+                            m1: {
+                                active: true,
+                                color: "rgb(52, 197, 173)",
+                                name: "m1"
+                            },
+                            length: 2
+                        }
+                    },
+                    _totActive: 2
+                };
+            </pre>
+     *</p>
+     * @returns {boolean} whether the reading fits selected filters or not
+     */
     this.fitFilters = function(){
         var app = parsedData.getCriticalEntryById(vm.appId),
             reading,
@@ -279,7 +429,14 @@ angular.module('evtviewer.reading')
         vm.hidden = !fit;
         return fit;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.reading.controller:ReadingCtrl#destroy
+     * @methodOf evtviewer.reading.controller:ReadingCtrl
+     *
+     * @description
+     *  <p>Remove instance from saved instances in {@link evtviewer.reading.evtReading evtReading} provider.</p>
+     */
     this.destroy = function() {
         var tempId = this.uid;
         // TODO: remove from list and collection

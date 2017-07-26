@@ -6,7 +6,7 @@
  * # evtBox
  * This provider expands the scope of the
  * {@link evtviewer.box.directive:box box} directive 
- * is expanded and stored untill the directive remains instantiated.
+ * and stores its reference untill the directive remains instantiated.
  *
  * @requires $log
  * @requires $q
@@ -40,7 +40,7 @@ angular.module('evtviewer.box')
 	 * @name evtviewer.box.controller:BoxCtrl
 	 * @description 
 	 * # BoxCtrl
-	 * <p>This is controller for the {@link evtviewer.box.directive:evtBox evtBox} directive. </p>
+	 * <p>This is controller for the {@link evtviewer.box.directive:box box} directive. </p>
 	 * <p>It is not actually implemented separately but its methods are defined in the 
 	 * {@link evtviewer.box.evtBox evtBox} provider 
 	 * where the scope of the directive is extended with all the necessary properties and methods

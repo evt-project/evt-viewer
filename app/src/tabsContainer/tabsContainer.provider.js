@@ -6,7 +6,7 @@
  * # evtTabsContainer
  * This provider expands the scope of the
  * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive 
- * is expanded and stored untill the directive remains instantiated.
+ * and stores its reference untill the directive remains instantiated.
  * It also add some modules to controller, according to <code>&lt;evt-tabs-container&gt;</code> type.
  *
  * @requires $log

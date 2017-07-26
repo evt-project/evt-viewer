@@ -4,9 +4,9 @@
  * @name evtviewer.popover.evtPopover
  * @description 
  * # evtPopover
- *  This provider expands the scope of the
+ * This provider expands the scope of the
  * {@link evtviewer.popover.directive:evtPopover evtPopover} directive 
- * is expanded and stored untill the directive remains instantiated.
+ * and stores its reference untill the directive remains instantiated.
 **/
 angular.module('evtviewer.popover')
 

@@ -12,9 +12,9 @@
  * and stores it. The expanded scope is aaved inside the memory as long as the directive is instantiated.
  *
  * ## Directives
- * - {@link evtviewer.quote.directive:quote quote} is custom directive that will highlight the quotations within the running text and allow the user to click on them to access the corresponding sources apparatus entries.
+ * - {@link evtviewer.quote.directive:evtQuote evtQuote} is custom directive that will highlight the quotations within the running text and allow the user to click on them to access the corresponding sources apparatus entries.
  *
  * ## Controllers
- * - {@link evtviewer.quote.controller:QuoteCtrl QuoteCtrl}: controller for the {@link evtviewer.quote.directive:quote evtQuote} directive.
+ * - {@link evtviewer.quote.controller:QuoteCtrl QuoteCtrl}: controller for the {@link evtviewer.quote.directive:evtQuote evtQuote} directive.
 **/
 angular.module('evtviewer.quote', []);

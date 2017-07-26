@@ -6,7 +6,7 @@
  * # evtList
  * This provider expands the scope of the
  * {@link evtviewer.list.directive:evtList evtList} directive 
- * is expanded and stored untill the directive remains instantiated.
+ * and stores its reference untill the directive remains instantiated.
  *
  * @requires evtviewer.dataHandler.parsedData
 **/
