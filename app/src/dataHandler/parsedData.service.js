@@ -4,7 +4,8 @@
  * @name evtviewer.dataHandler.parsedData
  * @description 
  * # parsedData
- * TODO: Add description and comments for every method
+ * Service that is responsible of the storage and retrievement of data parsed from 
+ * source edition document.
  * 
  * @requires $log
  * @requires evtviewer.core.config
@@ -118,16 +119,46 @@ angular.module('evtviewer.dataHandler')
 		},
 		_indexes: []
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getEncodingDetail
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get a particular detail about the encoding of source edition document.
+     * @param {string} detailName Name of detail to retrieve
+     * @returns {string} value of detail retrieved 
+     */
 	parsedData.getEncodingDetail = function(detailName) {
 		return encodingDetails[detailName];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#setEncodingDetail
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Store a particular detail about the encoding of source edition document.
+     * @param {string} detailName Name of detail to store
+     * @param {string} value Value of detail to store
+     */
 	parsedData.setEncodingDetail = function(detailName, value) {
 		encodingDetails[detailName] = value;
 	};
 
-	parsedData.getNamedEntityTypeIcon = function(type) { //TODO: Move in Utils provider (?)
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getNamedEntityTypeIcon
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the icon connected to a particular named entity type
+     * @param {string} type Type of named entity to handle
+     * @returns {string} name of icon connected to the particular type of named entity
+     * @todo Move in Utils provider (?)
+     */
+	parsedData.getNamedEntityTypeIcon = function(type) {
 		var icon;
 		switch(type) {
             case 'place':
@@ -153,6 +184,23 @@ angular.module('evtviewer.dataHandler')
         return icon;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addNamedEntitiesCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add a new collection of named entities
+     * @param {Object} collection Collection of named entities to add to stored ones.
+     * It is structure as follows:
+     <pre>
+		var collection = {
+			id,
+			type,
+			title
+		};
+     </pre>
+     */
 	parsedData.addNamedEntitiesCollection = function(collection) {
 		var collectionId = collection.id;
 		if (namedEntities._collections[collectionId] === undefined) {
@@ -172,6 +220,37 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addNamedEntityInCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add a named entity in a given collection. If the collection has not yet been stored,
+     * it will be added to stored ones. The named entity is both added to the list of entities in the collection
+     * and the general list where only information about <code>collectionId</code> and <code>listKey</code> will be saved.
+     * @param {Object} collection Collection to be handled. It is structure as follows:
+	     <pre>
+			var collection = {
+				id,
+				type,
+				title
+			};
+	     </pre>
+	 * @param {Object} namedEntity Named entity to be added. It is structure as follow:
+	 	<pre>
+			var namedEntity = {
+				id,
+				label,
+				content: {
+					_indexes: []
+				},
+				_listPos,
+				_xmlSource
+			};
+	 	</pre>
+	 * @param {string} listKey Ordering key of named entity to be added.
+     */
 	parsedData.addNamedEntityInCollection = function(collection, namedEntity, listKey) {
 		var collectionId = collection.id;
 		if (namedEntities._collections[collectionId] === undefined) {
@@ -194,18 +273,88 @@ angular.module('evtviewer.dataHandler')
 		namedEntities._collections[collectionId][listKey]._indexes.push(entityId);
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Retrieve all the collections of named entities.
+     * @returns {Object} List of collection of all named entities parsed. 
+     * The list of all indexes is stored in the property <code>_indexes</code>.
+     */
 	parsedData.getNamedEntitiesCollection = function() {
 		return namedEntities._collections;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollectionByName
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Retrieve the object representing a named entities' collection by its name
+     * (that is used as unique identifier).
+     * @param {string} collectionId Identifier (Name) of collection to retrieve
+     * @returns {Object} Object representing the named entities collection with 
+     * that particular <code>collectionId</code>. It is structure as follows:
+     	<pre>
+			var collection = {
+				[listKey] = {
+					[namedEntityId] : {},
+					_indexes: []
+				},
+				_indexes: [],
+				_listKeys: [],
+				_title,
+				_type,
+				_icon 
+			};
+     	</pre>
+     */
 	parsedData.getNamedEntitiesCollectionByName = function(collectionId) {
 		return namedEntities._collections[collectionId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollectionByNameAndPos
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of a named entities in a particular collection that are indexed by a particular key.
+     * @param {string} collectionId Id of collection to be handled
+     * @param {string} listKey Id of indexing key to be used
+     * @returns {Object} Object representing the list of named entities contained in the collection
+     * with <code>id = collectionId</code> that have been indexed whithin given <code>listKey</code>.
+     * The list of all the entities' ids is stored in the property <code>_indexes</code>.
+     */
 	parsedData.getNamedEntitiesCollectionByNameAndPos = function(collectionId, listKey) {
 		return namedEntities._collections[collectionId][listKey];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getNamedEntity
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the object representing a particular named entity.
+     * @param {string} namedEntityId Unique identifier of named entity to be retrieved
+     * @returns {Object} Object representing the named entity with <code>id = namedEntityId</code>.
+     * It is structured as follows:
+     	<pre>
+			var namedEntity = {
+				id,
+				label,
+				content: {
+					_indexes: []
+				},
+				_listPos,
+				_xmlSource
+			};
+	 	</pre>
+     */
 	parsedData.getNamedEntity = function(namedEntityId) {
 		var namedEntity;
 		if (namedEntityId) {
@@ -220,6 +369,16 @@ angular.module('evtviewer.dataHandler')
 		return namedEntity;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getNamedEntityType
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * get the type of a particular named entity.
+     * @param {string} namedEntityId Unique identifier of named entity to be retrieved
+     * @returns {string} Type of named entity with <code>id = namedEntityId</code>.
+     */
 	parsedData.getNamedEntityType = function(namedEntityId) {
 		var collectionId = namedEntityId && namedEntities[namedEntityId] ? namedEntities[namedEntityId].collectionId : undefined;
 		var collectionObj = parsedData.getNamedEntitiesCollectionByName(collectionId);
@@ -261,7 +420,29 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	/* PAGES */
-	// TODO: add attribute for the original xml reference
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addPage
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add a page to stored pages collection. If the page has already been added it means that it contains
+     * more than one document. In this case the <code>docId</code> will be added to the list
+     * of documents contained in the page. 
+     * The <code>pageId</code> of the new page will be also added to the list of 
+     * pages of the document with <code>id = docId</code>. 
+     * @param {Object} page Page to be added. It is structured as:
+     	<pre>
+			var page = {
+				value,
+				label,
+				title,
+				source
+			};
+     	</pre>
+     * @param {string} docId Identifier of document in which the page is contained
+     * @todo add attribute for the original xml reference
+     */
 	parsedData.addPage = function(page, docId) {
 		var pageId = page.value;
 		if (pagesCollection.length === undefined) {
@@ -288,13 +469,61 @@ angular.module('evtviewer.dataHandler')
 			documentsCollection[docId].pages.push(pageId);
 		}
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getPages
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of parsed pages.
+     * @returns {Object} Object representing the list of parsed pages.
+     */
 	parsedData.getPages = function() {
 		return pagesCollection;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getPage
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the object representing a particular page.
+     * @param {stirng} pageId Identifier of the page to retrieve
+	 * @returns {Object} Object representing the page with <code>id = pageId</code>.
+	 * It is structured as follow:
+	 	<pre>
+			var page = {
+				value,
+				label,
+				title,
+				source,
+				text: {
+					[docId] : {
+						[editionLevel]: ''
+					}
+				},
+				docs: []
+			};
+	 	</pre>
+     */
 	parsedData.getPage = function(pageId) {
 		return pagesCollection[pageId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#setPageText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+	 * Set the text in a particular edition level of a page whithin a particular document.
+	 * If we are adding the text for a document not yet listed in the <code>docs</code> property,
+	 * it will be added to it.
+	 * @param {string} pageId Identifier of the page to be handled
+	 * @param {string} docId Identifier of the document to be handled
+	 * @param {string} editionLevel Edition level of text to be added
+	 * @param {string} HTMLtext String representing the HTML of the page whithin the particular document at a particular edition level
+     */
 	parsedData.setPageText = function(pageId, docId, editionLevel, HTMLtext) {
 		var pageObj = pagesCollection[pageId];
 		if (pageObj) {
@@ -316,6 +545,17 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getPageText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Retrieve the text of a particular page whithin a particular document at a particular edition level.
+     * @param {string} pageId Identifier of the page to be handled
+	 * @param {string} docId Identifier of the document to be handled
+	 * @param {string} editionLevel Edition level to be handled
+	 */
 	parsedData.getPageText = function(pageId, docId, editionLevel) {
 		var pageObj = pagesCollection[pageId];
 		if (pageObj && pageObj.text && pageObj.text[docId]) {
@@ -324,6 +564,17 @@ angular.module('evtviewer.dataHandler')
 		return undefined;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getPageImage
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the image url of the facsimile related to a particular page.
+     * @param {string} pageId Identifier of the page to be handled
+     * @returns {Object} Object representing the facsimile connected to the page with <code>id = pageId</code>
+     * @todo: Do it again!!
+     */
 	parsedData.getPageImage = function(pageId) {
 		var images = [];
 
@@ -336,6 +587,13 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	/* DOCUMENTS */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addDocument = function(doc) {
 		var docId = doc.value;
 		if (doc.value === '') {
@@ -347,12 +605,33 @@ angular.module('evtviewer.dataHandler')
 			// _console.log('parsedData - addDocument ', doc);
 		}
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getDocuments
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getDocuments = function() {
 		return documentsCollection;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getDocument = function(docId) {
 		return documentsCollection[docId];
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getPreviousDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getPreviousDocument = function(docId) {
 		var currentDocIndex = documentsCollection._indexes.indexOf(docId);
 		var previousId = documentsCollection._indexes[currentDocIndex - 1];
@@ -363,6 +642,13 @@ angular.module('evtviewer.dataHandler')
 	/*Methods added to handle and save external files (@author --> CM) */
 	/*******************************************************************/
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addExternalDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addExternalDocument = function(extDoc) {
 		var docId = extDoc.value;
 		if (externalDocsCollection.length === undefined) {
@@ -378,15 +664,36 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getExternalDocuments
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getExternalDocuments = function() {
 		return externalDocsCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getExternalDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getExternalDocument = function(extDocId) {
 		return externalDocsCollection[extDocId];
 	};
 
 	// Method to store sources XML documents
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addSourceDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addSourceDocument = function(extDoc, id) {
 		var docId = extDoc.value;
 		if (sourcesDocsCollection.length === undefined) {
@@ -402,10 +709,24 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSourceDocuments
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getSourceDocuments = function() {
 		return sourcesDocsCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSourceDocument
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getSourceDocument = function(extDocId) {
 		return sourcesDocsCollection[extDocId];
 	};
@@ -413,26 +734,68 @@ angular.module('evtviewer.dataHandler')
 	/**** End of methods for external files ****/
 
 	/* EDITION */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#setCriticalEditionAvailability
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.setCriticalEditionAvailability = function(isAvailable) {
 		criticalEdition = isAvailable;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#isCriticalEditionAvailable
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.isCriticalEditionAvailable = function() {
 		return criticalEdition;
 	};
 
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#setEditions
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
     parsedData.setEditions = function(editions) {
         editionLevels = editions;
     };
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addEdition
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addEdition = function(edition) {
 		editionLevels.push(edition);
 	};
 	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getEditions
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getEditions = function() {
 		return editionLevels;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getEdition
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getEdition = function(editionId) {
 		//TODO: Rifare
 		var i = 0,
@@ -447,6 +810,13 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	/* WITNESSES */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addElementInWitnessCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addElementInWitnessCollection = function(element) {
 		var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
 			return el.length !== 0;
@@ -468,6 +838,13 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addWitnessText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addWitnessText = function(witId, docId, content) {
 		if (witnessesCollection[witId] !== undefined) {
 			if (witnessesCollection[witId].text === undefined) {
@@ -476,6 +853,13 @@ angular.module('evtviewer.dataHandler')
 			witnessesCollection[witId].text[docId] = content;
 		}
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitnessText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitnessText = function(witId, docId) {
 		if (witnessesCollection[witId] !== undefined) {
 			if (witnessesCollection[witId].text !== undefined && witnessesCollection[witId].text[docId] !== undefined) {
@@ -483,15 +867,43 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitnessesList
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitnessesList = function() {
 		return witnessesCollection._indexes.witnesses;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitnesses
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitnesses = function() {
 		return witnessesCollection;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitness
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitness = function(witId) {
 		return witnessesCollection[witId];
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitnessPages
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitnessPages = function(witId) {
 		if (witnessesCollection[witId] !== undefined) {
 			if (witnessesCollection[witId].pages === undefined) {
@@ -511,9 +923,23 @@ angular.module('evtviewer.dataHandler')
 			return witnessesCollection[witId].pages;
 		}
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#isWitnessesGroup
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.isWitnessesGroup = function(sigla) {
 		return witnessesCollection[sigla] !== undefined && witnessesCollection[sigla]._type === 'group';
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitnessesInGroup
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitnessesInGroup = function(groupId) {
 		var wits = [];
 		if (witnessesCollection[groupId] !== undefined && witnessesCollection[groupId]._type === 'group') {
@@ -531,6 +957,13 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	//temp
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getWitnessesListFormatted
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getWitnessesListFormatted = function() {
 		var structure = witnessesCollection._indexes.encodingStructure;
 		var content;
@@ -581,17 +1014,45 @@ angular.module('evtviewer.dataHandler')
 	/* **************** */
 	/* CRITICAL ENTRIES */
 	/* **************** */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalTextsCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalTextsCollection = function() {
 		return criticalTexts;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addCriticalText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addCriticalText = function(text, docId) {
 		criticalTexts[docId] = text;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalText = function(docId) {
 		return criticalTexts[docId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#resetCriticalEntries
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.resetCriticalEntries = function() {
 		criticalAppCollection = {
 			filtersCollection: {
@@ -611,6 +1072,13 @@ angular.module('evtviewer.dataHandler')
 		};
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#generateAlphabeticExponent
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	var generateAlphabeticExponent = function() {
 		var number = criticalAppCollection._indexes.appEntries.length,
 			exponent;
@@ -628,6 +1096,13 @@ angular.module('evtviewer.dataHandler')
         return exponent;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addCriticalEntry
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addCriticalEntry = function(entry) {
 		if (criticalAppCollection[entry.id] === undefined) {
 			criticalAppCollection[entry.id] = entry;
@@ -644,27 +1119,69 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#setCriticalEntriesLoaded
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.setCriticalEntriesLoaded = function(status) {
 		criticalAppCollection.__allLoaded = status;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntries
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntries = function() {
 		return criticalAppCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntryById
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntryById = function(entryId) {
 		return criticalAppCollection[entryId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntryExponent
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntryExponent = function(entryId) {
 		var entry = parsedData.getCriticalEntryById(entryId);
 		return (entry ? entry.exponent : '');
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntriesMaxVariance
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntriesMaxVariance = function() {
 		return criticalAppCollection._maxVariance;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getReadingAttributes
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getReadingAttributes = function(readingId, appId) {
 		var attributes = [];
 		if (criticalAppCollection[appId].content[readingId] !== undefined) {
@@ -673,11 +1190,25 @@ angular.module('evtviewer.dataHandler')
 		return attributes;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#isSubApp
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.isSubApp = function(appId) {
 		return criticalAppCollection[appId]._subApp;
 	};
 
 	/* CRITICAL ENTRIES FILTERS */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getGenericColorForAppEntry
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getGenericColorForAppEntry = function(index) {
 		var filtersCollection = criticalAppCollection.filtersCollection,
 			color = genericColors[index];
@@ -700,6 +1231,13 @@ angular.module('evtviewer.dataHandler')
 		return color;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addCriticalEntryFilter
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addCriticalEntryFilter = function(name, value) {
 		var possibleVariantFilters = config.possibleVariantFilters,
 			possibleLemmaFilters = config.possibleLemmaFilters,
@@ -751,18 +1289,46 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntriesFiltersCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntriesFiltersCollection = function() {
 		return criticalAppCollection.filtersCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntriesFilters
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntriesFilters = function() {
 		return criticalAppCollection.filtersCollection.filters;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntriesFilterValues
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntriesFilterValues = function(filter) {
 		return criticalAppCollection.filtersCollection.filters[filter];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getCriticalEntriesFilterColor
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getCriticalEntriesFilterColor = function(filter, value) {
 		return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
 	};
@@ -771,6 +1337,13 @@ angular.module('evtviewer.dataHandler')
 	/* BIBLIOGRAPHIC REFs */
 	/* ****************** */
 	/* TODO: reorganize in EVT general style JSON model */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addBibliographicRef
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addBibliographicRef = function(biblElement) {
 		if (bibliographicRefsCollection[biblElement.id] === undefined) {
 			bibliographicRefsCollection[biblElement.id] = biblElement;
@@ -778,10 +1351,24 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getBibliographicRefsCollection
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getBibliographicRefsCollection = function() {
 		return bibliographicRefsCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getBibliographicRefById
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getBibliographicRefById = function(refId) {
 		return bibliographicRefsCollection[refId];
 	};
@@ -790,6 +1377,13 @@ angular.module('evtviewer.dataHandler')
 	/* VERSION ENTRIES */
 	/*******************/
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addVersionEntry
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addVersionEntry = function(entry) {
 		if (versionAppCollection[entry.id] === undefined) {
 			versionAppCollection._indexes.encodingStructure.push(entry.id);
@@ -797,15 +1391,36 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getVersionEntries
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getVersionEntries = function() {
 		return versionAppCollection;
 	};
 
 	// @entryId --> id of the version app entry | returns the parsed entry or undefined
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getVersionEntry
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getVersionEntry = function(entryId) {
 		return versionAppCollection[entryId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addVersionWitness
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addVersionWitness = function(ver, wit) {
 		var witMap = versionAppCollection._indexes.versionWitMap;
 		if (witMap[ver] === undefined) {
@@ -830,6 +1445,13 @@ angular.module('evtviewer.dataHandler')
 	// Adds the parsed text of a version
 	// @text --> parsed text | @docId --> id of the current document | @ver --> id of the version
 	// @author --> CM
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addVersionText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addVersionText = function(text, docId, ver) {
 		if (versionTexts[docId] === undefined) {
 			versionTexts[docId] = {};
@@ -843,6 +1465,13 @@ angular.module('evtviewer.dataHandler')
 
 	// @ver --> id of the version | @docId --> id of the currentDocument
 	// Returns the parsed text of the version. | @author --> CM
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getVersionText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getVersionText = function(ver, docId) {
 		return versionTexts[docId][ver];
 	};
@@ -850,10 +1479,24 @@ angular.module('evtviewer.dataHandler')
 	/* ************ */
 	/* PROJECT INFO */
 	/* ************ */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#updateProjectInfoContent
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getProjectInfo
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
 	};
@@ -862,6 +1505,13 @@ angular.module('evtviewer.dataHandler')
 	/* ****** */
 	/* GLYPHS */
 	/* ****** */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addGlyph
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addGlyph = function(glyph) {
 		var glyphId,
 			glyphIndexes = glyphsCollection._indexes;
@@ -879,14 +1529,35 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getGlyphs
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getGlyphs = function() {
 		return glyphsCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getGlyph
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getGlyph = function(glyphId) {
 		return glyphsCollection[glyphId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getGlyphMappingForEdition
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
 		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
 	};
@@ -894,6 +1565,13 @@ angular.module('evtviewer.dataHandler')
 	/* ***************** */
 	/* DIGITAL FACSIMILE */
 	/* ***************** */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addZone
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addZone = function(zone) {
 		var zoneId,
 			zoneIndexes = zonesCollection._indexes;
@@ -911,14 +1589,35 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getZones
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getZones = function() {
 		return zonesCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getZone
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getZone = function(zoneId) {
 		return zonesCollection[zoneId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#isITLAvailable
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.isITLAvailable = function() {
 		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
 	};
@@ -926,6 +1625,13 @@ angular.module('evtviewer.dataHandler')
 	/*******************/
 	/*SOURCES APPARATUS*/
 	/*******************/
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addQuote
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addQuote = function(entry) {
 		//Adding the quote object to the collection...
 		if (quotesCollection[entry.id] === undefined) {
@@ -979,14 +1685,35 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getQuotes
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getQuotes = function() {
 		return quotesCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getQuote
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getQuote = function(entryId) {
 		return quotesCollection[entryId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addSource
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addSource = function(entry) {
 		if (sourcesCollection[entry.id] === undefined) {
 			sourcesCollection[entry.id] = entry;
@@ -1017,10 +1744,24 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSources
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getSources = function() {
 		return sourcesCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSource
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getSource = function(entryId) {
 		return sourcesCollection[entryId];
 	};
@@ -1029,14 +1770,35 @@ angular.module('evtviewer.dataHandler')
 	/*ANALOGUES*/
 	/***********/
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getAnalogue
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getAnalogue = function(analogueId) {
 		return analoguesCollection[analogueId];
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getAnalogues
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.getAnalogues = function() {
 		return analoguesCollection;
 	};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addAnalogue
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     */
 	parsedData.addAnalogue = function(entry) {
 		if (analoguesCollection[entry.id] === undefined) {
 			analoguesCollection[entry.id] = entry;
