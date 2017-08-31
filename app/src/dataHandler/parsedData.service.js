@@ -326,7 +326,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} collectionId Id of collection to be handled
      * @param {string} listKey Id of indexing key to be used
      * @returns {Object} Object representing the list of named entities contained in the collection
-     * with <code>id = collectionId</code> that have been indexed whithin given <code>listKey</code>.
+     * with <code>id = collectionId</code> that have been indexed within given <code>listKey</code>.
      * The list of all the entities' ids is stored in the property <code>_indexes</code>.
      */
 	parsedData.getNamedEntitiesCollectionByNameAndPos = function(collectionId, listKey) {
@@ -516,13 +516,13 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
-	 * Set the text in a particular edition level of a page whithin a particular document.
+	 * Set the text in a particular edition level of a page within a particular document.
 	 * If we are adding the text for a document not yet listed in the <code>docs</code> property,
 	 * it will be added to it.
 	 * @param {string} pageId Identifier of the page to be handled
 	 * @param {string} docId Identifier of the document to be handled
 	 * @param {string} editionLevel Edition level of text to be added
-	 * @param {string} HTMLtext String representing the HTML of the page whithin the particular document at a particular edition level
+	 * @param {string} HTMLtext String representing the HTML of the page within the particular document at a particular edition level
      */
 	parsedData.setPageText = function(pageId, docId, editionLevel, HTMLtext) {
 		var pageObj = pagesCollection[pageId];
@@ -551,7 +551,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
-     * Retrieve the text of a particular page whithin a particular document at a particular edition level.
+     * Retrieve the text of a particular page within a particular document at a particular edition level.
      * @param {string} pageId Identifier of the page to be handled
 	 * @param {string} docId Identifier of the document to be handled
 	 * @param {string} editionLevel Edition level to be handled
@@ -593,6 +593,19 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add document to stored collection
+     * @param {Object} doc Object representing the document to add. 
+     * It is structured as follows:
+     	<pre>
+			var doc = {
+				value,
+				label,
+				title,
+				content,
+				front,
+				pages,
+			};
+     	</pre> 
      */
 	parsedData.addDocument = function(doc) {
 		var docId = doc.value;
@@ -611,6 +624,16 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve collection of parsed documents.
+     * @returns {Object} Object representing the collection of parsed documents.
+     * It is structured as follows:
+     	<pre>
+			var documentsCollection = {
+				[docId]: {},
+				_indexes: [],
+				length: 0
+			};
+     	</pre>
      */
 	parsedData.getDocuments = function() {
 		return documentsCollection;
@@ -621,6 +644,20 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve information about a particular document.
+     * @param {string} docId Identifier of document to retrieve
+     * @returns {Object} Object representing the document with <code>id = docId</code>.
+     * It is structured as follows:
+     	<pre>
+			var doc = {
+				value,
+				label,
+				title,
+				content,
+				front,
+				pages,
+			};
+     	</pre> 
      */
 	parsedData.getDocument = function(docId) {
 		return documentsCollection[docId];
@@ -631,6 +668,20 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Get the document that preceeds a particular one in the list of parsed ones.
+     * @param {string} docId Identifier of document to handle
+     * @ returns {Object} Object representing the document that preceeds the one with <code>id = docId</code>.
+     * It is structured as follows:
+     	<pre>
+			var doc = {
+				value,
+				label,
+				title,
+				content,
+				front,
+				pages,
+			};
+     	</pre> 
      */
 	parsedData.getPreviousDocument = function(docId) {
 		var currentDocIndex = documentsCollection._indexes.indexOf(docId);
@@ -638,16 +689,22 @@ angular.module('evtviewer.dataHandler')
 		return documentsCollection[previousId];
 	};
 
-	/*******************************************************************/
-	/*Methods added to handle and save external files (@author --> CM) */
-	/*******************************************************************/
-
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addExternalDocument
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add an external document in the collection of external files.
+	 * @param {Object} extDoc Object representing the document to add.
+	 * It is structured as follows:
+	 	<pre>
+			var extDoc = {
+				value: type,
+				content: doc
+			};
+	 	</pre>
+	 * @author CM
      */
 	parsedData.addExternalDocument = function(extDoc) {
 		var docId = extDoc.value;
@@ -670,6 +727,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Get the collection of external documents that have been parsed.
+     * @returns {Object} Object representing the collection of parsed external documents.
+     * @author CM
      */
 	parsedData.getExternalDocuments = function() {
 		return externalDocsCollection;
@@ -681,6 +741,17 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve information about a particular external document
+     * @param {string} extDocId Identifier of external document to retrieve
+     * @returns {Object} Object representing the external document with <code>id = extDocId</code>. 
+	 * It is structured as follows:
+	 	<pre>
+			var extDoc = {
+				value: type,
+				content: doc
+			};
+	 	</pre>
+     * @author CM
      */
 	parsedData.getExternalDocument = function(extDocId) {
 		return externalDocsCollection[extDocId];
@@ -693,6 +764,17 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add sources document, that is connected to a particular document.
+     * @param {Object} extDoc Object representing the external source document to add.
+     * It is structured as follows:
+	 	<pre>
+			var extDoc = {
+				value: type,
+				content: doc
+			};
+	 	</pre>
+	 * @param {string} id Identifier of document connected to the current external source 
+     * @author CM
      */
 	parsedData.addSourceDocument = function(extDoc, id) {
 		var docId = extDoc.value;
@@ -715,6 +797,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of external source documents that have been parsed.
+     * @returns {Object} Object representing the collection of parsed external source documents
+     * @author CM
      */
 	parsedData.getSourceDocuments = function() {
 		return sourcesDocsCollection;
@@ -726,12 +811,21 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve information about a particular external source document
+     * @param {string} extDocId Identifier of external source document to retrieve
+     * @returns {Object} Object representing the external source document retrieved.
+	 * It is structured as follows:
+	 	<pre>
+			var extDoc = {
+				value: type,
+				content: doc
+			};
+	 	</pre>
+     * @author CM
      */
 	parsedData.getSourceDocument = function(extDocId) {
 		return sourcesDocsCollection[extDocId];
 	};
-
-	/**** End of methods for external files ****/
 
 	/* EDITION */
 	/**
@@ -740,6 +834,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Set availability of critical edition level for the current parsed edition.
+     * This method is used during parsing phase and will set the availability based on 
+     * the presence of particular elements and information in the original document.
+     * @param {boolean} isAvailable Whether the critical edition level is available or not 
      */
 	parsedData.setCriticalEditionAvailability = function(isAvailable) {
 		criticalEdition = isAvailable;
@@ -751,6 +849,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Check whether the critical edition level is available or not for current parsed edition.
+     * @returns {boolean} Whether the critical edition level is available or not
      */
 	parsedData.isCriticalEditionAvailable = function() {
 		return criticalEdition;
@@ -762,6 +862,18 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Set the edition levels informations.
+     * Edition level informations are retrieved from configuration file.
+     * @param {Object} editions Object representing the edition levels information. 
+     * It is an array of edition data, each one structured as follows:
+     	<pre>
+			var edition = {
+				value,
+				label,
+				title,
+				visible
+			};
+     	</pre>
      */
     parsedData.setEditions = function(editions) {
         editionLevels = editions;
@@ -773,6 +885,18 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add the information about a particular edition level to stored ones.
+     * Edition level informations are retrieved from configuration file.
+     * @param {Object} edition Object representing the information about one edition level.
+     * It is structured as follows:
+     	<pre>
+			var edition = {
+				value,
+				label,
+				title,
+				visible
+			};
+     	</pre>
      */
 	parsedData.addEdition = function(edition) {
 		editionLevels.push(edition);
@@ -784,6 +908,18 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the information about the parsed edition levels. 
+     * Edition level informations are retrieved from configuration file.
+     * @returns {array} List of information about edition level.
+     * Each object within this array is structured as follows:
+     	<pre>
+			var edition = {
+				value,
+				label,
+				title,
+				visible
+			};
+     	</pre>
      */
 	parsedData.getEditions = function() {
 		return editionLevels;
@@ -795,9 +931,21 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Get information about a particular edition level (useful to retrieve availability or label).
+     * @param {string} editionId Identifier of edition level to retrieve
+     * @returns {Object} Object representing the edition level with <code>value = editionId</code>.
+     * It is structured as follows:
+     	<pre>
+			var edition = {
+				value,
+				label,
+				title,
+				visible
+			};
+     	</pre>
+     * @todo Do it again... better!
      */
 	parsedData.getEdition = function(editionId) {
-		//TODO: Rifare
 		var i = 0,
 			edition;
 		while (i < editionLevels.length && edition === undefined) {
@@ -816,6 +964,27 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add element in witness collection. The element could be an object representing a witness
+     * or an object representing a group of witness.
+     * @param {Object} element Object representing a witness or a group of witness.
+     * It could be structured as follows:
+     	<pre>
+			var elementWitness = {
+				id,
+                attributes,
+                description,
+                _group,
+                _type = 'witness'
+			};
+			var elementGroup = {
+				id,
+	            name,
+	            content,
+	            _type = 'group',
+	            _group,
+	            text
+			};
+     	</pre>
      */
 	parsedData.addElementInWitnessCollection = function(element) {
 		var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
@@ -844,6 +1013,12 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add text of a particular witness for a particular document.
+     * The text will be added only if there is already a reference of the witness
+     * in the collection of parsed ones!
+     * @param {string} witId Identifier of witness to handle
+     * @param {string} docId Identifier of document to handle
+     * @param {string} content HTML string representing the content of the witness for the indicated document
      */
 	parsedData.addWitnessText = function(witId, docId, content) {
 		if (witnessesCollection[witId] !== undefined) {
@@ -859,6 +1034,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the text of a witness for a particular document
+     * @param {string} witId Identifier of witness to handle
+     * @param {string} docId Identifier of document to handle
+     * @returns {string} HTML string representing the content of the witness for the indicated document
      */
 	parsedData.getWitnessText = function(witId, docId) {
 		if (witnessesCollection[witId] !== undefined) {
@@ -873,6 +1052,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the list of parsed witnesses
+     * @returns {array} List of IDs of witnesses that have been parsed
      */
 	parsedData.getWitnessesList = function() {
 		return witnessesCollection._indexes.witnesses;
@@ -883,6 +1064,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of parsed witness
+     * @returns {Object} Object contaning all the information about the witnesses and group of witnesses that have been parsed
      */
 	parsedData.getWitnesses = function() {
 		return witnessesCollection;
@@ -893,6 +1076,19 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the information about a particular witness
+     * @param {string} witId Identifier representing the witness to retrieve
+     * @returns {Object} Object contaning all the parsed information about the witness with <code>id = witId</code>.
+     * It is structured as follows:
+     	<pre>
+			var witness = {
+				id,
+                attributes,
+                description,
+                _group,
+                _type = 'witness'
+			};
+     	</pre>
      */
 	parsedData.getWitness = function(witId) {
 		return witnessesCollection[witId];
@@ -903,6 +1099,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the list of pages within a particular witness.
+	 * @param {string} witId Identifier of witness to handle
+	 * @returns {Object} Object representing the list of pages within the witness with <code>id = witId</code>
      */
 	parsedData.getWitnessPages = function(witId) {
 		if (witnessesCollection[witId] !== undefined) {
@@ -929,6 +1128,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Check whether a sigla represent a single witness or a group of witnesses.
+     * @param {string} sigla Sigla to be checked
+     * @returns {boolean} whether the sigla represent a single witness or a group of witnesses
      */
 	parsedData.isWitnessesGroup = function(sigla) {
 		return witnessesCollection[sigla] !== undefined && witnessesCollection[sigla]._type === 'group';
@@ -939,6 +1141,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the list of witnesses within a particular group.
+     * @param {string} groupId Identifier of group to handle
+     * @returns {array} list of IDs of witnesses contained in the group with <code>id = groupId</code>
      */
 	parsedData.getWitnessesInGroup = function(groupId) {
 		var wits = [];
@@ -956,13 +1161,15 @@ angular.module('evtviewer.dataHandler')
 		return wits;
 	};
 
-	//temp
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getWitnessesListFormatted
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the list of witnesses properly formatted and ready to be compiled in the HTML.
+     * @returns {string} HTML string representing the formatted list of witnesses
+     * @todo: Find another way of doing this!
      */
 	parsedData.getWitnessesListFormatted = function() {
 		var structure = witnessesCollection._indexes.encodingStructure;
@@ -1020,6 +1227,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of critical texts that have been parsed.
+     * @returns {Object} Object representing the collection of critical texts parsed from source data
      */
 	parsedData.getCriticalTextsCollection = function() {
 		return criticalTexts;
@@ -1030,6 +1239,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add the critical text for a particular document.
+     * @param {string} text HTML string representing the parsed critical text
+     * @param {string} docId Identifier of document to handle  
      */
 	parsedData.addCriticalText = function(text, docId) {
 		criticalTexts[docId] = text;
@@ -1041,6 +1253,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the critical text of a particular document.
+	 * @param {string} docId Identifier of document to handle 
+	 * @returns {string} HTML string representing the parsed critical text
      */
 	parsedData.getCriticalText = function(docId) {
 		return criticalTexts[docId];
@@ -1052,6 +1267,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Reset the collection of parsed critical entries. Since the collection has a 
+     * quite complex structure this reset function was necessary!
      */
 	parsedData.resetCriticalEntries = function() {
 		criticalAppCollection = {
@@ -1078,6 +1295,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * [PRIVATE] Generate an alphanumeric exponent based on already retrieve critical apparatus entries.
+     * @returns {string} Alphanumeric exponent generated
      */
 	var generateAlphabeticExponent = function() {
 		var number = criticalAppCollection._indexes.appEntries.length,
@@ -1102,6 +1321,39 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a critical apparatus entry to the collection of parsed ones.
+     * Before the addition an alphanumeric exponent will be generated and associated to the new entry,
+     * depending on previous parsed entries.
+     * After the addition the maximal variance for the critical apparatus entries
+     * will be eventually updated with the new entry variance value.
+     * @param {Object} entry Object representing a critical apparatus entry.
+     * It is structured as follows:
+     	<pre>
+			var entry = {
+				type: 'app',
+				id: '',
+				attributes: [],
+				lemma: '',
+				note: '',
+				content: {
+					// READINGS
+					// GROUPS
+					// SUBAPP
+				},
+				_indexes: {
+					encodingStructure: [],
+					readings: {
+						_indexes: [],
+						_significant: []
+					},
+					groups: [],
+					subApps: [],
+					witMap: {}
+				},
+				_subApp: false | true,
+				_xmlSource: ''
+			};
+     	</pre>
      */
 	parsedData.addCriticalEntry = function(entry) {
 		if (criticalAppCollection[entry.id] === undefined) {
@@ -1125,6 +1377,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Set a flag that will allow a quick check about the critical apparatus entries loading status.
+     * @param {boolean} status Whether the critical apparatus entries have been all loaded or not
      */
 	parsedData.setCriticalEntriesLoaded = function(status) {
 		criticalAppCollection.__allLoaded = status;
@@ -1136,6 +1390,26 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of all critical apparatus entries that have been parsed.
+     * @returns {Object} Object representing the parsed critical apparatus entries. It is structured as follows:
+     	<pre>
+			var criticalAppCollection = {
+				filtersCollection: {
+					filters: {},
+					length: 0,
+					forLemmas: 0,
+					forVariants: 0,
+					colors: []
+				},
+				__allLoaded: false,
+				_maxVariance: 0,
+				_indexes: {
+					encodingStructure: [],
+					appEntries: [],
+					exponents: [],
+				}
+			};
+     	</pre>
      */
 	parsedData.getCriticalEntries = function() {
 		return criticalAppCollection;
@@ -1147,6 +1421,36 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the information about a particular critical apparatus entry.
+     * @param {string} entryId Identifier of critical apparatus entry to handle
+     * @return {Object} Object representing the critical apparatus entry with <code>id = entryId</code>.
+     * It is structured as follows:
+     	<pre>
+			var entry = {
+				type: 'app',
+				id: '',
+				attributes: [],
+				lemma: '',
+				note: '',
+				content: {
+					// READINGS
+					// GROUPS
+					// SUBAPP
+				},
+				_indexes: {
+					encodingStructure: [],
+					readings: {
+						_indexes: [],
+						_significant: []
+					},
+					groups: [],
+					subApps: [],
+					witMap: {}
+				},
+				_subApp: false | true,
+				_xmlSource: ''
+			};
+     	</pre>
      */
 	parsedData.getCriticalEntryById = function(entryId) {
 		return criticalAppCollection[entryId];
@@ -1158,6 +1462,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the exponent of a particular critical apparatus entry.
+     * @param {string} entryId Identifier of critical apparatus entry to handle
+     * @returns {string} Alphanumeric exponent associated to the critical apparatus entry with <code>id = entryId</code>
      */
 	parsedData.getCriticalEntryExponent = function(entryId) {
 		var entry = parsedData.getCriticalEntryById(entryId);
@@ -1170,6 +1477,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the maximal variance registered for the critical apparatus entries.
+     * @returns {number} maximal variance registered
      */
 	parsedData.getCriticalEntriesMaxVariance = function() {
 		return criticalAppCollection._maxVariance;
@@ -1181,6 +1490,11 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the attributes associated to a particular reading within a particular critical apparatus entry.
+     * @param {string} readingId Identifier of reading to handle
+     * @param {string} appId Identifier of critical apparatus entry to handle
+	 * @returns {array} List of attributes (pair of label/value) registered for the particular 
+	 * reading within a particular critical apparatus entry.
      */
 	parsedData.getReadingAttributes = function(readingId, appId) {
 		var attributes = [];
@@ -1196,6 +1510,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Check if a critical apparatus entry is a "Sub apparatus", or rather it is nested in another critical apparatus entry.
+     * @param {string} appId Identifier of critical apparatus entry to check.
+     * @returns {boolean} whether a critical apparatus entry is a "Sub apparatus" or not
      */
 	parsedData.isSubApp = function(appId) {
 		return criticalAppCollection[appId]._subApp;

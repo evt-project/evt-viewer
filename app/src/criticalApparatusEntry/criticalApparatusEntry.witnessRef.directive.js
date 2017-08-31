@@ -4,7 +4,7 @@
  * @name evtviewer.criticalApparatusEntry.directive:evtWitnessRef
  * @description 
  * # evtWitnessRef
- * Custom element that identifies the sigla of a witness to be used whithin the critical apparatus entry as an "access point"
+ * Custom element that identifies the sigla of a witness to be used within the critical apparatus entry as an "access point"
  * to the context of a specific reading.
  *
  * @scope

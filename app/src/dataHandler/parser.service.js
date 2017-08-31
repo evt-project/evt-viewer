@@ -343,7 +343,7 @@ angular.module('evtviewer.dataHandler')
 	parser.parseExternalDocuments = function(doc, type) {
 		var newExtDoc = {
 			value: type,
-			content: doc,
+			content: doc
 		};
 		if (type !== 'analogues' && type !== 'sources') {
 			parsedData.addSourceDocument(newExtDoc, type);

@@ -16,7 +16,7 @@
  * The scope of the directive is expanded and stored inside the 
  * {@link evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry evtCriticalApparatusEntry} provider.
  * - {@link evtviewer.criticalApparatusEntry.directive:evtWitnessRef evtWitnessRef}: custom directive
- * that identifies the sigla of a witness to be used whithin the critical apparatus entry as an "access point"
+ * that identifies the sigla of a witness to be used within the critical apparatus entry as an "access point"
  * to the context of a specific reading.
  *
  * ## Controllers
