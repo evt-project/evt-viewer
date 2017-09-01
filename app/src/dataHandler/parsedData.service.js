@@ -19,8 +19,28 @@ angular.module('evtviewer.dataHandler')
 
 	_console.log('parsedData running');
 
+	 /**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#encodingDetails
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about encoding details are stored. 
+     */
 	var encodingDetails = {	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#projectInfo
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about project information are stored.
+     	<pre>
+			var projectInfo = {
+				fileDescription: '',
+				encodingDescription: '',
+				textProfile: '',
+				outsideMetadata: '',
+				revisionHistory: ''
+			};
+     	</pre> 
+     */
 	var projectInfo = {
 		fileDescription: '',
 		encodingDescription: '',
@@ -29,31 +49,161 @@ angular.module('evtviewer.dataHandler')
 		revisionHistory: ''
 	};
 
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#bibliographicRefsCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about bibliographic references are stored.
+     	<pre>
+			var bibliographicRefsCollection = {
+				[biblElemId] : {
+					id: '',
+	                type: '',
+	                author: [],
+	                titleAnalytic: '',
+	                titleMonogr: '',
+	                editionMonogr: '',
+	                date: '',
+	                editor: [],
+	                publisher: '',
+	                pubPlace: '',
+	                biblScope: {},
+	                note: {},
+	                idno: {},
+	                outputs: {},
+	                plainText: ''
+				},
+				_indexes: [biblElemId]
+			};
+     	</pre> 
+     */
 	var bibliographicRefsCollection = {
 		_indexes: []
 	};
 
 	// TODO manage unique value for pages, documents and editions
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#pagesCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about pages are stored.
+    	<pre>
+			var pagesCollection = {
+				[pageId]: {
+					value,
+					label,
+					title,
+					source,
+					text: {
+						[docId] : {
+							[editionLevel]: ''
+						}
+					},
+					docs: []
+				},
+				length: 1
+			};
+    	</pre>
+     */
 	var pagesCollection = {
 		length: 0
 	};
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#documentsCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about documents are stored.
+     * The list of document IDs is stored in the property <code>_indexes</code>.
+     	<pre>
+			var documentsCollection = {
+				[docId]: {
+					value,
+					label,
+					title,
+					content,
+					front,
+					pages
+				},
+				_indexes: [],
+				length: 0
+			};
+     	</pre>
+     */
 	var documentsCollection = {
 		_indexes: [],
 		length: 0
 	};
 
-	//Collezione aggiunta da CM
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#externalDocsCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about external documents are stored.
+     	<pre>
+			var externalDocsCollection = {
+				[extDocId] : {
+					value: type,
+					content: doc
+				},
+				length: 1
+			}
+     	</pre>
+     * @author CM
+     */
 	var externalDocsCollection = {
 		length: 0
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#sourcesDocsCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about source documents are stored.
+     	<pre>
+			var sourcesDocsCollection = {
+				[sourceDocId] : {
+					value: type,
+					content: doc
+				},
+				length: 1
+			}
+     	</pre>
+     * @author CM
+     */
 	var sourcesDocsCollection = {
 		length: 0
 	};
 
 	// var pagesCollectionTexts = []; 
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#witnessesCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about witnesses or group of witnesses are stored.
+     	<pre>
+			var witnessesCollection = {
+				[witId] : {
+					id,
+	                attributes,
+	                description,
+	                _group,
+	                _type = 'witness'
+				},
+				[groupId]: {
+					id,
+		            name,
+		            content,
+		            _type = 'group',
+		            _group,
+		            text
+				},
+				_indexes: {
+					witnesses: [],
+					groups: [],
+					encodingStructure: []
+				}
+			};
+     	</pre>
+     */
 	var witnessesCollection = {
 		_indexes: {
 			witnesses: [],
@@ -61,9 +211,65 @@ angular.module('evtviewer.dataHandler')
 			encodingStructure: []
 		}
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#genericColors
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about generic colors to use for filters are stored.
+     	<pre>
+			var genericColors = [];
+     	</pre>
+     */
 	var genericColors = config.genericColors;
 
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#criticalAppCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about critical apparatus entries are stored.
+     	<pre>
+			var criticalAppCollection = {
+				[entryId]: {
+					type: 'app',
+					id: '',
+					attributes: [],
+					lemma: '',
+					note: '',
+					content: {
+						// READINGS
+						// GROUPS
+						// SUBAPP
+					},
+					_indexes: {
+						encodingStructure: [],
+						readings: {
+							_indexes: [],
+							_significant: []
+						},
+						groups: [],
+						subApps: [],
+						witMap: {}
+					},
+					_subApp: false | true,
+					_xmlSource: ''
+				},
+				filtersCollection: {
+					filters: {},
+					length: 0,
+					forLemmas: 0,
+					forVariants: 0,
+					colors: []
+				},
+				__allLoaded: false,
+				_maxVariance: 0,
+				_indexes: {
+					encodingStructure: [],
+					appEntries: [],
+					exponents: [],
+				}
+			};
+     	</pre>
+     */
 	var criticalAppCollection = {
 		filtersCollection: {
 			filters: {},
@@ -86,11 +292,67 @@ angular.module('evtviewer.dataHandler')
 			exponents: [],
 		}
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#criticalTexts
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about critical texts are stored.
+     	<pre>
+			var criticalTexts = {
+				[docId]: ''
+			};
+     	</pre>
+     */
 	var criticalTexts = {};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#editionLevels
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about edition levels are stored.
+     	<pre>
+			var editionLevels = [{
+				value,
+				label,
+				title,
+				visible
+			}];
+     	</pre>
+     */
 	var editionLevels = [];
-	// Object to save the versions readings (@author --> CM)
+	
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#versionAppCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about versions readings are stored.
+     	<pre>
+			var versionAppCollection = {
+				[entryId] : {
+					type: 'recensioApp',
+					id: '',
+					attributes: [],
+					lemma: '',
+					content: {
+						//GROUPS
+						//lem
+						//rdg*
+					},
+					_indexes: {
+						witMap: {},
+					},
+					_xmlSource: ''
+				},
+				_indexes: {
+					encodingStructure : [],
+					versionWitMap : {},
+					versionId : {
+						_name: {}
+					}
+				}
+			};
+     	</pre>
+     * @author CM
+     */
 	var versionAppCollection = {
 		_indexes: {
 			encodingStructure : [],
@@ -101,18 +363,109 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#versionTexts
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about versions texts are stored.
+     	<pre>
+			var versionTexts = {
+				[docId]: {
+					[verId]: ''
+				}
+			};
+     	</pre>
+     * @author CM
+     */
 	var versionTexts = {};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#criticalEdition
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about availability of critical edition level for the current parsed edition is stored.
+     	<pre>
+			var criticalEdition = false | true
+     	</pre>
+     */
 	var criticalEdition = false;
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#glyphsCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about glyphs are stored.
+     	<pre>
+			var glyphsCollection = {
+				[glyphId] : {
+					id,
+					xmlCode,
+					mapping: {
+						[typeOfMapping] : {
+							element,
+							content,
+							attributes: []
+						}
+					},
+					parsedXml
+				},
+				_indexes: []
+			};
+     	</pre>
+     */
 	var glyphsCollection = {
 		_indexes: []
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#glyphsCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about zones are stored.
+     	<pre>
+			var zonesCollection = {
+				[zoneId] : {
+					page,
+					id,
+					[attribName]: ''
+				},
+				_indexes: [zoneId]
+			};
+     	</pre>
+     */
 	var zonesCollection = {
 		_indexes: []
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#namedEntities
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about named entities are stored.
+     	<pre>
+			var namedEntities = {
+				_collections: {
+					[collectionId]: {
+						[listKey] = {
+							[namedEntityId] : {
+								id,
+								label,
+								content: {
+									_indexes: []
+								},
+								_listPos,
+								_xmlSource
+							},
+							_indexes: []
+						},
+						_indexes: [],
+						_listKeys: [],
+						_title,
+						_type,
+						_icon 
+					},
+					_indexes: []	
+				},
+				_indexes: []
+			};
+     	</pre>
+     */
 	var namedEntities = {
 		_collections: {
 			_indexes: []	
@@ -301,7 +654,15 @@ angular.module('evtviewer.dataHandler')
      	<pre>
 			var collection = {
 				[listKey] = {
-					[namedEntityId] : {},
+					[namedEntityId] : {
+						id,
+						label,
+						content: {
+							_indexes: []
+						},
+						_listPos,
+						_xmlSource
+					},
 					_indexes: []
 				},
 				_indexes: [],
@@ -385,20 +746,83 @@ angular.module('evtviewer.dataHandler')
 		return collectionObj ? collectionObj._type : 'generic';
 	};
 
-	/*****************************/
-	/*QUOTES & SOURCES collection*/
-	/*(@author --> CM)           */
-	/*****************************/
-
+	/*******************************/
+	/* QUOTES & SOURCES collection */
+	/*******************************/
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#quotesCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about quotes are stored.
+     	<pre>
+			var quotesCollection = {
+				[quoteId]: {
+					type: 'quote',
+					id,
+					attributes: [],
+					content: [],
+					_indexes: {
+						sourceId: [], // ids of the bibliographic citations that are inside the quote
+						sourceRefId: [], // references to bibliographic citations that are outside the quote
+						correspId: {}, // ids of the segments inside the source text that correspond to the quote
+						subQuotes: [], // ids of quotes nested inside the quote                
+					},
+					_subQuote, // boolean; is the quote nested in another quote?
+					_xmlSource
+				},
+				_indexes: {
+					encodingStructure: [],
+					sourcesRef: {
+						_id: [],
+					}
+				}
+			};
+     	</pre> 
+     * @author CM 
+     */
 	var quotesCollection = {
 		_indexes: {
 			encodingStructure: [],
 			sourcesRef: {
 				_id: [],
 			}
-		},
+		}
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#sourcesCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about sources are stored.
+     	<pre>
+			var sourcesCollection = {
+				[sourceId]: {
+					id,
+					abbr: {
+						title: [],
+						author: [],
+						msId: []
+					},
+					attributes: [],
+					quotesEntriesId: [], // ids of the quotes that refer to this source
+					bibl: [], // full bibliographic references of the source (which almost always corresponds the content of the source itself)
+					quote: [],
+					url: [], // links to the full text of the source
+					text: {},
+					_textAvailable: false,
+					_xmlSource
+				},
+				_indexes: {
+					encodingStructure: [],
+					quotesRef: {
+						_id: [],
+					},
+					availableTexts : [],
+					correspId: {}
+				}
+			};
+     	</pre> 
+     * @author CM 
+     */
 	var sourcesCollection = {
 		_indexes: {
 			encodingStructure: [],
@@ -407,9 +831,39 @@ angular.module('evtviewer.dataHandler')
 			},
 			availableTexts : [],
 			correspId: {}
-		},
+		}
 	};
-
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#sourcesCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about analogues are stored.
+     	<pre>
+			var analoguesCollection = {
+				[analogueId]: {
+					id,
+					type,
+					attributes: [],
+					content: [],
+					sources: [],
+					_indexes: {
+						sourceId: [],
+						sourceRefId: [],
+						subAnalogues: []
+					},
+					_subAnalogue: false | true,
+					_xmlSource
+				},
+				_indexes: {
+					encodingStructure: [],
+				},
+				_refId: {
+					_indexes: []
+				}
+			};
+     	</pre> 
+     * @author CM 
+     */
 	var analoguesCollection = {
 		_indexes: {
 			encodingStructure: [],
@@ -603,7 +1057,7 @@ angular.module('evtviewer.dataHandler')
 				title,
 				content,
 				front,
-				pages,
+				pages
 			};
      	</pre> 
      */
@@ -1525,6 +1979,12 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve a generic color to be associated to a critical apparatus entry filter.
+     * First of all the system will try to get the color from a given list of colors
+     * (that's why we need to pass the <code>index</code> of the filter handled); if no colors
+     * available, it will generate a new random color, being aware that it has not been used yet. 
+     * @param {string} index Index of current filter handled.
+     * @returns {string} Hex or RGB string representing the color to be associated to the filter handled
      */
 	parsedData.getGenericColorForAppEntry = function(index) {
 		var filtersCollection = criticalAppCollection.filtersCollection,
@@ -1554,6 +2014,14 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a new critical apparatus entry filter to filters collection.
+     * The filters collection is structured in a way that for each "filter name" 
+     * there could be more values; each value is an <code>Object</code> in which 
+     * are defined both the <code>value</code> and the <code>color</code>
+     * (the color is assigned automatically depending on a given list of color or on a random generation).
+     * Each filter will be also restricted to a particular type of reading (either variant or lemma or both).
+     * @param {string} name Name of filter to be added
+     * @param {string} value Value of filter to be added
      */
 	parsedData.addCriticalEntryFilter = function(name, value) {
 		var possibleVariantFilters = config.possibleVariantFilters,
@@ -1612,6 +2080,17 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the stored collection of critical apparatus entries filters.
+     * @returns {Object} Critical apparatus entries filters collection. It is structured as follows:
+     	<pre>
+			var filtersCollection = {
+				filters: {},
+				length: 0,
+				forLemmas: 0,
+				forVariants: 0,
+				colors: []
+			};
+     	</pre>
      */
 	parsedData.getCriticalEntriesFiltersCollection = function() {
 		return criticalAppCollection.filtersCollection;
@@ -1623,6 +2102,25 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the list of saved critical apparatus entries filters.
+     * @returns {Object} List of saved critical apparatus entries filters. It is structured as follows:
+     	<pre>
+			var filters = {
+				[nameOfFilter] : {
+					name,
+					possibleFor: {
+						lemma: true | false,
+						variant: true | false
+					},
+					values: {
+						[value] = {
+							name,
+							color
+						}
+					}
+				}
+			};
+     	</pre>
      */
 	parsedData.getCriticalEntriesFilters = function() {
 		return criticalAppCollection.filtersCollection.filters;
@@ -1634,6 +2132,25 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the information about a particular critical apparatus entries filter.
+     * @param {string} filter Name of filter to retrieve
+     * @returns {Object} Object representing the information about a particular critical apparatus entries filter.
+     * It is structured as follows:
+     	<pre>
+			var filter = {
+				name,
+				possibleFor: {
+					lemma: true | false,
+					variant: true | false
+				},
+				values: {
+					[value] = {
+						name,
+						color
+					}
+				}
+			};
+     	</pre>
      */
 	parsedData.getCriticalEntriesFilterValues = function(filter) {
 		return criticalAppCollection.filtersCollection.filters[filter];
@@ -1645,6 +2162,11 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the color associated to a particular value of a particular critical apparatus entries filter.
+     * @param {string} filter Name of filter to handle
+     * @param {string} value Value to handle
+     * @returns {string} Hex or RGB string representing the color code associated to the particular value 
+     * of the particular critical apparatus entries filter requested.
      */
 	parsedData.getCriticalEntriesFilterColor = function(filter, value) {
 		return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
@@ -1653,13 +2175,35 @@ angular.module('evtviewer.dataHandler')
 	/* ****************** */
 	/* BIBLIOGRAPHIC REFs */
 	/* ****************** */
-	/* TODO: reorganize in EVT general style JSON model */
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addBibliographicRef
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a bibliographic reference to the collection of parsed ones.
+     * @param {Object} biblElement Object representing the bibliographic reference to add. it is structured as follows:
+     	<pre>
+			var biblElement = {
+				id: '',
+                type: '',
+                author: [],
+                titleAnalytic: '',
+                titleMonogr: '',
+                editionMonogr: '',
+                date: '',
+                editor: [],
+                publisher: '',
+                pubPlace: '',
+                biblScope: {},
+                note: {},
+                idno: {},
+                outputs: {},
+                plainText: ''
+			};
+     	</pre>
+     * @author MR
+     * @todo: reorganize in EVT general style JSON model
      */
 	parsedData.addBibliographicRef = function(biblElement) {
 		if (bibliographicRefsCollection[biblElement.id] === undefined) {
@@ -1674,6 +2218,33 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of bibliographic references parsed from main source text.
+     * @returns {Object} Object representing the bibliographic references collection.
+     * It is structured as follows:
+     	<pre>
+			var bibliographicRefsCollection = {
+				[biblElemId] : {
+					id: '',
+	                type: '',
+	                author: [],
+	                titleAnalytic: '',
+	                titleMonogr: '',
+	                editionMonogr: '',
+	                date: '',
+	                editor: [],
+	                publisher: '',
+	                pubPlace: '',
+	                biblScope: {},
+	                note: {},
+	                idno: {},
+	                outputs: {},
+	                plainText: ''
+				},
+				_indexes: [biblElemId]
+			};
+     	</pre>
+     * @author MR
+     * @todo: reorganize in EVT general style JSON model
      */
 	parsedData.getBibliographicRefsCollection = function() {
 		return bibliographicRefsCollection;
@@ -1685,6 +2256,31 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the all the stored information about a particular bibliographic reference.
+     * @param {string} refId Identifier of bibliographic reference to handle
+     * @returns {Object} Object representing the parsed information about the bibliographic reference with <code>id = refId</code>.
+     * It is structured as follows:
+     	<pre>
+			var biblElem = {
+				id: '',
+                type: '',
+                author: [],
+                titleAnalytic: '',
+                titleMonogr: '',
+                editionMonogr: '',
+                date: '',
+                editor: [],
+                publisher: '',
+                pubPlace: '',
+                biblScope: {},
+                note: {},
+                idno: {},
+                outputs: {},
+                plainText: ''
+			};
+     	</pre>
+     * @author MR
+     * @todo: reorganize in EVT general style JSON model
      */
 	parsedData.getBibliographicRefById = function(refId) {
 		return bibliographicRefsCollection[refId];
@@ -1700,6 +2296,27 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add A version apparatus entry to collection of parsed ones.
+     * @param {object} entry Object representing the version apparatus entry to add.
+     * It is structured as follows:
+     	<pre>
+			var entry = {
+				type: 'recensioApp',
+				id: '',
+				attributes: [],
+				lemma: '',
+				content: {
+					//GROUPS
+					//lem
+					//rdg*
+				},
+				_indexes: {
+					witMap: {},
+				},
+				_xmlSource: ''
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.addVersionEntry = function(entry) {
 		if (versionAppCollection[entry.id] === undefined) {
@@ -1714,18 +2331,68 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of all version apparatus entries.
+     * @returns {Object} Object representing the collection of all version apparatus entries.
+     * It is structured as follows:
+     	<pre>
+			var versionAppCollection = {
+				[entryId] : {
+					type: 'recensioApp',
+					id: '',
+					attributes: [],
+					lemma: '',
+					content: {
+						//GROUPS
+						//lem
+						//rdg*
+					},
+					_indexes: {
+						witMap: {},
+					},
+					_xmlSource: ''
+				},
+				_indexes: {
+					encodingStructure : [],
+					versionWitMap : {},
+					versionId : {
+						_name: {}
+					}
+				}
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getVersionEntries = function() {
 		return versionAppCollection;
 	};
 
-	// @entryId --> id of the version app entry | returns the parsed entry or undefined
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getVersionEntry
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve all the information about a particular version apparatus entry.
+     * @param {string} entryId Identifier of the version apparatus entry to retrieve 
+     * @returns {Object} Object representing the parsed entry. It is structured as follows:
+     	<pre>
+			var entry = {
+				type: 'recensioApp',
+				id: '',
+				attributes: [],
+				lemma: '',
+				content: {
+					//GROUPS
+					//lem
+					//rdg*
+				},
+				_indexes: {
+					witMap: {},
+				},
+				_xmlSource: ''
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getVersionEntry = function(entryId) {
 		return versionAppCollection[entryId];
@@ -1737,6 +2404,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a witness for a particular version of text.
+     * @param {string} ver Identifier of version to handle
+     * @param {string} wit Identifier of witness to handle
+     * @author CM
      */
 	parsedData.addVersionWitness = function(ver, wit) {
 		var witMap = versionAppCollection._indexes.versionWitMap;
@@ -1759,15 +2430,17 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
-	// Adds the parsed text of a version
-	// @text --> parsed text | @docId --> id of the current document | @ver --> id of the version
-	// @author --> CM
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addVersionText
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add the parsed text of a particular version of text.
+     * @param {string} text HTML string representing the parsed text to add
+     * @param {string} docId Identifier of document to handle
+     * @param {string} ver Identifier of version to handle
+     * @author CM
      */
 	parsedData.addVersionText = function(text, docId, ver) {
 		if (versionTexts[docId] === undefined) {
@@ -1780,14 +2453,17 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
-	// @ver --> id of the version | @docId --> id of the currentDocument
-	// Returns the parsed text of the version. | @author --> CM
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getVersionText
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the parsed text of a particular version of text.
+     * @param {string} ver Identifier of version to handle
+     * @param {string} docId Identifier of document to handle
+     * @return {string} HTML string representing the parsed text of the given version of the given document
+     * @author CM
      */
 	parsedData.getVersionText = function(ver, docId) {
 		return versionTexts[docId][ver];
@@ -1802,6 +2478,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Update a particular project information.
+     * @param {string} newContent HTML string representing the new value of the data for the particular project information
+     * @param {string} type Label of the project information to update
      */
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
@@ -1813,6 +2492,18 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve all project information.
+     * @returns {Object} Object representing all the parsed project information. It is structured as follows:
+     	<pre>
+			var projectInfo = {
+				fileDescription: '',
+				encodingDescription: '',
+				textProfile: '',
+				outsideMetadata: '',
+				revisionHistory: ''
+			};
+     	</pre>
+     * @todo: Generalize more the JSON object!!
      */
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
@@ -1828,6 +2519,22 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a glyph to the collection of stored ones.
+     * @param {Object} glyph Object representing the glyph to add. It is structured as follows:
+     	<pre>
+			var glyph = {
+				id,
+				xmlCode,
+				mapping: {
+					[typeOfMapping] : {
+						element,
+						content,
+						attributes: []
+					}
+				},
+				parsedXml
+			};
+     	</pre>
      */
 	parsedData.addGlyph = function(glyph) {
 		var glyphId,
@@ -1852,6 +2559,25 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve all the parsed collection of glyphs.
+     * @returns {Object} Object representing the collection of parsed glyphs. It is structured as follows:
+		<pre>
+			var glyphsCollection = {
+				[glyphId] : {
+					id,
+					xmlCode,
+					mapping: {
+						[typeOfMapping] : {
+							element,
+							content,
+							attributes: []
+						}
+					},
+					parsedXml
+				},
+				_indexes: []
+			};
+		</pre>
      */
 	parsedData.getGlyphs = function() {
 		return glyphsCollection;
@@ -1863,6 +2589,23 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve all the information about a particular glyph
+     * @param {string} glyphId Identifier of glyph to retrieve
+     * @returns {Object} Object representing the glyph to retrieve. It is structured as follows:
+     	<pre>
+			var glyph = {
+				id,
+				xmlCode,
+				mapping: {
+					[typeOfMapping] : {
+						element,
+						content,
+						attributes: []
+					}
+				},
+				parsedXml
+			};
+     	</pre>
      */
 	parsedData.getGlyph = function(glyphId) {
 		return glyphsCollection[glyphId];
@@ -1874,6 +2617,18 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Get the mapping of a particular glyph for a particular edition level
+     * @param {string} glyphId Identifier of glyph to handle
+     * @param {string} editionLevel Edition label to handle
+     * @returns {Object} Object representing all the mapping information of a given glyph for the given edition level.
+     * It is structured as follows:
+     	<pre>
+			var mapping = {
+				element,
+				content,
+				attributes: []
+			};
+     	</pre>
      */
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
 		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
@@ -1888,6 +2643,15 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a zone to the collection of parsed ones.
+     * @param {Object} zone Object representing the zone to add. It ist structured as follows:
+     	<pre>
+			var zone = {
+				page,
+				id,
+				[attribName]: ''
+			};
+     	</pre>
      */
 	parsedData.addZone = function(zone) {
 		var zoneId,
@@ -1912,6 +2676,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of parsed zones.
+     * @returns {Object} Object representing the collection of parsed zones
      */
 	parsedData.getZones = function() {
 		return zonesCollection;
@@ -1923,6 +2689,16 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve all the information of a particular zone.
+     * @param {string} zoneId Identifier of zone to retrieve
+     * @returns {Object} Object representing the zone to add. It ist structured as follows:
+     	<pre>
+			var zone = {
+				page,
+				id,
+				[attribName]: ''
+			};
+     	</pre>
      */
 	parsedData.getZone = function(zoneId) {
 		return zonesCollection[zoneId];
@@ -1934,6 +2710,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
+     * @returns {boolean} Whether the Image-Text Linking tool is available or not
      */
 	parsedData.isITLAvailable = function() {
 		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
@@ -1948,6 +2726,29 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a quote to the collection of parsed ones.
+     * @param {Object} entry Object representing a quote to add. It is structured as follows:
+     	<pre>
+     		var entry = {
+				type: 'quote',
+				id,
+				attributes: [],
+				content: [],
+				_indexes: {
+					// bibliographic citations inside the quote
+					sourceId: [], 
+					// bibliographic citations outside the quote
+					sourceRefId: [], 
+					// segments inside the source text that correspond to the quote
+					correspId: {}, 
+					// quotes nested inside the quote                
+					subQuotes: [], 
+				},
+				_subQuote, // boolean; is the quote nested in another quote?
+				_xmlSource
+     		};
+		</pre>
+     * @author CM
      */
 	parsedData.addQuote = function(entry) {
 		//Adding the quote object to the collection...
@@ -2008,6 +2809,33 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of parsed quotes.
+     * @returns {Object} Object representing the collection of parsed quotes. It is structured as follows:
+     	<pre>
+			var quotesCollection = {
+				[quoteId] : {
+					type: 'quote',
+					id,
+					attributes: [],
+					content: [],
+					_indexes: {
+						sourceId: [], // ids of the bibliographic citations that are inside the quote
+						sourceRefId: [], // references to bibliographic citations that are outside the quote
+						correspId: {}, // ids of the segments inside the source text that correspond to the quote
+						subQuotes: [], // ids of quotes nested inside the quote                
+					},
+					_subQuote, // boolean; is the quote nested in another quote?
+					_xmlSource
+				},
+				_indexes: {
+					encodingStructure: [],
+					sourcesRef: {
+						_id: [],
+					}
+				}
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getQuotes = function() {
 		return quotesCollection;
@@ -2019,6 +2847,26 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the information about a particular quote.
+     * @param {string} entryId Identifier of quote to retrieve
+     * @returns {Object} Object representing the quote with <code>id = entryId</code>. It is structured as follows:
+     	<pre>
+			var quote = {
+				type: 'quote',
+				id,
+				attributes: [],
+				content: [],
+				_indexes: {
+					sourceId: [], // ids of the bibliographic citations that are inside the quote
+					sourceRefId: [], // references to bibliographic citations that are outside the quote
+					correspId: {}, // ids of the segments inside the source text that correspond to the quote
+					subQuotes: [], // ids of quotes nested inside the quote                
+				},
+				_subQuote, // boolean; is the quote nested in another quote?
+				_xmlSource	
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getQuote = function(entryId) {
 		return quotesCollection[entryId];
@@ -2030,6 +2878,27 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add a source to the collection of parsed ones.
+     * @param {Object} entry Object representing the source to add. It is structured as follows:
+		<pre>
+			var entry = {
+				id,
+				abbr: {
+					title: [],
+					author: [],
+					msId: []
+				},
+				attributes: [],
+				quotesEntriesId: [], // ids of the quotes that refer to this source
+				bibl: [], // full bibliographic references of the source (which almost always corresponds the content of the source itself)
+				quote: [],
+				url: [], // links to the full text of the source
+				text: {},
+				_textAvailable: false,
+				_xmlSource
+			};
+		</pre>
+     * @author CM
      */
 	parsedData.addSource = function(entry) {
 		if (sourcesCollection[entry.id] === undefined) {
@@ -2067,6 +2936,37 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of parsed sources.
+     * @returns {Object} Object representing the collection of parsed sources. It is structured as follows:
+     	<pre>
+			var sourcesCollection = {
+				[sourceId]: {
+					id,
+					abbr: {
+						title: [],
+						author: [],
+						msId: []
+					},
+					attributes: [],
+					quotesEntriesId: [], // ids of the quotes that refer to this source
+					bibl: [], // full bibliographic references of the source (which almost always corresponds the content of the source itself)
+					quote: [],
+					url: [], // links to the full text of the source
+					text: {},
+					_textAvailable: false,
+					_xmlSource
+				},
+				_indexes: {
+					encodingStructure: [],
+					quotesRef: {
+						_id: [],
+					},
+					availableTexts : [],
+					correspId: {}
+				}
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getSources = function() {
 		return sourcesCollection;
@@ -2078,6 +2978,28 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve all the information about a particular source.
+     * @param {string} entryId Identifier of source to retrieve
+     * @returns {Object} Object representing the source. It is structured as follows:
+		<pre>
+			var entry = {
+				id,
+				abbr: {
+					title: [],
+					author: [],
+					msId: []
+				},
+				attributes: [],
+				quotesEntriesId: [], // ids of the quotes that refer to this source
+				bibl: [], // full bibliographic references of the source (which almost always corresponds the content of the source itself)
+				quote: [],
+				url: [], // links to the full text of the source
+				text: {},
+				_textAvailable: false,
+				_xmlSource
+			};
+		</pre>
+     * @author CM
      */
 	parsedData.getSource = function(entryId) {
 		return sourcesCollection[entryId];
@@ -2093,6 +3015,26 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the information about a particular analogue.
+     * @param {string} analogueId Identifier of analogue to retrieve
+     * @returns {Object} Object representing the analogue. It is structured as follows:
+     	<pre>
+			var analogue = {
+				id,
+				type,
+				attributes: [],
+				content: [],
+				sources: [],
+				_indexes: {
+					sourceId: [],
+					sourceRefId: [],
+					subAnalogues: []
+				},
+				_subAnalogue: false | true,
+				_xmlSource
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getAnalogue = function(analogueId) {
 		return analoguesCollection[analogueId];
@@ -2104,6 +3046,33 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Retrieve the collection of parsed analogues.
+     * @returns {Object} Object representing the collection of parsed analogues. It is structured as follows:
+     	<pre>
+			var analoguesCollection = {
+				[analogueId]: {
+					id,
+					type,
+					attributes: [],
+					content: [],
+					sources: [],
+					_indexes: {
+						sourceId: [],
+						sourceRefId: [],
+						subAnalogues: []
+					},
+					_subAnalogue: false | true,
+					_xmlSource
+				},
+				_indexes: {
+					encodingStructure: [],
+				},
+				_refId: {
+					_indexes: []
+				}
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.getAnalogues = function() {
 		return analoguesCollection;
@@ -2115,6 +3084,25 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
+     * Add an analogue to the collection of parsed ones.
+     * @param {Object} entry Object representing the analogue to add. It is structured as follows:
+     	<pre>
+			var analogue = {
+				id,
+				type,
+				attributes: [],
+				content: [],
+				sources: [],
+				_indexes: {
+					sourceId: [],
+					sourceRefId: [],
+					subAnalogues: []
+				},
+				_subAnalogue: false | true,
+				_xmlSource
+			};
+     	</pre>
+     * @author CM
      */
 	parsedData.addAnalogue = function(entry) {
 		if (analoguesCollection[entry.id] === undefined) {
