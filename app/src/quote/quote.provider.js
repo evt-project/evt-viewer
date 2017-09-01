@@ -105,7 +105,7 @@ angular.module('evtviewer.quote')
          * Get the references of the instances of <code>&lt;evt-quote&gt;</code> connected 
          * to a particular sources apparatus entry.
          * 
-         * @param {string} appId id of sources apparatus entry ti handle
+         * @param {string} appId id of sources apparatus entry to handle
          *
          * @returns {array} array of references of <code>&lt;evt-quote&gt;</code>s connected 
          * to given sources apparatus entry 
@@ -170,7 +170,7 @@ angular.module('evtviewer.quote')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.quote.evtQuote#mouseOverByAppId
+         * @name evtviewer.quote.evtQuote#mouseOverByQuoteId
          * @methodOf evtviewer.quote.evtQuote
          *
          * @description

@@ -124,7 +124,7 @@ angular.module('evtviewer.quote')
     };
     /**
      * @ngdoc method
-     * @name evtviewer.quote.controller:QuoteCtrl#toggleOverAppEntries
+     * @name evtviewer.quote.controller:QuoteCtrl#toggleOverQuotes
      * @methodOf evtviewer.quote.controller:QuoteCtrl
      *
      * @description
@@ -143,7 +143,7 @@ angular.module('evtviewer.quote')
     };
     /**
      * @ngdoc method
-     * @name evtviewer.quote.controller:QuoteCtrl#toggleSelectAppEntries
+     * @name evtviewer.quote.controller:QuoteCtrl#toggleSelectQuotes
      * @methodOf evtviewer.quote.controller:QuoteCtrl
      *
      * @description
@@ -202,7 +202,7 @@ angular.module('evtviewer.quote')
      * Callback fired when user clicks on a quote. It will:<ul>
      * <li>Stop event propagation</li>
      * <li>Toggle the "select" state on quotes connected to the same sources apparatus entry 
-     * ({@link evtviewer.quote.controller:QuoteCtrl#toggleSelectAppEntries toggleSelectAppEntries()})</li>
+     * ({@link evtviewer.quote.controller:QuoteCtrl#toggleSelectQuotes toggleSelectQuotes()})</li>
      * <li>If the apparatus is in inline mode and is not yet opened, toggle the state of the 
      * connected sources apparatus entry ({@link evtviewer.quote.controller:QuoteCtrl#toggleApparatus toggleApparatus()})</li>
      * </ul>

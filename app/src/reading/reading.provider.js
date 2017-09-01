@@ -154,7 +154,7 @@ angular.module('evtviewer.reading')
          * Get the references of the instances of <code>&lt;evt-reading&gt;</code> connected 
          * to a particular critical apparatus entry.
          * 
-         * @param {string} appId id of critical apparatus entry ti handle
+         * @param {string} appId id of critical apparatus entry to handle
          *
          * @returns {array} array of references of <code>&lt;evt-reading&gt;</code>s connected 
          * to given critical apparatus entry 

@@ -179,7 +179,7 @@ angular.module('evtviewer.criticalApparatusEntry')
          * Get the reference to <code>&lt;evt-critical-apparatus-entry&gt;</code>
          * with given id.
          * 
-         * @param {string} appId id of critical apparatus entry ti handle
+         * @param {string} appId id of critical apparatus entry to handle
          *
          * @returns {Object} object representing the reference to <code>&lt;evt-critical-apparatus-entry&gt;</code>
          * with given id
