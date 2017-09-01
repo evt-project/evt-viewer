@@ -4,7 +4,7 @@
  * @name evtviewer.dataHandler.evtCriticalApparatus
  * @description 
  * # evtCriticalApparatus
- * TODO: Add description and comments for every method
+ * Service containing methods to handle the contents of critical apparatus entries (lemma, readings, etc.).
  * 
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
@@ -30,7 +30,7 @@ angular.module('evtviewer.dataHandler')
      * @param {boolean} subApp whether the entry is a nested one
      * @param {string} scopeWit id of witness to consider
      *
-     * @return {objecy} JSON object representing the content of the entry, that is structured as follows:
+     * @returns {objecy} JSON object representing the content of the entry, that is structured as follows:
         <pre>
             var appContent = {
 				attributes: {

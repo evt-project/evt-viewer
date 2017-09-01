@@ -26,7 +26,7 @@ angular.module('evtviewer.core')
     * @param {Object} destination JSON object containing an object to extend
     * @param {Object} source JSON object containing the extension to add to destination
     *
-    * @return {Object} extended JSON object
+    * @returns {Object} extended JSON object
     */
 	this.deepExtend = function(destination, source) {
 		for (var property in source) {
@@ -55,7 +55,7 @@ angular.module('evtviewer.core')
     * @param {Object} destination JSON object containing an object to extend
     * @param {Object} source JSON object containing the extension to add to destination
     *
-    * @return {Object} extended JSON object
+    * @returns {Object} extended JSON object
     */
 	this.deepExtendSkipDefault = function(destination, source) {
 		for (var property in source) {

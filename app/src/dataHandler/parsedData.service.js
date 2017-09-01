@@ -746,9 +746,9 @@ angular.module('evtviewer.dataHandler')
 		return collectionObj ? collectionObj._type : 'generic';
 	};
 
-	/*******************************/
-	/* QUOTES & SOURCES collection */
-	/*******************************/
+	/////////////////////////////////
+	// QUOTES & SOURCES collection //
+	/////////////////////////////////
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#quotesCollection
@@ -1672,9 +1672,9 @@ angular.module('evtviewer.dataHandler')
 		return content;
 	};
 
-	/* **************** */
-	/* CRITICAL ENTRIES */
-	/* **************** */
+	// //////////////// //
+	// CRITICAL ENTRIES //
+	// //////////////// //
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getCriticalTextsCollection
@@ -1877,7 +1877,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Retrieve the information about a particular critical apparatus entry.
      * @param {string} entryId Identifier of critical apparatus entry to handle
-     * @return {Object} Object representing the critical apparatus entry with <code>id = entryId</code>.
+     * @returns {Object} Object representing the critical apparatus entry with <code>id = entryId</code>.
      * It is structured as follows:
      	<pre>
 			var entry = {
@@ -2172,9 +2172,9 @@ angular.module('evtviewer.dataHandler')
 		return criticalAppCollection.filtersCollection.filters[filter].values[value].color;
 	};
 
-	/* ****************** */
-	/* BIBLIOGRAPHIC REFs */
-	/* ****************** */
+	// ////////////////// //
+	// BIBLIOGRAPHIC REFs //
+	// ////////////////// //
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addBibliographicRef
@@ -2286,9 +2286,9 @@ angular.module('evtviewer.dataHandler')
 		return bibliographicRefsCollection[refId];
 	};
 
-	/*******************/
-	/* VERSION ENTRIES */
-	/*******************/
+	// /////////////// //
+	// VERSION ENTRIES //
+	// /////////////// //
 
 	/**
      * @ngdoc method
@@ -2462,16 +2462,16 @@ angular.module('evtviewer.dataHandler')
      * Retrieve the parsed text of a particular version of text.
      * @param {string} ver Identifier of version to handle
      * @param {string} docId Identifier of document to handle
-     * @return {string} HTML string representing the parsed text of the given version of the given document
+     * @returns {string} HTML string representing the parsed text of the given version of the given document
      * @author CM
      */
 	parsedData.getVersionText = function(ver, docId) {
 		return versionTexts[docId][ver];
 	};
 
-	/* ************ */
-	/* PROJECT INFO */
-	/* ************ */
+	// //////////// //
+	// PROJECT INFO //
+	// //////////// //
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#updateProjectInfoContent
@@ -2510,9 +2510,9 @@ angular.module('evtviewer.dataHandler')
 	};
 
 
-	/* ****** */
-	/* GLYPHS */
-	/* ****** */
+	// ////// //
+	// GLYPHS //
+	// ////// //
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addGlyph
@@ -2634,9 +2634,9 @@ angular.module('evtviewer.dataHandler')
 		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
 	};
 
-	/* ***************** */
-	/* DIGITAL FACSIMILE */
-	/* ***************** */
+	// ///////////////// //
+	// DIGITAL FACSIMILE //
+	// ///////////////// //
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addZone
@@ -2717,9 +2717,9 @@ angular.module('evtviewer.dataHandler')
 		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
 	};
 
-	/*******************/
-	/*SOURCES APPARATUS*/
-	/*******************/
+	// ///////////////// //
+	// SOURCES APPARATUS //
+	// ///////////////// //
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addQuote
@@ -2730,7 +2730,7 @@ angular.module('evtviewer.dataHandler')
      * @param {Object} entry Object representing a quote to add. It is structured as follows:
      	<pre>
      		var entry = {
-				type: 'quote',
+     			type: 'quote',
 				id,
 				attributes: [],
 				content: [],
@@ -3005,9 +3005,9 @@ angular.module('evtviewer.dataHandler')
 		return sourcesCollection[entryId];
 	};
 
-	/***********/
-	/*ANALOGUES*/
-	/***********/
+	// ///////// //
+	// ANALOGUES //
+	// ///////// //
 
 	/**
      * @ngdoc method

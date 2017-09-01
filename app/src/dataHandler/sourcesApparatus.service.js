@@ -29,7 +29,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} quote XML element to parse
      * @param {string} scopeWit id of witness to consider
      *
-     * @return {objecy} JSON object representing the content of the quote, that is structured as follows:
+     * @returns {objecy} JSON object representing the content of the quote, that is structured as follows:
         <pre>
             var appContent = {
 				attributes: {
@@ -104,7 +104,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {Object} entry JSON object representing the source
      *
-     * @return {objecy} JSON object representing the source, that is structured as follows:
+     * @returns {objecy} JSON object representing the source, that is structured as follows:
         <pre>
             var source = {
 				id: '',
@@ -188,7 +188,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {Object} entry JSON object representing the source
      *
-     * @return {string} generated abbreviation of the source
+     * @returns {string} generated abbreviation of the source
      *
      * @author CM
      */
@@ -229,7 +229,7 @@ angular.module('evtviewer.dataHandler')
      * @param {Object} quote JSON object representing the quote
      * @param {string} scopeWit id of witness to consider
      *
-     * @return {string} the text of the quote
+     * @returns {string} the text of the quote
      *
      * @author CM
      */
@@ -268,7 +268,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @param {Object} entry JSON object representing the entry to handle
      *
-     * @return {string} the text of the entry
+     * @returns {string} the text of the entry
      *
      * @author CM
 	 * @todo Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
@@ -298,7 +298,7 @@ angular.module('evtviewer.dataHandler')
      * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to consider
      *
-     * @return {string} the text of the entry
+     * @returns {string} the text of the entry
      *
      * @author CM
      */

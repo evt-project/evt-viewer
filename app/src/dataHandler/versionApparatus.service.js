@@ -29,7 +29,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} scopeWit id of witness to consider
      * @param {string} scopeVer id of version to consider
      *
-     * @return {objecy} JSON object representing the content of the entry, that is structured as follows:
+     * @returns {objecy} JSON object representing the content of the entry, that is structured as follows:
         <pre>
             var appContent = {
                 attributes : {
@@ -88,7 +88,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} scopeWit id of witness to consider
      * @param {string} scopeVer id of version to consider
      *
-     * @return {objecy} JSON object representing the content of the version, that is structured as follows:
+     * @returns {objecy} JSON object representing the content of the version, that is structured as follows:
         <pre>
             var version = {
                 id : '',

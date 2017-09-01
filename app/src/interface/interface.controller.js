@@ -34,7 +34,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentViewMode
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current view mode from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
-         * @return {string} current view mode
+         * @returns {string} current view mode
          */
 		$scope.getCurrentViewMode = function() {
 			return evtInterface.getState('currentViewMode');
@@ -44,7 +44,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentPage
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current page from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
-         * @return {string} current page
+         * @returns {string} current page
          */
 		$scope.getCurrentPage = function() {
 			return evtInterface.getState('currentPage');
@@ -54,7 +54,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentDocument
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current document from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
-         * @return {string} current document
+         * @returns {string} current document
          */
 		$scope.getCurrentDocument = function() {
 			return evtInterface.getState('currentDoc');
@@ -64,7 +64,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentEdition
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current edition from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
-         * @return {string} current edition
+         * @returns {string} current edition
          */
 		$scope.getCurrentEdition = function() {
 			return evtInterface.getState('currentEdition');
@@ -74,7 +74,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableWitnesses
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get available witnesses from evtInterface properties ({@link evtviewer.interface.evtInterface#getProperty evtInterface.getProperty()})
-         * @return {array} current available witnesses list
+         * @returns {array} current available witnesses list
          */
 		$scope.getAvailableWitnesses = function() {
 			return evtInterface.getProperty('availableWitnesses');
@@ -84,7 +84,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#isWitnessSelectorActive
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check whether witnesses selector is active or not. Get information from evtInterface properties ({@link evtviewer.interface.evtInterface#getProperty evtInterface.getProperty()})
-         * @return {boolean} whether witnesses selector is active or not
+         * @returns {boolean} whether witnesses selector is active or not
          */
 		$scope.isWitnessSelectorActive = function() {
 			return evtInterface.getProperty('witnessSelector');
@@ -364,7 +364,7 @@ angular.module('evtviewer.interface')
          * which can contain info about current document, current page, current edition level, 
          * current view, current apparatus entry selected and all other data that are saved in the URL during navigation.
          * Information about the project (or the edition) are retrieved from {@link evtviewer.dataHandler.parsedData parsedData}.
-         * @return {string} HTML of the generated bookmark to be compiled and shown to the user.
+         * @returns {string} HTML of the generated bookmark to be compiled and shown to the user.
          */
 		$scope.getBookmark = function() {
 			var projectRef = parsedData.getProjectInfo().editionReference || {};
@@ -381,7 +381,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getErrorMsg
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get the current error generated from the {@link evtviewer.communication.evtCommunication evtCommunication} service.
-         * @return {Object} object representing the current communication error:
+         * @returns {Object} object representing the current communication error:
          <pre>
 			var currentError = {
 		        code  : '',
@@ -399,7 +399,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableSourcesTexts
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get available sources texts
-         * @return {array} list of available sources texts
+         * @returns {array} list of available sources texts
          * @author CM
          */
          // Method to get available sources texts
@@ -412,7 +412,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentSourceText
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get the id of the source text shown in the interface.
-         * @return {string} id of the source text shown in the interface
+         * @returns {string} id of the source text shown in the interface
          * @author CM
          */
 		$scope.getCurrentSourceText = function() {
@@ -426,7 +426,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#isApparatusBoxOpen
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check if the apparatuses box is open
-         * @return {boolean} whether the apparatuses box is opened or not
+         * @returns {boolean} whether the apparatuses box is opened or not
          * @author CM
          */
 		$scope.isApparatusBoxOpen = function() {
@@ -437,7 +437,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#showApparatusesBox
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check if the apparatuses box should be shown.
-         * @return {boolean} whether the apparatuses box should be shown or not
+         * @returns {boolean} whether the apparatuses box should be shown or not
          * @author CM
          */
 		$scope.showApparatusesBox = function() {
@@ -448,7 +448,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentVersions
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current versions selected
-         * @return {string} id of current versions selected
+         * @returns {string} id of current versions selected
          * @author CM
          */
 		$scope.getCurrentVersions = function() {
@@ -459,7 +459,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableVersions
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get available versions
-         * @return {array} list of available versions
+         * @returns {array} list of available versions
          * @author CM
          */
 		$scope.getAvailableVersions = function() {
@@ -470,7 +470,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#isVersionSelectorActive
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Check if the selector for the versions is active
-         * @return {boolean} whether the selector for the versions is active or not
+         * @returns {boolean} whether the selector for the versions is active or not
          * @author CM
          */
 		$scope.isVersionSelectorActive = function() {
@@ -481,7 +481,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getAllVersionsNumber
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get number of total versions available
-         * @return {number} number of versions available
+         * @returns {number} number of versions available
          * @author CM
          */
 		$scope.getAllVersionsNumber = function() {
@@ -493,7 +493,7 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get description of a given version
          * @param {string} ver id of version to retrieve
-         * @return {string} HTML of given version description to be compiled in UI
+         * @returns {string} HTML of given version description to be compiled in UI
          * @author CM
          */
 		$scope.getVersion = function(ver) {
@@ -568,7 +568,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableLanguages
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get available languages for interface translation
-         * @return {array} list of languages available for interface translation
+         * @returns {array} list of languages available for interface translation
          */
 		$scope.getAvailableLanguages = function() {
 			return evtTranslation.getLanguages();
@@ -578,7 +578,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentLanguage
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get current selected language
-         * @return {string} id of current selected language
+         * @returns {string} id of current selected language
          */
 		$scope.getCurrentLanguage = function() {
 			return evtTranslation.getCurrentLanguage();
