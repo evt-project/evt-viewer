@@ -4,8 +4,13 @@
  * @name evtviewer.quote.directive:evtQuote
  * @description 
  * # evtQuote
- * TODO: Add description!
- * It uses the {@link evtviewer.quote.controller:QuoteCtrl QuoteCtrl} controller. 
+ * <p>Element that identify a quote connected to a specific source apparatus entry. </p>
+ * <p>It is visually distinguished from the rest of the text.</p>
+ * <p>When the user clicks on it, the connected source apparatus entry with all the information retrieved 
+ * from the source encoded text (and stored in {@link evtviewer.dataHandler.parsedData parsedData}) will be shown.</p>
+ *
+ * <p>It uses the {@link evtviewer.quote.controller:QuoteCtrl QuoteCtrl} controller. </p>
+ * <p>The initial scope is expanded in {@link evtviewer.quote.evtQuote evtQuote} provider.</p>
  *
  * @scope
  * @param {string=} quoteId id of quote to be shown

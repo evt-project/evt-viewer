@@ -4,7 +4,7 @@
  * @name evtviewer.popover.directive:evtPopover
  * @description 
  * # evtPopover
- * <p>Element is a small pop-up box that appears when the user clicks on an element (or passes over it with the mouse) and 
+ * <p>This element is a small pop-up box that appears when the user clicks on an element (or passes over it with the mouse) and 
  * can contain different content.</p>
  * <p>It uses the {@link evtviewer.popover.controller:PopoverCtrl PopoverCtrl} controller.</p>
  * <p>The initial scope is extended in {@link evtviewer.popover.evtPopover evtPopover} provider.</p>
