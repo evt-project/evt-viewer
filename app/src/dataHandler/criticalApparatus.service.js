@@ -24,7 +24,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the content of a particular critical apparatus entry.
+     * The function  will look for the lemma, the significant and not significant readings,
+     * the sub critical apparatus and the critical note. For each element it prepare the output,
+     * and reorganize it in such a structure that speeds up the future data retrievements.
      *
      * @param {element} entry XML element to parse
      * @param {boolean} subApp whether the entry is a nested one
@@ -141,7 +144,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Expand the siglas referenced to a group with the siglas of witnesses contained in that group.
+     * Every new information is stored within the <code>entry</code> object.
+     * Prepare the output for the visualization of readings of a particular group of witnesses.
      *
      * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to consider
@@ -242,7 +247,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the reading text for a particular group of witnesses.
      *
      * @param {Object} reading JSON object representing the reading to handle
      * @param {string} scopeWit id of witness to consider
@@ -286,7 +291,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the content of a particular critical element, that could be a sub apparatus, a generic element 
+     * or a simple text string. This function can be used to generate the output of a critical apparatus entry.
      *
      * @param {Object} element JSON object representing the element to handle
      * @param {string} scopeWit id of witness to consider
@@ -317,7 +323,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the text of the lemma of a particular critical apparatus entry.
      *
      * @param {Object} lemma JSON object representing the lemma to handle
      * @param {string} scopeWit id of witness to consider
@@ -357,7 +363,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the text of nested critical apparatus entries.
+     * The nested apparatus will be delimited by "((" and "))" within the lemma or reading text.
      *
      * @param {string} subAppId id of nested apparatus to handle
      * @param {string} scopeWit id of witness to consider
@@ -385,7 +392,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the output for the list of significant readings of a particular critical apparatus entry.
+     * The function will eventually tranform empty node into omission nodes,
+     * will handle lacunas and fragments tags and generate a well formatted output
+     * where the reading text is follower by the list of witnesses siglas to which the reading belongs. 
      *
      * @param {Object} reading JSON object representing the reading to handle
      * @param {string} scopeWit id of witness to consider
@@ -450,7 +460,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Generic function that allows to retrieve the content of a particular element within a critical apparatus entry.
+     * This element can be an apparatus, a quote, an analogue or a more generic element.
+     * The output will be generated based on the tag name of the element itself.
      *
      * @param {Object} element JSON object representing the critical entry to handle
      * @param {string} scopeWit id of witness to consider
@@ -491,13 +503,16 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the text of the critical apparatus entry, included the nested apparatuses.
+     * The basic text of the entry is already available into <code>content</code> array property;
+     * thus the function will just concatenate the items in it.
      *
      * @param {Object} element JSON object representing the critical entry to handle
      *
      * @returns {string} the text of entry
      * 
      * @author CM
+     * @todo: Decide if the transformation of each text node in a span.textNode is still necessary or not.
      */
 	apparatus.getText = function(entry) {
 		var result = '';
@@ -519,7 +534,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * [PRIVATE] TODO: Add description for function and parameters
+     * [PRIVATE] Retrieve the text of a particular critical apparatus for a particular scope witness.
      *
      * @param {Object} element JSON object representing the critical entry to handle
      * @param {string} scopeWit id of witness to consider
@@ -547,7 +562,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the output to show the list of witnesses to which belongs a particular reading
+     * within a particular critical apparatus entry. Each sigla will be trasformed into a 
+     * <code>&lt;evt-witness-red&gt;</code> element.
      *
      * @param {Object} reading JSON object representing the reading to handle
      * @param {string} elemType type of element that is being handled
@@ -584,7 +601,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the list of attributes (and their values) connected to a particular reading or lemma
+     * of a particular critical apparatus entry.
      *
      * @param {Object} reading JSON object representing the reading to handle
      * @param {string} elemType type of element that is being handled
@@ -611,7 +629,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * This method transform <code>lacunaStart</code> and <code>lacunaEnd</code> elements into simple element that will inform about the start/end of a lacuna.
+     * This method transform <code>lacunaStart</code> and <code>lacunaEnd</code> elements into 
+     * simple element that will inform about the start/end of a lacuna.
      *
      * @param {string} appText text of the apparatus to handle
      *
@@ -628,7 +647,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * This method transform <code>witStart</code> and <code>witEnd</code> elements into simple element that will inform about the start/end of a fragment.
+     * This method transform <code>witStart</code> and <code>witEnd</code> elements into simple element 
+     * that will inform about the start/end of a fragment.
      *
      * @param {string} appText text of the apparatus to handle
      *

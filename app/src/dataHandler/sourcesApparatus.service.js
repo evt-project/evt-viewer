@@ -4,7 +4,7 @@
  * @name evtviewer.dataHandler.evtSourcesApparatus
  * @description 
  * # evtSourcesApparatus
- * TODO: Add description and comments for every method
+ * Service containing methods to handle the contents of sources entries.
  *
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
@@ -24,7 +24,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtSourcesApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the information about a particular quote.
      *
      * @param {element} quote XML element to parse
      * @param {string} scopeWit id of witness to consider
@@ -100,7 +100,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtSourcesApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the information about a particular source entry.
      *
      * @param {Object} entry JSON object representing the source
      *
@@ -184,7 +184,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtSourcesApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the abbreviated form of the output content of a particular source text. 
      *
      * @param {Object} entry JSON object representing the source
      *
@@ -194,22 +194,24 @@ angular.module('evtviewer.dataHandler')
      */
 	apparatus.getSourceAbbr = function(entry) {
 		var abbr = '';
-		if (entry.abbr.msId.length > 0) {
-			for (var i = 0; i < entry.abbr.msId.length; i++) {
-				abbr += apparatus.getText(entry.abbr.msId[i]) + ' ';
-			}
-		} else {
-			//...or author and title.
-			if (entry.abbr.author.length > 0) {
-				abbr += apparatus.getText(entry.abbr.author[0]);
-				if (entry.abbr.author.length > 1) {
-					abbr += 'et al., ';
-				} else {
-					abbr += ', ';
+		if (entry.abbr) {
+			if (entry.abbr.msId && entry.abbr.msId.length > 0) {
+				for (var i = 0; i < entry.abbr.msId.length; i++) {
+					abbr += apparatus.getText(entry.abbr.msId[i]) + ' ';
 				}
-			}
-			if (entry.abbr.title.length > 0) {
-				abbr += apparatus.getText(entry.abbr.title[0]);
+			} else {
+				//...or author and title.
+				if (entry.abbr.author && entry.abbr.author.length > 0) {
+					abbr += apparatus.getText(entry.abbr.author[0]);
+					if (entry.abbr.author.length > 1) {
+						abbr += 'et al., ';
+					} else {
+						abbr += ', ';
+					}
+				}
+				if (entry.abbr.title && entry.abbr.title.length > 0) {
+					abbr += apparatus.getText(entry.abbr.title[0]);
+				}
 			}
 		}
 		//If there is no author nor title, it uses the xml:id
@@ -224,7 +226,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtSourcesApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the textual output of a particular quote.
+     * The function will handle also sub quotes, which will be displayed between "((" and "))".
      *
      * @param {Object} quote JSON object representing the quote
      * @param {string} scopeWit id of witness to consider
@@ -264,7 +267,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtSourcesApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the text of a particular source entry.
+     * The basic text of the entry is already available into <code>content</code> array property;
+     * thus the function will just concatenate the items in it.
      *
      * @param {Object} entry JSON object representing the entry to handle
      *
@@ -293,7 +298,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtSourcesApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * etrieve the text of a particular source entry for a particular scope witness.
      *
      * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to consider

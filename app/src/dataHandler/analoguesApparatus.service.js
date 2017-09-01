@@ -4,7 +4,8 @@
  * @name evtviewer.dataHandler.evtAnaloguesApparatus
  * @description 
  * # evtAnaloguesApparatus
- * TODO: Add description and comments for every method
+ * Service containing methods to handle the contents of analogue entries.
+ *
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
@@ -25,7 +26,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
      *
      * @description
-     * TODO: Add description of method and parameters!
+     * Retrieve the information about a particular analogue apparatus.
      *
      * @param {Object} analogue JSON object representing the analogue to handle
      * @param {string} scopeWit id of witness to handle
@@ -72,7 +73,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
      *
      * @description
-     * TODO: Add description of method and parameters!
+     * Retrieve the information about a particular source entry.
+     * After retrieving the eventual manuscript, author and title information,
+     * the function will transform the bibliographic reference into strings and
+     * retrieve the cited text.
      *
      * @param {Object} entry JSON object representing the entry to handle
      *
@@ -98,21 +102,23 @@ angular.module('evtviewer.dataHandler')
 			_xmlSource: entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, ''),
 		};
 
-		if (entry.abbr.msId.length > 0) {
-			for (var i = 0; i < entry.abbr.msId.length; i++) {
-				source.abbr += '<span class="msId inSource">' + apparatus.getText(entry.abbr.msId[i]) + '</span>';
-			}
-		} else {
-			if (entry.abbr.author.length > 0) {
-				source.abbr += '<span class="author inSource">' + apparatus.getText(entry.abbr.author[0]) + '</span>';
-				if (entry.abbr.author.length > 1) {
-					source.abbr += 'et al., ';
-				} else {
-					source.abbr += ', ';
+		if (entry.abbr) {
+			if (entry.abbr.msId && entry.abbr.msId.length > 0) {
+				for (var i = 0; i < entry.abbr.msId.length; i++) {
+					source.abbr += '<span class="msId inSource">' + apparatus.getText(entry.abbr.msId[i]) + '</span>';
 				}
-			}
-			if (entry.abbr.title.length > 0) {
-				source.abbr += '<span class="title inSource">' + apparatus.getText(entry.abbr.title[0]) + '</span>';
+			} else {
+				if (entry.abbr.author && entry.abbr.author.length > 0) {
+					source.abbr += '<span class="author inSource">' + apparatus.getText(entry.abbr.author[0]) + '</span>';
+					if (entry.abbr.author.length > 1) {
+						source.abbr += 'et al., ';
+					} else {
+						source.abbr += ', ';
+					}
+				}
+				if (entry.abbr.title && entry.abbr.title.length > 0) {
+					source.abbr += '<span class="title inSource">' + apparatus.getText(entry.abbr.title[0]) + '</span>';
+				}
 			}
 		}
 		if (source.abbr === '') {
@@ -143,7 +149,8 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
      *
      * @description
-     * TODO: Add description of method and parameters!
+     * Retrieve the content of the header of a particular analogue entry.
+     * Please note: The header is the main text to be shown in the inline box representing the analogue entry.
      *
      * @param {Object} analogue JSON object representing the analogue to handle
      * @param {string} scopeWit id of witness to handle
@@ -183,7 +190,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
      *
      * @description
-     * TODO: Add description of method and parameters!
+     * Retrieve the text of a particular analogue entry.
+     * The basic text of the entry is already available into <code>content</code> array property;
+     * thus the function will just concatenate the items in it.
      *
      * @param {Object} entry JSON object representing the entry to handle
      *
@@ -210,7 +219,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtAnaloguesApparatus
      *
      * @description
-     * TODO: Add description of method and parameters!
+     * Retrieve the text of a particular analogue entry for a particular scope witness.
      *
      * @param {Object} entry JSON object representing the entry to handle
      * @param {string} scopeWit id of witness to handle

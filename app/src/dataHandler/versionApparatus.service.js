@@ -4,7 +4,7 @@
  * @name evtviewer.dataHandler.evtVersionApparatus
  * @description 
  * # evtVersionApparatus
- * TODO: Add description and comments for every method
+ * Service containing methods to handle the contents of alternative version of text (for double recensio support).
  *
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
@@ -23,7 +23,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtVersionApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the information about a particular version entry.
      *
      * @param {element} entry XML element to parse
      * @param {string} scopeWit id of witness to consider
@@ -82,7 +82,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtVersionApparatus
      *
      * @description
-     * TODO: Add description for function and parameters
+     * Retrieve the content of a particular version.
      *
      * @param {Object} ver JSON object representing a version of the text
      * @param {string} scopeWit id of witness to consider
