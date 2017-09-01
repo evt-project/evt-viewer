@@ -553,7 +553,7 @@ angular.module('evtviewer.dataHandler')
 		for (var i = 0; i < entityNode.attributes.length; i++) {
 			var attrib = entityNode.attributes[i];
 			if (attrib.specified) {
-				newNodeElem.setAttribute('data-' + attrib.name, attrib.value);
+				newNodeElem.setAttribute('data-' + attrib.name.replace(':','-'), attrib.value);
 				headTextContent += evtParser.camelToSpace(attrib.value) + ', ';
 			}
 		}

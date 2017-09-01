@@ -319,7 +319,7 @@ angular.module('evtviewer.dataHandler')
 			for (var i = 0; i < element.attributes.length; i++) {
 				var attrib = element.attributes[i];
 				if (attrib.specified) {
-					var attribName = attrib.name.replace(':', '_');
+					var attribName = attrib.name.replace(':', '-');
 					attributes[attribName] = attrib.value;
 					attributes._indexes.push(attribName);
 				}
@@ -707,7 +707,7 @@ angular.module('evtviewer.dataHandler')
 							var attrib = mapping.attributes[i];
 							if (attrib.specified) {
 								glyph.mapping[sType].attributes.push({
-									name: attrib.name,
+									name: attrib.name.replace(':', '-'),
 									value: attrib.value
 								});
 							}
@@ -790,7 +790,7 @@ angular.module('evtviewer.dataHandler')
 				for (var i = 0; i < element.attributes.length; i++) {
 					var attrib = element.attributes[i];
 					if (attrib.specified) {
-						newPage[attrib.name] = attrib.value;
+						newPage[attrib.name.replace(':', '-')] = attrib.value;
 					}
 				}
 
@@ -874,7 +874,7 @@ angular.module('evtviewer.dataHandler')
 				for (var j = 0; j < element.attributes.length; j++) {
 					var attrib = element.attributes[j];
 					if (attrib.specified) {
-						newDoc[attrib.name] = attrib.value;
+						newDoc[attrib.name.replace(':', '-')] = attrib.value;
 					}
 				}
 				parsedData.addDocument(newDoc);

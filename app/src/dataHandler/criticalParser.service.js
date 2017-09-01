@@ -420,7 +420,7 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		if (criticalText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
+			var errorMsg = '<span class="alert-msg alert-msg-error critical-text-error"># Critical Text Error. # <br/>{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 			criticalText = errorMsg;
 		}
 

@@ -849,7 +849,7 @@ angular.module('evtviewer.dataHandler')
 			var attrib = attribKeys[key];
 			var value = element.attributes[attrib];
 			if (attrib !== 'xml:id') {
-				spanElement.setAttribute('data-' + attrib, value);
+				spanElement.setAttribute('data-' + attrib.replace(':', '-'), value);
 			}
 		}
 
@@ -1804,7 +1804,7 @@ angular.module('evtviewer.dataHandler')
 					var attrib = attribKeys[key];
 					var value = elem.attributes[attrib];
 					if (attrib !== 'xml:id') {
-						spanElement.setAttribute('data-' + attrib, value);
+						spanElement.setAttribute('data-' + attrib.replace(':','-'), value);
 					}
 				}
 
@@ -2435,7 +2435,7 @@ angular.module('evtviewer.dataHandler')
 					var attrib = attribKeys[key];
 					var value = elem.attributes[attrib];
 					if (attrib !== 'xml:id') {
-						spanElement.setAttribute('data-' + attrib, value);
+						spanElement.setAttribute('data-' + attrib.replace(':','-'), value);
 					}
 				}
 

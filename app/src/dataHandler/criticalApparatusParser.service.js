@@ -155,8 +155,9 @@ angular.module('evtviewer.dataHandler')
     parser.parseWitnesses = function(doc) {
         var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
         var currentDocument = angular.element(doc);
-        if (currentDocument.find(config.listDef.replace(/[<>]/g, '')).length > 0) {
-            angular.forEach(currentDocument.find(config.listDef.replace(/[<>]/g, '')), 
+        var witnessesList = currentDocument.find(config.listDef.replace(/[<>]/g, ''));
+        if (witnessesList.length > 0) {
+            angular.forEach(witnessesList, 
                 function(element) {
                     if ( !evtParser.isNestedInElem(element, element.tagName) ) {
                         angular.forEach(element.childNodes, function(child){
