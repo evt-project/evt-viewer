@@ -4,8 +4,11 @@
  * @name evtviewer.versionReading.directive:evtVersionReading
  * @description 
  * # evtVersionReading
- * TODO: Add description!
- * It uses the {@link evtviewer.versionReading.controller:versionReadingCtrl versionReadingCtrl} controller. 
+ * <p>Element that identify a double recensio reading connected to a specific double recensio apparatus. </p>
+ * <p>When the user clicks on it, the connected double recensio apparatus with all the information retrieved 
+ * from the source encoded text (and stored in {@link evtviewer.dataHandler.parsedData parsedData}) will be shown</p>
+ * <p>It uses the {@link evtviewer.versionReading.controller:versionReadingCtrl versionReadingCtrl} controller.</p>
+ * <p>The initial scope is expanded in {@link evtviewer.versionReading.evtReading evtReading} provider.</p>
  *
  * @scope
  * @param {string=} type tipology of version reading
@@ -15,6 +18,9 @@
  * @param {string=} scopeVersion id of scope version
  *
  * @restrict E
+ *
+ * @requires evtviewer.versionReading.evtVersionReading
+ * @requires evtviewer.interface.evtInterface
  *
  * @author CM
 **/
