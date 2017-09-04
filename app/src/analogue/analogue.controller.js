@@ -52,7 +52,7 @@ angular.module('evtviewer.analogue')
      *
      * @description
      * Set *selected* property to true (this property is used to simulate the selection on
-     * different analogue instances connected to the same analogues apparatus when the uses clicks on one of them).
+     * different analogue instances connected to the same analogues apparatus when the user clicks on one of them).
      */
 	this.setSelected = function() {
 		vm.selected = true;
@@ -64,7 +64,7 @@ angular.module('evtviewer.analogue')
      *
      * @description
      * Set *selected* property to false (this property is used to simulate the selection on
-     * different analogue instances connected to the same analogues apparatus when the uses clicks on one of them).
+     * different analogue instances connected to the same analogues apparatus when the user clicks on one of them).
      */
 	this.unselect = function() {
 		vm.selected = false;

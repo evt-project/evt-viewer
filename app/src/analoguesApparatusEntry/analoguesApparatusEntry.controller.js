@@ -25,8 +25,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	// ///////////////////////// //
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#toggleSource
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#toggleSource
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Update the information contained in the tabs below, depending on source clicked.
@@ -51,8 +51,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#toggleOverSource
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#toggleOverSource
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Toggle <code>__overSource</code> directive property depending on a particular source id.
@@ -69,8 +69,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#getActiveSourceAbbr
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#getActiveSourceAbbr
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Retrieve the abbreviated output for a particular source.
@@ -87,8 +87,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#toggleSubContent
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#toggleSubContent
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Open/Close a specific tab of additional contents. If <code>subContentName</code> is the same
@@ -105,8 +105,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#mouseOver
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#mouseOver
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Set *over* property to true (this property is used to simulate the over event on
@@ -117,8 +117,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#mouseOut
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#mouseOut
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Set *over* property to false (this property is used to simulate the over event on
@@ -129,24 +129,24 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#mouseOut
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#mouseOut
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Set *selected* property to true (this property is used to simulate the selection on
-     * different reading instances connected to the scope analogues apparatus when the uses clicks on current element).
+     * different reading instances connected to the scope analogues apparatus when the user clicks on current element).
      */
 	this.setSelected = function() {
 		vm.selected = true;
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#unselect
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#unselect
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Set *selected* property to false (this property is used to simulate the selection on
-     * different reading instances connected to the scope analogues apparatus when the uses clicks on current element).
+     * different reading instances connected to the scope analogues apparatus when the user clicks on current element).
      */
 	this.unselect = function() {
 		vm.selected = false;
@@ -154,8 +154,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#unselect
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#isSelect
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Check if the analogues apparatus entry can be considered "*selected*".
@@ -170,8 +170,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#closeSubContent
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#closeSubContent
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Close currently opened sub content.
@@ -181,13 +181,13 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#toggleOverAnaloguesEntries
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#toggleOverAnaloguesEntries
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * <p>Simulate the "over" event on all the analogue connected to the scope analogue apparatus entry.</p>
      * <p>It will use some methods from {@link evtviewer.reading.evtReading evtReading} provider and from
-     * {@link evtviewer.analoguesApparatusEntryCtrl.evtCriticalApparatusEntry evtCriticalApparatusEntry}.</p>
+     * {@link evtviewer.analoguesApparatusEntry.evtCriticalApparatusEntry evtCriticalApparatusEntry}.</p>
      * @param {event} $event mouseover/mouseout event
      */
 	this.toggleOverAnaloguesEntries = function($event) {
@@ -206,8 +206,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#callbackClick
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#callbackClick
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * Callback fired when user clicks on a analogue apparatus entry. It will:<ul>
@@ -230,8 +230,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#alignAnalogues
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#alignAnalogues
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
      * <p>Scroll textual content of opened boxes (or apparatuses) to the readings connected to scope analogue apparatus entry.</p>
@@ -246,11 +246,11 @@ angular.module('evtviewer.analoguesApparatusEntry')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl#destroy
-     * @methodOf evtviewer.analoguesApparatusEntryCtrl.controller:analoguesApparatusEntryCtrl
+     * @name evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl#destroy
+     * @methodOf evtviewer.analoguesApparatusEntry.controller:analoguesApparatusEntryCtrl
      *
      * @description
-     * <p>Remove instance from saved instances in {@link evtviewer.analoguesApparatusEntryCtrl.evtCriticalApparatusEntry evtCriticalApparatusEntry} provider.</p>
+     * <p>Remove instance from saved instances in {@link evtviewer.analoguesApparatusEntry.evtCriticalApparatusEntry evtCriticalApparatusEntry} provider.</p>
      */
 	this.destroy = function() {
 		evtAnaloguesApparatusEntry.destroy(this.uid);

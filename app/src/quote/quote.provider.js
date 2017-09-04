@@ -105,7 +105,7 @@ angular.module('evtviewer.quote')
          * Get the references of the instances of <code>&lt;evt-quote&gt;</code> connected 
          * to a particular sources apparatus entry.
          * 
-         * @param {string} appId id of sources apparatus entry to handle
+         * @param {string} currentId id of sources apparatus entry to handle
          *
          * @returns {array} array of references of <code>&lt;evt-quote&gt;</code>s connected 
          * to given sources apparatus entry 
@@ -135,7 +135,7 @@ angular.module('evtviewer.quote')
          *
          * @description
          * Set current sources apparatus entry.
-         * @param {string} appId id of sources apparatus entry to be set as current one
+         * @param {string} quoteId id of quote to be set as current one
          */
         quote.setCurrentSourcesEntry = function(quoteId) {
             if (evtInterface.getState('currentQuote')  !== quoteId) {
@@ -176,7 +176,7 @@ angular.module('evtviewer.quote')
          * @description
          * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-quote&gt;</code> 
          * connected to a given sources apparatus entry
-         * @param {string} appId id of sources apparatus entry to handle
+         * @param {string} quoteId id of quote to handle
          */
         quote.mouseOverByQuoteId = function(quoteId) {
             angular.forEach(collection, function(currentQuote) {
@@ -228,9 +228,9 @@ angular.module('evtviewer.quote')
          *
          * @description
          * <p>Select all <code>&lt;evt-quote&gt;</code>s connected to a given sources apparatus entry.</p>
-         * <p>Set given <code>appId</code> as current one 
+         * <p>Set given <code>quoteId</code> as current one 
          * ({@link evtviewer.quote.evtQuote#setCurrentAppEntry setCurrentAppEntry()}).</p>
-         * @param {string} appId id of sources apparatus entry to handle
+         * @param {string} quoteId id of quote to handle
          */
         quote.selectById = function(quoteId) {
             angular.forEach(collection, function(currentQuote) {

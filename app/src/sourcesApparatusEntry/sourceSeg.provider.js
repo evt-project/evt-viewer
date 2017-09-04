@@ -4,7 +4,9 @@
  * @name evtviewer.sourcesApparatusEntry.evtSourceSeg
  * @description 
  * # evtSourceSeg
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.sourcesApparatusEntry.directive:evtSourceSeg evtSourceSeg} 
+ * directive and stores its reference untill the directive remains instantiated.
  *
  * @author CM
 **/
@@ -21,7 +23,37 @@ angular.module('evtviewer.sourcesApparatusEntry')
             collection = {},
             list = [],
             idx = 0;
-        
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#build
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * <p>This method will extend the scope of 
+         * {@link evtviewer.sourcesApparatusEntry.directive:evtSourceSeg evtSourceSeg} directive 
+         * according to selected configurations and parsed data.</p>
+         *
+         * @param {Object} scope initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    uid,
+                    segId,
+                    quoteId,
+                    sourceId,
+                    
+                    over,
+                    selected,
+
+                    panel : {
+                        quotes,
+                        _quoteOver,
+                        _quoteSelected
+                    }
+                };
+            </pre>
+         */
         sourceSeg.build = function(scope) {
             var currentId = idx++,
                 segId = scope.segId || undefined,
@@ -69,23 +101,61 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
             return collection[currentId];
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#getById
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Get the reference to <code>&lt;evt-source-seg&gt;</code>
+         * with given id.
+         * 
+         * @param {string} currentId id of source segment entry to handle
+         *
+         * @returns {Object} object representing the reference to <code>&lt;evt-source-seg&gt;</code>
+         * with given id
+         */
         sourceSeg.getById = function(currentId) {
             if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#getList
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Get the list of all the instance of <code>&lt;evt-source-seg&gt;</code>.
+         *
+         * @returns {array} array of ids of all the instance of <code>&lt;evt-source-seg&gt;</code>.
+         */
         sourceSeg.getList = function() {
             return list;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#mouseOutAll
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Simulate a "*mouseout*" event on all instances of <code>&lt;evt-source-seg&gt;</code>
+         */
         sourceSeg.mouseOutAll = function() {
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.mouseOut();
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#mouseOverBySegId
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-source-seg&gt;</code> 
+         * with given entry id 
+         * @param {string} segId Id of analogues apparatus entry to handle
+         */
         sourceSeg.mouseOverBySegId = function(segId) {
             angular.forEach(collection, function(currentEntry) {
                 if (currentEntry.segId === segId) {
@@ -95,7 +165,16 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 }
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#selectBySegId
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * <p>Select all <code>&lt;evt-source-seg&gt;</code>s connected to a given segment.</p>
+         * <p>Set given <code>segId</code> as current one.</p>
+         * @param {string} segId Id of source segment to handle
+         */
         sourceSeg.selectBySegId = function(segId) {
             angular.forEach(collection, function(currentEntry) {
                 if (currentEntry.segId === segId) {
@@ -106,14 +185,29 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 }
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#unselectAll
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Unselect all instances of <code>&lt;evt-source-seg&gt;</code>
+         */
         sourceSeg.unselectAll = function() {
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.unselect();
                 currentEntry.unselectQuote();
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#updateCurrentQuote
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Set current analogues apparatus entry.
+         * @param {string} quoteId Id of quote entry to be set as current one
+         */
         sourceSeg.updateCurrentQuote = function(quoteId) {
             if (currentQuote !== quoteId) {
                 angular.forEach(collection, function(currentEntry) {
@@ -127,11 +221,28 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 });
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#getCurrentQuote
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Retrieve current quote entry.
+         * @returns {string} ID of current quote
+         */
         sourceSeg.getCurrentQuote = function() {
             return currentQuote;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#destroy
+         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         *
+         * @description
+         * Delete the instance of a particular <code>&lt;evt-source-seg&gt;</code>
+         * 
+         * @param {string} tempId Id of <code>&lt;evt-source-seg&gt;</code> to destroy
+         */
         sourceSeg.destroy = function(tempId) {
             delete collection[tempId];
         };

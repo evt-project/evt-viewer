@@ -175,7 +175,7 @@ angular.module('evtviewer.criticalApparatusEntry')
      *
      * @description
      * Set *selected* property to true (this property is used to simulate the selection on
-     * different reading instances connected to the scope critical apparatus when the uses clicks on current element).
+     * different reading instances connected to the scope critical apparatus when the user clicks on current element).
      */
     this.setSelected = function() {
         vm.selected = true;
@@ -187,7 +187,7 @@ angular.module('evtviewer.criticalApparatusEntry')
      *
      * @description
      * Set *selected* property to false (this property is used to simulate the selection on
-     * different reading instances connected to the scope critical apparatus when the uses clicks on current element).
+     * different reading instances connected to the scope critical apparatus when the user clicks on current element).
      */
     this.unselect = function() {
         vm.selected = false;

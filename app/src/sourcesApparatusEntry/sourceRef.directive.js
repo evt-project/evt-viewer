@@ -4,8 +4,9 @@
  * @name evtviewer.sourcesApparatusEntry.directive:evtSourceRef
  * @description 
  * # evtSourceRef
- * TODO: Add description!
- *
+ * <p>Custom directive that will handle the connection between the source and the text in the Source-Text View.</p>
+ * <p>The {@link evtviewer.sourcesApparatusEntry.controller:sourceRefCtrl controller} for this directive is dynamically defined 
+ * inside the <code>link</code> function.</p>
  * @scope
  * @param {string=} sourceId id of source
  * @param {string=} sourceAbbr abbreviation of source
@@ -26,6 +27,29 @@ angular.module('evtviewer.sourcesApparatusEntry')
         transclude: true,
         templateUrl: 'src/sourcesApparatusEntry/sourceRef.directive.tmpl.html',
         link: function(scope, element, attrs) {
+
+            /**
+             * @ngdoc object
+             * @module evtviewer.sourcesApparatusEntry
+             * @name evtviewer.sourcesApparatusEntry.controller:sourceRefCtrl
+             * @description 
+             * # sourceSegCtrl
+             * This is the controller for the {@link evtviewer.sourcesApparatusEntry.directive:evtSourceRef evtSourceRef} directive. 
+             *
+             * @author CM
+            **/
+            /**
+             * @ngdoc method
+             * @name evtviewer.sourcesApparatusEntry.controller:sourceRefCtrl#openSource
+             * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceRefCtrl
+             *
+             * @description
+             * <p>Open the source connected to the scope quote.</p>
+             * <p>It updates the source to show inside of the source text box.</p>
+             * <p>It switches to the "Source-Text" view.</p>
+             * <p>It checks if the selected quote has a corresponding segment inside of the souce text.
+             * If so, it saves the reference inside of the the "segToAlign" variable.</p>
+             */
             scope.openSource = function() {
                 
                 var newSource = scope.sourceId;

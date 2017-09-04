@@ -4,14 +4,16 @@
  * @name evtviewer.sourcesApparatusEntry.directive:evtSourceSeg
  * @description 
  * # evtSourceSeg
- * TODO: Add description!
- * It uses the {@link evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl sourceSegCtrl} controller. 
+ * <p>Custom directive that will show the segment within the source text.</p>
+ * <p>It uses the {@link evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl sourceSegCtrl} controller. </p>
  *
  * @scope
  * @param {string=} segId id of connected segment
  * @param {string=} sourceId id of connected source
  *
  * @restrict E
+ *
+ * @requires evtviewer.sourcesApparatusEntry.evtSourceSeg
  *
  * @author CM
 **/

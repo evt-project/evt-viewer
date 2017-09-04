@@ -102,7 +102,7 @@ angular.module('evtviewer.analogue')
          * Get the references of the instances of <code>&lt;evt-analogue&gt;</code> connected 
          * to a particular analogues apparatus entry.
          * 
-         * @param {string} appId id of analogues apparatus entry to handle
+         * @param {string} currentId id of analogues apparatus entry to handle
          *
          * @returns {array} array of references of <code>&lt;evt-analogue&gt;</code>s connected 
          * to given analogues apparatus entry 
@@ -132,7 +132,7 @@ angular.module('evtviewer.analogue')
          *
          * @description
          * Set current analogues apparatus entry.
-         * @param {string} appId id of analogues apparatus entry to be set as current one
+         * @param {string} analogueId id of analogues apparatus entry to be set as current one
          */
 		analogue.setCurrentAnaloguesEntry = function(analogueId) {
 			if (evtInterface.getState('currentAnalogue')  !== analogueId) {
@@ -173,7 +173,7 @@ angular.module('evtviewer.analogue')
          * @description
          * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-analogue&gt;</code> 
          * connected to a given analogues apparatus entry
-         * @param {string} appId id of analogues apparatus entry to handle
+         * @param {string} analogueId id of analogues apparatus entry to handle
          */
 		analogue.mouseOverByAnalogueId = function(analogueId) {
 			angular.forEach(collection, function(currentAnalogue) {
@@ -225,9 +225,9 @@ angular.module('evtviewer.analogue')
          *
          * @description
          * <p>Select all <code>&lt;evt-analogue&gt;</code>s connected to a given analogues apparatus entry.</p>
-         * <p>Set given <code>appId</code> as current one 
+         * <p>Set given <code>analogueId</code> as current one 
          * ({@link evtviewer.analogue.evtAnalogue#setCurrentAppEntry setCurrentAppEntry()}).</p>
-         * @param {string} appId id of analogues apparatus entry to handle
+         * @param {string} analogueId id of analogues apparatus entry to handle
          */
 		analogue.selectById = function(analogueId) {
 			angular.forEach(collection, function(currentAnalogue) {

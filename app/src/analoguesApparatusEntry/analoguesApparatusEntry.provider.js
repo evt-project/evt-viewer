@@ -185,7 +185,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
          * Get the reference to <code>&lt;evt-analogues-apparatus-entry&gt;</code>
          * with given id.
          * 
-         * @param {string} appId id of analogues apparatus entry to handle
+         * @param {string} currentId id of analogues apparatus entry to handle
          *
          * @returns {Object} object representing the reference to <code>&lt;evt-analogues-apparatus-entry&gt;</code>
          * with given id
@@ -215,7 +215,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
          *
          * @description
          * Set current analogues apparatus entry.
-         * @param {string} appId Id of analogues apparatus entry to be set as current one
+         * @param {string} analogueId Id of analogues apparatus entry to be set as current one
          */
 		analoguesAppEntry.setCurrentAnaloguesEntry = function(analogueId) {
 			if (evtInterface.getCurrentAnalogue !== analogueId) {
@@ -232,7 +232,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
          * Retrieve current analogues apparatus entry.
          * @returns {string} id of current analogues apparatus entry
          */
-		analoguesAppEntry.getCurrentAnaloguesEntry = function(analogueId) {
+		analoguesAppEntry.getCurrentAnaloguesEntry = function() {
 			return currentAnaloguesEntry;
 		};
 		/**
@@ -256,7 +256,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
          * @description
          * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-analogues-apparatus-entry&gt;</code> 
          * with given entry id 
-         * @param {string} appId Id of analogues apparatus entry to handle
+         * @param {string} analogueId Id of analogues apparatus entry to handle
          */
 		analoguesAppEntry.mouseOverByAnalogueId = function(analogueId) {
 			angular.forEach(collection, function(currentEntry) {
@@ -287,8 +287,8 @@ angular.module('evtviewer.analoguesApparatusEntry')
          *
          * @description
          * <p>Select all <code>&lt;evt-analogues-apparatus-entry&gt;</code>s connected to a given critical entry.</p>
-         * <p>Set given <code>appId</code> as current one.</p>
-         * @param {string} appId Id of analogues apparatus entry to handle
+         * <p>Set given <code>analogueId</code> as current one.</p>
+         * @param {string} analogueId Id of analogues apparatus entry to handle
          */
 		analoguesAppEntry.selectById = function(analogueId) {
 			angular.forEach(collection, function(currentEntry) {
@@ -307,7 +307,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
          * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
          *
          * @description
-         * Delete the analoguesApparatusEntry of the instance of a particular <code>&lt;evt-analogues-apparatus-entry&gt;</code>
+         * Delete the the instance of a particular <code>&lt;evt-analogues-apparatus-entry&gt;</code>
          * 
          * @param {string} tempId Id of <code>&lt;evt-analogues-apparatus-entry&gt;</code> to destroy
          */

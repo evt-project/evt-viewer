@@ -58,7 +58,7 @@ angular.module('evtviewer.reading')
      *
      * @description
      * Set *selected* property to true (this property is used to simulate the selection on
-     * different reading instances connected to the same critical apparatus when the uses clicks on one of them).
+     * different reading instances connected to the same critical apparatus when the user clicks on one of them).
      */
     this.setSelected = function() {
         vm.selected = true;
@@ -70,7 +70,7 @@ angular.module('evtviewer.reading')
      *
      * @description
      * Set *selected* property to false (this property is used to simulate the selection on
-     * different reading instances connected to the same critical apparatus when the uses clicks on one of them).
+     * different reading instances connected to the same critical apparatus when the user clicks on one of them).
      */
     this.unselect = function() {
         vm.selected = false;
