@@ -519,6 +519,39 @@ angular.module('evtviewer.box')
 			}
 
 			// _console.log('vm - building box for ' + currentId);
+			/**
+		     * @ngdoc method
+		     * @name evtviewer.box.controller:BoxCtrl#updateContent
+		     * @methodOf evtviewer.box.controller:BoxCtrl
+		     *
+		     * @description
+		     * <p>Update the content of the box.</p>
+		     * <p>This method will differ from a box instance to another,
+		     * depending on its type.: <ul>
+			 * <li>If '*image*' it will change the image shown, and prepare the zones for the eventual Image-Text linking tool.</li>
+			 * <li>If '*text*' it will change the text shown, depending on current edition level. 
+			 * If the text is not yet available it will parse it and save it in {@link evtviewer.dataHandler.parsedData parsedData}
+			 * for future retrievements. After the new text is set it will eventually prepare the text for the correct
+			 * functioning of tools like Image-Text Linking, Highlight of Named Entities, etc.</li>
+			 * <li>if '*witness*' it will change the text shown, depending on the scope witness.
+			 * * If the text is not yet available it will parse it and save it in {@link evtviewer.dataHandler.parsedData parsedData}
+			 * for future retrievements.</li>
+			 * <li>if '*source*' it will change the text shown, depending on the scope source.
+			 * * If the text is not yet available it will parse it and save it in {@link evtviewer.dataHandler.parsedData parsedData}
+			 * for future retrievements.</li>
+			 * <li>if '*version*' it will change the text shown, depending on the scope version.
+			 * * If the text is not yet available it will parse it and save it in {@link evtviewer.dataHandler.parsedData parsedData}
+			 * for future retrievements.</li>
+			 * <li>otherwise it will set as new content, the one that is passed as method parameter.</li>
+			 * </ul></p>
+			 * <p>For more details we suggest to see the implementation itself.</p>
+			 * <p>This method is defined and attached to controller scope in the 
+			 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
+			 *
+			 * @param {string} newContent HTML string representing the new content to be shown in the box.
+			 * This will not be necessary for instances of box with type equal to "image", "text", "witness", "source" and "version".
+			 * @returns {string} class names to be added
+		     */
 			var newContent;
 			switch (currentType) {
 				case 'image':
@@ -953,13 +986,13 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-					// //////////// //
-					// Case version //
-					// /////////////////////////////////////////////////////////////////////
-					// It loads the parsed texts of the main text different versions.     //
-					// There are a selector to choose the version, a button to remove     //
-					// the version and a button to handle the font size. | author --> CM //
-					// /////////////////////////////////////////////////////////////////////
+				// //////////// //
+				// Case version //
+				// /////////////////////////////////////////////////////////////////////
+				// It loads the parsed texts of the main text different versions.     //
+				// There are a selector to choose the version, a button to remove     //
+				// the version and a button to handle the font size. | author --> CM //
+				// /////////////////////////////////////////////////////////////////////
 				case 'version':
 					var versionId = parsedData.getVersionEntries()._indexes.versionId[vm.version];
 					topMenuList.selectors.push({

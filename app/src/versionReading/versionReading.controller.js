@@ -247,7 +247,7 @@ angular.module('evtviewer.versionReading')
      * @methodOf evtviewer.versionReading.controller:versionReadingCtrl
      *
      * @description
-     *  <p>Remove instance from saved instances in {@link evtviewer.versionReading.evtReading evtReading} provider.</p>
+     *  <p>Remove instance from saved instances in {@link evtviewer.versionReading.evtVersionReading evtVersionReading} provider.</p>
      */
     this.destroy = function() {
         var tempId = this.uid;
