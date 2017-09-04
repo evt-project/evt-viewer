@@ -103,8 +103,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#getById
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#getById
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Get the reference to <code>&lt;evt-source-seg&gt;</code>
@@ -122,8 +122,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#getList
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#getList
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Get the list of all the instance of <code>&lt;evt-source-seg&gt;</code>.
@@ -135,8 +135,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#mouseOutAll
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#mouseOutAll
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Simulate a "*mouseout*" event on all instances of <code>&lt;evt-source-seg&gt;</code>
@@ -148,8 +148,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#mouseOverBySegId
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#mouseOverBySegId
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-source-seg&gt;</code> 
@@ -167,8 +167,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#selectBySegId
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#selectBySegId
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * <p>Select all <code>&lt;evt-source-seg&gt;</code>s connected to a given segment.</p>
@@ -187,8 +187,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#unselectAll
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#unselectAll
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Unselect all instances of <code>&lt;evt-source-seg&gt;</code>
@@ -201,8 +201,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#updateCurrentQuote
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#updateCurrentQuote
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Set current analogues apparatus entry.
@@ -223,8 +223,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#getCurrentQuote
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#getCurrentQuote
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Retrieve current quote entry.
@@ -235,8 +235,8 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.analoguesApparatusEntry.evtSourceSeg#destroy
-         * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
+         * @name evtviewer.sourcesApparatusEntry.evtSourceSeg#destroy
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourceSeg
          *
          * @description
          * Delete the reference of the instance of a particular <code>&lt;evt-source-seg&gt;</code>

@@ -16,7 +16,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#mouseOver
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Set *over* property to true (this property is used to simulate the over event on
@@ -28,7 +28,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#mouseOut
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Set *over* property to false (this property is used to simulate the over event on
@@ -40,7 +40,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#mouseOut
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Set *selected* property to true (this property is used to simulate the selection on
@@ -52,7 +52,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#unselect
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Set *selected* property to false (this property is used to simulate the selection on
@@ -64,7 +64,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#getQuoteId
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Retrieve the ID of the quote connected to the current instance of &lt;evt-source-seg&gt;.
@@ -75,7 +75,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#setQuoteId
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Update the ID of the quote connected to the current instance of &lt;evt-source-seg&gt;.
@@ -88,7 +88,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#unselectQuote
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Reset the selected quote and the quote over property.
@@ -100,7 +100,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#toggleOverSeg
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Toggle the current "overed" segment.
@@ -116,7 +116,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#callbackClick
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Callback fired when user clicks on a source segment. It will:<ul>
@@ -138,7 +138,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#toggleQuoteOver
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Toggle the selected quote.
@@ -157,7 +157,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     /**
      * @ngdoc method
      * @name evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl#selectQuote
-     * @methodOf evtviewer.sourcesApparatusEntry.controller:evtSourceSeg
+     * @methodOf evtviewer.sourcesApparatusEntry.controller:sourceSegCtrl
      *
      * @description
      * Select a quote and aligne textual boxes to the connected reference.
