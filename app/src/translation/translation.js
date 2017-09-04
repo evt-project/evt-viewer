@@ -4,6 +4,10 @@
  * @module evtviewer.translation
  * @description 
  * # evtviewer.translation
- * TODO: Add description!
+ * Module referring to User Interface translation
+ *
+ * ## Services
+ * - {@link evtviewer.translation.evtTranslation evtTranslation} where are defined and exposed 
+ * methods to handle UI translation.
 **/
 angular.module('evtviewer.translation', []);

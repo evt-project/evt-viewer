@@ -4,15 +4,19 @@
  * @name evtviewer.dataHandler.evtNamedEntitiesParser
  * @description 
  * # evtNamedEntitiesParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding named entities and relations among them
  *
- * @author Chiara Di Pietro
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.parsedData
+ *
+ * @author CDP
 **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtNamedEntitiesParser', function(parsedData, evtParser, config) {
 	var NEparser = {};
-	//TODO retrieve definitions form configurations
+	//TODO retrieve definitions from configurations
 	var listsMainContentDef = '<sourceDesc>';
 	var listsToParse = [{
 		listDef: '<listPlace>',
@@ -47,7 +51,32 @@ angular.module('evtviewer.dataHandler')
 		relationPassiveDef = 'passive',
 		relationMutualDef  = 'mutual',
 		relationTypeDef    = 'type';
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseEntities
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * This method will parse named entities and store extracted data into 
+     * {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     * It is a generic function that will loop over an arry of possible list <code>listsToParse</code> 
+     * and will parse its content depending using tag Names defined in the list itself.
+     * Each element of the <code>listsToParse</code> array is structure as follows:
+     	<pre>
+		var list = {
+			listDef: '', // tagName of list
+			contentDef: '', // tagName of single entity
+			contentForLabelDef: '', // element to be used as main name
+			type: '' // typology of list
+		}
+     	</pre>
+     * Once the parser of entities has finished, it will parse all the relations and update information of entities
+     * that appear in a relation.
+     *
+     * @param {string} doc string representing the XML document to be parsed
+     *
+     * @author CDP
+     */
 	NEparser.parseEntities = function(doc) {
 		var currentDocument = angular.element(doc),
 			relationsInListDef = '';
@@ -103,7 +132,37 @@ angular.module('evtviewer.dataHandler')
 
 		console.log('## parseEntities ##', parsedData.getNamedEntitiesCollection());
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseDirectSubList
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * This method will parse all first level sub list and store extracted data into 
+     * {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {element} nodeElem XML element representing the entity to be parsed
+     * @param {Object} listToParse JSON object representing the list that is being parsed; this object is structured as follows:
+     	<pre>
+		var listToParse = {
+			listDef: '', // tagName of list
+			contentDef: '', // tagName of single entity
+			contentForLabelDef: '', // element to be used as main name
+			type: '' // typology of list
+		}
+     	</pre>
+     * @param {Object} defCollection JSON object representing the collection where to store data about relations;
+     * this object is structured as follows
+     	<pre>
+			var defCollection = {
+				id : '',
+				type : '',
+				title : ''
+			};
+     	</pre>
+     *
+     * @author CDP
+     */
 	NEparser.parseDirectSubList = function(nodeElem, listToParse, defCollection) {
 		var contentDef = listToParse.contentDef, 
 			listDef = listsToParse.listDef;
@@ -118,7 +177,30 @@ angular.module('evtviewer.dataHandler')
 			}
 		});
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseRelationsInList
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * This method will parse all the relations encoded in a list
+     * - It will handle information about roles (active, passive, mutual) and about relation type.
+     * - It will update data in named entities that appear in the relation itself
+     * - Finaly, it will store all data extracted in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {element} nodeElem XML element representing the entity to be parsed
+     * @param {Object} defCollection JSON object representing the collection where to store data about relations. 
+     * This object is structured as follows
+     	<pre>
+			var defCollection = {
+				id : '',
+				type : '',
+				title : ''
+			};
+     	</pre>
+     *
+     * @author CDP
+     */
 	NEparser.parseRelationsInList = function(nodeElem, defCollection) {
 		var parsedRelation = evtParser.parseXMLElement(nodeElem, nodeElem, {skip: '<evtNote>'}),
 			activeRefs = nodeElem.getAttribute(relationActiveDef),
@@ -223,7 +305,7 @@ angular.module('evtviewer.dataHandler')
 		relationText += '</span>';
 		relationText += parsedRelation ? parsedRelation.innerHTML : nodeElem.innerHTML;
 		
-		// Update info in pased named entities
+		// Update info in passed named entities
 		// Active roles
 		// Add relation info to active elements
 		for (var x = 0; x < activeRefsArray.length; x++) {
@@ -307,11 +389,47 @@ angular.module('evtviewer.dataHandler')
 			relationEl.content.actors = actors;
 			relationEl.content._indexes.push('actors');
 		}
-
-
 		parsedData.addNamedEntityInCollection(defCollection, relationEl, relationEl._listPos);
 	};
-
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseEntity
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * [PRIVATE] This is a very generic function to parse a single entity.
+     * The content of the entity is parsed in a very generic way:
+     * - A loop will transform every child node of the given element in a JSON structure that looks like this:
+     	<pre>
+     		var element = {
+     			content : {
+     				'childNode_1': { 'text': 'Text with HTML of child 1', 'attributes': [ ] }, 
+     				'childNode_2': { 'text': 'Text with HTML of child 2', 'attributes': [ ] }, 
+     				'childNode_n': { 'text': 'Text with HTML of child n', 'attributes': [ ] },
+     				_indexes: [ 'childNode_1', 'childNode_2', 'childNode_n' ]
+     			}
+     		};
+     	</pre>
+     * - The generic XML parser will transform the content of each node in an HTML element with *Tag Name* as *Class Name*
+     *
+     * @param {element} nodeElem XML element representing the entity to parse
+     * @param {string} listToParse encoding definitions of the list to which the entity belongs
+     *
+     * @returns {Object} JSON element representing the entity, structure as follows:
+     	<pre>
+			var el = {
+				id         : '',
+				label      : '',
+				content    : {
+					_indexes: []
+				},
+				_listPos   : '',
+				_xmlSource : ''
+			};
+     	</pre>
+     * 
+     * @author CDP
+     */
 	var parseEntity = function(nodeElem, listToParse) {
 		var contentDef = listToParse.contentDef, 
 			listDef = listToParse.listDef,
@@ -336,17 +454,6 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		angular.forEach(nodeElem.childNodes, function(child) {
-			// Each child node of XML node will be saved in a JSON structure that looks like this:
-			// element: {
-			//		content : {
-			//			'childNode_1': { 'text': 'Text with HTML of child 1', 'attributes': [ ] }, 
-			//			'childNode_2': { 'text': 'Text with HTML of child 2', 'attributes': [ ] }, 
-			//			'childNode_n': { 'text': 'Text with HTML of child n', 'attributes': [ ] },
-			//			_indexes: [ 'childNode_1', 'childNode_2', 'childNode_n' ]
-			//		}
-			// }
-			// The generic XML parser will transform the content of each node in an HTML element 
-			// with Tag Name as Class Name
 			if (child.nodeType === 1) {
 				if (contentForLabelDef.indexOf('<'+child.tagName+'>') >= 0 && child.children && child.children.length > 0) {
 					angular.forEach(child.children, function(subChild) {
@@ -378,7 +485,22 @@ angular.module('evtviewer.dataHandler')
 			attributes: evtParser.parseElementAttributes(child) 
 		}); 
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseSubEntity
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * This method will parse entities nested into other entities.
+     *
+     * @param {element} nodeElem XML element representing the main entity
+     * @param {string} contentDef encoding definitions of the single entity
+     * @param {string} listDef encoding definitions of the list to which the entity belongs
+     *
+     * @returns {element} <code>evt-named-entity-ref</code> pointing to given entity reference
+     * 
+     * @author CDP
+     */
 	NEparser.parseSubEntity = function(nodeElem, contentDef, listDef) {
 		var newNodeElem = document.createElement('evt-named-entity-ref'),
 			entityRef = nodeElem.getAttribute('ref'),
@@ -403,18 +525,24 @@ angular.module('evtviewer.dataHandler')
 		}
 		return newNodeElem;
 	};
-
-	/* ******************* */
-	/* parseNamedEntitySubList(docDOM) */
-	/* **************************************************************************** */
-	/* Function to parse an XML element representing a named entity sub list	    */
-	/* and transform it into an unordered list with attributes as titles 			*/
-	/* @doc -> XML to be parsed                                                  	*/
-	/* @entityNode -> Node to be transformed										*/
-	/* @skip -> names of sub elements to skip from transformation					*/
-	/* **************************************************************************** */
-	// It will replace the node @entityNode
-	// and replace it with a new ul element
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseNamedEntitySubList
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * This method will parse an XML element representing a named entity sub list
+	 * and transform it into an unordered list with attributes as titles
+     * It will replace the node <code>entityNode</code> with a new <code>ul</code> element.
+     * 
+     * @param {element} doc XML element representing the document to be parsed
+     * @param {element} entityNode node to be transformed
+     * @param {string} skip names of sub elements to skip from transformation
+     *
+     * @returns {element} new element created from entity node
+     * 
+     * @author CDP
+     */
 	NEparser.parseNamedEntitySubList = function(doc, entityNode, skip) {
 		var newNodeElem = document.createElement('span'),
 			entityHeadElem = document.createElement('span'),
@@ -425,7 +553,7 @@ angular.module('evtviewer.dataHandler')
 		for (var i = 0; i < entityNode.attributes.length; i++) {
 			var attrib = entityNode.attributes[i];
 			if (attrib.specified) {
-				newNodeElem.setAttribute('data-' + attrib.name, attrib.value);
+				newNodeElem.setAttribute('data-' + attrib.name.replace(':','-'), attrib.value);
 				headTextContent += evtParser.camelToSpace(attrib.value) + ', ';
 			}
 		}
@@ -441,7 +569,28 @@ angular.module('evtviewer.dataHandler')
 		}
 		return newNodeElem;
 	};
-
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseCollectionData
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * [PRIVATE] This is a very generic function that will parse the information about an collection of entities.
+     *
+     * @param {element} el XML element representing the collection to be parsed
+     * @param {Object} defCollection JSON object representing the parsed collection and containing data already retrieved. 
+     *
+     * @returns {Object} JSON object representing a collection of entities, structured as follows:
+     	<pre>
+			var defCollection = {
+				id : ''
+				type : '',
+				title : ''
+			};
+     	</pre>
+     * 
+     * @author CDP
+     */
 	var parseCollectionData = function(el, defCollection) {
 		var collection = defCollection;
 		if (el.previousElementSibling && listHeaderDef.indexOf('<' + el.previousElementSibling.tagName + '>') >= 0) {
@@ -477,7 +626,33 @@ angular.module('evtviewer.dataHandler')
 			pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
 		return pageId;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseEntitiesOccurrences
+     * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+     *
+     * @description
+     * This method will parse all the occurrences of a particular named entity..
+     * - It will use regular expression to find the page breaks before a specific occurence
+     * - For each page break identified, it will retrieve the detailed information already parsed and stored in 
+     * {@link evtviewer.dataHandler.parsedData parsedData}.
+     *
+     * @param {element} docObj XML element representing the document to be parsed
+     * @param {string} refId id of named entity to handle
+     *
+     * @returns {array} array of pages in which the given named entity appears. 
+     * Each page is structured as follows:
+     	<pre>
+			var page = {
+				pageId: ''.
+				pageLabel: '',
+				docId: '',
+				docLabel: ''
+			}
+     	</pre>
+     * 
+     * @author CDP
+     */
 	NEparser.parseEntitiesOccurrences = function(docObj, refId) {
 		var doc = docObj && docObj.content ? docObj.content : undefined,
 			docHTML = doc ? doc.outerHTML : undefined,

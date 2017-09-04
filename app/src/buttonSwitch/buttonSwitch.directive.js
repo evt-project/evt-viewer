@@ -4,14 +4,24 @@
  * @name evtviewer.buttonSwitch.directive:buttonSwitch
  * @description 
  * # buttonSwitch
- * TODO: Add description!
+ * <p>Container that simulates a button. This is used to uniformize the layout of buttons
+ * to all different operating system and browser. </p>
+ * <p>Buttons can have icon and/or text and will trigger a callback function whem users click on it.</p>
+ * <p>Since each instance of buttonSwitch must be controlled in different 
+ * ways depending on type, the {@link evtviewer.buttonSwitch.controller:ButtonSwitchCtrl controller} for this directive is dynamically defined 
+ * inside the {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
  *
  * @scope
  * @param {string=} title title of button
  * @param {string=} label label of button
  * @param {string=} icon icon of button
- * @param {string=} type type of button that will determin the callback
- * @param {string=} value value of button
+ * @param {string=} type type of button that will determin the callback. Handled values: '*addWit*', '*alignReadings*', 
+ * '*bookmark*', '*changeViewMode*', '*colorLegend*', '*closeDialog*', '*closePinned*', '*download-xml*',
+ * '*fontSizeDecrease*', '*fontSizeTools*', '*front*', '*heatmap*', '*itl*', '*mainMenu*', '*openGlobalDialogInfo*', 
+ * '*openGlobalDialogWitnesses*', '*openGlobalDialogLists*', '*pin*', '*removeWit*', '*searchInEdition*', '*searchInWit*', 
+ * '*share*', '*toggleInfoWit*', '*toggleFilterApp*', '*togglePinned*', '*witList*', '*toggleInfoSrc*', '*addVer*', 
+ * '*removeVer*', '*cropText*'.
+ * @param {string=} value value associated to button
  * @param {string=} iconPos position of icon ('left', 'right'). Default 'right'
  *
  * @restrict E

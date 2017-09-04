@@ -4,8 +4,7 @@
  * @name evtviewer.bibliography.controller:BiblElemCtrl
  * @description 
  * # BiblElemCtrl
- * TODO: Add description and list of dependencies!
- * The controller for the {@link evtviewer.bibliography.directive:evtBiblElem evtBiblElem} directive. 
+ * This is the controller for the {@link evtviewer.bibliography.directive:evtBiblElem evtBiblElem} directive. 
 **/
 angular.module('evtviewer.bibliography')
 
@@ -17,9 +16,18 @@ angular.module('evtviewer.bibliography')
     //recupero stili bibliografici
     vm.styles = config.allowedBibliographicStyles;
     vm.initialSelectedStyle = config.defaultBibliographicStyle;
-    _console.log(vm.initialSelectedStyle);
+    /**
+     * @ngdoc method
+     * @name evtviewer.bibliography.controller:BiblElemCtrl#getFormattedBibl
+     * @methodOf evtviewer.bibliography.controller:BiblElemCtrl
+     *
+     * @description
+     * Format the output of the entry accordingly to the globally selected style.
+     *
+     * @returns {string} string of the HTML to be compiles, representing the output of the bibliographic entry,
+     * properly formatted according to globally selected style
+     */
     vm.getFormattedBibl = function() {
-        _console.log($scope.biblId);
         var biblElement = parsedData.getBibliographicRefById($scope.biblId);
         if (biblElement) {
             if (!biblElement.outputs[vm.initialSelectedStyle]) {
@@ -30,5 +38,4 @@ angular.module('evtviewer.bibliography')
             return '';
         }
     };
-
 });

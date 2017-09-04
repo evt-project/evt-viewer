@@ -4,8 +4,11 @@
  * @name evtviewer.reference.directive:ref
  * @description 
  * # ref
- * TODO: Add description!
- * It uses the {@link evtviewer.reference.controller:RefCtrl RefCtrl} controller. 
+ * <p>Element pointing to internal or external resources.</p>
+ * <p>A particular action will be performed when clicking on it, 
+ * according to target type (internal, external, etc.).</p>
+ * <p>It uses the {@link evtviewer.reference.controller:RefCtrl RefCtrl} controller.</p>
+ * <p>The initial scope is extended in {@link evtviewer.reference.evtRef evtRef} provider.</p>
  *
  * @scope
  * @param {string=} target referenced target

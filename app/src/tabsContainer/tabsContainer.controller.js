@@ -4,8 +4,11 @@
  * @name evtviewer.tabsContainer.controller:TabsContainerCtrl
  * @description 
  * # TabsContainerCtrl
- * TODO: Add description and list of dependencies!
- * The controller for the {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive. 
+ * This is the controller for the {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive. 
+ * @requires $log
+ * @requires $scope
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.interface.evtInterface
 **/
 angular.module('evtviewer.tabsContainer')
 

@@ -1,0 +1,11 @@
+@ngdoc overview
+@name Development Enviroment Preparation
+@description
+
+# EVT 2 - Development Enviroment Preparation
+Short instructions to install and configure the development framework for EVT 2.0 (evt-viewer).
+Select your operating system to start.
+
+- {@link installation/install_Linux Linux}
+- {@link installation/install_Windows Windows}
+- {@link installation/install_Mac OS X}

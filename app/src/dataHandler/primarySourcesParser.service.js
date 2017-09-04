@@ -4,7 +4,13 @@
  * @name evtviewer.dataHandler.evtPrimarySourcesParser
  * @description 
  * # evtPrimarySourcesParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding primary source information
+ *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -13,7 +19,20 @@ angular.module('evtviewer.dataHandler')
 
 	var defSurfaceElement = 'surface',
 		defZoneElement = 'zone';
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtPrimarySourcesParser#parseZones
+     * @methodOf evtviewer.dataHandler.evtPrimarySourcesParser
+     *
+     * @description
+     * This method will parse zones in a given <code>facsimile</code> element
+     * and store them into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     * Zones will be used for Image-Text linking.
+     *
+     * @param {element} facsimile XML element to be parsed
+     *
+     * @author CDP
+     */
 	parser.parseZones = function(facsimile) {
 		var currentFacsimile = angular.element(facsimile);
 		angular.forEach(currentFacsimile.find(defSurfaceElement), 

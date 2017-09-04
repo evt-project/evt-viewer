@@ -4,7 +4,17 @@
  * @name evtviewer.dataHandler.evtCriticalParser
  * @description 
  * # evtCriticalParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding critical edition (critical text, witness text, etc.).
+ *
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.dataHandler.evtSourcesParser
+ * @requires evtviewer.dataHandler.evtAnaloguesParser
+ * @requires evtviewer.dataHandler.evtCriticalElementsParser
+ * @requires evtviewer.core.config
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -23,21 +33,36 @@ angular.module('evtviewer.dataHandler')
 			return el.length !== 0;
 		});
 
-
-	/* ******* */
-	/* WITNESS */
-	/* ******* */
-
-	/* ************************** */
-	/* parseWitnessText(doc, wit) */
-	/* ************************************************************************************** */
-	/* Function to parse the XML of the document and generate the text of a specified witness */
-	/* @doc   -> XML to be parsed                                                             */
-	/* @docID -> ID of current DOC                                                            */
-	/* @wit   -> witness specified                                                            */
-	/* ************************************************************************************** */
+	// /////// //
+	// WITNESS //
+	// /////// //
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalParser#parseWitnessText
+     * @methodOf evtviewer.dataHandler.evtCriticalParser
+     *
+     * @description
+     * This method will parse the XML of the document and generate the text of a specified witness.
+     * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements. 
+     * - It will loop over critical apparatus entries (defined as <code>apparatusEntryDef</code>) and get the reading belonging to given witness.
+     * - It will parse quotes and replace quotes elements with quotes text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText evtCriticalElementsParser.getQuoteText()}).
+     * - It will parse analogues and replace analogues elements with analogues text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getAnalogueText evtCriticalElementsParser.getAnalogueText()}).
+     * - It will parse page breaks ({@link evtviewer.dataHandler.evtCriticalApparatusParser#parseWitnessPageBreaks evtCriticalApparatusParser.parseWitnessPageBreaks()}).
+	 * - It will parse page lacunas ({@link evtviewer.dataHandler.evtCriticalApparatusParser#parseWitnessLacunas evtCriticalApparatusParser.parseWitnessLacunas()}).
+     * - If it is a fragmentary witness, it will then parse fragmentary text ({@link evtviewer.dataHandler.evtCriticalApparatusParser#parseFragmentaryWitnessText evtCriticalApparatusParser.parseFragmentaryWitnessText()}).
+     * - It will balance XHTML generated ({@link evtviewer.dataHandler.evtParser#balanceXHTML balanceXHTML()}).
+     * - It finally store generated XHTML into parsed data for future retrievements ({@link evtviewer.dataHandler.parsedData#addWitnessText addWitnessText()}).
+     *
+     * @param {element} doc XML element representing the document to be parsed
+     * @param {string} docID id of current document being parsed
+     * @param {string} wit id of the current witness being parsed
+     *
+     * @returns {promise} promise that the parser will end
+     *
+     * @author CDP
+     * @author CM
+     */
 	parser.parseWitnessText = function(doc, docId, wit) {
-		//console.log('parseWitnessText', wit);
 		var deferred = $q.defer();
 		var witnessText;
 		if (doc !== undefined) {
@@ -64,7 +89,7 @@ angular.module('evtviewer.dataHandler')
 						entry = parsedData.getCriticalEntryById(id);
 					}
 					// If I've already parsed all critical entries,
-					// or I've alreafy parsed the current entry...
+					// or I've already parsed the current entry...
 					// ...I can simply access the model to get the right output
 					// ... otherwise I parse the DOM and save the entry in the model
 					if (!config.loadCriticalEntriesImmediately && entry === undefined) {
@@ -208,21 +233,34 @@ angular.module('evtviewer.dataHandler')
 		return deferred;
 	};
 
-
-
-	/* ************* */
-	/* CRITICAL TEXT */
-	/* ************* */
-
-	/* ************************** */
-	/* parseCriticalText(doc) */
-	/* ************************************************************************ */
-	/* Function to parse the XML of the document and generate the critical text */
-	/* @doc -> XML to be parsed                                                 */
-	/* @docID -> ID of current DOC                                              */
-	/* @scopeVersion -> version of the text that has to be parsed               */
-	/* ************************************************************************ */
-	parser.parseCriticalText = function(doc, docId, scopeVersion) {
+	// ///////////// //
+	// CRITICAL TEXT //
+	// ///////////// //
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalParser#parseCriticalText
+     * @methodOf evtviewer.dataHandler.evtCriticalParser
+     *
+     * @description
+     * This method will parse the XML of the document and generate the critical text.
+     * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements. 
+     * - It will loop over critical apparatus entries (defined as <code>apparatusEntryDef</code>) and get the lemma.
+     * - It will parse quotes and replace quotes elements with quotes text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText evtCriticalElementsParser.getQuoteText()}).
+     * - It will parse analogues and replace analogues elements with analogues text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getAnalogueText evtCriticalElementsParser.getAnalogueText()}).
+     * - It will remove page breaks since they are not needed in a critical text.
+     * - It finally store generated XHTML into parsed data for future retrievements 
+     * ({@link evtviewer.dataHandler.parsedData#addCriticalText addCriticalText()} and {@link evtviewer.dataHandler.parsedData#addVersionText addVersionText()}).
+     *
+     * @param {element} doc XML element representing the document to be parsed
+     * @param {string} docID id of current document being parsed
+     * @param {string} scopeVersion version of the text that has to be parsed 
+     *
+     * @returns {promise} promise that the parser will end
+     *
+     * @author CDP
+     * @author CM
+     */
+    parser.parseCriticalText = function(doc, docId, scopeVersion) {
 		// console.log('parseCriticalText');
 		var deferred = $q.defer();
 		var criticalText;
@@ -382,7 +420,7 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		if (criticalText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
+			var errorMsg = '<span class="alert-msg alert-msg-error critical-text-error"># Critical Text Error. # <br/>{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
 			criticalText = errorMsg;
 		}
 
@@ -399,11 +437,24 @@ angular.module('evtviewer.dataHandler')
 		return deferred;
 	};
 
-	/*************/
-	/*SOURCE TEXT*/
-	/*************/
-
-	/*parseSourceText(*/
+	// /////////// //
+	// SOURCE TEXT //
+	// /////////// //
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalParser#parseSourceText
+     * @methodOf evtviewer.dataHandler.evtCriticalParser
+     *
+     * @description
+     * This method will parse the XML a source and save it into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {element} doc XML element representing the document to be parsed
+     * @param {string} sourceId id of source to be parsed
+     *
+     * @returns {promise} promise that the parser will end
+     *
+     * @author CM
+     */
 	parser.parseSourceText = function(doc, sourceId) {
 		var deferred = $q.defer();
 		var sourceText,

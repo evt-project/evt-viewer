@@ -4,13 +4,30 @@
  * @name evtviewer.core.Utils
  * @description 
  * # Utils
- * TODO: Add description and comments for every method
+ * <p>Service that exposes useful (DOM/parsing) methods.</p>
+ * <p>DOM utils methods are grouped in DOMutils property.</p>
 **/
 /*jshint -W059 */
 angular.module('evtviewer.core')
 
 .provider('Utils', function() {
 
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#deepExtend
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    * Extend an object with another: 
+    * - add to destination all properties that only appears in source
+    * - overwrite all properties that appears in destination with the corrensponding 
+    * properties that appear in source.
+    *
+    * @param {Object} destination JSON object containing an object to extend
+    * @param {Object} source JSON object containing the extension to add to destination
+    *
+    * @returns {Object} extended JSON object
+    */
 	this.deepExtend = function(destination, source) {
 		for (var property in source) {
 			if (source[property] && source[property].constructor && source[property].constructor === Object) {
@@ -23,6 +40,23 @@ angular.module('evtviewer.core')
 		return destination;
 	};
 
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#deepExtendSkipDefault
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    *  Extend an object with another, skipping the undefined values: 
+    * - add to destination all properties that only appears in source
+    * - overwrite all properties that appears in destination with the corrensponding 
+    * properties that appear in source
+    * - skip undefined properties that are undefined in source object
+    *
+    * @param {Object} destination JSON object containing an object to extend
+    * @param {Object} source JSON object containing the extension to add to destination
+    *
+    * @returns {Object} extended JSON object
+    */
 	this.deepExtendSkipDefault = function(destination, source) {
 		for (var property in source) {
 			if (source[property] && source[property].constructor && source[property].constructor === Object) {
@@ -45,7 +79,20 @@ angular.module('evtviewer.core')
 		return destination;
 	};
 
-	// DOM utils (TODO: Decide if move to another service)
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#DOMutils.getElementsBetweenTree
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    * Get all DOM elements contained between the node elements
+    *
+    * @param {element} start starting node
+    * @param {element} end ending node
+    *
+    * @returns {element[]} list of nodes contained between start node and end node
+    * @todo Decide if move to another service
+    */
 	this.getElementsBetweenTree = function(start, end) {
 		var ancestor = this.getCommonAncestor(start, end),
 			el,
@@ -73,8 +120,20 @@ angular.module('evtviewer.core')
 		}
 		return before.concat(after);
 	};
-
-	// Get the innermost element that is an ancestor of two nodes.
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#DOMutils.getCommonAncestor
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    * Get the innermost element that is an ancestor of two nodes.
+    *
+    * @param {element} a first node to handle
+    * @param {element} b second node to handle
+    *
+    * @returns {element} common ancestor node
+    * @todo Decide if move to another service
+    */
 	this.getCommonAncestor = function(a, b) {
 		var parents = $(a).parents().andSelf();
 		while (b) {
@@ -87,6 +146,20 @@ angular.module('evtviewer.core')
 		return null;
 	};
 
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#DOMutils.isNestedInElem
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    * Check if a node is nested in a node with given tag name
+    *
+    * @param {element} element element to check
+    * @param {string} parentTagName tag name of element that should be parent 
+    *
+    * @returns {boolean} whether the element is nested in an element with given tag name or not
+    * @todo Decide if move to another service
+    */
 	this.isNestedInElem = function(element, parentTagName) {
 		if (element.parentNode !== null && element.parentNode !== undefined && element.parentNode.tagName) {
 			if (element.parentNode.tagName === 'text') {
@@ -101,6 +174,20 @@ angular.module('evtviewer.core')
 		}
 	};
 
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#DOMutils.isNestedInClassElem
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    *  Check if a node is nested in a node with given class name
+    *
+    * @param {element} element element to check
+    * @param {string} parentClassName class name of element that should be parent 
+    *
+    * @returns {boolean} whether the element is nested in an element with given class name or not
+    * @todo Decide if move to another service
+    */
 	this.isNestedInClassElem = function(element, parentClassName) {
 		if (element.parentNode !== null && element.parentNode !== undefined && element.parentNode.className) {
 			if (element.parentNode.className === '') {
@@ -119,7 +206,18 @@ angular.module('evtviewer.core')
 		var hex = Math.floor(Math.random() * 256).toString(16);
 		return ('0' + String(hex)).substr(-2); // pad with zero 
 	};
-
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#getRandomColor
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    * Generate a random (RGB or HEX) color
+    *
+    * @param {string} type type of color to generate ('*rgb*', or '*hex*')
+    *
+    * @returns {string} (RGB/HEX) color generated
+    */
 	this.getRandomColor = function(type) {
 		if (type === 'hex') {
 			return '#' + hexC() + hexC() + hexC();
@@ -134,7 +232,18 @@ angular.module('evtviewer.core')
 			return 'rgb(' + mixedrgb.join(',') + ')';
 		}
 	};
-
+	/**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#DOMutils.decodeHTMLEntities
+    * @methodOf evtviewer.core.Utils
+    *
+    * @description
+    * Decode HTML entities contained in a given string
+    *
+    * @param {string} str string to handle
+    *
+    * @returns {string} string where HTML entities are decoded
+    */
 	this.decodeHTMLEntities = function(str) {
 		var element = document.createElement('div');
 		if (str && typeof str === 'string') {
@@ -152,6 +261,7 @@ angular.module('evtviewer.core')
 	this.$get = function() {
 		return {
 			deepExtend: this.deepExtend,
+			deepExtendSkipDefault: this.deepExtendSkipDefault,
 			getRandomColor: this.getRandomColor,
 			DOMutils: {
 				getElementsBetweenTree: this.getElementsBetweenTree,

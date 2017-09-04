@@ -4,9 +4,11 @@
  * @name evtviewer.select.controller:SelectCtrl
  * @description 
  * # SelectCtrl
- * TODO: Add description and list of dependencies!
- * The controller for the {@link evtviewer.select.directive:evtSelect evtSelect} directive. 
-**/
+ * This is the controller for the {@link evtviewer.select.directive:evtSelect evtSelect} directive. 
+ * @requires $log
+ * @requires evtviewer.select.evtSelect
+ * @requires evtviewer.dataHandler.parsedData
+ **/
 angular.module('evtviewer.select')
 
 .controller('SelectCtrl', function($log, evtSelect, parsedData) {    
@@ -17,15 +19,38 @@ angular.module('evtviewer.select')
     // 
     // Control function
     // 
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#expand
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Expand the option list.
+     */
     vm.expand = function() {
         vm.expanded = true;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#collapse
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Collapse the option list.
+     */
     vm.collapse = function() {
         vm.expanded = false;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#toggleExpand
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Expand/collapse the option list. 
+     * Close any other <code>&lt;evt-select&gt;</code> expanded.
+     * If option list has to open up, update container position.
+     */
     vm.toggleExpand = function(closeSiblings) {
         if (!closeSiblings) {
             evtSelect.closeAll(vm.uid);
@@ -35,7 +60,22 @@ angular.module('evtviewer.select')
         }
         vm.expanded = !vm.expanded;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#getOptionSelected
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Retrieve the option selected to be shown. 
+     * @returns {Object} selected option, structured as follows
+        <pre>
+            var selectedOption = {
+                value,
+                label,
+                title
+            };
+        </pre>
+     */
     vm.getOptionSelected = function() {
         var selectedOption;
         if (vm.optionSelected && vm.optionSelected.length > 0)  {
@@ -57,7 +97,22 @@ angular.module('evtviewer.select')
         }
         return selectedOption;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#selectOption
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Select a give option.
+     * @param {Object} option option to select, structured as follows
+        <pre>
+            var selectedOption = {
+                value,
+                label,
+                title
+            };
+        </pre>
+     */
     vm.selectOption = function(option) {
         if (vm.expanded) {
             vm.toggleExpand();
@@ -98,7 +153,23 @@ angular.module('evtviewer.select')
             vm.optionSelectedValue = option !== undefined ? option.value : undefined;
         }
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#getSelectedOptionIndex
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Retrieve selected option index in option list.
+     * @param {Object} option option to handle, structured as follows
+        <pre>
+            var selectedOption = {
+                value,
+                label,
+                title
+            };
+        </pre>
+     * @returns {number} index of selected option 
+     */
     vm.getSelectedOptionIndex = function(option) {
         var optionSelected = vm.optionSelected || [],
             i = 0,
@@ -109,7 +180,17 @@ angular.module('evtviewer.select')
         }
         return found ? i-1 : -1;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#selectOptionByValue
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Select option by value. 
+     * Option will be formatted according to type ("page", "document", "edition",  
+     * "witness", "witness-page", "source", "version").
+     * @param {any} optionValue value of option to select
+     */
     vm.selectOptionByValue = function(optionValue) {
         var option;
         if (optionValue !== undefined && optionValue !== '' ) {
@@ -170,7 +251,24 @@ angular.module('evtviewer.select')
             vm.selectOption(option);            
         }
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#isOptionSelected
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * Check if an option is already selected (this method was defined to handle also
+     * multiselection cases).
+     *
+     * @param {Object} option option to check, structured as follows
+        <pre>
+            var selectedOption = {
+                value,
+                label,
+                title
+            };
+        </pre>
+     */
     vm.isOptionSelected = function(option) {
         if (option !== undefined) {
             if (typeof(vm.optionSelected) === 'undefined') {
@@ -192,7 +290,14 @@ angular.module('evtviewer.select')
         }
 
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.select.controller:SelectCtrl#destroy
+     * @methodOf evtviewer.select.controller:SelectCtrl
+     *
+     * @description
+     * <p>Remove instance from saved instances in {@link evtviewer.select.evtSelect evtSelect} provider.</p>
+     */
     vm.destroy = function() {
         var tempId = vm.uid;
         // this.$destroy();

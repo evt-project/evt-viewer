@@ -4,9 +4,16 @@
  * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
  * @description 
  * # evtSourcesApparatusEntry
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.sourcesApparatusEntry.directive:evtSourcesApparatusEntry evtSourcesApparatusEntry} 
+ * directive and stores its reference untill the directive remains instantiated.
  *
- * @author Chiara Martignano
+ * @requires $log
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.sourcesApparatusEntry.evtSourcesApparatus
+ * @requires evtviewer.interface.evtInterface
+ *
+ * @author CM
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
@@ -25,7 +32,38 @@ angular.module('evtviewer.sourcesApparatusEntry')
             collection  = {},
             list        = [],
             idx         = 0;
-        
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#build
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * <p>This method will extend the scope of 
+         * {@link evtviewer.sourcesApparatusEntry.directive:evtSourcesApparatusEntry evtSourcesApparatusEntry} directive 
+         * according to selected configurations and parsed data.</p>
+         * <p>In particular it will decide which sub content tabs have to be shown and which have to hidden.</p>
+         *
+         * @param {Object} scope initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    uid,
+                    quoteId,
+                    head,
+                    xml,
+                    sources,
+                    srcList,
+                    _activeSource,
+                    _overSource,
+                    tabs,
+                    _subContentOpened,
+                    over,
+                    selected,
+                    currentViewMode
+                };
+            </pre>
+         */
         sourceEntry.build = function(scope) {
             var currentId = idx++,
                 entryId = scope.quoteId || undefined,
@@ -136,34 +174,88 @@ angular.module('evtviewer.sourcesApparatusEntry')
             
             return collection[currentId];
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#getById
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Get the reference to <code>&lt;evt-sources-apparatus-entry&gt;</code>
+         * with given id.
+         * 
+         * @param {string} currentId id of sources apparatus entry to handle
+         *
+         * @returns {Object} object representing the reference to <code>&lt;evt-sources-apparatus-entry&gt;</code>
+         * with given id
+         */
         sourceEntry.getById = function(currentId) {
             if (collection[currentId] !== undefined) {
                 return collection[currentId];
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#getList
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Get the list of all the instance of <code>&lt;evt-sources-apparatus-entry&gt;</code>.
+         *
+         * @returns {array} array of ids of all the instance of <code>&lt;evt-sources-apparatus-entry&gt;</code>.
+         */
         sourceEntry.getList = function() {
             return list;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#setCurrentSourcesEntry
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Set current sources apparatus entry.
+         * @param {string} quoteId Id of sources apparatus entry to be set as current one
+         */
         sourceEntry.setCurrentSourcesEntry = function(quoteId) {
             if (evtInterface.getCurrentQuote !== quoteId) {
                 evtInterface.updateState('currentQuote', quoteId);
             }
             currentSourcesEntry = quoteId;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#getCurrentSourcesEntry
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Retrieve current sources apparatus entry.
+         * @returns {string} id of current sources apparatus entry
+         */
         sourceEntry.getCurrentSourcesEntry = function() {
             return currentSourcesEntry;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#mouseOutAll
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Simulate a "*mouseout*" event on all instances of <code>&lt;evt-sources-apparatus-entry&gt;</code>
+         */
         sourceEntry.mouseOutAll = function() {
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.mouseOut();
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#mouseOverByQuoteId
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-sources-apparatus-entry&gt;</code> 
+         * with given entry id 
+         * @param {string} quoteId Id of sources apparatus entry to handle
+         */
         sourceEntry.mouseOverByQuoteId = function(quoteId) {
             angular.forEach(collection, function(currentEntry) {
                 if (currentEntry.quoteId === quoteId) {
@@ -173,13 +265,29 @@ angular.module('evtviewer.sourcesApparatusEntry')
                 }
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#unselectAll
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Unselect all instances of <code>&lt;evt-sources-apparatus-entry&gt;</code>
+         */
         sourceEntry.unselectAll = function() {
             angular.forEach(collection, function(currentEntry) {
                 currentEntry.unselect();
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#unselectAll
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * <p>Select all <code>&lt;evt-sources-apparatus-entry&gt;</code>s connected to a given critical entry.</p>
+         * <p>Set given <code>quoteId</code> as current one.</p>
+         * @param {string} quoteId Id of sources apparatus entry to handle
+         */
         sourceEntry.selectById = function(quoteId) {
             angular.forEach(collection, function(currentEntry) {
                 if (currentEntry.quoteId === quoteId) {
@@ -191,7 +299,16 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });  
             sourceEntry.setCurrentSourcesEntry(quoteId);
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry#destroy
+         * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
+         *
+         * @description
+         * Delete the reference of the instance of a particular <code>&lt;evt-sources-apparatus-entry&gt;</code>
+         * 
+         * @param {string} tempId Id of <code>&lt;evt-sources-apparatus-entry&gt;</code> to destroy
+         */
         sourceEntry.destroy = function(tempId) {
             delete collection[tempId];
         };

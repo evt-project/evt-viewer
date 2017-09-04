@@ -4,8 +4,15 @@
  * @name evtviewer.dialog.directive:evtDialog
  * @description 
  * # evtDialog
- * TODO: Add description!
- *
+ * <p>Container that opens up above everything and has a shadow below, hiding the lower contents.</p>
+ * <p>The content shown can be added as transcluded content.</p> 
+ * <p>The general layout and colors will depend on dialog type. </p>
+ * <p>Available types are:<ul>
+ * <li> **error**: Red color, smaller dimensions;</li>
+ * <li> **bookmark**: smaller dimensions.</li>
+ * </ul></p>
+ * <p>The {@link evtviewer.dialog.controller:DialogCtrl controller} for this directive is dynamically defined 
+ * inside the {@link evtviewer.dialog.evtDialog evtDialog} provider file.</p>
  * @scope
  * @param {string=} id id of dialog
  * @param {string=} type type of dialog ('error', 'bookmark')

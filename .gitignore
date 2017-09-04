@@ -4,7 +4,10 @@ dist
 .sass-cache
 bower_components
 build
-docs
+devDocs
 app/data
 app/old
 app/data/*
+.idea
+.DS_STORE
+package

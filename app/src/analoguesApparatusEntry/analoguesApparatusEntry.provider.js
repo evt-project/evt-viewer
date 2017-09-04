@@ -4,8 +4,15 @@
  * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
  * @description 
  * # evtAnaloguesApparatusEntry
- * TODO: Add description and comments for every method
-**/
+ *  This provider expands the scope of the
+ * {@link evtviewer.analoguesApparatusEntry.directive:evtAnaloguesApparatusEntry evtAnaloguesApparatusEntry} 
+ * directive and stores its reference untill the directive remains instantiated.
+ *
+ * @requires $log
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtAnaloguesApparatus
+ * @requires evtviewer.interface.evtInterface
+ **/
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .provider('evtAnaloguesApparatusEntry', function() {
@@ -23,7 +30,39 @@ angular.module('evtviewer.analoguesApparatusEntry')
 			collection = {},
 			list = [],
 			idx = 0;
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#build
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * <p>This method will extend the scope of 
+         * {@link evtviewer.analoguesApparatusEntry.directive:evtAnaloguesApparatusEntry evtAnaloguesApparatusEntry} directive 
+         * according to selected configurations and parsed data.</p>
+         * <p>In particular it will decide which sub content tabs have to be shown and which have to hidden.</p>
+         *
+         * @param {string} id string representing the id of scope analogues apparatus entry
+         * @param {Object} scope initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    uid,
+					analogueId,
+					header,
+					xml,
+					sources,
+					srcList,
+					_activeSource,
+					_overSource,
+					tabs,
+					_subContentOpened,
+					over,
+					selected,
+					currentViewMode
+                };
+            </pre>
+         */
 		analoguesAppEntry.build = function(scope) {
 			var currentId = idx++,
 				entryId = scope.analogueId || undefined,
@@ -137,34 +176,88 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 			return collection[currentId];
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#getById
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Get the reference to <code>&lt;evt-analogues-apparatus-entry&gt;</code>
+         * with given id.
+         * 
+         * @param {string} currentId id of analogues apparatus entry to handle
+         *
+         * @returns {Object} object representing the reference to <code>&lt;evt-analogues-apparatus-entry&gt;</code>
+         * with given id
+         */
 		analoguesAppEntry.getById = function(currentId) {
 			if (collection[currentId] !== undefined) {
 				return collection[currentId];
 			}
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#getList
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Get the list of all the instance of <code>&lt;evt-analogues-apparatus-entry&gt;</code>.
+         *
+         * @returns {array} array of ids of all the instance of <code>&lt;evt-analogues-apparatus-entry&gt;</code>.
+         */
 		analoguesAppEntry.getList = function() {
 			return list;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#setCurrentAnaloguesEntry
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Set current analogues apparatus entry.
+         * @param {string} analogueId Id of analogues apparatus entry to be set as current one
+         */
 		analoguesAppEntry.setCurrentAnaloguesEntry = function(analogueId) {
 			if (evtInterface.getCurrentAnalogue !== analogueId) {
 				evtInterface.updateState('currentAnalogue', analogueId);
 			}
 			currentAnaloguesEntry = analogueId;
 		};
-
-		analoguesAppEntry.getCurrentAnaloguesEntry = function(analogueId) {
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#getCurrentAnaloguesEntry
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Retrieve current analogues apparatus entry.
+         * @returns {string} id of current analogues apparatus entry
+         */
+		analoguesAppEntry.getCurrentAnaloguesEntry = function() {
 			return currentAnaloguesEntry;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#mouseOutAll
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Simulate a "*mouseout*" event on all instances of <code>&lt;evt-analogues-apparatus-entry&gt;</code>
+         */
 		analoguesAppEntry.mouseOutAll = function() {
 			angular.forEach(collection, function(currentEntry) {
 				currentEntry.mouseOut();
 			});
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#mouseOverByAnalogueId
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-analogues-apparatus-entry&gt;</code> 
+         * with given entry id 
+         * @param {string} analogueId Id of analogues apparatus entry to handle
+         */
 		analoguesAppEntry.mouseOverByAnalogueId = function(analogueId) {
 			angular.forEach(collection, function(currentEntry) {
 				if (currentEntry.analogueId === analogueId) {
@@ -174,13 +267,29 @@ angular.module('evtviewer.analoguesApparatusEntry')
 				}
 			});
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#unselectAll
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Unselect all instances of <code>&lt;evt-analogues-apparatus-entry&gt;</code>
+         */
 		analoguesAppEntry.unselectAll = function() {
 			angular.forEach(collection, function(currentEntry) {
 				currentEntry.unselect();
 			});
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#unselectAll
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * <p>Select all <code>&lt;evt-analogues-apparatus-entry&gt;</code>s connected to a given critical entry.</p>
+         * <p>Set given <code>analogueId</code> as current one.</p>
+         * @param {string} analogueId Id of analogues apparatus entry to handle
+         */
 		analoguesAppEntry.selectById = function(analogueId) {
 			angular.forEach(collection, function(currentEntry) {
 				if (currentEntry.analogueId === analogueId) {
@@ -192,7 +301,16 @@ angular.module('evtviewer.analoguesApparatusEntry')
 			});
 			analoguesAppEntry.setCurrentAnaloguesEntry(analogueId);
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry#destroy
+         * @methodOf evtviewer.analoguesApparatusEntry.evtAnaloguesApparatusEntry
+         *
+         * @description
+         * Delete the the instance of a particular <code>&lt;evt-analogues-apparatus-entry&gt;</code>
+         * 
+         * @param {string} tempId Id of <code>&lt;evt-analogues-apparatus-entry&gt;</code> to destroy
+         */
 		analoguesAppEntry.destroy = function(tempId) {
 			delete collection[tempId];
 		};

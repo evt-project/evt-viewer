@@ -48,19 +48,10 @@ angular.module('evtviewer.core')
 			active: true
 		}
 	},
-	/**
-	 * @module evtviewer.core
-	 * @ngdoc object
-	 * @name configUrl
-	 * @description
-	 * `boolean`
-	 * Url for external configuration file
-	 *
-	 * Default for DEV:
-	 * <pre> configUrl: '../../config/config.json' </pre>
-	 * Default for BUILD:
-	 * <pre> configUrl: 'config/config.json' </pre>
-	 */
+	// Default for DEV:
+	// <pre> configUrl: '../../config/config.json' </pre>
+	// Default for BUILD:
+	// <pre> configUrl: 'config/config.json' </pre>
 	configUrl: '../../config/config.json',
 
 	dataUrl: '',
@@ -68,14 +59,14 @@ angular.module('evtviewer.core')
 
 	enableXMLdownload: true,
 	
-    /*sourcesUrl*/
-    /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
+    //sourcesUrl//
+    //Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.//
     sourcesUrl       : '',
-    /* sourcesTextsUrl */
-    /* Path of the folder containing the xml files of the sources texts */
+    // sourcesTextsUrl //
+    // Path of the folder containing the xml files of the sources texts //
     sourcesTextsUrl : '',
-    /*analoguesUrl*/
-    /*Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.*/
+    //analoguesUrl//
+    //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
     analoguesUrl     : '',
 
     preferredWitness: 'A',

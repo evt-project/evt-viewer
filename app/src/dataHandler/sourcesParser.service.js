@@ -4,9 +4,16 @@
  * @name evtviewer.dataHandler.evtSourcesParser
  * @description 
  * # evtSourcesParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding sources
  *
- * @author Chiara Martignano
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.evtCriticalElementsParser
+ *
+ * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -16,19 +23,23 @@ angular.module('evtviewer.dataHandler')
     var apparatusEntryDef = '<app>',
         quoteDef          = '<quote>';
     // Al momento ho usato solo questa variabile
-    //Queste due le userò appena inizierò a parsare le fonti
+    // Queste due le userò appena inizierò a parsare le fonti
     var sourceDef  = '<cit>',
         sourcesUrl = ''; // Parsing di più documenti
     
-    /****************** */
-    /*handleSource(elem)*/
-    /************************************************************ */
-    /*Function to search XML elements containing information about*/
-    /*sources, cited inside the critical text. These elements are */
-    /*referred through an xml:id attribute.                       */
-    /*@elem --> element to analyze                                */
-    /*@author --> CM                                              */
-    /************************************************************ */
+    /**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtSourcesParser#handleSource
+     * @methodOf evtviewer.dataHandler.evtSourcesParser
+     *
+     * @description
+     * [PRIVATE] This function will search XML elements containing information about
+     * sources, cited inside the critical text. These elements are referred through an xml:id attribute.
+     *
+     * @param {element} elem XML element to analyze
+     *
+     * @author CM
+     */
     var handleSource = function(elem){
         //Get the ids saved in quotesCollection
         var ref = parsedData.getQuotes()._indexes.sourcesRef._id;
@@ -57,15 +68,19 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    /* *****************/
-    /* parseQuotes(doc)*/
-    /* ****************************************************************/
-    /* Function to parse the blocks of the critical texts that cite a */
-    /* source in the XML file (sourceAppDef)                          */
-    /* and save them in parsedData                                    */
-    /* @doc document -> XML to be parsed                              */
-    /* @author: CM                                                    */
-    /* ****************************************************************/
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesParser#parseQuotes
+     * @methodOf evtviewer.dataHandler.evtSourcesParser
+     *
+     * @description
+     * This method will parse the blocks of the critical texts that cite a
+     * source in the XML file (<code>sourceAppDef</code>).
+     *
+     * @param {element} doc XML element to parse
+     *
+     * @author CM
+     */
     parser.parseQuotes = function(doc) {
         var deferred = $q.defer();
         var currentDocument = angular.element(doc); //wraps the DOM of doc as a jquery elementContent
@@ -85,7 +100,7 @@ angular.module('evtviewer.dataHandler')
         deferred.resolve('success');
         return deferred;
     };
-
+    
     var updateQuotes = function(){
         var appEntriesId = parsedData.getSources()._indexes.quotesRef._id;
         var sourcesEntriesId = parsedData.getQuotes()._indexes.encodingStructure;
@@ -100,15 +115,19 @@ angular.module('evtviewer.dataHandler')
             delete parsedData.getQuotes()[missing[j]];
         }
     };
-
-    /***************** */
-    /*parseSources(doc)*/
-    /**************************************************************/
-    /*Function to parse the sources bibliographic references, when*/
-    /*they are inside of the critical text document               */
-    /*@doc --> XML document to parse                              */
-    /*@author --> CM                                              */
-    /************************************************************ */
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesParser#parseSources
+     * @methodOf evtviewer.dataHandler.evtSourcesParser
+     *
+     * @description
+     * This method will parse the sources bibliographic references, when
+     * they are inside of the critical text document.
+     *
+     * @param {element} doc XML element to parse
+     *
+     * @author CM
+     */
     parser.parseSources = function(doc, extDoc) {
         var deferred = $q.defer();
 
@@ -140,15 +159,19 @@ angular.module('evtviewer.dataHandler')
         deferred.resolve('success');
         return deferred;
     };
-
-    /***************************/
-    /*parseExternalSources(doc)*/
-    /**************************************************************/
-    /*Function to parse the sources bibliographic references, when*/
-    /*they are inside an external document                        */
-    /*@doc --> XML external document to parse                     */
-    /*@author --> CM                                              */
-    /************************************************************ */
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesParser#parseExternalSources
+     * @methodOf evtviewer.dataHandler.evtSourcesParser
+     *
+     * @description
+     * This method will parse the sources bibliographic references, when
+     * they are inside an external document.
+     *
+     * @param {element} doc external XML document to parse
+     *
+     * @author CM
+     */
     parser.parseExternalSources = function(doc) {
         //TODO: risolvere problema di childNodes[0]
         var deferred = $q.defer();

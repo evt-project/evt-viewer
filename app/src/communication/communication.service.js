@@ -43,8 +43,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to access external configuration file in order to extend the defaults.
-     * @example
-     * evtCommunication.getExternalConfig(url);
+     *
      * @param {string} url external configuration file
      * @returns {httpPromise} resolve with fetched data, or fails with error description. 
      */
@@ -64,8 +63,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to access edition data from an URL. Different base parsers will be launched depending on type of read file.
-     * @example
-     * evtCommunication.getData(url);
+     * 
      * @param {string} url file containing the edition data
      * @returns {httpPromise} resolve with fetched data, or fails with error description. 
      */
@@ -94,8 +92,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to access edition external data from an URL. Different base parsers will be launched depending on type of read file.
-     * @example
-     * evtCommunication.getExternalData(url);
+     * 
      * @param {string} url file containing the edition data
      * @returns {httpPromise} resolve with fetched data, or fails with error description. 
      */
@@ -132,8 +129,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to access source text data from an URL. Different base parsers will be launched depending on type of read file.
-     * @example
-     * evtCommunication.getSourceTextFile(url, id);
+     * 
      * @param {string} url file containing the edition data
      * @param {string} id document connected to external source file
      * @returns {httpPromise} resolve with fetched data, or fails with error description. 
@@ -163,8 +159,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to get the current communication error.
-     * @example
-     * evtCommunication.getError();
+     * 
      * @returns {string} current error saved
      */
     communication.getError = function(){
@@ -178,8 +173,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to set the current communication error.
-     * @example
-     * evtCommunication.updateError(newError);
+     * 
      * @params {string} newError value of new error raised
      */
     communication.updateError = function(newError){
@@ -193,8 +187,7 @@ angular.module('evtviewer.communication')
      *
      * @description
      * Method to open a dialog showing the current communication error raised.
-     * @example
-     * evtCommunication.err(msg, code);
+     * 
      * @params {string} msg message of the error
      * @params {string} code code of the error
      */

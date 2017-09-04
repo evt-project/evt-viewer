@@ -4,8 +4,13 @@
  * @name evtviewer.dataHandler.evtCriticalElementsParser
  * @description 
  * # evtCriticalElementsParser
- * TODO: Add description and comments for every method
-**/
+ * Service containing methods to parse data regarding critical apparatuses (critical entries, sources, analogues).
+ *
+ * @requires xmlParser
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.core.config
+ **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtCriticalElementsParser', function(evtParser, parsedData, config, xmlParser) {
@@ -19,17 +24,31 @@ angular.module('evtviewer.dataHandler')
 		analogueDef = '<seg>,<ref[type=parallelPassage]>',
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 
-	/**************** */
-	/*CRITICAL ENTRIES*/
-	/**************** */
+	// /////////////// //
+	// CRITICAL ENTRIES//
+	// /////////////// //
 
-	/* ************************* */
-	/* parseGenericElement(elem) */
-	/* ******************************************************************** */
-	/* Function to parse a generic XML element inside the apparatus reading */
-	/* @elem element -> xml element to be parsed                            */
-	/* @return a json object representing the apparatus reading             */
-	/* ******************************************************************** */
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseGenericElement
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse a generic XML element inside the apparatus reading.
+     * 
+     * @param {element} elem XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the generic element
+     	<pre>
+			var genericElement = {
+				tagName: '',
+				type: 'genericElement',
+				attributes: [],
+				content: []
+			}
+     	</pre>
+     * @author CDP
+     */
 	var parseGenericElement = function(elem) {
 		if (config.lacunaMilestone.indexOf('<' + elem.tagName + '>') < 0 && config.fragmentMilestone.indexOf('<' + elem.tagName + '>') < 0) {
 			var genericElement = {
@@ -92,14 +111,37 @@ angular.module('evtviewer.dataHandler')
 		}
 
 	};
-	/* ********************* */
-	/* parseAppReading(elem) */
-	/* ******************************************************************* */
-	/* Function to parse the XML element representing an apparatus reading */
-	/* (<lem> o <rdg> in XML-TEI P5)                                       */
-	/* @elem element -> xml element to be parsed                           */
-	/* @return a json object representing the apparatus reading            */
-	/* ******************************************************************* */
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAppReading
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse the XML element representing an apparatus reading
+     * (<code>lem</code> or <code>rdg</code> in XML-TEI P5).
+     * 
+     * @param {Object} entry JSON object representing the critical entry to which the reading belongs
+     * @param {element} elem XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the apparatus reading
+     	<pre>
+			var reading = {
+				id: '',
+				attributes: [],
+				content: [
+					//text
+					//node
+					//subapp { id, type='subApp'}
+				],
+				note: '',
+				_significant: true,
+				_group: '',
+				_xmlTagName: '',
+				_xmlSource: ''
+			};
+     	</pre>
+     * @author CDP
+     */
 	var parseAppReading = function(entry, elem) {
 		var reading = {
 			id: '',
@@ -223,17 +265,23 @@ angular.module('evtviewer.dataHandler')
 
 		return reading;
 	};
-
-	/* ****************************** */
-	/* parseGroupReading(entry, elem) */
-	/* ************************************************************************* */
-	/* Function to parse the XML element representing an apparatus reading group */
-	/* (<rdgGrp> in XML-TEI P5)                                                  */
-	/* @entry element -> json element representing parent apparatus entry        */
-	/* @elem element -> xml element to be parsed                                 */
-	/* @return void                                                              */
-	/* ************************************************************************* */
-	var parseGroupReading = function(entry, elem) {
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseGroupReading
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse the XML element representing an apparatus reading group
+     * (<code>rdgGrp</code> in XML-TEI P5).
+     * For each reading contained in the group it will call the function 
+     * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppReading parseAppReading}
+     * 
+     * @param {Object} entry JSON object representing the critical entry to which the reading belongs
+     * @param {element} elem XML element to be parsed
+     *
+     * @author CDP
+     */
+    var parseGroupReading = function(entry, elem) {
 		var groupObj = {
 			attributes: [],
 			content: []
@@ -283,16 +331,50 @@ angular.module('evtviewer.dataHandler')
 		entry.content[groupObj.id] = groupObj;
 		entry._indexes.encodingStructure.push(groupObj.id);
 	};
-
-	/* ****************** */
-	/* parseAppEntry(app) */
-	/* ********************************************************************************** */
-	/* Function to parse the XML element representing an apparatus entry or a group       */
-	/* (<app> o <rdgGrp> in XML-TEI P5)                                                   */
-	/* @app element -> xml element representing the apparatus entry or group to be parsed */
-	/* @return a json object representing the apparatus entry read                        */
-	/* ********************************************************************************** */
-	var parseAppEntry = function(app) {
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAppEntry
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse the XML element representing an apparatus entry or a group
+     * (<code>app</code> or <code>rdgGrp</code> in XML-TEI P5).
+     * For each reading contained in the group it will call the function 
+     * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppReading parseAppReading}
+     * 
+     * @param {element} app XML element representing the apparatus entry or group to be parsed 
+     *
+     * @returns {Object} JSON object representing the apparatus entry parsed
+     	<pre>
+			var entry = {
+				type: 'app',
+				id: '',
+				attributes: [],
+				lemma: '',
+				note: '',
+				content: {
+					// READINGS
+					// GROUPS
+					// SUBAPP
+				},
+				_indexes: {
+					encodingStructure: [],
+					readings: {
+						_indexes: [],
+						_significant: []
+					},
+					groups: [],
+					subApps: [],
+					witMap: {}
+				},
+				_subApp: false,
+				_xmlSource: ''
+			};
+     	</pre>
+     *
+     * @author CDP
+     */
+    var parseAppEntry = function(app) {
 		var entry = {
 			type: 'app',
 			id: '',
@@ -386,10 +468,51 @@ angular.module('evtviewer.dataHandler')
 		return entry;
 	};
 
-	/************************************/
-	/*handleAppEntry(app, parentEntryId)*/
-	/********************************** */
-	parser.handleAppEntry = function(app, parentEntryId) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#handleAppEntry
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will handle (nested) apparatus entry. It will call the private function 
+     * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppEntry parseAppEntry()}
+     * and then perform a check on missing witnesses, calculates (and save) variance for the entry depending on different significant reading registered
+     * and store it in parsed data using the function {@link evtviewer.dataHandler.parsedData#addCriticalEntry addCriticalEntry()}.
+     *
+     * @param {element} app XML element representing the apparatus entry or group to be parsed 
+     * @param {string=} parentEntryId id of the parent apparatus entry in which the current one is nested 
+     *
+     * @returns {Object} JSON object representing the apparatus entry parsed
+     	<pre>
+			var entry = {
+				type: 'app',
+				id: '',
+				attributes: [],
+				lemma: '',
+				note: '',
+				content: {
+					// READINGS
+					// GROUPS
+					// SUBAPP
+				},
+				_indexes: {
+					encodingStructure: [],
+					readings: {
+						_indexes: [],
+						_significant: []
+					},
+					groups: [],
+					subApps: [],
+					witMap: {}
+				},
+				_subApp: false,
+				_xmlSource: ''
+			};
+     	</pre>
+     *
+     * @author CDP
+     */
+    parser.handleAppEntry = function(app, parentEntryId) {
 		// if (!app.getAttribute('type') || app.getAttribute('type') !== 'note' || app.getAttribute('type') !== 'recensio') {
 		var entry = parseAppEntry(app) || undefined;
 
@@ -441,13 +564,31 @@ angular.module('evtviewer.dataHandler')
 		// }
 	};
 
-	/****************************/
-	/* parseVersionGroup(group) */
-	/***************************************************************/
-	/* Function to parse the reading groups inside of version app. */
-	/* @group --> reading group to parse    |  @author --> CM      */
-	/***************************************************************/
-	var parseVersionGroup = function(entry, group) {
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseVersionGroup
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse the reading group inside of version app.
+     *
+     * @param {Object} entry JSON object representing the critical entry to which the reading belongs
+     * @param {element} group XML element representing the reading group to parse
+     *
+     * @returns {Object} JSON object representing the reading group inside of version app
+     	<pre>
+			var groupObj = {
+				id: '',
+				versionId: '',
+				attributes: [],
+				content: {},
+				lemma: ''
+			};
+     	</pre>
+     *
+     * @author CM
+     */
+    var parseVersionGroup = function(entry, group) {
 		var groupObj = {
 				id: '',
 				versionId: '',
@@ -498,16 +639,39 @@ angular.module('evtviewer.dataHandler')
 
 		return groupObj;
 	};
-
-	/***************************/
-	/* handleVersionEntry(app) */
-	/*************************************************************************************/
-	/* Function to parse an app element that encodes the differences between two or more */
-	/* versions of the text in a certain passage.                                        */
-	/* @app --> app element containing the info about the variants between versions      */
-	/* @author --> CM                                                                    */
-	/*************************************************************************************/
-	parser.handleVersionEntry = function(app) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#handleVersionEntry
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will parse an app element that encodes the differences between two or more
+     * versions of the text in a certain passage. 
+     *
+     * @param {element} app XML element containing the info about the variants between versions
+     *
+     * @returns {Object} JSON object representing the entry parsed
+     	<pre>
+			var entry = {
+				type: 'recensioApp',
+				id: '',
+				attributes: [],
+				lemma: '',
+				content: {
+					//GROUPS
+					//lem
+					//rdg*
+				},
+				_indexes: {
+					witMap: {},
+				},
+				_xmlSource: ''
+			};
+     	</pre>
+     *
+     * @author CM
+     */
+    parser.handleVersionEntry = function(app) {
 		var entry = {
 			type: 'recensioApp',
 			id: '',
@@ -557,15 +721,22 @@ angular.module('evtviewer.dataHandler')
 		parsedData.addVersionEntry(entry);
 		return entry;
 	};
-
-	/* ****************************************/
-	/* getEntryWitnessReadingText(entry, wit) */
-	/* ******************************************************************************************************* */
-	/* Function to get the text of the reading for a particular witness in a specific critical apparatus entry */
-	/* @entry -> critical entry object from model                                                              */
-	/* @wit -> witness specified                                                                               */
-	/* ******************************************************************************************************* */
-	parser.getEntryWitnessReadingText = function(entry, wit) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getEntryWitnessReadingText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will get the text of the reading for a particular witness in a specific critical apparatus entry.
+     *
+     * @param {Object} entry JSON object representing the critical entry to handle
+     * @param {string} wit id of witness to handle
+     *
+     * @returns {element} <code>evt-reading</code> element representing the reading of the given witness for the given critical apparatus entry
+     *
+     * @author CDP
+     */
+    parser.getEntryWitnessReadingText = function(entry, wit) {
 		var spanElement;
 		if (entry !== null) {
 			var entryReadings = entry._indexes.readings._indexes;
@@ -654,16 +825,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return spanElement;
 	};
-
-
-
-	/* ******************************************* */
-	/* getGenericElementText(element, wit) */
-	/* ************************************************************************************ */
-	/* Function to get the text of a generic element in a specific critical apparatus entry */
-	/* @element -> generic element from model                                               */
-	/* @wit -> current witness (optional)                                                   */
-	/* ************************************************************************************ */
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getGenericElementText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will get the text of a generic element in a specific critical apparatus entry.
+     *
+     * @param {element} element XML element to be parsed
+     * @param {string=} wit id of witness to handle
+     *
+     * @returns {element} <code>span</code> element representing the text of the given element belonging to given
+     *
+     * @author CM
+     */
 	var getGenericElementText = function(element, wit) {
 		var spanElement = document.createElement('span');
 		spanElement.className = element.tagName;
@@ -673,7 +849,7 @@ angular.module('evtviewer.dataHandler')
 			var attrib = attribKeys[key];
 			var value = element.attributes[attrib];
 			if (attrib !== 'xml:id') {
-				spanElement.setAttribute('data-' + attrib, value);
+				spanElement.setAttribute('data-' + attrib.replace(':', '-'), value);
 			}
 		}
 
@@ -705,15 +881,22 @@ angular.module('evtviewer.dataHandler')
 
 		return spanElement;
 	};
-
-	/******************************************/
-	/* getVersionEntryReadingText(entry, wit) */
-	/********************************************************************/
-	/* Function to get the text of a reading inside of a version entry. */
-	/* @entry -> version entry to parse | @wit -> current witness       */
-	/* @author -> CM                                                    */
-	/********************************************************************/
-	parser.getVersionEntryReadingText = function(entry, wit) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getVersionEntryReadingText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will get the text of a reading inside of a version entry.
+     *
+     * @param {Object} entry JSON object representing the version entry to handle
+     * @param {string=} wit id of witness to handle
+     *
+     * @returns {element} <code>evt-version-reading</code> element representing the reading of the given witness for the given version entry
+     *
+     * @author CM
+     */
+    parser.getVersionEntryReadingText = function(entry, wit) {
 		var spanElement,
 			rdgId = '',
 			rdgContent = [];
@@ -842,33 +1025,38 @@ angular.module('evtviewer.dataHandler')
 		return spanElement;
 	};
 
-	/* ************* */
-	/* CRITICAL TEXT */
-	/* ************* */
-
-	/* ******************************************* */
-	/* getEntryLemmaText(entry, wit) */
-	/* **************************************************************************** */
-	/* Function to get the text of the lemma in a specific critical apparatus entry */
-	/* @entry -> critical entry object from model                                   */
-	/* @wit -> current witness (optional)                                           */
-	/* **************************************************************************** */
-	parser.getEntryLemmaText = function(entry, wit) {
+	// ///////////// //
+	// CRITICAL TEXT //
+	// ///////////// //
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getEntryLemmaText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will get the text of the lemma in a specific critical apparatus entry.
+     *
+     * @param {Object} entry JSON object representing the critical apparatus entry to handle
+     * @param {string=} wit id of witness to handle that will be used as the scope witness for the <code>evt-reading</code> returned.
+     *
+     * @returns {element} <code>evt-reading</code> element representing the lemma of the given critical apparatus entry
+     *
+     * @author CDP
+     */
+    parser.getEntryLemmaText = function(entry, wit) {
 		var spanElement,
 			errorElement;
 
 		if (entry !== null) {
 			spanElement = document.createElement('evt-reading');
 			spanElement.setAttribute('data-app-id', entry.id);
-			/* 
-			    IMPORTANT: data-app-id should be the first attribute added to the element
-			    otherwise the parser for fragmentary witnesses will not work.
-			*/
+			// IMPORTANT: data-app-id should be the first attribute added to the element
+			// otherwise the parser for fragmentary witnesses will not work.
 			spanElement.setAttribute('data-scope-wit', wit);
 			spanElement.setAttribute('data-type', 'lemma');
 			if (entry._lacuna) {
 				var lacunaElement = document.createElement('span');
-				lacunaElement.className = 'lacunaApp icon-evt_note'; //DA ELIMINARE QUI IL PALLINO
+				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
 				spanElement.appendChild(lacunaElement);
 			} else if (entry.lemma !== undefined && entry.lemma !== '') {
 				spanElement.setAttribute('data-reading-id', entry.lemma);
@@ -922,7 +1110,7 @@ angular.module('evtviewer.dataHandler')
 
 				if (entry._variance !== undefined) {
 					spanElement.setAttribute('data-variance', entry._variance);
-					// da pesare sulla varianza massima
+					// TODO: da pesare sulla varianza massima
 				}
 			}
 		} else {
@@ -937,16 +1125,23 @@ angular.module('evtviewer.dataHandler')
 		}
 		return spanElement;
 	};
-
-	/*********************************************/
-	/* getVersionEntryLemma(entry, scopeVersion) */
-	/************************************************************************************/
-	/* Function to get the text of the lemma of a specific version encoded in a version */
-	/* apparatus entry.                                                                 */
-	/* @entry -> version apparatus entry |  @scopeVersion -> the version to display     */
-	/* @author -> CM                                                                    */
-	/************************************************************************************/
-	parser.getVersionEntryLemma = function(entry, wit, scopeVersion) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getVersionEntryLemma
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will get the text of the lemma of a specific version encoded in a version.
+     *
+     * @param {Object} entry JSON object representing the version apparatus entry to handle
+     * @param {string} wit id of witness to handle that will be used as the scope witness for the <code>evt-reading</code> returned.
+     * @param {string} scopeVersion id of the version to display
+     *
+     * @returns {element} <code>evt-version-reading</code> element representing the lemma of the given version apparatus entry
+     *
+     * @author CM
+     */
+    parser.getVersionEntryLemma = function(entry, wit, scopeVersion) {
 		var spanElement,
 			errorElement;
 		if (entry !== null) {
@@ -1019,20 +1214,37 @@ angular.module('evtviewer.dataHandler')
 		return spanElement;
 	};
 
-	/******************/
-	/*QUOTES & SOURCES*/
-	/******************/
+	// //////////////// //
+	// QUOTES & SOURCES //
+	// //////////////// //
 
-	/**************************/
-	/*parseQuoteContent(child)*/
-	/********************************************************************************/
-	/*Supporting function that parses the content of a quotation inside the critical*/
-	/*text or the text of a witness. If it finds a nested quote, an analogue, a note*/
-	/*or a critical apparatus entry, it calls the corresponding functions. If the   */
-	/*parsed element has children, the function calls itself recursively, otherwise */
-	/*the parseXMLElement function is called and the result added to the content.   */
-	/*@child --> content element to be parsed | @author --> CM                      */
-	/****************************************************************************** */
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseQuoteContent
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This is a supporting function that parses the content of a quotation inside the critical
+	 * text or the text of a witness. If it finds a nested quote, an analogue, a note
+	 * or a critical apparatus entry, it calls the corresponding functions. If the
+	 * parsed element has children, the function calls itself recursively, otherwise
+	 * the parseXMLElement function is called and the result added to the content.
+     *
+     * @param {element} elem XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the quote content parsed
+	     <pre>
+			var contentEl = {
+				tagName: '',
+				type: 'quoteContent',
+				attributes: [],
+				content: [],
+				_xmlSource: ''
+			};
+	     </pre>
+     *
+     * @author CM
+     */
 	var parseQuoteContent = function(elem) {
 		var contentEl = {
 			tagName: elem.tagName,
@@ -1084,19 +1296,39 @@ angular.module('evtviewer.dataHandler')
 		});
 		return contentEl;
 	};
-
-	/* *************** */
-	/* parseQuote(doc) */
-	/* ****************************************************************** */
-	/* Function to parse the content and the attributes of a single entry */
-	/* of the sources apparatus inside of the critical text and save it   */
-	/* in parsedData.                                                     */
-	/* @entry-> the XML element that marks up the quotation of a source   */
-	/* inside the text to be parsed                                       */
-	/* @author: CM                                                        */
-	/* ****************************************************************** */
-	parser.parseQuote = function(entry) {
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseQuote
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will parse the content and the attributes of a single entry
+	 * of the sources apparatus inside of the critical text and save it
+	* in {@link evtviewer.dataHandler.parsedData parsedData}. 
+     *
+     * @param {element} entry XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the quote element parsed
+	     <pre>
+			var quote = {
+				type: 'quote',
+				id: '',
+				attributes: [],
+				content: [],
+				_indexes: {
+					sourceId: [], //bibliographic citations inside the quote
+					sourceRefId: [], //references to bibliographic citations outside the quote
+					correspId: {}, //segments inside the source text that correspond to the quote
+					subQuotes: [], //quotes nested inside the quote                
+				},
+				_subQuote: false,
+				_xmlSource: ''
+			};
+	     </pre>
+     *
+     * @author CM
+     */
+    parser.parseQuote = function(entry) {
 		var quote = {
 			type: 'quote',
 			id: '',
@@ -1105,8 +1337,8 @@ angular.module('evtviewer.dataHandler')
 			_indexes: {
 				sourceId: [], //saves the id of the bibliographic citations that are inside the quote
 				sourceRefId: [], //saves the references to bibliographic citations that are outside the quote
-				correspId: {}, //saves the id of the segments inside of the source text that correspond to the quote
-				subQuotes: [], //saves the id of quotes nested inside of the quote                
+				correspId: {}, //saves the id of the segments inside the source text that correspond to the quote
+				subQuotes: [], //saves the id of quotes nested inside the quote                
 			},
 			_subQuote: false, //boolean is the quote nested in another quote
 			_xmlSource: entry.outerHTML
@@ -1261,19 +1493,34 @@ angular.module('evtviewer.dataHandler')
 		return quote;
 	};
 
-	/* ******* */
-	/* SOURCES */
-	/* ******* */
-
-	/********************************* */
-	/* parseSourceContent(elem, source)*/
-	/***********************************************************/
-	/* Function to parse an element inside of a source content.*/
-	/* @elem --> an element inside of source                   */
-	/* @source --> the source                                  */
-	/* @author: CM                                             */
-	/***********************************************************/
-	var parseSourceContent = function(elem, source) {
+	// /////// //
+	// SOURCES //
+	// /////// //
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseSourceContent
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse an element inside of a source content.
+     *
+     * @param {element} elem XML element that is inside the source
+     * @param {element=} source XML element representing the source
+     *
+     * @returns {Object} JSON object representing the source content parsed
+	     <pre>
+			var contentEl = {
+				tagName: '',
+				type: 'sourceContent',
+				attributes: [],
+				content: [],
+				url: []
+			};
+	     </pre>
+     *
+     * @author CM
+     */
+    var parseSourceContent = function(elem, source) {
 		var contentEl = {
 			tagName: elem.tagName,
 			type: 'sourceContent',
@@ -1313,16 +1560,40 @@ angular.module('evtviewer.dataHandler')
 
 		return contentEl;
 	};
-
-	/*********************/
-	/*parseSource(source)*/
-	/**************************************************************/
-	/*Function to parse a source bibliographic reference, and save*/
-	/*it in SourcesCollection.                                    */
-	/*@source --> source to parse                                 */
-	/*@quote (optional) --> quote that contains the parsed source */
-	/*@author --> CM                                              */
-	/************************************************************ */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseSource
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will parse a source bibliographic reference, and save
+	 * it in {@link evtviewer.dataHandler.parsedData parsedData}.
+     *
+     * @param {element} entry XML element to parse
+     * @param {element=} quote XML element representing the quote that contains the parsed source
+     *
+     * @returns {Object} JSON object representing the source element parsed
+	     <pre>
+			var source = {
+				id: '',
+				abbr: {
+					title: [],
+					author: [],
+					msId: []
+				},
+				attributes: [],
+				quotesEntriesId: [], //quotes that refer to this source
+				bibl: [], //full bibliographic reference of the source
+				quote: [],
+				url: [], //links to the full text of the source
+				text: {},
+				_textAvailable: false,
+				_xmlSource: ''
+			};
+	     </pre>
+     *
+     * @author CM
+     */
 	parser.parseSource = function(entry, quote) {
 		var source = {
 			id: '',
@@ -1477,10 +1748,22 @@ angular.module('evtviewer.dataHandler')
 
 		return source;
 	};
-
-	/*********************************+** */
-	/*getQuoteContentText(elem, wit, doc)*/
-	/************************************** */
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getQuoteContentText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will get the textual content of a quote content
+     *
+     * @param {element} elem XML element to parse
+     * @param {string} wit id of scope witness (needed to parse eventual page breaks)
+     * @param {string} doc string representing the whole XML source text
+     *
+     * @returns {element} DOM element representing the textual content of quote content
+     *
+     * @author CM
+     */
 	var getQuoteContentText = function(elem, wit, doc) {
 		var spanElement;
 
@@ -1521,7 +1804,7 @@ angular.module('evtviewer.dataHandler')
 					var attrib = attribKeys[key];
 					var value = elem.attributes[attrib];
 					if (attrib !== 'xml:id') {
-						spanElement.setAttribute('data-' + attrib, value);
+						spanElement.setAttribute('data-' + attrib.replace(':','-'), value);
 					}
 				}
 
@@ -1559,10 +1842,22 @@ angular.module('evtviewer.dataHandler')
 
 		return spanElement;
 	};
-
-	/******************* */
-	/*getQuoteText(quote)*/
-	/******************* */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will get the textual content of a quote
+     *
+     * @param {element} elem XML element to parse
+     * @param {string} wit id of scope witness (needed to parse eventual page breaks)
+     * @param {string} doc string representing the whole XML source text
+     *
+     * @returns {element} <code>evt-quote</code> element representing the textual content of quote
+     *
+     * @author CM
+     */
 	parser.getQuoteText = function(quote, wit, doc) {
 		var spanElement,
 			errorElement;
@@ -1615,17 +1910,33 @@ angular.module('evtviewer.dataHandler')
 		return spanElement;
 	};
 
-	/***********/
-	/*ANALOGUES*/
-	/***********/
-
-	/****************************/
-	/*parseAnalogueContent(elem)*/
-	/******************************************************************************/
-	/*Creates a new object of type 'analogueContent' that is added to the analogue*/
-	/*content array.                                                              */
-	/* @elem --> element nested in an AnalogueDef that has to be parsed           */
-	/**************************************************************************** */
+	// ///////// //
+	// ANALOGUES //
+	// ///////// //
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAnalogueContent
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function creates a new object of type 'analogueContent' 
+     * that is added to the analogue content array
+     *
+     * @param {element} elem XML element nested in an <code>AnalogueDef</code> that has to be parsed 
+     *
+     * @returns {Object} JSON object representing the analogue content
+     	<pre>
+			var contentEl = {
+				tagName: '',
+				type: 'analogueContent',
+				attributes: [],
+				content: [],
+				_xmlSource: ''
+			};
+     	</pre>
+     *
+     * @author CM
+     */
 	var parseAnalogueContent = function(elem) {
 		var contentEl = {
 			tagName: elem.tagName,
@@ -1678,14 +1989,37 @@ angular.module('evtviewer.dataHandler')
 
 		return contentEl;
 	};
-
-	/**********************/
-	/*parseAnalogue(entry)*/
-	/*****************************************************************************************/
-	/*Saves all the information about the parsed XML Element in an object of type 'analogue'.*/
-	/*@entry --> XML element to be parsed                                                    */
-	/*************************************************************************************** */
-	parser.parseAnalogue = function(entry) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAnalogue
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will parse an analogue element
+     *
+     * @param {element} entry XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the analogue entry
+     	<pre>
+			var analogue = {
+				id: '',
+				type: 'analogue',
+				attributes: [],
+				content: [],
+				sources: [],
+				_indexes: {
+					sourceId: [],
+					sourceRefId: [],
+					subAnalogues: []
+				},
+				_subAnalogue: false,
+				_xmlSource: ''
+			};
+     	</pre>
+     *
+     * @author CM
+     */
+    parser.parseAnalogue = function(entry) {
 		var analogue = {
 			id: '',
 			type: '',
@@ -1829,15 +2163,36 @@ angular.module('evtviewer.dataHandler')
 
 		return analogue;
 	};
-
-	/******************* */
-	/*parseAnalogueSource(entry)*/
-	/*************************************************************************** */
-	/*Parses the source element in order to then push it inside the corresponding*/
-	/*analogue array                                                             */
-	/* @entry --> XML element to be parsed                                       */
-	/*************************************************************************** */
-	parser.parseAnalogueSource = function(entry) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAnalogueSource
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will parse the an analogue element and saves 
+     *
+     * @param {element} entry XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the analogue source entry
+     	<pre>
+			var source = {
+				id: '',
+				abbr: {
+					title: [],
+					author: [],
+					msId: []
+				},
+				attributes: [],
+				bibl: [],
+				text: [],
+				url: [],
+				_xmlSource: ''
+			};
+     	</pre>
+     *
+     * @author CM
+     */
+    parser.parseAnalogueSource = function(entry) {
 		var source = {
 			id: '',
 			abbr: {
@@ -1962,13 +2317,29 @@ angular.module('evtviewer.dataHandler')
 
 		return source;
 	};
-
-	/******************************** */
-	/*parseAnalogueSourceContent(elem)*/
-	/*******************************************************************/
-	/* Function to parse the element contained inside a source element.*/
-	/* @ elem --> element to be parsed                                 */
-	/*******************************************************************/
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAnalogueSourceContent
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse the element contained inside a source element. 
+     *
+     * @param {element} elem XML element to be parsed
+     *
+     * @returns {Object} JSON object representing the analogue source content parsed
+     	<pre>
+			var contentEl = {
+				tagName: elem.tagName,
+				type: 'sourceContent',
+				attributes: [],
+				content: [],
+				url: []
+			};
+     	</pre>
+     *
+     * @author CM
+     */
 	var parseAnalogueSourceContent = function(elem) {
 		var contentEl = {
 			tagName: elem.tagName,
@@ -2009,10 +2380,22 @@ angular.module('evtviewer.dataHandler')
 
 		return contentEl;
 	};
-
-	/************************************** */
-	/*getAnalogueContentText(elem, wit, doc)*/
-	/************************************** */
+	/**
+     * @ngdoc function
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAnalogueSourceContent
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * [PRIVATE] This function will parse the text of an analogue content element
+     *
+     * @param {element} elem XML element to parse
+     * @param {string} wit id of scope witness (needed to parse eventual page breaks)
+     * @param {string} doc string representing the whole XML source text
+     *
+     * @returns {element} DOM element representing the analogue content element parsed
+     *
+     * @author CM
+     */
 	var getAnalogueContentText = function(elem, wit, doc) {
 		var spanElement;
 
@@ -2052,7 +2435,7 @@ angular.module('evtviewer.dataHandler')
 					var attrib = attribKeys[key];
 					var value = elem.attributes[attrib];
 					if (attrib !== 'xml:id') {
-						spanElement.setAttribute('data-' + attrib, value);
+						spanElement.setAttribute('data-' + attrib.replace(':','-'), value);
 					}
 				}
 
@@ -2086,11 +2469,23 @@ angular.module('evtviewer.dataHandler')
 
 		return spanElement;
 	};
-
-	/***************************/
-	/*getAnalogueText(analogue)*/
-	/***************************/
-	parser.getAnalogueText = function(analogue, wit, doc) {
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtCriticalElementsParser#getAnalogueText
+     * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+     *
+     * @description
+     * This method will parse the text of an analogue element
+     *
+     * @param {element} analogue XML element to parse
+     * @param {string} wit id of scope witness (needed to parse eventual page breaks)
+     * @param {string} doc string representing the whole XML source text
+     *
+     * @returns {element} <code>evt-analogue</code> element representing the analogue element parsed
+     *
+     * @author CM
+     */
+    parser.getAnalogueText = function(analogue, wit, doc) {
 		var spanElement,
 			errorElement; //TO DO: implementare gestione errore
 
