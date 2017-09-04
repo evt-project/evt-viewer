@@ -200,7 +200,7 @@ angular.module('evtviewer.popover')
          * @methodOf evtviewer.popover.evtPopover
          *
          * @description
-         * Delete the popover of the instance of a particular <code>&lt;evt-popover&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-popover&gt;</code>
          * 
          * @param {string} tempId id of <code>&lt;evt-popover&gt;</code> to destroy
          */

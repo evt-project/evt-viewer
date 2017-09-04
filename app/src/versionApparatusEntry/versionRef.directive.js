@@ -4,7 +4,11 @@
  * @name evtviewer.versionApparatusEntry.directive:evtVersionRef
  * @description 
  * # evtVersionRef
- * TODO: Add description!
+ * <p>Custom directive that will handle the connection between the double recensio entry 
+ * and the text in the "Multiple recensions" View</p>
+ * <p>The {@link evtviewer.versionApparatusEntry.controller:versionRefCtrl controller} for this directive is dynamically defined 
+ * inside the {@link evtviewer.versionApparatusEntry.evtVersionRef evtVersionRef} provider file.</p>
+ * <p>The initial scope is expanded in {@link evtviewer.versionApparatusEntry.evtVersionRef evtVersionRef} provider.</p>
  *
  * @scope
  * @param {string=} type type of version reference ('', 'version')
@@ -12,6 +16,8 @@
  * @param {string=} elId id of the current element
  *
  * @restrict E
+ *
+ * @requires evtviewer.versionApparatusEntry.evtVersionRef
  *
  * @author CM
 **/

@@ -249,7 +249,7 @@ angular.module('evtviewer.quote')
          * @methodOf evtviewer.quote.evtQuote
          *
          * @description
-         * Delete the quote of the instance of a particular <code>&lt;evt-quote&gt;</code>.
+         * Delete the reference of the instance of a particular <code>&lt;evt-quote&gt;</code>.
          * 
          * @param {string} tempId id of <code>&lt;evt-quote&gt;</code> to destroy
          */

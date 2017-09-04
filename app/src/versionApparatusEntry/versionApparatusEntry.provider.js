@@ -4,7 +4,13 @@
  * @name evtviewer.versionApparatusEntry.evtVersionApparatusEntry
  * @description 
  * # evtVersionApparatusEntry
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.versionApparatusEntry.directive:evtVersionApparatusEntry evtVersionApparatusEntry} 
+ * directive and stores its reference untill the directive remains instantiated.
+ *
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtVersionApparatus
+ * @requires evtviewer.core.config
  *
  * @author CM
 **/
@@ -18,7 +24,35 @@ angular.module('evtviewer.versionApparatusEntry')
             collection = {},
             list = [],
             idx = 0;
-        
+        /**
+         * @ngdoc method
+         * @name evtviewer.versionApparatusEntry.evtVersionApparatusEntry#build
+         * @methodOf evtviewer.versionApparatusEntry.evtVersionApparatusEntry
+         *
+         * @description
+         * <p>This method will extend the scope of 
+         * {@link evtviewer.versionApparatusEntry.directive:evtVersionApparatusEntry evtVersionApparatusEntry} directive 
+         * according to selected configurations and parsed data.</p>
+         * <p>In particular it will decide which sub content tabs have to be shown and which have to hidden.</p>
+         *
+         * @param {Object} scope initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    uid,
+                    scopeWit,
+                    scopeVer,
+                    appId,
+                    readingId,
+                    content,
+                    _subContentOpened,
+                    tabs,
+                    currentViewMode,
+                    currentVer
+                };
+            </pre>
+         */
         versionEntry.build = function(scope) {
             var currentId = idx++,
                 entryId = scope.appId || undefined,
@@ -88,7 +122,16 @@ angular.module('evtviewer.versionApparatusEntry')
 
             return collection[currentId];
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.versionApparatusEntry.evtVersionApparatusEntry#destroy
+         * @methodOf evtviewer.versionApparatusEntry.evtVersionApparatusEntry
+         *
+         * @description
+         * Delete the reference of the instance of a particular <code>&lt;evt-version-apparatus-entry&gt;</code>
+         * 
+         * @param {string} tempId id of <code>&lt;evt-version-apparatus-entry&gt;</code> to destroy
+         */
         versionEntry.destroy = function(tempId) {
             delete collection[tempId];
         };

@@ -297,7 +297,7 @@ angular.module('evtviewer.reading')
          * @methodOf evtviewer.reading.evtReading
          *
          * @description
-         * Delete the reading of the instance of a particular <code>&lt;evt-reading&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-reading&gt;</code>
          * 
          * @param {string} tempId id of <code>&lt;evt-reading&gt;</code> to destroy
          */

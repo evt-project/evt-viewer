@@ -239,7 +239,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
          * @methodOf evtviewer.analoguesApparatusEntry.evtSourceSeg
          *
          * @description
-         * Delete the instance of a particular <code>&lt;evt-source-seg&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-source-seg&gt;</code>
          * 
          * @param {string} tempId Id of <code>&lt;evt-source-seg&gt;</code> to destroy
          */

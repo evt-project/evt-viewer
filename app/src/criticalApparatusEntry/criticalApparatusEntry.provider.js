@@ -208,7 +208,7 @@ angular.module('evtviewer.criticalApparatusEntry')
          * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
          *
          * @description
-         * Delete the criticalApparatusEntry of the instance of a particular <code>&lt;evt-critical-apparatus-entry&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-critical-apparatus-entry&gt;</code>
          * 
          * @param {string} tempId id of <code>&lt;evt-critical-apparatus-entry&gt;</code> to destroy
          */

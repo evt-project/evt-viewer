@@ -246,7 +246,7 @@ angular.module('evtviewer.analogue')
          * @methodOf evtviewer.analogue.evtAnalogue
          *
          * @description
-         * Delete the analogue of the instance of a particular <code>&lt;evt-analogue&gt;</code>.
+         * Delete the reference of the instance of a particular <code>&lt;evt-analogue&gt;</code>.
          * 
          * @param {string} tempId id of <code>&lt;evt-analogue&gt;</code> to destroy
          */

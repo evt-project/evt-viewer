@@ -352,7 +352,7 @@ angular.module('evtviewer.namedEntity')
          * @methodOf evtviewer.namedEntity.evtNamedEntityRef
          *
          * @description
-         * Delete the select of the instance of a particular <code>&lt;evt-named-entity-ref&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-named-entity-ref&gt;</code>
          * 
          * @param {string} tempId id of <code>&lt;evt-named-entity-ref&gt;</code> to destroy
          */

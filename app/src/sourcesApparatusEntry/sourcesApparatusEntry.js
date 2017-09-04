@@ -16,7 +16,7 @@
  *
  * ## Directives
  * - {@link evtviewer.sourcesApparatusEntry.directive:evtSourcesApparatusEntry evtSourcesApparatusEntry}: custom directive 
- * that will show the content of an source apparatus entry.
+ * that will show the content of a source apparatus entry.
  * - {@link evtviewer.sourcesApparatusEntry.directive:evtSourceRef evtSourceRef}: custom directive 
  * that will handle the connection between the source and the text in the Source-Text View.
  * - {@link evtviewer.sourcesApparatusEntry.directive:evtSourceSeg evtSourceSeg}: custom directive 

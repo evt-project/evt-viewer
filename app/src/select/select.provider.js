@@ -761,7 +761,7 @@ angular.module('evtviewer.select')
          * @methodOf evtviewer.select.evtSelect
          *
          * @description
-         * Delete the select of the instance of a particular <code>&lt;evt-select&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-select&gt;</code>
          * 
          * @param {string} tempId id of <code>&lt;evt-select&gt;</code> to destroy
          */

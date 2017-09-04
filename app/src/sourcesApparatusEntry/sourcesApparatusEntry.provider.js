@@ -305,7 +305,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
          * @methodOf evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
          *
          * @description
-         * Delete the sourcesApparatusEntry of the instance of a particular <code>&lt;evt-sources-apparatus-entry&gt;</code>
+         * Delete the reference of the instance of a particular <code>&lt;evt-sources-apparatus-entry&gt;</code>
          * 
          * @param {string} tempId Id of <code>&lt;evt-sources-apparatus-entry&gt;</code> to destroy
          */
