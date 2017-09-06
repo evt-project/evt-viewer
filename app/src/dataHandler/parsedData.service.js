@@ -1631,44 +1631,58 @@ angular.module('evtviewer.dataHandler')
 		content = '<ul>';
 		for (var i = 0; i < structure.length; i++) {
 			var element = witnessesCollection[structure[i]];
-			if (element._type === 'witness') {
-				content += '<li>';
-				if (element.attributes && element.attributes.n) {
-					content += '<strong>' + element.attributes.n + '</strong>';
-				} else {
-					content += '<strong>#' + element.id + '</strong>';
-				}
-				content += '<br /><div>' + element.description.innerHTML + '</div>';	
-				content += '</li>';
-			} else {
-				content += '<li>';
-				if (element.attributes && element.attributes.n) {
-					content += '<strong>' + element.attributes.n + '</strong>';
-				} else {
-					content += '<strong>#' + element.id + '</strong>';
-				}
-				content += '<br /><div>' + element.name + '</div>';
-				content += '<ul>';
-                var elementContentLength = element.content ? element.content.length : 0;
-				for (var j = 0; j < elementContentLength; j++) {
-					var subElement = witnessesCollection[element.content[j]];
-					if (subElement && subElement._type === 'witness') {
-						content += '<li>';
-						if (subElement.attributes && subElement.attributes.n) {
-							content += '<strong>' + subElement.attributes.n + '</strong>';
-						} else {
-							content += '<strong>#' + subElement.id + '</strong>';
-						}
-						content += '<br /><div>' + subElement.description.innerHTML + '</div>';
-						content += '</li>';
-					}
-					//TO DO RICORSIVA!!!            
-				}
-				content += '</ul>';
-				content += '</li>';
-			}
+			content += formatWitnessesListElement(element);
 		}
 		content += '</ul>';
+		return content;
+	};
+	var formatWitnessesListElement = function(element) {
+		var content = '';
+		var sigla = '' 
+		if (element._type === 'witness') {
+			content += '<li><div>';
+			if (element.attributes && element.attributes.n) {
+				sigla = element.attributes.n;
+			} else if (element.sigla && element.sigla !== '') {
+				sigla = element.sigla;
+			}
+			content += '<strong>' + sigla + '</strong>';
+			
+			if (element.description) {
+				if (element.description.nodeType === 3) {
+					if (element.description.textContent !== '' && sigla !== '') {
+						content += ': ';
+					}
+					content += element.description.textContent;
+				} else {
+					if (element.description.innerHTML !== '' && sigla !== '') {
+						content += ': ';
+					}
+					content += element.description.innerHTML;
+				}
+			}
+			content += '</div></li>';
+		} else {
+			content += '<li><div>';
+			if (element.attributes && element.attributes.n) {
+				sigla = element.attributes.n;
+			} else if (element.sigla && element.sigla !== '') {
+				sigla = element.sigla;
+			}
+			content += '<strong>' + sigla + '</strong>';
+			if (sigla !== '' && element.name !== '') {
+				content += ': ';
+			}
+			content += element.name;
+			content += '</div><ul>';
+            var elementContentLength = element.content ? element.content.length : 0;
+			for (var j = 0; j < elementContentLength; j++) {
+				var subElement = witnessesCollection[element.content[j]];
+				content += formatWitnessesListElement(subElement);
+			}
+			content += '</ul>';
+			content += '</li>';
+		}
 		return content;
 	};
 

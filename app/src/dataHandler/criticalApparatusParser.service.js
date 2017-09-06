@@ -86,7 +86,8 @@ angular.module('evtviewer.dataHandler')
     var parseListWit = function(doc, listWit) {
         var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) { return el.length !== 0; });
         var list = {
-            id      : listWit.getAttribute('xml:id'),
+            id      : listWit.getAttribute('xml:id') || evtParser.xpath(listWit).substr(1),
+            sigla   : listWit.getAttribute('xml:id'),
             name    : '',
             content : [],
             _type   : 'group',
@@ -120,8 +121,9 @@ angular.module('evtviewer.dataHandler')
                 } 
                 else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0){ //witness
                     var witnessElem = {
-                        id          : child.getAttribute('xml:id'),
-                         attributes  : evtParser.parseElementAttributes(child),
+                        id          : child.getAttribute('xml:id') || evtParser.xpath(child).substr(0),
+                        sigla       : child.getAttribute('xml:id'),
+                        attributes  : evtParser.parseElementAttributes(child),
                         description : evtParser.parseXMLElement(doc, child, {skip: ''}),
                         _group      : list.id,
                         _type       : 'witness'
@@ -169,7 +171,8 @@ angular.module('evtviewer.dataHandler')
                                         el = parseListWit(doc, child);
                                     } else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0) { // witness
                                         el = {
-                                            id          : child.getAttribute('xml:id'),
+                                            id          : child.getAttribute('xml:id') || evtParser.xpath(child).substr(0),
+                                            sigla       : child.getAttribute('xml:id'),
                                             description : evtParser.parseXMLElement(doc, child, {skip: ''}),
                                             _group      : undefined,
                                             _type       : 'witness',
