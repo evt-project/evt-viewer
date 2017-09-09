@@ -501,7 +501,7 @@ angular.module('evtviewer.dataHandler')
          replace = str.replace(regex, " ");
          str = replace;
       }
-      return $str;
+      return str;
    };
 
    /* *************************** */
