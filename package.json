@@ -51,7 +51,6 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "js-search": "^1.4.2",
-    "js-worker-search": "^1.1.2"
+    "jquery-xpath": "^0.3.1"
   }
 }
