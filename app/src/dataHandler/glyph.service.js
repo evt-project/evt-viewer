@@ -95,20 +95,19 @@ angular.module('evtviewer.dataHandler')
     * @param {string} text contain the text of the document
     * @returns {string} the text of the document
     */
-   evtGlyph.addGlyph = function (currentGlyph, text) {
+   evtGlyph.addGlyph = function (currentGlyph) {
       var currentEdition;
 
       currentEdition = evtInterface.getState('currentEdition');
 
       switch (currentEdition) {
          case 'diplomatic':
-            text += currentGlyph.diplomatic;
+            return currentGlyph.diplomatic;
             break;
          case 'interpretative':
-            text += currentGlyph.interpretative;
+            return currentGlyph.interpretative;
             break;
       }
-      return text;
    };
 
    /**

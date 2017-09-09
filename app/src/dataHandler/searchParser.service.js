@@ -1,15 +1,14 @@
-import * as JsSearch from 'js-search';
+//import * as JsSearch from 'js-search';
 //import SearchApi from 'js-worker-search';
+import 'jquery-xpath/jquery.xpath.js';
 
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchParser', function (parsedData, evtInterface, evtGlyph) {
-   let parser = {};
+.service('evtSearchParser', function (evtInterface, evtGlyph) {
+   var parser = {};
    console.log("SEARCH PARSER RUNNING");
 
-   let text = '',
-       str = '',
-
+   var text = '',
        nodes,
        node,
 
@@ -21,74 +20,54 @@ angular.module('evtviewer.dataHandler')
        glyphs = [],
 
        word = {},
-       editionWords = [],
-
-       regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
+       editionWords = [];
 
    parser.parseWords = function (doc) {
       text = getText(doc);
-
-      /*let tokenize = new JsSearch.SimpleTokenizer();
-       let words = tokenize.tokenize(text);
-       console.log(words);*/
-
-      //const searchApi = new SearchApi();
-
-      //var c = searchApi.indexDocument(doc);
-      /*let c = searchApi.indexDocument('foo', 'Text describing an Object identified as "foo"');
-       let d = searchApi.indexDocument('bar', 'Text describing an Object identified as "bar"');*/
-      //const promise = searchApi.search('describing');
    };
 
-   let getText = function (doc) {
-      let path;
-      let nsResolver = {
+   var getText = function (doc) {
+      currentEdition = getCurrentEdition();
+
+      if(currentEdition === 'diplomatic') {
+         nodes = $(doc).xpath("//body//(g | text()[normalize-space()])");
+
+         for(var i = 0; i < nodes.length; i++) {
+            node = nodes[i];
+            if(node.nodeName === 'g') {
+               currentGlyph = evtGlyph.getGlyph(node);
+               glyphs = evtGlyph.addGlyphs(currentGlyph);
+               text += evtGlyph.addGlyph(currentGlyph);
+            }
+            else {
+               text += node.textContent;
+            }
+         }
+      }
+      else {
+         //critical
+      }
+      text = cleanText(text);
+      console.log(text);
+
+     /* var path;
+      var nsResolver = {
          lookupNamespaceURI: function (prefix) {
             prefix = 'ns';
-            let namespace = doc.documentElement.namespaceURI;
+            var namespace = doc.documentElement.namespaceURI;
             return namespace;
          }
       };
 
-      doc.documentElement.namespaceURI == null ? path = '//body//node()[not(self::comment())]' : path = '//ns:body//node()[not(self::comment())]';
-      nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ANY_TYPE, null);
+      doc.documentElement.namespaceURI == null ? path = '//body//(g | text()[normalize-space()]) ' : path = '//ns:body//text()[normalize-space()] | //ns:body//g';
+      nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);*/
 
-      node = nodes.iterateNext();
-      str = node.nodeValue;
-
-      while (node || str === null || containOnlySpace(str)) {
-         if (node.tagName !== 'g' || !containOnlySpace(str)) {
-            str = node.nodeValue;
-            checkNodeIteration(node);
-            node = checkCurrentEditionIteration(node);
-
-            if (str !== null && !containOnlySpace(str)) {
-               addWord();
-            }
-
-            node = nodes.iterateNext();
-
-            if (node !== null) {
-               node = checkCurrentNode(node, doc);
-            }
-
-            if (node === null) {
-               console.log(text);
-               console.log(glyphs);
-               console.log(editionWords);
-               return text;
-            }
-            str = node.nodeValue;
-         }
-         else {
-            currentGlyph = evtGlyph.getGlyph(node);
-            glyphs = evtGlyph.addGlyphs(currentGlyph);
-            text = evtGlyph.addGlyph(currentGlyph, text);
-            addSpace();
-            node = nodes.iterateNext();
-         }
-         text = cleanText(text);
+      /*for(var i = 0; i < nodes.snapshotLength; i++) {
+         str += nodes.snapshotItem(i).textContent;
       }
+      text = cleanText(str);
+      console.log(text);*/
+
    };
 
    /*** EDITION ***/
@@ -98,7 +77,7 @@ angular.module('evtviewer.dataHandler')
    /* ******************************* */
    /* Function to get current Edition */
    /* ******************************* */
-   let getCurrentEdition = function () {
+   var getCurrentEdition = function () {
       currentEdition = evtInterface.getState('currentEdition');
       return currentEdition;
    };
@@ -109,8 +88,8 @@ angular.module('evtviewer.dataHandler')
    /* Function to iterate node that don't belong to current edition */
    /* @node -> current node                                         */
    /* ************************************************************* */
-   let checkCurrentEditionIteration = function (node) {
-      let nodeName = node.nodeName;
+  /* var checkCurrentEditionIteration = function (node) {
+      var nodeName = node.nodeName;
 
       currentEdition = getCurrentEdition();
 
@@ -140,7 +119,7 @@ angular.module('evtviewer.dataHandler')
          }
       }
       return node;
-   };
+   };*/
 
 
    /*** DIPLOMATIC/INTERPRETATIVE EDITION ***/
@@ -153,8 +132,8 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                                                     */
    /* @doc -> current xml document                                              */
    /* ************************************************************************* */
-   let checkCurrentChoiceNode = function (node) {
-      let word = {},
+   /*var checkCurrentChoiceNode = function (node) {
+      var word = {},
          children = node.children,
          childNode,
          childNodeName,
@@ -162,13 +141,13 @@ angular.module('evtviewer.dataHandler')
          innerHtml,
          outerHtmlChild;
 
-      for (let i = 0; i < children.length; i++) {
+      for (var i = 0; i < children.length; i++) {
          childNodeName = children[i].nodeName;
          innerHtml = children[i].innerHTML;
          nodeHaveChild = children[i].children.length !== 0;
 
          if (nodeHaveChild) {
-            for (let j = 0; j < children[i].children.length; j++) {
+            for (var j = 0; j < children[i].children.length; j++) {
                outerHtmlChild = children[i].children[j].outerHTML;
 
                childNode = checkChildNode(children[i].children[j]);
@@ -214,7 +193,7 @@ angular.module('evtviewer.dataHandler')
          }
       }
       return word;
-   };
+   };*/
 
 
    /*** CRITICAL EDITION ***/
@@ -226,8 +205,8 @@ angular.module('evtviewer.dataHandler')
    /* that contain critical lectio                                           */
    /* @node -> current node                                                  */
    /* ********************************************************************** */
-   let checkCurrentAppNode = function (node, doc) {
-      let word = {},
+   /*var checkCurrentAppNode = function (node, doc) {
+      var word = {},
          children = node.children,
          child,
          childNodeName,
@@ -237,11 +216,12 @@ angular.module('evtviewer.dataHandler')
          nodeHaveWit,
          witnessText;
 
-      for (let i = 0; i < children.length; i++) {
+      for (var i = 0; i < children.length; i++) {
          child = children[i];
          childNodeName = child.nodeName;
 
          if(childNodeName !== 'note') {
+            var a = checkChildNode(child);
             witnessText = child.textContent;
             nodeHaveChild = children[i].children.length !== 0;
 
@@ -251,7 +231,7 @@ angular.module('evtviewer.dataHandler')
                   word = handleNestedApp(child, word);
                }
                else {
-                  for (let j = 0; j < child.children.length; j++) {
+                  for (var j = 0; j < child.children.length; j++) {
                      witness = getCurrentWitness(child.children[j]);
                      childNodeName = child.children[j].nodeName;
 
@@ -275,7 +255,7 @@ angular.module('evtviewer.dataHandler')
 
                if(nodeHaveWit) {
                   witnesses = witness.split(' ');
-                  for(let z = 0; z < witnesses.length; z++) {
+                  for(var z = 0; z < witnesses.length; z++) {
                      Object.keys(word).length === 0 ? word.critical = {[witnesses[z]]: witnessText} : word.critical[witnesses[z]] = witnessText;
                   }
                }
@@ -283,7 +263,7 @@ angular.module('evtviewer.dataHandler')
          }
       }
       return word;
-   };
+   };*/
 
    /* ***************************** */
    /* BEGIN getCurrentWitness(node) */
@@ -291,12 +271,12 @@ angular.module('evtviewer.dataHandler')
    /* Function to get the current witness  */
    /* @node -> current node                */
    /* ************************************ */
-   let getCurrentWitness = function (node) {
-      let witList = {},
+   /*var getCurrentWitness = function (node) {
+      var witList = {},
           group = [];
 
       if(node.getAttribute('wit')) {
-         let wit = node.getAttribute('wit');
+         var wit = node.getAttribute('wit');
 
          while(wit.includes('#')) {
             wit = wit.replace('#', '');
@@ -306,7 +286,7 @@ angular.module('evtviewer.dataHandler')
             wit = '';
             witList = parsedData.getWitnesses();
             group = witList.group.content;
-            for (let i = 0; i < group.length; i++) {
+            for (var i = 0; i < group.length; i++) {
                i !== group.length-1 ? wit += group[i] + ' ' : wit += group[i];
             }
          }
@@ -315,7 +295,7 @@ angular.module('evtviewer.dataHandler')
       else {
          return false;
       }
-   };
+   };*/
 
    /* ********************************* */
    /* BEGIN handleNestedApp(node, word) */
@@ -324,13 +304,13 @@ angular.module('evtviewer.dataHandler')
    /* @node -> current node                           */
    /* @word -> object containing the different lectio */
    /* *********************************************** */
-   let handleNestedApp = function(node, word) {
-      let innerHtml = node.innerHTML,
+   /*var handleNestedApp = function(node, word) {
+      var innerHtml = node.innerHTML,
          nestedEl,
          nestedElInner,
          toReplace;
 
-      for(let i = 0; i < node.children.length; i++) {
+      for(var i = 0; i < node.children.length; i++) {
          nestedEl = node.children[i];
 
          switch(nestedEl.nodeName) {
@@ -341,15 +321,15 @@ angular.module('evtviewer.dataHandler')
                innerHtml = innerHtml.replace(toReplace, nestedElInner);
 
                word = checkCurrentAppNode(node);
-               for(let j = 0; j < Object.keys(word.critical).length; j++) {
-                  let wit = Object.keys(word.critical)[j];
-                  let repl = innerHtml.replace(nestedElInner, word.critical[wit]);
+               for(var j = 0; j < Object.keys(word.critical).length; j++) {
+                  var wit = Object.keys(word.critical)[j];
+                  var repl = innerHtml.replace(nestedElInner, word.critical[wit]);
                   word.critical[wit] = repl;
                }
          }
       }
       return word;
-   };
+   };*/
 
 
    /*** NODE ***/
@@ -360,7 +340,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to check the current node name and add word to editionWords */
    /* @node -> current node                                                */
    /* ******************************************************************** */
-   let checkCurrentNode = function(node, doc) {
+   /*var checkCurrentNode = function(node, doc) {
       switch (node.nodeName) {
          case 'choice':
             currentChoiceNode = node;
@@ -378,7 +358,7 @@ angular.module('evtviewer.dataHandler')
             break;
       }
       return node;
-   };
+   };*/
 
    /* ************************ */
    /* BEGIN iterateNode(node)  */
@@ -386,11 +366,11 @@ angular.module('evtviewer.dataHandler')
    /* Function to iterate node    */
    /* @node -> current node       */
    /* *************************** */
-   let iterateNode = function(node) {
-      let child;
+   /*var iterateNode = function(node) {
+      var child;
 
          if (node.childNodes.length > 0) {
-            for (let i = 0; i < node.childNodes.length; i++) {
+            for (var i = 0; i < node.childNodes.length; i++) {
                child = nodes.iterateNext();
                child = iterateNode(child);
             }
@@ -399,7 +379,7 @@ angular.module('evtviewer.dataHandler')
             child = nodes.iterateNext();
          }
          return child;
-   };
+   };*/
 
    /* ****************************** */
    /* BEGIN checkNodeIteration(node) */
@@ -407,14 +387,15 @@ angular.module('evtviewer.dataHandler')
    /* Function to iterate specific nodes */
    /* @node -> current node              */
    /* ********************************** */
-   let checkNodeIteration = function (node) {
-      let nodeName = node.nodeName;
+   /*var checkNodeIteration = function (node) {
+      var nodeName = node.nodeName;
 
       switch (nodeName) {
          case 'note':
+         case 'del':
             iterateNode(node);
       }
-   };
+   };*/
 
    /* ******************************* */
    /* BEGIN checkChildNode(childNode) */
@@ -422,7 +403,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to check if childNodes contain a specific element */
    /* @childNode -> current childNode                            */
    /* ********************************************************** */
-   let checkChildNode = function(childNode) {
+   /*var checkChildNode = function(childNode) {
       if(childNode.children.length === 0) {
          switch (childNode.nodeName) {
             case 'g', 'rdg':
@@ -430,13 +411,13 @@ angular.module('evtviewer.dataHandler')
          }
       }
       else {
-         for (let i = 0; i < childNode.children.length; i++) {
+         for (var i = 0; i < childNode.children.length; i++) {
             childNode = childNode.children[i];
             checkChildNode(childNode);
          }
       }
       return childNode;
-   };
+   };*/
 
 
 
@@ -446,8 +427,8 @@ angular.module('evtviewer.dataHandler')
    /* ************************************* */
    /* Function to add word in text (string) */
    /* ************************************* */
-   let addWord = function() {
-      let nextSibling = node.nextSibling,
+   /*var addWord = function() {
+      var nextSibling = node.nextSibling,
           previousSibling = node.previousSibling;
 
       if (node.parentNode.parentNode.nodeName === 'choice' && nextSibling !== null && previousSibling !== null || node.parentNode.nodeName === 'hi') {
@@ -465,15 +446,15 @@ angular.module('evtviewer.dataHandler')
       else {
          text += str;
       }
-   };
+   };*/
 
    /* **************** */
    /* BEGIN addSpace() */
    /* ************************************* */
    /* Function to add space where necessary */
    /* ************************************* */
-   let addSpace = function() {
-      let nextSibling = node.nextSibling,
+   /*var addSpace = function() {
+      var nextSibling = node.nextSibling,
           previousSibling = node.previousSibling;
 
       if(nextSibling === null && previousSibling !== null) {
@@ -485,7 +466,7 @@ angular.module('evtviewer.dataHandler')
       else {
          text += '';
       }
-   };
+   };*/
 
    /* *************************** */
    /* BEGIN containOnlySpace(str) */
@@ -493,16 +474,16 @@ angular.module('evtviewer.dataHandler')
    /* Function to check if string (str) contains only spaces */
    /* @str -> string to check                                */
    /* ****************************************************** */
-   let containOnlySpace = function(str) {
+   /*var containOnlySpace = function(str) {
       return jQuery.trim(str).length === 0;
-   };
+   };*/
 
    /* ******************** */
    /* BEGIN cleanText(str) */
    /* **************************************************************** */
    /* Function to clean text (string) from spaces and some punctuation */
    /* **************************************************************** */
-   let cleanText = function (str) {
+   var cleanText = function (str) {
       str = cleanSpace(str);
       str = cleanPunctuation(str);
       return str;
@@ -513,13 +494,14 @@ angular.module('evtviewer.dataHandler')
    /* ******************************************* */
    /* Function to clean text (string) from spaces */
    /* ******************************************* */
-   let cleanSpace = function(str) {
-      let replace;
-      while(str.match(/\s\s/)){
-         replace = str.replace(/\s\s/, " ");
+   var cleanSpace = function(str) {
+      var replace,
+          regex = /\s\s/;
+      while(str.match(regex)){
+         replace = str.replace(regex, " ");
          str = replace;
       }
-      return str;
+      return $str;
    };
 
    /* *************************** */
@@ -527,8 +509,10 @@ angular.module('evtviewer.dataHandler')
    /* ***************************************************** */
    /* Function to clean text (string) from some punctuation */
    /* ***************************************************** */
-   let cleanPunctuation = function(str) {
-      let replace;
+   var cleanPunctuation = function(str) {
+      var replace,
+          regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
+
       while(str.match(regex)) {
          replace = str.replace(regex, "");
          str = replace;
