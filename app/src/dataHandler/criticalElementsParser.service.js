@@ -20,8 +20,8 @@ angular.module('evtviewer.dataHandler')
 		lemmaDef = '<lem>',
 		readingDef = lemmaDef + ', <rdg>',
 		readingGroupDef = '<rdgGrp>',
-		quoteDef = '<quote>',
-		analogueDef = '<seg>,<ref[type=parallelPassage]>',
+		quoteDef = config.quoteDef || '<quote>',
+		analogueDef = config.analogueDef || '<seg>,<ref[type=parallelPassage]>',
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 
 	// /////////////// //

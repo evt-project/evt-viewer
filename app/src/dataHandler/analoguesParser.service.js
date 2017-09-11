@@ -23,9 +23,9 @@ angular.module('evtviewer.dataHandler')
 	var parser = {};
 
 	var apparatusEntryDef = '<app>',
-		quoteDef = '<quote>',
+		quoteDef = config.quoteDef || '<quote>',
 		analoguesUrl = config.analoguesUrl || '',
-		analogueDef = '<seg>,<ref[type=parallelPassage]>';
+		analogueDef = config.analogueDef || '<seg>,<ref[type=parallelPassage]>';
 
 	/**
      * @ngdoc method

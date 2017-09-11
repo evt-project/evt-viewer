@@ -100,6 +100,7 @@ angular.module('evtviewer.interface')
      <pre>
         var properties = {
             indexTitle : '',
+            webSite            : '',
             dataUrl : '',
             logoUrl : '',
             enableXMLdownload : false,
@@ -117,6 +118,7 @@ angular.module('evtviewer.interface')
      */
     var properties = {
         indexTitle         : '',
+        webSite            : '',
         dataUrl            : '',
         logoUrl            : '',
         enableXMLdownload  : false,
@@ -167,6 +169,7 @@ angular.module('evtviewer.interface')
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
                 properties.indexTitle         = config.indexTitle;
                 properties.logoUrl            = config.logoUrl;
+                properties.webSite            = config.webSite;
                 properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
                 

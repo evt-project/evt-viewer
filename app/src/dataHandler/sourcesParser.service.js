@@ -21,7 +21,7 @@ angular.module('evtviewer.dataHandler')
     var parser = {};
 
     var apparatusEntryDef = '<app>',
-        quoteDef          = '<quote>';
+        quoteDef          = config.quoteDef || '<quote>';
     // Al momento ho usato solo questa variabile
     // Queste due le userò appena inizierò a parsare le fonti
     var sourceDef  = '<cit>',

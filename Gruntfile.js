@@ -207,12 +207,13 @@ module.exports = function (grunt) {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
-      },
-      // TODO: temp mobile
-      mobile: {
-        src: ['<%= yeoman.app %>/mobile.html'],
-        ignorePath:  /\.\.\//
       }
+      //,
+      // TODO: temp mobile
+      // mobile: {
+      //   src: ['<%= yeoman.app %>/mobile.html'],
+      //   ignorePath:  /\.\.\//
+      // }
       // TODO: overwrite bootstrap style in EVT css
       // sass: {
       //   src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
@@ -255,7 +256,7 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
@@ -382,7 +383,7 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.dist %>/*.html', '!<%= yeoman.dist %>/mobile.html']
       }
     },
 
@@ -398,6 +399,8 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
+            '!mobile.html',
+            'README.md',
             'images/{,*/}*.{webp}',
             'fonts/{,*/}*.*',
             'config/{,*/}*.*',
@@ -462,8 +465,8 @@ module.exports = function (grunt) {
       },
       local_dependencies: {
         files: {
-          '<%= yeoman.app %>/index.html': ['<%= yeoman.app %>/src/*/*.js'],
-          '<%= yeoman.app %>/mobile.html': ['<%= yeoman.app %>/src/*/*.js']
+          '<%= yeoman.app %>/index.html': ['<%= yeoman.app %>/src/*/*.js']
+          //'<%= yeoman.app %>/mobile.html': ['<%= yeoman.app %>/src/*/*.js']
         }
       }
     }

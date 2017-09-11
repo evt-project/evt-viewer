@@ -308,7 +308,19 @@ angular.module('evtviewer.interface')
          */
 		$scope.getState = function(name) {
 			return evtInterface.getState(name);
-		};		
+		};
+      /**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getWebSite
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get the external web site of the edition.
+         * Add 'http://' if not included in path. 
+         * @returns {string} URL of external web site of edition
+         */
+      $scope.getWebSite= function() {
+         var webSite = evtInterface.getProperty('webSite');
+         return webSite.indexOf('http://') < 0 ? 'http://' + webSite : webSite;
+      };		
 		/**
          * @ngdoc method
          * @name evtviewer.interface.controller:InterfaceCtrl#handleGenericClick

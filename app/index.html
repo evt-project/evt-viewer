@@ -44,6 +44,11 @@
     <header>
         <img class="logo" ng-if="getProperty('logoUrl') !== ''" ng-src="{{getProperty('logoUrl')}}" />
         {{ getProperty('indexTitle') }}
+        <a class="webSiteLink" 
+            ng-if="getProperty('webSite') !== ''"  
+            href="{{getWebSite()}}" target="_blank">
+            <i class="fa fa-external-link"></i>
+        </a>
         <div class="globalMenu">
             <div class="viewModeMenu">
                 <button-switch
@@ -515,7 +520,7 @@
     <script src="/src/namedEntity/namedEntityRef.directive.js"></script>
     <script src="/src/namedEntity/genericEntity.service.js"></script>
 
-    <script src="/src/mobile/mobile.js"></script>
+    <!--<script src="/src/mobile/mobile.js"></script>
     <script src="/src/mobile/mobile.dir.js"></script>
     <script src="/src/mobile/mobile.provider.js"></script>
     <script src="/src/mobile/mobileMenu.ctrl.js"></script>
@@ -525,7 +530,7 @@
     <script src="/src/mobile/mobileSearch.ctrl.js"></script>
     <script src="/src/mobile/mobileSearch.dir.js"></script>
     <script src="/src/mobile/mobileView.ctrl.js"></script>
-    <script src="/src/mobile/mobileView.dir.js"></script>
+    <script src="/src/mobile/mobileView.dir.js"></script>-->
 
     <script src="/src/criticalApparatusEntry/criticalApparatusEntry.js"></script>
     <script src="/src/criticalApparatusEntry/criticalApparatusEntry.configuration.js"></script>
