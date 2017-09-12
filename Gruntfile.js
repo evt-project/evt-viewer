@@ -27,6 +27,8 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-markdown');
   
+  grunt.loadNpmTasks('grunt-text-replace'); // Used to automatically replace the path to config.json in GLOBALCONFIGS
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -64,6 +66,26 @@ module.exports = function (grunt) {
         ]
       }
     },
+
+    replace: {
+      configPathBuild: {
+        src: ['<%= yeoman.app %>/src/{,*/}*.js'],
+        overwrite: true,
+        replacements: [{
+          from: '../../config/config.json',
+          to: 'config/config.json'
+        }]
+      },
+      configPathDev: {
+        src: ['<%= yeoman.app %>/src/{,*/}*.js'],
+        overwrite: true,
+        replacements: [{
+          from: 'config/config.json',
+          to: '../../config/config.json'
+        }]
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -521,6 +543,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     // 'injector',
+    'replace:configPathBuild',
     'html2js:main',
     'wiredep',
     'useminPrepare',
@@ -534,7 +557,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'markdown'
+    'markdown',
+    'replace:configPathDev'
     // 'htmlmin'
   ]);
 

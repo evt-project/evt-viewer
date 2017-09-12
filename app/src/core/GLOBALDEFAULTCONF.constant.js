@@ -48,11 +48,9 @@ angular.module('evtviewer.core')
 			active: true
 		}
 	},
-	// Default for DEV:
+	// Default:
 	// <pre> configUrl: '../../config/config.json' </pre>
-	// Default for BUILD:
-	// <pre> configUrl: 'config/config.json' </pre>
-	configUrl: 'config/config.json',
+	configUrl: '../../config/config.json',
 
 	dataUrl: '',
 	logoUrl: '',
