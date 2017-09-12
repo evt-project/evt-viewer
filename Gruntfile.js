@@ -25,6 +25,8 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-ngdocs');
 
+  grunt.loadNpmTasks('grunt-markdown');
+  
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -49,6 +51,19 @@ module.exports = function (grunt) {
       }
     },
 
+    markdown: {
+      all: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/',
+            src: '{,*/}*.md',
+            dest: '<%= yeoman.dist %>',
+            ext: '.html'
+          }
+        ]
+      }
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -518,7 +533,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'filerev',
-    'usemin'
+    'usemin',
+    'markdown'
     // 'htmlmin'
   ]);
 
