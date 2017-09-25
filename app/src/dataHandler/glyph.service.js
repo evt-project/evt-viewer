@@ -124,7 +124,7 @@ angular.module('evtviewer.dataHandler')
          replaceGTag = 'reord brnd';
       </pre>
     */
-   evtGlyph.replaceGlyphTag = function (node, childNode, innerHtml, outerHtmlChild) {
+   /*evtGlyph.replaceGlyphTag = function (node, childNode, innerHtml, outerHtmlChild) {
       var replaceGTag,
           toReplace = outerHtmlChild,
           glyph;
@@ -138,7 +138,7 @@ angular.module('evtviewer.dataHandler')
       }
 
       return replaceGTag;
-   };
+   };*/
 
    /* *************************** */
    /* BEGIN getCurrentGlyph(node) */

@@ -19,7 +19,7 @@ angular.module('evtviewer.dataHandler')
 
        glyphs = [],
 
-       word = {},
+       //word = {},
        editionWords = [];
 
    parser.parseWords = function (doc) {
@@ -29,24 +29,16 @@ angular.module('evtviewer.dataHandler')
    var getText = function (doc) {
       currentEdition = getCurrentEdition();
 
-      if(currentEdition === 'diplomatic') {
-         nodes = $(doc).xpath("//body//(g | text()[normalize-space()])");
+      switch(currentEdition) {
+         case 'diplomatic':
+         case 'interpretative':
+            text = getDiplomaticInterpretativeText(doc, currentEdition);
+            break;
+         case 'critical':
+            break;
+      }
+      editionWords = getLectio(doc, glyphs);
 
-         for(var i = 0; i < nodes.length; i++) {
-            node = nodes[i];
-            if(node.nodeName === 'g') {
-               currentGlyph = evtGlyph.getGlyph(node);
-               glyphs = evtGlyph.addGlyphs(currentGlyph);
-               text += evtGlyph.addGlyph(currentGlyph);
-            }
-            else {
-               text += node.textContent;
-            }
-         }
-      }
-      else {
-         //critical
-      }
       text = cleanText(text);
       console.log(text);
 
@@ -69,6 +61,73 @@ angular.module('evtviewer.dataHandler')
       console.log(text);*/
 
    };
+
+   var getDiplomaticInterpretativeText = function (doc, currentEdition) {
+      switch(currentEdition) {
+         case 'diplomatic':
+            nodes = $(doc).xpath("//body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]");
+            break;
+         case 'interpretative':
+            nodes = $(doc).xpath("//body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]");
+            break;
+      }
+
+      for(var i = 0; i < nodes.length; i++) {
+         node = nodes[i];
+
+         if(node.nodeName === 'g') {
+            currentGlyph = evtGlyph.getGlyph(node);
+            glyphs = evtGlyph.addGlyphs(currentGlyph);
+            text += evtGlyph.addGlyph(currentGlyph);
+         }
+         else {
+            text += node.textContent;
+            //addSpace(node);
+         }
+      }
+      return text;
+   };
+
+
+   //per quando l'utente cambia il tipo di edizione,
+   // quando l'utente ha già fatto ricerche su una delle due versioni.
+   var getLectio = function(doc, glyphs) {
+      var word = {};
+
+      nodes = $(doc).xpath('//choice/child::*');
+
+      for(var i = 0; i < nodes.length; i++) {
+         node = nodes[i];
+
+         var c = $(node).xpath('.//child::*');
+         for(var j = 0; j < c.length; j++) {
+            if(c[j].nodeName === 'g') {
+               currentGlyph = evtGlyph.getGlyph(c[j]);
+            }
+         }
+
+         switch(node.nodeName) {
+            case 'sic':
+            case 'orig':
+            case 'abbr':
+            case 'am':
+               word.diplomatic = node.textContent;
+               break;
+            case 'corr':
+            case 'reg':
+            case 'expan':
+            case 'ex':
+               word.interpretative = node.textContent;
+               break;
+         }
+         if(i % 2 !== 0) {
+            editionWords.push(word);
+            word = {};
+         }
+      }
+      return editionWords;
+   };
+
 
    /*** EDITION ***/
 
@@ -144,7 +203,7 @@ angular.module('evtviewer.dataHandler')
       for (var i = 0; i < children.length; i++) {
          childNodeName = children[i].nodeName;
          innerHtml = children[i].innerHTML;
-         nodeHaveChild = children[i].children.length !== 0;
+         nodeHaveChifld = children[i].children.length !== 0;
 
          if (nodeHaveChild) {
             for (var j = 0; j < children[i].children.length; j++) {
@@ -194,7 +253,6 @@ angular.module('evtviewer.dataHandler')
       }
       return word;
    };*/
-
 
    /*** CRITICAL EDITION ***/
 
@@ -453,20 +511,16 @@ angular.module('evtviewer.dataHandler')
    /* ************************************* */
    /* Function to add space where necessary */
    /* ************************************* */
-   /*var addSpace = function() {
-      var nextSibling = node.nextSibling,
-          previousSibling = node.previousSibling;
+   var addSpace = function(node) {
+      var test = $(node).xpath('./ancestor::choice');
 
-      if(nextSibling === null && previousSibling !== null) {
-            text += ' ';
+      var parentNode = node.parentNode,
+          nextSibling = node.nextSibling;
+
+      if(test.length > 0) {
+         text += ' ';
       }
-      else if (nextSibling === null && previousSibling === null) {
-         text += '';
-      }
-      else {
-         text += '';
-      }
-   };*/
+   };
 
    /* *************************** */
    /* BEGIN containOnlySpace(str) */
@@ -511,7 +565,7 @@ angular.module('evtviewer.dataHandler')
    /* ***************************************************** */
    var cleanPunctuation = function(str) {
       var replace,
-          regex = /[.,\/#!$%\^&\*;:{}=\-_`~()<>]/;
+          regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
 
       while(str.match(regex)) {
          replace = str.replace(regex, "");
