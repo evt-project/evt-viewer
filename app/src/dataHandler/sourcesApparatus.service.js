@@ -168,10 +168,10 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		//Prepares the links to the source text (online or in the source view)
-		if (entry.url.length === 1) {
-			if (entry.url[0].indexOf('http') >= 0) {
-				source.url += '<span class="linkLabel">{{ \'CRITICAL_APPARATUS.SEE_FULL_SOURCE_WEB\' | translate }}</span><a target="_blank" href="' + entry.url[0] + '">' + entry.url[0] + '</a><br/>';
-			} else if (entry.url[0].indexOf(entry.id) >= 0) {
+		for (var i = 0; i < entry.url.length; i++) {
+			if (entry.url[i].indexOf('http') >= 0) {
+				source.url += '<span class="linkLabel">{{ \'CRITICAL_APPARATUS.SEE_FULL_SOURCE_WEB\' | translate }}</span><a target="_blank" href="' + entry.url[i] + '">' + entry.url[i] + '</a><br/>';
+			} else if (entry.url[i].indexOf(entry.id) >= 0) {
 				source.url += '<span class="linkLabel"><evt-source-ref data-source-id="' + entry.id + '">{{ \'CRITICAL_APPARATUS.SEE_FULL_SOURCE\' | translate }}</evt-source-ref></span>';
 			}
 		}
