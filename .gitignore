@@ -3,6 +3,7 @@ app/dist
 .tmp
 .sass-cache
 .idea
+docs
 bower_components
 app/data
 package-lock.json
