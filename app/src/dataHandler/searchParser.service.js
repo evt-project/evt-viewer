@@ -538,8 +538,8 @@ angular.module('evtviewer.dataHandler')
    /* Function to clean text (string) from spaces and some punctuation */
    /* **************************************************************** */
    var cleanText = function (str) {
-      str = cleanSpace(str);
       str = cleanPunctuation(str);
+      str = cleanSpace(str);
       return str;
    };
 
