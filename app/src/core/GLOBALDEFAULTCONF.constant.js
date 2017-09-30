@@ -2,7 +2,7 @@ angular.module('evtviewer.core')
 
 .constant('GLOBALDEFAULTCONF', {
 
-	// TODO: select doc system 
+	// TODO: select doc system
 	/**
 	 * @module evtviewer.core
 	 * @ngdoc object
@@ -64,13 +64,13 @@ angular.module('evtviewer.core')
 	configUrl: '../../config/config.json',
 
    //dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
-   //dataUrl          : '../../data/DOTR.xml',
+   dataUrl          : '../../data/DOTR.xml',
    //dataUrl          : '../../data/codice-pelavicino.xml',
-   dataUrl          : '../../data/PhiBor_Esempio_codifica.xml',
+   //dataUrl          : '../../data/PhiBor_Esempio_codifica.xml',
 	logoUrl: '',
 
 	enableXMLdownload: true,
-	
+
     /*sourcesUrl*/
     /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
     sourcesUrl       : '',

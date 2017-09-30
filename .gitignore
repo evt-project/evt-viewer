@@ -1,11 +1,8 @@
 node_modules
-dist
+app/dist
 .tmp
 .sass-cache
 .idea
 bower_components
-build
-docs
 app/data
-app/old
 package-lock.json

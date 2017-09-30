@@ -1,7 +1,7 @@
 {
 	"dataUrl": "",
     "sourcesUrl"       : "",
-    
+
     "sourcesTextsUrl" : "",
     "logoUrl": "",
     "enableXMLdownload" : true,
@@ -13,18 +13,18 @@
 	"indexTitle": "",
 	"webSite": "",
 
-	"defaultEdition": "critical",
+	"defaultEdition": "diplomatic",
 	"showEditionLevelSelector": true,
 	"availableEditionLevel": [{
 		"value": "critical",
 		"label": "Critical",
 		"title": "Critical edition",
-		"visible": true
+		"visible": false
 	}, {
 		"value": "diplomatic",
 		"label": "Diplomatic",
 		"title": "Diplomatic edition",
-		"visible": false
+		"visible": true
 	}, {
 		"value": "interpretative",
 		"label": "Interpretative",
@@ -87,7 +87,7 @@
 	"notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
 
 	"maxWitsLoadTogether": 5,
-    
+
     "versions" : [],
     "witnessesGroups": [],
 
@@ -95,7 +95,7 @@
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
     "showReadingExponent": true,
-    
+
     "showInlineCriticalApparatus": false,
     "showInlineSources": false,
     "showInlineAnalogues": false,
@@ -122,7 +122,7 @@
 	"heatmapColor": "",
 
     "namedEntitiesSelector": true,
-    
+
     "namedEntitiesToHandle": [{
         "tagName": "persName",
         "label": "Persons",
