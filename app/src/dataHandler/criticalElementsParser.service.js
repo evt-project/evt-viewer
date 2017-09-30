@@ -1548,6 +1548,7 @@ angular.module('evtviewer.dataHandler')
 					if (child.getAttribute('target') !== null && child.getAttribute('target') !== '') {
 						contentEl.url.push(child.getAttribute('target'));
 					}
+					contentEl.content.push(parseSourceContent(child));
 				} else if (child.children.length > 0) {
 					for (var i = 0; i < child.children.length; i++) {
 						contentEl.content.push(parseSourceContent(child.children[i]));
@@ -1666,6 +1667,7 @@ angular.module('evtviewer.dataHandler')
 			});
 		}
 
+		//Parsing the content of the source element
 		angular.forEach(entry.childNodes, function(child) {
 			if (child.nodeType === 3) {
 				if (child.textContent.trim() !== '') {
@@ -1722,6 +1724,7 @@ angular.module('evtviewer.dataHandler')
 							source.url.push(val[i]);
 						}
 					}
+					source.bibl.push(parseSourceContent(child));
 				} else {
 					var childContent = parseSourceContent(child, entry);
 					/*if (childContent.tagName === 'author') {
@@ -2297,8 +2300,14 @@ angular.module('evtviewer.dataHandler')
 					}
 				} else if (child.tagName === 'citedRange') {
 					if (child.getAttribute('target') !== null && child.getAttribute('target') !== '') {
-						source.url.push(child.getAttribute('target'));
+						attrib = child.getAttribute('target');
+						val = attrib.replace(/#/g, '').split(' ');
+						for (i = 0; i < val.length; i++) {
+							//...add its target values to the url array.
+							source.url.push(val[i]);
+						}
 					}
+					source.bibl.push(parseSourceContent(child));
 				} else {
 					var childContent = parseAnalogueSourceContent(child, entry);
 					/* FIXME if (childContent.tagName === 'author') {
@@ -2368,6 +2377,7 @@ angular.module('evtviewer.dataHandler')
 					if (child.getAttribute('target') !== null && child.getAttribute('target') !== '') {
 						contentEl.url.push(child.getAttribute('target'));
 					}
+					contentEl.content.push(parseSourceContent(child));
 				} else if (child.children.length > 0) {
 					for (var i = 0; i < child.children.length; i++) {
 						contentEl.content.push(parseAnalogueSourceContent(child.children[i]));

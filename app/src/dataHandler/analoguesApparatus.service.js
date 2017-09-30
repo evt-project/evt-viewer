@@ -205,7 +205,7 @@ angular.module('evtviewer.dataHandler')
 		if (content !== undefined) {
 			for (var i = 0; i < content.length; i++) {
 				if (typeof content[i] === 'string') {
-					result += content[i];
+					result += ' ' + content[i];
 				} else if (content[i].content !== undefined) {
 					result += apparatus.getText(content[i]);
 				}
