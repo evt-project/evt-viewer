@@ -1,5 +1,16 @@
 import 'jquery-xpath/jquery.xpath.js';
 
+/**
+ * @ngdoc service
+ * @module evtviewer.dataHandler
+ * @name evtviewer.dataHandler.evtCriticalParser
+ * @description
+ * # evtSearchParser
+ * In this service are defined and exposed methods to handle search feature.
+ *
+ * @requires evtviewer.interface.evtInterface
+ * @requires evtviewer.dataHandler.evtGlyph
+ */
 angular.module('evtviewer.dataHandler')
 
 .service('evtSearchParser', function (evtInterface, evtGlyph) {
@@ -10,7 +21,19 @@ angular.module('evtviewer.dataHandler')
        currentEdition,
        editionWords = [];
 
-   parser.parseText = function (doc) {
+   /**
+    * @ngdoc method
+    * @name evitviewer.dataHandler.evtSearchParser#parseText
+    * @methodOf evtviewer.dataHandler.evtSearchParser
+    *
+    * @description
+    * This method will get the text of a specific XML document.
+    *
+    * @param {element} doc XML element to be parsed
+    *
+    * @author GC
+    */
+   parser.getText = function (doc) {
       currentEdition = getCurrentEdition();
 
       switch(currentEdition) {
@@ -105,13 +128,6 @@ angular.module('evtviewer.dataHandler')
       return word;
    };
 
-   /*** EDITION ***/
-
-   /* ************************* */
-   /* BEGIN getCurrentEdition() */
-   /* ******************************* */
-   /* Function to get current Edition */
-   /* ******************************* */
    var getCurrentEdition = function () {
       currentEdition = evtInterface.getState('currentEdition');
       return currentEdition;

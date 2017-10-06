@@ -2,6 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtglyph
+ *
  * @description
  * # evtGlyph
  * The evtGlyph service manages glyph operation,
@@ -24,16 +25,14 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @name evtviewer.dataHandler.evtGlyph#getGlyph
     * @methodOf evtviewer.dataHandler.evtGlyph
-    * @description Get the glyph of current node.
-    * @param {Object} currentNode the node currently selected
-    * @returns {Object} contains glyph id and its diplomatic and interpretative version. Example:
-    * <pre>
-         var glyph = {
-            diplomatic = ''
-            id = 'Hunc'
-            interpretative = 'H'
-         };
-      </pre>
+    *
+    * @description
+    * Get the glyph of current node.
+    *
+    * @param {Object} currentNode The node currently selected
+    * @returns {Object} contains glyph id and its diplomatic and interpretative version.
+    *
+    * @author GC
     */
    evtGlyph.getGlyph = function (currentNode) {
       var glyph = {};
@@ -56,24 +55,15 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @name evtviewer.dataHandler.evtGlyph#addGlyphs
     * @methodOf evtviewer.dataHandler.evtGlyph
-    * @description Add the current glyph to an array.
-    * @param {Object} glyph the current glyph, that contains an id and the diplomatic and interpretative version
+    *
+    * @description
+    * Add the current glyph to an array.
+    *
+    * @param {Object} glyph the current glyph, that contains an id and the diplomatic and interpretative version.
     * @returns {Array} an array of all glyphs in the document. Each glyph contains an id and its diplomatic and
-    * interpretative verion. Example:
-    * <pre>
-         var glyphs = {
-            0: {
-              diplomatic = ''
-              id = 'Hunc'
-              interpretative = 'H'
-            },
-            1: {
-              diplomatic = 'ſ'
-              id = 'slong'
-              interpretative = 's'
-            }
-         };
-      </pre>
+    * interpretative verion.
+    *
+    * @author GC
     */
    evtGlyph.addGlyphs = function (glyph) {
       var found;
@@ -94,11 +84,15 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @name evtviewer.dataHandler.evtGlyph#addGlyph
     * @methodOf evtviewer.dataHandler.evtGlyph
-    * @description Adds the current glyph in a string, that contain the text of the document.
-    * @param {Object} currentGlyph the current glyph, that contains information about codepoint, diplomatic and
-    * interpretative version
+    *
+    * @description
+    * Adds the current glyph in a string, that contain the text of the document.
+    *
+    * @param {Object} currentGlyph the current glyph, that contains information about codepoint, diplomatic and interpretative version
     * @param {string} text contain the text of the document
     * @returns {string} the text of the document
+    *
+    * @author GC
     */
    evtGlyph.addGlyph = function (currentGlyph) {
       var currentEdition;
@@ -117,70 +111,17 @@ angular.module('evtviewer.dataHandler')
 
    /**
     * @ngdoc method
-    * @name evtviewer.dataHandler.evtGlyph#replaceGlyphTag
-    * @methodOf evtviewer.dataHandler.evtGlyph
-    * @description Replaces the current glyph tag with the current glyph.
-    * @param {Object} node the current node
-    * @param {Object} childNode the child node of the child node of the current node
-    * @param {string} innerHtml the property innerHtml of the child node of the current node
-    * @param {string} outerHtmlChild the property outerHtml of child node of the child node of the current node
-    * @returns {string} the string with replaced glyph. Example:
-    * <pre>
-         replaceGTag = 'reord brnd';
-      </pre>
-    */
-   /*evtGlyph.replaceGlyphTag = function (node, childNode, innerHtml, outerHtmlChild) {
-      var replaceGTag,
-          toReplace = outerHtmlChild,
-          glyph;
-
-      node = childNode;
-      glyph = evtGlyph.getGlyph(node);
-      replaceGTag = innerHtml.replace(toReplace, glyph.diplomatic);
-
-      while (replaceGTag.includes(toReplace)) {
-         replaceGTag = replaceGTag.replace(toReplace, glyph.diplomatic);
-      }
-
-      return replaceGTag;
-   };*/
-
-   /* *************************** */
-   /* BEGIN getCurrentGlyph(node) */
-   /* ***************************************** */
-   /* Function to find a glyph in xml document  */
-   /* @doc -> current xml document              */
-   /* ***************************************** */
-
-   /**
-    * @ngdoc method
     * @name evtviewer.dataHandler.evtGlyph#getCurrentGlyph
     * @methodOf evtviewer.dataHandler.evtGlyph
-    * @description Get the current glyph
+    *
+    * @description
+    * Get the current glyph.
+    *
     * @param {Object} node the current node
-    * @returns {Object} the current glyph, that contains information about codepoint, diplomatic and
-    * interpretative version. Example:
-    * <pre>
-         currentGlyph = {
-            codepoint: {
-               attributes: [],
-               content: 'U+FF10',
-               element: '<mapping subtype="MUFI-PUA" type="codepoint">U+F110</mapping>'
-            },
-            diplomatic: {
-               attributes: [],
-               content: '',
-               element: '<mapping type="diplomatic"></mapping>'
-            },
-            normalized: {
-               attributes: [],
-               content: 'H',
-               element: '<mapping type="normalized">H</mapping>'
-            }
-         };
-      </pre>
+    * @returns {Object} the current glyph, that contains information about codepoint, diplomatic and interpretative version.
+    *
+    * @author GC
     */
-
    evtGlyph.getCurrentGlyph = function (node) {
       var sRef,
           glyphs = evtGlyph.getGlyphs();
