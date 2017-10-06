@@ -14,12 +14,9 @@ angular.module('evtviewer.dataHandler')
 
        currentEdition,
        currentGlyph,
-       currentChoiceNode,
-       currentAppNode,
 
        glyphs = [],
 
-       //word = {},
        editionWords = [];
 
    parser.parseWords = function (doc) {
@@ -37,29 +34,13 @@ angular.module('evtviewer.dataHandler')
          case 'critical':
             break;
       }
-      editionWords = getLectio(doc, glyphs);
+      console.log(glyphs);
+
+      editionWords = getLectio(doc);
+      console.log(editionWords);
 
       text = cleanText(text);
       console.log(text);
-
-     /* var path;
-      var nsResolver = {
-         lookupNamespaceURI: function (prefix) {
-            prefix = 'ns';
-            var namespace = doc.documentElement.namespaceURI;
-            return namespace;
-         }
-      };
-
-      doc.documentElement.namespaceURI == null ? path = '//body//(g | text()[normalize-space()]) ' : path = '//ns:body//text()[normalize-space()] | //ns:body//g';
-      nodes = doc.evaluate(path, doc, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);*/
-
-      /*for(var i = 0; i < nodes.snapshotLength; i++) {
-         str += nodes.snapshotItem(i).textContent;
-      }
-      text = cleanText(str);
-      console.log(text);*/
-
    };
 
    var getDiplomaticInterpretativeText = function (doc, currentEdition) {
@@ -77,57 +58,62 @@ angular.module('evtviewer.dataHandler')
 
          if(node.nodeName === 'g') {
             currentGlyph = evtGlyph.getGlyph(node);
-            glyphs = evtGlyph.addGlyphs(currentGlyph);
             text += evtGlyph.addGlyph(currentGlyph);
          }
          else {
             text += node.textContent;
-            //addSpace(node);
          }
       }
       return text;
    };
 
+   var getLectio = function(doc) {
+      var word = {},
+         currentNode;
 
-   //per quando l'utente cambia il tipo di edizione,
-   // quando l'utente ha già fatto ricerche su una delle due versioni.
-   var getLectio = function(doc, glyphs) {
-      var word = {};
-
-      nodes = $(doc).xpath('//choice/child::*');
-
+      nodes = $(doc).xpath('//choice');
       for(var i = 0; i < nodes.length; i++) {
-         node = nodes[i];
+         word.diplomatic = '';
+         word.interpretative = '';
+         currentNode = nodes[i];
 
-         var c = $(node).xpath('.//child::*');
-         for(var j = 0; j < c.length; j++) {
-            if(c[j].nodeName === 'g') {
-               currentGlyph = evtGlyph.getGlyph(c[j]);
-            }
-         }
+         getDiplomaticLectio(word, currentNode);
+         getInterpretativeLectio(word, currentNode);
 
-         switch(node.nodeName) {
-            case 'sic':
-            case 'orig':
-            case 'abbr':
-            case 'am':
-               word.diplomatic = node.textContent;
-               break;
-            case 'corr':
-            case 'reg':
-            case 'expan':
-            case 'ex':
-               word.interpretative = node.textContent;
-               break;
-         }
-         if(i % 2 !== 0) {
-            editionWords.push(word);
-            word = {};
-         }
+         editionWords.push(word);
+         word = {};
       }
       return editionWords;
    };
 
+
+
+   var getDiplomaticLectio = function(word, currentNode) {
+      var glyph,
+          diplomaticNodes = $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)');
+
+      for (var i = 0; i < diplomaticNodes.length; i++) {
+         if(diplomaticNodes[i].nodeName === 'g') {
+            glyph = evtGlyph.getCurrentGlyph(diplomaticNodes[i]);
+            word.diplomatic += glyph.diplomatic.content;
+         }
+         else {
+            word.diplomatic += diplomaticNodes[i].textContent;
+         }
+      }
+      word.diplomatic = cleanText(word.diplomatic);
+      return word;
+   };
+
+   var getInterpretativeLectio = function(word, currentNode) {
+      var interpretativeNodes = $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex)]');
+
+      for (var i = 0; i < interpretativeNodes.length; i++) {
+         word.interpretative += interpretativeNodes[i].textContent;
+      }
+      word.interpretative = cleanText(word.interpretative);
+      return word;
+   };
 
    /*** EDITION ***/
 

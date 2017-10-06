@@ -38,13 +38,18 @@ angular.module('evtviewer.dataHandler')
    evtGlyph.getGlyph = function (currentNode) {
       var glyph = {};
 
-      currentGlyph = getCurrentGlyph(currentNode);
+      currentGlyph = evtGlyph.getCurrentGlyph(currentNode);
 
       glyph.id = glyphId;
       currentGlyph.diplomatic !== undefined ? glyph.diplomatic = currentGlyph.diplomatic.content : glyph.diplomatic = '';
       currentGlyph.normalized !== undefined ? glyph.interpretative = currentGlyph.normalized.content: glyph.interpretative = '';
 
       return glyph;
+   };
+
+   evtGlyph.getGlyphs = function() {
+      var glyphs = parsedData.getGlyphs();
+      return glyphs;
    };
 
    /**
@@ -176,9 +181,9 @@ angular.module('evtviewer.dataHandler')
       </pre>
     */
 
-   var getCurrentGlyph = function (node) {
+   evtGlyph.getCurrentGlyph = function (node) {
       var sRef,
-          glyphs = parsedData.getGlyphs();
+          glyphs = evtGlyph.getGlyphs();
 
       sRef = node.getAttribute('ref');
       sRef = sRef.replace('#', '');
