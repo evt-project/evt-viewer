@@ -15,15 +15,17 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtSearchParser', function (evtInterface, evtGlyph) {
    var parser = {};
-   console.log("SEARCH PARSER RUNNING");
 
    var text = '',
        currentEdition,
        editionWords = [];
 
+   var namespace = false,
+       nsResolver;
+
    /**
     * @ngdoc method
-    * @name evitviewer.dataHandler.evtSearchParser#parseText
+    * @name evtviewer.dataHandler.evtSearchParser#parseText
     * @methodOf evtviewer.dataHandler.evtSearchParser
     *
     * @description
@@ -34,6 +36,8 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    parser.getText = function (doc) {
+      namespace = checkNamespace(doc, namespace);
+
       currentEdition = getCurrentEdition();
 
       switch(currentEdition) {
@@ -42,6 +46,7 @@ angular.module('evtviewer.dataHandler')
             text = parser.parseDiplomaticInterpretativeText(doc, currentEdition);
             break;
          case 'critical':
+            text = parser.parseCriticalText(doc);
             break;
       }
 
@@ -59,10 +64,12 @@ angular.module('evtviewer.dataHandler')
 
       switch(currentEdition) {
          case 'diplomatic':
-            nodes = $(doc).xpath("//body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]");
+            namespace ? nodes = $(doc).xpath("//ns:body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]", nsResolver)
+                      :  nodes = $(doc).xpath("//body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]");
             break;
          case 'interpretative':
-            nodes = $(doc).xpath("//body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]");
+            namespace ? nodes = $(doc).xpath("//ns:body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]", nsResolver)
+                      : nodes = $(doc).xpath("//body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]");
             break;
       }
 
@@ -85,8 +92,8 @@ angular.module('evtviewer.dataHandler')
           currentNode,
           word = {};
 
+      namespace ? nodes = $(doc).xpath('//ns:choice', nsResolver) : nodes = $(doc).xpath('//choice');
 
-      nodes = $(doc).xpath('//choice');
       for(var i = 0; i < nodes.length; i++) {
          word.diplomatic = '';
          word.interpretative = '';
@@ -103,7 +110,11 @@ angular.module('evtviewer.dataHandler')
 
    var getDiplomaticLectio = function(word, currentNode) {
       var glyph,
-          diplomaticNodes = $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)');
+          diplomaticNodes;
+
+      namespace ? diplomaticNodes = $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)', nsResolver)
+                : diplomaticNodes = $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)');
+
 
       for (var i = 0; i < diplomaticNodes.length; i++) {
          if(diplomaticNodes[i].nodeName === 'g') {
@@ -131,6 +142,15 @@ angular.module('evtviewer.dataHandler')
    var getCurrentEdition = function () {
       currentEdition = evtInterface.getState('currentEdition');
       return currentEdition;
+   };
+
+   parser.parseCriticalText = function (doc) {
+      var nodes,
+          node;
+
+      namespace ? nodes = $(doc).xpath("//ns:body", nsResolver) : nodes = $(doc).xpath("//body");
+
+
    };
 
 
@@ -296,6 +316,8 @@ angular.module('evtviewer.dataHandler')
       return jQuery.trim(str).length === 0;
    };*/
 
+
+   /*TODO: Move this functions in Utils*/
    /* ******************** */
    /* BEGIN cleanText(str) */
    /* **************************************************************** */
@@ -336,6 +358,19 @@ angular.module('evtviewer.dataHandler')
          str = replace;
       }
       return str;
+   };
+
+   var checkNamespace = function(doc, namespace) {
+      var ns = doc.documentElement.namespaceURI;
+      if(ns !== null) {
+         namespace = true;
+         nsResolver = function(prefix) {
+            if(prefix === 'ns') {
+               return doc.documentElement.namespaceURI;
+            }
+         };
+      }
+      return namespace;
    };
 
    return parser;
