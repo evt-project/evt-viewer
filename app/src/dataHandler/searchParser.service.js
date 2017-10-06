@@ -1,5 +1,3 @@
-//import * as JsSearch from 'js-search';
-//import SearchApi from 'js-worker-search';
 import 'jquery-xpath/jquery.xpath.js';
 
 angular.module('evtviewer.dataHandler')
@@ -9,41 +7,33 @@ angular.module('evtviewer.dataHandler')
    console.log("SEARCH PARSER RUNNING");
 
    var text = '',
-       nodes,
-       node,
-
        currentEdition,
-       currentGlyph,
-
-       glyphs = [],
-
        editionWords = [];
 
-   parser.parseWords = function (doc) {
-      text = getText(doc);
-   };
-
-   var getText = function (doc) {
+   parser.parseText = function (doc) {
       currentEdition = getCurrentEdition();
 
       switch(currentEdition) {
          case 'diplomatic':
          case 'interpretative':
-            text = getDiplomaticInterpretativeText(doc, currentEdition);
+            text = parser.parseDiplomaticInterpretativeText(doc, currentEdition);
             break;
          case 'critical':
             break;
       }
-      console.log(glyphs);
 
-      editionWords = getLectio(doc);
+      editionWords = parser.parseDiplomaticInterpretativeLectio(doc);
       console.log(editionWords);
 
       text = cleanText(text);
       console.log(text);
    };
 
-   var getDiplomaticInterpretativeText = function (doc, currentEdition) {
+   parser.parseDiplomaticInterpretativeText = function (doc, currentEdition) {
+      var nodes,
+          node,
+          currentGlyph;
+
       switch(currentEdition) {
          case 'diplomatic':
             nodes = $(doc).xpath("//body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]");
@@ -67,9 +57,11 @@ angular.module('evtviewer.dataHandler')
       return text;
    };
 
-   var getLectio = function(doc) {
-      var word = {},
-         currentNode;
+   parser.parseDiplomaticInterpretativeLectio = function(doc) {
+      var nodes,
+          currentNode,
+          word = {};
+
 
       nodes = $(doc).xpath('//choice');
       for(var i = 0; i < nodes.length; i++) {
@@ -85,8 +77,6 @@ angular.module('evtviewer.dataHandler')
       }
       return editionWords;
    };
-
-
 
    var getDiplomaticLectio = function(word, currentNode) {
       var glyph,
@@ -127,118 +117,6 @@ angular.module('evtviewer.dataHandler')
       return currentEdition;
    };
 
-   /* **************************************** */
-   /* BEGIN checkCurrentEditionIteration(node) */
-   /* ************************************************************* */
-   /* Function to iterate node that don't belong to current edition */
-   /* @node -> current node                                         */
-   /* ************************************************************* */
-  /* var checkCurrentEditionIteration = function (node) {
-      var nodeName = node.nodeName;
-
-      currentEdition = getCurrentEdition();
-
-      if (currentEdition === 'diplomatic') {
-         switch (nodeName) {
-            case 'corr':
-            case 'reg':
-            case 'expan':
-            case 'ex':
-               node = iterateNode(node);
-         }
-      }
-      if (currentEdition === 'interpretative') {
-         switch (nodeName) {
-            case 'sic':
-            case 'orig':
-            case 'abbr':
-            case 'am':
-               node = iterateNode(node);
-         }
-      }
-      if(currentEdition === 'critical') {
-         switch(nodeName) {
-            case 'rdgGrp':
-            case 'rdg':
-               node = iterateNode(node);
-         }
-      }
-      return node;
-   };*/
-
-
-   /*** DIPLOMATIC/INTERPRETATIVE EDITION ***/
-
-   /* *************************************** */
-   /* BEGIN checkCurrentChoiceNode(node, doc) */
-   /* ************************************************************************* */
-   /* Function to check current choice node and create an array (EditionWords), */
-   /* that contain diplomatic lectio and interpretative lectio                  */
-   /* @node -> current node                                                     */
-   /* @doc -> current xml document                                              */
-   /* ************************************************************************* */
-   /*var checkCurrentChoiceNode = function (node) {
-      var word = {},
-         children = node.children,
-         childNode,
-         childNodeName,
-         nodeHaveChild,
-         innerHtml,
-         outerHtmlChild;
-
-      for (var i = 0; i < children.length; i++) {
-         childNodeName = children[i].nodeName;
-         innerHtml = children[i].innerHTML;
-         nodeHaveChifld = children[i].children.length !== 0;
-
-         if (nodeHaveChild) {
-            for (var j = 0; j < children[i].children.length; j++) {
-               outerHtmlChild = children[i].children[j].outerHTML;
-
-               childNode = checkChildNode(children[i].children[j]);
-
-               switch (childNodeName) {
-                  case 'sic':
-                  case 'orig':
-                  case 'abbr':
-                  case 'am':
-                     if (childNode && childNode.nodeName === 'g') {
-                        word.diplomatic = evtGlyph.replaceGlyphTag(node, childNode, innerHtml, outerHtmlChild);
-                        innerHtml = word.diplomatic;
-                     }
-                     else {
-                        innerHtml = innerHtml.replace(outerHtmlChild, children[i].children[j].textContent);
-                        word.diplomatic = children[i].textContent;
-                     }
-                     break;
-                  case 'corr':
-                  case 'reg':
-                  case 'expan':
-                  case 'ex':
-                     word.interpretative = children[i].textContent;
-                     break;
-               }
-            }
-         }
-         else {
-            switch (childNodeName) {
-               case 'sic':
-               case 'orig':
-               case 'abbr':
-               case 'am':
-                  word.diplomatic = children[i].textContent;
-                  break;
-               case 'corr':
-               case 'reg':
-               case 'expan':
-               case 'ex':
-                  word.interpretative = children[i].textContent;
-                  break;
-            }
-         }
-      }
-      return word;
-   };*/
 
    /*** CRITICAL EDITION ***/
 
@@ -375,122 +253,6 @@ angular.module('evtviewer.dataHandler')
       return word;
    };*/
 
-
-   /*** NODE ***/
-
-   /* **************************** */
-   /* BEGIN checkCurrentNode(node) */
-   /* **************************** */
-   /* Function to check the current node name and add word to editionWords */
-   /* @node -> current node                                                */
-   /* ******************************************************************** */
-   /*var checkCurrentNode = function(node, doc) {
-      switch (node.nodeName) {
-         case 'choice':
-            currentChoiceNode = node;
-            word = checkCurrentChoiceNode(node);
-            editionWords.push(word);
-            node = currentChoiceNode;
-            break;
-         case 'app':
-            if(node.parentNode.nodeName !== 'lem') {
-               currentAppNode = node;
-               word = checkCurrentAppNode(node, doc);
-               editionWords.push(word);
-               node = currentAppNode;
-            }
-            break;
-      }
-      return node;
-   };*/
-
-   /* ************************ */
-   /* BEGIN iterateNode(node)  */
-   /* *************************** */
-   /* Function to iterate node    */
-   /* @node -> current node       */
-   /* *************************** */
-   /*var iterateNode = function(node) {
-      var child;
-
-         if (node.childNodes.length > 0) {
-            for (var i = 0; i < node.childNodes.length; i++) {
-               child = nodes.iterateNext();
-               child = iterateNode(child);
-            }
-         }
-         else {
-            child = nodes.iterateNext();
-         }
-         return child;
-   };*/
-
-   /* ****************************** */
-   /* BEGIN checkNodeIteration(node) */
-   /* ********************************** */
-   /* Function to iterate specific nodes */
-   /* @node -> current node              */
-   /* ********************************** */
-   /*var checkNodeIteration = function (node) {
-      var nodeName = node.nodeName;
-
-      switch (nodeName) {
-         case 'note':
-         case 'del':
-            iterateNode(node);
-      }
-   };*/
-
-   /* ******************************* */
-   /* BEGIN checkChildNode(childNode) */
-   /* ********************************************************** */
-   /* Function to check if childNodes contain a specific element */
-   /* @childNode -> current childNode                            */
-   /* ********************************************************** */
-   /*var checkChildNode = function(childNode) {
-      if(childNode.children.length === 0) {
-         switch (childNode.nodeName) {
-            case 'g', 'rdg':
-               return childNode;
-         }
-      }
-      else {
-         for (var i = 0; i < childNode.children.length; i++) {
-            childNode = childNode.children[i];
-            checkChildNode(childNode);
-         }
-      }
-      return childNode;
-   };*/
-
-
-
-
-   /* *************** */
-   /* BEGIN addWord() */
-   /* ************************************* */
-   /* Function to add word in text (string) */
-   /* ************************************* */
-   /*var addWord = function() {
-      var nextSibling = node.nextSibling,
-          previousSibling = node.previousSibling;
-
-      if (node.parentNode.parentNode.nodeName === 'choice' && nextSibling !== null && previousSibling !== null || node.parentNode.nodeName === 'hi') {
-         text += str;
-      }
-      else if (nextSibling === null && previousSibling === null) {
-         text += ' ' + str + ' ';
-      }
-      else if (nextSibling === null || nextSibling.nodeName === 'pb' || nextSibling.nodeName === 'lb') {
-         text += str + ' ';
-      }
-      else if (previousSibling === null || previousSibling.nodeName === 'pb' || previousSibling.nodeName === 'lb') {
-         text += ' ' + str;
-      }
-      else {
-         text += str;
-      }
-   };*/
 
    /* **************** */
    /* BEGIN addSpace() */

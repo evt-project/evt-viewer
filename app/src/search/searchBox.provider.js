@@ -64,9 +64,9 @@ angular.module('evtviewer.search')
          if(btnStatus && check) {
             check = false;
             doc = baseData.getXML();
-            evtSearchParser.parseWords(doc);
+            evtSearchParser.parseText(doc);
          }
-         
+
          collection.status[key] = btnStatus;
          return btnStatus;
       };
