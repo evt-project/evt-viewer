@@ -64,12 +64,12 @@ angular.module('evtviewer.dataHandler')
 
       switch(currentEdition) {
          case 'diplomatic':
-            namespace ? nodes = $(doc).xpath("//ns:body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]", nsResolver)
-                      :  nodes = $(doc).xpath("//body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]");
+            nodes = namespace ? $(doc).xpath("//ns:body//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex))]", nsResolver)
+                              : $(doc).xpath("//body//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]");
             break;
          case 'interpretative':
-            namespace ? nodes = $(doc).xpath("//ns:body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]", nsResolver)
-                      : nodes = $(doc).xpath("//body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]");
+            nodes = namespace ? $(doc).xpath("//ns:body//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am))]", nsResolver)
+                              : $(doc).xpath("//body//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]");
             break;
       }
 
@@ -92,7 +92,7 @@ angular.module('evtviewer.dataHandler')
           currentNode,
           word = {};
 
-      namespace ? nodes = $(doc).xpath('//ns:choice', nsResolver) : nodes = $(doc).xpath('//choice');
+      nodes = namespace ? $(doc).xpath('//ns:choice', nsResolver) : $(doc).xpath('//choice');
 
       for(var i = 0; i < nodes.length; i++) {
          word.diplomatic = '';
@@ -112,9 +112,8 @@ angular.module('evtviewer.dataHandler')
       var glyph,
           diplomaticNodes;
 
-      namespace ? diplomaticNodes = $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)', nsResolver)
-                : diplomaticNodes = $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)');
-
+      diplomaticNodes = namespace ? $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::am)] | ns:g)', nsResolver)
+                                  : $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)');
 
       for (var i = 0; i < diplomaticNodes.length; i++) {
          if(diplomaticNodes[i].nodeName === 'g') {
@@ -130,7 +129,10 @@ angular.module('evtviewer.dataHandler')
    };
 
    var getInterpretativeLectio = function(word, currentNode) {
-      var interpretativeNodes = $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex)]');
+      var interpretativeNodes;
+
+      interpretativeNodes = namespace ? $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex)]')
+                                      : $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex)]');
 
       for (var i = 0; i < interpretativeNodes.length; i++) {
          word.interpretative += interpretativeNodes[i].textContent;
@@ -148,9 +150,13 @@ angular.module('evtviewer.dataHandler')
       var nodes,
           node;
 
-      namespace ? nodes = $(doc).xpath("//ns:body", nsResolver) : nodes = $(doc).xpath("//body");
+      nodes = namespace ? $(doc).xpath("//ns:body//text()", nsResolver) : $(doc).xpath("//body//text()");
 
-
+      for(var i = 0; i < nodes.length; i++) {
+         node = nodes[i];
+         text += node.textContent;
+      }
+      return text;
    };
 
 
@@ -289,23 +295,7 @@ angular.module('evtviewer.dataHandler')
       return word;
    };*/
 
-
-   /* **************** */
-   /* BEGIN addSpace() */
-   /* ************************************* */
-   /* Function to add space where necessary */
-   /* ************************************* */
-   var addSpace = function(node) {
-      var test = $(node).xpath('./ancestor::choice');
-
-      var parentNode = node.parentNode,
-          nextSibling = node.nextSibling;
-
-      if(test.length > 0) {
-         text += ' ';
-      }
-   };
-
+   /*TODO: Move this functions in Utils*/
    /* *************************** */
    /* BEGIN containOnlySpace(str) */
    /* ****************************************************** */
@@ -316,8 +306,6 @@ angular.module('evtviewer.dataHandler')
       return jQuery.trim(str).length === 0;
    };*/
 
-
-   /*TODO: Move this functions in Utils*/
    /* ******************** */
    /* BEGIN cleanText(str) */
    /* **************************************************************** */
