@@ -53,7 +53,8 @@ angular.module('evtviewer.dataHandler')
       editionWords = parser.parseDiplomaticInterpretativeLectio(doc);
       console.log(editionWords);
 
-      text = cleanText(text);
+      text = cleanPunctuation(text);
+      text = $(doc).xpath("normalize-space('" + text + "')")[0];
       console.log(text);
    };
 
@@ -112,7 +113,7 @@ angular.module('evtviewer.dataHandler')
       var glyph,
           diplomaticNodes;
 
-      diplomaticNodes = namespace ? $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::am)] | ns:g)', nsResolver)
+      diplomaticNodes = namespace ? $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am)] | ns:g)', nsResolver)
                                   : $(currentNode).xpath('.//(child::text()[normalize-space()][(ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am)] | g)');
 
       for (var i = 0; i < diplomaticNodes.length; i++) {
@@ -131,7 +132,7 @@ angular.module('evtviewer.dataHandler')
    var getInterpretativeLectio = function(word, currentNode) {
       var interpretativeNodes;
 
-      interpretativeNodes = namespace ? $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex)]')
+      interpretativeNodes = namespace ? $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex)]', nsResolver)
                                       : $(currentNode).xpath('.//child::text()[normalize-space()][(ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex)]');
 
       for (var i = 0; i < interpretativeNodes.length; i++) {
