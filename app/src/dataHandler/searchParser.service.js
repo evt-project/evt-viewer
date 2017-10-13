@@ -23,6 +23,8 @@ angular.module('evtviewer.dataHandler')
    var namespace = false,
        nsResolver;
 
+   var regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+
    /**
     * @ngdoc method
     * @name evtviewer.dataHandler.evtSearchParser#parseText
@@ -103,7 +105,9 @@ angular.module('evtviewer.dataHandler')
          getDiplomaticLectio(word, currentNode);
          getInterpretativeLectio(word, currentNode);
 
-         editionWords.push(word);
+         if (!containOnlySpace(word.diplomatic) && !containOnlySpace(word.interpretative)) {
+            editionWords.push(word);
+         }
          word = {};
       }
       return editionWords;
@@ -303,9 +307,9 @@ angular.module('evtviewer.dataHandler')
    /* Function to check if string (str) contains only spaces */
    /* @str -> string to check                                */
    /* ****************************************************** */
-   /*var containOnlySpace = function(str) {
+   var containOnlySpace = function(str) {
       return jQuery.trim(str).length === 0;
-   };*/
+   };
 
    /* ******************** */
    /* BEGIN cleanText(str) */
@@ -339,8 +343,7 @@ angular.module('evtviewer.dataHandler')
    /* Function to clean text (string) from some punctuation */
    /* ***************************************************** */
    var cleanPunctuation = function(str) {
-      var replace,
-          regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+      var replace;
 
       while(str.match(regex)) {
          replace = str.replace(regex, "");
