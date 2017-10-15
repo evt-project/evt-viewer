@@ -13,7 +13,7 @@ import 'jquery-xpath/jquery.xpath.js';
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchParser', function (evtInterface, evtGlyph) {
+.service('evtSearchParser', function (evtInterface, evtGlyph, parsedData) {
    var parser = {};
 
    var text = '',
@@ -46,13 +46,14 @@ angular.module('evtviewer.dataHandler')
          case 'diplomatic':
          case 'interpretative':
             text = parser.parseDiplomaticInterpretativeText(doc, currentEdition);
+            editionWords = parser.parseDiplomaticInterpretativeLectio(doc);
             break;
          case 'critical':
             text = parser.parseCriticalText(doc);
+            editionWords = parser.parseCriticalLectio(doc);
             break;
       }
 
-      editionWords = parser.parseDiplomaticInterpretativeLectio(doc);
       console.log(editionWords);
 
       text = cleanPunctuation(text);
@@ -155,7 +156,7 @@ angular.module('evtviewer.dataHandler')
       var nodes,
           node;
 
-      nodes = namespace ? $(doc).xpath("//ns:body//text()", nsResolver) : $(doc).xpath("//body//text()");
+      nodes = namespace ? $(doc).xpath("//ns:body//text()[not((ancestor::ns:rdg | ancestor::ns:note))]", nsResolver) : $(doc).xpath("//body//text()[not((ancestor::rdg | ancestor::note))]");
 
       for(var i = 0; i < nodes.length; i++) {
          node = nodes[i];
@@ -164,6 +165,62 @@ angular.module('evtviewer.dataHandler')
       return text;
    };
 
+   parser.parseCriticalLectio = function (doc) {
+      var nodes,
+          currentNode,
+          word = {};
+
+      nodes = namespace ? $(doc).xpath("//ns:body//ns:app", nsResolver) : $(doc).xpath("//body//app");
+
+      for (var i = 0; i < nodes.length; i++) {
+         currentNode = nodes[i];
+
+         getCriticalLectio(word, currentNode);
+         editionWords.push(word);
+         word = {};
+      }
+      return editionWords;
+   };
+
+   var getCriticalLectio = function(word, currentNode) {
+      var criticalNodes,
+          node,
+          wit;
+
+      criticalNodes = namespace ? $(currentNode).xpath(".//(ns:lem | ns:rdg)[@wit]", nsResolver) : $(currentNode).xpath(".//(lem | rdg)[@wit]");
+
+      for(var i = 0; i < criticalNodes.length; i++) {
+         node = criticalNodes[i];
+         wit = getCurrentWitness(node);
+
+         wit.split('').forEach(function(w) {
+            if (Object.keys(word).length === 0) {
+               word.critical = {[w]: criticalNodes[i].textContent};
+            }
+            else {
+               word.critical[w] = criticalNodes[i].textContent;
+            }
+         });
+      }
+   };
+
+   var getCurrentWitness = function (node) {
+      var wit = node.getAttribute('wit');
+      var witList = parsedData.getWitnesses();
+      
+      wit = wit.split('#').join('').replace(/\s/g, '');
+
+      if(wit.includes('group')) {
+         var str = '';
+         var group = witList.group.content;
+         group.forEach(function (w) {
+            str += w;
+         });
+         wit = wit.replace('group', str);
+      }
+
+      return wit;
+   };
 
    /*** CRITICAL EDITION ***/
 
