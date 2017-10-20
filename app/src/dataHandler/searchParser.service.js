@@ -175,14 +175,17 @@ angular.module('evtviewer.dataHandler')
       for (var i = 0; i < nodes.length; i++) {
          currentNode = nodes[i];
 
-         getCriticalLectio(word, currentNode);
-         editionWords.push(word);
-         word = {};
+         getCriticalLectio(word, currentNode, doc);
+
+         if(Object.keys(word).length !== 0) {
+            editionWords.push(word);
+            word = {};
+         }
       }
       return editionWords;
    };
 
-   var getCriticalLectio = function(word, currentNode) {
+   var getCriticalLectio = function(word, currentNode, doc) {
       var criticalNodes,
           node,
           wit;
@@ -193,21 +196,39 @@ angular.module('evtviewer.dataHandler')
          node = criticalNodes[i];
          wit = getCurrentWitness(node);
 
-         wit.split('').forEach(function(w) {
-            if (Object.keys(word).length === 0) {
-               word.critical = {[w]: criticalNodes[i].textContent};
-            }
-            else {
-               word.critical[w] = criticalNodes[i].textContent;
-            }
-         });
+         var followingNodeIsLacunaStart = namespace ? $(node).xpath(".//following-sibling::ns:rdg[child::ns:lacunaStart]", nsResolver).length !== 0
+                                                    : $(node).xpath(".//following-sibling::rdg[child::lacunaStart]").length !== 0;
+         var followingNodeIsLacunaEnd = namespace ? $(node).xpath(".//following-sibling::ns:rdg[child::ns:lacunaEnd]", nsResolver).length !== 0
+                                                  : $(node).xpath(".//following-sibling::rdg[child::lacunaEnd]").length !== 0;
+         var notHaveLacuna;
+
+         if(node.textContent === "" && followingNodeIsLacunaStart || followingNodeIsLacunaEnd) {
+            notHaveLacuna = wit;
+         }
+
+         if(node.hasChildNodes() && node.childNodes[0].nodeName === 'lacunaStart') {
+            var lacunaText = '';
+            lacunaText += getLacunaText(node, wit, doc);
+            handleLacunaText(notHaveLacuna, wit, lacunaText, word, doc);
+         }
+
+         if(notHaveLacuna === undefined) {
+            wit.split('').forEach(function (w) {
+               if (Object.keys(word).length === 0) {
+                  word.critical = {[w]: criticalNodes[i].textContent};
+               }
+               else {
+                  word.critical[w] = criticalNodes[i].textContent;
+               }
+            });
+         }
       }
    };
 
    var getCurrentWitness = function (node) {
       var wit = node.getAttribute('wit');
       var witList = parsedData.getWitnesses();
-      
+
       wit = wit.split('#').join('').replace(/\s/g, '');
 
       if(wit.includes('group')) {
@@ -220,6 +241,48 @@ angular.module('evtviewer.dataHandler')
       }
 
       return wit;
+   };
+
+   var getLacunaText = function(node, lacunaWit, doc) {
+      var lacunaEnd,
+          lacunaStart,
+          lacunaEndLength,
+          lacunaStartLength,
+          lacunaTextNode,
+          lacunaText = '';
+
+      var docDOM = doc.getElementsByTagName('body')[0];
+
+      lacunaEnd = namespace ? $(node).xpath("following::ns:rdg[@wit='#" + lacunaWit + "'][ns:lacunaEnd]", nsResolver)
+                            : $(node).xpath("following::rdg[@wit='#" + lacunaWit + "'][lacunaEnd]");
+
+      lacunaStart = namespace ? $(lacunaEnd).xpath("preceding::ns:rdg[@wit='#" + lacunaWit + "'][ns:lacunaStart]", nsResolver)
+                              : $(lacunaEnd).xpath("preceding::rdg[@wit='#" + lacunaWit + "'][lacunaStart]");
+
+      lacunaEndLength = lacunaEnd.length;
+      lacunaStartLength = lacunaStart.length;
+
+      lacunaTextNode = namespace ? $(docDOM).xpath("//text()[normalize-space()][not(ancestor::ns:note)][preceding::ns:rdg[@wit='#" + lacunaWit + "'][ns:lacunaStart][" + lacunaStartLength + "] and following::ns:rdg[@wit='#" + lacunaWit + "'][ns:lacunaEnd][" + lacunaEndLength + "]]", nsResolver)
+                                 : $(docDOM).xpath("//text()[normalize-space()][not(ancestor::note)][preceding::rdg[@wit='#" + lacunaWit + "'][lacunaStart][" + lacunaStartLength + "] and following::rdg[@wit='#" + lacunaWit + "'][lacunaEnd][" + lacunaEndLength + "]]");
+
+      for(var i = 0; i < lacunaTextNode.length; i++) {
+         lacunaText += lacunaTextNode[i].textContent;
+      }
+
+      return lacunaText;
+   };
+
+   var handleLacunaText = function(notHaveLacunaWit, wit, lacunaText, word, doc) {
+      lacunaText = $(doc).xpath("normalize-space('" + lacunaText + "')")[0];
+      notHaveLacunaWit.split('').forEach(function (w) {
+         if(Object.keys(word).length === 0) {
+            word.critical = {[w]: lacunaText};
+         }
+         else {
+            word.critical[w] = lacunaText;
+         }
+      });
+      word.critical[wit] = '';
    };
 
    /*** CRITICAL EDITION ***/
@@ -252,7 +315,7 @@ angular.module('evtviewer.dataHandler')
             nodeHaveChild = children[i].children.length !== 0;
 
             if (nodeHaveChild && childNodeName !== 'rdg') {
-               if(childNodeName === 'lem' && nodeHaveChild) {
+               if(childNodeName ===  'lem' && nodeHaveChild) {
                   witness = getCurrentWitness(child);
                   word = handleNestedApp(child, word);
                }
