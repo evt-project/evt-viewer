@@ -146,21 +146,17 @@ There are 3 ready-to-use examples. The one used by default is n. 1.
 
 If you want to explore the other two you will just have to open the corresponding config.json file (f.i. config_ex2.json), copy its content and paste it into the main config.json file. Then go to the index.html opened in your browser and reload the page!
 
-* EXAMPLE 1 : example1.xml
+* EXAMPLE 1 : PhiBor_Esempio_codifica.xml
 Short extract of Edizione Logica Avicennae, changed by CM for EVT testing purposes. It presents multiple levels of apparatuses (critical entries, sources and analogues), displayed in a separate dedicated frame.
-Configurations for this edition: config_ex1.json
+Configurations for this edition: config_Phibor.json
 
-* EXAMPLE 2 : example2.xml
+* EXAMPLE 2 : pseudoEditionTest.xml
 Pseudo edition for demonstration and testing purposes only, originally encoded by Marjorie Burghart for her TEI Critical Toolbox software, and properly modified in order to cover the highest number of possible use cases. It presents just the critical apparatus entry, displayed inline, within the main text.
-Configurations for this edition: config_ex2.json
+Configurations for this edition: config_pseudoEditionTest.json
 
-* EXAMPLE 3 : example3.xml
+* EXAMPLE 3 : CodicePelavicino.xml
 Short extract of the Codice Pelavicino edition, which presents the encoding of named entities, in particular person, place and organization names.
-Configurations for this edition: config_ex3.json
-
-* EXAMPLE 4 : example4.xml
-Short extract of *The Tragedie of Doctor Faustus* (B text) by Christopher Marlowe. Text provided by Perseus Digital Library, with funding from Tufts University. Original version available for viewing and download at http://www.perseus.tufts.edu/hopper/.
-Configurations for this edition: config_ex4.json
+Configurations for this edition: config_CP.json
 
 
 4 - EVT Manual
