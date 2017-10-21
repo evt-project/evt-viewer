@@ -3,10 +3,10 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/progetto-Poloni_1.xml",
-    "sourcesUrl"       : "",
-    "analoguesUrl"     : "",
-    "sourcesTextsUrl" : "",
+	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
+    "sourcesUrl"       : "data/sources.xml",
+    "analoguesUrl"     : "data/analogues.xml",
+    "sourcesTextsUrl" : "data/sources/",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
@@ -47,7 +47,7 @@
                             }],
     "defaultEdition": "critical",
     "showEditionLevelSelector": true,
-    
+
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
@@ -62,16 +62,16 @@
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "enableXMLdownload" : true,
-    
+
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
-    
-    "namedEntitiesSelector": true,
-    
+
+    "namedEntitiesSelector": false,
+
     "namedEntitiesToHandle": [{
         "tagName": "persName",
         "label": "Persons",
@@ -89,12 +89,12 @@
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
         "label": "Role Name",
-        "available": true,
+        "available": false,
         "color": "#cfc"
     }, {
         "tagName": "measure",
         "label": "Measure",
-        "available": true,
+        "available": false,
         "color": "#ffecb3"
     }],
 
@@ -136,8 +136,8 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-    
-    "versions" : [],
+
+    "versions" : ["rec2", "rec1", "rec3"],
     "witnessesGroups": [
         {
             "groupName" : "Grp_1",
@@ -153,13 +153,13 @@
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
     "showReadingExponent": true,
-    
+
     "showInlineCriticalApparatus": false,
     "showInlineSources": false,
     "showInlineAnalogues": false,
 
 
-    
+
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {

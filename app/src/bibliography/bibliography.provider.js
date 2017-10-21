@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.bibliography
  * @name evtviewer.bibliography.evtBibliography
- * @description 
+ * @description
  * # evtBibliography
  * Provider that will manage all instances of {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive.
  *
@@ -32,23 +32,23 @@ angular.module('evtviewer.bibliography')
 
 		var _console = $log.getInstance('bibliography');
 
-		// 
+		//
 		// Control function
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.bibliography.controller:BibliographyCtrl#getFormattedBibl
 	     * @methodOf evtviewer.bibliography.controller:BibliographyCtrl
 	     *
 	     * @description
-	     * <p>This method will retrieve from {@link evtviewer.dataHandler.parsedData parsedData} 
-	     * the bibliographic entry with the given id and will return the output for 
+	     * <p>This method will retrieve from {@link evtviewer.dataHandler.parsedData parsedData}
+	     * the bibliographic entry with the given id and will return the output for
 	     * the selected bibliographic style or the plain text (if styles are not allowed).
 	     * If the output for the selected style has not been generated yet, it will use
 	     * {@link evtviewer.dataHandler.evtBibliographyParser#formatResult formatResult} to generate it.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
-		 * 
+		 *
 		 * @param {string} biblId id of bibliographic reference to handle
 		 *
 		 * @returns {string} HTML string representing the output of the bibliographic referenec
@@ -77,11 +77,11 @@ angular.module('evtviewer.bibliography')
 	     *
 	     * @description
 	     * <p>This method will retrieve the type of the bibliographic entry using the method
-	     * {@link evtviewer.dataHandler.evtBibliographyParser#getType getType} defined in 
+	     * {@link evtviewer.dataHandler.evtBibliographyParser#getType getType} defined in
 	     * {@link evtviewer.dataHandler.evtBibliographyParser evtBibliographyParser} service.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
-		 * 
+		 *
 		 * @param {string} biblId id of bibliographic reference to handle
 		 *
 		 * @returns {string} type of given entry
@@ -102,9 +102,9 @@ angular.module('evtviewer.bibliography')
 	     *
 	     * @description
 	     * <p>This method will check whether the given entry should be highlighted or not.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
-		 * 
+		 *
 		 * @param {string} entryId id of bibliographic reference to handle
 		 *
 		 * @returns {boolean} whether the entry should be highlighted or not
@@ -121,9 +121,9 @@ angular.module('evtviewer.bibliography')
 	     *
 	     * @description
 	     * <p>This method will retrieve the bibliographic entry from {@link evtviewer.dataHandler.parsedData parsedData}.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider file.</p>
-		 * 
+		 *
 		 * @param {string} entryId id of bibliographic reference to handle
 		 *
 		 * @returns {Object} JSON object representing the bibliographic entry, structure as follows:
@@ -153,24 +153,24 @@ angular.module('evtviewer.bibliography')
 			return parsedData.getBibliographicRefById(biblId);
 		};
 
-		// 
+		//
 		// Bibliography builder
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.bibliography.evtBibliography#build
 	     * @methodOf evtviewer.bibliography.evtBibliography
 	     *
 	     * @description
-	     * <p>This method will extend the scope of {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive 
+	     * <p>This method will extend the scope of {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive
 	     * according to selected configurations and parsed data.
-	     * - It sets the available list of styles depending on available bibliographic styles retrieved from configurations; 
+	     * - It sets the available list of styles depending on available bibliographic styles retrieved from configurations;
 	     * - It sets the default selected style depending on default parameter retrieved from configurations;
 	     * - It checks which tools (style selection and ordering) to use, according to data parsed;
 	     * - It eventually retrieves the parameters available for the ordering;
 	     * - It retrieves the bibliographic entries from {@link evtviewer.dataHandler.parsedData parsedData};
 	     * - It finally extend the scope, stores a reference of each directive instance and returns the extended scope.</p>
-		 * 
+		 *
 		 * @param {Object} scope initial scope of the directive:
 		 	<pre>
 				var scope = {
@@ -208,7 +208,7 @@ angular.module('evtviewer.bibliography')
 				biblRefsCollection,
 				//recupero stili bibliografici
 				styles = config.allowedBibliographicStyles || {},
-				initialSelectedStyle, 
+				initialSelectedStyle,
 				selectedSorting,
 				biblSortSelectVisibility = true,
 				biblSortStyleSelectVisibility = true,
@@ -220,7 +220,7 @@ angular.module('evtviewer.bibliography')
 			if (config.defaultBibliographicStyle !== '' && styles[config.defaultBibliographicStyle] !== undefined && styles[config.defaultBibliographicStyle].enabled) {
 				initialSelectedStyle = styles[config.defaultBibliographicStyle];
 			}
-			
+
 			for (var key in styles) {
 				if (!initialSelectedStyle && styles[key].enabled && !initialSelectedStyle) {
 					initialSelectedStyle = styles[key];
@@ -229,7 +229,7 @@ angular.module('evtviewer.bibliography')
 					delete styles[key];
 				}
 			}
-			
+
 			if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
@@ -258,12 +258,7 @@ angular.module('evtviewer.bibliography')
 			if (sortBy && Object.keys(sortBy).length > 0) {
 				biblSortSelectVisibility = true;
 				//setting the first sorting entry (if existing)
-				var firstKey;
-				if (typeof sortBy.Author !== 'undefined') {
-					firstKey = sortBy.Author;
-				} else {
-					firstKey = Object.keys(sortBy)[0];
-				}
+				var firstKey = Object.keys(sortBy)[0];
 				selectedSorting = sortBy[firstKey];
 			} else {
 				biblSortSelectVisibility = false;
@@ -319,7 +314,7 @@ angular.module('evtviewer.bibliography')
 
 		//
 		// Service function
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.bibliography.evtBibliography#destroy
