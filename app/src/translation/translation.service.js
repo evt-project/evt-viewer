@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.translation
  * @name evtviewer.translation.evtTranslation
- * @description 
+ * @description
  * # evtTranslation
  * This service defines and exposes methods to handle UI translation.
  *
@@ -87,17 +87,18 @@ angular.module('evtviewer.translation')
      *
      * @description
      * Guess user language from the settings of his/her browser
-     * @returns {string} key code of user language 
+     * @returns {string} key code of user language
      */
     translation.getUserLanguage = function() {
         var userLang,
+			langParts,
             navigatorLang = navigator.language;
         if (navigatorLang.indexOf('_') >= 0) {
-            var langParts = navigatorLang.split('_');
+            langParts = navigatorLang.split('_');
             userLang = langParts[0];
-        } if (navigatorLang.indexOf('-') >= 0) { 
-            var langParts = navigatorLang.split('-'); 
-            userLang = langParts[0]; 
+        } if (navigatorLang.indexOf('-') >= 0) {
+            langParts = navigatorLang.split('-'); 
+            userLang = langParts[0];
         } else {
             userLang = navigatorLang;
         }

@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtCriticalApparatusParser
- * @description 
+ * @description
  * # evtCriticalApparatusParser
  * Service containing methods to parse data regarding critical apparatus.
  *
@@ -28,7 +28,7 @@ angular.module('evtviewer.dataHandler')
 
     // Al momento ho usato solo questa variabile
 
-    
+
     //Queste due le userò appena inizierò a parsare le fonti
     var sourceDef = '<cit>';
     var sourcesUrl = ''; // Parsing di più documenti
@@ -42,7 +42,7 @@ angular.module('evtviewer.dataHandler')
      * Find critical entry in source document by id. Function to be used when critical entries are not loaded all together.
      * When found, the entry is then parsed with {@link evtviewer.dataHandler.evtCriticalElementsParser#handleAppEntry handleAppEntry()}
      * and stored in {@link evtviewer.dataHandler.parsedData parsedData}.
-     * 
+     *
      * @param {element} doc XML of the edition
      * @param {string} appId id of critical entry to be found
      *
@@ -57,7 +57,7 @@ angular.module('evtviewer.dataHandler')
             console.log('ERROR');
         }
     };
-    
+
     /**
      * @ngdoc function
      * @name evtviewer.dataHandler.evtCriticalApparatusParser#parseListWit
@@ -105,7 +105,7 @@ angular.module('evtviewer.dataHandler')
                 }
             }
         }
-        
+
         angular.forEach(listWit.childNodes, function(child){
             if (child.nodeType === 1) {
                 if (child.tagName === 'head') {
@@ -118,7 +118,7 @@ angular.module('evtviewer.dataHandler')
                         parsedData.addElementInWitnessCollection(subList);
                         list.content.push(subList.id);
                     }
-                } 
+                }
                 else if (config.versionDef.indexOf('<'+child.tagName+'>') >= 0){ //witness
                     var witnessElem = {
                         id          : child.getAttribute('xml:id') || evtParser.xpath(child).substr(0),
@@ -134,7 +134,7 @@ angular.module('evtviewer.dataHandler')
                         // Add the witness to the witMap of the versionEntries collection (@author -> CM)
                         if (ver !== undefined) {
                             parsedData.addVersionWitness(ver, witnessElem.id);
-                        }                        
+                        }
                     }
                 }
             }
@@ -147,9 +147,9 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatusParser
      *
      * @description
-     * This method will parse the list of witnesses and groups of witnesses existing in the XML file 
+     * This method will parse the list of witnesses and groups of witnesses existing in the XML file
      * and save it in {@link evtviewer.dataHandler.parsedData parsedData}.
-     * 
+     *
      * @param {string} doc string representing the XML to be parsed
      *
      * @author CDP
@@ -159,7 +159,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc);
         var witnessesList = currentDocument.find(config.listDef.replace(/[<>]/g, ''));
         if (witnessesList.length > 0) {
-            angular.forEach(witnessesList, 
+            angular.forEach(witnessesList,
                 function(element) {
                     if ( !evtParser.isNestedInElem(element, element.tagName) ) {
                         angular.forEach(element.childNodes, function(child){
@@ -212,13 +212,13 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatusParser
      *
      * @description
-     * This method will parse the critical entries existing in the XML file  
+     * This method will parse the critical entries existing in the XML file
      * and save them in {@link evtviewer.dataHandler.parsedData parsedData}.
-     * It searches for elements with <code>tagName</code> equals to that defined in <code>apparatusEntryDef</code> 
+     * It searches for elements with <code>tagName</code> equals to that defined in <code>apparatusEntryDef</code>
      * and for each one of them it calls the function {@link evtviewer.dataHandler.evtCriticalElementsParser#handleAppEntry handleAppEntry}.
-     * Finally it adds the JSON object generated into {@link evtviewer.dataHandler.parsedData parsedData} 
+     * Finally it adds the JSON object generated into {@link evtviewer.dataHandler.parsedData parsedData}
      * using the method {@link evtviewer.dataHandler.parsedData#addCriticalEntry addCriticalEntry()}.
-     * 
+     *
      * @param {string} doc string representing the XML to be parsed
      *
      * @returns {promise} promise when parsed will end
@@ -228,7 +228,7 @@ angular.module('evtviewer.dataHandler')
         parsedData.resetCriticalEntries();
         var deferred = $q.defer();
         var currentDocument = angular.element(doc);
-        angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')),
             function(element) {
                 //TODO: if-else per handleRecensioEntry
                 if (!element.hasAttribute('type') || (element.getAttribute('type') !== 'recensio')){
@@ -247,7 +247,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatusParser
      *
      * @description
-     * This method will parse the critical entries that contain passages that differ 
+     * This method will parse the critical entries that contain passages that differ
      * in two or more versions of the text.
      *
      * @param {string} doc string representing the XML to be parsed
@@ -258,13 +258,13 @@ angular.module('evtviewer.dataHandler')
      parser.parseVersionEntries = function(doc) {
         var deferred = $q.defer(),
             currentDocument = angular.element(doc);
-        
+
         angular.forEach(currentDocument.find(apparatusEntryDef.replace(/[<>]/g, '')+'[type=recensio]'), function(element) {
             evtCriticalElementsParser.handleVersionEntry(element);
         });
-        
+
         console.log('## Version Entries ##', parsedData.getVersionEntries());
-        
+
         deferred.resolve('success');
         return deferred;
     };
@@ -286,7 +286,7 @@ angular.module('evtviewer.dataHandler')
      * @returns {boolean} whether the element belongs to the specific witness(es) or not
      * @author CDP
      */
-    parser.containsWitnessElement = function(att, witObj) {
+    parser.containsWitnessElement = function(attr, witObj) {
         if (attr === null) {
             return false;
         } else {
@@ -329,7 +329,7 @@ angular.module('evtviewer.dataHandler')
                 newPbElem.textContent = pbNode.getAttribute('n');
                 pbNode.parentNode.replaceChild(newPbElem, pbNode);
             } else {
-                pbNode.parentNode.removeChild(pbNode); 
+                pbNode.parentNode.removeChild(pbNode);
             }
         }
     };
@@ -341,14 +341,14 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will parse lacuna start/end in witnesses.
      * - It retrieves <code>lacunaStart</code> and <code>lacunaEnd</code> elements and save them in two different arrays.
-     * - It prepares two empy arrays that will store <code>lacunaStart</code> and <code>lacunaEnd</code> elements of the given witness 
+     * - It prepares two empy arrays that will store <code>lacunaStart</code> and <code>lacunaEnd</code> elements of the given witness
      * (<code>startLacunasWit</code> and <code>endLacunasWit</code>).
      * - Then it loop over those arrays and for each element retrieve the critical apparatus entry id (<code>appId</code>),
      * the reading id (<code>readingId</code>) and the reading witnesses siglas (<code>readingWits</code>).
      *  - If the reading belongs to the given witness if will add it in the array of start/end lacunas for the witness.
      * - Then if start and end elements for lacunas in given witness are the same in number, thanks to a regular expression
-     * it will replace the XML string contained between each pair of start and end elements with a pair of 
-     * <code>evt-reading</code>s that will have respectively the <code>data-app-id</code> property equals to the 
+     * it will replace the XML string contained between each pair of start and end elements with a pair of
+     * <code>evt-reading</code>s that will have respectively the <code>data-app-id</code> property equals to the
      * <code>startLacuna</code> and <code>endLacuna</code> element id.
      * - Otherwise it will replace the text of the all witness with an error message.
      *
@@ -361,7 +361,7 @@ angular.module('evtviewer.dataHandler')
         var startLacunas = docDOM.getElementsByTagName('lacunaStart'),
             endLacunas   = docDOM.getElementsByTagName('lacunaEnd'),
             startLacunasWit = [],
-            endLacunasWit   = [], 
+            endLacunasWit   = [],
             appId,
             readingId,
             readingWits;
@@ -387,12 +387,12 @@ angular.module('evtviewer.dataHandler')
         }
         if (startLacunasWit.length === endLacunasWit.length) {
             for(var k = startLacunasWit.length-1; k >= 0; k--) {
-                var appStart = startLacunasWit[k].parentNode, 
+                var appStart = startLacunasWit[k].parentNode,
                     appEnd   = endLacunasWit[k].parentNode;
-                
+
                 var appStartId = appStart.getAttribute('data-app-id'),
                     appEndId   = appEnd.getAttribute('data-app-id');
-                
+
                 var match = '<evt-reading.*data-app-id.*'+appStartId+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading.*data-app-id.*'+appEndId+'.*<\/evt-reading>';
                 var sRegExInput = new RegExp(match, 'ig'),
                     newHTML     = '<span data-app-id-start="'+appStartId+'" data-app-id-end="'+appEndId+'" class="lacuna">[LACUNA]</span>';
@@ -410,7 +410,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will check if a witness is a fragmentary one or not
-     * It will look if in the XML document there are <code>witStart</code> elements with <code>wit</code> 
+     * It will look if in the XML document there are <code>witStart</code> elements with <code>wit</code>
      * attribute equal to the sigla of the given witness.
      *
      * @param {element} docDOM XML element to be parsed
@@ -423,7 +423,7 @@ angular.module('evtviewer.dataHandler')
         try {
             if (docDOM.querySelectorAll('witStart[wit*=\'#'+wit+'\']').length > 0) {
                 return true;
-            } else if (docDOM.querySelectorAll('rdg[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 || 
+            } else if (docDOM.querySelectorAll('rdg[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 ||
                        docDOM.querySelectorAll('lem[wit*=\'#'+wit+'\'] witStart:not([wit]').length > 0 ) {
                 return true;
             } else {
@@ -441,15 +441,15 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will parse text of fragmentary witness.
      * - It retrieves <code>witStart</code> and <code>witEnd</code> elements and save them in two different arrays.
-     * - It prepares two empy arrays that will store <code>witStart</code> and <code>witEnd</code> elements of the given witness 
+     * - It prepares two empy arrays that will store <code>witStart</code> and <code>witEnd</code> elements of the given witness
      * (<code>startsWit</code> and <code>endsWit</code>).
      * - Then it loop over those arrays and for each element retrieve the critical apparatus entry id (<code>appId</code>),
      * the reading id (<code>readingId</code>) and the reading witnesses siglas (<code>readingWits</code>).
      *  - If the reading belongs to the given witness if will add it in the array of start/end fragments for the witness.
      * - Then if start and end elements for fragments in given witness are the same in number, thanks to a regular expression
-     * it will replace the XML string contained between each pair of start and end elements with a pair of 
-     * <code>evt-reading</code>s that will have respectively the <code>data-app-id</code> property equals to the 
-     * <code>witStart</code> and <code>witEnd</code> element id. 
+     * it will replace the XML string contained between each pair of start and end elements with a pair of
+     * <code>evt-reading</code>s that will have respectively the <code>data-app-id</code> property equals to the
+     * <code>witStart</code> and <code>witEnd</code> element id.
      * Those <code>evt-reading</code>s will be both preceded by a <code>span</code> element indicating the start or end of the fragment
      * (and will be used just to show a grafic separator for the fragment).
      * - Otherwise it will replace the text of the all witness with an error message.
@@ -495,9 +495,9 @@ angular.module('evtviewer.dataHandler')
 
                 var appStartId = appStart.getAttribute('data-app-id'),
                     appEndId   = appEnd.getAttribute('data-app-id');
-                
+
                 var match = '<evt-reading data-app-id="'+appStartId+'.*<\/evt-reading>(.|[\r\n])*?<evt-reading data-app-id.*'+appEndId+'.*<\/evt-reading>';
-                var sRegExInput = new RegExp(match, 'ig'); 
+                var sRegExInput = new RegExp(match, 'ig');
                 fragmentaryText = '<span class="fragment fragment-start"></span>'+(docDOM.innerHTML.match(sRegExInput))+'<span class="fragment fragment-end"></span>'+fragmentaryText;
             }
             return fragmentaryText;

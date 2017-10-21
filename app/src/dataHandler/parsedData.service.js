@@ -2,11 +2,11 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.parsedData
- * @description 
+ * @description
  * # parsedData
- * Service that is responsible of the storage and retrievement of data parsed from 
+ * Service that is responsible of the storage and retrievement of data parsed from
  * source edition document.
- * 
+ *
  * @requires $log
  * @requires evtviewer.core.config
  * @requires evtviewer.core.Utils
@@ -23,7 +23,7 @@ angular.module('evtviewer.dataHandler')
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#encodingDetails
      * @propertyOf evtviewer.dataHandler.parsedData
-     * @description [Private] Internal property where information about encoding details are stored. 
+     * @description [Private] Internal property where information about encoding details are stored.
      */
 	var encodingDetails = {	};
 	/**
@@ -39,7 +39,7 @@ angular.module('evtviewer.dataHandler')
 				outsideMetadata: '',
 				revisionHistory: ''
 			};
-     	</pre> 
+     	</pre>
      */
 	var projectInfo = {
 		fileDescription: '',
@@ -75,7 +75,7 @@ angular.module('evtviewer.dataHandler')
 				},
 				_indexes: [biblElemId]
 			};
-     	</pre> 
+     	</pre>
      */
 	var bibliographicRefsCollection = {
 		_indexes: []
@@ -173,7 +173,7 @@ angular.module('evtviewer.dataHandler')
 		length: 0
 	};
 
-	// var pagesCollectionTexts = []; 
+	// var pagesCollectionTexts = [];
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#witnessesCollection
@@ -279,8 +279,8 @@ angular.module('evtviewer.dataHandler')
 			colors: []
 
 			// colors : ['rgb(215,48,39)','rgb(244,109,67)','rgb(253,174,97)','rgb(254,224,139)','rgb(217,239,139)','rgb(166,217,106)','rgb(102,189,99)','rgb(26,152,80)'],
-			// colors : ['rgb(51,102,204)', 'rgb(16,150,24)', 'rgb(255,153,0)', 
-			//           'rgb(221,68,119)', 'rgb(34,170,153)', 
+			// colors : ['rgb(51,102,204)', 'rgb(16,150,24)', 'rgb(255,153,0)',
+			//           'rgb(221,68,119)', 'rgb(34,170,153)',
 			//           'rgb(153,0,153)', 'rgb(220,57,18', 'rgb(0,153,198)', 'rgb(102,170,0)',
 			//           'rgb(184,46,46)', 'rgb(49,99,149)', 'rgb(153,68,153)'],
 		},
@@ -319,7 +319,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      */
 	var editionLevels = [];
-	
+
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#versionAppCollection
@@ -458,9 +458,9 @@ angular.module('evtviewer.dataHandler')
 						_listKeys: [],
 						_title,
 						_type,
-						_icon 
+						_icon
 					},
-					_indexes: []	
+					_indexes: []
 				},
 				_indexes: []
 			};
@@ -468,7 +468,7 @@ angular.module('evtviewer.dataHandler')
      */
 	var namedEntities = {
 		_collections: {
-			_indexes: []	
+			_indexes: []
 		},
 		_indexes: []
 	};
@@ -480,7 +480,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Get a particular detail about the encoding of source edition document.
      * @param {string} detailName Name of detail to retrieve
-     * @returns {string} value of detail retrieved 
+     * @returns {string} value of detail retrieved
      */
 	parsedData.getEncodingDetail = function(detailName) {
 		return encodingDetails[detailName];
@@ -565,7 +565,7 @@ angular.module('evtviewer.dataHandler')
 				_listKeys: [],
 				_title : collection && collection.title ? collection.title : '',
 				_type : listType,
-				_icon : listIcon 
+				_icon : listIcon
 			};
 
 
@@ -633,7 +633,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Retrieve all the collections of named entities.
-     * @returns {Object} List of collection of all named entities parsed. 
+     * @returns {Object} List of collection of all named entities parsed.
      * The list of all indexes is stored in the property <code>_indexes</code>.
      */
 	parsedData.getNamedEntitiesCollection = function() {
@@ -649,7 +649,7 @@ angular.module('evtviewer.dataHandler')
      * Retrieve the object representing a named entities' collection by its name
      * (that is used as unique identifier).
      * @param {string} collectionId Identifier (Name) of collection to retrieve
-     * @returns {Object} Object representing the named entities collection with 
+     * @returns {Object} Object representing the named entities collection with
      * that particular <code>collectionId</code>. It is structure as follows:
      	<pre>
 			var collection = {
@@ -669,7 +669,7 @@ angular.module('evtviewer.dataHandler')
 				_listKeys: [],
 				_title,
 				_type,
-				_icon 
+				_icon
 			};
      	</pre>
      */
@@ -720,9 +720,9 @@ angular.module('evtviewer.dataHandler')
 		var namedEntity;
 		if (namedEntityId) {
 			var namedEntityRefs = namedEntities[namedEntityId];
-			if (namedEntityRefs !== undefined && namedEntityRefs.collectionId !== undefined && 
-				namedEntityRefs.listKey !== undefined && 
-				namedEntities._collections[namedEntityRefs.collectionId] !== undefined && 
+			if (namedEntityRefs !== undefined && namedEntityRefs.collectionId !== undefined &&
+				namedEntityRefs.listKey !== undefined &&
+				namedEntities._collections[namedEntityRefs.collectionId] !== undefined &&
 				namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey] !== undefined) {
 				namedEntity = namedEntities._collections[namedEntityRefs.collectionId][namedEntityRefs.listKey][namedEntityId];
 			}
@@ -765,7 +765,7 @@ angular.module('evtviewer.dataHandler')
 						sourceId: [], // ids of the bibliographic citations that are inside the quote
 						sourceRefId: [], // references to bibliographic citations that are outside the quote
 						correspId: {}, // ids of the segments inside the source text that correspond to the quote
-						subQuotes: [], // ids of quotes nested inside the quote                
+						subQuotes: [], // ids of quotes nested inside the quote
 					},
 					_subQuote, // boolean; is the quote nested in another quote?
 					_xmlSource
@@ -777,8 +777,8 @@ angular.module('evtviewer.dataHandler')
 					}
 				}
 			};
-     	</pre> 
-     * @author CM 
+     	</pre>
+     * @author CM
      */
 	var quotesCollection = {
 		_indexes: {
@@ -820,8 +820,8 @@ angular.module('evtviewer.dataHandler')
 					correspId: {}
 				}
 			};
-     	</pre> 
-     * @author CM 
+     	</pre>
+     * @author CM
      */
 	var sourcesCollection = {
 		_indexes: {
@@ -861,8 +861,8 @@ angular.module('evtviewer.dataHandler')
 					_indexes: []
 				}
 			};
-     	</pre> 
-     * @author CM 
+     	</pre>
+     * @author CM
      */
 	var analoguesCollection = {
 		_indexes: {
@@ -882,9 +882,9 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Add a page to stored pages collection. If the page has already been added it means that it contains
      * more than one document. In this case the <code>docId</code> will be added to the list
-     * of documents contained in the page. 
-     * The <code>pageId</code> of the new page will be also added to the list of 
-     * pages of the document with <code>id = docId</code>. 
+     * of documents contained in the page.
+     * The <code>pageId</code> of the new page will be also added to the list of
+     * pages of the document with <code>id = docId</code>.
      * @param {Object} page Page to be added. It is structured as:
      	<pre>
 			var page = {
@@ -1048,7 +1048,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Add document to stored collection
-     * @param {Object} doc Object representing the document to add. 
+     * @param {Object} doc Object representing the document to add.
      * It is structured as follows:
      	<pre>
 			var doc = {
@@ -1059,7 +1059,7 @@ angular.module('evtviewer.dataHandler')
 				front,
 				pages
 			};
-     	</pre> 
+     	</pre>
      */
 	parsedData.addDocument = function(doc) {
 		var docId = doc.value;
@@ -1111,7 +1111,7 @@ angular.module('evtviewer.dataHandler')
 				front,
 				pages,
 			};
-     	</pre> 
+     	</pre>
      */
 	parsedData.getDocument = function(docId) {
 		return documentsCollection[docId];
@@ -1135,7 +1135,7 @@ angular.module('evtviewer.dataHandler')
 				front,
 				pages,
 			};
-     	</pre> 
+     	</pre>
      */
 	parsedData.getPreviousDocument = function(docId) {
 		var currentDocIndex = documentsCollection._indexes.indexOf(docId);
@@ -1197,7 +1197,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Retrieve information about a particular external document
      * @param {string} extDocId Identifier of external document to retrieve
-     * @returns {Object} Object representing the external document with <code>id = extDocId</code>. 
+     * @returns {Object} Object representing the external document with <code>id = extDocId</code>.
 	 * It is structured as follows:
 	 	<pre>
 			var extDoc = {
@@ -1227,7 +1227,7 @@ angular.module('evtviewer.dataHandler')
 				content: doc
 			};
 	 	</pre>
-	 * @param {string} id Identifier of document connected to the current external source 
+	 * @param {string} id Identifier of document connected to the current external source
      * @author CM
      */
 	parsedData.addSourceDocument = function(extDoc, id) {
@@ -1289,9 +1289,9 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Set availability of critical edition level for the current parsed edition.
-     * This method is used during parsing phase and will set the availability based on 
+     * This method is used during parsing phase and will set the availability based on
      * the presence of particular elements and information in the original document.
-     * @param {boolean} isAvailable Whether the critical edition level is available or not 
+     * @param {boolean} isAvailable Whether the critical edition level is available or not
      */
 	parsedData.setCriticalEditionAvailability = function(isAvailable) {
 		criticalEdition = isAvailable;
@@ -1318,7 +1318,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Set the edition levels informations.
      * Edition level informations are retrieved from configuration file.
-     * @param {Object} editions Object representing the edition levels information. 
+     * @param {Object} editions Object representing the edition levels information.
      * It is an array of edition data, each one structured as follows:
      	<pre>
 			var edition = {
@@ -1355,14 +1355,14 @@ angular.module('evtviewer.dataHandler')
 	parsedData.addEdition = function(edition) {
 		editionLevels.push(edition);
 	};
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getEditions
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
-     * Retrieve the information about the parsed edition levels. 
+     * Retrieve the information about the parsed edition levels.
      * Edition level informations are retrieved from configuration file.
      * @returns {array} List of information about edition level.
      * Each object within this array is structured as follows:
@@ -1638,7 +1638,7 @@ angular.module('evtviewer.dataHandler')
 	};
 	var formatWitnessesListElement = function(element) {
 		var content = '';
-		var sigla = '' 
+		var sigla = ''; 
 		if (element._type === 'witness') {
 			content += '<li><div>';
 			if (element.attributes && element.attributes.n) {
@@ -1647,7 +1647,7 @@ angular.module('evtviewer.dataHandler')
 				sigla = element.sigla;
 			}
 			content += '<strong>' + sigla + '</strong>';
-			
+
 			if (element.description) {
 				if (element.description.nodeType === 3) {
 					if (element.description.textContent !== '' && sigla !== '') {
@@ -1709,7 +1709,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Add the critical text for a particular document.
      * @param {string} text HTML string representing the parsed critical text
-     * @param {string} docId Identifier of document to handle  
+     * @param {string} docId Identifier of document to handle
      */
 	parsedData.addCriticalText = function(text, docId) {
 		criticalTexts[docId] = text;
@@ -1722,7 +1722,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Retrieve the critical text of a particular document.
-	 * @param {string} docId Identifier of document to handle 
+	 * @param {string} docId Identifier of document to handle
 	 * @returns {string} HTML string representing the parsed critical text
      */
 	parsedData.getCriticalText = function(docId) {
@@ -1735,7 +1735,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
-     * Reset the collection of parsed critical entries. Since the collection has a 
+     * Reset the collection of parsed critical entries. Since the collection has a
      * quite complex structure this reset function was necessary!
      */
 	parsedData.resetCriticalEntries = function() {
@@ -1961,7 +1961,7 @@ angular.module('evtviewer.dataHandler')
      * Retrieve the attributes associated to a particular reading within a particular critical apparatus entry.
      * @param {string} readingId Identifier of reading to handle
      * @param {string} appId Identifier of critical apparatus entry to handle
-	 * @returns {array} List of attributes (pair of label/value) registered for the particular 
+	 * @returns {array} List of attributes (pair of label/value) registered for the particular
 	 * reading within a particular critical apparatus entry.
      */
 	parsedData.getReadingAttributes = function(readingId, appId) {
@@ -1996,7 +1996,7 @@ angular.module('evtviewer.dataHandler')
      * Retrieve a generic color to be associated to a critical apparatus entry filter.
      * First of all the system will try to get the color from a given list of colors
      * (that's why we need to pass the <code>index</code> of the filter handled); if no colors
-     * available, it will generate a new random color, being aware that it has not been used yet. 
+     * available, it will generate a new random color, being aware that it has not been used yet.
      * @param {string} index Index of current filter handled.
      * @returns {string} Hex or RGB string representing the color to be associated to the filter handled
      */
@@ -2005,11 +2005,11 @@ angular.module('evtviewer.dataHandler')
 			color = genericColors[index];
 		if (filtersCollection.colors === undefined ||
 			filtersCollection.colors.indexOf(color) < 0) {
-			// If color has not been used yet 
+			// If color has not been used yet
 			color = genericColors[index];
 			genericColors.splice(index, 1);
 		} else {
-			// If color has already been used, I try to get the following 
+			// If color has already been used, I try to get the following
 			if (index >= filtersCollection.colors.length - 1) {
 				var newRandomColor = Utils.getRandomColor('rgb');
 				while (filtersCollection.colors.indexOf(newRandomColor) >= 0) {
@@ -2029,8 +2029,8 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Add a new critical apparatus entry filter to filters collection.
-     * The filters collection is structured in a way that for each "filter name" 
-     * there could be more values; each value is an <code>Object</code> in which 
+     * The filters collection is structured in a way that for each "filter name"
+     * there could be more values; each value is an <code>Object</code> in which
      * are defined both the <code>value</code> and the <code>color</code>
      * (the color is assigned automatically depending on a given list of color or on a random generation).
      * Each filter will be also restricted to a particular type of reading (either variant or lemma or both).
@@ -2179,7 +2179,7 @@ angular.module('evtviewer.dataHandler')
      * Retrieve the color associated to a particular value of a particular critical apparatus entries filter.
      * @param {string} filter Name of filter to handle
      * @param {string} value Value to handle
-     * @returns {string} Hex or RGB string representing the color code associated to the particular value 
+     * @returns {string} Hex or RGB string representing the color code associated to the particular value
      * of the particular critical apparatus entries filter requested.
      */
 	parsedData.getCriticalEntriesFilterColor = function(filter, value) {
@@ -2387,7 +2387,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Retrieve all the information about a particular version apparatus entry.
-     * @param {string} entryId Identifier of the version apparatus entry to retrieve 
+     * @param {string} entryId Identifier of the version apparatus entry to retrieve
      * @returns {Object} Object representing the parsed entry. It is structured as follows:
      	<pre>
 			var entry = {
@@ -2431,13 +2431,13 @@ angular.module('evtviewer.dataHandler')
 		} else {
 			if (witMap[ver].indexOf(wit) < 0) {
 				witMap[ver].push(wit);
-			}			
+			}
 		}
 
 		var versionId = versionAppCollection._indexes.versionId,
 			name = versionAppCollection._indexes.versionId._name;
 		if (versionId[ver] === undefined) {
-			var index = config.versions.indexOf(ver); 
+			var index = config.versions.indexOf(ver);
 			var v = 'Version &#'+(65+index)+';';
 			versionId[ver] = v;
 			name[v] = ver;
@@ -2750,13 +2750,13 @@ angular.module('evtviewer.dataHandler')
 				content: [],
 				_indexes: {
 					// bibliographic citations inside the quote
-					sourceId: [], 
+					sourceId: [],
 					// bibliographic citations outside the quote
-					sourceRefId: [], 
+					sourceRefId: [],
 					// segments inside the source text that correspond to the quote
-					correspId: {}, 
-					// quotes nested inside the quote                
-					subQuotes: [], 
+					correspId: {},
+					// quotes nested inside the quote
+					subQuotes: [],
 				},
 				_subQuote, // boolean; is the quote nested in another quote?
 				_xmlSource
@@ -2836,7 +2836,7 @@ angular.module('evtviewer.dataHandler')
 						sourceId: [], // ids of the bibliographic citations that are inside the quote
 						sourceRefId: [], // references to bibliographic citations that are outside the quote
 						correspId: {}, // ids of the segments inside the source text that correspond to the quote
-						subQuotes: [], // ids of quotes nested inside the quote                
+						subQuotes: [], // ids of quotes nested inside the quote
 					},
 					_subQuote, // boolean; is the quote nested in another quote?
 					_xmlSource
@@ -2874,10 +2874,10 @@ angular.module('evtviewer.dataHandler')
 					sourceId: [], // ids of the bibliographic citations that are inside the quote
 					sourceRefId: [], // references to bibliographic citations that are outside the quote
 					correspId: {}, // ids of the segments inside the source text that correspond to the quote
-					subQuotes: [], // ids of quotes nested inside the quote                
+					subQuotes: [], // ids of quotes nested inside the quote
 				},
 				_subQuote, // boolean; is the quote nested in another quote?
-				_xmlSource	
+				_xmlSource
 			};
      	</pre>
      * @author CM

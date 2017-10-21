@@ -3,7 +3,7 @@
  * @module evtviewer.interface
  * @name evtviewer.interface.controller:InterfaceCtrl
  *
- * @description 
+ * @description
  * # InterfaceCtrl
  * The InterfaceCtrl controller handles the upper level user interface.
  *
@@ -204,8 +204,8 @@ angular.module('evtviewer.interface')
          * @description Get current apparatus from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()}).
          * @returns {string} id of current apparatus
          */
-		$scope.getCurrentApparatus = function() { 
-			return evtInterface.getState('currentApparatus') ; 
+		$scope.getCurrentApparatus = function() {
+			return evtInterface.getState('currentApparatus') ;
 		};
 		/**
          * @ngdoc property
@@ -314,23 +314,23 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#getWebSite
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Get the external web site of the edition.
-         * Add 'http://' if not included in path. 
+         * Add 'http://' if not included in path.
          * @returns {string} URL of external web site of edition
          */
       $scope.getWebSite= function() {
          var webSite = evtInterface.getProperty('webSite');
          return webSite.indexOf('http://') < 0 ? 'http://' + webSite : webSite;
-      };		
+      };
 		/**
          * @ngdoc method
          * @name evtviewer.interface.controller:InterfaceCtrl#handleGenericClick
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
-         * @description Handle click on page. 
+         * @description Handle click on page.
          * - If target is not a directive evt-select, close all opened selects.
          * - If target is not a directive evt-buttonSwitch, close all selects that are not switchers, but are "stand alone" buttons.
          * - If target is not a directive evt-popover, close all opened popover.
          * - If target is a witness selector (selector appearing in collation view), hide it.
-         * @param {event} $event click event 
+         * @param {event} $event click event
          * @todo: Add more cases
          */
 		$scope.handleGenericClick = function($event) {
@@ -357,9 +357,9 @@ angular.module('evtviewer.interface')
          * @ngdoc method
          * @name evtviewer.interface.controller:InterfaceCtrl#handleKeydownEvent
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
-         * @description Handle a key down event on page. 
+         * @description Handle a key down event on page.
          * - If keyCode = 27 [ESC], close all opened dialogs
-         * @param {event} $event keydown event 
+         * @param {event} $event keydown event
          * @todo: Add more cases. Think about creating a dedicated directive
          */
 		$scope.handleKeydownEvent = function($event) {
@@ -371,9 +371,9 @@ angular.module('evtviewer.interface')
          * @ngdoc method
          * @name evtviewer.interface.controller:InterfaceCtrl#getBookmark
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
-         * @description Generate the bookmark of the current view using information about project 
-         * (author, title and publisher of the edition) and the current URL, 
-         * which can contain info about current document, current page, current edition level, 
+         * @description Generate the bookmark of the current view using information about project
+         * (author, title and publisher of the edition) and the current URL,
+         * which can contain info about current document, current page, current edition level,
          * current view, current apparatus entry selected and all other data that are saved in the URL during navigation.
          * Information about the project (or the edition) are retrieved from {@link evtviewer.dataHandler.parsedData parsedData}.
          * @returns {string} HTML of the generated bookmark to be compiled and shown to the user.
@@ -510,7 +510,7 @@ angular.module('evtviewer.interface')
          */
 		$scope.getVersion = function(ver) {
 			var versionEntries = parsedData.getVersionEntries(),
-				versionIds = versionEntries ? versionEntries._indexes : {}
+				versionIds = versionEntries ? versionEntries._indexes : {};
 			return (versionIds && versionIds.versionId ? versionIds.versionId[ver] : '');
 		};
 		/**
@@ -600,7 +600,7 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.controller:InterfaceCtrl#setLanguage
          * @methodOf evtviewer.interface.controller:InterfaceCtrl
          * @description Change interface translation
-         * @param {string} langKey key of new language to set  
+         * @param {string} langKey key of new language to set
          */
 		$scope.setLanguage = function(langKey) {
 			evtTranslation.setLanguage(langKey);
@@ -613,7 +613,7 @@ angular.module('evtviewer.interface')
  * @ngdoc directive
  * @module evtviewer.interface
  * @name evtviewer.interface.directive:g
- * @description 
+ * @description
  * # g
  * Directive to transform encoded gliph into actual text depending on parsed data about the referenced item
  *
@@ -623,8 +623,8 @@ angular.module('evtviewer.interface')
  * @restrict E
  *
  * @todo Move this directive in a proper file
- * @todo Decide if simply use html content to be compiled 
- * (in this case the same HTML will be used for each occurrence of glyph) 
+ * @todo Decide if simply use html content to be compiled
+ * (in this case the same HTML will be used for each occurrence of glyph)
  * or if parse the glyph content deeperand use only the character needed.
 **/
 .directive('g', function(parsedData) {

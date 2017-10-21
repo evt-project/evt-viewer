@@ -2,11 +2,11 @@
  * @ngdoc object
  * @module evtviewer.bibliography
  * @name evtviewer.bibliography.controller:BibliographyCtrl
- * @description 
+ * @description
  * # BibliographyCtrl
  * <p>This is controller for the {@link evtviewer.bibliography.directive:evtBibliography evtBibliography} directive. </p>
- * <p>The majority of the methods of this controller are defined in the 
- * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider 
+ * <p>The majority of the methods of this controller are defined in the
+ * {@link evtviewer.bibliography.evtBibliography evtBibliography} provider
  * where the scope of the directive is extended with all the necessary properties and methods.</p>
  *
  * @requires $log
@@ -15,7 +15,7 @@
  **/
 angular.module('evtviewer.bibliography')
 
-.controller('BibliographyCtrl', function($log, $scope, evtBibliography) { 
+.controller('BibliographyCtrl', function($log, $scope, evtBibliography) {
     var _console = $log.getInstance('BibliographyCtrl');
 
     var vm = this;
@@ -31,7 +31,7 @@ angular.module('evtviewer.bibliography')
      * @param {string} biblId1 id of first bibliographic reference to handle
      * @param {string} biblId2 id of second bibliographic reference to handle
      *
-     * @returns {number}  number indicating whether a bibliographic reference comes before 
+     * @returns {number}  number indicating whether a bibliographic reference comes before
      * or after or is the same as the given bibliographic reference in sort order.
      *
      * @author MR
@@ -57,7 +57,7 @@ angular.module('evtviewer.bibliography')
             case vm.sortBy.Year:
                 //sorting by year
                 if (typeof biblId1.value.date !== 'undefined') {
-                    // If Number() returns Nan, whe must must be sure to assign empty string to result variable in order to 
+                    // If Number() returns Nan, whe must must be sure to assign empty string to result variable in order to
                     // provide the same sorting logic, element with no information are at the top of the final list.
                     // Infact: ''.localeCompare(...) => -1
                     result1 = biblId1.value.date !== '' && Number(biblId1.value.date) ? Number(biblId1.value.date) : '';
@@ -68,7 +68,7 @@ angular.module('evtviewer.bibliography')
                 break;
 
             case vm.sortBy.Title:
-                //sorting by analytic title or normale title 
+                //sorting by analytic title or normale title
                 if (typeof biblId1.value.titleAnalytic !== 'undefined') {
                     result1 = biblId1.value.titleAnalytic !== '' && result1 === '' ? biblId1.value.titleAnalytic : result1;
                 }
@@ -106,5 +106,5 @@ angular.module('evtviewer.bibliography')
      */
     this.destroy = function() {
         evtBibliography.destroy(this.uid);
-    }
+    };
 });
