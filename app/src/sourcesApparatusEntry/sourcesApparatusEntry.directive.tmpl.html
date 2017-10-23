@@ -9,10 +9,6 @@
     
     <div class="sources-apparatus-entry_main-content"
         ng-if="vm.currentViewMode !== 'srcTxt'">
-        <sup
-            class="iconbis-evt_quote-left">
-        </sup>
-        <span class="sources-apparatus-entry_main-content_header" compile="vm.head"></span>
         <div class="sources-apparatus-entry_tools">
             <button-switch
                 title=" {{ 'BUTTONS.ALIGN_QUOTES' | translate }}"
@@ -22,6 +18,11 @@
                 data-type="alignReadings"
                 ng-click="vm.alignQuotes()"></button-switch>
         </div>
+        <sup
+            class="iconbis-evt_quote-left">
+        </sup>
+        <span class="sources-apparatus-entry_main-content_header" compile="vm.head"></span>
+        
     </div>
     
     <div class="sources-apparatus-entry_main-content_list"

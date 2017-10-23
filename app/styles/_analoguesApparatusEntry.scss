@@ -1,3 +1,11 @@
+sup.iconbis-evt_analogue {
+    font-size: 0.8em;
+    color: $base-color-dark;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
 .analogues-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
@@ -13,7 +21,6 @@
 
     span:not(.app_lemma), span:not(.app_lemma_content) {
         background: transparent;
-        display: inline-block;
     }
 
     &.active {
@@ -49,7 +56,7 @@
         float: right;
         display: block;
         position: relative;
-        bottom: 6px;
+        bottom: 4px;
         right: -2px;
         background: transparent;
         text-align: center;
@@ -70,12 +77,13 @@
         }
     }
     &_main-content{
-        padding: 5px;
+        padding: 9px;
         // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
 
         &_header {
+            display: inline;
             .textNode {
                 margin-right: 0.2em;
             }
@@ -97,6 +105,7 @@
                 padding-top: 0.2em;
                 padding-bottom: 0;
                 margin-bottom: 0;
+                top: 10px;
             }
             ul {
                 &.pointer {

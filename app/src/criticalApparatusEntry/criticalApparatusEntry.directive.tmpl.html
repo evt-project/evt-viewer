@@ -7,14 +7,7 @@
              'selected': vm.isSelected() && !vm.isInline() && scopeViewMode === 'readingTxt',
              'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
-      <span class="apparatus_exponent"
-            ng-if="::vm.showExponent"
-            compile="vm.exponent"></span>
-
-      <span 
-        class="app_lemma"
-        ng-if="::vm.content.lemma.content !== ''"
-        compile="::vm.content.lemma.content"></span>      
+          
     
     <div class="critical-apparatus-entry_tools"
       ng-if="::(scopeViewMode === 'collation' || scopeVieMode === 'readingTxt') || vm.isPinAvailable()">
@@ -41,6 +34,14 @@
             data-type="alignReadings"
             ng-click="vm.alignReadings()"></button-switch>
     </div>
+    <span class="apparatus_exponent"
+            ng-if="::vm.showExponent"
+            compile="vm.exponent"></span>
+
+      <span 
+        class="app_lemma"
+        ng-if="::vm.content.lemma.content !== ''"
+        compile="::vm.content.lemma.content"></span>  
     <div class="critical-apparatus-entry_main-content_list">
             <span 
               class="app_reading"

@@ -6,7 +6,6 @@
      ng-click="vm.callbackClick($event)">
     
     <div class="analogues-apparatus-entry_main-content">
-        <span class="analogues-apparatus-entry_main-content_header" compile="vm.header"></span>
         <div
             class="analogues-apparatus-entry_tools">
             <button-switch 
@@ -17,6 +16,11 @@
                 data-type="alignReadings"
                 ng-click="vm.alignAnalogues()"></button-switch>
         </div>
+        <sup
+            class="iconbis-evt_analogue">
+        </sup>
+        <span class="analogues-apparatus-entry_main-content_header" compile="vm.header"></span>
+        
     </div>
     
     <div class="analogues-apparatus-entry_main-content_list">
