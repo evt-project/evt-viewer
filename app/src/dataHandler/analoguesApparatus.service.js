@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtAnaloguesApparatus
- * @description 
+ * @description
  * # evtAnaloguesApparatus
  * Service containing methods to handle the contents of analogue entries.
  *
@@ -60,7 +60,7 @@ angular.module('evtviewer.dataHandler')
 
 		for (var i = 0; i < analogue.sources.length; i++) {
 			var source = apparatus.getSource(analogue.sources[i]);
-			appContent.sources.push(source);
+			if (source) {appContent.sources.push(source);}
 		}
 
 		appContent.header = apparatus.getHeader(analogue, scopeWit);

@@ -73,12 +73,16 @@ angular.module('evtviewer.dataHandler')
 		for (var i = 0; i < sourceId.length; i++) {
 			source = parsedData.getSource(sourceId[i]);
 			entry = apparatus.getSource(source);
-			appContent.sources.push(entry);
+			if (entry) {
+				appContent.sources.push(entry);
+			}
 		}
 		for (var j = 0; j < sourceRefId.length; j++) {
 			source = parsedData.getSource(sourceRefId[j]);
 			entry = apparatus.getSource(source);
-			appContent.sources.push(entry);
+			if (entry) {
+				appContent.sources.push(entry);
+			}
 		}
 
 		appContent.quote = apparatus.getQuote(quote, scopeWit);
@@ -118,6 +122,9 @@ angular.module('evtviewer.dataHandler')
      * @author CM
      */
 	apparatus.getSource = function(entry) {
+		if (!entry) {
+			return undefined;
+		}
 		var source = {
 			id: entry.id,
 			abbr: '',
