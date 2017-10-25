@@ -2,7 +2,7 @@
  * @ngdoc object
  * @module evtviewer.reference
  * @name evtviewer.reference.controller:RefCtrl
- * @description 
+ * @description
  * # RefCtrl
  * This is controller for the {@link evtviewer.reference.directive:ref ref} directive.
  *
@@ -30,11 +30,11 @@ angular.module('evtviewer.reference')
      * @description
      * Check the value of **type**; <ul>
      * <li>if it is a bibliographic reference and the referring entry appear in parsed data,
-     * it will open the bibliography 
+     * it will open the bibliography
      * panel whitin the global info dialog. Since the id of referring bibliography entry is given
      * to the service {@link evtviewer.bibliography.evtHighlight} the panel will scroll to the element and
      * highlight it for few seconds;</li>
-     * <li>if it is a bibliographic reference, but the entry does not appear in extracted data, 
+     * <li>if it is a bibliographic reference, but the entry does not appear in extracted data,
      * an error message will be shown;</li>
      * <li> if it is an external target, it will opena a new window at given URL</li></ul>
      *
@@ -45,14 +45,14 @@ angular.module('evtviewer.reference')
      */
 	vm.handleRefClick = function(oEvent) {
 		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.target.substr(0, 1) === '#') {
-			
+
 			// Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
-			// passiamo a evtHighlight l'id dell'entrata da evidenziare 
+			// passiamo a evtHighlight l'id dell'entrata da evidenziare
 			// (ci penserà il template della bibliografia al resto)
 			// apriamo il dialog con tipo globalInfo
 			// scegliamo di visualizzare come pannello iniziale quello della bibliografia
-			
-			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza 
+
+			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza
 			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
 			var target = vm.target.replace('#', ''),
 				bibliographicRef = parsedData.getBibliographicRefById(target),
@@ -70,11 +70,13 @@ angular.module('evtviewer.reference')
 			}
 			//Se il riferimento non esiste, c'è un errore allora
 			else {
-				evtCommunication.err('MESSAGES.REFERENCE_NOT_FOUND', '405');
+				evtCommunication.err('MESSAGES.REFERENCE_NOT_FOUND', '', '405', true);
 			}
 		} else { // Generic link
-			var url = vm.target.indexOf('http') < 0 ? 'http://' + vm.target : vm.target;
-			window.open(url, '_blank');
+			if (vm.target && vm.target !== '') {
+				var url = vm.target.indexOf('http') < 0 ? 'http://' + vm.target : vm.target;
+				window.open(url, '_blank');
+			}
 		}
 	};
 

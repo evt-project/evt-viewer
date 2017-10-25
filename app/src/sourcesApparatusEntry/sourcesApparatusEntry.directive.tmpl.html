@@ -6,7 +6,7 @@
     ng-mouseover="vm.toggleOverSourcesEntries($event)"
     ng-mouseout="vm.toggleOverSourcesEntries($event)"
     ng-click="vm.callbackClick($event)">
-    
+
     <div class="sources-apparatus-entry_main-content"
         ng-if="vm.currentViewMode !== 'srcTxt'">
         <div class="sources-apparatus-entry_tools">
@@ -22,12 +22,13 @@
             class="iconbis-evt_quote-left">
         </sup>
         <span class="sources-apparatus-entry_main-content_header" compile="vm.head"></span>
-        
+
     </div>
-    
+
     <div class="sources-apparatus-entry_main-content_list"
         ng-class="{ 'srctxt' : vm.currentViewMode === 'srcTxt' }">
-        <span class="sources-apparatus-entry_main-content_list-label"> {{ 'SOURCES.QUOTED_SOURCES' | translate }} </span>
+        <span class="sources-apparatus-entry_main-content_list-label"
+          ng-if="vm.sources.length > 1"> {{ 'SOURCES.QUOTED_SOURCES' | translate }} </span>
         <ul
             ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1 && vm.currentViewMode !== 'srcTxt'}">
             <li

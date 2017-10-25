@@ -2,9 +2,9 @@
  * @ngdoc directive
  * @module evtviewer.box
  * @name evtviewer.box.directive:box
- * @description 
+ * @description
  * # box
- * <p>Container with an header with tools (optional), a body and a footer with tools (optional). 
+ * <p>Container with an header with tools (optional), a body and a footer with tools (optional).
  * The content of the body will depend on box type. </p>
  * <p>Available types are:<ul>
  * <li> **image**: <ul>
@@ -49,14 +49,14 @@
  *  <li>Footer: hidden</li></ul></li>
  * </ul>
  * <br/>&#8727; if available</p>
- * <p>Since each instance of box must be controlled in different 
- * ways depending on type, the {@link evtviewer.box.controller:BoxCtrl controller} for this directive is dynamically defined inside the 
+ * <p>Since each instance of box must be controlled in different
+ * ways depending on type, the {@link evtviewer.box.controller:BoxCtrl controller} for this directive is dynamically defined inside the
  * {@link evtviewer.box.evtBox evtBox} provider.</p>
  *
  * @scope
  * @param {string=} id id of box to be shown
  * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty')
- * @param {string=} subtype subtype of box to be shown 
+ * @param {string=} subtype subtype of box to be shown
  * @param {string=} witness scope witness
  * @param {string=} witpage scope witness page
  * @param {string=} edition scope edition
@@ -104,7 +104,7 @@ angular.module('evtviewer.box')
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
-                
+
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
                     // Scrol box to update page numbers
                     //BIND DEPRECATED, USE ON
@@ -155,7 +155,7 @@ angular.module('evtviewer.box')
                 }
                 displayResult(scope, config.xsltUrl);
             });
-            
+
             /* ****************** */
             /* XSL TRANSFORMATION */
             /* ****************** */
@@ -195,7 +195,7 @@ angular.module('evtviewer.box')
             // /////////////////////// //
             // END XSL TRANSFORMATION  //
             // ////////////////////// //
-            
+
             /**
              * @ngdoc method
              * @name evtviewer.box.controller:BoxCtrl#getTotElementsOfType
@@ -212,8 +212,8 @@ angular.module('evtviewer.box')
             scope.vm.getTotElementsOfType = function(type){
                 return evtBox.getListByType(type).length;
             };
-            
-            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+
+            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
                 /** @ngdoc method
                  * @name evtviewer.box.controller:BoxCtrl#scrollToPage
                  * @methodOf evtviewer.box.controller:BoxCtrl
@@ -252,9 +252,9 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
-                
+
                 // Necessary for first load page/app entry alignment
-                var pageId, 
+                var pageId,
                     currentAppId = evtInterface.getState('currentAppEntry');
                 if ( currentBox.type === 'witness' ) {
                     pageId = scope.vm.witness+'-'+evtInterface.getCurrentWitnessPage(scope.vm.witness);
@@ -263,7 +263,7 @@ angular.module('evtviewer.box')
                 }
                 scope.vm.scrollToPage(pageId);
                 scope.vm.scrollToAppEntry(currentAppId);
-                
+
                 // scope.$watch(function() {
                 //     return evtInterface.getState('currentAppEntry');
                 // }, function(newItem, oldItem) {
@@ -273,38 +273,40 @@ angular.module('evtviewer.box')
                 //         }
                 //     }
                 // }, true);
-                
-                scope.$watch(function() {
-                    return evtInterface.getState('currentDoc');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
-                        scope.vm.state.docId = newItem;
-                        scope.vm.isLoading = true;
-                        currentBox.updateContent();
-                        if (scope.vm.currentType === 'text') {
-                            var docObj = parsedData.getDocument(newItem),
-                                docFront = docObj ? docObj.front : undefined;
 
-                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                                scope.vm.updateTopBoxContent(content);
-                        }
-                    }
-                }, true);
-
-                scope.$watch(function() {
-                    return scope.vm.state.filters._totActive;
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem) {
-                        $timeout(function(){
-                            var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
-                            var height = angular.element(filtersActiveElem).height();
-                            var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
-                            angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
-                        });
-                    }
-                }, true);
             }
 
+            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+              scope.$watch(function() {
+                  return evtInterface.getState('currentDoc');
+              }, function(newItem, oldItem) {
+                  if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
+                      scope.vm.state.docId = newItem;
+                      scope.vm.isLoading = true;
+                      currentBox.updateContent();
+                      if (scope.vm.currentType === 'text') {
+                          var docObj = parsedData.getDocument(newItem),
+                              docFront = docObj ? docObj.front : undefined;
+
+                              var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                              scope.vm.updateTopBoxContent(content);
+                      }
+                  }
+              }, true);
+
+              scope.$watch(function() {
+                  return scope.vm.state.filters._totActive;
+              }, function(newItem, oldItem) {
+                  if (oldItem !== newItem) {
+                      $timeout(function(){
+                          var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
+                          var height = angular.element(filtersActiveElem).height();
+                          var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
+                          angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
+                      });
+                  }
+              }, true);
+            }
 
             //Added by CM
             if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
@@ -424,13 +426,13 @@ angular.module('evtviewer.box')
                         scope.vm.state.pageId = newItem;
                         currentBox.updateContent();
                     }
-                }, true); 
+                }, true);
             }
 
             //Watchers for box of type "source"//
             //author: CM//
             if (currentBox.type === 'source') {
-                
+
                 //Watcher to intialize the sources texts, by parsing them.     //
                 //The watcher checks if the source to parse has been loaded,   //
                 //then updates the content of the box with current source text.//
@@ -459,7 +461,7 @@ angular.module('evtviewer.box')
                     }
                 });
             }
-            
+
             if (currentBox.type === 'text' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {
                     return evtInterface.getState('currentVersion');
@@ -473,7 +475,7 @@ angular.module('evtviewer.box')
             scope.$on('$destroy', function() {
                 if (currentBox){
                     currentBox.destroy();
-                }     
+                }
             });
         }
     };

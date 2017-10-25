@@ -2,10 +2,10 @@
  * @ngdoc service
  * @module evtviewer.box
  * @name evtviewer.box.evtBox
- * @description 
+ * @description
  * # evtBox
  * This provider expands the scope of the
- * {@link evtviewer.box.directive:box box} directive 
+ * {@link evtviewer.box.directive:box box} directive
  * and stores its reference untill the directive remains instantiated.
  *
  * @requires $log
@@ -38,11 +38,11 @@ angular.module('evtviewer.box')
 	 * @ngdoc object
 	 * @module evtviewer.box
 	 * @name evtviewer.box.controller:BoxCtrl
-	 * @description 
+	 * @description
 	 * # BoxCtrl
 	 * <p>This is controller for the {@link evtviewer.box.directive:box box} directive. </p>
-	 * <p>It is not actually implemented separately but its methods are defined in the 
-	 * {@link evtviewer.box.evtBox evtBox} provider 
+	 * <p>It is not actually implemented separately but its methods are defined in the
+	 * {@link evtviewer.box.evtBox evtBox} provider
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
@@ -63,9 +63,9 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Update a property of the box state.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
-		 * 
+		 *
 		 * @param {string} key key to update
 		 * @param {any} value new value
 		 *
@@ -83,9 +83,9 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Retrieve a property of the box state.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
-		 * 
+		 *
 		 * @param {string} key key of property to retrieve
 		 *
 		 * @returns {any} reference to state property
@@ -101,7 +101,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Remove instance from saved instances in {@link evtviewer.box.evtBox evtBox} provider.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 	     */
 		var destroy = function() {
@@ -118,7 +118,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Toggle a certain filter on critical apparatus entries.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file, and will be acatually used only when
 		 * box is of type **text** or **witness**.</p>
 		 * <p>The internal properties in which active filters are stored is structure as follows:
@@ -130,7 +130,7 @@ angular.module('evtviewer.box')
 				        totActive: 2,
 				        values: {
 				            0: "m1",
-				            1: "CDP", 
+				            1: "CDP",
 				            CDP: {
 				                active: true,
 				                color: "rgb(253, 153, 54)",
@@ -197,7 +197,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Clear all selecter values referring to a certain filter on critical apparatus entries.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file, and will be acatually used only when
 		 * box is of type **text** or **witness**.</p>
 		 * <p>The internal properties in which active filters are stored is structure as follows:
@@ -209,7 +209,7 @@ angular.module('evtviewer.box')
 				        totActive: 2,
 				        values: {
 				            0: "m1",
-				            1: "CDP", 
+				            1: "CDP",
 				            CDP: {
 				                active: true,
 				                color: "rgb(253, 153, 54)",
@@ -242,9 +242,9 @@ angular.module('evtviewer.box')
 	     * @methodOf evtviewer.box.controller:BoxCtrl
 	     *
 	     * @description
-	     * <p>TOpen/close the Top Box, usually used to store secondary 
+	     * <p>TOpen/close the Top Box, usually used to store secondary
 	     * contents like header information about the shown text.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 	     */
 		var toggleTopBox = function() {
@@ -260,7 +260,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Open/close the Box containing critical apparatus entries filters.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file, and will be acatually used only when
 		 * box is of type **text** or **witness**.</p>
 	     */
@@ -277,9 +277,9 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Update the content to be shown in Top Box.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
-		 * 
+		 *
 		 * @param {string} newContent string representing the HTML of new content to be shown in Top Box
 	     */
 		var updateTopBoxContent = function(newContent) {
@@ -293,9 +293,9 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Get CSS rule for current font size.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
-		 * 
+		 *
 		 * @returns {string} CSS rule for current font size
 	     */
 		var fontSize = function() {
@@ -309,7 +309,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Increase font size.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 	     */
 		var fontSizeIncrease = function() {
@@ -323,7 +323,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Decrease font size.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 	     */
 		var fontSizeDecrease = function() {
@@ -338,7 +338,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Reset default font size.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 	     */
 		var fontSizeReset = function() {
@@ -352,7 +352,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Check if Image Text Linking UI Tool is active.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 		 *
 		 * @returns {boolean} whether the ITL UI Tool is active or not
@@ -367,10 +367,10 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Get (Named) Entities active types.</p>
-	     * <p>The names of active types will be set as class name of box body contentainer with 
-	     * the suffix <code>-active</code> and will be used in CSS stylesheets to highlight 
+	     * <p>The names of active types will be set as class name of box body contentainer with
+	     * the suffix <code>-active</code> and will be used in CSS stylesheets to highlight
 	     * (named) entities occurrences of the specific selected type.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 		 *
 		 * @returns {string} names of active (named) entities
@@ -390,7 +390,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Get additional class names to be added to box-body container.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 		 *
 		 * @returns {string} class names to be added
@@ -412,11 +412,11 @@ angular.module('evtviewer.box')
 	     * @methodOf evtviewer.box.evtBox
 	     *
 	     * @description
-	     * <p>This method will extend the scope of {@link evtviewer.box.directive:box box} directive 
+	     * <p>This method will extend the scope of {@link evtviewer.box.directive:box box} directive
 	     * according to selected configurations and parsed data.</p>
 	     * <p>According to <code>type</code> it will set the buttons and selectors to be shown in header and footer
 	     * and define the function to be used when the main content should be updated.</p>
-		 * 
+		 *
 		 * @param {Object} scope initial scope of the directive:
 		 	<pre>
 				var scope: {
@@ -529,7 +529,7 @@ angular.module('evtviewer.box')
 		     * <p>This method will differ from a box instance to another,
 		     * depending on its type.: <ul>
 			 * <li>If '*image*' it will change the image shown, and prepare the zones for the eventual Image-Text linking tool.</li>
-			 * <li>If '*text*' it will change the text shown, depending on current edition level. 
+			 * <li>If '*text*' it will change the text shown, depending on current edition level.
 			 * If the text is not yet available it will parse it and save it in {@link evtviewer.dataHandler.parsedData parsedData}
 			 * for future retrievements. After the new text is set it will eventually prepare the text for the correct
 			 * functioning of tools like Image-Text Linking, Highlight of Named Entities, etc.</li>
@@ -545,7 +545,7 @@ angular.module('evtviewer.box')
 			 * <li>otherwise it will set as new content, the one that is passed as method parameter.</li>
 			 * </ul></p>
 			 * <p>For more details we suggest to see the implementation itself.</p>
-			 * <p>This method is defined and attached to controller scope in the 
+			 * <p>This method is defined and attached to controller scope in the
 			 * {@link evtviewer.box.evtBox evtBox} provider file.</p>
 			 *
 			 * @param {string} newContent HTML string representing the new content to be shown in the box.
@@ -560,7 +560,7 @@ angular.module('evtviewer.box')
 						type: 'page',
 						initValue: evtInterface.getState('currentPage')
 					});
-					
+
 					topMenuList.buttons.push({
 						title: 'BUTTONS.THUMBNAILS',
 						label: 'BUTTONS.THUMBS',
@@ -729,23 +729,26 @@ angular.module('evtviewer.box')
 							newDoc = parsedData.getCriticalText(scope.vm.state.docId);
 							if (newDoc === undefined) {
 								newDoc = parsedData.getDocument(scope.vm.state.docId);
-								try {
-									if (config.versions.length > 2) {
-										promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, config.versions[0]).promise);
-									} else {
-										promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
-									}
-									$q.all(promises).then(function() {
-										scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
-										scope.vm.isLoading = false;
-										$timeout(function() {
-											evtGenericEntity.highlightActiveTypes();
+
+								if (newDoc !== undefined) {
+									try {
+										if (config.versions.length > 2) {
+											promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, config.versions[0]).promise);
+										} else {
+											promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+										}
+										$q.all(promises).then(function() {
+											scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
+											scope.vm.isLoading = false;
+											$timeout(function() {
+												evtGenericEntity.highlightActiveTypes();
+											});
 										});
-									});
-								} catch (err) {
-									_console.log(err);
-									newContent = errorMsg;
-									scope.vm.isLoading = false;
+									} catch (err) {
+										_console.log(err);
+										newContent = errorMsg;
+										scope.vm.isLoading = false;
+									}
 								}
 							} else {
 								scope.vm.content = newDoc || noTextAvailableMsg;
@@ -928,7 +931,7 @@ angular.module('evtviewer.box')
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,
 						type: 'source',
-						initValue: evtInterface.getState('currentSourceText') 
+						initValue: evtInterface.getState('currentSourceText')
 					});
 					topMenuList.buttons.push({
 						title: 'BUTTONS.BIBLIOGRAPHIC_REF',
@@ -969,7 +972,7 @@ angular.module('evtviewer.box')
 										scope.vm.isLoading = false;
 									});
 									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
-									updateTopBoxContent(sourceBibl);
+									if (sourceBibl) { updateTopBoxContent(sourceBibl); }
 								} catch (err) {
 									_console.log(err);
 									scope.vm.content = errorMsg;
@@ -1192,7 +1195,7 @@ angular.module('evtviewer.box')
 	     * @methodOf evtviewer.box.evtBox
 	     *
 	     * @description
-	     * Get the references of the instance of the <code>&lt;box&gt;</code> that present a particular property 
+	     * Get the references of the instance of the <code>&lt;box&gt;</code> that present a particular property
 	     * with a particular value
 		 *
 		 * @param {string} parameter property that box should have
@@ -1216,7 +1219,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Align box body container of all box instances to a particular critical apparatus entry.</p>
-		 * <p>For each box reference, the provider will trigger the function 
+		 * <p>For each box reference, the provider will trigger the function
 		 * {@link evtviewer.box.controller:BoxCtrl#scrollToAppEntry} of controller.</p>
 		 *
 		 * @param {string} appId critical apparatus entry to consider during alignment
@@ -1237,7 +1240,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Align box body container of all box instances to a particular quote or source entry.</p>
-		 * <p>For each box reference, the provider will trigger the function 
+		 * <p>For each box reference, the provider will trigger the function
 		 * {@link evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry} of controller.</p>
 		 * <p>This function will be used for the alignment of the apparatuses panel with all other visible boxes.</p>
 		 * @param {string} quoteId quote to consider during alignment
@@ -1263,7 +1266,7 @@ angular.module('evtviewer.box')
 	     *
 	     * @description
 	     * <p>Align box body container of all box instances to a particular analogue entry.</p>
-		 * <p>For each box reference, the provider will trigger the function 
+		 * <p>For each box reference, the provider will trigger the function
 		 * {@link evtviewer.box.controller:BoxCtrl#scrollToAnaloguesEntry} of controller.</p>
 		 * <p>This function will be used for the alignment of the apparatuses panel with all other visible boxes.</p>
 		 * @param {string} analogueId analogue to consider during alignment

@@ -44,8 +44,8 @@
     <header>
         <img class="logo" ng-if="getProperty('logoUrl') !== ''" ng-src="{{getProperty('logoUrl')}}" />
         {{ getProperty('indexTitle') }}
-        <a class="webSiteLink" 
-            ng-if="getProperty('webSite') !== ''"  
+        <a class="webSiteLink"
+            ng-if="getProperty('webSite') !== ''"
             href="{{getWebSite()}}" target="_blank">
             <i class="fa fa-external-link"></i>
         </a>
@@ -72,7 +72,7 @@
                 ng-if="getProperty('namedEntitiesLists')"
                 data-icon="list"
                 data-type="openGlobalDialogLists">
-            </button-switch> 
+            </button-switch>
             <button-switch
                 class="smaller"
                 title="BUTTONS.INFO"
@@ -124,11 +124,11 @@
                         <span>
                             <i class="icon fa fa-language"></i>
                             {{'MAIN_MENU.LANGUAGES' | translate}}
-                            <img ng-repeat="langKey in getAvailableLanguages()" 
+                            <img ng-repeat="langKey in getAvailableLanguages()"
                                 ng-if="langKey && langKey !== ''"
-                                ng-src="images/{{langKey}}.png" 
+                                ng-src="images/{{langKey}}.png"
                                 ng-class="{ 'active': langKey === getCurrentLanguage() }"
-                                class="flag" 
+                                class="flag"
                                 ng-click="setLanguage(langKey)"
                                 title="{{ 'LANGUAGES.'+langKey | uppercase | translate }}" alt="{{ ::langKey | uppercase}}">
                         </span>
@@ -151,7 +151,7 @@
         <section
             class="secondary-container"
             ng-show="getSecondaryContentOpened() !== ''">
-            <evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES" 
+            <evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
                 ng-if="getProperty('namedEntitiesLists')">
                 <evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
                     data-type="entitiesList"
@@ -195,7 +195,7 @@
                                    'half-left': !isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
                 </button-switch>
 
-                <box data-type="pinnedBoard" 
+                <box data-type="pinnedBoard"
                     ng-if="!isLoading() && isPinnedAppBoardOpened()"
                     ng-class="{ 'pin-centered': isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
                      <span ng-if="evtPinnedElements.getPinned().length <= 0" class="italic">
@@ -203,7 +203,7 @@
                     </span>
                     <div ng-if="evtPinnedElements.getVisibleTypes().length <= 0 && evtPinnedElements.getPinned().length > 0 && entry !== ''"
                          ng-repeat="entry in evtPinnedElements.getPinned()">
-                        
+
                         <evt-critical-apparatus-entry
                             ng-if="::evtPinnedElements.getPinnedElementType(entry) === 'criticalApparatusEntry'"
                             class="in_critical_apparatus active"
@@ -211,7 +211,7 @@
                             data-type="pinned"
                             data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
 
-                        <evt-named-entity 
+                        <evt-named-entity
                             ng-if="::evtPinnedElements.getPinnedElementType(entry).indexOf('namedEntity') >= 0"
                             data-location="pinned"
                             data-entity-id="{{::entry}}"></evt-named-entity>
@@ -229,7 +229,7 @@
                                     data-type="pinned"
                                     data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
 
-                                <evt-named-entity 
+                                <evt-named-entity
                                     ng-if="::type.indexOf('namedEntity') >= 0"
                                     data-location="pinned"
                                     data-entity-id="{{::entry}}"></evt-named-entity>
@@ -240,10 +240,10 @@
                     ng-if="isApparatusBoxOpen()"
                     data-type="empty" id="empty"
                     ng-class="{ 'smaller' : isPinnedAppBoardOpened() && isApparatusBoxOpen() }">
-                    <evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses> 
+                    <evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>
                 </box>
             </section>
-            
+
             <!-- VERSIONS -->
             <section id="main-container" class="viewMode" ng-switch-when="versions">
                 <box data-type="text"
@@ -269,13 +269,13 @@
                     ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0),
                                'floatRight': (!existCriticalText() && getCurrentVersions().length > 1) || (existCriticalText() && getCurrentVersions().length > 0)}">
                 </button-switch>
-                
-                <div 
+
+                <div
                     ng-if="isVersionSelectorActive()"
                     class="availableVersions-selector versionSelector"
                     ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0)}">
-                    <span 
-                        ng-click="addVersion(version)" 
+                    <span
+                        ng-click="addVersion(version)"
                         ng-repeat="version in getAvailableVersions()"
                         compile="getVersion(version)"></span>
                 </div>
@@ -360,15 +360,16 @@
         </section>
 
         <section class="global-msg-container"
-                ng-if="getErrorMsg() !== undefined && getErrorMsg().code === 404">
+                ng-if="getErrorMsg() !== undefined && getErrorMsg().code === '404' && !isLoading()">
             <div class="global-msg">
                 <h1>EVT Viewer</h1>
-                <h2>{{getErrorMsg().title | translate }}</h2><!-- TODO: Add translation -->
-                <p>{{ getErrorMsg().msg | translate }}</p><!-- TODO: Add translation -->
+                <h2>{{ 'ERROR' | translate }} {{getErrorMsg().code}} - {{getErrorMsg().title | translate }}</h2><!-- TODO: Add translation -->
+                <p>{{ getErrorMsg().msg | translate }}</p>
+                <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
     </div>
-    
+
     <section class="global-loading-container" ng-show="isLoading()">
         <!-- LOADING... -->
         <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
@@ -456,7 +457,7 @@
     <script src="/src/dataHandler/criticalElementsParser.service.js"></script>
     <script src="/src/dataHandler/versionApparatus.service.js"></script>
     <script src="/src/dataHandler/bibliographyParser.service.js"></script>
-    
+
     <script src="/src/bibliography/bibliography.js"></script>
     <script src="/src/bibliography/scrollif.directive.js"></script>
     <script src="/src/bibliography/highlight.service.js"></script>
@@ -559,7 +560,7 @@
     <script src="/src/quote/quote.configuration.js"></script>
     <script src="/src/quote/quote.provider.js"></script>
     <script src="/src/quote/quote.controller.js"></script>
-    <script src="/src/quote/quote.directive.js"></script>    
+    <script src="/src/quote/quote.directive.js"></script>
 
     <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.js"></script>
     <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.configuration.js"></script>

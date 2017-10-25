@@ -2,10 +2,10 @@
  * @ngdoc service
  * @module evtviewer.buttonSwitch
  * @name evtviewer.buttonSwitch.evtButtonSwitch
- * @description 
+ * @description
  * # evtButtonSwitch
  * This provider expands the scope of the
- * {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive 
+ * {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive
  * and stores its reference untill the directive remains instantiated.
  *
  * @requires $timeout
@@ -32,11 +32,11 @@ angular.module('evtviewer.buttonSwitch')
 	 * @ngdoc object
 	 * @module evtviewer.buttonSwitch
 	 * @name evtviewer.buttonSwitch.controller:ButtonSwitchCtrl
-	 * @description 
+	 * @description
 	 * # ButtonSwitchCtrl
 	 * <p>This is controller for the {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive. </p>
-	 * <p>It is not actually implemented separately but its methods are defined in the 
-	 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider 
+	 * <p>It is not actually implemented separately but its methods are defined in the
+	 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
@@ -45,7 +45,7 @@ angular.module('evtviewer.buttonSwitch')
             collection = {},
             list       = [],
             idx        = 0;
-        
+
         var _console = $log.getInstance('buttonSwitch');
 
         /**
@@ -55,7 +55,7 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * <p>Toggle active state.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 	     */
         var toggleActive = function() {
@@ -69,7 +69,7 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * <p>Update active state.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 		 *
 		 * @param {boolean} state whether the button should be active or not
@@ -85,7 +85,7 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * <p>Disable button.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 	     */
         var disable = function() {
@@ -99,7 +99,7 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * <p>Enable button.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 	     */
         var enable = function() {
@@ -113,7 +113,7 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * <p>Remove instance from saved instances in {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider.</p>
-		 * <p>This method is defined and attached to controller scope in the 
+		 * <p>This method is defined and attached to controller scope in the
 		 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 	     */
         var destroy = function() {
@@ -130,14 +130,14 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * <p>[PRIVATE] Get EVT icon class name for a particular icon type.</p>
-	     * <p>Handled cases:  **add**, **bookmark**, **color-legend**, 
-	     * **download**, **download-xml**, **filter**, **filters**, **font-size**, **font-size-minus**, 
-	     * **font-size-plus**, **font-size-reset**, **heatmap**, **info**, **info-alt**, **itl**, 
-	     * **language**, **list**, **menu**, **menu-vert**, **mode-imgtxt**, **mode-txttxt**, 
-	     * **reading-txt**, **mode-collation**, **mode-srctxt**, **mode-versions**, **mode-bookreader**, 
+	     * <p>Handled cases:  **add**, **bookmark**, **color-legend**,
+	     * **download**, **download-xml**, **filter**, **filters**, **font-size**, **font-size-minus**,
+	     * **font-size-plus**, **font-size-reset**, **heatmap**, **info**, **info-alt**, **itl**,
+	     * **language**, **list**, **menu**, **menu-vert**, **mode-imgtxt**, **mode-txttxt**,
+	     * **reading-txt**, **mode-collation**, **mode-srctxt**, **mode-versions**, **mode-bookreader**,
 	     * **pin**, **pin-off**, **pin-on**, **remove**, **search**, **thumb**, **thumbs**, **thumbnail**.
 	     * **thumbnails**, **txt**, **v-align**, **witnesses**.</p>
-	     * <p>Output icons can be retrieve both from EVT font set of from font-awesome. 
+	     * <p>Output icons can be retrieve both from EVT font set of from font-awesome.
 	     * If you want to add a custom icon set you should add it among font faces and remember to add the related css file.</p>
 	     *
 	     * @param {string} icon type of icon.
@@ -258,7 +258,7 @@ angular.module('evtviewer.buttonSwitch')
 	     * @methodOf evtviewer.buttonSwitch.evtButtonSwitch
 	     *
 	     * @description
-	     * <p>This method will extend the scope of {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive 
+	     * <p>This method will extend the scope of {@link evtviewer.buttonSwitch.directive:buttonSwitch buttonSwitch} directive
 	     * according to selected configurations and parsed data.</p>
 	     * <p>According to <code>type</code> it will set the output icon (if present), the icon position,
 	     * the button type ('*standAlone*', that will not be connected to other switchers, and '*default*')
@@ -359,7 +359,7 @@ angular.module('evtviewer.buttonSwitch')
                 callback = function() { console.log('TODO ' + type); },
                 fakeCallback = function() {};
 			var scopeHelper = {};
-			
+
 			// SET CALLBACK //
 			switch (type) {
 				case 'addWit':
@@ -456,7 +456,7 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
-				case 'download-xml': 
+				case 'download-xml':
 					callback = function() {
 						window.open(config.dataUrl, '_blank');
 					};
@@ -657,9 +657,11 @@ angular.module('evtviewer.buttonSwitch')
                         var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
                         //Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
                         //TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
-                        var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
-                        scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
-                        scope.$parent.vm.toggleTopBox();
+												if (source) {
+													var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
+													scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+													scope.$parent.vm.toggleTopBox();
+												}
                     };
                     fakeCallback = function(){
                         scope.$parent.vm.updateState('topBoxOpened', false);
@@ -697,7 +699,7 @@ angular.module('evtviewer.buttonSwitch')
 		     * @description
 		     * <p>Perform the callback associated to button.</p>
 		     * <p>Remove "*selected*" class to all buttons that are not "*standAlone*"</p>
-			 * <p>This method is defined and attached to controller scope in the 
+			 * <p>This method is defined and attached to controller scope in the
 			 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 		     */
 			var doCallback = function() {
@@ -750,7 +752,7 @@ angular.module('evtviewer.buttonSwitch')
 
 		//
 		// Service function
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.buttonSwitch.evtButtonSwitch#getById
@@ -758,7 +760,7 @@ angular.module('evtviewer.buttonSwitch')
 	     *
 	     * @description
 	     * Get the reference of the instance of a particular <code>&lt;button-switch&gt;</code>.
-		 * 
+		 *
 		 * @param {string} currentId id of button to retrieve
 		 *
 		 * @returns {Object} reference of the instance of <code>&lt;button-switch&gt;</code> with given id
