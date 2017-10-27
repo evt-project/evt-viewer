@@ -1638,7 +1638,7 @@ angular.module('evtviewer.dataHandler')
 	};
 	var formatWitnessesListElement = function(element) {
 		var content = '';
-		var sigla = ''; 
+		var sigla = '';
 		if (element._type === 'witness') {
 			content += '<li><div>';
 			if (element.attributes && element.attributes.n) {
@@ -1773,10 +1773,10 @@ angular.module('evtviewer.dataHandler')
         if (number > 26) {
             firstExp = (Math.floor(number/26))+96;
             if (number%26 === 0) {
-                exponent = '&#'+(firstExp-1)+'; z';
+                exponent = '&#'+(firstExp-1)+';z';
             } else {
             lastExp = (number%26)+96;
-            exponent='&#'+firstExp+'; &#'+lastExp+';'; }
+            exponent='&#'+firstExp+';&#'+lastExp+';'; }
         } else {
             exponent = '&#'+(number+96)+';';
         }
