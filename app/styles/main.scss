@@ -525,7 +525,7 @@ pre {
     }
 }
 .p {
-    .projectInfo-inlineLabel { display: none; } 
+    .projectInfo-inlineLabel { display: none; }
 }
 
 // Generic style
@@ -599,4 +599,7 @@ pre {
 
 .emptyText {
     padding: 0 .4rem;
+    &::after {
+      content: "\00a0";
+  }
 }
