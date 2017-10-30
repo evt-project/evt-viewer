@@ -716,7 +716,7 @@ angular.module('evtviewer.interface')
         };
         /**
          * @ngdoc method
-         * @name evtviewer.interface.evtInterface#getAllVersionsNumber
+         * @name evtviewer.interface.evtInterface#updateCurrentVersionEntry
          * @methodOf evtviewer.interface.evtInterface
          * @description Update current version entry if given entry id is not undefined
          * @param {string} appId id of entry to be set as current version entry
@@ -726,6 +726,17 @@ angular.module('evtviewer.interface')
             if (appId !== undefined) {
                 state.currentVersionEntry = appId;
             }
+        };
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getCurrentVersionEntry
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current version entry if given entry id is not undefined
+         * @param {string} appId id of entry to be set as current version entry
+         * @author CM
+         */
+        mainInterface.getCurrentVersionEntry = function(appId) {
+            return state.currentVersionEntry;
         };
         /**
          * @ngdoc method
@@ -739,6 +750,16 @@ angular.module('evtviewer.interface')
             if (ver !== undefined && config.versions.indexOf(ver) !== -1) {
                 state.currentVersion = ver;
             }
+        };
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#getCurrentVersion
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Get current version displayed in the text main box
+         * @author CM
+         */
+        mainInterface.getCurrentVersion = function(ver) {
+            return state.currentVersion;
         };
         // WITNESS
         /**

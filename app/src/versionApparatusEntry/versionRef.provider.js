@@ -100,10 +100,25 @@ angular.module('evtviewer.versionApparatusEntry')
                             var currentVersionAppId = evtInterface.getState('currentVersionEntry') || '';
                             if (currentVersionAppId !== '') {
                                 var newBox = evtBox.getElementByValueOfParameter('version', target);
+                                //TOCHECK: newBox is undefined because the if clause is executed before the viewMode changes
                                 if (newBox !== undefined) {
                                     newBox.scrollToAppEntry(currentVersionAppId);
                                 }
                             }
+                        } else if (target === config.versions[0]) {
+                            if (currentViewMode !== 'versions') {
+                                evtInterface.updateState('currentViewMode', 'versions');
+                            }
+                            evtInterface.updateCurrentVersion(target);
+                            var entry = parsedData.getVersionEntries()[evtInterface.getCurrentVersionEntry()].content;
+                            var vers = Object.keys(entry);
+                            var versions = evtInterface.getState('currentVersions');
+                            for (var i = 0; i < vers.length; i++) {
+                                if (versions.indexOf(vers[i]) < 0 && vers[i] !== config.versions[0]) {
+                                    evtInterface.addVersion(vers[i]);
+                                }
+                            }                            
+                            evtInterface.updateUrl()
                         }
                     };
                     break;
@@ -120,7 +135,7 @@ angular.module('evtviewer.versionApparatusEntry')
                 title : title,
                 callback : callback,
                 currentViewMode : currentViewMode,
-                ver: config.versions[0] || ''
+                ver: evtInterface.getCurrentVersion() || ''
             };
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
