@@ -970,7 +970,9 @@ angular.module('evtviewer.dataHandler')
 					// if the entry contains a lem for the version the witness belongs to...
 					if (entry.content[ver] !== undefined) {
 						var verLemma = entry.content[ver].lemma;
-						if (verLemma !== undefined) {
+						var verRdgIndex = Object.keys(entry.content[ver].content)[0],
+							verRdg = entry.content[ver].content[verRdgIndex];
+						if (verLemma !== undefined && verLemma !== '') {
 							var lemmaContent = entry.content[ver].content[verLemma].content;
 							// it adds the content of the lem to the spanElement
 							for (j in lemmaContent) {
@@ -1000,6 +1002,35 @@ angular.module('evtviewer.dataHandler')
 							rdgId = verLemma;
 						}
 						// otherwise it returns null and no node is attached to the witness text
+						else if (verRdg !== undefined && verRdg !== '') {
+							var rdgContent = verRdg.content;
+							// it adds the content of the lem to the spanElement
+							for (j in rdgContent) {
+								if (typeof(rdgContent[j]) === 'string') {
+									spanElement.appendChild(document.createTextNode(rdgContent[j]));
+								} else {
+									if (rdgContent[j].type === 'subApp' || rdgContent[j].type === 'app') {
+										var subEntry = parsedData.getCriticalEntryById(rdgContent[j].id);
+										var subEntryElem = wit === '' ? parser.getEntryWitnessReadingText(subEntry, wit) : parser.getEntryWitnessReadingText(subEntry, wit);
+										var subReadingId = subEntry._indexes.witMap[wit] || '';
+										subEntryElem.setAttribute('data-reading-id', subReadingId);
+										if (subEntryElem !== null) {
+											spanElement.appendChild(subEntryElem);
+										}
+									} else if (rdgContent[j].type === 'quote') {
+										quoteElement = parser.getQuoteText(rdgContent[j], wit);
+										spanElement.appendChild(quoteElement);
+									} else if (rdgContent[j].type === 'analogue') {
+										analogueElement = parser.getAnalogueText(rdgContent[j], wit);
+										spanElement.appendChild(analogueElement);
+									} else if (rdgContent[j].type === 'genericElement') {
+										genericElement = getGenericElementText(rdgContent[j], wit);
+										spanElement.appendChild(genericElement);
+									}
+								}
+							}
+							rdgId = verLemma;
+						}
 					} else {
 						return null;
 					}
@@ -1157,6 +1188,8 @@ angular.module('evtviewer.dataHandler')
 
 			if (entry.content[scopeVersion] !== undefined) {
 				var scopeVerLem = entry.content[scopeVersion].lemma;
+				var verRdgIndex = Object.keys(entry.content[scopeVersion].content)[0],
+							verRdg = entry.content[scopeVersion].content[verRdgIndex];
 				if (scopeVerLem !== undefined && scopeVerLem !== '') {
 					spanElement.setAttribute('data-reading-id', scopeVerLem);
 					var lemmaContent = entry.content[scopeVersion].content[entry.content[scopeVersion].lemma].content;
@@ -1178,6 +1211,31 @@ angular.module('evtviewer.dataHandler')
 								spanElement.appendChild(analogueElement);
 							} else if (lemmaContent[i].type === 'recensioApp') {
 								var versionAppElem = parser.getVersionEntryLemma(lemmaContent[i], wit, scopeVersion);
+								spanElement.appendChild(versionAppElem);
+							}
+						}
+					}
+				} else if (verRdg !== undefined && verRdg !== '') {
+					spanElement.setAttribute('data-reading-id', verRdgIndex);
+					var rdgContent = verRdg.content;
+					for (var i in rdgContent) {
+						if (typeof(rdgContent[i]) === 'string') {
+							spanElement.appendChild(document.createTextNode(rdgContent[i]));
+						} else {
+							if (rdgContent[i].type === 'app') {
+								var appEntry = parsedData.getCriticalEntryById(rdgContent[i].id);
+								var appEntryElem = parser.getEntryWitnessReadingText(appEntry, '');
+								if (appEntryElem !== null) {
+									spanElement.appendChild(appEntryElem);
+								}
+							} else if (rdgContent[i].type === 'quote') {
+								var quoteElement = parser.getQuoteText(rdgContent[i], wit);
+								spanElement.appendChild(quoteElement);
+							} else if (rdgContent[i].type === 'analogue') {
+								var analogueElement = parser.getAnalogueText(rdgContent[i], wit);
+								spanElement.appendChild(analogueElement);
+							} else if (rdgContent[i].type === 'recensioApp') {
+								var versionAppElem = parser.getVersionEntryLemma(rdgContent[i], wit, scopeVersion);
 								spanElement.appendChild(versionAppElem);
 							}
 						}

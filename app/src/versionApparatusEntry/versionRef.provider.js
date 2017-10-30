@@ -96,6 +96,7 @@ angular.module('evtviewer.versionApparatusEntry')
                             if (currentViewMode !== 'versions') {
                                 evtInterface.updateState('currentViewMode', 'versions');
                             }
+                            evtInterface.updateUrl()
                             var currentVersionAppId = evtInterface.getState('currentVersionEntry') || '';
                             if (currentVersionAppId !== '') {
                                 var newBox = evtBox.getElementByValueOfParameter('version', target);
@@ -118,7 +119,8 @@ angular.module('evtviewer.versionApparatusEntry')
                 target : target,
                 title : title,
                 callback : callback,
-                currentViewMode : currentViewMode
+                currentViewMode : currentViewMode,
+                ver: config.versions[0] || ''
             };
             
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

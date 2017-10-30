@@ -275,8 +275,12 @@
         text-decoration: none;
     }
     &_text {
-        &:not(.selected) {
+        &:not(.selected):not( .not-select) {
             text-decoration: underline !important;
+        }
+        &.not-select {
+            font-weight: bold;
+            cursor: default;
         }
     }
 }
