@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.UItools
  * @name evtviewer.UItools.evtPinnedElements
- * @description 
+ * @description
  * # evtPinnedElements
  * In this service are defined and exposed methods to handle pinned elements.
  * @requires evtviewer.core.Utils
@@ -27,7 +27,7 @@ angular.module('evtviewer.UItools')
      * @methodOf evtviewer.UItools.evtPinnedElements
      *
      * @description
-     * Retrieve list of pinned elements from bowser cookies. 
+     * Retrieve list of pinned elements from bowser cookies.
      * Check if elements are contained in current edition and prepare list of pinned elements.
      */
 	pinnedElements.getElementsFromCookies = function() {
@@ -85,7 +85,7 @@ angular.module('evtviewer.UItools')
 			pinned._indexesByType._types.push(element.type);
 		}
 		pinned._indexesByType[element.type].push(element.id);
-		document.cookie = 'pinned' + '=' + JSON.stringify(pinned) + '; 1';
+		document.cookie = 'pinned' + '=' + JSON.stringify(pinned) + '; 1'
 	};
 	/**
      * @ngdoc method
@@ -131,11 +131,11 @@ angular.module('evtviewer.UItools')
      * @returns {Object} object representing current pinned elements, and is structured as follows:
      	<pre>
 			var pinned = {
-				el1 : { 
+				el1 : {
 					id: "el1",
 					type: "type1"
 				},
-				el2 : { 
+				el2 : {
 					id: "el2",
 					type: "type2"
 				}
@@ -199,7 +199,7 @@ angular.module('evtviewer.UItools')
      * Retrieve a specific pinned element.
      *
      * @param {string} elementId id of pinned element to retrieve
-     * @returns {Object} pinned element with given id 
+     * @returns {Object} pinned element with given id
      */
 	pinnedElements.getPinnedElement = function(elementId) {
 		return pinned[elementId];
@@ -213,7 +213,7 @@ angular.module('evtviewer.UItools')
      * Retrieve type of a specific pinned element.
      *
      * @param {string} elementId id of pinned element to handle
-     * @returns {string} type of pinned element with given id 
+     * @returns {string} type of pinned element with given id
      */
 	pinnedElements.getPinnedElementType = function(elementId) {
 		return pinned[elementId].type;
@@ -292,7 +292,7 @@ angular.module('evtviewer.UItools')
      *
      * @description
      * Get list of visible types
-     * 
+     *
      * @returns {array} array of types that have to be shown on screen
      */
 	pinnedElements.getVisibleTypes = function() {

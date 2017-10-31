@@ -2,9 +2,9 @@
  * @ngdoc directive
  * @module evtviewer.popover
  * @name evtviewer.popover.directive:evtPopover
- * @description 
+ * @description
  * # evtPopover
- * <p>This element is a small pop-up box that appears when the user clicks on an element (or passes over it with the mouse) and 
+ * <p>This element is a small pop-up box that appears when the user clicks on an element (or passes over it with the mouse) and
  * can contain different content.</p>
  * <p>It uses the {@link evtviewer.popover.controller:PopoverCtrl PopoverCtrl} controller.</p>
  * <p>The initial scope is extended in {@link evtviewer.popover.evtPopover evtPopover} provider.</p>
@@ -12,7 +12,7 @@
  * @scope
  * @param {string=} trigger type of event that triggers the opening of the popover ('over', 'click')
  * @param {string=} tooltip text that will be compiled in popover
- * @param {string=} parentRef reference of parent element that is used to adjust popover size and position 
+ * @param {string=} parentRef reference of parent element that is used to adjust popover size and position
  *
  * @restrict E
 **/
@@ -37,7 +37,7 @@ angular.module('evtviewer.popover')
              * @methodOf evtviewer.popover.controller:PopoverCtrl
              *
              * @description
-             * Stop propagation of event and trigger 
+             * Stop propagation of event and trigger
              * {@link evtviewer.popover.controller:PopoverCtrl#toggleTooltipOver toggleTooltipOver} method.
              */
             scope.vm.toggleTooltipHover = function(e, vm) {
@@ -50,8 +50,8 @@ angular.module('evtviewer.popover')
              * @methodOf evtviewer.popover.controller:PopoverCtrl
              *
              * @description
-             * Stop propagation of event, eventually resize the tooltip 
-             * ({@link evtviewer.popover.controller:PopoverCtrl#resizeTooltip resizeTooltip}) 
+             * Stop propagation of event, eventually resize the tooltip
+             * ({@link evtviewer.popover.controller:PopoverCtrl#resizeTooltip resizeTooltip})
              * and trigger {@link evtviewer.popover.controller:PopoverCtrl#toggleOver toggleOver} method.
              */
             scope.vm.toggleMouseHover = function(e, vm){
@@ -70,8 +70,8 @@ angular.module('evtviewer.popover')
              * @methodOf evtviewer.popover.controller:PopoverCtrl
              *
              * @description
-             * Stop propagation of event, eventually resize the tooltip 
-             * ({@link evtviewer.popover.controller:PopoverCtrl#resizeTooltip resizeTooltip}) 
+             * Stop propagation of event, eventually resize the tooltip
+             * ({@link evtviewer.popover.controller:PopoverCtrl#resizeTooltip resizeTooltip})
              * and trigger {@link evtviewer.popover.controller:PopoverCtrl#toggleExpand toggleExpand} method.
              */
             scope.vm.triggerClick = function(e, vm) {
@@ -111,20 +111,20 @@ angular.module('evtviewer.popover')
 
                 // Rimuovere gli stili inline del tooltip in quanto la posizione va ricalcolata ogni volta
                 // Mettere magari nella funzione di chiusura?
-                // Recupero gli elementi 
+                // Recupero gli elementi
                 tooltip.removeAttr('style');
 
-                // Prendere altezza, larghezza e offset superiore e sinistro del trigger 
+                // Prendere altezza, larghezza e offset superiore e sinistro del trigger
                 // [NB: vanno gestiti trigger spezzati su piu righe]
                 var triggerHeight           = trigger.height(),
                     triggerHeightSingleLine = trigger.css('font-size').substr(0,2)*1+1,
                     triggerWidth            = trigger.width(),
                     triggerTop              = trigger.position().top,
                     triggerLeft             = trigger.position().left;
-                
+
                 // Prendere larghezza, altezza e offset superiore e sinistro del tooltip
                 // Mi servono la larghezza e l'altezza reali, quindi devo mettere il tooltip in posizione relativa
-                // L'offset superiore 
+                // L'offset superiore
                 var tooltipTop        = tooltip.offset().top,
                     tooltipRealWidth  = tooltip.outerWidth(),
                     tooltipRealHeight = tooltip.outerHeight();
@@ -138,8 +138,8 @@ angular.module('evtviewer.popover')
                             'width'     : settings.tooltipMaxWidth+'px',
                             'max-width' : settings.tooltipMaxWidth+'px'
                         });
-                } 
-                
+                }
+
                 tooltip
                     .css({
                         'position' : 'absolute'
@@ -160,10 +160,10 @@ angular.module('evtviewer.popover')
 				}
                 var boxOffsetLeft     = element.parents(parentRef).offset().left,
                     boxContainerWidth = element.parents(parentRef).innerWidth();
-                
+
                 var tooltipNewLeft = (x-boxOffsetLeft) - (tooltipRealWidth/2),
                     diff;
-                
+
                 tooltip
                     .css({
                         'left' : tooltipNewLeft+'px'
@@ -198,12 +198,12 @@ angular.module('evtviewer.popover')
 
                 var boxContainerHeight  = element.parents(parentRef).outerHeight(),
                     tooltipOffsetBottom = triggerTop + triggerHeight + tooltipRealHeight,
-                    tooltipNewMarginTop, 
+                    tooltipNewMarginTop,
                     diffClientYTriggerTop;
 
                 if ( tooltipOffsetBottom > boxContainerHeight ) { // OPEN UP
                     tooltipNewMarginTop = tooltipRealHeight+triggerHeight+10;
-                    
+
                     // Riposiziono il tooltip se il testo del trigger si spezza su più linee
                     // In base alla posizione y del mouse
                     if ( triggerHeight > triggerHeightSingleLine ) {
@@ -231,15 +231,15 @@ angular.module('evtviewer.popover')
                     } else {
                        tooltip.css({
                             'margin-top' : '5px'
-                        }); 
+                        });
                     }
-                    
+
                 }
 
                 // Riposiziono orizzontalmente l'elemento .before in base al click del mouse
                 // [Valutare se utilizzarlo]
-                var beforeNewLeft = x - tooltipNewLeft - boxOffsetLeft-20;
-                
+                var beforeNewLeft = x - tooltipNewLeft - boxOffsetLeft - 20;
+                beforeNewLeft = beforeNewLeft < 0 ? 0 : beforeNewLeft;
                 // beforeWidth = 20;
                 // beforeMarginRight = x+beforeWidth;
                 // tooltipMarginRight = tooltip.offset().left + tooltip.width();
@@ -247,11 +247,11 @@ angular.module('evtviewer.popover')
                 //     beforeNewLeft = (beforeMarginRight - tooltipMarginRight );
                 //     console.log(tooltipMarginRight);
                 // }
-                
-                before.css({ 
+
+                before.css({
                     'left': beforeNewLeft+'px'
                 });
-                
+
                 // Ultimo controllo finale per la larghezza del tooltip
                 tooltipRealWidth = tooltip.width();
                 if( tooltipRealWidth > settings.tooltipMaxWidth ){
@@ -261,7 +261,7 @@ angular.module('evtviewer.popover')
                     });
                 }
             };
-            
+
             // Initialize popover
             var currentPopover = evtPopover.build(scope.trigger, scope.tooltip, scope.vm);
 
@@ -269,7 +269,7 @@ angular.module('evtviewer.popover')
             scope.$on('$destroy', function() {
                 if (currentPopover){
                     currentPopover.destroy();
-                }     
+                }
             });
         }
     };

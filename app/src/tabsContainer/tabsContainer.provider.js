@@ -2,10 +2,10 @@
  * @ngdoc service
  * @module evtviewer.tabsContainer
  * @name evtviewer.tabsContainer.evtTabsContainer
- * @description 
+ * @description
  * # evtTabsContainer
  * This provider expands the scope of the
- * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive 
+ * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive
  * and stores its reference untill the directive remains instantiated.
  * It also add some modules to controller, according to <code>&lt;evt-tabs-container&gt;</code> type.
  *
@@ -31,9 +31,9 @@ angular.module('evtviewer.tabsContainer')
 
 		var _console = $log.getInstance('tabsContainer');
 
-		// 
+		//
 		// Control function
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.evtviewer.tabsContainer.controller:TabsContainerCtrl#destroy
@@ -41,7 +41,7 @@ angular.module('evtviewer.tabsContainer')
 	     *
 	     * @description
 	     * <p>Remove instance from saved instances in {@link evtviewer.tabsContainer.evtTabsContainer evtTabsContainer} provider.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.tabsContainer.evtTabsContainer evtTabsContainer} provider file.</p>
 	     */
 		var destroy = function() {
@@ -57,7 +57,7 @@ angular.module('evtviewer.tabsContainer')
 	     *
 	     * @description
 	     * Open/close a given tab.
-	     * <p>This method is defined and attached to controller scope in the 
+	     * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.tabsContainer.evtTabsContainer evtTabsContainer} provider file
          * and differs according to scope <code>type</code>.</p>
 		 *
@@ -68,17 +68,17 @@ angular.module('evtviewer.tabsContainer')
 			vm.subContentOpened = vm.subContentOpened !== subContentName ? subContentName : '';
 		};
 
-		// 
+		//
 		// TabsContainer builder
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.tabsContainer.evtTabsContainer#build
 	     * @methodOf evtviewer.tabsContainer.evtTabsContainer
 	     *
 	     * @description
-	     * <p>This method will extend the scope of 
-	     * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive 
+	     * <p>This method will extend the scope of
+	     * {@link evtviewer.tabsContainer.directive:evtTabsContainer evtTabsContainer} directive
 	     * according to selected configurations and parsed data.</p>
 	     * <p>According to <code>type</code> it will set the list of tabs and relative content.
 		 * <p>Handled types are: <ul>
@@ -86,7 +86,7 @@ angular.module('evtviewer.tabsContainer')
 		 * 'Revision History' and 'Bibliography');</li>
 		 * <li> **entitiesList**: tabs will be all available lists of named entities.</li>
 		 * </ul></p>
-		 * <p>You can add your own type of select, if the same select used in different places 
+		 * <p>You can add your own type of select, if the same select used in different places
 		 * should always have the same behaviour and content.</p>
 		 *
 		 * @param {Object} scope initial scope of the directive:
@@ -244,11 +244,17 @@ angular.module('evtviewer.tabsContainer')
 			return collection[currentId];
 		};
 
-
+		tabsContainer.setSubContentOpenedByType = function(containerType, subContentOpenedName) {
+			angular.forEach(collection, function(currentTabsContainer) {
+					if (currentTabsContainer.type === containerType) {
+							currentTabsContainer.subContentOpened = subContentOpenedName;
+					}
+			});
+		}
 		//
 		// Service function
-		// 
-		
+		//
+
 		return tabsContainer;
 	};
 

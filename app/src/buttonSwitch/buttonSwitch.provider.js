@@ -495,7 +495,7 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					break;
 				case 'front':
-					btnType = 'toggler';
+					btnType = 'standAlone';
 					callback = function() {
 						var parentBox = scope.$parent.vm;
 						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'front') {

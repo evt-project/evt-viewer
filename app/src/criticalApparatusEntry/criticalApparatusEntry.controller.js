@@ -2,9 +2,9 @@
  * @ngdoc object
  * @module evtviewer.criticalApparatusEntry
  * @name evtviewer.criticalApparatusEntry.controller:CriticalApparatusEntryCtrl
- * @description 
+ * @description
  * # CriticalApparatusEntryCtrl
- * This is the controller for the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive. 
+ * This is the controller for the {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive.
  * @requires $log
  * @requires $scope
  * @requires evtviewer.core.config
@@ -113,6 +113,10 @@ angular.module('evtviewer.criticalApparatusEntry')
             evtPinnedElements.removeElement({id: vm.appId, type: 'criticalApparatusEntry'});
         } else {
             evtPinnedElements.addElement({id: vm.appId, type: 'criticalApparatusEntry'});
+            var pinnedElements = evtPinnedElements.getPinned();
+            if (pinnedElements && pinnedElements.length === 1) {
+              evtInterface.updateState('isPinnedAppBoardOpened', true);
+            }
         }
     };
     /**
@@ -123,7 +127,7 @@ angular.module('evtviewer.criticalApparatusEntry')
      * @description
      * <p>Scroll textual content of opened boxes (or apparatuses) to the readings connected to scope critical apparatus entry.</p>
      * <p>It will use methods from
-     * {@link evtviewer.box.evtBox evtBox} provider and 
+     * {@link evtviewer.box.evtBox evtBox} provider and
      * {@link evtviewer.apparatuses.evtApparatuses evtApparatuses} provider.</p>
      */
     this.alignReadings = function(){
@@ -236,7 +240,7 @@ angular.module('evtviewer.criticalApparatusEntry')
      * @description
      * Callback fired when user clicks on a critical apparatus entry. It will:<ul>
      * <li>Stop event propagation</li>
-     * <li>If current view is "Reading Text", it willbe selected/unselected and interface state will be updated 
+     * <li>If current view is "Reading Text", it willbe selected/unselected and interface state will be updated
      * with new state.</li>
      * </ul>
      * @param {event} $event click event
@@ -244,7 +248,7 @@ angular.module('evtviewer.criticalApparatusEntry')
     this.callbackClick = function($event) {
         $event.stopPropagation();
         var target = $event.target;
-        
+
         if (vm.currentViewMode === 'readingTxt') {
             if (vm.isSelected()) {
                 if (target && target.className.indexOf('critical-apparatus-entry_other-content_headers') < 0 &&

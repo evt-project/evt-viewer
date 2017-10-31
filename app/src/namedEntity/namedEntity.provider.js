@@ -2,10 +2,10 @@
  * @ngdoc service
  * @module evtviewer.namedEntity
  * @name evtviewer.namedEntity.evtNamedEntity
- * @description 
+ * @description
  * # evtNamedEntity
  * This provider expands the scope of the
- * {@link evtviewer.namedEntity.directive:evtNamedEntity evtNamedEntity} directive 
+ * {@link evtviewer.namedEntity.directive:evtNamedEntity evtNamedEntity} directive
  * and stores its reference untill the directive remains instantiated.
  *
  * @requires $timeout
@@ -22,7 +22,7 @@ angular.module('evtviewer.namedEntity')
 .provider('evtNamedEntity', function() {
 
     var defaults = this.defaults;
-    
+
     this.setDefaults = function(_defaults) {
         defaults = _defaults;
     };
@@ -31,11 +31,11 @@ angular.module('evtviewer.namedEntity')
      * @ngdoc object
      * @module evtviewer.namedEntity
      * @name evtviewer.namedEntity.controller:NamedEntityCtrl
-     * @description 
+     * @description
      * # NamedEntityCtrl
      * <p>This is controller for the {@link evtviewer.namedEntity.directive:evtNamedEntity evtNamedEntity} directive. </p>
-     * <p>It is not actually implemented separately but its methods are defined in the 
-     * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider 
+     * <p>It is not actually implemented separately but its methods are defined in the
+     * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
@@ -51,7 +51,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Get the main output of scope named entity.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          */
         var getElementContent = function() {
@@ -66,14 +66,14 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Open/close the details panel of named entity element.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          */
         var toggle = function() {
             var vm = this;
             if (vm.location !== 'mainText') {
                 vm.toggleSubContent(vm._firstSubContentOpened);
-                
+
                 vm.opened = !vm.opened;
                 vm.toggleState();
             }
@@ -85,14 +85,14 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Open/close the "Occurrences" tab of named entity details panel.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          */
         var toggleOccurrences = function() {
             var vm = this;
             if (!vm.occurrences) {
                 vm.occurrences = namedEntity.getOccurrences(vm.entityId);
-            } 
+            }
             vm.occurrencesOpened = !vm.occurrencesOpened;
             vm.toggleSection('occurrencesOpened');
         };
@@ -103,7 +103,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Open/close the "More Info" tab of named entity details panel.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          */
         var toggleMoreInfo = function() {
@@ -119,9 +119,9 @@ angular.module('evtviewer.namedEntity')
          * @description
          * <p>Navigate to given document and page of given occurrence.</p>
          * <p>Highlight the occurrence in arrival page.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
-         * @param {Object} occurrence Object representing the occurence we want to navigate to. 
+         * @param {Object} occurrence Object representing the occurence we want to navigate to.
          * It contains all the information about document and page to which navigate.
          */
         var goToOccurrence = function(occurrence) {
@@ -130,7 +130,7 @@ angular.module('evtviewer.namedEntity')
             evtInterface.updateState('currentDoc', occurrence.docId);
             evtInterface.updateUrl();
             if (evtInterface.getState('secondaryContent') === 'entitiesList') {
-                evtInterface.updateState('secondaryContent', '');        
+                evtInterface.updateState('secondaryContent', '');
             }
             $timeout(function() {
                 evtNamedEntityRef.highlightByEntityId(vm.entityId);
@@ -143,7 +143,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Open/close a given tab of named entity details panel.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          * @param {string} subContentName Name of tab to toggle
          */
@@ -169,7 +169,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Check whether the "Pin" tool is available or not.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          * @returns {boolean} whether the "Pin" tool is available or not
          */
@@ -183,7 +183,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Check whether the named entity is "Pinned" or not.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          * @returns {boolean} whether the named entity is "Pinned" or not
          */
@@ -198,9 +198,9 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Get "pinned" icon state.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
-         * @returns {string} name of class to give to "Pin" button: 
+         * @returns {string} name of class to give to "Pin" button:
          * "pin-on" if the named entity is "Pinned", "pin-off" othewise
          */
         var getPinnedState = function() {
@@ -214,7 +214,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Toggle "pinned" state.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
          */
         var togglePin = function(){
@@ -223,6 +223,10 @@ angular.module('evtviewer.namedEntity')
                 evtPinnedElements.removeElement({id: vm.entityId, type: 'namedEntity_'+vm.entityType });
             } else {
                 evtPinnedElements.addElement({ id: vm.entityId, type: 'namedEntity_'+vm.entityType });
+                var pinnedElements = evtPinnedElements.getPinned();
+                if (pinnedElements && pinnedElements.length === 1) {
+                  evtInterface.updateState('isPinnedAppBoardOpened', true);
+                }
             }
         };
         /**
@@ -232,9 +236,9 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Check whether a given occurrence is pointing to the current Doc/Page pair.</p>
-         * <p>This method is defined and attached to controller scope in the 
+         * <p>This method is defined and attached to controller scope in the
          * {@link evtviewer.namedEntity.evtNamedEntity evtNamedEntity} provider file.</p>
-         * @param {Object} occurrence Object representing the occurence we want to navigate to. 
+         * @param {Object} occurrence Object representing the occurence we want to navigate to.
          * It contains all the information about document and page to which navigate.
          */
         var isCurrentPageDoc = function(occurrence) {
@@ -242,18 +246,18 @@ angular.module('evtviewer.namedEntity')
                 currentPage = evtInterface.getState('currentPage');
             return (currentDoc === occurrence.docId && currentPage === occurrence.pageId);
         };
-        // 
+        //
         // NamedEntity builder
-        // 
+        //
         /**
          * @ngdoc method
          * @name evtviewer.namedEntity.evtNamedEntity#build
          * @methodOf evtviewer.namedEntity.evtNamedEntity
          *
          * @description
-         * <p>This method will extend the scope of {@link evtviewer.namedEntity.directive:evtNamedEntity evtNamedEntity} directive 
+         * <p>This method will extend the scope of {@link evtviewer.namedEntity.directive:evtNamedEntity evtNamedEntity} directive
          * according to selected configurations and parsed data.</p>
-         * 
+         *
          * @param {string} id Named Entity unique identifier
          * @param {Object} scope initial scope of the directive:
             <pre>
@@ -311,9 +315,9 @@ angular.module('evtviewer.namedEntity')
                 entityType = scope.entityType || parsedData.getNamedEntityType(entityId) || 'generic',
                 location = scope.location || 'list',
                 attributes = '';
-                
+
             var scopeHelper = {};
-            
+
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
@@ -321,7 +325,7 @@ angular.module('evtviewer.namedEntity')
             var namedEntity = parsedData.getNamedEntity(entityId),
                 moreInfoAvailable = true,
                 entityTypeIcon = parsedData.getNamedEntityTypeIcon(entityType);
-            
+
             moreInfoAvailable = namedEntity !== undefined && namedEntity.notes !== undefined && namedEntity.notes.length > 0;
             switch (entityType) {
                 case 'place':
@@ -352,12 +356,12 @@ angular.module('evtviewer.namedEntity')
             };
             tabs._indexes.push('moreInfo');
             tabs.moreInfo = { label: 'NAMED_ENTITIES.MORE_INFO' };
-            
+
             if (entityType !== 'relation') {
                 tabs._indexes.push('occurrences');
                 tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES' };
             }
-            
+
             tabs._indexes.push('xmlSource');
             tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
 
@@ -413,7 +417,7 @@ angular.module('evtviewer.namedEntity')
 
         //
         // Service function
-        // 
+        //
         /**
          * @ngdoc method
          * @name evtviewer.namedEntity.evtNamedEntity#getOccurrences
@@ -421,10 +425,10 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * <p>Get the list of occurrences of a given named entity.</p>
-         * <p>Data are parsed from originale XML source document, by using 
-         * {@link evtviewer.dataHandler.evtNamedEntitiesParser#parseEntitiesOccurrences parseEntitiesOccurrences} 
+         * <p>Data are parsed from originale XML source document, by using
+         * {@link evtviewer.dataHandler.evtNamedEntitiesParser#parseEntitiesOccurrences parseEntitiesOccurrences}
          * method</p>
-         * 
+         *
          * @param {string} refId Named entity unique identifier
          * @returns {array} List of occurrences of given named entity
          */
@@ -446,7 +450,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * Get the reference of the instance of a particular <code>&lt;evt-named-entity&gt;</code>.
-         * 
+         *
          * @param {string} entityId Id of <code>&lt;evt-named-entity&gt;</code> to retrieve
          *
          * @returns {Object} Reference of the instance of <code>&lt;evt-named-entity&gt;</code> with given id
@@ -457,7 +461,7 @@ angular.module('evtviewer.namedEntity')
                 if (currentNamedEntity.entityId === entityId) {
                     foundNamedEntity = currentNamedEntity;
                 }
-            });  
+            });
             return foundNamedEntity;
         };
         /**
@@ -495,7 +499,7 @@ angular.module('evtviewer.namedEntity')
          *
          * @description
          * Delete the reference of the instance of a particular <code>&lt;evt-named-entity&gt;</code>
-         * 
+         *
          * @param {string} tempId id of <code>&lt;evt-named-entity&gt;</code> to destroy
          */
         namedEntity.destroy = function(tempId) {

@@ -14,11 +14,12 @@
  * @requires evtviewer.bibliography.evtHighlight
  * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.communication.evtCommunication
+ * @requires evtviewer.tabsContainer.evtTabsContainer
 
 **/
 angular.module('evtviewer.reference')
 
-.controller('RefCtrl', function($log, evtRef, parsedData, evtDialog, evtHighlight, evtInterface, $timeout, evtCommunication) {
+.controller('RefCtrl', function($log, evtRef, parsedData, evtDialog, evtHighlight, evtInterface, $timeout, evtCommunication, evtTabsContainer) {
 	var vm = this;
 
 	var _console = $log.getInstance('reference');
@@ -55,13 +56,11 @@ angular.module('evtviewer.reference')
 			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza
 			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
 			var target = vm.target.replace('#', ''),
-				bibliographicRef = parsedData.getBibliographicRefById(target),
-				tabContainerPanel = evtInterface.getTabContainerPanel(),
-				bibliographyPanel = tabContainerPanel ? tabContainerPanel.bibliography : undefined;
-			if (bibliographicRef && bibliographyPanel) {
-				evtInterface.updateState('secondaryContent', ' ');
+				bibliographicRef = parsedData.getBibliographicRefById(target);
+			if (bibliographicRef) {
+				evtInterface.updateState('secondaryContent', 'globalInfo');
 				evtDialog.openByType('globalInfo');
-				evtInterface.setHomePanel(bibliographyPanel.name);
+				evtInterface.setHomePanel('bibliography');
 				evtHighlight.setHighlighted(target);
 				//dopo 2s viene rimosso l'attributo highlight
 				$timeout(function() {
