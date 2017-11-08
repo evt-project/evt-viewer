@@ -117,7 +117,7 @@ EVT 2 is able to handle multiple levels of apparatuses: critical entries apparat
 * `toolHeatMap`. Indicate if you want to include the Heat Map tool within the Critical Edition box (`true`) or not (`false`). This tool gives the user an overview about text variance.
 
 ##### Advanced Settings
-Customize how data are recognized by the system.
+Tell the system how to recognize the data: indicate which XML tag you used for the encoding of the different objects.
 
 **XML Tag usage configuration**
 * `listDef`. List of Witnesses: element(s) you used to encode the lists of all the witnesses or changes referred to by the critical apparatus (f.i. `<listWit>` or `<listChange>`). Please divide values using commas.
@@ -144,19 +144,24 @@ Customize how data are recognized by the system.
 
 There are 3 ready-to-use examples. The one used by default is n. 1.
 
-If you want to explore the other two you will just have to open the corresponding config.json file (f.i. config_ex2.json), copy its content and paste it into the main config.json file. Then go to the index.html opened in your browser and reload the page!
+If you want to explore the other two you will just have to open the corresponding config.json file (f.i. config_ex2.json), copy its content and paste it into the main config.json file overwriting the existing configuration. Then go to the index.html opened in your browser and reload the page!
 
-* EXAMPLE 1 : PhiBor_Esempio_codifica.xml
+* EXAMPLE 1: avicenna.xml -
 Short extract of Edizione Logica Avicennae, changed by CM for EVT testing purposes. It presents multiple levels of apparatuses (critical entries, sources and analogues), displayed in a separate dedicated frame.
-Configurations for this edition: config_Phibor.json
+Configurations for this edition: config_avicenna.json
 
-* EXAMPLE 2 : pseudoEditionTest.xml
-Pseudo edition for demonstration and testing purposes only, originally encoded by Marjorie Burghart for her TEI Critical Toolbox software, and properly modified in order to cover the highest number of possible use cases. It presents just the critical apparatus entry, displayed inline, within the main text.
-Configurations for this edition: config_pseudoEditionTest.json
+* EXAMPLE 2: pseudoEdition.xml -
+Pseudo edition for demonstration and testing purposes only, originally encoded by Marjorie Burghart for her TEI Critical Toolbox software, and modified in order to cover the highest number of possible use cases. It presents just the critical apparatus entry, displayed inline, within the main text.
+Configurations for this edition: config_pseudoEdition.json
 
-* EXAMPLE 3 : CodicePelavicino.xml
+* EXAMPLE 3: pelavicino.xml -
 Short extract of the Codice Pelavicino edition, which presents the encoding of named entities, in particular person, place and organization names.
-Configurations for this edition: config_CP.json
+Configurations for this edition: config_pelavicino.json
+NB: Note that at this time EVT 2 can support diplomatic editions only in a limited way, feature parity with the previous version will come next year.
+
+* EXAMPLE 4 : marlowe.xml -
+Short extract of *The Tragedie of Doctor Faustus* (B text) by Christopher Marlowe. Text provided by Perseus Digital Library, with funding from Tufts University. Original version available for viewing and download at [http://www.perseus.tufts.edu/hopper/](http://www.perseus.tufts.edu/hopper/).
+Configurations for this edition: config_marlowe.json
 
 
 4 - EVT Manual
