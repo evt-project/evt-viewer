@@ -1,9 +1,9 @@
 {
-    "indexTitle": "Edizione Logica Avicennae [experimental encoding]",
+    "indexTitle": "",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/avicenna.xml",
+	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl" : "data/sources/",
@@ -140,11 +140,11 @@
     "versions" : ["rec2", "rec1", "rec3"],
     "witnessesGroups": [
         {
-            "groupName" : "Group 1",
+            "groupName" : "Grp_1",
             "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
         },
         {
-            "groupName" : "Group 2",
+            "groupName" : "Grp_2",
             "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
         }
     ],

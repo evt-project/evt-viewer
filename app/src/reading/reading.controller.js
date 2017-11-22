@@ -138,6 +138,7 @@ angular.module('evtviewer.reading')
     this.toggleOverAppEntries = function($event) {
         $event.stopPropagation();
         if ( !vm.hidden ) {
+            _console.log("vm.toggle - ", vm);
             if ( vm.over === false ) {
                 evtReading.mouseOverByAppId(vm.appId);
                 evtCriticalApparatusEntry.mouseOverByAppId(vm.appId);
