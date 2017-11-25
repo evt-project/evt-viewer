@@ -78,7 +78,7 @@ angular.module('evtviewer.dataHandler')
 
          if(node.nodeName === 'g') {
             currentGlyph = evtGlyph.getGlyph(node);
-            text += evtGlyph.addGlyph(currentGlyph);
+            text += evtGlyph.addGlyph(currentGlyph, currentEdition);
          }
          else {
             text += node.textContent;
