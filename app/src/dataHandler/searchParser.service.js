@@ -8,16 +8,15 @@ import 'jquery-xpath/jquery.xpath.js';
  * # evtSearchParser
  * In this service are defined and exposed methods to handle search feature.
  *
- * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.dataHandler.evtGlyph
+ * @requires evtviewer.dataHandler.parsedData
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchParser', function (evtInterface, evtGlyph, parsedData) {
+.service('evtSearchParser', function (evtGlyph, parsedData) {
    var parser = {};
 
    var text = '',
-       currentEdition,
        editionWords = [];
 
    var namespace = false,
@@ -37,11 +36,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   parser.getText = function (doc) {
+   parser.getText = function (doc, currentEdition) {
       namespace = checkNamespace(doc, namespace);
-
-      currentEdition = getCurrentEdition();
-
       switch(currentEdition) {
          case 'diplomatic':
          case 'interpretative':
@@ -145,11 +141,6 @@ angular.module('evtviewer.dataHandler')
       }
       word.interpretative = cleanText(word.interpretative);
       return word;
-   };
-
-   var getCurrentEdition = function () {
-      currentEdition = evtInterface.getState('currentEdition');
-      return currentEdition;
    };
 
    parser.parseCriticalText = function (doc) {

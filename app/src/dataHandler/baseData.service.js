@@ -106,9 +106,6 @@ angular.module('evtviewer.dataHandler')
         // Parse pages
         // evtParser.parsePages(docElements);
 
-        // Parse Glyphs
-        evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
-
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
 

@@ -2,12 +2,12 @@
  * @ngdoc service
  * @module evtviewer.interface
  * @name evtviewer.interface.evtInterface
- * @description 
+ * @description
  * # evtInterface
- * The evtInterface service is encharged of storing information about the status of the application, 
+ * The evtInterface service is encharged of storing information about the status of the application,
  * and it exposes function to retrieve and change particular status data.
  *
- * 
+ *
  * @requires $rootScope
  * @requires $timeout
  * @requires $routeParams
@@ -18,6 +18,8 @@
  * @requires evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
  * @requires evtviewer.dataHandler.evtCriticalApparatusParser
  * @requires evtviewer.dataHandler.evtCriticalParser
+ * @requires evtviewer.dataHandler.baseData
+ * @requires evtviewer.dataHandler.evtSearchParser
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.reading.evtReading
  * @requires evtviewer.UItools.evtPinnedElements
@@ -26,7 +28,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtSearchParser, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -49,8 +51,8 @@ angular.module('evtviewer.interface')
 			isSearchBoxOpened : false,
             isPinnedAppBoardOpened : false,
             secondaryContent : '',
-            dialog : { 
-                home : '' 
+            dialog : {
+                home : ''
             },
             isApparatusBoxOpen : true,
             currentApparatus : undefined,
@@ -156,24 +158,24 @@ angular.module('evtviewer.interface')
          * @methodOf evtviewer.interface.evtInterface
          *
          * @description
-         * Main interface boot. 
-         * During this phase, after reading the JSON configuration file ({@link evtviewer.communication.evtCommunication#getExternalConfig evtCommunication.getExternalConfig}) 
-         * and updating the appropriate parameters in the internal model, 
-         * the system initiates an Ajax request in order to retrieve the edition data, contained in the file specified by the publisher, 
+         * Main interface boot.
+         * During this phase, after reading the JSON configuration file ({@link evtviewer.communication.evtCommunication#getExternalConfig evtCommunication.getExternalConfig})
+         * and updating the appropriate parameters in the internal model,
+         * the system initiates an Ajax request in order to retrieve the edition data, contained in the file specified by the publisher,
          * which can either be a local file or an online resource ({@link evtviewer.communication.evtCommunication#getData evtCommunication.getData}).
          * If the publisher has indicated a URL for sources and/or analogues, the system initiates one (or more) other Ajax requests in order
          * to retrive this external material ({@link evtviewer.communication.evtCommunication#getExternalData evtCommunication.getExternalData}).
-         * If no errors are raised, the interface will update its status and available features, 
+         * If no errors are raised, the interface will update its status and available features,
          * eventually launch other parser to get data not yet retrieved and update url parameters depending either on previous paramenter set or on the default values.
-         * 
+         *
          */
-        mainInterface.boot = function() {  
+        mainInterface.boot = function() {
             evtCommunication.getExternalConfig(config.configUrl).then(function(){
                 properties.indexTitle         = config.indexTitle;
                 properties.logoUrl            = config.logoUrl;
                 properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
-                
+
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);
                 var userLangKey = evtTranslation.getUserLanguage(),
@@ -182,7 +184,7 @@ angular.module('evtviewer.interface')
                 evtTranslation.setLanguage(userLangKey);
 
                 //TODO: object containing all the external files in globaldefault
-                
+
                 // Parse the external Sources file, if defined (@author: CM)
                 if (config.sourcesUrl !== '') {
                         evtCommunication.getExternalData(config.sourcesUrl);
@@ -193,9 +195,9 @@ angular.module('evtviewer.interface')
                 }
 
                 mainInterface.updateProperty('dataUrl', config.dataUrl);
-				
+
                 state.currentSearchBoxPosition = config.searchBoxPosition;
-                
+
                 evtCommunication.getData(config.dataUrl).then(function () {
                     // Remove Collation View Mode if Witnesses List Empty
                     for (var i = 0, totViews = properties.availableViewModes.length; i < totViews; i++) {
@@ -207,7 +209,7 @@ angular.module('evtviewer.interface')
                             properties.availableViewModes[i].visible = false;
                         }
                         if (viewModeName === 'srcTxt' && (!parsedData.getSources()._indexes.availableTexts || parsedData.getSources()._indexes.availableTexts.length === 0)) {
-                            properties.availableViewModes[i].visible = false;   
+                            properties.availableViewModes[i].visible = false;
                         }
                     }
 
@@ -218,18 +220,24 @@ angular.module('evtviewer.interface')
                         for (var e = 0; e < config.availableEditionLevel.length; e++) {
                             var edition = config.availableEditionLevel[e];
                             if (edition.visible) {
-                                parsedData.addEdition(edition);    
+                                parsedData.addEdition(edition);
                             }
                         }
                     }
 
                     mainInterface.updateParams($routeParams);
 
+                    var doc = baseData.getXML();
+                    // Parse Glyphs
+                    evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
+                    // Init search
+                    evtSearchParser.getText(doc, mainInterface.getState('currentEdition'));
+
                     var promises = [];
-                    
+
                     var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                     if (currentDocFirstLoad !== undefined){
-                        
+
                         // Parse critical entries
                         if (config.loadCriticalEntriesImmediately){
                             promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
@@ -248,14 +256,14 @@ angular.module('evtviewer.interface')
                                 promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
                             }
                         }
-                        
+
                         $q.all(promises).then(function() {
                             // Update current app entry
-                            if (state.currentAppEntry !== undefined && 
+                            if (state.currentAppEntry !== undefined &&
                                 parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {
                                 mainInterface.updateState('currentAppEntry', '');
                             }
-                            
+
                             // Temp | TODO: add to updateParams? //
                             // Prepare the sources texts available and the source text to show as default
                             // in the src-Txt view
@@ -278,9 +286,9 @@ angular.module('evtviewer.interface')
                                     properties.availableVersions.push(config.versions[v]);
                                 }
                             }
-                            
+
                             mainInterface.updateUrl();
-                            
+
                             var quotesList = parsedData.getQuotes()._indexes.encodingStructure || [],
                                 quotesInBox = !config.showInlineSources && quotesList.length > 0,
                                 analoguesList = parsedData.getAnalogues()._indexes.encodingStructure || [],
@@ -302,7 +310,7 @@ angular.module('evtviewer.interface')
         // ////////// //
         // PARAMS GET //
         // ////////// //
-		
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#setTabContainerPanel
@@ -324,7 +332,7 @@ angular.module('evtviewer.interface')
 		mainInterface.getTabContainerPanel = function(){
 			return state.dialog.tabContainerPanel;
 		};
-		
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#setHomePanel
@@ -335,7 +343,7 @@ angular.module('evtviewer.interface')
 		mainInterface.setHomePanel = function(string){
 			state.dialog.home = string;
 		};
-		
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#getHomePanel
@@ -346,18 +354,18 @@ angular.module('evtviewer.interface')
 		mainInterface.getHomePanel = function(){
 			return state.dialog.home;
 		};
-		
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#isLoading
          * @methodOf evtviewer.interface.evtInterface
          * @description Check if interface is in "loading" status
-         * @returns {boolean} interface loading status 
+         * @returns {boolean} interface loading status
          */
         mainInterface.isLoading = function() {
             return state.isLoading;
         };
-        
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#isToolAvailable
@@ -441,8 +449,8 @@ angular.module('evtviewer.interface')
                 isLoading : true,
                 isPinnedAppBoardOpened : false,
                 secondaryContent : '',
-                dialog : { 
-                    home : '' 
+                dialog : {
+                    home : ''
                 },
                 isApparatusBoxOpen : true,
                 currentApparatus : undefined,
@@ -532,7 +540,7 @@ angular.module('evtviewer.interface')
         mainInterface.getSecondaryContentOpened = function(){
             return state.secondaryContent;
         };
-	
+
 		mainInterface.isSearchBoxOpened = function() {
 			return state.isSearchBoxOpened;
 		}
@@ -547,11 +555,11 @@ angular.module('evtviewer.interface')
         mainInterface.togglePinnedAppBoardOpened = function() {
             state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
         };
-	
+
 		mainInterface.toogleSearchBoxOpened = function() {
 			state.isSearchBoxOpened = !state.isSearchBoxOpened;
 		}
-        
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#setToolStatus
@@ -589,12 +597,12 @@ angular.module('evtviewer.interface')
         mainInterface.updateState = function(property, value){
             state[property] = value;
         };
-        
+
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#toggleState
          * @methodOf evtviewer.interface.evtInterface
-         * @description Toggle the value of a given property. 
+         * @description Toggle the value of a given property.
          * NB: Use this method only with boolean parameters!
          * @param {string} property name of property to update
          */
@@ -607,8 +615,8 @@ angular.module('evtviewer.interface')
          * @name evtviewer.interface.evtInterface#updateCurrentHighlightedZone
          * @methodOf evtviewer.interface.evtInterface
          * @description Update current highlighted zone if different from current
-         * @todo: Eventually change once the image viewer has been implemented 
-         * @param {object} zone object representing new zone 
+         * @todo: Eventually change once the image viewer has been implemented
+         * @param {object} zone object representing new zone
          */
         mainInterface.updateCurrentHighlightedZone = function(zone) {
             var currentZone = state.currentHighlightedZone;
@@ -725,7 +733,7 @@ angular.module('evtviewer.interface')
                 mainInterface.addAvailableVersion(oldVer);
             }
             state.currentVersions[oldVerOldIndex] = newVer;
-            mainInterface.removeAvailableVersion(newVer);            
+            mainInterface.removeAvailableVersion(newVer);
         };
         /**
          * @ngdoc method
@@ -768,7 +776,7 @@ angular.module('evtviewer.interface')
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#removeAvailableWitness
          * @methodOf evtviewer.interface.evtInterface
-         * @description Remove given witness from the available witness list, only if given witness is already in the list 
+         * @description Remove given witness from the available witness list, only if given witness is already in the list
          * @param {string} witness id of witness to be removed from available witnesses list
          * @author Chiara Di Pietro
          */
@@ -843,7 +851,7 @@ angular.module('evtviewer.interface')
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#switchWitnesses
          * @methodOf evtviewer.interface.evtInterface
-         * @description Switch positions of given witnesses. 
+         * @description Switch positions of given witnesses.
          * If the witness is already in the current witnesses list, it will be switched with the old one.
          * @param {string} oldWit the old witness to change
          * @param {string} newWit the new witness to view
@@ -851,7 +859,7 @@ angular.module('evtviewer.interface')
          * @todo update box scroll to page on switching...
          */
          mainInterface.switchWitnesses = function(oldWit, newWit) {
-            // se il testimone che sto selezionando è già visualizzato 
+            // se il testimone che sto selezionando è già visualizzato
             // lo scambio con il vecchio testimone
             var newWitOldIndex = state.currentWits.indexOf(newWit),
                 oldWitOldIndex = state.currentWits.indexOf(oldWit);
@@ -951,16 +959,16 @@ angular.module('evtviewer.interface')
                 sourceId,
                 apparatusId;
 
-            // VIEW MODE 
+            // VIEW MODE
             if (params.viewMode !== undefined) {
                 // Check if view mode is available
                 if (mainInterface.isViewModeAvailable(params.viewMode)) {
                     viewMode = params.viewMode;
-                } 
+                }
             }
 
-            // EDITION 
-            var availableEditionLevel = parsedData.getEditions(); 
+            // EDITION
+            var availableEditionLevel = parsedData.getEditions();
             if (params.e !== undefined ) {
                 if (parsedData.getEdition(params.e)) {
                     edition = params.e;
@@ -1034,7 +1042,7 @@ angular.module('evtviewer.interface')
                         } else {
                             properties.availableWitnesses = [];
                         }
-                    }                    
+                    }
                 } else {
                     if (config.versions.length > 1) {
                         // Check if the main version of the text refers to some particular witnesses
@@ -1103,7 +1111,7 @@ angular.module('evtviewer.interface')
                 if (viewMode === 'collation') {
                     if (state.currentWits !== undefined && state.currentWits.length > 0) {
                         if (searchPath !== '') {
-                          searchPath += '&';  
+                          searchPath += '&';
                         }
                         searchPath += 'ws=';
                         for (var w in state.currentWits){
@@ -1121,11 +1129,11 @@ angular.module('evtviewer.interface')
                 }
                 if (state.currentAppEntry !== undefined && state.currentAppEntry !== '') {
                     if (searchPath !== '') {
-                      searchPath += '&';  
+                      searchPath += '&';
                     }
                     searchPath += 'app='+state.currentAppEntry;
                 }
-                
+
             if (viewMode !== undefined) {
                 // window.history.pushState(null, null, '#/'+viewMode+'?'+searchPath.substr(1));
                 window.location = '#/'+viewMode+'?'+searchPath;

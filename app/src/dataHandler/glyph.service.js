@@ -9,12 +9,11 @@
  * and it exposes functions to retrieve and act upon them.
  *
  * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.interface.evtInterface
  */
 
 angular.module('evtviewer.dataHandler')
 
-.service('evtGlyph', function(parsedData, evtInterface) {
+.service('evtGlyph', function(parsedData) {
    var evtGlyph =  {};
 
    var currentGlyph,
@@ -94,18 +93,12 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   evtGlyph.addGlyph = function (currentGlyph) {
-      var currentEdition;
-
-      currentEdition = evtInterface.getState('currentEdition');
-
+   evtGlyph.addGlyph = function (currentGlyph, currentEdition) {
       switch (currentEdition) {
          case 'diplomatic':
             return currentGlyph.diplomatic;
-            break;
          case 'interpretative':
             return currentGlyph.interpretative;
-            break;
       }
    };
 
