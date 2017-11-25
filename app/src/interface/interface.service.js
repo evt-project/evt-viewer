@@ -231,7 +231,7 @@ angular.module('evtviewer.interface')
                     // Parse Glyphs
                     evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
                     // Init search
-                    evtSearchParser.getText(doc, mainInterface.getState('currentEdition'));
+                    evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
 
                     var promises = [];
 
