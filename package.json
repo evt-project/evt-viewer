@@ -51,6 +51,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "jquery-xpath": "^0.3.1"
+    "jquery-xpath": "^0.3.1",
+    "lunr": "^2.1.4"
   }
 }
