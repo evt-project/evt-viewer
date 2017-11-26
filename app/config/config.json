@@ -4,10 +4,10 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
-    "sourcesUrl"       : "data/sources.xml",
-    "analoguesUrl"     : "data/analogues.xml",
-    "sourcesTextsUrl" : "data/sources/",
+	"dataUrl": "",
+    "sourcesUrl"       : "",
+    "analoguesUrl"     : "",
+    "sourcesTextsUrl" : "",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
@@ -53,17 +53,17 @@
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "enableXMLdownload" : true,
@@ -139,17 +139,8 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-    "versions" : ["rec2", "rec1", "rec3"],
-    "witnessesGroups": [
-        {
-            "groupName" : "Grp_1",
-            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
-        },
-        {
-            "groupName" : "Grp_2",
-            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
-        }
-    ],
+    "versions" : [],
+    "witnessesGroups": [ ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
