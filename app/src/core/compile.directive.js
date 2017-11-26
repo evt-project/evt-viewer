@@ -4,7 +4,8 @@
  * @name evtviewer.core.directive:compile
  * @description 
  * # compile
- * TODO: Add description!
+ * Dinamically compile the HTML (containing custom directives) 
+ * inside the element where the directive is used.
  *
  * @restrict A
 **/

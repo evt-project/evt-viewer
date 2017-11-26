@@ -36,6 +36,7 @@
             background: $base-color-dark;
             color: $base-color-light;
             padding: 10px;
+            padding-right: 50px;
             text-align: center;
             font-size: 1.2em;
             button-switch{
@@ -52,7 +53,7 @@
     }
 }
 
-.evt-dialog.evt-dialog-error,  
+.evt-dialog.evt-dialog-error,
 .evt-dialog.evt-dialog-small{
     .evt-dialog-container {
         min-width: 10%;

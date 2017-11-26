@@ -2,14 +2,61 @@
  * @ngdoc directive
  * @module evtviewer.box
  * @name evtviewer.box.directive:box
- * @description 
+ * @description
  * # box
- * TODO: Add description!
+ * <p>Container with an header with tools (optional), a body and a footer with tools (optional).
+ * The content of the body will depend on box type. </p>
+ * <p>Available types are:<ul>
+ * <li> **image**: <ul>
+ *  <li>Header: Page selector, Thumbnails button</li>
+ *  <li>Body: Image viewer (to be implemented)</li>
+ *  <li>Footer: hidden </li></ul></li>
+ *
+ * <li> **text**: <ul>
+ *  <li>Header: Page selector, Document selector, Edition level selector&#8727;, Version selector&#8727;, Witnesses list button&#8727;,
+ * info button&#8727;, Color legend keys button&#8727;</li>
+ *  <li>Body: Text of the edition, updated to current document, page and edition level</li>
+ *  <li>Footer: Critical entries filters and heat map buttons&#8727;, Entities selector&#8727;, Font size change buttons</li></ul></li>
+ *
+ * <li> **witness** <ul>
+ *  <li>Header: Witnesses selector, Selected witness pages selector, Witness info button&#8727;, Witness close button</li>
+ *  <li>Body: Text of selected witness, aligned to current page or current critical entry selected</li>
+ *  <li>Footer: Critical entries filters buttons&#8727;, Font size change buttons</li></ul></li>
+ *
+ * <li> **source** <ul>
+ *  <li>Header: Sources selector&#8727;, Source bibliographic reference button</li>
+ *  <li>Body: Text of the current source text</li>
+ *  <li>Footer: Font size change buttons</li></ul></li>
+ *
+ * <li> **version** <ul>
+ *  <li>Header: Version selector&#8727;, Version close button</li>
+ *  <li>Body: Text of the current selected version aligned to main text</li>
+ *  <li>Footer: Font size change buttons</li></ul></li>
+ *
+ * <li> **pinnedBoard** <ul>
+ *  <li>Header: Close button</li>
+ *  <li>Body: Transcluded content (it will be a list of pinned elements)</li>
+ *  <li>Footer: Pinned elements filter selector&#8727;</li></ul></li>
+ *
+ * <li> **empty** <ul>
+ *  <li>Header: hidden</li>
+ *  <li>Body: Transcluded content</li>
+ *  <li>Footer: hidden</li></ul></li>
+ *
+ * <li> *no type* <ul>
+ *  <li>Header: Close button</li>
+ *  <li>Body: Transcluded content</li>
+ *  <li>Footer: hidden</li></ul></li>
+ * </ul>
+ * <br/>&#8727; if available</p>
+ * <p>Since each instance of box must be controlled in different
+ * ways depending on type, the {@link evtviewer.box.controller:BoxCtrl controller} for this directive is dynamically defined inside the
+ * {@link evtviewer.box.evtBox evtBox} provider.</p>
  *
  * @scope
  * @param {string=} id id of box to be shown
  * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty')
- * @param {string=} subtype subtype of box to be shown 
+ * @param {string=} subtype subtype of box to be shown
  * @param {string=} witness scope witness
  * @param {string=} witpage scope witness page
  * @param {string=} edition scope edition
@@ -57,7 +104,7 @@ angular.module('evtviewer.box')
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
-                
+
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
                     // Scrol box to update page numbers
                     //BIND DEPRECATED, USE ON
@@ -108,7 +155,7 @@ angular.module('evtviewer.box')
                 }
                 displayResult(scope, config.xsltUrl);
             });
-            
+
             /* ****************** */
             /* XSL TRANSFORMATION */
             /* ****************** */
@@ -145,16 +192,38 @@ angular.module('evtviewer.box')
                     }
                 }
             };
-            /* ****************** */
-            /* XSL TRANSFORMATION */
-            /* ****************** */
-            
-            // Necessary to handle box resizings depending on numbers of boxes
+            // /////////////////////// //
+            // END XSL TRANSFORMATION  //
+            // ////////////////////// //
+
+            /**
+             * @ngdoc method
+             * @name evtviewer.box.controller:BoxCtrl#getTotElementsOfType
+             * @methodOf evtviewer.box.controller:BoxCtrl
+             *
+             * @description
+             * <p>Get number of instances of <code>&lt;box&gt;</code>s of a particular type.</p>
+             * <p>This function is necessary to handle box resizings depending on numbers of boxes.</p>
+             *
+             * @param {string} type type of <code>&lt;box&gt;</code> to handle
+             *
+             * @returns {number} number of instances of <code>&lt;box&gt;</code>s of a particular type
+             */
             scope.vm.getTotElementsOfType = function(type){
                 return evtBox.getListByType(type).length;
             };
-            
-            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+
+            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
+                /** @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#scrollToPage
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Scroll box body container to a particular page anchor.</p>
+                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness** and **text**.</p>
+                 *
+                 * @param {string} pageId id of page to consider during scrolling
+                 */
                 scope.vm.scrollToPage = function(pageId) {
                     $timeout(function(){
                         var pbElem = $('#'+currentBox.uid).find('#pb_'+pageId);
@@ -164,7 +233,16 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
-                
+                /** @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#scrollToAppEntry
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Scroll box body container to a particular critical apparatus entry.</p>
+                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness** and **text**.</p>
+                 *
+                 * @param {string} appId id of critical apparatus entry to consider during scrolling
+                 */
                 scope.vm.scrollToAppEntry = function(appId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
@@ -174,9 +252,9 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
-                
+
                 // Necessary for first load page/app entry alignment
-                var pageId, 
+                var pageId,
                     currentAppId = evtInterface.getState('currentAppEntry');
                 if ( currentBox.type === 'witness' ) {
                     pageId = scope.vm.witness+'-'+evtInterface.getCurrentWitnessPage(scope.vm.witness);
@@ -185,7 +263,7 @@ angular.module('evtviewer.box')
                 }
                 scope.vm.scrollToPage(pageId);
                 scope.vm.scrollToAppEntry(currentAppId);
-                
+
                 // scope.$watch(function() {
                 //     return evtInterface.getState('currentAppEntry');
                 // }, function(newItem, oldItem) {
@@ -195,41 +273,53 @@ angular.module('evtviewer.box')
                 //         }
                 //     }
                 // }, true);
-                
-                scope.$watch(function() {
-                    return evtInterface.getState('currentDoc');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
-                        scope.vm.state.docId = newItem;
-                        scope.vm.isLoading = true;
-                        currentBox.updateContent();
-                        if (scope.vm.currentType === 'text') {
-                            var docObj = parsedData.getDocument(newItem),
-                                docFront = docObj ? docObj.front : undefined;
 
-                                var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                                scope.vm.updateTopBoxContent(content);
-                        }
-                    }
-                }, true);
-
-                scope.$watch(function() {
-                    return scope.vm.state.filters._totActive;
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem) {
-                        $timeout(function(){
-                            var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
-                            var height = angular.element(filtersActiveElem).height();
-                            var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
-                            angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
-                        });
-                    }
-                }, true);
             }
 
+            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+              scope.$watch(function() {
+                  return evtInterface.getState('currentDoc');
+              }, function(newItem, oldItem) {
+                  if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
+                      scope.vm.state.docId = newItem;
+                      scope.vm.isLoading = true;
+                      currentBox.updateContent();
+                      if (scope.vm.currentType === 'text') {
+                          var docObj = parsedData.getDocument(newItem),
+                              docFront = docObj ? docObj.front : undefined;
+
+                              var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                              scope.vm.updateTopBoxContent(content);
+                      }
+                  }
+              }, true);
+
+              scope.$watch(function() {
+                  return scope.vm.state.filters._totActive;
+              }, function(newItem, oldItem) {
+                  if (oldItem !== newItem) {
+                      $timeout(function(){
+                          var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
+                          var height = angular.element(filtersActiveElem).height();
+                          var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
+                          angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
+                      });
+                  }
+              }, true);
+            }
 
             //Added by CM
             if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
+                /** @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Scroll box body container to a particular quote.</p>
+                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
+                 *
+                 * @param {string} quoteId id of quote to consider during scrolling
+                 */
                 scope.vm.scrollToQuotesEntry = function(quoteId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-quote-id=\''+quoteId+'\']');
@@ -239,7 +329,16 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
-
+                /** @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#scrollToAnaloguesEntry
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Scroll box body container to a particular analogue.</p>
+                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
+                 *
+                 * @param {string} analogueId id of analogue to consider during scrolling
+                 */
                 scope.vm.scrollToAnaloguesEntry = function(analogueId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-analogue-id=\''+analogueId+'\']');
@@ -249,8 +348,17 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
-
-                // If the version apparatus entry isn't visible, the box scrolls in order to show the apparatus completely
+                /** @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#scrollToVersionApparatus
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Scroll box body container to a particular critical apparatus entry on version text.</p>
+                 * <p>If the version apparatus entry isn't visible, the box scrolls in order to show the apparatus completely.</p>
+                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
+                 *
+                 * @param {string} appId id of critical apparatus entry to consider during scrolling
+                 */
                 scope.vm.scrollToVersionApparatus = function(appId) {
                     $timeout(function() {
                         var appEntryElem = $('#'+currentBox.uid).find('evt-version-apparatus-entry[data-app-id=\''+appId+'\']'),
@@ -269,6 +377,16 @@ angular.module('evtviewer.box')
             }
 
             if (currentBox.type === 'source') {
+                /** @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Scroll box body container to a particular quote entry on source text.</p>
+                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **source**.</p>
+                 *
+                 * @param {string} segId id of quote entry to consider during scrolling
+                 */
                 scope.vm.scrollToQuotesEntry = function(segId) {
                     $timeout(function(){
                         var appElem = $('#'+currentBox.uid).find('[data-seg-id=\''+segId+'\']');
@@ -308,16 +426,16 @@ angular.module('evtviewer.box')
                         scope.vm.state.pageId = newItem;
                         currentBox.updateContent();
                     }
-                }, true); 
+                }, true);
             }
 
-            /*Watchers for box of type "source"*/
-            /*@author: CM*/
+            //Watchers for box of type "source"//
+            //author: CM//
             if (currentBox.type === 'source') {
-                
-                /*Watcher to intialize the sources texts, by parsing them.     */
-                /*The watcher checks if the source to parse has been loaded,   */
-                /*then updates the content of the box with current source text.*/
+
+                //Watcher to intialize the sources texts, by parsing them.     //
+                //The watcher checks if the source to parse has been loaded,   //
+                //then updates the content of the box with current source text.//
                 scope.$watch(function() {
                     return evtInterface.getProperty('isSourceLoading');
                 }, function(newItem, oldItem) {
@@ -329,9 +447,9 @@ angular.module('evtviewer.box')
                     }
                 });
 
-                /*Watch to change the source text.                              */
-                /*Checks if the current Source text has changed and then updates*/
-                /*the content of the box.                                       */
+                //Watch to change the source text.                              //
+                //Checks if the current Source text has changed and then updates//
+                //the content of the box.                                       //
                 scope.$watch(function() {
                     return evtInterface.getState('currentSourceText') ;
                 }, function(newItem, oldItem) {
@@ -343,7 +461,7 @@ angular.module('evtviewer.box')
                     }
                 });
             }
-            
+
             if (currentBox.type === 'text' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {
                     return evtInterface.getState('currentVersion');
@@ -357,7 +475,7 @@ angular.module('evtviewer.box')
             scope.$on('$destroy', function() {
                 if (currentBox){
                     currentBox.destroy();
-                }     
+                }
             });
         }
     };

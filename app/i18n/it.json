@@ -67,7 +67,8 @@
 		"MORE_INFO": "Maggiori informazioni circa l'entrata d'apparato",
 		"NO_DATA": "Nessuna informazione aggiuntiva.",
 		"ORTHOGRAPHIC_VARIANTS_FOR": "Varianti ortografiche per ",
-		"SEE_FULL_SOURCE": "Visualizza il testo completo nel testo nella vista \"Testo-Fonte\"",
+		"SEE_FULL_SOURCE": "Visualizza il testo completo nella vista \"Testo-Fonte\"",
+		"SEE_FULL_SOURCE_WEB": "Visualizza il testo completo online",
 		"TABS": {
 			"CRITICAL_NOTE": "Nota critica",
 			"MORE_INFO": "Info aggiuntive",
@@ -118,20 +119,27 @@
 		"PROJECT_INFO": "Informazioni sul progetto"
 	},
 	"MESSAGES" : {
+		"BIBL_REF_NOT_FOUND": "Impossibile trovare i riferimenti bibliografici",
+		"COMMUNICATION_ERROR": "Errore di comunicazione",
 		"ERROR_IN_PARSING_TEXT": "Si è verificato un errore nell'analisi del testo.",
 		"ERROR_IN_PARSING_LACUNA": "Si è verificato un errore nel caricamento delle lacune per questo testimone.",
 		"ERROR_IN_PARSING_FRAGMENTARY_TEXT":"Si è verificato un errore nel caricamento del testimone frammentario.",
+		"FILE_NOT_FOUND": "File non trovato",
 		"FRONT_NOT_AVAILABLE": "Nessuna informazione introduttiva disponibile.",
 		"GENERIC_ERROR": "Si è verificato un problema.",
 		"LOADING_OCCURRENCES": "Recupero occorrenze in corso...",
+		"MISSING_PARAMETERS": "Parametri mancanti",
+		"MISSING_REFEREMENT": "Riferementi mancanti",
 		"NO_MORE_INFO_AVAILABLE": "Nessuna informazione aggiuntiva disponibile.",
 		"NO_RESULT_FOUND": "Nessun risultato trovato.",
 		"NO_XML_SOURCE": "La codifica XML non è disponibile.",
+		"PATH_TO_EDITION_EMPTY": "Il collegamento ai dati dell'edizione non è specificato.",
 		"PINNED_ELEMENTS_SHOWN_HERE": "Gli elementi selezionati verranno visualizzati qui.",
 		"REFERENCE_NOT_FOUND":"Riferimento bibliografico non trovato.",
 		"SEE_VERSION_TEXT": "Visualizza il testo della versione",
 		"SEE_WITNESS": "Visualizza il testimone",
 		"SELECT_AN_APPARATUS": "Selezionare un apparato o un elemento critico all'interno del testo critico.",
+		"SOMETHING_WRONG_DURING_FILE_LOADING": "Si è verificato un errore durante il caricamento del file",
 		"TEXT_NOT_AVAILABLE": "Il testo non è disponibile.",
 		"TEXT_OF_SOURCE_NOT_AVAILABLE": "Il testo della fonte {{sources}} non è disponibile.",
 		"TEXT_OF_VERSION_NOT_AVAILABLE": "Il testo della versione {{version}} non è disponibile.",
@@ -246,7 +254,7 @@
 		"COLLATION": "Collazione",
 		"SOURCE_TEXT": "Testo Fonti"
 	},
-	"AND": "e",	
+	"AND": "e",
 	"ERROR" : "Errore",
 	"PUBLISHED_BY": "Pubblicato da"
 }

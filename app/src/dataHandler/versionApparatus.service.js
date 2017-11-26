@@ -4,15 +4,46 @@
  * @name evtviewer.dataHandler.evtVersionApparatus
  * @description 
  * # evtVersionApparatus
- * TODO: Add description and comments for every method
+ * Service containing methods to handle the contents of alternative version of text (for double recensio support).
  *
- * @author Chiara Martignano
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtCriticalApparatus
+ * @requires evtviewer.dataHandler.evtParser
+ *
+ * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtVersionApparatus', function(config, parsedData, evtCriticalApparatus, evtParser) {
     var apparatus = {};
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtVersionApparatus#getContent
+     * @methodOf evtviewer.dataHandler.evtVersionApparatus
+     *
+     * @description
+     * Retrieve the information about a particular version entry.
+     *
+     * @param {element} entry XML element to parse
+     * @param {string} scopeWit id of witness to consider
+     * @param {string} scopeVer id of version to consider
+     *
+     * @returns {objecy} JSON object representing the content of the entry, that is structured as follows:
+        <pre>
+            var appContent = {
+                attributes : {
+                    values : {},
+                    _keys : []
+                },
+                versions: [],
+                note: '',
+                _readings : false,
+                _xmlSource: ''
+            };
+        </pre>
+     * @author CM
+     */
     apparatus.getContent = function(entry, scopeWit, scopeVer) {
         var appContent = {
             attributes : {
@@ -45,7 +76,34 @@ angular.module('evtviewer.dataHandler')
         }       
         return appContent;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtVersionApparatus#getVersionContent
+     * @methodOf evtviewer.dataHandler.evtVersionApparatus
+     *
+     * @description
+     * Retrieve the content of a particular version.
+     *
+     * @param {Object} ver JSON object representing a version of the text
+     * @param {string} scopeWit id of witness to consider
+     * @param {string} scopeVer id of version to consider
+     *
+     * @returns {objecy} JSON object representing the content of the version, that is structured as follows:
+        <pre>
+            var version = {
+                id : '',
+                value : '',
+                lem : '',
+                significantReadings : [],
+                notSignificantReadings : [],
+                attributes: {
+                    values : {},
+                    _keys : []
+                }
+            };
+        </pre>
+     * @author CM
+     */
     apparatus.getVersionContent = function(ver, scopeWit, scopeVer) {
         var version = {
             id : ver.versionId,

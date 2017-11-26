@@ -4,7 +4,9 @@
  * @name evtviewer.popover.evtPopover
  * @description 
  * # evtPopover
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.popover.directive:evtPopover evtPopover} directive 
+ * and stores its reference untill the directive remains instantiated.
 **/
 angular.module('evtviewer.popover')
 
@@ -25,7 +27,32 @@ angular.module('evtviewer.popover')
         // 
         // Popover builder
         // 
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#build
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * <p>This method will extend the scope of {@link evtviewer.popover.directive:evtPopover evtPopover} directive 
+         * according to selected configurations.</p>
+         *
+         * @param {string} triggerText string representing the HTML to be compiled and used as trigger element
+         * @param {string} tooltipText strin representing the HTML to be compile and used as the content of the pop-up box
+         * @param {Object} vm initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    // expansion
+                    uid,
+                    trigger,
+                    tooltip,
+                    expanded,
+                    tooltipOver,
+                    defaults
+                };
+            </pre>
+         */
         popover.build = function(triggerText, tooltipText, vm) {
             var currentId          = idx++,
                 currentTriggerText = triggerText || '',
@@ -59,16 +86,49 @@ angular.module('evtviewer.popover')
         //
         // Service function
         // 
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#getById
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * Get the reference of the instance of a particular <code>&lt;evt-popover&gt;</code>.
+         * 
+         * @param {string} currentId id of popover to retrieve
+         *
+         * @returns {Object} reference of the instance of <code>&lt;evt-popover&gt;</code> with given id
+         */
         popover.getById = function(currentId) {
             if (collection[currentId] !== 'undefined') {
                 return collection[currentId];
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#getList
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * Get the list of all the instance of <code>&lt;evt-popover&gt;</code>.
+         *
+         * @returns {array} array of ids of all the instance of <code>&lt;evt-popover&gt;</code>.
+         */
         popover.getList = function() {
             return list;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#expandById
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * <p>Expand popover with a certain id.</p>
+         * <p>This function is useful if we want to trigger the expansion from an external service/controller.</p>
+         * <p> It eventually collapse all other <code>&lt;evt-popover&gt;</code>.</p>
+         *
+         * @param {string} currentId id of popover to expand
+         * @param {boolean=} closeSiblings whether or not to collapse all other expanded popovers.
+         */
         popover.expandById = function(currentId, closeSiblings) {
             if (collection[currentId] !== 'undefined') {
                 collection[currentId].expand();
@@ -77,7 +137,17 @@ angular.module('evtviewer.popover')
                 }
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#closeAll
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * <p>Collapse all instantiated <code>&lt;evt-popover&gt;</code>,
+         * expect that with given id.</p>
+         *
+         * @param {string} skipId id of popover to skip from closing
+         */
         popover.closeAll = function(skipId) {
             angular.forEach(collection, function(currentPopover, currentId) {
                 if (skipId === undefined) {
@@ -87,7 +157,17 @@ angular.module('evtviewer.popover')
                 }
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#mouseOutAll
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * <p>Set *mouse out* to all instantiated <code>&lt;evt-popover&gt;</code>,
+         * expect that with given id.</p>
+         *
+         * @param {string} skipId id of popover to skip from closing
+         */
         popover.mouseOutAll = function(skipId) {
             angular.forEach(collection, function(currentPopover, currentId) {
                 if (currentId !== skipId.toString()) {
@@ -95,7 +175,16 @@ angular.module('evtviewer.popover')
                 }
             });
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#getIdTooltipOvered
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * <p>Get the id of current popover opened.</p>
+         *
+         * @returns {string} id of current popover opened
+         */
         popover.getIdTooltipOvered = function(){
             var tuid = -1;
             angular.forEach(collection, function(currentPopover) {
@@ -105,7 +194,16 @@ angular.module('evtviewer.popover')
             });
             return tuid;
         };
-
+        /**
+         * @ngdoc method
+         * @name evtviewer.popover.evtPopover#destroy
+         * @methodOf evtviewer.popover.evtPopover
+         *
+         * @description
+         * Delete the reference of the instance of a particular <code>&lt;evt-popover&gt;</code>
+         * 
+         * @param {string} tempId id of <code>&lt;evt-popover&gt;</code> to destroy
+         */
         popover.destroy = function(tempId){
             delete collection[tempId];
         };

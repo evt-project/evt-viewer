@@ -3,21 +3,7 @@
     ng-class="{ 'noTools' : (scopeViewMode !== 'collation' && scopeViewMode !== 'readingTxt' && scopeViewMode !== 'versions') && !vm.isPinAvailable()}">
     <div
         class="version-apparatus-entry_main-content">
-        <div
-            class="versions-lemmas">
-            <span
-                ng-repeat="version in ::vm.content.versions">
-                <!--TODO: change to evt-ref-->
-                <evt-version-ref
-                    data-target="{{::version.value}}"
-                    data-type="version"
-                    data-el-id="{{vm.currentVer}}"
-                    class="version-label"></evt-version-ref>
-                <span
-                    class="version-lem"
-                    compile="version.lem"></span>
-            </span>
-        </div>
+        
         <div
             class="version-apparatus-entry_tools"
             ng-if="(scopeViewMode === 'collation' || scopeViewMode === 'readingTxt' || scopeViewMode === 'versions')">
@@ -44,6 +30,21 @@
                 data-icon="v-align"
                 data-type="alignReadings"
                 ng-click="vm.alignReadings()"></button-switch>
+        </div>
+        <div
+            class="versions-lemmas">
+            <span
+                ng-repeat="version in ::vm.content.versions">
+                <!--TODO: change to evt-ref-->
+                <evt-version-ref
+                    data-target="{{::version.value}}"
+                    data-type="version"
+                    data-el-id="{{vm.currentVer}}"
+                    class="version-label"></evt-version-ref>
+                <span
+                    class="version-lem"
+                    compile="version.lem"></span>
+            </span>
         </div>
     </div>
     <div

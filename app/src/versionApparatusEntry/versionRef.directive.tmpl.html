@@ -2,9 +2,10 @@
     class="evt-version-ref"
     title="{{vm.title | translate}}"
     ng-click="vm.callback()"
-    ng-class="{ 'selected' : vm.elId === vm.target}">
+    ng-class="{ 'selected' : vm.elId === vm.target, 'not-select': vm.elId === vm.ver }">
     <span
         class="evt-version-ref_text"
-        compile="vm.id">
+        compile="vm.id"
+        ng-class="{ 'selected' : vm.elId === vm.target, 'not-select': vm.target === vm.ver }">
     </span>
 </span>

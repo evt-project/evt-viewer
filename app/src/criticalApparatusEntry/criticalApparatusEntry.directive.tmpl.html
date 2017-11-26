@@ -1,4 +1,4 @@
-<div 
+<div
   class="critical-apparatus-entry"
   ng-mouseover="vm.toggleOverAppEntries($event);"
   ng-mouseout="vm.toggleOverAppEntries($event)"
@@ -7,25 +7,18 @@
              'selected': vm.isSelected() && !vm.isInline() && scopeViewMode === 'readingTxt',
              'over': vm.currentViewMode === 'readingTxt' && vm.over}">
   <div class="critical-apparatus-entry_main-content">
-      <span class="apparatus_exponent"
-            ng-if="::vm.showExponent"
-            compile="vm.exponent"></span>
 
-      <span 
-        class="app_lemma"
-        ng-if="::vm.content.lemma.content !== ''"
-        compile="::vm.content.lemma.content"></span>      
-    
+
     <div class="critical-apparatus-entry_tools"
       ng-if="::(scopeViewMode === 'collation' || scopeVieMode === 'readingTxt') || vm.isPinAvailable()">
-      <button-switch 
+      <button-switch
             title="BUTTONS.PIN_REMOVE"
             ng-if="::vm.isPinAvailable() && vm.type === 'pinned'"
             data-label=""
             data-icon="remove"
             data-type="pin-off"
             ng-click="vm.togglePin()"></button-switch>
-      <button-switch 
+      <button-switch
             title="BUTTONS.PIN_TOGGLE"
             ng-if="::vm.isPinAvailable() && vm.type === 'default'"
             data-label=""
@@ -33,7 +26,7 @@
             data-type="pin"
             ng-class="{'active' : vm.isPinned()}"
             ng-click="vm.togglePin()"></button-switch>
-      <button-switch 
+      <button-switch
             title="BUTTONS.ALIGN_READINGS"
             ng-if="::vm.type === 'default' && (scopeViewMode === 'collation' || !vm.showInlineCriticalApparatus())"
             data-label=""
@@ -41,14 +34,22 @@
             data-type="alignReadings"
             ng-click="vm.alignReadings()"></button-switch>
     </div>
+    <span class="apparatus_exponent"
+            ng-if="::vm.showExponent"
+            compile="vm.exponent"></span>
+
+      <span
+        class="app_lemma"
+        ng-if="::vm.content.lemma.content !== ''"
+        compile="::vm.content.lemma.content"></span>
     <div class="critical-apparatus-entry_main-content_list">
-            <span 
+            <span
               class="app_reading"
               ng-if="::vm.witnessesGroups.length === 0"
-              ng-repeat="reading in ::vm.content.significantReadings track by $index" 
+              ng-repeat="reading in ::vm.content.significantReadings track by $index"
               compile="reading.content">
               </span>
-              <ul 
+              <ul
                 class="app_reading_list"
                 ng-if="::vm.witnessesGroups.length > 0">
                 <li ng-repeat="group in ::vm.witnessesGroups"
@@ -66,7 +67,7 @@
   <div class="critical-apparatus-entry_other-content"
        ng-if="::vm.tabs._indexes.length > 0">
 
-      <div 
+      <div
         class="critical-apparatus-entry_other-content_headers"
         ng-class="{'closed': vm._subContentOpened === ''}">
           <span ng-repeat="tab in ::vm.tabs._indexes track by $index"
@@ -75,7 +76,7 @@
                 {{ vm.tabs[tab].label | translate }}
           </span>
       </div>
-      <div 
+      <div
         class="critical-apparatus-entry_other-content_panels"
         ng-class="{'closed': vm._subContentOpened === ''}">
           <div class="critical-apparatus-entry_other-content_panel"
@@ -84,17 +85,17 @@
                 ng-switch="::tab">
                 <div ng-switch-when="notSignificantReadings">
                   <ul ng-if="::vm.witnessesGroups.length <= 0">
-                      <li ng-repeat="reading in ::vm.content.notSignificantReadings track by $index" 
+                      <li ng-repeat="reading in ::vm.content.notSignificantReadings track by $index"
                           compile="::reading.content"></li>
                   </ul>
                   <div
                     ng-if="::vm.witnessesGroups.length > 0"
                     ng-repeat="group in ::vm.witnessesGroups">
-                    <span 
+                    <span
                       class="critical-apparatus-entry_other-content_panel_orthographic_title"
                       ng-if="::group.notSignificantText !== undefined">
                       {{ 'CRITICAL_APPARATUS.ORTHOGRAPHIC_VARIANTS_FOR' | translate }} {{::group.groupName}}</span>
-                    <span 
+                    <span
                       class="critical-apparatus-entry_other-content_panel_orthographic_text"
                       ng-if="::group.notSignificantText !== undefined"
                       compile="group.notSignificantText"></span>
@@ -102,7 +103,7 @@
                 </div>
                 <div ng-switch-when="moreInfo">
                   <span class="app_lemma">
-                    {{ 'CRITICAL_APPARATUS.METADATA_FOR_LEMMA' | translate }} "<em 
+                    {{ 'CRITICAL_APPARATUS.METADATA_FOR_LEMMA' | translate }} "<em
                         ng-if="::vm.content.lemma.content !== ''"
                         compile="::vm.content.lemma.content"></em>"
                   </span>
@@ -114,18 +115,18 @@
                   </ul>
                   <ul ng-if="::(vm.content.attributes._keys.length <= 0 || vm.content.attributes._keys.length === 1 && vm.content.attributes._keys.indexOf('xml:id') > 0)">
                     <li><em>{{ 'CRITICAL_APPARATUS.NO_DATA' | translate }}</em></li></ul>
-                  
+
                   <span class="moreInfo-metadataTitle">{{ 'CRITICAL_APPARATUS.MORE_INFO' | translate }}</span>
                   <ul>
-                      <li 
+                      <li
                         class="app_lemma"
                         class="app_reading_content"
                         ng-if="::(vm.content.lemma.attributes._keys.length > 1 || vm.content.lemma.attributes._keys.length === 1 && vm.content.lemma.attributes._keys.indexOf('xml:id') < 0)">
                           <span>
                             {{ 'CRITICAL_APPARATUS.METADATA_FOR' | translate }}
-                            <em 
+                            <em
                                 ng-if="::vm.content.lemma.content !== ''"
-                                compile="::vm.content.lemma.content"></em> 
+                                compile="::vm.content.lemma.content"></em>
                           </span>
                           <ul>
                             <li ng-repeat="attr in ::vm.content.lemma.attributes._keys track by $index"
@@ -135,15 +136,15 @@
                           </ul>
                       </li>
 
-                      <li 
+                      <li
                         class="app_reading_content"
                         ng-repeat="reading in ::vm.content.significantReadings track by $index"
                         ng-if="::(reading.attributes._keys.length > 1 || reading.attributes._keys.length === 1 && reading.attributes._keys.indexOf('xml:id') < 0)">
                           <span>
-                           {{ 'CRITICAL_APPARATUS.METADATA_FOR' | translate }} 
-                            <em 
+                           {{ 'CRITICAL_APPARATUS.METADATA_FOR' | translate }}
+                            <em
                                 class="app_reading"
-                                compile="::reading.content"></em> 
+                                compile="::reading.content"></em>
                           </span>
                           <ul>
                             <li ng-repeat="attr in ::reading.attributes._keys track by $index"
@@ -153,15 +154,15 @@
                           </ul>
                       </li>
 
-                      <li 
+                      <li
                         class="app_reading_content"
                         ng-repeat="reading in ::vm.content.notSignificantReadings track by $index"
                         ng-if="::(reading.attributes._keys.length > 1 || reading.attributes._keys.length === 1 && reading.attributes._keys.indexOf('xml:id') < 0)">
                           <span>
-                            {{ 'CRITICAL_APPARATUS.METADATA_FOR' | translate }} 
-                            <em 
+                            {{ 'CRITICAL_APPARATUS.METADATA_FOR' | translate }}
+                            <em
                                 class="app_reading"
-                                compile="::reading.content"></em> 
+                                compile="::reading.content"></em>
                           </span>
                           <ul>
                             <li ng-repeat="attr in reading.attributes._keys track by $index">

@@ -166,7 +166,7 @@
               <a href="{{page.url}}" tabindex="2">{{page.shortName}}</a>
             </li>
           </ul>
-          <ul class="nav nav-list well" ng-repeat="module in modules | orderBy: 'name': desc" class="api-list-item">
+          <ul class="nav nav-list well" ng-repeat="module in modules | orderBy: 'name': asc" class="api-list-item">
             <li class="nav-header module">
               <a class="guide">module</a>
               <a class="code" href="{{module.url}}" title="{{module.name}}">{{module.name}}</a>

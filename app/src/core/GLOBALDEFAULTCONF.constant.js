@@ -48,19 +48,8 @@ angular.module('evtviewer.core')
 			active: true
 		}
 	},
-	/**
-	 * @module evtviewer.core
-	 * @ngdoc object
-	 * @name configUrl
-	 * @description
-	 * `boolean`
-	 * Url for external configuration file
-	 *
-	 * Default for DEV:
-	 * <pre> configUrl: '../../config/config.json' </pre>
-	 * Default for BUILD:
-	 * <pre> configUrl: 'config/config.json' </pre>
-	 */
+	// Default:
+	// <pre> configUrl: '../../config/config.json' </pre>
 	configUrl: '../../config/config.json',
 
    //dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
@@ -70,15 +59,14 @@ angular.module('evtviewer.core')
 	logoUrl: '',
 
 	enableXMLdownload: true,
-
-    /*sourcesUrl*/
-    /*Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.*/
+    // sourcesUrl //
+    // Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.//
     sourcesUrl       : '',
-    /* sourcesTextsUrl */
-    /* Path of the folder containing the xml files of the sources texts */
+    // sourcesTextsUrl //
+    // Path of the folder containing the xml files of the sources texts //
     sourcesTextsUrl : '',
-    /*analoguesUrl*/
-    /*Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.*/
+    //analoguesUrl//
+    //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
     analoguesUrl     : '',
 
     preferredWitness: 'A',
@@ -157,11 +145,13 @@ angular.module('evtviewer.core')
 	versionDef: '<witness>, <change>',
 	fragmentMilestone: '<witStart>, <witEnd>',
 	lacunaMilestone: '<lacunaStart>, <lacunaEnd>',
-	skipCriticalEntriesFilters: 'wit, target, corresp',
 	possibleVariantFilters: 'type, cause, hand',
 	possibleLemmaFilters: 'resp, cert',
 	notSignificantVariant: '<orig>, <sic>, [type=orthographic]',
 
+	loadCriticalEntriesImmediately: true,
+	maxWitsLoadTogether: 5,
+	
     /*Versions*/
     /*Array to encode cases of double or multiple redactions of the text*/
     /*The array collects the id used inside of the XML file as values of*/
@@ -185,17 +175,16 @@ angular.module('evtviewer.core')
     ],
 
     /*Definition of the element used within the XML file to encode quotes for the sources apparatus.*/
-    quoteDef    : '',
+    quoteDef    : '<quote>',
     /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
-    analogueDef : '',
+    analogueDef : '<seg>,<ref[type=parallelPassage]>',
 
     showReadingExponent: true,
     showInlineCriticalApparatus: true,
     showInlineSources: false,
     showInlineAnalogues: false,
 
-	loadCriticalEntriesImmediately: true,
-	maxWitsLoadTogether: 5,
+	
 
 	variantColors: {},
 	filterColors: {},

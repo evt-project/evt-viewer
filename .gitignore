@@ -2,8 +2,14 @@ node_modules
 app/dist
 .tmp
 .sass-cache
-.idea
 docs
-bower_components
-app/data
 package-lock.json
+bower_components
+build
+devDocs
+app/data
+app/old
+app/data/*
+.idea
+.DS_STORE
+package

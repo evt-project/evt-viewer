@@ -18,10 +18,16 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'build'
+    dist: 'build',
+    docs: '<%= yeoman.app %>/docs',
+    distDocs: 'devDocs'
   };
 
   grunt.loadNpmTasks('grunt-ngdocs');
+
+  grunt.loadNpmTasks('grunt-markdown');
+  
+  grunt.loadNpmTasks('grunt-text-replace'); // Used to automatically replace the path to config.json in GLOBALCONFIGS
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -33,12 +39,51 @@ module.exports = function (grunt) {
       options: {
         scripts: ['angular.js', '../src.js'],
         html5Mode: false,
-        template: '<%= yeoman.app %>/docs_templates/index.tmpl'
+        template: '<%= yeoman.docs %>/templates/index.tmpl',
+        startPage: '/api',
+        dest: '<%= yeoman.distDocs %>'
       },
+      installation: {
+        src: ['<%= yeoman.docs %>/installation/*.ngdoc'],
+        title: 'Development Enviroment Preparation'
+      }, 
       api: {
-       src: ['app/index.ngdoc', 'app/src/evtviewer.js', 'app/src/**/*.js', '!app/src/mobile/*.js'],
-       title: 'EVT 2 Dev Documentation'
-    }
+        src: ['<%= yeoman.docs %>/index.ngdoc', '<%= yeoman.app %>/src/evtviewer.js', '<%= yeoman.app %>/src/**/*.js', '!<%= yeoman.app %>/src/mobile/*.js'],
+        title: 'EVT 2 Dev Documentation'
+      }
+    },
+
+    markdown: {
+      all: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/',
+            src: '{,*/}*.md',
+            dest: '<%= yeoman.dist %>',
+            ext: '.html'
+          }
+        ]
+      }
+    },
+
+    replace: {
+      configPathBuild: {
+        src: ['<%= yeoman.app %>/src/{,*/}*.js'],
+        overwrite: true,
+        replacements: [{
+          from: '../../config/config.json',
+          to: 'config/config.json'
+        }]
+      },
+      configPathDev: {
+        src: ['<%= yeoman.app %>/src/{,*/}*.js'],
+        overwrite: true,
+        replacements: [{
+          from: 'config/config.json',
+          to: '../../config/config.json'
+        }]
+      }
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -174,6 +219,16 @@ module.exports = function (grunt) {
           ]
         }]
       },
+      docs: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.distDocs %>/{,*/}*',
+            '!<%= yeoman.distDocs %>/.git{,*/}*'
+          ]
+        }]
+      },
       server: '.tmp'
     },
 
@@ -197,12 +252,13 @@ module.exports = function (grunt) {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
-      },
-      // TODO: temp mobile
-      mobile: {
-        src: ['<%= yeoman.app %>/mobile.html'],
-        ignorePath:  /\.\.\//
       }
+      //,
+      // TODO: temp mobile
+      // mobile: {
+      //   src: ['<%= yeoman.app %>/mobile.html'],
+      //   ignorePath:  /\.\.\//
+      // }
       // TODO: overwrite bootstrap style in EVT css
       // sass: {
       //   src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
@@ -266,7 +322,7 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
@@ -393,7 +449,7 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.dist %>/*.html', '!<%= yeoman.dist %>/mobile.html']
       }
     },
 
@@ -409,6 +465,8 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
+            '!mobile.html',
+            'README.md',
             'images/{,*/}*.{webp}',
             'fonts/{,*/}*.*',
             'config/{,*/}*.*',
@@ -434,8 +492,8 @@ module.exports = function (grunt) {
       },
       docs: {
         expand: true,
-        cwd: '<%= yeoman.app %>/docs_templates',
-        dest: 'docs',
+        cwd: '<%= yeoman.docs %>',
+        dest: '<%= yeoman.distDocs %>',
         src: []
       }
     },
@@ -473,8 +531,8 @@ module.exports = function (grunt) {
       },
       local_dependencies: {
         files: {
-          '<%= yeoman.app %>/index.html': ['<%= yeoman.app %>/src/*/*.js'],
-          '<%= yeoman.app %>/mobile.html': ['<%= yeoman.app %>/src/*/*.js']
+          '<%= yeoman.app %>/index.html': ['<%= yeoman.app %>/src/*/*.js']
+          //'<%= yeoman.app %>/mobile.html': ['<%= yeoman.app %>/src/*/*.js']
         }
       }
     }
@@ -516,6 +574,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     // 'injector',
+    'replace:configPathBuild',
     'html2js:main',
     'wiredep',
     'useminPrepare',
@@ -528,7 +587,9 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'filerev',
-    'usemin'
+    'usemin',
+    'markdown',
+    'replace:configPathDev'
     // 'htmlmin'
   ]);
 

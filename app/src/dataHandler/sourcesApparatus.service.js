@@ -2,15 +2,52 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtSourcesApparatus
- * @description 
+ * @description
  * # evtSourcesApparatus
- * TODO: Add description and comments for every method
+ * Service containing methods to handle the contents of sources entries.
+ *
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ * @requires evtviewer.dataHandler.evtSourcesParser
+ * @requires evtviewer.dataHandler.evtCriticalApparatus
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
 **/
 angular.module('evtviewer.dataHandler')
 
 .service('evtSourcesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatus, evtCriticalApparatusParser) {
 	var apparatus = {};
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getContent
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * Retrieve the information about a particular quote.
+     *
+     * @param {element} quote XML element to parse
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {objecy} JSON object representing the content of the quote, that is structured as follows:
+        <pre>
+            var appContent = {
+				attributes: {
+					values: {},
+					_keys: []
+				},
+				sources: [],
+				quote: '',
+				abbrQuote: {
+					begin: '',
+					end: ''
+				},
+				quoteCorresp: '',
+				_xmlSource: ''
+			};
+        </pre>
+     * @author CM
+     */
 	apparatus.getContent = function(quote, scopeWit) {
 		// console.log('getContent', quote);
 		var appContent = {
@@ -36,12 +73,16 @@ angular.module('evtviewer.dataHandler')
 		for (var i = 0; i < sourceId.length; i++) {
 			source = parsedData.getSource(sourceId[i]);
 			entry = apparatus.getSource(source);
-			appContent.sources.push(entry);
+			if (entry) {
+				appContent.sources.push(entry);
+			}
 		}
 		for (var j = 0; j < sourceRefId.length; j++) {
 			source = parsedData.getSource(sourceRefId[j]);
 			entry = apparatus.getSource(source);
-			appContent.sources.push(entry);
+			if (entry) {
+				appContent.sources.push(entry);
+			}
 		}
 
 		appContent.quote = apparatus.getQuote(quote, scopeWit);
@@ -57,8 +98,33 @@ angular.module('evtviewer.dataHandler')
 
 		return appContent;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getSource
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * Retrieve the information about a particular source entry.
+     *
+     * @param {Object} entry JSON object representing the source
+     *
+     * @returns {objecy} JSON object representing the source, that is structured as follows:
+        <pre>
+            var source = {
+				id: '',
+				abbr: '',
+				text: '',
+				bibl: '',
+				url: '',
+				_xmlSource: ''
+			};
+        </pre>
+     * @author CM
+     */
 	apparatus.getSource = function(entry) {
+		if (!entry) {
+			return undefined;
+		}
 		var source = {
 			id: entry.id,
 			abbr: '',
@@ -109,35 +175,50 @@ angular.module('evtviewer.dataHandler')
 		}
 
 		//Prepares the links to the source text (online or in the source view)
-		if (entry.url.length === 1) {
-			if (entry.url[0].indexOf('http') >= 0) {
-				source.url += '<span class="linkLabel">See source text online</span><a target="_blank" href="' + entry.url[0] + '">' + entry.url[0] + '</a><br/>';
-			} else if (entry.url[0].indexOf(entry.id) >= 0) {
+		for (var z = 0; z < entry.url.length; z++) {
+			if (entry.url[z].indexOf('http') >= 0) {
+				source.url += '<span class="linkLabel">{{ \'CRITICAL_APPARATUS.SEE_FULL_SOURCE_WEB\' | translate }}</span><a target="_blank" href="' + entry.url[z] + '">' + entry.url[z] + '</a><br/>';
+			} else if (entry.url[z].indexOf(entry.id) >= 0) {
 				source.url += '<span class="linkLabel"><evt-source-ref data-source-id="' + entry.id + '">{{ \'CRITICAL_APPARATUS.SEE_FULL_SOURCE\' | translate }}</evt-source-ref></span>';
 			}
 		}
 
 		return source;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getSourceAbbr
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * Retrieve the abbreviated form of the output content of a particular source text.
+     *
+     * @param {Object} entry JSON object representing the source
+     *
+     * @returns {string} generated abbreviation of the source
+     *
+     * @author CM
+     */
 	apparatus.getSourceAbbr = function(entry) {
 		var abbr = '';
-		if (entry.abbr.msId.length > 0) {
-			for (var i = 0; i < entry.abbr.msId.length; i++) {
-				abbr += apparatus.getText(entry.abbr.msId[i]) + ' ';
-			}
-		} else {
-			//...or author and title.
-			if (entry.abbr.author.length > 0) {
-				abbr += apparatus.getText(entry.abbr.author[0]);
-				if (entry.abbr.author.length > 1) {
-					abbr += 'et al., ';
-				} else {
-					abbr += ', ';
+		if (entry.abbr) {
+			if (entry.abbr.msId && entry.abbr.msId.length > 0) {
+				for (var i = 0; i < entry.abbr.msId.length; i++) {
+					abbr += apparatus.getText(entry.abbr.msId[i]) + ' ';
 				}
-			}
-			if (entry.abbr.title.length > 0) {
-				abbr += apparatus.getText(entry.abbr.title[0]);
+			} else {
+				//...or author and title.
+				if (entry.abbr.author && entry.abbr.author.length > 0) {
+					abbr += apparatus.getText(entry.abbr.author[0]);
+					if (entry.abbr.author.length > 1) {
+						abbr += 'et al., ';
+					} else {
+						abbr += ', ';
+					}
+				}
+				if (entry.abbr.title && entry.abbr.title.length > 0) {
+					abbr += apparatus.getText(entry.abbr.title[0]);
+				}
 			}
 		}
 		//If there is no author nor title, it uses the xml:id
@@ -146,7 +227,22 @@ angular.module('evtviewer.dataHandler')
 		}
 		return abbr;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getQuote
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * Retrieve the textual output of a particular quote.
+     * The function will handle also sub quotes, which will be displayed between "((" and "))".
+     *
+     * @param {Object} quote JSON object representing the quote
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} the text of the quote
+     *
+     * @author CM
+     */
 	apparatus.getQuote = function(quote, scopeWit) {
 		var content = quote.content || [];
 		var result = '';
@@ -172,8 +268,23 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
-	//Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getText
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * Retrieve the text of a particular source entry.
+     * The basic text of the entry is already available into <code>content</code> array property;
+     * thus the function will just concatenate the items in it.
+     *
+     * @param {Object} entry JSON object representing the entry to handle
+     *
+     * @returns {string} the text of the entry
+     *
+     * @author CM
+	 * @todo Eventualmente aggiungere parametro stringa per il valore della class di span (tipo 'author' o 'textNode')
+     */
 	apparatus.getText = function(entry) {
 		var result = '';
 		var content = entry.content;
@@ -188,7 +299,21 @@ angular.module('evtviewer.dataHandler')
 		}
 		return result;
 	};
-
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtSourcesApparatus#getAppText
+     * @methodOf evtviewer.dataHandler.evtSourcesApparatus
+     *
+     * @description
+     * etrieve the text of a particular source entry for a particular scope witness.
+     *
+     * @param {Object} entry JSON object representing the entry to handle
+     * @param {string} scopeWit id of witness to consider
+     *
+     * @returns {string} the text of the entry
+     *
+     * @author CM
+     */
 	apparatus.getAppText = function(entry, scopeWit) {
 		var result = '';
 		if (scopeWit === '' || scopeWit === undefined || entry._indexes.witMap[scopeWit] === undefined) {

@@ -2,11 +2,23 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtBibliographyParser
- * @description 
+ * @description
  * # evtBibliographyParser
- * TODO: Add description and comments for every method
+ * Service containing methods to parse data regarding bibliographic references.
+ * The modules can be divided into parsers and getters.
+ * - Parsers: they will extract the information from the XML original source document and save them in
+ * {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+ * - Getters: they will return a certain value regarding a specific biliographic entrance.
+ * The functions without parameters return the value of variables defined inside the service itself.
+ * The functions with parameters, instead, will access to the fields of a particular object defined during main parsing.
  *
- * @author Maurizio Ricci
+ * @requires $q
+ * @requires xmlParser
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.evtParser
+ *
+ * @author MR
 **/
 angular.module('evtviewer.dataHandler')
 
@@ -43,14 +55,24 @@ angular.module('evtviewer.dataHandler')
     };
 
     var parser = {};
-    /*/
-    Questo file si compone sostanzialmente di 3 funzioni principali:
-    	- parseBiblInfo: ricerca nel documento i tag, in cui cercare le info bibliografiche
-    	- extractInfo: serve a estrarre le informazioni contenute dentro un certo tag. Per rendere più modulare la funzione,
-    				al suo interno sono oontenute altre funzioni ausiliarie, ciascuna con il compito di estrarre un certo tipo di informazioni
-    	- formatResult: ha il compito di usare le informazioni estratte in precedenza per creare una stringa html secondo un certo stile bibliografico,
-    				mediante CSS, viene curato lo stile, aggiungendo eventuali punti/virgole
-    /*/
+
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#parseBiblInfo
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will parse the XML source document in order to find the more information about bibliographic references possible.
+     * The possible tags that identify a bibliographic reference are defined in a private variable <code>bibliographicDef</code>
+     * (in TEI P5 they will be <code>bibl</code> and <code>biblStruct</code>).
+     * As the information is collected, they are saved in a temporary associative array (<code>newBiblElement</code>).
+     * Once the parser has ended, the collection of bibliographic references is stored in
+     * {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {string} doc string representing the XML element to parse
+     *
+     * @author MR
+     */
     parser.parseBiblInfo = function(doc) {
         var currentDocument = angular.element(doc);
 
@@ -62,9 +84,9 @@ angular.module('evtviewer.dataHandler')
     };
 
     var handleBibliographyDef = function(key, currentDocument) {
-    	var listBibl = currentDocument.find(sourceDescDef.replace(/[<>]/g, '') + ' ' +listBiblDef.replace(/[<>]/g, ''));
+    	var listBibl = currentDocument.find(listBiblDef.replace(/[<>]/g, ''));
         var resultsSet = listBibl.find('>' + bibliographyDef[key].replace(/[<>]/g, ''));
-        /*Non vogliamo i tag annidati ma solo quelli top, 
+        /*Non vogliamo i tag annidati ma solo quelli top,
         il caso in cui serve è quello dei bibl che possono essere annidati, vogliamo solo i bibl radice */
         //resultsSet = $(resultsSet).filter(function() {
             //non vogliamo niente che sia dentro sourceDesc ne che sia annidato dentro un altro bibl,
@@ -80,6 +102,81 @@ angular.module('evtviewer.dataHandler')
     };
 
     // Bibliographic data container
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#extractInfo
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will parse the information contained in a given tag.
+     * In order to make the function more modular, other auxiliary private functions were defined externally,
+     * each one with the task of extracting a certain type of data.<br /><br />
+     * **NOTES:**
+     * - The name/surname values can be retrieved from an unstructured string with a little bit of heuristic,
+     * simply going to look for a comma in the string: the text before the comma is interpreted as the last name, the text after as a name.
+     * <br/>Es: “Rossi, Mario” => **cognome:** Rossi **nome:** Mario <br/>
+     * Obviously, if there are more than one comma or none exists, no value will be found.
+     * - Multiple titles of the works are ignored.
+     * - If partial encryption (unstructured) is detected in the bibliographic node,
+     * output will have the same encoded information in XML.
+     *  It is possible for the end user to set the style of these entries in CSS using the selector:
+     * <code>.unstructuredBibl. &lt;Element_name&gt;</code><br/> Example:
+     * <pre>
+        .unstructuredBibl.title {
+            font-weight: bold;
+        }
+        </pre>
+     *
+     * @param {element} element XML element to parse
+     *
+     * @returns {Object} JSON object representing the extracted data, that is structured as follows:
+        <pre>
+            var newBiblElement = {
+                id: '',
+                type: '',
+                author: [],
+                titleAnalytic: '',
+                titleMonogr: '',
+                editionMonogr: '',
+                date: '',
+                editor: [],
+                publisher: '',
+                pubPlace: '',
+                biblScope: {},
+                note: {},
+                idno: {},
+                outputs: {},
+                plainText: ''
+            };
+        </pre>
+     * - **id:** identifier of the work retrieved from the XML source node (attribute <code>@xml:id</code>)),
+     * its parent node's id or generated from its xpath;
+     * - **type:** typology of the work, retrieved from the first attribute <code>@type</code> available among the titles found;
+     * - **author:** array of authors of the work, retrieved inside <code>&lt;monogr&gt;</code> if it is a book or inside
+     * <code>&lt;analytic&gt;</code> if it is a part of a collection. The values of name and surname are retrieved from the elements
+     * <code>&lt;name&gt;</code>, <code>&lt;surname&gt;</code>, <code>&lt;persName&gt;</code> or directly from <code>&lt;author&gt;</code>;
+     * - **titleAnalytic/titleMonogr:** title of the work, retrieved from <code>&lt;monogr&gt;/&lt;titleMonogr&gt;</code> if it is a book or from
+     * <code>&lt;analytic&gt;/&lt;titleAnalytic&gt;</code> if it is a part of a collection. The parser is able to find the title also directly
+     * inside <code>&lt;bibl&gt;</code> and <code>&lt;series&gt;</code>;
+     * - **editionMonogr:** edition of the work, retrieved from <code>&lt;edition&gt;</code>, when it is nested in <code>&lt;bibl&gt;</code>
+     * or <code>&lt;monogr&gt;</code>;
+     * - **date:** date of the work, retrieved from <code>&lt;date&gt;</code> when it is inside <code>&lt;bibl&gt;</code>, <code>&lt;series&gt;</code>,
+     * <code>&lt;monogr&gt;/&lt;edition&gt;</code> or <code>&lt;monogr&gt;/&lt;imprint&gt;</code>;
+     * - **editor:** editor of the work, retrieved in from <code>&lt;editor&gt;</code> at every level of nesting;
+     * - **publisher/pubPlace:** publisher and publication place of the work, retrieved from <code>&lt;publisher&gt;</code> and <code>&lt;pubPlace&gt;</code>
+     * when they are inside <code>&lt;monogr&gt;/&lt;imprint&gt;</code> or <code>&lt;series&gt;</code>;
+     * - **note:** notes about the work, retrieved from <code>&lt;note&gt;</code> when it is inside <code>&lt;monogr&gt;/&lt;imprint&gt;</code>.
+     * Notes are also saved in an associative array which presents as index the value of the attribute <code>@type</code> of the <code>&lt;note&gt;</code> itself;
+     * - **idno:** identifier number of the work, retrieved from <code>&lt;idno&gt;</code> when it directly nested in the bibliographic element;
+     * the info extracted are also saved in an associative array which presents as index the value of the attribute <code>@type</code> of the <code>&lt;idno&gt;</code> itself;
+     * - **biblScope:** bibliographic reference, retrieved from <code>&lt;biblScope&gt;</code> inside <code>&lt;monogr&gt;</code> or <code>&lt;series&gt;</code>;
+     * these information are organized in an associative array which presents as index the value of the attributes <code>@type</code> or <code>@unit</code>
+     * of <code>&lt;biblScope&gt;</code> itself;
+     * - **outputs:** associative array that contains HTML strings formatted according to a  specific citation style; the name of the style is the <code>key</code>
+     * of the array. In this way, once the output for a specific style is generated it is saved an will be easily retrieved without any further computation;
+     * - **plainText:** non-formatted HTML output that is generated when the bibliographic reference does not present any structured or encoded data.
+     * @author MR
+     */
     parser.extractInfo = function(element) {
         var newBiblElement = {
             id: '',
@@ -269,11 +366,9 @@ angular.module('evtviewer.dataHandler')
         });
     };
 
-    /*
-    	@elemento = dove cercare
-    	@lastRelevantParent = ultimo genitore conosciuto tra quelli di cui vogliamo estrarre info 
-    	(name,surname,forename,author), dobbiamo tenerne traccia per sapere dove salvare poi via via i dati ricevuti
-    */
+    //	@elemento = dove cercare
+    //	@lastRelevantParent = ultimo genitore conosciuto tra quelli di cui vogliamo estrarre info
+    //	(name,surname,forename,author), dobbiamo tenerne traccia per sapere dove salvare poi via via i dati ricevuti
     var parsePersonInfo = function(elemento, lastRelevantParent, newPersonElement) {
         if (elemento.nodeType === 3) {
             var text = elemento.textContent.substr(0, 1).toUpperCase() + elemento.textContent.substr(1);
@@ -418,10 +513,6 @@ angular.module('evtviewer.dataHandler')
         });
     };
 
-
-
-
-
     var isObject = function(obj) {
         return obj && ((typeof obj).toLowerCase() === 'object');
     };
@@ -434,8 +525,8 @@ angular.module('evtviewer.dataHandler')
         return (typeof obj).toLowerCase() === 'string';
     };
 
-    /* 	toglie i punti finali dal testo raccolto e rimuove anche gli spazi iniziali/finali per 
-    	garantire un corretto sorting e per maggiore omogeneità una volta su schermo */
+    // 	toglie i punti finali dal testo raccolto e rimuove anche gli spazi iniziali/finali per
+    //	garantire un corretto sorting e per maggiore omogeneità una volta su schermo
     var removeEndingPointTrim = function(arr, removeEndingPoint, trim) {
         if (typeof arr === 'string') {
             if (removeEndingPoint) {
@@ -502,9 +593,25 @@ angular.module('evtviewer.dataHandler')
         return res;
     };
 
-    //genera una stringa html in base alle informazioni estratte e a un certo stile bibliografico
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#formatResult
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will use the information about bibliographic references previously parsed
+     * in order to generate an HTML output string that respects a specific bibliographic style.
+     * The style, and the eventual add of points and commas, is handled with CSS style rules.
+     * The generated HTML style output is then saved in the stored reference of each bibliographic entry
+     * in order to be retrieved every time that is neede, without generating it again.
+     * The styles handled at the moment are Chicago, APA and MLA.
+     *
+     * @param {string} styleCode key of style code to use
+     * @param {Object} newBiblElement JSON object representing the bibliographic element
+     *
+     * @author MR
+     */
     parser.formatResult = function(styleCode, newBiblElement) {
-        console.log(styleCode);
         if (!newBiblElement.outputs[styleCode]) {
             var string = '';
             var firstAuthor, firstName, firstSurname;
@@ -897,11 +1004,10 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    /*/serve a estrarre nome/cognome da una stringa con un certo pattern:
-    	<cognome>+\s*,\s*<nome>* dove <cognome> e <nome> sono stringhe di testo rappresentanti un cognome/nome
-    	Esempio: Rossi, Mario -> cognome= Rossi, nome= Mario
-    			 Rossi, Mario, Luigi -> stringa non riconosciuta come valida
-    /*/
+    // serve a estrarre nome/cognome da una stringa con un certo pattern:
+    //	<cognome>+\s*,\s*<nome>* dove <cognome> e <nome> sono stringhe di testo rappresentanti un cognome/nome
+    //	Esempio: Rossi, Mario -> cognome= Rossi, nome= Mario
+    //			 Rossi, Mario, Luigi -> stringa non riconosciuta come valida
     var extractSurnameNameFromString = function(string) {
         var author = {
             surname: '',
@@ -968,33 +1074,86 @@ angular.module('evtviewer.dataHandler')
         return string1 + string2;
     };
 
-    /*/Getters, ritornano il valore richiesto relativo a una entrata bibliografica estratta, oppure undefined.
-	Le funzioni senza argomenti ritornano il valore di variabili definite dentro al servizio (chiamato parser).
-	Le funzioni che accettano un parametro (per facilità di comprensione chiamato newBiblElement) accedono dei campi di un oggetto definito 
-	nella funzione parser.extractInfo; per una descrizione più completa del modello dei dati estratti, vedere la documentazione di questo file,
-	alla voce newBiblElement. /*/
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#yearInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will tell whether or not any information about publication year as been detected
+     * among the bibliographic references parsed.
+     *
+     * @returns {boolean} whether or not there is at least one bibliographic referenc with publication year information
+     */
     parser.yearInfoDetected = function() {
         return yearTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#authorInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will tell whether or not any information about author as been detected
+     * among the bibliographic references parsed.
+     *
+     * @returns {boolean} whether or not there is at least one bibliographic referenc with author information
+     */
     parser.authorInfoDetected = function() {
         return authorTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#titleInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will tell whether or not any information about title as been detected
+     * among the bibliographic references parsed.
+     *
+     * @returns {boolean} whether or not there is at least one bibliographic referenc with title information
+     */
     parser.titleInfoDetected = function() {
         return titleTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#publisherInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will tell whether or not any information about publisher as been detected
+     * among the bibliographic references parsed.
+     *
+     * @returns {boolean} whether or not there is at least one bibliographic referenc with publisher information
+     */
     parser.publisherInfoDetected = function() {
         return publisherTagDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#bibliographicStyleInfoDetected
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This method will tell whether or not there are enough information (author and title at least) to handle bibliographic styles.
+     * @returns {boolean} whether or not bibliographic styles are available
+     */
     parser.bibliographicStyleInfoDetected = function() {
         return bibliographicStyleInfoDetected;
     };
-
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtBibliographyParser#getType
+     * @methodOf evtviewer.dataHandler.evtBibliographyParser
+     *
+     * @description
+     * This metod will returnthe type of the given bibliographic reference.
+     * This method encapsulates an internal function
+     *
+     * @param {Object} newBiblElement JSON object representing the bibliographic element to handle
+     */
     parser.getType = function(newBiblElement) {
-        //parser encapsulates an internal function
         return getPubblicationType(newBiblElement);
     };
 

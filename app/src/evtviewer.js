@@ -27,7 +27,6 @@
  * @requires evtviewer.box
  * @requires evtviewer.select
  * @requires evtviewer.buttonSwitch
- * @requires evtviewer.mobile
  * @requires evtviewer.popover
  * @requires evtviewer.namedEntity
  * @requires evtviewer.criticalApparatusEntry
@@ -47,6 +46,7 @@
  * @requires evtviewer.UItools
  * @requires evtviewer.search
  */
+ //* @requires evtviewer.mobile
 angular
 	.module('evtviewer', [
 		'ngAnimate',
@@ -69,7 +69,7 @@ angular
 		'evtviewer.box',
 		'evtviewer.select',
 		'evtviewer.buttonSwitch',
-		'evtviewer.mobile',
+		//'evtviewer.mobile',
 		'evtviewer.popover',
 		'evtviewer.namedEntity',
 		'evtviewer.criticalApparatusEntry',

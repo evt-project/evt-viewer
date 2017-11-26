@@ -4,7 +4,16 @@
  * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
  * @description 
  * # evtCriticalApparatusEntry
- * TODO: Add description and comments for every method
+ * This provider expands the scope of the
+ * {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} 
+ * directive and stores its reference untill the directive remains instantiated.
+ *
+ * @requires evtviewer.core.config
+ * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.dataHandler.baseData
+ * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.criticalApparatus.evtCriticalApparatus
+ * @requires evtviewer.UItools.evtPinnedElements
 **/
 angular.module('evtviewer.criticalApparatusEntry')
 
@@ -27,7 +36,42 @@ angular.module('evtviewer.criticalApparatusEntry')
 		// 
 		// Reading builder
 		// 
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#build
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * <p>This method will extend the scope of 
+         * {@link evtviewer.criticalApparatusEntry.directive:evtCriticalApparatusEntry evtCriticalApparatusEntry} directive 
+         * according to selected configurations and parsed data.</p>
+         * <p>In particular it will decide which sub content tabs have to be shown and which have to hidden.</p>
+         *
+         * @param {string} id string representing the id of scope critical apparatus entry
+         * @param {Object} scope initial scope of the directive
+         *
+         * @returns {Object} extended scope:
+            <pre>
+                var scopeHelper = {
+                    // expansion
+                    uid,
+                    scopeWit,
+                    appId,
+                    parentAppId,
+                    readingId,
+                    content,
+                    type,
+                    _subContentOpened,
+                    over,
+                    selected,
+                    tabs,
+                    exponent,
+                    showExponent,
+                    witnessesGroups,
+                    currentViewMode
+                };
+            </pre>
+         */
 		appEntry.build = function(id, scope) {
 			var currentId = idx++,
 				entryId = id || undefined,
@@ -126,40 +170,113 @@ angular.module('evtviewer.criticalApparatusEntry')
 		//
 		// Service function
 		// 
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#getById
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Get the reference to <code>&lt;evt-critical-apparatus-entry&gt;</code>
+         * with given id.
+         * 
+         * @param {string} currentId id of critical apparatus entry to handle
+         *
+         * @returns {Object} object representing the reference to <code>&lt;evt-critical-apparatus-entry&gt;</code>
+         * with given id
+         */
 		appEntry.getById = function(currentId) {
 			if (collection[currentId] !== 'undefined') {
 				return collection[currentId];
 			}
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#getList
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Get the list of all the instance of <code>&lt;evt-critical-apparatus-entry&gt;</code>.
+         *
+         * @returns {array} array of ids of all the instance of <code>&lt;evt-critical-apparatus-entry&gt;</code>.
+         */
 		appEntry.getList = function() {
 			return list;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#destroy
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Delete the reference of the instance of a particular <code>&lt;evt-critical-apparatus-entry&gt;</code>
+         * 
+         * @param {string} tempId id of <code>&lt;evt-critical-apparatus-entry&gt;</code> to destroy
+         */
 		appEntry.destroy = function(tempId) {
 			delete collection[tempId];
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#getPinned
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Get the list of critical apparatus entries that are pinned.
+         *
+         * @returns {array} array of ids of all the pinned critical apparatus entries
+         */
 		appEntry.getPinned = function() {
 			return evtPinnedElements.getPinnedByType('criticalApparatusEntry');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#setCurrentAppEntry
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Set current critical apparatus entry.
+         * @param {string} appId id of critical apparatus entry to be set as current one
+         */
 		appEntry.setCurrentAppEntry = function(appId) {
 			if (currentAppEntry !== appId) {
 				currentAppEntry = appId;
 			}
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#getCurrentAppEntry
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Retrieve current critical apparatus entry.
+         * @returns {string} id of current critical apparatus entry
+         */
 		appEntry.getCurrentAppEntry = function() {
 			return currentAppEntry;
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#mouseOutAll
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Simulate a "*mouseout*" event on all instances of <code>&lt;evt-critical-apparatus-entry&gt;</code>
+         */
 		appEntry.mouseOutAll = function() {
 			angular.forEach(collection, function(currentEntry) {
 				currentEntry.mouseOut();
 			});
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#mouseOutAll
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Simulate a "*mouseover*" event on all instances of <code>&lt;evt-critical-apparatus-entry&gt;</code> 
+         * with given entry id 
+         * @param {string} appId id of critical apparatus entry to handle
+         */
 		appEntry.mouseOverByAppId = function(appId) {
 			angular.forEach(collection, function(currentEntry) {
 				if (currentEntry.appId === appId) {
@@ -169,14 +286,30 @@ angular.module('evtviewer.criticalApparatusEntry')
 				}
 			});
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#unselectAll
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * Unselect all instances of <code>&lt;evt-critical-apparatus-entry&gt;</code>
+         */
 		appEntry.unselectAll = function() {
 			angular.forEach(collection, function(currentEntry) {
 				currentEntry.unselect();
 			});
 			appEntry.setCurrentAppEntry('');
 		};
-
+		/**
+         * @ngdoc method
+         * @name evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry#unselectAll
+         * @methodOf evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
+         *
+         * @description
+         * <p>Select all <code>&lt;evt-critical-apparatus-entry&gt;</code>s connected to a given critical entry.</p>
+         * <p>Set given <code>appId</code> as current one.</p>
+         * @param {string} appId id of critical apparatus entry to handle
+         */
 		appEntry.selectById = function(appId) {
 			angular.forEach(collection, function(currentEntry) {
 				if (currentEntry.appId === appId) {
@@ -190,5 +323,4 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 		return appEntry;
 	};
-
 });

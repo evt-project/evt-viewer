@@ -44,10 +44,22 @@ body {
         @include colors($base-color-light, $base-color-dark);
     }
 
-    > header .logo {
-        height: 34px;
-        float: left;
-        margin-right: 1rem;
+    > header {
+        .logo {
+            height: 34px;
+            float: left;
+            margin-right: 1rem;
+        }
+        .webSiteLink {
+            color: #f5f5f5;
+            font-size: 1.2rem;
+            margin-left: 0.4rem;
+            opacity: .7;
+            &:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+        }
     }
 }
 
@@ -514,7 +526,7 @@ pre {
     }
 }
 .p {
-    .projectInfo-inlineLabel { display: none; } 
+    .projectInfo-inlineLabel { display: none; }
 }
 
 // Generic style
@@ -588,4 +600,13 @@ pre {
 
 .emptyText {
     padding: 0 .4rem;
+    &::after {
+      content: "\00a0";
+  }
+}
+
+.front [data-type='footer'] {
+    font-size: 95%;
+    padding: 10px 0;
+    border-top: 1px solid;
 }

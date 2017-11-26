@@ -1,0 +1,65 @@
+@ngdoc overview
+@name OS X
+@description
+
+# EVT 2 - Development Enviroment Preparation
+Short instructions to install and configure the development framework for EVT 2.0 (evt-viewer) on OS X devices.
+
+## OS X
+
+* HOMEBREW [to do only if you haven't already installed homebrew]
+<pre> 
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  brew doctor
+</pre>
+
+* GIT [to do only if you haven't already installed git]
+<pre> sudo brew install git </pre>
+
+* RUBY
+<pre> 
+  sudo brew install ruby 
+  sudo gem update --system 
+  sudo gem install compass 
+</pre>
+
+* NODE JS
+<pre> sudo brew install node </pre>
+
+* BOWER AT SYSTEM LEVEL
+<pre> sudo npm install -g bower </pre>
+
+* GRUNT AT SYSTEM LEVEL
+<pre> sudo npm install -g grunt-cli  </pre>
+
+* CLONE THE EVT REPOSITORY FROM GITHUB
+<pre> git clone https://github.com/evt-project/evt-viewer.git </pre>
+
+* GO INTO THE REPOSITORY FOLDER
+<pre> cd evt-viewer </pre>
+
+* NPM
+<pre> 
+  npm install
+  npm install bower 
+</pre>
+[ignore any WARN message, they are harmless]
+
+* BOWER 
+<pre> bower install [choose the angular.js version recommended for evt-viewer] </pre>
+
+* START GRUNT DEV
+<pre> grunt dev </pre>
+[most likely at this point in time evt-viewer won't be launched correctly starting from the master branch, see below how to switch to  the develop branch]
+
+* SWITCH TO THE DEVELOP GIT BRANCH 
+<pre> git checkout develop </pre>
+
+* TO UPDATE THE REPOSITORY
+<pre> git pull </pre>
+
+* START GRUNT DEV
+<pre> grunt dev </pre>
+
+* IN CASE OF VISUALIZATION PROBLEMS
+<pre> grunt dev --force </pre>

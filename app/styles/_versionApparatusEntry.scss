@@ -260,18 +260,27 @@
 /* VERSION REF */
 .evt-version-ref {
     margin: 0 3px;
+    cursor: pointer;
     text-decoration: underline !important;
-    display: block;
-    
+
     &:hover {
         text-shadow: 0px 0px 1px rgba(0,0,0,.7);
-        cursor: pointer;
     }
     &::after {
         text-decoration: none !important;
     }
     &.selected {
-        cursor: default !important;
+        cursor: default;
         text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+        text-decoration: none;
+    }
+    &_text {
+        &:not(.selected):not( .not-select) {
+            text-decoration: underline !important;
+        }
+        &.not-select {
+            font-weight: bold;
+            cursor: default;
+        }
     }
 }

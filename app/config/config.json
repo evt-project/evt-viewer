@@ -1,38 +1,13 @@
 {
-	"dataUrl": "",
-    "sourcesUrl"       : "",
 
-    "sourcesTextsUrl" : "",
+    "indexTitle": "",
+    "webSite": "",
     "logoUrl": "",
-    "enableXMLdownload" : true,
-    "analoguesUrl"     : "",
 
-	"preferredWitness": "",
-	"skipWitnesses": "",
-
-	"indexTitle": "",
-	"webSite": "",
-
-	"defaultEdition": "diplomatic",
-	"showEditionLevelSelector": true,
-	"availableEditionLevel": [{
-		"value": "critical",
-		"label": "Critical",
-		"title": "Critical edition",
-		"visible": false
-	}, {
-		"value": "diplomatic",
-		"label": "Diplomatic",
-		"title": "Diplomatic edition",
-		"visible": true
-	}, {
-		"value": "interpretative",
-		"label": "Interpretative",
-		"title": "Interpretative edition",
-		"visible": true
-	}],
-
-    "showDocumentSelector": false,
+	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
+    "sourcesUrl"       : "data/sources.xml",
+    "analoguesUrl"     : "data/analogues.xml",
+    "sourcesTextsUrl" : "data/sources/",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
@@ -71,34 +46,77 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
+    "defaultEdition": "critical",
+    "showEditionLevelSelector": true,
 
-	"toolHeatMap": true,
-	"toolPinAppEntries": true,
-    "searchBoxPosition" : "",
-	"toolImageTextLinking": true,
+    "availableEditionLevel": [{
+        "value": "critical",
+        "label": "Critical",
+        "title": "Critical edition",
+        "visible": true
+    }, {
+        "value": "diplomatic",
+        "label": "Diplomatic",
+        "title": "Diplomatic edition",
+        "visible": false
+    }, {
+        "value": "interpretative",
+        "label": "Interpretative",
+        "title": "Interpretative edition",
+        "visible": false
+    }],
+
+    "enableXMLdownload" : true,
+
+    "toolPinAppEntries": true,
+    "toolImageTextLinking": true,
+
+	"searchBoxPosition" : "",
+
+    "namedEntitiesSelector": false,
+
+    "namedEntitiesToHandle": [{
+        "tagName": "persName",
+        "label": "Persons",
+        "available": true
+    },{
+        "tagName": "placeName",
+        "label": "Places",
+        "available": true
+    },{
+        "tagName": "orgName",
+        "label": "Organizations",
+        "available": true
+    }],
+
+    "otherEntitiesToHandle": [{
+        "tagName": "rolename",
+        "label": "Role Name",
+        "available": false,
+        "color": "#cfc"
+    }, {
+        "tagName": "measure",
+        "label": "Measure",
+        "available": false,
+        "color": "#ffecb3"
+    }],
+
+
+    "toolHeatMap": true,
+    "preferredWitness": "",
+    "skipWitnesses": "",
 
 	"listDef": "<listWit>, <listChange>",
 	"versionDef": "<witness>, <change>",
 	"fragmentMilestone": "<witStart>, <witEnd>",
 	"lacunaMilestone": "<lacunaStart>, <lacunaEnd>",
-	"skipCriticalEntriesFilters": "wit, target, corresp",
 	"possibleVariantFilters": "",
 	"possibleLemmaFilters": "resp",
 	"notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
 
 	"maxWitsLoadTogether": 5,
 
-    "versions" : [],
-    "witnessesGroups": [],
-
-    "quoteDef"              : "<quote>",
-    "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
-
-    "showReadingExponent": true,
-
-    "showInlineCriticalApparatus": false,
-    "showInlineSources": false,
-    "showInlineAnalogues": false,
+    "showDocumentSelector": false,
 
 	"variantColors": {
 		"type": {
@@ -121,33 +139,26 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-    "namedEntitiesSelector": true,
+    "versions" : ["rec2", "rec1", "rec3"],
+    "witnessesGroups": [
+        {
+            "groupName" : "Grp_1",
+            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
+        },
+        {
+            "groupName" : "Grp_2",
+            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
+        }
+    ],
 
-    "namedEntitiesToHandle": [{
-        "tagName": "persName",
-        "label": "Persons",
-        "available": true
-    },{
-        "tagName": "placeName",
-        "label": "Places",
-        "available": true
-    },{
-        "tagName": "orgName",
-        "label": "Organizations",
-        "available": true
-    }],
+    "quoteDef"              : "<quote>",
+    "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
-    "otherEntitiesToHandle": [{
-    	"tagName": "rolename",
-        "label": "Role Name",
-        "available": true,
-        "color": "#cfc"
-    }, {
-    	"tagName": "measure",
-    	"label": "Measure",
-    	"available": true,
-    	"color": "#ffecb3"
-    }],
+    "showReadingExponent": true,
+
+    "showInlineCriticalApparatus": false,
+    "showInlineSources": false,
+    "showInlineAnalogues": false,
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {
