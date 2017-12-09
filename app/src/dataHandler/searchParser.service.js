@@ -1,5 +1,5 @@
-import "jquery-xpath/jquery.xpath.js";
-var lunr = require("lunr");
+import 'jquery-xpath/jquery.xpath.js';
+var lunr = require('lunr');
 
 /**
  * @ngdoc service
@@ -11,15 +11,14 @@ var lunr = require("lunr");
  *
  * @requires evtviewer.dataHandler.evtGlyph
  */
-angular.module("evtviewer.dataHandler")
+angular.module('evtviewer.dataHandler')
 
-.service("evtSearchParser", function(evtGlyph) {
-   var evtSearchParser = {};
+.service('evtSearchP', function() {
 
-   var namespace = false,
-       nsResolver;
-
-   var lines = [];
+   function EvtSearchParser() {
+      this.namespace = false;
+      this.nsResolver = '';
+   }
 
    /**
     * @ngdoc method
@@ -34,24 +33,42 @@ angular.module("evtviewer.dataHandler")
     *
     * @author GC
     */
-   evtSearchParser.parseDocument = function (doc, currentEdition) {
-      console.log("SEARCH PARSER RUNNING!");
 
-      namespace = checkNamespace(doc, namespace);
+   EvtSearchParser.prototype.parseDocument = function (doc, currentEdition) {
+      console.log('SEARCH PARSER RUNNING!');
 
-      switch(currentEdition) {
+     // var namespace = EvtSearchParser.prototype.parseDocument.prototype.checkNamespace(doc, this.namespace, this.nsResolver);
+
+
+      /*var idx = lunr(function () {
+         this.ref('line');
+         this.field('text');
+         this.metadataWhitelist = ['position'];
+      });*/
+      /*switch(this.currentEdition) {
          case 'diplomatic':
          case 'interpretative':
             parseLines(doc, lines, currentEdition);
             break;
          case 'critical':
             break;
-      }
-
-      console.log(lines);
+      }*/
    };
 
-   evtSearchParser.createIndex = function(lines) {
+   EvtSearchParser.prototype.parseDocument.prototype.checkNamespace = function(doc, namespace, nsResolver) {
+      var ns = doc.documentElement.namespaceURI;
+      if(ns !== null) {
+         namespace = true;
+         nsResolver = function(prefix) {
+            if(prefix === 'ns') {
+               return doc.documentElement.namespaceURI;
+            }
+         };
+      }
+      return namespace;
+   };
+
+  /* evtSearchParser.createIndex = function(lines) {
 
       var idx = lunr(function () {
          this.ref('line')
@@ -66,9 +83,10 @@ angular.module("evtviewer.dataHandler")
       });
 
       var search = idx.search("secgan");
-   };
+   };*/
 
-   var parseLines = function(doc, lines, currentEdition) {
+
+  /* var parseLines = function(doc, lines, currentEdition) {
       lines = getLines(doc, currentEdition);
       return lines;
    };
@@ -119,6 +137,7 @@ angular.module("evtviewer.dataHandler")
 
       for(var i = 0; i < nodes.length; i++) {
          if(nodes[i].nodeName === 'g') {
+
             currentGlyph = evtGlyph.getGlyph(nodes[i]);
             line.text += evtGlyph.addGlyph(currentGlyph, currentEdition);
          }
@@ -128,19 +147,8 @@ angular.module("evtviewer.dataHandler")
       }
       return line.text;
    };
+*/
 
-   var checkNamespace = function(doc, namespace) {
-      var ns = doc.documentElement.namespaceURI;
-      if(ns !== null) {
-         namespace = true;
-         nsResolver = function(prefix) {
-            if(prefix === 'ns') {
-               return doc.documentElement.namespaceURI;
-            }
-         };
-      }
-      return namespace;
-   };
 
-return evtSearchParser;
+return EvtSearchParser;
 });

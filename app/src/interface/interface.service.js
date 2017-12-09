@@ -19,7 +19,8 @@
  * @requires evtviewer.dataHandler.evtCriticalApparatusParser
  * @requires evtviewer.dataHandler.evtCriticalParser
  * @requires evtviewer.dataHandler.baseData
- * @requires evtviewer.dataHandler.evtSearchParser
+ * @requires evtviewer.dataHandler.evtBuilder
+ * @requires evtviewer.dataHandler.evtSearch
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.reading.evtReading
  * @requires evtviewer.UItools.evtPinnedElements
@@ -28,7 +29,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtSearchParser, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtBuilder, evtSearch, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -232,13 +233,13 @@ angular.module('evtviewer.interface')
                 }
                 mainInterface.updateParams($routeParams);
 
+                var promises = [];
                 var doc = baseData.getXML();
                 // Parse Glyphs
-                evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
-                // Init search
-                evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
-
-                var promises = [];
+                 evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
+                 // Init search
+                 var evtSearchParser = evtBuilder.create(evtSearch, 'Parser');
+                 evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
 
                 var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                 if (currentDocFirstLoad !== undefined) {
