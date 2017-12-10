@@ -84,13 +84,6 @@ angular.module('evtviewer.dataHandler')
       return docs;
    };
 
-   Doc.prototype.getCurrentPage = function(xmlDocDom, line) {
-      var pages = $(line).xpath('.//preceding::pb/@n'),
-          currentPage = pages[pages.length-1].value;
-      return currentPage;
-
-   };
-
    //TODO add documentation
    Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition) {
       var lines = [];
@@ -138,7 +131,7 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    Doc.prototype.getLineText = function(xmlDocDom, lines, currentEdition) {
-      var lineNodes = [],
+      var lineInfo = [],
           line = {
              doc: [],
              page: '',
@@ -146,13 +139,15 @@ angular.module('evtviewer.dataHandler')
              text : ''
           };
 
-      lineNodes = Doc.prototype.getLineNodes(xmlDocDom, currentEdition);
+      console.time('getLineInfo');
+      lineInfo = Doc.prototype.getLinesInfo(xmlDocDom, currentEdition);
+      console.timeEnd('getLineInfo');
 
-      for (var i = 0; i < lineNodes.length; i++) {
+      for (var i = 0; i < lineInfo.length; i++) {
          line.doc = Doc.prototype.getCurrentDocs();
-         line.page = lineNodes[i].page;
-         line.line = lineNodes[i].line;
-         line.text = Doc.prototype.addLineContent(lineNodes[i], line, currentEdition);
+         line.page = lineInfo[i].page;
+         line.line = lineInfo[i].line;
+         line.text = Doc.prototype.addLineContent(lineInfo[i], line, currentEdition);
          lines.push(line);
          line = {
             doc: [],
@@ -167,47 +162,56 @@ angular.module('evtviewer.dataHandler')
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchDocument#getLineNodes
+    * @name evtviewer.dataHandler.evtSearchDocument#getLinesInfo
     * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
-    * This method get line's nodes
+    * This method get some information about the line:
+    * - the nodes within a line
+    * - the line number
+    * - the page number where the line is located
     *
     * @param {element} xmlDocDom XML element to be parsed
     * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
     *
-    * @returns {array} return an array of line's nodes
+    * @returns {array} return an array of objects containing information about the lines
     *
     * @author GC
     */
-   Doc.prototype.getLineNodes = function(xmlDocDom, currentEdition) {
-      var linesNodes = [],
+   Doc.prototype.getLinesInfo = function(xmlDocDom, currentEdition) {
+      var linesNodes,
           line = {},
-          lineNodes = [];
+          linesInfo = [],
+          currentPage;
 
-      linesNodes = this.namespace ? $(xmlDocDom).xpath('//ns:body//ns:l', this.nsResolver)
-                                  : $(xmlDocDom).xpath('//body//l');
+      linesNodes = this.namespace ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb)', this.nsResolver)
+                                  : $(xmlDocDom).xpath('//body//(l|pb)');
 
-      for(var i = 0; i < lineNodes.length; i++) {
-         line.page = Doc.prototype.getCurrentPage(xmlDocDom, linesNodes[i]);
-         line.line = $(linesNodes[i]).xpath('string(@n)')[0];
-
-         switch (currentEdition) {
-            case 'diplomatic':
-               line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex))]', this.nsResolver)
-                                           : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]');
-               break;
-            case 'interpretative':
-               break;
-            case 'critical':
-               break;
+      for(var i = 0; i < linesNodes.length; i++) {
+         if(linesNodes[i].nodeName === 'pb') {
+            currentPage = linesNodes[i].getAttribute('n');
          }
+         else {
+            line.page = currentPage;
+            line.line = $(linesNodes[i]).xpath('string(@n)')[0];
 
-         lineNodes.push(line);
-         line = {};
+            switch (currentEdition) {
+               case 'diplomatic':
+                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex))]', this.nsResolver)
+                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]');
+                  break;
+               case 'interpretative':
+                  break;
+               case 'critical':
+                  break;
+            }
+
+            linesInfo.push(line);
+            line = {};
+         }
       }
 
-      return lineNodes;
+      return linesInfo;
    };
 
    /**
@@ -219,7 +223,7 @@ angular.module('evtviewer.dataHandler')
     * @description
     * This method add line's content to an object
     *
-    * @param {array} lineNodes The line's nodes
+    * @param {object} lineInfo An object containing information about the current line
     * @param {object} line The line object with his properties (line.line and line.nodes)
     * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
     *
@@ -227,8 +231,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Doc.prototype.addLineContent = function (lineNodes, line, currentEdition) {
-      var nodes = lineNodes.nodes;
+   Doc.prototype.addLineContent = function (lineInfo, line, currentEdition) {
+      var nodes = lineInfo.nodes;
 
       for(var i = 0; i < nodes.length; i++) {
 
