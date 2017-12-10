@@ -21,6 +21,7 @@ angular.module('evtviewer.dataHandler')
    function Doc() {
       this.namespace = false;
       this.nsResolver = '';
+      this.title = '';
    }
 
    /**
@@ -58,7 +59,7 @@ angular.module('evtviewer.dataHandler')
     * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
-    * This method get the title and the pages of the current docs
+    * This method get the title the currents docs
     *
     * @returns {array} return a collection of docs
     *
@@ -76,11 +77,18 @@ angular.module('evtviewer.dataHandler')
          docId = docIndexes[i];
          document = documents[docId];
          doc.title = document.title;
-         doc.pages = document.pages;
          docs.push(doc);
          doc = {};
       }
+
       return docs;
+   };
+
+   Doc.prototype.getCurrentPage = function(xmlDocDom, line) {
+      var pages = $(line).xpath('.//preceding::pb/@n'),
+          currentPage = pages[pages.length-1].value;
+      return currentPage;
+
    };
 
    //TODO add documentation
@@ -88,8 +96,6 @@ angular.module('evtviewer.dataHandler')
       var lines = [];
       lines = Doc.prototype.parseLines(xmlDocDom, lines, currentEdition);
       console.log(lines);
-
-      var doctitle = Doc.prototype.getDocTitle();
    };
 
    /**
@@ -134,6 +140,8 @@ angular.module('evtviewer.dataHandler')
    Doc.prototype.getLineText = function(xmlDocDom, lines, currentEdition) {
       var lineNodes = [],
           line = {
+             doc: [],
+             page: '',
              line:'',
              text : ''
           };
@@ -141,10 +149,14 @@ angular.module('evtviewer.dataHandler')
       lineNodes = Doc.prototype.getLineNodes(xmlDocDom, currentEdition);
 
       for (var i = 0; i < lineNodes.length; i++) {
+         line.doc = Doc.prototype.getCurrentDocs();
+         line.page = lineNodes[i].page;
          line.line = lineNodes[i].line;
          line.text = Doc.prototype.addLineContent(lineNodes[i], line, currentEdition);
          lines.push(line);
          line = {
+            doc: [],
+            page: '',
             line:'',
             text : ''
          };
@@ -176,10 +188,11 @@ angular.module('evtviewer.dataHandler')
       linesNodes = this.namespace ? $(xmlDocDom).xpath('//ns:body//ns:l', this.nsResolver)
                                   : $(xmlDocDom).xpath('//body//l');
 
-      for(var i = 0; i < linesNodes.length; i++) {
+      for(var i = 0; i < lineNodes.length; i++) {
+         line.page = Doc.prototype.getCurrentPage(xmlDocDom, linesNodes[i]);
          line.line = $(linesNodes[i]).xpath('string(@n)')[0];
 
-         switch(currentEdition) {
+         switch (currentEdition) {
             case 'diplomatic':
                line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex))]', this.nsResolver)
                                            : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]');
