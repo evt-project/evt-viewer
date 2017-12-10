@@ -22,7 +22,7 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @module evtviewer.dataHandler
     * @name evtviewer.dataHandler.evtSearchParser#parseDocument
-    *
+    * @methodOf evtviewer.dataHandler.evtSearchParser
     *
     * @description
     * This method parse a specific XML document.

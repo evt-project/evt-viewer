@@ -11,11 +11,12 @@ import 'jquery-xpath/jquery.xpath.js';
  *
  * @requires evtviewer.dataHandler.evtBuilder
  * @requires evtviewer.dataHandler.evtGlyph
+ * @requires evtviewer.dataHandler.parseData
  * @requires evtviewer.core.Utils
  */
 angular.module('evtviewer.dataHandler')
 
-.factory('evtSearchDocument', function(evtBuilder, evtGlyph, Utils) {
+.factory('evtSearchDocument', function(evtBuilder, evtGlyph, parsedData, Utils) {
    //Doc constructor
    function Doc() {
       this.namespace = false;
@@ -26,6 +27,7 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @module evtviewer.dataHandler
     * @name evtviewer.dataHandler.evtSearchDocument#hasNamespace
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
     * This method check if XML document has a namespace
@@ -49,17 +51,52 @@ angular.module('evtviewer.dataHandler')
       return this.namespace;
    };
 
+   /**
+    * @ngdoc method
+    * @module evtviewer.dataHandler
+    * @name evtviewer.dataHandler.evtSearchDocument#getCurrentDocs
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    *
+    * @description
+    * This method get the title and the pages of the current docs
+    *
+    * @returns {array} return a collection of docs
+    *
+    * @author GC
+    */
+   Doc.prototype.getCurrentDocs = function() {
+      var documents = parsedData.getDocuments(),
+          docIndexes = documents._indexes,
+          docId,
+          document,
+          docs = [],
+          doc = {};
+
+      for(var i = 0; i < docIndexes.length; i++) {
+         docId = docIndexes[i];
+         document = documents[docId];
+         doc.title = document.title;
+         doc.pages = document.pages;
+         docs.push(doc);
+         doc = {};
+      }
+      return docs;
+   };
+
    //TODO add documentation
    Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition) {
       var lines = [];
       lines = Doc.prototype.parseLines(xmlDocDom, lines, currentEdition);
       console.log(lines);
+
+      var doctitle = Doc.prototype.getDocTitle();
    };
 
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
     * @name evtviewer.dataHandler.evtSearchDocument#parseLines
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
     * This method parses document's lines
@@ -81,6 +118,7 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @module evtviewer.dataHandler
     * @name evtviewer.dataHandler.evtSearchDocument#getLineText
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
     * This method get line's number and text
@@ -118,6 +156,7 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @module evtviewer.dataHandler
     * @name evtviewer.dataHandler.evtSearchDocument#getLineNodes
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
     * This method get line's nodes
@@ -162,6 +201,7 @@ angular.module('evtviewer.dataHandler')
     * @ngdoc method
     * @module evtviewer.dataHandler
     * @name evtviewer.dataHandler.evtSearchDocument#addLineContent
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
     * This method add line's content to an object
