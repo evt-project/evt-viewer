@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtEditionParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -126,6 +126,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} type Type of document passed [e.g. 'source', 'analogues']
      * @author CM
      */
+     
     baseData.addXMLExtDocument = function(extDoc, type) {
         var docElements = xmlParser.parse(extDoc);
         try {
@@ -168,6 +169,13 @@ angular.module('evtviewer.dataHandler')
             _console.log('Something wrong with the supplementary XML files '+e);
         }
     };
+
+
+    /** intanto partiamo da qui */
+
+
+
+
 
     /**
      * @ngdoc method
@@ -224,6 +232,9 @@ angular.module('evtviewer.dataHandler')
 
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
+
+        // Da fare : Parse edition 
+        evtEditionParser.parseEdition(docElements);
 
     };
 
