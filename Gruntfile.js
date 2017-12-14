@@ -1,4 +1,5 @@
 /*jshint camelcase: false */
+/*jshint camelcase: false */
 'use strict';
 
 // # Globbing
@@ -26,7 +27,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ngdocs');
 
   grunt.loadNpmTasks('grunt-markdown');
-  
+
   grunt.loadNpmTasks('grunt-text-replace'); // Used to automatically replace the path to config.json in GLOBALCONFIGS
 
   // Define the configuration for all the tasks
@@ -46,7 +47,7 @@ module.exports = function (grunt) {
       installation: {
         src: ['<%= yeoman.docs %>/installation/*.ngdoc'],
         title: 'Development Enviroment Preparation'
-      }, 
+      },
       api: {
         src: ['<%= yeoman.docs %>/index.ngdoc', '<%= yeoman.app %>/src/evtviewer.js', '<%= yeoman.app %>/src/**/*.js', '!<%= yeoman.app %>/src/mobile/*.js'],
         title: 'EVT 2 Dev Documentation'
@@ -108,11 +109,13 @@ module.exports = function (grunt) {
         tasks: ['compass:server', 'autoprefixer']
       },
       babel: {
-        files: ['<%= yeoman.app %>/src/dataHandler/searchParser.service.js'],
+        files: ['<%= yeoman.app %>/src/dataHandler/search/searchDocument.service.js',
+                '<%= yeoman.app %>/src/dataHandler/search/searchPoetry.service.js'],
         tasks: ['babel']
       },
       webpack: {
-        files: ['<%= yeoman.app %>/dist/searchParser.service.js'],
+        files: ['<%= yeoman.app %>/dist/comp/searchDocument.service.js',
+                '<%= yeoman.app %>/dist/comp/searchPoetry.service.js'],
         tasks: ['webpack']
       },
       // gruntfile: {
@@ -303,7 +306,8 @@ module.exports = function (grunt) {
        },
        dist: {
           files: {
-             'app/dist/searchParser.service.js': 'app/src/dataHandler/searchParser.service.js'
+             'app/dist/comp/searchDocument.service.js': 'app/src/dataHandler/search/searchDocument.service.js',
+             'app/dist/comp/searchPoetry.service.js': 'app/src/dataHandler/search/searchPoetry.service.js'
           }
        }
      },

@@ -36,7 +36,10 @@ angular.module('evtviewer.dataHandler')
 
       var doc = evtBuilder.create(Parser, 'Doc');
       doc.hasNamespace(xmlDocDom);
-      doc.parsePoetry(xmlDocDom, currentEdition);
+      console.log('NAMESPACE: ' + doc.hasNamespace(xmlDocDom));
+      var ns = doc.namespace;
+      var nsRes = doc.nsResolver;
+      doc.parsePoetry(xmlDocDom, currentEdition, ns, nsRes);
    };
 
    Parser.Doc = evtSearchDocument;

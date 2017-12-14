@@ -3,11 +3,12 @@ const path = require('path');
 module.exports = {
   devtool: 'source-map',
   entry: [
-    './app/dist/searchParser.service.js'
+     './app/dist/comp/searchDocument.service.js',
+     './app/dist/comp/searchPoetry.service.js'
   ],
   output: {
     path: './app/dist',
-    filename: 'searchParser.service.js'
+    filename: 'searchDocument.service.js'
   },
   plugins: [
   ],
