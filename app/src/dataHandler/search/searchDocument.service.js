@@ -85,9 +85,9 @@ angular.module('evtviewer.dataHandler')
    };
 
    //TODO add documentation
-   Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition) {
+   Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, ns, nsResolver) {
       var lines = [];
-      lines = Doc.prototype.parseLines(xmlDocDom, lines, currentEdition);
+      lines = Doc.prototype.parseLines(xmlDocDom, lines, currentEdition, ns, nsResolver);
       console.log(lines);
    };
 
@@ -108,8 +108,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Doc.prototype.parseLines = function(xmlDocDom, lines, currentEdition) {
-      lines = Doc.prototype.getLineText(xmlDocDom, lines, currentEdition);
+   Doc.prototype.parseLines = function(xmlDocDom, lines, currentEdition, ns, nsResolver) {
+      lines = Doc.prototype.getLineText(xmlDocDom, lines, currentEdition, ns, nsResolver);
       return lines;
    };
 
@@ -130,7 +130,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Doc.prototype.getLineText = function(xmlDocDom, lines, currentEdition) {
+   Doc.prototype.getLineText = function(xmlDocDom, lines, currentEdition, ns, nsResolver) {
       var lineInfo = [],
           line = {
              doc: [],
@@ -140,7 +140,7 @@ angular.module('evtviewer.dataHandler')
           };
 
       console.time('getLineInfo');
-      lineInfo = Doc.prototype.getLinesInfo(xmlDocDom, currentEdition);
+      lineInfo = Doc.prototype.getLinesInfo(xmlDocDom, currentEdition, ns, nsResolver);
       console.timeEnd('getLineInfo');
 
       for (var i = 0; i < lineInfo.length; i++) {
@@ -178,14 +178,14 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Doc.prototype.getLinesInfo = function(xmlDocDom, currentEdition) {
+   Doc.prototype.getLinesInfo = function(xmlDocDom, currentEdition, ns, nsResolver) {
       var linesNodes,
           line = {},
           linesInfo = [],
           currentPage;
 
-      linesNodes = this.namespace ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb)', this.nsResolver)
-                                  : $(xmlDocDom).xpath('//body//(l|pb)');
+      linesNodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb)', nsResolver)
+                      : $(xmlDocDom).xpath('//body//(l|pb)');
 
       for(var i = 0; i < linesNodes.length; i++) {
          if(linesNodes[i].nodeName === 'pb') {
@@ -197,12 +197,12 @@ angular.module('evtviewer.dataHandler')
 
             switch (currentEdition) {
                case 'diplomatic':
-                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns::note))]', this.nsResolver)
-                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]');
+                  line.nodes = ns ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]', nsResolver)
+                                  : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]');
                   break;
                case 'interpretative':
-                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns::note))]', this.nsResolver)
-                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]');
+                  line.nodes = ns ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]', nsResolver)
+                                  : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]');
                   break;
                case 'critical':
                   break;
