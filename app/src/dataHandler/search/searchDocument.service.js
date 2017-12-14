@@ -201,6 +201,8 @@ angular.module('evtviewer.dataHandler')
                                               : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]');
                   break;
                case 'interpretative':
+                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am))]', this.nsResolver)
+                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]');
                   break;
                case 'critical':
                   break;
@@ -251,6 +253,7 @@ angular.module('evtviewer.dataHandler')
                }
                break;
             case 'interpretative':
+               line.text += nodes[i].textContent;
                break;
             case 'critical':
                break;
