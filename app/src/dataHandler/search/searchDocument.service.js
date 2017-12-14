@@ -197,12 +197,12 @@ angular.module('evtviewer.dataHandler')
 
             switch (currentEdition) {
                case 'diplomatic':
-                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex))]', this.nsResolver)
-                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex))]');
+                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns::note))]', this.nsResolver)
+                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]');
                   break;
                case 'interpretative':
-                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am))]', this.nsResolver)
-                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am))]');
+                  line.nodes = this.namespace ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns::note))]', this.nsResolver)
+                                              : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]');
                   break;
                case 'critical':
                   break;
