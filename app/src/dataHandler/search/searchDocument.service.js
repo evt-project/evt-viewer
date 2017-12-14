@@ -184,8 +184,8 @@ angular.module('evtviewer.dataHandler')
           linesInfo = [],
           currentPage;
 
-      linesNodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb)', nsResolver)
-                      : $(xmlDocDom).xpath('//body//(l|pb)');
+      linesNodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb)[not(ancestor::ns:note)]', nsResolver)
+                      : $(xmlDocDom).xpath('//body//(l|pb)[not(ancestor::note)]');
 
       for(var i = 0; i < linesNodes.length; i++) {
          if(linesNodes[i].nodeName === 'pb') {
