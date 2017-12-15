@@ -102,7 +102,7 @@ angular.module('evtviewer.dataHandler')
             line.page = currentPage;
             line.line = nodes[i].getAttribute('n') || id; id++;
 
-            var children = Poetry.prototype.getChildNodes(currentEdition, line, nodes[i], ns, nsResolver);
+            var children = Poetry.prototype.getChildNodes(currentEdition, nodes[i], ns, nsResolver);
             line.text = Poetry.prototype.getText(children, currentEdition);
 
             lines.push(line);
@@ -120,18 +120,54 @@ angular.module('evtviewer.dataHandler')
       return lines;
    };
 
-   //TODO Add documentation
+   /**
+    * @ngdoc method
+    * @module evtviewer.dataHandler
+    * @name evtviewer.dataHandler.evtSearchDocument#getPoetryTitle
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    *
+    * @description
+    * This method get the title of a specific poem
+    *
+    * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
+    * @param {element} node The line's node
+    * @param {boolean} ns True if namespace exist
+    * @param {function} nsResolver If exist it resolves the namespace
+    *
+    * @returns {str} return the poem's title
+    *
+    * @author GC
+    */
    Poetry.prototype.getPoetryTitle = function (currentEdition, node, ns, nsResolver) {
       var text = '',
-         nodes = Poetry.prototype.getChildNodes(currentEdition, nodes, node, ns, nsResolver);
+         nodes = Poetry.prototype.getChildNodes(currentEdition, node, ns, nsResolver);
 
       text += Poetry.prototype.getText(nodes, currentEdition);
 
       return text;
    };
 
-   //TODO Add documentation
-   Poetry.prototype.getChildNodes = function(currentEdition, nodes, node, ns, nsResolver) {
+   /**
+    * @ngdoc method
+    * @module evtviewer.dataHandler
+    * @name evtviewer.dataHandler.evtSearchDocument#getChildNodes
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    *
+    * @description
+    * This method get child nodes of specific line node
+    *
+    * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
+    * @param {element} node The line's node
+    * @param {boolean} ns True if namespace exist
+    * @param {function} nsResolver If exist it resolves the namespace
+    *
+    * @returns {array} return and array of child nodes
+    *
+    * @author GC
+    */
+   Poetry.prototype.getChildNodes = function(currentEdition, node, ns, nsResolver) {
+      var nodes = [];
+
       switch (currentEdition) {
          case 'diplomatic':
             nodes = ns ? $(node).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]', nsResolver)
