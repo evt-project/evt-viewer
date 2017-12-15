@@ -16,9 +16,7 @@ angular.module('evtviewer.dataHandler')
 
 .factory('evtSearchPoetry', function(evtBuilder, evtGlyph, Utils) {
    //Poetry constructor
-   function Poetry() {
-
-   }
+   function Poetry() {}
 
    /**
     * @ngdoc method
@@ -32,144 +30,142 @@ angular.module('evtviewer.dataHandler')
     * @param {element} xmlDocDom XML element to be parsed
     * @param {array} lines Parsed lines
     * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
+    * @param {array} docs The document's title
+    * @param {boolean} ns True if namespace exist
+    * @param {function} nsResolver If exist it resolves the namespace
     *
     * @returns {array} return an array of parsed lines
     *
     * @author GC
     */
-   Poetry.prototype.parseLines = function(xmlDocDom, lines, currentEdition, ns, nsResolver) {
-      lines = Poetry.prototype.getLineText(xmlDocDom, lines, currentEdition, ns, nsResolver);
+   Poetry.prototype.parseLines = function(xmlDocDom, lines, currentEdition, docs, ns, nsResolver) {
+      lines = Poetry.prototype.getLines(xmlDocDom, currentEdition, docs, ns, nsResolver);
       return lines;
    };
 
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchDocument#getLineText
+    * @name evtviewer.dataHandler.evtSearchDocument#getLine
     * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
-    * This method get line's number and text
-    *
-    * @param {element} xmlDocDom XML element to be parsed
-    * @param {array} lines Parsed lines
-    * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
-    *
-    * @returns {array} return an array of parsed lines
-    *
-    * @author GC
-    */
-   Poetry.prototype.getLineText = function(xmlDocDom, lines, currentEdition, ns, nsResolver) {
-      var lineInfo = [],
-          line = {
-            doc: [],
-            page: '',
-            line:'',
-            text : ''
-         };
-
-      console.time('getLineInfo');
-      lineInfo = Poetry.prototype.getLinesInfo(xmlDocDom, currentEdition, ns, nsResolver);
-      console.timeEnd('getLineInfo');
-
-      for (var i = 0; i < lineInfo.length; i++) {
-         //line.doc = Doc.prototype.getCurrentDocs();
-         line.page = lineInfo[i].page;
-         line.line = lineInfo[i].line;
-         line.text = Poetry.prototype.addLineContent(lineInfo[i], line, currentEdition);
-         lines.push(line);
-         line = {
-            doc: [],
-            page: '',
-            line:'',
-            text : ''
-         };
-      }
-      return lines;
-   };
-
-   /**
-    * @ngdoc method
-    * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchDocument#getLinesInfo
-    * @methodOf evtviewer.dataHandler.evtSearchDocument
-    *
-    * @description
-    * This method get some information about the line:
-    * - the nodes within a line
-    * - the line number
-    * - the page number where the line is located
+    * This method get line's number, page number, text and some information about lines
     *
     * @param {element} xmlDocDom XML element to be parsed
     * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
+    * @param {array} docs The document's title
     *
-    * @returns {array} return an array of objects containing information about the lines
-    *
+    * @returns {array} return an array of parsed lines. The structure is:
+    * <pre>
+    *     var lines = [
+    *       0: {
+    *          doc:[],
+    *          line:'',
+    *          page:'',
+    *          poetry:'',
+    *          text:''
+    *       },
+    *       1: {
+    *          doc:[],
+    *          line:'',
+    *          page:'',
+    *          poetry:'',
+    *          text:''
+    *       }
+    *     ]
+    * </pre>
     * @author GC
     */
-   Poetry.prototype.getLinesInfo = function(xmlDocDom, currentEdition, ns, nsResolver) {
-      var linesNodes,
+   Poetry.prototype.getLines = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+      var lines = [],
          line = {},
-         linesInfo = [],
-         currentPage;
-      //id = 1;
+         currentPage,
+         id,
+         title;
 
-      linesNodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb|ns:head)[not(ancestor::ns:note)]', nsResolver)
-         : $(xmlDocDom).xpath('//body//(l|pb|head)[not(ancestor::note)]');
+      var nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb|ns:head[@type="sub"])[not(ancestor::ns:note)]', nsResolver)
+                     : $(xmlDocDom).xpath('//body//(l|pb|head[@type="sub"])[not(ancestor::note)]');
 
-      for(var i = 0; i < linesNodes.length; i++) {
-         if(linesNodes[i].nodeName === 'pb') {
-            currentPage = linesNodes[i].getAttribute('n');
+
+      for(var i = 0; i < nodes.length; i++) {
+         if(nodes[i].nodeName === 'pb') {
+            currentPage = nodes[i].getAttribute('n');
          }
-         else if(linesNodes[i].nodeName === 'head') {
-
+         else if(nodes[i].nodeName === 'head') {
+            title = Poetry.prototype.getPoetryTitle(currentEdition, nodes[i], ns, nsResolver);
+            id = 1;
          }
          else {
+            line.doc = docs;
+            line.poetry = title;
             line.page = currentPage;
-            //line.line = $(linesNodes[i]).xpath('string(@n)')[0] || id;
-            //id++;
-            //line.line = Doc.prototype.getLineNumber(lineNodes[i]);
+            line.line = nodes[i].getAttribute('n') || id; id++;
 
-            switch (currentEdition) {
-               case 'diplomatic':
-                  line.nodes = ns ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]', nsResolver)
-                     : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]');
-                  break;
-               case 'interpretative':
-                  line.nodes = ns ? $(linesNodes[i]).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]', nsResolver)
-                     : $(linesNodes[i]).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]');
-                  break;
-               case 'critical':
-                  break;
-            }
+            var children = Poetry.prototype.getChildNodes(currentEdition, line, nodes[i], ns, nsResolver);
+            line.text = Poetry.prototype.getText(children, currentEdition);
 
-            linesInfo.push(line);
-            line = {};
+            lines.push(line);
          }
+
+         line = {
+            doc: [],
+            poetry: {},
+            page: '',
+            line:'',
+            text : ''
+         };
       }
 
-      return linesInfo;
+      return lines;
+   };
+
+   //TODO Add documentation
+   Poetry.prototype.getPoetryTitle = function (currentEdition, node, ns, nsResolver) {
+      var text = '',
+         nodes = Poetry.prototype.getChildNodes(currentEdition, nodes, node, ns, nsResolver);
+
+      text += Poetry.prototype.getText(nodes, currentEdition);
+
+      return text;
+   };
+
+   //TODO Add documentation
+   Poetry.prototype.getChildNodes = function(currentEdition, nodes, node, ns, nsResolver) {
+      switch (currentEdition) {
+         case 'diplomatic':
+            nodes = ns ? $(node).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]', nsResolver)
+                       : $(node).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]');
+            break;
+         case 'interpretative':
+            nodes = ns ? $(node).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]', nsResolver)
+                       : $(node).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]');
+            break;
+         case 'critical':
+            break;
+      }
+
+      return nodes;
    };
 
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchDocument#addLineContent
+    * @name evtviewer.dataHandler.evtSearchDocument#getText
     * @methodOf evtviewer.dataHandler.evtSearchDocument
     *
     * @description
-    * This method add line's content to an object
+    * This method get and add line's text to an object
     *
-    * @param {object} lineInfo An object containing information about the current line
-    * @param {object} line The line object with his properties (line.line and line.nodes)
+    * @param {array} nodes An array of line's child nodes
     * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
     *
     * @returns {str} return line's text cleaned from double spaces and some punctuation
     *
     * @author GC
     */
-   Poetry.prototype.addLineContent = function (lineInfo, line, currentEdition) {
-      var nodes = lineInfo.nodes;
+   Poetry.prototype.getText = function (nodes, currentEdition) {
+      var text = '';
 
       for(var i = 0; i < nodes.length; i++) {
 
@@ -181,21 +177,21 @@ angular.module('evtviewer.dataHandler')
                if(nodes[i].nodeName === 'g') {
                   glyph = evtBuilder.create(evtGlyph, 'Glyph');
                   currentGlyph = glyph.getGlyph(nodes[i]);
-                  line.text += glyph.addGlyph(currentGlyph, currentEdition);
+                  text += glyph.addGlyph(currentGlyph, currentEdition);
                }
                else {
-                  line.text += nodes[i].textContent;
+                  text += nodes[i].textContent;
                }
                break;
             case 'interpretative':
-               line.text += nodes[i].textContent;
+               text += nodes[i].textContent;
                break;
             case 'critical':
                break;
          }
       }
 
-      return Utils.cleanText(line.text);
+      return Utils.cleanText(text);
    };
 
    return Poetry;

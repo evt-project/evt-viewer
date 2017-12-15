@@ -89,9 +89,10 @@ angular.module('evtviewer.dataHandler')
 
    //TODO add documentation
    Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, ns, nsResolver) {
+      var docs = Doc.prototype.getCurrentDocs();
       var poetry = evtBuilder.create(Doc, 'Poetry');
       var lines = [];
-      lines = poetry.parseLines(xmlDocDom, lines, currentEdition, ns, nsResolver);
+      lines = poetry.parseLines(xmlDocDom, lines, currentEdition, docs, ns, nsResolver);
       console.log(lines);
    };
 
