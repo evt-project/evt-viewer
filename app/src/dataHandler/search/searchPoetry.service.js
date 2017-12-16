@@ -55,6 +55,8 @@ angular.module('evtviewer.dataHandler')
     * @param {element} xmlDocDom XML element to be parsed
     * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
     * @param {array} docs The document's title
+    * @param {boolean} ns True if namespace exist
+    * @param {function} nsResolver If exist it resolves the namespace
     *
     * @returns {array} return an array of parsed lines. The structure is:
     * <pre>
@@ -79,16 +81,42 @@ angular.module('evtviewer.dataHandler')
     */
    Poetry.prototype.getLines = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
       var lines = [],
-         line = {},
+         nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb|ns:head[@type="sub"])[not(ancestor::ns:note)]', nsResolver)
+                    : $(xmlDocDom).xpath('//body//(l|pb|head[@type="sub"])[not(ancestor::note)]');
+
+      lines = Poetry.prototype.getLineInfo(nodes, docs, lines, currentEdition, ns, nsResolver);
+
+      return lines;
+   };
+
+   /**
+    * @ngdoc method
+    * @module evtviewer.dataHandler
+    * @name evtviewer.dataHandler.evtSearchDocument#getLineInfo
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    *
+    * @description
+    * This method get line's number, page number, text and some information about line
+    *
+    * @param {array} nodes Line's nodes
+    * @param {array} docs The document's title
+    * @param {array} lines An empty array
+    * @param {string} currentEdition The document's current edition (diplomatic, interpretative or critical)
+    * @param {boolean} ns True if namespace exist
+    * @param {function} nsResolver If exist it resolves the namespace
+    *
+    * @returns {array} return an array of parsed lines.
+    *
+    * @author GC
+    */
+   Poetry.prototype.getLineInfo = function(nodes, docs, lines, currentEdition, ns, nsResolver) {
+      var line = {},
          currentPage,
          id,
          title;
 
-      var nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb|ns:head[@type="sub"])[not(ancestor::ns:note)]', nsResolver)
-                     : $(xmlDocDom).xpath('//body//(l|pb|head[@type="sub"])[not(ancestor::note)]');
-
-
       for(var i = 0; i < nodes.length; i++) {
+
          if(nodes[i].nodeName === 'pb') {
             currentPage = nodes[i].getAttribute('n');
          }
@@ -107,18 +135,10 @@ angular.module('evtviewer.dataHandler')
 
             lines.push(line);
          }
-
-         line = {
-            doc: [],
-            poetry: {},
-            page: '',
-            line:'',
-            text : ''
-         };
+         line = {};
       }
-
       return lines;
-   };
+   }
 
    /**
     * @ngdoc method
