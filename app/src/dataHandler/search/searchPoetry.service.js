@@ -14,7 +14,7 @@
  */
 angular.module('evtviewer.dataHandler')
 
-.factory('evtSearchPoetry', function(evtBuilder, evtGlyph, Utils) {
+.factory('evtSearchPoetry', function(evtBuilder, evtGlyph, Utils, XPATH) {
    //Poetry constructor
    function Poetry() {}
 
@@ -81,8 +81,8 @@ angular.module('evtviewer.dataHandler')
     */
    Poetry.prototype.getLines = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
       var lines = [],
-         nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:pb|ns:head[@type="sub"])[not(ancestor::ns:note)]', nsResolver)
-                    : $(xmlDocDom).xpath('//body//(l|pb|head[@type="sub"])[not(ancestor::note)]');
+         nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
+                    : $(xmlDocDom).xpath(XPATH.getLineNode);
 
       lines = Poetry.prototype.getLineInfo(nodes, docs, lines, currentEdition, ns, nsResolver);
 
@@ -105,7 +105,7 @@ angular.module('evtviewer.dataHandler')
     * @param {boolean} ns True if namespace exist
     * @param {function} nsResolver If exist it resolves the namespace
     *
-    * @returns {array} return an array of parsed lines.
+    * @returns {array} return an array with lines info.
     *
     * @author GC
     */
@@ -138,7 +138,7 @@ angular.module('evtviewer.dataHandler')
          line = {};
       }
       return lines;
-   }
+   };
 
    /**
     * @ngdoc method
@@ -190,12 +190,12 @@ angular.module('evtviewer.dataHandler')
 
       switch (currentEdition) {
          case 'diplomatic':
-            nodes = ns ? $(node).xpath('.//(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]', nsResolver)
-                       : $(node).xpath('.//(g | text())[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]');
+            nodes = ns ? $(node).xpath(XPATH.ns.getDiplomaticChildNodes, nsResolver)
+                       : $(node).xpath(XPATH.getDiplomaticChildNodes);
             break;
          case 'interpretative':
-            nodes = ns ? $(node).xpath('.//(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]', nsResolver)
-                       : $(node).xpath('.//(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]');
+            nodes = ns ? $(node).xpath(XPATH.ns.getInterpretativeChildNodes, nsResolver)
+                       : $(node).xpath(XPATH.getInterpretativeChildNodes);
             break;
          case 'critical':
             break;

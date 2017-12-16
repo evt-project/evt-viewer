@@ -21,9 +21,7 @@ angular.module('evtviewer.dataHandler')
    function EvtGlyph() {
    }
 
-   EvtGlyph.Glyph = function Glyph() {
-
-   };
+   EvtGlyph.Glyph = function Glyph() {};
 
    /**
     * @ngdoc method
