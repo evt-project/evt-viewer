@@ -116,7 +116,7 @@ angular.module('evtviewer.dataHandler')
       console.time('getLineInfo');
       var line = {},
          currentPage,
-         id,
+         id = 1,
          title;
 
       for(var i = 0; i < nodes.length; i++) {
@@ -300,7 +300,7 @@ angular.module('evtviewer.dataHandler')
                break;
          }
       }
-      //console.log(Utils.cleanText(text));
+      /*console.log(Utils.cleanText(text));*/
       return Utils.cleanText(text);
    };
 
