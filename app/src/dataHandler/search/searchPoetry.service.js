@@ -80,11 +80,13 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    Poetry.prototype.getLines = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+      console.time('getLines');
       var lines = [],
          nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
                     : $(xmlDocDom).xpath(XPATH.getLineNode);
 
-      lines = Poetry.prototype.getLineInfo(nodes, docs, lines, currentEdition, ns, nsResolver);
+      lines = Poetry.prototype.getLineInfo(xmlDocDom, nodes, docs, lines, currentEdition, ns, nsResolver);
+      console.timeEnd('getLines');
 
       return lines;
    };
@@ -98,6 +100,7 @@ angular.module('evtviewer.dataHandler')
     * @description
     * This method get line's number, page number, text and some information about line
     *
+    * @param {element} xmlDocDom XML element to be parsed
     * @param {array} nodes Line's nodes
     * @param {array} docs The document's title
     * @param {array} lines An empty array
@@ -109,7 +112,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Poetry.prototype.getLineInfo = function(nodes, docs, lines, currentEdition, ns, nsResolver) {
+   Poetry.prototype.getLineInfo = function(xmlDocDom, nodes, docs, lines, currentEdition, ns, nsResolver) {
+      console.time('getLineInfo');
       var line = {},
          currentPage,
          id,
@@ -125,10 +129,11 @@ angular.module('evtviewer.dataHandler')
             id = 1;
          }
          else {
-            line.doc = docs;
+
             line.poetry = title;
             line.page = currentPage;
             line.line = nodes[i].getAttribute('n') || id; id++;
+            line.doc = Poetry.prototype.getDocTitle(xmlDocDom, docs, nodes[i], ns, nsResolver);
 
             var children = Poetry.prototype.getChildNodes(currentEdition, nodes[i], ns, nsResolver);
             line.text = Poetry.prototype.getText(children, currentEdition);
@@ -137,7 +142,56 @@ angular.module('evtviewer.dataHandler')
          }
          line = {};
       }
+      console.timeEnd('getLineInfo');
       return lines;
+   };
+
+   /**
+    * @ngdoc method
+    * @module evtviewer.dataHandler
+    * @name evtviewer.dataHandler.evtSearchDocument#getDocTitle
+    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    *
+    * @description
+    * This method get the doc's title
+    *
+    * @param {element} xmlDocDom XML element to be parsed
+    * @param {array} docs The document's title
+    * @param {element} node The current line node
+    * @param {boolean} ns True if namespace exist
+    * @param {function} nsResolver If exist it resolves the namespace
+    *
+    * @returns {array} return an array with lines info.
+    *
+    * @author GC
+    */
+   Poetry.prototype.getDocTitle = function(xmlDocDom, docs, node, ns, nsResolver) {
+      var currentTitle,
+         title;
+
+      currentTitle = ns ? $(node).xpath('string(.//ancestor::ns:text/@n)', nsResolver)[0]
+                        : $(node).xpath('string(.//ancestor::text/@n)')[0];
+
+      if(currentTitle === '') {
+         var docId,
+            textNode = xmlDocDom.getElementsByTagName('group')[0].children,
+            currentTextNode = $(node).xpath('.//ancestor::ns:text[max(1)]', nsResolver)[0];
+
+         for(var j = 0; j < textNode.length; j++) {
+            if(currentTextNode === textNode[j]) {
+               docId = j;
+               title = docs[j].title;
+            }
+         }
+      }
+      else {
+         for (var i = 0; i < docs.length; i++) {
+            if (currentTitle === docs[i].title) {
+               title = docs[i].title;
+            }
+         }
+      }
+      return title;
    };
 
    /**
@@ -246,7 +300,7 @@ angular.module('evtviewer.dataHandler')
                break;
          }
       }
-
+      //console.log(Utils.cleanText(text));
       return Utils.cleanText(text);
    };
 
