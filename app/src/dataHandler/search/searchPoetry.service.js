@@ -123,14 +123,20 @@ angular.module('evtviewer.dataHandler')
 
          if(nodes[i].nodeName === 'pb') {
             currentPage = nodes[i].getAttribute('n');
-            line.page = currentPage;
          }
          else if(nodes[i].nodeName === 'head') {
-            title = Poetry.prototype.getPoetryTitle(currentEdition, nodes[i], ns, nsResolver);
-            id = 1;
-            line.poetry = title;
+           if(nodes[i].getAttribute('type') !== 'main') {
+              title = Poetry.prototype.getPoetryTitle(currentEdition, nodes[i], ns, nsResolver);
+              id = 1;
+           }
          }
          else {
+            if(currentPage !== undefined) {
+               line.page = currentPage;
+            }
+            if(title !== undefined) {
+               line.poetry = title;
+            }
             line.line = nodes[i].getAttribute('n') || id; id++;
             line.doc = Poetry.prototype.getDocTitle(xmlDocDom, docs, nodes[i], ns, nsResolver);
 
