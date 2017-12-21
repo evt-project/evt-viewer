@@ -172,7 +172,7 @@ angular.module('evtviewer.dataHandler')
       currentTitle = ns ? $(node).xpath('string(.//ancestor::ns:text/@n)', nsResolver)[0]
                         : $(node).xpath('string(.//ancestor::text/@n)')[0];
 
-      if(currentTitle === '') {
+      if(currentTitle === '' && docs.length > 1) {
          var docId,
             textNode = xmlDocDom.getElementsByTagName('group')[0].children,
             currentTextNode = $(node).xpath('.//ancestor::ns:text[max(1)]', nsResolver)[0];
@@ -183,6 +183,9 @@ angular.module('evtviewer.dataHandler')
                title = docs[j].title;
             }
          }
+      }
+      else if(currentTitle === '') {
+         title = docs[0].title;
       }
       else {
          for (var i = 0; i < docs.length; i++) {
