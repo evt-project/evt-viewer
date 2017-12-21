@@ -137,7 +137,7 @@ angular.module('evtviewer.dataHandler')
             if(title !== undefined) {
                line.poetry = title;
             }
-            line.line = nodes[i].getAttribute('n') || id; id++;
+            line.line = nodes[i].getAttribute('n') || id.toString(); id++;
             line.doc = Poetry.prototype.getDocTitle(xmlDocDom, docs, nodes[i], ns, nsResolver);
 
             var children = Poetry.prototype.getChildNodes(currentEdition, nodes[i], ns, nsResolver);
