@@ -178,20 +178,11 @@ angular.module('evtviewer.dataHandler')
       var currentTitle,
          title;
 
-      currentTitle = ns ? $(node).xpath('string(.//ancestor::ns:text/@n)', nsResolver)[0]
-                        : $(node).xpath('string(.//ancestor::text/@n)')[0];
+      currentTitle = ns ? $(node).xpath(XPATH.ns.getCurrentTitle, nsResolver)[0]
+                        : $(node).xpath(XPATH.getCurrentTitle)[0];
 
       if(currentTitle === '' && docs.length > 1) {
-         var docId,
-            textNode = xmlDocDom.getElementsByTagName('group')[0].children,
-            currentTextNode = $(node).xpath('.//ancestor::ns:text[max(1)]', nsResolver)[0];
-
-         for(var j = 0; j < textNode.length; j++) {
-            if(currentTextNode === textNode[j]) {
-               docId = j;
-               title = docs[j].title;
-            }
-         }
+         title = Poetry.prototype.getDocsTitle(xmlDocDom, docs,  node, ns, nsResolver);
       }
       else if(currentTitle === '' && mainTitle !== undefined) {
          title = mainTitle;
@@ -204,6 +195,22 @@ angular.module('evtviewer.dataHandler')
             if (currentTitle === docs[i].title) {
                title = docs[i].title;
             }
+         }
+      }
+      return title;
+   };
+
+   //TODO Add Documentation
+   Poetry.prototype.getDocsTitle = function(xmlDocDom, docs,  node, ns, nsResolver) {
+      var docId,
+         title,
+         textNode = xmlDocDom.getElementsByTagName('group')[0].children,
+         currentTextNode = ns ? $(node).xpath(XPATH.ns.getCurrentTextNode, nsResolver)[0]
+                              : $(node).xpath(XPATH.getCurrentTextNode)[0];
+      for(var j = 0; j < textNode.length; j++) {
+         if(currentTextNode === textNode[j]) {
+            docId = j;
+            title = docs[j].title;
          }
       }
       return title;
