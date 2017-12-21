@@ -117,6 +117,7 @@ angular.module('evtviewer.dataHandler')
       var line = {},
          currentPage,
          id = 1,
+         mainTitle,
          title;
 
       for(var i = 0; i < nodes.length; i++) {
@@ -129,6 +130,9 @@ angular.module('evtviewer.dataHandler')
               title = Poetry.prototype.getPoetryTitle(currentEdition, nodes[i], ns, nsResolver);
               id = 1;
            }
+           else {
+              mainTitle = nodes[i].textContent;
+           }
          }
          else {
             if(currentPage !== undefined) {
@@ -138,7 +142,7 @@ angular.module('evtviewer.dataHandler')
                line.poetry = title;
             }
             line.line = nodes[i].getAttribute('n') || id.toString(); id++;
-            line.doc = Poetry.prototype.getDocTitle(xmlDocDom, docs, nodes[i], ns, nsResolver);
+            line.doc = Poetry.prototype.getDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
 
             var children = Poetry.prototype.getChildNodes(currentEdition, nodes[i], ns, nsResolver);
             line.text = Poetry.prototype.getText(children, currentEdition);
@@ -170,7 +174,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Poetry.prototype.getDocTitle = function(xmlDocDom, docs, node, ns, nsResolver) {
+   Poetry.prototype.getDocTitle = function(xmlDocDom, docs, node, mainTitle, ns, nsResolver) {
       var currentTitle,
          title;
 
@@ -188,6 +192,9 @@ angular.module('evtviewer.dataHandler')
                title = docs[j].title;
             }
          }
+      }
+      else if(currentTitle === '' && mainTitle !== undefined) {
+         title = mainTitle;
       }
       else if(currentTitle === '') {
          title = docs[0].title;
