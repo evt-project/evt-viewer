@@ -33,20 +33,21 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Builder.create = function(instance, type) {
-      var constr = type;
+   Builder.create = function(Instance, type) {
+      var constr = type,
+         newInstance;
 
       // return error if the constructor (type) doesn't exist
-      if(typeof instance[constr] !== 'function') {
+      if(typeof Instance[constr] !== 'function') {
          throw {
             name: 'Error',
             message: constr + ' doesn\'t exist'
          };
       }
 
-      instance = new instance[constr]();
+      newInstance = new Instance[constr]();
 
-      return instance;
+      return newInstance;
    };
 
    return Builder;
