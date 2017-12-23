@@ -18,6 +18,8 @@ angular.module('evtviewer.dataHandler')
    //Parser constructor
    function Parser() {}
 
+   Parser.Doc = evtSearchDocument;
+
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
@@ -40,10 +42,9 @@ angular.module('evtviewer.dataHandler')
       doc.hasNamespace(xmlDocDom);
       ns = doc.namespace;
       nsResolver = doc.nsResolver;
+      //TODO Control the document's type
       doc.parsePoetry(xmlDocDom, currentEdition, ns, nsResolver);
    };
-
-   Parser.Doc = evtSearchDocument;
 
    return Parser;
 });

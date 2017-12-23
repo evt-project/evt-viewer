@@ -1,4 +1,5 @@
 import 'jquery-xpath/jquery.xpath.js';
+var lunr = require('lunr');
 
 /**
  * @ngdoc service
@@ -16,7 +17,7 @@ import 'jquery-xpath/jquery.xpath.js';
  */
 angular.module('evtviewer.dataHandler')
 
-.factory('evtSearchDocument', function(evtBuilder, evtSearchPoetry, parsedData) {
+.factory('evtSearchDocument', function(evtBuilder, evtSearchPoetry, evtCriticalEditionHandler, parsedData) {
    //Doc constructor
    function Doc() {
       this.namespace = false;
@@ -26,6 +27,8 @@ angular.module('evtviewer.dataHandler')
 
    Doc.Poetry = evtSearchPoetry;
    //Doc.Prose = evtSearchProse;
+
+   Doc.CriticalEditionHandler = evtCriticalEditionHandler;
 
    /**
     * @ngdoc method
@@ -68,7 +71,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Doc.prototype.getCurrentDocs = function() {
+   function getCurrentDocs() {
       var documents = parsedData.getDocuments(),
           docIndexes = documents._indexes,
           docId,
@@ -85,14 +88,71 @@ angular.module('evtviewer.dataHandler')
       }
 
       return docs;
-   };
+   }
 
    //TODO add documentation
    Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, ns, nsResolver) {
-      var docs = Doc.prototype.getCurrentDocs();
+      var docs = getCurrentDocs();
       var poetry = evtBuilder.create(Doc, 'Poetry');
+      var criticalHandler = evtBuilder.create(Doc, 'CriticalEditionHandler');
       var lines = [];
-      lines = poetry.parseLines(xmlDocDom, lines, currentEdition, docs, ns, nsResolver);
+      lines = poetry.parseLines(xmlDocDom, lines, currentEdition, criticalHandler, docs, ns, nsResolver);
+
+      var docPos = 0;
+
+      var lineMetadata = function (builder) {
+         var pipelineFunction = function (token) {
+            var line = lines[docPos].line;
+            token.metadata['line'] = line;
+
+            return token;
+         };
+         lunr.Pipeline.registerFunction(pipelineFunction, 'line');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('line');
+      };
+
+      var pageMetadata = function (builder) {
+         var pipelineFunction = function (token) {
+            var page = lines[docPos].page;
+            token.metadata['page'] = page;
+
+            return token;
+         };
+         lunr.Pipeline.registerFunction(pipelineFunction, 'page');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('page');
+      };
+
+      var poetryMetadata = function (builder) {
+         var pipelineFunction = function (token) {
+            var poetry = lines[docPos].poetry;
+            token.metadata['poetry'] = poetry;
+
+            return token;
+         };
+         lunr.Pipeline.registerFunction(pipelineFunction, 'poetry');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('poetry');
+      };
+
+      var idx = lunr(function () {
+         this.ref('doc')
+         this.field('text')
+         this.use(lineMetadata);
+         this.use(pageMetadata);
+         this.use(poetryMetadata);
+         this.metadataWhitelist = ['position', 'line', 'page', 'poetry'];
+
+         for(var i in lines) {
+            this.add(lines[i]);
+            docPos++;
+         }
+      });
+
+
+      var res = idx.search('giulia');
+
       console.log(lines);
    };
 
