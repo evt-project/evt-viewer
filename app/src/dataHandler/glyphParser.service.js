@@ -19,9 +19,36 @@ angular.module('evtviewer.dataHandler')
 
    //EvtGlyph constructor
    function EvtGlyph() {
+      this.glyphId = '';
    }
 
    EvtGlyph.Glyph = function Glyph() {};
+
+   /**
+    * @ngdoc method
+    * @name evtviewer.dataHandler.evtGlyph.Glyph#getCurrentGlyph
+    * @methodOf evtviewer.dataHandler.evtGlyph
+    *
+    * @description
+    * Get the current glyph.
+    *
+    * @param {Object} node the current node
+    * @returns {Object} the current glyph, that contains information about codepoint, diplomatic and interpretative version.
+    *
+    * @author GC
+    */
+   function getCurrentGlyph(node) {
+      var currentGlyph,
+         sRef,
+         glyphs = parsedData.getGlyphs();
+
+      sRef = node.getAttribute('ref');
+      sRef = sRef.replace('#', '');
+      this.glyphId = sRef;
+
+      currentGlyph = glyphs[sRef].mapping;
+      return currentGlyph;
+   }
 
    /**
     * @ngdoc method
@@ -40,40 +67,15 @@ angular.module('evtviewer.dataHandler')
       var currentGlyph,
           glyph = {};
 
-      currentGlyph = EvtGlyph.Glyph.prototype.getCurrentGlyph(currentNode);
+      currentGlyph = getCurrentGlyph(currentNode);
 
-      glyph.id = EvtGlyph.Glyph.glyphId;
+      glyph.id = this.glyphId;
       glyph.diplomatic = currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
       glyph.interpretative = currentGlyph.normalized !== undefined ? currentGlyph.normalized.content : '';
 
       return glyph;
    };
 
-   /**
-    * @ngdoc method
-    * @name evtviewer.dataHandler.evtGlyph.Glyph#getCurrentGlyph
-    * @methodOf evtviewer.dataHandler.evtGlyph
-    *
-    * @description
-    * Get the current glyph.
-    *
-    * @param {Object} node the current node
-    * @returns {Object} the current glyph, that contains information about codepoint, diplomatic and interpretative version.
-    *
-    * @author GC
-    */
-   EvtGlyph.Glyph.prototype.getCurrentGlyph = function (node) {
-      var currentGlyph,
-          sRef,
-          glyphs = parsedData.getGlyphs();
-
-      sRef = node.getAttribute('ref');
-      sRef = sRef.replace('#', '');
-      EvtGlyph.Glyph.glyphId = sRef;
-
-      currentGlyph = glyphs[sRef].mapping;
-      return currentGlyph;
-   };
 
    /**
     * @ngdoc method
