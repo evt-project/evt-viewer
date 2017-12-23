@@ -8,7 +8,7 @@ angular.module('evtviewer.search')
       defaults = _defaults;
    };
 
-   this.$get = function($log, config, baseData, evtSearchParser) {
+   this.$get = function($log, config/* baseData, evtSearchParser*/) {
       var currentPosition = config.searchBoxPosition,
          searchBox = {},
          collection = {},
@@ -63,8 +63,8 @@ angular.module('evtviewer.search')
 
          if(btnStatus && check) {
             check = false;
-            doc = baseData.getXML();
-            evtSearchParser.getText(doc);
+            /*doc = baseData.getXML();
+            evtSearchParser.getText(doc);*/
          }
 
          collection.status[key] = btnStatus;
