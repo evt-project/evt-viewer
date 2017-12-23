@@ -110,12 +110,14 @@ module.exports = function (grunt) {
       },
       babel: {
         files: ['<%= yeoman.app %>/src/dataHandler/search/searchDocument.service.js',
-                '<%= yeoman.app %>/src/dataHandler/search/searchPoetry.service.js'],
+                '<%= yeoman.app %>/src/dataHandler/search/searchPoetry.service.js',
+                '<%= yeoman.app %>/src/dataHandler/search/criticalEditionHandler.service.js'],
         tasks: ['babel']
       },
       webpack: {
         files: ['<%= yeoman.app %>/dist/comp/searchDocument.service.js',
-                '<%= yeoman.app %>/dist/comp/searchPoetry.service.js'],
+                '<%= yeoman.app %>/dist/comp/searchPoetry.service.js',
+                '<%= yeoman.app %>/dist/comp/criticalEditionHandler.service.js'],
         tasks: ['webpack']
       },
       // gruntfile: {
@@ -302,12 +304,13 @@ module.exports = function (grunt) {
     babel: {
        options: {
              sourceMap: true,
-             presets: ['es2015']
+             presets: ['env']
        },
        dist: {
           files: {
              'app/dist/comp/searchDocument.service.js': 'app/src/dataHandler/search/searchDocument.service.js',
-             'app/dist/comp/searchPoetry.service.js': 'app/src/dataHandler/search/searchPoetry.service.js'
+             'app/dist/comp/searchPoetry.service.js': 'app/src/dataHandler/search/searchPoetry.service.js',
+             'app/dist/comp/criticalEditionHandler.service.js': 'app/src/dataHandler/search/criticalEditionHandler.service.js',
           }
        }
      },
@@ -566,7 +569,7 @@ module.exports = function (grunt) {
   //   grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
   //   grunt.task.run(['serve:' + target]);
   // });
-
+   grunt.registerTask('default', ['babel']);
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
