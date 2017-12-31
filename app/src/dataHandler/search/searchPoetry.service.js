@@ -104,7 +104,7 @@ angular.module('evtviewer.dataHandler')
    }
 
    //TODO Add Documentation
-   function getDocsTitle(xmlDocDom, docs,  node, ns, nsResolver) {
+   function getDocTitle(xmlDocDom, docs,  node, ns, nsResolver) {
       var docId,
          title,
          textNode = xmlDocDom.getElementsByTagName('group')[0].children,
@@ -139,7 +139,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getDocTitle(xmlDocDom, docs, node, mainTitle, ns, nsResolver) {
+   function getCurrentDocTitle(xmlDocDom, docs, node, mainTitle, ns, nsResolver) {
       var currentTitle,
          title;
 
@@ -147,7 +147,7 @@ angular.module('evtviewer.dataHandler')
          : $(node).xpath(XPATH.getCurrentTitle)[0];
 
       if(currentTitle === '' && docs.length > 1) {
-         title = getDocsTitle(xmlDocDom, docs,  node, ns, nsResolver);
+         title = getDocTitle(xmlDocDom, docs,  node, ns, nsResolver);
       }
       else if(currentTitle === '' && mainTitle !== undefined) {
          title = mainTitle;
@@ -240,10 +240,10 @@ angular.module('evtviewer.dataHandler')
                line.page = currentPage;
             }
             if(title !== undefined) {
-               line.poetry = title;
+               line.title = title;
             }
             line.line = nodes[i].getAttribute('n') || id.toString(); id++;
-            line.doc = getDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
+            line.doc = getCurrentDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
 
             var children = getChildNodes(currentEdition, nodes[i], ns, nsResolver);
             line.text = getText(children, currentEdition/*, criticalHandler*/);

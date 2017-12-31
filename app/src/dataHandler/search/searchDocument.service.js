@@ -15,10 +15,11 @@ var lunr = require('lunr');
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchDocument', ['evtSearchPoetry', 'parsedData', function Doc(evtSearchPoetry, parsedData) {
+.service('evtSearchDocument', ['evtSearchPoetry', 'evtSearchProse', 'parsedData', function Doc(evtSearchPoetry, evtSearchProse, parsedData) {
       this.ns = false;
       this.nsResolver = '';
       this.Poetry = evtSearchPoetry;
+      this.Prose = evtSearchProse;
 
    /**
     * @ngdoc method
@@ -61,7 +62,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getCurrentDocs() {
+   Doc.prototype.getDocsTitle = function() {
       var documents = parsedData.getDocuments(),
           docIndexes = documents._indexes,
           docId,
@@ -80,12 +81,30 @@ angular.module('evtviewer.dataHandler')
       return docs;
    }
 
+   Doc.prototype.getDocType = function(xmlDocDom, ns, nsResolver) {
+      var type = ''
+      var verse = $(xmlDocDom).xpath('//ns:body//ns:l', nsResolver).length !== 0;
+      var prose = $(xmlDocDom).xpath('//ns:body//ns:p', nsResolver).length !== 0;
+
+      if(verse) {
+         type = 'verse';
+      }
+      else if(prose) {
+         type = 'prose';
+      }
+
+      return type;
+   };
+
    //TODO add documentation
-   Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, ns, nsResolver) {
-      var docs = getCurrentDocs();
+   Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
       //var criticalHandler = evtBuilder.create(Doc, 'CriticalEditionHandler');
       var lines = [];
       lines = this.Poetry.parseLines(xmlDocDom, lines, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
       console.log(lines);
+   };
+
+   Doc.prototype.parseProse = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+
    };
 }]);

@@ -33,7 +33,17 @@ angular.module('evtviewer.dataHandler')
     */
    Parser.prototype.parseDocument = function (xmlDocDom, currentEdition) {
       this.Doc.hasNamespace(xmlDocDom);
+      var type = this.Doc.getDocType(xmlDocDom, this.Doc.ns, this.Doc.nsResolver);
+      var docs = this.Doc.getDocsTitle();
 
-      this.Doc.parsePoetry(xmlDocDom, currentEdition, this.Doc.ns, this.Doc.nsResolver);
+      switch(type) {
+         case 'verse':
+            this.Doc.parsePoetry(xmlDocDom, currentEdition, docs, this.Doc.ns, this.Doc.nsResolver);
+            break;
+         case 'prose':
+            this.Doc.parseProse(xmlDocDom, currentEdition, docs, this.Doc.ns, this.Doc.nsResolver);
+            break;
+      }
+
    };
 }]);
