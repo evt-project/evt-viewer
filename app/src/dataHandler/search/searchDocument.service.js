@@ -1,40 +1,30 @@
-import 'jquery-xpath/jquery.xpath.js';
+var jqueryxpath = require('jquery-xpath/jquery.xpath.js');
 var lunr = require('lunr');
 
 /**
  * @ngdoc service
  * @module evtviewer.dataHandler
- * @name evtviewer.dataHandler.evtSearchDocument
+ * @name evtviewer.dataHandler.search.evtSearchDocument
  *
  * @description
  * # evtSearchDocument
  * In this service are defined and exposed methods to parse Document
  *
- * @requires evtviewer.dataHandler.evtBuilder
- * @requires evtviewer.dataHandler.evtGlyph
- * @requires evtviewer.dataHandler.parseData
- * @requires evtviewer.core.Utils
+ * @requires evtviewer.dataHandler.search.evtSearchPoetry
+ * @requires evtviewer.dataHandler.parsedData
  */
 angular.module('evtviewer.dataHandler')
 
-.factory('evtSearchDocument', function(evtBuilder, evtSearchPoetry, evtCriticalEditionHandler, parsedData) {
-   //Doc constructor
-   function Doc() {
-      this.namespace = false;
+.service('evtSearchDocument', ['evtSearchPoetry', 'parsedData', function Doc(evtSearchPoetry, parsedData) {
+      this.ns = false;
       this.nsResolver = '';
-      this.title = '';
-   }
-
-   Doc.Poetry = evtSearchPoetry;
-   //Doc.Prose = evtSearchProse;
-
-   Doc.CriticalEditionHandler = evtCriticalEditionHandler;
+      this.Poetry = evtSearchPoetry;
 
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchDocument#hasNamespace
-    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    * @name evtviewer.dataHandler.search.evtSearchDocument#hasNamespace
+    * @methodOf evtviewer.dataHandler.search.evtSearchDocument
     *
     * @description
     * This method check if XML document has a namespace
@@ -48,21 +38,21 @@ angular.module('evtviewer.dataHandler')
    Doc.prototype.hasNamespace = function(xmlDocDom) {
       var ns = xmlDocDom.documentElement.namespaceURI;
       if(ns !== null) {
-         this.namespace = true;
+         this.ns = true;
          this.nsResolver = function(prefix) {
             if(prefix === 'ns') {
                return xmlDocDom.documentElement.namespaceURI;
             }
          };
       }
-      return this.namespace;
+      return this.ns;
    };
 
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchDocument#getCurrentDocs
-    * @methodOf evtviewer.dataHandler.evtSearchDocument
+    * @name evtviewer.dataHandler.search.evtSearchDocument#getCurrentDocs
+    * @methodOf evtviewer.dataHandler.search.evtSearchDocument
     *
     * @description
     * This method get the title the currents docs
@@ -93,68 +83,9 @@ angular.module('evtviewer.dataHandler')
    //TODO add documentation
    Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, ns, nsResolver) {
       var docs = getCurrentDocs();
-      var poetry = evtBuilder.create(Doc, 'Poetry');
-      var criticalHandler = evtBuilder.create(Doc, 'CriticalEditionHandler');
+      //var criticalHandler = evtBuilder.create(Doc, 'CriticalEditionHandler');
       var lines = [];
-      lines = poetry.parseLines(xmlDocDom, lines, currentEdition, criticalHandler, docs, ns, nsResolver);
-
-      var docPos = 0;
-
-      var lineMetadata = function (builder) {
-         var pipelineFunction = function (token) {
-            var line = lines[docPos].line;
-            token.metadata['line'] = line;
-
-            return token;
-         };
-         lunr.Pipeline.registerFunction(pipelineFunction, 'line');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('line');
-      };
-
-      var pageMetadata = function (builder) {
-         var pipelineFunction = function (token) {
-            var page = lines[docPos].page;
-            token.metadata['page'] = page;
-
-            return token;
-         };
-         lunr.Pipeline.registerFunction(pipelineFunction, 'page');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('page');
-      };
-
-      var poetryMetadata = function (builder) {
-         var pipelineFunction = function (token) {
-            var poetry = lines[docPos].poetry;
-            token.metadata['poetry'] = poetry;
-
-            return token;
-         };
-         lunr.Pipeline.registerFunction(pipelineFunction, 'poetry');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('poetry');
-      };
-
-      var idx = lunr(function () {
-         this.ref('doc')
-         this.field('text')
-         this.use(lineMetadata);
-         this.use(pageMetadata);
-         this.use(poetryMetadata);
-         this.metadataWhitelist = ['position', 'line', 'page', 'poetry'];
-
-         for(var i in lines) {
-            this.add(lines[i]);
-            docPos++;
-         }
-      });
-
-
-      var res = idx.search('giulia');
-
+      lines = this.Poetry.parseLines(xmlDocDom, lines, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
       console.log(lines);
    };
-
-   return Doc;
-});
+}]);

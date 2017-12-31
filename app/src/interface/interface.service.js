@@ -238,8 +238,7 @@ angular.module('evtviewer.interface')
                 // Parse Glyphs
                  evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
                  // Init search
-                 var evtSearchParser = evtBuilder.create(evtSearch, 'Parser');
-                 evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
+                 evtSearch.Parser.parseDocument(doc, mainInterface.getState('currentEdition'));
 
                 var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                 if (currentDocFirstLoad !== undefined) {

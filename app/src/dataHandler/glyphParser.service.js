@@ -10,23 +10,16 @@
  *
  * @requires evtviewer.dataHandler.parsedData
  *
- * @returns {Object} EvtGlyph object
  */
 
 angular.module('evtviewer.dataHandler')
 
-.factory('evtGlyph', function(parsedData) {
-
-   //EvtGlyph constructor
-   function EvtGlyph() {
-      this.glyphId = '';
-   }
-
-   EvtGlyph.Glyph = function Glyph() {};
+.service('evtGlyph', ['parsedData', function Glyph(parsedData) {
+   this.glyphId = '';
 
    /**
     * @ngdoc method
-    * @name evtviewer.dataHandler.evtGlyph.Glyph#getCurrentGlyph
+    * @name evtviewer.dataHandler.evtGlyph#getCurrentGlyph
     * @methodOf evtviewer.dataHandler.evtGlyph
     *
     * @description
@@ -52,7 +45,7 @@ angular.module('evtviewer.dataHandler')
 
    /**
     * @ngdoc method
-    * @name evtviewer.dataHandler.evtGlyph.Glyph#getGlyph
+    * @name evtviewer.dataHandler.evtGlyph#getGlyph
     * @methodOf evtviewer.dataHandler.evtGlyph
     *
     * @description
@@ -63,7 +56,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   EvtGlyph.Glyph.prototype.getGlyph = function (currentNode) {
+   Glyph.prototype.getGlyph = function (currentNode) {
       var currentGlyph,
           glyph = {};
 
@@ -76,10 +69,9 @@ angular.module('evtviewer.dataHandler')
       return glyph;
    };
 
-
    /**
     * @ngdoc method
-    * @name evtviewer.dataHandler.evtGlyph.Glyph#addGlyphs
+    * @name evtviewer.dataHandler.evtGlyph#addGlyphs
     * @methodOf evtviewer.dataHandler.evtGlyph
     *
     * @description
@@ -87,11 +79,11 @@ angular.module('evtviewer.dataHandler')
     *
     * @param {Object} glyph the current glyph, that contains an id and the diplomatic and interpretative version.
     * @returns {Array} an array of all glyphs in the document. Each glyph contains an id and its diplomatic and
-    * interpretative verion.
+    * interpretative version.
     *
     * @author GC
     */
-   EvtGlyph.Glyph.prototype.addGlyphs = function (glyph) {
+   Glyph.prototype.addGlyphs = function (glyph) {
       var found,
           glyphs = [];
 
@@ -109,7 +101,7 @@ angular.module('evtviewer.dataHandler')
 
    /**
     * @ngdoc method
-    * @name evtviewer.dataHandler.evtGlyph.Glyph#addGlyph
+    * @name evtviewer.dataHandler.evtGlyph#addGlyph
     * @methodOf evtviewer.dataHandler.evtGlyph
     *
     * @description
@@ -121,7 +113,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   EvtGlyph.Glyph.prototype.addGlyph = function (currentGlyph, currentEdition) {
+   Glyph.prototype.addGlyph = function (currentGlyph, currentEdition) {
       switch (currentEdition) {
          case 'diplomatic':
             return currentGlyph.diplomatic;
@@ -129,6 +121,4 @@ angular.module('evtviewer.dataHandler')
             return currentGlyph.interpretative;
       }
    };
-
-   return EvtGlyph;
-});
+}]);

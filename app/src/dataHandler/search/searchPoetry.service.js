@@ -1,22 +1,20 @@
 /**
  * @ngdoc service
  * @module evtviewer.dataHandler
- * @name evtviewer.dataHandler.evtSearchPoetry
+ * @name evtviewer.dataHandler.search.evtSearchPoetry
  *
  * @description
  * # evtSearchDocument
  * In this service are defined and exposed methods to parse poetic Documents
  *
- * @requires evtviewer.dataHandler.evtBuilder
  * @requires evtviewer.dataHandler.evtGlyph
- * @requires evtviewer.dataHandler.parseData
+ * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.core.Utils
+ * @requires evtviewer.core.XPATH
  */
 angular.module('evtviewer.dataHandler')
 
-.factory('evtSearchPoetry', function(evtBuilder, evtGlyph, parsedData, Utils, XPATH) {
-   //Poetry constructor
-   function Poetry() {}
+.service('evtSearchPoetry', ['evtGlyph', 'parsedData', 'Utils', 'XPATH', function Poetry(evtGlyph, parsedData, Utils, XPATH) {
 
    /**
     * @ngdoc method
@@ -34,7 +32,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getText(nodes, currentEdition, criticalHandler) {
+   function getText(nodes, currentEdition/*, criticalHandler*/) {
       var text = '';
 
       for(var i = 0; i < nodes.length; i++) {
@@ -45,9 +43,9 @@ angular.module('evtviewer.dataHandler')
                   currentGlyph;
 
                if(nodes[i].nodeName === 'g') {
-                  glyph = evtBuilder.create(evtGlyph, 'Glyph');
-                  currentGlyph = glyph.getGlyph(nodes[i]);
-                  text += glyph.addGlyph(currentGlyph, currentEdition);
+                  //glyph = evtBuilder.create(evtGlyph, 'Glyph');
+                  currentGlyph = evtGlyph.getGlyph(nodes[i]);
+                  text += evtGlyph.addGlyph(currentGlyph, currentEdition);
                }
                else {
                   text += nodes[i].textContent;
@@ -57,7 +55,7 @@ angular.module('evtviewer.dataHandler')
                text += nodes[i].textContent;
                break;
             case 'critical':
-               text += criticalHandler.parseCriticalEdition(nodes[i]);
+               //text += criticalHandler.parseCriticalEdition(nodes[i]);
                //text += nodes[i].textContent;
                break;
          }
@@ -185,11 +183,11 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getPoetryTitle(currentEdition, node, criticalHandler, ns, nsResolver) {
+   function getPoetryTitle(currentEdition, node, /*criticalHandler,*/ ns, nsResolver) {
       var title = '',
          nodes = getChildNodes(currentEdition, node, ns, nsResolver);
 
-      title += getText(nodes, currentEdition, criticalHandler);
+      title += getText(nodes, currentEdition/*, criticalHandler*/);
 
       return title;
    }
@@ -215,7 +213,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getLineInfo(xmlDocDom, nodes, docs, lines, currentEdition, criticalHandler, ns, nsResolver) {
+   function getLineInfo(xmlDocDom, nodes, docs, lines, currentEdition, /*criticalHandler,*/ ns, nsResolver) {
       console.time('getLineInfo');
       var line = {},
          currentPage,
@@ -230,7 +228,7 @@ angular.module('evtviewer.dataHandler')
          }
          else if(nodes[i].nodeName === 'head') {
             if(nodes[i].getAttribute('type') !== 'main') {
-               title = getPoetryTitle(currentEdition, nodes[i],criticalHandler, ns, nsResolver);
+               title = getPoetryTitle(currentEdition, nodes[i], /*criticalHandler,*/ ns, nsResolver);
                id = 1;
             }
             else {
@@ -248,7 +246,7 @@ angular.module('evtviewer.dataHandler')
             line.doc = getDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
 
             var children = getChildNodes(currentEdition, nodes[i], ns, nsResolver);
-            line.text = getText(children, currentEdition, criticalHandler);
+            line.text = getText(children, currentEdition/*, criticalHandler*/);
 
             lines.push(line);
          }
@@ -294,13 +292,13 @@ angular.module('evtviewer.dataHandler')
     * </pre>
     * @author GC
     */
-   function getLines(xmlDocDom, currentEdition, criticalHandler, docs, ns, nsResolver) {
+   function getLines(xmlDocDom, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver) {
       console.time('getLines');
       var lines = [],
          nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
                     : $(xmlDocDom).xpath(XPATH.getLineNode);
 
-      lines = getLineInfo(xmlDocDom, nodes, docs, lines, currentEdition, criticalHandler, ns, nsResolver);
+      lines = getLineInfo(xmlDocDom, nodes, docs, lines, currentEdition, /*criticalHandler,*/ ns, nsResolver);
       console.timeEnd('getLines');
 
       return lines;
@@ -326,10 +324,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Poetry.prototype.parseLines = function(xmlDocDom, lines, currentEdition, criticalHandler, docs, ns, nsResolver) {
-      lines = getLines(xmlDocDom, currentEdition, criticalHandler, docs, ns, nsResolver);
+   Poetry.prototype.parseLines = function(xmlDocDom, lines, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver) {
+      lines = getLines(xmlDocDom, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
       return lines;
    };
-
-   return Poetry;
-});
+}]);

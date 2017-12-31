@@ -108,16 +108,14 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
       },
-      babel: {
+      /*babel: {
         files: ['<%= yeoman.app %>/src/dataHandler/search/searchDocument.service.js',
                 '<%= yeoman.app %>/src/dataHandler/search/searchPoetry.service.js',
                 '<%= yeoman.app %>/src/dataHandler/search/criticalEditionHandler.service.js'],
         tasks: ['babel']
-      },
+      },*/
       webpack: {
-        files: ['<%= yeoman.app %>/dist/comp/searchDocument.service.js',
-                '<%= yeoman.app %>/dist/comp/searchPoetry.service.js',
-                '<%= yeoman.app %>/dist/comp/criticalEditionHandler.service.js'],
+        files: ['<%= yeoman.app %>/src/dataHandler/search/searchDocument.service.js'],
         tasks: ['webpack']
       },
       // gruntfile: {
@@ -301,7 +299,7 @@ module.exports = function (grunt) {
     },
 
     // Compiles ES6 to ES5
-    babel: {
+    /*babel: {
        options: {
              sourceMap: true,
              presets: ['env']
@@ -313,7 +311,7 @@ module.exports = function (grunt) {
              'app/dist/comp/criticalEditionHandler.service.js': 'app/src/dataHandler/search/criticalEditionHandler.service.js',
           }
        }
-     },
+     },*/
 
     // Module bundler
     webpack: {
@@ -558,7 +556,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
-      'babel',
+      /*'babel',*/
       'webpack',
       'connect:livereload',
       'watch'
@@ -569,7 +567,7 @@ module.exports = function (grunt) {
   //   grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
   //   grunt.task.run(['serve:' + target]);
   // });
-   grunt.registerTask('default', ['babel']);
+   //grunt.registerTask('default', ['babel']);
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',

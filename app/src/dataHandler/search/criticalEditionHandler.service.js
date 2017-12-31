@@ -1,8 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.factory('evtCriticalEditionHandler', function(parsedData) {
-   //CriticalEditionHandler constructor
-   function CriticalEditionHandler() {}
+.service('evtCriticalEditionHandler', function CriticalEditionHandler(parsedData) {
 
    function getCurrentWitnesses(node) {
       var wit = node.getAttribute('wit'),
@@ -34,7 +32,6 @@ angular.module('evtviewer.dataHandler')
       }
 
       return text;
-   }
+   };
 
-   return CriticalEditionHandler;
 });

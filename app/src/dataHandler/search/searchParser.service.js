@@ -1,12 +1,12 @@
 /**
  * @ngdoc service
  * @module evtviewer.dataHandler
- * @name evtviewer.dataHandler.evtSearchParser
+ * @name evtviewer.dataHandler.search.evtSearchParser
  * @description
  * # evtSearchParser
  * In this service is defined a constructor and his object. The object exposed methods to handle search parser.
  *
- * @requires evtviewer.dataHandler.evtSearchParser
+ * @requires evtviewer.dataHandler.search.evtSearchDocument
  *
  * @returns {object} Parser object
  *
@@ -14,17 +14,14 @@
  */
 
 angular.module('evtviewer.dataHandler')
-.factory('evtSearchParser', function(evtSearchDocument, evtBuilder) {
-   //Parser constructor
-   function Parser() {}
-
-   Parser.Doc = evtSearchDocument;
+.service('evtSearchParser', ['evtSearchDocument', function Parser(evtSearchDocument) {
+   this.Doc = evtSearchDocument;
 
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.evtSearchParser#parseDocument
-    * @methodOf evtviewer.dataHandler.evtSearchParser
+    * @name evtviewer.dataHandler.search.evtSearchParser#parseDocument
+    * @methodOf evtviewer.dataHandler.search.evtSearchParser
     *
     * @description
     * This method parse a specific XML document.
@@ -35,16 +32,8 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    Parser.prototype.parseDocument = function (xmlDocDom, currentEdition) {
-      var doc = evtBuilder.create(Parser, 'Doc'),
-         ns,
-         nsResolver;
+      this.Doc.hasNamespace(xmlDocDom);
 
-      doc.hasNamespace(xmlDocDom);
-      ns = doc.namespace;
-      nsResolver = doc.nsResolver;
-      //TODO Control the document's type
-      doc.parsePoetry(xmlDocDom, currentEdition, ns, nsResolver);
+      this.Doc.parsePoetry(xmlDocDom, currentEdition, this.Doc.ns, this.Doc.nsResolver);
    };
-
-   return Parser;
-});
+}]);
