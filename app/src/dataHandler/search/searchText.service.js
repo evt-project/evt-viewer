@@ -173,9 +173,9 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getPoetryTitle(currentEdition, node, /*criticalHandler,*/ ns, nsResolver) {
+   function getPoetryTitle(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
       var title = '',
-         nodes = getChildNodes(currentEdition, node, ns, nsResolver);
+         nodes = getLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver);
 
       title += getText(nodes, currentEdition/*, criticalHandler*/);
 
@@ -204,7 +204,7 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    function getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, /*criticalHandler,*/ ns, nsResolver) {
-      //console.time('getLineInfo');
+      console.time('getLineInfo');
       var line = {},
          currentPage,
          id = 1,
@@ -218,7 +218,7 @@ angular.module('evtviewer.dataHandler')
          }
          else if(nodes[i].nodeName === 'head') {
             if(nodes[i].getAttribute('type') !== 'main') {
-               title = getPoetryTitle(currentEdition, nodes[i], /*criticalHandler,*/ ns, nsResolver);
+               title = getPoetryTitle(xmlDocDom, type, line, currentEdition, nodes[i], ns, nsResolver);
                id = 1;
             }
             else {
@@ -246,7 +246,7 @@ angular.module('evtviewer.dataHandler')
          }
          line = {};
       }
-      //console.timeEnd('getLineInfo');
+      console.timeEnd('getLineInfo');
       return lines;
    }
    

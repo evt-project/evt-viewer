@@ -83,9 +83,13 @@ angular.module('evtviewer.dataHandler')
 
    //TODO add documentation
    function getDocType(xmlDocDom, ns, nsResolver) {
-      var type = ''
-      var verse = $(xmlDocDom).xpath('//ns:body//ns:l', nsResolver).length !== 0;
-      var prose = $(xmlDocDom).xpath('//ns:body//ns:p', nsResolver).length !== 0;
+      var type = '';
+      
+      var verse = xmlDocDom.getElementsByTagName('l').length !== 0;
+      var prose = xmlDocDom.getElementsByTagName('l').length === 0;
+      
+      /*var verse = $(xmlDocDom).xpath('//ns:body//ns:l', nsResolver).length !== 0;
+      var prose = $(xmlDocDom).xpath('//ns:body//ns:p', nsResolver).length !== 0;*/
 
       if(verse) {
          type = 'verse';
@@ -113,8 +117,8 @@ angular.module('evtviewer.dataHandler')
                //paragraphs = this.Text.parseParagraphs(xmlDocDom, paragraphs, currentEdition, docs, ns, nsResolver);
             }
             break;
-         case 'poetry':
-            lines = this.Text.parseLines(xmlDocDom, paragraphs, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
+         case 'verse':
+            lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, docs, ns, nsResolver);
             break;
       }
 
