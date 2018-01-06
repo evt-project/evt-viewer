@@ -15,11 +15,11 @@ var lunr = require('lunr');
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchDocument', ['evtSearchPoetry', 'evtSearchProse', 'parsedData', function Doc(evtSearchPoetry, evtSearchProse, parsedData) {
-      this.ns = false;
-      this.nsResolver = '';
-      this.Poetry = evtSearchPoetry;
-      this.Prose = evtSearchProse;
+.service('evtSearchDocument', ['evtSearchPoetry', 'evtSearchProse', 'evtSearchText', 'parsedData', function Doc(evtSearchPoetry, evtSearchProse, evtSearchText, parsedData) {
+   this.ns = false;
+   this.nsResolver = '';
+   this.Text = evtSearchText;
+   this.type = '';
 
    /**
     * @ngdoc method
@@ -81,7 +81,8 @@ angular.module('evtviewer.dataHandler')
       return docs;
    }
 
-   Doc.prototype.getDocType = function(xmlDocDom, ns, nsResolver) {
+   //TODO add documentation
+   function getDocType(xmlDocDom, ns, nsResolver) {
       var type = ''
       var verse = $(xmlDocDom).xpath('//ns:body//ns:l', nsResolver).length !== 0;
       var prose = $(xmlDocDom).xpath('//ns:body//ns:p', nsResolver).length !== 0;
@@ -94,17 +95,43 @@ angular.module('evtviewer.dataHandler')
       }
 
       return type;
-   };
+   }
+   
+   Doc.prototype.parseText = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+      this.type = getDocType(xmlDocDom, ns, nsResolver);
 
-   //TODO add documentation
-   Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
-      //var criticalHandler = evtBuilder.create(Doc, 'CriticalEditionHandler');
-      var lines = [];
-      lines = this.Poetry.parseLines(xmlDocDom, lines, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
+      var lines,
+         paragraphs;
+
+      switch(this.type) {
+         case 'prose':
+            var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
+            if(hasLineBreakTag) {
+               lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
+            }
+            else {
+               //paragraphs = this.Text.parseParagraphs(xmlDocDom, paragraphs, currentEdition, docs, ns, nsResolver);
+            }
+            break;
+         case 'poetry':
+            lines = this.Text.parseLines(xmlDocDom, paragraphs, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
+            break;
+      }
+
       console.log(lines);
    };
 
-   Doc.prototype.parseProse = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+   //TODO add documentation
+   /*Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+      var lines = [];
+      lines = this.Poetry.parseLines(xmlDocDom, lines, currentEdition, /!*criticalHandler,*!/ docs, ns, nsResolver);
+      console.log(lines);
+   };*/
 
-   };
+   //TODO add documentation
+   /*Doc.prototype.parseProse = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+      var paragraphs = [];
+      paragraphs = this.Prose.parseParagraphs(xmlDocDom, paragraphs, currentEdition, docs, ns, nsResolver);
+      console.log(paragraphs);
+   };*/
 }]);
