@@ -21,4 +21,11 @@ angular.module('evtviewer.dataHandler')
                   : $(node).xpath(XPATH.getDiplomaticChildNodes);
       return nodes;
    };
+   
+   Poem.prototype.getInterpretativeLineNodes = function(node, nodes, ns, nsResolver) {
+      nodes = ns ? $(node).xpath(XPATH.ns.getInterpretativeChildNodes, nsResolver)
+                 : $(node).xpath(XPATH.getInterpretativeChildNodes);
+      return nodes;
+   };
+   
 }]);

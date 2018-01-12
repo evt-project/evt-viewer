@@ -37,9 +37,10 @@ angular.module('evtviewer.dataHandler')
 
       sRef = node.getAttribute('ref');
       sRef = sRef.replace('#', '');
-      this.glyphId = sRef;
+      Glyph.glyphId = sRef;
 
       currentGlyph = glyphs[sRef].mapping;
+      currentGlyph.id = Glyph.glyphId;
       return currentGlyph;
    }
 
@@ -62,7 +63,7 @@ angular.module('evtviewer.dataHandler')
 
       currentGlyph = getCurrentGlyph(currentNode);
 
-      glyph.id = this.glyphId;
+      glyph.id = currentGlyph.id;
       glyph.diplomatic = currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
       glyph.interpretative = currentGlyph.normalized !== undefined ? currentGlyph.normalized.content : '';
 
@@ -113,8 +114,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Glyph.prototype.addGlyph = function (currentGlyph, currentEdition) {
-      switch (currentEdition) {
+   Glyph.prototype.addGlyph = function (currentGlyph, editionType) {
+      switch (editionType) {
          case 'diplomatic':
             return currentGlyph.diplomatic;
          case 'interpretative':

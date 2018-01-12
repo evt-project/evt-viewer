@@ -20,6 +20,7 @@ angular.module('evtviewer.dataHandler')
    this.nsResolver = '';
    this.Text = evtSearchText;
    this.type = '';
+   this.edition = '';
 
    /**
     * @ngdoc method
@@ -100,11 +101,35 @@ angular.module('evtviewer.dataHandler')
    
    Doc.prototype.parseText = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
       this.type = getDocType(xmlDocDom);
-
+      this.edition = currentEdition;
+      
       var lines,
+         isDiplomaticEdition,
          paragraphs;
-
-      switch(this.type) {
+      
+         isDiplomaticEdition = this.edition === 'diplomatic' || this.edition === 'interpretative';
+      
+      if(isDiplomaticEdition) {
+         switch(this.type) {
+            case 'prose':
+               var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
+               if(hasLineBreakTag) {
+                  lines = this.Text.parseLines(xmlDocDom, lines, this.type, docs, ns, nsResolver);
+               }
+               else {
+                  paragraphs = this.Text.parseParagraphs();
+               }
+               break;
+            case 'verse':
+               lines = this.Text.parseLines(xmlDocDom, lines, this.type, docs, ns, nsResolver);
+               break;
+         }
+      }
+      else {
+      
+      }
+      
+      /*switch(this.type) {
          case 'prose':
             var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
             if(hasLineBreakTag) {
@@ -117,7 +142,7 @@ angular.module('evtviewer.dataHandler')
          case 'verse':
             lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, docs, ns, nsResolver);
             break;
-      }
+      }*/
 
       console.log('# LINES #', lines);
       console.log('# PARAGRAPHS #', paragraphs);
