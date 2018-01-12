@@ -15,7 +15,7 @@ var lunr = require('lunr');
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchDocument', ['evtSearchPoetry', 'evtSearchProse', 'evtSearchText', 'parsedData', function Doc(evtSearchPoetry, evtSearchProse, evtSearchText, parsedData) {
+.service('evtSearchDocument', ['evtSearchPoem', 'evtSearchProse', 'evtSearchText', 'parsedData', function Doc(evtSearchPoem, evtSearchProse, evtSearchText, parsedData) {
    this.ns = false;
    this.nsResolver = '';
    this.Text = evtSearchText;
@@ -85,10 +85,10 @@ angular.module('evtviewer.dataHandler')
    function getDocType(xmlDocDom) {
       var type = '';
       
-      var verse = xmlDocDom.getElementsByTagName('l').length !== 0;
+      var poem = xmlDocDom.getElementsByTagName('l').length !== 0;
       var prose = xmlDocDom.getElementsByTagName('l').length === 0;
       
-      if(verse) {
+      if(poem) {
          type = 'verse';
       }
       else if(prose) {

@@ -1,6 +1,6 @@
 //TODO add documentation
 angular.module('evtviewer.dataHandler')
-.service('evtSearchText', ['evtGlyph', 'XPATH', 'evtSearchProse', 'evtSearchPoetry', 'Utils', function Text(evtGlyph, XPATH, evtSearchProse, evtSearchPoetry, Utils) {
+.service('evtSearchText', ['evtGlyph', 'XPATH', 'evtSearchProse', 'evtSearchPoem', 'Utils', function Text(evtGlyph, XPATH, evtSearchProse, evtSearchPoem, Utils) {
 
    /**
     * @ngdoc method
@@ -66,12 +66,12 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getPoetryLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
+   function getPoemLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
       var nodes = [];
       
       switch (currentEdition) {
          case 'diplomatic':
-            nodes = evtSearchPoetry.getDiplomaticLineNodes(node, nodes, ns, nsResolver);
+            nodes = evtSearchPoem.getDiplomaticLineNodes(node, nodes, ns, nsResolver);
             break;
          case 'interpretative':
             nodes = ns ? $(node).xpath(XPATH.ns.getInterpretativeChildNodes, nsResolver)
@@ -172,9 +172,9 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getPoetryTitle(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
+   function getPoemTitle(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
       var title = '',
-         nodes = getPoetryLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver);
+         nodes = getPoemLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver);
       
       title += getText(nodes, currentEdition/*, criticalHandler*/);
       
@@ -237,7 +237,7 @@ angular.module('evtviewer.dataHandler')
          }
          else if (nodes[i].nodeName === 'head') {
             if (nodes[i].getAttribute('type') !== 'main') {
-               title = getPoetryTitle(xmlDocDom, type, line, currentEdition, nodes[i], ns, nsResolver);
+               title = getPoemTitle(xmlDocDom, type, line, currentEdition, nodes[i], ns, nsResolver);
                id = 1;
             }
             else {
@@ -257,7 +257,7 @@ angular.module('evtviewer.dataHandler')
          
             console.time('getLineNodes');
             if (type === 'verse') {
-               lineNodes = getPoetryLineNodes(xmlDocDom, type, line.line, currentEdition, nodes[i], ns, nsResolver);
+               lineNodes = getPoemLineNodes(xmlDocDom, type, line.line, currentEdition, nodes[i], ns, nsResolver);
             }
             else {
                switch (currentEdition) {
@@ -307,14 +307,14 @@ angular.module('evtviewer.dataHandler')
     *          doc:[],
     *          line:'',
     *          page:'',
-    *          poetry:'',
+    *          poem:'',
     *          text:''
     *       },
     *       1: {
     *          doc:[],
     *          line:'',
     *          page:'',
-    *          poetry:'',
+    *          poem:'',
     *          text:''
     *       }
     *     ]
