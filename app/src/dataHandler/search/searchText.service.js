@@ -204,7 +204,7 @@ angular.module('evtviewer.dataHandler')
     */
    function getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, ns, nsResolver) {
       console.time('getLineInfo');
-      
+   
       var line = {},
          lineNodes = [],
          currentPage,
@@ -214,7 +214,7 @@ angular.module('evtviewer.dataHandler')
          proseInterpretativeNodes,
          id = 1,
          countLine = 1;
-      
+   
       if (type === 'prose') {
          switch (currentEdition) {
             case 'diplomatic':
@@ -228,61 +228,61 @@ angular.module('evtviewer.dataHandler')
             case 'critical':
                break;
          }
-         
-         for (var i = 0; i < nodes.length; i++) {
-            
-            if (nodes[i].nodeName === 'pb') {
-               currentPage = nodes[i].getAttribute('n');
-            }
-            else if (nodes[i].nodeName === 'head') {
-               if (nodes[i].getAttribute('type') !== 'main') {
-                  title = getPoetryTitle(xmlDocDom, type, line, currentEdition, nodes[i], ns, nsResolver);
-                  id = 1;
-               }
-               else {
-                  mainTitle = nodes[i].textContent;
-               }
+      }
+   
+      for (var i = 0; i < nodes.length; i++) {
+      
+         if (nodes[i].nodeName === 'pb') {
+            currentPage = nodes[i].getAttribute('n');
+         }
+         else if (nodes[i].nodeName === 'head') {
+            if (nodes[i].getAttribute('type') !== 'main') {
+               title = getPoetryTitle(xmlDocDom, type, line, currentEdition, nodes[i], ns, nsResolver);
+               id = 1;
             }
             else {
-               if (currentPage !== undefined) {
-                  line.page = currentPage;
-               }
-               if (title !== undefined) {
-                  line.title = title;
-               }
-               line.line = nodes[i].getAttribute('n') || id.toString();
-               id++;
-               line.doc = getCurrentDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
-               
-               console.time('getLineNodes');
-               if (type === 'verse') {
-                  lineNodes = getPoetryLineNodes(xmlDocDom, type, line.line, currentEdition, nodes[i], ns, nsResolver);
-               }
-               else {
-                  switch(currentEdition) {
-                     case 'diplomatic':
-                        lineNodes = getProseLineNodes(currentEdition, countLine, proseDiplomaticNodes, ns, nsResolver);
-                        break;
-                     case 'interpretative':
-                        lineNodes = getProseLineNodes(currentEdition, countLine, proseInterpretativeNodes, ns, nsResolver);
-                        break;
-                     case 'critical':
-                        break;
-                  }
-                  
-                  countLine++;
-               }
-               console.timeEnd('getLineNodes');
-               
-               line.text = getText(lineNodes, currentEdition);
-               lineNodes = [];
-               lines.push(line);
+               mainTitle = nodes[i].textContent;
             }
-            line = {};
          }
-         console.timeEnd('getLineInfo');
-         return lines;
+         else {
+            if (currentPage !== undefined) {
+               line.page = currentPage;
+            }
+            if (title !== undefined) {
+               line.title = title;
+            }
+            line.line = nodes[i].getAttribute('n') || id.toString();
+            id++;
+            line.doc = getCurrentDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
+         
+            console.time('getLineNodes');
+            if (type === 'verse') {
+               lineNodes = getPoetryLineNodes(xmlDocDom, type, line.line, currentEdition, nodes[i], ns, nsResolver);
+            }
+            else {
+               switch (currentEdition) {
+                  case 'diplomatic':
+                     lineNodes = getProseLineNodes(currentEdition, countLine, proseDiplomaticNodes, ns, nsResolver);
+                     break;
+                  case 'interpretative':
+                     lineNodes = getProseLineNodes(currentEdition, countLine, proseInterpretativeNodes, ns, nsResolver);
+                     break;
+                  case 'critical':
+                     break;
+               }
+            
+               countLine++;
+            }
+            console.timeEnd('getLineNodes');
+         
+            line.text = getText(lineNodes, currentEdition);
+            lineNodes = [];
+            lines.push(line);
+         }
+         line = {};
       }
+      console.timeEnd('getLineInfo');
+      return lines;
    }
    
    /**
