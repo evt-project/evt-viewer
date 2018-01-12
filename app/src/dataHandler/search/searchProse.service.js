@@ -1,23 +1,33 @@
 //TODO add documentation
 angular.module('evtviewer.dataHandler')
-.service('evtSearchProse', ['evtGlyph', 'XPATH', 'Utils', function Prose(evtGlyph, XPATH, Utils) {
-
-   //TODO add documentation
-   Prose.prototype.getDiplomaticLineNodes = function(xmlDocDom, nodes, node, ns, nsResolver) {
-      var hasFollowingLb = $(node).xpath('.//following::ns:lb', nsResolver).length !== 0;
-      
-      if(hasFollowingLb) {
-         console.time('XPATH-INTERSECT');
-         nodes = ns ? $(node).xpath(XPATH.ns.getDiplomaticNodesBetween, nsResolver)
-                    : $(node).xpath(XPATH.getDiplomaticNodesBetween);
-         console.timeEnd('XPATH-INTERSECT');
+.service('evtSearchProse', ['XPATH', function Prose(XPATH) {
    
+   //TODO add documentation
+   Prose.prototype.getDiplomaticLineNodes = function (countLine, diplomaticNodes, ns, nsResolver) {
+      var lineNodes = [],
+         prevLb,
+         hasPrevLb;
+      
+      for (var i = 0; i < diplomaticNodes.length;) {
+         prevLb = ns ? $(diplomaticNodes[i]).xpath(XPATH.ns.getPrevLb, nsResolver)
+                     : $(diplomaticNodes[i]).xpath(XPATH.getPrevLb);
+         
+         hasPrevLb = prevLb.length !== 0;
+         
+         if (hasPrevLb) {
+            if (countLine === prevLb.length) {
+               lineNodes.push(diplomaticNodes[i]);
+               diplomaticNodes.splice(diplomaticNodes[i], 1);
+            }
+            else {
+               return lineNodes;
+            }
+         }
+         else {
+            diplomaticNodes.splice(diplomaticNodes[i], 1);
+         }
       }
-      else {
-         nodes = ns ? $(node).xpath(XPATH.ns.getDiplomaticNodesFollowing, nsResolver)
-                    : $(node).xpath(XPATH.getDiplomaticNodesFollowing);
-      }
-
-      return nodes;
+      return lineNodes;
    };
+   
 }]);

@@ -82,15 +82,12 @@ angular.module('evtviewer.dataHandler')
    }
 
    //TODO add documentation
-   function getDocType(xmlDocDom, ns, nsResolver) {
+   function getDocType(xmlDocDom) {
       var type = '';
       
       var verse = xmlDocDom.getElementsByTagName('l').length !== 0;
       var prose = xmlDocDom.getElementsByTagName('l').length === 0;
       
-      /*var verse = $(xmlDocDom).xpath('//ns:body//ns:l', nsResolver).length !== 0;
-      var prose = $(xmlDocDom).xpath('//ns:body//ns:p', nsResolver).length !== 0;*/
-
       if(verse) {
          type = 'verse';
       }
@@ -102,7 +99,7 @@ angular.module('evtviewer.dataHandler')
    }
    
    Doc.prototype.parseText = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
-      this.type = getDocType(xmlDocDom, ns, nsResolver);
+      this.type = getDocType(xmlDocDom);
 
       var lines,
          paragraphs;
@@ -111,10 +108,10 @@ angular.module('evtviewer.dataHandler')
          case 'prose':
             var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
             if(hasLineBreakTag) {
-               lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
+               lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, docs, ns, nsResolver);
             }
             else {
-               //paragraphs = this.Text.parseParagraphs(xmlDocDom, paragraphs, currentEdition, docs, ns, nsResolver);
+               paragraphs = this.Text.parseParagraphs();
             }
             break;
          case 'verse':
@@ -122,20 +119,8 @@ angular.module('evtviewer.dataHandler')
             break;
       }
 
-      console.log(lines);
+      console.log('# LINES #', lines);
+      console.log('# PARAGRAPHS #', paragraphs);
    };
-
-   //TODO add documentation
-   /*Doc.prototype.parsePoetry = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
-      var lines = [];
-      lines = this.Poetry.parseLines(xmlDocDom, lines, currentEdition, /!*criticalHandler,*!/ docs, ns, nsResolver);
-      console.log(lines);
-   };*/
-
-   //TODO add documentation
-   /*Doc.prototype.parseProse = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
-      var paragraphs = [];
-      paragraphs = this.Prose.parseParagraphs(xmlDocDom, paragraphs, currentEdition, docs, ns, nsResolver);
-      console.log(paragraphs);
-   };*/
+   
 }]);

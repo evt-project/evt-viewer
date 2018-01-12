@@ -18,18 +18,16 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getText(nodes, currentEdition/*, criticalHandler*/) {
+   function getText(nodes, currentEdition) {
       var text = '';
 
       for(var i = 0; i < nodes.length; i++) {
 
          switch(currentEdition) {
             case 'diplomatic':
-               var glyph,
-                  currentGlyph;
+               var currentGlyph;
 
                if(nodes[i].nodeName === 'g') {
-                  //glyph = evtBuilder.create(evtGlyph, 'Glyph');
                   currentGlyph = evtGlyph.getGlyph(nodes[i]);
                   text += evtGlyph.addGlyph(currentGlyph, currentEdition);
                }
@@ -46,7 +44,7 @@ angular.module('evtviewer.dataHandler')
                break;
          }
       }
-      /*console.log(Utils.cleanText(text));*/
+      
       return Utils.cleanText(text);
    }
 
@@ -68,17 +66,12 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
+   function getPoetryLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
       var nodes = [];
 
       switch (currentEdition) {
          case 'diplomatic':
-            if(type==='prose') {
-               nodes = evtSearchProse.getDiplomaticLineNodes(xmlDocDom, nodes, node, ns, nsResolver);
-            }
-            else if(type==='verse') {
-               nodes = evtSearchPoetry.getDiplomaticLineNodes(node, nodes, ns, nsResolver);
-            }
+            nodes = evtSearchPoetry.getDiplomaticLineNodes(node, nodes, ns, nsResolver);
             break;
          case 'interpretative':
             nodes = ns ? $(node).xpath(XPATH.ns.getInterpretativeChildNodes, nsResolver)
@@ -93,6 +86,22 @@ angular.module('evtviewer.dataHandler')
       return nodes;
    }
 
+   //TODO Add Documentation
+   function getProseLineNodes(currentEdition, countLine, diplomaticNodes, ns, nsResolver) {
+      var nodes = [];
+      
+      switch (currentEdition) {
+         case 'diplomatic':
+            nodes = evtSearchProse.getDiplomaticLineNodes(countLine, diplomaticNodes, ns, nsResolver);
+            break;
+         case 'interpretative':
+            break;
+         case 'critical':
+            break;
+      }
+      return nodes;
+   }
+   
    //TODO Add Documentation
    function getDocTitle(xmlDocDom, docs,  node, ns, nsResolver) {
       var docId,
@@ -175,7 +184,7 @@ angular.module('evtviewer.dataHandler')
     */
    function getPoetryTitle(xmlDocDom, type, line, currentEdition, node, ns, nsResolver) {
       var title = '',
-         nodes = getLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver);
+         nodes = getPoetryLineNodes(xmlDocDom, type, line, currentEdition, node, ns, nsResolver);
 
       title += getText(nodes, currentEdition/*, criticalHandler*/);
 
@@ -203,13 +212,22 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, /*criticalHandler,*/ ns, nsResolver) {
+   function getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, ns, nsResolver) {
       console.time('getLineInfo');
+      
       var line = {},
+         lineNodes = [],
          currentPage,
-         id = 1,
          mainTitle,
-         title;
+         title,
+         proseDiplomaticNodes,
+         id = 1,
+         countLine = 1;
+      
+      if(type === 'prose') {
+         proseDiplomaticNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseDiplomaticNodes, nsResolver)
+                                   : $(xmlDocDom).xpath(XPATH.getProseDiplomaticNodes);
+      }
       
       for(var i = 0; i < nodes.length; i++) {
          
@@ -235,14 +253,19 @@ angular.module('evtviewer.dataHandler')
             line.line = nodes[i].getAttribute('n') || id.toString(); id++;
             line.doc = getCurrentDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
             
-            //console.time('GET-LINE-NODE');
-            var lineNodes = getLineNodes(xmlDocDom, type, line.line, currentEdition, nodes[i], ns, nsResolver);
-            //console.timeEnd('GET-LINE-NODE');
-            
-            line.text = getText(lineNodes, currentEdition/*, criticalHandler*/);
-            
+            console.time('getLineNodes');
+            if(type === 'verse') {
+               lineNodes = getPoetryLineNodes(xmlDocDom, type, line.line, currentEdition, nodes[i], ns, nsResolver);
+            }
+            else {
+               lineNodes = getProseLineNodes(currentEdition, countLine, proseDiplomaticNodes, ns, nsResolver);
+               countLine++;
+            }
+            console.timeEnd('getLineNodes');
+   
+            line.text = getText(lineNodes, currentEdition);
+            lineNodes = [];
             lines.push(line);
-            
          }
          line = {};
       }
@@ -286,29 +309,15 @@ angular.module('evtviewer.dataHandler')
     * </pre>
     * @author GC
     */
-   function getLines(xmlDocDom, type, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver) {
-      //console.time('getLines');
+   function getLines(xmlDocDom, type, currentEdition, docs, ns, nsResolver) {
       var lines = [],
-         nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:l|ns:lb|ns:pb|ns:head|ns:head[@type=\'sub\'])[not(ancestor::ns:note)]', nsResolver)
+         nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
          : $(xmlDocDom).xpath(XPATH.getLineNode);
       
-      lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, /*criticalHandler,*/ ns, nsResolver);
-      //console.timeEnd('getLines');
+      lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, ns, nsResolver);
 
       return lines;
    }
-
-   /*function getParagraphs(xmlDocDom, currentEdition, docs, ns, nsResolver) {
-      console.time('getParagraphs');
-      var paragraphs = [],
-         nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:p|ns:pb|ns:head)', nsResolver)
-            : $(xmlDocDom).xpath('//body//p');
-
-      //lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, currentEdition, /!*criticalHandler,*!/ ns, nsResolver);
-      console.timeEnd('getParagraphs');
-
-      return paragraphs;
-   }*/
 
    /**
     * @ngdoc method
@@ -330,13 +339,24 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Text.prototype.parseLines = function(xmlDocDom, lines, type, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver) {
-      lines = getLines(xmlDocDom, type, currentEdition, /*criticalHandler,*/ docs, ns, nsResolver);
+   Text.prototype.parseLines = function(xmlDocDom, lines, type, currentEdition, docs, ns, nsResolver) {
+      lines = getLines(xmlDocDom, type, currentEdition, docs, ns, nsResolver);
       return lines;
    };
 
-   /*Text.prototype.parseParagraphs = function(xmlDocDom, paragraphs, currentEdition, docs, ns, nsResolver) {
-      paragraphs = getParagraphs(xmlDocDom, currentEdition, docs, ns, nsResolver);
-      return paragraphs;
+   /*function getParagraphs(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+      
+      var lines = [],
+         nodes = ns ? $(xmlDocDom).xpath('//ns:body//(ns:pb|ns:p//ns:lb)', nsResolver)
+            : $(xmlDocDom).xpath('//body//p');
+      
+      lines = getParInfo(xmlDocDom, nodes, docs, lines, currentEdition, /!*criticalHandler,*!/ ns, nsResolver);
+      
+      
+      return lines;
+   }*/
+   /*Text.prototype.parseParagraphs = function() {
+      lines = getParagraphs(xmlDocDom, currentEdition, docs, ns, nsResolver);
+      return lines;
    };*/
 }]);
