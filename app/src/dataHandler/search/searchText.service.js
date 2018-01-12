@@ -88,17 +88,7 @@ angular.module('evtviewer.dataHandler')
    
    //TODO Add Documentation
    function getProseLineNodes(currentEdition, countLine, proseLineNodes, ns, nsResolver) {
-      var nodes = [];
-      nodes = evtSearchProse.getLineNodes(countLine, proseLineNodes, ns, nsResolver);
-      /*switch (currentEdition) {
-         case 'diplomatic':
-            
-            break;
-         case 'interpretative':
-            break;
-         case 'critical':
-            break;
-      }*/
+      var nodes  = evtSearchProse.getLineNodes(countLine, proseLineNodes, ns, nsResolver);
       return nodes;
    }
    
