@@ -189,14 +189,17 @@ angular.module('evtviewer.dataHandler')
       var line = {},
          lineNodes = [],
          currentPage,
+         docTitle,
          mainTitle,
          title,
          proseDiplomaticNodes,
          proseInterpretativeNodes,
          id = 1,
          countLine = 1;
+      
+      
    
-      if(type === 'prose') {
+      if (type === 'prose') {
          console.time('getDiplomaticNodes');
          proseDiplomaticNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseDiplomaticNodes, nsResolver)
                                    : $(xmlDocDom).xpath(XPATH.getProseDiplomaticNodes);
@@ -258,6 +261,18 @@ angular.module('evtviewer.dataHandler')
       return lines;
    }
    
+   function getBodyNodes(type, body) {
+      var bodyNodes = [];
+      
+      if(type === 'verse') {
+         bodyNodes = $.makeArray(body.querySelectorAll('pb,l,head,head[type=\'sub\']'));
+      }
+      else {
+         bodyNodes = $.makeArray(body.querySelectorAll('pb,lb,head,head[type=\'sub\']'));
+      }
+      return bodyNodes;
+   }
+   
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
@@ -295,7 +310,10 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    function getLines(xmlDocDom, type, docs, ns, nsResolver) {
-      var lines = [];
+      var lines = [],
+         nodes= [],
+         body,
+         haveParentNote;
       
       /*console.time('GET-LINE-NODES');
       var nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
@@ -303,13 +321,23 @@ angular.module('evtviewer.dataHandler')
       console.timeEnd('GET-LINE-NODES');*/
    
       console.time('GET-LINE-NODES');
-      var nodes = xmlDocDom.querySelectorAll('pb,lb,l,head,head[type=\'sub\']');
+      body = xmlDocDom.querySelectorAll('body');
+      
+      if(body.length > 1) {
+         var bodyNodes;
+         for(var j = 0; j < body.length; j++) {
+            bodyNodes = getBodyNodes(type, body[j]);
+            nodes = $.merge(nodes, bodyNodes);
+         }
+      }
+      else {
+         nodes = getBodyNodes(type, body[0]);
+      }
+      
       for (var i = 0; i < nodes.length; i++) {
-         var haveParentNote = $(nodes[i]).parents().is('note');
+         haveParentNote = $(nodes[i]).parents().is('note');
          if(haveParentNote) {
-            var parent = nodes[i].parentNode;
-            parent.removeChild(nodes[i]);
-            nodes = xmlDocDom.querySelectorAll('pb,lb,l,head,head[type=\'sub\']');
+            nodes.splice(i, 1);
             i = i-1;
          }
       }
