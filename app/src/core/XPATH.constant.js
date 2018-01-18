@@ -9,7 +9,7 @@ angular.module('evtviewer.core')
    getDiplomaticNodesBetween:'(.//(following::text()|following::g) intersect .//following::lb[1]//(preceding::text()|preceding::g))[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]',
    getDiplomaticNodesFollowing: './/(following::text()|following::g)[not((ancestor::corr|ancestor::reg|ancestor::expan|ancestor::ex|ancestor::note))]',
    
-   getProseInterpretativeNodes: '//body//(g|p//text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]',
+   getProseInterpretativeNodes: '//body//p//(g|text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]',
    getInterpretativeChildNodes: './/(g | text())[not((ancestor::sic|ancestor::orig|ancestor::abbr|ancestor::am|ancestor::note))]',
    //getCriticalChildNodes: './/(lem | rdg)[@wit]',
    getCurrentTitle: 'string(.//ancestor::text/@n)',
@@ -22,7 +22,7 @@ angular.module('evtviewer.core')
       getProseDiplomaticNodes: '//ns:body//ns:p//(ns:g|text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]',
       getDiplomaticChildNodes: './/(ns:g | text())[not((ancestor::ns:corr|ancestor::ns:reg|ancestor::ns:expan|ancestor::ns:ex|ancestor::ns:note))]',
      
-      getProseInterpretativeNodes: '//ns:body//(ns:g|ns:p//text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]',
+      getProseInterpretativeNodes: '//ns:body//ns:p//(ns:g|text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]',
       getInterpretativeChildNodes: './/(ns:g | text())[not((ancestor::ns:sic|ancestor::ns:orig|ancestor::ns:abbr|ancestor::ns:am|ancestor::ns:note))]',
       getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
       getCurrentTitle: 'string(.//ancestor::ns:text/@n)',
