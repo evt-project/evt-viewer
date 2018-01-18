@@ -108,7 +108,8 @@ angular.module('evtviewer.dataHandler')
          paragraphs;
       
          isDiplomaticEdition = this.edition === 'diplomatic' || this.edition === 'interpretative';
-      
+         console.log(this.type);
+         
       if(isDiplomaticEdition) {
          switch(this.type) {
             case 'prose':
@@ -128,21 +129,6 @@ angular.module('evtviewer.dataHandler')
       else {
       
       }
-      
-      /*switch(this.type) {
-         case 'prose':
-            var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
-            if(hasLineBreakTag) {
-               lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, docs, ns, nsResolver);
-            }
-            else {
-               paragraphs = this.Text.parseParagraphs();
-            }
-            break;
-         case 'verse':
-            lines = this.Text.parseLines(xmlDocDom, lines, this.type, currentEdition, docs, ns, nsResolver);
-            break;
-      }*/
 
       console.log('# LINES #', lines);
       console.log('# PARAGRAPHS #', paragraphs);

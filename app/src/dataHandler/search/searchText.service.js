@@ -197,10 +197,15 @@ angular.module('evtviewer.dataHandler')
          countLine = 1;
    
       if(type === 'prose') {
+         console.time('getDiplomaticNodes');
          proseDiplomaticNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseDiplomaticNodes, nsResolver)
                                    : $(xmlDocDom).xpath(XPATH.getProseDiplomaticNodes);
+         console.timeEnd('getDiplomaticNodes');
+         
+         console.time('getInterpretativeNodes');
          proseInterpretativeNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseInterpretativeNodes, nsResolver)
                                        : $(xmlDocDom).xpath(XPATH.getProseInterpretativeNodes);
+         console.timeEnd('getInterpretativeNodes');
       }
    
       for (var i = 0; i < nodes.length; i++) {
@@ -290,9 +295,25 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    function getLines(xmlDocDom, type, docs, ns, nsResolver) {
-      var lines = [],
-         nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
+      var lines = [];
+      
+      /*console.time('GET-LINE-NODES');
+      var nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
                     : $(xmlDocDom).xpath(XPATH.getLineNode);
+      console.timeEnd('GET-LINE-NODES');*/
+   
+      console.time('GET-LINE-NODES');
+      var nodes = xmlDocDom.querySelectorAll('pb,lb,l,head,head[type=\'sub\']');
+      for (var i = 0; i < nodes.length; i++) {
+         var haveParentNote = $(nodes[i]).parents().is('note');
+         if(haveParentNote) {
+            var parent = nodes[i].parentNode;
+            parent.removeChild(nodes[i]);
+            nodes = xmlDocDom.querySelectorAll('pb,lb,l,head,head[type=\'sub\']');
+            i = i-1;
+         }
+      }
+      console.timeEnd('GET-LINE-NODES');
       
       lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, ns, nsResolver);
       
