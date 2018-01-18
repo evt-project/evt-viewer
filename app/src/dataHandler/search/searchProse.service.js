@@ -17,14 +17,14 @@ angular.module('evtviewer.dataHandler')
          if (hasPrevLb) {
             if (countLine === prevLb.length) {
                lineNodes.push(proseLineNodes[i]);
-               proseLineNodes.splice(proseLineNodes[i], 1);
+               proseLineNodes.splice(i, 1);
             }
             else {
                return lineNodes;
             }
          }
          else {
-            proseLineNodes.splice(proseLineNodes[i], 1);
+            proseLineNodes.splice(i, 1);
          }
       }
       return lineNodes;
