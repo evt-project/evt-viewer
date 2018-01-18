@@ -197,8 +197,6 @@ angular.module('evtviewer.dataHandler')
          id = 1,
          countLine = 1;
       
-      
-   
       if (type === 'prose') {
          console.time('getDiplomaticNodes');
          proseDiplomaticNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseDiplomaticNodes, nsResolver)
@@ -273,6 +271,47 @@ angular.module('evtviewer.dataHandler')
       return bodyNodes;
    }
    
+   function getMoreDocumentsLines(xmlDocDom, lines, docs, body, type, ns, nsResolver) {
+      var bodyNodes,
+         nodesDoc = [],
+         haveParentNote;
+      
+      for(var i = 0; i < body.length; i++) {
+         bodyNodes = getBodyNodes(type, body[i]);
+         nodesDoc.push(getBodyNodes(type, body[i]));
+      
+         for (var j = 0; j < nodesDoc.length; j++) {
+            for(var z = 0; z < nodesDoc[j].length; z++) {
+               haveParentNote = $(nodesDoc[j][z]).parents().is('note');
+               if(haveParentNote) {
+                  nodesDoc[j].splice(z, 1);
+                  z = z-1;
+               }
+            }
+         }
+         lines = getLineInfo(xmlDocDom, type, nodesDoc[i], docs, lines, ns, nsResolver);
+      }
+      
+      return lines;
+   }
+   
+   function getDocumentLines(xmlDocDom, lines, docs, body, type, ns, nsResolver) {
+      var nodes,
+         haveParentNote;
+      
+      nodes = getBodyNodes(type, body[0]);
+      
+      for (var i = 0; i < nodes.length; i++) {
+         haveParentNote = $(nodes[i]).parents().is('note');
+         if(haveParentNote) {
+            nodes.splice(i, 1);
+            i = i-1;
+         }
+      }
+      lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, ns, nsResolver);
+      return lines;
+   }
+   
    /**
     * @ngdoc method
     * @module evtviewer.dataHandler
@@ -311,39 +350,23 @@ angular.module('evtviewer.dataHandler')
     */
    function getLines(xmlDocDom, type, docs, ns, nsResolver) {
       var lines = [],
-         nodes= [],
-         body,
-         haveParentNote;
+         body;
       
       /*console.time('GET-LINE-NODES');
       var nodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getLineNode, nsResolver)
                     : $(xmlDocDom).xpath(XPATH.getLineNode);
       console.timeEnd('GET-LINE-NODES');*/
    
-      console.time('GET-LINE-NODES');
+      console.time('GET-LINES');
       body = xmlDocDom.querySelectorAll('body');
       
       if(body.length > 1) {
-         var bodyNodes;
-         for(var j = 0; j < body.length; j++) {
-            bodyNodes = getBodyNodes(type, body[j]);
-            nodes = $.merge(nodes, bodyNodes);
-         }
+         lines = getMoreDocumentsLines(xmlDocDom, lines, docs, body, type, ns, nsResolver);
       }
       else {
-         nodes = getBodyNodes(type, body[0]);
+         lines = getDocumentLines(xmlDocDom, lines, docs, body, type, ns, nsResolver);
       }
-      
-      for (var i = 0; i < nodes.length; i++) {
-         haveParentNote = $(nodes[i]).parents().is('note');
-         if(haveParentNote) {
-            nodes.splice(i, 1);
-            i = i-1;
-         }
-      }
-      console.timeEnd('GET-LINE-NODES');
-      
-      lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, ns, nsResolver);
+      console.timeEnd('GET-LINES');
       
       return lines;
    }
