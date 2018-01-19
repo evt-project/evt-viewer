@@ -114,15 +114,16 @@ angular.module('evtviewer.dataHandler')
          switch(this.type) {
             case 'prose':
                var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
-               if(hasLineBreakTag) {
-                  lines = this.Text.parseLines(xmlDocDom, lines, this.type, docs, ns, nsResolver);
+               if(hasLineBreakTag === true) {
+                  //le lines servono?
+                  lines = this.Text.parseLines(xmlDocDom, this.type, docs, ns, nsResolver);
                }
                else {
                   paragraphs = this.Text.parseParagraphs();
                }
                break;
             case 'verse':
-               lines = this.Text.parseLines(xmlDocDom, lines, this.type, docs, ns, nsResolver);
+               lines = this.Text.parseLines(xmlDocDom, this.type, docs, ns, nsResolver);
                break;
          }
       }

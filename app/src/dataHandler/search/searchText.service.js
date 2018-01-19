@@ -183,10 +183,11 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   function getLineInfo(xmlDocDom, type, nodes, docs, lines, ns, nsResolver) {
+   function getLineInfo(xmlDocDom, type, nodes, docs, ns, nsResolver) {
       console.time('getLineInfo');
    
       var line = {},
+         lines = [],
          lineNodes = [],
          currentPage,
          docTitle,
@@ -202,6 +203,7 @@ angular.module('evtviewer.dataHandler')
          proseDiplomaticNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseDiplomaticNodes, nsResolver)
                                    : $(xmlDocDom).xpath(XPATH.getProseDiplomaticNodes);
          console.timeEnd('getDiplomaticNodes');
+         console.log(proseDiplomaticNodes.length);
          
          console.time('getInterpretativeNodes');
          proseInterpretativeNodes = ns ? $(xmlDocDom).xpath(XPATH.ns.getProseInterpretativeNodes, nsResolver)
@@ -234,7 +236,7 @@ angular.module('evtviewer.dataHandler')
             id++;
             line.doc = getCurrentDocTitle(xmlDocDom, docs, nodes[i], mainTitle, ns, nsResolver);
          
-            console.time('getLineNodes');
+            //console.time('getLineNodes');
             if (type === 'verse') {
                lineNodes = getPoemLineNodes(xmlDocDom, type, line.line, nodes[i], ns, nsResolver);
             }
@@ -243,7 +245,7 @@ angular.module('evtviewer.dataHandler')
                lineNodes.interpretative = getProseLineNodes(countLine, proseInterpretativeNodes, ns, nsResolver);
                countLine++;
             }
-            console.timeEnd('getLineNodes');
+            //console.timeEnd('getLineNodes');
          
             line.text = {
                diplomatic: getText(lineNodes.diplomatic, 'diplomatic'),
@@ -259,6 +261,7 @@ angular.module('evtviewer.dataHandler')
       return lines;
    }
    
+   // TODO cambia in getfilteredebodynode
    function getBodyNodes(type, body) {
       var bodyNodes = [];
       
@@ -271,10 +274,10 @@ angular.module('evtviewer.dataHandler')
       return bodyNodes;
    }
    
-   function getMoreDocumentsLines(xmlDocDom, lines, docs, body, type, ns, nsResolver) {
+   function getMoreDocumentsLines(xmlDocDom, docs, body, type, ns, nsResolver) {
       var bodyNodes,
          nodesDoc = [],
-         haveParentNote;
+         haveParentNote, lines;
       
       for(var i = 0; i < body.length; i++) {
          bodyNodes = getBodyNodes(type, body[i]);
@@ -289,18 +292,20 @@ angular.module('evtviewer.dataHandler')
                }
             }
          }
-         lines = getLineInfo(xmlDocDom, type, nodesDoc[i], docs, lines, ns, nsResolver);
+         lines = getLineInfo(xmlDocDom, type, nodesDoc[i], docs, ns, nsResolver);
       }
       
       return lines;
    }
    
-   function getDocumentLines(xmlDocDom, lines, docs, body, type, ns, nsResolver) {
+   function getDocumentLines(xmlDocDom, docs, body, type, ns, nsResolver) {
       var nodes,
-         haveParentNote;
+         haveParentNote,
+         lines;
       
       nodes = getBodyNodes(type, body[0]);
       
+      // TODO Fallo prima! elimina tutte le <note>
       for (var i = 0; i < nodes.length; i++) {
          haveParentNote = $(nodes[i]).parents().is('note');
          if(haveParentNote) {
@@ -308,7 +313,7 @@ angular.module('evtviewer.dataHandler')
             i = i-1;
          }
       }
-      lines = getLineInfo(xmlDocDom, type, nodes, docs, lines, ns, nsResolver);
+      lines = getLineInfo(xmlDocDom, type, nodes, docs, ns, nsResolver);
       return lines;
    }
    
@@ -361,10 +366,10 @@ angular.module('evtviewer.dataHandler')
       body = xmlDocDom.querySelectorAll('body');
       
       if(body.length > 1) {
-         lines = getMoreDocumentsLines(xmlDocDom, lines, docs, body, type, ns, nsResolver);
+         lines = getMoreDocumentsLines(xmlDocDom, docs, body, type, ns, nsResolver);
       }
       else {
-         lines = getDocumentLines(xmlDocDom, lines, docs, body, type, ns, nsResolver);
+         lines = getDocumentLines(xmlDocDom, docs, body, type, ns, nsResolver);
       }
       console.timeEnd('GET-LINES');
       
@@ -391,8 +396,8 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Text.prototype.parseLines = function (xmlDocDom, lines, type, docs, ns, nsResolver) {
-      lines = getLines(xmlDocDom, type, docs, ns, nsResolver);
+   Text.prototype.parseLines = function (xmlDocDom, type, docs, ns, nsResolver) {
+      var lines = getLines(xmlDocDom, type, docs, ns, nsResolver);
       return lines;
    };
    
