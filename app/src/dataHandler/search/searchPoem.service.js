@@ -16,15 +16,13 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtSearchPoem', ['evtGlyph', 'parsedData', 'Utils', 'XPATH', function Poem(evtGlyph, parsedData, Utils, XPATH) {
 
-   Poem.prototype.getDiplomaticLineNodes = function(node, nodes, ns, nsResolver) {
-      nodes = ns ? $(node).xpath(XPATH.ns.getDiplomaticChildNodes, nsResolver)
-                  : $(node).xpath(XPATH.getDiplomaticChildNodes);
+   Poem.prototype.getDiplomaticLineNodes = function(xmlDocDom, node, nodes, ns, nsResolver) {
+      nodes = xmlDocDom.evaluate(XPATH.ns.getDiplomaticChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null);
       return nodes;
    };
    
-   Poem.prototype.getInterpretativeLineNodes = function(node, nodes, ns, nsResolver) {
-      nodes = ns ? $(node).xpath(XPATH.ns.getInterpretativeChildNodes, nsResolver)
-                 : $(node).xpath(XPATH.getInterpretativeChildNodes);
+   Poem.prototype.getInterpretativeLineNodes = function(xmlDocDom, node, nodes, ns, nsResolver) {
+      nodes = xmlDocDom.evaluate(XPATH.ns.getInterpretativeChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null);
       return nodes;
    };
    

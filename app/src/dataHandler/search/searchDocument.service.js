@@ -1,4 +1,3 @@
-var jqueryxpath = require('jquery-xpath/jquery.xpath.js');
 var lunr = require('lunr');
 
 /**
@@ -80,7 +79,7 @@ angular.module('evtviewer.dataHandler')
       }
 
       return docs;
-   }
+   };
 
    //TODO add documentation
    function getDocType(xmlDocDom) {
@@ -115,11 +114,10 @@ angular.module('evtviewer.dataHandler')
             case 'prose':
                var hasLineBreakTag = $(xmlDocDom).find('lb').length !== 0;
                if(hasLineBreakTag === true) {
-                  //le lines servono?
                   lines = this.Text.parseLines(xmlDocDom, this.type, docs, ns, nsResolver);
                }
                else {
-                  paragraphs = this.Text.parseParagraphs();
+                  //paragraphs = this.Text.parseParagraphs();
                }
                break;
             case 'verse':

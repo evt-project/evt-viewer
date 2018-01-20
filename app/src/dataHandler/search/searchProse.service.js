@@ -3,30 +3,33 @@ angular.module('evtviewer.dataHandler')
 .service('evtSearchProse', ['XPATH', function Prose(XPATH) {
    
    //TODO add documentation
-   Prose.prototype.getLineNodes = function (countLine, proseLineNodes, ns, nsResolver) {
+   Prose.prototype.getLineNodes = function (xmlDocDom, countLine, proseLineNodes, ns, nsResolver) {
       var lineNodes = [],
+         proseLineNode,
          prevLb,
          hasPrevLb;
       
-      for (var i = 0; i < proseLineNodes.length;) {
-         prevLb = ns ? $(proseLineNodes[i]).xpath(XPATH.ns.getPrevLb, nsResolver)
-                     : $(proseLineNodes[i]).xpath(XPATH.getPrevLb);
+      proseLineNode = proseLineNodes.iterateNext();
+      
+      while(proseLineNode !== null) {
+         prevLb = xmlDocDom.evaluate(XPATH.ns.getPrevLb, proseLineNode, nsResolver, XPathResult.ANY_TYPE, null);
+         hasPrevLb = prevLb.numberValue !== 0;
          
-         hasPrevLb = prevLb.length !== 0;
-         
-         if (hasPrevLb) {
-            if (countLine === prevLb.length) {
-               lineNodes.push(proseLineNodes[i]);
-               proseLineNodes.splice(i, 1);
+         if (hasPrevLb === true) {
+            if (countLine === prevLb.numberValue) {
+               lineNodes.push(proseLineNode);
             }
             else {
                return lineNodes;
             }
          }
          else {
-            proseLineNodes.splice(i, 1);
+            proseLineNode = proseLineNodes.iterateNext();
          }
+         
+         proseLineNode = proseLineNodes.iterateNext();
       }
+      
       return lineNodes;
    };
    
