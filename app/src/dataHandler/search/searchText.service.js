@@ -220,6 +220,8 @@ angular.module('evtviewer.dataHandler')
             title,
             proseDiplomaticNodes,
             proseInterpretativeNodes,
+            parId,
+            paragraph,
             id = 1,
             countLine = 1;
          
@@ -250,12 +252,20 @@ angular.module('evtviewer.dataHandler')
                   mainTitle = node.textContent;
                }
             }
+            else if (node.nodeName === 'p') {
+               parId = 1;
+               paragraph = node.getAttribute('n') || parId.toString();
+               parId++;
+            }
             else {
                if (currentPage !== undefined) {
                   line.page = currentPage;
                }
                if (title !== undefined) {
                   line.title = title;
+               }
+               if (paragraph !== undefined) {
+                  line.par = paragraph;
                }
                line.line = node.getAttribute('n') || id.toString();
                id++;
