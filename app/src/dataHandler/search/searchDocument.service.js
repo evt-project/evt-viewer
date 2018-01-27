@@ -1,5 +1,3 @@
-var lunr = require('lunr');
-
 /**
  * @ngdoc service
  * @module evtviewer.dataHandler
@@ -128,9 +126,10 @@ angular.module('evtviewer.dataHandler')
       else {
       
       }
-
       console.log('# LINES #', lines);
       console.log('# PARAGRAPHS #', paragraphs);
+      
+      return lines;
    };
    
 }]);
