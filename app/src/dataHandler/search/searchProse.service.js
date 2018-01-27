@@ -18,6 +18,7 @@ angular.module('evtviewer.dataHandler')
          if (hasPrevLb === true) {
             if (countLine === prevLb.numberValue) {
                lineNodes.push(proseLineNode);
+               proseLineNode = proseLineNodes.iterateNext();
             }
             else {
                return lineNodes;
@@ -26,8 +27,6 @@ angular.module('evtviewer.dataHandler')
          else {
             proseLineNode = proseLineNodes.iterateNext();
          }
-         
-         proseLineNode = proseLineNodes.iterateNext();
       }
       
       return lineNodes;

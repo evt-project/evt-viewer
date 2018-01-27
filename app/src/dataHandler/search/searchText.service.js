@@ -244,7 +244,7 @@ angular.module('evtviewer.dataHandler')
                currentPage = node.getAttribute('n');
             }
             else if (node.nodeName === 'head') {
-               if (node.getAttribute('type') !== 'main') {
+               if (node.getAttribute('type') === 'sub') {
                   title = getCompositionTitle(xmlDocDom, type, line, node, ns, nsResolver);
                   id = 1;
                }
