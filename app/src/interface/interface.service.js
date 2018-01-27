@@ -29,7 +29,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtBuilder, evtSearch, evtSearchIndex, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtSearchParser, evtSearchIndex, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -238,7 +238,7 @@ angular.module('evtviewer.interface')
                 // Parse Glyphs
                  evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
                  // Init search
-                 var parsedDocs = evtSearch.Parser.parseDocument(doc, mainInterface.getState('currentEdition'));
+                 var parsedDocs = evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
                  var index = evtSearchIndex.createIndex(parsedDocs);
 
                 var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
@@ -550,7 +550,7 @@ angular.module('evtviewer.interface')
 
 		mainInterface.isSearchBoxOpened = function() {
 			return state.isSearchBoxOpened;
-		}
+		};
 
     /* ************** */
     /* PARAMS UPDATES */
@@ -565,7 +565,7 @@ angular.module('evtviewer.interface')
 
 		mainInterface.toogleSearchBoxOpened = function() {
 			state.isSearchBoxOpened = !state.isSearchBoxOpened;
-		}
+		};
     /**
      * @ngdoc method
      * @name evtviewer.interface.evtInterface#setToolStatus
