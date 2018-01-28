@@ -17,7 +17,7 @@ angular.module('evtviewer.core')
    getCurrentTextNode: './/ancestor::text[1]',
 
    ns : {
-      getProseLineNodes: './/ns:div//node()[self::ns:p or self::ns:pb or self::ns:lb or self::ns:head]',
+      getProseLineNodes: './/node()[self::ns:p or self::ns:pb or self::ns:lb or self::ns:head]',
       getPoemLineNodes: './/node()[self::ns:pb or self::ns:l or self::ns:head]',
       
       getPrevLb:'count(preceding::ns:lb)',

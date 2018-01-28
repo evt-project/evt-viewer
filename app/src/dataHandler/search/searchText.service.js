@@ -94,7 +94,8 @@ angular.module('evtviewer.dataHandler')
             title,
             textNode = xmlDocDom.getElementsByTagName('group')[0].children,
             
-            currentTextNode = xmlDocDom.evaluate(XPATH.ns.getCurrentTextNode, node, nsResolver, XPathResult.ANY_TYPE, null);
+            currentTextNode = ns ? xmlDocDom.evaluate(XPATH.ns.getCurrentTextNode, node, nsResolver, XPathResult.ANY_TYPE, null)
+                                 : xmlDocDom.evaluate(XPATH.getCurrentTextNode, node, null, XPathResult.ANY_TYPE, null);
             currentTextNode = currentTextNode.iterateNext();
             
          for (var j = 0; j < textNode.length; j++) {
@@ -129,7 +130,8 @@ angular.module('evtviewer.dataHandler')
          var currentTitle,
             title;
          
-         currentTitle = xmlDocDom.evaluate(XPATH.ns.getCurrentTitle, node, nsResolver, XPathResult.ANY_TYPE, null);
+         currentTitle = ns ? xmlDocDom.evaluate(XPATH.ns.getCurrentTitle, node, nsResolver, XPathResult.ANY_TYPE, null)
+                           : xmlDocDom.evaluate(XPATH.getCurrentTitle, node, null, XPathResult.ANY_TYPE, null);
          currentTitle = currentTitle.stringValue;
          
          if (currentTitle === '' && docs.length > 1) {
@@ -229,17 +231,14 @@ angular.module('evtviewer.dataHandler')
          docTitle = getCurrentDocTitle(xmlDocDom, docs, node, mainTitle, ns, nsResolver);
          if (type === 'prose') {
             
-            console.time('getDiplomaticNodes');
-            proseDiplomaticNodes = xmlDocDom.evaluate(XPATH.ns.getProseDiplomaticNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null);
-            console.timeEnd('getDiplomaticNodes');
-      
-            console.time('getInterpretativeNodes');
-            proseInterpretativeNodes = xmlDocDom.evaluate(XPATH.ns.getProseInterpretativeNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null);
-            console.timeEnd('getInterpretativeNodes');
+            proseDiplomaticNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getProseDiplomaticNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
+                                      : xmlDocDom.evaluate(XPATH.getProseDiplomaticNodes, xmlDocDom, null, XPathResult.ANY_TYPE, null);
             
+            proseInterpretativeNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getProseInterpretativeNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
+                                          : xmlDocDom.evaluate(XPATH.getProseInterpretativeNodes, xmlDocDom, null, XPathResult.ANY_TYPE, null);
          }
          
-         while(node !== null) {
+         while (node !== null) {
             if (node.nodeName === 'pb') {
                currentPage = node.getAttribute('n');
             }
@@ -306,10 +305,12 @@ angular.module('evtviewer.dataHandler')
          var bodyFilteredNodes = [];
          
          if (type === 'verse') {
-            bodyFilteredNodes = xmlDocDom.evaluate(XPATH.ns.getPoemLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null);
+            bodyFilteredNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getPoemLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null)
+                                   : xmlDocDom.evaluate(XPATH.getPoemLineNodes, body, null, XPathResult.ANY_TYPE, null);
          }
          else {
-            bodyFilteredNodes = xmlDocDom.evaluate(XPATH.ns.getProseLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null);
+            bodyFilteredNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getProseLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null)
+                                   : xmlDocDom.evaluate(XPATH.getProseLineNodes, body, null, XPathResult.ANY_TYPE, null);
          }
          return bodyFilteredNodes;
       }
