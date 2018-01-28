@@ -40,16 +40,22 @@ angular.module('evtviewer.dataHandler')
                diplomaticText = metadata[prop].diplomaticText;
                if(diplomaticText !== undefined) {
                   for (var j = 0; j < diplomaticText.page.length; j++) {
-                     console.log('La parola si trova alla pagina ' + diplomaticText.page[j] + ' alla riga ' + diplomaticText.line[j]);
+                     console.log('Found in:\n page: ' + diplomaticText.page[j] + '\n line: ' + diplomaticText.line[j]);
                   }
+               }
+               else {
+                  console.log('No results!');
                }
             }
             else if(currentEdition === 'interpretative') {
                interpretativeText = metadata[prop].interpretativeText;
                if(interpretativeText !== undefined) {
                   for (var z = 0; z < interpretativeText.page.length; z++) {
-                     console.log('La parola si trova alla pagina ' + interpretativeText.page[z] + ' alla riga ' + interpretativeText.line[z]);
+                     console.log('Found in:\n page: ' + interpretativeText.page[z] + '\n line: ' + interpretativeText.line[z]);
                   }
+               }
+               else {
+                  console.log('No results!');
                }
             }
          }
