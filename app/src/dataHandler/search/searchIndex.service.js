@@ -3,6 +3,7 @@ var lunr = require('lunr');
 angular.module('evtviewer.dataHandler')
 
 .service('evtSearchIndex', function Index() {
+   this.index = [];
    
    function map(doc) {
       var document = {
@@ -43,7 +44,11 @@ angular.module('evtviewer.dataHandler')
    Index.prototype.createIndex = function(parsedDocs) {
    
       console.time('INDEX');
-      var index = lunr(function() {
+      this.index = lunr(function() {
+         this.pipeline.remove(lunr.trimmer);
+         this.pipeline.remove(lunr.stemmer);
+         this.pipeline.remove(lunr.stopWordFilter);
+         
          this.ref('doc');
          this.field('diplomaticText');
          this.field('interpretativeText');
@@ -57,8 +62,9 @@ angular.module('evtviewer.dataHandler')
          }
       });
       console.timeEnd('INDEX');
-      
-      /*var res = index.search('DUQUE');
-      console.log('Search Results', res);*/
+   };
+   
+   Index.prototype.getIndex = function() {
+      return this.index;
    };
 });
