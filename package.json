@@ -52,6 +52,6 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "lunr": "^2.1.4"
+    "lunr": "^2.1.5"
   }
 }

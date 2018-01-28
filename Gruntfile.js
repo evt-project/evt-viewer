@@ -115,7 +115,8 @@ module.exports = function (grunt) {
         tasks: ['babel']
       },*/
       webpack: {
-        files: ['<%= yeoman.app %>/src/dataHandler/search/searchIndex.service.js'],
+        files: ['<%= yeoman.app %>/src/dataHandler/search/searchIndex.service.js',
+                '<%= yeoman.app %>/src/dataHandler/search/search.service.js'],
         tasks: ['webpack']
       },
       // gruntfile: {

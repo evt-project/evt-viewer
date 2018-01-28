@@ -239,7 +239,7 @@ angular.module('evtviewer.interface')
                  evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
                  // Init search
                  var parsedDocs = evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
-                 var index = evtSearchIndex.createIndex(parsedDocs);
+                 evtSearchIndex.createIndex(parsedDocs);
 
                 var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                 if (currentDocFirstLoad !== undefined) {

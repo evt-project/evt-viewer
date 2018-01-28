@@ -4,10 +4,11 @@ module.exports = {
   devtool: 'source-map',
   entry: [
      './app/src/dataHandler/search/searchIndex.service.js',
+     './app/src/dataHandler/search/search.service.js'
   ],
   output: {
     path: './app/dist',
-    filename: 'searchIndex.service.js'
+    filename: 'search.service.js'
   },
   plugins: [],
   module: {
