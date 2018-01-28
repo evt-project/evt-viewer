@@ -8,7 +8,7 @@ angular.module('evtviewer.search')
       defaults = _defaults;
    };
 
-   this.$get = function($log, config/* baseData, evtSearchParser*/) {
+   this.$get = function($log, config) {
       var currentPosition = config.searchBoxPosition,
          searchBox = {},
          collection = {},
@@ -29,13 +29,13 @@ angular.module('evtviewer.search')
             {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
             {title: 'Previous', label: '', icon: 'previous', type: ''},
             {title: 'Next', label: '', icon: 'next', type: ''},
-            {title: 'Search', label: '', icon: 'search', type: ''}
+            {title: 'Search', label: '', icon: 'search', type: 'search'}
          ];
          var scopeHelper;
 
          scopeHelper = {
             status          : status,
-            searchBoxBtn    : searchBoxBtn
+            searchBoxBtn    : searchBoxBtn,
          };
 
          collection = angular.extend(vm, scopeHelper);
@@ -50,7 +50,7 @@ angular.module('evtviewer.search')
       };
 
       searchBox.getCurrentPosition = function() {
-         return collection.getPosition();
+         return collection.getSearchBoxPosition();
       };
 
       searchBox.getStatus = function(key) {
@@ -58,13 +58,10 @@ angular.module('evtviewer.search')
       };
 
       searchBox.openBox = function(key) {
-         var btnStatus = collection.updateState(key),
-             doc;
+         var btnStatus = collection.updateState(key);
 
          if(btnStatus && check) {
             check = false;
-            /*doc = baseData.getXML();
-            evtSearchParser.getText(doc);*/
          }
 
          collection.status[key] = btnStatus;

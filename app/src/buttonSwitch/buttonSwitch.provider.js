@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox) {
+	this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox, evtSearch) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -604,10 +604,14 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateUrl();
 					};
 					break;
-				case 'searchInEdition':
+				case 'search':
 					callback = function() {
-						var edition = scope.$parent.vm.edition;
-						alert('Search in edition level ' + edition + '. Coming Soon...');
+					   var index = scope.$parent.vm.getIndex();
+					   var inputValue = scope.$parent.vm.searchInput;
+                  var res = evtSearch.query(index, inputValue);
+                  
+                  var currentEdition = scope.$parent.vm.getCurrentEdition();
+                  evtSearch.handleSearchResults(res, currentEdition);
 					};
 					break;
 				case 'searchInWit':
