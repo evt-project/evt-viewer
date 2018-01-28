@@ -12,7 +12,8 @@ angular.module('evtviewer.dataHandler')
       proseLineNode = proseLineNodes.iterateNext();
       
       while(proseLineNode !== null) {
-         prevLb = xmlDocDom.evaluate(XPATH.ns.getPrevLb, proseLineNode, nsResolver, XPathResult.ANY_TYPE, null);
+         prevLb = ns ? xmlDocDom.evaluate(XPATH.ns.getPrevLb, proseLineNode, nsResolver, XPathResult.ANY_TYPE, null)
+                     : xmlDocDom.evaluate(XPATH.getPrevLb, proseLineNode, null, XPathResult.ANY_TYPE, null)
          hasPrevLb = prevLb.numberValue !== 0;
          
          if (hasPrevLb === true) {
