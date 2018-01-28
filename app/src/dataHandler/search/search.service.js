@@ -1,3 +1,5 @@
+var lunr = require('lunr');
+
 /**
  * @ngdoc service
  * @module evtviewer.dataHandler
@@ -12,8 +14,45 @@
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearch', ['evtSearchParser', function EvtSearch(evtSearchParser) {
-   this.Parser = evtSearchParser;
-   this.Index = '';
-   this.Search = '';
-}]);
+.service('evtSearch', function Search() {
+   
+   Search.prototype.query = function(index, token) {
+      var result = index.query(function(q) {
+         q.term(token, {
+            usePipeline: false,
+            wildcard: lunr.Query.wildcard.TRAILING
+         });
+      });
+      return result;
+   };
+   
+   Search.prototype.handleSearchResults = function(res, currentEdition) {
+      var diplomaticText,
+         interpretativeText;
+      
+      console.log('Results', res);
+      
+      for(var i = 0; i < res.length; i++) {
+         var metadata = res[i].matchData.metadata;
+   
+         for(var prop in metadata) {
+            if(currentEdition === 'diplomatic') {
+               diplomaticText = metadata[prop].diplomaticText;
+               if(diplomaticText !== undefined) {
+                  for (var j = 0; j < diplomaticText.page.length; j++) {
+                     console.log('La parola si trova alla pagina ' + diplomaticText.page[j] + ' alla riga ' + diplomaticText.line[j]);
+                  }
+               }
+            }
+            else if(currentEdition === 'interpretative') {
+               interpretativeText = metadata[prop].interpretativeText;
+               if(interpretativeText !== undefined) {
+                  for (var z = 0; z < interpretativeText.page.length; z++) {
+                     console.log('La parola si trova alla pagina ' + interpretativeText.page[z] + ' alla riga ' + interpretativeText.line[z]);
+                  }
+               }
+            }
+         }
+      }
+   };
+});
