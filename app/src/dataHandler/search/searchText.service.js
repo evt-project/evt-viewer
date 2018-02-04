@@ -237,6 +237,13 @@ angular.module('evtviewer.dataHandler')
             proseInterpretativeNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getProseInterpretativeNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
                                           : xmlDocDom.evaluate(XPATH.getProseInterpretativeNodes, xmlDocDom, null, XPathResult.ANY_TYPE, null);
          }
+         /*else {
+            poemDiplomaticNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getPoemDiplomaticNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getPoemDiplomaticNodes, xmlDocDom, null, XPathResult.ANY_TYPE, null);
+   
+            poemInterpretativeNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getPoemInterpretativeNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getPoemInterpretativeNodes, xmlDocDom, null, XPathResult.ANY_TYPE, null);
+         }*/
          
          while (node !== null) {
             if (node.nodeName === 'pb') {
@@ -269,9 +276,17 @@ angular.module('evtviewer.dataHandler')
                line.line = node.getAttribute('n') || id.toString();
                id++;
                line.doc = docTitle;
-      
+               
                //console.time('getLineNodes');
                if (type === 'verse') {
+                  /*lineNodes.diplomatic = getProseLineNodes(xmlDocDom, countLine, poemDiplomaticNodes, ns, nsResolver);
+                  lineNodes.interpretative = getProseLineNodes(xmlDocDom, countLine, poemInterpretativeNodes, ns, nsResolver);
+                  countLine++;
+   
+                  line.text = {
+                     diplomatic: getProseText(lineNodes.diplomatic, 'diplomatic'),
+                     interpretative: getProseText(lineNodes.interpretative, 'interpretative')
+                  };*/
                   lineNodes = getPoemLineChildNodes(xmlDocDom, node, ns, nsResolver);
                   line.text = {
                      diplomatic: getPoemText(lineNodes.diplomatic, 'diplomatic'),
@@ -288,21 +303,24 @@ angular.module('evtviewer.dataHandler')
                      interpretative: getProseText(lineNodes.interpretative, 'interpretative')
                   };
                }
-               //console.timeEnd('getLineNodes');
+               
+               line.lineId = docs[0].id + '-' + line.page + '-' + line.line;
+               lines[docs[0].id + '-' + line.page + '-' + line.line] = line;
                
                lineNodes = [];
-               lines.push(line);
             }
             node = nodes.iterateNext();
             line = {};
          }
-         
       console.timeEnd('getLineInfo');
       return lines;
    }
    
       function getFilteredBodyNodes(xmlDocDom, type, body, ns, nsResolver) {
          var bodyFilteredNodes = [];
+         
+         /*bodyFilteredNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null)
+            : xmlDocDom.evaluate(XPATH.getLineNodes, body, null, XPathResult.ANY_TYPE, null);*/
          
          if (type === 'verse') {
             bodyFilteredNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getPoemLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null)

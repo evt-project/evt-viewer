@@ -36,7 +36,9 @@ angular.module('evtviewer.dataHandler')
          results = '<p>No Results found!</p>';
       }
       else {
-         var parsedDocs = evtSearchParser.parsedDocs;
+         var parsedDocs = evtSearchParser.parsedDocs,
+            lineId;
+         
          for(var i = 0; i < res.length; i++) {
             var metadata = res[i].matchData.metadata;
       
@@ -45,7 +47,8 @@ angular.module('evtviewer.dataHandler')
                   var diplomaticText = metadata[prop].diplomaticText;
                   if(diplomaticText !== undefined) {
                      for (var j = 0; j < diplomaticText.page.length; j++) {
-                        content = '<p>Found in ' + diplomaticText.docTitle[j] +
+                        lineId = diplomaticText.lineId[j];
+                        content = '<p>'+parsedDocs[lineId].text.diplomatic+'</p><p>Found in ' + diplomaticText.docTitle[j] +
                            ' page ' + diplomaticText.page[j] + ' (line ' + diplomaticText.line[j] + ')</p>';
                         results += content;
                      }
@@ -55,7 +58,8 @@ angular.module('evtviewer.dataHandler')
                   var interpretativeText = metadata[prop].interpretativeText;
                   if(interpretativeText !== undefined) {
                      for (var z = 0; z < interpretativeText.page.length; z++) {
-                        content = '<p>Found in ' + interpretativeText.docTitle[z] +
+                        lineId = interpretativeText.lineId[z];
+                        content = '<p>'+parsedDocs[lineId].text.interpretative+'</p><p>Found in ' + interpretativeText.docTitle[z] +
                            ' page ' + interpretativeText.page[z] + ' (line ' + interpretativeText.line[z] + ')</p>';
                         results += content;
                      }

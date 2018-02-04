@@ -72,6 +72,7 @@ angular.module('evtviewer.dataHandler')
          docId = docIndexes[i];
          document = documents[docId];
          doc.title = document.title;
+         doc.id  = docId;
          docs.push(doc);
          doc = {};
       }

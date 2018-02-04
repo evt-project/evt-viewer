@@ -20,7 +20,7 @@ angular.module('evtviewer.dataHandler')
       
       var pipelineFunction = function(token) {
          var docIndex = builder.documentCount - 1;
-         token.metadata['line'] = parsedDocs[docIndex].line;
+         token.metadata['line'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].line;
          return token;
       };
       
@@ -29,10 +29,22 @@ angular.module('evtviewer.dataHandler')
       builder.metadataWhitelist.push('line');
    }
    
+   function addLineIdMetadata(builder, parsedDocs) {
+      var pipelineFunction = function(token) {
+         var docIndex = builder.documentCount - 1;
+         token.metadata['lineId'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].lineId;
+         return token;
+      };
+      
+      lunr.Pipeline.registerFunction(pipelineFunction, 'lineId');
+      builder.pipeline.add(pipelineFunction);
+      builder.metadataWhitelist.push('lineId');
+   }
+   
    function addPageMetadata(builder, parsedDocs) {
       var pipelineFunction = function(token) {
          var docIndex = builder.documentCount - 1;
-         token.metadata['page'] = parsedDocs[docIndex].page;
+         token.metadata['page'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].page;
          return token;
       };
       
@@ -44,7 +56,8 @@ angular.module('evtviewer.dataHandler')
    function addDocTitleMetadata(builder, parsedDocs) {
       var pipelineFunction = function(token) {
          var docIndex = builder.documentCount - 1;
-         token.metadata['docTitle'] = parsedDocs[docIndex].doc;
+         token.metadata['docTitle'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].doc;
+   
          return token;
       };
       
@@ -66,14 +79,15 @@ angular.module('evtviewer.dataHandler')
          this.use(addDocTitleMetadata, parsedDocs);
          this.use(addPageMetadata, parsedDocs);
          this.use(addLineMetadata, parsedDocs);
-         this.metadataWhitelist = ['docTitle', 'page', 'line', 'position'];
+         this.use(addLineIdMetadata, parsedDocs);
+         this.metadataWhitelist = ['docTitle', 'page', 'line', 'lineId', 'position'];
          
-         for(var z = 0; z < parsedDocs.length; z++){
-            var doc = map(parsedDocs[z]);
+         for(var document in parsedDocs) {
+            var doc = map(parsedDocs[document]);
             this.add(doc);
          }
       });
-      console.timeEnd('INDEX');;
+      console.timeEnd('INDEX');
       
    };
    

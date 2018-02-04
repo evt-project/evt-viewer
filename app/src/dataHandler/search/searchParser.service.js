@@ -16,6 +16,7 @@
 angular.module('evtviewer.dataHandler')
 .service('evtSearchParser', ['evtSearchDocument', function Parser(evtSearchDocument) {
    this.Doc = evtSearchDocument;
+   this.parsedDocs = [];
 
    /**
     * @ngdoc method
@@ -32,15 +33,14 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    Parser.prototype.parseDocument = function (xmlDocDom, currentEdition) {
-      var parsedDocs;
       
       this.Doc.hasNamespace(xmlDocDom);
       var docs = this.Doc.getDocsTitle();
       
       console.time('PARSE-TEXT');
-      parsedDocs = this.Doc.parseText(xmlDocDom, currentEdition, docs, this.Doc.ns, this.Doc.nsResolver);
+      this.parsedDocs = this.Doc.parseText(xmlDocDom, currentEdition, docs, this.Doc.ns, this.Doc.nsResolver);
       console.timeEnd('PARSE-TEXT');
       
-      return parsedDocs;
+      return this.parsedDocs;
    };
 }]);
