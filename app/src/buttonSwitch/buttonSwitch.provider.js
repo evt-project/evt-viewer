@@ -606,20 +606,38 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'search':
 					callback = function() {
-					   var index = scope.$parent.vm.getIndex();
+                  var result;
 					   var inputValue = scope.$parent.vm.searchInput;
-                  var res = evtSearch.query(index, inputValue);
-                  
-                  var currentEdition = scope.$parent.vm.getCurrentEdition();
-                  evtSearch.handleSearchResults(res, currentEdition);
+					   
+                  if(inputValue !== '') {
+                     var index = scope.$parent.vm.getIndex();
+                     var res = evtSearch.query(index, inputValue, index.ref);
+   
+                     var currentEdition = scope.$parent.vm.getCurrentEdition();
+   
+                     result = evtSearch.handleSearchResults(res, currentEdition);
+                     
+                  }
+                  else {
+                     result = 'Enter your query into the search box above';
+                  }
+                  scope.$parent.vm.searchResults = result;
+                  evtSearchBox.openBox('searchResults');
 					};
 					break;
-				case 'searchInWit':
-					callback = function() {
-						var wit = scope.$parent.vm.witness;
-						alert('Search in witness ' + wit + '. Coming Soon...');
-					};
-					break;
+            case 'searchResultsToggle':
+               callback = function() {
+               };
+               break;
+            case 'searchTools':
+               callback = function(){
+                 evtSearchBox.toggleBox('searchBox');
+                 evtSearchBox.closeBox('searchResults');
+               };
+               /*fakeCallback = function() {
+					   return callback();
+					};*/
+               break;
 				case 'share':
 					callback = function() {
 						alert(window.location);
@@ -648,15 +666,6 @@ angular.module('evtviewer.buttonSwitch')
 					callback = function() {
 						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
-					break;
-				case 'searchTools':
-					callback = function(){
-						var searchBtnState = evtSearchBox.openBox('searchBtn');
-						//evtInterface.toogleSearchBoxOpened();
-					};
-					/*fakeCallback = function() {
-					   return callback();
-					};*/
 					break;
 				case 'witList':
 					btnType = 'toggler';

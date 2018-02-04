@@ -35,14 +35,25 @@ angular.module('evtviewer.dataHandler')
          token.metadata['page'] = parsedDocs[docIndex].page;
          return token;
       };
-   
+      
       lunr.Pipeline.registerFunction(pipelineFunction, 'page');
       builder.pipeline.add(pipelineFunction);
       builder.metadataWhitelist.push('page');
    }
    
-   Index.prototype.createIndex = function(parsedDocs) {
+   function addDocTitleMetadata(builder, parsedDocs) {
+      var pipelineFunction = function(token) {
+         var docIndex = builder.documentCount - 1;
+         token.metadata['docTitle'] = parsedDocs[docIndex].doc;
+         return token;
+      };
+      
+      lunr.Pipeline.registerFunction(pipelineFunction, 'docTitle');
+      builder.pipeline.add(pipelineFunction);
+      builder.metadataWhitelist.push('docTitle');
+   }
    
+   Index.prototype.createIndex = function(parsedDocs) {
       console.time('INDEX');
       this.index = lunr(function() {
          this.pipeline.remove(lunr.trimmer);
@@ -52,16 +63,18 @@ angular.module('evtviewer.dataHandler')
          this.ref('doc');
          this.field('diplomaticText');
          this.field('interpretativeText');
+         this.use(addDocTitleMetadata, parsedDocs);
          this.use(addPageMetadata, parsedDocs);
          this.use(addLineMetadata, parsedDocs);
-         this.metadataWhitelist = ['page', 'line'];
+         this.metadataWhitelist = ['docTitle', 'page', 'line', 'position'];
          
          for(var z = 0; z < parsedDocs.length; z++){
             var doc = map(parsedDocs[z]);
             this.add(doc);
          }
       });
-      console.timeEnd('INDEX');
+      console.timeEnd('INDEX');;
+      
    };
    
    Index.prototype.getIndex = function() {

@@ -3,37 +3,51 @@
 /* *************************** */
 
 .search-box.internal {
-    min-width: calc(100% - #{$mainContainer-border-width*2*2}); 
-    position: absolute;
-    bottom: $mainContainer-border-width+1;
-    left: $mainContainer-border-width*2;
-    margin: 42px 0;
-    background: $box-background-color;
-    .buttonSwitch {
-        @include border('right');
-        .icon {
-            line-height: 16px;
-        }
-    }
-    .btn-left, .btn-right {
-        button-switch:first-child .buttonSwitch {
-            @include border('left');
-        }
-    }
-    .btn-left {
-        float: left;  
-    }
-    .btn-right {
-        float: right;
-    }
-    button-switch {
-        margin-right: 0;
-    }
-    input {
-        min-height: 100%;
-        min-width: calc(100% - 180px);
-        position: absolute;
-        padding: 0 10px 0 5px;
-        border: transparent;
-    }
+   min-width: calc(100% - #{$mainContainer-border-width*2*2});
+   position: absolute;
+   bottom: $mainContainer-border-width;
+   left: $mainContainer-border-width*2;
+   margin: 42px 0;
+   background: $box-background-color;
+   .buttonSwitch {
+      @include border('right');
+      .icon {
+         line-height: 16px;
+      }
+   }
+   .btn-left, .btn-right {
+      button-switch:first-child .buttonSwitch {
+         @include border('left');
+      }
+   }
+   .btn-left {
+      float: left;
+   }
+   .btn-right {
+      float: right;
+   }
+   button-switch {
+      margin-right: 0;
+   }
+   input {
+      height: 28px;
+      min-width: calc(100% - 180px);
+      position: absolute;
+      padding: 0 10px 0 5px;
+      border: transparent;
+   }
+   .search-results {
+      height:0;
+      transition: height .5s;
+      p {
+         display: none;
+      }
+      &.open {
+         height: 594px;
+         p {
+            display: block;
+            margin-top:0;
+         }
+      }
+   }
 }

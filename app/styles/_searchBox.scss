@@ -4,12 +4,18 @@
 
 .search-box {
 	height: auto;
-	display: none;
-	@include border('top');
-    @include border('bottom');
+   //display: none;
+   @include border('top');
 	&.open {
-        display: inline-block;
-    }
+      display: inline-block;
+   }
+   form {
+      height: 30px;
+      @include border('bottom');
+   }
+   .search-results {
+      overflow: auto;
+   }
 }
 
 @import "searchBoxInternal.scss";

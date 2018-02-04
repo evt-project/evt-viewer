@@ -548,10 +548,6 @@ angular.module('evtviewer.interface')
         return state.secondaryContent;
     };
 
-		mainInterface.isSearchBoxOpened = function() {
-			return state.isSearchBoxOpened;
-		};
-
     /* ************** */
     /* PARAMS UPDATES */
     /* ************** */
@@ -562,10 +558,6 @@ angular.module('evtviewer.interface')
     mainInterface.togglePinnedAppBoardOpened = function() {
         state.isPinnedAppBoardOpened = !state.isPinnedAppBoardOpened;
     };
-
-		mainInterface.toogleSearchBoxOpened = function() {
-			state.isSearchBoxOpened = !state.isSearchBoxOpened;
-		};
     /**
      * @ngdoc method
      * @name evtviewer.interface.evtInterface#setToolStatus

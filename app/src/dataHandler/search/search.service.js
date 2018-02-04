@@ -14,51 +14,56 @@ var lunr = require('lunr');
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearch', function Search() {
+.service('evtSearch', ['evtSearchParser', function Search(evtSearchParser) {
+   var searchResults;
    
-   Search.prototype.query = function(index, token) {
-      var result = index.query(function(q) {
+   Search.prototype.query = function(index, token, doc) {
+      searchResults = index.query(function(q) {
          q.term(token, {
             usePipeline: false,
-            wildcard: lunr.Query.wildcard.TRAILING
+            wildcard: lunr.Query.wildcard.TRAILING,
+            ref: doc
          });
       });
-      return result;
+      return searchResults;
    };
    
    Search.prototype.handleSearchResults = function(res, currentEdition) {
-      var diplomaticText,
-         interpretativeText;
+      var results = '',
+         content = '';
       
-      console.log('Results', res);
+      if(res.length === 0) {
+         results = '<p>No Results found!</p>';
+      }
+      else {
+         var parsedDocs = evtSearchParser.parsedDocs;
+         for(var i = 0; i < res.length; i++) {
+            var metadata = res[i].matchData.metadata;
       
-      for(var i = 0; i < res.length; i++) {
-         var metadata = res[i].matchData.metadata;
-   
-         for(var prop in metadata) {
-            if(currentEdition === 'diplomatic') {
-               diplomaticText = metadata[prop].diplomaticText;
-               if(diplomaticText !== undefined) {
-                  for (var j = 0; j < diplomaticText.page.length; j++) {
-                     console.log('Found in:\n page: ' + diplomaticText.page[j] + '\n line: ' + diplomaticText.line[j]);
+            for(var prop in metadata) {
+               if(currentEdition === 'diplomatic') {
+                  var diplomaticText = metadata[prop].diplomaticText;
+                  if(diplomaticText !== undefined) {
+                     for (var j = 0; j < diplomaticText.page.length; j++) {
+                        content = '<p>Found in ' + diplomaticText.docTitle[j] +
+                           ' page ' + diplomaticText.page[j] + ' (line ' + diplomaticText.line[j] + ')</p>';
+                        results += content;
+                     }
                   }
                }
-               else {
-                  console.log('No results!');
-               }
-            }
-            else if(currentEdition === 'interpretative') {
-               interpretativeText = metadata[prop].interpretativeText;
-               if(interpretativeText !== undefined) {
-                  for (var z = 0; z < interpretativeText.page.length; z++) {
-                     console.log('Found in:\n page: ' + interpretativeText.page[z] + '\n line: ' + interpretativeText.line[z]);
+               else if(currentEdition === 'interpretative') {
+                  var interpretativeText = metadata[prop].interpretativeText;
+                  if(interpretativeText !== undefined) {
+                     for (var z = 0; z < interpretativeText.page.length; z++) {
+                        content = '<p>Found in ' + interpretativeText.docTitle[z] +
+                           ' page ' + interpretativeText.page[z] + ' (line ' + interpretativeText.line[z] + ')</p>';
+                        results += content;
+                     }
                   }
-               }
-               else {
-                  console.log('No results!');
                }
             }
          }
       }
+      return results;
    };
-});
+}]);

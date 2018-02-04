@@ -1,9 +1,10 @@
 angular.module('evtviewer.search')
 
-.controller('SearchBoxCtrl', ['config', 'evtInterface', 'evtSearchBox', 'evtSearchIndex', function (config, evtInterface, evtSearchBox, evtSearchIndex) {
+.controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchIndex', 'evtSearch', function ($scope, config, evtInterface, evtSearchBox, evtSearchIndex, evtSearch) {
     var vm = this;
     
     vm.searchInput = '';
+    vm.searchResults = '';
     
     vm.getSearchBoxPosition = function() {
         var currentPos = config.searchBoxPosition,
@@ -31,4 +32,10 @@ angular.module('evtviewer.search')
        return evtSearchIndex.getIndex();
     };
     
+    vm.getSearchResults = function() {
+       if(vm.searchResults === '') {
+          vm.searchResults = '<p>No Results found!</p>';
+       }
+       return vm.searchResults;
+    };
 }]);

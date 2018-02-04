@@ -11,8 +11,8 @@ angular.module('evtviewer.search')
    this.$get = function($log, config) {
       var currentPosition = config.searchBoxPosition,
          searchBox = {},
-         collection = {},
-         check = true;
+         collection = {};
+      
       var _console = $log.getInstance('search');
 
       //
@@ -21,10 +21,11 @@ angular.module('evtviewer.search')
       searchBox.build = function(scope, vm) {
          var currentPosition = config.searchBoxPosition;
          var status = {
-            searchBtn   : false
+            searchBox   : false,
+            searchResults : false
          };
          var searchBoxBtn = [
-            {title: 'Show Results', label: '', icon: 'search-results-show', type: ''},
+            {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsToggle'},
             {title: 'Advanced Search', label: '', icon: 'search-advanced', type: ''},
             {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
             {title: 'Previous', label: '', icon: 'previous', type: ''},
@@ -57,17 +58,21 @@ angular.module('evtviewer.search')
          return collection.status[key];
       };
 
-      searchBox.openBox = function(key) {
-         var btnStatus = collection.updateState(key);
-
-         if(btnStatus && check) {
-            check = false;
-         }
-
-         collection.status[key] = btnStatus;
-         return btnStatus;
+      searchBox.toggleBox = function(key) {
+         collection.status[key] = collection.updateState(key);
+         return key;
       };
+      
+      searchBox.openBox = function(key) {
+         collection.status[key] = true;
+         return key;
+      }
 
+      searchBox.closeBox = function(key) {
+         collection.status[key] = false;
+         return key;
+      }
+      
       return searchBox;
    };
 });
