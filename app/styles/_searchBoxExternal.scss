@@ -6,7 +6,7 @@
 	height: auto;
 	position: absolute;
 	right: 4px;
-	@include border('all');
+	@include border($mainContainer-border-width, 'all', $base-color-dark);
 	background-color: $box-background-color;
 	.searchBtnGroup {
 		display: none;

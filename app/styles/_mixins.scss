@@ -67,11 +67,11 @@
     }
 }
 
-@mixin border($direction) {
+@mixin border($width, $direction, $color) {
     @if($direction == 'all' or $direction == '') {
-        border: $mainContainer-border-width solid $box-structure-color-dark;
+        border: $width solid $color;
     } @else {
-        border-#{$direction}: $mainContainer-border-width solid $box-structure-color-dark;
+        border-#{$direction}: $width solid $color;
     }
 }
 /* == END Mixins */

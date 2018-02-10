@@ -9,19 +9,30 @@
    left: $mainContainer-border-width*2;
    margin: 42px 0;
    background: $box-background-color;
+   &.results-open {
+      @include calc(max-height, #{setInsideFrameHeight()} - 5px);
+      transition: max-height .5s;
+   }
    .buttonSwitch {
-      @include border('right');
+      @include border($mainContainer-border-width, 'right', $base-color-dark);
       .icon {
          line-height: 16px;
       }
    }
    .btn-left, .btn-right {
       button-switch:first-child .buttonSwitch {
-         @include border('left');
+         @include border($mainContainer-border-width, 'left', $base-color-dark);
       }
    }
    .btn-left {
       float: left;
+      button-switch[data-type='searchResultsHide'] {
+         display: none;
+         position: absolute;
+         left: 0;
+         top: 0;
+         @include border($mainContainer-border-width, left, $base-color-dark);
+      }
    }
    .btn-right {
       float: right;
@@ -30,7 +41,7 @@
       margin-right: 0;
    }
    input {
-      height: 28px;
+      height: $search-box-height;
       min-width: calc(100% - 180px);
       position: absolute;
       padding: 0 10px 0 5px;
@@ -38,15 +49,39 @@
    }
    .search-results {
       height:0;
-      transition: height .5s;
       p {
          display: none;
       }
       &.open {
-         height: 594px;
+         height: 95%;
+         padding: $base-padding;
+         div:nth-child(2) {
+            padding-top: 100px;
+         }
          p {
             display: block;
             margin-top:0;
+         }
+         .search-info {
+            text-align: center;
+            margin-bottom: 40px;
+            background-color: #fff;
+            position: absolute;
+            width: calc(100% - #{$mainContainer-border-width*8});
+            top: $search-box-height + $mainContainer-border-width;
+            left: 0;
+            padding-top:15px;
+            p:first-child {
+               margin-bottom: 0;
+            }
+         }
+      }
+      .search-result {
+         margin-bottom: 30px;
+         @include border($mainContainer-border-width/2, 'bottom', $border-light);
+         .original-text {
+            display: block;
+            font-style: italic;
          }
       }
    }

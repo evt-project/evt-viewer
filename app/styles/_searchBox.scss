@@ -3,19 +3,34 @@
 /* *************************** */
 
 .search-box {
-	height: auto;
-   //display: none;
-   @include border('top');
+	max-height: $search-box-height;
+   transition: max-height .5s;
+   display: none;
+   @include border($mainContainer-border-width, 'top',$base-color-dark);
 	&.open {
       display: inline-block;
    }
    form {
       height: 30px;
-      @include border('bottom');
+      @include border($mainContainer-border-width, 'bottom', $base-color-dark);
    }
    .search-results {
       overflow: auto;
    }
+}
+
+/* helpers */
+.show {
+   display: block!important;
+}
+.hide {
+   display: none;
+}
+.show-visibility {
+   visibility: visible;
+}
+.hide-visibility {
+   visibility: hidden;
 }
 
 @import "searchBoxInternal.scss";

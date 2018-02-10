@@ -25,7 +25,8 @@ angular.module('evtviewer.search')
             searchResults : false
          };
          var searchBoxBtn = [
-            {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsToggle'},
+            {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
+            {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide'},
             {title: 'Advanced Search', label: '', icon: 'search-advanced', type: ''},
             {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
             {title: 'Previous', label: '', icon: 'previous', type: ''},

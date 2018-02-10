@@ -1,5 +1,5 @@
 <div class="search-box {{vm.getSearchBoxPosition()}}"
-     ng-class="{'open' : vm.getState('searchBox')}">
+     ng-class="{'open' : vm.getState('searchBox'), 'results-open' : vm.getState('searchResults')}">
 
    <!-- search form -->
    <form>
@@ -11,7 +11,7 @@
                data-label="{{button.label}}"
                data-icon="{{button.icon}}"
                data-type="{{button.type}}"
-               ng-repeat="button in vm.searchBoxBtn|limitTo: 3">
+               ng-repeat="button in vm.searchBoxBtn|limitTo: 4">
             </button-switch>
          </div>
          <div class="btn-right">
@@ -21,7 +21,7 @@
                data-label="{{button.label}}"
                data-icon="{{button.icon}}"
                data-type="{{button.type}}"
-               ng-repeat="button in vm.searchBoxBtn|limitTo: 3:3">
+               ng-repeat="button in vm.searchBoxBtn|limitTo: 3:4">
             </button-switch>
          </div>
       </div>

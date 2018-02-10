@@ -606,17 +606,16 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'search':
 					callback = function() {
-                  var result;
-					   var inputValue = scope.$parent.vm.searchInput;
+                  var result,
+                     inputValue = scope.$parent.vm.searchInput;
 					   
                   if(inputValue !== '') {
-                     var index = scope.$parent.vm.getIndex();
-                     var res = evtSearch.query(index, inputValue, index.ref);
-   
-                     var currentEdition = scope.$parent.vm.getCurrentEdition();
-   
-                     result = evtSearch.handleSearchResults(res, currentEdition);
+                     var index = scope.$parent.vm.getIndex(),
+                        res = evtSearch.query(index, inputValue, index.ref),
+                        currentEdition = scope.$parent.vm.getCurrentEdition();
                      
+                     console.log(res);
+                     result = evtSearch.handleSearchResults(inputValue, res, currentEdition);
                   }
                   else {
                      result = 'Enter your query into the search box above';
@@ -625,8 +624,20 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchBox.openBox('searchResults');
 					};
 					break;
-            case 'searchResultsToggle':
+            case 'searchResultsShow':
                callback = function() {
+                  var msg = 'Enter your query into the search box above';
+                  evtSearchBox.openBox('searchResults');
+                  $('[data-type=\'searchResultsShow\']').toggleClass('hide-visibility');
+                  $('[data-type=\'searchResultsHide\']').toggleClass('show');
+                  scope.$parent.vm.searchResults = msg;
+               };
+               break;
+            case 'searchResultsHide':
+               callback = function() {
+                  evtSearchBox.closeBox('searchResults');
+                  $('[data-type=\'searchResultsShow\']').toggleClass('hide-visibility');
+                  $('[data-type=\'searchResultsHide\']').toggleClass('show');
                };
                break;
             case 'searchTools':
