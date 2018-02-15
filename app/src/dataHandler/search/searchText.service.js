@@ -336,12 +336,12 @@ angular.module('evtviewer.dataHandler')
       function getMoreDocumentsLines(xmlDocDom, docs, body, type, ns, nsResolver) {
          var bodyFilteredNodes,
             lineNodesInfo,
-            lines = [];
+            lines = {};
          
          for (var i = 0; i < body.length; i++) {
             bodyFilteredNodes = getFilteredBodyNodes(xmlDocDom, type, body[i], ns, nsResolver);
             lineNodesInfo = getLineInfo(xmlDocDom, type, bodyFilteredNodes, docs, ns, nsResolver);
-            lines = $.merge(lines, lineNodesInfo);
+            lines = Object.assign(lines, lineNodesInfo);
          }
          
          return lines;
