@@ -2,7 +2,7 @@
      ng-class="{'open' : vm.getState('searchBox'), 'results-open' : vm.getState('searchResults')}">
 
    <!-- search form -->
-   <form>
+   <form ng-submit="vm.doSearchCallback()">
       <div class="searchBtnGroup">
          <div class="btn-left">
             <button-switch

@@ -35,4 +35,25 @@ angular.module('evtviewer.search')
     vm.getSearchResults = function() {
        return vm.searchResults;
     };
+    
+    vm.doSearchCallback = function() {
+       var result,
+          inputValue = vm.searchInput;
+   
+       if(inputValue !== '') {
+          var index = vm.getIndex(),
+             res = evtSearch.query(index, inputValue, index.ref),
+             currentEdition = vm.getCurrentEdition();
+      
+          console.log(res);
+          result = evtSearch.handleSearchResults(inputValue, res, currentEdition);
+      
+       }
+       else {
+          result = 'Enter your query into the search box above';
+       }
+       vm.searchResults = result;
+       evtSearchBox.openBox('searchResults');
+       evtSearchBox.showSearchResultsHideBtn();
+    };
 }]);

@@ -606,24 +606,7 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'search':
 					callback = function() {
-                  var result,
-                     inputValue = scope.$parent.vm.searchInput;
-					   
-                  if(inputValue !== '') {
-                     var index = scope.$parent.vm.getIndex(),
-                        res = evtSearch.query(index, inputValue, index.ref),
-                        currentEdition = scope.$parent.vm.getCurrentEdition();
-                     
-                     console.log(res);
-                     result = evtSearch.handleSearchResults(inputValue, res, currentEdition);
-                    
-                  }
-                  else {
-                     result = 'Enter your query into the search box above';
-                  }
-                  scope.$parent.vm.searchResults = result;
-                  evtSearchBox.openBox('searchResults');
-                  evtSearchBox.showSearchResultsHideBtn();
+					   scope.$parent.vm.doSearchCallback();
 					};
 					break;
             case 'searchResultsShow':
