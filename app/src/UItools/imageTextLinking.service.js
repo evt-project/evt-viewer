@@ -28,6 +28,8 @@ angular.module('evtviewer.UItools')
     ITLutils.turnOnITL = function() {
         this.activateITL();
         evtInterface.setToolStatus('ITL', 'active');
+        console.log("TurnONITL");
+        document.getElementById("example-overlay").className = "highlight";
     };
 
     /**
@@ -47,6 +49,9 @@ angular.module('evtviewer.UItools')
         this.deactivateITL();
         evtInterface.setToolStatus('ITL', 'inactive');
         evtInterface.updateCurrentHighlightedZone(undefined);
+        console.log("TurnONITL");
+        document.getElementById("example-overlay").className = "nohighlight";
+       
     };
 
     /**

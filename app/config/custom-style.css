@@ -9,3 +9,15 @@
 /* e.g. <del/> => .del{ # your style goes here # }                   */  
 /*                                                                   */
 /* ***************************************************************** */
+.highlight {
+   opacity: 0.4;
+   filter: alpha(opacity=40);
+   outline: 12px auto red;
+   /* #0A7EbE; */
+   background-color: white;
+}
+
+.nohighlight {
+    display: none;
+ }
+ 

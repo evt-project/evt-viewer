@@ -1,12 +1,12 @@
 {
-    "indexTitle": "Edizione Logica Avicennae [experimental encoding]",
+    "indexTitle": "experimental encoding for the image viewer",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/avicenna.xml",
-    "sourcesUrl"       : "data/sources.xml",
-    "analoguesUrl"     : "data/analogues.xml",
-    "sourcesTextsUrl" : "data/sources/",
+	"dataUrl": "data/prova.xml",
+    "sourcesUrl"       : "",
+    "analoguesUrl"     : "",
+    "sourcesTextsUrl" : "",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
@@ -19,7 +19,7 @@
                                 "label"    : "MULTIPLE_RECENSIONS",
                                 "icon"     : "mode-versions",
                                 "viewMode" : "versions",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "IMAGE_TEXT",
@@ -37,7 +37,7 @@
                                 "label"    : "COLLATION",
                                 "icon"     : "mode-collation",
                                 "viewMode" : "collation",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "SOURCE_TEXT",
@@ -45,14 +45,14 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "critical",
-    "showEditionLevelSelector": true,
+    "defaultEdition": "interpretative",
+    "showEditionLevelSelector": false,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
@@ -62,7 +62,7 @@
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "enableXMLdownload" : true,
@@ -70,7 +70,7 @@
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
 
-    "namedEntitiesSelector": false,
+    "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
         "tagName": "persName",
@@ -89,17 +89,17 @@
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
         "label": "Role Name",
-        "available": false,
+        "available": true,
         "color": "#cfc"
     }, {
         "tagName": "measure",
         "label": "Measure",
-        "available": false,
+        "available": true,
         "color": "#ffecb3"
     }],
 
 
-    "toolHeatMap": true,
+    "toolHeatMap": false,
     "preferredWitness": "",
     "skipWitnesses": "",
 
@@ -154,9 +154,9 @@
 
     "showReadingExponent": true,
 
-    "showInlineCriticalApparatus": false,
-    "showInlineSources": false,
-    "showInlineAnalogues": false,
+    "showInlineCriticalApparatus": true,
+    "showInlineSources": true,
+    "showInlineAnalogues": true,
 
 
 

@@ -100,21 +100,17 @@ angular.module('evtviewer.box')
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
                 boxBody = angular.element(element).find('.box-body')[0];
-            console.log("creato viewer?");
-
+            
+            //$timeout(function(){console.log("timeout 2000", scope, scope.vm)},2000);
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
+               
                 // tentativo di mettere OSD - FIXME - non va bene qui!!
                 if (currentBox.type === 'image') {
-                    	var viewer = OpenSeadragon({
-						 	id: "box_body_mainImage",
-						 	prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
-						 	tileSources: "/data/dzi/1.dzi"
-						 });
-						 console.log("bob2");
-						 console.log("updated viewer", viewer);
-                    console.log("creato viewer?");
+                    	console.log("box di tipo immagine");                                   
+                       
+
                 }
 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {

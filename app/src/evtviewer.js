@@ -44,8 +44,10 @@
  * @requires evtviewer.versionReading
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
+ * @requires evtviewer.imageViewer
  */
  //* @requires evtviewer.mobile
+ 
 angular
 	.module('evtviewer', [
 		'ngAnimate',
@@ -85,5 +87,6 @@ angular
         'evtviewer.apparatuses',
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools'
+		'evtviewer.UItools',
+		'evtviewer.imageViewer'
     ]);

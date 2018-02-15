@@ -12,7 +12,7 @@
     <div 
         class="box-menu" 
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'"">
+        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'">
         
         <evt-select 
             data-id="{{::selector.id}}"
@@ -34,10 +34,16 @@
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
-    <div class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
+    <div class="box-body box-{{vm.type}} {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
          style="{{vm.fontSize();}}"
          id="box_body_{{::vm.uid}}" 
-         compile="::vm.content" ng-transclude></div>
+         compile="::vm.content" ng-transclude>
+       <!-- OpenSeaDradon component -->
+        <div ng-app="evtviewer.imageViewer" ng-controller="evtviewer.imageViewerCtrl" style="height:100%">
+            <osd name="::vm.type" ng-if="::vm.type=='image'"></osd>  
+       </div> 
+
+    </div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     <div class="filters-in-box" 
