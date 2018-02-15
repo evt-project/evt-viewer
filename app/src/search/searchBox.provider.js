@@ -74,6 +74,21 @@ angular.module('evtviewer.search')
          return key;
       }
       
+      searchBox.toggleSearchResults = function() {
+         $('[data-type=\'searchResultsShow\']').toggleClass('hide-visibility');
+         $('[data-type=\'searchResultsHide\']').toggleClass('show');
+      }
+      
+      searchBox.showSearchResultsShowBtn = function() {
+         $('[data-type=\'searchResultsShow\']').removeClass('hide-visibility');
+         $('[data-type=\'searchResultsHide\']').removeClass('show');
+      }
+      
+      searchBox.showSearchResultsHideBtn = function() {
+         $('[data-type=\'searchResultsShow\']').addClass('hide-visibility');
+         $('[data-type=\'searchResultsHide\']').addClass('show');
+      }
+      
       return searchBox;
    };
 });

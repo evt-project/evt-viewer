@@ -616,34 +616,38 @@ angular.module('evtviewer.buttonSwitch')
                      
                      console.log(res);
                      result = evtSearch.handleSearchResults(inputValue, res, currentEdition);
+                    
                   }
                   else {
                      result = 'Enter your query into the search box above';
                   }
                   scope.$parent.vm.searchResults = result;
                   evtSearchBox.openBox('searchResults');
+                  evtSearchBox.showSearchResultsHideBtn();
 					};
 					break;
             case 'searchResultsShow':
                callback = function() {
-                  var msg = 'Enter your query into the search box above';
+                  var msg;
+                  if(scope.$parent.vm.searchResults === '') {
+                     msg = 'Enter your query into the search box above';
+                     scope.$parent.vm.searchResults = msg;
+                  }
                   evtSearchBox.openBox('searchResults');
-                  $('[data-type=\'searchResultsShow\']').toggleClass('hide-visibility');
-                  $('[data-type=\'searchResultsHide\']').toggleClass('show');
-                  scope.$parent.vm.searchResults = msg;
+                  evtSearchBox.toggleSearchResults();
                };
                break;
             case 'searchResultsHide':
                callback = function() {
                   evtSearchBox.closeBox('searchResults');
-                  $('[data-type=\'searchResultsShow\']').toggleClass('hide-visibility');
-                  $('[data-type=\'searchResultsHide\']').toggleClass('show');
+                  evtSearchBox.toggleSearchResults();
                };
                break;
             case 'searchTools':
                callback = function(){
                  evtSearchBox.toggleBox('searchBox');
                  evtSearchBox.closeBox('searchResults');
+                 evtSearchBox.showSearchResultsShowBtn();
                };
                /*fakeCallback = function() {
 					   return callback();

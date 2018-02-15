@@ -33,9 +33,6 @@ angular.module('evtviewer.search')
     };
     
     vm.getSearchResults = function() {
-       if(vm.searchResults === '') {
-          vm.searchResults = '<p>No Results found!</p>';
-       }
        return vm.searchResults;
     };
 }]);
