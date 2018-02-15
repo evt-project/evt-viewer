@@ -1,0 +1,81 @@
+<!--BUTTONS TO SWITCH THE VIEW MODE OF THE APPARATUSES-->
+<!--div
+    class="apparatuses_switch-mode-buttons">
+    <button
+        type="button"
+        ng-click="vm.toggleAppStructure('tabs')"
+        class="tabs-button">
+        Switch to tab mode
+    </button>
+    <button
+        type="button"
+        ng-click="vm.toggleAppStructure('subBoxes')"
+        class="subBoxes-button">
+        Switch to boxes mode
+    </button>
+</div-->
+
+<div
+    class="apparatuses_main"
+    id="apparatuses_{{::vm.uid}}"
+    ng-switch="vm.appStructure">
+
+    <div
+        class="apparatuses_tabs"
+        ng-switch-when="tabs">
+        <div class="apparatuses_tabs_header">
+            <span class="appLabel" 
+                ng-repeat="apparatusId in vm.apparatuses._indexes" 
+                ng-click="vm.setCurrentApparatus(apparatusId)" 
+                ng-class="{'selected': apparatusId === vm.getCurrentApparatus()}" 
+                >{{ vm.apparatuses[apparatusId].label | translate }}</span> 
+        </div>
+        <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+        <div class="apparatuses_tabs_fakeTopSpace"></div>
+        <div class="apparatuses_tabs_body apparatuses_content_body">
+            <div infinite-scroll="vm.loadMoreElements()" infinite-scroll-distance="2" infinite-scroll-parent='true' infinite-scroll-immediate-check="false" ng-switch="vm.currentApparatus">
+                <div
+                    class="active-apparatus"
+                    ng-switch-when="criticalApparatus">
+                    <evt-critical-apparatus-entry
+                        ng-repeat="app in vm.getVisibleList(vm.currentApparatus)"
+                        data-app-id="{{::app}}">
+                    </evt-critical-apparatus-entry>
+                </div>
+                <div
+                    class="active-apparatus"
+                    ng-switch-when="sources">
+                    <evt-sources-apparatus-entry
+                        ng-repeat="quote in vm.getVisibleList(vm.currentApparatus)"
+                        data-quote-id="{{::quote}}">
+                    </evt-sources-apparatus-entry>
+                </div>
+                <div
+                    class="active-apparatus"
+                    ng-switch-when="analogues">
+                    <evt-analogues-apparatus-entry
+                        ng-repeat="analogue in vm.getVisibleList(vm.currentApparatus)"
+                        data-analogue-id="{{::analogue}}">
+                    </evt-analogues-apparatus-entry>
+                </div>
+                <div
+                    ng-show="!vm.currentApparatus || vm.currentApparatus === ''"
+                    ng-switch-default>
+                    <span> {{ 'MESSAGES.SELECT_AN_APPARATUS' | translate }} </span>
+                </div>
+                <!--div
+                    ng-switch-when="Commentary Notes">
+                </div-->
+            </div>
+        </div>
+    </div>
+    
+    <div
+        class="apparatuses_sub-boxes"
+        ng-switch-when="subBoxes">
+        <div class="apparatuses_sub-boxes_body">
+            <span>BOXES :)</span>
+        </div>
+    </div>
+    
+</div>

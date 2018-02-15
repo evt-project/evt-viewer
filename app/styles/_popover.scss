@@ -1,0 +1,101 @@
+/* *************************** */
+/* POPOVER                     */
+/* *************************** */
+
+$popover-background-color: $base-color-light;
+$popover-color: $base-color-dark;
+$popover-shadow-color: #7e7067;
+
+@mixin tooltipBeforeAfter(){
+    position: absolute;
+    
+    font-family: FontAwesome;
+    font-size: 2em;
+
+    color:$popover-background-color;
+}
+
+.popover {
+    display:inline;
+}
+
+.popover_trigger {
+    color: $popover-color;
+    opacity: .7;
+    cursor: pointer;
+    font-size: 110%;
+    vertical-align: top;
+
+    &.expanded {
+        // text-decoration: underline;
+        opacity: 1;
+    }
+    
+    &.active:hover {
+        // text-decoration:underline;
+        opacity: 1;
+        text-shadow: 0px 0px 0.3px rgba(0, 0, 0, 0.9);
+        .popup_tooltip {
+            text-decoration: none;
+        }
+    }
+
+    &.blurred{
+        color: transparent !important;
+        text-shadow: 0 0 5px #000;
+    }
+}
+
+.avoidBlur {
+    .popover_trigger.blurred{
+        color: $popover-color !important;
+        text-shadow: 0px 0px 0.3px rgba(0, 0, 0, 0.9);
+    }
+}
+.popover_tooltip {
+    display: none;
+    margin: 0 10px;
+    position: relative;
+    padding: 5px;
+    z-index:99;
+
+    background: $popover-background-color;
+    color: $popover-color;
+    font-size: 90%;
+    text-align: center;
+    
+    @include set(box-shadow, 2px 2px 2px $popover-shadow-color);
+    border: 2.5px solid black;
+    border-radius: 3px;
+    
+    cursor: text !important;
+
+    span {
+        background: transparent;
+    }
+
+    &.expanded {
+        display: block;
+    }
+    &.hidden {
+        opacity:0;
+    }
+    .popover__tooltip__before{
+        position:absolute;
+        top:0px;
+
+        &::before {
+            @include tooltipBeforeAfter();
+            top: -20px;
+            content:"\f0d8";
+            text-shadow: 0px -3px 0px #000;
+            height:0px;
+        }
+    }
+    &.open-up {
+        .popover__tooltip__before::before {
+            content:"\f0d7";
+            text-shadow: 0px 3px 0px #000;
+        }
+    }
+}

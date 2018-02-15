@@ -1,0 +1,501 @@
+<!--  View  -->
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'image'" >
+
+    <div class="fullscreen">
+
+        <figure
+            ng-repeat="img in mockImage"
+            ng-swipe-right="prevItem()"
+            ng-swipe-left="nextItem()"
+            ng-show="isActive($index)" >
+
+            <img
+                class="slide"
+                ng-src="{{img.url}}"
+                alt="{{img.title}} {{img.page}}" >
+
+        </figure>
+
+    </div>
+
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
+</section>
+
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'text'" >
+
+    <div class="fullscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+           
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'diplomatic'">
+
+                <p ng-include="text.diplomatic"></p>
+
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div>        
+
+        </div>
+
+    </div>   
+    
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
+</section>
+
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'imageimage'" >
+
+    <div class="fullscreen">
+
+        <figure
+            ng-repeat="img in mockBook"
+            ng-swipe-right="prevImageImage()"
+            ng-swipe-left="nextImageImage()"
+            ng-show="isActive($index)">
+
+            <img 
+                class="slide"
+                ng-src="{{img.url}}"
+                alt="{{img.title}} {{img.page}}">
+
+        </figure>
+
+    </div>
+
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevImageImage()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextImageImage()">
+    </span>
+
+</section>
+
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'imagetext'" >
+
+    <div class="halfscreen">
+
+        <figure
+            ng-repeat="img in mockImage"
+            ng-swipe-right="prevItem()"
+            ng-swipe-left="nextItem()"
+            ng-show="isActive($index)">
+
+            <img
+                class="slide"
+                ng-src="{{img.url}}"
+                alt="{{img.title}} {{img.page}}" >
+
+        </figure>
+
+    </div>
+    <div class="halfscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'diplomatic'">
+
+                <p ng-include="text.diplomatic"></p>
+
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div> 
+
+
+        </div>
+
+    </div>
+    
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
+</section>
+
+
+<section 
+    class="baseTemplate"
+    ng-if="view.currentView === 'texttext'" >
+
+    <div class="halfscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'diplomatic'">
+
+                <p ng-include="text.diplomatic"></p>
+
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionDipl.currentEditionDipl === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div> 
+
+        </div>
+
+    </div>
+    
+    <div class="halfscreen">
+
+        <div
+            class="boxText"
+            ng-repeat="text in mockText">
+
+            <div
+                class="information"
+                ng-show="isActive($index)">
+
+                <span class="textPage">{{text.page}}</span>
+                <span class="textTitle">{{text.title}}</span>
+                              
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'diplomatic'">
+
+                <p ng-include="text.diplomatic"></p>
+
+            </div>
+
+            <div
+                class="contentText"
+                ng-swipe-right="singlePrev()"
+                ng-swipe-left="singleNext()"
+                ng-show="isActive($index)"
+                ng-if="editionInt.currentEditionInt === 'interpretative'">
+
+                <p ng-include="text.interpretative"></p>
+
+            </div> 
+
+        </div>
+
+    </div>
+    
+    <!-- prev / next controls -->
+
+    <span 
+        class="prev"
+        ng-click="prevItem()">
+    </span>
+
+    <span 
+        class="next"
+        ng-click="nextItem()">
+    </span>
+
+</section>
+
+<!--  end View  -->
+
+<!--  Toolbar  -->
+
+<section class="toolbar">
+
+    <section class="settings">
+        <section 
+            class="leftSettings"
+            ng-if="view.currentView === 'text' || view.currentView === 'texttext'">
+
+            <div class="contentSettings">
+                <div 
+                    class ="leftSetOptions"
+                    ng-show="leftTextOptions">
+                    
+                    <ul class="optionText">
+                        <li 
+                            class="{{option.template}}"
+                            ng-class="{'active': isActiveButtonDipl(option.template)}"
+                            ng-repeat="option in textEdition"
+                            ng-click="showEditionDipl(option.template); buttonEditionDipl(option)">
+
+                            <span> {{option.description}}</span>
+                        </li>
+                        
+                    </ul>
+
+                </div>
+                <div
+                    class="leftButtonSettings"
+                    ng-class="{'active': leftTextOptions}"
+                    ng-click="leftTextSettings()">
+
+                    <span>
+                        <i class="fa fa-cogs"></i>
+                    </span>
+
+                </div>
+                
+            </div>
+
+        </section>
+
+        <section 
+            class="rightSettings"
+            ng-if="view.currentView === 'imagetext' || view.currentView === 'texttext'">
+
+            <div class="contentSettings">
+                <div 
+                    class ="rightSetOptions"
+                    ng-show="rightTextOptions">
+                    
+                    <li 
+                        class="{{option.template}}"
+                        ng-class="{'active': isActiveButtonInt(option.template)}"
+                        ng-repeat="option in textEdition"
+                        ng-click="showEditionInt(option.template); buttonEditionInt(option)">
+
+                        <span> {{option.description}}</span>
+                    </li>
+
+                </div>
+                <div
+                    class="rightButtonSettings"
+                    ng-class="{'active': rightTextOptions}"
+                    ng-click="rightTextSettings()">
+
+                    <span>
+                        <i class="fa fa-cogs"></i>
+                    </span>
+
+                </div>
+                
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <section
+        class="thumbImage"
+        ng-if="view.currentView === 'image'">
+
+        <div
+            class="buttonThumb"
+            ng-class="{'active': navThumb}"
+            ng-click="showThumb()">
+
+            <span>
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+
+        </div>
+        <div 
+            class="navThumb"
+            ng-show="navThumb">
+
+           <figure 
+                ng-class="{'active': isActive($index)}"
+                ng-click="showImage($index)"
+                ng-repeat="img in thumbnails">
+                
+                <img 
+                    ng-src="{{img.url}}"
+                    alt="{{img.page}}">
+
+                <figcaption>{{img.page}}</figcaption>
+
+            </figure> 
+          
+        </div>
+
+    </section>
+
+    <section
+        class="thumbImage"
+        ng-if="view.currentView === 'imageimage'">
+
+        <div
+            class="buttonThumb"
+            ng-class="{'active': navThumb}"
+            ng-click="showThumb()">
+
+            <span>
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+
+        </div>
+        <div 
+            class="navThumb"
+            ng-show="navThumb">
+
+           <figure 
+                ng-class="{'active': isActive($index)}"
+                ng-click="showImage($index)"
+                ng-repeat="img in thumbBook">
+                
+                <img 
+                    ng-src="{{img.url}}"
+                    alt="{{img.page}}">
+
+                <figcaption>{{img.page}}</figcaption>
+
+            </figure> 
+          
+        </div>
+
+    </section>
+
+    <section
+        class="thumbText"
+        ng-if="view.currentView === 'text' || view.currentView === 'imagetext' || view.currentView === 'texttext'">
+
+        <div
+            class="buttonThumb"
+            ng-class="{'active': navThumb}"
+            ng-click="showThumb()">
+
+            <span>
+                <i class="fa fa-ellipsis-h"></i>
+            </span>
+
+        </div>
+        <div 
+            class="navThumb"
+            ng-show="navThumb">
+
+           <figure 
+                ng-class="{'active': isActive($index)}"
+                ng-click="showImage($index)"
+                ng-repeat="img in thumbnails">
+                
+                <img 
+                    ng-src="{{img.url}}"
+                    alt="{{img.page}}">
+
+                <figcaption>{{img.page}}</figcaption>
+
+            </figure> 
+          
+        </div>
+
+    </section>
+
+</section>
+
+<!--  end Toolbar -->

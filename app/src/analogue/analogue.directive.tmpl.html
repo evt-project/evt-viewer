@@ -1,0 +1,27 @@
+<span
+    class="analogue"
+    ng-mouseover="vm.toggleOverAnalogues($event)"
+    ng-mouseout="vm.toggleOverAnalogues($event)"
+    ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
+                'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
+                'over'     : vm.over,
+                'blurred'  : $parent.vm.state.topBoxOpened}">
+    <i
+        class="iconbis-evt_analogue"
+        title="{{ 'ANALOGUES.ANALOGUE' | translate}}"
+        ng-click="vm.callbackClick($event)"
+        ng-if="(vm.type !== 'subquote' && !$parent.vm.selected) || (vm.over && vm.type === 'subquote' && !$parent.vm.selected)">
+    </i>
+    <span
+        class="analogue__text"
+        ng-click="vm.callbackClick($event)"
+        ng-transclude></span>
+        
+    <evt-analogues-apparatus-entry
+        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
+        ng-if="vm.apparatus._loaded && vm.apparatus.inline"
+        ng-show="vm.isApparatusOpened()"
+        data-analogue-id="{{::vm.analogueId}}"
+        data-scope-wit="{{::vm.scopeWit}}">
+    </evt-analogues-apparatus-entry>
+</span>

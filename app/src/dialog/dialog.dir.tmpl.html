@@ -1,0 +1,28 @@
+<div class="evt-dialog"
+    ng-show="vm.opened"
+    ng-class="::{'evt-dialog-error': vm.type === 'error',
+               'evt-dialog-small': vm.type === 'bookmark' }">
+    <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
+
+
+    <div class="evt-dialog-container">
+        <div class="evt-dialog-container-top">
+            <span class="evt-dialog-container-top-title">{{ vm.title | translate }}</span>
+            <button-switch 
+                    class="noPadding"
+                    title="{{ 'DIALOGS.CLOSE' | translate }}"
+                    data-icon="remove"
+                    data-type="closeDialog">
+            </button-switch>
+        </div>
+        <div ng-switch="vm.type">
+            <div 
+                ng-switch-when="error"
+                class="evt-dialog-container-content"
+                compile="::vm.content"></div>
+            <div 
+                ng-switch-default
+                class="evt-dialog-container-content" ng-transclude></div>
+        </div>
+    </div>
+</div>

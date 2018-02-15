@@ -1,0 +1,188 @@
+@ngdoc overview
+@name EVT 2 Dev Guide
+@description
+
+# EVT 2 Dev Guide
+Welcome to the developers guide of EVT 2.
+
+Before starting you have to prepare the development environment by installing all the needed dependencies,
+as explained in **Development Enviroment Preparation**.
+
+The documentation is organized into modules which contain the different components of EVT 2.
+These components are directives, services, filters, providers and controllers.
+
+## EVT 2 Modules
+The main module of the application is {@link evtviewer evtviewer}.
+
+A different module has been defined for each interface element. For each of them it is possible to have:
+- a configuration file where the values of some constants are defined
+- provider/service
+- directive
+- controller (where everything concerning the single instance of the directive is defined)
+
+## Modules organization
+Some modules, especially those used to manage data, are defined exclusively by a service.
+For the implementation of the services, provider was mainly used for modules that need to be instantiated more than once.
+This choice was first driven by the fact that the provider can be injected into other modules depending from it during the configuration phase.
+Moreover, from a theoretical point of view, it was possible to create components in a programmatic manner and 
+to give to all functions defined in the service access to an object that is not directly defined by a directive.
+
+## General Styling
+
+With regard to the graphic style, rules have been defined in SCSS and grouped in an external folder "styles". 
+{@link http://susy.oddbird.net/ Susy} framework was chosen as a grid-layout engine.
+
+## Overview
+The main module is provided by default and contains the core components of EVT 2.
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Description</th>
+      <th>Main devs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>{@link evtviewer.analogue analogue}</th>
+      <th>Module referring to analogues</th>
+      <th>CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.analoguesApparatusEntry analoguesApparatusEntry}</th>
+      <th>Module referring to analogue apparatues entries</th>
+      <th>CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.apparatuses apparatuses}</th>
+      <th>Module referring to critical apparatuses box</th>
+      <th>CM, CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.bibliography bibliography}</th>
+      <th>Module referring to bibliography references and lists</th>
+      <th>MR</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.box box}</th>
+      <th>Module referring to box, single content of text, images, etc.</th>
+      <th>CDP, CM, GC</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.buttonSwitch buttonSwitch}</th>
+      <th>Module referring to button switchers.</th>
+      <th>RM, CDP, CM, GC</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.communication communication}</th>
+      <th>Module referring to communication operations</th>
+      <th>RM, CDP, CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.core core}</th>
+      <th>Core module</th>
+      <th>RM, CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.criticalApparatusEntry criticalApparatusEntry}</th>
+      <th>Module referring to critical apparatus entries</th>
+      <th>CDP, CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.dataHandler dataHandler}</th>
+      <th>Module referring to parsing, storing and retrieving operations on source data</th>
+      <th>CDP, CM, MR, GC</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.dialog dialog}</th>
+      <th>Module referring to dialogs</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.interface interface}</th>
+      <th>Module referring to main interface</th>
+      <th>CDP, CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.list list}</th>
+      <th>Module referring to lists</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.namedEntity namedEntity}</th>
+      <th>Module referring to named entities</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.popover popover}</th>
+      <th>Module referring to popover</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.quote quote}</th>
+      <th>Module referring to quotes</th>
+      <th>CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.reading reading}</th>
+      <th>Module referring to critical reading</th>
+      <th>CDP, CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.reference reference}</th>
+      <th>Module referring to references</th>
+      <th>CDP, MR</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.select select}</th>
+      <th>Module referring to custom selects</th>
+      <th>RM, CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.sourcesApparatusEntry sourcesApparatusEntry}</th>
+      <th>Module referring to source apparatus entries</th>
+      <th>CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.tabsContainer tabsContainer}</th>
+      <th>Module referring to tabs container</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.translation translation}</th>
+      <th>Module referring to translation</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.UItools UItools}</th>
+      <th>Module referring to UI tools</th>
+      <th>CDP</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.versionApparatusEntry versionApparatusEntry}</th>
+      <th>Module referring to version apparatus entries</th>
+      <th>CM</th>
+    </tr>
+    <tr>
+      <th>{@link evtviewer.versionReading versionReading}</th>
+      <th>Module referring to version readings</th>
+      <th>CM</th>
+    </tr>
+  </tbody>
+</table>
+
+## Main developers (alphabetical order)
+- [CDP] Chiara Di Pietro (<dipi.chiara@gmail.com>)
+ - current development
+ - BA thesis on critical edition support 
+ - initial configuration 
+- [CM] Chiara Martignano 
+ - current development
+ - BA thesis on critical edition support 
+ - internship
+- [GC] Giulia Cacioli 
+ - BA thesis on internal search engine
+- [MR] Maurizio Ricci 
+ - internship on bibliography support (and first draft of named entities)
+- [RM] Raffaele Masotti 
+ - initial configuration

@@ -1,0 +1,24 @@
+<span
+    class="version-reading"
+    ng-mouseover="vm.toggleOverAppEntries($event)"
+    ng-mouseout="vm.toggleOverAppEntries($event)"
+    ng-class="{ 'blurred'  : $parent.vm.state.topBoxOpened,
+                'over'     : vm.over,
+                'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}">
+    <span
+        class="version-reading_text"
+        ng-click="vm.callbackClick($event);"
+        ng-mouseover="vm.highlightOn()"
+        ng-mouseout="vm.highlightOff()"
+        ng-class="{ 'over'     : vm.over && !vm.isSelect(),
+                    'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened}"
+        ng-transclude>
+    </span>
+    <evt-version-apparatus-entry
+        ng-if="vm.isScopeRecensioAvailable() && vm.apparatus.opened"
+        ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
+        data-app-id="{{::vm.appId}}"
+        data-reading-id="{{::vm.readingId}}"
+        data-scope-wit="{{::vm.scopeWit}}"
+        data-scope-ver="{{::vm.scopeVer}}"></evt-version-apparatus-entry>
+</span>

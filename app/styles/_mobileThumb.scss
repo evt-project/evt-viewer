@@ -1,0 +1,107 @@
+/* Thumbnails ====================================== */ 
+
+@include border-box-sizing;
+
+@mixin marginThumb($margin){
+    width: 100%;
+    display: block;
+    margin-top: $margin;
+    text-align: center;
+
+    .active .fa {
+        color: #FFF;            
+        text-shadow: none;        
+    }
+}
+
+.thumbText {
+    @include marginThumb (-1.6em);
+}
+
+.thumbImage {
+    @include marginThumb (0);
+}
+
+.buttonThumb {
+    width: 1.8em;
+    height: 1.2em;
+    margin: 0 auto;
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    color: #999;
+    background: #333;
+    opacity: 0.9;
+    font-size: 2em; 
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    .fa {
+        padding-top: 0.2em;
+    }
+
+}
+
+.navThumb{
+    height: 8em;
+    padding: 0.4em;
+    background: #333;
+    opacity: 0.9;
+    font-size: 0.9em;
+    overflow-y: hidden;
+
+    .active {
+        border: 1px solid #666;
+        background: #222;
+        box-shadow: inset 0px 0px 6px 5px rgba(0,0,0,0.75);
+    }
+
+    figure {
+        margin: 0.2em;
+        padding: 0.2em 0;
+        float: left;
+        display: inline-block;       
+    }
+
+    img {
+        max-width: 60%;
+        margin: 0 auto;
+        cursor: pointer;
+    } 
+
+    figcaption {
+        margin: 0 auto;
+    }
+
+}
+
+/* Smartphone ================================================ */ 
+@media screen and (max-width: 479px) {
+
+    .navThumb{
+        width: 390%;    
+    }
+
+
+}
+/* end Smartphone ============================================= */
+/* Tablet Portrait ============================================ */ 
+@media screen and (min-width: 480px) and (max-width: 800px) {
+
+    .navThumb{
+        width: 250%;
+    }
+}
+
+/* end Tablet Portrait ======================================== */ 
+/* Tablet Landscape =========================================== */
+@media screen and (min-width: 801px) {
+
+    .navThumb{
+        width: 160%;
+    }
+}
+
+/* end Tablet Landscape ======================================= */
+
+/* end Thumbnails ====================================== */ 

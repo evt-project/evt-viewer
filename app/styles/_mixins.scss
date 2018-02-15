@@ -1,0 +1,71 @@
+/* *************************** */
+/* Mixins */
+@mixin colors($color, $background){
+    color: $color;
+    background: $background;
+}
+
+@mixin calc($property, $expression) { 
+  #{$property}: -moz-calc(#{$expression}); 
+  #{$property}: -o-calc(#{$expression}); 
+  #{$property}: -webkit-calc(#{$expression}); 
+  #{$property}: calc(#{$expression}); 
+} 
+
+@mixin set($property, $value) { 
+  -moz-#{$property}: #{$value}; 
+  -o-#{$property}: #{$value}; 
+  -webkit-#{$property}: #{$value};
+  -khtml-#{$property}: #{$value}; 
+  -ms-#{$property}: #{$value};
+  #{$property}: #{$value}; 
+} 
+
+@mixin main-frame(){
+    // @include span(18 of 20); 
+    height: 100%;
+    overflow: hidden;
+    padding: 0px;
+    font-size: 18px;
+}
+
+@mixin inside-header(){
+    @include span(9 of 9);  
+    @include colors($base-color-light, $base-color-dark);
+    height: $mainContainer-menu-height;
+    min-height: $mainContainer-menu-height;
+    font-size: 16px;
+    padding: 6px;
+    display: block;
+    float: none;
+}
+
+@mixin frame(){
+    @include span(9 of 18);
+    height:100%;
+}
+
+@mixin frameBody(){ 
+    padding:4% 4%;
+    @include calc(height, #{setInsideFrameHeight()});
+}
+
+@mixin mainNavArrow(){
+    @include span(1 of 20); 
+    text-align: center;
+
+    span {
+        height: 59px;
+        top: 50%;
+        position: relative;
+        transform: translateY(-50%);
+        opacity:0.5;
+    }
+    span:hover {
+        opacity:1;
+        cursor:pointer;
+    }
+}
+
+/* == END Mixins */
+/* =========================== */

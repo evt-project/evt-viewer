@@ -1,0 +1,23 @@
+<span class="popover">
+   <span 
+        class="popover_trigger" 
+        ng-mouseover="vm.toggleMouseHover($event, vm)" 
+        ng-mouseout="vm.toggleMouseHover($event, vm)"
+        ng-click="vm.triggerClick($event, vm);" 
+        ng-class="{'expanded':vm.expanded, 
+                   'active': vm.over,
+                   'blurred': $parent.vm.state.topBoxOpened}">
+        <span ng-transclude></span>
+   </span>
+   <span 
+        class="popover_tooltip" 
+        ng-class="{'expanded':vm.expanded || (vm.trigger==='over' && vm.over)}"
+        ng-mouseover="vm.toggleTooltipHover($event, vm)"
+        ng-mouseout="vm.toggleTooltipHover($event, vm)">
+        <span 
+            class="popover__tooltip__before" 
+            ng-mouseover="vm.toggleTooltipHover($event, vm)"
+            ng-mouseout="vm.toggleTooltipHover($event, vm)"></span>
+      <span compile="::vm.tooltip"></span>
+   </span>
+</span>

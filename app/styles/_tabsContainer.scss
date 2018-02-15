@@ -1,0 +1,80 @@
+/* *************************** */
+/* TABS CONTAINER              */
+/* *************************** */
+
+.evt-tabs-container {
+    padding-top:1px;
+    height:100%;
+    overflow: hidden;
+    &.vertical {
+        .evt-tabs-container{
+            &_headers {
+                display: inline-block;
+                float: left;
+                @include calc(height, 100% - #{$mainContainer-menu-height});
+                border-right: 1px solid $base-color-dark;
+                width: 20%;
+                position: absolute;
+                overflow: hidden;
+                bottom: 0;
+                left: 0;
+                top: $mainContainer-menu-height+1;
+            }
+            &_header {
+                display: block;
+                border-bottom: 1px solid $base-color-dark;
+                color: $base-color-dark;
+                font-variant: small-caps;
+                text-align: left;
+                padding: 10px;
+                cursor: pointer;
+                &.active, &:hover{
+                    background: $base-color-middle;
+                    color: $base-color-light;
+                }
+                &.active{
+                    background: $base-color-dark;
+                    color: $base-color-light;
+                }
+                &-icon {
+                    min-width: 18px;
+                    margin-right: 3px;
+                    text-align: center;
+                }
+            }
+
+            &_panels{
+                position: relative;
+                height: 100%;
+                left: 20%;
+                width: 80%;
+            }
+        }
+    }
+
+    &_headers {
+       
+    }
+
+    &_panels{
+        
+    }
+
+    &_panel {
+        display: none;
+        padding: 10px 15px;
+        height: 100%;
+
+        &.active {
+            display: block;
+            margin-bottom: 10px;
+            overflow-y: auto;
+        }
+
+        &.noscroll {
+            overflow-y: hidden !important;
+            padding: 0;
+            margin-bottom: 0;
+        }
+    }
+}

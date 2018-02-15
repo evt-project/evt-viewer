@@ -1,84 +1,391 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML>
 <html class="no-js">
-  <head>
-    <!-- <meta charset="utf-8"> -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <title>EVT Viewer</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <head>
+        <!-- <meta charset="utf-8"> -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <title>EVT Viewer</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- TODO: temp -->
-    <!-- build:css(.) styles/evt-old.css -->
-    <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
-    <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"></link>
-    <!-- endbuild -->
-    
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="evtviewer">
+        <!-- build:css(.) styles/vendor.css -->
+        <!-- bower:css -->
+        <!-- endbower -->
+        <!-- endbuild -->
+
+        <!-- TODO: temp -->
+        <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
+        <!-- <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link> -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link> -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link> -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
+        <link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css"></link>
+        <!-- endbuild -->
+
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/tei.css">
+        <link rel="stylesheet" href="config/custom-style.css">
+        <!-- endbuild -->
+
+    </head>
+    <body ng-app="evtviewer"
+        ng-controller="InterfaceCtrl"
+        ng-keydown="handleKeydownEvent($event)"
+        ng-click="handleGenericClick($event)">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    
 
-    <header>Header</header>
 
-    <section id="global-container">
-        <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div>
-        <section id="main-container">
-            <section id="main-container__left">
-                <header id="main-container__left__menu-top">
-                    <selector data-id="Pages"></selector>
-                </header>
-                <div id="main-container__left__body">Left</div>
-                <footer id="main-container__left__menu-bottom">Left footer</footer>
-            </section>
-
-            <section id="main-container__right">
-                <header id="main-container__right__menu-top">
-                    <selector data-id="Documents"></selector>
-                    <selector data-id="EditionLevels"></selector>
-                </header>
-                <div id="main-container__right__body">
-                    <div id="text_cont">
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                        Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Salutantibus vitae elit libero, a pharetra augue. Non equidem invideo, miror magis posuere velit aliquet. Nec dubitamus multa iter quae et nos invenerat. Quam diu etiam furor iste tuus nos eludet? Pellentesque habitant morbi tristique senectus et netus. Idque Caesaris facere voluntate liceret: sese habere. Contra legem facit qui id facit quod lex prohibet. Mercedem aut nummos unde unde extricat, amaras. Contra legem facit qui id facit quod lex prohibet. Phasellus laoreet lorem vel dolor tempus vehicula. At nos hinc posthac, sitientis piros Afros. Tityre, tu patulae recubans sub tegmine fagi  dolor. Gallia est omnis divisa in partes tres, quarum. Plura mihi bona sunt, inclinet, amari petere vellent. Pellentesque habitant morbi tristique senectus et netus. Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae. Cum sociis natoque penatibus et magnis dis parturient. Idque Caesaris facere voluntate liceret: sese habere. Tu quoque, Brute, fili mi, nihil timor populi, nihil! Salutantibus vitae elit libero, a pharetra augue. Nec dubitamus multa iter quae et nos invenerat. Morbi odio eros, volutpat ut pharetra vitae, lobortis sed nibh. Morbi fringilla convallis sapien, id pulvinar odio volutpat.
-                    </div>
-                </div>
-                <footer id="main-container__right__menu-bottom">Right footer</footer>
-            </section>
+    <header>
+        <img class="logo" ng-if="getProperty('logoUrl') !== ''" ng-src="{{getProperty('logoUrl')}}" />
+        {{ getProperty('indexTitle') }}
+        <a class="webSiteLink"
+            ng-if="getProperty('webSite') !== ''"
+            href="{{getWebSite()}}" target="_blank">
+            <i class="fa fa-external-link"></i>
+        </a>
+        <div class="globalMenu">
+            <div class="viewModeMenu">
+                <button-switch
+                        title="VIEW_MODES.{{::mode.label}}"
+                        class="mode-view"
+                        data-label=""
+                        data-icon="{{::mode.icon}}"
+                        data-value="{{::mode.viewMode}}"
+                        data-type="changeViewMode"
+                        ng-repeat="mode in getAvailableViewModes() track by $index"
+                        ng-if="mode.visible">
+                </button-switch>
+            </div>
+            <!-- <button-switch
+                    title="Witnesses"
+                    data-icon="witnesses"
+                    data-type="openGlobalDialogWitnesses">
+            </button-switch>
+            <button-switch
+                title="BUTTONS.LIST"
+                ng-if="getProperty('namedEntitiesLists')"
+                data-icon="list"
+                data-type="openGlobalDialogLists">
+            </button-switch>
+            <button-switch
+                class="smaller"
+                title="BUTTONS.INFO"
+                data-icon="info"
+                data-type="openGlobalDialogInfo">
+            </button-switch>
+            <button-switch
+                title="BUTTONS.BOOKMARK"
+                data-icon="bookmark"
+                data-type="bookmark">
+            </button-switch>
+            <button-switch
+                ng-if="getProperty('enableXMLdownload')"
+                title="BUTTONS.DOWNLOAD_XML"
+                data-icon="download"
+                data-type="download-xml">
+            </button-switch> -->
+            <button-switch
+                title="BUTTONS.MENU"
+                data-icon="menu"
+                data-type="mainMenu">
+            </button-switch>
+            <div class="mainMenu" ng-if="getState('mainMenu') === true">
+                <ul>
+                    <li>
+                        <span ng-click="openGlobalDialogInfo()">
+                            <i class="icon icon-evt_info-alt"></i>
+                            {{'MAIN_MENU.PROJECT_INFO' | translate}}</span>
+                    </li>
+                    <li ng-if="getProperty('namedEntitiesLists')">
+                        <span ng-click="openGlobalDialogLists()">
+                            <i class="icon icon-evt_list"></i>
+                            {{'MAIN_MENU.OPEN_LISTS' | translate}}</span>
+                    </li>
+                    <li>
+                        <span ng-click="generateBookmark()">
+                            <i class="icon icon-evt_bookmark"></i>
+                            {{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
+                    </li>
+                    <li ng-if="getProperty('enableXMLdownload')">
+                        <span ng-click="downloadXML()">
+                            <i class="icon fa fa-download"></i>
+                            {{'MAIN_MENU.DOWNLOAD_XML' | translate}}</span>
+                    </li>
+                </ul>
+                <hr/>
+                <ul>
+                    <li>
+                        <span>
+                            <i class="icon fa fa-language"></i>
+                            {{'MAIN_MENU.LANGUAGES' | translate}}
+                            <img ng-repeat="langKey in getAvailableLanguages()"
+                                ng-if="langKey && langKey !== ''"
+                                ng-src="images/{{langKey}}.png"
+                                ng-class="{ 'active': langKey === getCurrentLanguage() }"
+                                class="flag"
+                                ng-click="setLanguage(langKey)"
+                                title="{{ 'LANGUAGES.'+langKey | uppercase | translate }}" alt="{{ ::langKey | uppercase}}">
+                        </span>
+                    </li>
+                    <li class="inactive">
+                        <span>
+                            <i class="icon fa fa-keyboard-o"></i>
+                            {{ 'MAIN_MENU.KEYBOARD_SHORT_CUTS' | translate }}</span></li>
+                </ul>
+            </div>
+            <!-- <button-switch
+                    class="noPadding"
+                    title="Menu"
+                    data-icon="menu-vert"
+                    data-type="openMenu">
+            </button-switch> -->
+        </div>
+    </header>
+    <div id="global-container-ext" ng-show="!isLoading()">
+        <section
+            class="secondary-container"
+            ng-show="getSecondaryContentOpened() !== ''">
+            <evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
+                ng-if="getProperty('namedEntitiesLists')">
+                <evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
+                    data-type="entitiesList"
+                    data-orientation="vertical">
+                </evt-tabs-container>
+            </evt-dialog>
+            <evt-dialog data-type="globalInfo" data-title="DIALOGS.PROJECT_INFO">
+                <evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
+                    data-type="projectInfo"
+                    data-orientation="vertical">
+                </evt-tabs-container>
+            </evt-dialog>
+            <evt-dialog data-type="witnessesList" data-title="DIALOGS.WITNESSES">
+                <div compile="getWitnessesListFormatted()"></div>
+            </evt-dialog>
+            <evt-dialog data-type="bookmark" data-title="DIALOGS.BOOKMARK">
+                <div compile="getBookmark()"></div>
+            </evt-dialog>
         </section>
-        <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div>
+        <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
+            <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
+            <!-- READING TEXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"
+                     ng-class="{'centered': !isPinnedAppBoardOpened(),
+                                'half-centered': isPinnedAppBoardOpened(),
+                                'half-left': isApparatusBoxOpen(),
+                                'smaller-left': isApparatusBoxOpen() && isPinnedAppBoardOpened() }"></box>
+                <button-switch
+                        title="BUTTONS.SHOW_PINNED_ENTRIES"
+                        data-label=""
+                        data-icon="pin"
+                        data-type="togglePinned"
+                        ng-if="::isToolAvailable('toolPinAppEntries')"
+                        class="togglePinned_btn"
+                        ng-class="{'centered': !isPinnedAppBoardOpened() && !isApparatusBoxOpen(),
+                                   'half-centered': isPinnedAppBoardOpened() && !isApparatusBoxOpen(),
+                                   'left': isPinnedAppBoardOpened() && isApparatusBoxOpen(),
+                                   'half-left': !isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
+                </button-switch>
+
+                <box data-type="pinnedBoard"
+                    ng-if="!isLoading() && isPinnedAppBoardOpened()"
+                    ng-class="{ 'pin-centered': isPinnedAppBoardOpened() && isApparatusBoxOpen()}">
+                     <span ng-if="evtPinnedElements.getPinned().length <= 0" class="italic">
+                        {{ 'MESSAGES.PINNED_ELEMENTS_SHOWN_HERE' | translate }}
+                    </span>
+                    <div ng-if="evtPinnedElements.getVisibleTypes().length <= 0 && evtPinnedElements.getPinned().length > 0 && entry !== ''"
+                         ng-repeat="entry in evtPinnedElements.getPinned()">
+
+                        <evt-critical-apparatus-entry
+                            ng-if="::evtPinnedElements.getPinnedElementType(entry) === 'criticalApparatusEntry'"
+                            class="in_critical_apparatus active"
+                            ng-click="updateCurrentAppEntry(entry);"
+                            data-type="pinned"
+                            data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
+
+                        <evt-named-entity
+                            ng-if="::evtPinnedElements.getPinnedElementType(entry).indexOf('namedEntity') >= 0"
+                            data-location="pinned"
+                            data-entity-id="{{::entry}}"></evt-named-entity>
+                    </div>
+
+                    <div ng-if="evtPinnedElements.getVisibleTypes().length > 0"
+                         ng-repeat="type in evtPinnedElements.getVisibleTypes()">
+                            <span class="pinnedTypeTitle">{{ ::type | camelToSpaces | underscoresToSpaces | capitalize  }}</span><!-- TODO: Add translation -->
+                            <div ng-repeat="entry in evtPinnedElements.getPinnedByType(type)">
+                                <evt-critical-apparatus-entry
+                                    ng-if="::type === 'criticalApparatusEntry'"
+                                    class="in_critical_apparatus"
+                                    ng-class="{'active': getCurrentAppEntry() === entry}"
+                                    ng-click="updateCurrentAppEntry(entry);"
+                                    data-type="pinned"
+                                    data-app-id="{{::entry}}"></evt-critical-apparatus-entry>
+
+                                <evt-named-entity
+                                    ng-if="::type.indexOf('namedEntity') >= 0"
+                                    data-location="pinned"
+                                    data-entity-id="{{::entry}}"></evt-named-entity>
+                            </div>
+                    </div>
+                </box>
+                <box
+                    ng-if="isApparatusBoxOpen()"
+                    data-type="empty" id="empty"
+                    ng-class="{ 'smaller' : isPinnedAppBoardOpened() && isApparatusBoxOpen() }">
+                    <evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>
+                </box>
+            </section>
+
+            <!-- VERSIONS -->
+            <section id="main-container" class="viewMode" ng-switch-when="versions">
+                <box data-type="text"
+                     id="mainText"
+                     ng-if="existCriticalText() && (getCurrentEdition() === 'critical')"
+                     data-edition="{{getCurrentEdition()}}"></box>
+
+                <div class="compareVer_box" id="compareVer_box"
+                     ng-class="{'span9of18': (existCriticalText() && getCurrentVersions().length <= 1),
+                                'span18of18': !existCriticalText()}">
+                    <box data-type="version"
+                         data-version="{{version}}"
+                         ng-repeat="version in getCurrentVersions()"></box>
+                </div>
+
+                <button-switch
+                    ng-if="getAllVersionsNumber() > 2"
+                    title="BUTTONS.ADD_VERSION"
+                    data-label="Add Version"
+                    data-icon="add"
+                    data-type="addVer"
+                    class="compareVer_box--buttonAddVer inverted-color verSelector"
+                    ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0),
+                               'floatRight': (!existCriticalText() && getCurrentVersions().length > 1) || (existCriticalText() && getCurrentVersions().length > 0)}">
+                </button-switch>
+
+                <div
+                    ng-if="isVersionSelectorActive()"
+                    class="availableVersions-selector versionSelector"
+                    ng-class="{'left75': (!existCriticalText() && getCurrentVersions().length == 1) || (existCriticalText() && getCurrentVersions().length == 0)}">
+                    <span
+                        ng-click="addVersion(version)"
+                        ng-repeat="version in getAvailableVersions()"
+                        compile="getVersion(version)"></span>
+                </div>
+            </section>
+
+            <!-- COLLAZIONE -->
+            <section id="main-container" class="viewMode" ng-switch-when="collation">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"
+                     ng-if="existCriticalText()"></box>
+                <!-- <div
+                    compile="printCriticalApparatus()"
+                    style="position: absolute; background: rgb(255, 255, 255) none repeat scroll 0% 0%;"> -->
+
+                <div class="compareWits_box" id="compareWits_box"
+                     ng-class="{'span9of18': (existCriticalText() && getCurrentWitnesses().length <= 1),
+                                'span18of18': !existCriticalText()}">
+                    <box data-type="witness"
+                         data-witness="{{witness}}"
+                         ng-if="witness"
+                         data-witpage="{{getCurrentWitnessPage(witness)}}"
+                         ng-repeat="witness in getCurrentWitnesses()" ></box>
+                </div>
+                <button-switch
+                        title="BUTTONS.ADD_WITNESS"
+                        data-label="BUTTONS.ADD_WITNESS"
+                        data-icon="add"
+                        data-type="addWit"
+                        class="compareWits_box--buttonAddWit inverted-color witnessSelector"
+                        ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0),
+                                    'floatRight': (!existCriticalText() && getCurrentWitnesses().length > 1) || (existCriticalText() && getCurrentWitnesses().length > 0)}">
+                </button-switch>
+
+                <div
+                    ng-if="isWitnessSelectorActive()"
+                    class="availableWitnesses-selector witnessSelector"
+                    ng-class="{'left75': (!existCriticalText() && getCurrentWitnesses().length == 1) || (existCriticalText() && getCurrentWitnesses().length == 0)}">
+                    <span
+                        ng-click="addWitness(witness)"
+                        ng-if="::witness"
+                        ng-repeat="witness in getAvailableWitnesses() track by $index">{{::getWitness(witness)}}</span>
+                </div>
+            </section>
+
+            <!-- TXT TXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="txtTxt">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText1"></box>
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText2"></box>
+            </section>
+
+            <!-- IMG TXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="imgTxt">
+                <box data-type="image"
+                     id="mainImage"></box>
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"></box>
+            </section>
+
+            <!-- SRC TXT -->
+            <section id="main-container" class="viewMode" ng-switch-when="srcTxt">
+                <box data-type="text"
+                     data-edition="{{getCurrentEdition()}}"
+                     id="mainText"
+                     ng-show="existCriticalText()"></box>
+                <box data-type="source"
+                     ng-if="getCurrentSourceText()"
+                     data-source={{getCurrentSourceText()}}
+                     id="srcText"></box>
+            </section>
+
+            <!-- LOADING... -->
+            <section id="main-container" class="viewMode" ng-switch-default>
+                <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+            </section>
+            <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
+        </section>
+
+        <section class="global-msg-container"
+                ng-if="getErrorMsg() !== undefined && getErrorMsg().code === '404' && !isLoading()">
+            <div class="global-msg">
+                <h1>EVT Viewer</h1>
+                <h2>{{ 'ERROR' | translate }} {{getErrorMsg().code}} - {{getErrorMsg().title | translate }}</h2><!-- TODO: Add translation -->
+                <p>{{ getErrorMsg().msg | translate }}</p>
+                <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
+            </div>
+        </section>
+    </div>
+
+    <section class="global-loading-container" ng-show="isLoading()">
+        <!-- LOADING... -->
+        <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
     </section>
+
+    <evt-dialog
+        data-id="errorMsg"
+        data-type="error"
+        data-title="ERROR"></evt-dialog>
 
     <footer>Footer</footer>
 
 
     <!-- TODO: change route system -->
-    <div ng-view=""></div>
-    
+    <!-- <div ng-view=""></div> -->
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--
     <script>
@@ -111,6 +418,10 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-xml/angular-xml.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
+    <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -119,25 +430,179 @@
     <script src="/src/evtviewer.js"></script>
 
     <!-- injector:js -->
-    <script src="/src/DataModel/DataModel.js"></script>
-    <script src="/src/Communication/Communication.js"></script>
-    <script src="/src/Selectors/Selector.js"></script>
-    <script src="/src/Parser/Parser.js"></script>
-    <script src="/src/Core/Core.js"></script>
-    <script src="/src/Interface/Interface.js"></script>
-    <script src="/src/Interface/Interface.service.js"></script>
-    <script src="/src/Core/EventDispatcher.service.js"></script>
-    <script src="/src/DataModel/BaseData.service.js"></script>
-    <script src="/src/Communication/Communication.service.js"></script>
-    <script src="/src/DataModel/PageData.service.js"></script>
-    <script src="/src/Core/EVTVIEWERDEFAULTCONF.constant.js"></script>
-    <script src="/src/Core/Utils.service.js"></script>
-    <script src="/src/Core/Config.factory.js"></script>
-    <script src="/src/Parser/Parser.service.js"></script>
-    <script src="/src/Selectors/Selector.ctrl.js"></script>
-    <script src="/src/Selectors/Selector.dir.js"></script>
-    <script src="/src/Core/BaseComponent.factory.js"></script>
-    <script src="/src/Selectors/Selector.service.js"></script>
+    <script src="/src/core/core.js"></script>
+    <script src="/src/core/GLOBALDEFAULTCONF.constant.js"></script>
+    <script src="/src/core/utils.provider.js"></script>
+    <script src="/src/core/config.provider.js"></script>
+    <script src="/src/core/log.enhance.js"></script>
+    <script src="/src/core/eventDispatcher.service.js"></script>
+    <script src="/src/core/compile.directive.js"></script>
+    <script src="/src/core/filters.js"></script>
+
+    <script src="/src/dataHandler/dataHandler.js"></script>
+    <script src="/src/dataHandler/baseData.service.js"></script>
+
+    <script src="/src/dataHandler/parsedData.service.js"></script>
+    <script src="/src/dataHandler/parser.service.js"></script>
+    <script src="/src/dataHandler/criticalApparatusParser.service.js"></script>
+    <script src="/src/dataHandler/criticalApparatus.service.js"></script>
+    <script src="/src/dataHandler/namedEntitiesParser.service.js"></script>
+    <script src="/src/dataHandler/primarySourcesParser.service.js"></script>
+    <script src="/src/dataHandler/projectInfoParser.service.js"></script>
+    <script src="/src/dataHandler/criticalParser.service.js"></script>
+    <script src="/src/dataHandler/sourcesParser.service.js"></script>
+    <script src="/src/dataHandler/sourcesApparatus.service.js"></script>
+    <script src="/src/dataHandler/analoguesParser.service.js"></script>
+    <script src="/src/dataHandler/analoguesApparatus.service.js"></script>
+    <script src="/src/dataHandler/criticalElementsParser.service.js"></script>
+    <script src="/src/dataHandler/versionApparatus.service.js"></script>
+    <script src="/src/dataHandler/bibliographyParser.service.js"></script>
+
+    <script src="/src/bibliography/bibliography.js"></script>
+    <script src="/src/bibliography/scrollif.directive.js"></script>
+    <script src="/src/bibliography/highlight.service.js"></script>
+    <script src="/src/bibliography/bibliography.provider.js"></script>
+    <script src="/src/bibliography/bibliography.controller.js"></script>
+    <script src="/src/bibliography/bibliography.directive.js"></script>
+    <script src="/src/bibliography/biblElem.controller.js"></script>
+    <script src="/src/bibliography/biblElem.directive.js"></script>
+
+    <script src="/src/interface/interface.js"></script>
+    <script src="/src/interface/interface.configuration.js"></script>
+    <script src="/src/interface/interface.controller.js"></script>
+    <script src="/src/interface/interface.service.js"></script>
+
+    <script src="/src/reference/ref.js"></script>
+    <script src="/src/reference/ref.configuration.js"></script>
+    <script src="/src/reference/ref.provider.js"></script>
+    <script src="/src/reference/ref.controller.js"></script>
+    <script src="/src/reference/ref.directive.js"></script>
+
+    <script src="/src/communication/communication.js"></script>
+    <script src="/src/communication/communication.service.js"></script>
+
+    <script src="/src/translation/translation.js"></script>
+    <script src="/src/translation/translation.service.js"></script>
+
+    <script src="/src/UItools/UItools.service.js"></script>
+    <script src="/src/UItools/imageTextLinking.service.js"></script>
+    <script src="/src/UItools/pinnedElements.service.js"></script>
+
+    <script src="/src/box/box.js"></script>
+    <script src="/src/box/box.configuration.js"></script>
+    <script src="/src/box/box.provider.js"></script>
+    <script src="/src/box/box.directive.js"></script>
+
+    <script src="/src/select/select.js"></script>
+    <script src="/src/select/select.configuration.js"></script>
+    <script src="/src/select/select.provider.js"></script>
+    <script src="/src/select/select.controller.js"></script>
+    <script src="/src/select/select.directive.js"></script>
+
+    <script src="/src/buttonSwitch/buttonSwitch.js"></script>
+    <script src="/src/buttonSwitch/buttonSwitch.provider.js"></script>
+    <script src="/src/buttonSwitch/buttonSwitch.directive.js"></script>
+
+    <script src="/src/popover/popover.js"></script>
+    <script src="/src/popover/popover.configuration.js"></script>
+    <script src="/src/popover/popover.provider.js"></script>
+    <script src="/src/popover/popover.controller.js"></script>
+    <script src="/src/popover/popover.directive.js"></script>
+
+    <script src="/src/list/list.js"></script>
+    <script src="/src/list/list.provider.js"></script>
+    <script src="/src/list/list.directive.js"></script>
+
+    <script src="/src/namedEntity/namedEntity.js"></script>
+    <script src="/src/namedEntity/namedEntity.configuration.js"></script>
+    <script src="/src/namedEntity/namedEntity.provider.js"></script>
+    <script src="/src/namedEntity/namedEntity.directive.js"></script>
+    <script src="/src/namedEntity/namedEntityRef.provider.js"></script>
+    <script src="/src/namedEntity/namedEntityRef.directive.js"></script>
+    <script src="/src/namedEntity/genericEntity.service.js"></script>
+
+    <!--<script src="/src/mobile/mobile.js"></script>
+    <script src="/src/mobile/mobile.dir.js"></script>
+    <script src="/src/mobile/mobile.provider.js"></script>
+    <script src="/src/mobile/mobileMenu.ctrl.js"></script>
+    <script src="/src/mobile/mobileMenu.dir.js"></script>
+    <script src="/src/mobile/mobileInfo.ctrl.js"></script>
+    <script src="/src/mobile/mobileInfo.dir.js"></script>
+    <script src="/src/mobile/mobileSearch.ctrl.js"></script>
+    <script src="/src/mobile/mobileSearch.dir.js"></script>
+    <script src="/src/mobile/mobileView.ctrl.js"></script>
+    <script src="/src/mobile/mobileView.dir.js"></script>-->
+
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.configuration.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.provider.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.controller.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.directive.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.js"></script>
+
+    <script src="/src/reading/reading.js"></script>
+    <script src="/src/reading/reading.configuration.js"></script>
+    <script src="/src/reading/reading.provider.js"></script>
+    <script src="/src/reading/reading.controller.js"></script>
+    <script src="/src/reading/reading.directive.js"></script>
+
+    <script src="/src/dialog/dialog.js"></script>
+    <script src="/src/dialog/dialog.configuration.js"></script>
+    <script src="/src/dialog/dialog.provider.js"></script>
+    <script src="/src/dialog/dialog.directive.js"></script>
+
+    <script src="/src/tabsContainer/tabsContainer.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.provider.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.controller.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.directive.js"></script>
+
+    <script src="/src/quote/quote.js"></script>
+    <script src="/src/quote/quote.configuration.js"></script>
+    <script src="/src/quote/quote.provider.js"></script>
+    <script src="/src/quote/quote.controller.js"></script>
+    <script src="/src/quote/quote.directive.js"></script>
+
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.configuration.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.provider.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.controller.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.directive.js"></script>
+        <!--evt-source-ref-->
+    <script src="/src/sourcesApparatusEntry/sourceRef.directive.js"></script>
+        <!--evt-source-seg-->
+    <script src="/src/sourcesApparatusEntry/sourceSeg.provider.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.controller.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.directive.js"></script>
+
+    <script src="/src/analogue/analogue.js"></script>
+    <script src="/src/analogue/analogue.configuration.js"></script>
+    <script src="/src/analogue/analogue.provider.js"></script>
+    <script src="/src/analogue/analogue.controller.js"></script>
+    <script src="/src/analogue/analogue.directive.js"></script>
+
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.configuration.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.provider.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.controller.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.directive.js"></script>
+
+    <script src="/src/apparatuses/apparatuses.js"></script>
+    <script src="/src/apparatuses/apparatuses.configuration.js"></script>
+    <script src="/src/apparatuses/apparatuses.provider.js"></script>
+    <script src="/src/apparatuses/apparatuses.controller.js"></script>
+    <script src="/src/apparatuses/apparatuses.directive.js"></script>
+
+    <script src="/src/versionReading/versionReading.js"></script>
+    <script src="/src/versionReading/versionReading.provider.js"></script>
+    <script src="/src/versionReading/versionReading.controller.js"></script>
+    <script src="/src/versionReading/versionReading.directive.js"></script>
+
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.js"></script>
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.provider.js"></script>
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.controller.js"></script>
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.directive.js"></script>
+    <script src="/src/versionApparatusEntry/versionRef.provider.js"></script>
+    <script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

@@ -1,0 +1,99 @@
+<div
+    class="sources-apparatus-entry"
+    ng-class="{ 'selected' : vm.isSelect() && vm.currentViewMode == 'readingTxt',
+                'over' : vm.currentViewMode === 'readingTxt' && vm.over,
+                'srctxt' : vm.currentViewMode === 'srcTxt'}"
+    ng-mouseover="vm.toggleOverSourcesEntries($event)"
+    ng-mouseout="vm.toggleOverSourcesEntries($event)"
+    ng-click="vm.callbackClick($event)">
+
+    <div class="sources-apparatus-entry_main-content"
+        ng-if="vm.currentViewMode !== 'srcTxt'">
+        <div class="sources-apparatus-entry_tools">
+            <button-switch
+                title=" {{ 'BUTTONS.ALIGN_QUOTES' | translate }}"
+                ng-if="vm.currentViewMode !== 'imgTxt' && vm.currentViewMode !== 'srcTxt'"
+                data-label=""
+                data-icon="v-align"
+                data-type="alignReadings"
+                ng-click="vm.alignQuotes()"></button-switch>
+        </div>
+        <sup
+            class="iconbis-evt_quote-left">
+        </sup>
+        <span class="sources-apparatus-entry_main-content_header" compile="vm.head"></span>
+
+    </div>
+
+    <div class="sources-apparatus-entry_main-content_list"
+        ng-class="{ 'srctxt' : vm.currentViewMode === 'srcTxt' }">
+        <span class="sources-apparatus-entry_main-content_list-label"
+          ng-if="vm.sources.length > 1"> {{ 'SOURCES.QUOTED_SOURCES' | translate }} </span>
+        <ul
+            ng-class="{ 'pointer' : (vm.over || vm.selected) && vm.sources.length > 1 && vm.currentViewMode !== 'srcTxt'}">
+            <li
+                ng-repeat-start="source in ::vm.sources"
+                class="source-id"
+                ng-class="{ 'selected' : vm.selected && vm.sources.length > 1 && source.id == vm._activeSource,
+                            'over'   : (vm.over || vm.selected) && vm.sources.length > 1 && source.id == vm._overSource && vm.currentViewMode !== 'srcTxt'}"
+                ng-mouseover="vm.toggleOverSource($event, source.id)"
+                ng-mouseout="vm.toggleOverSource($event, source.id)"
+                ng-click="vm.toggleSource(source.id)"
+                compile="source.abbr">
+            </li>
+            <span class="compareLabel"
+                ng-if="vm.currentViewMode === 'srcTxt' && vm.isSourceTextAvailable(source.id)"
+                ng-repeat-end>
+                <evt-source-ref
+                    data-source-id="{{::source.id}}">
+                    {{ 'SOURCES.COMPARE_TEXT' | translate }}
+                </evt-source-ref>
+            </span>
+        </ul>
+    </div>
+    <div class="sources-apparatus-entry_other-content"
+         ng-if="vm.tabs._indexes.length > 0 && vm.currentViewMode !== 'srcTxt'">
+        <div
+            class="sources-apparatus-entry_other-content_headers"
+            ng-class="{'closed' : vm._subContentOpened === ''}">
+            <span ng-repeat="tab in ::vm.tabs._indexes"
+                  ng-click="vm.toggleSubContent(tab)"
+                  ng-class="{'active' : vm._subContentOpened == tab }">
+                {{ vm.tabs[tab].label | translate}}
+            </span>
+        </div>
+        <div class="sources-apparatus-entry_other-content_panels"
+             ng-class="{'closed': vm._subContentOpened === ''}">
+            <div class="sources-apparatus-entry_other-content_panel"
+                 ng-repeat="tab in ::vm.tabs._indexes"
+                 ng-class="{'active' : vm._subContentOpened == tab}"
+                 ng-switch="::tab">
+                 <div ng-switch-when="text">
+                      <span
+                        ng-if="::vm.srcList[vm._activeSource].text != ''"
+                        compile="vm.srcList[vm._activeSource].text"></span>
+                      <span
+                        ng-if="::vm.srcList[vm._activeSource].url != ''"
+                        compile="vm.srcList[vm._activeSource].url"></span>
+                 </div>
+                 <div ng-switch-when="biblRef"
+                      ng-if="::vm.srcList[vm._activeSource].bibl !== ''"
+                      compile="vm.srcList[vm._activeSource].bibl">
+                </div>
+                <div ng-switch-when="moreInfo">
+
+                </div>
+                <div ng-switch-when="xmlSource">
+                    {{ 'SOURCES.XML_SOURCE_QUOTE' | translate }}
+                    <pre>{{ ::vm.xml | prettyXml}}</pre>
+                    {{ 'SOURCES.XML_SOURCE_FOR' | translate }} <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
+                     <pre>{{ ::vm.srcList[vm._activeSource]._xmlSource | prettyXml }}</pre>
+                </div>
+                <div
+                    ng-switch-default
+                    ng-if="::vm.srcList[vm._activeSource].bibl !== ''"
+                    compile="vm.srcList[vm._activeSource].bibl"></div>
+            </div>
+        </div>
+    </div>
+</div>

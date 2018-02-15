@@ -1,0 +1,56 @@
+<header role="banner" >
+    <nav 
+        class="nav" 
+        role="navigation">
+        <ul>
+            <li  
+                class="navItem"
+                ng-class="{'active': isActiveButton(item.template)}"
+                ng-click="showSection(item.template); buttonSection(item)" 
+                ng-repeat="item in menu">
+                
+                <span>
+                    <i class="{{item.icon}}"></i>
+                </span>
+
+                <span class="title">
+                    <h1>{{item.description}}</h1>
+                </span>   
+                
+            </li>
+
+            <li 
+                class="navItem" 
+                ng-class="{'active': showItems}" 
+                ng-click="toggleView()">
+                
+                <span>
+                    <i class="fa fa-eye"></i>
+                </span>
+                
+            </li>
+        </ul>
+        <ul 
+            class="dropdown" 
+            ng-show="showItems">
+    
+            <li 
+                class="{{item.template}}"
+                ng-class="{'active': isActiveButton(item.template)}"
+                ng-click="showView(item.template); buttonView(item)"
+                ng-repeat="item in view">
+
+                <span>
+                    <i class="{{item.icon1}}"></i>
+                </span>
+
+                <span>
+                    <i class="{{item.icon2}}"></i>
+                </span>
+                
+            </li>
+        </ul>
+    </nav>
+</header>
+
+

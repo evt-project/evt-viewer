@@ -1,35 +1,66 @@
-.evtviewer-selector{
-	position: relative;
-    left: 0px;
-	font-size: 1em;
-	display: inline-block;
-	background:$base__color--light;
-	color: $base__color--dark;
-	text-align: left;
+/* *************************** */
+/* SELECTOR  				   */
+/* *************************** */
+
+$selector-background-color: $base-color-light;
+$selector-color: $base-color-dark;
+$selector-shadow-color: rgba(0, 0, 0, 0.4);
+
+$selector-open-option-border-color: #b0bec5;
+$selector-open-option-background: #b0bec5;
+$selector-open-option-width: 24px;
+
+$selector-option-background-color: $selector-background-color;
+$selector-option-color: $selector-color;
+$selector-option-background-color-hover: $base-color-middle;
+
+
+
+.selector{
 	height: 28px;
-	overflow: visible;
 	min-width: 80px;
-	@include set(box-shadow, 0px 2px 4px rgba(0, 0, 0, 0.4));
+	
+	margin: 0 4px;
+	position: relative;
+    left: 0;
+
+	display: inline-block;
+	
+	background:$selector-background-color;
+	color: $selector-color;
+	font-size: 1em;
+	text-align: left;
+	
+	overflow: visible;
+	
+	@include set(box-shadow, 0px 2px 4px $selector-shadow-color);
 	@include set(border-radius, 2px);
 
 	.label_selected{
-		margin: 0px 4px;
+		position: relative;	
 	    top: 3.5px;
-	   	position: relative;	
+	    margin: 0 4px;
+	    padding-right: $selector-open-option-width;
 	}
 
 	.open_options{
-		width: 24px;
-		text-align: center;
-		position: absolute;
-		right: 0px;
-		top: 0px;
 		height: 28px;
-		border-left: 1px solid #d9d7d7;
-		cursor: pointer;
-		background:#ccc4ba;
+		width: $selector-open-option-width;
+		
+		position: absolute;
+		right: 0;
+		top: 0;
+		
 		opacity: 0.5;
+
+		border-left: 1px solid $selector-open-option-border-color;
 		border-radius: 0 2px 2px 0;
+
+		background:$selector-open-option-background;
+		text-align: center;
+
+		cursor: pointer;
+		
 
 		&:hover{
 			opacity: 1;
@@ -40,45 +71,92 @@
 		}
 	}
 
-	.option_container{
-		position: absolute;
-		overflow-y:auto;
-		background:$base__color--light;
-		width: 100%;
+	.option_container {
+		display: none;
 		height:auto;
-		left: 0px;
-		top: 5px;
 		max-height: 170px;
-		z-index: 400;
+		min-width: 100%;
+		width: auto;
+
+		position: absolute;
+		left: 0;
 		top:30px;
-		@include set(box-shadow, 0px 2px 5px rgba(0, 0, 0, 0.7));
 
-		.option{
-			background: $base__color--light;
-			color: $base__color--dark;
+		overflow-y:auto;
+		background:$selector-background-color;
+
+		z-index: 400;
+		
+		@include set(box-shadow, 0 2px 5px $selector-shadow-color);
+
+		&.openUp {
+			display: block;
+			visibility: hidden;
+			top: 0px;
 			position: relative;
-			padding: 5px;
-			width: 100%;
-			color: $base__color--dark;
-			left: 0px;
-			border-bottom: solid 1px $base__color--dark;
-			cursor: pointer;
+			float: left;
+			max-height:300px;
+			overflow: auto;
+			@include set(box-shadow, 0px 0px 5px $selector-shadow-color);
+		}
+		
+		&.expanded {
+			display: block;
+			&.openUp {
+				display: inline;
+				visibility: visible;
+			}
+		}
+		.option{
 			height:100%;
+			width: 100%;
+			padding: 5px;
+			
+			position: relative;
+			left: 0;
+			
+			border-bottom: solid 1px $base-color-dark;
 
-			&:hover{
-				background: rgb(126,108,95);
-				color:#fff;
+			background: $selector-option-background-color;
+			color: $selector-option-color;
+			
+			display:flex;
+
+			&:hover:not(.groupTitle) {
+				cursor: pointer;
+				background: $selector-option-background-color-hover;
+				color: $selector-option-background-color;
+			}
+
+			&-icon-label {
+				font-size: 0.6em;
+			    margin: auto 0;
+				position: relative;
+				text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+				margin-right: 6px;
+			}
+
+			&.groupTitle {
+				cursor: default;
+				font-size: 90%;
+				font-variant: small-caps;
+				font-weight: bold;
+				border-bottom: none;
+				border-top: 3px double #000;
+			}
+			&.doubleBorderTop {
+				border-top: 3px double #000;	
 			}
 		}
 
 		.option.selected{
-			background: $base__color--dark;
-			color: $base__color--light;
+			background: $selector-option-color;
+			color: $selector-option-background-color;
 			cursor: default;
 
 			&:hover{
-				background: $base__color--dark;
-				color: $base__color--light;
+				background: $selector-option-color;
+				color: $selector-option-background-color;
 			}
 		}
 	}

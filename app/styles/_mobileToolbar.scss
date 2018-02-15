@@ -1,0 +1,16 @@
+/* TOOLBAR ====================================== */ 
+
+.toolbar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    display: block;
+    z-index: 20;  
+    bottom: 0;    
+}
+
+@import "mobileSettings.scss";
+@import "mobileThumb.scss";
+
+
+/* END TOOLBAR ====================================== */
