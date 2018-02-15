@@ -5,6 +5,9 @@ angular.module('evtviewer.search')
     
     vm.searchInput = '';
     vm.searchResults = '';
+    vm.index = evtSearchIndex.getIndex();
+    vm.resList = [];
+    vm.visibleRes = [];
     
     vm.getSearchBoxPosition = function() {
         var currentPos = config.searchBoxPosition,
@@ -28,26 +31,43 @@ angular.module('evtviewer.search')
        return evtInterface.getState('currentEdition');
     };
     
-    vm.getIndex = function() {
-       return evtSearchIndex.getIndex();
-    };
-    
     vm.getSearchResults = function() {
        return vm.searchResults;
     };
     
+    vm.loadMoreElements = function() {
+       var i = 0;
+       
+       while(i < 10 && i < vm.resList.length) {
+          var last = vm.visibleRes.length -1,
+             newEl = vm.resList[last+1];
+          if (newEl) {
+             vm.visibleRes.push(newEl);
+             vm.searchResults += newEl;
+          }
+          i++;
+       }
+    }
+    
     vm.doSearchCallback = function() {
-       var result,
+       vm.searchResults = '';
+       vm.visibleRes = [];
+       
+       var result = '',
           inputValue = vm.searchInput;
    
        if(inputValue !== '') {
-          var index = vm.getIndex(),
-             res = evtSearch.query(index, inputValue, index.ref),
-             currentEdition = vm.getCurrentEdition();
+          var currentEdition = vm.getCurrentEdition(),
+             res = evtSearch.query(vm.index, inputValue, vm.index.ref),
+             i = 0;
       
-          console.log(res);
-          result = evtSearch.handleSearchResults(inputValue, res, currentEdition);
-      
+          vm.resList = evtSearch.handleSearchResults(inputValue, res, currentEdition);
+          
+          while(i < 10 && i < vm.resList.length) {
+             vm.visibleRes.push(vm.resList[i]);
+             result += vm.resList[i];
+             i++;
+          }
        }
        else {
           result = 'Enter your query into the search box above';

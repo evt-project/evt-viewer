@@ -29,6 +29,8 @@
    </form>
 
    <!-- search results -->
-   <div class="search-results" ng-class="{'open' : vm.getState('searchResults')}" compile="vm.getSearchResults()"></div>
+   <div class="search-results" ng-class="{'open' : vm.getState('searchResults')}" >
+      <div infinite-scroll="vm.loadMoreElements()" infinite-scroll-parent="true" compile="vm.getSearchResults()"></div>
+   </div>
 
 </div>
