@@ -217,6 +217,7 @@ angular.module('evtviewer.dataHandler')
             lines = [],
             lineNodes = [],
             currentPage,
+            currentDoc,
             docTitle,
             mainTitle,
             title,
@@ -229,6 +230,13 @@ angular.module('evtviewer.dataHandler')
          
          var node = nodes.iterateNext();
          docTitle = getCurrentDocTitle(xmlDocDom, docs, node, mainTitle, ns, nsResolver);
+         
+         for(var i in docs) {
+            if(docs[i].title === docTitle) {
+               currentDoc = docs[i];
+            }
+         }
+         
          if (type === 'prose') {
             
             proseDiplomaticNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getProseDiplomaticNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
@@ -304,8 +312,8 @@ angular.module('evtviewer.dataHandler')
                   };
                }
                
-               line.lineId = docs[0].id + '-' + line.page + '-' + line.line;
-               lines[docs[0].id + '-' + line.page + '-' + line.line] = line;
+               line.lineId = currentDoc.id + '-' + line.page + '-' + line.line;
+               lines[currentDoc.id + '-' + line.page + '-' + line.line] = line;
                
                lineNodes = [];
             }
