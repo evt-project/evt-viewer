@@ -75,5 +75,10 @@ angular.module('evtviewer.search')
        vm.searchResults = result;
        evtSearchBox.openBox('searchResults');
        evtSearchBox.showSearchResultsHideBtn();
+       
+    };
+   
+    vm.highlightSearchResults = function(inputValue) {
+      return evtSearch.highlightSearchResults(inputValue);
     };
 }]);

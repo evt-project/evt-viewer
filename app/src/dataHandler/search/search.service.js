@@ -1,4 +1,5 @@
 var lunr = require('lunr');
+var Mark = require('mark.js');
 
 /**
  * @ngdoc service
@@ -79,10 +80,15 @@ angular.module('evtviewer.dataHandler')
       
       searchInfo = '<div class="search-info"><p>Search for <strong>' + inputValue + '</strong></p><p>We have found ' + countResults +
          ' results in the selected edition.</p></div>';
-      
+         
       resList.unshift(searchInfo);
       
       return resList;
    };
    
+   Search.prototype.highlightSearchResults = function(inputValue) {
+      var instance = new Mark(document.querySelector('#mainContentToTranform'));
+      instance.unmark(inputValue);
+      instance.mark(inputValue);
+   };
 }]);
