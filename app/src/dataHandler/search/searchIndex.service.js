@@ -53,6 +53,18 @@ angular.module('evtviewer.dataHandler')
       builder.metadataWhitelist.push('page');
    }
    
+   function addPageIdMetadata(builder, parsedDocs) {
+      var pipelineFunction = function(token) {
+         var docIndex = builder.documentCount - 1;
+         token.metadata['pageId'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].pageId;
+         return token;
+      };
+      
+      lunr.Pipeline.registerFunction(pipelineFunction, 'pageId');
+      builder.pipeline.add(pipelineFunction);
+      builder.metadataWhitelist.push('pageId');
+   }
+   
    function addDocTitleMetadata(builder, parsedDocs) {
       var pipelineFunction = function(token) {
          var docIndex = builder.documentCount - 1;
@@ -78,9 +90,10 @@ angular.module('evtviewer.dataHandler')
          this.field('interpretativeText');
          this.use(addDocTitleMetadata, parsedDocs);
          this.use(addPageMetadata, parsedDocs);
+         this.use(addPageIdMetadata, parsedDocs);
          this.use(addLineMetadata, parsedDocs);
          this.use(addLineIdMetadata, parsedDocs);
-         this.metadataWhitelist = ['docTitle', 'page', 'line', 'lineId', 'position'];
+         this.metadataWhitelist = ['docTitle', 'page', 'line', 'lineId', 'pageId'];
          
          for(var document in parsedDocs) {
             var doc = map(parsedDocs[document]);

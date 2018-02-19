@@ -217,6 +217,7 @@ angular.module('evtviewer.dataHandler')
             lines = [],
             lineNodes = [],
             currentPage,
+            currentPageId,
             currentDoc,
             docTitle,
             mainTitle,
@@ -256,6 +257,7 @@ angular.module('evtviewer.dataHandler')
          while (node !== null) {
             if (node.nodeName === 'pb') {
                currentPage = node.getAttribute('n');
+               currentPageId = node.getAttribute('xml:id');
             }
             else if (node.nodeName === 'head') {
                if (node.getAttribute('type') === 'sub') {
@@ -274,6 +276,7 @@ angular.module('evtviewer.dataHandler')
             else {
                if (currentPage !== undefined) {
                   line.page = currentPage;
+                  line.pageId = currentPageId;
                }
                if (title !== undefined) {
                   line.title = title;
