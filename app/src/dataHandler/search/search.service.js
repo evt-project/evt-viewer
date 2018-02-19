@@ -93,6 +93,8 @@ angular.module('evtviewer.dataHandler')
    Search.prototype.highlightSearchResults = function(inputValue) {
       var instance = new Mark(document.querySelector('#mainContentToTranform'));
       instance.unmark(inputValue);
-      instance.mark(inputValue);
+      instance.mark(inputValue, {
+         'wildcards': 'enabled'
+      });
    };
 }]);
