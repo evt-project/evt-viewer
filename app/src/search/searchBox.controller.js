@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
 
-.controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchIndex', 'evtSearch', function ($scope, config, evtInterface, evtSearchBox, evtSearchIndex, evtSearch) {
+.controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchIndex', 'evtSearch','$anchorScroll', '$location', 'evtSelect', 'parsedData', function ($scope, config, evtInterface, evtSearchBox, evtSearchIndex, evtSearch, $anchorScroll, $location, evtSelect, parsedData) {
     var vm = this;
     
     vm.searchInput = '';
@@ -75,10 +75,38 @@ angular.module('evtviewer.search')
        vm.searchResults = result;
        evtSearchBox.openBox('searchResults');
        evtSearchBox.showSearchResultsHideBtn();
-       
     };
    
     vm.highlightSearchResults = function(inputValue) {
-      return evtSearch.highlightSearchResults(inputValue);
+       return evtSearch.highlightSearchResults(inputValue);
+    };
+    
+    vm.scrollTo = function(id) {
+       $location.hash(id);
+       $anchorScroll();
+   };
+    
+    vm.goToAnchorPage = function() {
+       var anchorPageId,
+          currentDocument;
+   
+       anchorPageId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultPage')[0].getAttribute('id');
+       evtInterface.updateState('currentPage', anchorPageId);
+   
+       currentDocument = evtInterface.getState('currentDoc');
+       evtInterface.updateState('currentDoc', currentDocument);
+   
+       evtInterface.updateUrl();
+    };
+    
+    vm.goToAnchor = function() {
+       var eventElement;
+   
+       evtSearchBox.closeBox('searchResults');
+       
+       eventElement = window.event.target;
+       $(eventElement).addClass('selected');
+       
+       vm.goToAnchorPage();
     };
 }]);

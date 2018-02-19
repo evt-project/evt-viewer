@@ -35,7 +35,7 @@ angular.module('evtviewer.dataHandler')
          content = '',
          countResults = 0,
          parsedDocs = evtSearchParser.parsedDocs,
-         lineId,
+         resultId,
          text,
          searchInfo;
       
@@ -47,12 +47,14 @@ angular.module('evtviewer.dataHandler')
                var diplomaticText = metadata[prop].diplomaticText;
                if(diplomaticText !== undefined) {
                   for (var j = 0; j < diplomaticText.page.length; j++) {
-                     lineId = diplomaticText.lineId[j];
-                     text = parsedDocs[lineId].text.diplomatic;
+                     resultId = diplomaticText.lineId[j];
+                     text = parsedDocs[resultId].text.diplomatic;
                      text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
                      
-                     content = '<div class="search-result"><p><span class="original-text">' + text + '</span><span>Found in ' + diplomaticText.docTitle[j] +
-                           ' page ' + diplomaticText.page[j] + ' (line ' + diplomaticText.line[j] + ')</span></p></div>';
+                     content = '<div class="search-result" id="' + resultId + '"><p><span class="original-text">' + text + '</span>' +
+                        '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + diplomaticText.docTitle[j] +
+                           ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] +
+                        '</span> (line ' + diplomaticText.line[j] + ')</a></p></div>';
                      results += content;
                      resList.push(content);
                      countResults++;
@@ -63,12 +65,14 @@ angular.module('evtviewer.dataHandler')
                var interpretativeText = metadata[prop].interpretativeText;
                if(interpretativeText !== undefined) {
                   for (var z = 0; z < interpretativeText.page.length; z++) {
-                     lineId = interpretativeText.lineId[z];
-                     text = parsedDocs[lineId].text.interpretative;
+                     resultId = interpretativeText.lineId[z];
+                     text = parsedDocs[resultId].text.interpretative;
                      text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
                      
-                     content = '<div class="search-result"><p><span class="original-text">' + text + '</span><span>Found in ' + interpretativeText.docTitle[z] +
-                           ' page ' + interpretativeText.page[z] + ' (line ' + interpretativeText.line[z] + ')</span></p></div>';
+                     content = '<div class="search-result" id="\' + resultId + \'"><p><span class="original-text">' + text + '</span>' +
+                        '<span>Found in ' + interpretativeText.docTitle[z] +
+                           ' page <span id="' + interpretativeText.page[z] + '" class="resultPage">' + interpretativeText.page[z] +
+                        '</span> (line ' + interpretativeText.line[z] + ')</span></p></div>';
                      results += content;
                      resList.push(content);
                      countResults++;

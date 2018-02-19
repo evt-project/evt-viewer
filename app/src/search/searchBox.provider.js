@@ -9,7 +9,7 @@ angular.module('evtviewer.search')
    };
 
    this.$get = function($log, config) {
-      var currentPosition = config.searchBoxPosition,
+      var currentPosition,
          searchBox = {},
          collection = {};
       
@@ -19,10 +19,10 @@ angular.module('evtviewer.search')
       // Search Box builder
       //
       searchBox.build = function(scope, vm) {
-         var currentPosition = config.searchBoxPosition;
+         currentPosition = config.searchBoxPosition;
+         
          var status = {
-            searchBox   : false,
-            searchResults : false
+            searchBox   : false
          };
          var searchBoxBtn = [
             {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
@@ -59,6 +59,10 @@ angular.module('evtviewer.search')
          return collection.status[key];
       };
 
+      searchBox.getInputvalue = function() {
+        return collection.searchInput;
+      };
+      
       searchBox.toggleBox = function(key) {
          collection.status[key] = collection.updateState(key);
          return key;
