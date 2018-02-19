@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
 
-.controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchIndex', 'evtSearch','$anchorScroll', '$location', 'evtSelect', 'parsedData', function ($scope, config, evtInterface, evtSearchBox, evtSearchIndex, evtSearch, $anchorScroll, $location, evtSelect, parsedData) {
+.controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchIndex', 'evtSearch', 'evtSearchResults', '$anchorScroll', function ($scope, config, evtInterface, evtSearchBox, evtSearchIndex, evtSearch, evtSearchResults, $anchorScroll, $location) {
     var vm = this;
     
     vm.searchInput = '';
@@ -61,7 +61,7 @@ angular.module('evtviewer.search')
              res = evtSearch.query(vm.index, inputValue, vm.index.ref),
              i = 0;
       
-          vm.resList = evtSearch.handleSearchResults(inputValue, res, currentEdition);
+          vm.resList = evtSearchResults.renderSearchResults(inputValue, res, currentEdition);
           
           while(i < 10 && i < vm.resList.length) {
              vm.visibleRes.push(vm.resList[i]);
@@ -78,7 +78,7 @@ angular.module('evtviewer.search')
     };
    
     vm.highlightSearchResults = function(inputValue) {
-       return evtSearch.highlightSearchResults(inputValue);
+       return evtSearchResults.highlightSearchResults(inputValue);
     };
     
     vm.scrollTo = function(id) {
