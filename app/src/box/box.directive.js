@@ -67,7 +67,7 @@
 **/
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearch, evtSearchBox) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox) {
 
     return {
         restrict: 'E',
@@ -419,7 +419,7 @@ angular.module('evtviewer.box')
                     $timeout(function() {
                        var searchInput = evtSearchBox.getInputvalue();
                        if(searchInput !== '') {
-                          evtSearch.highlightSearchResults(searchInput);
+                          evtSearchResults.highlightSearchResults(searchInput);
                        }
                     });
                 }, true);

@@ -4,7 +4,8 @@ module.exports = {
   devtool: 'source-map',
   entry: [
      './app/src/dataHandler/search/searchIndex.service.js',
-     './app/src/dataHandler/search/search.service.js'
+     './app/src/dataHandler/search/search.service.js',
+     './app/src/dataHandler/search/searchResults.service.js'
   ],
   output: {
     path: './app/dist',

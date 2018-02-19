@@ -116,8 +116,8 @@ module.exports = function (grunt) {
       },*/
       webpack: {
         files: ['<%= yeoman.app %>/src/dataHandler/search/searchIndex.service.js',
-                '<%= yeoman.app %>/src/dataHandler/search/search.service.js'],
-        tasks: ['webpack']
+                '<%= yeoman.app %>/src/dataHandler/search/search.service.js',
+                '<%= yeoman.app %>/src/dataHandler/search/searchResults.service.js'],
       },
       // gruntfile: {
       //   files: ['Gruntfile.js']
