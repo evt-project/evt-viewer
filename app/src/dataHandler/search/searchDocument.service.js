@@ -103,20 +103,26 @@ angular.module('evtviewer.dataHandler')
          
       this.type = getDocType(xmlDocDomBody);
       
-      if(hasLineBreakTag === true) {
-         lines = this.Text.parseLines(xmlDocDom, docs, ns, nsResolver);
+      if(currentEdition === 'diplomatic') {
+         if (hasLineBreakTag === true) {
+            lines = this.Text.parseLines(xmlDocDom, docs, ns, nsResolver);
+         }
+         else {
+            switch (this.type) {
+               case 'prose':
+                  console.log('Parse Paragraph!');
+                  //parse Paragraph
+                  break;
+               case 'verse':
+                  console.log('Parse verse!');
+                  //parse <l>
+                  break;
+            }
+         }
       }
       else {
-         switch (this.type) {
-            case 'prose':
-               console.log('Parse Paragraph!');
-               //parse Paragraph
-                 break;
-            case 'verse':
-               console.log('Parse verse!');
-               //parse <l>
-                 break;
-         }
+         console.log('Parse critical edition!');
+         //parse critical edition
       }
       
       console.log('# LINES #', lines);
