@@ -83,8 +83,8 @@ angular.module('evtviewer.dataHandler')
    //TODO add documentation
    function getDocType(xmlDocDomBody) {
       var type = '',
-         poem = xmlDocDomBody[0].getElementsByTagName('l').length !== 0,
-         prose = xmlDocDomBody[0].getElementsByTagName('l').length === 0;
+         poem = xmlDocDomBody.getElementsByTagName('l').length !== 0,
+         prose = xmlDocDomBody.getElementsByTagName('l').length === 0;
       
       if(poem) {
          type = 'verse';
@@ -98,31 +98,36 @@ angular.module('evtviewer.dataHandler')
    
    Doc.prototype.parseText = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
       var xmlDocDomBody = xmlDocDom.getElementsByTagName('body'),
-         hasLineBreakTag = $(xmlDocDomBody).find('lb').length !== 0,
-         lines;
-         
-      this.type = getDocType(xmlDocDomBody);
-      
-      if(currentEdition === 'diplomatic') {
-         if (hasLineBreakTag === true) {
-            lines = this.Text.parseLines(xmlDocDom, docs, ns, nsResolver);
-         }
-         else {
-            switch (this.type) {
-               case 'prose':
-                  console.log('Parse Paragraph!');
-                  //parse Paragraph
-                  break;
-               case 'verse':
-                  console.log('Parse verse!');
-                  //parse <l>
-                  break;
+         hasLineBreakTag,
+         docLines = [],
+         lines= [];
+   
+      for(var i = 0; i < xmlDocDomBody.length; i++) {
+         hasLineBreakTag = $(xmlDocDomBody[i]).find('lb').length !== 0;
+         this.type = getDocType(xmlDocDomBody[i]);
+   
+         if (currentEdition === 'diplomatic') {
+            if (hasLineBreakTag === true) {
+               docLines = this.Text.parseLines(xmlDocDom, xmlDocDomBody[i], docs, ns, nsResolver);
+               lines = Object.assign(lines, docLines);
+            }
+            else {
+               switch (this.type) {
+                  case 'prose':
+                     console.log('Parse Paragraph!');
+                     //parse Paragraph
+                     break;
+                  case 'verse':
+                     console.log('Parse verse!');
+                     //parse line <l>
+                     break;
+               }
             }
          }
-      }
-      else {
-         console.log('Parse critical edition!');
-         //parse critical edition
+         else {
+            console.log('Parse critical edition!');
+            //parse critical edition
+         }
       }
       
       console.log('# LINES #', lines);

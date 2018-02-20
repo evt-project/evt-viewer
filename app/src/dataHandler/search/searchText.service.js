@@ -90,7 +90,7 @@ angular.module('evtviewer.dataHandler')
    
          for(var j = 0; j < nodes.length;) {
             prevLb = ns ? xmlDocDom.evaluate(XPATH.ns.getPrevLb, nodes[j], nsResolver, XPathResult.ANY_TYPE, null)
-               : xmlDocDom.evaluate(XPATH.getPrevLb, nodes[j], null, XPathResult.ANY_TYPE, null);
+                        : xmlDocDom.evaluate(XPATH.getPrevLb, nodes[j], null, XPathResult.ANY_TYPE, null);
             hasPrevLb = prevLb.numberValue !== 0;
       
             if (hasPrevLb === true) {
@@ -99,7 +99,6 @@ angular.module('evtviewer.dataHandler')
                   nodes.splice(0, 1);
                }
                else {
-            
                   return lineNodes;
                }
             }
@@ -341,30 +340,15 @@ angular.module('evtviewer.dataHandler')
    
       function getFilteredBodyNodes(xmlDocDom, body, ns, nsResolver) {
          var bodyFilteredNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getLineNodes, body, nsResolver, XPathResult.ANY_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getLineNodes, body, null, XPathResult.ANY_TYPE, null);
-         
+                                    : xmlDocDom.evaluate(XPATH.getLineNodes, body, null, XPathResult.ANY_TYPE, null);
          return bodyFilteredNodes;
-      }
-      
-      function getMoreDocumentsLines(xmlDocDom, docs, body, type, ns, nsResolver) {
-         var bodyFilteredNodes,
-            lineNodesInfo,
-            lines = {};
-         
-         for (var i = 0; i < body.length; i++) {
-            bodyFilteredNodes = getFilteredBodyNodes(xmlDocDom, type, body[i], ns, nsResolver);
-            lineNodesInfo = getLineInfo(xmlDocDom, type, bodyFilteredNodes, docs, ns, nsResolver);
-            lines = Object.assign(lines, lineNodesInfo);
-         }
-         
-         return lines;
       }
       
       function getDocumentLines(xmlDocDom, docs, body, ns, nsResolver) {
          var nodes,
             lines;
          
-         nodes = getFilteredBodyNodes(xmlDocDom, body[0], ns, nsResolver);
+         nodes = getFilteredBodyNodes(xmlDocDom, body, ns, nsResolver);
          lines = getLineInfo(xmlDocDom, nodes, docs, ns, nsResolver);
          
          return lines;
@@ -414,19 +398,11 @@ angular.module('evtviewer.dataHandler')
        * </pre>
        * @author GC
        */
-      function getLines(xmlDocDom, docs, ns, nsResolver) {
-         var lines = [],
-            body;
+      function getLines(xmlDocDom, xmlDocDomBody, docs, ns, nsResolver) {
+         var lines = [];
          
          removeNotes(xmlDocDom);
-         body = xmlDocDom.getElementsByTagName('body');
-         
-         if(body.length > 1) {
-            lines = getMoreDocumentsLines(xmlDocDom, docs, body, ns, nsResolver);
-         }
-         else {
-            lines = getDocumentLines(xmlDocDom, docs, body, ns, nsResolver);
-         }
+         lines = getDocumentLines(xmlDocDom, docs, xmlDocDomBody, ns, nsResolver);
          
          return lines;
       }
@@ -451,8 +427,8 @@ angular.module('evtviewer.dataHandler')
        *
        * @author GC
        */
-      Text.prototype.parseLines = function (xmlDocDom, docs, ns, nsResolver) {
-         var lines = getLines(xmlDocDom, docs, ns, nsResolver);
+      Text.prototype.parseLines = function (xmlDocDom, xmlDocDomBody, docs, ns, nsResolver) {
+         var lines = getLines(xmlDocDom, xmlDocDomBody, docs, ns, nsResolver);
          return lines;
       };
 
