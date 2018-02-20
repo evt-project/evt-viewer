@@ -26,10 +26,21 @@ angular.module('evtviewer.dataHandler')
                      text = parsedDocs[resultId].text.diplomatic;
                      text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
                      
-                     content = '<div class="search-result" id="' + resultId + '"><p><span class="original-text">' + text + '</span>' +
-                        '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + diplomaticText.docTitle[j] +
-                        ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] +
-                        '</span> (line ' + diplomaticText.line[j] + ')</a></p></div>';
+                     if(diplomaticText.paragraph[j] !== undefined) {
+                        content = '<div class="search-result" id="' + resultId + '">' +
+                           '<p><span class="original-text">' + text + '</span>' +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + diplomaticText.docTitle[j] +
+                           ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
+                           ' paragraph ' + diplomaticText.paragraph[j] + ' (line ' + diplomaticText.line[j] + ')</a></p></div>';
+                     }
+                     else {
+                        content = '<div class="search-result" id="' + resultId + '">' +
+                           '<p><span class="original-text">' + text + '</span>' +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + diplomaticText.docTitle[j] +
+                           ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
+                           ' (line ' + diplomaticText.line[j] + ')</a></p></div>';
+                     }
+                     
                      results += content;
                      resList.push(content);
                      countResults++;
@@ -43,11 +54,22 @@ angular.module('evtviewer.dataHandler')
                      resultId = interpretativeText.lineId[z];
                      text = parsedDocs[resultId].text.interpretative;
                      text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
+   
+                     if(interpretativeText.paragraph[z] !== undefined) {
+                        content = '<div class="search-result" id="' + resultId + '">' +
+                           '<p><span class="original-text">' + text + '</span>' +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + interpretativeText.docTitle[z] +
+                           ' page <span id="'+interpretativeText.pageId[z]+'" class="resultPage">' + interpretativeText.page[z] + '</span> ' +
+                           ' paragraph ' + interpretativeText.paragraph[z] + ' (line ' + interpretativeText.line[z] + ')</a></p></div>';
+                     }
+                     else {
+                        content = '<div class="search-result" id="' + resultId + '">' +
+                           '<p><span class="original-text">' + text + '</span>' +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + interpretativeText.docTitle[z] +
+                           ' page <span id="'+interpretativeText.pageId[z]+'" class="resultPage">' + interpretativeText.page[z] + '</span> ' +
+                           ' (line ' + interpretativeText.line[z] + ')</a></p></div>';
+                     }
                      
-                     content = '<div class="search-result" id="\' + resultId + \'"><p><span class="original-text">' + text + '</span>' +
-                        '<span>Found in ' + interpretativeText.docTitle[z] +
-                        ' page <span id="' + interpretativeText.page[z] + '" class="resultPage">' + interpretativeText.page[z] +
-                        '</span> (line ' + interpretativeText.line[z] + ')</span></p></div>';
                      results += content;
                      resList.push(content);
                      countResults++;
