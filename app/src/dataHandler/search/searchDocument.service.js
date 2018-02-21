@@ -18,6 +18,8 @@ angular.module('evtviewer.dataHandler')
    this.Text = evtSearchText;
    this.type = '';
    this.edition = '';
+   
+   var prevDocsLinesNumber = 0;
 
    /**
     * @ngdoc method
@@ -108,7 +110,8 @@ angular.module('evtviewer.dataHandler')
    
          if (currentEdition === 'diplomatic') {
             if (hasLineBreakTag === true) {
-               docLines = this.Text.parseLines(xmlDocDom, xmlDocDomBody[i], docs, ns, nsResolver);
+               docLines = this.Text.parseLines(xmlDocDom, xmlDocDomBody[i], prevDocsLinesNumber, docs, ns, nsResolver);
+               prevDocsLinesNumber = this.Text.getAllDocsLinesNumber();
                lines = Object.assign(lines, docLines);
             }
             else {

@@ -29,14 +29,16 @@ angular.module('evtviewer.dataHandler')
                      if(diplomaticText.paragraph[j] !== undefined) {
                         content = '<div class="search-result" id="' + resultId + '">' +
                            '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + diplomaticText.docTitle[j] +
-                           ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                           '<span id="' + diplomaticText.docId[j] + '" class="resultDoc">' + diplomaticText.docTitle[j] + '</span>' +
+                           ' page <span id="' + diplomaticText.pageId[j] + '" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
                            ' paragraph ' + diplomaticText.paragraph[j] + ' (line ' + diplomaticText.line[j] + ')</a></p></div>';
                      }
                      else {
                         content = '<div class="search-result" id="' + resultId + '">' +
                            '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + diplomaticText.docTitle[j] +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                           '<span id="' + diplomaticText.docId[j] + '" class="resultDoc">' +diplomaticText.docTitle[j] + '</span>' +
                            ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
                            ' (line ' + diplomaticText.line[j] + ')</a></p></div>';
                      }
@@ -58,14 +60,16 @@ angular.module('evtviewer.dataHandler')
                      if(interpretativeText.paragraph[z] !== undefined) {
                         content = '<div class="search-result" id="' + resultId + '">' +
                            '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + interpretativeText.docTitle[z] +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                           '<span id="' + interpretativeText.docId[z] + '" class="resultDoc">' + interpretativeText.docTitle[z] + '</span>' +
                            ' page <span id="'+interpretativeText.pageId[z]+'" class="resultPage">' + interpretativeText.page[z] + '</span> ' +
                            ' paragraph ' + interpretativeText.paragraph[z] + ' (line ' + interpretativeText.line[z] + ')</a></p></div>';
                      }
                      else {
                         content = '<div class="search-result" id="' + resultId + '">' +
                            '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' + interpretativeText.docTitle[z] +
+                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                           '<span id="' + interpretativeText.docId[z] + '" class="resultDoc">' + interpretativeText.docTitle[z] + '</span>' +
                            ' page <span id="'+interpretativeText.pageId[z]+'" class="resultPage">' + interpretativeText.page[z] + '</span> ' +
                            ' (line ' + interpretativeText.line[z] + ')</a></p></div>';
                      }

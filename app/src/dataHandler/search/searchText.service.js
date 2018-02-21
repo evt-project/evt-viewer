@@ -1,6 +1,7 @@
 //TODO add documentation
 angular.module('evtviewer.dataHandler')
    .service('evtSearchText', ['evtGlyph', 'XPATH', 'evtSearchProse', 'Utils', function Text(evtGlyph, XPATH, evtSearchProse, Utils) {
+      var countAllDocsLines = 0;
       
       /**
        * @ngdoc method
@@ -83,18 +84,35 @@ angular.module('evtviewer.dataHandler')
       }*/
       
       //TODO Add Documentation
-      function getLineNodes(xmlDocDom, countLine, nodes, edition, ns, nsResolver) {
+      function getLineNodes(xmlDocDom, body, prevDocsLinesNumber, countLine, nodes, edition, ns, nsResolver) {
          var lineNodes = [],
             prevLb,
-            hasPrevLb;
+            hasPrevLb,
+            countPrevLb,
+            prevBody;
    
          for(var j = 0; j < nodes.length;) {
+            prevBody = xmlDocDom.evaluate('count(.//preceding::ns:body)', nodes[j], nsResolver, XPathResult.ANY_TYPE, null);
+            
             prevLb = ns ? xmlDocDom.evaluate(XPATH.ns.getPrevLb, nodes[j], nsResolver, XPathResult.ANY_TYPE, null)
                         : xmlDocDom.evaluate(XPATH.getPrevLb, nodes[j], null, XPathResult.ANY_TYPE, null);
-            hasPrevLb = prevLb.numberValue !== 0;
+   
+            //se ci sono più testi allora sottraggo il numero degli <lb> presenti nei documenti precedenti (prevDocsLinesNumber) al documento corrente
+            // al numero di <lb> precedenti (prevLb) al nodo corrente(nodes[j]) -> sarà sempre maggiore di prevDocsLinesNumber
+            // così trovo il numero di <lb> che nel documento corrente precedono il nodo corrente
+            if(prevBody.numberValue >=1) {
+               countPrevLb = prevLb.numberValue - prevDocsLinesNumber;
+            }
+            else {
+               countPrevLb = prevLb.numberValue;
+            }
+            
+            
+            
+            hasPrevLb = countPrevLb !== 0;
       
             if (hasPrevLb === true) {
-               if (countLine === prevLb.numberValue) {
+               if (countLine === countPrevLb) {
                   lineNodes.push(nodes[j]);
                   nodes.splice(0, 1);
                }
@@ -211,9 +229,9 @@ angular.module('evtviewer.dataHandler')
          return title;
       }*/
       
-      function getDiplomaticNodes(xmlDocDom, diplomaticNodes, ns, nsResolver) {
-         var diplomaticNodesSnapshot = ns ? xmlDocDom.evaluate(XPATH.ns.getDiplomaticNodes, xmlDocDom, nsResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getDiplomaticNodes, xmlDocDom, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+      function getDiplomaticNodes(xmlDocDom, body, diplomaticNodes, ns, nsResolver) {
+         var diplomaticNodesSnapshot = ns ? xmlDocDom.evaluate(XPATH.ns.getDiplomaticNodes, body, nsResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
+            : xmlDocDom.evaluate(XPATH.getDiplomaticNodes, body, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
    
          for(var i = 0; i < diplomaticNodesSnapshot.snapshotLength; i++) {
             diplomaticNodes.push(diplomaticNodesSnapshot.snapshotItem(i));
@@ -221,9 +239,9 @@ angular.module('evtviewer.dataHandler')
          return diplomaticNodes;
       }
       
-      function getInterpretativeNodes(xmlDocDom, interpretativeNodes, ns, nsResolver) {
-         var interpretativeNodesSnapshot = ns ? xmlDocDom.evaluate(XPATH.ns.getInterpretativeNodes, xmlDocDom, nsResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getInterpretativeNodes, xmlDocDom, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+      function getInterpretativeNodes(xmlDocDom, body, interpretativeNodes, ns, nsResolver) {
+         var interpretativeNodesSnapshot = ns ? xmlDocDom.evaluate(XPATH.ns.getInterpretativeNodes, body, nsResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
+            : xmlDocDom.evaluate(XPATH.getInterpretativeNodes, body, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
    
          for(var i = 0; i < interpretativeNodesSnapshot.snapshotLength; i++) {
             interpretativeNodes.push(interpretativeNodesSnapshot.snapshotItem(i));
@@ -252,7 +270,7 @@ angular.module('evtviewer.dataHandler')
        *
        * @author GC
        */
-      function getLineInfo(xmlDocDom, nodes, docs, ns, nsResolver) {
+      function getLineInfo(xmlDocDom, body, prevDocsLinesNumber, nodes, docs, ns, nsResolver) {
          console.time('getLineInfo');
          
          var line = {},
@@ -281,8 +299,8 @@ angular.module('evtviewer.dataHandler')
             }
          }
          
-         diplomaticNodes = getDiplomaticNodes(xmlDocDom, diplomaticNodes, ns, nsResolver);
-         interpretativeNodes = getInterpretativeNodes(xmlDocDom, interpretativeNodes, ns, nsResolver);
+         diplomaticNodes = getDiplomaticNodes(xmlDocDom, body, diplomaticNodes, ns, nsResolver);
+         interpretativeNodes = getInterpretativeNodes(xmlDocDom, body, interpretativeNodes, ns, nsResolver);
          
          while (node !== null) {
             if (node.nodeName === 'pb') {
@@ -318,10 +336,12 @@ angular.module('evtviewer.dataHandler')
                line.line = node.getAttribute('n') || lineId.toString();
                lineId++;
                line.doc = docTitle;
+               line.docId = currentDoc.id;
                
-               lineNodes.diplomatic = getLineNodes(xmlDocDom, countLine, diplomaticNodes, 'diplomatic', ns, nsResolver);
-               lineNodes.interpretative = getLineNodes(xmlDocDom, countLine, interpretativeNodes, 'interpretative', ns, nsResolver);
+               lineNodes.diplomatic = getLineNodes(xmlDocDom, body, prevDocsLinesNumber, countLine, diplomaticNodes, 'diplomatic', ns, nsResolver);
+               lineNodes.interpretative = getLineNodes(xmlDocDom, body, prevDocsLinesNumber, countLine, interpretativeNodes, 'interpretative', ns, nsResolver);
                countLine++;
+               countAllDocsLines++;
                
                line.text = {
                   diplomatic: getText(lineNodes.diplomatic, 'diplomatic'),
@@ -346,12 +366,12 @@ angular.module('evtviewer.dataHandler')
          return bodyFilteredNodes;
       }
       
-      function getDocumentLines(xmlDocDom, docs, body, ns, nsResolver) {
+      function getDocumentLines(xmlDocDom, body, prevDocsLinesNumber, docs, ns, nsResolver) {
          var nodes,
             lines;
          
          nodes = getFilteredBodyNodes(xmlDocDom, body, ns, nsResolver);
-         lines = getLineInfo(xmlDocDom, nodes, docs, ns, nsResolver);
+         lines = getLineInfo(xmlDocDom, body, prevDocsLinesNumber, nodes, docs, ns, nsResolver);
          
          return lines;
       }
@@ -400,14 +420,20 @@ angular.module('evtviewer.dataHandler')
        * </pre>
        * @author GC
        */
-      function getLines(xmlDocDom, xmlDocDomBody, docs, ns, nsResolver) {
+      function getLines(xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver) {
          var lines = [];
          
          removeNotes(xmlDocDom);
-         lines = getDocumentLines(xmlDocDom, docs, xmlDocDomBody, ns, nsResolver);
+         lines = getDocumentLines(xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver);
          
          return lines;
       }
+      
+      // ritorna il numero di righe che sono presenti in tutti i documenti precedenti al documento corrente
+      // mi serve per gestire l'estrazione del testo quando siamo in presenza di più testi con <lb>
+      Text.prototype.getAllDocsLinesNumber = function() {
+         return countAllDocsLines;
+      };
       
       /**
        * @ngdoc method
@@ -429,8 +455,8 @@ angular.module('evtviewer.dataHandler')
        *
        * @author GC
        */
-      Text.prototype.parseLines = function (xmlDocDom, xmlDocDomBody, docs, ns, nsResolver) {
-         var lines = getLines(xmlDocDom, xmlDocDomBody, docs, ns, nsResolver);
+      Text.prototype.parseLines = function (xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver) {
+         var lines = getLines(xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver);
          return lines;
       };
 
