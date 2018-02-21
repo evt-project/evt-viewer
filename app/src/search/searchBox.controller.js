@@ -88,13 +88,12 @@ angular.module('evtviewer.search')
     
     vm.goToAnchorPage = function() {
        var anchorPageId,
-          currentDocument;
+          anchorDocId;
    
        anchorPageId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultPage')[0].getAttribute('id');
+       anchorDocId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultDoc')[0].getAttribute('id');
        evtInterface.updateState('currentPage', anchorPageId);
-   
-       currentDocument = evtInterface.getState('currentDoc');
-       evtInterface.updateState('currentDoc', currentDocument);
+       evtInterface.updateState('currentDoc', anchorDocId);
    
        evtInterface.updateUrl();
     };
@@ -104,7 +103,7 @@ angular.module('evtviewer.search')
    
        evtSearchBox.closeBox('searchResults');
        
-       eventElement = window.event.target;
+       eventElement = window.event.currentTarget;
        $(eventElement).addClass('selected');
        
        vm.goToAnchorPage();

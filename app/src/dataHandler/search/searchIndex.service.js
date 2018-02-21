@@ -90,6 +90,19 @@ angular.module('evtviewer.dataHandler')
       builder.metadataWhitelist.push('docTitle');
    }
    
+   function addDocIdMetadata(builder, parsedDocs) {
+      var pipelineFunction = function(token) {
+         var docIndex = builder.documentCount - 1;
+         token.metadata['docId'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].docId;
+      
+         return token;
+      };
+   
+      lunr.Pipeline.registerFunction(pipelineFunction, 'docId');
+      builder.pipeline.add(pipelineFunction);
+      builder.metadataWhitelist.push('docId');
+   }
+   
    Index.prototype.createIndex = function(parsedDocs) {
       console.time('INDEX');
       this.index = lunr(function() {
@@ -101,12 +114,13 @@ angular.module('evtviewer.dataHandler')
          this.field('diplomaticText');
          this.field('interpretativeText');
          this.use(addDocTitleMetadata, parsedDocs);
+         this.use(addDocIdMetadata, parsedDocs);
          this.use(addParagraphMetadata, parsedDocs);
          this.use(addPageMetadata, parsedDocs);
          this.use(addPageIdMetadata, parsedDocs);
          this.use(addLineMetadata, parsedDocs);
          this.use(addLineIdMetadata, parsedDocs);
-         this.metadataWhitelist = ['docTitle', 'paragraph', 'page', 'pageId', 'line', 'lineId'];
+         this.metadataWhitelist = ['docTitle', 'docId', 'paragraph', 'page', 'pageId', 'line', 'lineId'];
          
          for(var document in parsedDocs) {
             var doc = map(parsedDocs[document]);
