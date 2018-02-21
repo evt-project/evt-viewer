@@ -4,90 +4,111 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtSearchResults', ['evtSearchParser', function SearchResults(evtSearchParser) {
    
-   SearchResults.prototype.renderSearchResults = function(inputValue, res, currentEdition) {
-      var results = '',
-         resList = [],
-         content = '',
-         countResults = 0,
-         parsedDocs = evtSearchParser.parsedDocs,
+   function renderDiplomaticResults(metadata, inputValue, countResults) {
+      var resList = [],
          resultId,
-         text,
-         searchInfo;
-      
-      for(var i = 0; i < res.length; i++) {
-         var metadata = res[i].matchData.metadata;
-         
-         for(var prop in metadata) {
-            if(currentEdition === 'diplomatic') {
-               var diplomaticText = metadata[prop].diplomaticText;
-               if(diplomaticText !== undefined) {
-                  for (var j = 0; j < diplomaticText.page.length; j++) {
-                     resultId = diplomaticText.lineId[j];
-                     text = parsedDocs[resultId].text.diplomatic;
-                     text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
-                     
-                     if(diplomaticText.paragraph[j] !== undefined) {
-                        content = '<div class="search-result" id="' + resultId + '">' +
-                           '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
-                           '<span id="' + diplomaticText.docId[j] + '" class="resultDoc">' + diplomaticText.docTitle[j] + '</span>' +
-                           ' page <span id="' + diplomaticText.pageId[j] + '" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
-                           ' paragraph ' + diplomaticText.paragraph[j] + ' (line ' + diplomaticText.line[j] + ')</a></p></div>';
-                     }
-                     else {
-                        content = '<div class="search-result" id="' + resultId + '">' +
-                           '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
-                           '<span id="' + diplomaticText.docId[j] + '" class="resultDoc">' +diplomaticText.docTitle[j] + '</span>' +
-                           ' page <span id="'+diplomaticText.pageId[j]+'" class="resultPage">' + diplomaticText.page[j] + '</span> ' +
-                           ' (line ' + diplomaticText.line[j] + ')</a></p></div>';
-                     }
-                     
-                     results += content;
-                     resList.push(content);
-                     countResults++;
-                  }
-               }
-            }
-            else if(currentEdition === 'interpretative') {
-               var interpretativeText = metadata[prop].interpretativeText;
-               if(interpretativeText !== undefined) {
-                  for (var z = 0; z < interpretativeText.page.length; z++) {
-                     resultId = interpretativeText.lineId[z];
-                     text = parsedDocs[resultId].text.interpretative;
-                     text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
+         text = '',
+         results = '',
+         content = '',
+         parsedDocs = evtSearchParser.parsedDocs;
    
-                     if(interpretativeText.paragraph[z] !== undefined) {
-                        content = '<div class="search-result" id="' + resultId + '">' +
-                           '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
-                           '<span id="' + interpretativeText.docId[z] + '" class="resultDoc">' + interpretativeText.docTitle[z] + '</span>' +
-                           ' page <span id="'+interpretativeText.pageId[z]+'" class="resultPage">' + interpretativeText.page[z] + '</span> ' +
-                           ' paragraph ' + interpretativeText.paragraph[z] + ' (line ' + interpretativeText.line[z] + ')</a></p></div>';
-                     }
-                     else {
-                        content = '<div class="search-result" id="' + resultId + '">' +
-                           '<p><span class="original-text">' + text + '</span>' +
-                           '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
-                           '<span id="' + interpretativeText.docId[z] + '" class="resultDoc">' + interpretativeText.docTitle[z] + '</span>' +
-                           ' page <span id="'+interpretativeText.pageId[z]+'" class="resultPage">' + interpretativeText.page[z] + '</span> ' +
-                           ' (line ' + interpretativeText.line[z] + ')</a></p></div>';
-                     }
-                     
-                     results += content;
-                     resList.push(content);
-                     countResults++;
-                  }
+      for(var prop in metadata) {
+         var diplomaticText = metadata[prop].diplomaticText;
+         
+         if (diplomaticText !== undefined) {
+            for (var i = 0; i < diplomaticText.page.length; i++) {
+               resultId = diplomaticText.lineId[i];
+               text = parsedDocs[resultId].text.diplomatic;
+               text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
+         
+               if (diplomaticText.paragraph[i] !== undefined) {
+                  content = '<div class="search-result" id="' + resultId + '">' +
+                     '<p><span class="original-text">' + text + '</span>' +
+                     '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                     '<span id="' + diplomaticText.docId[i] + '" class="resultDoc">' + diplomaticText.docTitle[i] + '</span>' +
+                     ' page <span id="' + diplomaticText.pageId[i] + '" class="resultPage">' + diplomaticText.page[i] + '</span> ' +
+                     ' paragraph ' + diplomaticText.paragraph[i] + ' (line ' + diplomaticText.line[i] + ')</a></p></div>';
                }
+               else {
+                  content = '<div class="search-result" id="' + resultId + '">' +
+                     '<p><span class="original-text">' + text + '</span>' +
+                     '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                     '<span id="' + diplomaticText.docId[i] + '" class="resultDoc">' + diplomaticText.docTitle[i] + '</span>' +
+                     ' page <span id="' + diplomaticText.pageId[i] + '" class="resultPage">' + diplomaticText.page[i] + '</span> ' +
+                     ' (line ' + diplomaticText.line[i] + ')</a></p></div>';
+               }
+         
+               results += content;
+               resList.push(content);
+               countResults++;
             }
          }
       }
+      return resList;
+   }
+   
+   function renderInterpretativeResults(metadata, inputValue, countResults) {
+      var resList = [],
+         resultId,
+         text = '',
+         results = '',
+         content = '',
+         parsedDocs = evtSearchParser.parsedDocs;
+   
+      for(var prop in metadata) {
+         var interpretativeText = metadata[prop].interpretativeText;
+         if(interpretativeText !== undefined) {
+            for (var i = 0; i < interpretativeText.page.length; i++) {
+               resultId = interpretativeText.lineId[i];
+               text = parsedDocs[resultId].text.interpretative;
+               text = text.replace(inputValue, '<strong>' + inputValue + '</strong>');
+         
+               if(interpretativeText.paragraph[i] !== undefined) {
+                  content = '<div class="search-result" id="' + resultId + '">' +
+                     '<p><span class="original-text">' + text + '</span>' +
+                     '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                     '<span id="' + interpretativeText.docId[i] + '" class="resultDoc">' + interpretativeText.docTitle[i] + '</span>' +
+                     ' page <span id="'+interpretativeText.pageId[i]+'" class="resultPage">' + interpretativeText.page[i] + '</span> ' +
+                     ' paragraph ' + interpretativeText.paragraph[i] + ' (line ' + interpretativeText.line[i] + ')</a></p></div>';
+               }
+               else {
+                  content = '<div class="search-result" id="' + resultId + '">' +
+                     '<p><span class="original-text">' + text + '</span>' +
+                     '<a class="resultInfo" href="" ng-click="vm.goToAnchor()">Found in ' +
+                     '<span id="' + interpretativeText.docId[i] + '" class="resultDoc">' + interpretativeText.docTitle[i] + '</span>' +
+                     ' page <span id="'+interpretativeText.pageId[i]+'" class="resultPage">' + interpretativeText.page[i] + '</span> ' +
+                     ' (line ' + interpretativeText.line[i] + ')</a></p></div>';
+               }
+         
+               results += content;
+               resList.push(content);
+               countResults++;
+            }
+         }
+      }
+      return resList;
+   }
+   
+   SearchResults.prototype.renderSearchResults = function(inputValue, res, currentEdition) {
+      var resList = [],
+         metadata,
+         countResults = 0,
+         searchInfo;
       
-      searchInfo = '<div class="search-info"><p>Search for <strong>' + inputValue + '</strong></p><p>We have found ' + countResults +
-         ' results in the selected edition.</p></div>';
+      for(var i = 0; i < res.length; i++) {
+         metadata = res[i].matchData.metadata;
+         if(currentEdition === 'diplomatic') {
+            resList = renderDiplomaticResults(metadata, inputValue, countResults);
+         }
+         else if(currentEdition === 'interpretative') {
+            resList = renderInterpretativeResults(metadata, inputValue, countResults);
+         }
+      }
+      
+      searchInfo = '<div class="search-info"><p>Search for <strong>' + inputValue + '</strong></p>' +
+         '<p>We have found ' + countResults + ' results in the selected edition.</p></div>';
       
       resList.unshift(searchInfo);
-      
       return resList;
    };
    
