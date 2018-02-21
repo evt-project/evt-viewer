@@ -268,7 +268,8 @@ angular.module('evtviewer.dataHandler')
             interpretativeNodes = [],
             parId,
             paragraph,
-            id = 1,
+            lineId = 1,
+            pageId = 1,
             countLine = 1;
          
          var node = nodes.iterateNext();
@@ -286,7 +287,8 @@ angular.module('evtviewer.dataHandler')
          while (node !== null) {
             if (node.nodeName === 'pb') {
                currentPage = node.getAttribute('n');
-               currentPageId = node.getAttribute('xml:id');
+               currentPageId = node.getAttribute('xml:id') || 'page_' + pageId;
+               pageId++;
             }
             else if (node.nodeName === 'head') {
                /*if (node.getAttribute('type') === 'sub') {
@@ -313,8 +315,8 @@ angular.module('evtviewer.dataHandler')
                if (paragraph !== undefined) {
                   line.par = paragraph;
                }
-               line.line = node.getAttribute('n') || id.toString();
-               id++;
+               line.line = node.getAttribute('n') || lineId.toString();
+               lineId++;
                line.doc = docTitle;
                
                lineNodes.diplomatic = getLineNodes(xmlDocDom, countLine, diplomaticNodes, 'diplomatic', ns, nsResolver);
