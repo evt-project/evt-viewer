@@ -12,7 +12,7 @@
  */
 angular.module('evtviewer.dataHandler')
 
-.service('evtSearchDocument', ['evtSearchPoem', 'evtSearchProse', 'evtSearchText', 'parsedData', function Doc(evtSearchPoem, evtSearchProse, evtSearchText, parsedData) {
+.service('evtSearchDocument', ['evtSearchText', 'parsedData', function Doc(evtSearchText, parsedData) {
    this.ns = false;
    this.nsResolver = '';
    this.Text = evtSearchText;
@@ -62,7 +62,7 @@ angular.module('evtviewer.dataHandler')
     *
     * @author GC
     */
-   Doc.prototype.getDocsTitle = function() {
+   function getDocsTitle() {
       var documents = parsedData.getDocuments(),
           docIndexes = documents._indexes,
           docId,
@@ -80,36 +80,34 @@ angular.module('evtviewer.dataHandler')
       }
 
       return docs;
-   };
+   }
 
    //TODO add documentation
    function getDocType(xmlDocDomBody) {
-      var type = '',
-         poem = xmlDocDomBody.getElementsByTagName('l').length !== 0,
+      var poem = xmlDocDomBody.getElementsByTagName('l').length !== 0,
          prose = xmlDocDomBody.getElementsByTagName('l').length === 0;
       
-      if(poem) {
-         type = 'verse';
+      if(poem === true) {
+         this.type = 'verse';
       }
-      else if(prose) {
-         type = 'prose';
+      else if(prose === true) {
+         this.type = 'prose';
       }
-
-      return type;
    }
    
-   Doc.prototype.parseText = function(xmlDocDom, currentEdition, docs, ns, nsResolver) {
+   Doc.prototype.parseText = function(xmlDocDom, currentEdition, ns, nsResolver) {
       var xmlDocDomBody = xmlDocDom.getElementsByTagName('body'),
-         hasLineBreakTag,
+         docs = getDocsTitle(),
+         docHasLineBreakTag,
          docLines = [],
-         lines= [];
+         lines = [];
    
       for(var i = 0; i < xmlDocDomBody.length; i++) {
-         hasLineBreakTag = $(xmlDocDomBody[i]).find('lb').length !== 0;
-         this.type = getDocType(xmlDocDomBody[i]);
+         docHasLineBreakTag = $(xmlDocDomBody[i]).find('lb').length !== 0;
+         getDocType(xmlDocDomBody[i]);
    
          if (currentEdition === 'diplomatic') {
-            if (hasLineBreakTag === true) {
+            if (docHasLineBreakTag === true) {
                docLines = this.Text.parseLines(xmlDocDom, xmlDocDomBody[i], prevDocsLinesNumber, docs, ns, nsResolver);
                prevDocsLinesNumber = this.Text.getAllDocsLinesNumber();
                lines = Object.assign(lines, docLines);
@@ -122,7 +120,8 @@ angular.module('evtviewer.dataHandler')
                      break;
                   case 'verse':
                      console.log('Parse verse!');
-                     //parse line <l>
+                     //parse Verse
+                     lines = this.Text.parseVerse();
                      break;
                }
             }
@@ -134,8 +133,6 @@ angular.module('evtviewer.dataHandler')
       }
       
       console.log('# LINES #', lines);
-      //console.log('# PARAGRAPHS #', paragraphs);
-      
       return lines;
    };
    

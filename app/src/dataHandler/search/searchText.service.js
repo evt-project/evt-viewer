@@ -1,6 +1,6 @@
 //TODO add documentation
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchText', ['evtGlyph', 'XPATH', 'evtSearchProse', 'Utils', function Text(evtGlyph, XPATH, evtSearchProse, Utils) {
+   .service('evtSearchText', ['evtGlyph', 'XPATH', 'Utils', function Text(evtGlyph, XPATH, Utils) {
       var countAllDocsLines = 0;
       
       /**
@@ -106,8 +106,6 @@ angular.module('evtviewer.dataHandler')
             else {
                countPrevLb = prevLb.numberValue;
             }
-            
-            
             
             hasPrevLb = countPrevLb !== 0;
       
@@ -455,11 +453,15 @@ angular.module('evtviewer.dataHandler')
        *
        * @author GC
        */
-      Text.prototype.parseLines = function (xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver) {
+      Text.prototype.parseLines = function(xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver) {
          var lines = getLines(xmlDocDom, xmlDocDomBody, prevDocsLinesNumber, docs, ns, nsResolver);
          return lines;
       };
 
+      /*Text.prototype.parseVerse = function() {
+      
+      };*/
+      
 /*function getParagraphs(xmlDocDom, currentEdition, docs, ns, nsResolver) {
    
    var lines = [],

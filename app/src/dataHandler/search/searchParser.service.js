@@ -33,12 +33,10 @@ angular.module('evtviewer.dataHandler')
     * @author GC
     */
    Parser.prototype.parseDocument = function (xmlDocDom, currentEdition) {
-      
       this.Doc.hasNamespace(xmlDocDom);
-      var docs = this.Doc.getDocsTitle();
       
       console.time('PARSE-TEXT');
-      this.parsedDocs = this.Doc.parseText(xmlDocDom, currentEdition, docs, this.Doc.ns, this.Doc.nsResolver);
+      this.parsedDocs = this.Doc.parseText(xmlDocDom, currentEdition, this.Doc.ns, this.Doc.nsResolver);
       console.timeEnd('PARSE-TEXT');
       
       return this.parsedDocs;

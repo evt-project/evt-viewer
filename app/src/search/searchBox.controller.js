@@ -81,11 +81,6 @@ angular.module('evtviewer.search')
        return evtSearchResults.highlightSearchResults(inputValue);
     };
     
-    vm.scrollTo = function(id) {
-       $location.hash(id);
-       $anchorScroll();
-   };
-    
     vm.goToAnchorPage = function() {
        var anchorPageId,
           anchorDocId;
