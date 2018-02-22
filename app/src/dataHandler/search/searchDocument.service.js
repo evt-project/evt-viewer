@@ -17,7 +17,6 @@ angular.module('evtviewer.dataHandler')
    this.nsResolver = '';
    this.Text = evtSearchText;
    this.type = '';
-   this.edition = '';
    
    var prevDocsLinesNumber = 0;
 

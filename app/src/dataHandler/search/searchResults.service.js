@@ -4,7 +4,7 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtSearchResults', ['evtSearchParser', function SearchResults(evtSearchParser) {
    
-   function renderDiplomaticResults(metadata, inputValue, countResults) {
+   function renderDiplomaticResults(metadata, inputValue) {
       var resList = [],
          resultId,
          text = '',
@@ -40,14 +40,13 @@ angular.module('evtviewer.dataHandler')
          
                results += content;
                resList.push(content);
-               countResults++;
             }
          }
       }
       return resList;
    }
    
-   function renderInterpretativeResults(metadata, inputValue, countResults) {
+   function renderInterpretativeResults(metadata, inputValue) {
       var resList = [],
          resultId,
          text = '',
@@ -82,7 +81,6 @@ angular.module('evtviewer.dataHandler')
          
                results += content;
                resList.push(content);
-               countResults++;
             }
          }
       }
@@ -92,21 +90,23 @@ angular.module('evtviewer.dataHandler')
    SearchResults.prototype.renderSearchResults = function(inputValue, res, currentEdition) {
       var resList = [],
          metadata,
-         countResults = 0,
+         resultsNumber = 0,
          searchInfo;
       
       for(var i = 0; i < res.length; i++) {
          metadata = res[i].matchData.metadata;
          if(currentEdition === 'diplomatic') {
-            resList = renderDiplomaticResults(metadata, inputValue, countResults);
+            resList = renderDiplomaticResults(metadata, inputValue);
+            resultsNumber = resList.length;
          }
          else if(currentEdition === 'interpretative') {
-            resList = renderInterpretativeResults(metadata, inputValue, countResults);
+            resList = renderInterpretativeResults(metadata, inputValue);
+            resultsNumber = resList.length;
          }
       }
       
       searchInfo = '<div class="search-info"><p>Search for <strong>' + inputValue + '</strong></p>' +
-         '<p>We have found ' + countResults + ' results in the selected edition.</p></div>';
+         '<p>We have found ' + resultsNumber + ' results in the selected edition.</p></div>';
       
       resList.unshift(searchInfo);
       return resList;
