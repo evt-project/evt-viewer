@@ -108,7 +108,8 @@ angular.module('evtviewer.box')
                
                 // tentativo di mettere OSD - FIXME - non va bene qui!!
                 if (currentBox.type === 'image') {
-                    	console.log("box di tipo immagine");                                   
+                        console.log("box di tipo immagine");
+                                                           
                        
 
                 }
@@ -422,6 +423,7 @@ angular.module('evtviewer.box')
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
+                    console.log("aggiorno contenuto pagina testo");
                     currentBox.updateContent();
                 }, true);
             }

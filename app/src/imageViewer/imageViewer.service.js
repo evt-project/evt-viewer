@@ -1,5 +1,5 @@
 (function () {
-    angular.module('evtviewer.imageViewerService',[] )
+    angular.module('evtviewer.imageViewerService',[])
     
     .service('imageViewerModel',function(){
         var viewerModel = this;
@@ -29,7 +29,7 @@
             //navigatorId: "navscroll",
             visibilityRatio: 1,
             defaultZoomLevel: 1,
-            panHorizontal: false,
+            panHorizontal: true,
             constrainDuringPan: true,
             minZoomLevel: 1,
             //maxZoomLevel: 4.0,
@@ -51,6 +51,7 @@
     
     
     });
+    console.log("caricato modulo evtviewer.imageViewerService");
 })();
 /*
 */

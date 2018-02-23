@@ -19,9 +19,10 @@
 
      imageModule.controller("evtviewer.imageViewerCtrl", ["$scope","imageViewerModel", function ($scope,imageViewerModel) {
          $scope.options = imageViewerModel.getOptions();
-         $scope.test = "test";
+         //$scope.interface = evtInterface;
+         //evtInterface.updateState('currentPage','pippo');
          
-         console.log("caricato controller evtviewer.imageViewer", $scope.options);
+         //console.log("caricato controller evtviewer.imageViewer", $scope.interface);
       }]);
    console.log("caricato modulo per immagine!");
 })();
