@@ -2,7 +2,7 @@
    console.log("caricato modulo openseadragonService");
    angular.module('evtviewer.openseadragonService', ["evtviewer.interface"])
 
-      .service('imageViewerHandler', function (evtInterface) {
+      .service('imageViewerHandler', function (evtInterface, imageScrollMap) {
 
          var viewerHandler = this;
 
@@ -56,7 +56,7 @@
                //console.log("scope.$parent.$parent", scope.$parent.$parent.vm);
                //scope.$parent.$parent.vm.updateState('position',event.eventSource.viewport.getBounds());
                viewerHandler.scope.$apply(function () {
-                  evtInterface.updateState("currentPage", 'page2');
+                  evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
                   console.log("in handler:", evtInterface.getState('currentPage'));
                   //scope.$parent.$parent.vm.updateContent();
                });
@@ -64,7 +64,7 @@
             } else {
                console.log("scroll-out");
                viewerHandler.scope.$apply(function () {
-                  evtInterface.updateState("currentPage", 'page1');
+                  evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
                   console.log("in handler:", evtInterface.getState('currentPage'));
                   //scope.$parent.$parent.vm.updateContent();
                });
@@ -77,7 +77,7 @@
 
 
             console.log("pan", event);
-            if (event.immediately === undefined) {
+            //if (event.immediately === undefined) {
                var newY = event.center.y;
                var oldY = event.eventSource.viewport._oldCenterY;
                console.log("ok event pan", newY);
@@ -94,7 +94,7 @@
                      console.log("bounds:", oldBounds);
                      //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
                      viewerHandler.scope.$apply(function () {
-                        evtInterface.updateState("currentPage", 'page2');
+                        evtInterface.updateState("currentPage", imageScrollMap.mapDown(event.eventSource.viewport.getBounds()));
                         console.log("in pan handler:", evtInterface.getState('currentPage'));
                         //scope.$parent.$parent.vm.updateContent();
                      });
@@ -108,7 +108,7 @@
                      console.log("bounds:", oldBounds);
                      //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
                      viewerHandler.scope.$apply(function () {
-                        evtInterface.updateState("currentPage", 'page1');
+                        evtInterface.updateState("currentPage", imageScrollMap.mapUP(event.eventSource.viewport.getBounds()) !=='' ? imageScrollMap.mapUP(event.eventSource.viewport.getBounds()) : evtInterface.getState('currentPage'));
                         console.log("in pan handler:", evtInterface.getState('currentPage'));
                         //scope.$parent.$parent.vm.updateContent();
                      });
@@ -116,7 +116,7 @@
                }
 
                //event.stopBubbling = true;
-            }
+            //}
 
          }
 
