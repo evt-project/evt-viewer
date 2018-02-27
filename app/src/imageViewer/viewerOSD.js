@@ -38,6 +38,15 @@
 
                scope.osd.addHandler('pan', imageViewerHandler.pan);
 
+                scope.$watch(function() {
+                    return evtInterface.getState('currentPage');
+                }, function(newItem, oldItem) {
+                  if (oldItem !== newItem) {
+                    console.log("aggiorno contenuto viewer per pagina del testo");
+                    imageViewerHandler.updateViewerBounds(newItem);
+                  }
+                }, true);
+            
 
             }, 100);
 

@@ -34,11 +34,11 @@
             minZoomLevel: 1,
             //maxZoomLevel: 4.0,
     
-            wrapVertical: true,
+            wrapVertical: false,
             navigatorPosition: "ABSOLUTE",
-            navigatorTop: "1%",
+            navigatorTop: "0",
             navigatorLeft: "94%",
-            navigatorHeight: "95%",
+            navigatorHeight: "100%",
             navigatorWidth: "6%"
          };
     

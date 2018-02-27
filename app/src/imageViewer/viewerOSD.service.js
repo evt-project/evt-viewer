@@ -11,10 +11,10 @@
 
          viewerHandler.setViewer = function (viewer) {
             viewerHandler.viewer = viewer;
-         }
+         };
          viewerHandler.setScope = function (scope) {
             viewerHandler.scope = scope;
-         }
+         };
 
 
          viewerHandler.open = function () {
@@ -40,83 +40,99 @@
             //console.log("scope.$parent.$parent", scope.$parent.$parent.vm);
 
 
-         }
+         };
 
          viewerHandler.home = function () {
             console.log('pigiato home');
-         }
+            var oldBounds = viewerHandler.viewer.viewport.getBounds();
+            var h = oldBounds.height / oldBounds.width;
+            var newBounds = new OpenSeadragon.Rect(0, 0.1, 1, h);
+            viewerHandler.viewer.viewport.fitBounds(newBounds, true);
+         };
 
          viewerHandler.navigatorScroll = function (event) {
-
             console.log("navigator-scroll", evtInterface);
-
             console.log("navigator-scroll", event);
             if (event.scroll > 0) {
                console.log("scroll-in");
                //console.log("scope.$parent.$parent", scope.$parent.$parent.vm);
                //scope.$parent.$parent.vm.updateState('position',event.eventSource.viewport.getBounds());
-               viewerHandler.scope.$apply(function () {
-                  evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
-                  console.log("in handler:", evtInterface.getState('currentPage'));
-                  //scope.$parent.$parent.vm.updateContent();
-               });
+               //    viewerHandler.scope.$apply(function () {
+               //       evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
+               //       console.log("in handler:", evtInterface.getState('currentPage'));
+               //       //scope.$parent.$parent.vm.updateContent();
+               //    });
 
             } else {
                console.log("scroll-out");
-               viewerHandler.scope.$apply(function () {
-                  evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
-                  console.log("in handler:", evtInterface.getState('currentPage'));
-                  //scope.$parent.$parent.vm.updateContent();
-               });
+               //    viewerHandler.scope.$apply(function () {
+               //       evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
+               //       console.log("in handler:", evtInterface.getState('currentPage'));
+               //       //scope.$parent.$parent.vm.updateContent();
+               //    });
             }
 
 
-         }
+         };
 
          viewerHandler.pan = function (event) {
-
-
-            console.log("pan", event);
-            //if (event.immediately === undefined) {
+            try {
+               console.log("pan", event);
+               //if (event.immediately === undefined) {
                var newY = event.center.y;
                var oldY = event.eventSource.viewport._oldCenterY;
                console.log("ok event pan", newY);
                console.log("ok viewer pan", oldY);
-
-
                // evento scroll verso il basso
                if (viewerHandler.viewer.viewport.getZoom() === 1) {
                   console.log("aggiorna testo");
                   var oldBounds = viewerHandler.viewer.viewport.getBounds();
                   if (newY > oldY) {
                      console.log("mostro riga sotto");
-
                      console.log("bounds:", oldBounds);
                      //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
-                     viewerHandler.scope.$apply(function () {
-                        evtInterface.updateState("currentPage", imageScrollMap.mapDown(event.eventSource.viewport.getBounds()));
-                        console.log("in pan handler:", evtInterface.getState('currentPage'));
-                        //scope.$parent.$parent.vm.updateContent();
-                     });
-
-
-
+                     var newPage = imageScrollMap.mapDown(event.eventSource.viewport.getBounds());
+                     var currPage = evtInterface.getState('currentPage');
+                     if (newPage != currPage) {
+                        viewerHandler.scope.$apply(function () {
+                           evtInterface.updateState("currentPage", newPage);
+                           console.log("in pan handler:", evtInterface.getState('currentPage'));
+                           //scope.$parent.$parent.vm.updateContent();
+                        });
+                     }
                      //evento scroll verso l'alto    
                   } else if (newY < oldY) {
                      console.log("mostro riga sopra");
-
                      console.log("bounds:", oldBounds);
                      //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
-                     viewerHandler.scope.$apply(function () {
-                        evtInterface.updateState("currentPage", imageScrollMap.mapUP(event.eventSource.viewport.getBounds()) !=='' ? imageScrollMap.mapUP(event.eventSource.viewport.getBounds()) : evtInterface.getState('currentPage'));
-                        console.log("in pan handler:", evtInterface.getState('currentPage'));
-                        //scope.$parent.$parent.vm.updateContent();
-                     });
+                     var newPage = imageScrollMap.mapUP(event.eventSource.viewport.getBounds());
+                     var currPage = evtInterface.getState('currentPage');
+                     if (newPage != currPage) {
+                        viewerHandler.scope.$apply(function () {
+                           evtInterface.updateState("currentPage", newPage !== '' ? newPage : currPage);
+                           console.log("in pan handler:", evtInterface.getState('currentPage'));
+                           //scope.$parent.$parent.vm.updateContent();
+                        });
+                     }
                   }
                }
 
                //event.stopBubbling = true;
-            //}
+            } catch (err) {
+               console.log('error in pan', err);
+
+            }
+
+         };
+
+         viewerHandler.updateViewerBounds = function (page) {
+            console.log("updateViewerBounds: ", viewerHandler.viewer, page);
+            var oldBounds = viewerHandler.viewer.viewport.getBounds();
+            console.log("updateViewerBounds: ", oldBounds);
+            if (!imageScrollMap.isInBounds(oldBounds.y, page)) {
+               console.log('updateViewerBounds', page);
+               imageScrollMap.updateBounds(viewerHandler.viewer, page);
+            }
 
          }
 
@@ -124,7 +140,7 @@
          viewerHandler.testFun = function () {
             console.log("testFunction: ", viewerHandler);
             return "test ok";
-         }
+         };
 
          console.log("caricato servizio  imageViewerHandler");
 
