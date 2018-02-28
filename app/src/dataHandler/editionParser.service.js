@@ -14,9 +14,13 @@
 
  	parser.parseEdition = function(doc){
  		var currentDocument = angular.element(doc);
+ 		var expanDef = "expan, espansione";
+ 		var corrDef = "corr, correzione";
+ 		var restoreDef = "restore";
+ 		var regDef = "reg";
  		//"abbr" | expan" | "sic" |  "corr" | "del" | "add" | "restore"| "gap" | "supplied" | "orig" | "reg"
  		// forse un and andrbbe bene chiedere
- 		if(currentDocument.find("expan").length > 1 || currentDocument.find("corr").length > 1 || currentDocument.find("restore").length > 1  || currentDocument.find("reg").length > 1) {
+ 		if(currentDocument.find(expanDef).length > 1 || currentDocument.find(corrDef).length > 1 || currentDocument.find(restoreDef).length > 1  || currentDocument.find(regDef).length > 1) {
  			console.log(currentDocument.find("add").length);
  			console.log("nel tuo if");
  		}
