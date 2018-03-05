@@ -47,6 +47,7 @@
             content: "";
         }
 
+
         &:hover .reg, &.hover .reg {
             display: inline;
             min-width: 20px;
@@ -60,7 +61,7 @@
 
         &:hover .orig, &.hover .orig {
             color: #561c0a;
-            text-decoration: underline;
+            background-color: #FFD700;
             z-index: 9;
         }
 
