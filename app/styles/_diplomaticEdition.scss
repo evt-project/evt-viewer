@@ -1,107 +1,125 @@
 /* *************************** */
-/* DIPLOMATIC EDITION 		   */
+/* INTERPRETATIVE EDITION      */
 /* *************************** */
 
 .diplomaticEdition {
     // Abbreviations and Their Expansions
     .choice {
-        .abbr {
-            color: purple;
-        }
-
-        > .expan {
+        > .abbr {
             display: none;
         }
+        
+        .expan {}
     }
 
-    // 3.3.2 Emphasis, Foreign Words, and Unusual Language
-    // 3.3.2.2 Emphatic Words and Phrases
-    .hi {
-        &[data-rend="7init"] {
-            font-size: 200%;
-            font-weight: bold;
+    // Additions, Deletions, and Omissions
+    .add {
+        &[data-place='above'] {}
+    }
+
+    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+    .glyph {
+        .glyphname, .mapping {
+            display: none;
         }
 
-        &[data-rend="init3.1"] {
-            font-size: 180%;
-            font-weight: bold;
-        }
-
-        &[data-rend="cap"] {
-            text-transform: uppercase;
-        }
-
-        &[data-rend="double"] {
-            font-size: 120%;
+        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+            display: inline;
         }
     }
 
-    // 3.4 Simple Editorial Changes
-    .choice {}
+    .char {
+        .charname, .mapping {
+            display: none;
+        }
 
-    // 3.4.2 Regularization and Normalization
+        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+            display: inline;
+        }
+    }
+
     .choice {
-        position: relative;
+        display: inline;
 
         &:before, &:after {
             content: "";
         }
 
+        .corr, .reg {
+            font-size: 80%;
+            position: absolute;
+            line-height: 16px;
+            display: none;
+            border: 1.5px solid black;
+            border-radius: 3px;
 
-        &:hover .reg, &.hover .reg {
-            display: inline;
-            min-width: 20px;
-            text-align: center;
-            z-index: 99;
+            @include set(box-shadow, 2px 2px 2px #7e7067);
+
+            padding: 0.4%;
+            margin-top: 30px;
+
+            &:before {
+                left: 15%;
+                position: absolute;
+                top: -13px;
+            }
+        }
+
+        .corr {
+            &:before {
+                content: url("../images/popup_before_corr.png");
+            }
+        }
+
+        .corr, .corr * {
+            background: #f99069 !important;
+        }
+
+        .reg {
+            &:before {
+                content: url("../images/popup_before.png");
+            }
+        }
+
+        .reg, .reg * {
+            background: #e5dac4 !important;
         }
 
         .orig {
             color: #69513a;
+
+            &:hover, &.hover {
+                color: #561c0a;
+            }
         }
 
-        &:hover .orig, &.hover .orig {
-            color: #561c0a;
-            background-color: #FFD700;
-            z-index: 9;
+        &:hover, &.hover {
+            .reg, .corr {
+                display: inline;
+                min-width: 30px;
+                text-align: center;
+                z-index: 9;
+            }
+
+            .corr {
+                @include set(transform, translate(-80%, 0));
+            }
+
+            .orig {
+                background-color: #FFD700;
+            }
         }
 
-        .corr {
-            display: none;
-        }
-    }
-
-    .reg {
-        font-size: 80%;
-        position: absolute;
-        line-height: 16px;
-        display: none;
-        border: 1.5px solid black;
-        border-radius: 3px;
-        padding: 0.4%;
-        margin-top: 30px;
-
-        @include set(box-shadow, 2px 2px 2px #7e7067);
-
-        position: absolute;
-        left: 0;
-
-        &:before {
-            content: url("../images/popup_before.png");
-            left: 15%;
-            position: absolute;
-            top: -13px;
+        .sic {
+            color: #934d4d;
         }
 
-        span {
-            background: transparent;
+        &:hover, &.hover {
+            .sic{
+            background-color:#CCD700;
+            }
         }
-    }
 
-    .reg, .reg * {
-        background: #e5dac4 !important;
-    }
-
-    .orig {
         .sup {
             line-height: 20px;
             vertical-align: 20%;
@@ -113,51 +131,111 @@
         }
     }
 
-    // 3.4.3 Additions, Deletions, and Omissions
-    .add {
-        background-color: rgba(0, 128, 0, 0.8);
+    .sic {
+        display: inline-table;
 
-        &[data-place='above'] {}
-    }
+        &:before, &:after {
+            content: " ";
+        }
 
-    .del {
-        background-color: red;
-        text-decoration: line-through;
-    }
-
-    // 11.3.3.1 Damage, Illegibility, and Supplied Text
-    .damage {
-        background-color: rgba(193, 193, 193, 0.7);
-    }
-
-    .supplied {
-        &[data-reason='omitted'] {}
-
-        &[data-reason='illeggibile'] {}
-    }
-
-    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-    .glyph {
-        .glyphname, .mapping {
+        .corr {
+            font-size: 80%;
+            position: absolute;
+            line-height: 16px;
             display: none;
+            background: #f99069;
+            border: 1.5px solid black;
+            border-radius: 3px;
+
+            @include set(box-shadow, 2px 2px 2px #7e7067);
+
+            padding: 0.4%;
+            margin-top: 30px;
+
+            &:before {
+                content: url("../images/popup_before_corr.png");
+                left: 15%;
+                position: absolute;
+                top: -13px;
+            }
         }
 
-        .mapping[data-type="diplomatic"] {
-            display: inline;
+        .sic {
+            color: #934d4d;
+
+            &:hover, &.hover {
+                color: #561c0a;
+            }
+        }
+
+        &:hover, &.hover {
+            .corr {
+                display: inline;
+                min-width: 20px;
+                text-align: center;
+            }
+
+            .sic {
+                text-decoration: underline;
+            }
         }
     }
 
-    .char {
-        .charname, .mapping {
-            display: none;
+    //TODO: reorder
+    .attachment {
+        border: 1px solid black;
+        padding: 5px 0px 0px 10px;
+    }
+
+    .ex {
+        font-style: italic;
+    }
+
+    .lineN {
+        color: grey;
+        font-size: 0.8em;
+    }
+
+    .resp {
+        font-weight: bold;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .hi {
+        &[data-rend="7init"] {
+            font-size: 140%;
         }
 
-        .mapping[data-type="diplomatic"] {
-            display: inline;
+        &[data-rend="init3.1"] {
+            font-size: 120%;
+
+            /*font-weight: bold;*/
+        }
+
+        &[data-rend="cap"] {
+            text-transform: uppercase;
+        }
+
+        &[data-rend="double"] {
+            font-size: 120%;
         }
     }
 
-    //TO CHECK AND REORDER
+    .ex {
+        font-style: italic;
+    }
+
+    .zone {
+        margin-bottom: 5px;
+    }
+
+    .p {
+        display: block;
+    }
+
     .center, [rend="center"] {
         text-align: center;
         width: 92%;
@@ -174,52 +252,4 @@
     .left, [rend="left"] {
         display: inline-table;
     }
-
-    [data-rend="red"] {
-        color: red;
-    }
-
-    .attachment {
-        border: 1px solid black;
-        padding: 5px 0px 0px 10px;
-    }
-
-    .lineN {
-        color: grey;
-        font-size: 0.8em;
-    }
-
-    .subst {
-        text-decoration: underline;
-    }
-
-    .zone {
-        margin-bottom: 5px;
-    }
-}
-
-.choice_popup {
-    display: inline-table;
-
-    /*white-space: nowrap;*/
-}
-
-span.dipl-choice_popup:hover span.dipl-reg,
-span.dipl-choice_popup.hover span.dipl-reg {
-    display: inline;
-    min-width: 20px;
-    text-align: center;
-}
-
-span.dipl-choice_popup span.dipl-orig {
-    /*color: #999966;*/
-    color: #69513a;
-
-    /*background-color: rgba(255,255,204,0.8);*/
-}
-
-span.dipl-choice_popup:hover span.dipl-orig,
-span.dipl-choice_popup.hover span.dipl-orig {
-    color: #561c0a;
-    text-decoration: underline;
 }
