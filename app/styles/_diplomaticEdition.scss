@@ -1,15 +1,17 @@
 /* *************************** */
-/* INTERPRETATIVE EDITION      */
+/* DIPLOMATIC EDITION      */
 /* *************************** */
 
 .diplomaticEdition {
     // Abbreviations and Their Expansions
     .choice {
         > .abbr {
-            display: none;
+            display: purple;
         }
         
-        .expan {}
+        .expan {
+            display : none;
+        }
     }
 
     // Additions, Deletions, and Omissions
@@ -173,10 +175,6 @@
                 display: inline;
                 min-width: 20px;
                 text-align: center;
-            }
-
-            .sic {
-                text-decoration: underline;
             }
         }
     }
