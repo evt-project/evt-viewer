@@ -244,7 +244,7 @@ angular.module('evtviewer.dataHandler')
         var deferred = $q.defer(),
             mainUrl = config.dataUrl,
             includedFilesLoaded = 0,
-            filesToInclude = doc.getElementsByTagName('include');
+            filesToInclude = doc.getElementsByTagName('xi:include');
         mainUrl = mainUrl.substring(0, mainUrl.lastIndexOf('/') + 1);
         if (filesToInclude && filesToInclude.length > 0) {
             var totFilesToInclude = filesToInclude.length;
