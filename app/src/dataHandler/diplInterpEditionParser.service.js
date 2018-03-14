@@ -10,7 +10,9 @@
  angular.module('evtviewer.dataHandler')
 
  .service("evtDiplInterpEditionParser", function($q, parsedData, evtParser, xmlParser, config){
- 	var parser = {};
+ 	var parser = {
+ 		error:""
+ 	};
 
  	parser.parseEdition = function(doc){
  		var currentDocument = angular.element(doc);
