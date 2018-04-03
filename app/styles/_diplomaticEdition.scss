@@ -78,7 +78,7 @@
         }
 
         .expan, .corr, .reg {
-            float:left;
+            margin-left:-5%;
             font-size: 80%;
             position: absolute;
             line-height: 16px;
@@ -139,7 +139,7 @@
         &:hover, &.hover {
             .expan, .reg, .corr {
                 
-                display: inline;
+                display:inline;
                 min-width: 30px;
                 text-align: center;
                 z-index: 9;
