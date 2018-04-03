@@ -6,7 +6,7 @@
     // Abbreviations and Their Expansions
     .choice {
         > .abbr {
-            display: purple;
+            color: purple;
         }
         
         .expan {
@@ -14,18 +14,48 @@
         }
     }
 
-    // Additions, Deletions, and Omissions
+    // 3.4.3 Additions, Deletions, and Omissions
     .add {
+        background-color: #7CFC00;
+
         &[data-place='above'] {}
     }
 
-    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+    .del {
+        background-color: #FF6347;
+        text-decoration: line-through;
+    }
+
+    // 11.3.3.1 Damage, Illegibility, and Supplied Text
+    .damage {
+        background-color: rgba(193, 193, 193, 0.7);
+    }
+
+    .supplied {
+
+        border-color: #ADFF2F;
+        &[data-reason='omitted'] {}
+
+        &[data-reason='illeggibile'] {
+        }
+
+         &:before{
+            content: "[["
+        }
+
+        &:after{
+            content: "]]"
+        }
+    }
+
+
+     //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
     .glyph {
         .glyphname, .mapping {
             display: none;
         }
 
-        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+        .mapping[data-type="diplomatic"] {
             display: inline;
         }
     }
@@ -35,7 +65,7 @@
             display: none;
         }
 
-        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+        .mapping[data-type="diplomatic"] {
             display: inline;
         }
     }
@@ -47,7 +77,8 @@
             content: "";
         }
 
-        .corr, .reg {
+        .expan, .corr, .reg {
+            float:left;
             font-size: 80%;
             position: absolute;
             line-height: 16px;
@@ -87,6 +118,16 @@
             background: #e5dac4 !important;
         }
 
+        .expan {
+            &:before {
+                content: url("../images/popup_before_grey.png");
+            }
+        }
+
+        .expan, .expan * {
+            background: #E5E5E5 !important;
+        }
+
         .orig {
             color: #69513a;
 
@@ -96,16 +137,15 @@
         }
 
         &:hover, &.hover {
-            .reg, .corr {
+            .expan, .reg, .corr {
+                
                 display: inline;
                 min-width: 30px;
                 text-align: center;
                 z-index: 9;
             }
 
-            .corr {
-                @include set(transform, translate(-80%, 0));
-            }
+            
 
             .orig {
                 background-color: #FFD700;
@@ -114,6 +154,12 @@
 
         .sic {
             color: #934d4d;
+        }
+
+        &:hover, &.hover {
+            .abbr{
+            background-colo:pink;
+            }
         }
 
         &:hover, &.hover {
@@ -130,52 +176,6 @@
         .under {
             line-height: 20px;
             vertical-align: -20%;
-        }
-    }
-
-    .sic {
-        display: inline-table;
-
-        &:before, &:after {
-            content: " ";
-        }
-
-        .corr {
-            font-size: 80%;
-            position: absolute;
-            line-height: 16px;
-            display: none;
-            background: #f99069;
-            border: 1.5px solid black;
-            border-radius: 3px;
-
-            @include set(box-shadow, 2px 2px 2px #7e7067);
-
-            padding: 0.4%;
-            margin-top: 30px;
-
-            &:before {
-                content: url("../images/popup_before_corr.png");
-                left: 15%;
-                position: absolute;
-                top: -13px;
-            }
-        }
-
-        .sic {
-            color: #934d4d;
-
-            &:hover, &.hover {
-                color: #561c0a;
-            }
-        }
-
-        &:hover, &.hover {
-            .corr {
-                display: inline;
-                min-width: 20px;
-                text-align: center;
-            }
         }
     }
 

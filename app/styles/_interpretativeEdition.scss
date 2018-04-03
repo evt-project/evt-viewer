@@ -9,12 +9,41 @@
             display: none;
         }
         
-        .expan {}
+        .expan {
+            font-style: italic;
+        }
     }
 
     // Additions, Deletions, and Omissions
     .add {
+        background-color: #7CFC00;
+
         &[data-place='above'] {}
+    }
+
+    .del {
+        background-color: #FF6347;
+        text-decoration: line-through;
+    }
+
+    // 11.3.3.1 Damage, Illegibility, and Supplied Text
+
+
+    .supplied {
+
+        
+        &[data-reason='omitted'] {}
+
+        &[data-reason='illeggibile'] {
+        }
+
+        &:before{
+            content: "[["
+        }
+
+        &:after{
+            content: "]]"
+        }
     }
 
     //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
@@ -45,7 +74,7 @@
             content: "";
         }
 
-        .sic, .orig {
+        .abbr, .sic, .orig {
             font-size: 80%;
             position: absolute;
             line-height: 16px;
@@ -94,19 +123,30 @@
             }
         }
 
+        .abbr {
+            &:before {
+                content: url("../images/popup_before_grey.png");
+            }
+        }
+
+        .abbr, .abbr * {
+            background: #E5E5E5 !important;
+        }
+
         &:hover, &.hover {
-            .sic, .orig{
+            .abbr, .sic, .orig{
                 display: inline;
                 min-width: 30px;
                 text-align: center;
                 z-index: 9;
             }
 
-
+            
+            
             .reg {
                 background-color: #FFD700;
             }
-            
+
             .corr{
             background-color: #CCD700;}
 

@@ -11,7 +11,6 @@
 
  .service("evtDiplInterpEditionParser", function($q, parsedData, evtParser, xmlParser, config){
  	var parser = {
- 		error:""
  	};
 
  	parser.parseEdition = function(doc){
@@ -31,10 +30,12 @@
  		}
  		else{
  			
+ 			//TODO: create a error box
+ 			alert("Elementi non sufficienti per edizione diplomatica-interpretativa")
  			config.availableEditionLevel[0].visible=true;
  			config.availableEditionLevel[1].visible=false;
  			config.availableEditionLevel[2].visible=false;
- 			
+
  		}
 
  	}
