@@ -279,6 +279,16 @@
         margin-bottom: 8px; 
     }
 
+    //TODO: spaziatura MSDesc
+
+    .history, .handDesc, .decoDesc {
+        &:before{
+            content: "\a";
+            display: inline-block;
+            white-space: pre;
+        }
+        
+    }
     
     .msIdentifier {
         display: block;
@@ -456,19 +466,28 @@
             display:none;
         }
     }
+
+
+    //TODO : gestione titoli
     .titleStmt {
         margin-bottom: 10px;
         .title {
-            display: block;
+            display: inline;
             text-align: center;
             font-weight: bold;
             font-size: 1.2em;
             margin-bottom: 10px;
         }
         [data-type='sub']{
-            display: block;
             font-weight: bold;
             font-size: 1em;   
+        }
+        [data-type='main']{
+            margin-left:25%;
+
+            &:after{
+                content:" -";
+            }
         }
     }
     .editionStmt {

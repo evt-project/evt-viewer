@@ -16,7 +16,7 @@
 
     // 3.4.3 Additions, Deletions, and Omissions
     .add {
-        background-color: #7CFC00;
+        background-color: #00FF00;
 
         &[data-place='above'] {}
     }
@@ -33,7 +33,7 @@
 
     .supplied {
 
-        border-color: #ADFF2F;
+        background-color: #ADFF2F;
         &[data-reason='omitted'] {}
 
         &[data-reason='illeggibile'] {
