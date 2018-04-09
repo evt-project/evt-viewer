@@ -213,6 +213,9 @@ angular.module('evtviewer.buttonSwitch')
                 case 'mode-srctxt':
                     evtIcon = 'iconbis-evt_srctxt';
                     break;
+				case 'mode-viscoll':
+					evtIcon = 'iconbis-evt_srctxt';
+					break;
                 case 'mode-versions':
                     evtIcon = 'iconbis-evt_versions';
                     break;

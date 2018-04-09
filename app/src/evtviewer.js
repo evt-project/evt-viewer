@@ -29,6 +29,7 @@
  * @requires evtviewer.buttonSwitch
  * @requires evtviewer.popover
  * @requires evtviewer.namedEntity
+ * @requires evtviewer.navbar
  * @requires evtviewer.criticalApparatusEntry
  * @requires evtviewer.reading
  * @requires evtviewer.dialog
@@ -62,6 +63,7 @@ angular
 		'pascalprecht.translate',
 		'evtviewer.core',
 		'evtviewer.communication',
+		'evtviewer.navBar',
 		'evtviewer.translation',
 		'evtviewer.dataHandler',
 		'evtviewer.interface',
