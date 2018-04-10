@@ -203,7 +203,9 @@
 		"SUPPORT_DESC": "Descrizione del supporto",
 		"TEXT_CLASS": "Classificazione testuale",
 		"TEXT_LANG": "Lingua",
-		"VARIANT_ENCODING": "Codifica delle varianti"
+		"VARIANT_ENCODING": "Codifica delle varianti",
+		"FILE_DESC": "Descrizione File",
+		"BIBLIOGRAPHY": "Bibliografia"
 	},
 	"QUOTES" : {
 		"QUOTE_START": "Inizio citazione",

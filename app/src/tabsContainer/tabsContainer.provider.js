@@ -191,7 +191,7 @@ angular.module('evtviewer.tabsContainer')
 						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
 						tabs.bibliography = {
 							label: 'Bibliography',
-							name: 'bibliography',
+							name: 'BIBLIOGRAPHY',
 							content: bibliographyContent || noContent,
 							scrollDisabled: true
 						};

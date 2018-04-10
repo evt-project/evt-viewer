@@ -253,15 +253,18 @@
     position: relative;
 }
 .list{
+    margin-top:1.5%;
+    margin-bottom:1.5%;
+    margin-left:2%;
+    display:block;
+
     .item {
-        display: block;
-        &:before{
-            content : "\2022";
-            margin-right: 10px;
-            margin-left: 10px;
+        display: list-item;
+        position: relative;
+        left: 20px;
         }
     }
-}
+
 
 .listChange {
     .change {
@@ -471,6 +474,8 @@
     //TODO : gestione titoli
     .titleStmt {
         margin-bottom: 10px;
+        margin-left:25%;
+
         .title {
             display: inline;
             text-align: center;
@@ -483,8 +488,7 @@
             font-size: 1em;   
         }
         [data-type='main']{
-            margin-left:25%;
-
+            
             &:after{
                 content:" -";
             }
