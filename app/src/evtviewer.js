@@ -19,6 +19,7 @@
  * @requires {@link https://github.com/krtnio/angular-pretty-xml prettyXml}
  * @requires {@link https://sroze.github.io/ngInfiniteScroll/documentation.html infinite-scroll}
  * @requires {@link https://angular-translate.github.io/docs/#/api pascalprecht.translate}
+ * @requires {@link https://github.com/angular-slider/angularjs-slider}
  * @requires evtviewer.core
  * @requires evtviewer.communication
  * @requires evtviewer.translation
@@ -54,6 +55,7 @@ angular
 		'ngMessages',
 		'ngResource',
 		'ngSanitize',
+		'rzModule',
 		'ngTouch',
 		'templates-main', 
 		'ngRoute',

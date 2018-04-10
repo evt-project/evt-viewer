@@ -1,4 +1,9 @@
 <span>
 <!--inserire le cose del directive.tmpl -->
-NavBar works!!
+<div>
+    <div ng-controller="NavbarCtrl as vm">
+        <p>Page: {{vm.pageSlider.value}}</p>
+        <rzslider rzslider-model="vm.pageSlider.value" rzslider-options="vm.pageSlider.options"></rzslider>
+    </div>
+</div>
 </span>
