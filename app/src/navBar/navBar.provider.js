@@ -31,6 +31,11 @@ angular.module('evtviewer.navBar')
         
         var number = 0;
 		
+        var destroy = function() {
+            var tempId = this.uid;
+            // this.$destroy();
+            navBar.destroy(tempId);
+        };
 		// 
         // navBar builder
         // 
@@ -43,105 +48,47 @@ angular.module('evtviewer.navBar')
          * <p>This method will extend the scope of {@link evtviewer.navBar.directive:evtNavbar evtNavbar} directive 
          * according to selected configurations.</p>
          *
-         * @param {string} id string representing the id of scope navBar
          * @param {Object} scope initial scope of the directive
          *
          * @returns {Object} extended scope:
-            <pre>
-                var scopeHelper = {
-                    // expansion
-                    uid,
-                    scopeWit,
-                    appId,
-                    parentAppId,
-                    readingId,
-                    readingType,
-                    variance,
-                    type,
-                    attributes,
-                    exponent,
-                    showExponent,
-
-                    over,
-                    apparatus: {
-                        opened,
-                        content,
-                        _loaded,
-                        _subContentOpened,
-                        inline
-                    },
-                    selected,
-                    openTriggerEvent,
-                    defaults
-                };
-            </pre>
          */
-        navBar.build = function(id, scope) {
-            var currentId  = idx++,
-                entryId    = id || undefined,
-                attributes = '',
-                parentEntryId,
-                showExponent = config.showReadingExponent;
+        navBar.build = function(scope) {
+            var currentId  = idx++;
             var scopeHelper = {};
             
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
             
-            var exponent = parsedData.getCriticalEntryExponent(scope.appId);
-
-            if (scope.readingId !== undefined){
-                var aAttributes = parsedData.getReadingAttributes(scope.readingId, id) || [];
-                for (var attr in aAttributes) {
-                    if (attr !== 'wit' && attr !== 'xml:id'){
-                        attributes += attr.toUpperCase()+': '+aAttributes[attr]+' - ';
-                    }
+            var pageSlider = {
+                value: 150,
+                options: {
+                    floor: 0,
+                    ceil: 450
                 }
-                if (attributes !== '') {
-                    attributes = attributes.slice(0, -3);
-                }
-            }
-            var appObj = parsedData.getCriticalEntryById(entryId);
-            if (appObj && appObj._subApp) {
-                parentEntryId = appObj._indexes._parentEntry || '';
-            }
+            };
 
             scopeHelper = {
-                // expansion
-                uid              : currentId,
-                scopeWit         : scope.scopeWit || '',
-                appId            : entryId,
-                parentAppId      : parentEntryId,
-                readingId        : scope.readingId,
-                firstPage        : scope.firstPage,
-                lastPage         : scope.lastPage,
-                currentPage      : scope.currentPage,
-                attributes       : attributes,
-                exponent         : exponent,
-                showExponent     : showExponent,
+                // Scope expansion
+                uid: currentId,
+                pageSlider: pageSlider,
 
-                over             : false,
-                apparatus        : {
-                    opened            : false,
-                    content           : {},
-                    _loaded           : false,
-                    _subContentOpened : 'criticalNote',
-                    inline            : scope.inlineApparatus
-                },
-                selected         : entryId === reading.getCurrentAppEntry(),
-                openTriggerEvent : angular.copy(defaults.openTriggerEvent),
-                defaults         : angular.copy(defaults)
+                // Functions
+                destroy: destroy
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
             list.push({
-                id: currentId,
-                entryId: entryId
+                id: currentId
             });
 
             return collection[currentId];
         };
 		
+        navBar.destroy = function(tempId) {
+            delete collection[tempId];
+        };
+
         //le varie cose da far fare al provider sono da mettere qua
         return navBar;
     };

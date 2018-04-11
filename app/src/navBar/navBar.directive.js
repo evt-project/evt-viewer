@@ -26,30 +26,21 @@ angular.module('evtviewer.navBar')
     return {
         restrict: 'E',
         scope: {
-            appId       : '@',
-            readingId   : '@',
-            currentPage : '@',
-            firstPage   : '@',
-            lastPage    : '@'
+          // Insert here scope properties to be passed from HTML attributes
         },
         transclude: true,
         templateUrl: 'src/navBar/navBar.directive.tmpl.html',
         controllerAs: 'vm',
         controller: 'NavbarCtrl',
         link: function(scope, element, attrs){
-            // Initialize reading
-            scope.currentViewMode = evtInterface.getState('currentViewMode');
-            scope.inlineApparatus = evtInterface.isCriticalApparatusInline();
-            //var currentReading = evtReading.build(scope.appId, scope);
-            //if (scope.inlineApparatus && evtInterface.getState('currentAppEntry') === scope.appId) {
-               // currentReading.openApparatus();
-           // }
+            var currentNavbar = evtNavbar.build(scope);
+
             // Garbage collection
-          //  scope.$on('$destroy', function() {
-              //  if (currentReading){
-              //      currentReading.destroy();
-               // }     
-            //};
+            scope.$on('$destroy', function() {
+              if (currentNavbar) {
+                currentNavbar.destroy();
+              }     
+            });
         }
     };
 });

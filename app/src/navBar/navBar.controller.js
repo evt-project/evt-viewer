@@ -9,18 +9,10 @@
  * @requires $scope
  * @requires evtviewer.core.config
  * @requires evtviewer.navBar.evtNavbar
- * @requires evtviewer.popover.evtPopover
- * @requires evtviewer.dataHandler.baseData
- * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.dataHandler.evtCriticalApparatusParser
- * @requires evtviewer.interface.evtInterface
- * @requires evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
- * @requires evtviewer.apparatuses.evtApparatuses
- * @requires evtviewer.box.evtBox
 **/
 angular.module('evtviewer.navBar')
 
-.controller('NavbarCtrl', function(config, $log, $scope, evtReading, parsedData, evtPopover, evtCriticalApparatusParser, baseData, evtInterface, evtCriticalApparatusEntry, evtApparatuses, evtBox) {
+.controller('NavbarCtrl', function(config, $log, $scope, evtNavbar) {
     var vm = this;
     
     var _console = $log.getInstance('navBar');

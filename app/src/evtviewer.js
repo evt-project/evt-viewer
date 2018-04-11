@@ -59,6 +59,7 @@ angular
 		'ngTouch',
 		'templates-main', 
 		'ngRoute',
+		'rzModule',
 		'xml',
 		'prettyXml',
 		'infinite-scroll',
