@@ -235,7 +235,6 @@ angular.module('evtviewer.dataHandler')
 							var labelElement = document.createElement('span'),
 								addLabel = false;
 							labelElement.className = 'label-' + element.tagName;
-							console.log("QUI ALE");
 							labelElement.innerHTML = '{{ \'PROJECT_INFO.' + parser.camelToUnderscore(element.tagName).toUpperCase() + '\' | translate }}';
 							if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
 								labelElement.className += ' projectInfo-sectionHeader';

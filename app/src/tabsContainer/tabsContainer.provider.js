@@ -135,7 +135,7 @@ angular.module('evtviewer.tabsContainer')
 					var fileDescriptionContent = parsedData.getProjectInfo().fileDescription || '';
 					if (fileDescriptionContent && fileDescriptionContent !== '') {
 						tabs.fileDescription = {
-							label: 'File Description',
+							label: 'PROJECT_INFO.FILE_DESCRIPTION',
 							name: 'fileDescription',
 							content: fileDescriptionContent || noContent
 						};
@@ -146,7 +146,7 @@ angular.module('evtviewer.tabsContainer')
 					var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
 					if (encodingDescriptionContent && encodingDescriptionContent !== '') {
 						tabs.encodingDescription = {
-							label: 'Encoding Description',
+							label: 'PROJECT_INFO.ENCODING_DESCRIPTION',
 							name: 'encodingDescription',
 							content: encodingDescriptionContent || noContent
 						};
@@ -157,7 +157,7 @@ angular.module('evtviewer.tabsContainer')
 					var textProfileContent = parsedData.getProjectInfo().textProfile || '';
 					if (textProfileContent && textProfileContent !== '') {
 						tabs.textProfile = {
-							label: 'Text Profile',
+							label: 'PROJECT_INFO.TEXT_PROFILE',
 							name: 'textProfile',
 							content: textProfileContent || noContent
 						};
@@ -168,7 +168,7 @@ angular.module('evtviewer.tabsContainer')
 					var outsideMetadataContent = parsedData.getProjectInfo().outsideMetadata || '';
 					if (outsideMetadataContent && outsideMetadataContent !== '') {
 						tabs.outsideMetadata = {
-							label: 'Outside Metadata',
+							label: 'PROJECT_INFO.OUTSIDE_METADATA',
 							name: 'outsideMetadata',
 							content: outsideMetadataContent || noContent
 						};
@@ -179,7 +179,7 @@ angular.module('evtviewer.tabsContainer')
 					var revisionHistoryContent = parsedData.getProjectInfo().revisionHistory || '';
 					if (revisionHistoryContent && revisionHistoryContent !== '') {
 						tabs.revisionHistory = {
-							label: 'Revision History',
+							label: 'PROJECT_INFO.REVISION_HISTORY',
 							name: 'revisionHistory',
 							content: revisionHistoryContent || noContent
 						};
@@ -190,8 +190,8 @@ angular.module('evtviewer.tabsContainer')
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
 						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
 						tabs.bibliography = {
-							label: 'Bibliography',
-							name: 'BIBLIOGRAPHY',
+							label: 'PROJECT_INFO.BIBLIOGRAPHY',
+							name: 'bibliography',
 							content: bibliographyContent || noContent,
 							scrollDisabled: true
 						};
@@ -215,8 +215,9 @@ angular.module('evtviewer.tabsContainer')
 						};
 					}
 					break;
-			}
 
+			}
+			
 			var subContentOpened = tabs._indexes.length > 0 ? tabs._indexes[0] : '';
 
 			scopeHelper = {

@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/CodicePelavicino.xml",
+	"dataUrl": "data/Avicenna.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl" : "data/sources/",

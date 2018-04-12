@@ -10,6 +10,7 @@
             ng-class="{'active' : vm.subContentOpened === tab }">
             <i ng-if="::vm.tabs[tab].icon" class="fa {{::vm.tabs[tab].icon}} evt-tabs-container_header-icon"></i>
             {{ ::vm.tabs[tab].label | translate }}
+            {{DIALOGS._BOOKMARK | translate}}
         </span>
     </div>
     <div 

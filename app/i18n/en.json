@@ -203,7 +203,13 @@
 		"STD_VALS": "Standard values",
 		"TEXT_CLASS": "Text classification",
 		"TEXT_LANG": "Language",
-		"VARIANT_ENCODING": "Variant encoding"
+		"VARIANT_ENCODING": "Variant encoding",
+		"FILE_DESCRIPTION": "File Description",
+		"BIBLIOGRAPHY": "Bibliography",
+		"REVISION_HISTORY": "Revision History",
+		"ENCODING_DESCRIPTION": "Encoding Description",
+		"TEXT_PROFILE": "Text Profile",
+		"OUTSIDE_METADATA": "Outside Metadata"
 	},
 	"QUOTES" : {
 		"QUOTE_START": "Quote start",
