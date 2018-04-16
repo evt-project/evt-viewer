@@ -9,10 +9,11 @@
  * @requires $scope
  * @requires evtviewer.core.config
  * @requires evtviewer.navBar.evtNavbar
+ * @requires evtviewer.parsedData
 **/
 angular.module('evtviewer.navBar')
 
-.controller('NavbarCtrl', function(config, $log, $scope, evtNavbar) {
+.controller('NavbarCtrl', function(config, $log, $scope, evtNavbar, parsedData) {
     var vm = this;
     
     var _console = $log.getInstance('navBar');

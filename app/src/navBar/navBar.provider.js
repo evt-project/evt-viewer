@@ -60,11 +60,12 @@ angular.module('evtviewer.navBar')
                 return;
             }
             
+			var ceilSlider = parsedData.getPages[length];
             var pageSlider = {
-                value: 150,
+                value: 0,
                 options: {
                     floor: 0,
-                    ceil: 450
+                    ceil: ceilSlider,
                 }
             };
 
