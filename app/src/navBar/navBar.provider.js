@@ -8,6 +8,7 @@
  * {@link evtviewer.navBar.directive:evtNavbar evtNavbar} directive 
  * and stores its reference untill the directive remains instantiated.
  *
+ * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
 **/
@@ -23,7 +24,7 @@ angular.module('evtviewer.navBar')
 
     var currentAppEntry = '';
 	
-	this.$get = function(config, parsedData) {
+	this.$get = function(config, parsedData, evtInterface) {
         var navBar     = {},
             collection = {},
             list       = [],
@@ -61,6 +62,9 @@ angular.module('evtviewer.navBar')
             }
             
 			var ceilSlider = parsedData.getPages[length];
+			var currentDoc = evtInterface.getState('currentDoc');
+			var currentPage = evtInterface.getState('currentPage');
+			var pager = parsedData.addPage(currentPage, currentDoc);
             var pageSlider = {
                 value: 0,
                 options: {
