@@ -64,31 +64,35 @@ angular.module('evtviewer.navBar')
             
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
-			var pagesCollection = [];
-				parsedData.addPage('currentPage', doc);
-			angular.forEach(pagesCollection, function(pageId, page) {
-				parsedData.getPages.push(page + ': ' + pageId);
-			});
+			
+            var pagesCollection = parsedData.getPages();
+            console.log(pagesCollection);
+            
 			//var insertPage = parsedData.addPage('currentPage', doc);
-			var ceilSlider = pagesCollection[length];
+			console.log(pagesCollection[length]);
             var pageSlider = {
                 value: 0,
                 options: {
                     floor: 0,
-                    ceil: parsedData.getPages[length],
+                    ceil: pagesCollection ? pagesCollection.length : 0,
                 }
+            };
+
+            var updateOptions = function(options) {
+                var vm = this;
+                vm.pageSlider.options = options;
             };
 
             scopeHelper = {
                 // Scope expansion
                 uid: currentId,
                 pageSlider: pageSlider,
-				ceilSlider: ceilSlider,
 				pagesCollection: pagesCollection,
 				page: page,
 				doc: doc,
 
                 // Functions
+                updateOptions: updateOptions,
                 destroy: destroy
             };
 

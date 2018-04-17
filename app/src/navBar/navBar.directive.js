@@ -35,11 +35,24 @@ angular.module('evtviewer.navBar')
         link: function(scope, element, attrs){
             var currentNavbar = evtNavbar.build(scope);
 
+            scope.$watch(function() {
+                return parsedData.getPages();
+            }, function(newCollection, oldCollection) {
+                if (oldCollection !== newCollection) {
+                    var options = {
+                      floor: 0,
+                      ceil: newCollection ? newCollection.length : 0
+                    };
+                    console.log(options);
+                    currentNavbar.updateOptions(options);
+                }
+            }, true);
+
             // Garbage collection
             scope.$on('$destroy', function() {
               if (currentNavbar) {
                 currentNavbar.destroy();
-              }     
+              }
             });
         }
     };
