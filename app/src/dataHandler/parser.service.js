@@ -284,7 +284,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-        if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
+        if (element.nodeType === 3 || (element.innerHTML === '') || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
 			return newElement;
 		} else {
 			return document.createTextNode('');
