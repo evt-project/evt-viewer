@@ -66,10 +66,8 @@ angular.module('evtviewer.navBar')
 			var page = evtInterface.getState('currentPage');
 			
             var pagesCollection = parsedData.getPages();
-            console.log(pagesCollection);
             
 			//var insertPage = parsedData.addPage('currentPage', doc);
-			console.log(pagesCollection[length]);
             var pageSlider = {
                 value: 0,
                 options: {
