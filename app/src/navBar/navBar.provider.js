@@ -8,6 +8,7 @@
  * {@link evtviewer.navBar.directive:evtNavbar evtNavbar} directive 
  * and stores its reference untill the directive remains instantiated.
  *
+ * @requires $log
  * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
@@ -24,7 +25,7 @@ angular.module('evtviewer.navBar')
 
     var currentAppEntry = '';
 	
-	this.$get = function(config, parsedData, evtInterface) {
+	this.$get = function($log, config, parsedData, evtInterface) {
         var navBar     = {},
             collection = {},
             list       = [],
@@ -61,15 +62,20 @@ angular.module('evtviewer.navBar')
                 return;
             }
             
-			var ceilSlider = parsedData.getPages[length];
-			var currentDoc = evtInterface.getState('currentDoc');
-			var currentPage = evtInterface.getState('currentPage');
-			var pager = parsedData.addPage(currentPage, currentDoc);
+			var doc = evtInterface.getState('currentDoc');
+			var page = evtInterface.getState('currentPage');
+			var pagesCollection = [];
+				parsedData.addPage('currentPage', doc);
+			angular.forEach(pagesCollection, function(pageId, page) {
+				parsedData.getPages.push(page + ': ' + pageId);
+			});
+			//var insertPage = parsedData.addPage('currentPage', doc);
+			var ceilSlider = pagesCollection[length];
             var pageSlider = {
                 value: 0,
                 options: {
                     floor: 0,
-                    ceil: ceilSlider,
+                    ceil: parsedData.getPages[length],
                 }
             };
 
@@ -77,6 +83,10 @@ angular.module('evtviewer.navBar')
                 // Scope expansion
                 uid: currentId,
                 pageSlider: pageSlider,
+				ceilSlider: ceilSlider,
+				pagesCollection: pagesCollection,
+				page: page,
+				doc: doc,
 
                 // Functions
                 destroy: destroy
