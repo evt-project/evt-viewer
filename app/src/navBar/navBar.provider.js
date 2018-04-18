@@ -80,7 +80,14 @@ angular.module('evtviewer.navBar')
                 var vm = this;
                 vm.pageSlider.options = options;
             };
-
+			
+			var connection = function(page, pageslider){
+				if (page.value === pageslider.value){
+					return;
+				} else page.value = pageslider.value;
+			}
+			
+				
             scopeHelper = {
                 // Scope expansion
                 uid: currentId,
@@ -91,7 +98,8 @@ angular.module('evtviewer.navBar')
 
                 // Functions
                 updateOptions: updateOptions,
-                destroy: destroy
+                destroy: destroy,
+				connection: connection,
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
