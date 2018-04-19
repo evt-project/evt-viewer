@@ -75,17 +75,25 @@ angular.module('evtviewer.navBar')
                     ceil: pagesCollection ? pagesCollection.length : 0,
                 }
             };
+			
+			var connection = function(page){
+				var vm = this;
+				evtInterface.getState('currentPage');
+				if (vm.pageId !== pageSlider.value){
+					vm.pageId = pageSlider.value;
+					evtInterface.updateState('currentPage');
+				}
+			};
 
             var updateOptions = function(options) {
                 var vm = this;
                 vm.pageSlider.options = options;
             };
 			
-			var connection = function(page, pageslider){
-				if (page.value === pageslider.value){
-					return;
-				} else page.value = pageslider.value;
-			}
+			var updateValue = function(value) {
+				var vm = this;
+				vm.pageSlider.value = value;
+			};
 			
 				
             scopeHelper = {
@@ -98,6 +106,7 @@ angular.module('evtviewer.navBar')
 
                 // Functions
                 updateOptions: updateOptions,
+				updateValue: updateValue,
                 destroy: destroy,
 				connection: connection,
             };
