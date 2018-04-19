@@ -48,6 +48,7 @@ angular.module('evtviewer.navBar')
                 }
             }, true);
 			
+			
 			scope.$watch("pageSlider".value,  function(newValue, oldValue) {
 					if (oldValue !== newValue) {
 						var value = {
