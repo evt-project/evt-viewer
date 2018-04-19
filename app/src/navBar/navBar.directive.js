@@ -47,6 +47,16 @@ angular.module('evtviewer.navBar')
                     currentNavbar.updateOptions(options);
                 }
             }, true);
+			
+			scope.$watch("pageSlider".value,  function(newValue, oldValue) {
+					if (oldValue !== newValue) {
+						var value = {
+							value: newValue
+						};
+						console.log(value);
+						currentNavbar.updateValue(value);
+					}
+				}, true);
 
             // Garbage collection
             scope.$on('$destroy', function() {

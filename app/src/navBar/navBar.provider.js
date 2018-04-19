@@ -76,14 +76,23 @@ angular.module('evtviewer.navBar')
                 }
             };
 			
-			var connection = function(page){
-				var vm = this;
-				evtInterface.getState('currentPage');
-				if (vm.pageId !== pageSlider.value){
-					vm.pageId = pageSlider.value;
-					evtInterface.updateState('currentPage');
+			
+			var connection = function(page, pageSlider){
+				var slider = pageSlider.value;
+				var pageId = page.pageId;
+				if(pageId !== slider){
+					mainInterface.updateState('currentPage', slider);
 				}
 			};
+			
+			//var connection = function(page){
+				//var vm = this;
+				//evtInterface.getState('currentPage');
+				//if (vm.pageId !== pageSlider.value){
+					//vm.pageId = pageSlider.value;
+					//evtInterface.updateState('currentPage');
+				//}
+			//};
 
             var updateOptions = function(options) {
                 var vm = this;
