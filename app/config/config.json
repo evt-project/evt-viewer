@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/prova.xml",
+	"dataUrl": "data/rotoloSanTeobaldo.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -46,7 +46,7 @@
                                 "visible"  : true
                             }],
     "defaultEdition": "interpretative",
-    "showEditionLevelSelector": false,
+    "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{
         "value": "critical",
@@ -57,7 +57,7 @@
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",

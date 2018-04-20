@@ -10,7 +10,16 @@
             id: "osd_img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
             tileSources: "data/tails/scaled_70_verticale.dzi",
-             /*tileSources: ["data/bellinidzi/4-26giugno1834a.dzi",
+            //tileSources: "data/test-img/quamusdzi/QuamusImgManuscript.dzi", // immagine per Marocco
+            //overlays: [{
+            //    id: 'example-overlay',
+            //    x: 0.03,
+            //    y: 0.20,
+            //    width: 0.15,
+            //    height: 0.45,
+            //    className: 'nohighlight'
+            //}],            
+            /*tileSources: ["data/bellinidzi/4-26giugno1834a.dzi", // immagini per bellini
                             "data/bellinidzi/4-26giugno1834b.dzi"],
             
                             overlays: [{
@@ -24,15 +33,15 @@
     
             //sequenceMode: true,
             //degrees:90,
-            //showRotationControl: true,                
+            showRotationControl: true,                
             showNavigator: true,
             //navigatorId: "navscroll",
-            visibilityRatio: 1,
+            visibilityRatio: 0.8,
             defaultZoomLevel: 1,
             panHorizontal: true,
             constrainDuringPan: true,
-            minZoomLevel: 1,
-            //maxZoomLevel: 4.0,
+            minZoomLevel: 0.8,
+            maxZoomLevel: 4.0,
     
             wrapVertical: false,
             navigatorPosition: "ABSOLUTE",
