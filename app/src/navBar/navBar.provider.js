@@ -77,31 +77,18 @@ angular.module('evtviewer.navBar')
             };
 			
 			
-			var connection = function(page, pageSlider){
-				var slider = pageSlider.value;
-				var pageId = page.pageId;
-				if(pageId !== slider){
-					mainInterface.updateState('currentPage', slider);
-				}
-			};
-			
-			//var connection = function(page){
-				//var vm = this;
-				//evtInterface.getState('currentPage');
-				//if (vm.pageId !== pageSlider.value){
-					//vm.pageId = pageSlider.value;
-					//evtInterface.updateState('currentPage');
-				//}
-			//};
-
-            var updateOptions = function(options) {
+			var updateOptions = function(options) {
                 var vm = this;
                 vm.pageSlider.options = options;
             };
 			
-			var updateValue = function(value) {
+			var updatePage = function(value) {
 				var vm = this;
-				vm.pageSlider.value = value;
+				var pageId = vm.pagesCollection[value];
+                evtInterface.updateState('currentPage', pageId);
+                //TODO: Check if document is the new page is still part of the current document
+                // otherwise update currentDoc too (see 'page' callback in select.provider)
+                evtInterface.updateUrl();
 			};
 			
 				
@@ -115,9 +102,8 @@ angular.module('evtviewer.navBar')
 
                 // Functions
                 updateOptions: updateOptions,
-				updateValue: updateValue,
-                destroy: destroy,
-				connection: connection,
+				updatePage: updatePage,
+                destroy: destroy
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
