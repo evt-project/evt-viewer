@@ -12,6 +12,7 @@
  * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
+ * @requires evtviewer.select.evtSelect
 **/
 angular.module('evtviewer.navBar')
 
@@ -25,7 +26,7 @@ angular.module('evtviewer.navBar')
 
     var currentAppEntry = '';
 	
-	this.$get = function($log, config, parsedData, evtInterface) {
+	this.$get = function($log, config, parsedData, evtInterface, evtSelect) {
         var navBar     = {},
             collection = {},
             list       = [],
@@ -61,11 +62,14 @@ angular.module('evtviewer.navBar')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-            
-			var doc = evtInterface.getState('currentDoc');
+			
+			var doc = {
+				value: evtInterface.getState('currentDoc')
+			};
 			var page = evtInterface.getState('currentPage');
 			
             var pagesCollection = parsedData.getPages();
+			var documentsCollection = parsedData.getDocuments();
             
 			//var insertPage = parsedData.addPage('currentPage', doc);
             var pageSlider = {
@@ -82,26 +86,39 @@ angular.module('evtviewer.navBar')
                 vm.pageSlider.options = options;
             };
 			
-			var updatePage = function(value) {
+			var updatePage = function(value, docId) {
 				var vm = this;
 				var pageId = vm.pagesCollection[value];
-                evtInterface.updateState('currentPage', pageId);
+                var page = evtInterface.updateState('currentPage', pageId);
                 //TODO: Check if document is the new page is still part of the current document
                 // otherwise update currentDoc too (see 'page' callback in select.provider)
-                evtInterface.updateUrl();
+				evtInterface.updateUrl();
 			};
 			
+			var updateDocument = function(value){
+				var vm = this;
+				var pageId = vm.pagesCollection[value];
+				var currentDocument = evtInterface.getState('currentDoc');
+				var page = evtInterface.getState('currentPage', pageId);
+				var docs = vm.documentsCollection[value];
+				if (page.docs.length > 0 && page.docs.indexOf(currentDocument) < 0) { // page not part of the document
+					evtInterface.updateState('currentDoc', page.docs[0]);
+				}
+				evtInterface.updateUrl();
+			};
 				
             scopeHelper = {
                 // Scope expansion
                 uid: currentId,
                 pageSlider: pageSlider,
 				pagesCollection: pagesCollection,
+				documentsCollection: documentsCollection,
 				page: page,
 				doc: doc,
 
                 // Functions
                 updateOptions: updateOptions,
+				updateDocument: updateDocument,
 				updatePage: updatePage,
                 destroy: destroy
             };
