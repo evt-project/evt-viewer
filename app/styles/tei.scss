@@ -598,3 +598,93 @@
     font-weight: bolder;
     font-style: italic;
 }
+
+
+.gap{
+    &[data-unit="chars"]{
+
+        &[data-quantity='1']{
+            &:before{
+                content: "[."
+            }
+            &:after{
+            content: "]"}
+            }
+
+        &[data-quantity='2']{
+            &:before{
+                content: "[.."
+            }
+            &:after{
+            content: "]"}
+            }
+
+        &[data-quantity='3']{
+            &:before{
+                content: "[..."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='4']{
+            &:before{
+                content: "[...."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='5']{
+            &:before{
+                content: "[....."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='6']{
+            &:before{
+                content: "[......"
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='7']{
+            &:before{
+                content: "[......."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='8']{
+            &:before{
+                content: "[........"
+            }
+            &:after{
+            content: "]"}
+            }
+
+        &[data-quantity='unknown']{
+            &:before{
+                content: "[..."
+            }
+            &:after{
+            content: "]"}
+            }   
+
+        &[data-extent]{
+                &:before{
+                    content: "[***]"
+                }
+            }
+        }
+   
+}
