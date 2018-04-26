@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox, evtSearch) {
+	this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox, evtSearchResults, evtSearchResultsProvider) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -604,37 +604,52 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateUrl();
 					};
 					break;
-				case 'search':
-					callback = function() {
-					   scope.$parent.vm.doSearchCallback();
-					};
-					break;
+            case 'search':
+               callback = function() {
+                  scope.$parent.$parent.$$childHead.vm.placeholder = '';
+                  var inputValue = scope.$parent.vm.searchInput;
+                  scope.$parent.vm.searchedTerm = inputValue;
+                  
+                  var input = {
+                     '': function() {
+                        scope.$parent.$parent.$$childHead.vm.visibleRes = [];
+                        scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
+                     },
+                     'default': function() {
+                        var results = evtSearchResults.getSearchResults(inputValue);
+                        //TODO need refactoring
+                        scope.$parent.$parent.$$childHead.vm.currentEditionResults = evtSearchResults.getCurrentEditionResults(results, scope.$parent.$parent.$$childHead.vm.currentEdition);
+                        scope.$parent.$parent.$$childHead.vm.visibleRes = evtSearchResults.getVisibleResults(scope.$parent.$parent.$$childHead.vm.currentEditionResults);
+                     }
+                  };
+                  
+                  (input[inputValue] || input['default'])()
+                  evtSearchResultsProvider.openBox('searchResults');
+                  evtSearchResultsProvider.showSearchResultsHideBtn();
+               };
+               break;
             case 'searchResultsShow':
                callback = function() {
-                  var msg;
-                  if(scope.$parent.vm.searchResults === '') {
-                     msg = 'Enter your query into the search box above';
-                     scope.$parent.vm.searchResults = msg;
-                  }
-                  evtSearchBox.openBox('searchResults');
-                  evtSearchBox.toggleSearchResults();
+                  scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
+                  evtSearchResultsProvider.toggleSearchResults();
                };
                break;
             case 'searchResultsHide':
                callback = function() {
-                  evtSearchBox.closeBox('searchResults');
-                  evtSearchBox.toggleSearchResults();
+                  evtSearchResultsProvider.toggleSearchResults();
                };
                break;
-            case 'searchTools':
+            case 'searchToolsInternal':
                callback = function(){
-                 evtSearchBox.toggleBox('searchBox');
-                 evtSearchBox.closeBox('searchResults');
-                 evtSearchBox.showSearchResultsShowBtn();
+                  evtSearchBox.toggleBox('searchBox');
+                  evtSearchResultsProvider.closeBox('searchResults');
+                  evtSearchResultsProvider.showSearchResultsShowBtn();
                };
-               /*fakeCallback = function() {
-					   return callback();
-					};*/
+               break;
+            case 'searchToolsExternal':
+               callback = function() {
+                  window.alert('External position coming soon!');
+               };
                break;
 				case 'share':
 					callback = function() {

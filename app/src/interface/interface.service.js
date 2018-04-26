@@ -29,7 +29,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtSearchParser, evtSearchIndex, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, baseData, evtParser, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -235,12 +235,7 @@ angular.module('evtviewer.interface')
 
                 var promises = [];
                 var doc = baseData.getXML();
-                // Parse Glyphs
-                 evtParser.parseGlyphs(doc, mainInterface.getState('currentEdition'));
-                 // Init search
-                 var parsedDocs = evtSearchParser.parseDocument(doc, mainInterface.getState('currentEdition'));
-                 evtSearchIndex.createIndex(parsedDocs);
-
+                
                 var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                 if (currentDocFirstLoad !== undefined) {
 

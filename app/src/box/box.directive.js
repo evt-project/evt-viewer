@@ -415,13 +415,13 @@ angular.module('evtviewer.box')
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     currentBox.updateContent();
-                    
-                    $timeout(function() {
-                       var searchInput = evtSearchBox.getInputvalue();
-                       if(searchInput !== '') {
-                          evtSearchResults.highlightSearchResults(searchInput);
-                       }
-                    });
+   
+                   $timeout(function() {
+                      var searchInput = evtSearchBox.getInputValue();
+                      if(searchInput !== '') {
+                         evtSearchResults.highlightSearchResults(searchInput);
+                      }
+                   });
                 }, true);
             }
 

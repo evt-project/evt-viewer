@@ -1,5 +1,4 @@
 /*jshint camelcase: false */
-/*jshint camelcase: false */
 'use strict';
 
 // # Globbing
@@ -116,8 +115,8 @@ module.exports = function (grunt) {
       },*/
       webpack: {
         files: ['<%= yeoman.app %>/src/dataHandler/search/searchIndex.service.js',
-                '<%= yeoman.app %>/src/dataHandler/search/search.service.js',
-                '<%= yeoman.app %>/src/dataHandler/search/searchResults.service.js'],
+               '<%= yeoman.app %>/src/dataHandler/search/searchQuery.service.js',
+               '<%= yeoman.app %>/src/dataHandler/search/searchResults.service.js'],
          tasks: ['webpack']
       },
       // gruntfile: {
@@ -558,7 +557,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
-      /*'babel',*/
+      /*babel*/
       'webpack',
       'connect:livereload',
       'watch'

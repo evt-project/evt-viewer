@@ -1,137 +1,135 @@
 var lunr = require('lunr');
 
 angular.module('evtviewer.dataHandler')
-
-.service('evtSearchIndex', function Index() {
-   this.index = [];
-   
-   function map(doc) {
-      var document = {
-         doc: doc.doc,
-         page: doc.page,
-         line: doc.line,
-         diplomaticText: doc.text.diplomatic,
-         interpretativeText: doc.text.interpretative
-      };
-      return document;
-   }
-   
-   function addLineMetadata(builder, parsedDocs) {
+   .service('evtSearchIndex', function Index() {
+      this.index = {};
       
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['line'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].line;
-         return token;
-      };
-      
-      lunr.Pipeline.registerFunction(pipelineFunction, 'line');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('line');
-   }
-   
-   function addLineIdMetadata(builder, parsedDocs) {
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['lineId'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].lineId;
-         return token;
+      Index.prototype.createIndex = function (parsedElementsForIndexing) {
+         console.time('INDEX');
+         var document;
+         this.index = lunr(function () {
+            this.pipeline.remove(lunr.trimmer);
+            this.pipeline.remove(lunr.stemmer);
+            this.pipeline.remove(lunr.stopWordFilter);
+            
+            this.ref('xmlDocId');
+            this.field('diplomaticText');
+            this.field('interpretativeText');
+            this.use(addDocTitleMetadata, parsedElementsForIndexing);
+            this.use(addDocIdMetadata, parsedElementsForIndexing);
+            this.use(addParagraphMetadata, parsedElementsForIndexing);
+            this.use(addPageMetadata, parsedElementsForIndexing);
+            this.use(addPageIdMetadata, parsedElementsForIndexing);
+            this.use(addLineMetadata, parsedElementsForIndexing);
+            this.use(addLineIdMetadata, parsedElementsForIndexing);
+            this.metadataWhitelist = ['xmlDocTitle', 'xmlDocId', 'paragraph', 'page', 'pageId', 'line', 'lineId'];
+            
+            for (var i in parsedElementsForIndexing) {
+               document = map(parsedElementsForIndexing[i]);
+               this.add(document);
+            }
+         });
+         console.timeEnd('INDEX');
+         return this.index;
       };
       
-      lunr.Pipeline.registerFunction(pipelineFunction, 'lineId');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('lineId');
-   }
-   
-   function addPageMetadata(builder, parsedDocs) {
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['page'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].page;
-         return token;
+      Index.prototype.getIndex = function () {
+         return this.index;
       };
       
-      lunr.Pipeline.registerFunction(pipelineFunction, 'page');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('page');
-   }
-   
-   function addPageIdMetadata(builder, parsedDocs) {
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['pageId'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].pageId;
-         return token;
-      };
+      // serve per dire all'indice dove si trovano i campi nella mia struttura
+      function map(xmlDoc) {
+         var document = {
+            xmlDocId: xmlDoc.xmlDocId,
+            diplomaticText: xmlDoc.content.diplomatic,
+            interpretativeText: xmlDoc.content.interpretative
+         };
+         return document;
+      }
       
-      lunr.Pipeline.registerFunction(pipelineFunction, 'pageId');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('pageId');
-   }
-   
-   function addParagraphMetadata(builder, parsedDocs) {
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['paragraph'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].par;;
-         return token;
-      };
-   
-      lunr.Pipeline.registerFunction(pipelineFunction, 'paragraph');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('paragraph');
-   }
-   
-   function addDocTitleMetadata(builder, parsedDocs) {
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['docTitle'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].doc;
-   
-         return token;
-      };
-      
-      lunr.Pipeline.registerFunction(pipelineFunction, 'docTitle');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('docTitle');
-   }
-   
-   function addDocIdMetadata(builder, parsedDocs) {
-      var pipelineFunction = function(token) {
-         var docIndex = builder.documentCount - 1;
-         token.metadata['docId'] = parsedDocs[Object.keys(parsedDocs)[docIndex]].docId;
-      
-         return token;
-      };
-   
-      lunr.Pipeline.registerFunction(pipelineFunction, 'docId');
-      builder.pipeline.add(pipelineFunction);
-      builder.metadataWhitelist.push('docId');
-   }
-   
-   Index.prototype.createIndex = function(parsedDocs) {
-      console.time('INDEX');
-      this.index = lunr(function() {
-         this.pipeline.remove(lunr.trimmer);
-         this.pipeline.remove(lunr.stemmer);
-         this.pipeline.remove(lunr.stopWordFilter);
+      function addDocTitleMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['xmlDocTitle'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].xmlDocTitle;
+            
+            return token;
+         };
          
-         this.ref('doc');
-         this.field('diplomaticText');
-         this.field('interpretativeText');
-         this.use(addDocTitleMetadata, parsedDocs);
-         this.use(addDocIdMetadata, parsedDocs);
-         this.use(addParagraphMetadata, parsedDocs);
-         this.use(addPageMetadata, parsedDocs);
-         this.use(addPageIdMetadata, parsedDocs);
-         this.use(addLineMetadata, parsedDocs);
-         this.use(addLineIdMetadata, parsedDocs);
-         this.metadataWhitelist = ['docTitle', 'docId', 'paragraph', 'page', 'pageId', 'line', 'lineId'];
-         
-         for(var document in parsedDocs) {
-            var doc = map(parsedDocs[document]);
-            this.add(doc);
-         }
-      });
-      console.timeEnd('INDEX');
+         lunr.Pipeline.registerFunction(pipelineFunction, 'xmlDocTitle');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('xmlDocTitle');
+      }
       
-   };
-   
-   Index.prototype.getIndex = function() {
-      return this.index;
-   };
-});
+      function addDocIdMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['xmlDocId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].xmlDocId;
+            
+            return token;
+         };
+         
+         lunr.Pipeline.registerFunction(pipelineFunction, 'xmlDocId');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('xmlDocId');
+      }
+      
+      function addParagraphMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['paragraph'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].par;
+            return token;
+         };
+         
+         lunr.Pipeline.registerFunction(pipelineFunction, 'paragraph');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('paragraph');
+      }
+      
+      function addPageMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['page'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page;
+            return token;
+         };
+         
+         lunr.Pipeline.registerFunction(pipelineFunction, 'page');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('page');
+      }
+      
+      function addPageIdMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['pageId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].pageId;
+            return token;
+         };
+         
+         lunr.Pipeline.registerFunction(pipelineFunction, 'pageId');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('pageId');
+      }
+      
+      function addLineMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['line'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].line;
+            return token;
+         };
+         
+         lunr.Pipeline.registerFunction(pipelineFunction, 'line');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('line');
+      }
+      
+      function addLineIdMetadata(builder, parsedElementsForIndexing) {
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['lineId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lineId;
+            return token;
+         };
+         
+         lunr.Pipeline.registerFunction(pipelineFunction, 'lineId');
+         builder.pipeline.add(pipelineFunction);
+         builder.metadataWhitelist.push('lineId');
+      }
+   });

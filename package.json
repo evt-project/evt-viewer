@@ -2,14 +2,8 @@
   "name": "evtviewer",
   "version": "0.0.1",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
-    "babylon": "~6.3.26",
     "grunt": "^0.4.5",
     "grunt-autoprefixer": "^0.7.3",
-    "grunt-babel": "^6.0.0",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-compass": "^0.7.2",
@@ -52,7 +46,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "lunr": "^2.1.5",
+    "lunr": "^2.1.6",
     "mark.js": "^8.11.1"
   }
 }

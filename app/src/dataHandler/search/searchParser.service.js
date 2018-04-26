@@ -14,31 +14,6 @@
  */
 
 angular.module('evtviewer.dataHandler')
-.service('evtSearchParser', ['evtSearchDocument', function Parser(evtSearchDocument) {
-   this.Doc = evtSearchDocument;
-   this.parsedDocs = [];
-
-   /**
-    * @ngdoc method
-    * @module evtviewer.dataHandler
-    * @name evtviewer.dataHandler.search.evtSearchParser#parseDocument
-    * @methodOf evtviewer.dataHandler.search.evtSearchParser
-    *
-    * @description
-    * This method parse a specific XML document.
-    *
-    * @param {element} xmlDocDom XML element to be parsed
-    * @param {str} currentEdition The document's current edition (diplomatic, interpretative or critical)
-    *
-    * @author GC
-    */
-   Parser.prototype.parseDocument = function (xmlDocDom, currentEdition) {
-      this.Doc.hasNamespace(xmlDocDom);
-      
-      console.time('PARSE-TEXT');
-      this.parsedDocs = this.Doc.parseText(xmlDocDom, currentEdition, this.Doc.ns, this.Doc.nsResolver);
-      console.timeEnd('PARSE-TEXT');
-      
-      return this.parsedDocs;
-   };
-}]);
+   .factory('evtAbstractSearchParserInterface', ['EvtSearchInterface', function (EvtSearchInterface) {
+      return new EvtSearchInterface('evtAbstractSearchParserInterface', ['parseElements', 'getPrevDocsInfo']);
+   }]);

@@ -88,8 +88,7 @@
 				<button-switch
 					title="Search"
 					data-icon="search"
-					data-type="searchTools"
-					ng-show="getSearchBoxPosition()=='external'">
+					data-type="searchToolsExternal">
 				</button-switch>
 				<button-switch
 					title="BUTTONS.MENU"
@@ -176,10 +175,9 @@
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
 				<!-- READING TEXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="readingTxt">
-					<evt-search-box
-						ng-controller="SearchBoxCtrl as searchBox"
-						ng-show="searchBox.getPosition()=='external'">
-					</evt-search-box>
+               <!--<evt-search-box
+                  ng-controller="SearchBoxCtrl as searchBox">
+               </evt-search-box>-->
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
 						 id="mainText"
@@ -324,10 +322,9 @@
 							ng-if="::witness"
 							ng-repeat="witness in getAvailableWitnesses() track by $index">{{::getWitness(witness)}}</span>
 					</div>
-					<evt-search-box
-						ng-controller="SearchBoxCtrl as searchBox"
-						ng-show="searchBox.getPosition()=='external'">
-					</evt-search-box>
+               <!--<evt-search-box
+                  ng-controller="SearchBoxCtrl as searchBox">
+               </evt-search-box>-->
 				</section>
 				<!-- TXT TXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="txtTxt">
@@ -345,10 +342,9 @@
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
 						 id="mainText"></box>
-					<evt-search-box
-						ng-controller="SearchBoxCtrl as searchBox"
-						ng-show="searchBox.getPosition()=='external'">
-					</evt-search-box>
+               <!--<evt-search-box
+                  ng-controller="SearchBoxCtrl as searchBox">
+               </evt-search-box>-->
 				</section>
 				<!-- SRC TXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="srcTxt">
@@ -465,12 +461,17 @@
 		<script src="/src/dataHandler/bibliographyParser.service.js"></script>
 		<script src="/src/dataHandler/glyphParser.service.js"></script>
 
-		<script src="/src/dataHandler/search/searchParser.service.js"></script>
-		<script src="/src/dataHandler/search/searchPoem.service.js"></script>
-		<script src="/src/dataHandler/search/searchProse.service.js"></script>
-		<script src="/src/dataHandler/search/searchText.service.js"></script>
-		<script src="/src/dataHandler/search/searchDocument.service.js"></script>
-		<script src="/dist/search.service.js"></script>
+      <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
+      <script src="/src/dataHandler/search/search.service.js"></script>
+      <script src="/src/dataHandler/search/searchInterface.service.js"></script>
+      <script src="/src/dataHandler/search/searchDocument.service.js"></script>
+      <script src="/src/dataHandler/search/searchParser.service.js"></script>
+      <script src="/src/dataHandler/search/searchLbParser.service.js"></script>
+      <script src="/src/dataHandler/search/searchLineParser.service.js"></script>
+      <script src="/src/dataHandler/search/diplomaticEditionHandler.service.js"></script>
+      <script src="/src/dataHandler/search/interpretativeEditionHandler.service.js"></script>
+
+      <script src="/dist/search.service.js"></script>
 
 		<script src="/src/bibliography/bibliography.js"></script>
 		<script src="/src/bibliography/scrollif.directive.js"></script>
@@ -618,11 +619,13 @@
 		<script src="/src/versionApparatusEntry/versionRef.provider.js"></script>
 		<script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
 
-		<script src="/src/search/search.js"></script>
-		<script src="/src/search/searchBox.configuration.js"></script>
-		<script src="/src/search/searchBox.directive.js"></script>
-		<script src="/src/search/searchBox.controller.js"></script>
-		<script src="/src/search/searchBox.provider.js"></script>
+      <script src="/src/search/search.js"></script>
+      <script src="/src/search/searchBox.directive.js"></script>
+      <script src="/src/search/searchBox.controller.js"></script>
+      <script src="/src/search/searchBox.provider.js"></script>
+      <script src="/src/search/searchResults.directive.js"></script>
+      <script src="/src/search/searchResults.controller.js"></script>
+      <script src="/src/search/searchResults.provider.js"></script>
 		<!-- endinjector -->
 		<!-- endbuild -->
 	</body>

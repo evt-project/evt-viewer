@@ -1,8 +1,8 @@
-<div class="search-box {{vm.getSearchBoxPosition()}}"
-     ng-class="{'open' : vm.getState('searchBox'), 'results-open' : vm.getState('searchResults')}">
+<div class="search-box internal"
+     ng-class="{'open' : vm.getState('searchBox'), 'results-open' : vm.getSearchResultsState()} ">
 
-   <!-- search form -->
-   <form ng-submit="vm.doSearchCallback()">
+      <!-- search form -->
+      <form ng-submit="vm.doSearchCallback()">
       <div class="searchBtnGroup">
          <div class="btn-left">
             <button-switch
@@ -27,10 +27,5 @@
       </div>
       <input type="text" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.searchInput)" autocomplete="off" autofocus>
    </form>
-
-   <!-- search results -->
-   <div class="search-results" ng-class="{'open' : vm.getState('searchResults')}" >
-      <div infinite-scroll="vm.loadMoreElements()" infinite-scroll-parent="true" compile="vm.getSearchResults()"></div>
-   </div>
-
+   <evt-search-results ng-controller="SearchResultsCtrl as searchResults"></evt-search-results>
 </div>

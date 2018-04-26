@@ -1,32 +1,39 @@
-var lunr = require('lunr');
-
-/**
- * @ngdoc service
- * @module evtviewer.dataHandler
- * @name evtviewer.dataHandler.search.evtSearch
- * @description
- * # evtSearch
- * In this service is defined a constructor and his objects. The objects exposed methods to handle search feature.
- *
- * @requires evtviewer.dataHandler.search.evtSearchParser
- *
- * @author GC
- */
 angular.module('evtviewer.dataHandler')
-
-.service('evtSearch', function Search() {
-   var searchResults;
-   
-   Search.prototype.query = function(index, token, doc) {
-      searchResults = index.query(function(q) {
-         q.term(token, {
-            usePipeline: false,
-            wildcard: lunr.Query.wildcard.TRAILING,
-            ref: doc
-         });
-      });
-      return searchResults;
-   };
-   
-   
-});
+   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', function Search(evtSearchDocument, evtBuilder, evtSearchIndex) {
+      var prevDocsInfo = 0,
+         parsedElementsForIndexing = {};
+      
+      Search.prototype.initSearch = function (xmlDocDom) {
+         var parsedElements,
+            searchParser = {},
+            xmlDocsBody = evtSearchDocument.getXmlDocBody(xmlDocDom);
+         
+         console.time('Parsed all documents');
+         for (var i = 0; i < xmlDocsBody.length; i++) {
+            console.time('Parsed document number ' + i);
+            
+            searchParser = evtBuilder.createParser(xmlDocsBody[i]);
+            parsedElements = searchParser.parseElements(prevDocsInfo);
+            prevDocsInfo = searchParser.getPrevDocsInfo();
+            
+            parsedElementsForIndexing = angular.extend(parsedElementsForIndexing, parsedElements);
+            
+            console.timeEnd('Parsed document number ' + i);
+            console.log(parsedElements);
+         }
+         console.timeEnd('Parsed all documents');
+         console.log(parsedElementsForIndexing);
+         
+         console.time('Create Index');
+         evtSearchIndex.createIndex(parsedElementsForIndexing);
+         console.timeEnd('Create Index');
+      };
+      
+      Search.prototype.getParsedElementsForIndexing = function () {
+         return parsedElementsForIndexing;
+      };
+      
+      Search.prototype.getPrevDocsInfo = function () {
+         return prevDocsInfo;
+      };
+   }]);

@@ -707,15 +707,15 @@ angular.module('evtviewer.box')
 							}
 						});
 					}
-					bottomMenuList.buttons.push({
-						title: 'Search',
-						label: 'Search',
-						icon: 'search',
-						type: 'searchTools',
-						show: function() {
-							return evtSearchBox.getCurrentPosition() == 'internal'
-						}
-					});
+               bottomMenuList.buttons.push({
+                  title: 'Search',
+                  label: 'Search',
+                  icon: 'search',
+                  type: 'searchToolsInternal',
+                  show: function() {
+                     return true;
+                  }
+               });
 					bottomMenuList.buttons.push({
 						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
