@@ -13,7 +13,7 @@
             Results for <strong><i>{{result.token}}</i></strong><span class="token-results-number">({{result.resultsNumber}})</span>
             <ul class="search-result">
                <li ng-repeat="i in vm.range(result.resultsNumber) track by $index">
-                  <span class="original-text" id="{{result.diplomaticText.lineId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.diplomaticText.lineId[$index], 'diplomatic')"></span>
+                  <span class="original-text" id="{{result.diplomaticText.lineId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.diplomaticText.lineId[$index], 'diplomatic', result.token)"></span>
                   <a class="resultInfo" href="#" ng-click="vm.goToAnchor()">
                      Found in <span class="resultDoc" id="{{result.diplomaticText.xmlDocId[$index]}}">{{result.diplomaticText.xmlDocTitle[$index]}}</span>
                      page <span class="resultPage" id="{{result.diplomaticText.pageId[$index]}}">{{result.diplomaticText.page[$index]}}</span>

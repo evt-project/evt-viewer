@@ -20,16 +20,9 @@ angular.module('evtviewer.search')
       return evtSearchResultsProvider.getResultsNumber();
    };
 
-   vm.getHighlightedOriginalText = function(lineId, currentEdition) {
-      var originalText = evtSearchResultsProvider.getOriginalText(lineId, currentEdition),
-         inputValue = evtSearchBox.getInputValue(),
-         specialChar = ['*'];
-      
-      specialChar.forEach(function(char) {
-         inputValue = inputValue.includes(char) ? inputValue.replace(char, '') : inputValue;
-      });
-      
-      originalText = originalText.replace(inputValue, '<strong>' + inputValue + '</strong>');
+   vm.getHighlightedOriginalText = function(lineId, currentEdition, token) {
+      var originalText = evtSearchResultsProvider.getOriginalText(lineId, currentEdition);
+      originalText = originalText.replace(token, '<strong>' + token + '</strong>');
       return originalText;
    };
    
