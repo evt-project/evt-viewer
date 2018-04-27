@@ -106,7 +106,7 @@ angular.module('evtviewer.dataHandler')
                      interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
                      
                   };
-                  lines[line.lineId] = line;
+                  lines[line.docId] = line;
                   lineNodes = [];
                }
             };

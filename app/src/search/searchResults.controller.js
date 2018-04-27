@@ -20,8 +20,8 @@ angular.module('evtviewer.search')
       return evtSearchResultsProvider.getResultsNumber();
    };
 
-   vm.getHighlightedOriginalText = function(lineId, currentEdition, token) {
-      var originalText = evtSearchResultsProvider.getOriginalText(lineId, currentEdition);
+   vm.getHighlightedOriginalText = function(docId, currentEdition, token) {
+      var originalText = evtSearchResultsProvider.getOriginalText(docId, currentEdition);
       originalText = originalText.replace(token, '<strong>' + token + '</strong>');
       return originalText;
    };

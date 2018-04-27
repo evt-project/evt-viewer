@@ -15,13 +15,13 @@ angular.module('evtviewer.dataHandler')
             this.ref('xmlDocId');
             this.field('diplomaticText');
             this.field('interpretativeText');
-            this.use(addDocTitleMetadata, parsedElementsForIndexing);
-            this.use(addDocIdMetadata, parsedElementsForIndexing);
+            this.use(addXmlDocTitleMetadata, parsedElementsForIndexing);
+            this.use(addXmlDocIdMetadata, parsedElementsForIndexing);
             this.use(addParagraphMetadata, parsedElementsForIndexing);
             this.use(addPageMetadata, parsedElementsForIndexing);
             this.use(addPageIdMetadata, parsedElementsForIndexing);
             this.use(addLineMetadata, parsedElementsForIndexing);
-            this.use(addLineIdMetadata, parsedElementsForIndexing);
+            this.use(addDocIdMetadata, parsedElementsForIndexing);
             
             for (var i in parsedElementsForIndexing) {
                document = map(parsedElementsForIndexing[i]);
@@ -46,7 +46,7 @@ angular.module('evtviewer.dataHandler')
          return document;
       }
       
-      function addDocTitleMetadata(builder, parsedElementsForIndexing) {
+      function addXmlDocTitleMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
             token.metadata['xmlDocTitle'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].xmlDocTitle;
@@ -59,7 +59,7 @@ angular.module('evtviewer.dataHandler')
          builder.metadataWhitelist.push('xmlDocTitle');
       }
       
-      function addDocIdMetadata(builder, parsedElementsForIndexing) {
+      function addXmlDocIdMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
             token.metadata['xmlDocId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].xmlDocId;
@@ -123,15 +123,15 @@ angular.module('evtviewer.dataHandler')
          builder.metadataWhitelist.push('line');
       }
       
-      function addLineIdMetadata(builder, parsedElementsForIndexing) {
+      function addDocIdMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
-            token.metadata['lineId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lineId;
+            token.metadata['docId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].docId;
             return token;
          };
          
-         lunr.Pipeline.registerFunction(pipelineFunction, 'lineId');
+         lunr.Pipeline.registerFunction(pipelineFunction, 'docId');
          builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('lineId');
+         builder.metadataWhitelist.push('docId');
       }
    });
