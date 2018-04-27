@@ -11,7 +11,7 @@
  * @requires evtviewer.dataHandler.parsedData
  */
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchDocument', ['parsedData', function XmlDoc(parsedData) {
+   .service('evtSearchDocument', ['parsedData', 'XPATH', function XmlDoc(parsedData, XPATH) {
       var xmlDoc = this;
       
       xmlDoc.ns = false;
@@ -53,6 +53,20 @@ angular.module('evtviewer.dataHandler')
          return xmlDocDom.getElementsByTagName('body');
       };
       
+      XmlDoc.prototype.getCurrentXmlDoc = function(xmlDocDom, xmlDocBody, ns, nsResolver) {
+         var xmlDocsTitles = getXmlDocumentsTitles(),
+            currentTextNode = ns ? xmlDocDom.evaluate(XPATH.ns.getCurrentTextNode, xmlDocBody, nsResolver, XPathResult.ANY_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getCurrentTextNode, xmlDocBody, null, XPathResult.ANY_TYPE, null);
+   
+         currentTextNode = currentTextNode.iterateNext();
+   
+         for (var i in xmlDocsTitles) {
+            if (currentTextNode === xmlDocsTitles[i].textNode) {
+               return xmlDocsTitles[i];
+            }
+         }
+      };
+      
       /**
        * @ngdoc method
        * @module evtviewer.dataHandler
@@ -66,7 +80,7 @@ angular.module('evtviewer.dataHandler')
        *
        * @author GC
        */
-      XmlDoc.prototype.getXmlDocumentsTitles = function () {
+      function getXmlDocumentsTitles() {
          var documents = parsedData.getDocuments(),
             docIndexes = documents._indexes,
             xmlDocsTitles = [],
@@ -81,7 +95,7 @@ angular.module('evtviewer.dataHandler')
          });
          
          return xmlDocsTitles;
-      };
+      }
       
       XmlDoc.prototype.removeNoteElements = function (xmlDocDom) {
          var noteElements = xmlDocDom.getElementsByTagName('note');

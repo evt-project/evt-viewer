@@ -1,5 +1,5 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchParLineParser', ['evtSearchDocument', function (evtSearchDocument) {
+   .factory('EvtSearchParLineParser', ['evtSearchDocument', 'XPATH', function (evtSearchDocument, XPATH) {
       function ParLineParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
          this.xmlDocsTitles = evtSearchDocument.getXmlDocumentsTitles();
@@ -18,12 +18,33 @@ angular.module('evtviewer.dataHandler')
          ns = evtSearchDocument.ns;
          nsResolver = evtSearchDocument.nsResolver;
          
-         this.parsedElementsForIndexing = getParLineElements(xmlDocDom);
+         this.parsedElementsForIndexing = getParLineElements(xmlDocDom, this.xmlDocBody, this.xmlDocsTitles, ns, nsResolver);
          return this.parsedElementsForIndexing;
       };
       
-      function getParLineElements(xmlDocDom) {
+      function getParLineElements(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver) {
+         var parsedElementsForIndexing = [],
+            parLineNodes;
+         
          evtSearchDocument.removeNoteElements(xmlDocDom);
+         parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
+         parsedElementsForIndexing = getParLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, parLineNodes, ns, nsResolver);
+      }
+      
+      function getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver) {
+         return ns ? xmlDocDom.evaluate(XPATH.ns.getParLineNodes, xmlDocBody, nsResolver, XPathResult.ANY_TYPE, null)
+            : xmlDocDom.evaluate(XPATH.getParLineNodes, xmlDocBody, null, XPathResult.ANY_TYPE, null);
+      }
+      
+      function getParLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, parLineNodes, ns, nsResolver) {
+         var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver),
+            node = parLineNodes.iterateNext();
+         
+         while(node !== null) {
+            var nodes = {
+            };
+            (nodes[node.nodeName] || nodes['default'])();
+         }
       }
       
       return ParLineParser;

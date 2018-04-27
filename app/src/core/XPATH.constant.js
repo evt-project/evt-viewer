@@ -2,7 +2,7 @@ angular.module('evtviewer.core')
    
    .constant('XPATH', {
       getLineNodes: './/node()[self:lb or self:p or self:pb or self:head]',
-      //getProseLineNodes: './/node()[self::p or self::pb or self::lb or self::head]',
+      getParLineNodes: './/node()[self::p or self:l or self::pb or self::lb or self::head]',
       //getPoemLineNodes: './/node()[self::pb or self::l or self::head]',
       
       getPrevLb:'count(preceding::lb)',
@@ -24,7 +24,7 @@ angular.module('evtviewer.core')
       
       ns : {
          getLineNodes: './/node()[ self::ns:lb or self::ns:p or self::ns:pb or self::ns:head]',
-         //getProseLineNodes: './/node()[self::ns:p or self::ns:pb or self::ns:lb or self::ns:head]',
+         getParLineNodes: './/node()[self::ns:p or self::ns:l or self::ns:pb or self::ns:lb or self::ns:head]',
          //getPoemLineNodes: './/node()[self::ns:pb or self::ns:l or self::ns:head]',
          
          getPrevLb:'count(.//preceding::ns:lb)',

@@ -57,7 +57,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, lbNodes, prevDocsLbNumber, ns, nsResolver) {
-         var currentXmlDoc = getCurrentXmlDoc(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver),
+         var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver),
             diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
             interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
             currentPage,
@@ -117,19 +117,6 @@ angular.module('evtviewer.dataHandler')
          }
          
          return lines;
-      }
-      
-      function getCurrentXmlDoc(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver) {
-         var currentTextNode = ns ? xmlDocDom.evaluate(XPATH.ns.getCurrentTextNode, xmlDocBody, nsResolver, XPathResult.ANY_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getCurrentTextNode, xmlDocBody, null, XPathResult.ANY_TYPE, null);
-         
-         currentTextNode = currentTextNode.iterateNext();
-         
-         for (var i in xmlDocsTitles) {
-            if (currentTextNode === xmlDocsTitles[i].textNode) {
-               return xmlDocsTitles[i];
-            }
-         }
       }
       
       function getLineNodes(xmlDocDom, nodes, prevDocsLbNumber, countLine, ns, nsResolver) {
