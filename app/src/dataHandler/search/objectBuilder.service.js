@@ -12,16 +12,16 @@
  */
 
 angular.module('evtviewer.dataHandler')
-   .service('evtBuilder', ['evtSearchDocument', 'evtAbstractSearchParserInterface', 'EvtSearchLbParser', 'EvtSearchLineParser', function EvtBuilder(evtSearchDocument, evtAbstractSearchParserInterface, EvtSearchLbParser, EvtSearchLineParser) {
+   .service('evtBuilder', ['evtSearchDocument', 'evtAbstractSearchParserInterface', 'EvtSearchLbParser', 'EvtSearchParLineParser', function EvtBuilder(evtSearchDocument, evtAbstractSearchParserInterface, EvtSearchLbParser, EvtSearchParLineParser) {
       
       EvtBuilder.prototype.createParser = function (xmlDocBody) {
-         if (evtSearchDocument.hasLineElement(xmlDocBody) === true) {
-            ensureImplements(EvtSearchLineParser, evtAbstractSearchParserInterface);
-            return new EvtSearchLineParser();
-         }
-         else {
+         if (evtSearchDocument.hasLbElement(xmlDocBody) === true) {
             ensureImplements(EvtSearchLbParser, evtAbstractSearchParserInterface);
             return new EvtSearchLbParser(xmlDocBody);
+         }
+         else {
+            ensureImplements(EvtSearchParLineParser, evtAbstractSearchParserInterface);
+            return new EvtSearchParLineParser(xmlDocBody);
          }
       };
       

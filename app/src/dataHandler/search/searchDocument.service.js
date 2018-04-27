@@ -45,8 +45,8 @@ angular.module('evtviewer.dataHandler')
          return xmlDoc.ns;
       };
       
-      XmlDoc.prototype.hasLineElement = function (xmlDocBody) {
-         return xmlDocBody.getElementsByTagName('l') !== 0 && xmlDocBody.getElementsByTagName('lb').length === 0;
+      XmlDoc.prototype.hasLbElement = function(xmlDocBody) {
+         return xmlDocBody.getElementsByTagName('lb').length !== 0;
       };
       
       XmlDoc.prototype.getXmlDocBody = function (xmlDocDom) {

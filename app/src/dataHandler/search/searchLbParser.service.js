@@ -14,7 +14,7 @@
  */
 
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchLbParser', ['EvtSearchInterface', 'evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtGlyph', 'Utils', 'XPATH', function (EvtSearchInterface, evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtGlyph, Utils, XPATH) {
+   .factory('EvtSearchLbParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtGlyph', 'Utils', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtGlyph, Utils, XPATH) {
       
       function EvtSearchLbParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
@@ -29,9 +29,10 @@ angular.module('evtviewer.dataHandler')
       
       EvtSearchLbParser.prototype.parseElements = function (prevDocsLbNumber) {
          var ns,
-            nsResolver;
+            nsResolver,
+            xmlDocDom = this.xmlDocBody.ownerDocument;
          
-         evtSearchDocument.hasNamespace(this.xmlDocBody.ownerDocument);
+         evtSearchDocument.hasNamespace(xmlDocDom);
          ns = evtSearchDocument.ns;
          nsResolver = evtSearchDocument.nsResolver;
          
