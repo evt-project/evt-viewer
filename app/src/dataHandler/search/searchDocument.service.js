@@ -11,7 +11,7 @@
  * @requires evtviewer.dataHandler.parsedData
  */
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchDocument', ['parsedData', 'XPATH', function XmlDoc(parsedData, XPATH) {
+   .service('evtSearchDocument', ['parsedData', 'evtGlyph', 'XPATH', 'Utils', function XmlDoc(parsedData, evtGlyph, XPATH, Utils) {
       var xmlDoc = this;
       
       xmlDoc.ns = false;
@@ -96,6 +96,38 @@ angular.module('evtviewer.dataHandler')
          
          return xmlDocsTitles;
       }
+      
+      XmlDoc.prototype.getCurrentPage = function(node) {
+         return node.getAttribute('n');
+      };
+      
+      XmlDoc.prototype.getCurrentPageId = function(node, pageId) {
+         return node.getAttribute('xml:id') || 'page_' +pageId;
+      };
+      
+      XmlDoc.prototype.getParagraph = function(node, parId) {
+        return node.getAttribute('n') || parId.toString();
+      };
+      
+      XmlDoc.prototype.getContent = function(nodes, editionType) {
+         var nodeName,
+            currentGlyph,
+            text = '';
+   
+         nodes.forEach(function (node) {
+            nodeName = {
+               'g': function () {
+                  currentGlyph = evtGlyph.getGlyph(node, editionType);
+                  text += currentGlyph;
+               },
+               '#text': function () {
+                  text += node.textContent;
+               }
+            };
+            nodeName[node.nodeName]();
+         });
+         return Utils.cleanText(text);
+      };
       
       XmlDoc.prototype.removeNoteElements = function (xmlDocDom) {
          var noteElements = xmlDocDom.getElementsByTagName('note');

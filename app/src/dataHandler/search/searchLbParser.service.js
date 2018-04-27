@@ -74,12 +74,12 @@ angular.module('evtviewer.dataHandler')
          while (node !== null) {
             var nodes = {
                'pb': function () {
-                  currentPage = node.getAttribute('n');
-                  currentPageId = node.getAttribute('xml:id') || 'page_' + pageId;
+                  currentPage = evtSearchDocument.getCurrentPage(node);
+                  currentPageId = evtSearchDocument.getCurrentPageId(node, pageId);
                   pageId++;
                },
                'p': function () {
-                  paragraph = node.getAttribute('n') || parId.toString();
+                  paragraph = evtSearchDocument.getParagraph(node, parId);
                   parId++;
                },
                'default': function () {
@@ -94,7 +94,7 @@ angular.module('evtviewer.dataHandler')
                   line.xmlDocId = currentXmlDoc.id;
                   line.line = node.getAttribute('n') || lineId.toString();
                   lineId++;
-                  line.lineId = line.xmlDocId + '-' + line.page + '-' + line.line;
+                  line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
                   
                   lineNodes.diplomatic = getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
                   lineNodes.interpretative = getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
@@ -102,8 +102,8 @@ angular.module('evtviewer.dataHandler')
                   countAllDocsLine++;
                   
                   line.content = {
-                     diplomatic: getContent(lineNodes.diplomatic, 'diplomatic'),
-                     interpretative: getContent(lineNodes.interpretative, 'interpretative')
+                     diplomatic: evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic'),
+                     interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
                      
                   };
                   lines[line.lineId] = line;
@@ -160,26 +160,6 @@ angular.module('evtviewer.dataHandler')
             }
          }
          return lineNodes;
-      }
-      
-      function getContent(nodes, editionType) {
-         var nodeName,
-            currentGlyph,
-            text = '';
-         
-         nodes.forEach(function (node) {
-            nodeName = {
-               'g': function () {
-                  currentGlyph = evtGlyph.getGlyph(node, editionType);
-                  text += currentGlyph;
-               },
-               '#text': function () {
-                  text += node.textContent;
-               }
-            };
-            nodeName[node.nodeName]();
-         });
-         return Utils.cleanText(text);
       }
       
       return EvtSearchLbParser;

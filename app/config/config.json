@@ -70,9 +70,6 @@
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
-
-	"searchBoxPosition" : "",
-
     "namedEntitiesSelector": false,
 
     "namedEntitiesToHandle": [{
