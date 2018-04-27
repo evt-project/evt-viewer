@@ -18,7 +18,6 @@ angular.module('evtviewer.dataHandler')
       
       function EvtSearchLbParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
-         this.xmlDocsTitles = evtSearchDocument.getXmlDocumentsTitles();
          this.xmlDocBody = xmlDocBody;
       }
       
@@ -36,17 +35,17 @@ angular.module('evtviewer.dataHandler')
          ns = evtSearchDocument.ns;
          nsResolver = evtSearchDocument.nsResolver;
          
-         this.parsedElementsForIndexing = getLbLines(this.xmlDocBody.ownerDocument, this.xmlDocBody, this.xmlDocsTitles, prevDocsLbNumber, ns, nsResolver);
+         this.parsedElementsForIndexing = getLbLines(this.xmlDocBody.ownerDocument, this.xmlDocBody, prevDocsLbNumber, ns, nsResolver);
          return this.parsedElementsForIndexing;
       };
       
-      function getLbLines(xmlDocDom, xmlDocBody, xmlDocsTitles, prevDocsLbNumber, ns, nsResolver) {
+      function getLbLines(xmlDocDom, xmlDocBody, prevDocsLbNumber, ns, nsResolver) {
          var lines = [],
             lbNodes;
          
          evtSearchDocument.removeNoteElements(xmlDocDom);
          lbNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
-         lines = getLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, lbNodes, prevDocsLbNumber, ns, nsResolver);
+         lines = getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver);
          
          return lines;
       }
@@ -56,8 +55,8 @@ angular.module('evtviewer.dataHandler')
             : xmlDocDom.evaluate(XPATH.getLineNodes, xmlDocBody, null, XPathResult.ANY_TYPE, null);
       }
       
-      function getLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, lbNodes, prevDocsLbNumber, ns, nsResolver) {
-         var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver),
+      function getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
+         var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
             diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
             interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
             currentPage,

@@ -2,7 +2,6 @@ angular.module('evtviewer.dataHandler')
    .factory('EvtSearchParLineParser', ['evtSearchDocument', 'XPATH', function (evtSearchDocument, XPATH) {
       function ParLineParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
-         this.xmlDocsTitles = evtSearchDocument.getXmlDocumentsTitles();
          this.xmlDocBody = xmlDocBody;
       }
       
@@ -18,17 +17,17 @@ angular.module('evtviewer.dataHandler')
          ns = evtSearchDocument.ns;
          nsResolver = evtSearchDocument.nsResolver;
          
-         this.parsedElementsForIndexing = getParLineElements(xmlDocDom, this.xmlDocBody, this.xmlDocsTitles, ns, nsResolver);
+         this.parsedElementsForIndexing = getParLineElements(xmlDocDom, this.xmlDocBody, ns, nsResolver);
          return this.parsedElementsForIndexing;
       };
       
-      function getParLineElements(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver) {
+      function getParLineElements(xmlDocDom, xmlDocBody, ns, nsResolver) {
          var parsedElementsForIndexing = [],
             parLineNodes;
          
          evtSearchDocument.removeNoteElements(xmlDocDom);
          parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
-         parsedElementsForIndexing = getParLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, parLineNodes, ns, nsResolver);
+         parsedElementsForIndexing = getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
       }
       
       function getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver) {
@@ -36,8 +35,8 @@ angular.module('evtviewer.dataHandler')
             : xmlDocDom.evaluate(XPATH.getParLineNodes, xmlDocBody, null, XPathResult.ANY_TYPE, null);
       }
       
-      function getParLineInfo(xmlDocDom, xmlDocBody, xmlDocsTitles, parLineNodes, ns, nsResolver) {
-         var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, xmlDocsTitles, ns, nsResolver),
+      function getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
+         var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
             node = parLineNodes.iterateNext();
          
          while(node !== null) {
