@@ -18,7 +18,7 @@ angular.module('evtviewer.dataHandler')
          ns = evtSearchDocument.ns;
          nsResolver = evtSearchDocument.nsResolver;
          
-         this.parsedElementsForIndexing = getParLineElements();
+         this.parsedElementsForIndexing = getParLineElements(xmlDocDom);
          return this.parsedElementsForIndexing;
       };
       
