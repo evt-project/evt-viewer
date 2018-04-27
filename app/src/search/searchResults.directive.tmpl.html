@@ -16,8 +16,9 @@
                   <span class="original-text" id="{{result.diplomaticText.lineId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.diplomaticText.lineId[$index], 'diplomatic', result.token)"></span>
                   <a class="resultInfo" href="#" ng-click="vm.goToAnchor()">
                      Found in <span class="resultDoc" id="{{result.diplomaticText.xmlDocId[$index]}}">{{result.diplomaticText.xmlDocTitle[$index]}}</span>
-                     page <span class="resultPage" id="{{result.diplomaticText.pageId[$index]}}">{{result.diplomaticText.page[$index]}}</span>
-                     (line <span class="resultLine">{{result.diplomaticText.line[$index]}}</span>)
+                     <span class="resultPage" id="{{result.diplomaticText.pageId[$index]}}">page {{result.diplomaticText.page[$index]}}</span>
+                     <span class="resultPar" ng-if="result.diplomaticText.paragraph">paragraph {{result.diplomaticText.paragraph[$index]}}</span>
+                     <span class="resultLine">(line {{result.diplomaticText.line[$index]}})</span>
                   </a>
                </li>
             </ul>
@@ -34,8 +35,9 @@
                   <span class="original-text" id="{{result.interpretativeText.lineId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.interpretativeText.lineId[$index], 'interpretative')"></span>
                   <a class="resultInfo" href="#" ng-click="vm.goToAnchor()">
                      Found in <span class="resultDoc">{{result.interpretativeText.xmlDocTitle[$index]}}</span>
-                     page <span class="resultPage">{{result.interpretativeText.page[$index]}}</span>
-                     (line <span class="resultLine">{{result.interpretativeText.line[$index]}}</span>)
+                     <span class="resultPage">page {{result.interpretativeText.page[$index]}}</span>
+                     <span class="resultPar" ng-if="result.interpretativeText.paragraph">paragraph {{result.interpretativeText.paragraph[$index]}}</span>
+                     <span class="resultLine">(line {{result.interpretativeText.line[$index]}})</span>
                   </a>
                </li>
             </ul>

@@ -22,7 +22,6 @@ angular.module('evtviewer.dataHandler')
             this.use(addPageIdMetadata, parsedElementsForIndexing);
             this.use(addLineMetadata, parsedElementsForIndexing);
             this.use(addLineIdMetadata, parsedElementsForIndexing);
-            this.metadataWhitelist = ['xmlDocTitle', 'xmlDocId', 'paragraph', 'page', 'pageId', 'line', 'lineId'];
             
             for (var i in parsedElementsForIndexing) {
                document = map(parsedElementsForIndexing[i]);
@@ -74,15 +73,18 @@ angular.module('evtviewer.dataHandler')
       }
       
       function addParagraphMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
          var pipelineFunction = function (token) {
-            var docIndex = builder.documentCount - 1;
+            docIndex = builder.documentCount - 1;
             token.metadata['paragraph'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].par;
             return token;
          };
          
-         lunr.Pipeline.registerFunction(pipelineFunction, 'paragraph');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('paragraph');
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].par !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'paragraph');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('paragraph');
+         }
       }
       
       function addPageMetadata(builder, parsedElementsForIndexing) {
