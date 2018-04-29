@@ -10,4 +10,14 @@ angular.module('evtviewer.dataHandler')
          }
          return interpretativeNodes;
       };
+   
+      InterpretativeEdition.prototype.getParagraphInterpretativeNodes = function (xmlDocDom, node, ns, nsResolver) {
+         var interpretativeNodes = [],
+            interpretativeNodesSnapshot = ns ? xmlDocDom.evaluate(XPATH.ns.getParagraphInterpretativeNodes, node, nsResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getParagraphInterpretativeNodes, node, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+         for (var i = 0; i < interpretativeNodesSnapshot.snapshotLength; i++) {
+            interpretativeNodes.push(interpretativeNodesSnapshot.snapshotItem(i));
+         }
+         return interpretativeNodes;
+      };
    }]);

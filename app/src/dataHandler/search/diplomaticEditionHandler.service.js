@@ -10,4 +10,14 @@ angular.module('evtviewer.dataHandler')
          }
          return diplomaticNodes;
       };
+      
+      DiplomaticEdition.prototype.getParagraphDiplomaticNodes = function (xmlDocDom, node, ns, nsResolver) {
+        var diplomaticNodes = [],
+           diplomaticNodesSnapshot = ns ? xmlDocDom.evaluate(XPATH.ns.getParagraphDiplomaticNodes, node, nsResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null)
+              : xmlDocDom.evaluate(XPATH.getParagraphDiplomaticNodes, node, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+         for (var i = 0; i < diplomaticNodesSnapshot.snapshotLength; i++) {
+            diplomaticNodes.push(diplomaticNodesSnapshot.snapshotItem(i));
+         }
+         return diplomaticNodes;
+      };
    }]);
