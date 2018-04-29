@@ -76,11 +76,11 @@ angular.module('evtviewer.dataHandler')
          var docIndex = 0;
          var pipelineFunction = function (token) {
             docIndex = builder.documentCount - 1;
-            token.metadata['paragraph'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].par;
+            token.metadata['paragraph'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].paragraph;
             return token;
          };
          
-         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].par !== undefined) {
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].paragraph !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'paragraph');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('paragraph');
@@ -112,15 +112,18 @@ angular.module('evtviewer.dataHandler')
       }
       
       function addLineMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
             token.metadata['line'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].line;
             return token;
          };
-         
-         lunr.Pipeline.registerFunction(pipelineFunction, 'line');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('line');
+   
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].line !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'line');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('line');
+         }
       }
       
       function addDocIdMetadata(builder, parsedElementsForIndexing) {
