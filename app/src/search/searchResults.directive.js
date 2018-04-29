@@ -11,10 +11,12 @@ angular.module('evtviewer.search')
          evtSearchResultsProvider.build(scope, scope.vm);
    
          scope.$watch(function() {
-            return evtInterface.getState('currentEdition');;
+            return evtInterface.getState('currentEdition');
          }, function(newVal) {
             scope.vm.currentEdition = evtInterface.getState('currentEdition');
-            scope.$parent.vm.doSearchCallback();
+            if(scope.$parent.searchInput !== '') {
+               scope.$parent.vm.doSearchCallback();
+            }
          }, true);
       }
    };
