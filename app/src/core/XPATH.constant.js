@@ -1,7 +1,7 @@
 angular.module('evtviewer.core')
    
    .constant('XPATH', {
-      getLineNodes: './/node()[self:lb or self:p or self:pb or self:head]',
+      getLineNodes: './/node()[self::lb or self::p or self::pb or self::head]',
       getParLineNodes: './/node()[self::p or self:l or self::pb or self::head]',
       //getPoemLineNodes: './/node()[self::pb or self::l or self::head]',
       
@@ -24,7 +24,7 @@ angular.module('evtviewer.core')
       getCurrentTextNode: './/ancestor::text[1]',
       
       ns : {
-         getLineNodes: './/node()[ self::ns:lb or self::ns:p or self::ns:pb or self::ns:head]',
+         getLineNodes: './/node()[self::ns:lb or self::ns:p or self::ns:pb or self::ns:head]',
          getParLineNodes: './/node()[self::ns:p or self::ns:l or self::ns:pb or self::ns:head]',
          //getPoemLineNodes: './/node()[self::ns:pb or self::ns:l or self::ns:head]',
          
