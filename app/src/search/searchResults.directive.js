@@ -9,10 +9,13 @@ angular.module('evtviewer.search')
       controller: 'SearchResultsCtrl',
       link: function(scope) {
          evtSearchResultsProvider.build(scope, scope.vm);
-         
+   
          scope.$watch(function() {
+            return evtInterface.getState('currentEdition');;
+         }, function(newVal) {
             scope.vm.currentEdition = evtInterface.getState('currentEdition');
-         });
+            scope.$parent.vm.doSearchCallback();
+         }, true);
       }
    };
 }]);

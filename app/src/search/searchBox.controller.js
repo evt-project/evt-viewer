@@ -53,7 +53,9 @@ angular.module('evtviewer.search')
             }
          });
          
-         searchBtn.doCallback();
+         if(searchBtn) {
+            searchBtn.doCallback();
+         }
       };
       
    }]);
