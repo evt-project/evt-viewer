@@ -43,7 +43,6 @@ angular.module('evtviewer.navBar')
                       floor: 0,
                       ceil: newCollection ? newCollection.length - 1 : 0
                     };
-                    console.log(options);
                     currentNavbar.updateOptions(options);
                 }
             }, true);

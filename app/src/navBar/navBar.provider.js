@@ -85,16 +85,13 @@ angular.module('evtviewer.navBar')
 			var updatePage = function(value) {
 				var vm = this;
 				var pageId = vm.pagesCollection[value];
-                var page = evtInterface.updateState('currentPage', pageId);
-				var currentDocument = evtInterface.getState('currentDoc');
-                //TODO: Check if document is the new page is still part of the current document
-                // otherwise update currentDoc too (see 'page' callback in select.provider)
+                evtInterface.updateState('currentPage', pageId);
 				
+                var currentDocument = evtInterface.getState('currentDoc');
 				var newPage = vm.pagesCollection[pageId];
-				var documentId = newPage.docs;
 				if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
+				    evtInterface.updateState('currentDoc', newPage.docs[0]);
+                }
 				evtInterface.updateUrl();
 			};
 			
