@@ -41,7 +41,7 @@ angular.module('evtviewer.navBar')
                 if (oldCollection !== newCollection) {
                     var options = {
                       floor: 0,
-                      ceil: newCollection ? newCollection.length : 0
+                      ceil: newCollection ? newCollection.length - 1 : 0
                     };
                     console.log(options);
                     currentNavbar.updateOptions(options);
@@ -54,14 +54,6 @@ angular.module('evtviewer.navBar')
             },function(newValue, oldValue) {
             	if (oldValue !== newValue) {
 					currentNavbar.updatePage(newValue);
-				}
-			}, true);
-			
-			scope.$watch(function() {
-                return currentNavbar.doc.value;
-            },function(newValue, oldValue) {
-            	if (oldValue !== newValue) {
-					currentNavbar.updateDocument(newValue);
 				}
 			}, true);
 

@@ -63,15 +63,12 @@ angular.module('evtviewer.navBar')
                 return;
             }
 			
-			var doc = {
-				value: evtInterface.getState('currentDoc')
-			};
+			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
 			
             var pagesCollection = parsedData.getPages();
 			var documentsCollection = parsedData.getDocuments();
-            
-			//var insertPage = parsedData.addPage('currentPage', doc);
+			
             var pageSlider = {
                 value: 0,
                 options: {
@@ -80,32 +77,27 @@ angular.module('evtviewer.navBar')
                 }
             };
 			
-			
 			var updateOptions = function(options) {
                 var vm = this;
                 vm.pageSlider.options = options;
             };
 			
-			var updatePage = function(value, docId) {
+			var updatePage = function(value) {
 				var vm = this;
 				var pageId = vm.pagesCollection[value];
                 var page = evtInterface.updateState('currentPage', pageId);
+				var currentDocument = evtInterface.getState('currentDoc');
                 //TODO: Check if document is the new page is still part of the current document
                 // otherwise update currentDoc too (see 'page' callback in select.provider)
+				
+				var newPage = vm.pagesCollection[pageId];
+				var documentId = newPage.docs;
+				if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
 				evtInterface.updateUrl();
 			};
 			
-			var updateDocument = function(value){
-				var vm = this;
-				var pageId = vm.pagesCollection[value];
-				var currentDocument = evtInterface.getState('currentDoc');
-				var page = evtInterface.getState('currentPage', pageId);
-				var docs = vm.documentsCollection[value];
-				if (page.docs.length > 0 && page.docs.indexOf(currentDocument) < 0) { // page not part of the document
-					evtInterface.updateState('currentDoc', page.docs[0]);
-				}
-				evtInterface.updateUrl();
-			};
 				
             scopeHelper = {
                 // Scope expansion
@@ -118,7 +110,6 @@ angular.module('evtviewer.navBar')
 
                 // Functions
                 updateOptions: updateOptions,
-				updateDocument: updateDocument,
 				updatePage: updatePage,
                 destroy: destroy
             };
