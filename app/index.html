@@ -355,6 +355,16 @@
                      data-source={{getCurrentSourceText()}}
                      id="srcText"></box>
             </section>
+			
+			<!-- VISCOLL -->
+			<section id="main-container" class="viewMode" ng-switch-when="visColl">
+				<box data-type="image"
+					id="viscollImage"></box>
+				<box data-type="source"
+					ng-if="getCurrentSourceText()"
+					data-source={{getCurrentSourceText()}}
+					id="visColl"></box>
+			</section>
 
             <!-- LOADING... -->
             <section id="main-container" class="viewMode" ng-switch-default>
