@@ -112,6 +112,10 @@ angular.module('evtviewer.dataHandler')
             'accuracy': {
                'value': 'exactly',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter': function() {
+               var regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+               return inputValue.match(regex) ? false : true;
             }
          });
       };
