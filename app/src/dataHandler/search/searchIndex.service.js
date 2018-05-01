@@ -22,6 +22,7 @@ angular.module('evtviewer.dataHandler')
             this.use(addPageIdMetadata, parsedElementsForIndexing);
             this.use(addLineMetadata, parsedElementsForIndexing);
             this.use(addDocIdMetadata, parsedElementsForIndexing);
+            this.use(addPositionMetadata, parsedElementsForIndexing);
             
             for (var i in parsedElementsForIndexing) {
                document = map(parsedElementsForIndexing[i]);
@@ -136,5 +137,9 @@ angular.module('evtviewer.dataHandler')
          lunr.Pipeline.registerFunction(pipelineFunction, 'docId');
          builder.pipeline.add(pipelineFunction);
          builder.metadataWhitelist.push('docId');
+      }
+      
+      function addPositionMetadata(builder) {
+         builder.metadataWhitelist.push('position');
       }
    });

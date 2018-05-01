@@ -318,6 +318,12 @@ angular.module('evtviewer.core')
      }
      return str;
    };
+   
+   this.replaceStringAt = function(string, token, replace, startPos, endPos) {
+      return string.slice(0, startPos) +
+         string.slice(startPos, endPos).replace(token, replace) +
+         string.slice(endPos);
+   };
 
 	this.$get = function() {
 		return {
@@ -327,6 +333,7 @@ angular.module('evtviewer.core')
          cleanText: this.cleanText,
          cleanSpace: this.cleanSpace,
          cleanPunctuation: this.cleanPunctuation,
+         replaceStringAt: this.replaceStringAt,
 			DOMutils: {
 				getElementsBetweenTree: this.getElementsBetweenTree,
 				getCommonAncestor: this.getCommonAncestor,

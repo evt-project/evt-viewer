@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
 
-.controller('SearchResultsCtrl',['evtSearchResultsProvider', 'evtSearchResults', 'evtInterface', 'evtSearchBox', function(evtSearchResultsProvider, evtSearchResults, evtInterface, evtSearchBox) {
+.controller('SearchResultsCtrl',['evtSearchResultsProvider', 'evtSearchResults', 'evtInterface', 'Utils', function(evtSearchResultsProvider, evtSearchResults, evtInterface, Utils) {
    var vm = this;
    
    vm.currentEdition = evtInterface.getState('currentEdition');
@@ -20,10 +20,13 @@ angular.module('evtviewer.search')
       return evtSearchResultsProvider.getResultsNumber();
    };
 
-   vm.getHighlightedOriginalText = function(docId, currentEdition, token) {
-      var originalText = evtSearchResultsProvider.getOriginalText(docId, currentEdition);
-      originalText = originalText.replace(token, '<strong>' + token + '</strong>');
-      return originalText;
+   vm.getHighlightedOriginalText = function(docId, currentEdition, token, position) {
+      var originalText = evtSearchResultsProvider.getOriginalText(docId, currentEdition),
+         replace = '<strong>' + token + '</strong>',
+         startPos = position[0],
+         endPos = position[0] + position[1];
+      
+      return Utils.replaceStringAt(originalText, token, replace, startPos, endPos);
    };
    
    vm.loadMoreElements = function() {
