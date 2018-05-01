@@ -108,7 +108,11 @@ angular.module('evtviewer.dataHandler')
          instance.unmark(inputValue);
          instance.mark(inputValue, {
             'wildcards': 'enable',
-            'acrossElements': true
+            'acrossElements': true,
+            'accuracy': {
+               'value': 'exactly',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            }
          });
       };
    }]);
