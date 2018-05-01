@@ -294,6 +294,9 @@ angular.module('evtviewer.core')
 	      replace = str.replace(regex, ' ');
 	      str = replace;
       }
+      if(str.charAt(0) === ' ') {
+	      str = str.substring(1);
+      }
       return str;
    };
 
