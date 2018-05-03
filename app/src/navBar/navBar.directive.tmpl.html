@@ -1,4 +1,17 @@
-<div>
-    <p>Page: {{vm.pageSlider.value}}</p>
-    <rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options"></rzslider>
+<div class="navBarSlider">
+	<button type="button" class="buttonSlider" id="leftLeft"
+	ng-click="vm.pageSlider.value = 0"><i class="fa fa-angle-double-left"></i></button>
+	<button type="button" class="buttonSlider" id="left"
+	ng-hide="vm.pageSlider.value == 0"
+	ng-click="vm.pageSlider.value = vm.pageSlider.value - 1"><i class="fa fa-angle-left"></i></button>
+    <p id="sliderValue"><!--Page: {{vm.pageSlider.value}}--></p>
+    <rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider"></rzslider>
+	<button type="button" class="buttonSlider" id="right"
+	ng-hide="vm.pageSlider.value == vm.pageSlider.options.ceil"
+	ng-click="vm.pageSlider.value = vm.pageSlider.value + 1"><i class="fa fa-angle-right"></i></button>
+	<button type="button" class="buttonSlider" id="rightRight"
+	ng-click="vm.pageSlider.value = vm.pageSlider.options.ceil"><i class="fa fa-angle-double-right"></i></button>
+	<button type="button" class="buttonSlider" id="thumbnails"> Thumbnails
+	</button>
 </div>
+<!-- avanti e fine a sx, dietro e inizio a dx-->

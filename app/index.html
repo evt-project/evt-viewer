@@ -151,7 +151,7 @@
         </div>
     </header>
     <div id="global-container-ext" ng-show="!isLoading()">
-        <evt-navbar></evt-navbar>
+        
         <section
             class="secondary-container"
             ng-show="getSecondaryContentOpened() !== ''">
@@ -247,7 +247,7 @@
                     <evt-apparatuses data-current-apparatus="{{vm.getCurrentApparatus()}}"></evt-apparatuses>
                 </box>
             </section>
-
+			
             <!-- VERSIONS -->
             <section id="main-container" class="viewMode" ng-switch-when="versions">
                 <box data-type="text"
@@ -382,8 +382,9 @@
                 <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
+		<evt-navbar></evt-navbar>
     </div>
-
+	
     <section class="global-loading-container" ng-show="isLoading()">
         <!-- LOADING... -->
         <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
