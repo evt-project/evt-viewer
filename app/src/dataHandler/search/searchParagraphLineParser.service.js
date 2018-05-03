@@ -5,8 +5,7 @@ angular.module('evtviewer.dataHandler')
          this.xmlDocBody = xmlDocBody;
       }
       
-      ParLineParser.prototype.getPrevDocsInfo = function () {
-      };
+      ParLineParser.prototype.getPrevDocsInfo = function () {};
       
       ParLineParser.prototype.parseElements = function () {
          var ns,
@@ -108,8 +107,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getCurrentPageNodes(xmlDocDom, nodes) {
-         var currentPageNodes = [],
-            prevPb;
+         var currentPageNodes = [];
          
          for(var i = 0; i < nodes.length;) {
             if(nodes[i].nodeName !== 'pb') {

@@ -6,11 +6,15 @@ angular.module('evtviewer.dataHandler')
       
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
          console.time('INDEX');
+         
          var document;
          this.index = lunr(function () {
             this.pipeline.remove(lunr.trimmer);
             this.pipeline.remove(lunr.stemmer);
             this.pipeline.remove(lunr.stopWordFilter);
+   
+            this.tokenizer = customTokenizer;
+            this.tokenizer.separator = /[\s,.;:/?!()]+/;
             
             this.ref('xmlDocId');
             this.field('diplomaticText');
@@ -142,4 +146,58 @@ angular.module('evtviewer.dataHandler')
       function addPositionMetadata(builder) {
          builder.metadataWhitelist.push('position');
       }
+      
+      /* PLUGINS */
+      var customTokenizer = function(obj) {
+         var str = obj.toString().trim().toLowerCase(),
+            strLength = str.length,
+            char,
+            token,
+            tokens = [],
+            tokenLength,
+            prevTokenEndIndex,
+            isCompoundWord;
+   
+         for (var endIndex = 0, startIndex = 0; endIndex <= strLength; endIndex++) {
+            char = str.charAt(endIndex);
+            tokenLength = endIndex - startIndex;
+            
+            if(char === '-') {
+               token =  str.slice(startIndex, endIndex);
+               prevTokenEndIndex = endIndex;
+               tokens.push(
+                  new lunr.Token (token, {
+                     position: [startIndex, tokenLength],
+                     index: tokens.length
+                  })
+               );
+            }
+            
+            if ((char.match(this.tokenizer.separator) || endIndex === strLength)) {
+               token = str.slice(startIndex, endIndex);
+               isCompoundWord = token.indexOf('-') !== -1;
+               
+               if(isCompoundWord) {
+                  var tok = str.slice(prevTokenEndIndex + 1, endIndex);
+                  tokens.push(
+                     new lunr.Token (tok, {
+                        position: [prevTokenEndIndex + 1, tokenLength],
+                        index: tokens.length
+                     })
+                  );
+               }
+               
+               if (tokenLength > 0) {
+                  tokens.push(
+                     new lunr.Token (token, {
+                        position: [startIndex, tokenLength],
+                        index: tokens.length
+                     })
+                  );
+               }
+               startIndex = endIndex + 1;
+            }
+         }
+         return tokens;
+      };
    });
