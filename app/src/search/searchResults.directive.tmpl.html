@@ -10,7 +10,10 @@
       <div class="token-results" ng-repeat="result in vm.visibleRes track by $index" ng-if="vm.currentEdition == 'diplomatic'">
          <div class="token">
             <span ng-click="vm.toggle()" class="icon"></span>
-            Results for <strong><i>{{result.token}}</i></strong><span class="token-results-number">({{result.resultsNumber}})</span>
+            Results for <span class="result-token">{{result.token}}</span>
+            in <span class="result-doc">{{result.diplomaticText.xmlDocTitle[$index]}}</span>
+            <span class="results-number">({{result.resultsNumber}})</span>
+
             <ul class="search-result">
                <li ng-repeat="i in vm.range(result.resultsNumber) track by $index">
                   <span class="original-text" id="{{result.diplomaticText.docId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.diplomaticText.docId[$index], 'diplomatic', result.token, result.diplomaticText.position[$index])"></span>
@@ -22,6 +25,7 @@
                   </a>
                </li>
             </ul>
+
          </div>
       </div>
 
@@ -29,7 +33,10 @@
       <div class="token-results" ng-repeat="result in vm.visibleRes track by $index" ng-if="vm.currentEdition == 'interpretative'">
          <div class="token">
             <span ng-click="vm.toggle()" class="icon"></span>
-            Results for <strong><i>{{result.token}}</i></strong><span class="token-results-number">({{result.resultsNumber}})</span>
+            Results for <span class="result-token">{{result.token}}</span>
+            in <span class="result-doc">{{result.interpretativeText.xmlDocTitle[$index]}}</span>
+            <span class="token-results-number">({{result.resultsNumber}})</span>
+
             <ul class="search-result">
                <li ng-repeat="i in vm.range(result.resultsNumber) track by $index">
                   <span class="original-text" id="{{result.interpretativeText.docId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.interpretativeText.docId[$index], 'interpretative', result.token, result.interpretativeText.position[$index])"></span>
@@ -41,6 +48,7 @@
                   </a>
                </li>
             </ul>
+            
          </div>
       </div>
    </div>

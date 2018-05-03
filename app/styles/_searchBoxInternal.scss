@@ -91,7 +91,14 @@
             }
          }
       }
-      .token-results-number {
+      .result-token,
+      .result-doc {
+         font-style: italic;
+      }
+      .result-token {
+         font-weight: bold;
+      }
+      .results-number {
          font-size: 16px;
          padding-left: 5px;
       }
