@@ -149,7 +149,7 @@ angular.module('evtviewer.dataHandler')
       
       /* PLUGINS */
       var customTokenizer = function(obj) {
-         var str = obj.toString().trim().toLowerCase(),
+         var str = obj.toString().trim(),
             strLength = str.length,
             char,
             token,
