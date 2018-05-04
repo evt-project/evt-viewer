@@ -109,12 +109,13 @@ angular.module('evtviewer.dataHandler')
          instance.mark(inputValue, {
             'wildcards': 'enable',
             'acrossElements': true,
+            'caseSensitive': true,
             'accuracy': {
                'value': 'exactly',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
             'filter': function() {
-               var regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+               var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
                return inputValue.match(regex) ? false : true;
             }
          });
