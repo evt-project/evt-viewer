@@ -126,7 +126,8 @@ angular.module('evtviewer.dataHandler')
             };
             nodeName[node.nodeName]();
          });
-         return Utils.cleanText(text);
+         
+         return Utils.cleanSpace(text);
       };
       
       XmlDoc.prototype.removeNoteElements = function (xmlDocDom) {

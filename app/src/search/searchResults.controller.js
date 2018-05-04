@@ -24,9 +24,10 @@ angular.module('evtviewer.search')
       var originalText = evtSearchResultsProvider.getOriginalText(docId, currentEdition),
          replace = '<strong>' + token + '</strong>',
          startPos = position[0],
-         endPos = position[0] + position[1];
+         endPos = position[0] + position[1],
+         highlightedText = Utils.replaceStringAt(originalText, token, replace, startPos, endPos);
       
-      return Utils.replaceStringAt(originalText, token, replace, startPos, endPos);
+         return evtSearchResults.getTextPreview(highlightedText, replace);
    };
    
    vm.loadMoreElements = function() {

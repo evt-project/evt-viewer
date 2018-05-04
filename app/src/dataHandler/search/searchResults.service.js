@@ -103,6 +103,27 @@ angular.module('evtviewer.dataHandler')
          return edition[currentEdition]();
       };
       
+      SearchResults.prototype.getTextPreview = function(highlightedText, replace) {
+         var splitText = highlightedText.split(/\s+/),
+            replaceIndex = splitText.indexOf(replace),
+            textBeforeReplace,
+            textAfterReplace,
+            textPreview;
+         
+         textAfterReplace = splitText.slice(replaceIndex, replaceIndex + 10);
+         textBeforeReplace = replaceIndex < 10 ? splitText.slice(0, replaceIndex)
+                           : splitText.slice(replaceIndex - 10, replaceIndex);
+         
+         textPreview = textBeforeReplace.length < 10 ? textBeforeReplace.join(' ') + ' ' + textAfterReplace.join(' ') + '...'
+                           : '...' + textBeforeReplace.join(' ') + ' ' + textAfterReplace.join(' ') + '...';
+         
+         if(splitText.length < 15) {
+            textPreview = textBeforeReplace.join(' ') + ' ' + textAfterReplace.join(' ');
+         }
+         
+         return textPreview;
+      };
+      
       SearchResults.prototype.highlightSearchResults = function (inputValue) {
          var instance = new Mark(document.querySelector('#mainContentToTranform'));
          instance.unmark(inputValue);
