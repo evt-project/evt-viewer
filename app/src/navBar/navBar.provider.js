@@ -92,6 +92,9 @@ angular.module('evtviewer.navBar')
 				if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
 				    evtInterface.updateState('currentDoc', newPage.docs[0]);
                 }
+				if (newPage.docs.length > 1) { //The page has two different docs
+					evtInterface.updateState('currentDoc', newPage.docs[0]);
+				}
 				evtInterface.updateUrl();
 			};
 			
