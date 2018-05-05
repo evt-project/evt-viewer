@@ -2645,7 +2645,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      */
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
-		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
+		return glyphsCollection[glyphId] ? glyphsCollection[glyphId].mapping[editionLevel] : undefined;
 	};
 
 	// ///////////////// //
