@@ -1,13 +1,13 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchParLineParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH) {
-      function ParLineParser(xmlDocBody) {
+   .factory('EvtSearchDiploInterprParLineParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH) {
+      function DiplomaticInterpretativeParLineParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
          this.xmlDocBody = xmlDocBody;
       }
-      
-      ParLineParser.prototype.getPrevDocsInfo = function () {};
-      
-      ParLineParser.prototype.parseElements = function () {
+   
+      DiplomaticInterpretativeParLineParser.prototype.getPrevDocsInfo = function () {};
+   
+      DiplomaticInterpretativeParLineParser.prototype.parseElements = function () {
          var ns,
             nsResolver,
             xmlDocDom = this.xmlDocBody.ownerDocument;
@@ -121,5 +121,5 @@ angular.module('evtviewer.dataHandler')
          return currentPageNodes;
       }
       
-      return ParLineParser;
+      return DiplomaticInterpretativeParLineParser;
    }]);
