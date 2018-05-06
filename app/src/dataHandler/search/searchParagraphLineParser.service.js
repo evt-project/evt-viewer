@@ -61,8 +61,8 @@ angular.module('evtviewer.dataHandler')
                      interpretativeNodes = evtInterpretativeEditionHandler.getParagraphInterpretativeNodes(xmlDocDom, node, ns, nsResolver);
                   
                   for(var i = 0; i < diplomaticNodes.length;) {
-                     var currentPageDiplomaticNodes,
-                        currentPageInterpretativeNodes;
+                     var currentParDiplomaticNodes,
+                        currentParInterpretativeNodes;
                      
                      if(diplomaticNodes[i].nodeName === 'pb') {
                         currentPage = evtSearchDocument.getCurrentPage(diplomaticNodes[i]);
@@ -80,17 +80,17 @@ angular.module('evtviewer.dataHandler')
                      documentToIndex.pageId = currentPageId;
                      documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
    
-                     currentPageDiplomaticNodes = getCurrentPageNodes(xmlDocDom, diplomaticNodes);
-                     currentPageInterpretativeNodes = getCurrentPageNodes(xmlDocDom, interpretativeNodes);
+                     currentParDiplomaticNodes = getCurrentPageNodes(xmlDocDom, diplomaticNodes);
+                     currentParInterpretativeNodes = getCurrentPageNodes(xmlDocDom, interpretativeNodes);
    
                      documentToIndex.content = {
-                        diplomatic: evtSearchDocument.getContent(currentPageDiplomaticNodes, 'diplomatic'),
-                        interpretative: evtSearchDocument.getContent(currentPageInterpretativeNodes, 'interpretative')
+                        diplomatic: evtSearchDocument.getContent(currentParDiplomaticNodes, 'diplomatic'),
+                        interpretative: evtSearchDocument.getContent(currentParInterpretativeNodes, 'interpretative')
                      };
                      
                      documentsToIndex[documentToIndex.docId] = documentToIndex;
-                     currentPageDiplomaticNodes = [];
-                     currentPageInterpretativeNodes = [];
+                     currentParDiplomaticNodes = [];
+                     currentParInterpretativeNodes = [];
                      documentToIndex = {};
                   }
                   parId++;
