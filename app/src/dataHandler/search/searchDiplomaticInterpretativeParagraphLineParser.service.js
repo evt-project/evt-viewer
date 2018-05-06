@@ -79,8 +79,8 @@ angular.module('evtviewer.dataHandler')
                      documentToIndex.pageId = currentPageId;
                      documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
    
-                     currentParDiplomaticNodes = getCurrentParagraphNodes(xmlDocDom, diplomaticNodes);
-                     currentParInterpretativeNodes = getCurrentParagraphNodes(xmlDocDom, interpretativeNodes);
+                     currentParDiplomaticNodes = getCurrentPageParNodes(xmlDocDom, diplomaticNodes);
+                     currentParInterpretativeNodes = getCurrentPageParNodes(xmlDocDom, interpretativeNodes);
    
                      documentToIndex.content = {
                         diplomatic: evtSearchDocument.getContent(currentParDiplomaticNodes, 'diplomatic'),
@@ -104,7 +104,7 @@ angular.module('evtviewer.dataHandler')
          return documentsToIndex;
       }
       
-      function getCurrentParagraphNodes(xmlDocDom, nodes) {
+      function getCurrentPageParNodes(xmlDocDom, nodes) {
          var currentParagraphNodes = [];
          
          for(var i = 0; i < nodes.length;) {
