@@ -38,7 +38,6 @@ angular.module('evtviewer.dataHandler')
             currentPage,
             currentPageId,
             pageId = 1,
-            countPage = 1,
             paragraph,
             parId = 1,
             documentToIndex = {},
@@ -80,8 +79,8 @@ angular.module('evtviewer.dataHandler')
                      documentToIndex.pageId = currentPageId;
                      documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
    
-                     currentParDiplomaticNodes = getCurrentPageNodes(xmlDocDom, diplomaticNodes);
-                     currentParInterpretativeNodes = getCurrentPageNodes(xmlDocDom, interpretativeNodes);
+                     currentParDiplomaticNodes = getCurrentParagraphNodes(xmlDocDom, diplomaticNodes);
+                     currentParInterpretativeNodes = getCurrentParagraphNodes(xmlDocDom, interpretativeNodes);
    
                      documentToIndex.content = {
                         diplomatic: evtSearchDocument.getContent(currentParDiplomaticNodes, 'diplomatic'),
@@ -101,24 +100,23 @@ angular.module('evtviewer.dataHandler')
             };
             nodes[node.nodeName]();
             node = parLineNodes.iterateNext();
-            //documentToIndex = {};
          }
          return documentsToIndex;
       }
       
-      function getCurrentPageNodes(xmlDocDom, nodes) {
-         var currentPageNodes = [];
+      function getCurrentParagraphNodes(xmlDocDom, nodes) {
+         var currentParagraphNodes = [];
          
          for(var i = 0; i < nodes.length;) {
             if(nodes[i].nodeName !== 'pb') {
-               currentPageNodes.push(nodes[i]);
+               currentParagraphNodes.push(nodes[i]);
                nodes.splice(0, 1);
             }
             else {
-               return currentPageNodes;
+               return currentParagraphNodes;
             }
          }
-         return currentPageNodes;
+         return currentParagraphNodes;
       }
       
       return DiplomaticInterpretativeParLineParser;
