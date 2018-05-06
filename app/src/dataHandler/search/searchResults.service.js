@@ -63,6 +63,14 @@ angular.module('evtviewer.dataHandler')
                   }
                   results.interpretative.push(interprResult);
                }
+               if (metadata[token].content) {
+                  diplResult = {
+                     token: token,
+                     diplomaticText: metadata[token].content,
+                     resultsNumber: metadata[token].content.page.length
+                  }
+                  results.diplomatic.push(diplResult);
+               }
             }
          });
          
@@ -94,7 +102,7 @@ angular.module('evtviewer.dataHandler')
          
          var edition = {
             'diplomatic': function () {
-               return parsedData[lineId].content.diplomatic;
+               return parsedData[lineId].content.diplomatic || parsedData[lineId].content;
             },
             'interpretative': function () {
                return parsedData[lineId].content.interpretative;

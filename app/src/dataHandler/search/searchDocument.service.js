@@ -45,6 +45,14 @@ angular.module('evtviewer.dataHandler')
          return xmlDoc.ns;
       };
       
+      XmlDoc.prototype.isDiplomaticInterpretativeEdition = function(xmlDocBody) {
+         return xmlDocBody.getElementsByTagName('choice').length !== 0;
+      };
+      
+      XmlDoc.prototype.isDiplomaticEdition = function (xmlDocBody) {
+         return xmlDocBody.getElementsByTagName('choice').length === 0;
+      };
+      
       XmlDoc.prototype.hasLbElement = function(xmlDocBody) {
          return xmlDocBody.getElementsByTagName('lb').length !== 0;
       };
@@ -102,7 +110,7 @@ angular.module('evtviewer.dataHandler')
       };
       
       XmlDoc.prototype.getCurrentPageId = function(node, pageId) {
-         return node.getAttribute('xml:id') || 'page_' +pageId;
+         return node.getAttribute('xml:id') || 'page_' + pageId;
       };
       
       XmlDoc.prototype.getParagraph = function(node, parId) {

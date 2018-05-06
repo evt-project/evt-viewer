@@ -17,8 +17,15 @@ angular.module('evtviewer.dataHandler')
             this.tokenizer.separator = /[\s,.;:/?!()]+/;
             
             this.ref('xmlDocId');
-            this.field('diplomaticText');
-            this.field('interpretativeText');
+            
+            if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[0]].content.diplomaticText) {
+               this.field('diplomaticText');
+               this.field('interpretativeText');
+            }
+            else {
+               this.field('content');
+            }
+            
             this.use(addXmlDocTitleMetadata, parsedElementsForIndexing);
             this.use(addXmlDocIdMetadata, parsedElementsForIndexing);
             this.use(addParagraphMetadata, parsedElementsForIndexing);
@@ -46,7 +53,8 @@ angular.module('evtviewer.dataHandler')
          var document = {
             xmlDocId: xmlDoc.xmlDocId,
             diplomaticText: xmlDoc.content.diplomatic,
-            interpretativeText: xmlDoc.content.interpretative
+            interpretativeText: xmlDoc.content.interpretative,
+            content: xmlDoc.content
          };
          return document;
       }

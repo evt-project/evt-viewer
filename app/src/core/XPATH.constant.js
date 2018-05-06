@@ -16,6 +16,8 @@ angular.module('evtviewer.core')
       getInterpretativeNodes: '//body//node()[self::g or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       getParagraphInterpretativeNodes: './/node()[self::g or self::pb or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       //getInterpretativeChildNodes: './/node()[self::g or self::text()][not((ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am))]',
+   
+      getParagraphChildNodes: './/node()[self::g or self::pb or self::text()]',
       
       //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
       
@@ -42,6 +44,8 @@ angular.module('evtviewer.core')
          getParagraphInterpretativeNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          //getPoemInterpretativeNodes: '//ns:body//node()[self::ns:g or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          //getInterpretativeChildNodes: './/node()[self::ns:g or self::text()][not((ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am))]',
+         
+         getParagraphChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
          
          //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
          

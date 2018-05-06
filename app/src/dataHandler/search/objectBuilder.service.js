@@ -12,17 +12,30 @@
  */
 
 angular.module('evtviewer.dataHandler')
-   .service('evtBuilder', ['evtSearchDocument', 'evtAbstractSearchParserInterface', 'EvtSearchLbParser', 'EvtSearchParLineParser', function EvtBuilder(evtSearchDocument, evtAbstractSearchParserInterface, EvtSearchLbParser, EvtSearchParLineParser) {
+   .service('evtBuilder', ['evtSearchDocument', 'evtAbstractSearchParserInterface', 'EvtSearchLbParser', 'EvtSearchParLineParser', 'EvtSearchDiplomaticParLineParser',
+      function EvtBuilder(evtSearchDocument, evtAbstractSearchParserInterface, EvtSearchLbParser, EvtSearchParLineParser, EvtSearchDiplomaticParLineParser) {
       
       EvtBuilder.prototype.createParser = function (xmlDocBody) {
-         if (evtSearchDocument.hasLbElement(xmlDocBody) === true) {
+         var hasLbElement = evtSearchDocument.hasLbElement(xmlDocBody),
+            isDiplomaticInterpretativeEdition = evtSearchDocument.isDiplomaticInterpretativeEdition(xmlDocBody),
+            isDiplomaticEdition = evtSearchDocument.isDiplomaticEdition(xmlDocBody);
+         
+         if (hasLbElement && isDiplomaticInterpretativeEdition) {
             ensureImplements(EvtSearchLbParser, evtAbstractSearchParserInterface);
             return new EvtSearchLbParser(xmlDocBody);
          }
-         else {
+         else if (hasLbElement && isDiplomaticEdition) {
+         
+         }
+         else if(!hasLbElement && isDiplomaticInterpretativeEdition) {
             ensureImplements(EvtSearchParLineParser, evtAbstractSearchParserInterface);
             return new EvtSearchParLineParser(xmlDocBody);
          }
+         else {
+            ensureImplements(EvtSearchDiplomaticParLineParser, evtAbstractSearchParserInterface);
+            return new EvtSearchDiplomaticParLineParser(xmlDocBody);
+         }
+         
       };
       
       function ensureImplements(evtSearchParser, evtSearchInterface) {
