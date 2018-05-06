@@ -113,6 +113,21 @@ angular.module('evtviewer.dataHandler')
          return node.getAttribute('xml:id') || 'page_' + pageId;
       };
       
+      XmlDoc.prototype.getCurrentPageParNodes = function (xmlDocDom, nodes) {
+         var currentParagraphNodes = [];
+   
+         for(var i = 0; i < nodes.length;) {
+            if(nodes[i].nodeName !== 'pb') {
+               currentParagraphNodes.push(nodes[i]);
+               nodes.splice(0, 1);
+            }
+            else {
+               return currentParagraphNodes;
+            }
+         }
+         return currentParagraphNodes;
+      };
+      
       XmlDoc.prototype.getParagraph = function(node, parId) {
         return node.getAttribute('n') || parId.toString();
       };

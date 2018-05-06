@@ -79,8 +79,8 @@ angular.module('evtviewer.dataHandler')
                      documentToIndex.pageId = currentPageId;
                      documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
    
-                     currentParDiplomaticNodes = getCurrentPageParNodes(xmlDocDom, diplomaticNodes);
-                     currentParInterpretativeNodes = getCurrentPageParNodes(xmlDocDom, interpretativeNodes);
+                     currentParDiplomaticNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, diplomaticNodes);
+                     currentParInterpretativeNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, interpretativeNodes);
    
                      documentToIndex.content = {
                         diplomatic: evtSearchDocument.getContent(currentParDiplomaticNodes, 'diplomatic'),
@@ -102,21 +102,6 @@ angular.module('evtviewer.dataHandler')
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
-      }
-      
-      function getCurrentPageParNodes(xmlDocDom, nodes) {
-         var currentParagraphNodes = [];
-         
-         for(var i = 0; i < nodes.length;) {
-            if(nodes[i].nodeName !== 'pb') {
-               currentParagraphNodes.push(nodes[i]);
-               nodes.splice(0, 1);
-            }
-            else {
-               return currentParagraphNodes;
-            }
-         }
-         return currentParagraphNodes;
       }
       
       return DiplomaticInterpretativeParLineParser;

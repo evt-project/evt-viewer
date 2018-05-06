@@ -38,7 +38,6 @@ angular.module('evtviewer.dataHandler')
             currentPage,
             currentPageId,
             pageId = 1,
-            countPage = 1,
             paragraph,
             parId = 1,
             documentToIndex = {},
@@ -84,7 +83,7 @@ angular.module('evtviewer.dataHandler')
                      documentToIndex.pageId = currentPageId;
                      documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
                      
-                     currentParNodes = getCurrentPageParNodes(xmlDocDom, parNodes);
+                     currentParNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, parNodes);
    
                      documentToIndex.content = evtSearchDocument.getContent(currentParNodes, '');
    
@@ -102,21 +101,6 @@ angular.module('evtviewer.dataHandler')
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
-      }
-   
-      function getCurrentPageParNodes(xmlDocDom, nodes) {
-         var currentParagraphNodes = [];
-      
-         for(var i = 0; i < nodes.length;) {
-            if(nodes[i].nodeName !== 'pb') {
-               currentParagraphNodes.push(nodes[i]);
-               nodes.splice(0, 1);
-            }
-            else {
-               return currentParagraphNodes;
-            }
-         }
-         return currentParagraphNodes;
       }
       
       function getParagraphChildNodes(xmlDocDom, node, ns, nsResolver) {
