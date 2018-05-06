@@ -65,30 +65,33 @@ angular.module('evtviewer.dataHandler')
                      parNodes.push(currentNode);
                      currentNode = paragraphChildNodes.iterateNext();
                   }
-   
-                  paragraph = evtSearchDocument.getParagraph(node, parId);
-   
-                  documentToIndex.xmlDocTitle = currentXmlDoc.title;
-                  documentToIndex.xmlDocId = currentXmlDoc.id;
-                  documentToIndex.paragraph = paragraph;
-                  documentToIndex.page = currentPage;
-                  documentToIndex.pageId = currentPageId;
-                  documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
                   
-                  parNodes.forEach(function(parNode) {
-                     if(parNode.nodeName === 'pb') {
-                        currentPage = evtSearchDocument.getCurrentPage(parNode);
-                        currentPageId = evtSearchDocument.getCurrentPageId(parNode, pageId);
+                  for(var i = 0; i < parNodes.length;) {
+                     var currentParNodes;
+                     
+                     if(parNodes[i].nodeName === 'pb') {
+                        currentPage = evtSearchDocument.getCurrentPage(parNodes[i]);
+                        currentPageId = evtSearchDocument.getCurrentPageId(parNodes[i], pageId);
                         pageId++;
-                        parNodes.splice(parNodes.indexOf(parNode), 1);
+                        parNodes.splice(parNodes.indexOf(parNodes[i]), 1);
                      }
-                  });
-                  
-                  documentToIndex.content = evtSearchDocument.getContent(parNodes, '');
-                  
-                  documentsToIndex[documentToIndex.docId] = documentToIndex;
-                  parNodes = [];
-                  documentToIndex = {};
+                     paragraph = evtSearchDocument.getParagraph(node, parId);
+   
+                     documentToIndex.xmlDocTitle = currentXmlDoc.title;
+                     documentToIndex.xmlDocId = currentXmlDoc.id;
+                     documentToIndex.paragraph = paragraph;
+                     documentToIndex.page = currentPage;
+                     documentToIndex.pageId = currentPageId;
+                     documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
+                     
+                     currentParNodes = getCurrentPageParNodes(xmlDocDom, parNodes);
+   
+                     documentToIndex.content = evtSearchDocument.getContent(currentParNodes, '');
+   
+                     documentsToIndex[documentToIndex.docId] = documentToIndex;
+                     currentParNodes = [];
+                     documentToIndex = {};
+                  }
                   parId++;
                },
                'l': function() {
@@ -99,6 +102,21 @@ angular.module('evtviewer.dataHandler')
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
+      }
+   
+      function getCurrentPageParNodes(xmlDocDom, nodes) {
+         var currentParagraphNodes = [];
+      
+         for(var i = 0; i < nodes.length;) {
+            if(nodes[i].nodeName !== 'pb') {
+               currentParagraphNodes.push(nodes[i]);
+               nodes.splice(0, 1);
+            }
+            else {
+               return currentParagraphNodes;
+            }
+         }
+         return currentParagraphNodes;
       }
       
       function getParagraphChildNodes(xmlDocDom, node, ns, nsResolver) {
