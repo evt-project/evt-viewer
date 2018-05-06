@@ -16,17 +16,17 @@
 angular.module('evtviewer.dataHandler')
    .factory('EvtSearchDiploInterprLbParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtGlyph', 'Utils', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtGlyph, Utils, XPATH) {
       
-      function EvtSearchDiploInterprLbParser(xmlDocBody) {
+      function DiplomaticInterpretativeLbParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
          this.xmlDocBody = xmlDocBody;
       }
       
       var countAllDocsLine = 0;
-      EvtSearchDiploInterprLbParser.prototype.getPrevDocsInfo = function () {
+      DiplomaticInterpretativeLbParser.prototype.getPrevDocsInfo = function () {
          return countAllDocsLine;
       };
    
-      EvtSearchDiploInterprLbParser.prototype.parseElements = function (prevDocsLbNumber) {
+      DiplomaticInterpretativeLbParser.prototype.parseElements = function (prevDocsLbNumber) {
          var ns,
             nsResolver,
             xmlDocDom = this.xmlDocBody.ownerDocument;
@@ -162,5 +162,5 @@ angular.module('evtviewer.dataHandler')
          return lineNodes;
       }
       
-      return EvtSearchDiploInterprLbParser;
+      return DiplomaticInterpretativeLbParser;
    }]);
