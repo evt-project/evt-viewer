@@ -14,19 +14,19 @@
  */
 
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchLbParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtGlyph', 'Utils', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtGlyph, Utils, XPATH) {
+   .factory('EvtSearchDiploInterprLbParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtGlyph', 'Utils', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtGlyph, Utils, XPATH) {
       
-      function EvtSearchLbParser(xmlDocBody) {
+      function EvtSearchDiploInterprLbParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
          this.xmlDocBody = xmlDocBody;
       }
       
       var countAllDocsLine = 0;
-      EvtSearchLbParser.prototype.getPrevDocsInfo = function () {
+      EvtSearchDiploInterprLbParser.prototype.getPrevDocsInfo = function () {
          return countAllDocsLine;
       };
-      
-      EvtSearchLbParser.prototype.parseElements = function (prevDocsLbNumber) {
+   
+      EvtSearchDiploInterprLbParser.prototype.parseElements = function (prevDocsLbNumber) {
          var ns,
             nsResolver,
             xmlDocDom = this.xmlDocBody.ownerDocument;
@@ -162,5 +162,5 @@ angular.module('evtviewer.dataHandler')
          return lineNodes;
       }
       
-      return EvtSearchLbParser;
+      return EvtSearchDiploInterprLbParser;
    }]);
