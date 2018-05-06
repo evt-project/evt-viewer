@@ -20,18 +20,22 @@ angular.module('evtviewer.dataHandler')
             isDiplomaticInterpretativeEdition = evtSearchDocument.isDiplomaticInterpretativeEdition(xmlDocBody),
             isDiplomaticEdition = evtSearchDocument.isDiplomaticEdition(xmlDocBody);
          
+         // parser for diplomatic-interpretative editions with <lb> tag
          if (hasLbElement && isDiplomaticInterpretativeEdition) {
             ensureImplements(EvtSearchDiploInterprLbParser, evtAbstractSearchParserInterface);
             return new EvtSearchDiploInterprLbParser(xmlDocBody);
          }
-         else if (hasLbElement && isDiplomaticEdition) {
+         // parser for diplomatic editions with <lb> tag
+         if (hasLbElement && isDiplomaticEdition) {
          
          }
-         else if(!hasLbElement && isDiplomaticInterpretativeEdition) {
+         // parser for diplomatic-interpretative editions without <lb> tag
+         if(!hasLbElement && isDiplomaticInterpretativeEdition) {
             ensureImplements(EvtSearchDiploInterprParLineParser, evtAbstractSearchParserInterface);
             return new EvtSearchDiploInterprParLineParser(xmlDocBody);
          }
-         else {
+         // parser for diplomatic editions without <lb> tag
+         if(!hasLbElement && isDiplomaticEdition) {
             ensureImplements(EvtSearchDiplomaticParLineParser, evtAbstractSearchParserInterface);
             return new EvtSearchDiplomaticParLineParser(xmlDocBody);
          }
