@@ -18,7 +18,7 @@ angular.module('evtviewer.dataHandler')
             
             this.ref('xmlDocId');
             
-            if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[0]].content.diplomaticText) {
+            if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[0]].content.diplomatic) {
                this.field('diplomaticText');
                this.field('interpretativeText');
             }
