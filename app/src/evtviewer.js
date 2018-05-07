@@ -66,7 +66,6 @@ angular
 		'pascalprecht.translate',
 		'evtviewer.core',
 		'evtviewer.communication',
-		'evtviewer.navBar',
 		'evtviewer.translation',
 		'evtviewer.dataHandler',
 		'evtviewer.interface',
@@ -90,5 +89,6 @@ angular
         'evtviewer.apparatuses',
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools'
+        'evtviewer.UItools',
+		'evtviewer.navBar'
     ]);

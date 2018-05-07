@@ -55,6 +55,14 @@ angular.module('evtviewer.navBar')
 					currentNavbar.updatePage(newValue);
 				}
 			}, true);
+			
+			scope.$watch(function() {
+				return evtInterface.getState('currentPage');
+			}, function(newValue, oldValue) {
+				if (oldValue !== newValue) {
+					currentNavbar.updateSlider(newValue);
+				}
+			}, true);
 
             // Garbage collection
             scope.$on('$destroy', function() {

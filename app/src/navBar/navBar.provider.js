@@ -63,11 +63,12 @@ angular.module('evtviewer.navBar')
                 return;
             }
 			
-			var doc = evtInterface.getState('currentDoc');
-			var page = evtInterface.getState('currentPage');
 			
             var pagesCollection = parsedData.getPages();
 			var documentsCollection = parsedData.getDocuments();
+			
+			var doc = evtInterface.getState('currentDoc');
+			var page = evtInterface.getState('currentPage');
 			
             var pageSlider = {
                 value: 0,
@@ -98,6 +99,16 @@ angular.module('evtviewer.navBar')
 				evtInterface.updateUrl();
 			};
 			
+			var updateSlider = function(value) {
+				var vm = this;
+				var pageId = vm.pagesCollection[value];
+				var newPage = vm.pagesCollection[pageId];
+				var sliderValue = vm.pageSlider.value;
+				if (sliderValue !== newPage){
+					sliderValue = newPage;
+				}
+			}
+			
 				
             scopeHelper = {
                 // Scope expansion
@@ -110,6 +121,7 @@ angular.module('evtviewer.navBar')
 
                 // Functions
                 updateOptions: updateOptions,
+				updateSlider: updateSlider,
 				updatePage: updatePage,
                 destroy: destroy
             };
