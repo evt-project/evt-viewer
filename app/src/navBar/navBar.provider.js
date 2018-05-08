@@ -101,13 +101,18 @@ angular.module('evtviewer.navBar')
 			
 			var updateSlider = function(value) {
 				var vm = this;
-				var pageId = vm.pagesCollection[value];
-				var newPage = vm.pagesCollection[pageId];
 				var sliderValue = vm.pageSlider.value;
-				if (sliderValue !== newPage){
-					sliderValue = newPage;
+				var pageId = vm.pagesCollection[value];
+				for (var i in vm.pagesCollection) {
+					if (value === vm.pagesCollection[i]){
+						var newPage = i;
+					}
 				}
-			}
+				if (vm.pageSlider.value !== newPage){
+					vm.pageSlider.value = newPage;
+				}
+				evtInterface.updateUrl();
+			};
 			
 				
             scopeHelper = {
