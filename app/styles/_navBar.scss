@@ -3,7 +3,7 @@
 /* *************************** */
 
 .navBarSlider {
-  width: 80%;
+  width: 100%;
   height: $base-slider-height;
   position: relative;
   cursor: pointer;
@@ -28,36 +28,25 @@
 	position: relative;
 	}
  
-	#left {
-        background: #B0E0E6;
+	#left, #right {
+        background: #bedde0;
 		border-radius: 16px;
-		font-size: 16px;
-		top: 5px;
+		font-size: 15px;
+		top: 3px;
 	}
 	
-	#right {
-        background: #B0E0E6;
+	
+	
+	#leftLeft, #rightRight {
+		background: #bedde0;
 		border-radius: 16px;
-		font-size: 16px;
-		top: 5px;
+		font-size: 15px;
+		top: 3px;
 	}
 	
-	#leftLeft {
-		background: #B0E0E6;
-		border-radius: 16px;
-		font-size: 16px;
-		top: 5px;
-	}
-	
-	#rightRight {
-		background: #B0E0E6;
-		border-radius: 16px;
-		font-size: 16px;
-		top: 5px;
-	}
 	
 	#thumbnails {
 	border-radius: 16px;
-	top: 5px;
-	background: #B0E0E6;
+	top: 3px;
+	background: #bedde0;
 	}
