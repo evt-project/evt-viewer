@@ -13,8 +13,10 @@
 		<button-switch
 			title="beforePage"
 			data-label=""
-			class="buttonRight"
-			ng-click="vm.pageSlider.value = vm.pageSlider.value - 1"
+			data-icon=""
+			data-type="beforePage"
+			ng-click="vm.doCallback()"
+			
 			>
 		</button-switch>
 		
@@ -22,7 +24,8 @@
 		<button-switch
 			title="nextPage"
 			data-label=""
-			ng-click="vm.pageSlider.value = vm.pageSlider.value + 1"
+			data-type="nextPage"
+			ng-click="vm.doCallback()"
 			>
 		</button-switch>
 

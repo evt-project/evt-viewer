@@ -40,7 +40,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
+    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtNavbar) {
         var button    = {},
             collection = {},
             list       = [],
@@ -701,17 +701,20 @@ angular.module('evtviewer.buttonSwitch')
 				case 'nextPage':
 					callback = function() {
 						var vm = this;
-						if (vm.pageSlider.value < vm.pageSlider.options.ceil) {
-							vm.pageSlider.value ++;
+						if (scope.$parent.vm.pageSlider.value < scope.$parent.vm.pageSlider.options.ceil) {
+							scope.$parent.vm.pageSlider.value = scope.$parent.vm.pageSlider.value + 1;
 						}
+						vm.active = !vm.active;
 					};
 					break;
 				case 'beforePage':
 					callback = function() {
 						var vm = this;
-						if (vm.pageSlider.value = vm.pageSlider.options.floor) {
-							vm.pageSlider.value --;
+						vm.getIcon;
+						if (scope.$parent.vm.pageSlider.value > scope.$parent.vm.pageSlider.options.floor) {
+							scope.$parent.vm.pageSlider.value = scope.$parent.vm.pageSlider.value - 1;
 						}
+						vm.active = !vm.active;
 					};
 					break;
 				default:
