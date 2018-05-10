@@ -710,7 +710,6 @@ angular.module('evtviewer.buttonSwitch')
 				case 'beforePage':
 					callback = function() {
 						var vm = this;
-						vm.getIcon;
 						if (scope.$parent.vm.pageSlider.value > scope.$parent.vm.pageSlider.options.floor) {
 							scope.$parent.vm.pageSlider.value = scope.$parent.vm.pageSlider.value - 1;
 						}
