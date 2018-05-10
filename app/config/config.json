@@ -44,13 +44,7 @@
                                 "icon"     : "mode-srcTxt",
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
-                            },
-							{
-								"label"		: "VISCOLL",
-								"icon"		: "mode-viscoll",
-								"viewMode"	: "visColl",
-								"visible"	: true
-							}],
+                            }],
     "defaultEdition": "critical",
     "showEditionLevelSelector": true,
 

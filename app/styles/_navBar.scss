@@ -9,7 +9,6 @@
   cursor: pointer;
   z-index: 1;
   display: inline;
-  left: 7%;
   top: 10px;
   
 	#sliderValue {
@@ -45,7 +44,7 @@
 	}
 	
 	
-	#thumbnails {
+	#thumbnails, #visColl {
 	border-radius: 16px;
 	top: 3px;
 	background: #bedde0;

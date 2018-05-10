@@ -133,13 +133,7 @@ angular.module('evtviewer.core')
                                 icon     : 'mode-srcTxt',
                                 viewMode : 'srcTxt',
                                 visible  : true
-                            },
-							{
-								label	: 'VISCOLL',
-								icon	: 'mode-viscoll',
-								viewMode: 'visColl',
-								visible : true
-							}],
+                            }],
 
 	toolHeatMap: true,
 	toolPinAppEntries: false,

@@ -15,7 +15,7 @@
 **/
 angular.module('evtviewer.navBar')
 
-.controller('NavbarCtrl', function(config, $log, $scope, evtNavbar, parsedData, evtInterface, evtSelect) {
+.controller('NavbarCtrl', function(config, $log, $scope, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
     var vm = this;
     
     var _console = $log.getInstance('navBar');

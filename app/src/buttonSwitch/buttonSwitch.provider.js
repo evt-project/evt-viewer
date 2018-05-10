@@ -136,7 +136,7 @@ angular.module('evtviewer.buttonSwitch')
 	     * **language**, **list**, **menu**, **menu-vert**, **mode-imgtxt**, **mode-txttxt**,
 	     * **reading-txt**, **mode-collation**, **mode-srctxt**, **mode-versions**, **mode-bookreader**,
 	     * **pin**, **pin-off**, **pin-on**, **remove**, **search**, **thumb**, **thumbs**, **thumbnail**.
-	     * **thumbnails**, **txt**, **v-align**, **witnesses**.</p>
+	     * **thumbnails**, **txt**, **v-align**, **witnesses**, **nextPage**, **beforePage**.</p>
 	     * <p>Output icons can be retrieve both from EVT font set of from font-awesome.
 	     * If you want to add a custom icon set you should add it among font faces and remember to add the related css file.</p>
 	     *
@@ -252,6 +252,12 @@ angular.module('evtviewer.buttonSwitch')
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
 					break;
+				case 'nextPage':
+					evtIcon = 'fa fa-angle-right';
+					break;
+				case 'beforePage':
+					evtIcon = 'fa fa-angle-left';
+					break;
 			}
 			return evtIcon;
 		};
@@ -296,7 +302,9 @@ angular.module('evtviewer.buttonSwitch')
 		 * 		<li>'*toggleInfoSrc*': open/close information box about source;</li>
 		 * 		<li>'*addVer*': open selector of available witnesses to add a version in text-version view;</li>
 		 * 		<li>'*removeVer*': remove version from view;</li>
-		 * 		<li>'*cropText*': crop text.</li></ul></p>
+		 * 		<li>'*cropText*': crop text.</li>
+		 *		<li>'*nextPage*': next page.</li>
+		 *		<li>'*beforePage*': before page.</li></ul></p>
 		 * <p>To see details of callback function just open the file and read.</p>
 		 * <p>You can add your own type of button, if the same button used in different places should always have the same behaviour.</p>
 		 * <p>You can also overwrite the call back to trigger event with <code>ng-click</code> directive</p>
@@ -690,6 +698,22 @@ angular.module('evtviewer.buttonSwitch')
                         return s;
                     };
                     break;
+				case 'nextPage':
+					callback = function() {
+						var vm = this;
+						if (vm.pageSlider.value < vm.pageSlider.options.ceil) {
+							vm.pageSlider.value ++;
+						}
+					};
+					break;
+				case 'beforePage':
+					callback = function() {
+						var vm = this;
+						if (vm.pageSlider.value = vm.pageSlider.options.floor) {
+							vm.pageSlider.value --;
+						}
+					};
+					break;
 				default:
 					break;
 			}
