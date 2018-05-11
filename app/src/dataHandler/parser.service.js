@@ -284,7 +284,15 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-        if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
+		if (tagName === 'w' && newElement.innerHTML !== undefined) {
+			if (newElement.innerHTML[0] !== ' ') {
+				newElement.innerHTML = ' '+newElement.innerHTML;
+			}
+		}
+
+        if (element.nodeType === 3 || 
+        	(element.innerHTML !== undefined && element.innerHTML.replace(/\s/g, '') === '') || 
+        	 (newElement.innerHTML !== undefined && newElement.innerHTML.replace(/\s/g, '') !== '')) {
 			return newElement;
 		} else {
 			return document.createTextNode('');
@@ -1075,9 +1083,8 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = '<pb>,<g>';
-				elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {
-					skip: skip
-				}), elem);
+				var parsedElem = parser.parseXMLElement(doc, elem, { skip: skip });
+				elem.parentNode.replaceChild(parsedElem, elem);
 			});
 			editionText = docDOM.outerHTML;
 		} else {
