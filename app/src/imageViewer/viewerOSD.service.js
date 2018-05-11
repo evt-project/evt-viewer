@@ -136,6 +136,49 @@
 
          }
 
+         viewerHandler.highlightOverlay = function(zone){
+            console.log('in highlight Overlay: ', zone);
+            if(!zone) throw "problem in zone data extraction";
+            
+            try {
+                  viewerHandler.viewer.removeOverlay("line-overlay");
+            } catch (error) {
+                  console.error('no line overlay', error);
+            }
+            var rectObj = convertZoneToOSD(zone);
+            var elt = document.createElement("div");
+            elt.id = "line-overlay";
+            elt.className = "highlight";
+            viewerHandler.viewer.addOverlay({
+                element: elt,
+                location: rectObj
+            });
+
+         }
+
+         viewerHandler.turnOffOverlay = function(){
+            try {
+                  viewerHandler.viewer.removeOverlay("line-overlay");
+            } catch (error) {
+                  console.error('no line overlay', error);
+            }
+         }
+
+         function convertZoneToOSD(zone){
+               // TODO, This is just a test
+            var tmp = {};
+            tmp.x = _(zone.ulx);
+            tmp.y = _(zone.uly);
+            tmp.width = _(zone.lrx - zone.ulx);
+            tmp.hight = _(zone.lry - zone.uly);
+            console.log("in convert zone to OSD", tmp);
+            return new OpenSeadragon.Rect(tmp.x/3500, tmp.y/3500, tmp.width/3500, tmp.hight/3500);
+         }
+
+         function _(value){
+               return value;
+         }
+
 
          viewerHandler.testFun = function () {
             console.log("testFunction: ", viewerHandler);

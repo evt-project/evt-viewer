@@ -11,7 +11,7 @@
 **/
 angular.module('evtviewer.UItools')
 
-.service('evtImageTextLinking', function(evtInterface, Utils, parsedData) {
+.service('evtImageTextLinking', function(evtInterface, Utils, parsedData, imageViewerHandler) {
     var ITLutils = {};
 
     /**
@@ -29,7 +29,7 @@ angular.module('evtviewer.UItools')
         this.activateITL();
         evtInterface.setToolStatus('ITL', 'active');
         console.log("TurnONITL");
-        document.getElementById("example-overlay").className = "highlight";
+        //document.getElementById("example-overlay").className = "highlight";
     };
 
     /**
@@ -49,8 +49,9 @@ angular.module('evtviewer.UItools')
         this.deactivateITL();
         evtInterface.setToolStatus('ITL', 'inactive');
         evtInterface.updateCurrentHighlightedZone(undefined);
-        console.log("TurnONITL");
-        document.getElementById("example-overlay").className = "nohighlight";
+        this.switchingOffHighlightInImage();
+        console.log("TurnOFFITL");
+        //document.getElementById("example-overlay").className = "nohighlight";
        
     };
 
@@ -66,6 +67,7 @@ angular.module('evtviewer.UItools')
      * the preparazion of zones in image ({@link evtviewer.UItools.evtImageTextLinking#prepareZoneInImgInteractions prepareZoneInImgInteractions} method).
      */
     ITLutils.activateITL = function() {
+        console.log('in activateITL');
         this.prepareLines();
         this.prepareZoneInImgInteractions();
     };
@@ -83,6 +85,7 @@ angular.module('evtviewer.UItools')
     ITLutils.deactivateITL = function() {
         var currentHzone = evtInterface.getState('currentHighlightedZone');
         // Deselect current selected
+        console.log('currentHzone in deactivateITL ' + currentHzone);
         if (currentHzone) {
             this.changeLinesHighlightStatus(currentHzone.id, 'unselect');
         }
@@ -101,6 +104,7 @@ angular.module('evtviewer.UItools')
      * to add/remove "lineHover" and "lineSelected" classes
      */
     ITLutils.prepareLines = function() {
+        console.log('in prepareLines');
         var lbs = document.getElementsByClassName('lb');
         for (var i = 0; i < lbs.length; i++) {
             var lbId;
@@ -164,10 +168,12 @@ angular.module('evtviewer.UItools')
             elementInLine.onmouseover = function() {
                 var lineId = this.getAttribute('data-line');
                 ITLutils.changeLinesHighlightStatus(lineId, 'over');
+                ITLutils.highlightZoneInImage("zone_"+lineId); //FIXME: il nome della zona deve essere valutata a runtime.
             };
             elementInLine.onmouseout = function() {
                 var lineId = this.getAttribute('data-line');
                 ITLutils.changeLinesHighlightStatus(lineId, 'out');
+                ITLutils.switchingOffHighlightInImage();
             };
             elementInLine.onclick = function() {
                 var lineId = this.getAttribute('data-line'),
@@ -176,6 +182,7 @@ angular.module('evtviewer.UItools')
                 if (currentHzone && currentHzone.name === 'Line') {
                     // Deselect current selected
                     ITLutils.changeLinesHighlightStatus(currentHzone.id, 'unselect');
+                    ITLutils.switchingOffHighlightInImage();
                 }
 
                 // Select this and set current
@@ -201,6 +208,7 @@ angular.module('evtviewer.UItools')
      * Transform back <span class="textNode"> into actual textNode      
      */
     ITLutils.resetTextNodes = function() {
+        console.log("in reset Text Nodes");
         var textNodes = document.getElementsByClassName('textNode');
         for (var i in textNodes) {
             var element = textNodes[i];
@@ -316,12 +324,24 @@ angular.module('evtviewer.UItools')
      *
      * @param {string} zoneId id of zone to be highlighted
      */
-    ITLutils.highlightZoneInImage = function(zoneId) {
-        var zone = parsedData.getZone(zoneId);
-        if (zone) {
-            console.log('## HIGHLIGHT ZONE : ', zone);
-        }
+    ITLutils.highlightZoneInImage = function (zoneId) {
+       var ITLactive = evtInterface.getToolState('ITL') === 'active';
+       if (ITLactive) {
+          var zone = parsedData.getZone(zoneId);
+          if (zone) {
+             console.log('## HIGHLIGHT ZONE : ', zone);
+             // prendi riferimento al viewer
+             console.log('## PRENDERE RIFERIMENTO al VIEWER ##')
+             imageViewerHandler.highlightOverlay(zone);
+             // inserisci overlay alla posizione indicata in zone
+             console.log('GESTIRE OVERLAY A PARTIRE DAI DATI ESTRATTI DA ZONE');
+          }
+       }
     };
+
+    ITLutils.switchingOffHighlightInImage = function(){
+        imageViewerHandler.turnOffOverlay();
+    }
 
     return ITLutils;
 });

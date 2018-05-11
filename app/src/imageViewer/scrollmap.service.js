@@ -33,10 +33,10 @@ angular.module('evtviewer.openseadragonService')
          },
          yPage7: {
             from: 6.70,
-            to: 7.65
+            to: 7.95
          },
          yPage8: {
-            from: 7.65,
+            from: 7.95,
             to: 9.00
          },
          yPage9: {

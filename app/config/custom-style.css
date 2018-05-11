@@ -12,12 +12,18 @@
 .highlight {
    opacity: 0.4;
    filter: alpha(opacity=40);
-   outline: 12px auto red;
+   outline: 10px auto red;
    /* #0A7EbE; */
-   background-color: white;
+   background-color: greenyellow;
 }
 
 .nohighlight {
     display: none;
  }
+ 
+ /* regola per la demo in arabo */
+ /*#mainContentToTranform { */
+/*     direction: rtl; */
+/* }*/
+
  

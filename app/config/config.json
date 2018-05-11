@@ -1,9 +1,9 @@
 {
-    "indexTitle": "experimental encoding for the image viewer",
+    "indexTitle": "Edizione digitale del Rotulo di San Teobaldo",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/rotoloSanTeobaldo.xml",
+    "dataUrl":"data/rotoloSanTeobaldo.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -65,7 +65,7 @@
         "visible": true
     }],
 
-    "enableXMLdownload" : true,
+    "enableXMLdownload" : false,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
