@@ -13,30 +13,6 @@
       @include calc(max-height, #{setInsideFrameHeight()} - 5px);
       transition: max-height .5s;
    }
-   /*&.options-open {
-      .checkbox-container {
-         display: block;
-         height: 35px;
-         position: relative;
-         left: 58px;
-         bottom: 37px;
-         background-color: $search-options-background;
-         border: 1px solid;
-         width: 180px;
-         label {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-         }
-         input {
-            position: relative;
-            top: 3px;
-         }
-      }
-   }
-   .checkbox-container {
-      display: none;
-   }*/
    button-switch {
       &[data-type="searchCaseSensitive"] {
          .buttonSwitch-active {
