@@ -109,8 +109,8 @@ angular.module('evtviewer.dataHandler')
          return node.getAttribute('n');
       };
       
-      XmlDoc.prototype.getCurrentPageId = function(node, pageId) {
-         return node.getAttribute('xml:id') || 'page_' + pageId;
+      XmlDoc.prototype.getCurrentPageId = function(node) {
+         return node.getAttribute('xml:id') || 'page_' + node.getAttribute('n');
       };
       
       XmlDoc.prototype.getCurrentPageParNodes = function (xmlDocDom, nodes) {

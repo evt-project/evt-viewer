@@ -54,7 +54,7 @@ angular.module('evtviewer.dataHandler')
                },
                'pb': function() {
                   currentPage = evtSearchDocument.getCurrentPage(node);
-                  currentPageId = evtSearchDocument.getCurrentPageId(node, pageId);
+                  currentPageId = evtSearchDocument.getCurrentPageId(node);
                   pageId++;
                },
                'default': function () {
