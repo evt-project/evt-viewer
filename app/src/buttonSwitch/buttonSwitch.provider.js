@@ -643,25 +643,22 @@ angular.module('evtviewer.buttonSwitch')
                };
                break;
             case 'searchCaseSensitive':
+               btnType = 'standAlone';
                callback = function() {
                   evtSearchBox.updateStatus('searchCaseSensitive');
                   evtSearchResults.highlightSearchResults(scope.$parent.vm.searchInput);
                };
-               fakeCallback = function() {
-      
-               };
                break;
             case 'searchToolsInternal':
+               btnType = 'standAlone';
                callback = function(){
                   evtSearchBox.toggleBox('searchBox');
                   evtSearchResultsProvider.closeBox('searchResults');
                   evtSearchResultsProvider.showSearchResultsShowBtn();
                };
-               fakeCallback = function() {
-               
-               };
                break;
             case 'searchToolsExternal':
+               btnType = 'standAlone';
                callback = function() {
                   window.alert('External position coming soon!');
                };
