@@ -1,7 +1,7 @@
 var Mark = require('mark.js');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox) {
+   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils', function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
       
       SearchResults.prototype.getSearchResults = function (inputValue) {
          var searchResults;
@@ -135,10 +135,16 @@ angular.module('evtviewer.dataHandler')
       
       SearchResults.prototype.getTextPreview = function(highlightedText, replace) {
          var splitText = highlightedText.split(/\s+/),
-            replaceIndex = splitText.indexOf(replace),
+            replaceIndex,
             textBeforeReplace,
             textAfterReplace,
-            textPreview;
+            textPreview,
+            i = 1;
+         
+         while(Utils.cleanPunctuation(splitText[i]) !== replace) {
+            replaceIndex = i;
+            i++;
+         }
          
          textAfterReplace = splitText.slice(replaceIndex, replaceIndex + 10);
          textBeforeReplace = replaceIndex < 10 ? splitText.slice(0, replaceIndex)

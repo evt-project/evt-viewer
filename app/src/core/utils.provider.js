@@ -313,7 +313,7 @@ angular.module('evtviewer.core')
     */
    this.cleanPunctuation = function(str) {
      var replace,
-         regex = /[.,\/#!$%\^&\*;:{}=\-_`~()]/;
+         regex = /[.,#!$%\^&\*;:{}=\-_`~()]/;
 
      while(str.match(regex)) {
         replace = str.replace(regex, '');
