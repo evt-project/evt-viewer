@@ -9,27 +9,13 @@
 	ng-click="vm.pageSlider.value = 0"><i class="fa fa-angle-double-left"></i></button>
 	<button type="button" class="buttonSlider" id="rightRight"
 	ng-click="vm.pageSlider.value = vm.pageSlider.options.ceil"><i class="fa fa-angle-double-right"></i></button>
-	
 		<button-switch
 			title="beforePage"
-			data-label=""
-			data-icon="beforePage"
-			data-type="beforePage"
-			data-value="beforePage"
-			ng-click="vm.doCallback()"
-			class="fa fa-angle-left"
-			
-			>
-		</button-switch>
-		
-		
+			data-icon="prev-page"
+			data-type="prevPage"></button-switch>
 		<button-switch
 			title="nextPage"
-			data-label=""
-			data-type="nextPage"
-			ng-click="vm.doCallback()"
-			>
-		</button-switch>
-
+			data-icon="next-page" 
+			data-type="nextPage"></button-switch>
 </div>
 <!-- avanti e fine a sx, dietro e inizio a dx-->

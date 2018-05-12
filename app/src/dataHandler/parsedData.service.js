@@ -909,6 +909,7 @@ angular.module('evtviewer.dataHandler')
 		if (pagesCollection[pageId] === undefined) {
 			page.docs = [docId];
 			pagesCollection[pagesCollection.length] = pageId;
+			page.indexInCollection = pagesCollection.length;
 			pagesCollection[pageId] = page;
 			pagesCollection.length++;
 			// _console.log('parsedData - addPage ', page);

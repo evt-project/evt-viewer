@@ -252,10 +252,10 @@ angular.module('evtviewer.buttonSwitch')
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
 					break;
-				case 'nextPage':
+				case 'next-page':
 					evtIcon = 'fa fa-angle-right';
 					break;
-				case 'beforePage':
+				case 'prev-page':
 					evtIcon = 'fa fa-angle-left';
 					break;
 			}
@@ -701,19 +701,55 @@ angular.module('evtviewer.buttonSwitch')
 				case 'nextPage':
 					callback = function() {
 						var vm = this;
-						if (scope.$parent.vm.pageSlider.value < scope.$parent.vm.pageSlider.options.ceil) {
-							scope.$parent.vm.pageSlider.value = scope.$parent.vm.pageSlider.value + 1;
+						vm.active = false;
+						var pagesCollection = parsedData.getPages();
+
+						var currentPage = evtInterface.getState('currentPage');
+						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+						
+						var currentDocument = evtInterface.getState('currentDoc');
+						var newPageId = pagesCollection[currentPageIndex+1];
+						if (newPageId) {
+							var newPage = pagesCollection[newPageId];
+							evtInterface.updateState('currentPage', newPageId);
+							
+							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							if (newPage.docs.length > 1) { //The page has two different docs
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							evtInterface.updateUrl();
 						}
-						vm.active = !vm.active;
+						// TODO: set disabled as we reach the bottom of pages collection
+						// and reactivate next-page if we leave the beginning of pages collection
 					};
 					break;
-				case 'beforePage':
+				case 'prevPage':
 					callback = function() {
 						var vm = this;
-						if (scope.$parent.vm.pageSlider.value > scope.$parent.vm.pageSlider.options.floor) {
-							scope.$parent.vm.pageSlider.value = scope.$parent.vm.pageSlider.value - 1;
+						vm.active = false;
+						var pagesCollection = parsedData.getPages();
+
+						var currentPage = evtInterface.getState('currentPage');
+						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+						
+						var currentDocument = evtInterface.getState('currentDoc');
+						var newPageId = pagesCollection[currentPageIndex-1];
+						if (newPageId) {
+							var newPage = pagesCollection[newPageId];
+							evtInterface.updateState('currentPage', newPageId);
+							
+							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							if (newPage.docs.length > 1) { //The page has two different docs
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							evtInterface.updateUrl();
 						}
-						vm.active = !vm.active;
+						// TODO: set disabled as we reach the top of pages collection
+						// and reactivate next-page if we leave the end of pages collection
 					};
 					break;
 				default:
@@ -769,6 +805,7 @@ angular.module('evtviewer.buttonSwitch')
 				destroy: destroy
 			};
 
+			console.log(icon)
 			collection[currentId] = angular.extend(vm, scopeHelper);
 			list.push({
 				id: currentId,
