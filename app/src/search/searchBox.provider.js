@@ -13,13 +13,14 @@ angular.module('evtviewer.search')
          
          searchBox.build = function (scope, vm) {
             var status = {
-               searchBox: false
+               searchBox: false,
+               searchCaseSensitive : false
             };
             var searchBoxBtn = [
                {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
                {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide'},
-               {title: 'Advanced Search', label: '', icon: 'search-advanced', type: ''},
                {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
+               {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
                {title: 'Previous', label: '', icon: 'previous', type: ''},
                {title: 'Next', label: '', icon: 'next', type: ''},
                {title: 'Search', label: '', icon: 'search', type: 'search'}
@@ -39,18 +40,22 @@ angular.module('evtviewer.search')
          
          searchBox.getSearchResults = function () {
             return collection.searchResults;
-         }
-         
-         searchBox.getStatus = function (key) {
-            return collection.status[key];
          };
          
          searchBox.getInputValue = function () {
             return collection.searchedTerm;
          };
          
-         searchBox.toggleBox = function (key) {
+         searchBox.getStatus = function (key) {
+            return collection.status[key];
+         };
+         
+         searchBox.updateStatus = function (key) {
             collection.status[key] = collection.updateState(key);
+         };
+         
+         searchBox.toggleBox = function (key) {
+            searchBox.updateStatus(key);
          };
          
          searchBox.openBox = function (key) {

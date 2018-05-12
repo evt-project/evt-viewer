@@ -152,6 +152,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'bookmark':
 					evtIcon = 'icon-evt_bookmark';
 					break;
+            case 'case-sensitive' :
+               evtIcon = 'icon-evt_case-sensitive';
+               break;
 				case 'color-legend':
 					evtIcon = 'icon-evt_color-legend';
 					break;
@@ -639,11 +642,23 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchResultsProvider.toggleSearchResults();
                };
                break;
+            case 'searchCaseSensitive':
+               callback = function() {
+                  evtSearchBox.updateStatus('searchCaseSensitive');
+                  evtSearchResults.highlightSearchResults(scope.$parent.vm.searchInput);
+               };
+               fakeCallback = function() {
+      
+               };
+               break;
             case 'searchToolsInternal':
                callback = function(){
                   evtSearchBox.toggleBox('searchBox');
                   evtSearchResultsProvider.closeBox('searchResults');
                   evtSearchResultsProvider.showSearchResultsShowBtn();
+               };
+               fakeCallback = function() {
+               
                };
                break;
             case 'searchToolsExternal':

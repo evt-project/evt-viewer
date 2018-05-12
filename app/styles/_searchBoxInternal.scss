@@ -37,6 +37,13 @@
    .checkbox-container {
       display: none;
    }*/
+   button-switch {
+      &[data-type="searchCaseSensitive"] {
+         .buttonSwitch-active {
+            background-color: $buttonSwitch-active-background-color;
+         }
+      }
+   }
    .buttonSwitch {
       width: 30px;
       @include border($mainContainer-border-width, 'right', $base-color-dark);

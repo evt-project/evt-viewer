@@ -1,7 +1,7 @@
 var Mark = require('mark.js');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch) {
+   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox) {
       
       SearchResults.prototype.getSearchResults = function (inputValue) {
          var searchResults;
@@ -29,21 +29,43 @@ angular.module('evtviewer.dataHandler')
          return visibleRes;
       };
       
-      function getQueryResults(inputValue) {
-         var index = evtSearchIndex.getIndex();
+      function getIndex() {
+         return evtSearchIndex.getIndex();
+      }
+      
+      function getCaseSensitiveResults(inputValue) {
+         var index = getIndex();
          return evtSearchQuery.query(index, inputValue);
+      }
+   
+      function getCaseInsensitiveResults(inputValue) {
+         var index = getIndex(),
+            result = [];
+         
+         for(var token in index.invertedIndex) {
+            if(token.toLowerCase() === inputValue.toLowerCase()) {
+               result = result.concat(evtSearchQuery.query(index, token));
+            }
+         }
+         
+         return result;
       }
       
       function getResultsMetadata(inputValue) {
-         var res = getQueryResults(inputValue);
-         var diplResult = {},
+         var caseSensitiveResults = getCaseSensitiveResults(inputValue),
+            caseInsensitiveResults = getCaseInsensitiveResults(inputValue),
+            res,
+            diplResult = {},
             interprResult = {};
+         
+         var isCaseSensitive = evtSearchBox.getStatus('searchCaseSensitive');
+         res = isCaseSensitive ? caseSensitiveResults : caseInsensitiveResults;
          
          var results = {
             diplomatic: [],
             interpretative: []
          };
-         
+   
          res.forEach(function (result) {
             var metadata = result.matchData.metadata;
             for (var token in metadata) {
@@ -133,12 +155,14 @@ angular.module('evtviewer.dataHandler')
       };
       
       SearchResults.prototype.highlightSearchResults = function (inputValue) {
-         var instance = new Mark(document.querySelector('#mainContentToTranform'));
+         var instance = new Mark(document.querySelector('#mainContentToTranform')),
+            isCaseSensitive = evtSearchBox.getStatus('searchCaseSensitive');
+         
          instance.unmark(inputValue);
          instance.mark(inputValue, {
             'wildcards': 'enable',
             'acrossElements': true,
-            'caseSensitive': true,
+            'caseSensitive': isCaseSensitive,
             'accuracy': {
                'value': 'exactly',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']

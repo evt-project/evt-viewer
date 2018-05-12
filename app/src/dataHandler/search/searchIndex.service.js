@@ -155,7 +155,7 @@ angular.module('evtviewer.dataHandler')
          builder.metadataWhitelist.push('position');
       }
       
-      /* PLUGINS */
+      /* PLUGINS FOR LUNR.JS */
       var customTokenizer = function(obj) {
          var str = obj.toString().trim(),
             strLength = str.length,
