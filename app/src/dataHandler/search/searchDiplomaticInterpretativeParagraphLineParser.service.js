@@ -1,5 +1,5 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchDiploInterprParLineParser', ['evtSearchDocument', 'evtParagraphHandler', 'XPATH', function (evtSearchDocument, evtParagraphHandler, XPATH) {
+   .factory('EvtSearchDiploInterprParLineParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH) {
       function DiplomaticInterpretativeParLineParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
          this.xmlDocBody = xmlDocBody;
@@ -38,6 +38,11 @@ angular.module('evtviewer.dataHandler')
             currentPage,
             currentPageId,
             pageId = 1,
+            paragraph,
+            parId = 1,
+            line,
+            lineId = 1,
+            documentToIndex = {},
             documentsToIndex = {},
             
             node = parLineNodes.iterateNext();
@@ -52,14 +57,59 @@ angular.module('evtviewer.dataHandler')
                   currentPageId = evtSearchDocument.getCurrentPageId(node, pageId);
                   pageId++;
                },
-               'p': function () {
-                  documentsToIndex = evtParagraphHandler.getParagraphInfo(xmlDocDom, currentXmlDoc, node, currentPage, currentPageId, pageId, documentsToIndex, ns, nsResolver);
-               },
-               'l': function() {
-                  console.log();
+               'default': function () {
+                  var diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticChildNodes(xmlDocDom, node, ns, nsResolver),
+                     interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeChildNodes(xmlDocDom, node, ns, nsResolver);
+                  
+                  for(var i = 0; i < diplomaticNodes.length;) {
+                     var currentElementDiplomaticNodes,
+                        currentElementInterpretativeNodes;
+                     
+                     if(diplomaticNodes[i].nodeName === 'pb') {
+                        currentPage = evtSearchDocument.getCurrentPage(diplomaticNodes[i]);
+                        currentPageId = evtSearchDocument.getCurrentPageId(diplomaticNodes[i], pageId);
+                        pageId++;
+                        diplomaticNodes.splice(0, 1);
+                        interpretativeNodes.splice(0, 1);
+                     }
+   
+                     documentToIndex.xmlDocTitle = currentXmlDoc.title;
+                     documentToIndex.xmlDocId = currentXmlDoc.id;
+                     documentToIndex.page = currentPage;
+                     documentToIndex.pageId = currentPageId;
+   
+                     var nodeName = {
+                        'p': function() {
+                           paragraph = node.getAttribute('n') || parId.toString();
+                           documentToIndex.paragraph = paragraph;
+                           documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
+                           parId++;
+                        },
+                        'l': function() {
+                           line = node.getAttribute('n') || lineId.toString();
+                           documentToIndex.line = line;
+                           documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.line;
+                           lineId++;
+                        }
+                     };
+                     nodeName[node.nodeName]();
+   
+                     currentElementDiplomaticNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, diplomaticNodes);
+                     currentElementInterpretativeNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, interpretativeNodes);
+   
+                     documentToIndex.content = {
+                        diplomatic: evtSearchDocument.getContent(currentElementDiplomaticNodes, 'diplomatic'),
+                        interpretative: evtSearchDocument.getContent(currentElementInterpretativeNodes, 'interpretative')
+                     };
+                     
+                     documentsToIndex[documentToIndex.docId] = documentToIndex;
+                     currentElementDiplomaticNodes = [];
+                     currentElementInterpretativeNodes = [];
+                     documentToIndex = {};
+                  }
                }
             };
-            nodes[node.nodeName]();
+            (nodes[node.nodeName] || nodes['default'])();
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;

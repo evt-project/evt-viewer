@@ -56,7 +56,7 @@ angular.module('evtviewer.dataHandler')
                   pageId++;
                },
                'p': function () {
-                  var paragraphChildNodes = getParagraphChildNodes(xmlDocDom, node, ns, nsResolver),
+                  var paragraphChildNodes = getChildNodes(xmlDocDom, node, ns, nsResolver),
                      currentNode = paragraphChildNodes.iterateNext(),
                      parNodes = [];
                   
@@ -103,9 +103,9 @@ angular.module('evtviewer.dataHandler')
          return documentsToIndex;
       }
       
-      function getParagraphChildNodes(xmlDocDom, node, ns, nsResolver) {
-         return ns ? xmlDocDom.evaluate(XPATH.ns.getParagraphChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getParagraphChildNodes, node, null, XPathResult.ANY_TYPE, null);
+      function getChildNodes(xmlDocDom, node, ns, nsResolver) {
+         return ns ? xmlDocDom.evaluate(XPATH.ns.getChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null)
+            : xmlDocDom.evaluate(XPATH.getChildNodes, node, null, XPathResult.ANY_TYPE, null);
       }
       
       return DiplomaticParLineParser;
