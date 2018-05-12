@@ -7,7 +7,7 @@
    position: absolute;
    bottom: 5px;
    left: $mainContainer-border-width*2;
-   margin: 41px 0;
+   margin: 40px 0;
    background: $box-background-color;
    &.results-open {
       @include calc(max-height, #{setInsideFrameHeight()} - 5px);
