@@ -2,14 +2,18 @@
 /* NAVBAR                      */
 /* *************************** */
 
+.navBarSliderWrapper {
+	height: $base-slider-height;
+	background: #263238;
+	border-top: 2px solid #ffffff;
+	}
+
 .navBarSlider {
-  width: 100%;
-  height: $base-slider-height;
   position: relative;
   cursor: pointer;
   z-index: 1;
   display: inline;
-  top: 10px;
+  bottom: -10px;
   
 	#sliderValue {
 		font-size: 0.8em;
@@ -19,8 +23,6 @@
 	#slider {
 	width: 70%;
 	}
-	
-}
 
 .buttonSlider {
 	cursor: pointer;
@@ -48,4 +50,6 @@
 	border-radius: 16px;
 	top: 3px;
 	background: #bedde0;
+	}
+	
 	}

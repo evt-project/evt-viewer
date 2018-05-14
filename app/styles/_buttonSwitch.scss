@@ -86,6 +86,15 @@ button-switch {
         }
     }
 
+	&.sliders {
+		.buttonSwitch {
+			background: #ECEFF1;
+			border-radius: 4px;
+			font-size: 25px;
+			}
+		}
+	
+	
     &.inverted-color {
         .buttonSwitch {
             color: $buttonSwitch-background-color;

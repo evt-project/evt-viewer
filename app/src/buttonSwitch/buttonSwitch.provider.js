@@ -258,6 +258,12 @@ angular.module('evtviewer.buttonSwitch')
 				case 'prev-page':
 					evtIcon = 'fa fa-angle-left';
 					break;
+				case 'first-page':
+					evtIcon = 'fa fa-angle-double-left';
+					break;
+				case 'last-page':
+					evtIcon = 'fa fa-angle-double-right';
+					break;
 			}
 			return evtIcon;
 		};
@@ -304,7 +310,9 @@ angular.module('evtviewer.buttonSwitch')
 		 * 		<li>'*removeVer*': remove version from view;</li>
 		 * 		<li>'*cropText*': crop text.</li>
 		 *		<li>'*nextPage*': next page.</li>
-		 *		<li>'*beforePage*': before page.</li></ul></p>
+		 *		<li>'*beforePage*': before page.</li>
+		 *		<li>'*firstPage*': first page.</li>
+		 *		<li>'*lastPage*': last page.</li></ul></p>
 		 * <p>To see details of callback function just open the file and read.</p>
 		 * <p>You can add your own type of button, if the same button used in different places should always have the same behaviour.</p>
 		 * <p>You can also overwrite the call back to trigger event with <code>ng-click</code> directive</p>
@@ -736,6 +744,60 @@ angular.module('evtviewer.buttonSwitch')
 						
 						var currentDocument = evtInterface.getState('currentDoc');
 						var newPageId = pagesCollection[currentPageIndex-1];
+						if (newPageId) {
+							var newPage = pagesCollection[newPageId];
+							evtInterface.updateState('currentPage', newPageId);
+							
+							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							if (newPage.docs.length > 1) { //The page has two different docs
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							evtInterface.updateUrl();
+						}
+						// TODO: set disabled as we reach the top of pages collection
+						// and reactivate next-page if we leave the end of pages collection
+					};
+					break;
+				case 'firstPage':
+					callback = function() {
+						var vm = this;
+						vm.active = false;
+						var pagesCollection = parsedData.getPages();
+
+						var currentPage = evtInterface.getState('currentPage');
+						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+						
+						var currentDocument = evtInterface.getState('currentDoc');
+						var newPageId = pagesCollection[currentPageIndex-currentPageIndex];
+						if (newPageId) {
+							var newPage = pagesCollection[newPageId];
+							evtInterface.updateState('currentPage', newPageId);
+							
+							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							if (newPage.docs.length > 1) { //The page has two different docs
+								evtInterface.updateState('currentDoc', newPage.docs[0]);
+							}
+							evtInterface.updateUrl();
+						}
+						// TODO: set disabled as we reach the top of pages collection
+						// and reactivate next-page if we leave the end of pages collection
+					};
+					break;
+				case 'lastPage':
+					callback = function() {
+						var vm = this;
+						vm.active = false;
+						var pagesCollection = parsedData.getPages();
+
+						var currentPage = evtInterface.getState('currentPage');
+						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+						
+						var currentDocument = evtInterface.getState('currentDoc');
+						var newPageId = pagesCollection[pagesCollection.length - 1];
 						if (newPageId) {
 							var newPage = pagesCollection[newPageId];
 							evtInterface.updateState('currentPage', newPageId);

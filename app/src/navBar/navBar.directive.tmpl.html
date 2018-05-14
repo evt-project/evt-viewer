@@ -5,17 +5,25 @@
 	</button>
     <p id="sliderValue"><!--Page: {{vm.pageSlider.value}}--></p>
     <rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider"></rzslider>
-	<button type="button" class="buttonSlider" id="leftLeft"
-	ng-click="vm.pageSlider.value = 0"><i class="fa fa-angle-double-left"></i></button>
-	<button type="button" class="buttonSlider" id="rightRight"
-	ng-click="vm.pageSlider.value = vm.pageSlider.options.ceil"><i class="fa fa-angle-double-right"></i></button>
+		<button-switch
+			title="firstPage"
+			data-icon="first-page" 
+			data-type="firstPage"
+			class="sliders"></button-switch>
 		<button-switch
 			title="beforePage"
 			data-icon="prev-page"
-			data-type="prevPage"></button-switch>
+			data-type="prevPage"
+			class="sliders"></button-switch>
 		<button-switch
 			title="nextPage"
 			data-icon="next-page" 
-			data-type="nextPage"></button-switch>
+			data-type="nextPage"
+			class="sliders"></button-switch>
+		<button-switch
+			title="lastPage"
+			data-icon="last-page" 
+			data-type="lastPage"
+			class="sliders"></button-switch>
 </div>
 <!-- avanti e fine a sx, dietro e inizio a dx-->
