@@ -33,6 +33,16 @@
    /* For IE8 and earlier */
 }
 
+.selectedHighlight {
+   filter: alpha(opacity=50);
+   /*outline: 10px auto red;*/ 
+    /* #0A7EbE; */ 
+   /*background-color: greenyellow;*/
+   border: 1px solid #4c2f2f;
+   background-color: #9c4837;
+   opacity: 0.5;
+}
+
 .nohighlight {
    display: none;
 }

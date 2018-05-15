@@ -3,6 +3,8 @@
    angular.module('evtviewer.openseadragonService', ["evtviewer.interface"])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap) {
+         let ImageNormalizationCoefficient = 3500;
+         let YminPan = 0.5;
 
          var viewerHandler = this;
 
@@ -156,9 +158,37 @@
 
          }
 
+         viewerHandler.highlightSelectedOverlay = function(zone, zoneName){
+            console.log('in highlight Overlay: ', zone);
+            if(!zone) throw "problem in zone data extraction";
+            
+            try {
+                  viewerHandler.viewer.removeOverlay("line-overlay");
+            } catch (error) {
+                  console.error('no line overlay', error);
+            }
+            var rectObj = convertZoneToOSD(zone);
+            var elt = document.createElement("div");
+            elt.id = "line-overlay_selected";
+            elt.className = "selectedHighlight";
+            viewerHandler.viewer.addOverlay({
+                element: elt,
+                location: rectObj
+            });
+
+         }
+
          viewerHandler.turnOffOverlay = function(){
             try {
                   viewerHandler.viewer.removeOverlay("line-overlay");
+            } catch (error) {
+                  console.error('no line overlay', error);
+            }
+         }
+
+         viewerHandler.turnOffOverlaySelected = function(){
+            try {
+                  viewerHandler.viewer.removeOverlay("line-overlay_selected");
             } catch (error) {
                   console.error('no line overlay', error);
             }
@@ -172,12 +202,27 @@
             tmp.width = _(zone.lrx - zone.ulx);
             tmp.hight = _(zone.lry - zone.uly);
             console.log("in convert zone to OSD", tmp);
-            return new OpenSeadragon.Rect(tmp.x/3500, tmp.y/3500, tmp.width/3500, tmp.hight/3500);
+            return new OpenSeadragon.Rect(tmp.x/ImageNormalizationCoefficient, tmp.y/ImageNormalizationCoefficient, tmp.width/ImageNormalizationCoefficient, tmp.hight/ImageNormalizationCoefficient);
          }
 
          function _(value){
                return value;
          }
+
+         viewerHandler.moveToZone = function(zone){
+            console.log("moveTo: ", zone);
+            console.log("viewport center: ", viewerHandler.viewer.viewport.getCenter());
+            var oldCenter = viewerHandler.viewer.viewport.getCenter();
+            console.log("old center y", oldCenter.y);
+            console.log("zone y", zone.uly/ImageNormalizationCoefficient);
+            var newY = (zone.uly/ImageNormalizationCoefficient<YminPan)?YminPan:zone.uly/ImageNormalizationCoefficient;
+            var newCenter = new OpenSeadragon.Point(oldCenter.x,newY);
+            console.log("new center", newCenter);
+            viewerHandler.viewer.viewport.panTo(newCenter);
+            console.log("center after pan",viewerHandler.viewer.viewport.getCenter() );
+         }
+
+
 
 
          viewerHandler.testFun = function () {

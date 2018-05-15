@@ -13,6 +13,7 @@ angular.module('evtviewer.UItools')
 
 .service('evtImageTextLinking', function(evtInterface, Utils, parsedData, imageViewerHandler) {
     var ITLutils = {};
+    let zonePrefix = "zone_";
 
     /**
      * @ngdoc method
@@ -50,6 +51,7 @@ angular.module('evtviewer.UItools')
         evtInterface.setToolStatus('ITL', 'inactive');
         evtInterface.updateCurrentHighlightedZone(undefined);
         this.switchingOffHighlightInImage();
+        this.switchingOffHighlightInImageSelected();
         console.log("TurnOFFITL");
         //document.getElementById("example-overlay").className = "nohighlight";
        
@@ -168,7 +170,7 @@ angular.module('evtviewer.UItools')
             elementInLine.onmouseover = function() {
                 var lineId = this.getAttribute('data-line');
                 ITLutils.changeLinesHighlightStatus(lineId, 'over');
-                ITLutils.highlightZoneInImage("zone_"+lineId); //FIXME: il nome della zona deve essere valutata a runtime.
+                ITLutils.highlightZoneInImage(zonePrefix+lineId); //FIXME: il nome della zona deve essere valutata a runtime.
             };
             elementInLine.onmouseout = function() {
                 var lineId = this.getAttribute('data-line');
@@ -178,11 +180,13 @@ angular.module('evtviewer.UItools')
             elementInLine.onclick = function() {
                 var lineId = this.getAttribute('data-line'),
                     currentHzone = evtInterface.getState('currentHighlightedZone');
+                    console.log("onclick: ", lineId, currentHzone );
 
                 if (currentHzone && currentHzone.name === 'Line') {
                     // Deselect current selected
                     ITLutils.changeLinesHighlightStatus(currentHzone.id, 'unselect');
                     ITLutils.switchingOffHighlightInImage();
+                    ITLutils.switchingOffHighlightInImageSelected();
                 }
 
                 // Select this and set current
@@ -192,6 +196,7 @@ angular.module('evtviewer.UItools')
                         id: lineId
                     });
                     ITLutils.changeLinesHighlightStatus(lineId, 'select');
+                    ITLutils.selectHighlightedZone(lineId);
                 } else {
                     evtInterface.updateCurrentHighlightedZone(undefined);
                 }
@@ -268,7 +273,9 @@ angular.module('evtviewer.UItools')
      * @todo Adapt to real viewer, once this is implemented
      */
     ITLutils.prepareZoneInImgInteractions = function() {
+        console.log("prepare zone in Image");
         var zones = document.getElementsByClassName('zoneInImg');
+        console.log("zones in Image:", zones);
         for (var i = 0; i < zones.length; i++) {
             var zone = zones[i];
 
@@ -341,6 +348,19 @@ angular.module('evtviewer.UItools')
 
     ITLutils.switchingOffHighlightInImage = function(){
         imageViewerHandler.turnOffOverlay();
+        //imageViewerHandler.turnOffOverlaySelected();
+    }
+    ITLutils.switchingOffHighlightInImageSelected = function(){
+        imageViewerHandler.turnOffOverlaySelected();
+        //imageViewerHandler.turnOffOverlaySelected();
+    }
+
+    ITLutils.selectHighlightedZone = function(lineId){
+        console.log("selectHighlightedZone: ", lineId);
+        var zone = parsedData.getZone(zonePrefix+lineId);
+        imageViewerHandler.turnOffOverlaySelected();
+        imageViewerHandler.highlightSelectedOverlay(zone,zonePrefix+lineId);
+        imageViewerHandler.moveToZone(zone);
     }
 
     return ITLutils;
