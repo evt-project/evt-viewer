@@ -264,6 +264,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'last-page':
 					evtIcon = 'fa fa-angle-double-right';
 					break;
+				case 'hide-bar':
+					evtIcon = 'fa fa-angle-double-down';
+					break;
 			}
 			return evtIcon;
 		};
@@ -312,7 +315,8 @@ angular.module('evtviewer.buttonSwitch')
 		 *		<li>'*nextPage*': next page.</li>
 		 *		<li>'*beforePage*': before page.</li>
 		 *		<li>'*firstPage*': first page.</li>
-		 *		<li>'*lastPage*': last page.</li></ul></p>
+		 *		<li>'*lastPage*': last page.</li>
+		 *		<li>'*hideBar*': hide navBar.</li></ul></p>
 		 * <p>To see details of callback function just open the file and read.</p>
 		 * <p>You can add your own type of button, if the same button used in different places should always have the same behaviour.</p>
 		 * <p>You can also overwrite the call back to trigger event with <code>ng-click</code> directive</p>
@@ -729,8 +733,11 @@ angular.module('evtviewer.buttonSwitch')
 							}
 							evtInterface.updateUrl();
 						}
-						// TODO: set disabled as we reach the bottom of pages collection
-						// and reactivate next-page if we leave the beginning of pages collection
+						if (newPageId !== pagesCollection[pagesCollection.length - 1]) {
+							vm.disabled = false;
+						} else {
+							vm.disabled = true;
+						}
 					};
 					break;
 				case 'prevPage':
@@ -756,8 +763,11 @@ angular.module('evtviewer.buttonSwitch')
 							}
 							evtInterface.updateUrl();
 						}
-						// TODO: set disabled as we reach the top of pages collection
-						// and reactivate next-page if we leave the end of pages collection
+						if (newPageId !== pagesCollection[0]) {
+							vm.disabled = false;
+						} else {
+							vm.disabled = true;
+						}
 					};
 					break;
 				case 'firstPage':
@@ -783,8 +793,6 @@ angular.module('evtviewer.buttonSwitch')
 							}
 							evtInterface.updateUrl();
 						}
-						// TODO: set disabled as we reach the top of pages collection
-						// and reactivate next-page if we leave the end of pages collection
 					};
 					break;
 				case 'lastPage':
@@ -810,10 +818,16 @@ angular.module('evtviewer.buttonSwitch')
 							}
 							evtInterface.updateUrl();
 						}
-						// TODO: set disabled as we reach the top of pages collection
-						// and reactivate next-page if we leave the end of pages collection
 					};
 					break;
+				case 'hideBar':
+					btnType = 'toggler';
+					callback = function() {
+						var vm = this;
+						vm.active = !vm.active;
+						if (vm.active = false) {
+						}
+					}
 				default:
 					break;
 			}
