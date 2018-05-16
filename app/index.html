@@ -372,14 +372,16 @@
                 <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
-		
-		<section class="navBarSliderWrapper">
-			<evt-navbar></evt-navbar>
-			<button-switch
+			
+		<button-switch
 			title="hideBar"
 			data-icon="hide-bar"
 			data-type="hideBar"
 			class="hider"></button-switch>
+		<section class="navBarSliderWrapper"
+		ng-if="isNavBarOpened() === true">
+			
+			<evt-navbar></evt-navbar>
 		</section>
     </div>
 	

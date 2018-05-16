@@ -821,11 +821,16 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					break;
 				case 'hideBar':
-					btnType = 'toggler';
 					callback = function() {
 						var vm = this;
-						vm.active = !vm.active;
-						if (vm.active = false) {
+						var startId = evtInterface.getState('isNavBarOpened') ;
+						if (vm.active === true) {
+							evtInterface.updateState('isNavBarOpened', true);
+							vm.active = false;
+						}
+						else if (vm.active === false) {
+							evtInterface.updateState('isNavBarOpened', false);
+							vm.active = true;
 						}
 					}
 				default:
