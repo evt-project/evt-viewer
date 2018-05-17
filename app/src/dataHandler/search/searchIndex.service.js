@@ -28,6 +28,7 @@ angular.module('evtviewer.dataHandler')
             
             this.use(addXmlDocTitleMetadata, parsedElementsForIndexing);
             this.use(addXmlDocIdMetadata, parsedElementsForIndexing);
+            this.use(addSectionMetadata, parsedElementsForIndexing);
             this.use(addParagraphMetadata, parsedElementsForIndexing);
             this.use(addPageMetadata, parsedElementsForIndexing);
             this.use(addPageIdMetadata, parsedElementsForIndexing);
@@ -83,6 +84,21 @@ angular.module('evtviewer.dataHandler')
          lunr.Pipeline.registerFunction(pipelineFunction, 'xmlDocId');
          builder.pipeline.add(pipelineFunction);
          builder.metadataWhitelist.push('xmlDocId');
+      }
+   
+      function addSectionMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
+         var pipelineFunction = function (token) {
+            docIndex = builder.documentCount - 1;
+            token.metadata['sectionTitle'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].sectionTitle;
+            return token;
+         };
+      
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].sectionTitle !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'sectionTitle');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('sectionTitle');
+         }
       }
       
       function addParagraphMetadata(builder, parsedElementsForIndexing) {

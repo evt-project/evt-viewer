@@ -1,5 +1,5 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchDiploInterprParLineParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH) {
+   .factory('EvtSearchDiploInterprParLineParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', 'Utils', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH, Utils) {
       function DiplomaticInterpretativeParLineParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
          this.xmlDocBody = xmlDocBody;
@@ -54,21 +54,22 @@ angular.module('evtviewer.dataHandler')
                'head': function() {
                   var headDiplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticChildNodes(xmlDocDom, node, ns, nsResolver),
                      headInterpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeChildNodes(xmlDocDom, node, ns, nsResolver);
-   
+                     
                   var type = {
                      'main': function () {
-                        mainTitle = {
+                        /*documentToIndex.contentMainTitle = {
                            diplomatic: evtSearchDocument.getContent(headDiplomaticNodes, 'diplomatic'),
                            interpretative: evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative')
-                        };
-                        return mainTitle;
+                        };*/
+                        mainTitle = evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative');
                      },
                      'sub': function () {
-                        sectionTitle = {
+                        /*documentToIndex.contentSectionTitle = {
                            diplomatic: evtSearchDocument.getContent(headDiplomaticNodes, 'diplomatic'),
                            interpretative: evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative')
-                        };
-                        return sectionTitle;
+                        };*/
+                        sectionTitle = evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative');
+                        sectionTitle = Utils.cleanText(sectionTitle);
                      }
                   };
                   type[node.getAttribute('type')]();
