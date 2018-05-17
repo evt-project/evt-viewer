@@ -35,8 +35,8 @@ angular.module('evtviewer.core')
          
          getInterpretativeNodes: './/node()[self::ns:g or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          getInterpretativeChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
-          
-         getParagraphChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
+         
+         getChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
          
          //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
          

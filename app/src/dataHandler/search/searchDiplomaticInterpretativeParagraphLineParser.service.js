@@ -35,6 +35,8 @@ angular.module('evtviewer.dataHandler')
       
       function getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
          var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
+            mainTitle,
+            sectionTitle,
             currentPage,
             currentPageId,
             pageId = 1,
@@ -50,7 +52,27 @@ angular.module('evtviewer.dataHandler')
          while(node !== null) {
             var nodes = {
                'head': function() {
-                  console.log();
+                  var headDiplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticChildNodes(xmlDocDom, node, ns, nsResolver),
+                     headInterpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeChildNodes(xmlDocDom, node, ns, nsResolver);
+   
+                  var type = {
+                     'main': function () {
+                        mainTitle = {
+                           diplomatic: evtSearchDocument.getContent(headDiplomaticNodes, 'diplomatic'),
+                           interpretative: evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative')
+                        };
+                        return mainTitle;
+                     },
+                     'sub': function () {
+                        sectionTitle = {
+                           diplomatic: evtSearchDocument.getContent(headDiplomaticNodes, 'diplomatic'),
+                           interpretative: evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative')
+                        };
+                        return sectionTitle;
+                     }
+                  };
+                  type[node.getAttribute('type')]();
+                  lineId = 1;
                },
                'pb': function() {
                   currentPage = evtSearchDocument.getCurrentPage(node);
@@ -72,7 +94,13 @@ angular.module('evtviewer.dataHandler')
                         diplomaticNodes.splice(0, 1);
                         interpretativeNodes.splice(0, 1);
                      }
-   
+                     if(mainTitle !== undefined) {
+                        documentToIndex.mainTitle = mainTitle;
+                     }
+                     if(sectionTitle !== undefined) {
+                        documentToIndex.sectionTitle = sectionTitle;
+                     }
+                     
                      documentToIndex.xmlDocTitle = currentXmlDoc.title;
                      documentToIndex.xmlDocId = currentXmlDoc.id;
                      documentToIndex.page = currentPage;
