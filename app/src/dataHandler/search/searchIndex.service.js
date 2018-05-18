@@ -14,7 +14,7 @@ angular.module('evtviewer.dataHandler')
             this.pipeline.remove(lunr.stopWordFilter);
    
             this.tokenizer = customTokenizer;
-            this.tokenizer.separator = /[\s,.;:/?!()]+/;
+            this.tokenizer.separator = /[\s,.;:/?!()\'\"]+/;
             
             this.ref('xmlDocId');
             

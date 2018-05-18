@@ -134,14 +134,14 @@ angular.module('evtviewer.dataHandler')
       };
       
       SearchResults.prototype.getTextPreview = function(highlightedText, replace) {
-         var splitText = highlightedText.split(/\s+/),
+         var splitText = highlightedText.split(/[\s]+/),
             replaceIndex,
             textBeforeReplace,
             textAfterReplace,
             textPreview,
-            i = 1;
+            i = 0;
          
-         while(Utils.cleanPunctuation(splitText[i]) !== replace) {
+         while(Utils.cleanPunctuation(splitText[i]) !== replace && i < splitText.length -1) {
             replaceIndex = i;
             i++;
          }
