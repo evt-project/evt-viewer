@@ -21,10 +21,7 @@ angular.module('evtviewer.dataHandler')
       };
       
       function getParLineElements(xmlDocDom, xmlDocBody, ns, nsResolver) {
-         var parLineNodes;
-         
-         evtSearchDocument.removeNoteElements(xmlDocDom);
-         parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
+         var parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
          return getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
       }
       

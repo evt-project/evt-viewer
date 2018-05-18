@@ -8,6 +8,8 @@ angular.module('evtviewer.dataHandler')
             searchParser = {},
             xmlDocsBody = evtSearchDocument.getXmlDocBody(xmlDocDom);
          
+         evtSearchDocument.removeNoteElements(xmlDocDom);
+         
          console.time('Parsed all documents');
          for (var i = 0; i < xmlDocsBody.length; i++) {
             console.time('Parsed document number ' + i);

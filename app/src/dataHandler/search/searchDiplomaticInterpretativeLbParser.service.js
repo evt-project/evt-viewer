@@ -41,12 +41,9 @@ angular.module('evtviewer.dataHandler')
       
       function getLbLines(xmlDocDom, xmlDocBody, prevDocsLbNumber, ns, nsResolver) {
          var lines = [],
-            lbNodes;
+            lbNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
          
-         evtSearchDocument.removeNoteElements(xmlDocDom);
-         lbNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
          lines = getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver);
-         
          return lines;
       }
       

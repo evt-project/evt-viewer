@@ -21,10 +21,7 @@ angular.module('evtviewer.dataHandler')
       };
    
       function getParLineElements(xmlDocDom, xmlDocBody, ns, nsResolver) {
-         var parLineNodes;
-      
-         evtSearchDocument.removeNoteElements(xmlDocDom);
-         parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
+         var parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
          return getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
       }
    
@@ -40,6 +37,8 @@ angular.module('evtviewer.dataHandler')
             pageId = 1,
             paragraph,
             parId = 1,
+            line,
+            lineId,
             documentToIndex = {},
             documentsToIndex = {},
    
@@ -77,16 +76,26 @@ angular.module('evtviewer.dataHandler')
       
                      documentToIndex.xmlDocTitle = currentXmlDoc.title;
                      documentToIndex.xmlDocId = currentXmlDoc.id;
-                     documentToIndex.page = currentPage;
-                     documentToIndex.pageId = currentPageId;
+                     
+                     if(currentPage) {
+                        documentToIndex.page = currentPage;
+                        documentToIndex.pageId = currentPageId;
+                     }
                      
                      var nodeName = {
                         'p': function() {
                            paragraph = evtSearchDocument.getParagraph(node, parId);
                            documentToIndex.paragraph = paragraph;
-                           documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
+                           documentToIndex.docId = currentPage ? documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph
+                                                               : documentToIndex.xmlDocId + '-' + documentToIndex.paragraph;
+                        },
+                        'l': function() {
+                           line = evtSearchDocument.getLine(node, lineId);
+                           documentToIndex.line = line;
+                           documentToIndex.docId = currentPage ? documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.line
+                                                               : documentToIndex.xmlDocId + '-' + documentToIndex.line;
                         }
-                     }
+                     };
                      nodeName[node.nodeName]();
                      
                      currentElementNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, nodes);
