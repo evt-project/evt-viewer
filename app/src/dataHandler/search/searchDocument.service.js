@@ -132,6 +132,10 @@ angular.module('evtviewer.dataHandler')
         return node.getAttribute('n') || parId.toString();
       };
       
+      XmlDoc.prototype.getLine = function(node, lineId) {
+         return node.getAttribute('n') || lineId.toString();
+      }
+      
       XmlDoc.prototype.getContent = function(nodes, editionType) {
          var nodeName,
             currentGlyph,

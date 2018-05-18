@@ -109,13 +109,13 @@ angular.module('evtviewer.dataHandler')
    
                      var nodeName = {
                         'p': function() {
-                           paragraph = node.getAttribute('n') || parId.toString();
+                           paragraph = evtSearchDocument.getParagraph(node, parId);
                            documentToIndex.paragraph = paragraph;
                            documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
                            parId++;
                         },
                         'l': function() {
-                           line = node.getAttribute('n') || lineId.toString();
+                           line = evtSearchDocument.getLine(node, lineId);
                            documentToIndex.line = line;
                            documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.line;
                            lineId++;
