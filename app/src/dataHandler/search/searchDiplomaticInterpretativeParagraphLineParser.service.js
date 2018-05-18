@@ -123,8 +123,8 @@ angular.module('evtviewer.dataHandler')
                      };
                      nodeName[node.nodeName]();
    
-                     currentElementDiplomaticNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, diplomaticNodes);
-                     currentElementInterpretativeNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, interpretativeNodes);
+                     currentElementDiplomaticNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, diplomaticNodes);
+                     currentElementInterpretativeNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, interpretativeNodes);
    
                      documentToIndex.content = {
                         diplomatic: evtSearchDocument.getContent(currentElementDiplomaticNodes, 'diplomatic'),

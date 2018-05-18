@@ -55,49 +55,51 @@ angular.module('evtviewer.dataHandler')
                   currentPageId = evtSearchDocument.getCurrentPageId(node, pageId);
                   pageId++;
                },
-               'p': function () {
-                  var paragraphChildNodes = getChildNodes(xmlDocDom, node, ns, nsResolver),
-                     currentNode = paragraphChildNodes.iterateNext(),
-                     parNodes = [];
+               'default': function () {
+                  var childNodes = getChildNodes(xmlDocDom, node, ns, nsResolver),
+                     currentNode = childNodes.iterateNext(),
+                     nodes = [];
                   
                   while(currentNode !== null) {
-                     parNodes.push(currentNode);
-                     currentNode = paragraphChildNodes.iterateNext();
+                     nodes.push(currentNode);
+                     currentNode = childNodes.iterateNext();
                   }
                   
-                  for(var i = 0; i < parNodes.length;) {
-                     var currentParNodes;
+                  for(var i = 0; i < nodes.length;) {
+                     var currentElementNodes;
                      
-                     if(parNodes[i].nodeName === 'pb') {
-                        currentPage = evtSearchDocument.getCurrentPage(parNodes[i]);
-                        currentPageId = evtSearchDocument.getCurrentPageId(parNodes[i], pageId);
+                     if(nodes[i].nodeName === 'pb') {
+                        currentPage = evtSearchDocument.getCurrentPage(nodes[i]);
+                        currentPageId = evtSearchDocument.getCurrentPageId(nodes[i], pageId);
                         pageId++;
-                        parNodes.splice(parNodes.indexOf(parNodes[i]), 1);
+                        nodes.splice(nodes.indexOf(nodes[i]), 1);
                      }
-                     paragraph = evtSearchDocument.getParagraph(node, parId);
-   
+      
                      documentToIndex.xmlDocTitle = currentXmlDoc.title;
                      documentToIndex.xmlDocId = currentXmlDoc.id;
-                     documentToIndex.paragraph = paragraph;
                      documentToIndex.page = currentPage;
                      documentToIndex.pageId = currentPageId;
-                     documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
                      
-                     currentParNodes = evtSearchDocument.getCurrentPageParNodes(xmlDocDom, parNodes);
-   
-                     documentToIndex.content = evtSearchDocument.getContent(currentParNodes, '');
+                     var nodeName = {
+                        'p': function() {
+                           paragraph = evtSearchDocument.getParagraph(node, parId);
+                           documentToIndex.paragraph = paragraph;
+                           documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
+                        }
+                     }
+                     nodeName[node.nodeName]();
+                     
+                     currentElementNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, nodes);
+                     documentToIndex.content = evtSearchDocument.getContent(currentElementNodes, '');
    
                      documentsToIndex[documentToIndex.docId] = documentToIndex;
-                     currentParNodes = [];
+                     currentElementNodes = [];
                      documentToIndex = {};
                   }
                   parId++;
-               },
-               'l': function() {
-                  console.log();
                }
             };
-            nodes[node.nodeName]();
+            (nodes[node.nodeName] || nodes['default'])();
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
