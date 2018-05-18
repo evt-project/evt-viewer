@@ -73,7 +73,7 @@ angular.module('evtviewer.dataHandler')
                   diplResult = {
                      token: token,
                      diplomaticText: metadata[token].diplomaticText,
-                     resultsNumber: metadata[token].diplomaticText.page.length
+                     resultsNumber: metadata[token].diplomaticText.xmlDocId.length
                   }
                   results.diplomatic.push(diplResult);
                }
@@ -81,7 +81,7 @@ angular.module('evtviewer.dataHandler')
                   interprResult = {
                      token: token,
                      interpretativeText: metadata[token].interpretativeText,
-                     resultsNumber: metadata[token].interpretativeText.page.length
+                     resultsNumber: metadata[token].interpretativeText.xmlDocId.length
                   }
                   results.interpretative.push(interprResult);
                }
@@ -89,7 +89,7 @@ angular.module('evtviewer.dataHandler')
                   diplResult = {
                      token: token,
                      diplomaticText: metadata[token].content,
-                     resultsNumber: metadata[token].content.page.length
+                     resultsNumber: metadata[token].content.xmlDocId.length
                   }
                   results.diplomatic.push(diplResult);
                }

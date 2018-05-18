@@ -117,27 +117,33 @@ angular.module('evtviewer.dataHandler')
       }
       
       function addPageMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
             token.metadata['page'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page;
             return token;
          };
-         
-         lunr.Pipeline.registerFunction(pipelineFunction, 'page');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('page');
+   
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'page');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('page');
+         }
       }
       
       function addPageIdMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
             token.metadata['pageId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].pageId;
             return token;
          };
-         
-         lunr.Pipeline.registerFunction(pipelineFunction, 'pageId');
-         builder.pipeline.add(pipelineFunction);
-         builder.metadataWhitelist.push('pageId');
+   
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'pageId');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('pageId');
+         }
       }
       
       function addLineMetadata(builder, parsedElementsForIndexing) {

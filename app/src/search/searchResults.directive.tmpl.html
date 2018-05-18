@@ -19,8 +19,8 @@
                   <span class="original-text" id="{{result.diplomaticText.docId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.diplomaticText.docId[$index], 'diplomatic', result.token, result.diplomaticText.position[$index])"></span>
                   <a class="resultInfo" href="#" ng-click="vm.goToAnchor()">
                      Found in <span class="resultDoc" id="{{result.diplomaticText.xmlDocId[$index]}}">{{result.diplomaticText.xmlDocTitle[$index]}}</span>
-                     <span class="resultSection">({{result.diplomaticText.sectionTitle[$index]}})</span>
-                     <span class="resultPage" id="{{result.diplomaticText.pageId[$index]}}">page {{result.diplomaticText.page[$index]}}</span>
+                     <span class="resultSection" ng-if="result.diplomaticText.sectionTitle">({{result.diplomaticText.sectionTitle[$index]}})</span>
+                     <span class="resultPage" id="{{result.diplomaticText.pageId[$index]}}" ng-if="result.diplomaticText.page">page {{result.diplomaticText.page[$index]}}</span>
                      <span class="resultPar" ng-if="result.diplomaticText.paragraph">paragraph {{result.diplomaticText.paragraph[$index]}}</span>
                      <span class="resultLine" ng-if="result.diplomaticText.line">(line {{result.diplomaticText.line[$index]}})</span>
                   </a>
@@ -43,8 +43,8 @@
                   <span class="original-text" id="{{result.interpretativeText.docId[$index]}}" ng-bind-html="vm.getHighlightedOriginalText(result.interpretativeText.docId[$index], 'interpretative', result.token, result.interpretativeText.position[$index])"></span>
                   <a class="resultInfo" href="#" ng-click="vm.goToAnchor()">
                      Found in <span class="resultDoc">{{result.interpretativeText.xmlDocTitle[$index]}}</span>
-                     <span class="resultSection">({{result.interpretativeText.sectionTitle[$index]}})</span>
-                     <span class="resultPage">page {{result.interpretativeText.page[$index]}}</span>
+                     <span class="resultSection" ng-if="result.diplomaticText.sectionTitle">({{result.interpretativeText.sectionTitle[$index]}})</span>
+                     <span class="resultPage" id="{{result.interpretativeText.pageId[$index]}}" ng-if="result.diplomaticText.page">page {{result.interpretativeText.page[$index]}}</span>
                      <span class="resultPar" ng-if="result.interpretativeText.paragraph">paragraph {{result.interpretativeText.paragraph[$index]}}</span>
                      <span class="resultLine" ng-if="result.interpretativeText.line">(line {{result.interpretativeText.line[$index]}})</span>
                   </a>
