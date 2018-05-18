@@ -83,11 +83,11 @@ angular.module('evtviewer.dataHandler')
                   parId++;
                },
                'default': function () {
-                  if (currentPage !== undefined) {
+                  if (currentPage) {
                      line.page = currentPage;
                      line.pageId = currentPageId;
                   }
-                  if (paragraph !== undefined) {
+                  if (paragraph) {
                      line.par = paragraph;
                   }
                   line.xmlDocTitle = currentXmlDoc.title;

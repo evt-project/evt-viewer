@@ -104,20 +104,26 @@ angular.module('evtviewer.dataHandler')
                      
                      documentToIndex.xmlDocTitle = currentXmlDoc.title;
                      documentToIndex.xmlDocId = currentXmlDoc.id;
-                     documentToIndex.page = currentPage;
-                     documentToIndex.pageId = currentPageId;
+                     
+                     if(currentPage) {
+                        documentToIndex.page = currentPage;
+                        documentToIndex.pageId = currentPageId;
+                     }
+                     
    
                      var nodeName = {
                         'p': function() {
                            paragraph = evtSearchDocument.getParagraph(node, parId);
                            documentToIndex.paragraph = paragraph;
-                           documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph;
+                           documentToIndex.docId = currentPage ? documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph
+                                                               : documentToIndex.xmlDocId + '-' + documentToIndex.paragraph;
                            parId++;
                         },
                         'l': function() {
                            line = evtSearchDocument.getLine(node, lineId);
                            documentToIndex.line = line;
-                           documentToIndex.docId = documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.line;
+                           documentToIndex.docId = currentPage ? documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.line
+                                                               : documentToIndex.xmlDocId + '-' + documentToIndex.line;
                            lineId++;
                         }
                      };
