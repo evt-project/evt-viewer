@@ -1,36 +1,7 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchDiplomaticParLineParser', ['evtSearchDocument', 'XPATH', function (evtSearchDocument, XPATH) {
-      function DiplomaticParLineParser(xmlDocBody) {
-         this.parsedElementsForIndexing = {};
-         this.xmlDocBody = xmlDocBody;
-      }
-   
-      DiplomaticParLineParser.prototype.getPrevDocsInfo = function () {};
+   .service('EvtSearchDiplomaticParLineHandler', ['evtSearchDocument', 'XPATH', function DiplomaticParLineHandler(evtSearchDocument, XPATH) {
       
-      DiplomaticParLineParser.prototype.parseElements = function () {
-         var ns,
-            nsResolver,
-            xmlDocDom = this.xmlDocBody.ownerDocument;
-   
-         evtSearchDocument.hasNamespace(xmlDocDom);
-         ns = evtSearchDocument.ns;
-         nsResolver = evtSearchDocument.nsResolver;
-   
-         this.parsedElementsForIndexing = getParLineElements(xmlDocDom, this.xmlDocBody, ns, nsResolver);
-         return this.parsedElementsForIndexing;
-      };
-   
-      function getParLineElements(xmlDocDom, xmlDocBody, ns, nsResolver) {
-         var parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
-         return getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
-      }
-   
-      function getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver) {
-         return ns ? xmlDocDom.evaluate(XPATH.ns.getParLineNodes, xmlDocBody, nsResolver, XPathResult.ANY_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getParLineNodes, xmlDocBody, null, XPathResult.ANY_TYPE, null);
-      }
-      
-      function getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
+      DiplomaticParLineHandler.prototype.getParLineInfo = function(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
          var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
             currentPage,
             currentPageId,
@@ -112,12 +83,11 @@ angular.module('evtviewer.dataHandler')
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
-      }
+      };
       
       function getChildNodes(xmlDocDom, node, ns, nsResolver) {
          return ns ? xmlDocDom.evaluate(XPATH.ns.getChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getChildNodes, node, null, XPathResult.ANY_TYPE, null);
+                   : xmlDocDom.evaluate(XPATH.getChildNodes, node, null, XPathResult.ANY_TYPE, null);
       }
       
-      return DiplomaticParLineParser;
    }]);

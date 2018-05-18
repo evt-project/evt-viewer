@@ -1,36 +1,7 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtSearchDiploInterprParLineParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', 'Utils', function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH, Utils) {
-      function DiplomaticInterpretativeParLineParser(xmlDocBody) {
-         this.parsedElementsForIndexing = {};
-         this.xmlDocBody = xmlDocBody;
-      }
+   .service('EvtSearchDiploInterprParLineHandler', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', 'Utils', function DiploInterprParLineHandler(evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH, Utils) {
    
-      DiplomaticInterpretativeParLineParser.prototype.getPrevDocsInfo = function () {};
-   
-      DiplomaticInterpretativeParLineParser.prototype.parseElements = function () {
-         var ns,
-            nsResolver,
-            xmlDocDom = this.xmlDocBody.ownerDocument;
-         
-         evtSearchDocument.hasNamespace(xmlDocDom);
-         ns = evtSearchDocument.ns;
-         nsResolver = evtSearchDocument.nsResolver;
-         
-         this.parsedElementsForIndexing = getParLineElements(xmlDocDom, this.xmlDocBody, ns, nsResolver);
-         return this.parsedElementsForIndexing;
-      };
-      
-      function getParLineElements(xmlDocDom, xmlDocBody, ns, nsResolver) {
-         var parLineNodes = getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
-         return getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
-      }
-      
-      function getFilteredNodes(xmlDocDom, xmlDocBody, ns, nsResolver) {
-         return ns ? xmlDocDom.evaluate(XPATH.ns.getParLineNodes, xmlDocBody, nsResolver, XPathResult.ANY_TYPE, null)
-            : xmlDocDom.evaluate(XPATH.getParLineNodes, xmlDocBody, null, XPathResult.ANY_TYPE, null);
-      }
-      
-      function getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
+      DiploInterprParLineHandler.prototype.getParLineInfo = function (xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
          var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
             mainTitle,
             sectionTitle,
@@ -60,7 +31,7 @@ angular.module('evtviewer.dataHandler')
                         };*/
                         mainTitle = evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative');
                      },
-                     'sub': function () {
+                     'default': function () {
                         /*documentToIndex.contentSectionTitle = {
                            diplomatic: evtSearchDocument.getContent(headDiplomaticNodes, 'diplomatic'),
                            interpretative: evtSearchDocument.getContent(headInterpretativeNodes, 'interpretative')
@@ -69,7 +40,7 @@ angular.module('evtviewer.dataHandler')
                         sectionTitle = Utils.cleanText(sectionTitle);
                      }
                   };
-                  type[node.getAttribute('type')]();
+                  (type[node.getAttribute('type') === 'main'] || type['default'])();
                   lineId = 1;
                },
                'pb': function() {
@@ -147,5 +118,4 @@ angular.module('evtviewer.dataHandler')
          return documentsToIndex;
       }
       
-      return DiplomaticInterpretativeParLineParser;
    }]);
