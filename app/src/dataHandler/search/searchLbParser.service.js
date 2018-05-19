@@ -14,8 +14,8 @@
  */
 
 angular.module('evtviewer.dataHandler')
-   .factory('EvtLbParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtSearchDiploInterprLbHandler', 'evtGlyph', 'Utils', 'XPATH',
-      function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtSearchDiploInterprLbHandler, evtGlyph, Utils, XPATH) {
+   .factory('EvtLbParser', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtSearchDiploInterprLbHandler', 'evtSearchDiplomaticLbHandler', 'evtGlyph', 'Utils', 'XPATH',
+      function (evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtSearchDiploInterprLbHandler, evtSearchDiplomaticLbHandler, evtGlyph, Utils, XPATH) {
       
       function LbParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
@@ -53,7 +53,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
-         return evtSearchDocument.isDiplomaticEdition(xmlDocBody) ? console.log()
+         return evtSearchDocument.isDiplomaticEdition(xmlDocBody) ? evtSearchDiplomaticLbHandler.getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver)
                                                                   : evtSearchDiploInterprLbHandler.getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver);
       }
       

@@ -8,13 +8,14 @@ angular.module('evtviewer.core')
       getPrevBody:'count(.//preceding::body)',
       getPrevPb:'count(.//preceding::pb)',
       
-      getDiplomaticNodes: '//body//node()[self::g or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
+      getDiplomaticNodes: './/node()[self::g or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
       getDiplomaticChildNodes: './/node()[self::g or self::pb or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
       
       getInterpretativeNodes: '//body//node()[self::g or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       getInterpretativeChildNodes: './/node()[self::g or self::pb or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       
       getChildNodes: './/node()[self::g or self::pb or self::text()]',
+      getTextGlyphNodes: './/node()[self::g or self::text()]',
       
       //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
       
@@ -29,7 +30,7 @@ angular.module('evtviewer.core')
          getPrevLb:'count(.//preceding::ns:lb)',
          getPrevBody:'count(.//preceding::ns:body)',
          getPrevP:'count(.//preceding::ns:p)',
-         
+   
          getDiplomaticNodes: './/node()[self::ns:g or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
          getDiplomaticChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
          
@@ -37,6 +38,7 @@ angular.module('evtviewer.core')
          getInterpretativeChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          
          getChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
+         getTextGlyphNodes: './/node()[self::ns:g or self::text()]',
          
          //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
          

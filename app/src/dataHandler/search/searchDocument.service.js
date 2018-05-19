@@ -168,6 +168,34 @@ angular.module('evtviewer.dataHandler')
          return lineNodes;
       };
       
+      XmlDoc.prototype.getChildNodes = function (xmlDocDom, node, ns, nsResolver) {
+         var nodes = [],
+            currentNode,
+            childNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null)
+                             : xmlDocDom.evaluate(XPATH.getChildNodes, node, null, XPathResult.ANY_TYPE, null);
+         
+         currentNode = childNodes.iterateNext();
+         while(currentNode !== null) {
+            nodes.push(currentNode);
+            currentNode = childNodes.iterateNext();
+         }
+         return nodes;
+      };
+      
+      XmlDoc.prototype.getBodyTextGlyphNodes = function (xmlDocDom, xmlDocBody, ns, nsResolver) {
+         var nodes = [],
+            currentNode,
+            childNodes = ns ? xmlDocDom.evaluate(XPATH.ns.getTextGlyphNodes, xmlDocBody, nsResolver, XPathResult.ANY_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getTextGlyphNodes, xmlDocBody, null, XPathResult.ANY_TYPE, null);
+   
+         currentNode = childNodes.iterateNext();
+         while(currentNode !== null) {
+            nodes.push(currentNode);
+            currentNode = childNodes.iterateNext();
+         }
+         return nodes;
+      };
+      
       XmlDoc.prototype.getParagraph = function(node, parId) {
         return node.getAttribute('n') || parId.toString();
       };

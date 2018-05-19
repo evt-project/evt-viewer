@@ -9,7 +9,7 @@ angular.module('evtviewer.dataHandler')
             paragraph,
             parId = 1,
             line,
-            lineId,
+            lineId = 1,
             documentToIndex = {},
             documentsToIndex = {},
    
@@ -26,23 +26,16 @@ angular.module('evtviewer.dataHandler')
                   pageId++;
                },
                'default': function () {
-                  var childNodes = getChildNodes(xmlDocDom, node, ns, nsResolver),
-                     currentNode = childNodes.iterateNext(),
-                     nodes = [];
+                  var childNodes = evtSearchDocument.getChildNodes(xmlDocDom, node, ns, nsResolver);
                   
-                  while(currentNode !== null) {
-                     nodes.push(currentNode);
-                     currentNode = childNodes.iterateNext();
-                  }
-                  
-                  for(var i = 0; i < nodes.length;) {
+                  for(var i = 0; i < childNodes.length;) {
                      var currentElementNodes;
                      
-                     if(nodes[i].nodeName === 'pb') {
-                        currentPage = evtSearchDocument.getCurrentPage(nodes[i]);
-                        currentPageId = evtSearchDocument.getCurrentPageId(nodes[i], pageId);
+                     if(childNodes[i].nodeName === 'pb') {
+                        currentPage = evtSearchDocument.getCurrentPage(childNodes[i]);
+                        currentPageId = evtSearchDocument.getCurrentPageId(childNodes[i], pageId);
                         pageId++;
-                        nodes.splice(nodes.indexOf(nodes[i]), 1);
+                        childNodes.splice(childNodes.indexOf(childNodes[i]), 1);
                      }
       
                      documentToIndex.xmlDocTitle = currentXmlDoc.title;
@@ -69,7 +62,7 @@ angular.module('evtviewer.dataHandler')
                      };
                      nodeName[node.nodeName]();
                      
-                     currentElementNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, nodes);
+                     currentElementNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, childNodes);
                      documentToIndex.content = evtSearchDocument.getContent(currentElementNodes, '');
    
                      documentsToIndex[documentToIndex.docId] = documentToIndex;
@@ -84,10 +77,5 @@ angular.module('evtviewer.dataHandler')
          }
          return documentsToIndex;
       };
-      
-      function getChildNodes(xmlDocDom, node, ns, nsResolver) {
-         return ns ? xmlDocDom.evaluate(XPATH.ns.getChildNodes, node, nsResolver, XPathResult.ANY_TYPE, null)
-                   : xmlDocDom.evaluate(XPATH.getChildNodes, node, null, XPathResult.ANY_TYPE, null);
-      }
       
    }]);
