@@ -12,38 +12,20 @@
  */
 
 angular.module('evtviewer.dataHandler')
-   .service('evtBuilder', ['EvtParagraphLineParser', 'evtSearchDocument', 'evtAbstractSearchParserInterface',
-      function EvtBuilder(EvtParagraphLineParser, evtSearchDocument, evtAbstractSearchParserInterface) {
+   .service('evtBuilder', ['EvtParagraphLineParser', 'EvtLbParser', 'evtSearchDocument', 'evtAbstractSearchParserInterface',
+      function EvtBuilder(EvtParagraphLineParser, EvtLbParser, evtSearchDocument, evtAbstractSearchParserInterface) {
       
       EvtBuilder.prototype.createParser = function (xmlDocBody) {
-         var hasLbElement = evtSearchDocument.hasLbElement(xmlDocBody),
-            isDiplomaticInterpretativeEdition = evtSearchDocument.isDiplomaticInterpretativeEdition(xmlDocBody),
-            isDiplomaticEdition = evtSearchDocument.isDiplomaticEdition(xmlDocBody);
+         var hasLbElement = evtSearchDocument.hasLbElement(xmlDocBody);
          
-         // parser for diplomatic-interpretative editions with <lb> tag
-         /*if (hasLbElement && isDiplomaticInterpretativeEdition) {
-            ensureImplements(EvtSearchDiploInterprLbParser, evtAbstractSearchParserInterface);
-            return new EvtSearchDiploInterprLbParser(xmlDocBody);
-         }*/
-         // parser for diplomatic editions with <lb> tag
-         /*if (hasLbElement && isDiplomaticEdition) {
-         
-         }*/
+         if(hasLbElement) {
+            ensureImplements(EvtLbParser, evtAbstractSearchParserInterface);
+            return new EvtLbParser(xmlDocBody);
+         }
          if(!hasLbElement) {
             ensureImplements(EvtParagraphLineParser, evtAbstractSearchParserInterface);
             return new EvtParagraphLineParser(xmlDocBody);
          }
-         // parser for diplomatic-interpretative editions without <lb> tag
-         /*if(!hasLbElement && isDiplomaticInterpretativeEdition) {
-            ensureImplements(EvtSearchDiploInterprParLineParser, evtAbstractSearchParserInterface);
-            return new EvtSearchDiploInterprParLineParser(xmlDocBody);
-         }*/
-         // parser for diplomatic editions without <lb> tag
-         /*if(!hasLbElement && isDiplomaticEdition) {
-            ensureImplements(EvtSearchDiplomaticParLineParser, evtAbstractSearchParserInterface);
-            return new EvtSearchDiplomaticParLineParser(xmlDocBody);
-         }*/
-         
       };
       
       function ensureImplements(evtSearchParser, evtSearchInterface) {

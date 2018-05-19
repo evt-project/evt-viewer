@@ -37,8 +37,10 @@ angular.module('evtviewer.dataHandler')
             this.use(addPositionMetadata, parsedElementsForIndexing);
             
             for (var i in parsedElementsForIndexing) {
-               document = map(parsedElementsForIndexing[i]);
-               this.add(document);
+               if(i !== 'countAllLines') {
+                  document = map(parsedElementsForIndexing[i]) || undefined;
+                  this.add(document);
+               }
             }
          });
          console.timeEnd('INDEX');

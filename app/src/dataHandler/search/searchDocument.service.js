@@ -45,10 +45,6 @@ angular.module('evtviewer.dataHandler')
          return xmlDoc.ns;
       };
       
-      XmlDoc.prototype.isDiplomaticInterpretativeEdition = function(xmlDocBody) {
-         return xmlDocBody.getElementsByTagName('choice').length !== 0;
-      };
-      
       XmlDoc.prototype.isDiplomaticEdition = function (xmlDocBody) {
          return xmlDocBody.getElementsByTagName('choice').length === 0;
       };
@@ -126,6 +122,50 @@ angular.module('evtviewer.dataHandler')
             }
          }
          return currentPageNodes;
+      };
+      
+      XmlDoc.prototype.getLineNodes = function(xmlDocDom, nodes, prevDocsLbNumber, countLine, ns, nsResolver) {
+         var lineNodes = [],
+            prevBody,
+            prevLb,
+            hasPrevLb,
+            countPrevLb;
+   
+         for (var i = 0; i < nodes.length;) {
+            prevBody = ns ? xmlDocDom.evaluate(XPATH.ns.getPrevBody, nodes[i], nsResolver, XPathResult.ANY_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getPrevBody, nodes[i], null, XPathResult.ANY_TYPE, null)
+      
+            prevLb = ns ? xmlDocDom.evaluate(XPATH.ns.getPrevLb, nodes[i], nsResolver, XPathResult.ANY_TYPE, null)
+               : xmlDocDom.evaluate(XPATH.getPrevLb, nodes[i], null, XPathResult.ANY_TYPE, null);
+      
+            //se ci sono più testi allora sottraggo il numero degli <lb> presenti nei testi precedenti al testo corrente,
+            // al numero di <lb> precedenti al nodo corrente(nodes[j]) -> sarà sempre maggiore di prevDocsLbNumber.
+            // così trovo il numero di <lb> che nel testo corrente precedono il nodo corrente
+            //countPrevLb = prevBody.numberValue >= 1 ? prevLb.numberValue - prevDocsLbNumber : prevLb.numberValue;
+      
+            if (prevBody.numberValue >= 1) {
+               countPrevLb = prevLb.numberValue - prevDocsLbNumber;
+            }
+            else {
+               countPrevLb = prevLb.numberValue;
+            }
+      
+            hasPrevLb = countPrevLb !== 0;
+      
+            if (hasPrevLb === true) {
+               if (countLine === countPrevLb) {
+                  lineNodes.push(nodes[i]);
+                  nodes.splice(0, 1);
+               }
+               else {
+                  return lineNodes;
+               }
+            }
+            else {
+               nodes.splice(0, 1);
+            }
+         }
+         return lineNodes;
       };
       
       XmlDoc.prototype.getParagraph = function(node, parId) {
