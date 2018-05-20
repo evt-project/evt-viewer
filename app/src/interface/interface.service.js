@@ -74,7 +74,7 @@ angular.module('evtviewer.interface')
         currentHighlightedZone: undefined,
         isLoading        : true,
         isPinnedAppBoardOpened : false,
-		isNavBarOpened : false,
+		isNavBarOpened   : false,
         secondaryContent : '',
 		dialog : {
 			home : ''

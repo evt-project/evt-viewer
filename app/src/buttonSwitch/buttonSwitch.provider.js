@@ -823,15 +823,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'hideBar':
 					callback = function() {
 						var vm = this;
-						var startId = evtInterface.getState('isNavBarOpened') ;
-						if (vm.active === true) {
-							evtInterface.updateState('isNavBarOpened', true);
-							vm.active = false;
-						}
-						else if (vm.active === false) {
-							evtInterface.updateState('isNavBarOpened', false);
-							vm.active = true;
-						}
+						var startState = evtInterface.getState('isNavBarOpened') ;
+						evtInterface.updateState('isNavBarOpened', !startState);
+						vm.active = !vm.active;
 					}
 				default:
 					break;

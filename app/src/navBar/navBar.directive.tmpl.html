@@ -1,29 +1,36 @@
-<div class="navBarSlider">
-	<button type="button" class="buttonSlider" id="thumbnails"> Thumbnails
-	</button>
-	<button type="button" class="buttonSlider" id="visColl"> VisColl
-	</button>
-    <p id="sliderValue"><!--Page: {{vm.pageSlider.value}}--></p>
-    <rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider"></rzslider>
+<section class="navBarSliderWrapper">
 		<button-switch
-			title="firstPage"
-			data-icon="first-page" 
-			data-type="firstPage"
-			class="sliders"></button-switch>
-		<button-switch
-			title="beforePage"
-			data-icon="prev-page"
-			data-type="prevPage"
-			class="sliders"></button-switch>
-		<button-switch
-			title="nextPage"
-			data-icon="next-page" 
-			data-type="nextPage"
-			class="sliders"></button-switch>
-		<button-switch
-			title="lastPage"
-			data-icon="last-page" 
-			data-type="lastPage"
-			class="sliders"></button-switch>
-</div>
+			title="hideBar"
+			data-icon="hide-bar"
+			data-type="hideBar"
+			class="hider"></button-switch>
+	<div class="navBarSlider" ng-class="{ hiding: isNavBarOpened }">
+		<button type="button" class="buttonSlider" id="thumbnails"> Thumbnails
+		</button>
+		<button type="button" class="buttonSlider" id="visColl"> VisColl
+		</button>
+		<p id="sliderValue"><!--Page: {{vm.pageSlider.value}}--></p>
+		<rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider"></rzslider>
+			<button-switch
+				title="firstPage"
+				data-icon="first-page" 
+				data-type="firstPage"
+				class="sliders"></button-switch>
+			<button-switch
+				title="beforePage"
+				data-icon="prev-page"
+				data-type="prevPage"
+				class="sliders"></button-switch>
+			<button-switch
+				title="nextPage"
+				data-icon="next-page" 
+				data-type="nextPage"
+				class="sliders"></button-switch>
+			<button-switch
+				title="lastPage"
+				data-icon="last-page" 
+				data-type="lastPage"
+				class="sliders"></button-switch>
+	</div>
+</section>
 <!-- avanti e fine a sx, dietro e inizio a dx-->

@@ -605,6 +605,16 @@ angular.module('evtviewer.interface')
 		$scope.setLanguage = function(langKey) {
 			evtTranslation.setLanguage(langKey);
 		};
+		/**
+		 * @ngdoc method
+		 * @name evtviewer.interface.controller:InterfaceCtrl#isNavBarOpened
+		 * @methodOf evtviewer.interface.controller:InterfaceCtrl
+		 * @description Check if navBar is opened
+		 * @returns {boolean} if is true or not
+		 */
+		 $scope.isNavBarOpened = function() { 
+			return evtInterface.getState("isNavBarOpened"); 
+		};
 
 		_console.log('InterfaceCtrl running');
 	})
