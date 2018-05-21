@@ -4,8 +4,13 @@
 
 .navBarSliderWrapper {
 	height: $base-slider-height;
-	background: #263238;
-	border-top: 2px solid #ffffff;
+	background: #2c3b42;
+	border: 2px solid #ded0d0;
+	position: fixed;
+	bottom: 0px;
+	width: 95%;
+	right: 15px;
+	border-radius: 16px;
 	}
 
 .navBarSlider {
@@ -13,7 +18,7 @@
   cursor: pointer;
   z-index: 1;
   display: inline;
-  bottom: 26px;
+  bottom: -12px;
   left: 5px;
   
 	#sliderValue {

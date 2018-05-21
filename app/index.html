@@ -372,8 +372,13 @@
                 <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
-			
-			<evt-navbar></evt-navbar>
+		
+			<button-switch
+			title="hideBar"
+			data-icon="hide-bar"
+			data-type="hideBar"
+			class="hider"></button-switch>
+			<evt-navbar ng-hide="isNavBarOpened() === true"></evt-navbar>
     </div>
 	
     <section class="global-loading-container" ng-show="isLoading()">
