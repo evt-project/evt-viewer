@@ -1,10 +1,16 @@
 <section class="navBarSliderWrapper">
 		
-	<div class="navBarSlider" ng-class="{ hiding: isNavBarOpened }">
-		<button type="button" class="buttonSlider" id="thumbnails"> Thumbnails
-		</button>
-		<button type="button" class="buttonSlider" id="visColl"> VisColl
-		</button>
+	<div class="navBarSlider">
+		<button-switch
+			title="thumbNails"
+			data-icon="thumb-nails"
+			data-type="thumbNails"
+			class="sliders"></button-switch>
+		<button-switch
+			title="visColl"
+			data-icon="viscoll"
+			data-type="visColl"
+			class="sliders"></button-switch>
 		<p id="sliderValue"><!--Page: {{vm.pageSlider.value}}--></p>
 		<rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider"></rzslider>
 			<button-switch

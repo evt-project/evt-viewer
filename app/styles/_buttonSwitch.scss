@@ -12,6 +12,7 @@ button-switch {
     margin-right: 5px;
 
     .buttonSwitch {
+		font-family: Junicode, Times, serif;
         min-height: 28px;
         min-width: 30px;
         width: auto;
@@ -71,6 +72,11 @@ button-switch {
 
             &.fa {
                 font-size: 1.1em !important;
+				top: 2px;
+				
+				&.fa-angle-double-down {
+				top: -4px;
+				}
             }
         }
         &.iconLeft {
@@ -99,13 +105,14 @@ button-switch {
 	&.hider {
 		.buttonSwitch {
 			position: absolute;
-			width: 25px;
 			left: 1315px;
-			bottom: 44px;
+			bottom: 5px;
+			height: 35px;
+			width: 35px;
 			background: #7a96a5;
-			border-radius: 16px;
-			margin-right: 30px;
+			border-radius: 12px;
 			z-index: 3;
+			font-size: 1em;
 			}
 		}
 	

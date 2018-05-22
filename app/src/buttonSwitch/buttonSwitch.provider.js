@@ -136,7 +136,7 @@ angular.module('evtviewer.buttonSwitch')
 	     * **language**, **list**, **menu**, **menu-vert**, **mode-imgtxt**, **mode-txttxt**,
 	     * **reading-txt**, **mode-collation**, **mode-srctxt**, **mode-versions**, **mode-bookreader**,
 	     * **pin**, **pin-off**, **pin-on**, **remove**, **search**, **thumb**, **thumbs**, **thumbnail**.
-	     * **thumbnails**, **txt**, **v-align**, **witnesses**, **nextPage**, **beforePage**.</p>
+	     * **thumbnails**, **txt**, **v-align**, **witnesses**, **nextPage**, **beforePage**, **dropNavBar**.</p>
 	     * <p>Output icons can be retrieve both from EVT font set of from font-awesome.
 	     * If you want to add a custom icon set you should add it among font faces and remember to add the related css file.</p>
 	     *
@@ -253,19 +253,25 @@ angular.module('evtviewer.buttonSwitch')
 					evtIcon = 'icon-evt_books';
 					break;
 				case 'next-page':
-					evtIcon = 'fa fa-angle-right';
+					evtIcon = 'fa fa-arrow-right';
 					break;
 				case 'prev-page':
-					evtIcon = 'fa fa-angle-left';
+					evtIcon = 'fa fa-arrow-left';
 					break;
 				case 'first-page':
-					evtIcon = 'fa fa-angle-double-left';
+					evtIcon = 'fa fa-fast-backward';
 					break;
 				case 'last-page':
-					evtIcon = 'fa fa-angle-double-right';
+					evtIcon = 'fa fa-fast-forward';
 					break;
 				case 'hide-bar':
-					evtIcon = 'fa fa-angle-double-down';
+					evtIcon = 'fa fa-caret-down';
+					break;
+				case 'thumb-nails':
+					evtIcon = 'fa fa-th';
+					break;
+				case 'viscoll':
+					evtIcon = 'fa fa-stack-overflow';
 					break;
 			}
 			return evtIcon;
@@ -827,6 +833,11 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateState('isNavBarOpened', !startState);
 						vm.active = !vm.active;
 					}
+					break;
+				case 'thumbNails':
+					callback = function() {
+						var vm = this;
+					};
 				default:
 					break;
 			}
