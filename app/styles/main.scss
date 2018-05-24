@@ -329,6 +329,19 @@ section > div {
     }
 }
 
+.popup-container {
+	position: absolute;
+	height: 475px;
+	width: 1345px;
+	left: 10px;
+	bottom: 50px;
+	background-color: #e5e5e5;
+	z-index: 3;
+	border: 2px #FFFFFF;
+	border-radius: 16px;
+	}
+
+
 .global-loading-container {
     display: block;
 }

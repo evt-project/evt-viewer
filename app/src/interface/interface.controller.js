@@ -615,6 +615,16 @@ angular.module('evtviewer.interface')
 		 $scope.isNavBarOpened = function() { 
 			return evtInterface.getState("isNavBarOpened"); 
 		};
+		/**
+		 * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isVisCollOpened
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description view the visColl popup
+         * @returns {boolean} if is true or not
+         */
+		 $scope.isVisCollOpened = function() {
+			 return evtInterface.getState("isVisCollOpened");
+		 };
 
 		_console.log('InterfaceCtrl running');
 	})

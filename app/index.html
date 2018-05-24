@@ -372,8 +372,19 @@
                 <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
+		<section class="popup-container"
+				ng-hide="isVisCollOpened() === false">
+			<div>
+				<p> prova Viscoll </p>
+			</div>
+		</section>
 		
-			<button-switch
+			<button-switch ng-hide="isNavBarOpened() === false"
+			title="hideBar"
+			data-icon="show-bar"
+			data-type="hideBar"
+			class="hider"></button-switch>
+			<button-switch ng-hide="isNavBarOpened() === true"
 			title="hideBar"
 			data-icon="hide-bar"
 			data-type="hideBar"

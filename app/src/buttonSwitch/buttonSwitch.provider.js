@@ -253,19 +253,22 @@ angular.module('evtviewer.buttonSwitch')
 					evtIcon = 'icon-evt_books';
 					break;
 				case 'next-page':
-					evtIcon = 'fa fa-arrow-right';
+					evtIcon = 'fa fa-caret-right';
 					break;
 				case 'prev-page':
-					evtIcon = 'fa fa-arrow-left';
+					evtIcon = 'fa fa-caret-left';
 					break;
 				case 'first-page':
-					evtIcon = 'fa fa-fast-backward';
+					evtIcon = 'fa fa-step-backward';
 					break;
 				case 'last-page':
-					evtIcon = 'fa fa-fast-forward';
+					evtIcon = 'fa fa-step-forward';
 					break;
 				case 'hide-bar':
 					evtIcon = 'fa fa-caret-down';
+					break;
+				case 'show-bar':
+					evtIcon = 'fa fa-caret-up';
 					break;
 				case 'thumb-nails':
 					evtIcon = 'fa fa-th';
@@ -837,6 +840,14 @@ angular.module('evtviewer.buttonSwitch')
 				case 'thumbNails':
 					callback = function() {
 						var vm = this;
+					};
+					break;
+				case 'visColl':
+					callback = function() {
+						var vm = this;
+						var startState = evtInterface.getState('isVisCollOpened') ;
+						evtInterface.updateState('isVisCollOpened', !startState);
+						vm.active = !vm.active;
 					};
 				default:
 					break;
