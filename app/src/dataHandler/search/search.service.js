@@ -14,7 +14,10 @@ angular.module('evtviewer.dataHandler')
          for (var i = 0; i < xmlDocsBody.length; i++) {
             console.time('Parsed document number ' + i);
             
+            console.time('createParser');
             searchParser = evtBuilder.createParser(xmlDocsBody[i]);
+            console.timeEnd('createParser');
+            
             parsedElements = searchParser.parseElements(prevDocsInfo);
             prevDocsInfo = searchParser.getPrevDocsInfo();
             

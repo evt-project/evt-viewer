@@ -128,7 +128,8 @@ angular.module('evtviewer.dataHandler')
          var lineNodes = [],
             prevBody,
             prevLb,
-            hasPrevLb,
+            nodeHasPrevLb,
+            nodeIsLb,
             countPrevLb;
    
          for (var i = 0; i < nodes.length;) {
@@ -149,17 +150,19 @@ angular.module('evtviewer.dataHandler')
             else {
                countPrevLb = prevLb.numberValue;
             }
+   
+            nodeHasPrevLb = countPrevLb !== 0;
+            nodeIsLb = nodes[i].nodeName === 'lb';
       
-            hasPrevLb = countPrevLb !== 0;
-      
-            if (hasPrevLb === true) {
-               if (countLine === countPrevLb) {
+            if (nodeHasPrevLb || nodeIsLb) {
+               if(nodeIsLb) {
+                  nodes.splice(0, 1);
+               }
+               while(nodes[i] !== undefined && nodes[i].nodeName !== 'lb') {
                   lineNodes.push(nodes[i]);
                   nodes.splice(0, 1);
                }
-               else {
-                  return lineNodes;
-               }
+               return lineNodes;
             }
             else {
                nodes.splice(0, 1);

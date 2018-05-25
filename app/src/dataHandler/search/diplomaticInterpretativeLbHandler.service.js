@@ -4,6 +4,7 @@ angular.module('evtviewer.dataHandler')
    
          var countAllDocsLine = 0;
          DiploInterprLbHandler.prototype.getLineInfo = function(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
+            console.time('Get Line Info');
             var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
                diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
                interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
@@ -14,9 +15,11 @@ angular.module('evtviewer.dataHandler')
                parId = 1,
                line = {},
                lineId = 1,
+               prevLine = 0,
                lineNodes = {},
                lines = {},
                countLine = 1,
+               countDuplicateLines = 0,
                node = lbNodes.iterateNext();
       
             while (node !== null) {
@@ -32,31 +35,41 @@ angular.module('evtviewer.dataHandler')
                      parId++;
                   },
                   'default': function () {
-                     if (currentPage) {
-                        line.page = currentPage;
-                        line.pageId = currentPageId;
-                     }
-                     if (paragraph) {
-                        line.par = paragraph;
-                     }
-                     line.xmlDocTitle = currentXmlDoc.title;
-                     line.xmlDocId = currentXmlDoc.id;
                      line.line = node.getAttribute('n') || lineId.toString();
-                     lineId++;
-                     line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
-               
-                     lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                     lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                     countLine++;
-                     countAllDocsLine++;
-               
-                     line.content = {
-                        diplomatic: evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic'),
-                        interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
-                  
-                     };
-                     lines[line.docId] = line;
-                     lineNodes = [];
+                     /* to handle <lb> elements inside <choice> element => in the xml coding in this case there will
+                     be two <lb> with the same "n" attribute */
+                     if(prevLine !== line.line) {
+                        if (currentPage) {
+                           line.page = currentPage;
+                           line.pageId = currentPageId;
+                        }
+                        if (paragraph) {
+                           line.par = paragraph;
+                        }
+                        line.xmlDocTitle = currentXmlDoc.title;
+                        line.xmlDocId = currentXmlDoc.id;
+                        line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
+   
+                        lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                        lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                        
+                        line.content = {
+                           diplomatic: evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic'),
+                           interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
+      
+                        };
+   
+                        lineId++;
+                        countLine++;
+                        countAllDocsLine++;
+                        prevLine = line.line;
+                        
+                        lines[line.docId] = line;
+                        lineNodes = [];
+                     }
+                     else {
+                        countDuplicateLines++;
+                     }
                   }
                };
                (nodes[node.nodeName] || nodes['default'])();
@@ -64,6 +77,7 @@ angular.module('evtviewer.dataHandler')
                line = {};
             }
             lines.countAllLines = countAllDocsLine;
+            console.timeEnd('Get Line Info');
             return lines;
          };
    }]);
