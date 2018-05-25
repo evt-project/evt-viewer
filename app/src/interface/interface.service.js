@@ -76,6 +76,7 @@ angular.module('evtviewer.interface')
         isPinnedAppBoardOpened : false,
 		isNavBarOpened   : false,
 		isVisCollOpened  : false,
+		isThumbNailsOpened : false,
         secondaryContent : '',
 		dialog : {
 			home : ''

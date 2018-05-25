@@ -373,6 +373,12 @@
             </div>
         </section>
 		<section class="popup-container"
+				ng-hide="isThumbNailsOpened() === false">
+			<div>
+				<p> prova Thumbnails </p>
+			</div>
+		</section>
+		<section class="popup-container"
 				ng-hide="isVisCollOpened() === false">
 			<div>
 				<p> prova Viscoll </p>
@@ -447,6 +453,7 @@
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <script src="bower_components/ngprogress/build/ngprogress.min.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
+    <script src="bower_components/angular-xslt/src/ng-xslt.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

@@ -772,10 +772,10 @@ angular.module('evtviewer.buttonSwitch')
 							}
 							evtInterface.updateUrl();
 						}
-						if (newPageId !== pagesCollection[0]) {
-							vm.disabled = false;
-						} else {
+						if (newPageId === pagesCollection[0]) {
 							vm.disabled = true;
+						} else {
+							vm.disabled = false;
 						}
 					};
 					break;
@@ -840,6 +840,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'thumbNails':
 					callback = function() {
 						var vm = this;
+						var startState = evtInterface.getState('isThumbNailsOpened') ;
+						evtInterface.updateState('isThumbNailsOpened', !startState);
+						vm.active = !vm.active;
 					};
 					break;
 				case 'visColl':

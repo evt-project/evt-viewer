@@ -625,6 +625,16 @@ angular.module('evtviewer.interface')
 		 $scope.isVisCollOpened = function() {
 			 return evtInterface.getState("isVisCollOpened");
 		 };
+		 /**
+		 * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isThumbNailsOpened
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description view the thumbnails popup
+         * @returns {boolean} if is true or not
+         */
+		 $scope.isThumbNailsOpened = function() {
+			 return evtInterface.getState("isThumbNailsOpened");
+		 };
 
 		_console.log('InterfaceCtrl running');
 	})
