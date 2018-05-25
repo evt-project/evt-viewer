@@ -31,6 +31,7 @@
  * @requires evtviewer.popover
  * @requires evtviewer.namedEntity
  * @requires evtviewer.navbar
+ * @requires evtviewer.viscoll
  * @requires evtviewer.criticalApparatusEntry
  * @requires evtviewer.reading
  * @requires evtviewer.dialog
@@ -90,5 +91,6 @@ angular
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
         'evtviewer.UItools',
-		'evtviewer.navBar'
+		'evtviewer.navBar',
+		'evtviewer.visColl'
     ]);
