@@ -15,7 +15,7 @@
 **/
 angular.module('evtviewer.visColl')
 
-.controller('ViscollCtrl', function(config, $log, $scope, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
+.controller('ViscollCtrl', function(config, $log, $scope, $filter, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
     var vm = this;
     
     var _console = $log.getInstance('visColl');

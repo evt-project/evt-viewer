@@ -20,6 +20,7 @@
  * @requires {@link https://sroze.github.io/ngInfiniteScroll/documentation.html infinite-scroll}
  * @requires {@link https://angular-translate.github.io/docs/#/api pascalprecht.translate}
  * @requires {@link https://github.com/angular-slider/angularjs-slider}
+ * @requires {@link https://github.com/krtnio/angular-xslt}
  * @requires evtviewer.core
  * @requires evtviewer.communication
  * @requires evtviewer.translation
@@ -62,6 +63,7 @@ angular
 		'ngRoute',
 		'rzModule',
 		'xml',
+		'ngXslt',
 		'prettyXml',
 		'infinite-scroll',
 		'pascalprecht.translate',
