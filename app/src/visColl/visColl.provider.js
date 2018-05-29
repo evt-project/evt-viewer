@@ -26,7 +26,7 @@ angular.module('evtviewer.visColl')
 
     var currentAppEntry = '';
 	
-	this.$get = function($log, $filter, config, parsedData, evtInterface, evtSelect) {
+	this.$get = function($log, $filter, config, parsedData, evtInterface, evtSelect, evtCommunication) {
         var visColl     = {},
             collection = {},
             list       = [],
@@ -69,14 +69,15 @@ angular.module('evtviewer.visColl')
 			
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
+			var xml = evtInterface.getProperties(visCollTextUrl);
 			
-			
-			function useXML {
-				var xml = "prova";
-				var xslt = "prov.xslt";
-				var filter = $filter('transformXml')(window, document, vm.xml, vm.xslt);
-			
-			
+
+			var displayResult = function(){
+				var vm = this;
+				xml = evtInterface.getProperties(visCollTextUrl);
+				xsl = evtInterface.getProperties(visCollStyleUrl);
+
+			};
 			
 				
             scopeHelper = {
@@ -88,7 +89,7 @@ angular.module('evtviewer.visColl')
 				doc: doc,
 
                 // Functions
-				useXML: useXML
+				displayResult: displayResult
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

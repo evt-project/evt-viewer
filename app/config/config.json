@@ -6,7 +6,9 @@
 	"dataUrl": "data/pelavicino.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
-    "sourcesTextsUrl" : "data/sources/",
+    "sourcesTextsUrl"  : "data/sources/",
+	"visCollTextUrl"   : "data/visColl/prova.xml",
+	"visCollStyleUrl"  : "data/visColl/prov.xslt",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
