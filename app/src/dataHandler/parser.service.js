@@ -888,11 +888,11 @@ angular.module('evtviewer.dataHandler')
 				parsedData.addDocument(newDoc);
 				parser.parsePages(element, newDoc.value);
 				
-				if (config.defaultEdition !== 'critical' || parsedData.isCriticalEditionAvailable()) {
+				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
 					// Split pages works only on diplomatic/interpretative edition
 					// In critical edition, text will be splitted into pages for each witness
 					config.defaultEdition = 'diplomatic';
-               var pages = parsedData.getPages();
+               		var pages = parsedData.getPages();
 					angular.forEach(angular.element(element).find(defContentEdition),
 						function(editionElement) {
 							//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
@@ -981,7 +981,7 @@ angular.module('evtviewer.dataHandler')
 		var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
 		var sRegExInput = new RegExp(match, 'ig');
 		var matches = docElement.outerHTML.match(sRegExInput);
-		for (var i = 0; i < pages.length; i++) {
+			for (var i = 0; i < pages.length; i++) {
 			var pageId = pages[i];
 			if (pageId && pageId !== '') {
 				parsedData.setPageText(pageId, docId, 'original', matches[i]);

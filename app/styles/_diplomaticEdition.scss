@@ -32,12 +32,11 @@
     }
 
     .supplied {
-
         background-color: #ADFF2F;
+
         &[data-reason='omitted'] {}
 
-        &[data-reason='illeggibile'] {
-        }
+        &[data-reason='illeggibile'] {}
 
          &:before{
             content: "[["
@@ -77,7 +76,7 @@
             content: "";
         }
 
-        .expan, .corr, .reg {
+        > .expan, > .corr, > .reg {
             margin-left:-5%;
             font-size: 80%;
             position: absolute;
@@ -98,7 +97,7 @@
             }
         }
 
-        .corr {
+        > .corr {
             &:before {
                 content: url("../images/popup_before_corr.png");
             }
@@ -108,7 +107,7 @@
             background: #f99069 !important;
         }
 
-        .reg {
+        > .reg {
             &:before {
                 content: url("../images/popup_before.png");
             }
@@ -118,7 +117,7 @@
             background: #e5dac4 !important;
         }
 
-        .expan {
+        > .expan {
             &:before {
                 content: url("../images/popup_before_grey.png");
             }
