@@ -981,7 +981,7 @@ angular.module('evtviewer.dataHandler')
 		var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
 		var sRegExInput = new RegExp(match, 'ig');
 		var matches = docElement.outerHTML.match(sRegExInput);
-			for (var i = 0; i < pages.length; i++) {
+		for (var i = 0; i < pages.length; i++) {
 			var pageId = pages[i];
 			if (pageId && pageId !== '') {
 				parsedData.setPageText(pageId, docId, 'original', matches[i]);

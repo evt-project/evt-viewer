@@ -327,8 +327,8 @@
                 <box data-type="text"
                      data-edition="{{getCurrentEdition()}}"
                      id="mainText1"></box>
-                <box data-type="text"
-                     data-edition="{{getCurrentEdition()}}"
+                <box data-type="text" data-subtype="comparing" ng-show="getCurrentComparingEdition() !== undefined"
+                     data-edition="{{getCurrentComparingEdition()}}"
                      id="mainText2"></box>
             </section>
 

@@ -42,6 +42,7 @@ angular.module('evtviewer.interface')
             currentWits : undefined,
             currentWitsPages : undefined,
             currentEdition : undefined,
+            currentComparingEdition: undefined,
             currentAppEntry : undefined,
             currentHighlightedZone : undefined,
             isLoading : true,
@@ -70,6 +71,7 @@ angular.module('evtviewer.interface')
         currentWits      : undefined,
         currentWitsPages : undefined,
         currentEdition   : undefined,
+        currentComparingEdition: undefined,
         currentAppEntry  : undefined,
         currentHighlightedZone: undefined,
         isLoading        : true,
@@ -436,6 +438,7 @@ angular.module('evtviewer.interface')
                 currentWits : undefined,
                 currentWitsPages : undefined,
                 currentEdition : undefined,
+                currentComparingEdition: undefined,
                 currentAppEntry : undefined,
                 currentHighlightedZone : undefined,
                 isLoading : true,
@@ -938,6 +941,7 @@ angular.module('evtviewer.interface')
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,
+                comparingEdition,
                 pageId,
                 docId,
                 witnesses,
@@ -983,8 +987,20 @@ angular.module('evtviewer.interface')
                 }
             }
 
+            if (params.ce !== undefined ) { 
+              comparingEdition = params.ce;
+            } else {
+              var i = 0;
+              while (!comparingEdition && i < availableEditionLevel.length) {
+                if (availableEditionLevel[i].value !== edition) {
+                  comparingEdition = availableEditionLevel[i].value;
+                }
+                i++;
+              }
+            }
+
             // PAGE
-            if ( params.p !== undefined ) {
+            if ( params.p !== undefined && parsedData.getEdition(params.ce)) {
                 pageId = params.p;
             } else {
                 var pages = parsedData.getPages();
@@ -1060,7 +1076,9 @@ angular.module('evtviewer.interface')
             } else if (viewMode === 'collation'){
                 mainInterface.updateState('currentEdition', 'critical');
             }
-
+    
+            mainInterface.updateState('currentComparingEdition', comparingEdition)
+            
             if ( pageId !== undefined ) {
                 mainInterface.updateState('currentPage', pageId);
             }
@@ -1098,6 +1116,7 @@ angular.module('evtviewer.interface')
                 searchPath += state.currentDoc === undefined ? '' : (searchPath === '' ? '' : '&')+'d='+state.currentDoc;
                 searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
                 searchPath += state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
+                searchPath += state.currentComparingEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'ce='+state.currentComparingEdition;
                 if (viewMode === 'collation') {
                     if (state.currentWits !== undefined && state.currentWits.length > 0) {
                         if (searchPath !== '') {

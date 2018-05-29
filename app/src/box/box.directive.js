@@ -401,15 +401,27 @@ angular.module('evtviewer.box')
             //TODO: aggiungere scroll per sources view
 
             if (currentBox.type === 'text') {
-                scope.$watch(function() {
-                    return evtInterface.getState('currentEdition');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                        scope.vm.edition = newItem;
-                        currentBox.updateContent();
+                if (currentBox.subtype === 'comparing') {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentComparingEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                          scope.vm.edition = newItem;
+                          currentBox.updateContent();
 
-                    }
-                }, true);
+                      }
+                  }, true);
+                } else {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                          scope.vm.edition = newItem;
+                          currentBox.updateContent();
+
+                      }
+                  }, true);
+                }
 
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');

@@ -647,11 +647,19 @@ angular.module('evtviewer.box')
 
 
 					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
-						topMenuList.selectors.push({
-							id: 'editionLevel_' + currentId,
-							type: 'edition',
-							initValue: evtInterface.getState('currentEdition')
-						});
+						if (scope.subtype === 'comparing') {
+							topMenuList.selectors.push({
+								id: 'comparingEditionLevel_' + currentId,
+								type: 'comparingEdition',
+								initValue: evtInterface.getState('currentComparingEdition')
+							});
+						} else {
+							topMenuList.selectors.push({
+								id: 'editionLevel_' + currentId,
+								type: 'edition',
+								initValue: evtInterface.getState('currentEdition')
+							});
+						}
 					}
 
 					topMenuList.buttons.push({
@@ -789,7 +797,7 @@ angular.module('evtviewer.box')
 							// parsedData.getDocument(scope.vm.state.docId).content
 							var currentPage = evtInterface.getState('currentPage'),
 								currentDoc = evtInterface.getState('currentDoc'),
-								currentEdition = evtInterface.getState('currentEdition');
+								currentEdition = scope.subtype === 'comparing' ? evtInterface.getState('currentComparingEdition') : evtInterface.getState('currentEdition');
 							newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
 							if (newDoc === undefined) {
 								newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
