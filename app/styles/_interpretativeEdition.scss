@@ -9,12 +9,41 @@
             display: none;
         }
         
-        .expan {}
+        .expan {
+            font-style: italic;
+        }
     }
 
     // Additions, Deletions, and Omissions
     .add {
+        background-color: #00FF00;
+
         &[data-place='above'] {}
+    }
+
+    .del {
+        background-color: #FF6347;
+        text-decoration: line-through;
+    }
+
+    // 11.3.3.1 Damage, Illegibility, and Supplied Text
+
+
+    .supplied {
+
+        
+        &[data-reason='omitted'] {}
+
+        &[data-reason='illeggibile'] {
+        }
+
+        &:before{
+            content: "[["
+        }
+
+        &:after{
+            content: "]]"
+        }
     }
 
     //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
@@ -45,7 +74,7 @@
             content: "";
         }
 
-        .corr, .orig {
+        .abbr, .sic, .orig {
             font-size: 80%;
             position: absolute;
             line-height: 16px;
@@ -65,15 +94,16 @@
             }
         }
 
-        .corr {
+        .sic {
             &:before {
                 content: url("../images/popup_before_corr.png");
             }
         }
 
-        .corr, .corr * {
+        .sic, .sic * {
             background: #f99069 !important;
         }
+        
 
         .orig {
             &:before {
@@ -93,26 +123,44 @@
             }
         }
 
+        .abbr {
+            &:before {
+                content: url("../images/popup_before_grey.png");
+            }
+        }
+
+        .abbr, .abbr * {
+            background: #E5E5E5 !important;
+        }
+
         &:hover, &.hover {
-            .orig, .corr {
+            .abbr, .sic, .orig{
                 display: inline;
                 min-width: 30px;
                 text-align: center;
                 z-index: 9;
             }
 
-            .corr {
-                @include set(transform, translate(-80%, 0));
+            
+            
+            .reg {
+                background-color: #FFD700;
             }
 
-            .reg {
-                text-decoration: underline;
-            }
+            .corr{
+            background-color: #CCD700;}
+
         }
 
-        .sic {
+        
+
+
+        .corr {
+            display:inline;
             color: #934d4d;
         }
+
+        
 
         .sup {
             line-height: 20px;
@@ -125,55 +173,6 @@
         }
     }
 
-    .sic {
-        display: inline-table;
-
-        &:before, &:after {
-            content: " ";
-        }
-
-        .corr {
-            font-size: 80%;
-            position: absolute;
-            line-height: 16px;
-            display: none;
-            background: #f99069;
-            border: 1.5px solid black;
-            border-radius: 3px;
-
-            @include set(box-shadow, 2px 2px 2px #7e7067);
-
-            padding: 0.4%;
-            margin-top: 30px;
-
-            &:before {
-                content: url("../images/popup_before_corr.png");
-                left: 15%;
-                position: absolute;
-                top: -13px;
-            }
-        }
-
-        .sic {
-            color: #934d4d;
-
-            &:hover, &.hover {
-                color: #561c0a;
-            }
-        }
-
-        &:hover, &.hover {
-            .corr {
-                display: inline;
-                min-width: 20px;
-                text-align: center;
-            }
-
-            .sic {
-                text-decoration: underline;
-            }
-        }
-    }
 
     //TODO: reorder
     .attachment {

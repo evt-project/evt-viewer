@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
+	"dataUrl": "data/VB-23-DOTR.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl" : "data/sources/",
@@ -52,17 +52,17 @@
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "enableXMLdownload" : true,

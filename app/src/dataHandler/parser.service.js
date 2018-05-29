@@ -1006,9 +1006,9 @@ angular.module('evtviewer.dataHandler')
 	 * @param {string} docId id of the edition document being parsed
 	 * @param {string} editionLevel id of the edition level being parsed
      * @param {string} docHTML string representing the original XML of the edition
-	 *
+	 * 
 	 * @returns {promise} promise that the parser will end
-	 *
+	 * 
      * @author CDP
      */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {

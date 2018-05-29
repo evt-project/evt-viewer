@@ -203,7 +203,13 @@
 		"SUPPORT_DESC": "Descrizione del supporto",
 		"TEXT_CLASS": "Classificazione testuale",
 		"TEXT_LANG": "Lingua",
-		"VARIANT_ENCODING": "Codifica delle varianti"
+		"VARIANT_ENCODING": "Codifica delle varianti",
+		"FILE_DESCRIPTION": "Descrizione File",
+		"BIBLIOGRAPHY": "Bibliografia",
+		"REVISION_HISTORY": "Cronologia Revisioni",
+		"ENCODING_DESCRIPTION": "Descrizione Codifica",
+		"TEXT_PROFILE": "Profilo Di Testo",
+		"OUTSIDE_METADATA": "Metadati Esterni"
 	},
 	"QUOTES" : {
 		"QUOTE_START": "Inizio citazione",
