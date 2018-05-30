@@ -134,8 +134,8 @@ angular.module('evtviewer.interface')
         parsedSourcesTexts : [ ],
         availableVersions  : [ ],
         versionSelector    : false,
-		visCollTextUrl     : '',
-		visCollStyleUrl    : ''
+    		visCollTextUrl     : '',
+    		visCollStyleUrl    : ''
     };
     /**
      * @ngdoc property
@@ -177,8 +177,8 @@ angular.module('evtviewer.interface')
                 properties.webSite            = config.webSite;
                 properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
-				properties.visCollTextUrl     = config.visCollTextUrl;
-				properties.visCollStyleUrl    = config.visCollStyleUrl;
+        				properties.visCollTextUrl     = config.visCollTextUrl;
+        				properties.visCollStyleUrl    = config.visCollStyleUrl;
 
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);

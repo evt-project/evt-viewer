@@ -69,14 +69,15 @@ angular.module('evtviewer.visColl')
 			
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
-			var xml = evtInterface.getProperties(visCollTextUrl);
+			var xml = evtInterface.getProperty('visCollTextUrl');
 			
 
 			var displayResult = function(){
 				var vm = this;
-				xml = evtInterface.getProperties(visCollTextUrl);
-				xsl = evtInterface.getProperties(visCollStyleUrl);
-
+				xml = evtInterface.getProperty('visCollTextUrl');
+				xsl = evtInterface.getProperty('visCollStyleUrl');
+                console.log("xml", xml);
+                console.log("xsl", xsl);
 			};
 			
 				
