@@ -46,7 +46,8 @@ angular.module('evtviewer.dataHandler')
 		encodingDescription: '',
 		textProfile: '',
 		outsideMetadata: '',
-		revisionHistory: ''
+		revisionHistory: '',
+		msDesc: ''
 	};
 
 	/**
@@ -2499,7 +2500,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
-
+   
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -2522,7 +2523,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
 	};
-
 
 	// ////// //
 	// GLYPHS //
