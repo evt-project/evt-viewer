@@ -3,11 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-<<<<<<< HEAD
-	"dataUrl": "data/DOTR.xml",
-=======
 	"dataUrl": "data/pelavicino.xml",
->>>>>>> msDescription
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl" : "data/sources/",
