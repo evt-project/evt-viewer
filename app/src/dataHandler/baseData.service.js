@@ -221,7 +221,7 @@ angular.module('evtviewer.dataHandler')
 
         // Parse projet info 
         evtProjectInfoParser.parseProjectInfo(docElements);
-
+      
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
 

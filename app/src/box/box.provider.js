@@ -575,14 +575,20 @@ angular.module('evtviewer.box')
 							type: 'itl'
 						});
 					}
-
+					topMenuList.buttons.push({
+						title: 'BUTTONS.MS',
+						label: 'BUTTONS.MSD',
+						type: 'msDesc'
+					});
+                    
+                    
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var currentPage = evtInterface.getState('currentPage'),
 							currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
 							pageSource = currentPageObj ? currentPageObj.source : '';
 						pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
-						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
+						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/fol_214v.jpg\')"/>';
 						// TODO: Add translation for alt text
 						// TEMP... TODO: creare direttiva per gestire le zone sull'immagine
 						var zonesHTML = '',

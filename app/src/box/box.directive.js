@@ -291,6 +291,12 @@ angular.module('evtviewer.box')
                               var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                               scope.vm.updateTopBoxContent(content);
                       }
+                      /* aggiunta per msDesc*/
+                      else if (scope.vm.currentType === 'image'){
+                          var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                          scope.vm.updateTopBoxContent(msDescObj); 
+                      }
+                      /* fine aggiunta*/
                   }
               }, true);
 
