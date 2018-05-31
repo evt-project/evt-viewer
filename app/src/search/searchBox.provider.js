@@ -13,8 +13,9 @@ angular.module('evtviewer.search')
          
          searchBox.build = function (scope, vm) {
             var status = {
-               searchBox: false,
-               searchCaseSensitive : false
+               searchBox : false,
+               searchCaseSensitive : false,
+               progressBar : false
             };
             var searchBoxBtn = [
                {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
@@ -64,6 +65,10 @@ angular.module('evtviewer.search')
          
          searchBox.closeBox = function (key) {
             collection.status[key] = false;
+         };
+         
+         searchBox.enableProgressBar = function () {
+            collection.enableProgressBar();
          };
          
          return searchBox;

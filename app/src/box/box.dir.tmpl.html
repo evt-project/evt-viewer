@@ -97,6 +97,11 @@
         ng-controller="SearchBoxCtrl as searchBox">
     </evt-search-box>
 
+   <evt-search-box-index
+      ng-if="vm.type=='text'"
+      ng-controller="SearchBoxCtrl as searchBox">
+   </evt-search-box-index>
+
     <div
         class="tools-group-box"
         ng-if="::vm.type!=='image'"
