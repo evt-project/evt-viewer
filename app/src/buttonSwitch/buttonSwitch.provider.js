@@ -378,8 +378,8 @@ angular.module('evtviewer.buttonSwitch')
 				active = scope.active || false,
 				disabled = scope.disabled || false,
 				btnType = scope.btnType || '',
-				callback = function() { console.log('TODO ' + type); },
-				fakeCallback = function() {};
+                callback = function() { console.log('TODO ' + type); },
+                fakeCallback = function() {};
 			var scopeHelper = {};
 
 			// SET CALLBACK //
@@ -403,15 +403,15 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'changeViewMode':
 					btnType = 'standAlone';
-					callback = function() {
-						var vm = this;
-						if (vm.value !== undefined) {
-							if (vm.value === 'srcTxt') {
-								var sourceId = evtInterface.getState('currentSourceText') ;
-								evtInterface.updateCurrentSourceText(sourceId);
-							}
-							evtInterface.updateState('currentViewMode', vm.value);
-							evtInterface.updateUrl();
+                    callback = function() {
+                        var vm = this;
+                        if (vm.value !== undefined) {
+                            if (vm.value === 'srcTxt') {
+                                var sourceId = evtInterface.getState('currentSourceText') ;
+                                evtInterface.updateCurrentSourceText(sourceId);
+                            }
+                            evtInterface.updateState('currentViewMode', vm.value);
+                            evtInterface.updateUrl();
 							if (evtInterface.getToolState('ITL') === 'active') {
 								if (vm.value === 'imgTxt') {
 									evtImageTextLinking.activateITL();
@@ -419,8 +419,8 @@ angular.module('evtviewer.buttonSwitch')
 									evtImageTextLinking.deactivateITL();
 								}
 							}
-						}
-					};
+                        }
+                    };
 					break;
 				case 'colorLegend':
 					btnType = 'toggler';
@@ -466,15 +466,15 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'closeDialog':
 					callback = function() {
-						var vm = this;
-						evtDialog.closeAll();
-						evtInterface.updateState('secondaryContent', '');
-						vm.active = !vm.active;
-					};
+                        var vm = this;
+                        evtDialog.closeAll();
+                        evtInterface.updateState('secondaryContent', '');
+                        vm.active = !vm.active;
+                    };
 
-					break;
+                    break;
 				case 'closePinned':
-					callback = function() {
+                    callback = function() {
 						evtInterface.toggleState('isPinnedAppBoardOpened') ;
 					};
 					break;
@@ -546,6 +546,35 @@ angular.module('evtviewer.buttonSwitch')
 						parentBox.updateState('topBoxOpened', false);
 					};
 					break;
+				case 'msDesc':
+				    btnType = 'standAlone';
+				    callback = function() {
+				        var parentBox = scope.$parent.vm;
+				        var topBox=document.getElementsByClassName("box-top-box");
+				        topBox[0].setAttribute("id","msDesc");
+						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'msDesc') {
+							parentBox.toggleTopBox();
+						} else {
+							var content;
+							var currentDocument = evtInterface.getState('currentDoc');
+							if (currentDocument) {
+								content = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+								scope.$parent.vm.updateTopBoxContent(content);
+								scope.$parent.vm.toggleTopBox();
+							}
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+							parentBox.updateTopBoxContent(newTopBoxContent);
+							parentBox.updateState('topBoxContent', 'msDesc');
+							if (!parentBox.getState('topBoxOpened')) {
+								parentBox.toggleTopBox();
+							}
+						}
+				    };
+				    fakeCallback = function() {
+						var parentBox = scope.$parent.vm;
+						parentBox.updateState('topBoxOpened', false);
+					};
+				    break;
 				case 'heatmap':
 					btnType = 'standAlone';
 					callback = function() {
@@ -595,6 +624,16 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				/*case 'msDesc':
+				    callback= function() {
+				        var doc=evtInterface.getState('currentDoc');
+				         var docElements = xmlParser.parse(doc);
+                         if (docElements.documentElement.nodeName === 'TEI'){
+                             console.log("dE "+docElements);
+				             //evtProjectInfoParser.msDescription(docElements);
+                         }
+				    };
+				    break;*/
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':
@@ -741,47 +780,45 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					//TODO: toggle buttons already active in same box -> PROVIDER NEEDED!!
 					break;
-				// Case toggleInfoSrc //
-				// Button to show/hide the bibliographic reference of the source //
-				// currently shown in the source-text view | @author --> CM      //
-				case 'toggleInfoSrc':
-					btnType = 'toggler';
-					callback = function(){
-						var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
-						//Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nella direttiva
-						//TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
-						if (source) {
-							var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
-							scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
-							scope.$parent.vm.toggleTopBox();
-						}
-					};
-					fakeCallback = function(){
-						scope.$parent.vm.updateState('topBoxOpened', false);
-					};
-					break;
-				// Case addVer //
-				// It shows the versions available in the versions selector | @author --> CM //
-				case 'addVer':
-					btnType = 'standAlone';
-					callback  = function() {
-						evtInterface.updateProperty('versionSelector', true);
-						scope.vm.active = false;
-					};
-					break;
-				case 'removeVer':
-					callback = function(){
-						var ver = scope.$parent.vm.version;
-						evtInterface.removeVersion(ver);
-					};
-					break;
-				case 'cropText':
-					btnType = 'toggler';
-					callback = function() {
-						var s = scope.$parent.vm;
-						return s;
-					};
-					break;
+                // Case toggleInfoSrc //
+                // Button to show/hide the bibliographic reference of the source //
+                // currently shown in the source-text view | @author --> CM      //
+                case 'toggleInfoSrc':
+                    btnType = 'toggler';
+                    callback = function(){
+                        var source = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
+                        //Garantire il collegamento del top box content con la fonte corretta, magari aggiungendo un watch nela direttiva
+                        //TODO: Ok, ma come funziona per far sì che il top box content venga aggiornato anche nel momento in cui si cambia con il selettore?
+												if (source) {
+													var newTopBoxContent = source.bibl || scope.$parent.vm.topBoxContent;
+													scope.$parent.vm.updateTopBoxContent(newTopBoxContent);
+													scope.$parent.vm.toggleTopBox();
+												}
+                    };
+                    fakeCallback = function(){
+                        scope.$parent.vm.updateState('topBoxOpened', false);
+                    };
+                    break;
+                case 'addVer':
+                    btnType = 'standAlone';
+                    callback  = function() {
+                        evtInterface.updateProperty('versionSelector', true);
+                        scope.vm.active = false;
+                    };
+                    break;
+                case 'removeVer':
+                    callback = function(){
+                        var ver = scope.$parent.vm.version;
+                        evtInterface.removeVersion(ver);
+                    };
+                    break;
+                case 'cropText':
+                    btnType = 'toggler';
+                    callback = function() {
+                        var s = scope.$parent.vm;
+                        return s;
+                    };
+                    break;
 				default:
 					break;
 			}

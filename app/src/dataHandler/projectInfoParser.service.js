@@ -21,7 +21,8 @@ angular.module('evtviewer.dataHandler')
         encodingDescriptionDef = '<encodingDesc>',
         textProfileDef         = '<profileDesc>',
         outsideMetadataDef     = '<xenoData>',
-        revisionHistoryDef     = '<revisionDesc>';
+        revisionHistoryDef     = '<revisionDesc>',
+        msDesc                 = '<msDesc>';
 
     var skipElementsFromParser = '<evtNote>',
         skipElementsFromInfo   = '<listBibl>, <listWit>';
@@ -35,10 +36,11 @@ angular.module('evtviewer.dataHandler')
                 parser.parseTextProfile(element);
                 parser.parseOutsideMetadata(element);
                 parser.parseRevisionHistory(element);
+                parser.parseMsDescription(element);
         });
-        //console.log('## parseProjectInfo ##', parsedData.getProjectInfo());
+        console.log('## parseProjectInfo ##', parsedData.getProjectInfo());
     };
-
+    
     var editionStmt     = '<editionStmt>', //dichiarazione sul titolo
         extent          = '<extent>',
         notesStmt       = '<notesStmt>',
@@ -46,6 +48,7 @@ angular.module('evtviewer.dataHandler')
         seriesStmt      = '<seriesStmt>',
         sourceDesc      = '<sourceDesc>',
         titleStmt       = '<titleStmt>';
+        
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtProjectInfoParser#parseEditionReference
@@ -207,6 +210,16 @@ angular.module('evtviewer.dataHandler')
                 parsedData.updateProjectInfoContent(revisionHistoryContent, 'revisionHistory');
         });
         // console.log('## parseRevisionHistory ##', parsedData.getProjectInfo().revisionHistory);
+    };
+    
+    parser.parseMsDescription = function (teiHeader) {
+        var currentDocument = angular.element(teiHeader);
+        angular.forEach(currentDocument.find(msDesc.replace(/[<>]/g, '')),
+            function(element) {
+                var msDescContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
+                parsedData.updateProjectInfoContent(msDescContent, 'msDesc');
+        });
+       //  console.log('## parseMsDescription ##', parsedData.getProjectInfo().msDesc);
     };
 
     return parser;
