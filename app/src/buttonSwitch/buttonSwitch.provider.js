@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearchBox, evtSearchResults, evtSearchResultsProvider) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearch, evtSearchBox, evtSearchResults, evtSearchResultsProvider, evtSearchIndex) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -631,6 +631,34 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchResultsProvider.showSearchResultsHideBtn();
                };
                break;
+            case 'searchIndex':
+               btnType = 'standAlone';
+               //evtSearchBox.updateStatus('progressBar');
+               
+               callback = function () {
+                  evtSearchBox.updateStatus('progressBar');
+                  
+                  scope.vm.active = false;
+   
+                  var xmlDocDom = baseData.getXML(),
+                     searchToolsBtn;
+   
+                  evtSearch.initSearch(xmlDocDom);
+                  scope.vm.disable();
+   
+                  searchToolsBtn = button.getByType('searchToolsInternal');
+                  searchToolsBtn.disabled = false;
+                  searchToolsBtn.callback = function () {
+                     evtSearchBox.toggleBox('searchBox');
+                     evtSearchResultsProvider.closeBox('searchResults');
+                     evtSearchResultsProvider.showSearchResultsShowBtn();
+                  };
+   
+                  scope.vm.callback = function() {
+                     scope.vm.active = false;
+                  };
+               };
+               break;
             case 'searchResultsShow':
                callback = function() {
                   scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
@@ -651,10 +679,9 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchToolsInternal':
                btnType = 'standAlone';
-               callback = function(){
-                  evtSearchBox.toggleBox('searchBox');
-                  evtSearchResultsProvider.closeBox('searchResults');
-                  evtSearchResultsProvider.showSearchResultsShowBtn();
+               disabled = true;
+               callback = function () {
+                  scope.vm.active = false;
                };
                break;
             case 'searchToolsExternal':
@@ -851,6 +878,14 @@ angular.module('evtviewer.buttonSwitch')
 		button.getList = function() {
 			return list;
 		};
+		
+		button.getByType = function(type) {
+		   for(var i in collection) {
+		      if(collection[i].type === type) {
+		         return collection[i];
+            }
+         }
+      };
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.buttonSwitch.evtButtonSwitch#unselectAll

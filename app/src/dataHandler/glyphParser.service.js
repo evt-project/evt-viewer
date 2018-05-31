@@ -59,9 +59,16 @@ angular.module('evtviewer.dataHandler')
             glyphs = parsedData.getGlyphs(),
             sRef = node.getAttribute('ref');
          
-         sRef = sRef.replace('#', '');
-         currentGlyph = glyphs[sRef].mapping;
-         currentGlyph.id = sRef;
+         try {
+            sRef = sRef.replace('#', '');
+            currentGlyph = glyphs[sRef].mapping;
+            currentGlyph.id = sRef;
+         }
+         catch(e) {
+            console.log(e);
+            return true;
+         }
+         
          return currentGlyph;
       }
    }]);

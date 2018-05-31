@@ -230,8 +230,8 @@ angular.module('evtviewer.dataHandler')
        // Parse Glyphs
        evtParser.parseGlyphs(docElements);
    
-       // Initi Search
-       evtSearch.initSearch(docElements);
+       // Init Search
+       //evtSearch.initSearch(docElements);
     };
 
     /**

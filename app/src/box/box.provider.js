@@ -714,6 +714,18 @@ angular.module('evtviewer.box')
                   type: 'searchToolsInternal',
                   show: function() {
                      return true;
+                  },
+                  disabled: function() {
+                     return true;
+                  }
+               });
+               bottomMenuList.buttons.push({
+                  title: 'Create index for enable search',
+                  label: 'Create index',
+                  icon: '',
+                  type: 'searchIndex',
+                  show: function() {
+                     return true;
                   }
                });
 					bottomMenuList.buttons.push({

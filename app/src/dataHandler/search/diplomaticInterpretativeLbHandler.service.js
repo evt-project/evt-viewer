@@ -44,7 +44,7 @@ angular.module('evtviewer.dataHandler')
                            line.pageId = currentPageId;
                         }
                         if (paragraph) {
-                           line.par = paragraph;
+                           line.paragraph = paragraph;
                         }
                         line.xmlDocTitle = currentXmlDoc.title;
                         line.xmlDocId = currentXmlDoc.id;
@@ -58,6 +58,9 @@ angular.module('evtviewer.dataHandler')
                            interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
       
                         };
+                        
+                        //console.log(line.content);
+                        //console.log('page' + line.page + '- line' + line.line + '\n');
    
                         lineId++;
                         countLine++;
