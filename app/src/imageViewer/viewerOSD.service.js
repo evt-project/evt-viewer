@@ -1,10 +1,10 @@
 (function () {
-   console.log("caricato modulo openseadragonService");
-   angular.module('evtviewer.openseadragonService', ["evtviewer.interface"])
+   console.log('caricato modulo openseadragonService');
+   angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap) {
-         let ImageNormalizationCoefficient = 3500;
-         let YminPan = 0.5;
+         const ImageNormalizationCoefficient = 3500;
+         const YminPan = 0.5;
 
          var viewerHandler = this;
 
@@ -20,9 +20,9 @@
 
 
          viewerHandler.open = function () {
-            console.log("openHandler");
+            console.log('openHandler');
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
-            console.log("openHandler", oldBounds);
+            console.log('openHandler', oldBounds);
             var h = oldBounds.height / oldBounds.width;
             var newBounds = new OpenSeadragon.Rect(0, 0.1, 1, h);
             console.log(newBounds);
@@ -34,7 +34,7 @@
             //viewer.navigator.element.firstChild.children[0]  = "hidden"; 
             //viewer.navigator.element.firstChild.children[1]  = "hidden"; 
             //viewer.navigator.element.firstChild.firstChild.style.overflow = "hidden";
-            console.log("element navigator", viewerHandler.viewer.navigator.element);
+            console.log('element navigator', viewerHandler.viewer.navigator.element);
             //console.log("evtInterface", evtInterface);
             //console.log("scope", scope);
             //console.log("element", element);
@@ -79,37 +79,38 @@
 
          viewerHandler.pan = function (event) {
             try {
-               console.log("pan", event);
+               console.log('pan', event);
                //if (event.immediately === undefined) {
                var newY = event.center.y;
                var oldY = event.eventSource.viewport._oldCenterY;
-               console.log("ok event pan", newY);
-               console.log("ok viewer pan", oldY);
+               console.log('ok event pan', newY);
+               console.log('ok viewer pan', oldY);
                // evento scroll verso il basso
                if (viewerHandler.viewer.viewport.getZoom() === 1) {
-                  console.log("aggiorna testo");
+                  var newPage, currPage;
+                  console.log('aggiorna testo');
                   var oldBounds = viewerHandler.viewer.viewport.getBounds();
                   if (newY > oldY) {
-                     console.log("mostro riga sotto");
-                     console.log("bounds:", oldBounds);
+                     console.log('mostro riga sotto');
+                     console.log('bounds:', oldBounds);
                      //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
-                     var newPage = imageScrollMap.mapDown(event.eventSource.viewport.getBounds());
-                     var currPage = evtInterface.getState('currentPage');
-                     if (newPage != currPage) {
+                     newPage = imageScrollMap.mapDown(event.eventSource.viewport.getBounds());
+                     currPage = evtInterface.getState('currentPage');
+                     if (newPage !== currPage) {
                         viewerHandler.scope.$apply(function () {
-                           evtInterface.updateState("currentPage", newPage);
-                           console.log("in pan handler:", evtInterface.getState('currentPage'));
+                           evtInterface.updateState('currentPage', newPage);
+                           console.log('in pan handler:', evtInterface.getState('currentPage'));
                            //scope.$parent.$parent.vm.updateContent();
                         });
                      }
                      //evento scroll verso l'alto    
                   } else if (newY < oldY) {
-                     console.log("mostro riga sopra");
-                     console.log("bounds:", oldBounds);
+                     console.log('mostro riga sopra');
+                     console.log('bounds:', oldBounds);
                      //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
-                     var newPage = imageScrollMap.mapUP(event.eventSource.viewport.getBounds());
-                     var currPage = evtInterface.getState('currentPage');
-                     if (newPage != currPage) {
+                     newPage = imageScrollMap.mapUP(event.eventSource.viewport.getBounds());
+                     currPage = evtInterface.getState('currentPage');
+                     if (newPage !== currPage) {
                         viewerHandler.scope.$apply(function () {
                            evtInterface.updateState("currentPage", newPage !== '' ? newPage : currPage);
                            console.log("in pan handler:", evtInterface.getState('currentPage'));
@@ -128,99 +129,242 @@
          };
 
          viewerHandler.updateViewerBounds = function (page) {
-            console.log("updateViewerBounds: ", viewerHandler.viewer, page);
+            console.log('updateViewerBounds: ', viewerHandler.viewer, page);
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
-            console.log("updateViewerBounds: ", oldBounds);
+            console.log('updateViewerBounds: ', oldBounds);
             if (!imageScrollMap.isInBounds(oldBounds.y, page)) {
                console.log('updateViewerBounds', page);
                imageScrollMap.updateBounds(viewerHandler.viewer, page);
             }
 
-         }
+         };
 
-         viewerHandler.highlightOverlay = function(zone){
+         viewerHandler.highlightOverlay = function (zone) {
             console.log('in highlight Overlay: ', zone);
-            if(!zone) throw "problem in zone data extraction";
-            
+            if (!zone) {
+               throw 'problem in zone data extraction';
+            }
+
             try {
-                  viewerHandler.viewer.removeOverlay("line-overlay");
+               viewerHandler.viewer.removeOverlay('line-overlay');
             } catch (error) {
-                  console.error('no line overlay', error);
+               console.error('no line overlay', error);
             }
             var rectObj = convertZoneToOSD(zone);
             var elt = document.createElement("div");
             elt.id = "line-overlay";
             elt.className = "highlight";
             viewerHandler.viewer.addOverlay({
-                element: elt,
-                location: rectObj
+               element: elt,
+               location: rectObj
             });
 
-         }
+         };
 
-         viewerHandler.highlightSelectedOverlay = function(zone, zoneName){
+         viewerHandler.highlightSelectedOverlay = function (zone, zoneName) {
             console.log('in highlight Overlay: ', zone);
-            if(!zone) throw "problem in zone data extraction";
-            
+            if (!zone) {
+               throw "problem in zone data extraction";
+            }
+
             try {
-                  viewerHandler.viewer.removeOverlay("line-overlay");
+               viewerHandler.viewer.removeOverlay("line-overlay");
             } catch (error) {
-                  console.error('no line overlay', error);
+               console.error('no line overlay', error);
             }
             var rectObj = convertZoneToOSD(zone);
             var elt = document.createElement("div");
             elt.id = "line-overlay_selected";
             elt.className = "selectedHighlight";
             viewerHandler.viewer.addOverlay({
-                element: elt,
-                location: rectObj
+               element: elt,
+               location: rectObj
             });
 
-         }
+         };
 
-         viewerHandler.turnOffOverlay = function(){
+         viewerHandler.turnOffOverlay = function () {
             try {
-                  viewerHandler.viewer.removeOverlay("line-overlay");
+               viewerHandler.viewer.removeOverlay("line-overlay");
             } catch (error) {
-                  console.error('no line overlay', error);
+               console.error('no line overlay', error);
             }
-         }
+         };
 
-         viewerHandler.turnOffOverlaySelected = function(){
+         viewerHandler.turnOffOverlaySelected = function () {
             try {
-                  viewerHandler.viewer.removeOverlay("line-overlay_selected");
+               viewerHandler.viewer.removeOverlay("line-overlay_selected");
             } catch (error) {
-                  console.error('no line overlay', error);
+               console.error('no line overlay', error);
             }
-         }
+         };
 
-         function convertZoneToOSD(zone){
-               // TODO, This is just a test
+         function convertZoneToOSD(zone) {
+            // TODO, This is just a test
             var tmp = {};
             tmp.x = _(zone.ulx);
             tmp.y = _(zone.uly);
             tmp.width = _(zone.lrx - zone.ulx);
             tmp.hight = _(zone.lry - zone.uly);
             console.log("in convert zone to OSD", tmp);
-            return new OpenSeadragon.Rect(tmp.x/ImageNormalizationCoefficient, tmp.y/ImageNormalizationCoefficient, tmp.width/ImageNormalizationCoefficient, tmp.hight/ImageNormalizationCoefficient);
+            return new OpenSeadragon.Rect(tmp.x / ImageNormalizationCoefficient, tmp.y / ImageNormalizationCoefficient, tmp.width / ImageNormalizationCoefficient, tmp.hight / ImageNormalizationCoefficient);
          }
 
-         function _(value){
-               return value;
+         function _(value) {
+            return value;
          }
 
-         viewerHandler.moveToZone = function(zone){
-            console.log("moveTo: ", zone);
-            console.log("viewport center: ", viewerHandler.viewer.viewport.getCenter());
+         viewerHandler.moveToZone = function (zone) {
+            console.log('moveTo: ', zone);
+            console.log('viewport center: ', viewerHandler.viewer.viewport.getCenter());
             var oldCenter = viewerHandler.viewer.viewport.getCenter();
-            console.log("old center y", oldCenter.y);
-            console.log("zone y", zone.uly/ImageNormalizationCoefficient);
-            var newY = (zone.uly/ImageNormalizationCoefficient<YminPan)?YminPan:zone.uly/ImageNormalizationCoefficient;
-            var newCenter = new OpenSeadragon.Point(oldCenter.x,newY);
-            console.log("new center", newCenter);
+            console.log('old center y', oldCenter.y);
+            console.log('zone y', zone.uly / ImageNormalizationCoefficient);
+            var newY = (zone.uly / ImageNormalizationCoefficient < YminPan) ? YminPan : zone.uly / ImageNormalizationCoefficient;
+            var newCenter = new OpenSeadragon.Point(oldCenter.x, newY);
+            console.log('new center', newCenter);
             viewerHandler.viewer.viewport.panTo(newCenter);
-            console.log("center after pan",viewerHandler.viewer.viewport.getCenter() );
-         }
+            console.log('center after pan', viewerHandler.viewer.viewport.getCenter());
+         };
+
+         viewerHandler.showHotSpot = function (zones) {
+            //showHotSpots -> for(){showHotSpot}
+            var toggle = false;
+            console.log('in showHotSpot di ViewerHandler', zones);
+
+            var rectObjs = [];
+            for (var i = 0; i < zones.length; i++) {
+               console.log('zona iesima', zones[i]);
+
+               var r = new OpenSeadragon.Rect(
+                  zones[i].ulx / ImageNormalizationCoefficient,
+                  zones[i].uly / ImageNormalizationCoefficient,
+                  (zones[i].lrx - zones[i].ulx) / ImageNormalizationCoefficient,
+                  (zones[i].lry - zones[i].uly) / ImageNormalizationCoefficient);
+
+               rectObjs.push(r);
+            }
+            console.log('point hotspot: ', rectObjs);
+
+            var hrefElts = [];
+            for (var j = 0; j < zones.length; j++) {
+               var content = zones[j].content;
+               var id = zones[j].id;
+               var zone = zones[j];
+               console.log('content', zone);
+
+               var hrefElt = document.createElement('div');
+               hrefElt.id = 'hotspot-overlay_selected-' + id;
+               //hrefElt.href = '#';
+               hrefElt.className = 'hotspot';
+               hrefElt.dataset.id = id;
+               hrefElt.onclick = function () {
+                  toggle = showDivHotSpot(toggle, this);
+               }; //function(){console.log('hot spot');};
+               hrefElt.onmouseleave = function () {
+                  toggle = hiddenDivHotSpot(toggle, this);
+               };
+               hrefElts.push(hrefElt);
+            }
+            console.log('hotspots: ', hrefElts);
+
+            viewerHandler.viewer.zoomPerClick = 1;
+            for (var k = 0; k < zones.length; k++) {
+               viewerHandler.viewer.addOverlay({
+                  element: hrefElts[k],
+                  location: rectObjs[k],
+                  //placement: OpenSeadragon.Placement.CENTER,
+                  //checkResize: false
+               });
+            }
+         };
+
+         var showDivHotSpot = function (toggle, elem) {
+            if (!toggle) {
+               console.log("elem id", elem.id);
+               var _$elem = $(elem);
+               var x = _$elem.position().left;
+               var y = _$elem.position().top;
+               var w = _$elem.width();
+               var h = _$elem.height();
+               var point1 = new OpenSeadragon.Point(x, y);
+               var point2 = new OpenSeadragon.Point(x + w, y + h);
+               var topLeft = viewerHandler.viewer.viewport.pointFromPixel(point1);
+               var bottomRight = viewerHandler.viewer.viewport.pointFromPixel(point2);
+               var DivTopLeft = 0;
+               if (topLeft.x <= 0.4) {
+                   DivTopLeft = topLeft.x + (bottomRight.x - topLeft.x) + 0.050;
+               } else {
+                     DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0.3);
+
+               }
+               var rect = new OpenSeadragon.Rect(
+                  DivTopLeft,
+                  topLeft.y,
+                  0.3,
+                  0.35);
+               //bottomRight.x - topLeft.x
+               //bottomRight.y - topLeft.y
+
+
+               var divElt = document.createElement('div');
+               divElt.id = 'div-hotspot-overlay_selected-' + elem.dataset.id;
+               divElt.className = 'hotspot-dida';
+               
+
+               var divTitleElt = document.createElement('div');
+               divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
+               divTitleElt.className = 'hotspot-dida-title';
+
+               var divBodyElt = document.createElement('div');
+               divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
+               divBodyElt.className = 'hotspot-dida-body';
+               divBodyElt.innerHTML = 'CONTENT-' + elem.dataset.id;
+
+               divElt.appendChild(divTitleElt);
+               divElt.appendChild(divBodyElt);
+
+               console.log('content', divElt);
+
+               var OSDOverlay = {
+                  element: divElt,
+                  location: rect
+               };
+
+
+               console.log(OSDOverlay.element);
+               viewerHandler.viewer.addOverlay(OSDOverlay);
+               toggle = !toggle;
+            }
+            return toggle;
+         };
+
+         var hiddenDivHotSpot = function (toggle, elem) {
+            console.log('hiddenDivHotSpot: ' + toggle);
+            try {
+               var id = elem.dataset.id;
+               viewerHandler.viewer.removeOverlay('div-hotspot-overlay_selected-' + id);
+            } catch (error) {
+               console.error('no hotspot overlay', error);
+            }
+
+            toggle = false;
+            return toggle;
+
+
+         };
+
+         viewerHandler.hiddenHotSpot = function (zones) {
+            console.log('in hiddenHotSpot di ViewerHandler');
+            try {
+               for (var i = 0; i < zones.length; i++) {
+                  viewerHandler.viewer.removeOverlay('hotspot-overlay_selected-' + zones[i].id);
+               }
+               viewerHandler.viewer.zoomPerClick = 2;
+            } catch (error) {
+               console.error('no hotspot overlay', error);
+            }
+         };
 
 
 

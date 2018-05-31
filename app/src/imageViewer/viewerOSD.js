@@ -31,7 +31,7 @@
                imageViewerHandler.setViewer(viewer);
                imageViewerHandler.setScope(scope);
 
-               scope.osd.addHandler("open", imageViewerHandler.open);
+               scope.osd.addOnceHandler("open", imageViewerHandler.open,null,1);
                scope.osd.addHandler("home", imageViewerHandler.home);
 
                scope.osd.addHandler('navigator-scroll', imageViewerHandler.navigatorScroll);

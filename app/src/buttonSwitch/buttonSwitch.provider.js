@@ -533,6 +533,7 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'itl':
 					active = evtInterface.getToolState('ITL') === 'active';
+					btnType = 'standAlone';
 					callback = function() {
 						var vm = this;
 						if (vm.active) { // Activate ITL

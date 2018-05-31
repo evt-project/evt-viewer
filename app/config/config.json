@@ -8,7 +8,7 @@
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
 
-    "defaultViewMode": "readingTxt",
+    "defaultViewMode": "imgTxt",
 	"availableViewModes": [{
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
@@ -31,7 +31,7 @@
                                 "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "COLLATION",
