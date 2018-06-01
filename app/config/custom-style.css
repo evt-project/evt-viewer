@@ -97,6 +97,10 @@ div.hotspot-dida-body {
     overflow-y: scroll;
 }
 
+
+div#toolbar-div * img {
+    display: initial !important;
+}
 /* regola per la demo in arabo */
 
 /*#mainContentToTranform { */

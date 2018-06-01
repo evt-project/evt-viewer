@@ -116,10 +116,10 @@ angular.module('evtviewer.openseadragonService')
             case 'up':
                console.log('mapping moving up');
                for (var i = 1; i <= map.size; i++) {
-                  console.log('nel for di scrolling up', (map[key + i].from + map[key + i].to) / 1.8);
+                  console.log('nel for di scrolling up', (map[key + i].from + map[key + i].to) / 2);
                   console.log('box y:', box.y);
                   console.log('from:', map[key + i].from);
-                  if (box.y < ((map[key + i].from + map[key + i].to) / 2.3) && box.y > map[key + i].from) {
+                  if (box.y < ((map[key + i].from + map[key + i].to) / 2) && box.y > map[key + i].from) {
                      console.log('nel if di scrolling up', i);
                      console.log(key + i);
                      return (key + i).substr(1).toLowerCase();
