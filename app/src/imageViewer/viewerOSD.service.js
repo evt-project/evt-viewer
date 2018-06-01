@@ -218,9 +218,15 @@
             console.log('moveTo: ', zone);
             console.log('viewport center: ', viewerHandler.viewer.viewport.getCenter());
             var oldCenter = viewerHandler.viewer.viewport.getCenter();
+            var currentBounds = viewerHandler.viewer.viewport.getBounds(true);
+            console.log('current bounds', currentBounds);
+            var normalizedZoney = zone.uly/ImageNormalizationCoefficient;
             console.log('old center y', oldCenter.y);
-            console.log('zone y', zone.uly / ImageNormalizationCoefficient);
-            var newY = (zone.uly / ImageNormalizationCoefficient < YminPan) ? YminPan : zone.uly / ImageNormalizationCoefficient;
+            console.log('zone y normalized', normalizedZoney);
+            console.log('differential y', oldCenter.y - normalizedZoney);
+            //var newY = (zone.uly / ImageNormalizationCoefficient < oldCenter.y) ? oldCenter.y : zone.uly / ImageNormalizationCoefficient;
+            var newY = ( (normalizedZoney < currentBounds.y + currentBounds.height) && normalizedZoney > currentBounds.y)  ? oldCenter.y :  (normalizedZoney < currentBounds.y) ? (currentBounds.y) :(currentBounds.y + currentBounds.height);
+            console.log('new center y',newY);
             var newCenter = new OpenSeadragon.Point(oldCenter.x, newY);
             console.log('new center', newCenter);
             viewerHandler.viewer.viewport.panTo(newCenter);

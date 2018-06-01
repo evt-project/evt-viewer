@@ -99,7 +99,7 @@ angular.module('evtviewer.UItools')
          }
          */
 
-         for(var index = 0; index < zonesIdx.length; index++) {
+         for (var index = 0; index < zonesIdx.length; index++) {
             var zoneId = zonesIdx[index];
             if (zoneId) {
                //console.log('nel for', zoneId);
@@ -430,10 +430,15 @@ angular.module('evtviewer.UItools')
 
       ITLutils.selectHighlightedZone = function (lineId) {
          console.log("selectHighlightedZone: ", lineId);
-         var zone = parsedData.getZone(lineId.replace(linetozoneRegExp, zonereplacedString));
-         imageViewerHandler.turnOffOverlaySelected();
-         imageViewerHandler.highlightSelectedOverlay(zone, lineId.replace(linetozoneRegExp, zonereplacedString));
-         imageViewerHandler.moveToZone(zone);
+         var ITLactive = evtInterface.getToolState('ITL') === 'active';
+         if (ITLactive) {
+            console.log("ITLactive true - selectHighlightedZone: ", lineId);
+            var zone = parsedData.getZone(lineId.replace(linetozoneRegExp, zonereplacedString));
+            imageViewerHandler.turnOffOverlaySelected();
+            imageViewerHandler.highlightSelectedOverlay(zone, lineId.replace(linetozoneRegExp, zonereplacedString));
+            imageViewerHandler.moveToZone(zone);
+         }
+
       };
 
       return ITLutils;
