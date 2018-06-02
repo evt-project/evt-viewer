@@ -616,8 +616,45 @@ angular.module('evtviewer.box')
 						scope.vm.isLoading = false;
 					};
 					break;
-				case 'text':
-					//TODO: Differentiate main text from second one
+            case 'text':
+               if(currentId === 'mainText' || currentId === 'mainText1') {
+                  bottomMenuList.buttons.push({
+                     title: 'Search',
+                     label: 'Search',
+                     icon: 'search',
+                     type: 'searchToolsInternal',
+                     show: function() {
+                        return true;
+                     },
+                     disabled: function() {
+                        return true;
+                     }
+                  });
+                  bottomMenuList.buttons.push({
+                     title: 'Create index for enable search',
+                     label: 'Create index',
+                     icon: '',
+                     type: 'searchIndex',
+                     show: function() {
+                        return true;
+                     }
+                  });
+               }
+               else {
+                  bottomMenuList.buttons.push({
+                     title: 'Search',
+                     label: 'Search',
+                     icon: 'search',
+                     type: 'searchToolsInternal',
+                     show: function() {
+                        return true;
+                     },
+                     disabled: function() {
+                        return true;
+                     }
+                  });
+               }
+               
 					if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
 						topMenuList.selectors.push({
 							id: 'document_' + currentId,
@@ -721,27 +758,6 @@ angular.module('evtviewer.box')
 							}
 						});
 					}
-               bottomMenuList.buttons.push({
-                  title: 'Search',
-                  label: 'Search',
-                  icon: 'search',
-                  type: 'searchToolsInternal',
-                  show: function() {
-                     return true;
-                  },
-                  disabled: function() {
-                     return true;
-                  }
-               });
-               bottomMenuList.buttons.push({
-                  title: 'Create index for enable search',
-                  label: 'Create index',
-                  icon: '',
-                  type: 'searchIndex',
-                  show: function() {
-                     return true;
-                  }
-               });
 					bottomMenuList.buttons.push({
 						title: 'BUTTONS.FONT_CHANGE',
 						label: '',
