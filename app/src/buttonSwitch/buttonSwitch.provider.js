@@ -672,30 +672,49 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchIndex':
                btnType = 'standAlone';
-               //evtSearchBox.updateStatus('progressBar');
+               function indexingInProgress() {
+                  var deferred = $q.defer();
+                  evtSearchBox.updateStatus('indexingInProgress');
+                  setTimeout(function() {
+                     deferred.resolve();
+                  }, 100);
+                  return deferred.promise;
+               }
                
                callback = function () {
-                  evtSearchBox.updateStatus('progressBar');
-                  
-                  scope.vm.active = false;
+                  var promise = indexingInProgress();
+                  promise.then(
+                    function() {
+                       var xmlDocDom = baseData.getXML(),
+                          searchToolsBtn,
+                          searchIndexBtn;
    
-                  var xmlDocDom = baseData.getXML(),
-                     searchToolsBtn;
-   
-                  evtSearch.initSearch(xmlDocDom);
-                  scope.vm.disable();
-   
-                  searchToolsBtn = button.getByType('searchToolsInternal');
-                  searchToolsBtn.disabled = false;
-                  searchToolsBtn.callback = function () {
-                     evtSearchBox.toggleBox('searchBox');
-                     evtSearchResultsProvider.closeBox('searchResults');
-                     evtSearchResultsProvider.showSearchResultsShowBtn();
-                  };
-   
-                  scope.vm.callback = function() {
-                     scope.vm.active = false;
-                  };
+                       searchIndexBtn = button.getByType('searchIndex');
+                       for (var i in searchIndexBtn) {
+                          searchIndexBtn[i].active = false;
+                          searchIndexBtn[i].disable();
+                          searchIndexBtn[i].callback = function() {
+                             for(var j in searchIndexBtn) {
+                                searchIndexBtn[j].active = false;
+                             }
+                          };
+                       }
+                       
+                       evtSearch.initSearch(xmlDocDom);
+                       
+                       searchToolsBtn = button.getByType('searchToolsInternal');
+                       for(var z in searchToolsBtn) {
+                          searchToolsBtn[z].disabled = false;
+                          searchToolsBtn[z].callback = function () {
+                             evtSearchBox.toggleBox('searchBox');
+                             evtSearchResultsProvider.closeBox('searchResults');
+                             evtSearchResultsProvider.showSearchResultsShowBtn();
+                          };
+                       }
+                       
+                       evtSearchBox.updateStatus('indexingInProgress');
+                    }
+                  );
                };
                break;
             case 'searchResultsShow':
@@ -917,11 +936,13 @@ angular.module('evtviewer.buttonSwitch')
 		};
 		
 		button.getByType = function(type) {
+		   var buttons = [];
 		   for(var i in collection) {
 		      if(collection[i].type === type) {
-		         return collection[i];
+		         buttons.push(collection[i]);
             }
          }
+         return buttons;
       };
 		/**
 	     * @ngdoc method

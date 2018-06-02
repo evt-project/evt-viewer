@@ -362,6 +362,13 @@
 					<div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
 				</section>
 				<!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
+            <!-- INDEXING IN PROGRESS -->
+            <section id="main-container"
+               class="viewMode indexingInProgress"
+               ng-controller="SearchBoxCtrl as searchBox"
+               ng-show="searchBox.getState('indexingInProgress')">
+               <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+            </section>
 			</section>
 			<section class="global-msg-container"
 					ng-if="getErrorMsg() !== undefined && getErrorMsg().code === '404' && !isLoading()">
@@ -629,7 +636,7 @@
       <script src="/src/search/searchResults.directive.js"></script>
       <script src="/src/search/searchResults.controller.js"></script>
       <script src="/src/search/searchResults.provider.js"></script>
-      <script src="/src/search/searchBoxIndex.directive.js"></script>
+      <!--<script src="/src/search/searchBoxIndex.directive.js"></script>-->
 		<!-- endinjector -->
 		<!-- endbuild -->
 	</body>
