@@ -8,7 +8,7 @@
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl"  : "data/sources/",
 	"visCollTextUrl"   : "data/visColl/prova.xml",
-	"visCollStyleUrl"  : "data/visColl/prov.xslt",
+	"visCollStyleUrl"  : "data/visColl/prov.sef",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{

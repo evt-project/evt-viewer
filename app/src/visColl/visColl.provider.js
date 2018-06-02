@@ -67,15 +67,18 @@ angular.module('evtviewer.visColl')
             var pagesCollection = parsedData.getPages();
 			var documentsCollection = parsedData.getDocuments();
 			
+			
+			var xmlDoc = evtInterface.getProperty('visCollStyleUrl');
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
-			var xmlDoc = evtInterface.getProperty('visCollTextUrl');
 			
 			var windowSaxon = function() {
+				vm = this;
                 SaxonJS.transform({
                  stylesheetLocation: config.visCollStyleUrl,
                 sourceLocation: config.visCollTextUrl
                  });
+				 return config.visCollTextUrl;
             }; 
 							
             scopeHelper = {
