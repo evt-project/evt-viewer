@@ -78,7 +78,7 @@ angular.module('evtviewer.visColl')
                  stylesheetLocation: config.visCollStyleUrl,
                 sourceLocation: config.visCollTextUrl
                  });
-				 return config.visCollTextUrl;
+				 return 'ciao';
             }; 
 							
             scopeHelper = {
