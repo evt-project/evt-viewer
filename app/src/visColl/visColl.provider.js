@@ -76,12 +76,14 @@ angular.module('evtviewer.visColl')
 				vm = this;
 				var prova = config.visCollTextUrl;
 				var prova2 = config.visCollStyleUrl;
+				
 				if (config.visCollTextUrl && config.visCollStyleUrl !== ''){
                 SaxonJS.transform({
                  stylesheetLocation: config.visCollStyleUrl,
                 sourceLocation: config.visCollTextUrl
                  });
-				 return evtInterface.getProperty('visCollTextUrl');
+				/* open(config.visCollTextUrl, '_self');*/
+				return 'con Open ogni click scatena eventi. Non riesco a far arrivare in output il file xml trasformato';
 				};
             }; 
 							
