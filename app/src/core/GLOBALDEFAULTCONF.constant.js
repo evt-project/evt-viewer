@@ -66,6 +66,12 @@ angular.module('evtviewer.core')
     //analoguesUrl//
     //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
     analoguesUrl     : '',
+	//visCollTextUrl//
+	//Url of the XML file encoding the visColl dataModel.//
+	visCollTextUrl   : '',
+	//visCollStyleUrl//
+	//Url of the SEF file encoding the visColl stylesheets for dataModel.//
+	visCollStyleUrl   : '',
 
     preferredWitness: 'A',
 	skipWitnesses: '',

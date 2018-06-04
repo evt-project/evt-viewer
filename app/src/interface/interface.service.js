@@ -116,6 +116,8 @@ angular.module('evtviewer.interface')
             parsedSourcesTexts : [ ],
             availableVersions : [ ],
             versionSelector : false
+			visCollTextUrl     : '',
+    		visCollStyleUrl    : ''
         };
         </pre>
      */

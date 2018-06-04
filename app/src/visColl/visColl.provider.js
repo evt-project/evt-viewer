@@ -74,11 +74,15 @@ angular.module('evtviewer.visColl')
 			
 			var windowSaxon = function() {
 				vm = this;
+				var prova = config.visCollTextUrl;
+				var prova2 = config.visCollStyleUrl;
+				if (config.visCollTextUrl && config.visCollStyleUrl !== ''){
                 SaxonJS.transform({
                  stylesheetLocation: config.visCollStyleUrl,
                 sourceLocation: config.visCollTextUrl
                  });
-				 return 'ciao';
+				 return evtInterface.getProperty('visCollTextUrl');
+				};
             }; 
 							
             scopeHelper = {

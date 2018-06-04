@@ -35,6 +35,23 @@ angular.module('evtviewer.visColl')
         link: function(scope, element, attrs){
             var currentViscoll = evtViscoll.build(scope);
 
+			
+			scope.$watch(function() {
+                return evtInterface.visCollTextUrl;
+            },function(newValue, oldValue) {
+            	if (oldValue !== newValue) {
+					evtInterface.updateProperty(visCollTextUrl, newValue);
+				}
+			}, true);
+			
+			scope.$watch(function() {
+                return evtInterface.visCollStyleUrl;
+            },function(newValue, oldValue) {
+            	if (oldValue !== newValue) {
+					evtInterface.updateProperty(visCollStyleUrl, newValue);
+				}
+			}, true);
+			
             // Garbage collection
             scope.$on('$destroy', function() {
               if (currentViscoll) {
