@@ -672,6 +672,21 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchIndex':
                btnType = 'standAlone';
+               disabled = (
+                  function() {
+                     if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                        console.log('INDEX DISABLE', evtInterface.getToolState('isDocumentIndexed'));
+                        return true;
+                     }
+                  })();
+               active = (
+                  function() {
+                     if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                        console.log('INDEX STATE', evtInterface.getToolState('isDocumentIndexed'));
+                        return false;
+                     }
+                  }
+               )();
                function indexingInProgress() {
                   var deferred = $q.defer();
                   evtSearchBox.updateStatus('indexingInProgress');
@@ -680,41 +695,40 @@ angular.module('evtviewer.buttonSwitch')
                   }, 100);
                   return deferred.promise;
                }
-               
-               callback = function () {
+               function indexingCallback() {
                   var promise = indexingInProgress();
                   promise.then(
-                    function() {
-                       var xmlDocDom = baseData.getXML(),
-                          searchToolsBtn,
-                          searchIndexBtn;
-   
-                       searchIndexBtn = button.getByType('searchIndex');
-                       for (var i in searchIndexBtn) {
-                          searchIndexBtn[i].active = false;
-                          searchIndexBtn[i].disable();
-                          searchIndexBtn[i].callback = function() {
-                             for(var j in searchIndexBtn) {
-                                searchIndexBtn[j].active = false;
-                             }
-                          };
-                       }
-                       
-                       evtSearch.initSearch(xmlDocDom);
-                       
-                       searchToolsBtn = button.getByType('searchToolsInternal');
-                       for(var z in searchToolsBtn) {
-                          searchToolsBtn[z].disabled = false;
-                          searchToolsBtn[z].callback = function () {
-                             evtSearchBox.toggleBox('searchBox');
-                             evtSearchResultsProvider.closeBox('searchResults');
-                             evtSearchResultsProvider.showSearchResultsShowBtn();
-                          };
-                       }
-                       
-                       evtSearchBox.updateStatus('indexingInProgress');
-                    }
+                     function() {
+                        var xmlDocDom = baseData.getXML(),
+                           searchToolsBtn,
+                           searchIndexBtn;
+         
+                        searchIndexBtn = button.getByType('searchIndex');
+                        for (var i in searchIndexBtn) {
+                           searchIndexBtn[i].active = false;
+                           searchIndexBtn[i].disable();
+                        }
+         
+                        evtSearch.initSearch(xmlDocDom);
+                        evtInterface.setToolStatus('isDocumentIndexed', 'true');
+         
+                        searchToolsBtn = button.getByType('searchToolsInternal');
+                        for(var z in searchToolsBtn) {
+                           searchToolsBtn[z].disabled = false;
+                        }
+         
+                        evtSearchBox.updateStatus('indexingInProgress');
+                     }
                   );
+               }
+               
+               callback = function () {
+                  if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                     scope.vm.active = false;
+                  }
+                  else {
+                     return indexingCallback();
+                  }
                };
                break;
             case 'searchResultsShow':
@@ -737,9 +751,30 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchToolsInternal':
                btnType = 'standAlone';
-               disabled = true;
+               disabled = (
+                  function() {
+                     if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                        console.log('SEARCHTOOL: INDEX DISABLE', evtInterface.getToolState('isDocumentIndexed'));
+                        return false;
+                     }
+                     else {
+                        return true;
+                     }
+                  })();
+               var activeCallback = function () {
+                  console.log('IN ACTIVE CALLBACK', evtSearchBox);
+                  evtSearchBox.toggleBox('searchBox');
+                  evtSearchResultsProvider.closeBox('searchResults');
+                  evtSearchResultsProvider.showSearchResultsShowBtn();
+               };
                callback = function () {
-                  scope.vm.active = false;
+                  if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                     console.log('CALLBACK SEARCH', activeCallback);
+                     return activeCallback();
+                  }
+                  else {
+                     scope.vm.active = false;
+                  }
                };
                break;
             case 'searchToolsExternal':
@@ -747,6 +782,18 @@ angular.module('evtviewer.buttonSwitch')
                callback = function() {
                   window.alert('External position coming soon!');
                };
+               break;
+            case 'searchVirtualKeyboard':
+               disabled = true;
+               callback = function() {}
+               break;
+            case 'searchPrevResult':
+               disabled = true;
+               callback = function() {}
+               break;
+            case 'searchNextResult':
+               disabled = true;
+               callback = function() {}
                break;
 				case 'share':
 					callback = function() {

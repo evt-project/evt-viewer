@@ -4,7 +4,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "",
+	"dataUrl": "../data/rotoloSanTeobaldo.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -26,13 +26,13 @@
                                 "label"    : "IMAGE_TEXT",
                                 "icon"     : "mode-imgTxt",
                                 "viewMode" : "imgTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "COLLATION",
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": false,
+    "showDocumentSelector": true,
 
 	"variantColors": {
 		"type": {
