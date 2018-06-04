@@ -7,8 +7,8 @@
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl"  : "data/sources/",
-	"visCollTextUrl"   : "data/prova.xml",
-	"visCollStyleUrl"  : "data/prov.sef.xml",
+	"visCollTextUrl"   : "data/visColl/dataModel2.xml",
+	"visCollStyleUrl"  : "data/visColl/collationXML_to_SVG_mod2.xsl",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
