@@ -80,10 +80,13 @@ angular.module('evtviewer.visColl')
 				if (config.visCollTextUrl && config.visCollStyleUrl !== ''){
                 SaxonJS.transform({
                  stylesheetLocation: config.visCollStyleUrl,
-                sourceLocation: config.visCollTextUrl
-                 });
+                sourceLocation: config.visCollTextUrl,
+				logLevel:10
+                 }, function(output) {
+					 console.log('callback saxon', output);
+				 });
 				/* open(config.visCollTextUrl, '_self');*/
-				return 'con Open ogni click scatena eventi. Non riesco a far arrivare in output il file xml trasformato';
+				/*return config.visCollTextUrl + ' con Open ogni click scatena eventi. Non riesco a far arrivare in output il file xml trasformato';*/
 				};
             }; 
 							
