@@ -21,10 +21,10 @@ angular.module('evtviewer.search')
             var searchBoxBtn = [
                {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
                {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide'},
-               {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: ''},
+               {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
                {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
-               {title: 'Previous', label: '', icon: 'previous', type: ''},
-               {title: 'Next', label: '', icon: 'next', type: ''},
+               {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},
+               {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
                {title: 'Search', label: '', icon: 'search', type: 'search'}
             ];
             var scopeHelper = {
