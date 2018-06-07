@@ -1,5 +1,5 @@
 <div class="search-box internal"
-     ng-class="{'open' : vm.getState('searchBox'), 'results-open' : vm.getSearchResultsState()} ">
+     ng-class="{'open' : $parent.vm.getState('searchBox'), 'results-open' : vm.getSearchResultsState()} ">
 
       <!-- search form -->
       <form ng-submit="vm.doSearchCallback()">

@@ -6,14 +6,12 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function ($log, config) {
-         var currentPosition,
-            searchBox = [],
+      this.$get = function () {
+         var searchBox = [],
             collection = {};
          
          searchBox.build = function (scope, vm) {
             var status = {
-               searchBox : false,
                searchCaseSensitive : false,
                progressBar : false,
                indexingInProgress : false

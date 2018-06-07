@@ -487,7 +487,8 @@ angular.module('evtviewer.box')
 					topBoxOpened: false,
 					fontSizeBtn: false,
 					fontSize: '100',
-					topBoxContent: ''
+					topBoxContent: '',
+               searchBox: false
 				},
 				appFilters = [],
 				updateContent,
