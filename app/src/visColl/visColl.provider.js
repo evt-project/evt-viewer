@@ -71,9 +71,12 @@ angular.module('evtviewer.visColl')
 			var xmlDoc = evtInterface.getProperty('visCollStyleUrl');
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
+			var img = parsedData.getSvgs();
+
+				
 			
 			var windowSaxon = function() {
-				vm = this;
+				var vm = this;
 				var prova = config.visCollTextUrl;
 				var prova2 = config.visCollStyleUrl;
 				
@@ -97,6 +100,7 @@ angular.module('evtviewer.visColl')
 				documentsCollection: documentsCollection,
 				page: page,
 				doc: doc,
+				img: img,
 
                 // Functions
 				windowSaxon: windowSaxon

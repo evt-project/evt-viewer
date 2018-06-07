@@ -807,6 +807,48 @@ angular.module('evtviewer.dataHandler')
 	};
 	/**
      * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseSvgs
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the svgs of the resource
+     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+     * @param {string} doc string representing the XML element to parse
+     * @param {string} docId id of the document to analyze and to whom add parsed pages
+     *
+     * @author CDP
+     */
+	parser.parseSvgs = function(doc, docId) {
+		var currentDocument = angular.element(doc);
+		var myfolder = Folder(config.visCollSvg);
+		var filelist = myfolder.getFiles(/\.(svg)$/i);
+		for(var i = 0; i < fileList.length; i++) {
+			var parsing = function(fileList) {
+				var newSvg = {};
+				newSvg.value = element.setAttribute('xml:id', i.length) || 'page_' + (parsedData.getSvgs().length + 1);
+				newSvg.label = element.setAttribute('n', i.length) || 'Page ' + (parsedData.getSvgs().length + 1);
+				for (var i = 0; i < element.attributes.length; i++) {
+					var attrib = element.attributes[i];
+					if (attrib.specified) {
+						newSvg[attrib.name.replace(':', '-')] = attrib.value;
+					}
+				}
+
+				// Get image source URL
+				if (element.getAttribute('facs')) {
+					newSvg.source = element.getAttribute('facs');
+				} else {
+					// TODO: handle other cases (e.g. <surface>)
+					newSvg.source = '';
+				}
+				parsedData.addPage(newSvg, docId);
+				};
+			};
+		//console.log('## Pages ##', parsedData.getPages());
+	};
+	/**
+     * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseDocuments
      * @methodOf evtviewer.dataHandler.evtParser
      *

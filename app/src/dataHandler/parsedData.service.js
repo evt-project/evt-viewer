@@ -110,6 +110,32 @@ angular.module('evtviewer.dataHandler')
 	};
 	/**
      * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#svgCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about svg are stored.
+    	<pre>
+			var svgCollection = {
+				[pageId]: {
+					value,
+					label,
+					title,
+					source,
+					text: {
+						[docId] : {
+							[editionLevel]: ''
+						}
+					},
+					docs: []
+				},
+				length: 1
+			};
+    	</pre>
+     */
+	var svgCollection = {
+		length: 0
+	};
+	/**
+     * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#documentsCollection
      * @propertyOf evtviewer.dataHandler.parsedData
      * @description [Private] Internal property where information about documents are stored.
@@ -1040,7 +1066,99 @@ angular.module('evtviewer.dataHandler')
 		// return images[i];
 		return {};
 	};
+	
+	/* SVG */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addSvg
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add a svg to stored svg collection. If the svg has already been added it means that it contains
+     * more than one document. In this case the <code>docId</code> will be added to the list
+     * of documents contained in the svg.
+     * The <code>pageId</code> of the new svg will be also added to the list of
+     * pages of the document with <code>id = docId</code>.
+     * @param {Object} svg Svg to be added. It is structured as:
+     	<pre>
+			var svg = {
+				value,
+				label,
+				title,
+				source
+			};
+     	</pre>
+     * @param {string} docId Identifier of document in which the svg is contained
+     * @todo add attribute for the original xml reference
+     */
+	parsedData.addSvg = function(svg, docId) {
+		var pageId = svg.value;
+		if (svgCollection.length === undefined) {
+			svgCollection.length = 0;
+		}
 
+		if (svg.value === '') {
+			pageId = svg.value = 'svg_' + (svgCollection.length + 1);
+		}
+		if (svgCollection[pageId] === undefined) {
+			svg.docs = [docId];
+			svgCollection[svgCollection.length] = pageId;
+			svg.indexInCollection = svgCollection.length;
+			svgCollection[pageId] = svg;
+			svgCollection.length++;
+			// _console.log('parsedData - addPage ', page);
+		} else {
+			var parsedSvg = svgCollection[pageId];
+			if (parsedSvg.docs && parsedSvg.docs.indexOf(docId) < 0) {
+				parsedSvg.docs.push(docId);
+			}
+		}
+
+		if (docId && docId !== '' && documentsCollection[docId] !== undefined) {
+			documentsCollection[docId].svg.push(pageId);
+		}
+	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSvgs
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of parsed svgs.
+     * @returns {Object} Object representing the list of parsed svgs.
+     */
+	parsedData.getSvgs = function() {
+		return svgCollection;
+	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSvg
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the object representing a particular svg.
+     * @param {stirng} pageId Identifier of the svg to retrieve
+	 * @returns {Object} Object representing the svg with <code>id = pageId</code>.
+	 * It is structured as follow:
+	 	<pre>
+			var svg = {
+				value,
+				label,
+				title,
+				source,
+				text: {
+					[docId] : {
+						[editionLevel]: ''
+					}
+				},
+				docs: []
+			};
+	 	</pre>
+     */
+	parsedData.getSvg = function(pageId) {
+		return svgCollection[pageId];
+	};
+	
 	/* DOCUMENTS */
 	/**
      * @ngdoc method
@@ -1058,7 +1176,8 @@ angular.module('evtviewer.dataHandler')
 				title,
 				content,
 				front,
-				pages
+				pages,
+				svg
 			};
      	</pre>
      */
@@ -1111,6 +1230,7 @@ angular.module('evtviewer.dataHandler')
 				content,
 				front,
 				pages,
+				svg,
 			};
      	</pre>
      */
@@ -1135,6 +1255,7 @@ angular.module('evtviewer.dataHandler')
 				content,
 				front,
 				pages,
+				svg,
 			};
      	</pre>
      */
