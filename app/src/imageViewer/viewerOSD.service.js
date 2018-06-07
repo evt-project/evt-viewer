@@ -264,6 +264,7 @@
                //hrefElt.href = '#';
                hrefElt.className = 'hotspot';
                hrefElt.dataset.id = id;
+               hrefElt.dataset.content = content;
                hrefElt.onclick = function () {
                   toggle = showDivHotSpot(toggle, this);
                }; //function(){console.log('hot spot');};
@@ -321,11 +322,12 @@
                var divTitleElt = document.createElement('div');
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
+               divTitleElt.innerHTML = 'HotSpot n.: '+elem.dataset.id;
 
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
                divBodyElt.className = 'hotspot-dida-body';
-               divBodyElt.innerHTML = 'CONTENT-' + elem.dataset.id;
+               divBodyElt.innerHTML = elem.dataset.content;
 
                divElt.appendChild(divTitleElt);
                divElt.appendChild(divBodyElt);
