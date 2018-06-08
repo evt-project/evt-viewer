@@ -331,9 +331,9 @@
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
 						 id="mainText1"></box>
-					<box data-type="text"
-						 data-edition="{{getCurrentEdition()}}"
-						 id="mainText2"></box>
+               <box data-type="text" data-subtype="comparing" ng-show="getCurrentComparingEdition() !== undefined"
+                    data-edition="{{getCurrentComparingEdition()}}"
+                    id="mainText2"></box>
 				</section>
 				<!-- IMG TXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="imgTxt">
