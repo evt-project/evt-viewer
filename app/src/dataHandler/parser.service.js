@@ -16,13 +16,15 @@ angular.module('evtviewer.dataHandler')
 .service('evtParser', function($q, xmlParser, parsedData, config) {
 	var parser = {};
 	var idx = 0;
+	var svgs = config.visCollSvg;
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
 		defLineBreak = '<lb>',
 		defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
-		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
+		defImage = 'svg';
 
 	var projectInfoDefs = {
 		sectionHeaders: '<sourceDesc>, ',
@@ -819,14 +821,12 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-	parser.parseSvgs = function(doc, docId) {
-		var currentDocument = angular.element(doc);
-		var myfolder = Folder(config.visCollSvg);
-		var filelist = myfolder.getFiles(/\.(svg)$/i);
-		for(var i = 0; i < fileList.length; i++) {
-			var parsing = function(fileList) {
+	parser.parseSvgs = function(svgs, docId) {
+		var currentDocument = angular.element(svgs);
+		angular.forEach(currentDocument.find(defImage),
+			function(element) {
 				var newSvg = {};
-				newSvg.value = element.setAttribute('xml:id', i.length) || 'page_' + (parsedData.getSvgs().length + 1);
+				newSvg.value = element.setAttribute('xml:id', 1) || 'page_' + (parsedData.getSvgs().length + 1);
 				newSvg.label = element.setAttribute('n', i.length) || 'Page ' + (parsedData.getSvgs().length + 1);
 				for (var i = 0; i < element.attributes.length; i++) {
 					var attrib = element.attributes[i];
@@ -842,9 +842,8 @@ angular.module('evtviewer.dataHandler')
 					// TODO: handle other cases (e.g. <surface>)
 					newSvg.source = '';
 				}
-				parsedData.addPage(newSvg, docId);
-				};
-			};
+				parsedData.addSvg(newSvg, docId);
+			});
 		//console.log('## Pages ##', parsedData.getPages());
 	};
 	/**

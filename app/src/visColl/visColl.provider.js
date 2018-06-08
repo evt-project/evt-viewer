@@ -72,6 +72,7 @@ angular.module('evtviewer.visColl')
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
 			var img = parsedData.getSvgs();
+			var img2 = parsedData.getState('currentPage');
 
 				
 			
