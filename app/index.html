@@ -162,6 +162,7 @@
                 <evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
                     data-type="projectInfo"
                     data-orientation="vertical">
+                    {{PROJECT_INFO.FILE_DESCRIPTION | translate}}
                 </evt-tabs-container>
             </evt-dialog>
             <evt-dialog data-type="witnessesList" data-title="DIALOGS.WITNESSES">
@@ -326,8 +327,8 @@
                 <box data-type="text"
                      data-edition="{{getCurrentEdition()}}"
                      id="mainText1"></box>
-                <box data-type="text"
-                     data-edition="{{getCurrentEdition()}}"
+                <box data-type="text" data-subtype="comparing" ng-show="getCurrentComparingEdition() !== undefined"
+                     data-edition="{{getCurrentComparingEdition()}}"
                      id="mainText2"></box>
             </section>
 

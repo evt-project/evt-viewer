@@ -41,13 +41,14 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      */
-      var projectInfo = {
-         fileDescription: '',
-         encodingDescription: '',
-         textProfile: '',
-         outsideMetadata: '',
-         revisionHistory: ''
-      };
+	var projectInfo = {
+		fileDescription: '',
+		encodingDescription: '',
+		textProfile: '',
+		outsideMetadata: '',
+		revisionHistory: '',
+		msDesc: ''
+	};
 
       /**
      * @ngdoc property
@@ -2421,99 +2422,99 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      * @author CM
      */
-      parsedData.getVersionEntry = function (entryId) {
-         return versionAppCollection[entryId];
-      };
+	parsedData.getVersionEntry = function(entryId) {
+		return versionAppCollection[entryId];
+	};
 
-      /**
-       * @ngdoc method
-       * @name evtviewer.dataHandler.parsedData#addVersionWitness
-       * @methodOf evtviewer.dataHandler.parsedData
-       *
-       * @description
-       * Add a witness for a particular version of text.
-       * @param {string} ver Identifier of version to handle
-       * @param {string} wit Identifier of witness to handle
-       * @author CM
-       */
-      parsedData.addVersionWitness = function (ver, wit) {
-         var witMap = versionAppCollection._indexes.versionWitMap;
-         if (witMap[ver] === undefined) {
-            witMap[ver] = [];
-            witMap[ver].push(wit);
-         } else {
-            if (witMap[ver].indexOf(wit) < 0) {
-               witMap[ver].push(wit);
-            }
-         }
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addVersionWitness
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add a witness for a particular version of text.
+     * @param {string} ver Identifier of version to handle
+     * @param {string} wit Identifier of witness to handle
+     * @author CM
+     */
+	parsedData.addVersionWitness = function(ver, wit) {
+		var witMap = versionAppCollection._indexes.versionWitMap;
+		if (witMap[ver] === undefined) {
+			witMap[ver] = [];
+			witMap[ver].push(wit);
+		} else {
+			if (witMap[ver].indexOf(wit) < 0) {
+				witMap[ver].push(wit);
+			}
+		}
 
-         var versionId = versionAppCollection._indexes.versionId,
-            name = versionAppCollection._indexes.versionId._name;
-         if (versionId[ver] === undefined) {
-            var index = config.versions.indexOf(ver);
-            var v = 'Version &#' + (65 + index) + ';';
-            versionId[ver] = v;
-            name[v] = ver;
-         }
-      };
+		var versionId = versionAppCollection._indexes.versionId,
+			name = versionAppCollection._indexes.versionId._name;
+		if (versionId[ver] === undefined) {
+			var index = config.versions.indexOf(ver);
+			var v = 'Version &#'+(65+index)+';';
+			versionId[ver] = v;
+			name[v] = ver;
+		}
+	};
 
-      /**
-       * @ngdoc method
-       * @name evtviewer.dataHandler.parsedData#addVersionText
-       * @methodOf evtviewer.dataHandler.parsedData
-       *
-       * @description
-       * Add the parsed text of a particular version of text.
-       * @param {string} text HTML string representing the parsed text to add
-       * @param {string} docId Identifier of document to handle
-       * @param {string} ver Identifier of version to handle
-       * @author CM
-       */
-      parsedData.addVersionText = function (text, docId, ver) {
-         if (versionTexts[docId] === undefined) {
-            versionTexts[docId] = {};
-            versionTexts[docId][ver] = text;
-         } else {
-            if (versionTexts[docId][ver] === undefined) {
-               versionTexts[docId][ver] = text;
-            }
-         }
-      };
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addVersionText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add the parsed text of a particular version of text.
+     * @param {string} text HTML string representing the parsed text to add
+     * @param {string} docId Identifier of document to handle
+     * @param {string} ver Identifier of version to handle
+     * @author CM
+     */
+	parsedData.addVersionText = function(text, docId, ver) {
+		if (versionTexts[docId] === undefined) {
+			versionTexts[docId] = {};
+			versionTexts[docId][ver] = text;
+		} else {
+			if (versionTexts[docId][ver] === undefined) {
+				versionTexts[docId][ver] = text;
+			}
+		}
+	};
 
-      /**
-       * @ngdoc method
-       * @name evtviewer.dataHandler.parsedData#getVersionText
-       * @methodOf evtviewer.dataHandler.parsedData
-       *
-       * @description
-       * Retrieve the parsed text of a particular version of text.
-       * @param {string} ver Identifier of version to handle
-       * @param {string} docId Identifier of document to handle
-       * @returns {string} HTML string representing the parsed text of the given version of the given document
-       * @author CM
-       */
-      parsedData.getVersionText = function (ver, docId) {
-         return versionTexts[docId][ver];
-      };
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getVersionText
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Retrieve the parsed text of a particular version of text.
+     * @param {string} ver Identifier of version to handle
+     * @param {string} docId Identifier of document to handle
+     * @returns {string} HTML string representing the parsed text of the given version of the given document
+     * @author CM
+     */
+	parsedData.getVersionText = function(ver, docId) {
+		return versionTexts[docId][ver];
+	};
 
-      // //////////// //
-      // PROJECT INFO //
-      // //////////// //
-      /**
-       * @ngdoc method
-       * @name evtviewer.dataHandler.parsedData#updateProjectInfoContent
-       * @methodOf evtviewer.dataHandler.parsedData
-       *
-       * @description
-       * Update a particular project information.
-       * @param {string} newContent HTML string representing the new value of the data for the particular project information
-       * @param {string} type Label of the project information to update
-       */
-      parsedData.updateProjectInfoContent = function (newContent, type) {
-         projectInfo[type] = newContent;
-      };
-
-      /**
+	// //////////// //
+	// PROJECT INFO //
+	// //////////// //
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#updateProjectInfoContent
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Update a particular project information.
+     * @param {string} newContent HTML string representing the new value of the data for the particular project information
+     * @param {string} type Label of the project information to update
+     */
+	parsedData.updateProjectInfoContent = function(newContent, type) {
+		projectInfo[type] = newContent;
+	};
+   
+	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
      * @methodOf evtviewer.dataHandler.parsedData
@@ -2536,11 +2537,10 @@ angular.module('evtviewer.dataHandler')
          return projectInfo;
       };
 
-
-      // ////// //
-      // GLYPHS //
-      // ////// //
-      /**
+	// ////// //
+	// GLYPHS //
+	// ////// //
+	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addGlyph
      * @methodOf evtviewer.dataHandler.parsedData

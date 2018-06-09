@@ -40,7 +40,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
+    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtProjectInfoParser, xmlParser) {
         var button    = {},
             collection = {},
             list       = [],
@@ -524,6 +524,35 @@ angular.module('evtviewer.buttonSwitch')
 						parentBox.updateState('topBoxOpened', false);
 					};
 					break;
+				case 'msDesc':
+				    btnType = 'standAlone';
+				    callback = function() {
+				        var parentBox = scope.$parent.vm;
+				        var topBox=document.getElementsByClassName("box-top-box");
+				        topBox[0].setAttribute("id","msDesc");
+						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'msDesc') {
+							parentBox.toggleTopBox();
+						} else {
+							var content;
+							var currentDocument = evtInterface.getState('currentDoc');
+							if (currentDocument) {
+								content = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+								scope.$parent.vm.updateTopBoxContent(content);
+								scope.$parent.vm.toggleTopBox();
+							}
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+							parentBox.updateTopBoxContent(newTopBoxContent);
+							parentBox.updateState('topBoxContent', 'msDesc');
+							if (!parentBox.getState('topBoxOpened')) {
+								parentBox.toggleTopBox();
+							}
+						}				        
+				    };
+				    fakeCallback = function() {
+						var parentBox = scope.$parent.vm;
+						parentBox.updateState('topBoxOpened', false);
+					};
+				    break;
 				case 'heatmap':
 					btnType = 'standAlone';
 					callback = function() {
@@ -576,6 +605,16 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				/*case 'msDesc':
+				    callback= function() {
+				        var doc=evtInterface.getState('currentDoc');
+				         var docElements = xmlParser.parse(doc);
+                         if (docElements.documentElement.nodeName === 'TEI'){
+                             console.log("dE "+docElements);
+				             //evtProjectInfoParser.msDescription(docElements);
+                         }				        
+				    };
+				    break;*/
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':

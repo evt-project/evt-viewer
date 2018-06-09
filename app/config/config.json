@@ -45,7 +45,7 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "interpretative",
+    "defaultEdition": "diplomatic",
     "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{

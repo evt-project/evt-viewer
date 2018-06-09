@@ -223,11 +223,11 @@ angular.module('evtviewer.dataHandler')
          //Parse named entity
          evtNamedEntitiesParser.parseEntities(docElements);
 
-         // Parse projet info 
-         evtProjectInfoParser.parseProjectInfo(docElements);
-
-         // Parse bibliography
-         evtBibliographyParser.parseBiblInfo(docElements);
+        // Parse projet info 
+        evtProjectInfoParser.parseProjectInfo(docElements);
+      
+        // Parse bibliography
+        evtBibliographyParser.parseBiblInfo(docElements);
 
       };
 

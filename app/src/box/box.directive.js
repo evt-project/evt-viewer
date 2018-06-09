@@ -300,6 +300,12 @@ angular.module('evtviewer.box')
                               var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                               scope.vm.updateTopBoxContent(content);
                       }
+                      /* aggiunta per msDesc*/
+                      else if (scope.vm.currentType === 'image'){
+                          var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                          scope.vm.updateTopBoxContent(msDescObj); 
+                      }
+                      /* fine aggiunta*/
                   }
               }, true);
 
@@ -410,15 +416,27 @@ angular.module('evtviewer.box')
             //TODO: aggiungere scroll per sources view
 
             if (currentBox.type === 'text') {
-                scope.$watch(function() {
-                    return evtInterface.getState('currentEdition');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                        scope.vm.edition = newItem;
-                        currentBox.updateContent();
+                if (currentBox.subtype === 'comparing') {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentComparingEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                          scope.vm.edition = newItem;
+                          currentBox.updateContent();
 
-                    }
-                }, true);
+                      }
+                  }, true);
+                } else {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                          scope.vm.edition = newItem;
+                          currentBox.updateContent();
+
+                      }
+                  }, true);
+                }
 
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');

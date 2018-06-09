@@ -575,54 +575,19 @@ angular.module('evtviewer.box')
 							type: 'itl'
 						});
 					}
-
-					// per integrare openseadragon operare su questa funzione di update. (l'id della div è "box_body_mainImage")
-					
-				
+					topMenuList.buttons.push({
+						title: 'BUTTONS.MS',
+						label: 'BUTTONS.MSD',
+						type: 'msDesc'
+					});
+                    
+                    
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						console.log("function update content Image");
 
 						console.log("func update image: current page:", evtInterface.getState('currentPage'));
 						evtInterface.updateState('currentPage',evtInterface.getState('currentPage'));
-
-						// var currentPage = evtInterface.getState('currentPage'),
-						// 	currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
-						// 	pageSource = currentPageObj ? currentPageObj.source : '';
-						// pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
-						// scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
-						// // TODO: Add translation for alt text
-						// // TEMP... TODO: creare direttiva per gestire le zone sull'immagine
-						// var zonesHTML = '',
-						// 	zones = parsedData.getZones();
-						// for (var zoneId in zones._indexes) {
-						// 	var zone = zones[zones._indexes[zoneId]];
-						// 	if (zone) {
-						// 		if (zone.page === currentPage) {
-						// 			zonesHTML += '<div class="zoneInImg" data-zone-id="' + zone.id + '" data-zone-name="' + zone.rendition + '"';
-						// 			if (zone.corresp && zone.corresp !== '') {
-						// 				var correspId = zone.corresp.replace('#', '');
-						// 				zonesHTML += ' data-corresp-id="' + correspId + '"';
-						// 				if (zone.rendition === 'Line') {
-						// 					zonesHTML += ' data-line="' + correspId + '"';
-						// 				} else if (zone.rendition === 'HotSpot') {
-						// 					zonesHTML += ' data-hs="' + correspId + '"';
-						// 				}
-						// 			}
-						// 			zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', ' + zone.lry + ') (' + zone.ulx + ', ' + zone.uly + ') </div>';
-						// 		}
-						// 	}
-						// }
-						// scope.vm.content += zonesHTML;
-						// =/ END TEMP
-
-						// scopeHelper.viewer = OpenSeadragon({
-						// 	id: "box_body_mainImage",
-						// 	prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
-						// 	tileSources: "/data/dzi/1.dzi"
-						// });
-						// console.log("bob2");
-						// console.log("updated viewer", scopeHelper.viewer);
 
 						scope.vm.isLoading = false;
 					};
@@ -664,11 +629,19 @@ angular.module('evtviewer.box')
 
 
 					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
-						topMenuList.selectors.push({
-							id: 'editionLevel_' + currentId,
-							type: 'edition',
-							initValue: evtInterface.getState('currentEdition')
-						});
+						if (scope.subtype === 'comparing') {
+							topMenuList.selectors.push({
+								id: 'comparingEditionLevel_' + currentId,
+								type: 'comparingEdition',
+								initValue: evtInterface.getState('currentComparingEdition')
+							});
+						} else {
+							topMenuList.selectors.push({
+								id: 'editionLevel_' + currentId,
+								type: 'edition',
+								initValue: evtInterface.getState('currentEdition')
+							});
+						}
 					}
 
 					topMenuList.buttons.push({
@@ -806,7 +779,7 @@ angular.module('evtviewer.box')
 							// parsedData.getDocument(scope.vm.state.docId).content
 							var currentPage = evtInterface.getState('currentPage'),
 								currentDoc = evtInterface.getState('currentDoc'),
-								currentEdition = evtInterface.getState('currentEdition');
+								currentEdition = scope.subtype === 'comparing' ? evtInterface.getState('currentComparingEdition') : evtInterface.getState('currentEdition');
 							newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
 							if (newDoc === undefined) {
 								newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');

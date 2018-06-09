@@ -887,14 +887,16 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addDocument(newDoc);
 				parser.parsePages(element, newDoc.value);
+				
 				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
 					// Split pages works only on diplomatic/interpretative edition
 					// In critical edition, text will be splitted into pages for each witness
 					config.defaultEdition = 'diplomatic';
+               		var pages = parsedData.getPages();
 					angular.forEach(angular.element(element).find(defContentEdition),
 						function(editionElement) {
 							//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-							parser.splitPages(editionElement, newDoc.value, defContentEdition);
+							parser.splitPages(pages, editionElement, newDoc.value, defContentEdition);
 						});
 				}
 			});
@@ -963,7 +965,7 @@ angular.module('evtviewer.dataHandler')
 
      * @author CDP
      */
-	parser.splitPages = function(docElement, docId, defContentEdition) {
+	parser.splitPages = function(pages, docElement, docId, defContentEdition) {
 		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
 			sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
 			matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
@@ -979,14 +981,8 @@ angular.module('evtviewer.dataHandler')
 		var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
 		var sRegExInput = new RegExp(match, 'ig');
 		var matches = docElement.outerHTML.match(sRegExInput);
-		var totMatches = matches ? matches.length : 0;
-		for (var i = 0; i < totMatches; i++) {
-			var matchPbIdAttr = 'xml:id=".*"',
-				sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
-				pbHTMLString = matches[i].match(sRegExPbIdAttr);
-			sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
-			var idAttr = pbHTMLString ? pbHTMLString[0].match(sRegExPbIdAttr) : undefined,
-				pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
+		for (var i = 0; i < pages.length; i++) {
+			var pageId = pages[i];
 			if (pageId && pageId !== '') {
 				parsedData.setPageText(pageId, docId, 'original', matches[i]);
 			}
@@ -1010,9 +1006,9 @@ angular.module('evtviewer.dataHandler')
 	 * @param {string} docId id of the edition document being parsed
 	 * @param {string} editionLevel id of the edition level being parsed
      * @param {string} docHTML string representing the original XML of the edition
-	 *
+	 * 
 	 * @returns {promise} promise that the parser will end
-	 *
+	 * 
      * @author CDP
      */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
