@@ -103,16 +103,16 @@ angular.module('evtviewer.UItools')
             var zoneId = zonesIdx[index];
             if (zoneId) {
                //console.log('nel for', zoneId);
-               let hotspot = zonesCollection[zoneId];
-               let hotspotId = zoneId.replace(/ST_hs_/, 'ST_div_hs_');
-               let tmpHotSpot
+               var h = zonesCollection[zoneId];
+               var hotspotId = zoneId.replace(/ST_hs_/, 'ST_div_hs_');
+               var tmpHotSpot
                console.log('hotSpotId', hotspotId);
                tmpHotSpot = parsedData.getHotSpot(hotspotId);
                if (tmpHotSpot) {
-                  hotspot.content = tmpHotSpot.content;
+                  h.content = tmpHotSpot.content;
                }
-               console.log('hot spot in prepare hotspot', hotspot);
-               zones.push(hotspot);
+               console.log('hot spot in prepare hotspot', h);
+               zones.push(h);
             }
 
          }
