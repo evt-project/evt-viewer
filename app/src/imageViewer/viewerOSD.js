@@ -15,7 +15,7 @@
          controller: ["$scope", function ($scope) {
             $scope.osd = null;
          }],
-         template: "<div id='osd_img' class='box-image box-body Edition noBottomMenu'></div><div id='toolbar-div'></div>",
+         template: "<div id='osd_img' class='box-image box-body Edition noBottomMenu'></div>",
          link: function (scope, element, attrs) {
 
             console.log("funzione link della direttiva seadragon");

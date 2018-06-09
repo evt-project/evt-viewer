@@ -33,7 +33,7 @@
     
             //sequenceMode: true,
             //degrees:90,
-            toolbar:"toolbar-div",
+            //toolbar:"toolbar-div",
             showRotationControl: true,                
             showNavigator: true,
             //navigatorId: "navscroll",
