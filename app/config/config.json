@@ -9,7 +9,7 @@
     "sourcesTextsUrl"  : "data/sources/",
 	"visCollTextUrl"   : "data/visColl/dataModel2.xml",
 	"visCollStyleUrl"  : "data/visColl/collationXML_to_SVG_mod2.sef.xml",
-	"visCollSvg"       : "data/visColl_svg/",
+	"visCollSvg"       : "data/visColl_svg/id194565161.svg",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{

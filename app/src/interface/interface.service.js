@@ -190,7 +190,11 @@ angular.module('evtviewer.interface')
                 evtTranslation.setLanguage(userLangKey);
 
                 //TODO: object containing all the external files in globaldefault
-
+				
+				// Parse the external Svg file, if defined.
+				if (config.visCollSvg !== '') {
+						evtCommunication.getSvgs(config.visCollSvg);
+				}
                 // Parse the external Sources file, if defined (@author: CM)
                 if (config.sourcesUrl !== '') {
                         evtCommunication.getExternalData(config.sourcesUrl);

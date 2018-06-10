@@ -72,8 +72,10 @@ angular.module('evtviewer.visColl')
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
 			var img = parsedData.getSvgs();
-			var img2 = parsedData.getState('currentPage');
-
+			var displayResult = function(){
+				var vm = this;
+				return parsedData.getSvgs();
+			};
 				
 			
 			var windowSaxon = function() {
@@ -104,6 +106,7 @@ angular.module('evtviewer.visColl')
 				img: img,
 
                 // Functions
+				displayResult: displayResult,
 				windowSaxon: windowSaxon
             };
 
