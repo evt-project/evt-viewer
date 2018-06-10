@@ -905,7 +905,6 @@ angular.module('evtviewer.buttonSwitch')
 				destroy: destroy
 			};
 
-			console.log(icon)
 			collection[currentId] = angular.extend(vm, scopeHelper);
 			list.push({
 				id: currentId,
