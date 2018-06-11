@@ -132,7 +132,8 @@ angular.module('evtviewer.dataHandler')
     	</pre>
      */
 	var svgCollection = {
-		length: 0
+		length: 0,
+		svgs: [],
 	};
 	/**
      * @ngdoc property
@@ -1091,32 +1092,10 @@ angular.module('evtviewer.dataHandler')
      * @param {string} docId Identifier of document in which the svg is contained
      * @todo add attribute for the original xml reference
      */
-	parsedData.addSvg = function(svg, docId) {
-		var pageId = svg.value;
-		if (svgCollection.length === undefined) {
-			svgCollection.length = 0;
-		}
-
-		if (svg.value === '') {
-			pageId = svg.value = 'svg_' + (svgCollection.length + 1);
-		}
-		if (svgCollection[pageId] === undefined) {
-			svg.docs = [docId];
-			svgCollection[svgCollection.length] = pageId;
-			svg.indexInCollection = svgCollection.length;
-			svgCollection[pageId] = svg;
-			svgCollection.length++;
-			// _console.log('parsedData - addPage ', page);
-		} else {
-			var parsedSvg = svgCollection[pageId];
-			if (parsedSvg.docs && parsedSvg.docs.indexOf(docId) < 0) {
-				parsedSvg.docs.push(docId);
-			}
-		}
-
-		if (docId && docId !== '' && documentsCollection[docId] !== undefined) {
-			documentsCollection[docId].svg.push(pageId);
-		}
+	parsedData.addSvg = function(svg) {
+		svgCollection.length++;
+		//this.svgCollection[this.svgCollection.length] = svg;
+		svgCollection.svgs.push(svg);
 	};
 	/**
      * @ngdoc method

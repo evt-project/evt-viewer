@@ -1,4 +1,8 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
 <section class="visCollWrapper">
-    <div id="visCollValue" compile="vm.windowSaxon()"></div>
+    <!--<div id="visCollValue" compile="vm.windowSaxon()"></div>-->
+	<div ng-for="svg for svgs">
+		<div id="visCollValue" [innerHTML]="svgs.innerHTML"></div>
+	</div>
+	<div id="visCollValue" compile="vm.displayResult()"></div>
 </section>

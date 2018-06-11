@@ -260,6 +260,8 @@ angular.module('evtviewer.interface')
                                   promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
                               }
                           }
+						  
+						  
 
                           $q.all(promises).then(function() {
                               // Update current app entry

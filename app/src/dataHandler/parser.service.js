@@ -821,15 +821,22 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-	parser.parseSvgs = function(svgs, docId) {
-		var currentDocument = angular.element(svgs);
+	parser.parseSvgs = function(svg) {
+		/*var currentDocument = angular.element(svg);
 		angular.forEach(currentDocument.find(defImage),
 			function(element) {
-				var newSvg = {};
-				newSvg.value = element.setAttribute('xml:id', 1) || 'page_' + (parsedData.getSvgs().length + 1);
-				newSvg.label = element.setAttribute('n', i.length) || 'Page ' + (parsedData.getSvgs().length + 1);
-				for (var i = 0; i < element.attributes.length; i++) {
-					var attrib = element.attributes[i];
+				var newSvg = {};*/
+				var XMLparser = new DOMParser();
+				var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
+				var svgElement = xmlDoc.getElementsByTagName('svg')[0];
+				//parsedData.addSvg(svgElement.outerHTML);
+				console.log(svgElement);
+				parsedData.addSvg(svgElement);
+				
+				/*newSvg.value = svg.setAttribute('xml:id', 1) || 'page_' + (parsedData.getSvgs().length + 1);
+				newSvg.label = svg.setAttribute('n', 1) || 'Page ' + (parsedData.getSvgs().length + 1);
+				for (var i = 0; i < svg.attributes.length; i++) {
+					var attrib = svg.attributes[i];
 					if (attrib.specified) {
 						newSvg[attrib.name.replace(':', '-')] = attrib.value;
 					}
@@ -841,9 +848,8 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					// TODO: handle other cases (e.g. <surface>)
 					newSvg.source = '';
-				}
-				parsedData.addSvg(newSvg, docId);
-			});
+				}*/
+			/*}*/
 		//console.log('## Pages ##', parsedData.getPages());
 	};
 	/**

@@ -106,7 +106,7 @@ angular.module('evtviewer.communication')
     communication.getSvgs = function(url) {
         return $http.get(url)
             .then(function(response) {
-                if (typeof(response.data) === 'file') {
+                if (typeof(response.data) === 'string') {
                     _console.log('XML Data received');
                     return baseData.addSVGDocument(response.data);
                 } else {

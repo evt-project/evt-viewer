@@ -71,11 +71,20 @@ angular.module('evtviewer.visColl')
 			var xmlDoc = evtInterface.getProperty('visCollStyleUrl');
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
-			var img = parsedData.getSvgs();
+			var imageS = parsedData.getSvgs();
 			var displayResult = function(){
 				var vm = this;
-				return parsedData.getSvgs();
+				if (vm.imageS !== ''){
+					vm.imageS = parsedData.getSvgs();
+					return vm.imageS.svgs;
+				}
+				else return 'errore';
 			};
+			//var imageS = Object.values(parsedData.getSvgs());
+			//var displayResult = function(){
+				//var vm = this;
+				//return parsedData.getSvgs();
+				//};
 				
 			
 			var windowSaxon = function() {
@@ -107,8 +116,9 @@ angular.module('evtviewer.visColl')
 				documentsCollection: documentsCollection,
 				page: page,
 				doc: doc,
-				img: img,
+				imageS: imageS,
                 output: undefined,
+				svgs: imageS,
                 // Functions
 				displayResult: displayResult,
 				windowSaxon: windowSaxon

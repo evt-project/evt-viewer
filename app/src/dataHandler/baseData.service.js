@@ -182,7 +182,7 @@ angular.module('evtviewer.dataHandler')
      */
 	baseData.addSVGDocument = function(doc) {
 		//Parse svgs
-		evtParser.parseSvgs(docElements, id);
+		evtParser.parseSvgs(doc);
 	};
     /**
      * @ngdoc method
