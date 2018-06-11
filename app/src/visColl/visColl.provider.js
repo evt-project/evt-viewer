@@ -82,18 +82,22 @@ angular.module('evtviewer.visColl')
 				var vm = this;
 				var prova = config.visCollTextUrl;
 				var prova2 = config.visCollStyleUrl;
-				
-				if (config.visCollTextUrl && config.visCollStyleUrl !== ''){
-                SaxonJS.transform({
-                 stylesheetLocation: config.visCollStyleUrl,
-                sourceLocation: config.visCollTextUrl,
-				logLevel:10
-                 }, function(output) {
-					 console.log('callback saxon', output);
-				 });
-				/* open(config.visCollTextUrl, '_self');*/
-				/*return config.visCollTextUrl + ' con Open ogni click scatena eventi. Non riesco a far arrivare in output il file xml trasformato';*/
-				};
+                if (vm.output) {
+                    return vm.output;
+                } else {
+                    if (config.visCollTextUrl && config.visCollStyleUrl !== ''){
+                        SaxonJS.transform({
+                            stylesheetLocation: config.visCollStyleUrl,
+                            sourceLocation: config.visCollTextUrl,
+                            logLevel:10
+                        }, function(output) {
+                            vm.output = output.innerHTML;
+                            //console.log('callback saxon', output);
+                        });
+                        /* open(config.visCollTextUrl, '_self');*/
+                        /*return config.visCollTextUrl + ' con Open ogni click scatena eventi. Non riesco a far arrivare in output il file xml trasformato';*/
+                    };
+                }
             }; 
 							
             scopeHelper = {
@@ -104,7 +108,7 @@ angular.module('evtviewer.visColl')
 				page: page,
 				doc: doc,
 				img: img,
-
+                output: undefined,
                 // Functions
 				displayResult: displayResult,
 				windowSaxon: windowSaxon
