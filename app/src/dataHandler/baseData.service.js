@@ -169,6 +169,21 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addSVGDocument
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store SVG documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be stored and parsed
+     * @param {string} id Id of document connected to Source Document
+     * @author CM
+     */
+	baseData.addSVGDocument = function(doc) {
+		//Parse svgs
+		evtParser.parseSvgs(doc);
+	};
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#launchXMLParsers
@@ -221,7 +236,7 @@ angular.module('evtviewer.dataHandler')
 
         // Parse projet info 
         evtProjectInfoParser.parseProjectInfo(docElements);
-      
+
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
 

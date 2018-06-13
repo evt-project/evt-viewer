@@ -79,6 +79,8 @@ footer {
     width: 100%;
 }
 
+.ng-isolate-scope
+
 section > div {
     height: 100%;
     display: block;
@@ -124,6 +126,8 @@ section > div {
 @import "sourceSeg.scss";
 @import "versionReading.scss";
 @import "versionApparatusEntry";
+@import "navBar";
+@import "visColl";
 
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
@@ -236,6 +240,7 @@ section > div {
 
     button-switch {
         margin: 0px;
+		display: inline;
 
         .buttonSwitch {
             height: auto;
@@ -324,6 +329,19 @@ section > div {
         padding: 20px;
     }
 }
+
+.popup-container {
+	position: absolute;
+	height: 475px;
+	width: 1345px;
+	left: 10px;
+	bottom: 50px;
+	background-color: #e5e5e5;
+	z-index: 3;
+	border: 2px #FFFFFF;
+	border-radius: 16px;
+	}
+
 
 .global-loading-container {
     display: block;
@@ -502,7 +520,7 @@ pre {
         border-bottom: 1px dotted #666;
         margin-bottom: 5px;
         font-variant: small-caps;
-        color: #000000;
+        color: #666;
         font-size: 90%;
         display:block;
         margin-top: 14px;

@@ -250,27 +250,10 @@ angular.module('evtviewer.select')
 					optionList = formatOptionList(parsedData.getDocuments());
 					break;
 				case 'edition':
-				case 'comparingEdition':
 					callback = function(oldOption, newOption) {
-						if (newOption !== undefined && 
-							(oldOption !== undefined && oldOption[0] !== undefined && 
-								newOption.value !== oldOption[0].value)) {
+						if (newOption !== undefined) {
 							vm.selectOption(newOption);
-							var stateToUpdate, oppositeStateName;
-							if (currentType === 'edition') {
-								stateToUpdate = 'currentEdition';
-								// change currentComparingEdition if equal to selected
-								oppositeStateName = 'currentComparingEdition';
-							} else if (currentType === 'comparingEdition') {
-								stateToUpdate = 'currentComparingEdition';
-								// change currentEdition if equal to selected
-								oppositeStateName = 'currentEdition';
-							} 
-							var oppositeState = evtInterface.getState(oppositeStateName);
-							if (oppositeState === newOption.value) {
-								evtInterface.updateState(oppositeStateName, oldOption[0].value);
-							}
-							evtInterface.updateState(stateToUpdate, newOption.value);
+							evtInterface.updateState('currentEdition', newOption.value);
 							evtInterface.updateUrl();
 						}
 					};

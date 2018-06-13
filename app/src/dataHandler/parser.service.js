@@ -16,13 +16,15 @@ angular.module('evtviewer.dataHandler')
 .service('evtParser', function($q, xmlParser, parsedData, config) {
 	var parser = {};
 	var idx = 0;
+	var svgs = config.visCollSvg;
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
 		defLineBreak = '<lb>',
 		defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
-		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
+		defImage = 'svg';
 
 	var projectInfoDefs = {
 		sectionHeaders: '<sourceDesc>, ',
@@ -284,15 +286,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-		if (tagName === 'w' && newElement.innerHTML !== undefined) {
-			if (newElement.innerHTML[0] !== ' ') {
-				newElement.innerHTML = ' '+newElement.innerHTML;
-			}
-		}
-
-        if (element.nodeType === 3 || 
-        	(element.innerHTML !== undefined && element.innerHTML.replace(/\s/g, '') === '') || 
-        	 (newElement.innerHTML !== undefined && newElement.innerHTML.replace(/\s/g, '') !== '')) {
+        if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
 			return newElement;
 		} else {
 			return document.createTextNode('');
@@ -815,6 +809,27 @@ angular.module('evtviewer.dataHandler')
 	};
 	/**
      * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseSvgs
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the svgs of the resource
+     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 *
+     * @param {string} doc string representing the XML element to parse
+     * @param {string} docId id of the document to analyze and to whom add parsed pages
+     *
+     * @author CDP
+     */
+	parser.parseSvgs = function(svg) {
+		var XMLparser = new DOMParser();
+		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
+		var svgElement = xmlDoc.getElementsByTagName(defImage)[0];
+		parsedData.addSvg(svgElement);
+	}
+	
+	/**
+     * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseDocuments
      * @methodOf evtviewer.dataHandler.evtParser
      *
@@ -887,16 +902,14 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addDocument(newDoc);
 				parser.parsePages(element, newDoc.value);
-				
 				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
 					// Split pages works only on diplomatic/interpretative edition
 					// In critical edition, text will be splitted into pages for each witness
 					config.defaultEdition = 'diplomatic';
-               		var pages = parsedData.getPages();
 					angular.forEach(angular.element(element).find(defContentEdition),
 						function(editionElement) {
 							//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-							parser.splitPages(pages, editionElement, newDoc.value, defContentEdition);
+							parser.splitPages(editionElement, newDoc.value, defContentEdition);
 						});
 				}
 			});
@@ -965,7 +978,7 @@ angular.module('evtviewer.dataHandler')
 
      * @author CDP
      */
-	parser.splitPages = function(pages, docElement, docId, defContentEdition) {
+	parser.splitPages = function(docElement, docId, defContentEdition) {
 		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
 			sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
 			matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
@@ -981,8 +994,14 @@ angular.module('evtviewer.dataHandler')
 		var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
 		var sRegExInput = new RegExp(match, 'ig');
 		var matches = docElement.outerHTML.match(sRegExInput);
-		for (var i = 0; i < pages.length; i++) {
-			var pageId = pages[i];
+		var totMatches = matches ? matches.length : 0;
+		for (var i = 0; i < totMatches; i++) {
+			var matchPbIdAttr = 'xml:id=".*"',
+				sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
+				pbHTMLString = matches[i].match(sRegExPbIdAttr);
+			sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
+			var idAttr = pbHTMLString ? pbHTMLString[0].match(sRegExPbIdAttr) : undefined,
+				pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
 			if (pageId && pageId !== '') {
 				parsedData.setPageText(pageId, docId, 'original', matches[i]);
 			}
@@ -1006,9 +1025,9 @@ angular.module('evtviewer.dataHandler')
 	 * @param {string} docId id of the edition document being parsed
 	 * @param {string} editionLevel id of the edition level being parsed
      * @param {string} docHTML string representing the original XML of the edition
-	 * 
+	 *
 	 * @returns {promise} promise that the parser will end
-	 * 
+	 *
      * @author CDP
      */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
@@ -1079,8 +1098,9 @@ angular.module('evtviewer.dataHandler')
 
 			angular.forEach(docDOM.children, function(elem) {
 				var skip = '<pb>,<g>';
-				var parsedElem = parser.parseXMLElement(doc, elem, { skip: skip });
-				elem.parentNode.replaceChild(parsedElem, elem);
+				elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {
+					skip: skip
+				}), elem);
 			});
 			editionText = docDOM.outerHTML;
 		} else {
