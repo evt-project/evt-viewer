@@ -26,7 +26,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q, $http) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -191,14 +191,16 @@ angular.module('evtviewer.interface')
 
                 //TODO: object containing all the external files in globaldefault
 				
-				// Parse the external Svg file, if defined.
-				if (config.visCollSvg !== '') {
-						evtCommunication.getSvgs(config.visCollSvg);
+				// Parse the external SVG files, if defined.
+				if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {
+                    config.svgFilesNames.forEach(function(fileName) {
+                        evtCommunication.getSvgs(config.visCollSvg + fileName);
+                    });
 				}
                 // Parse the external Sources file, if defined (@author: CM)
                 if (config.sourcesUrl !== '') {
-                        evtCommunication.getExternalData(config.sourcesUrl);
-                    }
+                    evtCommunication.getExternalData(config.sourcesUrl);
+                }
                 // Parse the external Analogues file, if defined (@author: CM)
                 if (config.analoguesUrl !== '') {
                         evtCommunication.getExternalData(config.analoguesUrl);

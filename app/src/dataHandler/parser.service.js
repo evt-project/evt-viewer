@@ -822,36 +822,12 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      */
 	parser.parseSvgs = function(svg) {
-		/*var currentDocument = angular.element(svg);
-		angular.forEach(currentDocument.find(defImage),
-			function(element) {
-				var newSvg = {};*/
-				var XMLparser = new DOMParser();
-				var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
-				var svgElement = xmlDoc.getElementsByTagName('svg')[0];
-				//parsedData.addSvg(svgElement.outerHTML);
-				console.log(svgElement);
-				parsedData.addSvg(svgElement);
-				
-				/*newSvg.value = svg.setAttribute('xml:id', 1) || 'page_' + (parsedData.getSvgs().length + 1);
-				newSvg.label = svg.setAttribute('n', 1) || 'Page ' + (parsedData.getSvgs().length + 1);
-				for (var i = 0; i < svg.attributes.length; i++) {
-					var attrib = svg.attributes[i];
-					if (attrib.specified) {
-						newSvg[attrib.name.replace(':', '-')] = attrib.value;
-					}
-				}
-
-				// Get image source URL
-				if (element.getAttribute('facs')) {
-					newSvg.source = element.getAttribute('facs');
-				} else {
-					// TODO: handle other cases (e.g. <surface>)
-					newSvg.source = '';
-				}*/
-			/*}*/
-		//console.log('## Pages ##', parsedData.getPages());
-	};
+		var XMLparser = new DOMParser();
+		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
+		var svgElement = xmlDoc.getElementsByTagName(defImage)[0];
+		parsedData.addSvg(svgElement);
+	}
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseDocuments
