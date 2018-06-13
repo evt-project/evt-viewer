@@ -1,0 +1,60 @@
+/* *************************** */
+/* NAVBAR                      */
+/* *************************** */
+
+.navBarSliderWrapper {
+	height: $base-slider-height;
+	background: #263238;
+	border-top: 2px solid #ded0d0;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	}
+
+.navBarSlider {
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+  display: inline;
+  bottom: 5px;
+  left: 35px;
+  
+	#sliderValue {
+		font-size: 0.8em;
+		display: inline;
+	}
+ 
+	#slider {
+	width: 70%;
+	}
+
+	
+.buttonSlider {
+	cursor: pointer;
+	position: relative;
+	}
+ 
+	#left, #right {
+        background: #bedde0;
+		border-radius: 16px;
+		font-size: 15px;
+		top: 3px;
+	}
+	
+	
+	
+	#leftLeft, #rightRight {
+		background: #bedde0;
+		border-radius: 16px;
+		font-size: 15px;
+		top: 3px;
+	}
+	
+	
+	#thumbnails, #visColl {
+	border-radius: 16px;
+	top: 3px;
+	background: #bedde0;
+	}
+	
+	}
