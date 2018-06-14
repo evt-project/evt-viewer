@@ -86,7 +86,31 @@ angular.module('evtviewer.visColl')
 				//var vm = this;
 				//return parsedData.getSvgs();
 				//};
-				
+			var svgAlert = function (svg) {
+				function isInterestingKey(k) {
+					return (k == 'x' || k == 'y' || k == 'fill');   
+				};
+				for (var i = 0; i < svg.childNodes.length; i++) {
+					var child = svg.childNodes[i];
+					if (child.nodeType == 1) {
+					console.log(child.tagName);
+					$.each(child.attributes, function (k, v) {
+					if (isInterestingKey(v.name)) {console.log(v.name+'='+v.value);
+					};
+			});
+			};
+			};
+		};			
+			
+			var htmlSvg = function(svg){
+			var receptacle = document.createElement('div');
+			var svgFragment = '<svg>' + svg + '</svg>';
+			receptacle.innerHTML = '' + svgFragment;
+			Array.prototype.slice.call(receptacle.childNodes[0].childNodes).forEach(function (svg) {
+				document.getElementById('svg').appendChild(svg)})
+			};
+			
+			
 			
 			var windowSaxon = function() {
 				var vm = this;
@@ -122,7 +146,9 @@ angular.module('evtviewer.visColl')
 				svgs: svgs,
                 // Functions
 				displayResult: displayResult,
-				windowSaxon: windowSaxon
+				windowSaxon: windowSaxon,
+				htmlSvg: htmlSvg,
+				svgAlert: svgAlert
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
