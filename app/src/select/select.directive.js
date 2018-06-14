@@ -92,6 +92,26 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
+            if (scope.type === 'edition') {
+                scope.$watch(function() {
+                    return evtInterface.getState('currentEdition');
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
+            if (scope.type === 'comparingEdition') {
+                scope.$watch(function() {
+                    return evtInterface.getState('currentComparingEdition');
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
             if (scope.type === 'source') {
                 scope.$watch(function() {
                     return evtInterface.getState('currentSource') ;

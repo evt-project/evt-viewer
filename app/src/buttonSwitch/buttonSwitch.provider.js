@@ -40,7 +40,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtNavbar) {
+    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtProjectInfoParser, xmlParser) {
         var button    = {},
             collection = {},
             list       = [],
@@ -136,7 +136,7 @@ angular.module('evtviewer.buttonSwitch')
 	     * **language**, **list**, **menu**, **menu-vert**, **mode-imgtxt**, **mode-txttxt**,
 	     * **reading-txt**, **mode-collation**, **mode-srctxt**, **mode-versions**, **mode-bookreader**,
 	     * **pin**, **pin-off**, **pin-on**, **remove**, **search**, **thumb**, **thumbs**, **thumbnail**.
-	     * **thumbnails**, **txt**, **v-align**, **witnesses**, **nextPage**, **beforePage**, **dropNavBar**.</p>
+	     * **thumbnails**, **txt**, **v-align**, **witnesses**.</p>
 	     * <p>Output icons can be retrieve both from EVT font set of from font-awesome.
 	     * If you want to add a custom icon set you should add it among font faces and remember to add the related css file.</p>
 	     *
@@ -213,9 +213,6 @@ angular.module('evtviewer.buttonSwitch')
                 case 'mode-srctxt':
                     evtIcon = 'iconbis-evt_srctxt';
                     break;
-				case 'mode-viscoll':
-					evtIcon = 'iconbis-evt_srctxt';
-					break;
                 case 'mode-versions':
                     evtIcon = 'iconbis-evt_versions';
                     break;
@@ -251,30 +248,6 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
-					break;
-				case 'next-page':
-					evtIcon = 'fa fa-caret-right';
-					break;
-				case 'prev-page':
-					evtIcon = 'fa fa-caret-left';
-					break;
-				case 'first-page':
-					evtIcon = 'fa fa-step-backward';
-					break;
-				case 'last-page':
-					evtIcon = 'fa fa-step-forward';
-					break;
-				case 'hide-bar':
-					evtIcon = 'fa fa-caret-down';
-					break;
-				case 'show-bar':
-					evtIcon = 'fa fa-caret-up';
-					break;
-				case 'thumb-nails':
-					evtIcon = 'fa fa-th';
-					break;
-				case 'viscoll':
-					evtIcon = 'fa fa-stack-overflow';
 					break;
 			}
 			return evtIcon;
@@ -320,12 +293,7 @@ angular.module('evtviewer.buttonSwitch')
 		 * 		<li>'*toggleInfoSrc*': open/close information box about source;</li>
 		 * 		<li>'*addVer*': open selector of available witnesses to add a version in text-version view;</li>
 		 * 		<li>'*removeVer*': remove version from view;</li>
-		 * 		<li>'*cropText*': crop text.</li>
-		 *		<li>'*nextPage*': next page.</li>
-		 *		<li>'*beforePage*': before page.</li>
-		 *		<li>'*firstPage*': first page.</li>
-		 *		<li>'*lastPage*': last page.</li>
-		 *		<li>'*hideBar*': hide navBar.</li></ul></p>
+		 * 		<li>'*cropText*': crop text.</li></ul></p>
 		 * <p>To see details of callback function just open the file and read.</p>
 		 * <p>You can add your own type of button, if the same button used in different places should always have the same behaviour.</p>
 		 * <p>You can also overwrite the call back to trigger event with <code>ng-click</code> directive</p>
@@ -556,6 +524,35 @@ angular.module('evtviewer.buttonSwitch')
 						parentBox.updateState('topBoxOpened', false);
 					};
 					break;
+				case 'msDesc':
+				    btnType = 'standAlone';
+				    callback = function() {
+				        var parentBox = scope.$parent.vm;
+				        var topBox=document.getElementsByClassName("box-top-box");
+				        topBox[0].setAttribute("id","msDesc");
+						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'msDesc') {
+							parentBox.toggleTopBox();
+						} else {
+							var content;
+							var currentDocument = evtInterface.getState('currentDoc');
+							if (currentDocument) {
+								content = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+								scope.$parent.vm.updateTopBoxContent(content);
+								scope.$parent.vm.toggleTopBox();
+							}
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+							parentBox.updateTopBoxContent(newTopBoxContent);
+							parentBox.updateState('topBoxContent', 'msDesc');
+							if (!parentBox.getState('topBoxOpened')) {
+								parentBox.toggleTopBox();
+							}
+						}				        
+				    };
+				    fakeCallback = function() {
+						var parentBox = scope.$parent.vm;
+						parentBox.updateState('topBoxOpened', false);
+					};
+				    break;
 				case 'heatmap':
 					btnType = 'standAlone';
 					callback = function() {
@@ -605,6 +602,16 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				/*case 'msDesc':
+				    callback= function() {
+				        var doc=evtInterface.getState('currentDoc');
+				         var docElements = xmlParser.parse(doc);
+                         if (docElements.documentElement.nodeName === 'TEI'){
+                             console.log("dE "+docElements);
+				             //evtProjectInfoParser.msDescription(docElements);
+                         }				        
+				    };
+				    break;*/
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':
@@ -719,139 +726,6 @@ angular.module('evtviewer.buttonSwitch')
                         return s;
                     };
                     break;
-				case 'nextPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[currentPageIndex+1];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-						if (newPageId !== pagesCollection[pagesCollection.length - 1]) {
-							vm.disabled = false;
-						} else {
-							vm.disabled = true;
-						}
-					};
-					break;
-				case 'prevPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[currentPageIndex-1];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-						if (newPageId === pagesCollection[0]) {
-							vm.disabled = true;
-						} else {
-							vm.disabled = false;
-						}
-					};
-					break;
-				case 'firstPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[currentPageIndex-currentPageIndex];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-					};
-					break;
-				case 'lastPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[pagesCollection.length - 1];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-					};
-					break;
-				case 'hideBar':
-					callback = function() {
-						var vm = this;
-						var startState = evtInterface.getState('isNavBarOpened') ;
-						evtInterface.updateState('isNavBarOpened', !startState);
-						vm.active = !vm.active;
-					}
-					break;
-				case 'thumbNails':
-					callback = function() {
-						var vm = this;
-						var startState = evtInterface.getState('isThumbNailsOpened') ;
-						evtInterface.updateState('isThumbNailsOpened', !startState);
-						vm.active = !vm.active;
-					};
-					break;
-				case 'visColl':
-					callback = function() {
-						var vm = this;
-						var startState = evtInterface.getState('isVisCollOpened') ;
-						evtInterface.updateState('isVisCollOpened', !startState);
-						vm.active = !vm.active;
-					};
 				default:
 					break;
 			}

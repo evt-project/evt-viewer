@@ -26,7 +26,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q, $http) {
+.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -42,6 +42,7 @@ angular.module('evtviewer.interface')
             currentWits : undefined,
             currentWitsPages : undefined,
             currentEdition : undefined,
+            currentComparingEdition: undefined,
             currentAppEntry : undefined,
             currentHighlightedZone : undefined,
             isLoading : true,
@@ -70,13 +71,11 @@ angular.module('evtviewer.interface')
         currentWits      : undefined,
         currentWitsPages : undefined,
         currentEdition   : undefined,
+        currentComparingEdition: undefined,
         currentAppEntry  : undefined,
         currentHighlightedZone: undefined,
         isLoading        : true,
         isPinnedAppBoardOpened : false,
-		isNavBarOpened   : false,
-		isVisCollOpened  : false,
-		isThumbNailsOpened : false,
         secondaryContent : '',
 		dialog : {
 			home : ''
@@ -116,8 +115,6 @@ angular.module('evtviewer.interface')
             parsedSourcesTexts : [ ],
             availableVersions : [ ],
             versionSelector : false
-			visCollTextUrl     : '',
-    		visCollStyleUrl    : ''
         };
         </pre>
      */
@@ -135,9 +132,7 @@ angular.module('evtviewer.interface')
         isSourceLoading    : false,
         parsedSourcesTexts : [ ],
         availableVersions  : [ ],
-        versionSelector    : false,
-    		visCollTextUrl     : '',
-    		visCollStyleUrl    : ''
+        versionSelector    : false
     };
     /**
      * @ngdoc property
@@ -179,8 +174,6 @@ angular.module('evtviewer.interface')
                 properties.webSite            = config.webSite;
                 properties.enableXMLdownload  = config.enableXMLdownload;
                 properties.availableViewModes = config.availableViewModes;
-        				properties.visCollTextUrl     = config.visCollTextUrl;
-        				properties.visCollStyleUrl    = config.visCollStyleUrl;
 
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);
@@ -190,17 +183,11 @@ angular.module('evtviewer.interface')
                 evtTranslation.setLanguage(userLangKey);
 
                 //TODO: object containing all the external files in globaldefault
-				
-				// Parse the external SVG files, if defined.
-				if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {
-                    config.svgFilesNames.forEach(function(fileName) {
-                        evtCommunication.getSvgs(config.visCollSvg + fileName);
-                    });
-				}
+
                 // Parse the external Sources file, if defined (@author: CM)
                 if (config.sourcesUrl !== '') {
-                    evtCommunication.getExternalData(config.sourcesUrl);
-                }
+                        evtCommunication.getExternalData(config.sourcesUrl);
+                    }
                 // Parse the external Analogues file, if defined (@author: CM)
                 if (config.analoguesUrl !== '') {
                         evtCommunication.getExternalData(config.analoguesUrl);
@@ -262,8 +249,6 @@ angular.module('evtviewer.interface')
                                   promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
                               }
                           }
-						  
-						  
 
                           $q.all(promises).then(function() {
                               // Update current app entry
@@ -453,6 +438,7 @@ angular.module('evtviewer.interface')
                 currentWits : undefined,
                 currentWitsPages : undefined,
                 currentEdition : undefined,
+                currentComparingEdition: undefined,
                 currentAppEntry : undefined,
                 currentHighlightedZone : undefined,
                 isLoading : true,
@@ -955,6 +941,7 @@ angular.module('evtviewer.interface')
         mainInterface.updateParams = function(params) {
             var viewMode = config.defaultViewMode,
                 edition  = config.defaultEdition,
+                comparingEdition,
                 pageId,
                 docId,
                 witnesses,
@@ -1000,8 +987,20 @@ angular.module('evtviewer.interface')
                 }
             }
 
+            if (params.ce !== undefined ) { 
+              comparingEdition = params.ce;
+            } else {
+              var i = 0;
+              while (!comparingEdition && i < availableEditionLevel.length) {
+                if (availableEditionLevel[i].value !== edition) {
+                  comparingEdition = availableEditionLevel[i].value;
+                }
+                i++;
+              }
+            }
+
             // PAGE
-            if ( params.p !== undefined ) {
+            if ( params.p !== undefined && parsedData.getEdition(params.ce)) {
                 pageId = params.p;
             } else {
                 var pages = parsedData.getPages();
@@ -1077,7 +1076,9 @@ angular.module('evtviewer.interface')
             } else if (viewMode === 'collation'){
                 mainInterface.updateState('currentEdition', 'critical');
             }
-
+    
+            mainInterface.updateState('currentComparingEdition', comparingEdition)
+            
             if ( pageId !== undefined ) {
                 mainInterface.updateState('currentPage', pageId);
             }
@@ -1115,6 +1116,7 @@ angular.module('evtviewer.interface')
                 searchPath += state.currentDoc === undefined ? '' : (searchPath === '' ? '' : '&')+'d='+state.currentDoc;
                 searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
                 searchPath += state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
+                searchPath += state.currentComparingEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'ce='+state.currentComparingEdition;
                 if (viewMode === 'collation') {
                     if (state.currentWits !== undefined && state.currentWits.length > 0) {
                         if (searchPath !== '') {

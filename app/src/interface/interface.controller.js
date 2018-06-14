@@ -69,6 +69,16 @@ angular.module('evtviewer.interface')
 		$scope.getCurrentEdition = function() {
 			return evtInterface.getState('currentEdition');
 		};
+      /**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentEdition
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get current edition from evtInterface states ({@link evtviewer.interface.evtInterface#getState evtInterface.getState()})
+         * @returns {string} current edition
+         */
+      $scope.getCurrentComparingEdition = function() {
+         return evtInterface.getState('currentComparingEdition');
+      };
 		/**
          * @ngdoc method
          * @name evtviewer.interface.controller:InterfaceCtrl#getAvailableWitnesses
@@ -605,36 +615,6 @@ angular.module('evtviewer.interface')
 		$scope.setLanguage = function(langKey) {
 			evtTranslation.setLanguage(langKey);
 		};
-		/**
-		 * @ngdoc method
-		 * @name evtviewer.interface.controller:InterfaceCtrl#isNavBarOpened
-		 * @methodOf evtviewer.interface.controller:InterfaceCtrl
-		 * @description Check if navBar is opened
-		 * @returns {boolean} if is true or not
-		 */
-		 $scope.isNavBarOpened = function() { 
-			return evtInterface.getState("isNavBarOpened"); 
-		};
-		/**
-		 * @ngdoc method
-         * @name evtviewer.interface.controller:InterfaceCtrl#isVisCollOpened
-         * @methodOf evtviewer.interface.controller:InterfaceCtrl
-         * @description view the visColl popup
-         * @returns {boolean} if is true or not
-         */
-		 $scope.isVisCollOpened = function() {
-			 return evtInterface.getState("isVisCollOpened");
-		 };
-		 /**
-		 * @ngdoc method
-         * @name evtviewer.interface.controller:InterfaceCtrl#isThumbNailsOpened
-         * @methodOf evtviewer.interface.controller:InterfaceCtrl
-         * @description view the thumbnails popup
-         * @returns {boolean} if is true or not
-         */
-		 $scope.isThumbNailsOpened = function() {
-			 return evtInterface.getState("isThumbNailsOpened");
-		 };
 
 		_console.log('InterfaceCtrl running');
 	})

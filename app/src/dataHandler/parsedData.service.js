@@ -46,7 +46,8 @@ angular.module('evtviewer.dataHandler')
 		encodingDescription: '',
 		textProfile: '',
 		outsideMetadata: '',
-		revisionHistory: ''
+		revisionHistory: '',
+		msDesc: ''
 	};
 
 	/**
@@ -107,33 +108,6 @@ angular.module('evtviewer.dataHandler')
      */
 	var pagesCollection = {
 		length: 0
-	};
-	/**
-     * @ngdoc property
-     * @name evtviewer.dataHandler.parsedData#svgCollection
-     * @propertyOf evtviewer.dataHandler.parsedData
-     * @description [Private] Internal property where information about svg are stored.
-    	<pre>
-			var svgCollection = {
-				[pageId]: {
-					value,
-					label,
-					title,
-					source,
-					text: {
-						[docId] : {
-							[editionLevel]: ''
-						}
-					},
-					docs: []
-				},
-				length: 1
-			};
-    	</pre>
-     */
-	var svgCollection = {
-		length: 0,
-		svgs: [],
 	};
 	/**
      * @ngdoc property
@@ -936,7 +910,6 @@ angular.module('evtviewer.dataHandler')
 		if (pagesCollection[pageId] === undefined) {
 			page.docs = [docId];
 			pagesCollection[pagesCollection.length] = pageId;
-			page.indexInCollection = pagesCollection.length;
 			pagesCollection[pageId] = page;
 			pagesCollection.length++;
 			// _console.log('parsedData - addPage ', page);
@@ -1067,77 +1040,7 @@ angular.module('evtviewer.dataHandler')
 		// return images[i];
 		return {};
 	};
-	
-	/* SVG */
-	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#addSvg
-     * @methodOf evtviewer.dataHandler.parsedData
-     *
-     * @description
-     * Add a svg to stored svg collection. If the svg has already been added it means that it contains
-     * more than one document. In this case the <code>docId</code> will be added to the list
-     * of documents contained in the svg.
-     * The <code>pageId</code> of the new svg will be also added to the list of
-     * pages of the document with <code>id = docId</code>.
-     * @param {Object} svg Svg to be added. It is structured as:
-     	<pre>
-			var svg = {
-				value,
-				label,
-				title,
-				source
-			};
-     	</pre>
-     * @param {string} docId Identifier of document in which the svg is contained
-     * @todo add attribute for the original xml reference
-     */
-	parsedData.addSvg = function(svg) {
-		svgCollection.length++;
-		//this.svgCollection[this.svgCollection.length] = svg;
-		svgCollection.svgs.push(svg);
-	};
-	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#getSvgs
-     * @methodOf evtviewer.dataHandler.parsedData
-     *
-     * @description
-     * Get the list of parsed svgs.
-     * @returns {Object} Object representing the list of parsed svgs.
-     */
-	parsedData.getSvgs = function() {
-		return svgCollection;
-	};
-	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#getSvg
-     * @methodOf evtviewer.dataHandler.parsedData
-     *
-     * @description
-     * Get the object representing a particular svg.
-     * @param {stirng} pageId Identifier of the svg to retrieve
-	 * @returns {Object} Object representing the svg with <code>id = pageId</code>.
-	 * It is structured as follow:
-	 	<pre>
-			var svg = {
-				value,
-				label,
-				title,
-				source,
-				text: {
-					[docId] : {
-						[editionLevel]: ''
-					}
-				},
-				docs: []
-			};
-	 	</pre>
-     */
-	parsedData.getSvg = function(pageId) {
-		return svgCollection[pageId];
-	};
-	
+
 	/* DOCUMENTS */
 	/**
      * @ngdoc method
@@ -1155,8 +1058,7 @@ angular.module('evtviewer.dataHandler')
 				title,
 				content,
 				front,
-				pages,
-				svg
+				pages
 			};
      	</pre>
      */
@@ -1209,7 +1111,6 @@ angular.module('evtviewer.dataHandler')
 				content,
 				front,
 				pages,
-				svg,
 			};
      	</pre>
      */
@@ -1234,7 +1135,6 @@ angular.module('evtviewer.dataHandler')
 				content,
 				front,
 				pages,
-				svg,
 			};
      	</pre>
      */
@@ -2600,7 +2500,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
-
+   
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -2623,7 +2523,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
 	};
-
 
 	// ////// //
 	// GLYPHS //
@@ -2746,7 +2645,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      */
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
-		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
+		return glyphsCollection[glyphId] ? glyphsCollection[glyphId].mapping[editionLevel] : undefined;
 	};
 
 	// ///////////////// //
