@@ -8,7 +8,7 @@ angular.module('evtviewer.search')
       controllerAs: 'vm',
       controller: 'SearchResultsCtrl',
       link: function(scope) {
-         evtSearchResultsProvider.build(scope, scope.vm);
+         evtSearchResultsProvider.build(scope.vm);
    
          scope.$watch(function() {
             return evtInterface.getState('currentEdition');

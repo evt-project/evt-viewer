@@ -6,12 +6,13 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function () {
+      this.$get = function (evtBox) {
          var searchBox = [],
             collection = {};
          
          searchBox.build = function (scope, vm) {
             var status = {
+               searchResultBox: false,
                searchCaseSensitive : false,
                progressBar : false,
                indexingInProgress : false
@@ -25,9 +26,12 @@ angular.module('evtviewer.search')
                {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
                {title: 'Search', label: '', icon: 'search', type: 'search'}
             ];
+            var parentBoxId = scope.$parent.id;
+            
             var scopeHelper = {
                status: status,
-               searchBoxBtn: searchBoxBtn
+               searchBoxBtn: searchBoxBtn,
+               parentBoxId: parentBoxId
             };
             
             collection = angular.extend(vm, scopeHelper);
@@ -47,27 +51,21 @@ angular.module('evtviewer.search')
          };
          
          searchBox.getStatus = function (key) {
-            return collection.status[key];
+            if(collection.status) {
+               return collection.status[key];
+            }
+         };
+         
+         searchBox.getBoxEdition = function (boxId) {
+            return evtBox.getEditionById(boxId);
          };
          
          searchBox.updateStatus = function (key) {
-            collection.status[key] = collection.updateState(key);
-         };
-         
-         searchBox.toggleBox = function (key) {
-            searchBox.updateStatus(key);
-         };
-         
-         searchBox.openBox = function (key) {
-            collection.status[key] = true;
+            collection.status[key] = !collection.status[key];
          };
          
          searchBox.closeBox = function (key) {
-            collection.status[key] = false;
-         };
-         
-         searchBox.enableProgressBar = function () {
-            collection.enableProgressBar();
+            return collection.closeBox(key);
          };
          
          return searchBox;

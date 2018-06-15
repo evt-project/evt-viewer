@@ -46,7 +46,7 @@ angular.module('evtviewer.box')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus, evtSearchBox) {
+	this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus) {
 		var box = {},
 			collection = {},
 			list = [],
@@ -472,6 +472,7 @@ angular.module('evtviewer.box')
 		box.build = function(scope, vm) {
 			var currentId = vm.id || idx++,
 				currentType = vm.type || 'default',
+            currentEdition = vm.edition,
 				topMenuList = {
 					selectors: [],
 					buttons: [],
@@ -1143,6 +1144,7 @@ angular.module('evtviewer.box')
 			}
 
 			scopeHelper = {
+            currentEdition: currentEdition,
 				// expansion
 				uid: currentId,
 				defaults: angular.copy(defaults),
@@ -1332,7 +1334,11 @@ angular.module('evtviewer.box')
 				}
 			}
 		};
-
+		
+		//TODO Add documentation
+		box.getEditionById = function (currentBoxId) {
+         return collection[currentBoxId].currentEdition;
+      };
 		return box;
 	};
 });
