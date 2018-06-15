@@ -47,6 +47,8 @@
 		"IMAGE_TEXT_LINKING": "Collegamento Testo Immagine",
 		"LIST": "Liste",
 		"MENU": "Apri Menu",
+		"MS": "Descrizione del manoscritto",
+		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "Nessun altra versione disponibile",
 		"NO_WITNESSES_AVAILABLE": "Nessun altro testimone disponibile",
 		"PIN_REMOVE": "Rimuovi Pin",
@@ -203,7 +205,13 @@
 		"SUPPORT_DESC": "Descrizione del supporto",
 		"TEXT_CLASS": "Classificazione testuale",
 		"TEXT_LANG": "Lingua",
-		"VARIANT_ENCODING": "Codifica delle varianti"
+		"VARIANT_ENCODING": "Codifica delle varianti",
+		"FILE_DESCRIPTION": "Descrizione File",
+		"BIBLIOGRAPHY": "Bibliografia",
+		"REVISION_HISTORY": "Cronologia Revisioni",
+		"ENCODING_DESCRIPTION": "Descrizione Codifica",
+		"TEXT_PROFILE": "Profilo Di Testo",
+		"OUTSIDE_METADATA": "Metadati Esterni"
 	},
 	"QUOTES" : {
 		"QUOTE_START": "Inizio citazione",
