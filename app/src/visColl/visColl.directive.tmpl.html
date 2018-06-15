@@ -3,10 +3,10 @@
     <!--<div id="visCollValue" compile="vm.windowSaxon()"></div>
 	<div compile="vm.displayResult()"></div>-->
 	<div ng-repeat="svg in vm.svgs track by $index" class="visCollContainer">
-		<div id="visCollValue" type="image/svg+xml">{{svg.outerHTML}}</div>
+		<div id="visCollValue" type="image/svg+xml" compile="svg.innerHTML"></div>
 		<!--<ng-bind-html-unsafe ng-bind-html-unsafe="{{svg.innerHTML | stringtohtml}}">{{svg.innerHTML | stringtohtml}}</ng-bind-html-unsafe>
 		
-		compile="svg.outerHTML | htmltostring"-->
+		compile="svg.outerHTML | htmltostring"      {{svg.insertAdjacentHTML('beforeEnd', svg.outerHTML)}}-->
 		</div>
 
 </section>

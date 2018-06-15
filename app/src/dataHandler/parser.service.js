@@ -825,6 +825,7 @@ angular.module('evtviewer.dataHandler')
 		var XMLparser = new DOMParser();
 		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
 		var svgElement = xmlDoc.getElementsByTagName(defImage)[0];
+		svgElement.firstChild
 		parsedData.addSvg(svgElement);
 	}
 	
