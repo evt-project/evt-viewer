@@ -26,7 +26,7 @@ angular.module('evtviewer.visColl')
 
     var currentAppEntry = '';
 	
-	this.$get = function($log, $filter, config, parsedData, evtInterface, evtSelect, evtCommunication, xmlParser) {
+	this.$get = function($log, $filter, config, parsedData, evtInterface, evtSelect, evtCommunication, xmlParser, $sce) {
         var visColl     = {},
             collection = {},
             list       = [],

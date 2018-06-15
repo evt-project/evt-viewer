@@ -57,4 +57,4 @@ angular.module('evtviewer.core')
 	return function(input, all) {
 		return (!!input && input.replace) ? input.replace(/="[^"]+"/g,function($0){return $0.replace(/&lt;/g,"<").replace(/&gt;/g,">");}) : '';
 	};
-});
+})
