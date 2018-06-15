@@ -754,7 +754,6 @@ angular.module('evtviewer.buttonSwitch')
                disabled = (
                   function() {
                      if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
-                        console.log('SEARCHTOOL: INDEX DISABLE', evtInterface.getToolState('isDocumentIndexed'));
                         return false;
                      }
                      else {
@@ -762,14 +761,14 @@ angular.module('evtviewer.buttonSwitch')
                      }
                   })();
                var activeCallback = function () {
-                  console.log('IN ACTIVE CALLBACK', evtSearchBox);
-                  evtSearchBox.toggleBox('searchBox');
+                  var searchBoxStatus = scope.$parent.vm.getState('searchBox');
+                  scope.$parent.vm.updateState('searchBox', !searchBoxStatus);
+                  
                   evtSearchResultsProvider.closeBox('searchResults');
                   evtSearchResultsProvider.showSearchResultsShowBtn();
                };
                callback = function () {
                   if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
-                     console.log('CALLBACK SEARCH', activeCallback);
                      return activeCallback();
                   }
                   else {
