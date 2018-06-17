@@ -5,7 +5,7 @@
 
 
 .visCollWrapper {
-	height: 400px;
+	height: 460px;
 	color: #000000;
 	overflow-y: scroll; 
 	}
@@ -20,4 +20,14 @@
 		width: 300px;
 		font-size: 30px;
 		display: inline;
+		}
+		
+	.viscollImage {
+		height: 94%;
+		width: 15%;
+		bottom: 10px;
+		left: 20px;
+		position: relative;
+		margin-top: 5px;
+		border-radius: 4px;
 		}

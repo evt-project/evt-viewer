@@ -67,8 +67,6 @@ angular.module('evtviewer.visColl')
             var pagesCollection = parsedData.getPages();
 			var documentsCollection = parsedData.getDocuments();
 			
-			
-			var xmlDoc = evtInterface.getProperty('visCollStyleUrl');
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
 			var imageS = parsedData.getSvgs();

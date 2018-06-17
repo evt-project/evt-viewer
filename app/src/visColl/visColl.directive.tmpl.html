@@ -1,12 +1,9 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
 <section class="visCollWrapper">
-    <!--<div id="visCollValue" compile="vm.windowSaxon()"></div>
-	<div compile="vm.displayResult()"></div>-->
 	<div ng-repeat="svg in vm.svgs track by $index" class="visCollContainer">
 		<div id="visCollValue" type="image/svg+xml" compile="svg.outerHTML" class="svg"></div>
-		<!--<ng-bind-html-unsafe ng-bind-html-unsafe="{{svg.innerHTML | stringtohtml}}">{{svg.innerHTML | stringtohtml}}</ng-bind-html-unsafe>
-		
-		compile="svg.outerHTML | htmltostring"      {{svg.insertAdjacentHTML('beforeEnd', svg.outerHTML)}}-->
+		<img ng-src="images/fol_214v.jpg" class="viscollImage"></img>
+		<img ng-src="images/{{vm.pagesCollection[$index]}}.jpg" class="viscollImage"></img>
 		</div>
 
 </section>
