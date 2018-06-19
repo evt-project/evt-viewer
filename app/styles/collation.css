@@ -39,7 +39,7 @@
 }
 
 .notLeaf{
-    stroke:#d2d4d8;
+    stroke:#transparent;
     stroke-width:0.8pt;
     fill:none;
     stroke-linecap:square;

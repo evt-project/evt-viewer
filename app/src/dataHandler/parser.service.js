@@ -787,6 +787,7 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					newPage.value = element.getAttribute('xml:id') || 'page_' + (parsedData.getPages().length + 1);
 				}
+				newPage.svgId = element.getAttribute ('svg:id') || (parsedData.getPages().length + 1);
 				newPage.label = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
 				newPage.title = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
 				for (var i = 0; i < element.attributes.length; i++) {

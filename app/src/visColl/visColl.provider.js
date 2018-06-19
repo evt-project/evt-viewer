@@ -100,6 +100,13 @@ angular.module('evtviewer.visColl')
 			};
 		};			
 			
+			//var tentativo = function(value){
+				//var vm = this
+				//var svgId = vm.pagesCollection[svgId];
+				//value = svgId;
+				//return value
+				
+			
 			var htmlSvg = function(svg){
 			var receptacle = document.createElement('div');
 			var svgFragment = '<svg>' + svg + '</svg>';

@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/pelavicino.xml",
+	"dataUrl": "data/VercelliBook.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl"  : "data/sources/",
@@ -11,26 +11,9 @@
 	"visCollStyleUrl"  : "data/visColl/collationXML_to_SVG_mod2.sef.xml",
     "visCollSvg"       : "data/visColl_svg/",
     "svgFilesNames" : [
-        "id-1945-65-16-1.svg",
-        "id-1945-65-16-2.svg",
-        "id-1945-65-16-3.svg",
-        "id-1945-65-16-4.svg",
-        "id-1945-65-16-5.svg",
-        "id-1945-65-16-6.svg",
-        "id-1945-65-16-7.svg",
-        "id-1945-65-16-8.svg",
-        "id-1945-65-16-9.svg",
-        "id-1945-65-16-10.svg",
-        "id-1945-65-16-11.svg",
-        "id-1945-65-16-12.svg",
-        "id-1945-65-16-13.svg",
-        "id-1945-65-16-14.svg",
-        "id-1945-65-16-15.svg",
-        "id-1945-65-16-16.svg",
-        "id-1945-65-16-17.svg",
-        "id-1945-65-16-18.svg",
-        "id-1945-65-16-19.svg",
-        "id-1945-65-16-20.svg"
+        "id-VB-1.svg",
+        "id-VB-2.svg",
+        "id-VB-3.svg"
     ],
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
