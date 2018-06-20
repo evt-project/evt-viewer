@@ -12,7 +12,15 @@
 	
 	.visCollContainer {
 	height: 400px;
+	width: 671px;
+	float: left;
+	display: block;
 	color: #000000;
+	z-index: 1;
+	}
+	
+	.imageContainer {
+	bottom: 10px;
 	}
 	
 	#visCollValue {
