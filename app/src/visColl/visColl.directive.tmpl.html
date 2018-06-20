@@ -4,7 +4,15 @@
 		<div id="visCollValue" type="image/svg+xml" compile="svg.outerHTML" class="svg"></div>
 		</div>
 	<div ng-repeat="page in vm.pagesCollection" class="imageContainer">
-		<img ng-src="images/immagini/singole/{{vm.pagesCollection[$index+1]}}.jpg"  type="image" class="viscollImage"></img>
+		<img ng-src="images/immagini/singole/{{vm.pagesCollection[$index]}}.jpg"  
+		type="image" 
+		class="viscollImage" >{{vm.pagesCollection[$index]}}</img>
 		<!-- <img ng-src="images/{{vm.pagesCollection[$xml:id===svg.svgId]}}.jpg ng-hide="svg.svgId === ''></img> -->
 	</div>
+		<!--<evt-select 
+            data-id="images"
+            data-type="image"
+            data-init="VB_fol_001r.jpg"
+            ng-repeat="page in vm.pagesCollection track by $index">
+        </evt-select>-->
 </section>
