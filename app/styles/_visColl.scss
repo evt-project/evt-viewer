@@ -11,12 +11,8 @@
 	}
 	
 	.visCollContainer {
-	height: 400px;
-	width: 671px;
-	float: left;
-	display: block;
-	color: #000000;
-	z-index: 1;
+	width: 100%;
+	margin-bottom: 30px;
 	}
 	
 	.imageContainer {
@@ -26,19 +22,30 @@
 	}
 	
 	#visCollValue {
+		display: inline;
+		}
+		
+	#imageValue {
 		height: 200px;
 		width: 300px;
 		font-size: 30px;
 		display: inline;
+		color: #ffffff;
+		text-align: right;
+		}
+		
+	#imageFolio {
+		float: right;
+		position: relative;
+		right: 50px;
+		top: 150px;
 		}
 		
 	.viscollImage {
 		height: 94%;
-		width: 20%;
 		bottom: 10px;
-		left: 32px;
+		left: 52px;
 		margin-right: 30px;
 		position: relative;
-		margin-top: 5px;
 		border-radius: 4px;
 		}

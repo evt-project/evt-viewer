@@ -2,12 +2,16 @@
 <section class="visCollWrapper">
 	<div ng-repeat="svg in vm.svgs track by $index" class="visCollContainer">
 		<div id="visCollValue" type="image/svg+xml" compile="svg.outerHTML" class="svg"></div>
-		</div>
-	<div ng-repeat="page in vm.pagesCollection" class="imageContainer">
-		<img ng-src="images/immagini/singole/{{vm.pagesCollection[$index]}}.jpg"  
-		type="image" 
-		class="viscollImage" >{{vm.pagesCollection[$index]}}</img>
+		<!--</div>
+	<div ng-repeat="page in vm.pagesCollection" class="imageContainer">-->
+		<div id="imageValue">
+		<img class="viscollImage" ng-src="images/immagini/singole/{{vm.pagesCollection[$index]}}.jpg"  
+		type="image"  ></img>
+		<img class="viscollImage" ng-src="images/immagini/singole/{{vm.pagesCollection[$index+1]}}.jpg"  
+		type="image"  ></img>
+		<p id="imageFolio">{{vm.pagesCollection[$index]}}</p>
 		<!-- <img ng-src="images/{{vm.pagesCollection[$xml:id===svg.svgId]}}.jpg ng-hide="svg.svgId === ''></img> -->
+		</div>
 	</div>
 		<!--<evt-select 
             data-id="images"
