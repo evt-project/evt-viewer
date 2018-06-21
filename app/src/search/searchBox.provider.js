@@ -19,7 +19,7 @@ angular.module('evtviewer.search')
             };
             var searchBoxBtn = [
                {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
-               {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide'},
+               {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide', hide: true},
                {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
                {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
                {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},

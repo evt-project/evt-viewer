@@ -5,23 +5,25 @@
    <form ng-submit="vm.doSearchCallback()">
       <div class="searchBtnGroup">
          <div class="btn-left">
+
             <button-switch
+               ng-repeat="button in vm.searchBoxBtn|limitTo: 4"
                class="no-background"
-               title="{{button.title}}"
-               data-label="{{button.label}}"
-               data-icon="{{button.icon}}"
-               data-type="{{button.type}}"
-               ng-repeat="button in vm.searchBoxBtn|limitTo: 4">
+               title="{{::button.title}}"
+               data-label="{{::button.label}}"
+               data-icon="{{::button.icon}}"
+               data-type="{{::button.type}}"
+               ng-hide="button.hide">
             </button-switch>
          </div>
          <div class="btn-right">
             <button-switch
+               ng-repeat="button in vm.searchBoxBtn|limitTo: 3:4"
                class="no-background"
-               title="{{button.title}}"
-               data-label="{{button.label}}"
-               data-icon="{{button.icon}}"
-               data-type="{{button.type}}"
-               ng-repeat="button in vm.searchBoxBtn|limitTo: 3:4">
+               title="{{::button.title}}"
+               data-label="{{::button.label}}"
+               data-icon="{{::button.icon}}"
+               data-type="{{::button.type}}">
             </button-switch>
          </div>
       </div>

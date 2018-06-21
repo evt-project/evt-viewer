@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResultsProvider, evtSearchIndex) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -737,13 +737,15 @@ angular.module('evtviewer.buttonSwitch')
                callback = function() {
                   scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
                   scope.$parent.$parent.vm.updateState('searchResultBox');
-                  evtSearchResultsProvider.showSearchResultsHideBtn();
+                  scope.$parent.button.hide = !scope.$parent.button.hide;
+                  scope.$parent.$$nextSibling.button.hide = !scope.$parent.$$nextSibling.button.hide;
                };
                break;
             case 'searchResultsHide':
                callback = function() {
                   scope.$parent.$parent.vm.updateState('searchResultBox');
-                  evtSearchResultsProvider.showSearchResultsShowBtn();
+                  scope.$parent.button.hide = !scope.$parent.button.hide;
+                  scope.$parent.$$prevSibling.button.hide = !scope.$parent.$$prevSibling.button.hide;
                };
                break;
             case 'searchCaseSensitive':
@@ -769,7 +771,7 @@ angular.module('evtviewer.buttonSwitch')
                   scope.$parent.vm.updateState('searchBox', !searchBoxStatus);
                   
                   evtSearchBox.closeBox('searchResultBox');
-                  evtSearchResultsProvider.showSearchResultsShowBtn();
+                  //evtSearchResultsProvider.showSearchResultsShowBtn();
                };
                callback = function () {
                   if(evtInterface.getToolState('isDocumentIndexed') === 'true') {

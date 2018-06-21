@@ -3,17 +3,12 @@
 /* *************************** */
 
 .search-box.internal {
-   /*min-width: calc(100% - #{$mainContainer-border-width*2*2});
-   position: absolute;
-   bottom: 5px;
-   left: $mainContainer-border-width*2;
-   margin: 40px 0;
-   background: $box-background-color;*/
    &.results-open {
       @include calc(max-height, #{setInsideFrameHeight()} - 5px);
       transition: max-height .5s;
    }
    button-switch {
+      margin-right: 0;
       &[data-type="searchCaseSensitive"] {
          .buttonSwitch-active {
             background-color: $buttonSwitch-active-background-color;
@@ -35,19 +30,9 @@
    }
    .btn-left {
       float: left;
-      button-switch[data-type='searchResultsHide'] {
-         display: none;
-         position: absolute;
-         left: -1px;
-         top: 0;
-         @include border($mainContainer-border-width, left, $base-color-dark);
-      }
    }
    .btn-right {
       float: right;
-   }
-   button-switch {
-      margin-right: 0;
    }
    input[type="text"] {
       height: $search-input-height;

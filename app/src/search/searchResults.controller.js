@@ -1,7 +1,7 @@
 angular.module('evtviewer.search')
 
-.controller('SearchResultsCtrl',['$scope', 'evtSearchResultsProvider', 'evtSearchResults', 'evtInterface', 'Utils',
-   function($scope, evtSearchResultsProvider, evtSearchResults, evtInterface, Utils) {
+.controller('SearchResultsCtrl',['$scope', 'evtSearchResults', 'evtInterface', 'Utils',
+   function($scope,evtSearchResults, evtInterface, Utils) {
    var vm = this;
    
    vm.currentEdition = evtInterface.getState('currentEdition');

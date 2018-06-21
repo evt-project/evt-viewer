@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchBoxCtrl', ['$rootScope', '$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResultsProvider', 'evtSearchResults', 'evtButtonSwitch',
-      function ($rootScope, $scope, config, evtInterface, evtSearchBox, evtSearchResultsProvider, evtSearchResults) {
+   .controller('SearchBoxCtrl', ['$rootScope', '$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResults', 'evtButtonSwitch',
+      function ($rootScope, $scope, config, evtInterface, evtSearchBox, evtSearchResults) {
       var vm = this;
       
       vm.searchInput = '';
