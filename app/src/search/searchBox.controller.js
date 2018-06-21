@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResultsProvider', 'evtSearchResults', 'evtButtonSwitch',
-      function ($scope, config, evtInterface, evtSearchBox, evtSearchResultsProvider, evtSearchResults) {
+   .controller('SearchBoxCtrl', ['$rootScope', '$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResultsProvider', 'evtSearchResults', 'evtButtonSwitch',
+      function ($rootScope, $scope, config, evtInterface, evtSearchBox, evtSearchResultsProvider, evtSearchResults) {
       var vm = this;
       
       vm.searchInput = '';
@@ -27,18 +27,18 @@ angular.module('evtviewer.search')
         return evtSearchBox.getBoxEdition(boxId);
       };
       
-      vm.closeBox = function(key) {
-         vm.status[key] = false;
-         return vm.status[key];
-      };
-      
       vm.getInputValue = function () {
          return vm.searchInput;
       };
       
       vm.getSearchedTerm = function () {
          return vm.searchedTerm;
-      }
+      };
+      
+      vm.closeBox = function(key) {
+         vm.status[key] = false;
+         return vm.status[key];
+      };
       
       vm.loadMoreElements = function () {
          var i = 0;

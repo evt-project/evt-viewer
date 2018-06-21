@@ -4,20 +4,12 @@ angular.module('evtviewer.search')
    function SearchResults() {
    }
    
-   this.$get = function(evtSearchResults) {
+   this.$get = function() {
       var collection = {};
       
       SearchResults.prototype.build = function(vm) {
          collection = vm;
          return collection;
-      };
-      
-      SearchResults.prototype.getOriginalText = function(lineId, currentEdition) {
-         return evtSearchResults.getOriginalText(lineId, currentEdition);
-      };
-      
-      SearchResults.prototype.getVisibleResults = function() {
-         return evtSearchResults.getVisibleResults();
       };
       
       SearchResults.prototype.showSearchResultsShowBtn = function() {

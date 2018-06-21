@@ -658,7 +658,8 @@ angular.module('evtviewer.buttonSwitch')
                         scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
                      },
                      'default': function() {
-                        var results = evtSearchResults.getSearchResults(inputValue),
+                        var isCaseSensitive = scope.$parent.$parent.vm.getState('searchCaseSensitive');
+                        var results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
                            currentBoxId = scope.$parent.$parent.vm.parentBoxId,
                            currentEdition = evtBox.getEditionById(currentBoxId);
                         //TODO need refactoring
@@ -748,7 +749,6 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchCaseSensitive':
                btnType = 'standAlone';
                callback = function() {
-                  evtSearchBox.updateStatus('searchCaseSensitive');
                   scope.$parent.$parent.vm.updateState('searchCaseSensitive');
                   evtSearchResults.highlightSearchResults(scope.$parent.vm.searchInput);
                };
