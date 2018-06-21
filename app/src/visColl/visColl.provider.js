@@ -73,9 +73,9 @@ angular.module('evtviewer.visColl')
 			var svgs = imageS.svgs;
 			var displayResult = function(){
 				var vm = this;
-				if (vm.imageS !== ''){
-					vm.imageS = parsedData.getSvgs();
-					return vm.imageS.svgs;
+				var page = evtInterface.getState('currentPage');
+				if (page !== undefined){
+					return page.imag;
 				}
 				else return 'errore';
 			};
