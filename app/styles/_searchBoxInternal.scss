@@ -30,6 +30,9 @@
    }
    .btn-left {
       float: left;
+      button-switch[data-type='searchResultsHide'] {
+         @include border($mainContainer-border-width, left, $base-color-dark);
+      }
    }
    .btn-right {
       float: right;

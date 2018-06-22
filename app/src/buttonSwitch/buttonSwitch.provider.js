@@ -671,7 +671,8 @@ angular.module('evtviewer.buttonSwitch')
                   (input[inputValue] || input['default'])();
                   
                   scope.$parent.$parent.vm.status['searchResultBox'] = true;
-                  evtSearchResultsProvider.showSearchResultsHideBtn();
+                  scope.$parent.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.button.hide = true;
+                  scope.$parent.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.button.hide = false;
                };
                break;
             case 'searchIndex':
