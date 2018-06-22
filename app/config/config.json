@@ -10,6 +10,8 @@
 	"visCollTextUrl"   : "data/visColl/dataModel2.xml",
 	"visCollStyleUrl"  : "data/visColl/collationXML_to_SVG_mod2.sef.xml",
     "visCollSvg"       : "data/visColl_svg/",
+	"visCollImageList" : "data/VBImageList.xml",
+	"visCollDataModel" : "data/dataModel2VB.xml",
     "svgFilesNames" : [
         "id-VB-1.svg",
         "id-VB-2.svg",

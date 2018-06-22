@@ -24,7 +24,10 @@ angular.module('evtviewer.dataHandler')
 		defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
-		defImage = 'svg';
+		defImage = 'svg',
+		defLeaf = 'leaf',
+		defQuire = 'quire',
+		defImageList = 'image';
 
 	var projectInfoDefs = {
 		sectionHeaders: '<sourceDesc>, ',
@@ -828,8 +831,45 @@ angular.module('evtviewer.dataHandler')
 		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
 		var svgElement = xmlDoc.getElementsByTagName(defImage)[0];
 		parsedData.addSvg(svgElement);
-	}
+	};
 	
+	parser.parseViscollDatamodel = function(file){
+		var XMLparser = new DOMParser();
+		var doc = XMLparser.parseFromString(file, "text/xml");
+		var currentDocument = angular.element(doc);
+		angular.forEach(currentDocument.find(defQuire),
+		function (element) {
+					var newQuire = {};
+					newQuire.value = element.getAttribute ('xml:id') || 'xml:id';
+					newQuire.n = element.getAttribute ('n') || 'quire' + (parsedData.getQuires().length + 1);
+					newQuire.leaf = {};
+					parsedData.addQuire(newQuire);
+				});
+
+		angular.forEach(currentDocument.find(defLeaf),
+		function (element) {
+					var newLeaf = {};
+					newLeaf.value = element.getAttribute('xml:id') || 'xml:id';
+					newLeaf.quire = element.lastChild.getAttribute('target') || 'target';
+					newLeaf.conjoin = element.lastChild.firstChild.getAttribute('target') || 'target';
+					parsedData.addLeaf(newLeaf);
+				});
+		};
+	
+	
+	parser.parseImageList = function(file){
+		var XMLparser = new DOMParser();
+		var doc = XMLparser.parseFromString(file, "text/xml");
+		var currentDocument = angular.element(doc);
+		angular.forEach(currentDocument.find(defImageList),
+				function (element) {
+					var newImage = {};
+					newImage.value = element.getAttribute('val') || 'val';
+					newImage.url = element.getAttribute('url')|| 'url';
+					newImage.quire = element.getAttribute('quire')|| 'quire';
+					parsedData.addImageList(newImage);
+				});
+		};
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseDocuments

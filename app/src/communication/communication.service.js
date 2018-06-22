@@ -121,6 +121,60 @@ angular.module('evtviewer.communication')
             });
     };
 	
+	/**
+     * @ngdoc method
+     * @name evtviewer.communication.evtCommunication#getDataModel
+     * @methodOf evtviewer.communication.evtCommunication
+     *
+     * @description
+     * Method to access DataModel data from an URL. Different base parsers will be launched depending on type of read file.
+     *
+     * @param {string} url file containing the edition data
+     * @returns {httpPromise} resolve with fetched data, or fails with error description.
+     */
+	communication.getDataModel = function(url) {
+		return $http.get(url)
+            .then(function(response) {
+                if (typeof(response.data) === 'string') {
+                    _console.log('XML Data received');
+                    return baseData.addDataModel(response.data);
+                } 
+            }, function(error) {
+                if (defaults.errorMsgs[error.status]) {
+                    communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg, url, error.status, true);
+                }
+            });
+    };
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.communication.evtCommunication#getImageList
+     * @methodOf evtviewer.communication.evtCommunication
+     *
+     * @description
+     * Method to access ImageList data from an URL. Different base parsers will be launched depending on type of read file.
+     *
+     * @param {string} url file containing the edition data
+     * @returns {httpPromise} resolve with fetched data, or fails with error description.
+     */
+	communication.getImageList = function(url) {
+		return $http.get(url)
+            .then(function(response) {
+                if (typeof(response.data) === 'string') {
+                    _console.log('XML Data received');
+                    return baseData.addImageList(response.data);
+                } 
+            }, function(error) {
+                if (defaults.errorMsgs[error.status]) {
+                    communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg, url, error.status, true);
+                }
+            });
+    };
+			
     /**
      * @ngdoc method
      * @name evtviewer.communication.evtCommunication#getExternalData

@@ -191,6 +191,14 @@ angular.module('evtviewer.interface')
 
                 //TODO: object containing all the external files in globaldefault
 				
+				// Parse Image List
+				if (config.visCollImageList !== '') {
+					evtCommunication.getImageList(config.visCollImageList);
+				}
+				// Parse DataModel
+				if (config.visCollDataModel !== '') {
+					evtCommunication.getDataModel(config.visCollDataModel);
+				}
 				// Parse the external SVG files, if defined.
 				if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {
                     config.svgFilesNames.forEach(function(fileName) {

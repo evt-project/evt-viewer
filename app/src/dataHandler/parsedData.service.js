@@ -134,6 +134,8 @@ angular.module('evtviewer.dataHandler')
 	var svgCollection = {
 		length: 0,
 		svgs: [],
+		quires: {},
+		imglist: {}
 	};
 	/**
      * @ngdoc property
@@ -951,6 +953,7 @@ angular.module('evtviewer.dataHandler')
 			documentsCollection[docId].pages.push(pageId);
 		}
 	};
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPages
@@ -1097,6 +1100,34 @@ angular.module('evtviewer.dataHandler')
 		//this.svgCollection[this.svgCollection.length] = svg;
 		svgCollection.svgs.push(svg);
 	};
+	
+	parsedData.addImageList = function(imageElement){
+		var imageId = imageElement.value;
+		var imageUrl = imageElement.url;
+		svgCollection.length++;
+	};
+	
+	parsedData.addQuire = function(quire) {
+		var quireId = quire.value;
+		var quireLeaves = [];
+		for (leaf in quire){
+			quireLeaves.push(leaf);
+			quireLeaves.length++
+		};
+		svgCollection.length++;
+	};
+	
+	parsedData.addLeaf = function(leaf) {
+		var leafId = leaf.value;
+		var leafQuire = leaf.quire;
+		var leafConjoin = leaf.conjoin;
+		svgCollection.length++;
+		for (svgCollection.quires.quireId in quires){
+		if (leaf.conjoin === quires.quireId){
+		svgCollection.quires.quireLeaves(quireId).push;
+		};
+		};
+	}
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getSvgs
