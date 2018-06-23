@@ -1108,6 +1108,7 @@ angular.module('evtviewer.dataHandler')
 	};
 	
 	parsedData.addQuire = function(quire) {
+		var vm = this;
 		var quireId = quire.value;
 		var quireLeaves = [];
 		for (leaf in quire){
@@ -1122,11 +1123,6 @@ angular.module('evtviewer.dataHandler')
 		var leafQuire = leaf.quire;
 		var leafConjoin = leaf.conjoin;
 		svgCollection.length++;
-		for (svgCollection.quires.quireId in quires){
-		if (leaf.conjoin === quires.quireId){
-		svgCollection.quires.quireLeaves(quireId).push;
-		};
-		};
 	}
 	/**
      * @ngdoc method

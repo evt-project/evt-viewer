@@ -850,8 +850,13 @@ angular.module('evtviewer.dataHandler')
 		function (element) {
 					var newLeaf = {};
 					newLeaf.value = element.getAttribute('xml:id') || 'xml:id';
+					var q = element.lastChild.childNodes;
 					newLeaf.quire = element.lastChild.getAttribute('target') || 'target';
-					newLeaf.conjoin = element.lastChild.firstChild.getAttribute('target') || 'target';
+					if (q[1] == undefined){
+						newLeaf.conjoin = q[0].getAttribute('target') || 'target';
+					} else {
+					newLeaf.conjoin = q[1].getAttribute('target') || 'target';
+					}
 					parsedData.addLeaf(newLeaf);
 				});
 		};
