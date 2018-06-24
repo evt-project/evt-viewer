@@ -134,8 +134,9 @@ angular.module('evtviewer.dataHandler')
 	var svgCollection = {
 		length: 0,
 		svgs: [],
-		quires: {},
-		imglist: {}
+		leaves: [],
+		quires: [],
+		imglist: []
 	};
 	/**
      * @ngdoc property
@@ -1102,28 +1103,46 @@ angular.module('evtviewer.dataHandler')
 	};
 	
 	parsedData.addImageList = function(imageElement){
-		var imageId = imageElement.value;
-		var imageUrl = imageElement.url;
-		svgCollection.length++;
-	};
-	
-	parsedData.addQuire = function(quire) {
 		var vm = this;
-		var quireId = quire.value;
-		var quireLeaves = [];
-		for (leaf in quire){
-			quireLeaves.push(leaf);
-			quireLeaves.length++
+		var imageId = imageElement.value;
+		var	imageUrl = imageElement.url;
+		var image = {
+			imageId: imageId,
+			imageUrl: imageUrl
 		};
 		svgCollection.length++;
+		svgCollection.imglist.push(image);
+	};
+
+	parsedData.addQuire = function(quire) {
+		var quireId = quire.value;
+		var leaves = [];
+		var quires = {
+			quireId: quireId,
+			leafinquire: leaves
+		}
+		svgCollection.length++;
+		svgCollection.quires.push(quires);
 	};
 	
 	parsedData.addLeaf = function(leaf) {
-		var leafId = leaf.value;
+		var leafId = leaf.val;
 		var leafQuire = leaf.quire;
 		var leafConjoin = leaf.conjoin;
+		var leaf = {
+			leafId: leafId,
+			leafQuire: leafQuire,
+			leafConjoin: leafConjoin
+		}
+		for (quire in svgCollection.quires){
+			if (quire.quireId = leafId){
+				quire.leafinquire.push(leaf)
+			};
+		};
 		svgCollection.length++;
-	}
+		svgCollection.leaves.push(leaf);
+	};
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getSvgs

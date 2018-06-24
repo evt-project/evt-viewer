@@ -839,23 +839,22 @@ angular.module('evtviewer.dataHandler')
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.find(defQuire),
 		function (element) {
-					var newQuire = {};
+			var newQuire = {};
 					newQuire.value = element.getAttribute ('xml:id') || 'xml:id';
 					newQuire.n = element.getAttribute ('n') || 'quire' + (parsedData.getQuires().length + 1);
 					newQuire.leaf = {};
 					parsedData.addQuire(newQuire);
-				});
-
+		});
 		angular.forEach(currentDocument.find(defLeaf),
 		function (element) {
 					var newLeaf = {};
-					newLeaf.value = element.getAttribute('xml:id') || 'xml:id';
+					newLeaf.val = element.getAttribute('xml:id') || 'xml:id';
 					var q = element.lastChild.childNodes;
-					newLeaf.quire = element.lastChild.getAttribute('target') || 'target';
+					newLeaf.quire = element.lastChild.getAttribute('target').replace('#', '') || 'target';
 					if (q[1] == undefined){
 						newLeaf.conjoin = q[0].getAttribute('target') || 'target';
 					} else {
-					newLeaf.conjoin = q[1].getAttribute('target') || 'target';
+					newLeaf.conjoin = q[1].getAttribute('target').replace('#', '') || 'target';
 					}
 					parsedData.addLeaf(newLeaf);
 				});
