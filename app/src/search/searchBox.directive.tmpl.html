@@ -27,7 +27,7 @@
             </button-switch>
          </div>
       </div>
-      <input type="text" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.searchInput)" autocomplete="off" autofocus>
+      <input type="text" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.parentBoxId, vm.searchInput)" autocomplete="off" autofocus>
    </form>
    <evt-search-results ng-controller="SearchResultsCtrl as searchResults"></evt-search-results>
 </div>

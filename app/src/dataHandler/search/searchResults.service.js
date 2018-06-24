@@ -156,9 +156,9 @@ angular.module('evtviewer.dataHandler')
          return textPreview;
       };
       
-      SearchResults.prototype.highlightSearchResults = function (inputValue) {
-         var instance = new Mark(document.querySelector('#mainContentToTranform')),
-            isCaseSensitive = evtSearchBox.getStatus('searchCaseSensitive');
+      SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
+         var instance = new Mark(document.querySelector('#' + mainBoxId)),
+            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
          
          instance.unmark(inputValue);
          instance.mark(inputValue, {
@@ -166,7 +166,7 @@ angular.module('evtviewer.dataHandler')
             'acrossElements': true,
             'caseSensitive': isCaseSensitive,
             'accuracy': {
-               'value': 'exactly',
+               'value': 'partially',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
             'filter': function() {

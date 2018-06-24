@@ -734,24 +734,31 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsShow':
                callback = function() {
+                  var parentBoxId = scope.$parent.vm.parentBoxId;
+                  
                   scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
-                  scope.$parent.$parent.vm.updateState('searchResultBox');
-                  scope.$parent.button.hide = !scope.$parent.button.hide;
-                  scope.$parent.$$nextSibling.button.hide = !scope.$parent.$$nextSibling.button.hide;
+                  evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
                };
                break;
             case 'searchResultsHide':
                callback = function() {
-                  scope.$parent.$parent.vm.updateState('searchResultBox');
-                  scope.$parent.button.hide = !scope.$parent.button.hide;
-                  scope.$parent.$$prevSibling.button.hide = !scope.$parent.$$prevSibling.button.hide;
+                  var parentBoxId = scope.$parent.vm.parentBoxId;
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
                };
                break;
             case 'searchCaseSensitive':
                btnType = 'standAlone';
                callback = function() {
-                  scope.$parent.$parent.vm.updateState('searchCaseSensitive');
-                  evtSearchResults.highlightSearchResults(scope.$parent.vm.searchInput);
+                  var currentSearchBox = scope.$parent.vm,
+                     mainBoxId = scope.$parent.vm.parentBoxId;
+                  
+                  evtSearchBox.updateStatus(currentSearchBox.parentBoxId, 'searchCaseSensitive');
+                  evtSearchResults.highlightSearchResults(mainBoxId, currentSearchBox.searchInput);
                };
                break;
             case 'searchToolsInternal':
@@ -766,11 +773,14 @@ angular.module('evtviewer.buttonSwitch')
                      }
                   })();
                var activeCallback = function () {
-                  var searchBoxStatus = scope.$parent.vm.getState('searchBox');
-                  scope.$parent.vm.updateState('searchBox', !searchBoxStatus);
+                  var searchBoxStatus = scope.$parent.vm.getState('searchBox'),
+                     parentBox = scope.$parent.vm;
+   
+                  parentBox.updateState('searchBox', !searchBoxStatus);
+                  evtSearchBox.closeBox(parentBox.id, 'searchResultBox');
                   
-                  evtSearchBox.closeBox('searchResultBox');
-                  //evtSearchResultsProvider.showSearchResultsShowBtn();
+                  evtSearchBox.showBtn(parentBox.id, 'searchResultsShow');
+                  evtSearchBox.hideBtn(parentBox.id, 'searchResultsHide');
                };
                callback = function () {
                   if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
