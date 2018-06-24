@@ -829,6 +829,11 @@ angular.module('evtviewer.dataHandler')
 	parser.parseSvgs = function(svg) {
 		var XMLparser = new DOMParser();
 		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
+		var newSvg = {
+			quireN: '1', //(--> id di g recuperi la prima cifra),
+			svgLeaves: [], //array con tutti gli id delle foglie
+			textSvg: ''//disegno intero --> per la direttiva HTML
+		}
 		var svgElement = xmlDoc.getElementsByTagName(defImage)[0];
 		parsedData.addSvg(svgElement);
 	};
@@ -840,25 +845,30 @@ angular.module('evtviewer.dataHandler')
 		angular.forEach(currentDocument.find(defQuire),
 		function (element) {
 			var newQuire = {};
-					newQuire.value = element.getAttribute ('xml:id') || 'xml:id';
-					newQuire.n = element.getAttribute ('n') || 'quire' + (parsedData.getQuires().length + 1);
-					newQuire.leaf = {};
+					newQuire.value = element.getAttribute('xml:id') || 'xml:id';
+					newQuire.n = element.getAttribute('n') || 'quire' + (parsedData.getQuires().length + 1);
+					newQuire.leaves = {
+						length: 0
+					};
 					parsedData.addQuire(newQuire);
 		});
+		console.log(parsedData.getSvgs()); // Tutte le quire!
 		angular.forEach(currentDocument.find(defLeaf),
-		function (element) {
-					var newLeaf = {};
-					newLeaf.val = element.getAttribute('xml:id') || 'xml:id';
-					var q = element.lastChild.childNodes;
-					newLeaf.quire = element.lastChild.getAttribute('target').replace('#', '') || 'target';
-					if (q[1] == undefined){
-						newLeaf.conjoin = q[0].getAttribute('target') || 'target';
-					} else {
-					newLeaf.conjoin = q[1].getAttribute('target').replace('#', '') || 'target';
-					}
-					parsedData.addLeaf(newLeaf);
-				});
-		};
+			function (element) {
+				var newLeaf = {};
+				newLeaf.value = element.getAttribute('xml:id') || 'xml:id';
+				var q = element.lastChild.childNodes;
+				newLeaf.quire = element.lastChild.getAttribute('target').replace('#', '') || 'target';
+				if (q[1] == undefined){
+					newLeaf.conjoin = q[0].getAttribute('target') || 'target';
+				} else {
+				newLeaf.conjoin = q[1].getAttribute('target').replace('#', '') || 'target';
+				}
+				parsedData.addLeaf(newLeaf);
+			});
+		console.log(parsedData.getSvgs()); // Tutte le quire con le leaf!!
+		
+	};
 	
 	
 	parser.parseImageList = function(file){
@@ -866,13 +876,13 @@ angular.module('evtviewer.dataHandler')
 		var doc = XMLparser.parseFromString(file, "text/xml");
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.find(defImageList),
-				function (element) {
-					var newImage = {};
-					newImage.value = element.getAttribute('val') || 'val';
-					newImage.url = element.getAttribute('url')|| 'url';
-					newImage.quire = element.getAttribute('quire')|| 'quire';
-					parsedData.addImageList(newImage);
-				});
+			function (element) {
+				var newImage = {};
+				newImage.value = element.getAttribute('val') || 'val';
+				newImage.url = element.getAttribute('url')|| 'url';
+				newImage.quire = element.getAttribute('quire')|| 'quire';
+				parsedData.addImageList(newImage);
+			});
 		};
 	/**
      * @ngdoc method
