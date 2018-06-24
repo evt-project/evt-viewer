@@ -25,6 +25,7 @@ angular.module('evtviewer.dataHandler')
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
 		defImage = 'svg',
+		defG = 'g',
 		defLeaf = 'leaf',
 		defQuire = 'quire',
 		defImageList = 'image';
@@ -829,8 +830,23 @@ angular.module('evtviewer.dataHandler')
 	parser.parseSvgs = function(svg) {
 		var XMLparser = new DOMParser();
 		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
-		var svgElement = xmlDoc.getElementsByTagName(defImage)[0];
-		parsedData.addSvg(svgElement);
+		var currentDocument = angular.element(xmlDoc);
+		var xmlSvg = xmlDoc.lastChild;
+		var xmlTitle = xmlSvg.firstElementChild;
+		var newSvg = {
+			quireN: xmlTitle.innerHTML.charAt(27), //id di g recuperare la prima cifra con getAttribute sull'ID
+			svgLeaves: [], //array con tutti gli ID
+			textSvg: xmlDoc.getElementsByTagName(defImage)[0]
+		}
+		// ciclo sui g --> aggiungere a svg leaves gli id hasAttribute
+		angular.forEach(currentDocument.find(defG),
+			function(element){
+				if (element.hasAttribute("id")){
+					element.id.replace('#','');
+					newSvg.svgLeaves.push(element).replace('#','');
+				};
+			});
+		parsedData.addSvg(newSvg);
 	};
 	
 	parser.parseViscollDatamodel = function(file){
@@ -840,15 +856,19 @@ angular.module('evtviewer.dataHandler')
 		angular.forEach(currentDocument.find(defQuire),
 		function (element) {
 			var newQuire = {};
-					newQuire.value = element.getAttribute ('xml:id') || 'xml:id';
-					newQuire.n = element.getAttribute ('n') || 'quire' + (parsedData.getQuires().length + 1);
-					newQuire.leaf = {};
+					newQuire.value = element.getAttribute('xml:id') || 'xml:id';
+					newQuire.n = element.getAttribute('n') || 'quire' + (parsedData.getQuires().length + 1);
+					newQuire.leaves = {
+						length: 0
+					};
 					parsedData.addQuire(newQuire);
 		});
+		console.log(parsedData.getSvgs());
+		//quires
 		angular.forEach(currentDocument.find(defLeaf),
 		function (element) {
 					var newLeaf = {};
-					newLeaf.val = element.getAttribute('xml:id') || 'xml:id';
+					newLeaf.value = element.getAttribute('xml:id') || 'xml:id';
 					var q = element.lastChild.childNodes;
 					newLeaf.quire = element.lastChild.getAttribute('target').replace('#', '') || 'target';
 					if (q[1] == undefined){
@@ -858,6 +878,8 @@ angular.module('evtviewer.dataHandler')
 					}
 					parsedData.addLeaf(newLeaf);
 				});
+				console.log(parsedData.getSvgs());
+				//leaf
 		};
 	
 	
@@ -866,13 +888,13 @@ angular.module('evtviewer.dataHandler')
 		var doc = XMLparser.parseFromString(file, "text/xml");
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.find(defImageList),
-				function (element) {
-					var newImage = {};
-					newImage.value = element.getAttribute('val') || 'val';
-					newImage.url = element.getAttribute('url')|| 'url';
-					newImage.quire = element.getAttribute('quire')|| 'quire';
-					parsedData.addImageList(newImage);
-				});
+			function (element) {
+				var newImage = {};
+				newImage.value = element.getAttribute('val') || 'val';
+				newImage.url = element.getAttribute('url')|| 'url';
+				newImage.id = element.getAttribute('id')|| 'id';
+				parsedData.addImageList(newImage);
+			});
 		};
 	/**
      * @ngdoc method
