@@ -435,9 +435,11 @@ angular.module('evtviewer.box')
                     currentBox.updateContent();
    
                    $timeout(function() {
-                      var searchInput = evtSearchBox.getInputValue();
+                      var currentBoxId = scope.id,
+                         searchInput = evtSearchBox.getInputValue(currentBoxId);
+   
                       if(searchInput !== '') {
-                         evtSearchResults.highlightSearchResults(searchInput);
+                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
                       }
                    });
                 }, true);
