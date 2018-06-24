@@ -692,7 +692,7 @@ angular.module('evtviewer.buttonSwitch')
                )();
                function indexingInProgress() {
                   var deferred = $q.defer();
-                  evtSearchBox.updateStatus('indexingInProgress');
+                  evtInterface.updateState('indexingInProgress', true);
                   setTimeout(function() {
                      deferred.resolve();
                   }, 100);
@@ -706,12 +706,10 @@ angular.module('evtviewer.buttonSwitch')
                            searchToolsBtn,
                            searchIndexBtn;
          
-                        searchIndexBtn = button.getByType('searchIndex');
-                        for (var i in searchIndexBtn) {
-                           searchIndexBtn[i].active = false;
-                           searchIndexBtn[i].disable();
-                        }
-         
+                        searchIndexBtn = button.getByType('searchIndex')[0];
+                        searchIndexBtn.active = false;
+                        searchIndexBtn.disable();
+                        
                         evtSearch.initSearch(xmlDocDom);
                         evtInterface.setToolStatus('isDocumentIndexed', 'true');
          
@@ -719,8 +717,8 @@ angular.module('evtviewer.buttonSwitch')
                         for(var z in searchToolsBtn) {
                            searchToolsBtn[z].disabled = false;
                         }
-         
-                        evtSearchBox.updateStatus('indexingInProgress');
+   
+                        evtInterface.updateState('indexingInProgress', false);
                      }
                   );
                }

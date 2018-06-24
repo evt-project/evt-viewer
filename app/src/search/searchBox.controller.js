@@ -19,10 +19,6 @@ angular.module('evtviewer.search')
          return vm.status[key];
       };
       
-      vm.getExternalBoxStatus = function (key) {
-         return evtSearchBox.getStatus(key);
-      };
-      
       vm.getBoxEdition = function (boxId) {
         return evtSearchBox.getBoxEdition(boxId);
       };

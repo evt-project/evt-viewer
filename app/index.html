@@ -175,9 +175,6 @@
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
 				<!-- READING TEXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="readingTxt">
-               <!--<evt-search-box
-                  ng-controller="SearchBoxCtrl as searchBox">
-               </evt-search-box>-->
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
 						 id="mainText"
@@ -322,9 +319,6 @@
 							ng-if="::witness"
 							ng-repeat="witness in getAvailableWitnesses() track by $index">{{::getWitness(witness)}}</span>
 					</div>
-               <!--<evt-search-box
-                  ng-controller="SearchBoxCtrl as searchBox">
-               </evt-search-box>-->
 				</section>
 				<!-- TXT TXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="txtTxt">
@@ -342,9 +336,6 @@
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
 						 id="mainText"></box>
-               <!--<evt-search-box
-                  ng-controller="SearchBoxCtrl as searchBox">
-               </evt-search-box>-->
 				</section>
 				<!-- SRC TXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="srcTxt">
@@ -365,8 +356,7 @@
             <!-- INDEXING IN PROGRESS -->
             <section id="main-container"
                class="viewMode indexingInProgress"
-               ng-controller="SearchBoxCtrl as searchBox"
-               ng-show="searchBox.getExternalBoxStatus('indexingInProgress')">
+               ng-show="getState('indexingInProgress')">
                <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
             </section>
 			</section>

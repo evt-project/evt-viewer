@@ -14,8 +14,7 @@ angular.module('evtviewer.search')
             var status = {
                searchResultBox: false,
                searchCaseSensitive : false,
-               progressBar : false,
-               indexingInProgress : false
+               progressBar : false
             };
             var searchBoxBtn = [
                {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
