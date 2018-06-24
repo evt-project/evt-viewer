@@ -8,7 +8,8 @@ angular.module('evtviewer.search')
       
       this.$get = function (evtBox) {
          var searchBox = [],
-            collection = {};
+            searchBoxCollection = {},
+            searchBoxId;
          
          searchBox.build = function (scope, vm) {
             var status = {
@@ -26,45 +27,69 @@ angular.module('evtviewer.search')
                {title: 'Search', label: '', icon: 'search', type: 'search'}
             ];
             var parentBoxId = scope.$parent.id;
+            searchBoxId = parentBoxId + 'searchBox';
             
             var scopeHelper = {
                status: status,
                searchBoxBtn: searchBoxBtn,
-               parentBoxId: parentBoxId
+               parentBoxId: parentBoxId,
+               searchBoxId: searchBoxId
             };
             
-            collection = angular.extend(vm, scopeHelper);
-            return collection;
+            searchBoxCollection[parentBoxId] = angular.extend(vm, scopeHelper);
+            return searchBoxCollection[parentBoxId];
          };
          
          searchBox.getDefaults = function (key) {
             return defaults[key];
          };
          
-         searchBox.getSearchResults = function () {
-            return collection.searchResults;
+         searchBox.getSearchResults = function (parentBoxId) {
+            return searchBoxCollection[parentBoxId].searchResults;
          };
          
-         searchBox.getInputValue = function () {
-            return collection.searchedTerm;
+         searchBox.getInputValue = function (parentBoxId) {
+            return searchBoxCollection[parentBoxId].searchedTerm;
          };
          
-         searchBox.getStatus = function (key) {
-            if(collection.status) {
-               return collection.status[key];
+         searchBox.getStatus = function (parentBoxId, key) {
+            if(searchBoxCollection[parentBoxId].status) {
+               return searchBoxCollection[parentBoxId].status[key];
             }
          };
          
-         searchBox.getBoxEdition = function (boxId) {
-            return evtBox.getEditionById(boxId);
+         searchBox.updateStatus = function (parentBoxId, key) {
+            searchBoxCollection[parentBoxId].status[key] = !searchBoxCollection[parentBoxId].status[key];
          };
          
-         searchBox.updateStatus = function (key) {
-            collection.status[key] = !collection.status[key];
+         searchBox.closeBox = function (parentBoxId, key) {
+            var currentBox;
+            
+            for(var i in searchBoxCollection) {
+               currentBox = searchBoxCollection[i];
+               if (currentBox.parentBoxId === parentBoxId) {
+                  currentBox.status[key] = false;
+                  return currentBox.status[key];
+               }
+            }
          };
          
-         searchBox.closeBox = function (key) {
-            return collection.closeBox(key);
+         searchBox.showBtn = function (parentBoxId, type) {
+            var currentBoxButtons = searchBoxCollection[parentBoxId].searchBoxBtn;
+            for(var i in currentBoxButtons) {
+               if(currentBoxButtons[i].type === type) {
+                  currentBoxButtons[i].hide = false;
+               }
+            }
+         };
+   
+         searchBox.hideBtn = function (parentBoxId, type) {
+            var currentBoxButtons = searchBoxCollection[parentBoxId].searchBoxBtn;
+            for(var i in currentBoxButtons) {
+               if(currentBoxButtons[i].type === type) {
+                  currentBoxButtons[i].hide = true;
+               }
+            }
          };
          
          return searchBox;
