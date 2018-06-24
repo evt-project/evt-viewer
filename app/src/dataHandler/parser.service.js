@@ -832,9 +832,9 @@ angular.module('evtviewer.dataHandler')
 		var xmlDoc = XMLparser.parseFromString(svg, "text/xml");
 		var currentDocument = angular.element(xmlDoc);
 		var xmlSvg = xmlDoc.lastChild;
-		var xmlTitle = xmlSvg.firstElementChild;
+		var xmlFile = xmlSvg.firstElementChild;
 		var newSvg = {
-			quireN: xmlTitle.innerHTML.charAt(27), //id di g recuperare la prima cifra con getAttribute sull'ID
+			quireN: xmlFile.innerHTML.charAt(27), //id di g recuperare la prima cifra con getAttribute sull'ID
 			svgLeaves: [], //array con tutti gli ID
 			textSvg: xmlDoc.getElementsByTagName(defImage)[0]
 		}
