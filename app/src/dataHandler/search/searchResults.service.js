@@ -157,7 +157,7 @@ angular.module('evtviewer.dataHandler')
       };
       
       SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
-         var instance = new Mark(document.querySelector('#' + mainBoxId)),
+         var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
             isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
          
          instance.unmark(inputValue);
