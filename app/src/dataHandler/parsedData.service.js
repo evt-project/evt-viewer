@@ -132,8 +132,15 @@ angular.module('evtviewer.dataHandler')
     	</pre>
      */
 	var svgCollection = {
-		length: 0,
-		svgs: [],
+		svgs: {
+			length: 0
+		},
+		quires: {
+			length: 0
+		},
+		imglist: {
+			length: 0
+		}
 	};
 	/**
      * @ngdoc property
@@ -951,6 +958,7 @@ angular.module('evtviewer.dataHandler')
 			documentsCollection[docId].pages.push(pageId);
 		}
 	};
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPages
@@ -1093,10 +1101,29 @@ angular.module('evtviewer.dataHandler')
      * @todo add attribute for the original xml reference
      */
 	parsedData.addSvg = function(svg) {
-		svgCollection.length++;
-		//this.svgCollection[this.svgCollection.length] = svg;
-		svgCollection.svgs.push(svg);
+		svgCollection.svgs.length++;
+		svgCollection.svgs['svg_'+svgCollection.svgs.length] = svg;
 	};
+	
+	parsedData.addImageList = function(imageElement){
+		imageId = imageElement.value;
+		svgCollection.imglist[imageId] = imageElement;
+		svgCollection.imglist.length++;
+	};
+
+	parsedData.addQuire = function(quire) {
+		var quireId = quire.value;
+		svgCollection.quires[quireId] = quire;
+		svgCollection.length++;
+	};
+	
+	parsedData.addLeaf = function(leaf) {
+		var leafId = leaf.value;
+		var quireId = leaf.quire;
+		svgCollection.quires[quireId].leaves[leafId]=leaf;
+		svgCollection.quires[quireId].leaves.length++;
+	};
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getSvgs

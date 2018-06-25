@@ -184,6 +184,39 @@ angular.module('evtviewer.dataHandler')
 		//Parse svgs
 		evtParser.parseSvgs(doc);
 	};
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addDataModel
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store DataModel documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be stored and parsed
+     * @param {string} id Id of document connected to Source Document
+     * @author CM
+     */
+	baseData.addDataModel = function(doc) {
+		//Parse imagelist
+		evtParser.parseViscollDatamodel(doc);
+	};
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addImageList
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store ImageList documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be stored and parsed
+     * @param {string} id Id of document connected to Source Document
+     * @author CM
+     */
+	baseData.addImageList = function(doc) {
+		//Parse imagelist
+		evtParser.parseImageList(doc);
+	};
+	
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#launchXMLParsers

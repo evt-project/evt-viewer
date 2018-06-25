@@ -26,7 +26,7 @@ angular.module('evtviewer.visColl')
 
     var currentAppEntry = '';
 	
-	this.$get = function($log, $filter, config, parsedData, evtInterface, evtSelect, evtCommunication, xmlParser) {
+	this.$get = function($log, $filter, config, parsedData, evtInterface, evtSelect, evtCommunication, xmlParser, $sce) {
         var visColl     = {},
             collection = {},
             list       = [],
@@ -67,17 +67,15 @@ angular.module('evtviewer.visColl')
             var pagesCollection = parsedData.getPages();
 			var documentsCollection = parsedData.getDocuments();
 			
-			
-			var xmlDoc = evtInterface.getProperty('visCollStyleUrl');
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
 			var imageS = parsedData.getSvgs();
 			var svgs = imageS.svgs;
 			var displayResult = function(){
 				var vm = this;
-				if (vm.imageS !== ''){
-					vm.imageS = parsedData.getSvgs();
-					return vm.imageS.svgs;
+				var page = evtInterface.getState('currentPage');
+				if (page !== undefined){
+					return page.imag;
 				}
 				else return 'errore';
 			};
@@ -101,6 +99,13 @@ angular.module('evtviewer.visColl')
 			};
 			};
 		};			
+			
+			//var tentativo = function(value){
+				//var vm = this
+				//var svgId = vm.pagesCollection[svgId];
+				//value = svgId;
+				//return value
+				
 			
 			var htmlSvg = function(svg){
 			var receptacle = document.createElement('div');

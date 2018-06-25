@@ -69,6 +69,7 @@ angular.module('evtviewer.navBar')
 			
 			var doc = evtInterface.getState('currentDoc');
 			var page = evtInterface.getState('currentPage');
+			var folio = 0;
 			
             var pageSlider = {
                 value: 0,
@@ -110,6 +111,9 @@ angular.module('evtviewer.navBar')
 				}
 				if (vm.pageSlider.value !== newPage){
 					vm.pageSlider.value = newPage;
+				}
+				if (vm.folio !== value){
+					vm.folio = value;
 				}
 				evtInterface.updateUrl();
 			};

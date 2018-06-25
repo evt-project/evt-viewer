@@ -79,10 +79,20 @@ footer {
     width: 100%;
 }
 
+svg.ng-scope {
+	background: #396f7b;
+	height: 252px;
+	width: 252px;
+	margin-left: 15px;
+	border-radius: 8px;
+	margin-top: 75px;
+	margin-bottom: 5px;
+	}
+
 .ng-isolate-scope
 
 section > div {
-    height: 100%;
+    height: 260px;
     display: block;
     vertical-align: middle;
 }
@@ -332,14 +342,13 @@ section > div {
 
 .popup-container {
 	position: absolute;
-	height: 475px;
-	width: 1345px;
-	left: 10px;
-	bottom: 50px;
-	background-color: #e5e5e5;
+	height: 490px;
+	width: 1358px;
+	left: 4px;
+	bottom: 45.5px;
+	background-color: #bdbdbd;
 	z-index: 3;
 	border: 2px #FFFFFF;
-	border-radius: 16px;
 	}
 
 

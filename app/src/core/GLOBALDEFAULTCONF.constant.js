@@ -73,6 +73,8 @@ angular.module('evtviewer.core')
 	//Url of the XML file encoding the visColl dataModel.//
 	visCollTextUrl   : '',
 	//visCollStyleUrl//
+	//visCollImageList//
+	visCollImageList : '',
 	//Url of the SEF file encoding the visColl stylesheets for dataModel.//
 	visCollStyleUrl   : '',
 	//svgFilesNames//
