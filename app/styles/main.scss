@@ -341,8 +341,8 @@ section > div {
 }
 
 .popup-container {
+	@include calc(height, unquote("#{setVisCollFrameHeight()} + 1px"));
 	position: absolute;
-	height: 490px;
 	width: 1358px;
 	left: 4px;
 	bottom: 45.5px;

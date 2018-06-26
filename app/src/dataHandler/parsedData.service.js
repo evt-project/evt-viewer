@@ -1101,8 +1101,8 @@ angular.module('evtviewer.dataHandler')
      * @todo add attribute for the original xml reference
      */
 	parsedData.addSvg = function(svg) {
-		svgCollection.svgs.length++;
 		svgCollection.svgs['svg_'+svgCollection.svgs.length] = svg;
+		svgCollection.svgs.length++;
 	};
 	
 	parsedData.addImageList = function(imageElement){
@@ -1114,7 +1114,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.addQuire = function(quire) {
 		var quireId = quire.value;
 		svgCollection.quires[quireId] = quire;
-		svgCollection.length++;
+		svgCollection.quires.length++;
 	};
 	
 	parsedData.addLeaf = function(leaf) {

@@ -8,6 +8,14 @@
     stroke-linecap:round;
 }
 
+.leaf:hover{
+	stroke: #d3d3d3;
+}
+
+.leaf:active{
+	stroke: #000000;
+}
+
 .missingLeaf{
     stroke:#D3D3D3;
     stroke-width:1pt;

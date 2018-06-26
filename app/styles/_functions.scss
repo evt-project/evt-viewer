@@ -14,6 +14,10 @@
 	
 }
 
+@function setVisCollFrameHeight() {
+	@return "100% - #{$base-header-height + $base-slider-height + 2}";
+	}
+
 @function setInsideFrameHeight(){
 	@if($mainContainer-top-menu == true and $mainContainer-bottom-menu == true){
 		@return "100% -  #{$mainContainer-menu-height*2}";

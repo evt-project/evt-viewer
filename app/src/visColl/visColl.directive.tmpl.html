@@ -1,23 +1,14 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
 <section class="visCollWrapper">
-	<div ng-repeat="svg in vm.svgs track by $index" class="visCollContainer">
-		<div id="visCollValue" type="image/svg+xml" compile="svg.outerHTML" class="svg"></div>
-		<!--</div>
-	<div ng-repeat="page in vm.pagesCollection" class="imageContainer">-->
-		<div id="imageValue">
-		<img class="viscollImage" ng-src="images/immagini/singole/{{vm.pagesCollection[$index]}}.jpg"  
-		type="image"  ></img>
-		<img class="viscollImage" ng-src="images/immagini/singole/{{vm.pagesCollection[$index+1]}}.jpg"  
-		type="image"  ></img>
-		<p id="imageFolio">{{vm.pagesCollection[$index]}}</p>
-		<!-- <img ng-src="images/{{vm.pagesCollection[$xml:id===svg.svgId]}}.jpg ng-hide="svg.svgId === ''></img> -->
-		</div>
+	<select>
+		<option value="#" selected>Quires</option>
+		<option ng-repeat="svg in vm.svgCollection.svgs track by $index" ng-hide="$last" value="[$index]"></option>
+	</select>
+	<div ng-repeat="svg in vm.svgCollection.svgs"> 
+	<div id="visCollValue" type="image/svg+xml" 
+	compile="vm.totSvg[$index].outerHTML" ng-hide="$last">
+		{{vm.displayResult()}}</div>
 	</div>
-	<!--<div>{{vm.displayResult()}}</div>
-		<evt-select 
-            data-id="images"
-            data-type="image"
-            data-init="VB_fol_001r.jpg"
-            ng-repeat="page in vm.pagesCollection track by $index">
-        </evt-select>-->
+	<p>{{vm.conjoinToImage()}}</p>
+	<p>{{vm.unit()}}</p>
 </section>

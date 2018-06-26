@@ -843,7 +843,7 @@ angular.module('evtviewer.dataHandler')
 			function(element){
 				if (element.hasAttribute("id")){
 					element.id.replace('#','');
-					newSvg.svgLeaves.push(element).replace('#','');
+					newSvg.svgLeaves.push(element);
 				};
 			});
 		parsedData.addSvg(newSvg);
@@ -872,7 +872,7 @@ angular.module('evtviewer.dataHandler')
 					var q = element.lastChild.childNodes;
 					newLeaf.quire = element.lastChild.getAttribute('target').replace('#', '') || 'target';
 					if (q[1] == undefined){
-						newLeaf.conjoin = q[0].getAttribute('target') || 'target';
+						newLeaf.conjoin = q[0].getAttribute('target').replace('#', '') || 'target';
 					} else {
 					newLeaf.conjoin = q[1].getAttribute('target').replace('#', '') || 'target';
 					}
