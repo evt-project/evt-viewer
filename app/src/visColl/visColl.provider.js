@@ -123,6 +123,7 @@ angular.module('evtviewer.visColl')
                 }
             };
 
+			
             var unit = function(){
                 var vm = this;
                 if(vm.svgCollection.svgs.length && vm.svgCollection.quires.length !== 0 &&
