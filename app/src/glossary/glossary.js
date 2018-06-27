@@ -17,18 +17,19 @@ function createBox(elem, xml, box){
 	k=wordTS.trim();
 	//qui ci va wordTS
 	alert(k);
-	b= xml.getElementById(k);
-	def=b.innerHTML;
-	if (def != undefined ){
-	    			
-		box+=wordTS+": "+def+"</span>";
-	    $(box).insertAfter(elem);
-	    $(".glossBox").click(function(event){
-	    	event.stopPropagation();
-	    })
-	    box="<span class='glossBox'>";
-	    session=true;
-
+	b= xml.getElementsByTagName("entry");
+	for (i=0; i<b.length;i++){
+		id= b[i].getAttribute("xml:id");
+		if (id==k){
+			def = b[i].innerHTML;
+			box+=wordTS+": "+def+"</span>";
+	   		$(box).insertAfter(elem);
+	    	$(".glossBox").click(function(event){
+	    		event.stopPropagation();
+	    	})
+	    	box="<span class='glossBox'>";
+	    	session=true;
+		}
 	}
 	return session
 }
