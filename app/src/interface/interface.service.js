@@ -230,13 +230,13 @@ angular.module('evtviewer.interface')
 
                     // /////////////////// //
                     // VISCOLL DATA IMPORT //
+					// Parse DataModel
+                    if (config.visCollDataModel !== '') {
+                        promises.push(evtCommunication.getViscollDataModel(config.visCollDataModel));
+                    }
                     // Parse Image List
                     if (config.visCollImageList !== '') {
                         promises.push(evtCommunication.getViscollImageList(config.visCollImageList));
-                    }
-                    // Parse DataModel
-                    if (config.visCollDataModel !== '') {
-                        promises.push(evtCommunication.getViscollDataModel(config.visCollDataModel));
                     }
                     // Parse the external SVG files, if defined.
                     if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {

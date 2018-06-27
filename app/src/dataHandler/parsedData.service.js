@@ -133,13 +133,16 @@ angular.module('evtviewer.dataHandler')
      */
 	var viscollSvgCollection = {
 		svgs: {
-			length: 0
+			length: 0,
+			_indexes: []
 		},
 		quires: {
-			length: 0
+			length: 0,
+			_indexes: []
 		},
 		imglist: {
-			length: 0
+			length: 0,
+			_indexes: []
 		}
 	};
 	/**
@@ -1101,20 +1104,24 @@ angular.module('evtviewer.dataHandler')
      * @todo add attribute for the original xml reference
      */
 	parsedData.addViscollSvg = function(svg) {
-		viscollSvgCollection.svgs['svg_'+viscollSvgCollection.svgs.length] = svg;
+		var svgId = 'svg_'+viscollSvgCollection.svgs.length
+		viscollSvgCollection.svgs[svgId] = svg;
 		viscollSvgCollection.svgs.length++;
+		viscollSvgCollection.svgs._indexes.push(svgId);
 	};
 	
 	parsedData.addViscollImageList = function(imageElement){
-		imageId = imageElement.value;
+		var imageId = imageElement.value;
 		viscollSvgCollection.imglist[imageId] = imageElement;
 		viscollSvgCollection.imglist.length++;
+		viscollSvgCollection.imglist._indexes.push(imageId);
 	};
 
 	parsedData.addViscollQuire = function(quire) {
 		var quireId = quire.value;
 		viscollSvgCollection.quires[quireId] = quire;
 		viscollSvgCollection.quires.length++;
+		viscollSvgCollection.quires._indexes.push(quireId);
 	};
 	
 	parsedData.addViscollLeaf = function(leaf) {
@@ -1122,6 +1129,7 @@ angular.module('evtviewer.dataHandler')
 		var quireId = leaf.quire;
 		viscollSvgCollection.quires[quireId].leaves[leafId]=leaf;
 		viscollSvgCollection.quires[quireId].leaves.length++;
+		viscollSvgCollection.quires[quireId].leaves._indexes.push(leafId);
 	};
 	
 	/**

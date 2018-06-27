@@ -1,7 +1,7 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
 <section class="visCollWrapper">
 		<div id="selectorDiv">
-				<form name="quireForm" class="quireSelector">
+				<form name="quireForm" class="quireSelector" ng-hide="$first">
 					  <label for="quireSelect">Select a quire:</label>
 					  <select name="quireSelect" id="quireSelect"
 						ng-options="item.quireN for item in vm.svgCollection.svgs track by $index"
@@ -10,9 +10,9 @@
 					<tt class="quireSelector">option = {{svgCollection.svgs[0].quireN}}</tt><br/>
 					</div>
 					{{vm.displayResult()}}
-	<div ng-repeat="svg in vm.svgCollection.svgs">
+	<div ng-repeat="svg in vm.svgCollection.svgs" ng-hide="$last">
 
-			<form name="folioForm" class="selectorViscoll" ng-hide="$first">
+			<form name="folioForm" class="selectorViscoll">
 				  <label for="folioSelect">Select a folio:</label>
 				  <select name="folioSelect" id="folioSelect"
 					ng-options="item.id for item in svg.svgLeaves"
@@ -22,7 +22,7 @@
 				<tt ng-hide="$first" class="selectorViscoll"><p>Hi {{vm.count}}</p><!--<img class="viscollImage" ng-src="{{vm.myFunction()}}"></img>--></tt><br/>
 				<p id="quireNumber">{{svg.quireN}}</p>
 				<div id="visCollValue" type="image/svg+xml" 
-		compile="::vm.getTotSvgOuterHTML($index)" ng-hide="$last">
+		compile="::vm.getTotSvgOuterHTML($index)">
 		</div>
 	</div>
 </section>
