@@ -124,7 +124,6 @@ angular.module('evtviewer.visColl')
                     }
                 }
             };
-
 			
             var unit = function(){
                 var vm = this;
@@ -153,35 +152,15 @@ angular.module('evtviewer.visColl')
                     }
             };
 
-            var myFunction = function(){
+            var count = 0;
+            var change = function(){
                 var vm = this;
-                if(vm.svgCollection.svgs.length && vm.svgCollection.quires.length !== 0 &&
-                    vm.svgCollection.svgs.length === vm.svgCollection.quires.length){
-                        for (item in svgCollection.svgs){
-                            if (svgCollection.svgs[item].hasOwnProperty('textSvg')){
-                                for (x in svgCollection.svgs[item].svgLeaves){
-                                    for (y in svgCollection.imglist){
-                                        if(svgCollection.imglist[y].hasOwnProperty('url')){
-                                            if(svgCollection.svgs[item].svgLeaves[x].id===svgCollection.imglist[y].id.slice(0, -2)){
-                                                if (svgCollection.svgs[item].svgLeaves[x].img == undefined){
-                                                    svgCollection.svgs[item].svgLeaves[x].img = svgCollection.imglist[y].url;
-                                                    return svgCollection.svgs[item].svgLeaves[x].img;
-                                                } else {
-                                                    svgCollection.svgs[item].svgLeaves[x].img2 = svgCollection.imglist[y].url;
-                                                    return svgCollection.svgs[item].svgLeaves[x].img2;
-                                                }
-                                            }
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-            };
+                vm.count++;
+            }
+
             var getTotSvgOuterHTML = function(index) {
                 var vm = this;
-                if (index && vm.totSvg[index] !== undefined) {
+                if (vm.totSvg[index] !== undefined) {
                     return vm.totSvg[index].outerHTML;
                 } else {
                     return '<span>No data</span>';
@@ -193,10 +172,11 @@ angular.module('evtviewer.visColl')
                 uid: currentId,
                 svgCollection: svgCollection,
                 totSvg: totSvg,
+                count: count,
+                change: change,
                 conjoinToImage: conjoinToImage,
                 // Functions
                 displayResult: displayResult,
-                myFunction: myFunction,
                 getTotSvgOuterHTML: getTotSvgOuterHTML,
                 unit: unit
             };
