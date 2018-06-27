@@ -71,6 +71,8 @@ angular.module('evtviewer.visColl')
 					    if (svgCollection.svgs[item].hasOwnProperty('textSvg')){
                             var svg = svgCollection.svgs[item].textSvg;
                             vm.totSvg.push(svg);
+							vm.conjoinToImage();
+							vm.unit();
                             }
                     }
                 }
@@ -136,10 +138,10 @@ angular.module('evtviewer.visColl')
                                             if(svgCollection.svgs[item].svgLeaves[x].id===svgCollection.imglist[y].id.slice(0, -2)){
                                                 if (svgCollection.svgs[item].svgLeaves[x].img == undefined){
                                                     svgCollection.svgs[item].svgLeaves[x].img = svgCollection.imglist[y].url;
-                                                    svgCollection.svgs[item].svgLeaves[x].imgConjoin = svgCollection.imglist[y].conjoin;
+                                                    svgCollection.svgs[item].svgLeaves[x].imgConjoin = svgCollection.imglist[y].conjoinUrl;
                                                 } else {
                                                     svgCollection.svgs[item].svgLeaves[x].img2 = svgCollection.imglist[y].url;
-                                                    svgCollection.svgs[item].svgLeaves[x].imgConjoin2 = svgCollection.imglist[y].conjoin;
+                                                    svgCollection.svgs[item].svgLeaves[x].imgConjoin2 = svgCollection.imglist[y].conjoinUrl;
                                                 }
                                             }
                                         }
@@ -152,7 +154,30 @@ angular.module('evtviewer.visColl')
             };
 
             var myFunction = function(){
-                return "niceTry";
+                var vm = this;
+                if(vm.svgCollection.svgs.length && vm.svgCollection.quires.length !== 0 &&
+                    vm.svgCollection.svgs.length === vm.svgCollection.quires.length){
+                        for (item in svgCollection.svgs){
+                            if (svgCollection.svgs[item].hasOwnProperty('textSvg')){
+                                for (x in svgCollection.svgs[item].svgLeaves){
+                                    for (y in svgCollection.imglist){
+                                        if(svgCollection.imglist[y].hasOwnProperty('url')){
+                                            if(svgCollection.svgs[item].svgLeaves[x].id===svgCollection.imglist[y].id.slice(0, -2)){
+                                                if (svgCollection.svgs[item].svgLeaves[x].img == undefined){
+                                                    svgCollection.svgs[item].svgLeaves[x].img = svgCollection.imglist[y].url;
+                                                    return svgCollection.svgs[item].svgLeaves[x].img;
+                                                } else {
+                                                    svgCollection.svgs[item].svgLeaves[x].img2 = svgCollection.imglist[y].url;
+                                                    return svgCollection.svgs[item].svgLeaves[x].img2;
+                                                }
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
             };
 
             scopeHelper = {

@@ -5,7 +5,7 @@
 
 
 .visCollWrapper {
-	height: 460px;
+	height: 530px;
 	color: #000000;
 	overflow-y: scroll; 
 	}
@@ -16,13 +16,14 @@
 	}
 	
 	.imageContainer {
-	bottom: 10px;
 	font-size: 0.8em;
 	color: #ffffff;
 	}
 	
 	#visCollValue {
 		display: block;
+		height: 260px;
+		position: relative;
 		}
 		
 	#imageValue {
@@ -34,18 +35,34 @@
 		text-align: right;
 		}
 		
-	#imageFolio {
-		float: right;
-		position: relative;
-		right: 50px;
-		top: 150px;
-		}
-		
 	.viscollImage {
-		height: 94%;
-		bottom: 10px;
-		left: 52px;
-		margin-right: 30px;
+		height: 200px;
+		left: 152px;
 		position: relative;
 		border-radius: 4px;
 		}
+		
+	.selectorViscoll {
+		width: 11.7%;
+		left: 300px;
+		font-size: 0.5em;
+		position: relative;
+		background-color: #ffffff;
+	}
+	
+	.quireSelector {
+		width: 12.7%;
+		top: 30px;
+		left: 300px;
+		font-size: 0.5em;
+		position: relative;
+		background-color: #ffffff;
+	}
+	
+	#selectorDiv {
+	height: 50px;
+	}
+	
+	#quireNumber {
+	color: #ffffff;
+	}
