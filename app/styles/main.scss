@@ -609,3 +609,15 @@ pre {
     padding: 10px 0;
     border-top: 1px solid;
 }
+
+.glossBox{
+    position: absolute;
+    border: 0;
+    padding: .5em 1em;
+    background: blue;
+    overflow: auto;
+    zoom: 1;
+    margin-top:-5%;
+    margin-left: -15%;
+
+}

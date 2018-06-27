@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/pelavicino.xml",
+	"dataUrl": "data/ER_1-146_crit.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl" : "data/sources/",
@@ -52,17 +52,17 @@
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "enableXMLdownload" : true,
