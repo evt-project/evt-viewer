@@ -8,20 +8,21 @@
 						ng-model="svgCollection.svgs"></select>
 					</form>
 					<tt class="quireSelector">option = {{svgCollection.svgs[0].quireN}}</tt><br/>
-				  </div>
-	<div ng-repeat="svg in vm.svgCollection.svgs"> 
+					</div>
+					{{vm.displayResult()}}
+	<div ng-repeat="svg in vm.svgCollection.svgs">
+
 			<form name="folioForm" class="selectorViscoll" ng-hide="$first">
 				  <label for="folioSelect">Select a folio:</label>
 				  <select name="folioSelect" id="folioSelect"
 					ng-options="item.id for item in svg.svgLeaves"
 					ng-model="svg.svgLeaves[item]"
-					ng-value="item.img"></select>
+					ng-value="item.img" ng-change="vm.change()"></select>
 				</form>
-				<tt ng-hide="$first" class="selectorViscoll"><!--<img class="viscollImage" ng-src="{{vm.myFunction()}}"></img>--></tt><br/>
+				<tt ng-hide="$first" class="selectorViscoll"><p>Hi {{vm.count}}</p><!--<img class="viscollImage" ng-src="{{vm.myFunction()}}"></img>--></tt><br/>
 				<p id="quireNumber">{{svg.quireN}}</p>
 				<div id="visCollValue" type="image/svg+xml" 
 		compile="::vm.getTotSvgOuterHTML($index)" ng-hide="$last">
 		</div>
-		{{vm.displayResult()}}
 	</div>
 </section>
