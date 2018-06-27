@@ -64,7 +64,7 @@ angular.module('evtviewer.visColl')
             }
 
             var svgCollection = parsedData.getViscollSvgs();	
-            
+
 			var displayResult = function(){
 				var vm = this;
                 if (vm.svgCollection.svgs.length === 3) {
@@ -182,7 +182,7 @@ angular.module('evtviewer.visColl')
             };
             var getTotSvgOuterHTML = function(index) {
                 var vm = this;
-                if (index && vm.totSvg[index] !== undefined) {
+                if (index !== undefined && vm.totSvg[index] !== undefined) {
                     return vm.totSvg[index].outerHTML;
                 } else {
                     return '<span>No data</span>';
