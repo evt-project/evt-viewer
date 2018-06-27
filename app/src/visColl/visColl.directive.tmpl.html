@@ -20,8 +20,8 @@
 				<tt ng-hide="$first" class="selectorViscoll"><!--<img class="viscollImage" ng-src="{{vm.myFunction()}}"></img>--></tt><br/>
 				<p id="quireNumber">{{svg.quireN}}</p>
 				<div id="visCollValue" type="image/svg+xml" 
-		compile="vm.totSvg[$index].outerHTML" ng-hide="$last">
-			{{vm.displayResult()}}
+		compile="::vm.getTotSvgOuterHTML($index)" ng-hide="$last">
 		</div>
+		{{vm.displayResult()}}
 	</div>
 </section>

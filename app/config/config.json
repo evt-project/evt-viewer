@@ -7,6 +7,9 @@
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl"  : "data/sources/",
+
+    "singleImagesUrl"  : "data/immagini/singole/",
+
 	"visCollTextUrl"   : "data/visColl/dataModel2.xml",
 	"visCollStyleUrl"  : "data/visColl/collationXML_to_SVG_mod2.sef.xml",
     "visCollSvg"       : "data/visColl_svg/",
@@ -163,9 +166,9 @@
 
     "showReadingExponent": true,
 
-    "showInlineCriticalApparatus": false,
-    "showInlineSources": false,
-    "showInlineAnalogues": false,
+    "showInlineCriticalApparatus": true,
+    "showInlineSources": true,
+    "showInlineAnalogues": true,
 
 
 
