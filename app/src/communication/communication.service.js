@@ -94,7 +94,7 @@ angular.module('evtviewer.communication')
 
 	/**
      * @ngdoc method
-     * @name evtviewer.communication.evtCommunication#getSvgs
+     * @name evtviewer.communication.evtCommunication#getViscollSvgs
      * @methodOf evtviewer.communication.evtCommunication
      *
      * @description
@@ -103,15 +103,10 @@ angular.module('evtviewer.communication')
      * @param {string} url file containing the edition data
      * @returns {httpPromise} resolve with fetched data, or fails with error description.
      */
-    communication.getSvgs = function(url) {
+    communication.getViscollSvgs = function(url) {
         return $http.get(url)
             .then(function(response) {
-                if (typeof(response.data) === 'string') {
-                    _console.log('XML Data received');
-                    return baseData.addSVGDocument(response.data);
-                } else {
-                    // TODO: JSON?
-                }
+                return baseData.handleViscollSvg(response.data);
             }, function(error) {
                 if (defaults.errorMsgs[error.status]) {
                     communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
@@ -123,7 +118,7 @@ angular.module('evtviewer.communication')
 	
 	/**
      * @ngdoc method
-     * @name evtviewer.communication.evtCommunication#getDataModel
+     * @name evtviewer.communication.evtCommunication#getViscollDataModel
      * @methodOf evtviewer.communication.evtCommunication
      *
      * @description
@@ -132,12 +127,12 @@ angular.module('evtviewer.communication')
      * @param {string} url file containing the edition data
      * @returns {httpPromise} resolve with fetched data, or fails with error description.
      */
-	communication.getDataModel = function(url) {
+	communication.getViscollDataModel = function(url) {
 		return $http.get(url)
             .then(function(response) {
                 if (typeof(response.data) === 'string') {
                     _console.log('XML Data received');
-                    return baseData.addDataModel(response.data);
+                    return baseData.addViscollDataModel(response.data);
                 } 
             }, function(error) {
                 if (defaults.errorMsgs[error.status]) {
@@ -150,7 +145,7 @@ angular.module('evtviewer.communication')
 	
 	/**
      * @ngdoc method
-     * @name evtviewer.communication.evtCommunication#getImageList
+     * @name evtviewer.communication.evtCommunication#getViscollImageList
      * @methodOf evtviewer.communication.evtCommunication
      *
      * @description
@@ -159,12 +154,12 @@ angular.module('evtviewer.communication')
      * @param {string} url file containing the edition data
      * @returns {httpPromise} resolve with fetched data, or fails with error description.
      */
-	communication.getImageList = function(url) {
+	communication.getViscollImageList = function(url) {
 		return $http.get(url)
             .then(function(response) {
                 if (typeof(response.data) === 'string') {
                     _console.log('XML Data received');
-                    return baseData.addImageList(response.data);
+                    return baseData.addViscollImageList(response.data);
                 } 
             }, function(error) {
                 if (defaults.errorMsgs[error.status]) {

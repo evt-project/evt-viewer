@@ -171,50 +171,50 @@ angular.module('evtviewer.dataHandler')
 
 	/**
      * @ngdoc method
-     * @name evtviewer.dataHandler.baseData#addSVGDocument
+     * @name evtviewer.dataHandler.baseData#handleViscollSvg
      * @methodOf evtviewer.dataHandler.baseData
      *
      * @description
      * Store SVG documents for visColl view
-     * @param {string} srcDoc String representing the Source Document to be stored and parsed
-     * @param {string} id Id of document connected to Source Document
-     * @author CM
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
      */
-	baseData.addSVGDocument = function(doc) {
-		//Parse svgs
-		evtParser.parseSvgs(doc);
+	baseData.handleViscollSvg = function(sourceSvg) {
+        var svgElement = xmlParser.parse(sourceSvg);
+        //Parse svgs
+        evtParser.parseSvgsForViscoll(svgElement);
 	};
 	
 	/**
      * @ngdoc method
-     * @name evtviewer.dataHandler.baseData#addDataModel
+     * @name evtviewer.dataHandler.baseData#addViscollDataModel
      * @methodOf evtviewer.dataHandler.baseData
      *
      * @description
      * Store DataModel documents for visColl view
-     * @param {string} srcDoc String representing the Source Document to be stored and parsed
-     * @param {string} id Id of document connected to Source Document
-     * @author CM
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
      */
-	baseData.addDataModel = function(doc) {
+	baseData.addViscollDataModel = function(sourceXML) {
+        var xmlElement = xmlParser.parse(sourceXML);
 		//Parse imagelist
-		evtParser.parseViscollDatamodel(doc);
+		evtParser.parseViscollDatamodel(xmlElement);
 	};
 	
 	/**
      * @ngdoc method
-     * @name evtviewer.dataHandler.baseData#addImageList
+     * @name evtviewer.dataHandler.baseData#addViscollImageList
      * @methodOf evtviewer.dataHandler.baseData
      *
      * @description
      * Store ImageList documents for visColl view
-     * @param {string} srcDoc String representing the Source Document to be stored and parsed
-     * @param {string} id Id of document connected to Source Document
-     * @author CM
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
      */
-	baseData.addImageList = function(doc) {
-		//Parse imagelist
-		evtParser.parseImageList(doc);
+	baseData.addViscollImageList = function(sourceXML) {
+		var xmlElement = xmlParser.parse(sourceXML);
+        //Parse imagelist
+		evtParser.parseViscollImageList(xmlElement);
 	};
 	
     /**

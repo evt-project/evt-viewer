@@ -110,11 +110,11 @@ angular.module('evtviewer.dataHandler')
 	};
 	/**
      * @ngdoc property
-     * @name evtviewer.dataHandler.parsedData#svgCollection
+     * @name evtviewer.dataHandler.parsedData#viscollSvgCollection
      * @propertyOf evtviewer.dataHandler.parsedData
      * @description [Private] Internal property where information about svg are stored.
     	<pre>
-			var svgCollection = {
+			var viscollSvgCollection = {
 				[pageId]: {
 					value,
 					label,
@@ -131,7 +131,7 @@ angular.module('evtviewer.dataHandler')
 			};
     	</pre>
      */
-	var svgCollection = {
+	var viscollSvgCollection = {
 		svgs: {
 			length: 0
 		},
@@ -1079,7 +1079,7 @@ angular.module('evtviewer.dataHandler')
 	/* SVG */
 	/**
      * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#addSvg
+     * @name evtviewer.dataHandler.parsedData#addViscollSvg
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
@@ -1100,41 +1100,41 @@ angular.module('evtviewer.dataHandler')
      * @param {string} docId Identifier of document in which the svg is contained
      * @todo add attribute for the original xml reference
      */
-	parsedData.addSvg = function(svg) {
-		svgCollection.svgs['svg_'+svgCollection.svgs.length] = svg;
-		svgCollection.svgs.length++;
+	parsedData.addViscollSvg = function(svg) {
+		viscollSvgCollection.svgs['svg_'+viscollSvgCollection.svgs.length] = svg;
+		viscollSvgCollection.svgs.length++;
 	};
 	
-	parsedData.addImageList = function(imageElement){
+	parsedData.addViscollImageList = function(imageElement){
 		imageId = imageElement.value;
-		svgCollection.imglist[imageId] = imageElement;
-		svgCollection.imglist.length++;
+		viscollSvgCollection.imglist[imageId] = imageElement;
+		viscollSvgCollection.imglist.length++;
 	};
 
-	parsedData.addQuire = function(quire) {
+	parsedData.addViscollQuire = function(quire) {
 		var quireId = quire.value;
-		svgCollection.quires[quireId] = quire;
-		svgCollection.quires.length++;
+		viscollSvgCollection.quires[quireId] = quire;
+		viscollSvgCollection.quires.length++;
 	};
 	
-	parsedData.addLeaf = function(leaf) {
+	parsedData.addViscollLeaf = function(leaf) {
 		var leafId = leaf.value;
 		var quireId = leaf.quire;
-		svgCollection.quires[quireId].leaves[leafId]=leaf;
-		svgCollection.quires[quireId].leaves.length++;
+		viscollSvgCollection.quires[quireId].leaves[leafId]=leaf;
+		viscollSvgCollection.quires[quireId].leaves.length++;
 	};
 	
 	/**
      * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#getSvgs
+     * @name evtviewer.dataHandler.parsedData#getViscollSvgs
      * @methodOf evtviewer.dataHandler.parsedData
      *
      * @description
      * Get the list of parsed svgs.
      * @returns {Object} Object representing the list of parsed svgs.
      */
-	parsedData.getSvgs = function() {
-		return svgCollection;
+	parsedData.getViscollSvgs = function() {
+		return viscollSvgCollection;
 	};
 	/**
      * @ngdoc method
@@ -1161,8 +1161,8 @@ angular.module('evtviewer.dataHandler')
 			};
 	 	</pre>
      */
-	parsedData.getSvg = function(pageId) {
-		return svgCollection[pageId];
+	parsedData.getViscollSvg = function(pageId) {
+		return viscollSvgCollection[pageId];
 	};
 	
 	/* DOCUMENTS */
