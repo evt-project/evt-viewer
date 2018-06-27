@@ -1107,7 +1107,7 @@ angular.module('evtviewer.dataHandler')
 	};
 	
 	parsedData.addViscollImageList = function(imageElement){
-		var imageId = imageElement.value;
+		var imageId = imageElement.id;
 		viscollSvgCollection.imglist[imageId] = imageElement;
 		viscollSvgCollection.imglist._indexes.push(imageId);
 	};

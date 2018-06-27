@@ -845,6 +845,20 @@ angular.module('evtviewer.dataHandler')
                     newSvg.svgLeaves.push(element);
                 };
             });
+        var svgCollection = parsedData.getViscollSvgs();
+        angular.forEach(newSvg.svgLeaves, function(svgLeaf) {
+            angular.forEach(svgCollection.imglist._indexes, function(imgId) {
+                if (svgLeaf.id === imgId.slice(0, -2)) {
+                    if (svgLeaf.img == undefined){
+                        svgLeaf.img = svgCollection.imglist[imgId].url;
+                        svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
+                    } else {
+                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
+                        svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
+                    }  
+                }
+            });
+        });
         parsedData.addViscollSvg(newSvg);
     };
 
@@ -883,7 +897,7 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseViscollImageList = function(doc) {
         var currentDocument = angular.element(doc);
-        //var svgCollection = parsedData.getSvgs();
+        var svgCollection = parsedData.getViscollSvgs();
         angular.forEach(currentDocument.find(defImageList),
             function(element) {
                 var newImage = {
@@ -891,12 +905,30 @@ angular.module('evtviewer.dataHandler')
             		url: element.getAttribute('url') || 'url',
                 	id: element.getAttribute('id') || 'id'
                 };
-                console.log(newImage);
-                //var imageId = newImage.id.slice(0,-2);
-               // for quires, for leaves.
-               // fare la parte del conjoinUrl
+                var id = newImage.id.slice(0,-2);
+                angular.forEach(svgCollection.quires._indexes, function(quireId) {
+                    var leaves = svgCollection.quires[quireId].leaves;
+                    angular.forEach(leaves._indexes, function(leafId) {
+                        var leafObj = leaves[leafId];
+                        if (id === leafObj.value) {
+                            newImage.conjoin = leafObj.conjoin;
+                            if(newImage.id.substr(newImage.id.length-1) === 'v'){
+                                newImage.conjoin += '-r';
+                            } else {
+                                newImage.conjoin += '-v';
+                            }
+                        }
+                    });
+                });
                 parsedData.addViscollImageList(newImage);
             });
+        angular.forEach(svgCollection.imglist._indexes, function(id1) {
+            angular.forEach(svgCollection.imglist._indexes, function(id2) {
+                if (id2 === svgCollection.imglist[id1].conjoin) {
+                    svgCollection.imglist[id1].conjoinUrl = svgCollection.imglist[id2].url;
+                }
+            });
+        });
     };
     /**
      * @ngdoc method

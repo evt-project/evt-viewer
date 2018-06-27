@@ -72,86 +72,12 @@ angular.module('evtviewer.visColl')
 					    if (vm.svgCollection.svgs[item].hasOwnProperty('textSvg')){
                             var svg = vm.svgCollection.svgs[item].textSvg;
                             vm.totSvg.push(svg);
-							vm.conjoinToImage();
-							vm.unit();
                         }
                     }
                 }
             };
             
             var totSvg = [];
-
-            var conjoinToImage = function(){
-                var vm = this;
-                if(vm.svgCollection.svgs._indexes.length && vm.svgCollection.quires._indexes.length !== 0 &&
-                    vm.svgCollection.svgs._indexes.length === vm.svgCollection.quires._indexes.length){
-                    for (item in svgCollection.quires){
-                        if (svgCollection.quires[item].hasOwnProperty('leaves')){
-                            for (x in svgCollection.quires[item].leaves){
-                                if (svgCollection.quires[item].leaves[x].hasOwnProperty('value')){
-                                    for (y in svgCollection.imglist){
-                                        if(svgCollection.imglist[y].hasOwnProperty('url')){
-                                             if(svgCollection.imglist[y].id.slice(0, -2) === svgCollection.quires[item].leaves[x].value){
-                                                for(a in svgCollection.imglist){
-                                                    if(svgCollection.imglist[a].hasOwnProperty('url')){
-                                                        for(b in svgCollection.imglist){
-                                                            if(svgCollection.imglist[b].hasOwnProperty('url')){
-                                                                if(svgCollection.imglist[a].id.slice(0, -2) === svgCollection.imglist[b].id.slice(0,-2) &&
-                                                                svgCollection.imglist[a].id.substr(length-1) !== svgCollection.imglist[b].id.substr(length-1)){
-                                                                    if(svgCollection.imglist[y].value.substr(length-1) === 'v'){
-                                                                        svgCollection.imglist[y].conjoin = svgCollection.quires[item].leaves[x].conjoin + '-r';
-                                                                    } else {
-                                                                        svgCollection.imglist[y].conjoin = svgCollection.quires[item].leaves[x].conjoin + '-v';
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                for(z in svgCollection.imglist){
-                                                    if(svgCollection.imglist[z].hasOwnProperty('url')){
-                                                        if(svgCollection.imglist[z].id === svgCollection.imglist[y].conjoin){
-                                                            svgCollection.imglist[y].conjoinUrl = svgCollection.imglist[z].url;
-                                                        }
-                                                    }
-                                                }
-
-                                            } 
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-			
-            var unit = function(){
-                var vm = this;
-                if(vm.svgCollection.svgs._indexes.length && vm.svgCollection.quires._indexes.length !== 0 &&
-                    vm.svgCollection.svgs._indexes.length === vm.svgCollection.quires._indexes.length){
-                        for (item in svgCollection.svgs){
-                            if (svgCollection.svgs[item].hasOwnProperty('textSvg')){
-                                for (x in svgCollection.svgs[item].svgLeaves){
-                                    for (y in svgCollection.imglist){
-                                        if(svgCollection.imglist[y].hasOwnProperty('url')){
-                                            if(svgCollection.svgs[item].svgLeaves[x].id===svgCollection.imglist[y].id.slice(0, -2)){
-                                                if (svgCollection.svgs[item].svgLeaves[x].img == undefined){
-                                                    svgCollection.svgs[item].svgLeaves[x].img = svgCollection.imglist[y].url;
-                                                    svgCollection.svgs[item].svgLeaves[x].imgConjoin = svgCollection.imglist[y].conjoinUrl;
-                                                } else {
-                                                    svgCollection.svgs[item].svgLeaves[x].img2 = svgCollection.imglist[y].url;
-                                                    svgCollection.svgs[item].svgLeaves[x].imgConjoin2 = svgCollection.imglist[y].conjoinUrl;
-                                                }
-                                            }
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-            };
 
             var count = 0;
             var change = function(){
