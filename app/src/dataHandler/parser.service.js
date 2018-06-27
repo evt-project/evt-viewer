@@ -857,7 +857,8 @@ angular.module('evtviewer.dataHandler')
                 	value: element.getAttribute('xml:id') || '',
                 	n: element.getAttribute('n') || 'quire' + (parsedData.getViscollQuires().length + 1),
 	                leaves: {
-	                    length: 0
+	                    length: 0,
+						_indexes: []
 	                }
                 };
                 parsedData.addViscollQuire(newQuire);
@@ -882,6 +883,7 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseViscollImageList = function(doc) {
         var currentDocument = angular.element(doc);
+        //var svgCollection = parsedData.getSvgs();
         angular.forEach(currentDocument.find(defImageList),
             function(element) {
                 var newImage = {
@@ -890,6 +892,9 @@ angular.module('evtviewer.dataHandler')
                 	id: element.getAttribute('id') || 'id'
                 };
                 console.log(newImage);
+                //var imageId = newImage.id.slice(0,-2);
+               // for quires, for leaves.
+               // fare la parte del conjoinUrl
                 parsedData.addViscollImageList(newImage);
             });
     };
