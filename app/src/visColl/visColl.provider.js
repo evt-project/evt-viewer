@@ -67,7 +67,7 @@ angular.module('evtviewer.visColl')
 
 			var displayResult = function(){
 				var vm = this;
-                if (vm.svgCollection.svgs.length === 3) {
+                if (vm.svgCollection.svgs._indexes.length === 3) {
                     for(var item in vm.svgCollection.svgs) {
 					    if (vm.svgCollection.svgs[item].hasOwnProperty('textSvg')){
                             var svg = vm.svgCollection.svgs[item].textSvg;
@@ -83,8 +83,8 @@ angular.module('evtviewer.visColl')
 
             var conjoinToImage = function(){
                 var vm = this;
-                if(vm.svgCollection.svgs.length && vm.svgCollection.quires.length !== 0 &&
-                    vm.svgCollection.svgs.length === vm.svgCollection.quires.length){
+                if(vm.svgCollection.svgs._indexes.length && vm.svgCollection.quires._indexes.length !== 0 &&
+                    vm.svgCollection.svgs._indexes.length === vm.svgCollection.quires._indexes.length){
                     for (item in svgCollection.quires){
                         if (svgCollection.quires[item].hasOwnProperty('leaves')){
                             for (x in svgCollection.quires[item].leaves){
@@ -128,8 +128,8 @@ angular.module('evtviewer.visColl')
 			
             var unit = function(){
                 var vm = this;
-                if(vm.svgCollection.svgs.length && vm.svgCollection.quires.length !== 0 &&
-                    vm.svgCollection.svgs.length === vm.svgCollection.quires.length){
+                if(vm.svgCollection.svgs._indexes.length && vm.svgCollection.quires._indexes.length !== 0 &&
+                    vm.svgCollection.svgs._indexes.length === vm.svgCollection.quires._indexes.length){
                         for (item in svgCollection.svgs){
                             if (svgCollection.svgs[item].hasOwnProperty('textSvg')){
                                 for (x in svgCollection.svgs[item].svgLeaves){
