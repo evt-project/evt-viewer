@@ -1,15 +1,16 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
-<section class="visCollWrapper">
-    <div id="selectorDiv">
+    <div class="selectorDiv">
         <form name="quireForm" class="quireSelector" ng-hide="$first">
             <label for="quireSelect">Select a quire:</label>
             <select name="quireSelect" id="quireSelect"
                 ng-options="item.quireN for item in vm.svgCollection.svgs track by $index"
-                ng-model="svgCollection.svgs"></select>
+                ng-model="svgCollection.svgs"
+                ng-value="item.quireN"></select>
         </form>
-        <tt class="quireSelector">option = {{svgCollection.svgs[0].quireN}}</tt><br/>
+        <tt class="quireSelector">option = {{svgCollection.svgs[0].quireN}}</tt>
     </div>
-    <div ng-repeat="svg in vm.svgCollection.svgs">
+    <div class="viscollContainer" ng-repeat="svg in vm.svgCollection.svgs">
+        <p class="quireNumber">{{svg.quireN}}</p>
         <form name="folioForm" class="selectorViscoll" ng-hide="$first">
             <label for="folioSelect">Select a folio:</label>
             <select name="folioSelect" id="folioSelect"
@@ -17,19 +18,17 @@
                 ng-model="vm.selectedItem[svg.quireN]"
                 ng-value="item.id"></select>
         </form>
-        <div ng-hide="$first" class="imgSelectorViscoll">
-            <img id="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+        <div  class="imgSelectorViscoll">
+            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
             	 ng-src="{{vm.selectedItem[svg.quireN].img2}}"></img>
-            <img id="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
             	 ng-src="{{vm.selectedItem[svg.quireN].imgConjoin2}}"></img>
-            <img id="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
             	 ng-src="{{vm.selectedItem[svg.quireN].imgConjoin}}"></img>
-            <img id="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-            	 ng-src="{{vm.selectedItem[svg.quireN].img}}"></img>
+            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+                 ng-src="{{vm.selectedItem[svg.quireN].img}}"></img>
         </div>
-        <p id="quireNumber">{{svg.quireN}}</p>
-        <div id="visCollValue" type="image/svg+xml" 
+        <div class="visCollValue" type="image/svg+xml" 
             compile="::vm.getTotSvgOuterHTML($index)" ng-hide="$last">
         </div>
     </div>
-</section>

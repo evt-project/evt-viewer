@@ -79,16 +79,15 @@ footer {
     width: 100%;
 }
 
+
+
 svg.ng-scope {
 	position: relative;
-	left: 30px;
+	left: 10%;
 	background: #396f7b;
-	height: 252px;
-	width: 252px;
-	margin-left: 15px;
+	height: 100%;
+	width: 100%;
 	border-radius: 8px;
-	margin-top: 75px;
-	margin-bottom: 5px;
 	}
 
 .ng-isolate-scope
@@ -344,12 +343,12 @@ section > div {
 
 .popup-container {
 	@include calc(height, unquote("#{setVisCollFrameHeight()} + 1px"));
+	overflow-y: scroll;
 	position: absolute;
-	width: 1358px;
+	width: 99.6%;
 	left: 4px;
 	bottom: 45.5px;
 	background-color: #bdbdbd;
-	z-index: 3;
 	border: 2px #FFFFFF;
 	}
 

@@ -1,78 +1,61 @@
 /* *************************** */
 /* VISCOLL                     */
 /* *************************** */
-
-
-
-.visCollWrapper {
-	height: 530px;
-	width: 1362px;
-	color: #000000;
-	overflow-y: scroll; 
+	
+	.viscollContainer {
+		height: 100%;
 	}
 	
-	.visCollContainer {
-	width: 100%;
-	margin-bottom: 30px;
-	}
 	
-	.imageContainer {
-	font-size: 0.8em;
-	color: #ffffff;
-	}
-	
-	#visCollValue {
+	.visCollValue {
 		display: block;
 		height: 260px;
 		position: relative;
+		width: 20%;
 		}
 		
-	#imageValue {
-		height: 200px;
-		width: 300px;
-		font-size: 30px;
+	.viscollImage {
 		display: inline;
-		color: #ffffff;
-		text-align: right;
-		}
-		
-	#viscollImage {
-		display: inline;
-		height: 200px;
-		left: 152px;
+		width: 20%;
+		left: 18%;
+		bottom: 250px;
 		position: relative;
 		border-radius: 4px;
+		margin: 5px;
 		}
 		
 	.selectorViscoll {
 		width: 12.5%;
-		left: 350px;
+		left: 25%;
+		bottom: 290px;
 		font-size: 0.5em;
 		position: relative;
-		background-color: #ffffff;
+		background-color: #bdbdbd;
 	}
 	
 	.imgSelectorViscoll{
-		width: 600px;
-		left: 350px;
+		width: 60%;
+		left: 28%;
 		font-size: 0.5em;
-		position: relative;
+		position: absolute;
 		background-color: #bdbdbd;
 		}
 	
 	.quireSelector {
 		width: 12.7%;
-		top: 30px;
-		left: 300px;
+		top: 10px;
+		left: 20%;
 		font-size: 0.5em;
 		position: relative;
-		background-color: #ffffff;
+		background-color: #bdbdbd;
 	}
 	
-	#selectorDiv {
-	height: 50px;
+	.selectorDiv {
+	height: 100%;
 	}
 	
-	#quireNumber {
+	.quireNumber {
 	color: #ffffff;
+	position: relative;
+	bottom: 150px;
 	}
