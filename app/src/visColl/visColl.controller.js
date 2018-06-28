@@ -22,5 +22,21 @@ angular.module('evtviewer.visColl')
     // 
     // Control function
     // 
-	// metodi vari
+    // metodi vari
+    vm.updateViscollImage = function(item){
+        console.log(item);
+        for (x in vm.svgCollection.svgs){
+            if (vm.svgCollection.svgs[x].hasOwnProperty('textSvg')){
+                for (y in vm.svgCollection.svgs[x].svgLeaves){
+                    if (vm.svgCollection.svgs[x].svgLeaves[y].id === item){
+                        console.log(item);
+                        var object = vm.svgCollection.svgs[x].svgLeaves[y];
+                        console.log(object);
+                        vm.change(object)
+                    }
+                }
+            }
+        }
+    }
+
 });

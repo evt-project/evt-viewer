@@ -51,7 +51,7 @@ angular.module('evtviewer.visColl')
 					evtInterface.updateProperty(visCollStyleUrl, newValue);
 				}
 			}, true);
-			
+
             // Garbage collection
             scope.$on('$destroy', function() {
               if (currentViscoll) {

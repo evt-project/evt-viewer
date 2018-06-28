@@ -36,7 +36,8 @@
 		text-align: right;
 		}
 		
-	.viscollImage {
+	#viscollImage {
+		display: inline;
 		height: 200px;
 		left: 152px;
 		position: relative;
@@ -46,11 +47,18 @@
 	.selectorViscoll {
 		width: 12.5%;
 		left: 350px;
-		top: 300px;
 		font-size: 0.5em;
 		position: relative;
 		background-color: #ffffff;
 	}
+	
+	.imgSelectorViscoll{
+		width: 600px;
+		left: 350px;
+		font-size: 0.5em;
+		position: relative;
+		background-color: #bdbdbd;
+		}
 	
 	.quireSelector {
 		width: 12.7%;

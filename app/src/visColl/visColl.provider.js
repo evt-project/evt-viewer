@@ -79,11 +79,20 @@ angular.module('evtviewer.visColl')
             
             var totSvg = [];
 
-            var count = 0;
-            var change = function(){
+            var change = function(item){
                 var vm = this;
-                vm.count++;
+                var img1 = item.img;
+                console.log(img1);
+                vm.img = item.img;
+                vm.img2 = item.img2;
+                vm.conjoin = item.imgConjoin;
+                vm.conjoin2 = item.imgConjoin2;
             }
+
+            var img;
+            var img2;
+            var conjoin;
+            var conjoin2;
 
             var getTotSvgOuterHTML = function(index) {
                 var vm = this;
@@ -99,13 +108,14 @@ angular.module('evtviewer.visColl')
                 uid: currentId,
                 svgCollection: svgCollection,
                 totSvg: totSvg,
-                count: count,
+                img: img,
+                img2: img2,
+                conjoin: conjoin,
+                conjoin2: conjoin2,
                 change: change,
-                conjoinToImage: conjoinToImage,
                 // Functions
                 displayResult: displayResult,
-                getTotSvgOuterHTML: getTotSvgOuterHTML,
-                unit: unit
+                getTotSvgOuterHTML: getTotSvgOuterHTML
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

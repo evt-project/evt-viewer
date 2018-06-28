@@ -10,19 +10,24 @@
 					<tt class="quireSelector">option = {{svgCollection.svgs[0].quireN}}</tt><br/>
 					</div>
 					{{vm.displayResult()}}
-	<div ng-repeat="svg in vm.svgCollection.svgs" ng-hide="$last">
+	<div ng-repeat="svg in vm.svgCollection.svgs">
 
-			<form name="folioForm" class="selectorViscoll">
+			<form name="folioForm" class="selectorViscoll" ng-hide="$first">
 				  <label for="folioSelect">Select a folio:</label>
 				  <select name="folioSelect" id="folioSelect"
 					ng-options="item.id for item in svg.svgLeaves"
 					ng-model="svg.svgLeaves[item]"
-					ng-value="item.img" ng-change="vm.change()"></select>
+					ng-value="item.id" ng-change="vm.updateViscollImage(svg.svgLeaves[item].id)"></select>
 				</form>
-				<tt ng-hide="$first" class="selectorViscoll"><p>Hi {{vm.count}}</p><!--<img class="viscollImage" ng-src="{{vm.myFunction()}}"></img>--></tt><br/>
+				<div ng-hide="$first" class="imgSelectorViscoll">
+					<img id="viscollImage" ng-src="{{vm.img2}}"></img>
+					<img id="viscollImage" ng-src="{{vm.conjoin2}}"></img>
+					<img id="viscollImage" ng-src="{{vm.conjoin}}"></img>
+					<img id="viscollImage" ng-src="{{vm.img}}"></img>
+					</div>
 				<p id="quireNumber">{{svg.quireN}}</p>
 				<div id="visCollValue" type="image/svg+xml" 
-		compile="::vm.getTotSvgOuterHTML($index)">
+		compile="::vm.getTotSvgOuterHTML($index)" ng-hide="$last">
 		</div>
 	</div>
 </section>
