@@ -67,32 +67,15 @@ angular.module('evtviewer.visColl')
 
 			var displayResult = function(){
 				var vm = this;
-                if (vm.svgCollection.svgs._indexes.length === 3) {
-                    for(var item in vm.svgCollection.svgs) {
-					    if (vm.svgCollection.svgs[item].hasOwnProperty('textSvg')){
-                            var svg = vm.svgCollection.svgs[item].textSvg;
-                            vm.totSvg.push(svg);
-                        }
+                for (var item in vm.svgCollection.svgs) {
+                    if (vm.svgCollection.svgs[item].hasOwnProperty('textSvg')){
+                        var svg = vm.svgCollection.svgs[item].textSvg;
+                        vm.totSvg.push(svg);
                     }
-                }
+                }    
             };
             
             var totSvg = [];
-
-            var change = function(item){
-                var vm = this;
-                var img1 = item.img;
-                console.log(img1);
-                vm.img = item.img;
-                vm.img2 = item.img2;
-                vm.conjoin = item.imgConjoin;
-                vm.conjoin2 = item.imgConjoin2;
-            }
-
-            var img;
-            var img2;
-            var conjoin;
-            var conjoin2;
 
             var getTotSvgOuterHTML = function(index) {
                 var vm = this;
@@ -108,11 +91,6 @@ angular.module('evtviewer.visColl')
                 uid: currentId,
                 svgCollection: svgCollection,
                 totSvg: totSvg,
-                img: img,
-                img2: img2,
-                conjoin: conjoin,
-                conjoin2: conjoin2,
-                change: change,
                 // Functions
                 displayResult: displayResult,
                 getTotSvgOuterHTML: getTotSvgOuterHTML

@@ -841,8 +841,10 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(defG),
             function(element) {
                 if (element.hasAttribute("id")) {
-                    element.id.replace('#', '');
-                    newSvg.svgLeaves.push(element);
+                    var svgElement = {
+                    	id: element.id.replace('#', '')
+                    }
+                    newSvg.svgLeaves.push(svgElement);
                 };
             });
         var svgCollection = parsedData.getViscollSvgs();
@@ -880,18 +882,17 @@ angular.module('evtviewer.dataHandler')
         // Handle leafs
         angular.forEach(currentDocument.find(defLeaf),
             function(element) {
-                var qElem = element.lastChild,
+                var qElem = element.lastElementChild,
                 	conjoinElems = qElem.childNodes;
                 var conjoinElem = conjoinElems[1] == undefined ? conjoinElems[0] : conjoinElems[1];
-                
                 var newLeaf = {
                 	value: element.getAttribute('xml:id') || '',
-                	quire: element.lastChild.getAttribute('target').replace('#', '') || 'target',
+                	quire: element.lastElementChild.getAttribute('target').replace('#', '') || 'target',
                 	conjoin: conjoinElem.getAttribute('target').replace('#', '') || 'target'
                 };
                 parsedData.addViscollLeaf(newLeaf);
             });
-        console.log(parsedData.getViscollSvgs());
+        console.log("## parseViscollDatamodel ##", parsedData.getViscollSvgs());
     };
 
 

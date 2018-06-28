@@ -279,6 +279,8 @@ angular.module('evtviewer.interface')
                         }
 
                         $q.all(promises).then(function() {
+                            parsedData.setViscollSvgsLoaded(true);
+
                             // Update current app entry
                             if (state.currentAppEntry !== undefined &&
                                 parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {

@@ -140,7 +140,8 @@ angular.module('evtviewer.dataHandler')
 		},
 		imglist: {
 			_indexes: []
-		}
+		},
+		loaded: false
 	};
 	/**
      * @ngdoc property
@@ -1136,6 +1137,13 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.getViscollSvgs = function() {
 		return viscollSvgCollection;
+	};
+
+	parsedData.setViscollSvgsLoaded = function(loaded) {
+		return viscollSvgCollection.loaded = loaded;
+	};
+	parsedData.areViscollSvgsLoaded = function() {
+		return viscollSvgCollection.loaded;
 	};
 	/**
      * @ngdoc method
