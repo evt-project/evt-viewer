@@ -7,7 +7,6 @@
             ng-model="svgCollection.svgs"
             ng-value="item.quireN"></select>
     </form>
-    <tt class="quireSelector">option = {{vm.svgCollection.svgs[0].quireN}}</tt>
 </div>
 <div class="viscollItemsContainer">
     <div class="viscollContainer" ng-repeat="svgId in vm.svgCollection.svgs._indexes">
@@ -23,7 +22,11 @@
 	            <select name="folioSelect" id="folioSelect"
 	                ng-options="item.id for item in vm.svgCollection.svgs[svgId].svgLeaves"
 	                ng-model="vm.selectedItem[vm.getQuireN(svgId)]"
-	                ng-value="item.id"></select>
+					ng-value="item.id"></select>
+				<span class="viscollNumber" ng-show="vm.selectedItem[vm.getQuireN(svgId)].img2!=undefined">Unit between {{vm.selectedItem[vm.getQuireN(svgId)].imageId2}} and 
+						{{vm.selectedItem[vm.getQuireN(svgId)].conjoinId2}}, and between
+						{{vm.selectedItem[vm.getQuireN(svgId)].conjoinId}} and {{vm.selectedItem[vm.getQuireN(svgId)].imageId}}
+				</span>
 	        </form>
 	        <div  class="imgSelectorViscoll">
 	            <img class="viscollImage" 

@@ -850,10 +850,24 @@ angular.module('evtviewer.dataHandler')
 		                if (svgLeaf.id === imgId.slice(0, -2)) {
 		                    if (svgLeaf.img == undefined){
 		                        svgLeaf.img = svgCollection.imglist[imgId].url;
-		                        svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
+                                svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
+                                svgLeaf.imageId = svgCollection.imglist[imgId].value;
+                                if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
+                                    svgLeaf.conjoinId = svgCollection.imglist[imgId].conjoinUrl.slice(29,33);
+                                } else {
+                                    svgLeaf.imgConjoin = "images/empty-image.jpg";
+                                    svgLeaf.conjoinId = 'no folio'
+                                    }
 		                    } else {
 		                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
-		                        svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
+                                svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
+                                svgLeaf.imageId2 = svgCollection.imglist[imgId].value;
+                                if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
+                                    svgLeaf.conjoinId2 = svgCollection.imglist[imgId].conjoinUrl.slice(29,33);
+                                } else {
+                                    svgLeaf.imgConjoin2 = "images/empty-image.jpg";
+                                    svgLeaf.conjoinId2 = 'no folio'
+                                }
 		                    }  
 		                }
 		            });
