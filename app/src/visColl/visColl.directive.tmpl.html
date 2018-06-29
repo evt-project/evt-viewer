@@ -28,7 +28,7 @@
 						{{vm.selectedItem[vm.getQuireN(svgId)].conjoinId}} and {{vm.selectedItem[vm.getQuireN(svgId)].imageId}}
 				</span>
 	        </form>
-	        <div  class="imgSelectorViscoll">
+	        <div  class="imgSelectorViscoll" ng-show="vm.selectedItem[vm.getQuireN(svgId)].img2!=undefined">
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
 	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].img2}}"></img>
