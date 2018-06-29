@@ -14,10 +14,10 @@
         <form name="folioForm" class="selectorViscoll" ng-hide="$first">
             <label for="folioSelect">Select a folio:</label>
             <select name="folioSelect" id="folioSelect"
-                ng-options="item.id for item in svg.svgLeaves track by $index"
-                ng-model="vm.selectedItem[svg.quireN]"
-                ng-value="item.id"></select>
-        </form>
+              ng-options="item.id for item in svg.svgLeaves"
+              ng-model="vm.selectedItem[svg.quireN]"
+              ng-value="item.id"></select>
+          </form>
         <div  class="imgSelectorViscoll">
             <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
             	 ng-src="{{vm.selectedItem[svg.quireN].img2}}"></img>
