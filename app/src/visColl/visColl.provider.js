@@ -67,6 +67,7 @@ angular.module('evtviewer.visColl')
 
 			var displayResult = function(){
 				var vm = this;
+                vm.svgCollection = parsedData.getViscollSvgs();
                 for (var item in vm.svgCollection.svgs) {
                     if (vm.svgCollection.svgs[item].hasOwnProperty('textSvg')){
                         var svg = vm.svgCollection.svgs[item].textSvg;
@@ -86,12 +87,18 @@ angular.module('evtviewer.visColl')
                 }
             };
 
+            var getQuireN = function(svgId) {
+                var vm = this;
+                return vm.svgCollection.svgs[svgId].quireN;
+            };
+
             scopeHelper = {
                 // Scope expansion
                 uid: currentId,
                 svgCollection: svgCollection,
                 totSvg: totSvg,
                 // Functions
+                getQuireN: getQuireN,
                 displayResult: displayResult,
                 getTotSvgOuterHTML: getTotSvgOuterHTML
             };

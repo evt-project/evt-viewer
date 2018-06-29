@@ -81,23 +81,6 @@ footer {
 
 
 
-svg.ng-scope {
-	position: relative;
-	left: 10%;
-	background: #396f7b;
-	height: 100%;
-	width: 100%;
-	border-radius: 8px;
-	}
-
-.ng-isolate-scope
-
-section > div {
-    height: 260px;
-    display: block;
-    vertical-align: middle;
-}
-
 #left-nav {
     @include mainNavArrow;
 }
@@ -350,7 +333,8 @@ section > div {
 	bottom: 45.5px;
 	background-color: #bdbdbd;
 	border: 2px #FFFFFF;
-	}
+    z-index: 999;   
+}
 
 
 .global-loading-container {

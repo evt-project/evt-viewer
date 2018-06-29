@@ -838,29 +838,29 @@ angular.module('evtviewer.dataHandler')
                 textSvg: xmlSvg
             }
             // ciclo sui g --> aggiungere a svg leaves gli id hasAttribute
+        var svgCollection = parsedData.getViscollSvgs();
         angular.forEach(currentDocument.find(defG),
             function(element) {
                 if (element.hasAttribute("id")) {
-                    var svgElement = {
+                    var svgLeaf = {
                     	id: element.id.replace('#', '')
                     }
-                    newSvg.svgLeaves.push(svgElement);
+                   
+                    angular.forEach(svgCollection.imglist._indexes, function(imgId) {
+		                if (svgLeaf.id === imgId.slice(0, -2)) {
+		                    if (svgLeaf.img == undefined){
+		                        svgLeaf.img = svgCollection.imglist[imgId].url;
+		                        svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
+		                    } else {
+		                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
+		                        svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
+		                    }  
+		                }
+		            });
+		            newSvg.svgLeaves.push(svgLeaf);
                 };
             });
-        var svgCollection = parsedData.getViscollSvgs();
-        angular.forEach(newSvg.svgLeaves, function(svgLeaf) {
-            angular.forEach(svgCollection.imglist._indexes, function(imgId) {
-                if (svgLeaf.id === imgId.slice(0, -2)) {
-                    if (svgLeaf.img == undefined){
-                        svgLeaf.img = svgCollection.imglist[imgId].url;
-                        svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
-                    } else {
-                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
-                        svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
-                    }  
-                }
-            });
-        });
+        
         parsedData.addViscollSvg(newSvg);
     };
 

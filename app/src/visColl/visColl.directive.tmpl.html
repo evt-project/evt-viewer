@@ -1,34 +1,44 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
-    <div class="selectorDiv">
-        <form name="quireForm" class="quireSelector" ng-hide="$first">
-            <label for="quireSelect">Select a quire:</label>
-            <select name="quireSelect" id="quireSelect"
-                ng-options="item.quireN for item in vm.svgCollection.svgs track by $index"
-                ng-model="svgCollection.svgs"
-                ng-value="item.quireN"></select>
-        </form>
-        <tt class="quireSelector">option = {{svgCollection.svgs[0].quireN}}</tt>
+<div class="selectorDiv">
+    <form name="quireForm" class="quireSelector" ng-hide="$first">
+        <label for="quireSelect">Select a quire:</label>
+        <select name="quireSelect" id="quireSelect"
+            ng-options="item.quireN for item in vm.svgCollection.svgs track by $index"
+            ng-model="svgCollection.svgs"
+            ng-value="item.quireN"></select>
+    </form>
+    <tt class="quireSelector">option = {{vm.svgCollection.svgs[0].quireN}}</tt>
+</div>
+<div class="viscollItemsContainer">
+    <div class="viscollContainer" ng-repeat="svgId in vm.svgCollection.svgs._indexes">
+        <div class="viscollItem-leftContainer">
+        	<span class="quireNumber">Quire N. {{vm.getQuireN(svgId)}}</span>
+	        <div class="visCollValue" type="image/svg+xml" 
+	            compile="::vm.getTotSvgOuterHTML($index)">
+	        </div>
+	    </div>
+        <div class="viscollItem-rightContainer">
+	        <form name="folioForm" class="selectorViscoll">
+	            <label for="folioSelect">Select a folio:</label>
+	            <select name="folioSelect" id="folioSelect"
+	                ng-options="item.id for item in vm.svgCollection.svgs[svgId].svgLeaves"
+	                ng-model="vm.selectedItem[vm.getQuireN(svgId)]"
+	                ng-value="item.id"></select>
+	        </form>
+	        <div  class="imgSelectorViscoll">
+	            <img class="viscollImage" 
+	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].img2}}"></img>
+	            <img class="viscollImage" 
+	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].imgConjoin2}}"></img>
+	            <img class="viscollImage" 
+	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].imgConjoin}}"></img>
+	            <img class="viscollImage" 
+	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].img}}"></img>
+	        </div>
+	    </div>
     </div>
-    <div class="viscollContainer" ng-repeat="svg in vm.svgCollection.svgs">
-        <p class="quireNumber">{{svg.quireN}}</p>
-        <form name="folioForm" class="selectorViscoll" ng-hide="$first">
-            <label for="folioSelect">Select a folio:</label>
-            <select name="folioSelect" id="folioSelect"
-              ng-options="item.id for item in svg.svgLeaves"
-              ng-model="vm.selectedItem[svg.quireN]"
-              ng-value="item.id"></select>
-          </form>
-        <div  class="imgSelectorViscoll">
-            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-            	 ng-src="{{vm.selectedItem[svg.quireN].img2}}"></img>
-            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-            	 ng-src="{{vm.selectedItem[svg.quireN].imgConjoin2}}"></img>
-            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-            	 ng-src="{{vm.selectedItem[svg.quireN].imgConjoin}}"></img>
-            <img class="viscollImage" onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-                 ng-src="{{vm.selectedItem[svg.quireN].img}}"></img>
-        </div>
-        <div class="visCollValue" type="image/svg+xml" 
-            compile="::vm.getTotSvgOuterHTML($index)" ng-hide="$last">
-        </div>
-    </div>
+</div>

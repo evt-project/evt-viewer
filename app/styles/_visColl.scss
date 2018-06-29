@@ -1,61 +1,80 @@
 /* *************************** */
 /* VISCOLL                     */
 /* *************************** */
-	
-	.viscollContainer {
-		height: 100%;
-	}
-	
-	
-	.visCollValue {
-		display: block;
-		height: 100%;
-		position: relative;
-		width: 20%;
-		}
-		
-	.viscollImage {
-		display: inline;
-		width: 20%;
-		left: 18%;
-		bottom: 250px;
-		position: relative;
-		border-radius: 4px;
-		margin: 5px;
-		}
-		
-	.selectorViscoll {
-		width: 12.5%;
-		left: 25%;
-		bottom: 290px;
-		font-size: 0.5em;
-		position: relative;
-		background-color: #bdbdbd;
-	}
-	
-	.imgSelectorViscoll{
-		width: 60%;
-		left: 28%;
-		font-size: 0.5em;
-		position: absolute;
-		background-color: #bdbdbd;
-		}
-	
-	.quireSelector {
-		width: 12.7%;
-		top: 10px;
-		left: 20%;
-		font-size: 0.5em;
-		position: relative;
-		background-color: #bdbdbd;
-	}
-	
-	.selectorDiv {
+
+.viscollContainer {
 	height: 100%;
-	}
-	
-	.quireNumber {
+	vertical-align: top;
+    width: 100%;
+    overflow: hidden;
+    max-height: 300px
+}
+
+.viscollImage {
+	display: inline-block;
+	position: relative;
+	border-radius: 4px;
+	margin: 5px;
+    max-height: 250px;
+    width: 20%;
+}
+
+.selectorViscoll {
+	font-size: 0.5em;
+	display: block;
+}
+
+.imgSelectorViscoll {
+	font-size: 0.5em;
+	background-color: #bdbdbd;
+	display: block;
+}
+
+.quireSelector {
+	width: 12.7%;
+	top: 10px;
+	left: 20%;
+	font-size: 0.5em;
+	position: relative;
+	background-color: #bdbdbd;
+}
+
+.selectorDiv {
+	height: 100%;
+}
+
+.quireNumber {
 	color: #ffffff;
 	position: relative;
-	bottom: 150px;
-	}
+	display: block;
+	/*bottom: 150px;*/
+}
+
+.viscollItem-leftContainer {
+    width: 25%;
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+}
+
+.viscollItem-rightContainer {
+    width: 73%;
+    display: inline-block;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    height: 100%;
+    top: 20px;
+    vertical-align: top;
+    padding-left: 20px;
+}
+
+.viscollContainer svg { 
+	position: relative; 
+	background: #396f7b; 
+	height: 90%;
+	width: 90%;
+	margin-left: 15px; 
+	border-radius: 8px; 
+	margin-bottom: 5px; 
+}

@@ -228,25 +228,7 @@ angular.module('evtviewer.interface')
 
                     var promises = [];
 
-                    // /////////////////// //
-                    // VISCOLL DATA IMPORT //
-					// Parse DataModel
-                    if (config.visCollDataModel !== '') {
-                        promises.push(evtCommunication.getViscollDataModel(config.visCollDataModel));
-                    }
-                    // Parse Image List
-                    if (config.visCollImageList !== '') {
-                        promises.push(evtCommunication.getViscollImageList(config.visCollImageList));
-                    }
-                    // Parse the external SVG files, if defined.
-                    if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {
-                        config.svgFilesNames.forEach(function(fileName) {
-                            promises.push(evtCommunication.getViscollSvgs(config.visCollSvg + fileName));
-                        });
-                    }
-                    // END VISCOLL DATA IMPORT //
-                    // /////////////////////// //
-
+                    
                     // Parse the external Sources file, if defined (@author: CM)
                     if (config.sourcesUrl !== '') {
                         promises.push(evtCommunication.getExternalData(config.sourcesUrl));
@@ -279,7 +261,32 @@ angular.module('evtviewer.interface')
                         }
 
                         $q.all(promises).then(function() {
-                            parsedData.setViscollSvgsLoaded(true);
+                            // /////////////////// //
+                            // VISCOLL DATA IMPORT //
+                            // Parse DataModel
+                            var viscollPromises = [];
+                            if (config.visCollDataModel !== '') {
+                                viscollPromises.push(evtCommunication.getViscollDataModel(config.visCollDataModel));
+                            }
+                            // Parse Image List
+                            if (config.visCollImageList !== '') {
+                                viscollPromises.push(evtCommunication.getViscollImageList(config.visCollImageList));
+                            }
+                            $q.all(viscollPromises).then(function() {
+                              var svgViscollPromises = [];
+                              // Parse the external SVG files, if defined.
+                              if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {
+                                  config.svgFilesNames.forEach(function(fileName) {
+                                      svgViscollPromises.push(evtCommunication.getViscollSvgs(config.visCollSvg + fileName));
+                                  });
+                              }
+                              $q.all(svgViscollPromises).then(function() {
+                                parsedData.setViscollSvgsLoaded(true);
+                              });
+                            });
+                            
+                            // END VISCOLL DATA IMPORT //
+                            // /////////////////////// //
 
                             // Update current app entry
                             if (state.currentAppEntry !== undefined &&
