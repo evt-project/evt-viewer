@@ -68,6 +68,7 @@ angular.module('evtviewer.visColl')
 			var displayResult = function(){
 				var vm = this;
                 vm.svgCollection = parsedData.getViscollSvgs();
+                console.log(vm.svgCollection)
                 for (var item in vm.svgCollection.svgs) {
                     if (vm.svgCollection.svgs[item].hasOwnProperty('textSvg')){
                         var svg = vm.svgCollection.svgs[item].textSvg;
@@ -87,9 +88,24 @@ angular.module('evtviewer.visColl')
                 }
             };
 
-            var getQuireN = function(svgId) {
+            var getSvgQuireN = function(svgId) {
                 var vm = this;
                 return vm.svgCollection.svgs[svgId].quireN;
+            };
+
+            var getQuire = function(quireId) {
+                var vm = this;
+                return vm.svgCollection.quires[quireId] || {};
+            };
+
+            var isSelectedQuire = function(quireN) {
+                console.log('isSelectedQuire');
+                var vm = this;
+                if (!vm.selectedQuire) {
+                    return true;
+                } else {
+                    return quireN === vm.getQuire(vm.selectedQuire).n;
+                }
             };
 
             scopeHelper = {
@@ -97,8 +113,11 @@ angular.module('evtviewer.visColl')
                 uid: currentId,
                 svgCollection: svgCollection,
                 totSvg: totSvg,
+                selectedQuire: undefined,
                 // Functions
-                getQuireN: getQuireN,
+                getSvgQuireN: getSvgQuireN,
+                getQuire: getQuire,
+                isSelectedQuire: isSelectedQuire,
                 displayResult: displayResult,
                 getTotSvgOuterHTML: getTotSvgOuterHTML
             };

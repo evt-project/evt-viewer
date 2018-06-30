@@ -1,17 +1,22 @@
 <script type="text/javascript" src="src/visColl/SaxonJS.min.js"></script>
 <div class="selectorDiv">
-    <form name="quireForm" class="quireSelector" ng-hide="$first">
+    <form name="quireForm" class="quireSelector">
         <label for="quireSelect">Select a quire:</label>
         <select name="quireSelect" id="quireSelect"
-            ng-options="item.quireN for item in vm.svgCollection.svgs track by $index"
-            ng-model="svgCollection.svgs"
-            ng-value="item.quireN"></select>
+            ng-options="vm.getQuire(quireId).n for quireId in vm.svgCollection.quires._indexes"
+            ng-model="vm.selectedQuire"
+            ng-value="vm.getQuire(quireId).n">
+    	    <option value="">select a quire</option>
+        </select>
     </form>
 </div>
 <div class="viscollItemsContainer">
-    <div class="viscollContainer" ng-repeat="svgId in vm.svgCollection.svgs._indexes">
+    <div class="viscollContainer" 
+    	ng-repeat="svgId in vm.svgCollection.svgs._indexes track by $index"
+    	ng-if="vm.isSelectedQuire(vm.getSvgQuireN(svgId))"
+    	ng-class="{'selected' : vm.getSvgQuireN(svgId) === vm.getQuire(vm.selectedQuire).n }">
         <div class="viscollItem-leftContainer">
-        	<span class="quireNumber">Quire N. {{vm.getQuireN(svgId)}}</span>
+        	<span class="quireNumber">Quire N. {{vm.getSvgQuireN(svgId)}}</span>
 	        <div class="visCollValue" type="image/svg+xml" 
 	            compile="::vm.getTotSvgOuterHTML($index)">
 	        </div>
@@ -21,26 +26,28 @@
 	            <label for="folioSelect">Select a folio:</label>
 	            <select name="folioSelect" id="folioSelect"
 	                ng-options="item.id for item in vm.svgCollection.svgs[svgId].svgLeaves"
-	                ng-model="vm.selectedItem[vm.getQuireN(svgId)]"
+	                ng-model="vm.selectedItem[vm.getSvgQuireN(svgId)]"
 					ng-value="item.id"></select>
-				<span class="viscollNumber" ng-show="vm.selectedItem[vm.getQuireN(svgId)].img2!=undefined">Unit between {{vm.selectedItem[vm.getQuireN(svgId)].imageId2}} and 
-						{{vm.selectedItem[vm.getQuireN(svgId)].conjoinId2}}, and between
-						{{vm.selectedItem[vm.getQuireN(svgId)].conjoinId}} and {{vm.selectedItem[vm.getQuireN(svgId)].imageId}}
+				<span class="viscollNumber" 
+					ng-show="vm.selectedItem[vm.getSvgQuireN(svgId)].img2!=undefined">
+					Unit between {{vm.selectedItem[vm.getSvgQuireN(svgId)].imageId2}} and 
+						{{vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId2}}, and between
+						{{vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId}} and {{vm.selectedItem[vm.getSvgQuireN(svgId)].imageId}}
 				</span>
 	        </form>
-	        <div  class="imgSelectorViscoll" ng-show="vm.selectedItem[vm.getQuireN(svgId)].img2!=undefined">
+	        <div  class="imgSelectorViscoll" ng-show="vm.selectedItem[vm.getSvgQuireN(svgId)].img2!=undefined">
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].img2}}"></img>
+	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img2}}"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].imgConjoin2}}"></img>
+	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin2}}"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].imgConjoin}}"></img>
+	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin}}"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getQuireN(svgId)].img}}"></img>
+	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img}}"></img>
 	        </div>
 	    </div>
     </div>
