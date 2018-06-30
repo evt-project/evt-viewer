@@ -334,6 +334,7 @@ angular.module('evtviewer.interface')
          * @todo: Add more cases
          */
 		$scope.handleGenericClick = function($event) {
+         console.log($event);
 			var target = $event.target;
 			if ($(target).parents('evt-select').length === 0) {
 				evtSelect.closeAll();

@@ -23,35 +23,44 @@
 	    </div>
         <div class="viscollItem-rightContainer">
 	        <form name="folioForm" class="selectorViscoll">
-	            <label for="folioSelect">Select an unit:</label>
+	            <label for="folioSelect">Select a unit:</label>
 	            <select name="folioSelect" id="folioSelect"
-	                ng-options="item.id for item in vm.svgCollection.svgs[svgId].svgLeaves"
+	            	ng-options="item.id for item in vm.svgCollection.svgs[svgId].svgLeaves"
 	                ng-model="vm.selectedItem[vm.getSvgQuireN(svgId)]"
 					ng-value="item.id"></select>
 				<span class="viscollNumber" 
-					ng-show="vm.selectedItem[vm.getSvgQuireN(svgId)].img2!=undefined">
+					ng-if="vm.selectedItem[vm.getSvgQuireN(svgId)].img2 !== undefined">
 					Unit between {{vm.selectedItem[vm.getSvgQuireN(svgId)].imageId2}} and 
 						{{vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId2}}, and between
 						{{vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId}} and {{vm.selectedItem[vm.getSvgQuireN(svgId)].imageId}}
 				</span>
 	        </form>
-	        <div  class="imgSelectorViscoll" ng-show="vm.selectedItem[vm.getSvgQuireN(svgId)].img2!=undefined">
+	        <div  class="imgSelectorViscoll" 
+	        	ng-if="vm.selectedItem[vm.getSvgQuireN(svgId)].img2 !== undefined">
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
 					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img2}}"
+					title="Go to page"
 					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].imageId2)"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
 					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin2}}"
+					title="Go to page"
 					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId2)"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
 					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin}}"
+					title="Go to page"
 					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId)"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
 					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img}}"
+					title="Go to page"
 					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].imageId)"></img>
+	        </div>
+	        <div  class="imgSelectorViscoll_empty" 
+	        	ng-if="vm.selectedItem[vm.getSvgQuireN(svgId)].img2 === undefined">
+	        	<span>Select a unit to see its composition.</span>
 	        </div>
 	    </div>
     </div>

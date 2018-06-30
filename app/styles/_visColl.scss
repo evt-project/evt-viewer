@@ -17,6 +17,12 @@
 	margin: 5px;
     max-height: 250px;
     width: 20%;
+	@include set(box-shadow, '0 2px 4px #000');
+
+	&:hover {
+		cursor: pointer;
+		@include set(box-shadow, 'none');
+	}
 }
 
 .selectorViscoll {
@@ -27,6 +33,21 @@
 .imgSelectorViscoll {
 	font-size: 0.5em;
 	display: block;
+
+	&_empty {
+		font-size: 0.5em;
+		height: 195px;
+		color: grey;
+		vertical-align: middle;
+		display: table;
+		text-align: center;
+		width: 100%;
+
+		span {
+			display:table-cell;
+ 			vertical-align:middle;
+		}
+	}
 }
 
 .quireSelector {
@@ -61,7 +82,6 @@
     overflow-y: hidden;
     position: relative;
     height: 100%;
-    top: 20px;
     vertical-align: top;
     padding-left: 20px;
 }
