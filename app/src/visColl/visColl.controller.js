@@ -24,4 +24,17 @@ angular.module('evtviewer.visColl')
     // 
     // metodi vari
 
+    vm.updateCurrentPage = function(value){
+        var pagesCollection = parsedData.getPages();
+        for (page in pagesCollection){
+            if(pagesCollection[page].n != undefined){
+                if(pagesCollection[page].n == value){
+                    evtInterface.updateState('currentPage', page);
+                    evtInterface.updateState('isVisCollOpened', false);
+                }
+            }
+        }
+        evtInterface.updateUrl();
+    };
+
 });

@@ -23,7 +23,7 @@
 	    </div>
         <div class="viscollItem-rightContainer">
 	        <form name="folioForm" class="selectorViscoll">
-	            <label for="folioSelect">Select a folio:</label>
+	            <label for="folioSelect">Select a unit:</label>
 	            <select name="folioSelect" id="folioSelect"
 	                ng-options="item.id for item in vm.svgCollection.svgs[svgId].svgLeaves"
 	                ng-model="vm.selectedItem[vm.getSvgQuireN(svgId)]"
@@ -38,16 +38,20 @@
 	        <div  class="imgSelectorViscoll" ng-show="vm.selectedItem[vm.getSvgQuireN(svgId)].img2!=undefined">
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img2}}"></img>
+					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img2}}"
+					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].imageId2)"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin2}}"></img>
+					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin2}}"
+					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId2)"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin}}"></img>
+					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].imgConjoin}}"
+					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].conjoinId)"></img>
 	            <img class="viscollImage" 
 	            	onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-	                ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img}}"></img>
+					ng-src="{{vm.selectedItem[vm.getSvgQuireN(svgId)].img}}"
+					ng-click="vm.updateCurrentPage(vm.selectedItem[vm.getSvgQuireN(svgId)].imageId)"></img>
 	        </div>
 	    </div>
     </div>

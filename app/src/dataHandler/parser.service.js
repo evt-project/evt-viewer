@@ -853,7 +853,11 @@ angular.module('evtviewer.dataHandler')
                                 svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
                                 svgLeaf.imageId = svgCollection.imglist[imgId].value;
                                 if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
-                                    svgLeaf.conjoinId = svgCollection.imglist[imgId].conjoinUrl.slice(29,33);
+                                    for (a in svgCollection.imglist){
+                                        if (svgCollection.imglist[imgId].id == svgCollection.imglist[a].conjoin){
+                                                svgLeaf.conjoinId = svgCollection.imglist[a].value;
+                                            }
+                                    }
                                 } else {
                                     svgLeaf.imgConjoin = "images/empty-image.jpg";
                                     svgLeaf.conjoinId = 'no folio'
@@ -863,7 +867,11 @@ angular.module('evtviewer.dataHandler')
                                 svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
                                 svgLeaf.imageId2 = svgCollection.imglist[imgId].value;
                                 if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
-                                    svgLeaf.conjoinId2 = svgCollection.imglist[imgId].conjoinUrl.slice(29,33);
+                                    for (b in svgCollection.imglist){
+                                        if (svgCollection.imglist[imgId].id == svgCollection.imglist[b].conjoin){
+                                                svgLeaf.conjoinId2 = svgCollection.imglist[b].value;
+                                            }
+                                    }
                                 } else {
                                     svgLeaf.imgConjoin2 = "images/empty-image.jpg";
                                     svgLeaf.conjoinId2 = 'no folio'
