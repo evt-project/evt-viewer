@@ -553,7 +553,7 @@ angular.module('evtviewer.dataHandler')
 	parser.analyzeEncoding = function(doc) {
 		// Check if uses line breaks to divide lines
 		var currentDocument = angular.element(doc);
-		var lineBreaks = currentDocument.find(defLineBreak.replace(/[<>]/g, ''));
+		var lineBreaks = currentDocument.find('body '+defLineBreak.replace(/[<>]/g, ''));
 		parsedData.setEncodingDetail('usesLineBreaks', lineBreaks.length > 0);
 
 		var lineNums = currentDocument.find(defLine.replace(/[<>]/g, '') + '[n]');
