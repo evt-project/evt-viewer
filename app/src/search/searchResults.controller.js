@@ -1,7 +1,7 @@
 angular.module('evtviewer.search')
 
-.controller('SearchResultsCtrl',['$scope', 'evtSearchResults', 'evtInterface', 'Utils',
-   function($scope,evtSearchResults, evtInterface, Utils) {
+.controller('SearchResultsCtrl',['$scope', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils',
+   function($scope, evtSearchResults, evtSearchBox, evtInterface, Utils) {
    var vm = this;
    
    vm.currentEdition = evtInterface.getState('currentEdition');
@@ -64,10 +64,12 @@ angular.module('evtviewer.search')
    };
    
    vm.goToAnchor = function() {
-      var eventElement;
+      var eventElement,
+         mainBoxId = $scope.$parent.vm.parentBoxId;
       
-      evtSearchResultsProvider.closeBox('searchResults');
-      evtSearchResultsProvider.showSearchResultsShowBtn();
+      evtSearchBox.closeBox(mainBoxId, 'searchResultBox');
+      evtSearchBox.showBtn(mainBoxId, 'searchResultsShow');
+      evtSearchBox.hideBtn(mainBoxId, 'searchResultsHide');
       eventElement = window.event.currentTarget;
       $(eventElement).addClass('selected');
       vm.goToAnchorPage();
