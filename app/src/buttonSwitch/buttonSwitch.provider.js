@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtSearch, evtSearchBox, evtSearchResults, evtSearchResultsProvider, evtSearchIndex) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -649,7 +649,7 @@ angular.module('evtviewer.buttonSwitch')
             case 'search':
                callback = function() {
                   scope.$parent.$parent.$$childHead.vm.placeholder = '';
-                  var inputValue = scope.$parent.vm.searchInput;
+                  var inputValue = scope.$parent.vm.getInputValue();
                   scope.$parent.vm.searchedTerm = inputValue;
                   
                   var input = {
@@ -658,16 +658,21 @@ angular.module('evtviewer.buttonSwitch')
                         scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
                      },
                      'default': function() {
-                        var results = evtSearchResults.getSearchResults(inputValue);
+                        var isCaseSensitive = scope.$parent.$parent.vm.getState('searchCaseSensitive');
+                        var results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
+                           currentBoxId = scope.$parent.$parent.vm.parentBoxId,
+                           currentEdition = evtBox.getEditionById(currentBoxId);
                         //TODO need refactoring
-                        scope.$parent.$parent.$$childHead.vm.currentEditionResults = evtSearchResults.getCurrentEditionResults(results, scope.$parent.$parent.$$childHead.vm.currentEdition);
+                        scope.$parent.$parent.$$childHead.vm.currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition);
                         scope.$parent.$parent.$$childHead.vm.visibleRes = evtSearchResults.getVisibleResults(scope.$parent.$parent.$$childHead.vm.currentEditionResults);
                      }
                   };
                   
-                  (input[inputValue] || input['default'])()
-                  evtSearchResultsProvider.openBox('searchResults');
-                  evtSearchResultsProvider.showSearchResultsHideBtn();
+                  (input[inputValue] || input['default'])();
+                  
+                  scope.$parent.$parent.vm.status['searchResultBox'] = true;
+                  scope.$parent.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.button.hide = true;
+                  scope.$parent.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.button.hide = false;
                };
                break;
             case 'searchIndex':
@@ -675,21 +680,19 @@ angular.module('evtviewer.buttonSwitch')
                disabled = (
                   function() {
                      if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
-                        console.log('INDEX DISABLE', evtInterface.getToolState('isDocumentIndexed'));
                         return true;
                      }
                   })();
                active = (
                   function() {
                      if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
-                        console.log('INDEX STATE', evtInterface.getToolState('isDocumentIndexed'));
                         return false;
                      }
                   }
                )();
                function indexingInProgress() {
                   var deferred = $q.defer();
-                  evtSearchBox.updateStatus('indexingInProgress');
+                  evtInterface.updateState('indexingInProgress', true);
                   setTimeout(function() {
                      deferred.resolve();
                   }, 100);
@@ -703,12 +706,10 @@ angular.module('evtviewer.buttonSwitch')
                            searchToolsBtn,
                            searchIndexBtn;
          
-                        searchIndexBtn = button.getByType('searchIndex');
-                        for (var i in searchIndexBtn) {
-                           searchIndexBtn[i].active = false;
-                           searchIndexBtn[i].disable();
-                        }
-         
+                        searchIndexBtn = button.getByType('searchIndex')[0];
+                        searchIndexBtn.active = false;
+                        searchIndexBtn.disable();
+                        
                         evtSearch.initSearch(xmlDocDom);
                         evtInterface.setToolStatus('isDocumentIndexed', 'true');
          
@@ -716,8 +717,8 @@ angular.module('evtviewer.buttonSwitch')
                         for(var z in searchToolsBtn) {
                            searchToolsBtn[z].disabled = false;
                         }
-         
-                        evtSearchBox.updateStatus('indexingInProgress');
+   
+                        evtInterface.updateState('indexingInProgress', false);
                      }
                   );
                }
@@ -733,20 +734,31 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsShow':
                callback = function() {
+                  var parentBoxId = scope.$parent.vm.parentBoxId;
+                  
                   scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
-                  evtSearchResultsProvider.toggleSearchResults();
+                  evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
                };
                break;
             case 'searchResultsHide':
                callback = function() {
-                  evtSearchResultsProvider.toggleSearchResults();
+                  var parentBoxId = scope.$parent.vm.parentBoxId;
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
                };
                break;
             case 'searchCaseSensitive':
                btnType = 'standAlone';
                callback = function() {
-                  evtSearchBox.updateStatus('searchCaseSensitive');
-                  evtSearchResults.highlightSearchResults(scope.$parent.vm.searchInput);
+                  var currentSearchBox = scope.$parent.vm,
+                     mainBoxId = scope.$parent.vm.parentBoxId;
+                  
+                  evtSearchBox.updateStatus(currentSearchBox.parentBoxId, 'searchCaseSensitive');
+                  evtSearchResults.highlightSearchResults(mainBoxId, currentSearchBox.searchInput);
                };
                break;
             case 'searchToolsInternal':
@@ -761,11 +773,14 @@ angular.module('evtviewer.buttonSwitch')
                      }
                   })();
                var activeCallback = function () {
-                  var searchBoxStatus = scope.$parent.vm.getState('searchBox');
-                  scope.$parent.vm.updateState('searchBox', !searchBoxStatus);
+                  var searchBoxStatus = scope.$parent.vm.getState('searchBox'),
+                     parentBox = scope.$parent.vm;
+   
+                  parentBox.updateState('searchBox', !searchBoxStatus);
+                  evtSearchBox.closeBox(parentBox.id, 'searchResultBox');
                   
-                  evtSearchResultsProvider.closeBox('searchResults');
-                  evtSearchResultsProvider.showSearchResultsShowBtn();
+                  evtSearchBox.showBtn(parentBox.id, 'searchResultsShow');
+                  evtSearchBox.hideBtn(parentBox.id, 'searchResultsHide');
                };
                callback = function () {
                   if(evtInterface.getToolState('isDocumentIndexed') === 'true') {

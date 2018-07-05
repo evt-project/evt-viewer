@@ -1,14 +1,16 @@
-<div class="search-results" id="" ng-class="{'open' : vm.getState('searchResults')}">
+<div class="search-results" ng-show="$parent.vm.getState('searchResultBox')">
 
-   <div ng-if="vm.getInputValue() !== ''" infinite-scroll="vm.loadMoreElements()" infinite-scroll-parent="true">
+   <div ng-show="$parent.vm.getSearchedTerm() !== ''" infinite-scroll="vm.loadMoreElements()" infinite-scroll-parent="true">
+
       <div class="search-info">
-         <p>Search for <strong>{{vm.getInputValue()}}</strong></p>
+         <p>Search for <strong>{{$parent.vm.getSearchedTerm()}}</strong></p>
          <p>We have found <span>{{vm.getResultsNumber()}}</span> results in the selected edition</p>
       </div>
 
       <!-- Results for diplomatic edition -->
-      <div class="token-results" ng-repeat="result in vm.visibleRes track by $index" ng-if="vm.currentEdition == 'diplomatic'">
-         <div class="token">
+      <div class="token-results" ng-if="$parent.vm.getBoxEdition($parent.vm.parentBoxId) === 'diplomatic'">
+
+         <div class="token" ng-repeat="result in vm.visibleRes track by $index"  >
             <span ng-click="vm.toggle()" class="icon"></span>
             Results for <span class="result-token">{{result.token}}</span>
             in <span class="result-doc">{{result.diplomaticText.xmlDocTitle[$index]}}</span>
@@ -28,11 +30,13 @@
             </ul>
 
          </div>
+
       </div>
 
       <!-- Results for interpretative edition -->
-      <div class="token-results" ng-repeat="result in vm.visibleRes track by $index" ng-if="vm.currentEdition == 'interpretative'">
-         <div class="token">
+      <div class="token-results" ng-if="$parent.vm.getBoxEdition($parent.vm.parentBoxId) == 'interpretative'">
+
+         <div class="token" ng-repeat="result in vm.visibleRes track by $index">
             <span ng-click="vm.toggle()" class="icon"></span>
             Results for <span class="result-token">{{result.token}}</span>
             in <span class="result-doc">{{result.interpretativeText.xmlDocTitle[$index]}}</span>
@@ -52,9 +56,10 @@
             </ul>
 
          </div>
+
       </div>
    </div>
 
-   <div class="search-info" ng-if="vm.getInputValue() == ''">{{vm.placeholder}}</div>
+   <div class="search-info" ng-show="$parent.vm.getInputValue() === ''">{{vm.placeholder}}</div>
 
 </div>

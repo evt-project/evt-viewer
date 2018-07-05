@@ -6,68 +6,91 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function () {
+      this.$get = function (evtBox) {
          var searchBox = [],
-            collection = {};
+            searchBoxCollection = {},
+            searchBoxId;
          
          searchBox.build = function (scope, vm) {
             var status = {
+               searchResultBox: false,
                searchCaseSensitive : false,
-               progressBar : false,
-               indexingInProgress : false
+               progressBar : false
             };
             var searchBoxBtn = [
                {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
-               {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide'},
+               {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide', hide: true},
                {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
                {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
                {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},
                {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
                {title: 'Search', label: '', icon: 'search', type: 'search'}
             ];
+            var parentBoxId = scope.$parent.id;
+            searchBoxId = parentBoxId + 'searchBox';
+            
             var scopeHelper = {
                status: status,
-               searchBoxBtn: searchBoxBtn
+               searchBoxBtn: searchBoxBtn,
+               parentBoxId: parentBoxId,
+               searchBoxId: searchBoxId
             };
             
-            collection = angular.extend(vm, scopeHelper);
-            return collection;
+            searchBoxCollection[parentBoxId] = angular.extend(vm, scopeHelper);
+            return searchBoxCollection[parentBoxId];
          };
          
          searchBox.getDefaults = function (key) {
             return defaults[key];
          };
          
-         searchBox.getSearchResults = function () {
-            return collection.searchResults;
+         searchBox.getSearchResults = function (parentBoxId) {
+            return searchBoxCollection[parentBoxId].searchResults;
          };
          
-         searchBox.getInputValue = function () {
-            return collection.searchedTerm;
+         searchBox.getInputValue = function (parentBoxId) {
+            searchBoxCollection[parentBoxId].searchedTerm = searchBoxCollection[parentBoxId].searchInput;
+            return searchBoxCollection[parentBoxId].searchedTerm;
          };
          
-         searchBox.getStatus = function (key) {
-            return collection.status[key];
+         searchBox.getStatus = function (parentBoxId, key) {
+            if(searchBoxCollection[parentBoxId].status) {
+               return searchBoxCollection[parentBoxId].status[key];
+            }
          };
          
-         searchBox.updateStatus = function (key) {
-            collection.status[key] = collection.updateState(key);
+         searchBox.updateStatus = function (parentBoxId, key) {
+            searchBoxCollection[parentBoxId].status[key] = !searchBoxCollection[parentBoxId].status[key];
          };
          
-         searchBox.toggleBox = function (key) {
-            searchBox.updateStatus(key);
+         searchBox.closeBox = function (parentBoxId, key) {
+            var currentBox;
+            
+            for(var i in searchBoxCollection) {
+               currentBox = searchBoxCollection[i];
+               if (currentBox.parentBoxId === parentBoxId) {
+                  currentBox.status[key] = false;
+                  return currentBox.status[key];
+               }
+            }
          };
          
-         searchBox.openBox = function (key) {
-            collection.status[key] = true;
+         searchBox.showBtn = function (parentBoxId, type) {
+            var currentBoxButtons = searchBoxCollection[parentBoxId].searchBoxBtn;
+            for(var i in currentBoxButtons) {
+               if(currentBoxButtons[i].type === type) {
+                  currentBoxButtons[i].hide = false;
+               }
+            }
          };
-         
-         searchBox.closeBox = function (key) {
-            collection.status[key] = false;
-         };
-         
-         searchBox.enableProgressBar = function () {
-            collection.enableProgressBar();
+   
+         searchBox.hideBtn = function (parentBoxId, type) {
+            var currentBoxButtons = searchBoxCollection[parentBoxId].searchBoxBtn;
+            for(var i in currentBoxButtons) {
+               if(currentBoxButtons[i].type === type) {
+                  currentBoxButtons[i].hide = true;
+               }
+            }
          };
          
          return searchBox;

@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
 
-.directive('evtSearchResults', ['evtSearchResultsProvider', 'evtInterface', function(evtSearchResultsProvider, evtInterface) {
+.directive('evtSearchResults', ['evtInterface', function(evtInterface) {
    return {
       restrict: 'E',
       templateUrl : 'src/search/searchResults.directive.tmpl.html',
@@ -8,7 +8,6 @@ angular.module('evtviewer.search')
       controllerAs: 'vm',
       controller: 'SearchResultsCtrl',
       link: function(scope) {
-         evtSearchResultsProvider.build(scope, scope.vm);
    
          scope.$watch(function() {
             return evtInterface.getState('currentEdition');

@@ -1,5 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchBoxCtrl', ['config', 'evtInterface', 'evtSearchBox', 'evtSearchResultsProvider', 'evtSearchResults', 'evtButtonSwitch', function (config, evtInterface, evtSearchBox, evtSearchResultsProvider, evtSearchResults, evtButtonSwitch) {
+   .controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResults', 'evtBox',
+      function ($scope, config, evtInterface, evtSearchBox, evtSearchResults, evtBox) {
       var vm = this;
       
       vm.searchInput = '';
@@ -8,21 +9,31 @@ angular.module('evtviewer.search')
       vm.visibleRes = [];
       
       vm.getState = function (key) {
-         return evtSearchBox.getStatus(key);
+         if(vm.status) {
+            return vm.status[key];
+         }
       };
       
       vm.updateState = function (key) {
-         var currentState = vm.getState(key);
-         currentState = !currentState;
-         return currentState;
+         vm.status[key] = !vm.status[key];
+         return vm.status[key];
       };
       
-      vm.getSearchResultsState = function () {
-         return evtSearchResultsProvider.getStatus('searchResults');
+      vm.getBoxEdition = function (boxId) {
+        return evtBox.getEditionById(boxId);
       };
       
       vm.getInputValue = function () {
-         return evtSearchBox.getInputValue();
+         return vm.searchInput;
+      };
+      
+      vm.getSearchedTerm = function () {
+         return vm.searchedTerm;
+      };
+      
+      vm.closeBox = function(key) {
+         vm.status[key] = false;
+         return vm.status[key];
       };
       
       vm.loadMoreElements = function () {
@@ -39,22 +50,14 @@ angular.module('evtviewer.search')
          }
       };
       
-      vm.highlightSearchResults = function (inputValue) {
-         return evtSearchResults.highlightSearchResults(inputValue);
+      vm.highlightSearchResults = function (mainBoxId, inputValue) {
+         return evtSearchResults.highlightSearchResults(mainBoxId, inputValue);
       };
       
       vm.doSearchCallback = function () {
-         var btnList = evtButtonSwitch.getList(),
-            searchBtn;
-         
-         btnList.forEach(function (btn) {
-            if (btn.type === 'search') {
-               searchBtn = evtButtonSwitch.getById(btn.id);
-            }
-         });
-         
-         if(searchBtn) {
-            searchBtn.doCallback();
+         if($scope.$$childTail.$$childHead) {
+            var currentSearchBtn = $scope.$$childTail.$$childHead.vm;
+            currentSearchBtn.doCallback();
          }
       };
       

@@ -1,9 +1,10 @@
 var Mark = require('mark.js');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils', function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
+   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
+      function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
       
-      SearchResults.prototype.getSearchResults = function (inputValue) {
+      SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive) {
          var searchResults;
          
          var input = {
@@ -11,7 +12,7 @@ angular.module('evtviewer.dataHandler')
                searchResults = 'Enter your query into the search box above';
             },
             'default': function () {
-               searchResults = getResultsMetadata(inputValue);
+               searchResults = getResultsMetadata(inputValue, isCaseSensitive);
             }
          };
          (input[inputValue] || input['default'])();
@@ -33,39 +34,18 @@ angular.module('evtviewer.dataHandler')
          return evtSearchIndex.getIndex();
       }
       
-      function getCaseSensitiveResults(inputValue) {
-         var index = getIndex();
-         return evtSearchQuery.query(index, inputValue);
-      }
-   
-      function getCaseInsensitiveResults(inputValue) {
-         var index = getIndex(),
-            result = [];
-         
-         for(var token in index.invertedIndex) {
-            if(token.toLowerCase() === inputValue.toLowerCase()) {
-               result = result.concat(evtSearchQuery.query(index, token));
-            }
-         }
-         
-         return result;
-      }
-      
-      function getResultsMetadata(inputValue) {
-         var caseSensitiveResults = getCaseSensitiveResults(inputValue),
-            caseInsensitiveResults = getCaseInsensitiveResults(inputValue),
-            res,
+      function getResultsMetadata(inputValue, isCaseSensitive) {
+         var res,
+            results,
             diplResult = {},
             interprResult = {};
          
-         var isCaseSensitive = evtSearchBox.getStatus('searchCaseSensitive');
-         res = isCaseSensitive ? caseSensitiveResults : caseInsensitiveResults;
-         
-         var results = {
+         results = {
             diplomatic: [],
             interpretative: []
          };
-   
+         
+         res = isCaseSensitive ? getCaseSensitiveResults(inputValue) : getCaseInsensitiveResults(inputValue);
          res.forEach(function (result) {
             var metadata = result.matchData.metadata;
             for (var token in metadata) {
@@ -99,37 +79,54 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
       
+      function getCaseSensitiveResults(inputValue) {
+         var index = getIndex();
+         return evtSearchQuery.query(index, inputValue);
+      }
+   
+      function getCaseInsensitiveResults(inputValue) {
+         var index = getIndex(),
+            result = [];
+      
+         for(var token in index.invertedIndex) {
+            if(token.toLowerCase() === inputValue.toLowerCase()) {
+               result = result.concat(evtSearchQuery.query(index, token));
+            }
+         }
+      
+         return result;
+      }
+      
       SearchResults.prototype.getCurrentEditionResults = function (searchResults, currentEdition) {
-         var currentResults = [];
-         var edition = {
-            'diplomatic': function () {
+         var currentResults = [],
+            edition = {
+               'diplomatic': function () {
                var diplomaticResults = searchResults.diplomatic;
                diplomaticResults.forEach(function (result) {
                   currentResults.push(result);
                });
             },
-            'interpretative': function () {
+               'interpretative': function () {
                var interpretativeResults = searchResults.interpretative;
                interpretativeResults.forEach(function (result) {
                   currentResults.push(result);
                });
             }
-         };
+            };
          edition[currentEdition]();
          return currentResults;
       };
       
       SearchResults.prototype.getOriginalText = function (lineId, currentEdition) {
-         var parsedData = evtSearch.getParsedElementsForIndexing();
-         
-         var edition = {
-            'diplomatic': function () {
-               return parsedData[lineId].content.diplomatic || parsedData[lineId].content;
-            },
-            'interpretative': function () {
-               return parsedData[lineId].content.interpretative;
-            }
-         };
+         var parsedData = evtSearch.getParsedElementsForIndexing(),
+            edition = {
+               'diplomatic': function () {
+                  return parsedData[lineId].content.diplomatic || parsedData[lineId].content;
+               },
+               'interpretative': function () {
+                  return parsedData[lineId].content.interpretative;
+               }
+            };
          return edition[currentEdition]();
       };
       
@@ -156,13 +153,12 @@ angular.module('evtviewer.dataHandler')
          if(splitText.length < 15) {
             textPreview = textBeforeReplace.join(' ') + ' ' + textAfterReplace.join(' ');
          }
-         
          return textPreview;
       };
       
-      SearchResults.prototype.highlightSearchResults = function (inputValue) {
-         var instance = new Mark(document.querySelector('#mainContentToTranform')),
-            isCaseSensitive = evtSearchBox.getStatus('searchCaseSensitive');
+      SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
+         var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
+            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
          
          instance.unmark(inputValue);
          instance.mark(inputValue, {
@@ -170,7 +166,7 @@ angular.module('evtviewer.dataHandler')
             'acrossElements': true,
             'caseSensitive': isCaseSensitive,
             'accuracy': {
-               'value': 'exactly',
+               'value': 'partially',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
             'filter': function() {

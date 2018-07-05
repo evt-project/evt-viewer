@@ -3,17 +3,12 @@
 /* *************************** */
 
 .search-box.internal {
-   /*min-width: calc(100% - #{$mainContainer-border-width*2*2});
-   position: absolute;
-   bottom: 5px;
-   left: $mainContainer-border-width*2;
-   margin: 40px 0;
-   background: $box-background-color;*/
    &.results-open {
       @include calc(max-height, #{setInsideFrameHeight()} - 5px);
       transition: max-height .5s;
    }
    button-switch {
+      margin-right: 0;
       &[data-type="searchCaseSensitive"] {
          .buttonSwitch-active {
             background-color: $buttonSwitch-active-background-color;
@@ -36,18 +31,11 @@
    .btn-left {
       float: left;
       button-switch[data-type='searchResultsHide'] {
-         display: none;
-         position: absolute;
-         left: -1px;
-         top: 0;
          @include border($mainContainer-border-width, left, $base-color-dark);
       }
    }
    .btn-right {
       float: right;
-   }
-   button-switch {
-      margin-right: 0;
    }
    input[type="text"] {
       height: $search-input-height;
@@ -58,47 +46,41 @@
       border: transparent;
    }
    .search-results {
-      height:0;
+      height: 95%;
+      padding: $base-padding;
       p {
-         display: none;
+         display: block;
+         margin-top: 0;
       }
-      &.open {
-         height: 95%;
-         padding: $base-padding;
-         p {
-            display: block;
-            margin-top:0;
+      .token {
+         padding-bottom: 5px;
+      }
+      .icon:before {
+         content: '\25B6';
+         font-size: 12px;
+         position: relative;
+         bottom: 2px;
+         left: 3px;
+         cursor: pointer;
+      }
+      .icon.active:before {
+         content: '\25BC';
+         cursor: pointer;
+      }
+      .search-info {
+         text-align: center;
+         background-color: #fff;
+         position: absolute;
+         z-index: 1;
+         width: calc(100% - #{$mainContainer-border-width*8});
+         top: $search-box-height + $mainContainer-border-width*2;
+         left: 0;
+         padding-top: 15px;
+         p:first-child {
+            margin-bottom: 0;
          }
-         .token {
-            padding-bottom: 5px;
-         }
-         .icon:before {
-            content: '\25B6';
-            font-size: 12px;
-            position: relative;
-            bottom: 2px;
-            left: 3px;
-            cursor: pointer;
-         }
-         .icon.active:before {
-            content: '\25BC';
-            cursor: pointer;
-         }
-         .search-info {
-            text-align: center;
-            background-color: #fff;
-            position: absolute;
-            z-index: 1;
-            width: calc(100% - #{$mainContainer-border-width*8});
-            top: $search-box-height + $mainContainer-border-width*2;
-            left: 0;
-            padding-top:15px;
-            p:first-child {
-               margin-bottom: 0;
-            }
-            + .token-results {
-               padding-top: 80px;
-            }
+         + .token-results {
+            padding-top: 80px;
          }
       }
       .result-token,

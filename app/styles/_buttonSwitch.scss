@@ -10,6 +10,7 @@ $buttonSwitch-active-background-color: $base-color-active-background;
 $buttonSwitch-active-color: $base-color-active;
 button-switch {
     margin-right: 5px;
+    display: inline-block;
 
     .buttonSwitch {
         min-height: 28px;
