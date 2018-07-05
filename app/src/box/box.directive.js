@@ -100,10 +100,19 @@ angular.module('evtviewer.box')
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
                 boxBody = angular.element(element).find('.box-body')[0];
-
+            
+            //$timeout(function(){console.log("timeout 2000", scope, scope.vm)},2000);
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
+               
+                // tentativo di mettere OSD - FIXME - non va bene qui!!
+                if (currentBox.type === 'image') {
+                        console.log("box di tipo immagine");
+                                                           
+                       
+
+                }
 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
                     // Scrol box to update page numbers
@@ -432,6 +441,7 @@ angular.module('evtviewer.box')
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
+                    console.log("aggiorno contenuto pagina testo");
                     currentBox.updateContent();
    
                    $timeout(function() {

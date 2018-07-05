@@ -586,35 +586,11 @@ angular.module('evtviewer.box')
                     
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var currentPage = evtInterface.getState('currentPage'),
-							currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
-							pageSource = currentPageObj ? currentPageObj.source : '';
-						pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
-						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/fol_214v.jpg\')"/>';
-						// TODO: Add translation for alt text
-						// TEMP... TODO: creare direttiva per gestire le zone sull'immagine
-						var zonesHTML = '',
-							zones = parsedData.getZones();
-						for (var zoneId in zones._indexes) {
-							var zone = zones[zones._indexes[zoneId]];
-							if (zone) {
-								if (zone.page === currentPage) {
-									zonesHTML += '<div class="zoneInImg" data-zone-id="' + zone.id + '" data-zone-name="' + zone.rendition + '"';
-									if (zone.corresp && zone.corresp !== '') {
-										var correspId = zone.corresp.replace('#', '');
-										zonesHTML += ' data-corresp-id="' + correspId + '"';
-										if (zone.rendition === 'Line') {
-											zonesHTML += ' data-line="' + correspId + '"';
-										} else if (zone.rendition === 'HotSpot') {
-											zonesHTML += ' data-hs="' + correspId + '"';
-										}
-									}
-									zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', ' + zone.lry + ') (' + zone.ulx + ', ' + zone.uly + ') </div>';
-								}
-							}
-						}
-						scope.vm.content += zonesHTML;
-						// =/ END TEMP
+						console.log("function update content Image");
+
+						console.log("func update image: current page:", evtInterface.getState('currentPage'));
+						evtInterface.updateState('currentPage',evtInterface.getState('currentPage'));
+
 						scope.vm.isLoading = false;
 					};
 					break;

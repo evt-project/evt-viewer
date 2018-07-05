@@ -206,10 +206,12 @@
             @include colors($box-structure-color-light, #000);
             overflow: hidden;
             text-align: center;
+            padding: 0ex;
             img {
                 height: 100%;
             }
         }
+        
     }
     //TEXT
     &.box-text, &.box-critical_apparatus {

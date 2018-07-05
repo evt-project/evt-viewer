@@ -431,10 +431,19 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      */
-	var zonesCollection = {
-		_indexes: []
-	};
-	/**
+      var zonesCollection = {
+         _indexes: []
+      };
+
+
+      /**
+       * TODO: add the documentation info
+       */
+
+      var hotspotCollection = {
+         _indexes: []
+      };
+      /**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#namedEntities
      * @propertyOf evtviewer.dataHandler.parsedData
@@ -2072,7 +2081,7 @@ angular.module('evtviewer.dataHandler')
 				if (color) {
                     filtersCollection.colors.push(color);
                 }
-                
+
 				var valueObj = {
 					name: value,
 					color: color
@@ -2500,7 +2509,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
-   
+ 
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -2718,18 +2727,55 @@ angular.module('evtviewer.dataHandler')
 		return zonesCollection[zoneId];
 	};
 
-	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#isITLAvailable
-     * @methodOf evtviewer.dataHandler.parsedData
-     *
-     * @description
-     * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
-     * @returns {boolean} Whether the Image-Text Linking tool is available or not
-     */
-	parsedData.isITLAvailable = function() {
-		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
-	};
+
+      /**
+       * TODO:add documentation
+       */
+
+      parsedData.addHotSpot = function (hotspot) {
+		  console.log('addHotSpot', hotspot);
+         var hotSpotId,
+            hotSpotIndexes = hotspotCollection._indexes;
+
+         if (hotspot && hotspot.id !== '') {
+            hotSpotId = hotspot.id;
+         } else {
+            hotSpotId = hotspot.id = 'hotspot_' + (zoneIndexes + 1);
+         }
+         if (hotspotCollection[hotSpotId] === undefined) {
+            hotSpotIndexes[hotSpotIndexes.length] = hotSpotId;
+            hotspotCollection[hotSpotId] = hotspot;
+            hotSpotIndexes.length++;
+            _console.log('parsedData - addHotSpot ', hotspot);
+         }
+      };
+
+      parsedData.getHotSpots = function () {
+
+         return hotspotCollection;
+
+      };
+
+      parsedData.getHotSpot = function (hotspotId) {
+		  console.log('getHotSpot', hotspotId);
+
+         return hotspotCollection[hotspotId];
+
+      };
+
+
+      /**
+       * @ngdoc method
+       * @name evtviewer.dataHandler.parsedData#isITLAvailable
+       * @methodOf evtviewer.dataHandler.parsedData
+       *
+       * @description
+       * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
+       * @returns {boolean} Whether the Image-Text Linking tool is available or not
+       */
+      parsedData.isITLAvailable = function () {
+         return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
+      };
 
 	// ///////////////// //
 	// SOURCES APPARATUS //

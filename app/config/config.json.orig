@@ -1,12 +1,12 @@
 {
-    "indexTitle": "Edizione digitale del Rotulo di San Teobaldo",
+    "indexTitle": "",
     "webSite": "",
     "logoUrl": "",
 
-    "dataUrl":"data/rotoloSanTeobaldo.xml",
-    "sourcesUrl"       : "",
-    "analoguesUrl"     : "",
-    "sourcesTextsUrl" : "",
+	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
+    "sourcesUrl"       : "data/sources.xml",
+    "analoguesUrl"     : "data/analogues.xml",
+    "sourcesTextsUrl" : "data/sources/",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
@@ -31,7 +31,7 @@
                                 "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "COLLATION",
@@ -45,24 +45,24 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "diplomatic",
+    "defaultEdition": "critical",
     "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "enableXMLdownload" : true,
@@ -70,7 +70,7 @@
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
 
-    "namedEntitiesSelector": true,
+    "namedEntitiesSelector": false,
 
     "namedEntitiesToHandle": [{
         "tagName": "persName",
@@ -89,17 +89,17 @@
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
         "label": "Role Name",
-        "available": true,
+        "available": false,
         "color": "#cfc"
     }, {
         "tagName": "measure",
         "label": "Measure",
-        "available": true,
+        "available": false,
         "color": "#ffecb3"
     }],
 
 
-    "toolHeatMap": false,
+    "toolHeatMap": true,
     "preferredWitness": "",
     "skipWitnesses": "",
 
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": true,
+    "showDocumentSelector": false,
 
 	"variantColors": {
 		"type": {
@@ -136,8 +136,18 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-    "versions" : [],
-    "witnessesGroups": [ ],
+
+    "versions" : ["rec2", "rec1", "rec3"],
+    "witnessesGroups": [
+        {
+            "groupName" : "Grp_1",
+            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
+        },
+        {
+            "groupName" : "Grp_2",
+            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
+        }
+    ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
