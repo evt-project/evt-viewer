@@ -358,6 +358,12 @@
                 <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
             </section>
             <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
+           <!-- INDEXING IN PROGRESS -->
+           <section id="main-container"
+                    class="viewMode indexingInProgress"
+                    ng-show="getState('indexingInProgress')">
+              <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+           </section>
         </section>
 
         <section class="global-msg-container"
@@ -440,8 +446,10 @@
     <script src="/src/core/eventDispatcher.service.js"></script>
     <script src="/src/core/compile.directive.js"></script>
     <script src="/src/core/filters.js"></script>
+    <script src="/src/core/XPATH.constant.js"></script>
 
     <script src="/src/dataHandler/dataHandler.js"></script>
+    <script src="/src/dataHandler/baseData.service.js"></script>
     <script src="/src/dataHandler/baseData.service.js"></script>
 
 		<script src="/src/dataHandler/parsedData.service.js"></script>
