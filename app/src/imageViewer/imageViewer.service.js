@@ -9,7 +9,7 @@
         var options = {
             id: "osd_img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
-            tileSources: "data/tails/scaled_70_verticale.dzi", // immagine per rotulo Alba
+            tileSources: "data/tiles/scaled_70_verticale.dzi", // immagine per rotulo Alba
             //tileSources: "data/test-img/quamusdzi/QuamusImgManuscript.dzi", // immagine per Marocco
             //overlays: [{
             //    id: 'example-overlay',
