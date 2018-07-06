@@ -182,7 +182,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			} else {
 				if (!parsedData.getEncodingDetail('usesLineBreaks') && tagName === 'l') {
-					newElement = parser.parseLine(element);
+					newElement = parser.parseLine(doc, element, options);
 				} else if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
@@ -638,7 +638,7 @@ angular.module('evtviewer.dataHandler')
 		var n = 0;
 		while (n < lines.length) {
 			var lineNode = lines[n],
-				newElement = parser.parseLine(lineNode);
+				newElement = parser.parseLine(docDOM, lineNode, {});
 			lineNode.parentNode.replaceChild(newElement, lineNode);
 		}
 	};
@@ -658,7 +658,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-	parser.parseLine = function(lineNode) {
+	parser.parseLine = function(doc, lineNode, options) {
 		var newElement = document.createElement('div');
 		newElement.className = lineNode.tagName + ' l-block';
 		for (var i = 0; i < lineNode.attributes.length; i++) {
@@ -674,7 +674,9 @@ angular.module('evtviewer.dataHandler')
 			lineNumElem.className = 'lineN';
 			lineNumElem.textContent = lineNum;
 			newElement.className += ' l-hasLineN';
-			newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">' + newElement.innerHTML + '</span>';
+
+			var parsedElement = parser.parseXMLElement(doc, newElement, options);
+			newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">' + parsedElement.outerHTML + '</span>';
 			//newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
 		} else if (parsedData.getEncodingDetail('lineNums')) {
 			newElement.className += ' l-indent';
