@@ -13,7 +13,7 @@ angular.module('evtviewer.search')
             return evtInterface.getState('currentEdition');
          }, function(newVal) {
             scope.vm.currentEdition = evtInterface.getState('currentEdition');
-            if(scope.$parent.searchInput !== '') {
+            if(scope.$parent.searchInput !== '' && scope.$parent.searchInput !== undefined) {
                scope.$parent.vm.doSearchCallback();
             }
          }, true);
