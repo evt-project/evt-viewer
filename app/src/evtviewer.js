@@ -85,5 +85,6 @@ angular
         'evtviewer.apparatuses',
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools'
+        'evtviewer.UItools',
+        'evtviewer.glossary'
     ]);
