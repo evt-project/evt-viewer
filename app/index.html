@@ -51,7 +51,6 @@
         </a>
 
         <div class="globalMenu">
-            <titolo></titolo>
          <div class="viewModeMenu">
                 <button-switch
                         title="VIEW_MODES.{{::mode.label}}"
@@ -178,7 +177,7 @@
             <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
             <!-- READING TEXT -->
             <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
-                <box data-type="text"
+                <box titolo data-type="text"
                      data-edition="{{getCurrentEdition()}}"
                      id="mainText"
                      ng-class="{'centered': !isPinnedAppBoardOpened(),
@@ -610,6 +609,7 @@
 
     <script src="/src/glossary/glossary.js"></script>
     <script src="/src/glossary/glossary.directive.js"></script>
+    
     <!-- endinjector -->
     <!-- endbuild -->
 
