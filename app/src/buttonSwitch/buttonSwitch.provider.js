@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtVirtualKeyboard) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -798,8 +798,30 @@ angular.module('evtviewer.buttonSwitch')
                };
                break;
             case 'searchVirtualKeyboard':
-               disabled = true;
-               callback = function() {}
+               callback = function() {
+                  var keyboardId = scope.$parent.vm.keyboardId,
+                     keyboard =  $('#'+keyboardId).getkeyboard(),
+                     keyboardContainer;
+                  
+                  if(keyboard === undefined) {
+                     evtVirtualKeyboard.build(scope, vm);
+                  }
+                  keyboard = $('#'+keyboardId).getkeyboard();
+                  
+                  if(keyboard.isOpen) {
+                     keyboard.close();
+                  }
+                  else {
+                     keyboard.reveal();
+                     keyboardContainer = $('.keyboard-container');
+                     for(var i = 0; i < keyboardContainer.length; i++) {
+                        if(keyboardId === keyboardContainer[i].id) {
+                           keyboardContainer = keyboardContainer[i];
+                        }
+                     }
+                     $('.ui-keyboard').appendTo(keyboardContainer);
+                  }
+               }
                break;
             case 'searchPrevResult':
                disabled = true;

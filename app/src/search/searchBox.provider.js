@@ -6,7 +6,7 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function (evtBox) {
+      this.$get = function () {
          var searchBox = [],
             searchBoxCollection = {},
             searchBoxId;
@@ -27,7 +27,7 @@ angular.module('evtviewer.search')
                {title: 'Search', label: '', icon: 'search', type: 'search'}
             ];
             var parentBoxId = scope.$parent.id;
-            searchBoxId = parentBoxId + 'searchBox';
+            searchBoxId = parentBoxId + 'SearchBox';
             
             var scopeHelper = {
                status: status,
