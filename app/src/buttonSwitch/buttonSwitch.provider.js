@@ -649,7 +649,10 @@ angular.module('evtviewer.buttonSwitch')
             case 'search':
                callback = function() {
                   scope.$parent.$parent.$$childHead.vm.placeholder = '';
-                  var inputValue = scope.$parent.vm.getInputValue();
+                  
+                  var inputValue = scope.$parent.vm.getInputValue(),
+                     boxId = scope.$parent.id;
+                  
                   scope.$parent.vm.searchedTerm = inputValue;
                   
                   var input = {
@@ -671,8 +674,9 @@ angular.module('evtviewer.buttonSwitch')
                   (input[inputValue] || input['default'])();
                   
                   scope.$parent.$parent.vm.status['searchResultBox'] = true;
-                  scope.$parent.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.button.hide = true;
-                  scope.$parent.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.button.hide = false;
+                  evtSearchBox.hideBtn(scope.$parent.vm.parentBoxId, 'searchResultsShow');
+                  evtSearchBox.showBtn(scope.$parent.vm.parentBoxId, 'searchResultsHide');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, boxId);
                };
                break;
             case 'searchIndex':
@@ -740,6 +744,7 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
                   evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);
                };
                break;
             case 'searchResultsHide':
@@ -749,6 +754,7 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
                   evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);
                };
                break;
             case 'searchCaseSensitive':
@@ -798,28 +804,17 @@ angular.module('evtviewer.buttonSwitch')
                };
                break;
             case 'searchVirtualKeyboard':
+               btnType='standAlone';
                callback = function() {
-                  var keyboardId = scope.$parent.vm.keyboardId,
-                     keyboard =  $('#'+keyboardId).getkeyboard(),
-                     keyboardContainer;
-                  
-                  if(keyboard === undefined) {
-                     evtVirtualKeyboard.build(scope, vm);
-                  }
-                  keyboard = $('#'+keyboardId).getkeyboard();
-                  
-                  if(keyboard.isOpen) {
+                  var vm = this,
+                     keyboardId = scope.$parent.vm.keyboardId,
+                     keyboard =  $('#'+keyboardId).getkeyboard();
+   
+                  if(keyboard.isOpen || vm.active === false) {
                      keyboard.close();
                   }
                   else {
                      keyboard.reveal();
-                     keyboardContainer = $('.keyboard-container');
-                     for(var i = 0; i < keyboardContainer.length; i++) {
-                        if(keyboardId === keyboardContainer[i].id) {
-                           keyboardContainer = keyboardContainer[i];
-                        }
-                     }
-                     $('.ui-keyboard').appendTo(keyboardContainer);
                   }
                }
                break;

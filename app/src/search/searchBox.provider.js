@@ -22,14 +22,15 @@ angular.module('evtviewer.search')
             var defaultSearchBoxBtn = SEARCHBOXDEFAULTS.searchBoxBtn;
             var currentBoxEdition = scope.$parent.edition;
             for(var btn in defaultSearchBoxBtn) {
-               if(currentBoxEdition !== 'interpretative') {
+               searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+               /*if(currentBoxEdition !== 'interpretative') {
                   searchBoxBtn.push(defaultSearchBoxBtn[btn]);
                }
                else {
                   if(btn !== 'virtualKeyboard') {
                      searchBoxBtn.push(defaultSearchBoxBtn[btn]);
                   }
-               }
+               }*/
             }
             
             var parentBoxId = scope.$parent.id;

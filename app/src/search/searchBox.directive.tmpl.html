@@ -28,7 +28,7 @@
          </div>
       </div>
 
-      <input type="text" id="{{vm.keyboardId}}" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.parentBoxId, vm.searchInput)" autocomplete="off" autofocus>
+      <input type="text" id="{{::vm.keyboardId}}" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.parentBoxId, vm.searchInput)" autocomplete="off" autofocus>
    </form>
    <evt-virtual-keyboard></evt-virtual-keyboard>
    <evt-search-results ng-controller="SearchResultsCtrl as searchResults"></evt-search-results>
