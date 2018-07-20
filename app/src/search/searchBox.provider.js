@@ -6,7 +6,7 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function () {
+      this.$get = function (SEARCHBOXDEFAULTS) {
          var searchBox = [],
             searchBoxCollection = {},
             searchBoxId;
@@ -15,17 +15,23 @@ angular.module('evtviewer.search')
             var status = {
                searchResultBox: false,
                searchCaseSensitive : false,
+               virtualKeyboard: false,
                progressBar : false
             };
-            var searchBoxBtn = [
-               {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
-               {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide', hide: true},
-               {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
-               {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
-               {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},
-               {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
-               {title: 'Search', label: '', icon: 'search', type: 'search'}
-            ];
+            var searchBoxBtn = [];
+            var defaultSearchBoxBtn = SEARCHBOXDEFAULTS.searchBoxBtn;
+            var currentBoxEdition = scope.$parent.edition;
+            for(var btn in defaultSearchBoxBtn) {
+               if(currentBoxEdition !== 'interpretative') {
+                  searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+               }
+               else {
+                  if(btn !== 'virtualKeyboard') {
+                     searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+                  }
+               }
+            }
+            
             var parentBoxId = scope.$parent.id;
             searchBoxId = parentBoxId + 'SearchBox';
             
