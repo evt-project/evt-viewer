@@ -7,6 +7,7 @@
    left: 30px;
    bottom: 35px;
    padding: 10px;
+   text-align: left;
    @include border($mainContainer-border-width, 'all',$base-color-dark);
    background-color: $virtual-keyboard-background;
    .ui-keyboard-button {

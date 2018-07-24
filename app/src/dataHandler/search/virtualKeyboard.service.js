@@ -15,6 +15,21 @@ angular.module('evtviewer.dataHandler')
          return getDefaultKeyboardKeys(moreFrequentGlyph);
       };
       
+      VirtualKeyboard.prototype.getConfigKeyboardKeys = function(configKeys) {
+         var glyphs = parsedData.getGlyphs(),
+            configKeyboardKeys = {};
+         
+         for(var glyph in glyphs) {
+            for(var i = 0; i < configKeys.length; i++) {
+               if(glyph === configKeys[i]) {
+                  configKeyboardKeys[configKeys[i]] = glyphs[glyph].mapping.diplomatic.content;
+               }
+            }
+         }
+         return configKeyboardKeys;
+         
+      };
+      
       function getXmlDom() {
          return baseData.getXML();
       }
@@ -123,4 +138,5 @@ angular.module('evtviewer.dataHandler')
          }
          return keyboardGlyphs;
       }
+      
    }]);
