@@ -66,11 +66,13 @@ angular.module('evtviewer.search')
             var keyboardBtn = button.getByType('searchVirtualKeyboard'),
                keyboard = $('#' + parentBoxId + 'Keyboard').getkeyboard();
             
-            if(keyboardBtn.length === 1) {
-               keyboardBtn[0].setActive(false);
+            if(keyboard !== undefined) {
+               if(keyboardBtn.length === 1) {
+                  keyboardBtn[0].setActive(false);
+               }
+               keyboard.close();
             }
-            keyboard.close();
-         }
+         };
          
          return keyboard;
       };

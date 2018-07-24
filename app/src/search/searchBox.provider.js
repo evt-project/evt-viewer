@@ -18,18 +18,14 @@ angular.module('evtviewer.search')
                virtualKeyboard: false,
                progressBar : false
             };
-            var searchBoxBtn = [];
-            var defaultSearchBoxBtn = SEARCHBOXDEFAULTS.searchBoxBtn;
-            var currentBoxEdition = scope.$parent.edition;
+            var searchBoxBtn = [],
+               defaultSearchBoxBtn,
+               currentBoxEdition = scope.$parent.edition;
+            
+            defaultSearchBoxBtn = currentBoxEdition === 'diplomatic' ? SEARCHBOXDEFAULTS.diplomaticSearchBoxBtn : SEARCHBOXDEFAULTS.interpretativeSearchBoxBtn;
+            
             for(var btn in defaultSearchBoxBtn) {
-               if(currentBoxEdition !== 'interpretative') {
-                  searchBoxBtn.push(defaultSearchBoxBtn[btn]);
-               }
-               else {
-                  if(btn !== 'virtualKeyboard') {
-                     searchBoxBtn.push(defaultSearchBoxBtn[btn]);
-                  }
-               }
+               searchBoxBtn.push(defaultSearchBoxBtn[btn]);
             }
             
             var parentBoxId = scope.$parent.id;
