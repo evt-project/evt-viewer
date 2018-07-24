@@ -61,4 +61,16 @@ angular.module('evtviewer.search')
          }
       };
       
+      vm.getBtnLimit = function() {
+         var vm = this,
+            searchBoxBtnNumber = vm.searchBoxBtn.length;
+         
+         if(searchBoxBtnNumber === 6) {
+            return 3;
+         }
+         else {
+            return 4;
+         }
+      };
+      
    }]);
