@@ -43,7 +43,11 @@ angular.module('evtviewer.search')
                openOn: null,
                stayOpen: true,
                autoAccept : true,
-               appendTo: '#' + parentBoxId +' .search-box .keyboard-container'
+               appendTo: '#' + parentBoxId +' .search-box .keyboard-container',
+               change: function(e, kb) {
+                  kb.originalContent = kb.$preview.val();
+                  scope.vm.searchInput = kb.originalContent;
+               }
             });
            
            var scopeHelper = {
