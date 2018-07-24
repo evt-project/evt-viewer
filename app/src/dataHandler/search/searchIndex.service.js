@@ -33,6 +33,7 @@ angular.module('evtviewer.dataHandler')
             this.use(addPageMetadata, parsedElementsForIndexing);
             this.use(addPageIdMetadata, parsedElementsForIndexing);
             this.use(addLineMetadata, parsedElementsForIndexing);
+            this.use(addLbIdMetadata, parsedElementsForIndexing);
             this.use(addDocIdMetadata, parsedElementsForIndexing);
             this.use(addPositionMetadata, parsedElementsForIndexing);
             
@@ -160,6 +161,21 @@ angular.module('evtviewer.dataHandler')
             lunr.Pipeline.registerFunction(pipelineFunction, 'line');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('line');
+         }
+      }
+   
+      function addLbIdMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['lbId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lbId;
+            return token;
+         };
+      
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lbId !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'lbId');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('lbId');
          }
       }
       

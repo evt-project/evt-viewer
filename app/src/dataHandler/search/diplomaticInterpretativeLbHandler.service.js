@@ -49,6 +49,7 @@ angular.module('evtviewer.dataHandler')
                         line.xmlDocTitle = currentXmlDoc.title;
                         line.xmlDocId = currentXmlDoc.id;
                         line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
+                        line.lbId = node.getAttribute('xml:id');
    
                         lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
                         lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
