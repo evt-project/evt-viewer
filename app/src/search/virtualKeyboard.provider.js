@@ -2,7 +2,7 @@ angular.module('evtviewer.search')
    .provider('evtVirtualKeyboard', function() {
       var vm = this;
       
-      vm.$get = function(evtKeyboard, evtInterface) {
+      vm.$get = function(evtKeyboard) {
          var keyboard = [],
             keyboardCollection = {},
             parentBoxId,
@@ -10,9 +10,9 @@ angular.module('evtviewer.search')
             defaultKeyboardKeys,
             keyboardKeys;
          
-         keyboard.build = function(scope, vm, defaultKeyboardKeys) {
+         keyboard.build = function(scope, vm) {
             parentBoxId = scope.$parent.id;
-            keyboardId = scope.$parent.id + 'Keyboard';
+            keyboardId = parentBoxId + 'Keyboard';
             keyboardKeys = '';
             defaultKeyboardKeys = getDefaultKeyboardKeys();
             
@@ -44,10 +44,6 @@ angular.module('evtviewer.search')
    
          function getDefaultKeyboardKeys() {
             return evtKeyboard.getDefaultKeyboardKeys();
-         }
-         
-         keyboard.getKeyboards = function() {
-           return keyboardCollection;
          }
          
          keyboard.unselectCurrentKeyboard = function(button, parentBoxId) {
