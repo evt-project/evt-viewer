@@ -9,6 +9,7 @@ angular.module('evtviewer.search')
       this.$get = function (SEARCHBOXDEFAULTS) {
          var searchBox = [],
             searchBoxCollection = {},
+            parentBoxId,
             searchBoxId;
          
          searchBox.build = function (scope, vm) {
@@ -28,7 +29,7 @@ angular.module('evtviewer.search')
                searchBoxBtn.push(defaultSearchBoxBtn[btn]);
             }
             
-            var parentBoxId = scope.$parent.id;
+            parentBoxId = scope.$parent.id;
             searchBoxId = parentBoxId + 'SearchBox';
             
             var scopeHelper = {
@@ -61,7 +62,7 @@ angular.module('evtviewer.search')
          };
          
          searchBox.setStatus = function (parentBoxId, key, value) {
-           searchBoxCollection[parentBoxId].status.key = value;
+           searchBoxCollection[parentBoxId].status[key] = value;
          };
    
          searchBox.setSearchedTerm = function (parentBoxId, value) {
