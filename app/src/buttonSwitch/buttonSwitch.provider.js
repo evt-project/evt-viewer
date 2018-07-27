@@ -650,21 +650,21 @@ angular.module('evtviewer.buttonSwitch')
                callback = function() {
                   scope.$parent.$parent.$$childHead.vm.placeholder = '';
                   
-                  var inputValue = scope.$parent.vm.getInputValue(),
-                     boxId = scope.$parent.id;
+                  var parentBoxId = scope.$parent.id,
+                     inputValue = evtSearchBox.getInputValue(parentBoxId),
+                     input;
                   
-                  scope.$parent.vm.searchedTerm = inputValue;
-                  
-                  var input = {
+                  evtSearchBox.setSearchedTerm(parentBoxId, inputValue);
+                  input = {
                      '': function() {
                         scope.$parent.$parent.$$childHead.vm.visibleRes = [];
                         scope.$parent.$parent.$$childHead.vm.placeholder = 'Enter your query in the search box above';
                      },
                      'default': function() {
-                        var isCaseSensitive = scope.$parent.$parent.vm.getState('searchCaseSensitive');
-                        var results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
-                           currentBoxId = scope.$parent.$parent.vm.parentBoxId,
-                           currentEdition = evtBox.getEditionById(currentBoxId);
+                        var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
+                           results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
+                           currentEdition = evtBox.getEditionById(parentBoxId);
+                        
                         //TODO need refactoring
                         scope.$parent.$parent.$$childHead.vm.currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition);
                         scope.$parent.$parent.$$childHead.vm.visibleRes = evtSearchResults.getVisibleResults(scope.$parent.$parent.$$childHead.vm.currentEditionResults);
@@ -674,9 +674,10 @@ angular.module('evtviewer.buttonSwitch')
                   (input[inputValue] || input['default'])();
                   
                   scope.$parent.$parent.vm.status['searchResultBox'] = true;
-                  evtSearchBox.hideBtn(scope.$parent.vm.parentBoxId, 'searchResultsShow');
-                  evtSearchBox.showBtn(scope.$parent.vm.parentBoxId, 'searchResultsHide');
-                  evtVirtualKeyboard.unselectCurrentKeyboard(button, boxId);
+                  
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);
                };
                break;
             case 'searchIndex':
@@ -714,7 +715,7 @@ angular.module('evtviewer.buttonSwitch')
                         searchIndexBtn.active = false;
                         searchIndexBtn.disable();
                         
-                        evtSearch.initSearch(xmlDocDom);
+                        //evtSearch.initSearch(xmlDocDom);
                         evtInterface.setToolStatus('isDocumentIndexed', 'true');
          
                         searchToolsBtn = button.getByType('searchToolsInternal');
