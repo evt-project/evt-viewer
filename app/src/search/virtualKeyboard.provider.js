@@ -54,8 +54,8 @@ angular.module('evtviewer.search')
               keyboardId: keyboardId
            };
            
-           keyboardCollection[keyboardId] = angular.extend(vm, scopeHelper);
-           return keyboardCollection[keyboardId];
+           keyboardCollection[parentBoxId] = angular.extend(vm, scopeHelper);
+           return keyboardCollection[parentBoxId];
          };
    
          function getDefaultKeyboardKeys() {
@@ -65,6 +65,10 @@ angular.module('evtviewer.search')
          function getConfigKeyboardKeys(configKeys) {
             return evtKeyboard.getConfigKeyboardKeys(configKeys);
          }
+         
+         keyboard.getKeyboardId = function (parentBoxId) {
+           return keyboardCollection[parentBoxId].keyboardId;
+         };
          
          keyboard.unselectCurrentKeyboard = function(button, parentBoxId) {
             var keyboardBtn = button.getByType('searchVirtualKeyboard'),
