@@ -62,20 +62,19 @@ angular.module('evtviewer.search')
          };
          
          searchBox.setStatus = function (parentBoxId, key, value) {
-           searchBoxCollection[parentBoxId].status[key] = value;
+            searchBoxCollection[parentBoxId].status[key] = value;
+         };
+   
+         searchBox.updateStatus = function (parentBoxId, key) {
+            searchBoxCollection[parentBoxId].status[key] = !searchBoxCollection[parentBoxId].status[key];
          };
    
          searchBox.setSearchedTerm = function (parentBoxId, value) {
-           searchBoxCollection[parentBoxId].searchedTerm = value;
-         };
-         
-         searchBox.updateStatus = function (parentBoxId, key) {
-            searchBoxCollection[parentBoxId].status[key] = !searchBoxCollection[parentBoxId].status[key];
+            searchBoxCollection[parentBoxId].searchedTerm = value;
          };
          
          searchBox.closeBox = function (parentBoxId, key) {
             var currentBox;
-            
             for(var i in searchBoxCollection) {
                currentBox = searchBoxCollection[i];
                if (currentBox.parentBoxId === parentBoxId) {

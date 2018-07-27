@@ -15,8 +15,6 @@ angular.module('evtviewer.dataHandler')
             currentLineNodes = {},
             lines = {},
             countLine = 1,
-            documentToIndex = {},
-            documentsToIndex = {},
             
             node = lbNodes.iterateNext();
          

@@ -59,9 +59,6 @@ angular.module('evtviewer.dataHandler')
                            interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
       
                         };
-                        
-                        //console.log(line.content);
-                        //console.log('page' + line.page + '- line' + line.line + '\n');
    
                         lineId++;
                         countLine++;

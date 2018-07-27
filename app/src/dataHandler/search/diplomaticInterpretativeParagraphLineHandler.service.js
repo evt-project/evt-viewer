@@ -78,7 +78,6 @@ angular.module('evtviewer.dataHandler')
                         documentToIndex.pageId = currentPageId;
                      }
                      
-   
                      var nodeName = {
                         'p': function() {
                            paragraph = evtSearchDocument.getParagraph(node, parId);
@@ -116,6 +115,6 @@ angular.module('evtviewer.dataHandler')
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
-      }
+      };
       
    }]);

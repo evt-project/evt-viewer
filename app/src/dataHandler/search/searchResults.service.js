@@ -20,8 +20,8 @@ angular.module('evtviewer.dataHandler')
       };
       
       SearchResults.prototype.getVisibleResults = function (currentEditionResults) {
-         var visibleRes = [];
-         var j = 0;
+         var visibleRes = [],
+            j = 0;
          
          while (j < 20 && j < currentEditionResults.length) {
             visibleRes.push(currentEditionResults[j]);

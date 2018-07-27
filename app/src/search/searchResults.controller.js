@@ -1,5 +1,4 @@
 angular.module('evtviewer.search')
-   
    .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils',
       function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils) {
          var vm = this;
@@ -27,6 +26,7 @@ angular.module('evtviewer.search')
             return vm.currentEditionResults;
          };
          
+         //TODO move in provider
          vm.getHighlightedOriginalText = function (docId, currentEdition, token, position) {
             var originalText = evtSearchResults.getOriginalText(docId, currentEdition),
                replace = '<strong>' + token + '</strong>',
@@ -36,7 +36,8 @@ angular.module('evtviewer.search')
             
             return evtSearchResults.getTextPreview(highlightedText, replace);
          };
-         
+   
+         //TODO move in provider
          vm.loadMoreElements = function () {
             var i = 0,
                lastEl,
@@ -68,7 +69,7 @@ angular.module('evtviewer.search')
             var promise = goToAnchor();
             promise.then(
                function() {
-                  scrollTo(vm.currentLineId);
+                  vm.scrollTo(vm.currentLineId);
                });
          }
          
@@ -84,7 +85,7 @@ angular.module('evtviewer.search')
             window.event.preventDefault();
             eventElement = window.event.currentTarget;
             $(eventElement).addClass('selected');
-            vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].id;
+            vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
             goToAnchorPage();
             $(eventElement).removeClass('selected');
    
@@ -104,9 +105,9 @@ angular.module('evtviewer.search')
             evtInterface.updateUrl();
          }
          
-         function scrollTo(id) {
+         vm.scrollTo = function(id) {
             $location.hash(id);
             $anchorScroll();
-         }
+         };
          
       }]);

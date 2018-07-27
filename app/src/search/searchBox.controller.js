@@ -1,7 +1,8 @@
 angular.module('evtviewer.search')
-   .controller('SearchBoxCtrl', ['$scope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResults', 'evtBox',
-      function ($scope, config, evtInterface, evtSearchBox, evtSearchResults, evtBox) {
-      var vm = this;
+   .controller('SearchBoxCtrl', ['$rootScope', 'config', 'evtInterface', 'evtSearchBox', 'evtSearchResults', 'evtBox',
+      function ($rootScope, config, evtInterface, evtSearchBox, evtSearchResults, evtBox) {
+      var vm = this,
+         searchBtn = [];
       
       vm.searchInput = '';
       vm.searchedTerm = '';
@@ -55,9 +56,10 @@ angular.module('evtviewer.search')
       };
       
       vm.doSearchCallback = function () {
-         if($scope.$$childTail.$$childHead) {
-            var currentSearchBtn = $scope.$$childTail.$$childHead.vm;
-            currentSearchBtn.doCallback();
+         for(var i in searchBtn) {
+            if(searchBtn[i].parentId === vm.parentBoxId) {
+               searchBtn[i].btn.doCallback();
+            }
          }
       };
       
@@ -73,4 +75,7 @@ angular.module('evtviewer.search')
          }
       };
       
+      $rootScope.$on('searchBtn', function(e, data){
+         searchBtn.push(data);
+      });
    }]);

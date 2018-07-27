@@ -10,8 +10,7 @@ angular.module('evtviewer.dataHandler')
             glyphFrequency = getGlyphFrequency(glyphsInXmlDoc),
             glyphFreqDescendingOrder = getGlyphFreqInDescendingOrder(glyphFrequency),
             moreFrequentGlyph = getMoreFreqGlyphInDoc(glyphFreqDescendingOrder);
-            
-         console.log('Keyboard Glyphs: ', getDefaultKeyboardKeys(moreFrequentGlyph));
+         
          return getDefaultKeyboardKeys(moreFrequentGlyph);
       };
       
