@@ -716,8 +716,7 @@ angular.module('evtviewer.buttonSwitch')
                         searchIndexBtn = button.getByType('searchIndex')[0];
                         searchIndexBtn.active = false;
                         searchIndexBtn.disable();
-                        
-                        //evtSearch.initSearch(xmlDocDom);
+                        evtSearch.initSearch(xmlDocDom);
                         evtInterface.setToolStatus('isDocumentIndexed', 'true');
          
                         searchToolsBtn = button.getByType('searchToolsInternal');
