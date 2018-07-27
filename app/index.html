@@ -148,7 +148,7 @@
             </button-switch> -->
         </div>
     </header>
-    <div id="global-container-ext" ng-show="!isLoading()">
+    <div id="global-container-ext" ng-show="!isLoading()" ng-controller="CtrlGloss">
         <section
             class="secondary-container"
             ng-show="getSecondaryContentOpened() !== ''">
@@ -177,7 +177,7 @@
             <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
             <!-- READING TEXT -->
             <section id="main-container" class="viewMode" ng-switch-when="readingTxt">
-                <box titolo data-type="text"
+                <box data-type="text"
                      data-edition="{{getCurrentEdition()}}"
                      id="mainText"
                      ng-class="{'centered': !isPinnedAppBoardOpened(),
@@ -609,7 +609,7 @@
 
     <script src="/src/glossary/glossary.js"></script>
     <script src="/src/glossary/glossary.directive.js"></script>
-    
+    <script src="/src/glossary/glossary.controller.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

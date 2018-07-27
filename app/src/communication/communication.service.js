@@ -114,8 +114,7 @@ angular.module('evtviewer.communication')
                     else if (url === config.analoguesUrl) {
                         docType = 'analogues';
                     }
-                    baseData.addXMLExtDocument(response.data, docType);
-
+                    baseData.addXMLExtDocument(response.data, docType);                    
                     _console.log('XML Data received');
                 } else {
                     // TODO: JSON?

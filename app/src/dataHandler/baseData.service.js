@@ -129,6 +129,7 @@ angular.module('evtviewer.dataHandler')
     baseData.addXMLExtDocument = function(extDoc, type) {
         var docElements = xmlParser.parse(extDoc);
         try {
+            
             state.XMLStrings.push(extDoc);
             state.XMLExtDocuments[type] = docElements;
             state.XMLExtDocuments.length++;
