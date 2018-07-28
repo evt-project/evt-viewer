@@ -192,6 +192,11 @@ angular.module('evtviewer.interface')
                 if (config.analoguesUrl !== '') {
                         evtCommunication.getExternalData(config.analoguesUrl);
                 }
+
+                // Parse the glossary file if defined
+                if (config.glossaryUrl !== '') {
+                  evtCommunication.getExternalData(config.glossaryUrl);
+                }
                 mainInterface.updateProperty('dataUrl', config.dataUrl);
                 if (config.dataUrl === '') {
                     evtCommunication.err('', '', 'dataUrlEmpty', false);

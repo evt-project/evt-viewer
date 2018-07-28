@@ -133,7 +133,11 @@ angular.module('evtviewer.dataHandler')
             state.XMLStrings.push(extDoc);
             state.XMLExtDocuments[type] = docElements;
             state.XMLExtDocuments.length++;
-            var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
+            if (type === 'glossary') {
+                evtParser.parseGlossary(docElements);
+            } else {
+                evtParser.parseExternalDocuments(docElements, type);
+            }
             
             /*if (type === 'sources') {
                 evtSourcesParser.parseExternalSources(docElements);

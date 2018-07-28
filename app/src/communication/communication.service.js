@@ -113,6 +113,8 @@ angular.module('evtviewer.communication')
                     }
                     else if (url === config.analoguesUrl) {
                         docType = 'analogues';
+                    } else if (url === config.glossaryUrl) {
+                        docType = 'glossary';
                     }
                     baseData.addXMLExtDocument(response.data, docType);                    
                     _console.log('XML Data received');

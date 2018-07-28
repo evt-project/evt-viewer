@@ -148,7 +148,7 @@
             </button-switch> -->
         </div>
     </header>
-    <div id="global-container-ext" ng-show="!isLoading()" ng-controller="CtrlGloss">
+    <div id="global-container-ext" ng-show="!isLoading()">
         <section
             class="secondary-container"
             ng-show="getSecondaryContentOpened() !== ''">
@@ -172,6 +172,7 @@
             <evt-dialog data-type="bookmark" data-title="DIALOGS.BOOKMARK">
                 <div compile="getBookmark()"></div>
             </evt-dialog>
+            <evt-glossary ng-if="getSecondaryContentOpened() === 'glossary'"></evt-glossary>
         </section>
         <section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
             <!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
@@ -610,6 +611,7 @@
     <script src="/src/glossary/glossary.js"></script>
     <script src="/src/glossary/glossary.directive.js"></script>
     <script src="/src/glossary/glossary.controller.js"></script>
+    <script src="/src/glossary/glossaryWord.directive.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
 

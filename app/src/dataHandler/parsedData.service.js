@@ -3140,5 +3140,27 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
+	// GLOSSARY
+	var glossary = {
+		entries: {},
+		status: 'notLoaded'
+	};
+	
+	parsedData.addGlossaryEntry = function(entry) {
+		glossary.entries[entry.id] = entry;
+	};
+
+	parsedData.getGlossary = function() {
+		return glossary;
+	};
+	parsedData.getGlossaryEntryById = function(entryId) {
+		return glossary.entries[entryId];
+	};
+	parsedData.setGlossaryStatus = function(status) {
+		glossary.status = status;
+	};
+	parsedData.getGlossaryStatus = function() {
+		return glossary.status;
+	}
 	return parsedData;
 });

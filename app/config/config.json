@@ -6,7 +6,8 @@
 	"dataUrl": "data/ER_1-146_crit.xml",
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
-    "sourcesTextsUrl" : "data/sources/",
+    "sourcesTextsUrl"  : "data/sources/",
+    "glossaryUrl"      : "data/glossDucange.xml",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{

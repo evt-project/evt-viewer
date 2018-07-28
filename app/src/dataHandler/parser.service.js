@@ -353,13 +353,28 @@ angular.module('evtviewer.dataHandler')
 			value: type,
 			content: doc
 		};
-		if (type !== 'analogues' && type !== 'sources'  && type !== 'gloss') {
+		if (type !== 'analogues' && type !== 'sources') {
 			parsedData.addSourceDocument(newExtDoc, type);
 		} else {
 			parsedData.addExternalDocument(newExtDoc, type);
 		}
 		console.log('## Source Documents ##', parsedData.getSourceDocuments());
 		console.log('## External Documents ##', parsedData.getExternalDocuments());
+	};
+
+	parser.parseGlossary = function(doc) {
+		parsedData.setGlossaryStatus('loading');
+		angular.forEach(angular.element(doc).find('entry'),
+			function(entry) {
+				var glossaryEntry = {
+					id: entry.getAttribute('xml:id'),
+					rend: entry.getAttribute('rend'),
+					content: entry.innerHTML
+				};
+				parsedData.addGlossaryEntry(glossaryEntry);
+			});
+		parsedData.setGlossaryStatus('loaded');
+		console.log('## GLOSSARY PARSED ##');
 	};
 	/**
      * @ngdoc method
