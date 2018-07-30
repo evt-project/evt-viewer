@@ -7,7 +7,7 @@
     "sourcesUrl"       : "data/sources.xml",
     "analoguesUrl"     : "data/analogues.xml",
     "sourcesTextsUrl"  : "data/sources/",
-    "glossaryUrl"      : "data/glossDucange.xml",
+    "glossaryUrl"      : "data/glossarioXML.xml",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
