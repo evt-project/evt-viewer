@@ -38,14 +38,10 @@ angular.module('evtviewer.dataHandler')
       
       function getResultsMetadata(inputValue, isCaseSensitive) {
          var res,
-            results,
-            diplResult = {},
-            interprResult = {};
-         
-         results = {
-            diplomatic: [],
-            interpretative: []
-         };
+            results = {
+               diplomatic: [],
+               interpretative: []
+            };
          
          res = makeQuery(inputValue.toLowerCase());
          res.forEach(function (result) {
@@ -56,8 +52,8 @@ angular.module('evtviewer.dataHandler')
                resultByTokenObjects;
             
             for (var token in metadata) {
-               diplomaticMetadata = metadata[token].diplomaticText;
-               interpretativeMetadata = metadata[token].interpretativeText;
+               diplomaticMetadata = metadata[token].diplomaticText || {};
+               interpretativeMetadata = metadata[token].interpretativeText || {};
                resultByTokenObjects = getResultsByToken(diplomaticMetadata, interpretativeMetadata);
                
                if(isCaseSensitive) {
@@ -74,10 +70,10 @@ angular.module('evtviewer.dataHandler')
                }
                
                if(resultToken.diplomatic) {
-                  results.diplomatic = resultToken.diplomatic;
+                  results.diplomatic = results.diplomatic.concat(resultToken.diplomatic);
                }
                if(resultToken.interpretative) {
-                  results.interpretative = resultToken.interpretative;
+                  results.interpretative = results.interpretative.concat(resultToken.interpretative);
                }
             }
          });
@@ -125,8 +121,8 @@ angular.module('evtviewer.dataHandler')
             resultPosition;
          
          originalTokens = {
-            diplomatic: diplomaticMetadata.originalToken,
-            interpretative: interpretativeMetadata.originalToken
+            diplomatic: diplomaticMetadata.originalToken || [],
+            interpretative: interpretativeMetadata.originalToken || []
          };
          resultPosition = {
             diplomatic: originalTokens.diplomatic.map(getTokenPosition),
