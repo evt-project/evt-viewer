@@ -87,8 +87,19 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getCaseSensitiveResults(inputValue, tokenList) {
-         var results = [];
+         var results = [],
+            matchStarWildcard = inputValue.match(/[*]/);
+         
          for (var token in tokenList) {
+   
+            if(matchStarWildcard) {
+               inputValue.toLowerCase();
+               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard);
+               if(result) {
+                  results.push(result);
+               }
+            }
+            
             if (inputValue === token.toString()) {
                results.push(
                   {
@@ -100,6 +111,46 @@ angular.module('evtviewer.dataHandler')
             }
          }
          return results;
+      }
+   
+      function handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard) {
+         var inputValueLength = inputValue.length,
+            wildcardPos = matchStarWildcard.index,
+            tokenFirstChars = token.toString().slice(0, wildcardPos),
+            inputFirstChars = inputValue.slice(0, wildcardPos),
+            tokenLastChars,
+            inputLastChars,
+            result = {
+               token: token.toString(),
+               diplomaticText: tokenList[token],
+               resultsNumber: tokenList[token].xmlDocId.length
+            }
+         
+         //se * è alla fine
+         if(inputValueLength === wildcardPos+1) {
+            if(tokenFirstChars === inputFirstChars) {
+               return result;
+            }
+         }
+   
+         //se * è all'inizio
+         if(wildcardPos === 0) {
+            tokenLastChars = token.toString().slice(-inputValueLength+1);
+            inputLastChars = inputValue.slice(1, inputValueLength);
+            
+            if(tokenLastChars === inputLastChars) {
+               return result;
+            }
+         }
+         
+         // se * è nel mezzo
+         if(tokenFirstChars === inputFirstChars) {
+            inputLastChars = inputValue.slice(wildcardPos + 1, inputValue.length);
+            tokenLastChars = token.toString().slice(-inputLastChars.length);
+            if(tokenLastChars === inputLastChars) {
+               return result;
+            }
+         }
       }
       
       function getCaseInsensitiveResults(tokenList) {
