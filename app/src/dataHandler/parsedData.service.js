@@ -3150,6 +3150,10 @@ angular.module('evtviewer.dataHandler')
 		glossary.entries[entry.id] = entry;
 	};
 
+	parsedData.getGlossaryEntry = function() {
+		return glossary.entries;
+	};
+
 	parsedData.getGlossary = function() {
 		return glossary;
 	};
