@@ -46,7 +46,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "lunr": "^2.2.0",
+    "lunr": "^2.3.3",
     "mark.js": "^8.11.1"
   }
 }
