@@ -582,8 +582,8 @@ angular.module('evtviewer.box')
 						label: 'BUTTONS.MSD',
 						type: 'msDesc'
 					});
-                    
-                    
+     
+     
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var currentPage = evtInterface.getState('currentPage'),
@@ -1339,6 +1339,15 @@ angular.module('evtviewer.box')
 		box.getEditionById = function (currentBoxId) {
          return collection[currentBoxId].currentEdition;
       };
+		
+		box.getState = function (currentBoxId, key) {
+         return collection[currentBoxId].state[key];
+      };
+		
+		box.updateState = function (currentBoxId, key, value) {
+        collection[currentBoxId].state[key] = value;
+      };
+		
 		return box;
 	};
 });

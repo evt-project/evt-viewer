@@ -9,7 +9,8 @@
    }
    button-switch {
       margin-right: 0;
-      &[data-type="searchCaseSensitive"] {
+      &[data-type="searchCaseSensitive"],
+      &[data-type="searchVirtualKeyboard"] {
          .buttonSwitch-active {
             background-color: $buttonSwitch-active-background-color;
          }
@@ -38,6 +39,8 @@
       float: right;
    }
    input[type="text"] {
+      font-family: Junicode;
+      font-size: 18px;
       height: $search-input-height;
       min-width: calc(100% - 180px);
       position: absolute;

@@ -164,5 +164,7 @@
 		}
 	},
 
+   "virtualKeyboardKeys": [],
+
     "languages": ["en", "it"]
 }

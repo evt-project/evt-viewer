@@ -33,8 +33,10 @@ angular.module('evtviewer.dataHandler')
             this.use(addPageMetadata, parsedElementsForIndexing);
             this.use(addPageIdMetadata, parsedElementsForIndexing);
             this.use(addLineMetadata, parsedElementsForIndexing);
+            this.use(addLbIdMetadata, parsedElementsForIndexing);
             this.use(addDocIdMetadata, parsedElementsForIndexing);
             this.use(addPositionMetadata, parsedElementsForIndexing);
+            this.use(addOriginalTokenMetadata, parsedElementsForIndexing);
             
             for (var i in parsedElementsForIndexing) {
                if(i !== 'countAllLines') {
@@ -162,6 +164,21 @@ angular.module('evtviewer.dataHandler')
             builder.metadataWhitelist.push('line');
          }
       }
+   
+      function addLbIdMetadata(builder, parsedElementsForIndexing) {
+         var docIndex = 0;
+         var pipelineFunction = function (token) {
+            var docIndex = builder.documentCount - 1;
+            token.metadata['lbId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lbId;
+            return token;
+         };
+      
+         if(parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lbId !== undefined) {
+            lunr.Pipeline.registerFunction(pipelineFunction, 'lbId');
+            builder.pipeline.add(pipelineFunction);
+            builder.metadataWhitelist.push('lbId');
+         }
+      }
       
       function addDocIdMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
@@ -178,6 +195,10 @@ angular.module('evtviewer.dataHandler')
       function addPositionMetadata(builder) {
          builder.metadataWhitelist.push('position');
       }
+   
+      function addOriginalTokenMetadata(builder) {
+         builder.metadataWhitelist.push('originalToken');
+      }
       
       /* PLUGINS FOR LUNR.JS */
       var customTokenizer = function(obj) {
@@ -185,6 +206,7 @@ angular.module('evtviewer.dataHandler')
             strLength = str.length,
             char,
             token,
+            originalToken,
             tokens = [],
             tokenLength,
             prevTokenEndIndex,
@@ -207,6 +229,8 @@ angular.module('evtviewer.dataHandler')
             
             if ((char.match(this.tokenizer.separator) || endIndex === strLength)) {
                token = str.slice(startIndex, endIndex);
+               originalToken = token;
+               token = token.toLowerCase();
                isCompoundWord = token.indexOf('-') !== -1;
                
                if(isCompoundWord) {
@@ -223,7 +247,8 @@ angular.module('evtviewer.dataHandler')
                   tokens.push(
                      new lunr.Token (token, {
                         position: [startIndex, tokenLength],
-                        index: tokens.length
+                        index: tokens.length,
+                        originalToken: originalToken
                      })
                   );
                }

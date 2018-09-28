@@ -6,28 +6,31 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function (evtBox) {
+      this.$get = function (SEARCHBOXDEFAULTS) {
          var searchBox = [],
             searchBoxCollection = {},
+            parentBoxId,
             searchBoxId;
          
          searchBox.build = function (scope, vm) {
             var status = {
                searchResultBox: false,
                searchCaseSensitive : false,
+               virtualKeyboard: false,
                progressBar : false
             };
-            var searchBoxBtn = [
-               {title: 'Show Results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
-               {title: 'Hide Results', label: '', icon: 'search-results-hide', type: 'searchResultsHide', hide: true},
-               {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
-               {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
-               {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},
-               {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
-               {title: 'Search', label: '', icon: 'search', type: 'search'}
-            ];
-            var parentBoxId = scope.$parent.id;
-            searchBoxId = parentBoxId + 'searchBox';
+            var searchBoxBtn = [],
+               defaultSearchBoxBtn,
+               currentBoxEdition = scope.$parent.edition;
+            
+            defaultSearchBoxBtn = currentBoxEdition === 'diplomatic' ? SEARCHBOXDEFAULTS.diplomaticSearchBoxBtn : SEARCHBOXDEFAULTS.interpretativeSearchBoxBtn;
+            
+            for(var btn in defaultSearchBoxBtn) {
+               searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+            }
+            
+            parentBoxId = scope.$parent.id;
+            searchBoxId = parentBoxId + 'SearchBox';
             
             var scopeHelper = {
                status: status,
@@ -49,8 +52,7 @@ angular.module('evtviewer.search')
          };
          
          searchBox.getInputValue = function (parentBoxId) {
-            searchBoxCollection[parentBoxId].searchedTerm = searchBoxCollection[parentBoxId].searchInput;
-            return searchBoxCollection[parentBoxId].searchedTerm;
+            return searchBoxCollection[parentBoxId].searchInput;
          };
          
          searchBox.getStatus = function (parentBoxId, key) {
@@ -59,13 +61,20 @@ angular.module('evtviewer.search')
             }
          };
          
+         searchBox.setStatus = function (parentBoxId, key, value) {
+            searchBoxCollection[parentBoxId].status[key] = value;
+         };
+   
          searchBox.updateStatus = function (parentBoxId, key) {
             searchBoxCollection[parentBoxId].status[key] = !searchBoxCollection[parentBoxId].status[key];
+         };
+   
+         searchBox.setSearchedTerm = function (parentBoxId, value) {
+            searchBoxCollection[parentBoxId].searchedTerm = value;
          };
          
          searchBox.closeBox = function (parentBoxId, key) {
             var currentBox;
-            
             for(var i in searchBoxCollection) {
                currentBox = searchBoxCollection[i];
                if (currentBox.parentBoxId === parentBoxId) {

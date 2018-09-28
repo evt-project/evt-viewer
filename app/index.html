@@ -19,7 +19,8 @@
 		<!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link> -->
 		<!-- <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link> -->
 		<!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
-		<link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css"></link>
+		<link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css">
+      <link rel="stylesheet" href="bower_components/keyboard/dist/css/keyboard.min.css">
 		<!-- endbuild -->
 
 		<!-- build:css(.tmp) styles/main.css -->
@@ -420,6 +421,7 @@
 		<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
 		<script src="bower_components/angular-translate/angular-translate.js"></script>
 		<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+		<script src="bower_components/keyboard/dist/js/jquery.keyboard.min.js"></script>
 		<!-- endbower -->
 		<!-- endbuild -->
 
@@ -471,6 +473,7 @@
       <script src="/src/dataHandler/search/diplomaticInterpretativeParagraphLineHandler.service.js"></script>
       <script src="/src/dataHandler/search/diplomaticLbHandler.service.js"></script>
       <script src="/src/dataHandler/search/diplomaticInterpretativeLbHandler.service.js"></script>
+      <script src="/src/dataHandler/search/virtualKeyboard.service.js"></script>
       <script src="/dist/search.service.js"></script>
 
 		<script src="/src/bibliography/bibliography.js"></script>
@@ -623,8 +626,12 @@
       <script src="/src/search/searchBox.directive.js"></script>
       <script src="/src/search/searchBox.controller.js"></script>
       <script src="/src/search/searchBox.provider.js"></script>
+      <script src="/src/search/searchBox.configuration.js"></script>
       <script src="/src/search/searchResults.directive.js"></script>
       <script src="/src/search/searchResults.controller.js"></script>
+      <script src="/src/search/searchResults.provider.js"></script>
+      <script src="/src/search/virtualKeyboard.directive.js"></script>
+      <script src="/src/search/virtualKeyboard.provider.js"></script>
 		<!-- endinjector -->
 		<!-- endbuild -->
 	</body>
