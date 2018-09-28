@@ -6,11 +6,12 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function (SEARCHBOXDEFAULTS) {
+      this.$get = function (SEARCHBOXDEFAULTS, parsedData) {
          var searchBox = [],
             searchBoxCollection = {},
             parentBoxId,
-            searchBoxId;
+            searchBoxId,
+            glyphs = parsedData.getGlyphs();
          
          searchBox.build = function (scope, vm) {
             var status = {
@@ -26,7 +27,9 @@ angular.module('evtviewer.search')
             defaultSearchBoxBtn = currentBoxEdition === 'diplomatic' ? SEARCHBOXDEFAULTS.diplomaticSearchBoxBtn : SEARCHBOXDEFAULTS.interpretativeSearchBoxBtn;
             
             for(var btn in defaultSearchBoxBtn) {
-               searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+               if(btn.toString() !== 'virtualKeyboard' && glyphs._indexes.length === 0) {
+                  searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+               }
             }
             
             parentBoxId = scope.$parent.id;
