@@ -167,5 +167,7 @@
 		}
 	},
 
+   "virtualKeyboardKeys": [],
+
     "languages": ["en", "it"]
 }

@@ -49,8 +49,11 @@ $box-witness-text-color: $box-text-color;
 $search-box-height: 30px;
 $search-input-height: 27px;
 $search-result-info: $base-color-light;
-$search-options-background: white;
-$search-buttons-background: white;
+$search-options-background: $box-background-color;
+$search-buttons-background: $box-background-color;
+$virtual-keyboard-width: 325px;
+$virtual-keyboard-background: $box-background-color;
+$virtual-keyboard-btn-border: rgb(125, 125, 125);
 
 /* ** END BOXES */
 /* ************ */

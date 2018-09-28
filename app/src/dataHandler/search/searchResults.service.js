@@ -3,6 +3,8 @@ var Mark = require('mark.js');
 angular.module('evtviewer.dataHandler')
    .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
       function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
+   
+      var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
       
       SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive) {
          var searchResults;
@@ -20,8 +22,8 @@ angular.module('evtviewer.dataHandler')
       };
       
       SearchResults.prototype.getVisibleResults = function (currentEditionResults) {
-         var visibleRes = [];
-         var j = 0;
+         var visibleRes = [],
+            j = 0;
          
          while (j < 20 && j < currentEditionResults.length) {
             visibleRes.push(currentEditionResults[j]);
@@ -36,42 +38,42 @@ angular.module('evtviewer.dataHandler')
       
       function getResultsMetadata(inputValue, isCaseSensitive) {
          var res,
-            results,
-            diplResult = {},
-            interprResult = {};
+            results = {
+               diplomatic: [],
+               interpretative: []
+            };
          
-         results = {
-            diplomatic: [],
-            interpretative: []
-         };
-         
-         res = isCaseSensitive ? getCaseSensitiveResults(inputValue) : getCaseInsensitiveResults(inputValue);
+         res = makeQuery(inputValue.toLowerCase());
          res.forEach(function (result) {
-            var metadata = result.matchData.metadata;
+            var metadata = result.matchData.metadata,
+               diplomaticMetadata,
+               interpretativeMetadata,
+               resultToken,
+               resultByTokenObjects;
+            
             for (var token in metadata) {
-               if (metadata[token].diplomaticText) {
-                  diplResult = {
-                     token: token,
-                     diplomaticText: metadata[token].diplomaticText,
-                     resultsNumber: metadata[token].diplomaticText.xmlDocId.length
-                  }
-                  results.diplomatic.push(diplResult);
+               diplomaticMetadata = metadata[token].diplomaticText || {};
+               interpretativeMetadata = metadata[token].interpretativeText || {};
+               resultByTokenObjects = getResultsByToken(diplomaticMetadata, interpretativeMetadata);
+               
+               if(isCaseSensitive) {
+                  resultToken = {
+                     diplomatic: getCaseSensitiveResults(inputValue, resultByTokenObjects.diplomatic),
+                     interpretative: getCaseSensitiveResults(inputValue, resultByTokenObjects.interpretative)
+                  };
                }
-               if (metadata[token].interpretativeText) {
-                  interprResult = {
-                     token: token,
-                     interpretativeText: metadata[token].interpretativeText,
-                     resultsNumber: metadata[token].interpretativeText.xmlDocId.length
-                  }
-                  results.interpretative.push(interprResult);
+               else {
+                  resultToken = {
+                     diplomatic: getCaseInsensitiveResults(resultByTokenObjects.diplomatic),
+                     interpretative: getCaseInsensitiveResults(resultByTokenObjects.interpretative)
+                  };
                }
-               if (metadata[token].content) {
-                  diplResult = {
-                     token: token,
-                     diplomaticText: metadata[token].content,
-                     resultsNumber: metadata[token].content.xmlDocId.length
-                  }
-                  results.diplomatic.push(diplResult);
+               
+               if(resultToken.diplomatic) {
+                  results.diplomatic = results.diplomatic.concat(resultToken.diplomatic);
+               }
+               if(resultToken.interpretative) {
+                  results.interpretative = results.interpretative.concat(resultToken.interpretative);
                }
             }
          });
@@ -79,22 +81,147 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
       
-      function getCaseSensitiveResults(inputValue) {
+      function makeQuery(inputValue) {
          var index = getIndex();
          return evtSearchQuery.query(index, inputValue);
       }
-   
-      function getCaseInsensitiveResults(inputValue) {
-         var index = getIndex(),
-            result = [];
       
-         for(var token in index.invertedIndex) {
-            if(token.toLowerCase() === inputValue.toLowerCase()) {
-               result = result.concat(evtSearchQuery.query(index, token));
+      function getCaseSensitiveResults(inputValue, tokenList) {
+         var results = [],
+            matchStarWildcard = inputValue.match(/[*]/);
+         
+         for (var token in tokenList) {
+   
+            if(matchStarWildcard) {
+               inputValue.toLowerCase();
+               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard);
+               if(result) {
+                  results.push(result);
+               }
+            }
+            
+            if (inputValue === token.toString()) {
+               results.push(
+                  {
+                     token: token.toString(),
+                     diplomaticText: tokenList[token],
+                     resultsNumber: tokenList[token].xmlDocId.length
+                  }
+               );
             }
          }
+         return results;
+      }
+   
+      function handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard) {
+         var inputValueLength = inputValue.length,
+            wildcardPos = matchStarWildcard.index,
+            tokenFirstChars = token.toString().slice(0, wildcardPos),
+            inputFirstChars = inputValue.slice(0, wildcardPos),
+            tokenLastChars,
+            inputLastChars,
+            result = {
+               token: token.toString(),
+               diplomaticText: tokenList[token],
+               resultsNumber: tokenList[token].xmlDocId.length
+            }
+         
+         //se * è alla fine
+         if(inputValueLength === wildcardPos+1) {
+            if(tokenFirstChars === inputFirstChars) {
+               return result;
+            }
+         }
+   
+         //se * è all'inizio
+         if(wildcardPos === 0) {
+            tokenLastChars = token.toString().slice(-inputValueLength+1);
+            inputLastChars = inputValue.slice(1, inputValueLength);
+            
+            if(tokenLastChars === inputLastChars) {
+               return result;
+            }
+         }
+         
+         // se * è nel mezzo
+         if(tokenFirstChars === inputFirstChars) {
+            inputLastChars = inputValue.slice(wildcardPos + 1, inputValue.length);
+            tokenLastChars = token.toString().slice(-inputLastChars.length);
+            if(tokenLastChars === inputLastChars) {
+               return result;
+            }
+         }
+      }
       
+      function getCaseInsensitiveResults(tokenList) {
+         var results = [];
+         for(var token in tokenList) {
+            results.push(
+               {
+                  token: token.toString(),
+                  diplomaticText: tokenList[token],
+                  resultsNumber: tokenList[token].xmlDocId.length
+               }
+         );
+         }
+         return results;
+      }
+      
+      function getResultsByToken(diplomaticMetadata, interpretativeMetadata) {
+         var originalTokens,
+            resultPosition;
+         
+         originalTokens = {
+            diplomatic: diplomaticMetadata.originalToken || [],
+            interpretative: interpretativeMetadata.originalToken || []
+         };
+         resultPosition = {
+            diplomatic: originalTokens.diplomatic.map(getTokenPosition),
+            interpretative: originalTokens.interpretative.map(getTokenPosition)
+         };
+         
+         return {
+            diplomatic: buildResultsByToken(diplomaticMetadata, resultPosition.diplomatic),
+            interpretative: buildResultsByToken(interpretativeMetadata, resultPosition.interpretative)
+         };
+      }
+   
+      function getTokenPosition(token, resultPosition) {
+         return {
+            token: token,
+            position: resultPosition
+         };
+      }
+      
+      function buildResultsByToken (metadata, resultPosition) {
+         var result = {},
+            originalToken,
+            filteredMetadata = {},
+            noTokenInResult;
+         
+         for (var i = 0; i < resultPosition.length; i++) {
+            originalToken = resultPosition[i].token;
+            noTokenInResult = !result[resultPosition[i].token];
+      
+            for (var m in metadata) {
+               filteredMetadata[m.toString()] = metadata[m].filter(getRightMetadata, resultPosition[i]);
+            }
+      
+            if (noTokenInResult) {
+               result[originalToken] = filteredMetadata;
+               filteredMetadata = {};
+            }
+            else {
+               for (var fm in filteredMetadata) {
+                  result[originalToken][fm].push(filteredMetadata[fm][0]);
+               }
+            }
+         }
          return result;
+      }
+      
+      function getRightMetadata(metadata, position) {
+         return this.position === position;
       }
       
       SearchResults.prototype.getCurrentEditionResults = function (searchResults, currentEdition) {
@@ -170,7 +297,6 @@ angular.module('evtviewer.dataHandler')
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
             'filter': function() {
-               var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
                return inputValue.match(regex) ? false : true;
             }
          });

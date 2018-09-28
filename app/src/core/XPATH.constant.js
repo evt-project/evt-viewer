@@ -16,6 +16,7 @@ angular.module('evtviewer.core')
       
       getChildNodes: './/node()[self::g or self::pb or self::text()]',
       getTextGlyphNodes: './/node()[self::g or self::text()]',
+      getGlyphNodes: './/node()[self::g]',
       
       //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
       
@@ -39,6 +40,7 @@ angular.module('evtviewer.core')
          
          getChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
          getTextGlyphNodes: './/node()[self::ns:g or self::text()]',
+         getGlyphNodes: './/node()[self::ns:g]',
          
          //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
          

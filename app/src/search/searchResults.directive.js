@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
 
-.directive('evtSearchResults', ['evtInterface', function(evtInterface) {
+.directive('evtSearchResults', ['evtSearchResult', 'evtInterface', function(evtSearchResult, evtInterface) {
    return {
       restrict: 'E',
       templateUrl : 'src/search/searchResults.directive.tmpl.html',
@@ -8,12 +8,13 @@ angular.module('evtviewer.search')
       controllerAs: 'vm',
       controller: 'SearchResultsCtrl',
       link: function(scope) {
-   
+         evtSearchResult.build(scope, scope.vm);
+         
          scope.$watch(function() {
             return evtInterface.getState('currentEdition');
          }, function(newVal) {
             scope.vm.currentEdition = evtInterface.getState('currentEdition');
-            if(scope.$parent.searchInput !== '') {
+            if(scope.$parent.searchInput !== '' && scope.$parent.searchInput !== undefined) {
                scope.$parent.vm.doSearchCallback();
             }
          }, true);
