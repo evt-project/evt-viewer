@@ -55,6 +55,10 @@ angular.module('evtviewer.search')
             return defaults[key];
          };
          
+         searchBox.getCurrentBoxEdition = function (parentBoxId) {
+           return searchBoxCollection[parentBoxId].getBoxEdition(parentBoxId);
+         };
+         
          searchBox.getSearchResults = function (parentBoxId) {
             return searchBoxCollection[parentBoxId].searchResults;
          };
