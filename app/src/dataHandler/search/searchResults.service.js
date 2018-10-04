@@ -38,42 +38,59 @@ angular.module('evtviewer.dataHandler')
       
       function getResultsMetadata(inputValue, isCaseSensitive) {
          var res,
-            results = {
-               diplomatic: [],
-               interpretative: []
-            };
+            results = {};
          
          res = makeQuery(inputValue.toLowerCase());
          res.forEach(function (result) {
             var metadata = result.matchData.metadata,
-               diplomaticMetadata,
-               interpretativeMetadata,
+               newMetadata = {},
                resultToken,
                resultByTokenObjects;
             
             for (var token in metadata) {
-               diplomaticMetadata = metadata[token].diplomaticText || {};
-               interpretativeMetadata = metadata[token].interpretativeText || {};
-               resultByTokenObjects = getResultsByToken(diplomaticMetadata, interpretativeMetadata);
-               
-               if(isCaseSensitive) {
-                  resultToken = {
-                     diplomatic: getCaseSensitiveResults(inputValue, resultByTokenObjects.diplomatic),
-                     interpretative: getCaseSensitiveResults(inputValue, resultByTokenObjects.interpretative)
-                  };
+               if(metadata[token].diplomaticText || metadata[token].interpretativeText) {
+                  newMetadata['diplomatic'] = {};
+                  newMetadata['interpretative'] = {};
+                  newMetadata.diplomatic = metadata[token].diplomaticText;
+                  newMetadata.interpretative = metadata[token].interpretativeText;
+                  resultByTokenObjects = getResultsByToken(newMetadata);
+                  
+                  if(isCaseSensitive) {
+                     resultToken = {
+                        diplomatic: getCaseSensitiveResults(inputValue, resultByTokenObjects.diplomatic),
+                        interpretative: getCaseSensitiveResults(inputValue, resultByTokenObjects.interpretative)
+                     };
+                  }
+                  else {
+                     resultToken = {
+                        diplomatic: getCaseInsensitiveResults(resultByTokenObjects.diplomatic),
+                        interpretative: getCaseInsensitiveResults(resultByTokenObjects.interpretative)
+                     };
+                  }
+                  if(resultToken.diplomatic) {
+                     results['diplomatic'] = [];
+                     results.diplomatic = results.diplomatic.concat(resultToken.diplomatic);
+                  }
+                  if(resultToken.interpretative) {
+                     results['interpretative'] = [];
+                     results.interpretative = results.interpretative.concat(resultToken.interpretative);
+                  }
                }
                else {
-                  resultToken = {
-                     diplomatic: getCaseInsensitiveResults(resultByTokenObjects.diplomatic),
-                     interpretative: getCaseInsensitiveResults(resultByTokenObjects.interpretative)
-                  };
-               }
-               
-               if(resultToken.diplomatic) {
-                  results.diplomatic = results.diplomatic.concat(resultToken.diplomatic);
-               }
-               if(resultToken.interpretative) {
-                  results.interpretative = results.interpretative.concat(resultToken.interpretative);
+                  resultByTokenObjects = getResultsByToken(metadata[token]);
+                  
+                  if(isCaseSensitive) {
+                     resultToken = {
+                        content: getCaseSensitiveResults(inputValue, resultByTokenObjects.content)
+                     };
+                  }
+                  else {
+                     resultToken = {
+                        content: getCaseInsensitiveResults(resultByTokenObjects.content)
+                     };
+                  }
+                  results['diplomatic'] = [];
+                  results.diplomatic = results.diplomatic.concat(resultToken.content);
                }
             }
          });
@@ -104,7 +121,7 @@ angular.module('evtviewer.dataHandler')
                results.push(
                   {
                      token: token.toString(),
-                     diplomaticText: tokenList[token],
+                     metadata: tokenList[token],
                      resultsNumber: tokenList[token].xmlDocId.length
                   }
                );
@@ -159,7 +176,7 @@ angular.module('evtviewer.dataHandler')
             results.push(
                {
                   token: token.toString(),
-                  diplomaticText: tokenList[token],
+                  metadata: tokenList[token],
                   resultsNumber: tokenList[token].xmlDocId.length
                }
          );
@@ -167,22 +184,33 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
       
-      function getResultsByToken(diplomaticMetadata, interpretativeMetadata) {
+      function getResultsByToken(metadata) {
          var originalTokens,
             resultPosition;
          
+         if(metadata.content) {
+            originalTokens = {
+               content: metadata.content.originalToken
+            };
+            resultPosition = {
+               content: originalTokens.content.map(getTokenPosition)
+            };
+            return {
+               content: buildResultsByToken(metadata.content, resultPosition.content)
+            };
+         }
+         
          originalTokens = {
-            diplomatic: diplomaticMetadata.originalToken || [],
-            interpretative: interpretativeMetadata.originalToken || []
+            diplomatic: metadata.diplomatic.originalToken,
+            interpretative: metadata.interpretative.originalToken
          };
          resultPosition = {
             diplomatic: originalTokens.diplomatic.map(getTokenPosition),
             interpretative: originalTokens.interpretative.map(getTokenPosition)
          };
-         
          return {
-            diplomatic: buildResultsByToken(diplomaticMetadata, resultPosition.diplomatic),
-            interpretative: buildResultsByToken(interpretativeMetadata, resultPosition.interpretative)
+            diplomatic: buildResultsByToken(metadata.diplomatic, resultPosition.diplomatic),
+            interpretative: buildResultsByToken(metadata.interpretative, resultPosition.interpretative)
          };
       }
    

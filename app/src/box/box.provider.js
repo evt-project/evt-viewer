@@ -1337,7 +1337,7 @@ angular.module('evtviewer.box')
 		
 		//TODO Add documentation
 		box.getEditionById = function (currentBoxId) {
-         return collection[currentBoxId].currentEdition;
+         return collection[currentBoxId].edition;
       };
 		
 		box.getState = function (currentBoxId, key) {
