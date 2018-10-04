@@ -27,7 +27,12 @@ angular.module('evtviewer.search')
             defaultSearchBoxBtn = currentBoxEdition === 'diplomatic' ? SEARCHBOXDEFAULTS.diplomaticSearchBoxBtn : SEARCHBOXDEFAULTS.interpretativeSearchBoxBtn;
             
             for(var btn in defaultSearchBoxBtn) {
-               if(btn.toString() !== 'virtualKeyboard' && glyphs._indexes.length === 0) {
+               if(glyphs._indexes.length === 0) {
+                  if(btn.toString() !== 'virtualKeyboard') {
+                     searchBoxBtn.push(defaultSearchBoxBtn[btn]);
+                  }
+               }
+               else {
                   searchBoxBtn.push(defaultSearchBoxBtn[btn]);
                }
             }
