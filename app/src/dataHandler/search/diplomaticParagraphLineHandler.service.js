@@ -52,12 +52,14 @@ angular.module('evtviewer.dataHandler')
                            documentToIndex.paragraph = paragraph;
                            documentToIndex.docId = currentPage ? documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.paragraph
                                                                : documentToIndex.xmlDocId + '-' + documentToIndex.paragraph;
+                           parId++;
                         },
                         'l': function() {
                            line = evtSearchDocument.getLine(node, lineId);
                            documentToIndex.line = line;
                            documentToIndex.docId = currentPage ? documentToIndex.xmlDocId + '-' + documentToIndex.page + '-' + documentToIndex.line
                                                                : documentToIndex.xmlDocId + '-' + documentToIndex.line;
+                           lineId++;
                         }
                      };
                      nodeName[node.nodeName]();
@@ -69,7 +71,7 @@ angular.module('evtviewer.dataHandler')
                      currentElementNodes = [];
                      documentToIndex = {};
                   }
-                  parId++;
+                  //parId++;
                }
             };
             (nodes[node.nodeName] || nodes['default'])();

@@ -25,6 +25,10 @@ angular.module('evtviewer.search')
          vm.getCurrentEditionResults = function () {
             return vm.currentEditionResults;
          };
+   
+         vm.getCurrentBoxEdition = function (boxId) {
+            return evtSearchBox.getCurrentBoxEdition(boxId);
+         };
          
          //TODO move in provider
          vm.getHighlightedOriginalText = function (docId, currentEdition, token, position) {

@@ -433,7 +433,14 @@ angular.module('evtviewer.box')
                       if (oldItem !== newItem && scope.vm.edition !== newItem) {
                           scope.vm.edition = newItem;
                           currentBox.updateContent();
-
+                         $timeout(function() {
+                            var currentBoxId = scope.id,
+                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+      
+                            if(searchInput !== '') {
+                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                            }
+                         });
                       }
                   }, true);
                 }
