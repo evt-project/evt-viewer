@@ -5,10 +5,7 @@ angular.module('evtviewer.search')
          templateUrl: 'src/search/virtualKeyboard.directive.tmpl.html',
          replace: true,
          link: function(scope) {
-            var currentEdition = scope.$parent.edition;
-            if(currentEdition !== 'interpretative') {
-               evtVirtualKeyboard.build(scope, scope.vm);
-            }
+            evtVirtualKeyboard.build(scope, scope.vm);
          }
       };
    }]);
