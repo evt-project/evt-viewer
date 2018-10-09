@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.core
  * @name evtviewer.core.Utils
- * @description 
+ * @description
  * # Utils
  * <p>Service that exposes useful (DOM/parsing) methods.</p>
  * <p>DOM utils methods are grouped in DOMutils property.</p>
@@ -18,9 +18,9 @@ angular.module('evtviewer.core')
     * @methodOf evtviewer.core.Utils
     *
     * @description
-    * Extend an object with another: 
+    * Extend an object with another:
     * - add to destination all properties that only appears in source
-    * - overwrite all properties that appears in destination with the corrensponding 
+    * - overwrite all properties that appears in destination with the corrensponding
     * properties that appear in source.
     *
     * @param {Object} destination JSON object containing an object to extend
@@ -46,9 +46,9 @@ angular.module('evtviewer.core')
     * @methodOf evtviewer.core.Utils
     *
     * @description
-    *  Extend an object with another, skipping the undefined values: 
+    *  Extend an object with another, skipping the undefined values:
     * - add to destination all properties that only appears in source
-    * - overwrite all properties that appears in destination with the corrensponding 
+    * - overwrite all properties that appears in destination with the corrensponding
     * properties that appear in source
     * - skip undefined properties that are undefined in source object
     *
@@ -155,7 +155,7 @@ angular.module('evtviewer.core')
     * Check if a node is nested in a node with given tag name
     *
     * @param {element} element element to check
-    * @param {string} parentTagName tag name of element that should be parent 
+    * @param {string} parentTagName tag name of element that should be parent
     *
     * @returns {boolean} whether the element is nested in an element with given tag name or not
     * @todo Decide if move to another service
@@ -183,7 +183,7 @@ angular.module('evtviewer.core')
     *  Check if a node is nested in a node with given class name
     *
     * @param {element} element element to check
-    * @param {string} parentClassName class name of element that should be parent 
+    * @param {string} parentClassName class name of element that should be parent
     *
     * @returns {boolean} whether the element is nested in an element with given class name or not
     * @todo Decide if move to another service
@@ -204,7 +204,7 @@ angular.module('evtviewer.core')
 
 	var hexC = function() {
 		var hex = Math.floor(Math.random() * 256).toString(16);
-		return ('0' + String(hex)).substr(-2); // pad with zero 
+		return ('0' + String(hex)).substr(-2); // pad with zero
 	};
 	/**
     * @ngdoc method
@@ -223,9 +223,9 @@ angular.module('evtviewer.core')
 			return '#' + hexC() + hexC() + hexC();
 		} else if (type === 'rgb') {
 			var brightness = 5;
-			// Six levels of brightness from 0 to 5, 0 being the darkest 
+			// Six levels of brightness from 0 to 5, 0 being the darkest
 			var rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
-			var mix = [brightness * 51, brightness * 51, brightness * 51]; //51 => 255/5 
+			var mix = [brightness * 51, brightness * 51, brightness * 51]; //51 => 255/5
 			var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x) {
 				return Math.round(x / 2.0);
 			});
@@ -258,11 +258,85 @@ angular.module('evtviewer.core')
 		return str;
 	};
 
+   /**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#cleanText
+    * @methodof evtviewer.core.Utils
+    *
+    * @description
+    * Clean string from spaces and some punctuation
+    *
+    * @param str
+    *
+    * @returns {string} string cleaned from double spaces and punctuation
+    */
+	this.cleanText = function(str) {
+	   str = this.cleanPunctuation(str);
+	   str = this.cleanSpace(str);
+	   return str;
+   };
+
+   /**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#cleanSpace
+    * @methodof evtviewer.core.Utils
+    *
+    * @description
+    * Clean string from double spaces
+    *
+    * @param str
+    * @returns {string} string cleaned from double spaces
+    */
+   this.cleanSpace = function(str) {
+	   var replace,
+          regex = /\s\s/;
+	   while(str.match(regex)) {
+	      replace = str.replace(regex, ' ');
+	      str = replace;
+      }
+      if(str.charAt(0) === ' ') {
+	      str = str.substring(1);
+      }
+      return str;
+   };
+
+   /**
+    * @ngdoc method
+    * @name evtviewer.core.Utils#cleanPunctuation
+    * @methodof evtviewer.core.Utils
+    *
+    * @description
+    * Clean string from some punctuation
+    *
+    * @param str
+    * @returns {string} string cleaned from some punctuation
+    */
+   this.cleanPunctuation = function(str) {
+     var replace,
+         regex = /[.,#!$%\^&\*;:{}\[\]\'\"=\-_`~()]/;
+
+     while(str.match(regex)) {
+        replace = str.replace(regex, '');
+        str = replace;
+     }
+     return str;
+   };
+   
+   this.replaceStringAt = function(string, token, replace, startPos, endPos) {
+      return string.slice(0, startPos) +
+         string.slice(startPos, endPos).replace(token, replace) +
+         string.slice(endPos);
+   };
+
 	this.$get = function() {
 		return {
 			deepExtend: this.deepExtend,
 			deepExtendSkipDefault: this.deepExtendSkipDefault,
 			getRandomColor: this.getRandomColor,
+         cleanText: this.cleanText,
+         cleanSpace: this.cleanSpace,
+         cleanPunctuation: this.cleanPunctuation,
+         replaceStringAt: this.replaceStringAt,
 			DOMutils: {
 				getElementsBetweenTree: this.getElementsBetweenTree,
 				getCommonAncestor: this.getCommonAncestor,

@@ -67,7 +67,7 @@
 **/
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox) {
 
     return {
         restrict: 'E',
@@ -424,7 +424,14 @@ angular.module('evtviewer.box')
                       if (oldItem !== newItem && scope.vm.edition !== newItem) {
                           scope.vm.edition = newItem;
                           currentBox.updateContent();
-
+                         $timeout(function() {
+                            var currentBoxId = scope.id,
+                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+      
+                            if(searchInput !== '') {
+                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                            }
+                         });
                       }
                   }, true);
                 }
@@ -433,6 +440,15 @@ angular.module('evtviewer.box')
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     currentBox.updateContent();
+   
+                   $timeout(function() {
+                      var currentBoxId = scope.id,
+                         searchInput = evtSearchBox.getInputValue(currentBoxId);
+   
+                      if(searchInput !== '') {
+                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                      }
+                   });
                 }, true);
             }
 

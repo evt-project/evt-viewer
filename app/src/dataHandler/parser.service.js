@@ -154,9 +154,9 @@ angular.module('evtviewer.dataHandler')
 
 		if (element.nodeType === 3) { // Text
 			newElement = element;
-            if (newElement.textContent) {
-                newElement.textContent = newElement.textContent.replace('__SPACE__', ' ');
-            }
+			if (newElement.textContent) {
+				newElement.textContent = newElement.textContent.replace('__SPACE__', ' ');
+			}
 			// newElement = document.createElement('span');
 			// newElement.className = "textNode";
 			// newElement.appendChild(element);
@@ -275,24 +275,16 @@ angular.module('evtviewer.dataHandler')
 						newElement.appendChild(document.createElement('br'));
 						var lineN = document.createElement('span');
 						lineN.className = 'lineN';
-                        var lineNum = element.getAttribute('n');
-                        lineN.textContent = lineNum; 
-                        if (lineNum) {
-                            newElement.appendChild(lineN);  
-                        }
+						var lineNum = element.getAttribute('n');
+						lineN.textContent = lineNum;
+						if (lineNum) {
+							newElement.appendChild(lineN);
+						}
 					}
 				}
 			}
 		}
-		if (tagName === 'w' && newElement.innerHTML !== undefined) {
-			if (newElement.innerHTML[0] !== ' ') {
-				newElement.innerHTML = ' '+newElement.innerHTML;
-			}
-		}
-
-        if (element.nodeType === 3 || 
-        	(element.innerHTML !== undefined && element.innerHTML.replace(/\s/g, '') === '') || 
-        	 (newElement.innerHTML !== undefined && newElement.innerHTML.replace(/\s/g, '') !== '')) {
+		if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
 			return newElement;
 		} else {
 			return document.createTextNode('');
@@ -1014,91 +1006,93 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
-	   var balancedHTMLString = parser.balanceXHTML(docHTML);
-        balancedHTMLString = balancedHTMLString.replace(/> </g, '>__SPACE__<');
+		var balancedHTMLString = parser.balanceXHTML(docHTML);
+		balancedHTMLString = balancedHTMLString.replace(/>\s+</g, '>__SPACE__<');
 		var deferred = $q.defer(),
 			editionText = balancedHTMLString, //TEMP
-            doc = xmlParser.parse('<div id="mainContentToTranform" class="' + editionLevel + '">' + balancedHTMLString + '</div>');
-		if (doc !== undefined) {
-			var docDOM = doc.getElementById('mainContentToTranform');
-			//remove <pb>s
-			var pbNode,
-				pbs = docDOM.getElementsByTagName('pb'),
+
+			doc = xmlParser.parse('<div id="mainContentToTranform" class="' + editionLevel + '">' + balancedHTMLString + '</div>');
+			if (doc !== undefined) {
+				var docDOM = doc.getElementById('mainContentToTranform');
+				//remove <pb>s
+				var pbNode,
+					pbs = docDOM.getElementsByTagName('pb'),
+					k = 0;
+				while (k < pbs.length) {
+					pbNode = pbs[k];
+					pbNode.parentNode.removeChild(pbNode);
+				}
+
+				//remove <lb>s
+				var invalidLbsSuffix;
+				if (editionLevel === 'diplomatic') {
+					invalidLbsSuffix = '_reg';
+				} else if (editionLevel === 'interpretative') {
+					invalidLbsSuffix = '_orig';
+				}
+				if (invalidLbsSuffix) {
+					var lbs = docDOM.getElementsByTagName('lb');
+					k = 0;
+					while (k < lbs.length) {
+						var lbNode = lbs[k];
+						var lbNodeId = lbNode.getAttribute('xml:id');
+						if (lbNodeId && lbNodeId !== null && lbNodeId.indexOf(invalidLbsSuffix) >= 0) {
+							lbNode.parentNode.removeChild(lbNode);
+						} else {
+							k++;
+						}
+					}
+				}
+
+				var Gs = docDOM.getElementsByTagName('g');
 				k = 0;
-			while (k < pbs.length) {
-				pbNode = pbs[k];
-				pbNode.parentNode.removeChild(pbNode);
-			}
+				while (k < Gs.length) {
+					var gNode = Gs[k],
+						ref = gNode.getAttribute('ref'),
+						glyphNode = document.createElement('span');
+					glyphNode.className = 'glyph';
 
-			//remove <lb>s
-			var invalidLbsSuffix;
-			if (editionLevel === 'diplomatic') {
-				invalidLbsSuffix = '_reg';
-			} else if (editionLevel === 'interpretative') {
-				invalidLbsSuffix = '_orig';
-			}
-			if (invalidLbsSuffix) {
-				var lbs = docDOM.getElementsByTagName('lb');
-				k = 0;
-				while (k < lbs.length) {
-					var lbNode = lbs[k];
-					var lbNodeId = lbNode.getAttribute('xml:id');
-					if (lbNodeId && lbNodeId !== null && lbNodeId.indexOf(invalidLbsSuffix) >= 0) {
-						lbNode.parentNode.removeChild(lbNode);
-					} else {
-						k++;
+					if (ref && ref !== '') {
+						ref = ref.replace('#', '');
+						var edition = editionLevel;
+						edition = edition === 'interpretative' ? 'normalized' : edition;
+						if (parser.isNestedInElem(gNode, 'abbr') || parser.isNestedInElem(gNode, 'orig')) {
+							edition = 'diplomatic';
+						}
+						var glyphMappingForEdition = parsedData.getGlyphMappingForEdition(ref, edition);
+						if (glyphMappingForEdition) {
+							glyphNode.appendChild(angular.element(glyphMappingForEdition.element)[0]);
+						}
 					}
+					if (glyphNode) {
+						//TODO Creare direttiva apposita per GLYPHs
+						gNode.parentNode.insertBefore(glyphNode, gNode.nextSibling);
+					}
+					gNode.parentNode.removeChild(gNode);
 				}
+				docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
+
+				angular.forEach(docDOM.children, function(elem) {
+					var skip = '<pb>,<g>';
+					elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {
+						skip: skip
+					}), elem);
+				});
+				editionText = docDOM.outerHTML;
+			} else {
+				editionText = '<span> {{ \'TEXT_NOT_AVAILABLE\' | translate }}</span>';
 			}
 
-			var Gs = docDOM.getElementsByTagName('g');
-			k = 0;
-			while (k < Gs.length) {
-				var gNode = Gs[k],
-					ref = gNode.getAttribute('ref'),
-					glyphNode = document.createElement('span');
-				glyphNode.className = 'glyph';
-
-				if (ref && ref !== '') {
-					ref = ref.replace('#', '');
-					var edition = editionLevel;
-					edition = edition === 'interpretative' ? 'normalized' : edition;
-					if (parser.isNestedInElem(gNode, 'abbr') || parser.isNestedInElem(gNode, 'orig')) {
-						edition = 'diplomatic';
-					}
-					var glyphMappingForEdition = parsedData.getGlyphMappingForEdition(ref, edition);
-					if (glyphMappingForEdition) {
-						glyphNode.appendChild(angular.element(glyphMappingForEdition.element)[0]);
-					}
-				}
-				if (glyphNode) {
-					//TODO Creare direttiva apposita per GLYPHs
-					gNode.parentNode.insertBefore(glyphNode, gNode.nextSibling);
-				}
-				gNode.parentNode.removeChild(gNode);
+			if (editionText === undefined) {
+				var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
+				editionText = errorMsg;
 			}
-			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
+			editionText = editionText.replace(/__SPACE__/g, ' ');
+			parsedData.setPageText(pageId, docId, editionLevel, editionText);
 
-			angular.forEach(docDOM.children, function(elem) {
-				var skip = '<pb>,<g>';
-				var parsedElem = parser.parseXMLElement(doc, elem, { skip: skip });
-				elem.parentNode.replaceChild(parsedElem, elem);
-			});
-			editionText = docDOM.outerHTML;
-		} else {
-			editionText = '<span> {{ \'TEXT_NOT_AVAILABLE\' | translate }}</span>';
-		}
-
-		if (editionText === undefined) {
-			var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
-			editionText = errorMsg;
-		}
-
-		parsedData.setPageText(pageId, docId, editionLevel, editionText);
-
-		deferred.resolve('success');
-		return deferred;
-	};
+			deferred.resolve('success');
+			return deferred;
+		};
 
 	return parser;
 });

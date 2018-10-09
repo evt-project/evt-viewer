@@ -1,0 +1,18 @@
+/* *************************** */
+/* SEARCH BOX EXTERNAL         */
+/* *************************** */
+
+.search-box.external {
+   height: auto;
+   position: absolute;
+   right: 4px;
+   @include border($mainContainer-border-width, 'all', $base-color-dark);
+   background-color: $box-background-color;
+   .searchBtnGroup {
+      display: none;
+
+   }
+   input {
+      display: none;
+   }
+}

@@ -1,12 +1,13 @@
 {
+
     "indexTitle": "",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/pelavicino.xml",
-    "sourcesUrl"       : "data/sources.xml",
-    "analoguesUrl"     : "data/analogues.xml",
-    "sourcesTextsUrl" : "data/sources/",
+	"dataUrl": "../data/rotoloSanTeobaldo.xml",
+    "sourcesUrl"       : "",
+    "analoguesUrl"     : "",
+    "sourcesTextsUrl" : "",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
@@ -25,7 +26,7 @@
                                 "label"    : "IMAGE_TEXT",
                                 "icon"     : "mode-imgTxt",
                                 "viewMode" : "imgTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "TEXT_TEXT",
@@ -69,7 +70,6 @@
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
-
     "namedEntitiesSelector": false,
 
     "namedEntitiesToHandle": [{
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": false,
+    "showDocumentSelector": true,
 
 	"variantColors": {
 		"type": {
@@ -136,18 +136,8 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-
-    "versions" : ["rec2", "rec1", "rec3"],
-    "witnessesGroups": [
-        {
-            "groupName" : "Grp_1",
-            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
-        },
-        {
-            "groupName" : "Grp_2",
-            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
-        }
-    ],
+    "versions" : [],
+    "witnessesGroups": [ ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
@@ -157,9 +147,6 @@
     "showInlineCriticalApparatus": false,
     "showInlineSources": false,
     "showInlineAnalogues": false,
-
-
-
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {
@@ -176,6 +163,8 @@
 			"enabled": true
 		}
 	},
+
+   "virtualKeyboardKeys": [],
 
     "languages": ["en", "it"]
 }
