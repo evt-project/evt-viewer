@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
    .provider('evtSearchResult', function () {
-      this.$get = function (evtSearchBox) {
+      this.$get = function () {
         var searchResult = [],
            searchResultCollection = {};
         
