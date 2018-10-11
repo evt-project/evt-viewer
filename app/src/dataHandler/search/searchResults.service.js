@@ -143,7 +143,7 @@ angular.module('evtviewer.dataHandler')
             inputLastChars,
             result = {
                token: token.toString(),
-               diplomaticText: tokenList[token],
+               metadata: tokenList[token],
                resultsNumber: tokenList[token].xmlDocId.length
             }
          
