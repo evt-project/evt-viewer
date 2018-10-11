@@ -272,7 +272,11 @@ angular.module('evtviewer.dataHandler')
                });
             }
             };
-         edition[currentEdition]();
+         
+         if(Object.keys(searchResults).length !== 0){
+            edition[currentEdition]();
+         }
+         
          return currentResults;
       };
       
