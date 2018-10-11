@@ -3,8 +3,8 @@
 /* ********************** */
 .ui-keyboard {
    width: $virtual-keyboard-width;
-   top: auto;
-   left: 30px;
+   top: auto!important;
+   left: 30px!important;
    bottom: 35px;
    padding: 10px;
    text-align: left;
@@ -37,7 +37,7 @@
 
 .results-open {
    .ui-keyboard {
-      top: 35px;
+      top: 35px!important;
       bottom: auto;
    }
 }

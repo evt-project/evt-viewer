@@ -67,7 +67,7 @@
 **/
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox, evtVirtualKeyboard, evtButtonSwitch) {
 
     return {
         restrict: 'E',
@@ -424,6 +424,8 @@ angular.module('evtviewer.box')
                       if (oldItem !== newItem && scope.vm.edition !== newItem) {
                           scope.vm.edition = newItem;
                           currentBox.updateContent();
+                          
+                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
                          $timeout(function() {
                             var currentBoxId = scope.id,
                                searchInput = evtSearchBox.getInputValue(currentBoxId);
