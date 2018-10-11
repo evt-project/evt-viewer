@@ -148,9 +148,6 @@
     "showInlineSources": false,
     "showInlineAnalogues": false,
 
-
-
-
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {
 		"Chicago": {

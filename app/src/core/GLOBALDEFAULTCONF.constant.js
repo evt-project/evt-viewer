@@ -51,42 +51,8 @@ angular.module('evtviewer.core')
 	// Default:
 	// <pre> configUrl: '../../config/config.json' </pre>
 	configUrl: '../../config/config.json',
-
-   // POETRY - DIPLOMATIC
-   //dataUrl          : '../../data/DOTR.xml',
-   //dataUrl          : '../../data/soledades_anotada.xml',
-   //dataUrl          : '../../data/VB-07-Fates.xml',
-   //dataUrl          : '../../data/VB-21-SoulI.xml',
-   //dataUrl          : '../../data/VB-23-DOTR.xml',
-   //dataUrl          : '../../data/VB-28-Elene.xml',
-
-   // POETRY - CRITICAL
-   //dataUrl          : '../../data/Allia - Carme 65.xml',
-   //dataUrl          : '../../data/Allia - Carme 66.xml',
-   //dataUrl          : '../../data/Cannata - Jaufre Rudel. L amore di lontano.xml',
-   //dataUrl          : '../../data/Chielli - Carmen LXII.xml',
-   //dataUrl          : '../../data/soledades_critica.xml',
-
-   // PROSE - DIPLOMATIC
-   dataUrl          : '../../data/VB-01-Hom01.xml',
-   //dataUrl          : '../../data/VB-02-Hom02.xml', //prose-verse
-   //dataUrl          : '../../data/VB-03-Hom03.xml',
-   //dataUrl          : '../../data/VB-04-Hom04.xml',
-   //dataUrl          : '../../data/VB-05-Hom05.xml',
-   //dataUrl          : '../../data/VB-29-Hom23.xml',
-   //dataUrl          : '../../data/baudelaire_art-romantique.xml',
-
-   // PROSE - CRITICAL
-   //dataUrl          : '../../data/pseudo-edition-test-file_mod.xml',
-   //dataUrl          : '../../data/PhiBor_Esempio_codifica.xml',
-
-   // PROSE-POETRY
-   //dataUrl          : '../../data/Gherardi_volume_1_[2016-09-11].xml',
-
-
-   //dataUrl          : '../../data/Codice Pelavicino.xml',
-   //dataUrl          : '../../data/VB-complete-full.xml',
-
+   dataUrl: '',
+   
 	logoUrl: '',
 
 	enableXMLdownload: true,
