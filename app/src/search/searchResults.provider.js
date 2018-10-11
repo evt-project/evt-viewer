@@ -5,7 +5,7 @@ angular.module('evtviewer.search')
            searchResultCollection = {};
         
         searchResult.build = function (scope, vm) {
-           var parentBoxId = scope.$parent.vm.parentBoxId,
+           var parentBoxId = scope.$parent.id,
               scopeHelper = {
                   parentBoxId: parentBoxId
               };
