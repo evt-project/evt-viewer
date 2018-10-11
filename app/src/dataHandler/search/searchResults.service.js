@@ -51,8 +51,8 @@ angular.module('evtviewer.dataHandler')
                if(metadata[token].diplomaticText || metadata[token].interpretativeText) {
                   newMetadata['diplomatic'] = {};
                   newMetadata['interpretative'] = {};
-                  newMetadata.diplomatic = metadata[token].diplomaticText;
-                  newMetadata.interpretative = metadata[token].interpretativeText;
+                  newMetadata.diplomatic = metadata[token].diplomaticText || {};
+                  newMetadata.interpretative = metadata[token].interpretativeText || {};
                   resultByTokenObjects = getResultsByToken(newMetadata);
                   
                   if(isCaseSensitive) {
@@ -68,11 +68,15 @@ angular.module('evtviewer.dataHandler')
                      };
                   }
                   if(resultToken.diplomatic) {
-                     results['diplomatic'] = [];
-                     results.diplomatic = results.diplomatic.concat(resultToken.diplomatic);
+                     if(!results.diplomatic) {
+                        results['diplomatic'] = [];
+                     }
+                     results['diplomatic'] = results.diplomatic.concat(resultToken.diplomatic);
                   }
                   if(resultToken.interpretative) {
-                     results['interpretative'] = [];
+                     if(!results.interpretative) {
+                        results['interpretative'] = [];
+                     }
                      results.interpretative = results.interpretative.concat(resultToken.interpretative);
                   }
                }
@@ -139,7 +143,7 @@ angular.module('evtviewer.dataHandler')
             inputLastChars,
             result = {
                token: token.toString(),
-               diplomaticText: tokenList[token],
+               metadata: tokenList[token],
                resultsNumber: tokenList[token].xmlDocId.length
             }
          
@@ -201,8 +205,8 @@ angular.module('evtviewer.dataHandler')
          }
          
          originalTokens = {
-            diplomatic: metadata.diplomatic.originalToken,
-            interpretative: metadata.interpretative.originalToken
+            diplomatic: metadata.diplomatic.originalToken || [],
+            interpretative: metadata.interpretative.originalToken || []
          };
          resultPosition = {
             diplomatic: originalTokens.diplomatic.map(getTokenPosition),
