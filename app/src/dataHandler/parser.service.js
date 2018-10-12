@@ -182,7 +182,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			} else {
 				if (!parsedData.getEncodingDetail('usesLineBreaks') && tagName === 'l') {
-					newElement = parser.parseLine(element);
+					newElement = parser.parseLine(doc, element, options);
 				} else if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
@@ -545,7 +545,7 @@ angular.module('evtviewer.dataHandler')
 	parser.analyzeEncoding = function(doc) {
 		// Check if uses line breaks to divide lines
 		var currentDocument = angular.element(doc);
-		var lineBreaks = currentDocument.find(defLineBreak.replace(/[<>]/g, ''));
+		var lineBreaks = currentDocument.find('body '+defLineBreak.replace(/[<>]/g, ''));
 		parsedData.setEncodingDetail('usesLineBreaks', lineBreaks.length > 0);
 
 		var lineNums = currentDocument.find(defLine.replace(/[<>]/g, '') + '[n]');
@@ -630,7 +630,7 @@ angular.module('evtviewer.dataHandler')
 		var n = 0;
 		while (n < lines.length) {
 			var lineNode = lines[n],
-				newElement = parser.parseLine(lineNode);
+				newElement = parser.parseLine(docDOM, lineNode, {});
 			lineNode.parentNode.replaceChild(newElement, lineNode);
 		}
 	};
@@ -650,7 +650,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-	parser.parseLine = function(lineNode) {
+	parser.parseLine = function(doc, lineNode, options) {
 		var newElement = document.createElement('div');
 		newElement.className = lineNode.tagName + ' l-block';
 		for (var i = 0; i < lineNode.attributes.length; i++) {
@@ -666,7 +666,9 @@ angular.module('evtviewer.dataHandler')
 			lineNumElem.className = 'lineN';
 			lineNumElem.textContent = lineNum;
 			newElement.className += ' l-hasLineN';
-			newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">' + newElement.innerHTML + '</span>';
+
+			var parsedElement = parser.parseXMLElement(doc, newElement, options);
+			newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">' + parsedElement.outerHTML + '</span>';
 			//newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
 		} else if (parsedData.getEncodingDetail('lineNums')) {
 			newElement.className += ' l-indent';
@@ -884,11 +886,12 @@ angular.module('evtviewer.dataHandler')
 					// Split pages works only on diplomatic/interpretative edition
 					// In critical edition, text will be splitted into pages for each witness
 					config.defaultEdition = 'diplomatic';
-               		var pages = parsedData.getPages();
+					var pages = parsedData.getPages();
+					var newDocPages = newDoc.pages;
 					angular.forEach(angular.element(element).find(defContentEdition),
 						function(editionElement) {
 							//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-							parser.splitPages(pages, editionElement, newDoc.value, defContentEdition);
+							parser.splitPages(pages, editionElement, newDoc.value, defContentEdition, newDocPages);
 						});
 				}
 			});
@@ -957,27 +960,42 @@ angular.module('evtviewer.dataHandler')
 
      * @author CDP
      */
-	parser.splitPages = function(pages, docElement, docId, defContentEdition) {
+	parser.splitPages = function(pages, docElement, docId, defContentEdition, currentDocPages) {
 		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
 			sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
 			matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
+      
+      var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
+      var sRegExInput = new RegExp(match, 'ig');
+      var matches = docElement.outerHTML.match(sRegExInput);
+      var pageId;
+      
 		if (matchesOrphanText && matchesOrphanText.length > 0) {
 			var previousDoc = parsedData.getPreviousDocument(docId);
+			
 			if (previousDoc && previousDoc.pages && previousDoc.pages.length > 0) {
 				var parentPageId = previousDoc.pages[previousDoc.pages.length - 1];
+				var currentDocPos = pages.length - currentDocPages.length;
+				
 				if (parentPageId && parentPageId !== '') {
-					parsedData.setPageText(parentPageId, docId, 'original', matchesOrphanText[0]);
+				   var matchId = 0;
+               for (var j = currentDocPos; j < pages.length; j++) {
+                  pageId = pages[j];
+                  if (pageId && pageId !== '') {
+                     parsedData.setPageText(pageId, docId, 'original', matches[matchId]);
+                     matchId++;
+                  }
+               }
 				}
 			}
-		}
-		var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
-		var sRegExInput = new RegExp(match, 'ig');
-		var matches = docElement.outerHTML.match(sRegExInput);
-		for (var i = 0; i < pages.length; i++) {
-			var pageId = pages[i];
-			if (pageId && pageId !== '') {
-				parsedData.setPageText(pageId, docId, 'original', matches[i]);
-			}
+         else {
+            for (var i = 0; i < pages.length; i++) {
+               pageId = pages[i];
+               if (pageId && pageId !== '') {
+                  parsedData.setPageText(pageId, docId, 'original', matches[i]);
+               }
+            }
+         }
 		}
 	};
 	/**
