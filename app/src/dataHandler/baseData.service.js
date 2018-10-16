@@ -263,6 +263,9 @@ angular.module('evtviewer.dataHandler')
                         includedFilesLoaded++;
                         var includedDoc = xmlParser.parse(response.data),
                             includedTextElem = includedDoc.getElementsByTagName('text')[0];
+                        if (!includedTextElem) {
+                            includedTextElem = includedDoc.childNodes[0];
+                        }
                         element.parentNode.replaceChild(includedTextElem, element);
                         if (includedFilesLoaded === totFilesToInclude) {
                             deferred.resolve('success');
