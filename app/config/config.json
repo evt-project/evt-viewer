@@ -1,10 +1,10 @@
 {
 
-    "indexTitle": "",
+    "indexTitle": "Marco Polo Digitale",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "",
+	"dataUrl": "../data/polo/cap105.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -20,7 +20,7 @@
                                 "label"    : "MULTIPLE_RECENSIONS",
                                 "icon"     : "mode-versions",
                                 "viewMode" : "versions",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "IMAGE_TEXT",
@@ -32,7 +32,7 @@
                                 "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "COLLATION",
@@ -44,7 +44,7 @@
                                 "label"    : "SOURCE_TEXT",
                                 "icon"     : "mode-srcTxt",
                                 "viewMode" : "srcTxt",
-                                "visible"  : true
+                                "visible"  : false
                             }],
     "defaultEdition": "diplomatic",
     "showEditionLevelSelector": true,
@@ -53,17 +53,17 @@
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "enableXMLdownload" : true,
