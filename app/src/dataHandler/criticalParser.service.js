@@ -277,6 +277,7 @@ angular.module('evtviewer.dataHandler')
 				j = apps.length - 1,
 				count = 0;
 
+			// TODO-POLO: handle depa internal apps.
 			while (j < apps.length && j >= 0) {
 				var appNode = apps[j];
 				if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
@@ -369,14 +370,26 @@ angular.module('evtviewer.dataHandler')
 			}
 
 			//ANALOGUES
-			var analogues = [],
+			var depaApps = [],
+				  analogues = [],
 				//TO DO: trovare alternativa meno dispendiosa di memoria
-				allEl = docDOM.getElementsByTagName('*');
+				  allEl = docDOM.getElementsByTagName('*');
 			for (var w = 0; w < allEl.length; w++) {
 				var inner = allEl[w].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 				var el = allEl[w].outerHTML.replace(inner, '');
 				if (analogueRegExpr.test(el)) {
 					analogues.push(allEl[w]);
+				}
+				if (allEl[w].hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
+					// var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start;
+					var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end;
+					Object.values(depaEndIds).forEach((id, i) => {
+						if (id === allEl[w].getAttribute('xml:id')) {
+							var entry = parsedData.getCriticalEntryById(Object.keys(depaEndIds)[i]);
+							var spanElement = evtCriticalElementsParser.getDepaEntry(entry, '');
+							allEl[w].parentNode.insertBefore(spanElement, allEl[w].nextSibling);
+						}
+					});
 				}
 			}
 
