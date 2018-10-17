@@ -31,6 +31,7 @@
  * @requires evtviewer.namedEntity
  * @requires evtviewer.criticalApparatusEntry
  * @requires evtviewer.reading
+ * @requires evtviewer.depaReading
  * @requires evtviewer.dialog
  * @requires evtviewer.bibliography
  * @requires evtviewer.reference
@@ -74,18 +75,19 @@ angular
 		'evtviewer.namedEntity',
 		'evtviewer.criticalApparatusEntry',
 		'evtviewer.reading',
+		'evtviewer.depaReading',
 		'evtviewer.dialog',
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
-        'evtviewer.quote',
-        'evtviewer.tabsContainer',
-        'evtviewer.sourcesApparatusEntry',
-        'evtviewer.analogue',
-        'evtviewer.analoguesApparatusEntry',
-        'evtviewer.apparatuses',
-        'evtviewer.versionReading',
-        'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools',
-    	'evtviewer.search'
-    ]);
+		'evtviewer.quote',
+		'evtviewer.tabsContainer',
+		'evtviewer.sourcesApparatusEntry',
+		'evtviewer.analogue',
+		'evtviewer.analoguesApparatusEntry',
+		'evtviewer.apparatuses',
+		'evtviewer.versionReading',
+		'evtviewer.versionApparatusEntry',
+		'evtviewer.UItools',
+    'evtviewer.search'
+  ]);
