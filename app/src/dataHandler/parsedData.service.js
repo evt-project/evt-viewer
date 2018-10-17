@@ -291,6 +291,10 @@ angular.module('evtviewer.dataHandler')
 			encodingStructure: [],
 			appEntries: [],
 			exponents: [],
+			depa: {
+				start: {},
+				end: {}
+			}
 		}
 	};
 	/**
@@ -1831,14 +1835,51 @@ angular.module('evtviewer.dataHandler')
 			if (!entry._subApp) {
 				criticalAppCollection._indexes.encodingStructure.push(entry.id);
 			}
-        	var exponent = generateAlphabeticExponent();
-        	criticalAppCollection._indexes.exponents.push({appId: entry.id, exponent: exponent});
-        	criticalAppCollection[entry.id].exponent = exponent;
+			var exponent = generateAlphabeticExponent();
+			criticalAppCollection._indexes.exponents.push({appId: entry.id, exponent: exponent});
+			criticalAppCollection[entry.id].exponent = exponent;
 		}
 		if (entry._variance > criticalAppCollection._maxVariance) {
 			criticalAppCollection._maxVariance = entry._variance;
 		}
+		if (encodingDetails.variantEncodingMethod === 'double-end-point') {
+			parsedData.addCriticalEntryDepaInfo(entry);
+		}
 	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#addCriticalEntryDepaInfo
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * Adds the value of the from and the to attributes to the indexes of the app entries collection.
+	 * If the to attribute is not defined, it is created according to the variant ecoding location.
+	 * @param {Objects} entry the critical apparatus entry that has been added to the app entries collection
+	 * @author CM
+	 */
+	parsedData.addCriticalEntryDepaInfo = function(entry) {
+		if (!criticalAppCollection._indexes.depa) {
+			criticalAppCollection._indexes['depa'] = {
+				start: {},
+				end: {}
+			};
+		}
+		if (entry.attributes.from) {
+			var from = entry.attributes.from.charAt(0) === '#' ? entry.attributes.from.substr(1) : entry.attributes.from
+			criticalAppCollection._indexes.depa.start[entry.id] = from;
+		}
+		if (entry.attributes.to) {
+			var to = entry.attributes.to.charAt(0) === '#' ? entry.attributes.to.substr(1) : entry.attributes.to
+			criticalAppCollection._indexes.depa.end[entry.id] = to;
+		} else {
+			if (encodingDetails.variantEncodingLocation === 'internal') {
+				criticalAppCollection._indexes.depa.end[entry.id] = entry.id;
+			} else if (encodingDetails.variantEncodingLocation === 'external' && entry.attributes.from) {
+				criticalAppCollection._indexes.depa.end[entry.id] = entry.attributes.from.substr(1);
+			}
+		}
+	}
 
 	/**
      * @ngdoc method
