@@ -1156,6 +1156,89 @@ angular.module('evtviewer.dataHandler')
 		}
 		return spanElement;
 	};
+
+  parser.getDepaEntry = function(entry, wit) {
+		var spanElement,
+			errorElement;
+
+		if (entry !== null) {
+			spanElement = document.createElement('evt-depa-reading');
+			spanElement.setAttribute('data-app-id', entry.id);
+			// IMPORTANT: data-app-id should be the first attribute added to the element
+			// otherwise the parser for fragmentary witnesses will not work.
+			spanElement.setAttribute('data-scope-wit', wit);
+			spanElement.setAttribute('data-type', 'lemma');
+			if (entry._lacuna) {
+				var lacunaElement = document.createElement('span');
+				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
+				spanElement.appendChild(lacunaElement);
+			} else if (entry.lemma !== undefined && entry.lemma !== '') {
+				spanElement.setAttribute('data-reading-id', entry.lemma);
+				var lemmaContent = entry.content[entry.lemma].content;
+				for (var i in lemmaContent) {
+					if (typeof(lemmaContent[i]) === 'string') {
+						spanElement.appendChild(document.createTextNode(lemmaContent[i]));
+					} else {
+						if (lemmaContent[i].type === 'subApp') {
+							var subEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
+							var subEntryElem = wit === '' ? parser.getEntryLemmaText(subEntry, wit) : parser.getEntryWitnessReadingText(subEntry, wit);
+							var subReadingId = subEntry._indexes.witMap[wit] || '';
+							subEntryElem.setAttribute('data-reading-id', subReadingId);
+							if (subEntryElem !== null) {
+								spanElement.appendChild(subEntryElem);
+							}
+						} else if (lemmaContent[i].type === 'quote') {
+							var quoteElement = parser.getQuoteText(lemmaContent[i], wit);
+							spanElement.appendChild(quoteElement);
+						} else if (lemmaContent[i].type === 'analogue') {
+							var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
+							spanElement.appendChild(analogueElement);
+						} else if (lemmaContent[i].type === 'genericElement') {
+							var genericElement = getGenericElementText(lemmaContent[i], wit);
+							spanElement.appendChild(genericElement);
+						}
+					}
+				}
+			} else {
+				if (config.preferredWitness !== '') {
+					spanElement = parser.getEntryWitnessReadingText(entry, config.preferredWitness);
+					if (spanElement !== null) {
+						spanElement.className = 'autoLemma';
+					}
+				} else {
+					errorElement = document.createElement('span');
+					errorElement.className = 'encodingError';
+					errorElement.setAttribute('title', 'General error');
+					spanElement.appendChild(errorElement);
+				}
+			}
+			if (spanElement !== null) {
+				var attribKeys = Object.keys(entry.attributes);
+				for (var key in attribKeys) {
+					var attrib = attribKeys[key];
+					var value = entry.attributes[attrib];
+					if (attrib !== 'xml:id') {
+						spanElement.setAttribute('data-' + attrib.replace(':', '-'), value);
+					}
+				}
+
+				if (entry._variance !== undefined) {
+					spanElement.setAttribute('data-variance', entry._variance);
+					// TODO: da pesare sulla varianza massima
+				}
+			}
+		} else {
+			errorElement = document.createElement('span');
+			errorElement.className = 'encodingError';
+			errorElement.setAttribute('title', 'General error');
+			spanElement.appendChild(errorElement);
+		}
+
+		if (spanElement.childNodes.length <= 0) {
+			spanElement.innerHTML = '<span class="emptyText"></span>';
+		}
+		return spanElement;
+	};
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtCriticalElementsParser#getVersionEntryLemma
