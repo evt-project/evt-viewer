@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, evtCriticalElementsParser, xmlParser, config) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, evtCriticalElementsParser, xmlParser, config, evtDepaParser) {
 	var parser = {};
 
 	var apparatusEntryDef = '<app>',
@@ -370,8 +370,7 @@ angular.module('evtviewer.dataHandler')
 			}
 
 			//ANALOGUES
-			var depaApps = [],
-				  analogues = [],
+			var analogues = [],
 				//TO DO: trovare alternativa meno dispendiosa di memoria
 				  allEl = docDOM.getElementsByTagName('*');
 			for (var w = 0; w < allEl.length; w++) {
@@ -381,15 +380,10 @@ angular.module('evtviewer.dataHandler')
 					analogues.push(allEl[w]);
 				}
 				if (allEl[w].hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
-					// var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start;
-					var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end;
-					Object.values(depaEndIds).forEach((id, i) => {
-						if (id === allEl[w].getAttribute('xml:id')) {
-							var entry = parsedData.getCriticalEntryById(Object.keys(depaEndIds)[i]);
-							var spanElement = evtCriticalElementsParser.getDepaEntry(entry, '');
-							allEl[w].parentNode.insertBefore(spanElement, allEl[w].nextSibling);
-						}
-					});
+					var spanElement = evtDepaParser.setDepaElementInText(allEl[w], 'base', docDOM);
+					if (spanElement) {
+						allEl[w].parentNode.insertBefore(spanElement, allEl[w].nextSibling);
+					}
 				}
 			}
 
