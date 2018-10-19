@@ -316,6 +316,9 @@ angular.module('evtviewer.dataHandler')
 						}
 					}
 					if (entry !== undefined) {
+						if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+							evtParser.setDepaAppLemma(appNode, entry, doc);
+						}
 						if (entry.type === 'recensioApp') {
 							spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, '', scopeVersion);
 						} else {
