@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser) {
+.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, evtParser) {
   var parser = {};
 
   var startElements = {};
@@ -30,33 +30,28 @@ angular.module('evtviewer.dataHandler')
     var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         startId = depaStartIds[entry.id],
-        endId = depaEndIds[entry.id];
+        endId = depaEndIds[entry.id],
+        location = parsedData.getEncodingDetail('variantEncodingLocation');
     if (startId) {
       entry.header = '';
       if (startId === endId) {
-        entry.header = elem.innerHTML;
-      } else if (elem.parentNode.getAttribute('xml:id') === startId) {
-        var index = 0,
-            currentSibling = elem.parentNode.childNodes[0]; 
-        while (index < elem.parentNode.childNodes.length && (currentSibling.nodeType === 3 || currentSibling.getAttribute('xml:id') !== endId)) {
-          entry.header += elem.parentNode.childNodes[index].innerHTML ? elem.parentNode.childNodes[index].innerHTML : elem.parentNode.childNodes[index].textContent;
-          index++;
-          currentSibling = elem.parentNode.childNodes[index];
+        entry.header = elem.outerHTML;
+      } else {
+        var docString = doc.outerHTML;
+        var startPos = docString.search('xml:id="' + startId),
+            endPos = 0;
+        if (location === 'internal') {
+          var string = elem.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+          endPos = docString.search(string);
+        } else {
+          endPos = docString.search('xml:id="' + endId + '"');
         }
-      } else if (startElements[entry.id]) {
-        var startElem = startElements[entry.id];
-        if (startElem.childNodes && startElem.childNodes.length > 0) {
-          entry.header += startElem.innerHTML;
-        }
-        var index = 0,
-            currentSibling = startElem.parentNode.childNodes[0]; 
-        while (index < startElem.parentNode.childNodes.length && (currentSibling.nodeType === 3 || currentSibling.getAttribute('xml:id') !== endId)) {
-          entry.header += startElem.parentNode.childNodes[index].innerHTML ? startElem.parentNode.childNodes[index].innerHTML : startElem.parentNode.childNodes[index].textContent;
-          index++;
-          currentSibling = startElem.parentNode.childNodes[index];
-        }
+        entry.header = docString.substring(startPos, endPos);
+        entry.header = entry.header.substring(entry.header.indexOf('>') + 1);
+        entry.header = entry.header.substring(0, entry.header.lastIndexOf('<'));
+        entry.header = evtParser.balanceXHTML(entry.header);
       }
-      entry.header.trim();
+      entry.header = entry.header.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();;
     }
   }
 
