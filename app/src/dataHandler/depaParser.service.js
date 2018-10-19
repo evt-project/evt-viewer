@@ -3,8 +3,6 @@ angular.module('evtviewer.dataHandler')
 .service('evtDepaParser', function(parsedData, evtCriticalElementsParser, evtParser) {
   var parser = {};
 
-  var startElements = {};
-
   parser.setDepaElementInText = function(elem, textType, doc) {
     var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
@@ -15,18 +13,22 @@ angular.module('evtviewer.dataHandler')
       var startIdIndex = Object.values(depaStartIds).indexOf(elemId);
       if (elemId && endIdIndex >= 0) {
         var entry = parsedData.getCriticalEntryById(Object.keys(depaEndIds)[endIdIndex]);
-        spanElement = evtCriticalElementsParser.getDepaEntry(entry, '');
-        parser.setDepaElementBaseText(elem, entry, doc);
+        parser.setDepaAppLemma(elem, entry, doc);
+        spanElement = evtCriticalElementsParser.getDepaEntryText(entry, textType, 'end');
       }
       if (startIdIndex >= 0) {
         var entry = parsedData.getCriticalEntryById(Object.keys(depaStartIds)[startIdIndex]);        
-        startElements[entry.id] = elem;
+        parser.setDepaAppLemma(elem, entry, doc);
+        spanElement = evtCriticalElementsParser.getDepaEntryText(entry, textType, 'start');        
       }
     }
     return spanElement;
   };
 
-  parser.setDepaElementBaseText = function(elem, entry, doc) {
+  parser.setDepaAppLemma = function(elem, entry, doc) {
+    if (entry.header) {
+      return;
+    }
     var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         startId = depaStartIds[entry.id],
@@ -53,7 +55,7 @@ angular.module('evtviewer.dataHandler')
       }
       entry.header = entry.header.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();;
     }
-  }
+  };
 
   return parser;
 });
