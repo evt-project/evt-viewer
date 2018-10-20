@@ -1968,7 +1968,11 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getReadingAttributes = function(readingId, appId) {
 		var attributes = [];
 		if (criticalAppCollection[appId].content[readingId] !== undefined) {
-			attributes = criticalAppCollection[appId].content[readingId].attributes;
+			attributes = criticalAppCollection[appId].attributes;
+			var readingAttributes = criticalAppCollection[appId].content[readingId].attributes;
+			for (var key in readingAttributes) {
+				attributes[key] = readingAttributes[key];
+			}
 		}
 		return attributes;
 	};

@@ -1,11 +1,11 @@
 angular.module('evtviewer.search')
    .provider('evtSearchResult', function () {
-      this.$get = function (evtSearchBox) {
+      this.$get = function () {
         var searchResult = [],
            searchResultCollection = {};
         
         searchResult.build = function (scope, vm) {
-           var parentBoxId = scope.$parent.vm.parentBoxId,
+           var parentBoxId = scope.$parent.id,
               scopeHelper = {
                   parentBoxId: parentBoxId
               };

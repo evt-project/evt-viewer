@@ -51,8 +51,8 @@ angular.module('evtviewer.core')
 	// Default:
 	// <pre> configUrl: '../../config/config.json' </pre>
 	configUrl: '../../config/config.json',
-   dataUrl: '',
-   
+   dataUrl          : '',
+
 	logoUrl: '',
 
 	enableXMLdownload: true,

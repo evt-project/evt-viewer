@@ -302,7 +302,7 @@ angular.module('evtviewer.dataHandler')
 	apparatus.getGenericContent = function(element, scopeWit) {
 		var genericContentText;
 
-		genericContentText = '<span class="' + element.tagName + ' inApparatus">';
+		genericContentText = ' <span class="' + element.tagName + ' inApparatus">';
 		for (var i = 0; i < element.content.length; i++) {
 			if (typeof(element.content[i]) === 'string') {
 				genericContentText += element.content[i];
