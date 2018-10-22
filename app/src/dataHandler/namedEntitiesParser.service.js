@@ -466,6 +466,9 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		});
+		if (contentForLabelDef === '<placeName>') {
+			findMapCoordinates(el, nodeElem);
+		}
 		return el;
 	};
 
@@ -483,8 +486,24 @@ angular.module('evtviewer.dataHandler')
 		el.content[child.tagName].push({
 			text: parsedChild ? parsedChild.innerHTML : child.innerHTML,
 			attributes: evtParser.parseElementAttributes(child) 
-		}); 
+		});
 	};
+
+	var findMapCoordinates = function(el, node) {
+		var first = node.outerHTML.search('<geo');
+		if (first >= 0) {
+			var last = node.outerHTML.search('</geo>');
+			var geo = node.outerHTML.substring(first, last);
+			geo = geo.substring(geo.indexOf('>') + 1);
+			var coordinates = geo.split(', ');
+			if (coordinates.length === 2) {
+				el.map = {
+					lat: coordinates[0],
+					lng: coordinates[1]
+				}
+			}
+		}
+	}
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtNamedEntitiesParser#parseSubEntity
