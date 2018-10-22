@@ -89,5 +89,6 @@ angular
 		'evtviewer.versionReading',
 		'evtviewer.versionApparatusEntry',
 		'evtviewer.UItools',
-    'evtviewer.search'
+		'evtviewer.search',
+		'ui-leaflet'
   ]);
