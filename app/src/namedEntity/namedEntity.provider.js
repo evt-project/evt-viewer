@@ -362,6 +362,25 @@ angular.module('evtviewer.namedEntity')
                 tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES' };
             }
 
+            var center = {
+                zoom: 8
+            };
+            var mainMarker = {
+                focus: true,
+                draggable: false
+            };
+            // POLO-TODO: implementare parsing di coordinate e controllo.
+            if ((entityType === 'place' || entityType === 'placeName') && namedEntity.map) {
+                tabs._indexes.push('map');
+                tabs.map = { label: 'NAMED_ENTITIES.MAP' };
+                var lat = parseFloat(namedEntity.map.lat);
+                var lng = parseFloat(namedEntity.map.lng);
+                center.lat = lat;
+                center.lng = lng;
+                mainMarker.lat = lat;
+                mainMarker.lng = lng;
+            }
+
             tabs._indexes.push('xmlSource');
             tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
 
@@ -401,8 +420,9 @@ angular.module('evtviewer.namedEntity')
                 isPinAvailable : isPinAvailable,
                 isPinned: isPinned,
                 getPinnedState: getPinnedState,
-                togglePin: togglePin
-
+                togglePin: togglePin,
+                lfCenter: center,
+                lfMarkers: { mainMarker }
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
