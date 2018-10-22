@@ -225,7 +225,8 @@ angular.module('evtviewer.core')
     // NAMED ENTITIES
     namedEntitiesSelector: true,
     namedEntitiesToHandle: [],
-    otherEntitiesToHandle: [],
+		otherEntitiesToHandle: [],
+		listsMainContentDef: '<back>',
 
     languages: ['en', 'it']
 });

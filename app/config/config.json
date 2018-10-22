@@ -98,6 +98,7 @@
         "color": "#ffecb3"
     }],
 
+    "listsMainContentDef": "<back>",
 
     "toolHeatMap": true,
     "preferredWitness": "",

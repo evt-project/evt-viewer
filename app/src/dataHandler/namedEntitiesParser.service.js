@@ -17,7 +17,7 @@ angular.module('evtviewer.dataHandler')
 .service('evtNamedEntitiesParser', function(parsedData, evtParser, config) {
 	var NEparser = {};
 	//TODO retrieve definitions from configurations
-	var listsMainContentDef = '<sourceDesc>';
+	var listsMainContentDef = config.listsMainContentDef || '<sourceDesc>';
 	var listsToParse = [{
 		listDef: '<listPlace>',
 		contentDef: '<place>',
@@ -82,7 +82,7 @@ angular.module('evtviewer.dataHandler')
 			relationsInListDef = '';
 
 		for (var i = 0; i < listsToParse.length; i++) {
-			var listDef = listsMainContentDef.replace(/[<>]/g, '') + ' > ' + listsToParse[i].listDef.replace(/[<>]/g, ''),
+			var listDef = listsMainContentDef.replace(/[<>]/g, '') + ' ' + listsToParse[i].listDef.replace(/[<>]/g, ''),
 				contentDef = listsToParse[i].contentDef.replace(/[<>]/g, ''),
 				listType = listsToParse[i].type || 'generic',
 				listTitle = 'LISTS.'+listType.toUpperCase();
