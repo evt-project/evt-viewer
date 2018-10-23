@@ -174,7 +174,7 @@ angular.module('evtviewer.core')
     /*Definition of the element used within the XML file to encode quotes for the sources apparatus.*/
     quoteDef    : '<quote>',
     /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
-    analogueDef : '<seg>,<ref[type=parallelPassage]>',
+    analogueDef : '<ref[type=parallelPassage]>',
 
     showReadingExponent: true,
     showInlineCriticalApparatus: true,

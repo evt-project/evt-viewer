@@ -536,7 +536,7 @@ angular.module('evtviewer.dataHandler')
 				parsedXmlElem;
 
 			if (childElement.nodeType === 1 && listDef.toLowerCase().indexOf('<' + childElement.tagName.toLowerCase() + '>') >= 0 ) {
-				parsedXmlElem = NEparser.parseNamedEntitySubList(childElement, childElement, '<evtNote>');
+				parsedXmlElem = NEparser.parseNamedEntitySubList(childElement, childElement, { skip: '<evtNote>' });
 			} else {
 				parsedXmlElem = evtParser.parseXMLElement(childElement, childElement, {skip: '<evtNote>'});
 			} 
