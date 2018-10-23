@@ -45,7 +45,7 @@ angular.module('evtviewer.reference')
      * @author CDP
      */
 	vm.handleRefClick = function(oEvent) {
-		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.target.substr(0, 1) === '#') {
+		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.type === 'bibl' || vm.target.substr(0, 1) === '#') {
 
 			// Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
 			// passiamo a evtHighlight l'id dell'entrata da evidenziare

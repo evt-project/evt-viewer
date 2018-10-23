@@ -20,7 +20,7 @@ angular.module('evtviewer.reference')
         defaults = _defaults;
     };
 
-    this.$get = function($log) {
+    this.$get = function($log, parsedData) {
         var reference  = {},
             collection = {},
             list       = [],
@@ -72,10 +72,22 @@ angular.module('evtviewer.reference')
                 return;
             }
 
+            var tooltip = '',
+                hasPopover = currentType === 'bibl' || currentType === 'biblio',
+                target = currentTarget.replace('#', ''),
+                parentRef;
+            if (hasPopover && parsedData.getBibliographicRefsCollection()._indexes.indexOf(target) >= 0) {
+                tooltip = parsedData.getBibliographicRefsCollection()[target].plainText;
+                // parentRef = scope.$parent;
+            }
+
             scopeHelper = {
                 // expansion
                 uid           : currentId,
                 defaults      : angular.copy(defaults),
+                tooltip,
+                hasPopover,
+                parentRef,
 
                 // model
                 type         : currentType,

@@ -29,7 +29,15 @@ angular.module('evtviewer.reference')
         transclude: true,
         controllerAs: 'vm',
         controller: 'RefCtrl',
-        template: '<span class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>',
+        template: `<span><span ng-if="!vm.hasPopover" class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>
+        <evt-popover
+            ng-if="vm.hasPopover"
+            data-trigger="over"
+            data-tooltip="{{vm.tooltip}}"
+            data-parent-ref="{{vm.parentRef}}">
+            <span class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>
+        <evt-popover>
+        </span>`,
         link: function(scope) {
             // Initialize reading
             var currentRef = evtRef.build(scope);
