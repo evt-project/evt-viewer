@@ -70,7 +70,7 @@
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
-    "namedEntitiesSelector": false,
+    "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
         "tagName": "persName",
@@ -141,7 +141,7 @@
     "witnessesGroups": [ ],
 
     "quoteDef"              : "<quote>",
-    "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
+    "analogueDef"           : "<ref[type=parallelPassage]>",
 
     "showReadingExponent": true,
 

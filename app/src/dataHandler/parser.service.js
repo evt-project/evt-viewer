@@ -203,14 +203,11 @@ angular.module('evtviewer.dataHandler')
 
 				} else if (config.namedEntitiesSelector &&
 					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName + '>') >= 0 &&
-					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
+					element.getAttribute('ref')) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
 					newElement = document.createElement('span');
 					newElement.className = element.tagName !== undefined ? element.tagName : '';
-
-
-
 					if (element.attributes) {
 						for (var k = 0; k < element.attributes.length; k++) {
 							var attribK = element.attributes[k];
