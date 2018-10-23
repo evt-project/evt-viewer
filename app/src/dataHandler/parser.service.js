@@ -204,25 +204,20 @@ angular.module('evtviewer.dataHandler')
 
 				} else if (config.namedEntitiesSelector &&
 					possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName + '>') >= 0 &&
-					element.getAttribute('ref')) { //TODO: Rivedere
+					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
-					var biblRefRegEx = parser.createRegExpr(biblRefDef),
-							inner = element.innerHTML ? element.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') : '',
-							elemXML = element.outerHTML ? element.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').replace(inner, '') : '',
-							biblRef = element.attributes ? element.getAttribute('target') : undefined;
-					if (biblRef && biblRefRegEx.test(elemXML) && parsedData.getBibliographicRefsCollection()._indexes.indexOf(biblRef.replace('#', '')) >= 0) {
-						newElement = parser.parseBiblRef(doc, element, options);
-					} else {
-						newElement = document.createElement('span');
-						newElement.className = element.tagName !== undefined ? element.tagName : '';
-						if (element.attributes) {
-							for (var k = 0; k < element.attributes.length; k++) {
-								var attribK = element.attributes[k];
-								if (attribK.specified) {
-									if (attribK.name !== 'xml:id') {
-										newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
-									}
+					newElement = document.createElement('span');
+					newElement.className = element.tagName !== undefined ? element.tagName : '';
+
+
+
+					if (element.attributes) {
+						for (var k = 0; k < element.attributes.length; k++) {
+							var attribK = element.attributes[k];
+							if (attribK.specified) {
+								if (attribK.name !== 'xml:id') {
+									newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
 								}
 							}
 						}
