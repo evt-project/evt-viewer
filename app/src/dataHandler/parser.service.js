@@ -22,7 +22,8 @@ angular.module('evtviewer.dataHandler')
 		defLineBreak = '<lb>',
 		defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
-		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
+		biblRefDef = config.biblRefDef || '<ref[type=biblio]>';
 
 	var projectInfoDefs = {
 		sectionHeaders: '<sourceDesc>, ',
@@ -206,76 +207,84 @@ angular.module('evtviewer.dataHandler')
 					element.getAttribute('ref')) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
-					newElement = document.createElement('span');
-					newElement.className = element.tagName !== undefined ? element.tagName : '';
-					if (element.attributes) {
-						for (var k = 0; k < element.attributes.length; k++) {
-							var attribK = element.attributes[k];
-							if (attribK.specified) {
-								if (attribK.name !== 'xml:id') {
-									newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
-								}
-							}
-						}
-					}
-					if (element.childNodes) {
-						for (var j = 0; j < element.childNodes.length; j++) {
-							var childElement = element.childNodes[j].cloneNode(true);
-							newElement.appendChild(parser.parseXMLElement(doc, childElement, options));
-						}
+					var biblRefRegEx = parser.createRegExpr(biblRefDef),
+							inner = element.innerHTML ? element.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '') : '',
+							elemXML = element.outerHTML ? element.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').replace(inner, '') : '',
+							biblRef = element.attributes ? element.getAttribute('target') : undefined;
+					if (biblRef && biblRefRegEx.test(elemXML) && parsedData.getBibliographicRefsCollection()._indexes.indexOf(biblRef.replace('#', '')) >= 0) {
+						newElement = parser.parseBiblRef(doc, element, options);
 					} else {
-						newElement.innerHTML = element.innerHTML + ' ';
-					}
-
-					if (options.context && options.context === 'projectInfo') {
-						if (newElement.innerHTML.replace(/\s/g, '') !== '') {
-							var labelElement = document.createElement('span'),
-								addLabel = false;
-							labelElement.className = 'label-' + element.tagName;
-							labelElement.innerHTML = '{{ \'PROJECT_INFO.' + parser.camelToUnderscore(element.tagName).toUpperCase() + '\' | translate }}';
-							if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-sectionHeader';
-								addLabel = true;
-							} else if (projectInfoDefs.sectionSubHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-sectionSubHeader';
-								addLabel = true;
-							} else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-blockLabel';
-								addLabel = true;
-							} else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-inlineLabel';
-								labelElement.innerHTML += ': ';
-								addLabel = true;
-							}
-							if (projectInfoDefs.changeDef.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								var changeText = '';
-								var changeWhen = element.getAttribute(projectInfoDefs.changeWhenDef.replace(/[\[\]]/g, ''));
-								if (changeWhen) {
-									changeText += changeWhen + ' ';
+						newElement = document.createElement('span');
+						newElement.className = element.tagName !== undefined ? element.tagName : '';
+						if (element.attributes) {
+							for (var k = 0; k < element.attributes.length; k++) {
+								var attribK = element.attributes[k];
+								if (attribK.specified) {
+									if (attribK.name !== 'xml:id') {
+										newElement.setAttribute('data-' + attribK.name.replace(':', '-'), attribK.value);
+									}
 								}
-								var changeBy = element.getAttribute(projectInfoDefs.changeByDef.replace(/[\[\]]/g, ''));
-								if (changeBy) {
-									changeText += '[' + changeBy + ']';
-								}
-								if (changeText !== '') {
-									newElement.innerHTML = changeText + ' - ' + newElement.innerHTML;
-								}
-							}
-							if (addLabel) {
-								newElement.insertBefore(labelElement, newElement.childNodes[0]);
 							}
 						}
-					}
-
-					if (tagName === 'lb') {
-						newElement.id = element.getAttribute('xml:id');
-						newElement.appendChild(document.createElement('br'));
-						var lineN = document.createElement('span');
-						lineN.className = 'lineN';
-						var lineNum = element.getAttribute('n');
-						lineN.textContent = lineNum;
-						if (lineNum) {
-							newElement.appendChild(lineN);
+						if (element.childNodes) {
+							for (var j = 0; j < element.childNodes.length; j++) {
+								var childElement = element.childNodes[j].cloneNode(true);
+								newElement.appendChild(parser.parseXMLElement(doc, childElement, options));
+							}
+						} else {
+							newElement.innerHTML = element.innerHTML + ' ';
+						}
+	
+						if (options.context && options.context === 'projectInfo') {
+							if (newElement.innerHTML.replace(/\s/g, '') !== '') {
+								var labelElement = document.createElement('span'),
+									addLabel = false;
+								labelElement.className = 'label-' + element.tagName;
+								labelElement.innerHTML = '{{ \'PROJECT_INFO.' + parser.camelToUnderscore(element.tagName).toUpperCase() + '\' | translate }}';
+								if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+									labelElement.className += ' projectInfo-sectionHeader';
+									addLabel = true;
+								} else if (projectInfoDefs.sectionSubHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+									labelElement.className += ' projectInfo-sectionSubHeader';
+									addLabel = true;
+								} else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+									labelElement.className += ' projectInfo-blockLabel';
+									addLabel = true;
+								} else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+									labelElement.className += ' projectInfo-inlineLabel';
+									labelElement.innerHTML += ': ';
+									addLabel = true;
+								}
+								if (projectInfoDefs.changeDef.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+									var changeText = '';
+									var changeWhen = element.getAttribute(projectInfoDefs.changeWhenDef.replace(/[\[\]]/g, ''));
+									if (changeWhen) {
+										changeText += changeWhen + ' ';
+									}
+									var changeBy = element.getAttribute(projectInfoDefs.changeByDef.replace(/[\[\]]/g, ''));
+									if (changeBy) {
+										changeText += '[' + changeBy + ']';
+									}
+									if (changeText !== '') {
+										newElement.innerHTML = changeText + ' - ' + newElement.innerHTML;
+									}
+								}
+								if (addLabel) {
+									newElement.insertBefore(labelElement, newElement.childNodes[0]);
+								}
+							}
+						}
+	
+						if (tagName === 'lb') {
+							newElement.id = element.getAttribute('xml:id');
+							newElement.appendChild(document.createElement('br'));
+							var lineN = document.createElement('span');
+							lineN.className = 'lineN';
+							var lineNum = element.getAttribute('n');
+							lineN.textContent = lineNum;
+							if (lineNum) {
+								newElement.appendChild(lineN);
+							}
 						}
 					}
 				}
@@ -598,7 +607,6 @@ angular.module('evtviewer.dataHandler')
 		var listType = entityNode.tagName ? entityNode.tagName : 'generic';
 		entityElem.setAttribute('data-entity-type', listType);
 
-		var entityContent = '';
 		for (var i = 0; i < entityNode.childNodes.length; i++) {
 			var childElement = entityNode.childNodes[i].cloneNode(true),
 				parsedXmlElem;
@@ -610,6 +618,34 @@ angular.module('evtviewer.dataHandler')
 		}
 		return entityElem;
 	};
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtParser#parseBiblRef
+	 * @methodOf evtviewer.dataHandler.evtParser
+	 *
+	 * @description
+	 * This method will parse an XML element representing a bibliographic reference
+	 * and transform it into an <code>evt-bibl-ref</code> element.
+	*
+		* @param {element} doc XML element to be parsed
+		* @param {element} biblNode node to be transformed
+		* @param {string} skip names of sub elements to skip from transformation
+		* 
+		* @returns {element} <code>evt-bibl-ref</code> generated
+		*
+		* @author CM
+		*/
+	parser.parseBiblRef = function(doc, biblNode, skip) {
+		var biblElem = document.createElement('evt-bibl-ref');
+		biblElem.setAttribute('data-bibl-id', biblNode.getAttribute('target').replace('#', ''));
+		for (var i = 0; i < biblNode.childNodes.length; i++) {
+			var childElement = entityNode.childNodes[i].cloneNode(true),
+					parsedXmlElem;
+			parsedXmlElem = parser.parseXMLElement(doc, childElement, { skip });
+			biblElem.appendChild(parsedXmlElem);
+		}
+		return biblElem;
+	}
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseLines
