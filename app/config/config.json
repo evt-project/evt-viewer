@@ -157,13 +157,14 @@
 		},
 		"APA": {
 			"label": "APA",
-			"enabled": false
+			"enabled": true
 		},
 		"MLA": {
 			"label": "MLA",
 			"enabled": true
 		}
-	},
+    },
+    "biblRefDef": "<ref[type=biblio]>",
 
    "virtualKeyboardKeys": [],
 

@@ -211,6 +211,7 @@ angular.module('evtviewer.core')
 			enabled: true
 		}
 	},
+	biblRefDef: '<ref[type=biblio]>',
 	bibliographicEntriesSortBy: {
 		Author: 'BIBLIOGRAPHY.AUTHOR',
 		Year: 'BIBLIOGRAPHY.YEAR',
