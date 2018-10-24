@@ -488,7 +488,21 @@ angular.module('evtviewer.dataHandler')
 			attributes: evtParser.parseElementAttributes(child) 
 		});
 	};
-
+	
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtNamedEntitiesParser#findMapCoordinates
+	 * @methodOf evtviewer.dataHandler.evtNamedEntitiesParser
+	 *
+	 * @description
+	 * The method will search the <geo> element in order to retrieve the geographic coordinates
+	 * and stor them in the parsed entity object inside of a "map" property.
+	 * 
+	 * @param {Object} el JSON object representing the parsed entity node 
+	 * @param {element} node XML element representing the entity to be parsed
+	*
+	* @author CM
+	*/
 	var findMapCoordinates = function(el, node) {
 		var first = node.outerHTML.search('<geo');
 		if (first >= 0) {
