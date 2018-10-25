@@ -70,127 +70,8 @@ angular.module('evtviewer.dataHandler')
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
-			var apps = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
-				j = apps.length - 1;
-			while (j < apps.length && j >= 0) {
-				var appNode = apps[j];
-				if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
-					var id;
-					if (appNode.getAttribute('xml:id')) {
-						id = 'app_' + appNode.getAttribute('xml:id');
-					} else {
-						id = evtParser.xpath(appNode).substr(1);
-					}
-					var spanElement, entry;
-
-					if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-						entry = parsedData.getVersionEntry(id);
-					} else {
-						entry = parsedData.getCriticalEntryById(id);
-					}
-					// If I've already parsed all critical entries,
-					// or I've already parsed the current entry...
-					// ...I can simply access the model to get the right output
-					// ... otherwise I parse the DOM and save the entry in the model
-					if (!config.loadCriticalEntriesImmediately && entry === undefined) {
-						// Check if the app is of type recensio
-						if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-							evtCriticalElementsParser.handleVersionEntry(appNode);
-							entry = parsedData.getVersionEntry(id);
-						} else {
-							evtCriticalElementsParser.handleAppEntry(appNode);
-							var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-							if (subApps.length > 0) {
-								for (var z = 0; z < subApps.length; z++) {
-									evtCriticalElementsParser.handleAppEntry(subApps[z]);
-								}
-							}
-							entry = parsedData.getCriticalEntryById(id);
-						}
-					}
-					if (entry !== undefined) {
-						// If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
-						if (entry.type === 'recensioApp') {
-							spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
-							// Otherwise it is transformed in a evt-reading directive 
-						} else {
-							spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
-						}
-					} else {
-						spanElement = document.createElement('span');
-						spanElement.className = 'encodingError';
-					}
-					if (spanElement !== null) {
-						appNode.parentNode.replaceChild(spanElement, appNode);
-					}
-				}
-				j--;
-			}
-			//docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-
-			//docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''))
-			var quotes = [];
-			if (quoteDef.lastIndexOf('<') !== 0) {
-				var tags = quoteDef.split(',');
-				for (var i = 0; i < tags.length; i++) {
-					var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
-					for (var x = 0; x < q.length; x++) {
-						quotes.push(q[x]);
-					}
-				}
-			} else {
-				var quo = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''));
-				for (var f = 0; f < quo.length; f++) {
-					quotes.push(quo[f]);
-				}
-			}
-			var k = quotes.length - 1,
-                c = 0;
-			while (k < quotes.length && k >= 0) {
-				var quoteElem = quotes[k];
-				var quoteId;
-				if (quoteElem.getAttribute('xml:id')) {
-					quoteId = quoteElem.getAttribute('xml:id');
-				} else {
-					quoteId = evtParser.xpath(quoteElem).substr(1);
-				}
-				var quote = parsedData.getQuote(quoteId);
-				if (quote !== undefined) {
-					var quoteText = evtCriticalElementsParser.getQuoteText(quote, wit, doc);
-					quoteElem.parentNode.replaceChild(quoteText, quoteElem);
-				}
-				k--;
-			}
-
-			//ANALOGUES
-			var analogues = [],
-				//TO DO: trovare alternativa meno dispendiosa di memoria
-				allEl = docDOM.getElementsByTagName('*');
-			for (var s = 0; s < allEl.length; s++) {
-				var inner = allEl[s].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-				var el = allEl[s].outerHTML.replace(inner, '');
-				if (analogueRegExpr.test(el)) {
-					analogues.push(allEl[s]);
-				}
-			}
-
-			var h = analogues.length - 1;
-			while (h < analogues.length && h >= 0) {
-				var analogueElem = analogues[h];
-				var analogueId;
-				if (analogueElem.getAttribute('xml:id')) {
-					analogueId = analogueElem.getAttribute('xml:id');
-				} else {
-					analogueId = evtParser.xpath(analogueElem).substr(1);
-				}
-				var analogue = parsedData.getAnalogue(analogueId);
-				if (analogue !== undefined) {
-					var analogueText = evtCriticalElementsParser.getAnalogueText(analogue, wit, doc);
-					analogueElem.parentNode.replaceChild(analogueText, analogueElem);
-				}
-				h--;
-			}
-
+			parser.parseCriticalElementsInText(dom, doc, wit);
+			
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
 			angular.forEach(docDOM.querySelectorAll('[exclude]'), function(elem) {
@@ -261,7 +142,6 @@ angular.module('evtviewer.dataHandler')
      * @author CM
      */
     parser.parseCriticalText = function(doc, docId, scopeVersion) {
-		// console.log('parseCriticalText');
 		var deferred = $q.defer();
 		var criticalText;
 		if (doc !== undefined) {
@@ -272,144 +152,9 @@ angular.module('evtviewer.dataHandler')
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
 			//      parsedData.getWitness(config.preferredWitness) !== '') ) {
 
-			//READINGS
-			var apps = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
-				j = apps.length - 1,
-				count = 0;
+			parser.parseCriticalElementsInText(docDOM, doc, 'critical');
 
-			// TODO-POLO: handle depa internal apps.
-			while (j < apps.length && j >= 0) {
-				var appNode = apps[j];
-				if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
-					// var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-					var id;
-					if (appNode.getAttribute('xml:id')) {
-						id = 'app_' + appNode.getAttribute('xml:id');
-					} else {
-						id = evtParser.xpath(appNode).substr(1);
-					}
-					var spanElement, entry;
-
-					if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-						entry = parsedData.getVersionEntry(id);
-					} else {
-						entry = parsedData.getCriticalEntryById(id);
-					}
-
-					// If I've already parsed all critical entries,
-					// or I've already parsed the current entry...
-					// ...I can simply access the model to get the right output
-					// ... otherwise I parse the DOM and save the entry in the model
-					if (!config.loadCriticalEntriesImmediately || entry === undefined) {
-						if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-							evtCriticalElementsParser.handleVersionEntry(appNode);
-							entry = parsedData.getVersionEntry(id);
-						} else {
-							evtCriticalElementsParser.handleAppEntry(appNode);
-							var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-							if (subApps.length > 0) {
-								for (var z = 0; z < subApps.length; z++) {
-									evtCriticalElementsParser.handleAppEntry(subApps[z]);
-								}
-							}
-							entry = parsedData.getCriticalEntryById(id);
-						}
-					}
-					if (entry !== undefined) {
-						if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-							evtParser.setDepaAppLemma(appNode, entry, doc);
-						}
-						if (entry.type === 'recensioApp') {
-							spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, '', scopeVersion);
-						} else {
-							spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, '');
-						}
-					} else {
-						spanElement = document.createElement('span');
-						spanElement.className = 'errorMsg';
-						spanElement.textContent = 'ERROR';//TODO: Add translation
-					}
-					if (spanElement !== null) {
-						appNode.parentNode.replaceChild(spanElement, appNode);
-					}
-					count++;
-				}
-				j--;
-			}
-
-			//QUOTES
-			var quotes = [];
-			if (quoteDef.lastIndexOf('<') !== 0) {
-				var tags = quoteDef.split(',');
-				for (var i = 0; i < tags.length; i++) {
-					var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
-					for (var x = 0; x < q.length; x++) {
-						quotes.push(q[x]);
-					}
-				}
-			} else {
-				var quo = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''));
-				for (var f = 0; f < quo.length; f++) {
-					quotes.push(quo[f]);
-				}
-			}
-			var k = quotes.length - 1,
-				c = 0;
-
-			while (k < quotes.length && k >= 0) {
-				var quoteElem = quotes[k];
-				var quoteId;
-				if (quoteElem.getAttribute('xml:id')) {
-					quoteId = quoteElem.getAttribute('xml:id');
-				} else {
-					quoteId = evtParser.xpath(quoteElem).substr(1);
-				}
-				var quote = parsedData.getQuote(quoteId);
-				if (quote !== undefined) {
-					var quoteText = evtCriticalElementsParser.getQuoteText(quote, '', doc);
-					quoteElem.parentNode.replaceChild(quoteText, quoteElem);
-				}
-				k--;
-			}
-
-			//ANALOGUES
-			var analogues = [],
-				//TO DO: trovare alternativa meno dispendiosa di memoria
-				  allEl = docDOM.getElementsByTagName('*');
-			for (var w = 0; w < allEl.length; w++) {
-				var inner = allEl[w].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-				var el = allEl[w].outerHTML.replace(inner, '');
-				if (analogueRegExpr.test(el)) {
-					analogues.push(allEl[w]);
-				}
-				if (allEl[w].hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
-					var spanElement = evtDepaParser.setDepaElementInText(allEl[w], 'base', docDOM);
-					if (spanElement) {
-						allEl[w].parentNode.insertBefore(spanElement, allEl[w].nextSibling);
-					}
-				}
-			}
-
-			var h = analogues.length - 1;
-			while (h < quotes.length && h >= 0) {
-				var analogueElem = analogues[h];
-				var analogueId;
-				if (analogueElem.getAttribute('xml:id')) {
-					analogueId = analogueElem.getAttribute('xml:id');
-				} else {
-					analogueId = evtParser.xpath(analogueElem).substr(1);
-				}
-				var analogue = parsedData.getAnalogue(analogueId);
-
-				if (analogue !== undefined) {
-					var analogueText = evtCriticalElementsParser.getAnalogueText(analogue, '', doc);
-					analogueElem.parentNode.replaceChild(analogueText, analogueElem);
-				}
-				h--;
-			}
-
-
-			//remove <pb>
+			// remove <pb>
 			var pbs = docDOM.getElementsByTagName('pb');
 			k = 0;
 			while (k < pbs.length) {
@@ -446,6 +191,146 @@ angular.module('evtviewer.dataHandler')
 		deferred.resolve('success');
 		return deferred;
 	};
+
+	parser.parseCriticalElementsInText = function(dom, doc, wit) {
+		// apparatus entries in the text body
+		var apps = dom.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
+				appsIndex = apps.length - 1;
+		while (appsIndex < apps.length && appsIndex >= 0) {
+			if (!evtParser.isNestedInElem(apps[appsIndex], apparatusEntryDef.replace(/[<>]/g, ''))) {
+				parser.appendAppNode(apps[appsIndex], doc, wit);
+			}
+			appsIndex--;
+		}
+		// quotes
+		var quotes = [];
+		// Retrieves all quote definitions
+		var quoteDefs = quoteDef.split(',');
+		quoteDefs.forEach((def) => {
+			var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
+			quotes = quotes.concat(q);
+		});
+		var quotesIndex = quotes.length - 1;
+		while (quotesIndex < quotes.length && quotesIndex >= 0) {
+			parser.appendQuoteNode(quotes[quotesIndex], doc, wit);
+			quotesIndex--;
+		}
+		// analogues and depa internal critical entries
+		var analogues = [],
+				allEl = dom.getElementsByTagName('*');
+		Object.values(allEl).forEach((el) => {
+			var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+			var elTag = el.outerHTML.replace(inner, '');
+			if (analogueRegExpr.test(elTag)) {
+				analogues.push(el);
+			}
+			if (el.hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
+				var spanElement = evtDepaParser.setDepaElementInText(el, 'base', dom);
+				if (spanElement) {
+					el.parentNode.insertBefore(spanElement, el.nextSibling);
+				}
+			}
+		});
+		var analoguesIndex = analogues.length - 1;
+		while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
+			parser.appendAnalogueNode(analogues[analoguesIndex], doc, wit);
+			analoguesIndex--;
+		}
+	};
+
+	parser.appendAnalogueNode = function(analogueNode, doc, wit) {
+		var analogueId = parser.getParsedNodeId(analogueNode),
+				entry = parsedData.getAnalogue(analogueId),
+				spanElement;
+		if (entry) {
+			spanElement = evtCriticalElementsParser.getAnalogueText(antry, wit, doc);
+		}
+		if (spanElement) {
+			analogueNode.parentNode.replaceChild(spanElement, analogueNode);
+		}
+	};
+
+	parser.appendQuoteNode = function(quoteNode, doc, wit) {
+		var quoteId = parser.getParsedNodeId(quoteNode),
+				entry = parsedData.getQuote(quoteId),
+				spanElement;
+		if (entry) {
+			spanElement = evtCriticalElementsParser.getQuoteText(entry, wit, doc);
+		}
+		if (spanElement) {
+			quoteNode.parentNode.replaceChild(spanElement, quoteNode);
+		}
+	};
+
+	parser.appendAppNode = function(appNode, doc, wit) {
+		var appId = parser.getParsedNodeId(appNode),
+				entry = appNode.getAttribute('type') === 'recensio' ?
+					parsedData.getVersionEntry(appId) : parsedData.getCriticalEntryById(appId),
+				spanElement;
+		// Parse critical entry if it wasn't parsed before
+		if (!config.loadCriticalEntriesImmediately || entry === undefined) {
+			if (appNode.getAttribute('type') === 'recensio') {
+				evtCriticalElementsParser.handleVersionEntry(appNode);
+				entry = parsedData.getVersionEntry(appId);
+			} else {
+				evtCriticalElementsParser.handleAppEntry(appNode);
+				var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
+				subApps.forEach((sub) => {
+					evtCriticalElementsParser.handleAppEntry(sub);
+				});
+				entry = parsedData.getCriticalEntryById(appId);
+			}
+		}
+		// Get text element to append in the dom
+		if (entry) {
+			switch(wit) {
+				case '': {
+					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+						evtParser.setDepaAppLemma(appNode, entry, doc);
+					}
+					if (entry.type === 'recensioApp') {
+						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);
+					} else {
+						spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, wit);
+					}
+				} break;
+				default: {
+					// If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
+					if (entry.type === 'recensioApp') {
+						spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
+						// Otherwise it is transformed in a evt-reading directive 
+					} else {
+						spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
+					}
+				}
+			}
+		} else {
+			spanElement = parser.createErrorElement(null, 'encodingError');
+		}
+		// Replace app node with new text element
+		if (spanElement) {
+			appNode.parentNode.replaceChild(spanElement, appNode);
+		}
+	};
+
+	parser.createErrorElement = function(errClass, errMsg) {
+		var errorElement = document.createElement('span');
+		errorElement.className = errClass || 'errorMsg';
+		// TODO: add translation
+		errorElement.textContent = errMsg || 'ERROR';
+		return errorElement;
+	};
+
+	parser.getParsedNodeId = function(node) {
+		var nodeId;
+		if (node.attributes && node.getAttribute('xml:id')) {
+			nodeId = node.getAttribute('xml:id');
+			nodeId = node.tagName === 'app'? 'app_' + nodeId : nodeId;
+		} else {
+			nodeId = evtParser.xpath(node).substr(1);
+		}
+		return nodeId;
+	}
 
 	// /////////// //
 	// SOURCE TEXT //
