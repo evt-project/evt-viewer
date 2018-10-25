@@ -71,7 +71,7 @@ angular.module('evtviewer.dataHandler')
 				witObj = parsedData.getWitness(wit);
 
 			parser.parseCriticalElementsInText(dom, doc, wit);
-			
+
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
 			angular.forEach(docDOM.querySelectorAll('[exclude]'), function(elem) {
@@ -152,7 +152,7 @@ angular.module('evtviewer.dataHandler')
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
 			//      parsedData.getWitness(config.preferredWitness) !== '') ) {
 
-			parser.parseCriticalElementsInText(docDOM, doc, 'critical');
+			parser.parseCriticalElementsInText(docDOM, doc, '');
 
 			// remove <pb>
 			var pbs = docDOM.getElementsByTagName('pb');
