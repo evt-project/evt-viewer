@@ -50,7 +50,9 @@ angular.module('evtviewer.dataHandler')
         }
         entry.header = docString.substring(startPos, endPos);
         entry.header = entry.header.substring(entry.header.indexOf('>') + 1);
-        entry.header = entry.header.substring(0, entry.header.lastIndexOf('<'));
+        if (location === 'external') {
+          entry.header = entry.header.substring(0, entry.header.lastIndexOf('<'));
+        }
         entry.header = evtParser.balanceXHTML(entry.header);
       }
       entry.header = entry.header.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();;

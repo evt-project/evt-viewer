@@ -1157,7 +1157,7 @@ angular.module('evtviewer.dataHandler')
 		return spanElement;
 	};
 
-  parser.getDepaEntry = function(entry, wit) {
+  parser.getDepaEntryText = function(entry, wit, position) {
 		var spanElement,
 			errorElement;
 
@@ -1167,6 +1167,7 @@ angular.module('evtviewer.dataHandler')
 			// IMPORTANT: data-app-id should be the first attribute added to the element
 			// otherwise the parser for fragmentary witnesses will not work.
 			spanElement.setAttribute('data-scope-wit', wit);
+			spanElement.setAttribute('data-position', position);
 			spanElement.setAttribute('data-type', 'lemma');
 			if (entry._lacuna) {
 				var lacunaElement = document.createElement('span');
