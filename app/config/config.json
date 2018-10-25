@@ -4,7 +4,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "../data/polo/cap105.xml",
+	"dataUrl": "../data/polo/polo.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -140,8 +140,8 @@
     "versions" : [],
     "witnessesGroups": [ ],
 
-    "quoteDef"              : "<quote>",
-    "analogueDef"           : "<ref[type=parallelPassage]>",
+    "quoteDef"              : "",
+    "analogueDef"           : "",
 
     "showReadingExponent": true,
 
