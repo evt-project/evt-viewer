@@ -857,7 +857,10 @@ angular.module('evtviewer.dataHandler')
 		var currentDocument = angular.element(doc),
 			defDocElement,
 			defContentEdition = 'body';
-		if (currentDocument.find('text group text').length > 0) {
+		if(currentDocument.find('TEI > text').length > 0) {
+			defDocElement = 'TEI > text';
+			defContentEdition = 'group';
+		} else if (currentDocument.find('text group text').length > 0) {
 			defDocElement = 'text group text';
 		} else if (currentDocument.find('text').length > 0) {
 			defDocElement = 'text';
