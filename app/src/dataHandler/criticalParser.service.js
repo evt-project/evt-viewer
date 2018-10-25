@@ -152,7 +152,7 @@ angular.module('evtviewer.dataHandler')
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
 			//      parsedData.getWitness(config.preferredWitness) !== '') ) {
 
-			parser.parseCriticalElementsInText(docDOM, doc, 'critical');
+			parser.parseCriticalElementsInText(docDOM, doc, '');
 
 			// remove <pb>
 			var pbs = docDOM.getElementsByTagName('pb');
