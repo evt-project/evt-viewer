@@ -286,7 +286,7 @@ angular.module('evtviewer.dataHandler')
 			switch(wit) {
 				case '': {
 					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-						evtParser.setDepaAppLemma(appNode, entry, doc);
+						evtDepaParser.setDepaAppLemma(appNode, entry, doc);
 					}
 					if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);
