@@ -4,6 +4,9 @@ angular.module('evtviewer.dataHandler')
   var parser = {};
 
   parser.setDepaElementInText = function(elem, textType, doc) {
+    if (!parsedData.getCriticalEntries()._indexes.depa) {
+      return;
+    }
     var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         spanElement;
