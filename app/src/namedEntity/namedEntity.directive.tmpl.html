@@ -113,6 +113,8 @@
                                 ng-class="{'active': vm.isCurrentPageDoc(occurrence) } "
                                 ng-repeat="occurrence in ::vm.occurrences track by $index"
                                 ng-click="vm.goToOccurrence(occurrence)">
+                                <strong ng-if="occurrence.text" compile="occurrence.text"></strong>
+                                <span ng-if="occurrence.text">-</span>
                                 <span ng-if="occurrence.pageLabel">{{ 'LISTS.OCCURRENCE' | translate:occurrence }}</span>
                                 <span ng-if="occurrence.divLabel">{{ 'LISTS.OCCURRENCEDIV' | translate:occurrence }}</span>
                             </span>
