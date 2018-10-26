@@ -457,15 +457,20 @@ angular.module('evtviewer.namedEntity')
          * @returns {array} List of occurrences of given named entity
          */
         namedEntity.getOccurrences = function(refId) {
-            var documentsCollection = parsedData.getDocuments(),
+            var entityObj = parsedData.getNamedEntity(refId);
+            if (!entityObj._occurrences) {
+                var documentsCollection = parsedData.getDocuments(),
                 documentsIndexes = documentsCollection._indexes || [],
                 totOccurrences = [];
-            for (var i = 0; i < documentsIndexes.length; i++) {
-                var currentDoc = documentsCollection[documentsIndexes[i]],
-                    docPages = evtNamedEntitiesParser.parseEntitiesOccurrences(currentDoc, refId);
-                totOccurrences = totOccurrences.concat(docPages);
+                for (var i = 0; i < documentsIndexes.length; i++) {
+                    var currentDoc = documentsCollection[documentsIndexes[i]],
+                        docPages = evtNamedEntitiesParser.parseEntitiesOccurrences(currentDoc, refId);
+                    totOccurrences = totOccurrences.concat(docPages);
+                }
+                return totOccurrences;
+            } else {
+                return entityObj._occurrences;
             }
-            return totOccurrences;
         };
         /**
          * @ngdoc method
