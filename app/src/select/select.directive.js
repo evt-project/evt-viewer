@@ -132,6 +132,17 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
+            if (scope.type === 'div') {
+                scope.$watch(function() {
+                    return evtInterface.getState('currentDiv');
+                }, function(newItem, oldItem) {
+                    console.log(newItem, oldItem)
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }
+
             if (scope.type === 'version' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {
                     return evtInterface.getState('currentVersion');
