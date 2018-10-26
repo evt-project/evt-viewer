@@ -691,7 +691,7 @@ angular.module('evtviewer.dataHandler')
 			docHTML = doc ? doc.outerHTML : undefined,
 			occurLocations = [];
 		if (docHTML && refId && refId !== '') {
-			if (parsedData.getDocument(docObj.value).pages.length > 0) {
+			if (docObj.pages.length > 0) {
 				var match = '<pb(.|[\r\n])*?\/>(.|[\r\n])*?(?=#' + refId + ')',
 				sRegExInput = new RegExp(match, 'ig'),
 				matches = docHTML.match(sRegExInput),
@@ -713,38 +713,57 @@ angular.module('evtviewer.dataHandler')
 						});
 					}
 				}
-			} else if (parsedData.getDocument(docObj.value).divs.length > 0) {
-				occurLocations = NEparser.getOccurencesInDivs(docHTML, docObj, refId);
+			} else if (docObj.divs.length > 0) {
+				occurLocations = NEparser.getOccurencesInDivs(docObj, refId);
 			}
 		}
 		return occurLocations;
 	};
 
-	NEparser.getOccurencesInDivs = function(docHTML, docObj, refId) {
-		var divs = [];
-		var match = '<div(.|[\r\n])*?>(.|[\r\n])*?(?=#' + refId + ')',
-		sRegExInput = new RegExp(match, 'ig'),
-		matches = docHTML.match(sRegExInput),
-		totMatches = matches ? matches.length : 0;
-		for (var i = 0; i < totMatches; i++) {
-			//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
-			var matchOnlyPb = '<div(.|[\r\n])*?>',
-				sRegExOnlyDiv = new RegExp(matchOnlyPb, 'ig'),
-				divList = matches[i].match(sRegExOnlyDiv),
-				divString = divList && divList.length > 0 ? divList[divList.length - 1] : '';
-			var divId = getIdFromHTMLString(divString);
-			if (divId) {
-				var divObj = parsedData.getDiv(divId);
-				divs.push({ 
-					divId: divId, 
-					divLabel: divObj ? divObj.label : divId,
-					docId: docObj ? docObj.value : '',
-					docLabel: docObj ? docObj.label : '' 
-				});
-			}
+	NEparser.getOccurencesInDivs = function(docObj, refId) {
+		var divs = [],
+				doc = docObj && docObj.content ? docObj.content : undefined;
+		var	dom = angular.element(doc),
+				entityTagName = 'term';
+		var type = parsedData.getNamedEntityType(refId);
+		switch(type) {
+			case 'person': entityTagName = 'persName'; break;
+			case 'place': entityTagName = 'placeName'; break;
+			default: entityTagName = 'orgName';
 		}
+		docObj.divs.forEach((divId) => {
+			var divObj = parsedData.getDiv(divId),
+					divElem;
+			angular.forEach(dom.find('div'), function(div) {
+				if (div.getAttribute('xml:id') === divId) {
+					divElem = angular.element(div);
+				}
+			});
+			angular.forEach(divElem.find(entityTagName), function(entityElem) {
+				if (entityElem.attributes && entityElem.getAttribute('ref') && entityElem.getAttribute('ref').replace('#', '') === refId) {
+					var occurrence = { 
+						divId: divId, 
+						divLabel: divObj ? divObj.label : divId,
+						docId: docObj ? docObj.value : '',
+						docLabel: docObj ? docObj.label : '',
+						text: entityElem.innerHTML 
+					};
+					NEparser.addOccurrence(refId, occurrence);
+					divs.push(occurrence);
+				}
+			});
+		});
 		return divs;
-	}
+	};
+
+	NEparser.addOccurrence = function(refId, occurrence) {
+		var c = refId.charAt(0),
+				NEObj = parsedData.getNamedEntity(refId);
+		if (!NEObj._occurrences) {
+			NEObj._occurrences = [];
+		}
+		NEObj._occurrences.push(occurrence);
+	};
 
 	return NEparser;
 });
