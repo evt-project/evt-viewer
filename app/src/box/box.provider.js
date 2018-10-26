@@ -671,6 +671,11 @@ angular.module('evtviewer.box')
 							initValue: evtInterface.getState('currentPage')
 						});
 					} else {
+						topMenuList.selectors.push({
+							id: 'div_' + currentId,
+							type: 'div',
+							initValue: evtInterface.getState('currentDiv')
+						});
 						topMenuList.buttons.push({
 							title: 'BUTTONS.WITNESSES_LIST',
 							label: '',
@@ -893,6 +898,10 @@ angular.module('evtviewer.box')
 						id: 'page_' + currentId,
 						type: 'witness-page',
 						initValue: witPageId
+					}, {
+						id: 'div_' + currentId,
+						type: 'div',
+						initValue: evtInterface.getState('currentDiv')
 					});
 
 					topMenuList.buttons.push({
