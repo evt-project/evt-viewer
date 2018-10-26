@@ -101,6 +101,7 @@
 		"LIST": "Lista",
 		"NO_ELEMENTS": "Nessun elemento in questa lista",
 		"OCCURRENCE": "Fol. {{pageLabel}} ({{docLabel}})",
+		"OCCURRENCEDIV": "{{divLabel}} ({{docLabel}})",
 		"ORG": "Lista delle organizzazioni",
 		"PERSON": "Lista delle persone",
 		"PLACE": "Lista dei luoghi",
