@@ -109,6 +109,10 @@ angular.module('evtviewer.dataHandler')
 	var pagesCollection = {
 		length: 0
 	};
+
+	var divsCollection = {
+		length: 0
+	};
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#documentsCollection
@@ -968,6 +972,23 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getPage = function(pageId) {
 		return pagesCollection[pageId];
 	};
+
+	parsedData.addDiv = function(div, docId) {
+		var divId = div.value;
+		div.docs = [docId];
+		divsCollection[divsCollection.length] = divId;
+		divsCollection[divId] = div;
+		divsCollection.length++;
+		documentsCollection[docId].divs.push(divId);
+	};
+
+	parsedData.getDivs = function() {
+		return divsCollection;
+	};
+
+	parsedData.getDiv = function(divId) {
+		return divsCollection[divId];
+	}
 
 	/**
      * @ngdoc method

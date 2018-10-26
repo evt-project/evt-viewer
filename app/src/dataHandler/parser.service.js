@@ -879,7 +879,8 @@ angular.module('evtviewer.dataHandler')
 					title: element.getAttribute('n') || 'Document ' + (parsedData.getDocuments()._indexes.length + 1),
 					content: element,
 					front: undefined,
-					pages: [] // Pages will be added later
+					pages: [], // Pages will be added later
+					divs: []
 				};
 				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
 				if (docFront && docFront[0]) {
@@ -914,6 +915,7 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addDocument(newDoc);
 				parser.parsePages(element, newDoc.value);
+				parser.parseDivs(element, newDoc.value);
 				
 				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
 					// Split pages works only on diplomatic/interpretative edition
@@ -932,6 +934,35 @@ angular.module('evtviewer.dataHandler')
 		console.log('## Documents ##', parsedData.getDocuments());
 		return parsedData.getDocuments();
 	};
+
+	parser.parseDivs = function(doc, docId) {
+		var currentDocument = angular.element(doc);
+		angular.forEach(currentDocument.find('div'), function(element) {
+			var newDiv = {};
+			Object.values(element.attributes).forEach((attr) => {
+				if (attr.specified) {
+					newDiv[attr.name.replace(':', '-')] = attr.value;
+				}
+			});
+			newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
+			newDiv.title = '';
+			if (newDiv.type) {
+				newDiv.title += newDiv.type.substr(0,1).toUpperCase() + newDiv.type.substr(1);
+			}
+			if (newDiv.subtype) {
+				newDiv.title += ' - ' + newDiv.subtype.substr(0,1).toUpperCase() + newDiv.subtype.substr(1);
+			}
+			newDiv.title += ' ';
+			if (newDiv.n) {
+				newDiv.title += newDiv.n;
+			} else {
+				newDiv.title += parsedData.getDivs().length + 1;
+			}
+			newDiv.label = newDiv.title;
+			parsedData.addDiv(newDiv, docId);
+		});
+	};
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#splitLineBreaks

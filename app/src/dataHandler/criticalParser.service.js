@@ -71,7 +71,7 @@ angular.module('evtviewer.dataHandler')
 				witObj = parsedData.getWitness(wit);
 
 			parser.parseCriticalElementsInText(dom, doc, wit);
-			
+
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
 			angular.forEach(docDOM.querySelectorAll('[exclude]'), function(elem) {
