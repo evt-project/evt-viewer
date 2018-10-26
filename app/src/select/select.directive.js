@@ -136,7 +136,6 @@ angular.module('evtviewer.select')
                 scope.$watch(function() {
                     return evtInterface.getState('currentDiv');
                 }, function(newItem, oldItem) {
-                    console.log(newItem, oldItem)
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }

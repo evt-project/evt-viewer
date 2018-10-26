@@ -25,8 +25,8 @@ angular.module('evtviewer.dataHandler')
 		lemmaDef = '<lem>',
 		readingDef = lemmaDef + ', <rdg>',
 		readingGroupDef = '<rdgGrp>',
-		quoteDef = config.quoteDef || '<quote>',
-		analogueDef = config.analogueDef || '<seg>,<ref[type=parallelPassage]>',
+		quoteDef = config.quoteDef,
+		analogueDef = config.analogueDef,
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 	var skipFromBeingParsed = '<evt-reading>,<pb>,' + apparatusEntryDef + ',' + readingDef + ',' + readingGroupDef + ',' + quoteDef + ',' + analogueDef + ',<evt-quote>,<evt-analogue>,<evt-version-reading>',
 		skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
@@ -70,7 +70,7 @@ angular.module('evtviewer.dataHandler')
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
-			parser.parseCriticalElementsInText(dom, doc, wit);
+			parser.parseCriticalElementsInText(docDOM, doc, wit);
 
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
