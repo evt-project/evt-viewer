@@ -650,14 +650,14 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	// NAMED ENTITIES OCCURRENCES
-	var getPageIdFromHTMLString = function(HTMLstring) {
+	var getIdFromHTMLString = function(HTMLstring) {
 		var matchPbIdAttr = 'xml:id=".*"',
 			sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
 			pbHTMLString = HTMLstring.match(sRegExPbIdAttr);
 		sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
 		var idAttr = pbHTMLString ? pbHTMLString[0].match(sRegExPbIdAttr) : undefined,
-			pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
-		return pageId;
+			id = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
+		return id;
 	};
 	/**
      * @ngdoc method
@@ -689,32 +689,62 @@ angular.module('evtviewer.dataHandler')
 	NEparser.parseEntitiesOccurrences = function(docObj, refId) {
 		var doc = docObj && docObj.content ? docObj.content : undefined,
 			docHTML = doc ? doc.outerHTML : undefined,
-			pages = [];
+			occurLocations = [];
 		if (docHTML && refId && refId !== '') {
-			var match = '<pb(.|[\r\n])*?\/>(.|[\r\n])*?(?=#' + refId + ')',
+			if (parsedData.getDocument(docObj.value).pages.length > 0) {
+				var match = '<pb(.|[\r\n])*?\/>(.|[\r\n])*?(?=#' + refId + ')',
 				sRegExInput = new RegExp(match, 'ig'),
 				matches = docHTML.match(sRegExInput),
 				totMatches = matches ? matches.length : 0;
-			for (var i = 0; i < totMatches; i++) {
-				//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
-				var matchOnlyPb = '<pb(.|[\r\n])*?\/>',
-					sRegExOnlyPb = new RegExp(matchOnlyPb, 'ig'),
-					pbList = matches[i].match(sRegExOnlyPb),
-					pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
-				var pageId = getPageIdFromHTMLString(pbString);
-				if (pageId) {
-					var pageObj = parsedData.getPage(pageId);
-					pages.push({ 
-						pageId: pageId, 
-						pageLabel: pageObj ? pageObj.label : pageId,
-						docId: docObj ? docObj.value : '',
-						docLabel: docObj ? docObj.label : '' 
-					});
+				for (var i = 0; i < totMatches; i++) {
+					//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
+					var matchOnlyPb = '<pb(.|[\r\n])*?\/>',
+						sRegExOnlyPb = new RegExp(matchOnlyPb, 'ig'),
+						pbList = matches[i].match(sRegExOnlyPb),
+						pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
+					var pageId = getIdFromHTMLString(pbString);
+					if (pageId) {
+						var pageObj = parsedData.getPage(pageId);
+						occurLocations.push({ 
+							pageId: pageId, 
+							pageLabel: pageObj ? pageObj.label : pageId,
+							docId: docObj ? docObj.value : '',
+							docLabel: docObj ? docObj.label : '' 
+						});
+					}
 				}
+			} else if (parsedData.getDocument(docObj.value).divs.length > 0) {
+				occurLocations = NEparser.getOccurencesInDivs(docHTML, docObj, refId);
 			}
 		}
-		return pages;
+		return occurLocations;
 	};
+
+	NEparser.getOccurencesInDivs = function(docHTML, docObj, refId) {
+		var divs = [];
+		var match = '<div(.|[\r\n])*?>(.|[\r\n])*?(?=#' + refId + ')',
+		sRegExInput = new RegExp(match, 'ig'),
+		matches = docHTML.match(sRegExInput),
+		totMatches = matches ? matches.length : 0;
+		for (var i = 0; i < totMatches; i++) {
+			//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
+			var matchOnlyPb = '<div(.|[\r\n])*?>',
+				sRegExOnlyDiv = new RegExp(matchOnlyPb, 'ig'),
+				divList = matches[i].match(sRegExOnlyDiv),
+				divString = divList && divList.length > 0 ? divList[divList.length - 1] : '';
+			var divId = getIdFromHTMLString(divString);
+			if (divId) {
+				var divObj = parsedData.getDiv(divId);
+				divs.push({ 
+					divId: divId, 
+					divLabel: divObj ? divObj.label : divId,
+					docId: docObj ? docObj.value : '',
+					docLabel: docObj ? docObj.label : '' 
+				});
+			}
+		}
+		return divs;
+	}
 
 	return NEparser;
 });
