@@ -70,7 +70,7 @@ angular.module('evtviewer.dataHandler')
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
-			parser.parseCriticalElementsInText(dom, doc, wit);
+			parser.parseCriticalElementsInText(docDOM, doc, wit);
 
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
