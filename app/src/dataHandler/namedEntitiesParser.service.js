@@ -14,7 +14,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtNamedEntitiesParser', function(parsedData, evtParser, config) {
+.service('evtNamedEntitiesParser', function(parsedData, evtParser, config, xmlParser) {
 	var NEparser = {};
 	//TODO retrieve definitions from configurations
 	var listsMainContentDef = config.listsMainContentDef || '<sourceDesc>';
@@ -691,60 +691,83 @@ angular.module('evtviewer.dataHandler')
 			docHTML = doc ? doc.outerHTML : undefined,
 			occurLocations = [];
 		if (docHTML && refId && refId !== '') {
-			if (parsedData.getDocument(docObj.value).pages.length > 0) {
-				var match = '<pb(.|[\r\n])*?\/>(.|[\r\n])*?(?=#' + refId + ')',
-				sRegExInput = new RegExp(match, 'ig'),
-				matches = docHTML.match(sRegExInput),
-				totMatches = matches ? matches.length : 0;
-				for (var i = 0; i < totMatches; i++) {
-					//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
-					var matchOnlyPb = '<pb(.|[\r\n])*?\/>',
-						sRegExOnlyPb = new RegExp(matchOnlyPb, 'ig'),
-						pbList = matches[i].match(sRegExOnlyPb),
-						pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
-					var pageId = getIdFromHTMLString(pbString);
-					if (pageId) {
-						var pageObj = parsedData.getPage(pageId);
-						occurLocations.push({ 
-							pageId: pageId, 
-							pageLabel: pageObj ? pageObj.label : pageId,
-							docId: docObj ? docObj.value : '',
-							docLabel: docObj ? docObj.label : '' 
-						});
-					}
-				}
-			} else if (parsedData.getDocument(docObj.value).divs.length > 0) {
-				occurLocations = NEparser.getOccurencesInDivs(docHTML, docObj, refId);
+			var type = parsedData.getNamedEntityType(refId),
+					entityTagName = 'term';
+			switch(type) {
+				case 'person': entityTagName = 'persName'; break;
+				case 'place': entityTagName = 'placeName'; break;
+				default: entityTagName = 'orgName';
+			}
+			if (docObj.pages.length > 0) {
+				occurLocations = NEparser.getOccurencesInPages(docObj, refId, entityTagName);
+			} else if (docObj.divs.length > 0) {
+				occurLocations = NEparser.getOccurencesInDivs(docObj, refId, entityTagName);
 			}
 		}
 		return occurLocations;
 	};
 
-	NEparser.getOccurencesInDivs = function(docHTML, docObj, refId) {
-		var divs = [];
-		var match = '<div(.|[\r\n])*?>(.|[\r\n])*?(?=#' + refId + ')',
-		sRegExInput = new RegExp(match, 'ig'),
-		matches = docHTML.match(sRegExInput),
-		totMatches = matches ? matches.length : 0;
-		for (var i = 0; i < totMatches; i++) {
-			//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
-			var matchOnlyPb = '<div(.|[\r\n])*?>',
-				sRegExOnlyDiv = new RegExp(matchOnlyPb, 'ig'),
-				divList = matches[i].match(sRegExOnlyDiv),
-				divString = divList && divList.length > 0 ? divList[divList.length - 1] : '';
-			var divId = getIdFromHTMLString(divString);
-			if (divId) {
-				var divObj = parsedData.getDiv(divId);
-				divs.push({ 
-					divId: divId, 
-					divLabel: divObj ? divObj.label : divId,
-					docId: docObj ? docObj.value : '',
-					docLabel: docObj ? docObj.label : '' 
-				});
-			}
-		}
+	NEparser.getOccurencesInPages = function(docObj, refId, entityTagName) {
+		var pages = [];
+		docObj.pages.forEach((pageId) => {
+			var pageText = parsedData.getPageText(pageId, docObj.value, 'original');
+					pageText = evtParser.balanceXHTML(pageText),
+					pageObj = parsedData.getPage(pageId);
+			var dom = angular.element(xmlParser.parse(pageText));
+			angular.forEach(dom.find(entityTagName), function(entityElem) {
+				if (entityElem.attributes && entityElem.getAttribute('ref') && entityElem.getAttribute('ref').replace('#', '') === refId) {
+					var occurrence = { 
+						pageId: pageId, 
+						pageLabel: pageObj ? pageObj.label : divId,
+						docId: docObj ? docObj.value : '',
+						docLabel: docObj ? docObj.label : '',
+						text: entityElem.innerHTML 
+					};
+					NEparser.addOccurrence(refId, occurrence);
+					pages.push(occurrence);
+				}
+			});
+		});
+		return pages;
+	};
+
+	NEparser.getOccurencesInDivs = function(docObj, refId, entityTagName) {
+		var divs = [],
+				doc = docObj && docObj.content ? docObj.content : undefined,
+				dom = angular.element(doc);				
+		docObj.divs.forEach((divId) => {
+			var divObj = parsedData.getDiv(divId),
+					divElem;
+			angular.forEach(dom.find('div'), function(div) {
+				if (div.getAttribute('xml:id') === divId) {
+					divElem = angular.element(div);
+				}
+			});
+			angular.forEach(divElem.find(entityTagName), function(entityElem) {
+				if (entityElem.attributes && entityElem.getAttribute('ref') && entityElem.getAttribute('ref').replace('#', '') === refId) {
+					var occurrence = { 
+						divId: divId, 
+						divLabel: divObj ? divObj.label : divId,
+						docId: docObj ? docObj.value : '',
+						docLabel: docObj ? docObj.label : '',
+						text: entityElem.innerHTML 
+					};
+					NEparser.addOccurrence(refId, occurrence);
+					divs.push(occurrence);
+				}
+			});
+		});
 		return divs;
-	}
+	};
+
+	NEparser.addOccurrence = function(refId, occurrence) {
+		var c = refId.charAt(0),
+				NEObj = parsedData.getNamedEntity(refId);
+		if (!NEObj._occurrences) {
+			NEObj._occurrences = [];
+		}
+		NEObj._occurrences.push(occurrence);
+	};
 
 	return NEparser;
 });
