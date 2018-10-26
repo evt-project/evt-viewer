@@ -113,7 +113,8 @@
                                 ng-class="{'active': vm.isCurrentPageDoc(occurrence) } "
                                 ng-repeat="occurrence in ::vm.occurrences track by $index"
                                 ng-click="vm.goToOccurrence(occurrence)">
-                                {{ 'LISTS.OCCURRENCE' | translate:occurrence }}
+                                <span ng-if="occurrence.pageLabel">{{ 'LISTS.OCCURRENCE' | translate:occurrence }}</span>
+                                <span ng-if="occurrence.divLabel">{{ 'LISTS.OCCURRENCEDIV' | translate:occurrence }}</span>
                             </span>
                             <span class="italic" ng-if="::vm.occurrences && vm.occurrences.length <= 0">
                                 {{ 'MESSAGES.NO_RESULT_FOUND' | translate }}

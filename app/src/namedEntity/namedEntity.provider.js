@@ -126,7 +126,11 @@ angular.module('evtviewer.namedEntity')
          */
         var goToOccurrence = function(occurrence) {
             var vm = this;
-            evtInterface.updateState('currentPage', occurrence.pageId);
+            if (occurrence.pageId) {
+                evtInterface.updateState('currentPage', occurrence.pageId);
+            } else if (occurrence.divId) {
+                evtInterface.updateState('currentDiv', occurrence.divId);
+            }
             evtInterface.updateState('currentDoc', occurrence.docId);
             evtInterface.updateUrl();
             if (evtInterface.getState('secondaryContent') === 'entitiesList') {
