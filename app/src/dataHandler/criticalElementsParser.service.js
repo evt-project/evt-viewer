@@ -20,8 +20,8 @@ angular.module('evtviewer.dataHandler')
 		lemmaDef = '<lem>',
 		readingDef = lemmaDef + ', <rdg>',
 		readingGroupDef = '<rdgGrp>',
-		quoteDef = config.quoteDef || '<quote>',
-		analogueDef = config.analogueDef || '<seg>,<ref[type=parallelPassage]>',
+		quoteDef = config.quoteDef,
+		analogueDef = config.analogueDef,
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 
 	// /////////////// //
@@ -49,7 +49,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      * @author CDP
      */
-	var parseGenericElement = function(elem) {
+	parser.parseGenericElement = function(elem) {
 		if (config.lacunaMilestone.indexOf('<' + elem.tagName + '>') < 0 && config.fragmentMilestone.indexOf('<' + elem.tagName + '>') < 0) {
 			var genericElement = {
 				tagName: elem.tagName,
@@ -98,7 +98,7 @@ angular.module('evtviewer.dataHandler')
 							genericElement.content.push(parser.parseAnalogue(child));
 						}
 						if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))) {
-							genericElement.content.push(parseGenericElement(child));
+							genericElement.content.push(parser.parseGenericElement(child));
 						} else {
 							genericElement.content.push(child.cloneNode(true));
 						}
@@ -255,7 +255,7 @@ angular.module('evtviewer.dataHandler')
 					} else if (analogueRegExpr.test(childXml)) {
 						reading.content.push(parser.parseAnalogue(child));
 					} else if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))) {
-						reading.content.push(parseGenericElement(child));
+						reading.content.push(parser.parseGenericElement(child));
 					} else {
 						reading.content.push(child.cloneNode(true));
 					}

@@ -225,7 +225,7 @@ angular.module('evtviewer.dataHandler')
 				analogues.push(el);
 			}
 			if (el.hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
-				var spanElement = evtDepaParser.setDepaElementInText(el, 'base', dom);
+				var spanElement = evtDepaParser.setElementInText(el, 'base', dom);
 				if (spanElement) {
 					el.parentNode.insertBefore(spanElement, el.nextSibling);
 				}
@@ -286,7 +286,7 @@ angular.module('evtviewer.dataHandler')
 			switch(wit) {
 				case '': {
 					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-						evtDepaParser.setDepaAppLemma(appNode, entry, doc);
+						// evtDepaParser.setDepaAppLemma(appNode, entry, doc);
 					}
 					if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);
