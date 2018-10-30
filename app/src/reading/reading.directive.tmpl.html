@@ -15,7 +15,7 @@
         ng-transclude></span>
     
     <span
-        ng-if="::vm.showExponent"
+        ng-if="::vm.showExponent && vm.position !== 'start'"
         class="reading_exponent"
         ng-click="vm.callbackClick($event);"
         compile="::vm.exponent"></span>
