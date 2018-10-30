@@ -117,6 +117,7 @@ angular.module('evtviewer.reading')
                 type             : scope.type,
                 position         : scope.position,
                 method           : scope.method,
+                overlap          : scope.overlap,
                 attributes       : attributes,
                 exponent         : exponent,
                 showExponent     : showExponent,
