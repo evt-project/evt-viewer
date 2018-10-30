@@ -28,7 +28,13 @@ angular.module('evtviewer.dataHandler')
         spanElement.setAttribute('data-method', method);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
         if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
-          elem.parentNode.replaceChild(spanElement, elem);
+          var index = elem.childNodes.length - 1;
+          while (index >= 0) {
+            elem.removeChild(elem.childNodes[index]);
+            index--;           
+          }
+          console.log(elem)
+          elem.appendChild(spanElement);
         } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
           // TODO-POLO: substitute text?
           // var domString = dom.outerHTML,
