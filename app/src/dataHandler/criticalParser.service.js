@@ -202,6 +202,28 @@ angular.module('evtviewer.dataHandler')
 			}
 			appsIndex--;
 		}
+		if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
+					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
+			var depaAppsStartIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.start),
+					depaAppsEndIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.end),
+					anchorsIds = [];
+			depaAppsStartIds.map(id => {
+				if (anchorsIds.indexOf(id) < 0) {
+					anchorsIds.push(id)
+				}
+			});	
+			depaAppsEndIds.map(id => {
+				if (anchorsIds.indexOf(id) < 0) {
+					anchorsIds.push(id)
+				}
+			});	
+			anchorsIds.map(elemId => {
+				var el = dom.querySelector('[*|id=' + elemId + ']');
+				if (el) {
+					evtDepaParser.setElementInText(el, wit, dom);
+				}
+			});
+		}
 		// quotes
 		if (config.quoteDef) {
 			var quotes = [];
@@ -218,26 +240,23 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 		// analogues and depa internal critical entries
-		var analogues = [],
-				allEl = dom.getElementsByTagName('*');
-		Object.values(allEl).forEach((el) => {
-			if (config.analogueDef) {
-				var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-				var elTag = el.outerHTML.replace(inner, '');
-				if (analogueRegExpr.test(elTag)) {
-					analogues.push(el);
+		if (config.analogueDef) {
+			var analogues = [],
+					allEl = dom.getElementsByTagName('*');
+			Object.values(allEl).forEach((el) => {
+				if (config.analogueDef) {
+					var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+					var elTag = el.outerHTML.replace(inner, '');
+					if (analogueRegExpr.test(elTag)) {
+						analogues.push(el);
+					}
 				}
+			});
+			var analoguesIndex = analogues.length - 1;
+			while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
+				parser.appendAnalogueNode(analogues[analoguesIndex], doc, wit);
+				analoguesIndex--;
 			}
-			if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
-					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external'
-					&& el.hasAttribute('xml:id')) {
-				evtDepaParser.setElementInText(el, wit, dom);
-			}
-		});
-		var analoguesIndex = analogues.length - 1;
-		while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
-			parser.appendAnalogueNode(analogues[analoguesIndex], doc, wit);
-			analoguesIndex--;
 		}
 	};
 

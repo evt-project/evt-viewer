@@ -33,6 +33,7 @@ angular.module('evtviewer.dataHandler')
             elem.removeChild(elem.childNodes[index]);
             index--;           
           }
+          spanElement.setAttribute('data-position', 'end');
           elem.appendChild(spanElement);
         } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
           // TODO-POLO: substitute text?
@@ -68,6 +69,7 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.getLemma = function(entry, doc) {
+    var dom = doc[0].documentElement;
     var lemma = '',
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
@@ -75,19 +77,12 @@ angular.module('evtviewer.dataHandler')
         endId = depaEndIds[entry.id];
     if (startId) {
       if (startId === endId) {
-        var matches = doc.find('*'),
-            found = false,
-            index = 0;
-        while (!found && index < matches.length) {
-          var elem = matches[index];
-          if (elem.attributes && elem.hasAttribute('xml:id') && elem.getAttribute('xml:id') === startId) {
-            lemma = elem.outerHTML;
-            found = true;
-          }
-          index++;
+        var elem = dom.querySelector('[*|id=' + startId + ']')[0];
+        if (elem) {
+          lemma = elem.outerHTML;
         }
       } else {
-        var docString = doc[0].documentElement.outerHTML;
+        var docString = dom.outerHTML;
         lemma = parser.findReadingString(docString, endId, startId, entry);        
       }
       lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
