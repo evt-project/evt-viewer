@@ -66,7 +66,7 @@ angular.module('evtviewer.core')
     //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
     analoguesUrl     : '',
 
-    preferredWitness: 'A',
+    preferredWitness: '',
 	skipWitnesses: '',
 
 	indexTitle: 'EVT Critical Viewer',
@@ -160,21 +160,12 @@ angular.module('evtviewer.core')
     /*Used to divide the readings of all critical apparatus entries into groups.*/
     /*The witnesses property is required in order to have the partition.        */
     /*The groupName is optional: if set the name will be displayed.             */
-    witnessesGroups: [
-        {
-            groupName : 'Grp_1',
-            witnesses : ['V', 'P', 'N', 'M', 'G', 'C', 'R']
-        },
-        {
-            groupName : 'Grp_2',
-            witnesses : ['F', 'D', 'O', 'W', 'M5mg', 'B', 'U']
-        }
-    ],
+    witnessesGroups: [],
 
     /*Definition of the element used within the XML file to encode quotes for the sources apparatus.*/
-    quoteDef    : '<quote>',
+    quoteDef    : '',
     /*Definition of the element used within the XML file to encode passages for the analogues apparatus.*/
-    analogueDef : '<ref[type=parallelPassage]>',
+    analogueDef : '',
 
     showReadingExponent: true,
     showInlineCriticalApparatus: true,

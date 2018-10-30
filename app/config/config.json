@@ -4,7 +4,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "../data/polo/cap105.xml",
+	"dataUrl": "../data/pelavicino.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -47,29 +47,29 @@
                                 "visible"  : false
                             }],
     "defaultEdition": "diplomatic",
-    "showEditionLevelSelector": true,
+    "showEditionLevelSelector": false,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "enableXMLdownload" : true,
 
     "toolPinAppEntries": true,
-    "toolImageTextLinking": true,
+    "toolImageTextLinking": false,
     "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
@@ -98,7 +98,7 @@
         "color": "#ffecb3"
     }],
 
-    "listsMainContentDef": "<back>",
+    "listsMainContentDef": "<sourceDesc>",
 
     "toolHeatMap": true,
     "preferredWitness": "",
@@ -140,8 +140,8 @@
     "versions" : [],
     "witnessesGroups": [ ],
 
-    "quoteDef"              : "<quote>",
-    "analogueDef"           : "<ref[type=parallelPassage]>",
+    "quoteDef"              : "",
+    "analogueDef"           : "",
 
     "showReadingExponent": true,
 
