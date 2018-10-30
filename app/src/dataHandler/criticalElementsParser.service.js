@@ -20,8 +20,8 @@ angular.module('evtviewer.dataHandler')
 		lemmaDef = '<lem>',
 		readingDef = lemmaDef + ', <rdg>',
 		readingGroupDef = '<rdgGrp>',
-		quoteDef = config.quoteDef || '<quote>',
-		analogueDef = config.analogueDef || '<seg>,<ref[type=parallelPassage]>',
+		quoteDef = config.quoteDef,
+		analogueDef = config.analogueDef,
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 
 	// /////////////// //
@@ -49,7 +49,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      * @author CDP
      */
-	var parseGenericElement = function(elem) {
+	parser.parseGenericElement = function(elem) {
 		if (config.lacunaMilestone.indexOf('<' + elem.tagName + '>') < 0 && config.fragmentMilestone.indexOf('<' + elem.tagName + '>') < 0) {
 			var genericElement = {
 				tagName: elem.tagName,
@@ -98,7 +98,7 @@ angular.module('evtviewer.dataHandler')
 							genericElement.content.push(parser.parseAnalogue(child));
 						}
 						if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))) {
-							genericElement.content.push(parseGenericElement(child));
+							genericElement.content.push(parser.parseGenericElement(child));
 						} else {
 							genericElement.content.push(child.cloneNode(true));
 						}
@@ -255,7 +255,7 @@ angular.module('evtviewer.dataHandler')
 					} else if (analogueRegExpr.test(childXml)) {
 						reading.content.push(parser.parseAnalogue(child));
 					} else if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))) {
-						reading.content.push(parseGenericElement(child));
+						reading.content.push(parser.parseGenericElement(child));
 					} else {
 						reading.content.push(child.cloneNode(true));
 					}
@@ -736,9 +736,9 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-    parser.getEntryWitnessReadingText = function(entry, wit) {
+    parser.getEntryWitnessReadingText = function(entry, wit, position) {
 		var spanElement;
-		if (entry !== null) {
+		if (entry) {
 			var entryReadings = entry._indexes.readings._indexes;
 			spanElement = document.createElement('evt-reading');
 
@@ -756,7 +756,7 @@ angular.module('evtviewer.dataHandler')
 			*/
 			spanElement.setAttribute('data-scope-wit', wit);
 			var readingId = entry._indexes.witMap[wit];
-			if (readingId !== undefined && readingId !== '') {
+			if (readingId) {
 				spanElement.setAttribute('data-reading-id', readingId);
 				var readingContent = entry.content[readingId].content;
 				if (readingContent.length > 0) {
@@ -805,9 +805,9 @@ angular.module('evtviewer.dataHandler')
 				//     }
 				// }
 
-			} else if (entry.lemma) {
+			} else if (entry.lemma  && (!position || entry.lemma.indexOf('depa-lem') < 0)) {
 				spanElement = parser.getEntryLemmaText(entry, wit);
-			} else {
+			} else if (!position) {
 				var noRdgElement = document.createElement('span');
 				noRdgElement.className = 'empty';
 				noRdgElement.setAttribute('title', 'noRdg');
@@ -1074,11 +1074,11 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-    parser.getEntryLemmaText = function(entry, wit) {
+    parser.getEntryLemmaText = function(entry, wit, position) {
 		var spanElement,
 			errorElement;
 
-		if (entry !== null) {
+		if (entry) {
 			spanElement = document.createElement('evt-reading');
 			spanElement.setAttribute('data-app-id', entry.id);
 			// IMPORTANT: data-app-id should be the first attribute added to the element
@@ -1089,7 +1089,7 @@ angular.module('evtviewer.dataHandler')
 				var lacunaElement = document.createElement('span');
 				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
 				spanElement.appendChild(lacunaElement);
-			} else if (entry.lemma !== undefined && entry.lemma !== '') {
+			} else if (entry.lemma && (!position || entry.lemma.indexOf('depa-lem') < 0)) {
 				spanElement.setAttribute('data-reading-id', entry.lemma);
 				var lemmaContent = entry.content[entry.lemma].content;
 				for (var i in lemmaContent) {
@@ -1118,11 +1118,11 @@ angular.module('evtviewer.dataHandler')
 				}
 			} else {
 				if (config.preferredWitness !== '') {
-					spanElement = parser.getEntryWitnessReadingText(entry, config.preferredWitness);
+					spanElement = parser.getEntryWitnessReadingText(entry, config.preferredWitness, position);
 					if (spanElement !== null) {
 						spanElement.className = 'autoLemma';
 					}
-				} else {
+				} else if (!position) {
 					errorElement = document.createElement('span');
 					errorElement.className = 'encodingError';
 					errorElement.setAttribute('title', 'General error');
@@ -1157,89 +1157,6 @@ angular.module('evtviewer.dataHandler')
 		return spanElement;
 	};
 
-  parser.getDepaEntryText = function(entry, wit, position) {
-		var spanElement,
-			errorElement;
-
-		if (entry !== null) {
-			spanElement = document.createElement('evt-depa-reading');
-			spanElement.setAttribute('data-app-id', entry.id);
-			// IMPORTANT: data-app-id should be the first attribute added to the element
-			// otherwise the parser for fragmentary witnesses will not work.
-			spanElement.setAttribute('data-scope-wit', wit);
-			spanElement.setAttribute('data-position', position);
-			spanElement.setAttribute('data-type', 'lemma');
-			if (entry._lacuna) {
-				var lacunaElement = document.createElement('span');
-				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
-				spanElement.appendChild(lacunaElement);
-			} else if (entry.lemma !== undefined && entry.lemma !== '') {
-				spanElement.setAttribute('data-reading-id', entry.lemma);
-				var lemmaContent = entry.content[entry.lemma].content;
-				for (var i in lemmaContent) {
-					if (typeof(lemmaContent[i]) === 'string') {
-						spanElement.appendChild(document.createTextNode(lemmaContent[i]));
-					} else {
-						if (lemmaContent[i].type === 'subApp') {
-							var subEntry = parsedData.getCriticalEntryById(lemmaContent[i].id);
-							var subEntryElem = wit === '' ? parser.getEntryLemmaText(subEntry, wit) : parser.getEntryWitnessReadingText(subEntry, wit);
-							var subReadingId = subEntry._indexes.witMap[wit] || '';
-							subEntryElem.setAttribute('data-reading-id', subReadingId);
-							if (subEntryElem !== null) {
-								spanElement.appendChild(subEntryElem);
-							}
-						} else if (lemmaContent[i].type === 'quote') {
-							var quoteElement = parser.getQuoteText(lemmaContent[i], wit);
-							spanElement.appendChild(quoteElement);
-						} else if (lemmaContent[i].type === 'analogue') {
-							var analogueElement = parser.getAnalogueText(lemmaContent[i], wit);
-							spanElement.appendChild(analogueElement);
-						} else if (lemmaContent[i].type === 'genericElement') {
-							var genericElement = getGenericElementText(lemmaContent[i], wit);
-							spanElement.appendChild(genericElement);
-						}
-					}
-				}
-			} else {
-				if (config.preferredWitness !== '') {
-					spanElement = parser.getEntryWitnessReadingText(entry, config.preferredWitness);
-					if (spanElement !== null) {
-						spanElement.className = 'autoLemma';
-					}
-				} else {
-					errorElement = document.createElement('span');
-					errorElement.className = 'encodingError';
-					errorElement.setAttribute('title', 'General error');
-					spanElement.appendChild(errorElement);
-				}
-			}
-			if (spanElement !== null) {
-				var attribKeys = Object.keys(entry.attributes);
-				for (var key in attribKeys) {
-					var attrib = attribKeys[key];
-					var value = entry.attributes[attrib];
-					if (attrib !== 'xml:id') {
-						spanElement.setAttribute('data-' + attrib.replace(':', '-'), value);
-					}
-				}
-
-				if (entry._variance !== undefined) {
-					spanElement.setAttribute('data-variance', entry._variance);
-					// TODO: da pesare sulla varianza massima
-				}
-			}
-		} else {
-			errorElement = document.createElement('span');
-			errorElement.className = 'encodingError';
-			errorElement.setAttribute('title', 'General error');
-			spanElement.appendChild(errorElement);
-		}
-
-		if (spanElement.childNodes.length <= 0) {
-			spanElement.innerHTML = '<span class="emptyText"></span>';
-		}
-		return spanElement;
-	};
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtCriticalElementsParser#getVersionEntryLemma

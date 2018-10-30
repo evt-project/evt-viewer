@@ -203,32 +203,35 @@ angular.module('evtviewer.dataHandler')
 			appsIndex--;
 		}
 		// quotes
-		var quotes = [];
-		// Retrieves all quote definitions
-		var quoteDefs = quoteDef.split(',');
-		quoteDefs.forEach((def) => {
-			var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
-			quotes = quotes.concat(q);
-		});
-		var quotesIndex = quotes.length - 1;
-		while (quotesIndex < quotes.length && quotesIndex >= 0) {
-			parser.appendQuoteNode(quotes[quotesIndex], doc, wit);
-			quotesIndex--;
+		if (config.quoteDef) {
+			var quotes = [];
+			// Retrieves all quote definitions
+			var quoteDefs = quoteDef.split(',');
+			quoteDefs.forEach((def) => {
+				var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
+				quotes = quotes.concat(q);
+			});
+			var quotesIndex = quotes.length - 1;
+			while (quotesIndex < quotes.length && quotesIndex >= 0) {
+				parser.appendQuoteNode(quotes[quotesIndex], doc, wit);
+				quotesIndex--;
+			}
 		}
 		// analogues and depa internal critical entries
 		var analogues = [],
 				allEl = dom.getElementsByTagName('*');
 		Object.values(allEl).forEach((el) => {
-			var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-			var elTag = el.outerHTML.replace(inner, '');
-			if (analogueRegExpr.test(elTag)) {
-				analogues.push(el);
-			}
-			if (el.hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
-				var spanElement = evtDepaParser.setDepaElementInText(el, 'base', dom);
-				if (spanElement) {
-					el.parentNode.insertBefore(spanElement, el.nextSibling);
+			if (config.analogueDef) {
+				var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+				var elTag = el.outerHTML.replace(inner, '');
+				if (analogueRegExpr.test(elTag)) {
+					analogues.push(el);
 				}
+			}
+			if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
+					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external'
+					&& el.hasAttribute('xml:id')) {
+				evtDepaParser.setElementInText(el, wit, dom);
 			}
 		});
 		var analoguesIndex = analogues.length - 1;
@@ -263,6 +266,7 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parser.appendAppNode = function(appNode, doc, wit) {
+		// TODO-POLO: gestire app depa nel body
 		var appId = parser.getParsedNodeId(appNode),
 				entry = appNode.getAttribute('type') === 'recensio' ?
 					parsedData.getVersionEntry(appId) : parsedData.getCriticalEntryById(appId),
@@ -286,7 +290,7 @@ angular.module('evtviewer.dataHandler')
 			switch(wit) {
 				case '': {
 					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-						evtDepaParser.setDepaAppLemma(appNode, entry, doc);
+						// evtDepaParser.setDepaAppLemma(appNode, entry, doc);
 					}
 					if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);

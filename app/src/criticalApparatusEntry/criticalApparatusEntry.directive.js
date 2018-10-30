@@ -35,7 +35,9 @@ angular.module('evtviewer.criticalApparatusEntry')
             readingId   : '@',
             scopeWit    : '@',
             type        : '@',
-            exponent    : '@'
+            exponent    : '@',
+            method      : '@',
+            position    : '@'
         },
         transclude: true,
         templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.directive.tmpl.html',
