@@ -30,7 +30,13 @@ angular.module('evtviewer.dataHandler')
         if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
           elem.parentNode.replaceChild(spanElement, elem);
         } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
-          // var domString = dom.outerHTML;
+          // TODO-POLO: substitute text?
+          // var domString = dom.outerHTML,
+          //     subst = parser.findReadingString(domString, endId, startId, entry);
+          // var newString = dom.outerHTML.replace(subst, spanElement.outerHTML);
+          // dom = xmlParser.parse(newString).getElementsByTagName('body')[0];
+          spanElement.setAttribute('data-overlap', true);
+          elem.parentNode.insertBefore(spanElement, elem);
         } else {
           elem.parentNode.insertBefore(spanElement, elem);
         }
@@ -45,7 +51,11 @@ angular.module('evtviewer.dataHandler')
         spanElement.setAttribute('data-position', position);
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
         spanElement.setAttribute('data-method', method);
+        var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
         if (spanElement.firstChild && spanElement.firstChild.className === 'emptyText') {
+          elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+        } else if (endId !== startId) {
+          spanElement.setAttribute('data-overlap', true);
           elem.parentNode.insertBefore(spanElement, elem.nextSibling);
         }
       }
@@ -57,8 +67,7 @@ angular.module('evtviewer.dataHandler')
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         startId = depaStartIds[entry.id],
-        endId = depaEndIds[entry.id],
-        location = parsedData.getEncodingDetail('variantEncodingLocation');
+        endId = depaEndIds[entry.id];
     if (startId) {
       if (startId === endId) {
         var matches = doc.find('*'),
@@ -74,24 +83,31 @@ angular.module('evtviewer.dataHandler')
         }
       } else {
         var docString = doc[0].documentElement.outerHTML;
-        var startPos = docString.search('xml:id="' + startId),
-            endPos = 0;
-        if (location === 'internal') {
-          var string = entry._xmlSource.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-          endPos = docString.search(string);
-        } else {
-          endPos = docString.search('xml:id="' + endId + '"');
-        }
-        lemma = docString.substring(startPos, endPos);
-        lemma = lemma.substring(lemma.indexOf('>') + 1);
-        if (location === 'external') {
-          lemma = lemma.substring(0, lemma.lastIndexOf('<'));
-        }
+        lemma = parser.findReadingString(docString, endId, startId, entry);        
       }
       lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
       parser.parseLemma(entry, lemma);
     }
   };
+
+  parser.findReadingString = function(docString, endId, startId, entry) {
+    var startPos = docString.search('xml:id="' + startId),
+        endPos = 0,
+        location = parsedData.getEncodingDetail('variantEncodingLocation'),
+        readingString;
+    if (location === 'internal') {
+      var string = entry._xmlSource.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+      endPos = docString.search(string);
+    } else {
+      endPos = docString.search('xml:id="' + endId + '"');
+    }
+    readingString = docString.substring(startPos, endPos);
+    readingString = readingString.substring(readingString.indexOf('>') + 1);
+    if (location === 'external') {
+      readingString = readingString.substring(0, readingString.lastIndexOf('<'));
+    }
+    return readingString;
+  }
 
   parser.parseLemma = function(entry, lemma) {
     var parsedLemma = {

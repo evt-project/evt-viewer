@@ -231,7 +231,7 @@ angular.module('evtviewer.dataHandler')
 			if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
 					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external'
 					&& el.hasAttribute('xml:id')) {
-				dom = evtDepaParser.setElementInText(el, wit, dom) || dom;
+				evtDepaParser.setElementInText(el, wit, dom);
 			}
 		});
 		var analoguesIndex = analogues.length - 1;
