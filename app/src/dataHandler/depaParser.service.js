@@ -71,9 +71,8 @@ angular.module('evtviewer.dataHandler')
         if (location === 'external') {
           lemma = lemma.substring(0, lemma.lastIndexOf('<'));
         }
-        lemma = evtParser.balanceXHTML(lemma);
       }
-      lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();;
+      lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
       parser.parseLemma(entry, lemma);
     }
   };
@@ -82,69 +81,13 @@ angular.module('evtviewer.dataHandler')
     var parsedLemma = {
       id: entry.id + '-depa-lem',
       attributes: [],
-      content: [],
+      content: [lemma],
       note: '',
       _significant: true,
       _group: undefined,
       _xmlTagName: '',
       _xmlSource: lemma
     };
-    var node = xmlParser.parse('<lem>' + lemma + '</lem>');
-    angular.forEach(node.childNodes, (child) => {
-      if (child.nodeType === 3) {
-				if (child.textContent.trim() !== '') {
-					parsedLemma.content.push(child.textContent.trim());
-				}
-			} else if (child.nodeType === 1) {
-        if (apparatusEntryDef.indexOf('<' + child.tagName + '>') >= 0) {
-					// Sub apparatus
-					var entryApp = evtCriticalElementsParser.handleAppEntry(child, entry.id);
-					// Check if the app is inside a recensioApp or not (@author: CM)
-					if (entry.type === 'recensioApp' && elem.parentNode.tagName === 'rdgGrp') {
-						var entryAppInRecensio = evtCriticalElementsParser.handleAppEntry(child, elem);
-						parsedLemma.content.push(entryAppInRecensio);
-					} else {
-						parsedLemma.content.push({
-							id: entryApp.id,
-							type: 'subApp'
-						});
-						entry._indexes.subApps.push(entryApp.id);
-					}
-				} else {
-					var subst = '',
-						childXml = '';
-					if (angular.element(child)['0'].innerHTML !== undefined) {
-						subst = angular.element(child)['0'].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-						childXml = angular.element(child)['0'].outerHTML.replace(subst, '');
-					}
-
-					if (parsedLemma._significant) {
-						if (config.notSignificantVariant.indexOf('<' + child.tagName + '>') >= 0) {
-							parsedLemma._significant = false;
-						}
-					}
-					if (config.fragmentMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
-						var fragmentSigla = elem.getAttribute('wit');
-						child.setAttribute('wit', fragmentSigla);
-					}
-
-					if (config.lacunaMilestone.indexOf(child.tagName) >= 0 && child.getAttribute('wit') === null) {
-						var lacunaSigla = elem.getAttribute('wit');
-						child.setAttribute('wit', lacunaSigla);
-					}
-
-					if (quoteDef.indexOf('<' + child.tagName + '>') >= 0) {
-						parsedLemma.content.push(evtCriticalElementsParser.parseQuote(child));
-					} else if (analogueRegExpr.test(childXml)) {
-						parsedLemma.content.push(evtCriticalElementsParser.parseAnalogue(child));
-					} else if (angular.element(child).find(apparatusEntryDef.replace(/[<>]/g, ''))) {
-						parsedLemma.content.push(evtCriticalElementsParser.parseGenericElement(child));
-					} else {
-						parsedLemma.content.push(child.cloneNode(true));
-					}
-				}
-      }
-    });
     entry.content[parsedLemma.id] = parsedLemma;
     entry.lemma = parsedLemma.id;
   }
