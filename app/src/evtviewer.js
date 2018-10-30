@@ -75,7 +75,6 @@ angular
 		'evtviewer.namedEntity',
 		'evtviewer.criticalApparatusEntry',
 		'evtviewer.reading',
-		'evtviewer.depaReading',
 		'evtviewer.dialog',
 		'evtviewer.bibliography',
 		'evtviewer.reference',

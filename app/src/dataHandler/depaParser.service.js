@@ -33,7 +33,6 @@ angular.module('evtviewer.dataHandler')
             elem.removeChild(elem.childNodes[index]);
             index--;           
           }
-          console.log(elem)
           elem.appendChild(spanElement);
         } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
           // TODO-POLO: substitute text?
