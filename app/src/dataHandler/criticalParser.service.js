@@ -224,11 +224,10 @@ angular.module('evtviewer.dataHandler')
 			if (analogueRegExpr.test(elTag)) {
 				analogues.push(el);
 			}
-			if (el.hasAttribute('xml:id') && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point' && parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
-				var spanElement = evtDepaParser.setElementInText(el, 'base', dom);
-				if (spanElement) {
-					el.parentNode.insertBefore(spanElement, el.nextSibling);
-				}
+			if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
+					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external'
+					&& el.hasAttribute('xml:id')) {
+				evtDepaParser.setElementInText(el, wit, dom);
 			}
 		});
 		var analoguesIndex = analogues.length - 1;
@@ -263,6 +262,7 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parser.appendAppNode = function(appNode, doc, wit) {
+		// TODO-POLO: gestire app depa nel body
 		var appId = parser.getParsedNodeId(appNode),
 				entry = appNode.getAttribute('type') === 'recensio' ?
 					parsedData.getVersionEntry(appId) : parsedData.getCriticalEntryById(appId),

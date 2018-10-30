@@ -66,7 +66,7 @@ angular.module('evtviewer.core')
     //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
     analoguesUrl     : '',
 
-    preferredWitness: 'A',
+    preferredWitness: '',
 	skipWitnesses: '',
 
 	indexTitle: 'EVT Critical Viewer',

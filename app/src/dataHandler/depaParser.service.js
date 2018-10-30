@@ -2,38 +2,50 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtDepaParser', function(parsedData, evtCriticalElementsParser, evtParser, xmlParser, config) {
   var parser = {};
-  
-	var apparatusEntryDef = '<app>',
-  lemmaDef = '<lem>',
-  parsedLemmaDef = lemmaDef + ', <rdg>',
-  parsedLemmaGroupDef = '<rdgGrp>',
-  quoteDef = config.quoteDef,
-  analogueDef = config.analogueDef,
-  analogueRegExpr = evtParser.createRegExpr(analogueDef);
 
-  parser.setElementInText = function(elem, textType, doc) {
+  parser.setElementInText = function(elem, wit, dom) {
     if (!parsedData.getCriticalEntries()._indexes.depa) {
       return;
     }
     var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
-        spanElement;
-    if (elem.hasAttribute('xml:id')) {
-      var elemId = elem.getAttribute('xml:id');
-      var endIdIndex = Object.values(depaEndIds).indexOf(elemId);
-      var startIdIndex = Object.values(depaStartIds).indexOf(elemId);
-      if (elemId && endIdIndex >= 0) {
-        var entry = parsedData.getCriticalEntryById(Object.keys(depaEndIds)[endIdIndex]);
-        // parser.setDepaAppLemma(elem, entry, doc);
-        spanElement = evtCriticalElementsParser.getDepaEntryText(entry, textType, 'end');
-      }
-      if (startIdIndex >= 0) {
-        var entry = parsedData.getCriticalEntryById(Object.keys(depaStartIds)[startIdIndex]);        
-        // parser.setDepaAppLemma(elem, entry, doc);
-        spanElement = evtCriticalElementsParser.getDepaEntryText(entry, textType, 'start');        
+        elemId = elem.getAttribute('xml:id'),
+        endIdIndex = Object.values(depaEndIds).indexOf(elemId),
+        startIdIndex = Object.values(depaStartIds).indexOf(elemId),
+        entry, position;
+    // E se uno stesso anchor viene usato per più entry?
+    if (elemId && endIdIndex >= 0) {
+      entry = parsedData.getCriticalEntryById(Object.keys(depaEndIds)[endIdIndex]);
+      position = 'start';
+    }
+    if (elemId && startIdIndex >= 0) {
+      entry = parsedData.getCriticalEntryById(Object.keys(depaStartIds)[startIdIndex]);
+      position = 'end';
+    }
+    if (entry && position) {
+      var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+      : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+      spanElement.setAttribute('data-position', position);
+      var method = parsedData.getEncodingDetail('variantEncodingMethod');
+      spanElement.setAttribute('data-method', method);
+      var endId = depaEndIds[entry.id], startId = depaStartIds[entry.id];
+      if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
+        elem.parentNode.replaceChild(spanElement, elem);
+      } else if (endId === startId) {
+        elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+        var startElem = spanElement.cloneNode(true);
+        startElem.setAttribute('data-position', 'start');
+        elem.parentNode.insertBefore(startElem, elem);
+      } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
+        var domString = dom.outerHTML
+      } else {
+        if (position === 'start') {
+          elem.parentNode.insertBefore(spanElement, elem);
+        } else {
+          elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+        }
       }
     }
-    return spanElement;
   };
 
   parser.getLemma = function(entry, doc) {
