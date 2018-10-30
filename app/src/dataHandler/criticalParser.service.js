@@ -203,31 +203,35 @@ angular.module('evtviewer.dataHandler')
 			appsIndex--;
 		}
 		// quotes
-		var quotes = [];
-		// Retrieves all quote definitions
-		var quoteDefs = quoteDef.split(',');
-		quoteDefs.forEach((def) => {
-			var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
-			quotes = quotes.concat(q);
-		});
-		var quotesIndex = quotes.length - 1;
-		while (quotesIndex < quotes.length && quotesIndex >= 0) {
-			parser.appendQuoteNode(quotes[quotesIndex], doc, wit);
-			quotesIndex--;
+		if (config.quoteDef) {
+			var quotes = [];
+			// Retrieves all quote definitions
+			var quoteDefs = quoteDef.split(',');
+			quoteDefs.forEach((def) => {
+				var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
+				quotes = quotes.concat(q);
+			});
+			var quotesIndex = quotes.length - 1;
+			while (quotesIndex < quotes.length && quotesIndex >= 0) {
+				parser.appendQuoteNode(quotes[quotesIndex], doc, wit);
+				quotesIndex--;
+			}
 		}
 		// analogues and depa internal critical entries
 		var analogues = [],
 				allEl = dom.getElementsByTagName('*');
 		Object.values(allEl).forEach((el) => {
-			var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-			var elTag = el.outerHTML.replace(inner, '');
-			if (analogueRegExpr.test(elTag)) {
-				analogues.push(el);
+			if (config.analogueDef) {
+				var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+				var elTag = el.outerHTML.replace(inner, '');
+				if (analogueRegExpr.test(elTag)) {
+					analogues.push(el);
+				}
 			}
 			if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
 					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external'
 					&& el.hasAttribute('xml:id')) {
-				evtDepaParser.setElementInText(el, wit, dom);
+				dom = evtDepaParser.setElementInText(el, wit, dom) || dom;
 			}
 		});
 		var analoguesIndex = analogues.length - 1;
