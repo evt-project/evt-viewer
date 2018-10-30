@@ -10,42 +10,46 @@ angular.module('evtviewer.dataHandler')
     var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         elemId = elem.getAttribute('xml:id'),
-        endIdIndex = Object.values(depaEndIds).indexOf(elemId),
-        startIdIndex = Object.values(depaStartIds).indexOf(elemId),
-        entry, position;
-    // E se uno stesso anchor viene usato per più entry?
-    if (elemId && endIdIndex >= 0) {
-      entry = parsedData.getCriticalEntryById(Object.keys(depaEndIds)[endIdIndex]);
-      position = 'start';
+        entry, position,
+        ids = Object.values(depaStartIds).concat(Object.values(depaEndIds));
+    if (ids.indexOf(elemId) < 0) {
+      return;
     }
-    if (elemId && startIdIndex >= 0) {
-      entry = parsedData.getCriticalEntryById(Object.keys(depaStartIds)[startIdIndex]);
-      position = 'end';
-    }
-    if (entry && position) {
-      var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
-      : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
-      spanElement.setAttribute('data-position', position);
-      var method = parsedData.getEncodingDetail('variantEncodingMethod');
-      spanElement.setAttribute('data-method', method);
-      var endId = depaEndIds[entry.id], startId = depaStartIds[entry.id];
-      if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
-        elem.parentNode.replaceChild(spanElement, elem);
-      } else if (endId === startId) {
-        elem.parentNode.insertBefore(spanElement, elem.nextSibling);
-        var startElem = spanElement.cloneNode(true);
-        startElem.setAttribute('data-position', 'start');
-        elem.parentNode.insertBefore(startElem, elem);
-      } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
-        var domString = dom.outerHTML
-      } else {
-        if (position === 'start') {
-          elem.parentNode.insertBefore(spanElement, elem);
+    var startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
+    var endEntryIds = Object.keys(depaEndIds).filter(key => { return depaEndIds[key] === elemId }) || [];
+    position = 'start';
+    startEntryIds.forEach(entryId => {
+      entry = parsedData.getCriticalEntryById(entryId);
+      if (entry) {
+        var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+        spanElement.setAttribute('data-position', position);
+        var method = parsedData.getEncodingDetail('variantEncodingMethod');
+        spanElement.setAttribute('data-method', method);
+        var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
+        if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
+          elem.parentNode.replaceChild(spanElement, elem);
+        } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
+          // var domString = dom.outerHTML;
         } else {
+          elem.parentNode.insertBefore(spanElement, elem);
+        }
+      }
+    });
+    position = 'end';
+    endEntryIds.forEach(entryId => {
+      entry = parsedData.getCriticalEntryById(entryId);
+      if (entry) {
+        var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+        spanElement.setAttribute('data-position', position);
+        var method = parsedData.getEncodingDetail('variantEncodingMethod');
+        spanElement.setAttribute('data-method', method);
+        if (spanElement.firstChild && spanElement.firstChild.className === 'emptyText') {
           elem.parentNode.insertBefore(spanElement, elem.nextSibling);
         }
       }
-    }
+    });
   };
 
   parser.getLemma = function(entry, doc) {
