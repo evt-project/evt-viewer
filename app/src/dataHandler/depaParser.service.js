@@ -112,7 +112,7 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.getLemma = function(entry, doc) {
-    var dom = doc[0].documentElement || doc[0];
+    doc = doc.documentElement || doc;
     var lemma = '',
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
@@ -120,13 +120,13 @@ angular.module('evtviewer.dataHandler')
         endId = depaEndIds[entry.id];
     if (startId) {
       if (startId === endId) {
-        var elem = dom.querySelector('[*|id=' + startId + ']')[0];
+        var elem = doc.querySelector('[*|id=' + startId + ']');
         if (elem) {
-          lemma = elem.outerHTML;
+          lemma = elem.innerHTML;
         }
       } else {
-        var docString = dom.outerHTML;
-        lemma = parser.findReadingString(docString, endId, startId, entry);        
+        var docString = doc.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+        lemma = parser.findReadingString(docString, endId, startId, entry);
       }
       lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
       parser.parseLemma(entry, lemma);
@@ -134,15 +134,15 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.findReadingString = function(docString, endId, startId, entry) {
-    var startPos = docString.search('xml:id="' + startId),
+    var startPos = docString.indexOf('xml:id="' + startId),
         endPos = 0,
         location = parsedData.getEncodingDetail('variantEncodingLocation'),
         readingString;
     if (location === 'internal') {
       var string = entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-      endPos = docString.search(string);
+      endPos = docString.indexOf(string, startPos);
     } else {
-      endPos = docString.search('xml:id="' + endId + '"');
+      endPos = docString.indexOf('xml:id="' + endId + '"');
     }
     readingString = docString.substring(startPos, endPos);
     readingString = readingString.substring(readingString.indexOf('>') + 1);
