@@ -68,7 +68,7 @@ angular.module('evtviewer.interface')
         currentViewMode  : undefined,
         currentDoc       : undefined,
         currentPage      : undefined,
-        currentDiv      : undefined,
+        currentDivs      : { },
         currentWits      : undefined,
         currentWitsPages : undefined,
         currentEdition   : undefined,
@@ -795,6 +795,10 @@ angular.module('evtviewer.interface')
         mainInterface.updateWitnessesPage = function(witness, pageId) {
             state.currentWitsPages[witness] = pageId;
         };
+        
+        mainInterface.updateDiv = function(docId, divId) {
+            state.currentDivs[docId] = divId;
+        };
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#addWitness
@@ -1099,7 +1103,9 @@ angular.module('evtviewer.interface')
             }
             
             if ( divId ) {
-                mainInterface.updateState('currentDiv', divId);
+                if (docId) {
+                    mainInterface.updateDiv(docId, divId);
+                }
             }
 
             if ( docId !== undefined ) {
@@ -1130,11 +1136,12 @@ angular.module('evtviewer.interface')
          */
         mainInterface.updateUrl = function() {
             var viewMode   = state.currentViewMode,
+                docId = state.currentDoc,
                 searchPath = '';
 
                 searchPath += state.currentDoc === undefined ? '' : (searchPath === '' ? '' : '&')+'d='+state.currentDoc;
                 searchPath += state.currentPage === undefined ? '' : (searchPath === '' ? '' : '&')+'p='+state.currentPage;
-                searchPath += !state.currentDiv ? '' : (searchPath === '' ? '' : '&')+'s='+state.currentDiv;
+                searchPath += !state.currentDivs[docId] ? '' : (searchPath === '' ? '' : '&')+'s='+state.currentDivs[docId];
                 searchPath += state.currentEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'e='+state.currentEdition;
                 searchPath += state.currentComparingEdition === undefined ? '' : (searchPath === '' ? '' : '&')+'ce='+state.currentComparingEdition;
                 if (viewMode === 'collation') {

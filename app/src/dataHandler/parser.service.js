@@ -968,7 +968,6 @@ angular.module('evtviewer.dataHandler')
 			newDiv.label = newDiv.title;
 			parsedData.addDiv(newDiv, docId);
 		});
-		console.log('### DIVS ###', parsedData.getDivs());
 	};
 
 	/**
