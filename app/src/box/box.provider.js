@@ -882,8 +882,8 @@ angular.module('evtviewer.box')
 					break;
 				case 'witness':
 					var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness + '-' + vm.witPage : '';
-					var witDiv = parsedData.getDivs();
-					console.log(witDiv)
+					var docId = parsedData.getWitness(vm.witness).corresp;
+					var currentDiv = evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0];
 					topMenuList.selectors.push({
 						id: 'witnesses_' + currentId,
 						type: 'witness',
@@ -894,8 +894,8 @@ angular.module('evtviewer.box')
 						initValue: witPageId
 					}, {
 						id: 'div_' + currentId,
-						type: 'witDiv',
-						initValue: evtInterface.getState('currentDiv')
+						type: 'witnessDiv',
+						initValue: currentDiv
 					});
 
 					topMenuList.buttons.push({

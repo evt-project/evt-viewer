@@ -258,6 +258,10 @@ angular.module('evtviewer.select')
 							vm.selectOption(newOption);
 							var docId = newOption.docs[0];
 							evtInterface.updateDiv(docId, newOption.value);
+							var currentView = evtInterface.getState('currentViewMode');
+							if (currentView === 'collation') {
+								console.log('ciao')
+							}
 							evtInterface.updateUrl();
 						}
 					};
@@ -273,6 +277,29 @@ angular.module('evtviewer.select')
 						return option;
 					};
 					var currentDoc = evtInterface.getState('currentDoc');
+					optionList = formatOptionList(parsedData.getDocument(currentDoc).divs);
+					break;
+				case 'witnessDiv':
+					callback = function(oldOption, newOption) {
+						if (newOption) {
+							vm.selectOption(newOption);
+							var docId = newOption.docs[0];
+							evtInterface.updateDiv(docId, newOption.value);
+							evtInterface.updateUrl();
+						}
+					};
+					formatOptionList = function(optionList) {
+						var formattedList = [],
+							allDivs = parsedData.getDivs();
+						optionList.forEach((divId) => {
+							formattedList.push(allDivs[divId]);
+						});
+						return formattedList;
+					};
+					formatOption = function(option) {
+						return option;
+					};
+					var currentDoc = parsedData.getDiv(initValue).docs[0];
 					optionList = formatOptionList(parsedData.getDocument(currentDoc).divs);
 					break;
 				case 'edition':
