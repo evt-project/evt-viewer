@@ -235,7 +235,7 @@ angular.module('evtviewer.select')
 								evtInterface.updateState('currentPage', newOption.pages[0]);
 							}
 							if (newOption.divs.length > 0) {
-								evtInterface.updateState('currentDiv', newOption.divs[0]);
+								evtInterface.updateDiv(newOption.value, newOption.divs[0]);
 							}
 							evtInterface.updateUrl();
 						}
@@ -256,7 +256,8 @@ angular.module('evtviewer.select')
 					callback = function(oldOption, newOption) {
 						if (newOption) {
 							vm.selectOption(newOption);
-							evtInterface.updateState('currentDiv', newOption.value);
+							var docId = newOption.docs[0];
+							evtInterface.updateDiv(docId, newOption.value);
 							evtInterface.updateUrl();
 						}
 					};
