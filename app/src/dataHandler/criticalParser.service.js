@@ -239,18 +239,13 @@ angular.module('evtviewer.dataHandler')
 				quotesIndex--;
 			}
 		}
-		// analogues and depa internal critical entries
+		// analogues
 		if (config.analogueDef) {
 			var analogues = [],
-					allEl = dom.getElementsByTagName('*');
-			Object.values(allEl).forEach((el) => {
-				if (config.analogueDef) {
-					var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-					var elTag = el.outerHTML.replace(inner, '');
-					if (analogueRegExpr.test(elTag)) {
-						analogues.push(el);
-					}
-				}
+					defs = analogueDef.split(',') || [];
+			defs.forEach(def => {
+				var an = dom.querySelectorAll(def.replace('<', '').replace('>', ''));
+				an.forEach(analogue => { analogues.push(analogue); });
 			});
 			var analoguesIndex = analogues.length - 1;
 			while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
