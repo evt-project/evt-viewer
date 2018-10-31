@@ -948,6 +948,9 @@ angular.module('evtviewer.dataHandler')
 					newDiv[attr.name.replace(':', '-')] = attr.value;
 				}
 			});
+			if (newDiv.corresp) {
+				newDiv.corresp = newDiv.corresp.replace('#', '').split(' ');
+			}
 			newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
 			newDiv.title = '';
 			if (newDiv.type) {
@@ -965,6 +968,7 @@ angular.module('evtviewer.dataHandler')
 			newDiv.label = newDiv.title;
 			parsedData.addDiv(newDiv, docId);
 		});
+		console.log('### DIVS ###', parsedData.getDivs());
 	};
 
 	/**
