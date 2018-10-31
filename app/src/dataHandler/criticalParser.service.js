@@ -62,11 +62,11 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      * @author CM
      */
-	parser.parseWitnessText = function(doc, docId, wit) {
+	parser.parseWitnessText = function(origDoc, docId, wit) {
 		var deferred = $q.defer();
 		var witnessText;
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
@@ -141,12 +141,13 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      * @author CM
      */
-    parser.parseCriticalText = function(doc, docId, scopeVersion) {
+  parser.parseCriticalText = function(origDoc, docId, scopeVersion) {
 		var deferred = $q.defer();
 		var criticalText;
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);		
 			var docDOM = doc.getElementsByTagName('body')[0];
+			// console.log(docDOM.parentNode, docDOM.parentNode.parentNode)
 			// lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
 			// if (lemmas.length > 0 || 
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
@@ -192,6 +193,26 @@ angular.module('evtviewer.dataHandler')
 		return deferred;
 	};
 
+	parser.getDocRoot = function(doc) {
+		if (doc.tagName.toLowerCase() === 'tei') {
+			return doc;
+		} else {
+			return parser.getDocRoot(doc.parentNode);
+		}
+	}
+
+	parser.getDocToParse = function(origDoc) {
+		var root = parser.getDocRoot(origDoc),
+				copyRoot = root.cloneNode(true),
+				doc;
+		angular.forEach(angular.element(copyRoot).find(evtParser.parserProperties.defDocElement), elem => {
+				if (elem.outerHTML.localeCompare(origDoc.outerHTML) === 0) {
+					doc = elem;
+				}
+		});
+		return doc ? doc : origDoc;
+	}
+
 	parser.parseCriticalElementsInText = function(dom, doc, wit) {
 		// apparatus entries in the text body
 		var apps = dom.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
@@ -201,6 +222,28 @@ angular.module('evtviewer.dataHandler')
 				parser.appendAppNode(apps[appsIndex], doc, wit);
 			}
 			appsIndex--;
+		}
+		if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
+					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
+			var depaAppsStartIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.start),
+					depaAppsEndIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.end),
+					anchorsIds = [];
+			depaAppsStartIds.map(id => {
+				if (anchorsIds.indexOf(id) < 0) {
+					anchorsIds.push(id)
+				}
+			});	
+			depaAppsEndIds.map(id => {
+				if (anchorsIds.indexOf(id) < 0) {
+					anchorsIds.push(id)
+				}
+			});	
+			anchorsIds.map(elemId => {
+				var el = dom.querySelector('[*|id=' + elemId + ']');
+				if (el) {
+					evtDepaParser.setElementInText(el, wit, dom);
+				}
+			});
 		}
 		// quotes
 		if (config.quoteDef) {
@@ -217,27 +260,19 @@ angular.module('evtviewer.dataHandler')
 				quotesIndex--;
 			}
 		}
-		// analogues and depa internal critical entries
-		var analogues = [],
-				allEl = dom.getElementsByTagName('*');
-		Object.values(allEl).forEach((el) => {
-			if (config.analogueDef) {
-				var inner = el.innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-				var elTag = el.outerHTML.replace(inner, '');
-				if (analogueRegExpr.test(elTag)) {
-					analogues.push(el);
-				}
+		// analogues
+		if (config.analogueDef) {
+			var analogues = [],
+					defs = analogueDef.split(',') || [];
+			defs.forEach(def => {
+				var an = dom.querySelectorAll(def.replace('<', '').replace('>', ''));
+				an.forEach(analogue => { analogues.push(analogue); });
+			});
+			var analoguesIndex = analogues.length - 1;
+			while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
+				parser.appendAnalogueNode(analogues[analoguesIndex], doc, wit);
+				analoguesIndex--;
 			}
-			if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
-					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external'
-					&& el.hasAttribute('xml:id')) {
-				evtDepaParser.setElementInText(el, wit, dom);
-			}
-		});
-		var analoguesIndex = analogues.length - 1;
-		while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
-			parser.appendAnalogueNode(analogues[analoguesIndex], doc, wit);
-			analoguesIndex--;
 		}
 	};
 
@@ -279,7 +314,7 @@ angular.module('evtviewer.dataHandler')
 			} else {
 				evtCriticalElementsParser.handleAppEntry(appNode);
 				var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-				subApps.forEach((sub) => {
+				Object.values(subApps).forEach((sub) => {
 					evtCriticalElementsParser.handleAppEntry(sub);
 				});
 				entry = parsedData.getCriticalEntryById(appId);
@@ -290,9 +325,8 @@ angular.module('evtviewer.dataHandler')
 			switch(wit) {
 				case '': {
 					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-						// evtDepaParser.setDepaAppLemma(appNode, entry, doc);
-					}
-					if (entry.type === 'recensioApp') {
+						spanElement = evtDepaParser.getInternalDepaAppSpanElement(entry, wit, doc);
+					} else if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);
 					} else {
 						spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, wit);
@@ -354,13 +388,13 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CM
      */
-	parser.parseSourceText = function(doc, sourceId) {
+	parser.parseSourceText = function(origDoc, sourceId) {
 		var deferred = $q.defer();
 		var sourceText,
 			currentDoc = angular.element(doc);
 
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0];
 
 			var segs = docDOM.getElementsByTagName('seg'),

@@ -33,7 +33,7 @@ angular.module('evtviewer.dataHandler')
             elem.removeChild(elem.childNodes[index]);
             index--;           
           }
-          console.log(elem)
+          spanElement.setAttribute('data-position', 'end');
           elem.appendChild(spanElement);
         } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
           // TODO-POLO: substitute text?
@@ -42,9 +42,17 @@ angular.module('evtviewer.dataHandler')
           // var newString = dom.outerHTML.replace(subst, spanElement.outerHTML);
           // dom = xmlParser.parse(newString).getElementsByTagName('body')[0];
           spanElement.setAttribute('data-overlap', true);
-          elem.parentNode.insertBefore(spanElement, elem);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.firstChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          }
         } else {
-          elem.parentNode.insertBefore(spanElement, elem);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.firstChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          }
         }
       }
     });
@@ -59,16 +67,52 @@ angular.module('evtviewer.dataHandler')
         spanElement.setAttribute('data-method', method);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
         if (spanElement.firstChild && spanElement.firstChild.className === 'emptyText') {
-          elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.lastChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem);
+          }
         } else if (endId !== startId) {
           spanElement.setAttribute('data-overlap', true);
-          elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.lastChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem);
+          }
         }
       }
     });
   };
 
+  parser.getInternalDepaAppSpanElement = function(entry, wit, doc) {
+    var position = 'end';
+    var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+    : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+    spanElement.setAttribute('data-method', 'double-end-point');
+    var startElem = spanElement.cloneNode(true);
+    spanElement.setAttribute('data-position', 'end');
+    startElem.setAttribute('data-position', 'start');
+    var from = entry.attributes['from'].replace('#', ''),
+        to = entry.attributes['to'] ? entry.attributes['to'].replace('#', '') : null,
+        startNode = doc.querySelector('[*|id=' + from + ']');
+    if (from === to && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
+      var index = startNode.childNodes.length - 1;
+      while (index >= 0) {
+        startNode.removeChild(startNode.childNodes[index]);
+        index--;           
+      }
+      startNode.appendChild(spanElement);
+      return;
+    } else if (startNode && startNode.childNodes && startNode.childNodes.length > 0) {
+      startNode.insertBefore(startElem, startNode.firstChild);
+    } else {
+      startNode.parentNode.insertBefore(startElem, startNode.nextSibling);
+    }
+    return spanElement;
+  };
+
   parser.getLemma = function(entry, doc) {
+    doc = doc.documentElement || doc;
     var lemma = '',
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
@@ -76,20 +120,13 @@ angular.module('evtviewer.dataHandler')
         endId = depaEndIds[entry.id];
     if (startId) {
       if (startId === endId) {
-        var matches = doc.find('*'),
-            found = false,
-            index = 0;
-        while (!found && index < matches.length) {
-          var elem = matches[index];
-          if (elem.attributes && elem.hasAttribute('xml:id') && elem.getAttribute('xml:id') === startId) {
-            lemma = elem.outerHTML;
-            found = true;
-          }
-          index++;
+        var elem = doc.querySelector('[*|id=' + startId + ']');
+        if (elem) {
+          lemma = elem.innerHTML;
         }
       } else {
-        var docString = doc[0].documentElement.outerHTML;
-        lemma = parser.findReadingString(docString, endId, startId, entry);        
+        var docString = doc.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+        lemma = parser.findReadingString(docString, endId, startId, entry);
       }
       lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
       parser.parseLemma(entry, lemma);
@@ -97,15 +134,15 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.findReadingString = function(docString, endId, startId, entry) {
-    var startPos = docString.search('xml:id="' + startId),
+    var startPos = docString.indexOf('xml:id="' + startId),
         endPos = 0,
         location = parsedData.getEncodingDetail('variantEncodingLocation'),
         readingString;
     if (location === 'internal') {
-      var string = entry._xmlSource.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-      endPos = docString.search(string);
+      var string = entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+      endPos = docString.indexOf(string, startPos);
     } else {
-      endPos = docString.search('xml:id="' + endId + '"');
+      endPos = docString.indexOf('xml:id="' + endId + '"');
     }
     readingString = docString.substring(startPos, endPos);
     readingString = readingString.substring(readingString.indexOf('>') + 1);

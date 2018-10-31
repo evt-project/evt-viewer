@@ -234,7 +234,7 @@ angular.module('evtviewer.dataHandler')
                 if (!element.hasAttribute('type') || (element.getAttribute('type') !== 'recensio')){
                     var entry = evtCriticalElementsParser.handleAppEntry(element);
                     if (!entry.lemma && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-                        evtDepaParser.getLemma(entry, currentDocument);
+                        evtDepaParser.getLemma(entry, doc);
                     }
                 }
             });
