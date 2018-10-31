@@ -62,11 +62,11 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      * @author CM
      */
-	parser.parseWitnessText = function(doc, docId, wit) {
+	parser.parseWitnessText = function(origDoc, docId, wit) {
 		var deferred = $q.defer();
 		var witnessText;
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
@@ -141,12 +141,13 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      * @author CM
      */
-    parser.parseCriticalText = function(doc, docId, scopeVersion) {
+  parser.parseCriticalText = function(origDoc, docId, scopeVersion) {
 		var deferred = $q.defer();
 		var criticalText;
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);		
 			var docDOM = doc.getElementsByTagName('body')[0];
+			// console.log(docDOM.parentNode, docDOM.parentNode.parentNode)
 			// lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
 			// if (lemmas.length > 0 || 
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
@@ -191,6 +192,26 @@ angular.module('evtviewer.dataHandler')
 		deferred.resolve('success');
 		return deferred;
 	};
+
+	parser.getDocRoot = function(doc) {
+		if (doc.tagName.toLowerCase() === 'tei') {
+			return doc;
+		} else {
+			return parser.getDocRoot(doc.parentNode);
+		}
+	}
+
+	parser.getDocToParse = function(origDoc) {
+		var root = parser.getDocRoot(origDoc),
+				copyRoot = root.cloneNode(true),
+				doc;
+		angular.forEach(angular.element(copyRoot).find(evtParser.parserProperties.defDocElement), elem => {
+				if (elem.outerHTML.localeCompare(origDoc.outerHTML) === 0) {
+					doc = elem;
+				}
+		});
+		return doc ? doc : origDoc;
+	}
 
 	parser.parseCriticalElementsInText = function(dom, doc, wit) {
 		// apparatus entries in the text body
@@ -367,13 +388,13 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CM
      */
-	parser.parseSourceText = function(doc, sourceId) {
+	parser.parseSourceText = function(origDoc, sourceId) {
 		var deferred = $q.defer();
 		var sourceText,
 			currentDoc = angular.element(doc);
 
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0];
 
 			var segs = docDOM.getElementsByTagName('seg'),

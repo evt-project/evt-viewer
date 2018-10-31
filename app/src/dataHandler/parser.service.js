@@ -38,6 +38,7 @@ angular.module('evtviewer.dataHandler')
 	projectInfoDefs.sectionSubHeaders += '<principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>, <msIdentifier>, <physDesc>, <history>, <extent>, <editionStmt>';
 	projectInfoDefs.blockLabels += '<edition>, <correction>, <hyphenation>, <interpretation>, <normalization>, <punctuation>, <interpGrp>';
 	projectInfoDefs.blockLabels += '<quotation>, <segmentation>, <stdVals>, <colophon>, <handDesc>, <decoDesc>, <supportDesc>, <origin>';
+	parser.parserProperties = {};
 	// ///////// //
 	// UTILITIES //
 	// ///////// //
@@ -865,6 +866,9 @@ angular.module('evtviewer.dataHandler')
 			defDocElement = 'div[subtype="edition_text"]';
 			defContentEdition = 'div';
 		}
+
+		parser.parserProperties['defDocElement'] = defDocElement;
+		parser.parserProperties['defContentEdition'] = defContentEdition;
 
 		var frontDef = '<front>',
 			biblDef = '<biblStruct>';
