@@ -34,7 +34,10 @@ angular.module('evtviewer.reading')
             readingType : '@',
             variance    : '@',
             scopeWit    : '@',
-            type        : '@'
+            type        : '@',
+            position    : '@',
+            method      : '@',
+            overlap     : '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',
