@@ -46,8 +46,8 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : false
                             }],
-    "defaultEdition": "diplomatic",
-    "showEditionLevelSelector": true,
+    "defaultEdition": "critical",
+    "showEditionLevelSelector": false,
 
     "availableEditionLevel": [{
         "value": "critical",
@@ -65,6 +65,8 @@
         "title": "Interpretative edition",
         "visible": false
     }],
+
+    "mainDocId": "tr",
 
     "enableXMLdownload" : true,
 
