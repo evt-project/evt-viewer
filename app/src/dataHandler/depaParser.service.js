@@ -42,9 +42,17 @@ angular.module('evtviewer.dataHandler')
           // var newString = dom.outerHTML.replace(subst, spanElement.outerHTML);
           // dom = xmlParser.parse(newString).getElementsByTagName('body')[0];
           spanElement.setAttribute('data-overlap', true);
-          elem.parentNode.insertBefore(spanElement, elem);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.firstChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          }
         } else {
-          elem.parentNode.insertBefore(spanElement, elem);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.firstChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          }
         }
       }
     });
@@ -59,13 +67,47 @@ angular.module('evtviewer.dataHandler')
         spanElement.setAttribute('data-method', method);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
         if (spanElement.firstChild && spanElement.firstChild.className === 'emptyText') {
-          elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.lastChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem);
+          }
         } else if (endId !== startId) {
           spanElement.setAttribute('data-overlap', true);
-          elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(spanElement, elem.lastChild);
+          } else {
+            elem.parentNode.insertBefore(spanElement, elem);
+          }
         }
       }
     });
+  };
+
+  parser.getInternalDepaAppSpanElement = function(entry, wit, doc) {
+    var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+    : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+    spanElement.setAttribute('data-method', 'double-end-point');
+    var startElem = spanElement.cloneNode(true);
+    spanElement.setAttribute('data-position', 'end');
+    startElem.setAttribute('data-position', 'start');
+    var startNode = doc.querySelector('[*|id=' + from + ']'),
+        from = entry.attributes['from'],
+        to = entry.attributes['to'];
+    if (from === to && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
+      var index = startNode.childNodes.length - 1;
+      while (index >= 0) {
+        startNode.removeChild(startNode.childNodes[index]);
+        index--;           
+      }
+      startNode.appendChild(spanElement);
+      return;
+    } else if (startNode && startNode.childNodes && startNode.childNodes.length > 0) {
+      startNode.insertBefore(startElem, startNode.firstChild);
+    } else {
+      startNode.parentNode.insertBefore(startElem, startNode.nextSibling);
+    }
+    return spanElement;
   };
 
   parser.getLemma = function(entry, doc) {
