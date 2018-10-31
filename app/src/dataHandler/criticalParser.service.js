@@ -293,7 +293,7 @@ angular.module('evtviewer.dataHandler')
 			} else {
 				evtCriticalElementsParser.handleAppEntry(appNode);
 				var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-				subApps.forEach((sub) => {
+				Object.values(subApps).forEach((sub) => {
 					evtCriticalElementsParser.handleAppEntry(sub);
 				});
 				entry = parsedData.getCriticalEntryById(appId);

@@ -85,15 +85,16 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.getInternalDepaAppSpanElement = function(entry, wit, doc) {
+    var position = 'end';
     var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
     : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
     spanElement.setAttribute('data-method', 'double-end-point');
     var startElem = spanElement.cloneNode(true);
     spanElement.setAttribute('data-position', 'end');
     startElem.setAttribute('data-position', 'start');
-    var startNode = doc.querySelector('[*|id=' + from + ']'),
-        from = entry.attributes['from'],
-        to = entry.attributes['to'];
+    var from = entry.attributes['from'].replace('#', ''),
+        to = entry.attributes['to'] ? entry.attributes['to'].replace('#', '') : null,
+        startNode = doc.querySelector('[*|id=' + from + ']');
     if (from === to && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
       var index = startNode.childNodes.length - 1;
       while (index >= 0) {
@@ -111,7 +112,7 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.getLemma = function(entry, doc) {
-    var dom = doc[0].documentElement;
+    var dom = doc[0].documentElement || doc[0];
     var lemma = '',
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
@@ -138,7 +139,7 @@ angular.module('evtviewer.dataHandler')
         location = parsedData.getEncodingDetail('variantEncodingLocation'),
         readingString;
     if (location === 'internal') {
-      var string = entry._xmlSource.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
+      var string = entry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
       endPos = docString.search(string);
     } else {
       endPos = docString.search('xml:id="' + endId + '"');

@@ -235,8 +235,8 @@ angular.module('evtviewer.interface')
 
                           // Parse critical entries
                         if (parsedData.getEncodingDetail('variantEncodingLocation') === 'internal') {
-                            if (config.loadCriticalEntriesImmediately){
-                            promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
+                            if (config.loadCriticalEntriesImmediately) {
+                                promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
                             }
 
                             // Parse the versions entries

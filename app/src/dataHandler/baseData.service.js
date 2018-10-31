@@ -231,7 +231,7 @@ angular.module('evtviewer.dataHandler')
        // Parse Glyphs
        evtParser.parseGlyphs(docElements);
 
-       if (parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
+       if (parsedData.getEncodingDetail('variantEncodingLocation') !== 'internal') {
         if (config.loadCriticalEntriesImmediately){
             evtCriticalApparatusParser.parseCriticalEntries(docElements);
         }
