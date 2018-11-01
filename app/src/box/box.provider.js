@@ -1295,6 +1295,27 @@ angular.module('evtviewer.box')
 				}
 			}
 		};
+
+		box.alignScrollToDiv = function(divId) {
+			for (var i in collection) {
+				if (collection[i].scrollToDiv) {
+					var docId;
+					if (collection[i].type === 'witness') {
+						docId = parsedData.getWitness(collection[i].witness).corresp;
+						var corresp = parsedData.getDivs()._indexes.corresp[divId], div;
+						corresp.map(id => {
+							if (parsedData.getDiv(id).docs[0] === docId) {
+								div = id;
+							}
+						});
+						collection[i].scrollToDiv(div);
+					} else {
+						collection[i].scrollToDiv(divId);
+					}
+					
+				}
+			}
+		}
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.box.evtBox#alignScrollToQuote

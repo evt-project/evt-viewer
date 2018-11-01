@@ -532,15 +532,13 @@ angular.module('evtviewer.box')
                     docId = parsedData.getWitness(scope.witness).corresp;
                 } else {
                     docId = config.mainDocId || parsedData.getDocuments()._indexes[0];
-                    all = true && evtInterface.getState('currentViewMode') === 'collation';
+                    all = evtInterface.getState('currentViewMode') === 'collation';
                 }
                 scope.$watch(function() {
                     return evtInterface.getState('currentDivs')[docId];
                 }, function(newItem, oldItem) {
                     if (!all) {
                         scope.vm.scrollToDiv(newItem);
-                    } else {
-                        console.log('todo');
                     }
                 });
             }

@@ -29,7 +29,7 @@ angular.module('evtviewer.select')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, config, Utils, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements, evtSourcesApparatus) {
+	this.$get = function($log, config, Utils, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements, evtSourcesApparatus, evtBox) {
 		var select = {},
 			collection = {},
 			list = [],
@@ -259,8 +259,30 @@ angular.module('evtviewer.select')
 							var docId = newOption.docs[0];
 							evtInterface.updateDiv(docId, newOption.value);
 							var currentView = evtInterface.getState('currentViewMode');
-							if (currentView === 'collation') {
-								console.log('todo')
+							if (currentView === 'collation' && newOption.docs[0] === config.mainDocId) {
+								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
+								var witDocs = corresp.map(divId => {
+									return parsedData.getDiv(divId).docs[0];
+								});
+								var witsList = parsedData.getWitnessesList();
+								var wits = witDocs.map(doc => {
+									var witness;
+									witsList.forEach(wit => {
+										if (parsedData.getWitness(wit).corresp === doc) {
+											witness = wit;
+										}
+									});
+									return witness;
+								});
+								var currentWits = evtInterface.getState('currentWits');
+								witsList.forEach(wit => {
+									if (wits.indexOf(wit) >= 0 && currentWits.indexOf(wit) < 0) {
+										evtInterface.addWitness(wit);
+									} else if (wits.indexOf(wit) < 0 && currentWits.indexOf(wit) >= 0) {
+										evtInterface.removeWitness(wit);
+									}
+								});
+								evtBox.alignScrollToDiv(newOption.value)
 							}
 							evtInterface.updateUrl();
 						}
