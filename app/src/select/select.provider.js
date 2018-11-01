@@ -260,7 +260,7 @@ angular.module('evtviewer.select')
 							evtInterface.updateDiv(docId, newOption.value);
 							var currentView = evtInterface.getState('currentViewMode');
 							if (currentView === 'collation') {
-								console.log('ciao')
+								console.log('todo')
 							}
 							evtInterface.updateUrl();
 						}
