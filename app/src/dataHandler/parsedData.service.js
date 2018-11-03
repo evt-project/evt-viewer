@@ -1793,21 +1793,18 @@ angular.module('evtviewer.dataHandler')
      * @returns {string} Alphanumeric exponent generated
      */
 	var generateAlphabeticExponent = function() {
-		var number = criticalAppCollection._indexes.appEntries.length,
-			exponent;
-		var firstExp, lastExp;
-        if (number > 26) {
-            firstExp = (Math.floor(number/26))+96;
-            if (number%26 === 0) {
-                exponent = '&#'+(firstExp-1)+';z';
-            } else {
-            lastExp = (number%26)+96;
-            exponent='&#'+firstExp+';&#'+lastExp+';'; }
-        } else {
-            exponent = '&#'+(number+96)+';';
-        }
-        return exponent;
+		var number = criticalAppCollection._indexes.appEntries.length;
+		return findExp(number, '');
 	};
+
+	var findExp = function(number, exponent) {
+		if (number < 26) {
+			return String.fromCharCode(number + 96) + exponent;
+		} else {
+			var mod = number % 26, div = Math.floor(number / 26);
+			return findExp(div, exponent) + String.fromCharCode(mod + 97) + exponent;
+		}
+	}
 
 	/**
      * @ngdoc method
