@@ -1304,7 +1304,7 @@ angular.module('evtviewer.box')
 						docId = parsedData.getWitness(collection[i].witness).corresp;
 						var corresp = parsedData.getDivs()._indexes.corresp[divId], div;
 						corresp.map(id => {
-							if (parsedData.getDiv(id).docs[0] === docId) {
+							if (parsedData.getDiv(id).doc === docId) {
 								div = id;
 							}
 						});

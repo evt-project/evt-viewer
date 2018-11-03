@@ -967,6 +967,7 @@ angular.module('evtviewer.dataHandler')
 
 	parser.parseDiv = function(element, docId, section) {
 		var newDiv = {
+			doc: docId,
 			section: section,
 			subDivs: [],
 			title: '',

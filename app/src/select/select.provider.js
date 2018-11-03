@@ -256,13 +256,13 @@ angular.module('evtviewer.select')
 					callback = function(oldOption, newOption) {
 						if (newOption) {
 							vm.selectOption(newOption);
-							var docId = newOption.docs[0];
+							var docId = newOption.doc;
 							evtInterface.updateDiv(docId, newOption.value);
 							var currentView = evtInterface.getState('currentViewMode');
-							if (currentView === 'collation' && newOption.docs[0] === config.mainDocId) {
+							if (currentView === 'collation' && newOption.doc === config.mainDocId) {
 								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
 								var witDocs = corresp.map(divId => {
-									return parsedData.getDiv(divId).docs[0];
+									return parsedData.getDiv(divId).doc;
 								});
 								var witsList = parsedData.getWitnessesList();
 								var wits = witDocs.map(doc => {
@@ -287,42 +287,47 @@ angular.module('evtviewer.select')
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList) {
-						var formattedList = [],
-							allDivs = parsedData.getDivs();
+					formatOptionList = function(optionList, formattedList) {
+						var allDivs = parsedData.getDivs();
 						optionList.forEach((divId) => {
 							formattedList.push(allDivs[divId]);
+							if (parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+								formatOptionList(allDivs[divId].subDivs, formattedList);
+							}
 						});
-						return formattedList;
 					};
 					formatOption = function(option) {
 						return option;
 					};
 					var currentDoc = evtInterface.getState('currentDoc');
-					optionList = formatOptionList(parsedData.getDocument(currentDoc).divs);
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
 					break;
 				case 'witnessDiv':
 					callback = function(oldOption, newOption) {
 						if (newOption) {
 							vm.selectOption(newOption);
-							var docId = newOption.docs[0];
+							var docId = newOption.doc;
 							evtInterface.updateDiv(docId, newOption.value);
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList) {
-						var formattedList = [],
-							allDivs = parsedData.getDivs();
+					formatOptionList = function(optionList, formattedList) {
+						var allDivs = parsedData.getDivs();
 						optionList.forEach((divId) => {
+							if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
+								allDivs[divId].type = 'groupTitle';
+							}
 							formattedList.push(allDivs[divId]);
+							if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+								formatOptionList(allDivs[divId].subDivs, formattedList);
+							}
 						});
-						return formattedList;
 					};
 					formatOption = function(option) {
 						return option;
 					};
-					var currentDoc = parsedData.getDiv(initValue).docs[0];
-					optionList = formatOptionList(parsedData.getDocument(currentDoc).divs);
+					var currentDoc = parsedData.getDiv(initValue).doc;
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
 					break;
 				case 'edition':
 				case 'comparingEdition':
