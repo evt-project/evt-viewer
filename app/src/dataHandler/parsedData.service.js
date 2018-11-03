@@ -111,7 +111,12 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	var divsCollection = {
-		length: 0
+		length: 0,
+		_indexes: {
+			corresp : {},
+			subDivs: {},
+			main: {}
+		}
 	};
 	/**
      * @ngdoc property
@@ -975,11 +980,25 @@ angular.module('evtviewer.dataHandler')
 
 	parsedData.addDiv = function(div, docId) {
 		var divId = div.value;
-		div.docs = [docId];
 		divsCollection[divsCollection.length] = divId;
 		divsCollection[divId] = div;
 		divsCollection.length++;
 		documentsCollection[docId].divs.push(divId);
+		if (div.corresp) {
+			div.corresp.forEach(corresp => {
+				if (!divsCollection._indexes.corresp[corresp]) {
+					divsCollection._indexes.corresp[corresp] = [];
+				}
+				divsCollection._indexes.corresp[corresp].push(div.value);
+			});
+		}
+		if (!div._isSubDiv) {
+			divsCollection._indexes.subDivs[div.value] = div.subDivs || [];
+			if (!divsCollection._indexes.main[div.doc]) {
+				divsCollection._indexes.main[div.doc] = []
+			}
+			divsCollection._indexes.main[div.doc].push(div.value);
+		}
 	};
 
 	parsedData.getDivs = function() {

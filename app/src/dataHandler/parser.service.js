@@ -888,6 +888,7 @@ angular.module('evtviewer.dataHandler')
 				};
 				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
 				if (docFront && docFront[0]) {
+					parser.parseDivs(docFront[0], newDoc.value, 'front');
 					var frontElem = docFront[0].cloneNode(true),
 						biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
 					if (biblRefs) {
@@ -919,8 +920,16 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addDocument(newDoc);
 				parser.parsePages(element, newDoc.value);
-				parser.parseDivs(element, newDoc.value);
-				
+				if (defContentEdition === 'body') {
+					var body = element.querySelector('body');
+					parser.parseDivs(body, newDoc.value, 'body');
+					var back = element.querySelector('back');
+					if (back) {
+						parser.parseDivs(back, newDoc.value, 'back');
+					}
+				} else {
+					parser.parseDivs(element, newDoc.value, 'body');
+				}
 				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
 					// Split pages works only on diplomatic/interpretative edition
 					// In critical edition, text will be splitted into pages for each witness
@@ -936,36 +945,54 @@ angular.module('evtviewer.dataHandler')
 			});
 		console.log('## PAGES ##', parsedData.getPages());
 		console.log('## Documents ##', parsedData.getDocuments());
+		console.log('## DIVS ##', parsedData.getDivs())
 		return parsedData.getDocuments();
 	};
 
-	parser.parseDivs = function(doc, docId) {
+	parser.parseDivs = function(doc, docId, section) {
 		var currentDocument = angular.element(doc);
-		angular.forEach(currentDocument.find('div'), function(element) {
-			var newDiv = {};
-			Object.values(element.attributes).forEach((attr) => {
-				if (attr.specified) {
-					newDiv[attr.name.replace(':', '-')] = attr.value;
-				}
-			});
-			newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
-			newDiv.title = '';
-			if (newDiv.type) {
-				newDiv.title += newDiv.type.substr(0,1).toUpperCase() + newDiv.type.substr(1);
-			}
-			if (newDiv.subtype) {
-				newDiv.title += ' - ' + newDiv.subtype.substr(0,1).toUpperCase() + newDiv.subtype.substr(1);
-			}
-			newDiv.title += ' ';
-			if (newDiv.n) {
-				newDiv.title += newDiv.n;
-			} else {
-				newDiv.title += parsedData.getDivs().length + 1;
-			}
-			newDiv.label = newDiv.title;
-			parsedData.addDiv(newDiv, docId);
+		angular.forEach(currentDocument.children('div'), function(element) {
+			parser.parseDiv(element, docId, section);
 		});
 	};
+
+	parser.parseDiv = function(element, docId, section) {
+		var newDiv = {
+			doc: docId,
+			section: section,
+			subDivs: [],
+			title: '',
+			_isSubDiv: parser.isNestedInElem(element, 'div')
+		};
+		Object.values(element.attributes).forEach((attr) => {
+			if (attr.specified) {
+				newDiv[attr.name.replace(':', '-')] = attr.value;
+			}
+		});
+		if (newDiv.corresp) {
+			newDiv.corresp = newDiv.corresp.replace('#', '').split(' ');
+		}
+		newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
+		if (newDiv.type) {
+			newDiv.title += newDiv.type.substr(0,1).toUpperCase() + newDiv.type.substr(1);
+		}
+		if (newDiv.subtype) {
+			newDiv.title += ' - ' + newDiv.subtype.substr(0,1).toUpperCase() + newDiv.subtype.substr(1);
+		}
+		newDiv.title += ' ';
+		if (newDiv.n) {
+			newDiv.title += newDiv.n;
+		} else {
+			newDiv.title += parsedData.getDivs().length + 1;
+		}
+		newDiv.label = newDiv.title;
+		var elem = angular.element(element);
+		angular.forEach(elem.children('div'), function(child) {
+			newDiv.subDivs.push(parser.parseDiv(child, docId, section).value);
+		});
+		parsedData.addDiv(newDiv, docId);
+		return newDiv;
+	}
 
 	/**
      * @ngdoc method
