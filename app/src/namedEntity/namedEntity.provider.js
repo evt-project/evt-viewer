@@ -39,7 +39,7 @@ angular.module('evtviewer.namedEntity')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function($timeout, config, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef, evtPinnedElements) {
+    this.$get = function($timeout, config, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef, evtPinnedElements, evtDialog, evtTabsContainer, evtList) {
         var namedEntity    = {},
             collection = {},
             list       = [],
@@ -233,6 +233,13 @@ angular.module('evtviewer.namedEntity')
                 }
             }
         };
+
+        var openEntity = function() {
+            var vm = this;
+            evtInterface.updateState('secondaryContent', 'entitiesList');
+            evtDialog.openByType('entitiesList');
+            // evtInterface.setHomePanel('');
+        }
         /**
          * @ngdoc method
          * @name evtviewer.namedEntity.controller:NamedEntityCtrl#isCurrentPageDoc
@@ -425,6 +432,7 @@ angular.module('evtviewer.namedEntity')
                 isPinned: isPinned,
                 getPinnedState: getPinnedState,
                 togglePin: togglePin,
+                openEntity: openEntity,
                 lfCenter: center,
                 lfMarkers: { mainMarker }
             };

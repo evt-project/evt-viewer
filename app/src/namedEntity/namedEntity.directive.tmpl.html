@@ -2,8 +2,14 @@
      ng-class="::{'opened': vm.location === 'mainText'}">
 	<span class="namedEntity__header">
         <!-- HEADER -->
-        <div class="namedEntity_tools"
-          ng-if="::vm.isPinAvailable()">
+        <div class="namedEntity_tools">
+          <button-switch
+            ng-if="vm.location !== 'list'"
+            title="Show entry in full list"
+            data-label=""
+            data-icon="list"
+            data-type="openEntity"
+            ng-click="vm.openEntity()"></button-switch>
           <button-switch 
                 title="BUTTONS.PIN_REMOVE"
                 ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"

@@ -624,6 +624,12 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				case 'openEntity':
+					callback = function() {
+						var vm = this;
+						vm.active = !vm.active;
+					};
+					break;
 				/*case 'msDesc':
 				    callback= function() {
 				        var doc=evtInterface.getState('currentDoc');
