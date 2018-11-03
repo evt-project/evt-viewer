@@ -233,6 +233,15 @@ angular.module('evtviewer.box')
                         }
                     });
                 };
+                scope.vm.scrollToDiv = function(divId) {
+                    $timeout(function(){
+                        var divElem = $('#'+currentBox.uid).find('#'+divId);
+                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                        if (divElem.length > 0 && divElem[0] !== undefined) {
+                            boxBody.scrollTop = divElem[0].offsetTop-padding;
+                        }
+                    });
+                };
                 /** @ngdoc method
                  * @name evtviewer.box.controller:BoxCtrl#scrollToAppEntry
                  * @methodOf evtviewer.box.controller:BoxCtrl
@@ -513,6 +522,24 @@ angular.module('evtviewer.box')
                 }, function (newItem, oldItem) {
                     scope.vm.version = newItem;
                     currentBox.updateContent();
+                });
+            }
+
+                // TODO-POLO: aggiorna capitolo in tutti i box, se 
+            if (currentBox.type === 'text' || currentBox.type === 'witness') {
+                var docId, all = false;
+                if (currentBox.type === 'witness') {
+                    docId = parsedData.getWitness(scope.witness).corresp;
+                } else {
+                    docId = config.mainDocId || parsedData.getDocuments()._indexes[0];
+                    all = evtInterface.getState('currentViewMode') === 'collation';
+                }
+                scope.$watch(function() {
+                    return evtInterface.getState('currentDivs')[docId];
+                }, function(newItem, oldItem) {
+                    if (!all) {
+                        scope.vm.scrollToDiv(newItem);
+                    }
                 });
             }
 

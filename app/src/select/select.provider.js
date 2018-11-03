@@ -29,7 +29,7 @@ angular.module('evtviewer.select')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, config, Utils, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements, evtSourcesApparatus) {
+	this.$get = function($log, config, Utils, parsedData, evtInterface, evtNamedEntityRef, evtGenericEntity, evtPinnedElements, evtSourcesApparatus, evtBox) {
 		var select = {},
 			collection = {},
 			list = [],
@@ -235,7 +235,7 @@ angular.module('evtviewer.select')
 								evtInterface.updateState('currentPage', newOption.pages[0]);
 							}
 							if (newOption.divs.length > 0) {
-								evtInterface.updateState('currentDiv', newOption.divs[0]);
+								evtInterface.updateDiv(newOption.value, newOption.divs[0]);
 							}
 							evtInterface.updateUrl();
 						}
@@ -256,23 +256,78 @@ angular.module('evtviewer.select')
 					callback = function(oldOption, newOption) {
 						if (newOption) {
 							vm.selectOption(newOption);
-							evtInterface.updateState('currentDiv', newOption.value);
+							var docId = newOption.doc;
+							evtInterface.updateDiv(docId, newOption.value);
+							var currentView = evtInterface.getState('currentViewMode');
+							if (currentView === 'collation' && newOption.doc === config.mainDocId) {
+								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
+								var witDocs = corresp.map(divId => {
+									return parsedData.getDiv(divId).doc;
+								});
+								var witsList = parsedData.getWitnessesList();
+								var wits = witDocs.map(doc => {
+									var witness;
+									witsList.forEach(wit => {
+										if (parsedData.getWitness(wit).corresp === doc) {
+											witness = wit;
+										}
+									});
+									return witness;
+								});
+								var currentWits = evtInterface.getState('currentWits');
+								witsList.forEach(wit => {
+									if (wits.indexOf(wit) >= 0 && currentWits.indexOf(wit) < 0) {
+										evtInterface.addWitness(wit);
+									} else if (wits.indexOf(wit) < 0 && currentWits.indexOf(wit) >= 0) {
+										evtInterface.removeWitness(wit);
+									}
+								});
+								evtBox.alignScrollToDiv(newOption.value)
+							}
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList) {
-						var formattedList = [],
-							allDivs = parsedData.getDivs();
+					formatOptionList = function(optionList, formattedList) {
+						var allDivs = parsedData.getDivs();
 						optionList.forEach((divId) => {
 							formattedList.push(allDivs[divId]);
+							if (parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+								formatOptionList(allDivs[divId].subDivs, formattedList);
+							}
 						});
-						return formattedList;
 					};
 					formatOption = function(option) {
 						return option;
 					};
 					var currentDoc = evtInterface.getState('currentDoc');
-					optionList = formatOptionList(parsedData.getDocument(currentDoc).divs);
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
+					break;
+				case 'witnessDiv':
+					callback = function(oldOption, newOption) {
+						if (newOption) {
+							vm.selectOption(newOption);
+							var docId = newOption.doc;
+							evtInterface.updateDiv(docId, newOption.value);
+							evtInterface.updateUrl();
+						}
+					};
+					formatOptionList = function(optionList, formattedList) {
+						var allDivs = parsedData.getDivs();
+						optionList.forEach((divId) => {
+							if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
+								allDivs[divId].type = 'groupTitle';
+							}
+							formattedList.push(allDivs[divId]);
+							if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+								formatOptionList(allDivs[divId].subDivs, formattedList);
+							}
+						});
+					};
+					formatOption = function(option) {
+						return option;
+					};
+					var currentDoc = parsedData.getDiv(initValue).doc;
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
 					break;
 				case 'edition':
 				case 'comparingEdition':
