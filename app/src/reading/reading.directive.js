@@ -35,8 +35,6 @@ angular.module('evtviewer.reading')
             variance    : '@',
             scopeWit    : '@',
             type        : '@',
-            position    : '@',
-            method      : '@',
             overlap     : '@'
         },
         transclude: true,

@@ -28,7 +28,9 @@ angular.module('evtviewer.dataHandler')
         var spanElement = document.createElement('span');
         spanElement.setAttribute('data-app-id', entry.id);
         spanElement.setAttribute('class', 'depaAnchor');
-        spanElement.setAttribute('id', 'depaAnchor-' + entry.id);
+        spanElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
+        var depaContent = document.createTextNode('*DEPA ANCHOR*');
+        spanElement.appendChild(depaContent);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
         if (endId === startId && (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText')) {
           var index = elem.childNodes.length - 1;
@@ -37,28 +39,24 @@ angular.module('evtviewer.dataHandler')
             index--;           
           }
           elem.appendChild(rdgElement);
-        } else if (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText') {
-          // OPTION 1: substituting the text
-          var fromAnchor = dom.querySelector('[*|id="' + startId + '"]');
-          var toAnchor = dom.querySelector('[*|id="' + endId + '"]');
-          var range = document.createRange();
-          try {
-            range.setStart(fromAnchor, 0);
-            range.setEnd(toAnchor, 0);
-          } catch (e) { console.log(e); }
-          range.deleteContents();
-          range.insertNode(rdgElement);
-          // OPTION 2: keeping the text and adding the start anchor
-          // if (elem.childNodes && elem.childNodes.length > 0) {
-          //   elem.insertBefore(spanElement, elem.firstChild);
-          // } else {
-          //   elem.parentNode.insertBefore(spanElement, elem.nextSibling);
-          // }
         } else {
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.firstChild);
+          if (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText') {
+            var range = parser.getAppContentRange(startId, endId, dom);
+            // OPTION 1: substituting the text
+            range.deleteContents();
+            range.insertNode(rdgElement);
+            // OPTION 2: keeping the text and adding the start anchor
+            // if (elem.childNodes && elem.childNodes.length > 0) {
+            //   elem.insertBefore(spanElement, elem.firstChild);
+            // } else {
+            //   elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+            // }
           } else {
-            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+            if (elem.childNodes && elem.childNodes.length > 0) {
+              elem.insertBefore(spanElement, elem.firstChild);
+            } else {
+              elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+            }
           }
         }
       }
@@ -91,6 +89,17 @@ angular.module('evtviewer.dataHandler')
       }
     });
   };
+
+  parser.getAppContentRange = function(startId, endId, dom) {
+    var fromAnchor = dom.querySelector('[*|id="' + startId + '"]');
+    var toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+    var range = document.createRange();
+    try {
+      range.setStart(fromAnchor, 0);
+      range.setEnd(toAnchor, 0);
+    } catch (e) { console.log(e); }
+    return range;
+  }
 
   parser.getInternalDepaAppSpanElement = function(entry, wit, doc) {
     var position = 'end';
