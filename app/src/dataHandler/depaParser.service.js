@@ -21,32 +21,39 @@ angular.module('evtviewer.dataHandler')
     startEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
           : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
-        spanElement.setAttribute('data-position', position);
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
-        spanElement.setAttribute('data-method', method);
+        rdgElement.setAttribute('data-method', method);
+        var spanElement = document.createElement('span');
+        spanElement.setAttribute('data-app-id', entry.id);
+        spanElement.setAttribute('class', 'depaAnchor');
+        spanElement.setAttribute('id', 'depaAnchor-' + entry.id);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
-        if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
+        if (endId === startId && (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText')) {
           var index = elem.childNodes.length - 1;
           while (index >= 0) {
             elem.removeChild(elem.childNodes[index]);
             index--;           
           }
-          spanElement.setAttribute('data-position', 'end');
-          elem.appendChild(spanElement);
-        } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
-          // TODO-POLO: substitute text?
-          // var domString = dom.outerHTML,
-          //     subst = parser.findReadingString(domString, endId, startId, entry);
-          // var newString = dom.outerHTML.replace(subst, spanElement.outerHTML);
-          // dom = xmlParser.parse(newString).getElementsByTagName('body')[0];
-          spanElement.setAttribute('data-overlap', true);
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.firstChild);
-          } else {
-            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
-          }
+          elem.appendChild(rdgElement);
+        } else if (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText') {
+          // OPTION 1: substituting the text
+          var fromAnchor = dom.querySelector('[*|id="' + startId + '"]');
+          var toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+          var range = document.createRange();
+          try {
+            range.setStart(fromAnchor, 0);
+            range.setEnd(toAnchor, 0);
+          } catch (e) { console.log(e); }
+          range.deleteContents();
+          range.insertNode(rdgElement);
+          // OPTION 2: keeping the text and adding the start anchor
+          // if (elem.childNodes && elem.childNodes.length > 0) {
+          //   elem.insertBefore(spanElement, elem.firstChild);
+          // } else {
+          //   elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+          // }
         } else {
           if (elem.childNodes && elem.childNodes.length > 0) {
             elem.insertBefore(spanElement, elem.firstChild);
@@ -60,26 +67,27 @@ angular.module('evtviewer.dataHandler')
     endEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
           : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
-        spanElement.setAttribute('data-position', position);
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
-        spanElement.setAttribute('data-method', method);
+        rdgElement.setAttribute('data-method', method);
+        rdgElement.setAttribute('data-overlap', true);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
-        if (spanElement.firstChild && spanElement.firstChild.className === 'emptyText') {
+        if (rdgElement.firstChild && rdgElement.firstChild.className === 'emptyText') {
           if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.lastChild);
+            elem.insertBefore(rdgElement, elem.lastChild);
           } else {
-            elem.parentNode.insertBefore(spanElement, elem);
-          }
-        } else if (endId !== startId) {
-          spanElement.setAttribute('data-overlap', true);
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.lastChild);
-          } else {
-            elem.parentNode.insertBefore(spanElement, elem);
+            elem.parentNode.insertBefore(rdgElement, elem);
           }
         }
+        // OPTION 2: adding the end anchor
+        // else if (endId !== startId) {
+          // if (elem.childNodes && elem.childNodes.length > 0) {
+          //   elem.insertBefore(rdgElement, elem.lastChild);
+          // } else {
+          //   elem.parentNode.insertBefore(rdgElement, elem);
+          // }
+        // }
       }
     });
   };
