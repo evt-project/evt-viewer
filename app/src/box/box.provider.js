@@ -883,7 +883,8 @@ angular.module('evtviewer.box')
 				case 'witness':
 					var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness + '-' + vm.witPage : '';
 					var docId = parsedData.getWitness(vm.witness).corresp;
-					var currentDiv = evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0];
+					var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
+					: parsedData.getDocument(Object.keys(evtInterface.getState('currentDivs'))[0]).divs[0];
 					topMenuList.selectors.push({
 						id: 'witnesses_' + currentId,
 						type: 'witness',
@@ -955,11 +956,6 @@ angular.module('evtviewer.box')
 								if (currentDoc !== undefined) {
 									try {
 										var promises = [];
-										var wit = parsedData.getWitness(vm.witness);
-										if (wit.corresp) {
-											currentDoc = parsedData.getDocument(wit.corresp);
-											currentDocId = wit.corresp;
-										}
 										promises.push(evtCriticalParser.parseWitnessText(currentDoc.content, currentDocId, vm.witness).promise);
 										$q.all(promises).then(function() {
 											scope.vm.content = parsedData.getWitnessText(vm.witness, currentDocId) || noTextAvailableMsg;
@@ -1299,9 +1295,8 @@ angular.module('evtviewer.box')
 		box.alignScrollToDiv = function(divId) {
 			for (var i in collection) {
 				if (collection[i].scrollToDiv) {
-					var docId;
-					if (collection[i].type === 'witness') {
-						docId = parsedData.getWitness(collection[i].witness).corresp;
+					var docId = collection[i].type === 'witness' ? parsedData.getWitness(collection[i].witness).corresp : undefined;
+					if (docId) {
 						var corresp = parsedData.getDivs()._indexes.corresp[divId], div;
 						corresp.map(id => {
 							if (parsedData.getDiv(id).doc === docId) {
