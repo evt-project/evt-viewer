@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.reading')
 
-.directive('evtReading', function(evtReading, parsedData, evtInterface) {
+.directive('evtReading', function(evtReading, parsedData, evtInterface, evtCriticalApparatusEntry) {
     return {
         restrict: 'E',
         scope: {
@@ -35,8 +35,6 @@ angular.module('evtviewer.reading')
             variance    : '@',
             scopeWit    : '@',
             type        : '@',
-            position    : '@',
-            method      : '@',
             overlap     : '@'
         },
         transclude: true,
@@ -50,6 +48,25 @@ angular.module('evtviewer.reading')
             var currentReading = evtReading.build(scope.appId, scope);
             if (scope.inlineApparatus && evtInterface.getState('currentAppEntry') === scope.appId) {
                 currentReading.openApparatus();
+            }
+            if (scope.vm.overlap && scope.vm.range) {
+                scope.vm.range.forEach(el => {
+                    el.onmouseover = () => {
+                        evtReading.mouseOverByAppId(currentReading.appId);
+                        if (scope.currentViewMode !== 'collation') {
+                            evtCriticalApparatusEntry.mouseOverByAppId(currentReading.appId);
+                        }
+                    };
+                    el.onmouseout = () => {
+                        evtReading.mouseOutAll(currentReading.appId);
+                        if (scope.currentViewMode !== 'collation') {
+                            evtCriticalApparatusEntry.mouseOutAll(currentReading.appId);
+                        }
+                    };
+                    el.onclick = () => {
+                        currentReading.toggleSelectAppEntries();
+                    }
+                });
             }
             // Garbage collection
             scope.$on('$destroy', function() {

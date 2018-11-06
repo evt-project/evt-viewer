@@ -23,7 +23,7 @@ angular.module('evtviewer.reading')
 
     var currentAppEntry = '';
 
-    this.$get = function(config, parsedData) {
+    this.$get = function(config, parsedData, Utils) {
         var reading    = {},
             collection = {},
             list       = [],
@@ -105,6 +105,20 @@ angular.module('evtviewer.reading')
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
+            var selected = entryId === reading.getCurrentAppEntry(),
+                range;
+            if (scope.overlap) {
+                var wit = scope.scopeWit || '';
+                var fromAnchor = document.querySelector('[id="depaAnchor-' + entryId + '-' + wit + '"]'),
+                    toAnchor = document.querySelector('evt-reading[data-app-id="' + entryId + '"][data-scope-wit="' + wit + '"]');
+                range = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+                range.forEach(el => { 
+                    if (selected && el.className.indexOf('selected') < 0) {
+                        el.className += ' selected';
+                    }
+                });
+            }
+
             scopeHelper = {
                 // expansion
                 uid              : currentId,
@@ -115,9 +129,8 @@ angular.module('evtviewer.reading')
                 readingType      : scope.readingType,
                 variance         : scope.variance,
                 type             : scope.type,
-                position         : scope.position,
-                method           : scope.method,
                 overlap          : scope.overlap,
+                range            : range,
                 attributes       : attributes,
                 exponent         : exponent,
                 showExponent     : showExponent,
@@ -130,7 +143,7 @@ angular.module('evtviewer.reading')
                     _subContentOpened : 'criticalNote',
                     inline            : scope.inlineApparatus
                 },
-                selected         : entryId === reading.getCurrentAppEntry(),
+                selected         : selected,
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
                 defaults         : angular.copy(defaults)
             };
