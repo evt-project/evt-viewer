@@ -736,7 +736,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-    parser.getEntryWitnessReadingText = function(entry, wit, position) {
+    parser.getEntryWitnessReadingText = function(entry, wit, isDepa) {
 		var spanElement;
 		if (entry) {
 			var entryReadings = entry._indexes.readings._indexes;
@@ -805,9 +805,9 @@ angular.module('evtviewer.dataHandler')
 				//     }
 				// }
 
-			} else if (entry.lemma  && (!position || entry.lemma.indexOf('depa-lem') < 0)) {
+			} else if (entry.lemma  && (!isDepa || entry.lemma.indexOf('depa-lem') < 0)) {
 				spanElement = parser.getEntryLemmaText(entry, wit);
-			} else if (!position) {
+			} else if (!isDepa) {
 				var noRdgElement = document.createElement('span');
 				noRdgElement.className = 'empty';
 				noRdgElement.setAttribute('title', 'noRdg');
@@ -1074,7 +1074,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-    parser.getEntryLemmaText = function(entry, wit, position) {
+    parser.getEntryLemmaText = function(entry, wit, isDepa) {
 		var spanElement,
 			errorElement;
 
@@ -1089,7 +1089,7 @@ angular.module('evtviewer.dataHandler')
 				var lacunaElement = document.createElement('span');
 				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
 				spanElement.appendChild(lacunaElement);
-			} else if (entry.lemma && (!position || entry.lemma.indexOf('depa-lem') < 0)) {
+			} else if (entry.lemma && (!isDepa || entry.lemma.indexOf('depa-lem') < 0)) {
 				spanElement.setAttribute('data-reading-id', entry.lemma);
 				var lemmaContent = entry.content[entry.lemma].content;
 				for (var i in lemmaContent) {
@@ -1118,11 +1118,11 @@ angular.module('evtviewer.dataHandler')
 				}
 			} else {
 				if (config.preferredWitness !== '') {
-					spanElement = parser.getEntryWitnessReadingText(entry, config.preferredWitness, position);
+					spanElement = parser.getEntryWitnessReadingText(entry, config.preferredWitness, isDepa);
 					if (spanElement !== null) {
 						spanElement.className = 'autoLemma';
 					}
-				} else if (!position) {
+				} else if (!isDepa) {
 					errorElement = document.createElement('span');
 					errorElement.className = 'encodingError';
 					errorElement.setAttribute('title', 'General error');

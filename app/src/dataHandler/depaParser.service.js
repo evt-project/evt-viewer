@@ -1,88 +1,109 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, evtParser, xmlParser, config) {
+.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config) {
   var parser = {};
+
+  var apparatusEntryDef = '<app>',
+		lemmaDef = '<lem>',
+		readingDef = lemmaDef + ', <rdg>',
+		readingGroupDef = '<rdgGrp>',
+		quoteDef = config.quoteDef,
+		analogueDef = config.analogueDef,
+	  skipFromBeingParsed = '<evt-reading>,<pb>,' + apparatusEntryDef + ',' + readingDef + ',' + readingGroupDef + ',' + quoteDef + ',' + analogueDef + ',<evt-quote>,<evt-analogue>,<evt-version-reading>';
 
   parser.setElementInText = function(elem, wit, dom) {
     if (!parsedData.getCriticalEntries()._indexes.depa) {
       return;
     }
-    var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
-        depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
-        elemId = elem.getAttribute('xml:id'),
-        entry, position,
-        ids = Object.values(depaStartIds).concat(Object.values(depaEndIds));
-    if (ids.indexOf(elemId) < 0) {
+    var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
+        depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
+        elemId = elem.getAttribute('xml:id');
+    if (Object.values(depaStartIds).indexOf(elemId) < 0) {
       return;
     }
-    var startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
-    var endEntryIds = Object.keys(depaEndIds).filter(key => { return depaEndIds[key] === elemId }) || [];
-    position = 'start';
+    var entry,
+        startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
     startEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
-        spanElement.setAttribute('data-position', position);
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, true)
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, true);
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
-        spanElement.setAttribute('data-method', method);
-        var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
-        if (endId === startId && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
-          var index = elem.childNodes.length - 1;
-          while (index >= 0) {
-            elem.removeChild(elem.childNodes[index]);
-            index--;           
-          }
-          spanElement.setAttribute('data-position', 'end');
-          elem.appendChild(spanElement);
-        } else if (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText') {
-          // TODO-POLO: substitute text?
-          // var domString = dom.outerHTML,
-          //     subst = parser.findReadingString(domString, endId, startId, entry);
-          // var newString = dom.outerHTML.replace(subst, spanElement.outerHTML);
-          // dom = xmlParser.parse(newString).getElementsByTagName('body')[0];
-          spanElement.setAttribute('data-overlap', true);
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.firstChild);
+        rdgElement.setAttribute('data-method', method);
+
+        var startId = depaStartIds[entryId], endId = depaEndIds[entryId],
+            fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
+            toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+        // If the text needs to be substitute by the entry
+        if (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText') {
+          if (startId === endId) {
+            index = fromAnchor.childNodes.length - 1;
+            while (index >= 0) {
+              fromAnchor.removeChild(fromAnchor.childNodes[index]);
+              index--;
+            }
           } else {
-            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+            var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+            elems.forEach(el => {
+              el.parentNode.removeChild(el);
+            });
+          }
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(rdgElement, elem.firstChild);
+          } else {
+            elem.parentNode.insertBefore(rdgElement, elem.nextSibling);
           }
         } else {
+          // The text doesn't have to be substituted, but an anchor must be inserted
+          var anchorElement = document.createElement('span');
+          anchorElement.setAttribute('data-app-id', entry.id);
+          anchorElement.setAttribute('class', 'depaAnchor');
+          anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
           if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.firstChild);
+            elem.insertBefore(anchorElement, elem.firstChild);
           } else {
-            elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+            elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
           }
-        }
-      }
-    });
-    position = 'end';
-    endEntryIds.forEach(entryId => {
-      entry = parsedData.getCriticalEntryById(entryId);
-      if (entry) {
-        var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
-        spanElement.setAttribute('data-position', position);
-        var method = parsedData.getEncodingDetail('variantEncodingMethod');
-        spanElement.setAttribute('data-method', method);
-        var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
-        if (spanElement.firstChild && spanElement.firstChild.className === 'emptyText') {
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.lastChild);
-          } else {
-            elem.parentNode.insertBefore(spanElement, elem);
+          rdgElement.setAttribute('data-overlap', true);
+          if (endId === startId) {
+            fromAnchor = fromAnchor.firstChild;
+            toAnchor = toAnchor.lastChild;
           }
-        } else if (endId !== startId) {
-          spanElement.setAttribute('data-overlap', true);
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(spanElement, elem.lastChild);
+          var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+          elems.forEach(el => {
+            var newNode;
+            if (el.nodeType === 3) {
+              newNode = document.createElement('span');
+              newNode.setAttribute('class', 'depaContent');
+              newNode.textContent = el.textContent;
+            } else if (!el.className || el.className.indexOf('depaContent') < 0) {
+              var newNode = evtParser.parseXMLElement(dom, el, { skip: skipFromBeingParsed });
+              newNode.className += ' depaContent';
+            }
+            if (newNode) {
+              el.parentNode.replaceChild(newNode, el);
+            }
+          });
+          if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
+            toAnchor.appendChild(rdgElement);
           } else {
-            elem.parentNode.insertBefore(spanElement, elem);
+            toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
           }
         }
       }
     });
   };
+
+  parser.getAppContentRange = function(startId, endId, dom) {
+    var fromAnchor = dom.querySelector('[*|id="' + startId + '"]');
+    var toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+    var range = document.createRange();
+    try {
+      range.setStart(fromAnchor, 0);
+      range.setEnd(toAnchor, 0);
+    } catch (e) { console.log(e); }
+    return range;
+  }
 
   parser.getInternalDepaAppSpanElement = function(entry, wit, doc) {
     var position = 'end';
