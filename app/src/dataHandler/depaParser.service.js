@@ -51,42 +51,31 @@ angular.module('evtviewer.dataHandler')
           anchorElement.setAttribute('data-app-id', entry.id);
           anchorElement.setAttribute('class', 'depaAnchor');
           anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
-          var depaContent = document.createTextNode('*DEPA ANCHOR*');
-          anchorElement.appendChild(depaContent);
           if (elem.childNodes && elem.childNodes.length > 0) {
             elem.insertBefore(anchorElement, elem.firstChild);
           } else {
             elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
           }
           rdgElement.setAttribute('data-overlap', true);
-          try {
-            var range = document.createRange();
-            range.setStart(fromAnchor, 0);
-            range.setEnd(toAnchor, 0);
-            if (range.collapsed) {
-              range.selectNode(fromAnchor);
-            }
-            var span = document.createElement('span');
-            span.setAttribute('class', 'depaContent');
-            span.setAttribute('id', 'depaContent-' + entry.id + '-' + wit);
-            range.surroundContents(span);
-          } catch(e) {
-            var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
-            elems.forEach(el => {
-              var newNode;
-              if (el.nodeType === 3) {
-                newNode = document.createElement('span');
-                newNode.setAttribute('class', 'depaContent');
-                newNode.textContent = el.textContent;
-              } else if (!el.className || el.className.indexOf('depaContent') < 0) {
-                var newNode = el.cloneNode(true);
-                newNode.className += ' depaContent';
-              }
-              if (newNode) {
-                el.parentNode.replaceChild(newNode, el);
-              }
-            });
+          if (endId === startId) {
+            fromAnchor = fromAnchor.firstChild;
+            toAnchor = toAnchor.lastChild;
           }
+          var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+          elems.forEach(el => {
+            var newNode;
+            if (el.nodeType === 3) {
+              newNode = document.createElement('span');
+              newNode.setAttribute('class', 'depaContent');
+              newNode.textContent = el.textContent;
+            } else if (!el.className || el.className.indexOf('depaContent') < 0) {
+              var newNode = el.cloneNode(true);
+              newNode.className += ' depaContent';
+            }
+            if (newNode) {
+              el.parentNode.replaceChild(newNode, el);
+            }
+          });
           if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
             toAnchor.appendChild(rdgElement);
           } else {

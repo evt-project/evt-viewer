@@ -10,9 +10,6 @@ $reading-background-selected: rgb(208, 220, 255);
     &.selected, &.over {
         background: $reading-background-hover;
     }
-    &:hover {
-        background: $reading-background-hover;
-    }
 }
 
 evt-reading + evt-reading:not(.autoLemma) .reading {

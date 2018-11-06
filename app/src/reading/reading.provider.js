@@ -23,7 +23,7 @@ angular.module('evtviewer.reading')
 
     var currentAppEntry = '';
 
-    this.$get = function(config, parsedData) {
+    this.$get = function(config, parsedData, Utils) {
         var reading    = {},
             collection = {},
             list       = [],
@@ -105,6 +105,14 @@ angular.module('evtviewer.reading')
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
+            var range;
+            if (scope.overlap) {
+                var wit = scope.scopeWit || '';
+                var fromAnchor = document.querySelector('[id="depaAnchor-' + entryId + '-' + wit + '"]'),
+                    toAnchor = document.querySelector('evt-reading[data-app-id="' + entryId + '"][data-scope-wit="' + wit + '"]');
+                range = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+            }
+
             scopeHelper = {
                 // expansion
                 uid              : currentId,
@@ -116,6 +124,7 @@ angular.module('evtviewer.reading')
                 variance         : scope.variance,
                 type             : scope.type,
                 overlap          : scope.overlap,
+                range            : range,
                 attributes       : attributes,
                 exponent         : exponent,
                 showExponent     : showExponent,

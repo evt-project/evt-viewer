@@ -27,6 +27,16 @@ angular.module('evtviewer.reading')
     // 
     // Control function
     // 
+
+    var changeRangeStatus = function(property, className) {
+        vm.range.forEach(el => {
+            if (property) {
+                el.className += ' ' + className;
+            } else if (!property) {
+                el.className = el.className.replace(' ' + className, '');
+            }
+        });
+    }
     /**
      * @ngdoc method
      * @name evtviewer.reading.controller:ReadingCtrl#mouseOver
@@ -38,7 +48,7 @@ angular.module('evtviewer.reading')
      */
     this.mouseOver = function() {
         vm.over = true;
-        if (vm.overlap ) {
+        if (vm.overlap && vm.range) {
             changeRangeStatus(vm.over, 'over');
         }
     };
@@ -53,7 +63,7 @@ angular.module('evtviewer.reading')
      */
     this.mouseOut = function() {
         vm.over = false;
-        if (vm.overlap ) {
+        if (vm.overlap && vm.range) {
             changeRangeStatus(vm.over, 'over');
         }
     };
@@ -68,23 +78,11 @@ angular.module('evtviewer.reading')
      */
     this.setSelected = function() {
         vm.selected = true;
-        if (vm.overlap ) {
+        if (vm.overlap && vm.range) {
             changeRangeStatus(vm.selected, 'selected');
         }
     };
 
-    var changeRangeStatus = function(property, className) {
-        // var content = vm.range.cloneContents();
-        // vm.range.deleteContents();
-        // content.childNodes.forEach(child => {
-        //     if (!property && child.className.indexOf(className) >= 0) {
-        //         child.className = child.className.replace(' ' + className, '');
-        //     } else if (property) {
-        //         child.className += ' ' + className;
-        //     }
-        // });
-        // vm.range.insertNode(content);
-    }
     /**
      * @ngdoc method
      * @name evtviewer.reading.controller:ReadingCtrl#unselect
@@ -96,7 +94,7 @@ angular.module('evtviewer.reading')
      */
     this.unselect = function() {
         vm.selected = false;
-        if (vm.overlap ) {
+        if (vm.overlap && vm.range) {
             changeRangeStatus(vm.selected, 'selected');
         }
     };
