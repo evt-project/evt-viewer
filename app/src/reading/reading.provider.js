@@ -105,12 +105,18 @@ angular.module('evtviewer.reading')
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
-            var range;
+            var selected = entryId === reading.getCurrentAppEntry(),
+                range;
             if (scope.overlap) {
                 var wit = scope.scopeWit || '';
                 var fromAnchor = document.querySelector('[id="depaAnchor-' + entryId + '-' + wit + '"]'),
                     toAnchor = document.querySelector('evt-reading[data-app-id="' + entryId + '"][data-scope-wit="' + wit + '"]');
                 range = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+                range.forEach(el => { 
+                    if (selected && el.className.indexOf('selected') < 0) {
+                        el.className += ' selected';
+                    }
+                });
             }
 
             scopeHelper = {
@@ -137,7 +143,7 @@ angular.module('evtviewer.reading')
                     _subContentOpened : 'criticalNote',
                     inline            : scope.inlineApparatus
                 },
-                selected         : entryId === reading.getCurrentAppEntry(),
+                selected         : selected,
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
                 defaults         : angular.copy(defaults)
             };
