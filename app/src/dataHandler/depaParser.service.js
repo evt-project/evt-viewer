@@ -7,99 +7,90 @@ angular.module('evtviewer.dataHandler')
     if (!parsedData.getCriticalEntries()._indexes.depa) {
       return;
     }
-    var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
-        depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
-        elemId = elem.getAttribute('xml:id'),
-        ids = Object.values(depaStartIds).concat(Object.values(depaEndIds));
-    if (ids.indexOf(elemId) < 0) {
+    var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
+        depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
+        elemId = elem.getAttribute('xml:id');
+    if (Object.values(depaStartIds).indexOf(elemId) < 0) {
       return;
     }
     var entry,
-        startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [],
-        endEntryIds = Object.keys(depaEndIds).filter(key => { return depaEndIds[key] === elemId }) || [];
+        startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
     startEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, 'start')
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, 'start');
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, true)
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, true);
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
         rdgElement.setAttribute('data-method', method);
-        var anchorElement = document.createElement('span');
-        anchorElement.setAttribute('data-app-id', entry.id);
-        anchorElement.setAttribute('class', 'depaAnchor');
-        anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
-        var depaContent = document.createTextNode('*DEPA ANCHOR*');
-        anchorElement.appendChild(depaContent);
-        var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
-        // The apparatus entry has no text for the current doc
-        if (endId === startId && (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText')) {
-          var index = elem.childNodes.length - 1;
-          while (index >= 0) {
-            elem.removeChild(elem.childNodes[index]);
-            index--;           
-          }
-          elem.appendChild(rdgElement);
-        } else {
-          // The apparatus entry refers to multiple nodes
-          var fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
-              toAnchor = dom.querySelector('[*|id="' + endId + '"]');
-          if (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText') {
+
+        var startId = depaStartIds[entryId], endId = depaEndIds[entryId],
+            fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
+            toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+        // If the text needs to be substitute by the entry
+        if (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText') {
+          if (startId === endId) {
+            index = fromAnchor.childNodes.length - 1;
+            while (index >= 0) {
+              fromAnchor.removeChild(fromAnchor.childNodes[index]);
+              index--;
+            }
+          } else {
             var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
             elems.forEach(el => {
               el.parentNode.removeChild(el);
             });
-            if (elem.childNodes && elem.childNodes.length > 0) {
-              elem.insertBefore(rdgElement, elem.firstChild);
-            } else {
-              elem.parentNode.insertBefore(rdgElement, elem.nextSibling);
-            }
+          }
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(rdgElement, elem.firstChild);
           } else {
+            elem.parentNode.insertBefore(rdgElement, elem.nextSibling);
+          }
+        } else {
+          // The text doesn't have to be substituted, but an anchor must be inserted
+          var anchorElement = document.createElement('span');
+          anchorElement.setAttribute('data-app-id', entry.id);
+          anchorElement.setAttribute('class', 'depaAnchor');
+          anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
+          var depaContent = document.createTextNode('*DEPA ANCHOR*');
+          anchorElement.appendChild(depaContent);
+          if (elem.childNodes && elem.childNodes.length > 0) {
+            elem.insertBefore(anchorElement, elem.firstChild);
+          } else {
+            elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
+          }
+          rdgElement.setAttribute('data-overlap', true);
+          try {
+            var range = document.createRange();
+            range.setStart(fromAnchor, 0);
+            range.setEnd(toAnchor, 0);
+            if (range.collapsed) {
+              range.selectNode(fromAnchor);
+            }
             var span = document.createElement('span');
             span.setAttribute('class', 'depaContent');
             span.setAttribute('id', 'depaContent-' + entry.id + '-' + wit);
-            var range = document.createRange();
-            try {
-              range.setStart(fromAnchor, 0);
-              range.setEnd(toAnchor, 0);
-              if (range.collapsed) {
-                range.selectNode(fromAnchor);
+            range.surroundContents(span);
+          } catch(e) {
+            var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+            elems.forEach(el => {
+              var newNode;
+              if (el.nodeType === 3) {
+                newNode = document.createElement('span');
+                newNode.setAttribute('class', 'depaContent');
+                newNode.textContent = el.textContent;
+              } else if (!el.className || el.className.indexOf('depaContent') < 0) {
+                var newNode = el.cloneNode(true);
+                newNode.className += ' depaContent';
               }
-              range.surroundContents(span);
-            } catch(e) {
-              var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
-              elems.forEach(el => {
-                if (el.type === 3) {
-                  var span = document.createElement('span');
-                  span.setAttribute('class', 'depaContent');
-                  span.textContent = el.textContent;
-                  el.parentNode.replaceChild(span, el);
-                } else if (el.className && el.className.indexOf('depaContent') < 1) {
-                  el.className += ' depaContent';
-                }
-              });
-            }            
-            if (elem.childNodes && elem.childNodes.length > 0) {
-              elem.insertBefore(anchorElement, elem.firstChild);
-            } else {
-              elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
-            }
+              if (newNode) {
+                el.parentNode.replaceChild(newNode, el);
+              }
+            });
           }
-        }
-      }
-    });
-    endEntryIds.forEach(entryId => {
-      entry = parsedData.getCriticalEntryById(entryId);
-      if (entry) {
-        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, 'end')
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, 'end');
-        var method = parsedData.getEncodingDetail('variantEncodingMethod');
-        rdgElement.setAttribute('data-method', method);
-        rdgElement.setAttribute('data-overlap', true);
-        if (rdgElement.firstChild && rdgElement.firstChild.className === 'emptyText') {
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(rdgElement, elem.lastChild);
+          if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
+            toAnchor.appendChild(rdgElement);
           } else {
-            elem.parentNode.insertBefore(rdgElement, elem);
+            toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
           }
         }
       }
