@@ -1,7 +1,15 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils) {
+.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config) {
   var parser = {};
+
+  var apparatusEntryDef = '<app>',
+		lemmaDef = '<lem>',
+		readingDef = lemmaDef + ', <rdg>',
+		readingGroupDef = '<rdgGrp>',
+		quoteDef = config.quoteDef,
+		analogueDef = config.analogueDef,
+	  skipFromBeingParsed = '<evt-reading>,<pb>,' + apparatusEntryDef + ',' + readingDef + ',' + readingGroupDef + ',' + quoteDef + ',' + analogueDef + ',<evt-quote>,<evt-analogue>,<evt-version-reading>';
 
   parser.setElementInText = function(elem, wit, dom) {
     if (!parsedData.getCriticalEntries()._indexes.depa) {
@@ -69,7 +77,7 @@ angular.module('evtviewer.dataHandler')
               newNode.setAttribute('class', 'depaContent');
               newNode.textContent = el.textContent;
             } else if (!el.className || el.className.indexOf('depaContent') < 0) {
-              var newNode = el.cloneNode(true);
+              var newNode = evtParser.parseXMLElement(dom, el, { skip: skipFromBeingParsed });
               newNode.className += ' depaContent';
             }
             if (newNode) {
