@@ -7,15 +7,12 @@ $reading-background-selected: rgb(208, 220, 255);
 
 .depaContent {
     background: $reading-background-default;
-    &.selected {
+    &.selected, &.over {
         background: $reading-background-hover;
     }
-    &.over {
+    &:hover {
         background: $reading-background-hover;
     }
-}
-.depaContent:hover {
-    background: $reading-background-hover;
 }
 
 evt-reading + evt-reading:not(.autoLemma) .reading {

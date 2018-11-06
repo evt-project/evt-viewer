@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, evtParser, xmlParser, config) {
+.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils) {
   var parser = {};
 
   parser.setElementInText = function(elem, wit, dom) {
@@ -10,29 +10,29 @@ angular.module('evtviewer.dataHandler')
     var depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
         depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
         elemId = elem.getAttribute('xml:id'),
-        entry, position,
         ids = Object.values(depaStartIds).concat(Object.values(depaEndIds));
     if (ids.indexOf(elemId) < 0) {
       return;
     }
-    var startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
-    var endEntryIds = Object.keys(depaEndIds).filter(key => { return depaEndIds[key] === elemId }) || [];
-    position = 'start';
+    var entry,
+        startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [],
+        endEntryIds = Object.keys(depaEndIds).filter(key => { return depaEndIds[key] === elemId }) || [];
     startEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, 'start')
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, 'start');
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
         rdgElement.setAttribute('data-method', method);
-        var spanElement = document.createElement('span');
-        spanElement.setAttribute('data-app-id', entry.id);
-        spanElement.setAttribute('class', 'depaAnchor');
-        spanElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
+        var anchorElement = document.createElement('span');
+        anchorElement.setAttribute('data-app-id', entry.id);
+        anchorElement.setAttribute('class', 'depaAnchor');
+        anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
         var depaContent = document.createTextNode('*DEPA ANCHOR*');
-        spanElement.appendChild(depaContent);
+        anchorElement.appendChild(depaContent);
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
-        if (endId === startId && (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText')) {
+        // The apparatus entry has no text for the current doc
+        if (endId === startId && (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText')) {
           var index = elem.childNodes.length - 1;
           while (index >= 0) {
             elem.removeChild(elem.childNodes[index]);
@@ -40,37 +40,61 @@ angular.module('evtviewer.dataHandler')
           }
           elem.appendChild(rdgElement);
         } else {
-          if (!rdgElement.firstChild || rdgElement.firstChild.className !== 'emptyText') {
-            var range = parser.getAppContentRange(startId, endId, dom);
-            // OPTION 1: substituting the text
-            range.deleteContents();
-            range.insertNode(rdgElement);
-            // OPTION 2: keeping the text and adding the start anchor
-            // if (elem.childNodes && elem.childNodes.length > 0) {
-            //   elem.insertBefore(spanElement, elem.firstChild);
-            // } else {
-            //   elem.parentNode.insertBefore(spanElement, elem.nextSibling);
-            // }
-          } else {
+          // The apparatus entry refers to multiple nodes
+          var fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
+              toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+          if (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText') {
+            var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+            elems.forEach(el => {
+              el.parentNode.removeChild(el);
+            });
             if (elem.childNodes && elem.childNodes.length > 0) {
-              elem.insertBefore(spanElement, elem.firstChild);
+              elem.insertBefore(rdgElement, elem.firstChild);
             } else {
-              elem.parentNode.insertBefore(spanElement, elem.nextSibling);
+              elem.parentNode.insertBefore(rdgElement, elem.nextSibling);
+            }
+          } else {
+            var span = document.createElement('span');
+            span.setAttribute('class', 'depaContent');
+            span.setAttribute('id', 'depaContent-' + entry.id + '-' + wit);
+            var range = document.createRange();
+            try {
+              range.setStart(fromAnchor, 0);
+              range.setEnd(toAnchor, 0);
+              if (range.collapsed) {
+                range.selectNode(fromAnchor);
+              }
+              range.surroundContents(span);
+            } catch(e) {
+              var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+              elems.forEach(el => {
+                if (el.type === 3) {
+                  var span = document.createElement('span');
+                  span.setAttribute('class', 'depaContent');
+                  span.textContent = el.textContent;
+                  el.parentNode.replaceChild(span, el);
+                } else if (el.className && el.className.indexOf('depaContent') < 1) {
+                  el.className += ' depaContent';
+                }
+              });
+            }            
+            if (elem.childNodes && elem.childNodes.length > 0) {
+              elem.insertBefore(anchorElement, elem.firstChild);
+            } else {
+              elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
             }
           }
         }
       }
     });
-    position = 'end';
     endEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, 'end')
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, 'end');
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
         rdgElement.setAttribute('data-method', method);
         rdgElement.setAttribute('data-overlap', true);
-        var startId = depaStartIds[entryId], endId = depaEndIds[entryId];
         if (rdgElement.firstChild && rdgElement.firstChild.className === 'emptyText') {
           if (elem.childNodes && elem.childNodes.length > 0) {
             elem.insertBefore(rdgElement, elem.lastChild);
@@ -78,14 +102,6 @@ angular.module('evtviewer.dataHandler')
             elem.parentNode.insertBefore(rdgElement, elem);
           }
         }
-        // OPTION 2: adding the end anchor
-        // else if (endId !== startId) {
-          // if (elem.childNodes && elem.childNodes.length > 0) {
-          //   elem.insertBefore(rdgElement, elem.lastChild);
-          // } else {
-          //   elem.parentNode.insertBefore(rdgElement, elem);
-          // }
-        // }
       }
     });
   };

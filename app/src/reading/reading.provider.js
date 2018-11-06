@@ -105,31 +105,6 @@ angular.module('evtviewer.reading')
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
-            var range;
-            if (scope.overlap) {
-                var wit = scope.scopeWit || '';
-                var fromAnchor = document.querySelector('[id="depaAnchor-' + scope.appId + '-' + wit + '"]');
-                var toAnchor = document.querySelector('[data-app-id="' + entryId + '"][data-scope-wit="' + wit + '"]');
-                range = document.createRange();
-                try {
-                    range.setStart(fromAnchor, 0);
-                    range.setEnd(toAnchor.previousSibling || toAnchor.parentNode, 0);
-                } catch(e) { console.log(e) };
-                var content = range.cloneContents();
-                range.deleteContents();
-                content.childNodes.forEach(child => {
-                    if (child.nodeType === 3) {
-                        var span = document.createElement('span');
-                        span.setAttribute('class', 'depaContent');
-                        span.textContent = child.textContent;
-                        child.parentNode.replaceChild(span, child);
-                    } else {
-                        child.className += ' depaContent';
-                    }
-                });
-                range.insertNode(content);
-            }
-
             scopeHelper = {
                 // expansion
                 uid              : currentId,
@@ -141,7 +116,6 @@ angular.module('evtviewer.reading')
                 variance         : scope.variance,
                 type             : scope.type,
                 overlap          : scope.overlap,
-                range            : range,
                 attributes       : attributes,
                 exponent         : exponent,
                 showExponent     : showExponent,
