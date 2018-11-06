@@ -189,6 +189,9 @@ angular.module('evtviewer.dataHandler')
                                                 }
                                             }
                                         }
+                                        if (child.hasAttribute('corresp')) {
+                                            el.corresp = child.getAttribute('corresp').replace('#', '');
+                                        }
                                         // Add the witness to the witMap of the versionEntries collection (@author -> CM)
                                         if (ver !== undefined) {
                                             parsedData.addVersionWitness(ver, el.id);
