@@ -11,7 +11,7 @@ angular.module('evtviewer.dataHandler')
 		analogueDef = config.analogueDef,
 	  skipFromBeingParsed = '<evt-reading>,<pb>,' + apparatusEntryDef + ',' + readingDef + ',' + readingGroupDef + ',' + quoteDef + ',' + analogueDef + ',<evt-quote>,<evt-analogue>,<evt-version-reading>';
 
-  parser.setElementInText = function(elem, wit, dom) {
+  parser.setAppInText = function(elem, wit, dom) {
     if (!parsedData.getCriticalEntries()._indexes.depa) {
       return;
     }
@@ -34,6 +34,11 @@ angular.module('evtviewer.dataHandler')
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId],
             fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
             toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+        if (toAnchor.parentNode === fromAnchor) {
+          var from = document.createTextNode('');
+          fromAnchor.parentNode.insertBefore(from, fromAnchor);
+          fromAnchor = from;
+        }
         // If the text needs to be substitute by the entry
         if (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText') {
           if (startId === endId) {
@@ -94,42 +99,71 @@ angular.module('evtviewer.dataHandler')
     });
   };
 
-  parser.getAppContentRange = function(startId, endId, dom) {
-    var fromAnchor = dom.querySelector('[*|id="' + startId + '"]');
-    var toAnchor = dom.querySelector('[*|id="' + endId + '"]');
-    var range = document.createRange();
-    try {
-      range.setStart(fromAnchor, 0);
-      range.setEnd(toAnchor, 0);
-    } catch (e) { console.log(e); }
-    return range;
-  }
-
-  parser.getInternalDepaAppSpanElement = function(entry, wit, doc) {
-    var position = 'end';
-    var spanElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, position)
-    : evtCriticalElementsParser.getEntryLemmaText(entry, wit, position);
-    spanElement.setAttribute('data-method', 'double-end-point');
-    var startElem = spanElement.cloneNode(true);
-    spanElement.setAttribute('data-position', 'end');
-    startElem.setAttribute('data-position', 'start');
-    var from = entry.attributes['from'].replace('#', ''),
-        to = entry.attributes['to'] ? entry.attributes['to'].replace('#', '') : null,
-        startNode = doc.querySelector('[*|id=' + from + ']');
-    if (from === to && (!spanElement.firstChild || spanElement.firstChild.className !== 'emptyText')) {
-      var index = startNode.childNodes.length - 1;
-      while (index >= 0) {
-        startNode.removeChild(startNode.childNodes[index]);
-        index--;           
-      }
-      startNode.appendChild(spanElement);
-      return;
-    } else if (startNode && startNode.childNodes && startNode.childNodes.length > 0) {
-      startNode.insertBefore(startElem, startNode.firstChild);
+  parser.setInternalAppInText = function(app, entry, wit, doc) {
+    var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, true)
+    : evtCriticalElementsParser.getEntryLemmaText(entry, wit, true);
+    
+    var startId = entry.attributes['from'].replace('#', ''),
+        endId = entry.attributes['to'] ? entry.attributes['to'].replace('#', '') : null,
+        fromAnchor, toAnchor;
+    
+    if (endId) {
+      toAnchor = doc.querySelector('[*|id="' + endId + '"]');
     } else {
-      startNode.parentNode.insertBefore(startElem, startNode.nextSibling);
+      toAnchor = app.previousSibling;
     }
-    return spanElement;
+    if (startId) {
+      fromAnchor = doc.querySelector('[*|id="' + startId + '"]');
+      if (toAnchor.parentNode === fromAnchor) {
+        var from = document.createTextNode('');
+        fromAnchor.parentNode.insertBefore(from, fromAnchor);
+        fromAnchor = from;
+      }
+    }
+    var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+    if (rdgElement.firstChild && rdgElement.firstChild.className === 'emptyText') {
+      rdgElement.setAttribute('data-overlap', true);
+      var anchorElement = document.createElement('span');
+          anchorElement.setAttribute('data-app-id', entry.id);
+          anchorElement.setAttribute('class', 'depaAnchor');
+          anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
+      if (fromAnchor.childNodes && fromAnchor.childNodes.length > 0) {
+        fromAnchor.insertBefore(anchorElement, fromAnchor.firstChild);
+      } else {
+        fromAnchor.parentNode.insertBefore(anchorElement, fromAnchor.nextSibling);
+      }
+      elems.forEach(el => {
+        var newNode;
+        if (el.nodeType === 3) {
+          newNode = document.createElement('span');
+          newNode.setAttribute('class', 'depaContent');
+          newNode.textContent = el.textContent;
+        } else if (!el.className || el.className.indexOf('depaContent') < 0) {
+          var newNode = evtParser.parseXMLElement(doc, el, { skip: skipFromBeingParsed });
+          newNode.className += ' depaContent';
+        }
+        if (newNode) {
+          el.parentNode.replaceChild(newNode, el);
+        }
+      });
+      if (toAnchor === app) {
+        toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
+      } else if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
+        toAnchor.appendChild(rdgElement);
+      } else {
+        toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
+      }
+    } else {
+      elems.forEach(el => {
+        el.parentNode.removeChild(el);
+      });
+      if (fromAnchor.childNodes && fromAnchor.childNodes.length > 0) {
+        fromAnchor.insertBefore(rdgElement, fromAnchor.firstChild);
+      } else {
+        fromAnchor.parentNode.insertBefore(rdgElement, fromAnchor.nextSibling);
+      }
+    }
+    return rdgElement;
   };
 
   parser.getLemma = function(entry, doc) {

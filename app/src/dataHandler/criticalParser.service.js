@@ -241,7 +241,7 @@ angular.module('evtviewer.dataHandler')
 			anchorsIds.map(elemId => {
 				var el = dom.querySelector('[*|id=' + elemId + ']');
 				if (el) {
-					evtDepaParser.setElementInText(el, wit, dom);
+					evtDepaParser.setAppInText(el, wit, dom);
 				}
 			});
 		}
@@ -325,7 +325,7 @@ angular.module('evtviewer.dataHandler')
 			switch(wit) {
 				case '': {
 					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
-						spanElement = evtDepaParser.getInternalDepaAppSpanElement(entry, wit, doc);
+						evtDepaParser.setInternalAppInText(appNode, entry, wit, doc);
 					} else if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);
 					} else {
@@ -348,6 +348,8 @@ angular.module('evtviewer.dataHandler')
 		// Replace app node with new text element
 		if (spanElement) {
 			appNode.parentNode.replaceChild(spanElement, appNode);
+		} else if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+			appNode.parentNode.removeChild(appNode);
 		}
 	};
 
