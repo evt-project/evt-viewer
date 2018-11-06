@@ -76,23 +76,25 @@ angular.module('evtviewer.core')
 
 	defaultEdition: 'critical',
 
-	showEditionLevelSelector: true,
+	showEditionLevelSelector: false,
 	availableEditionLevel: [{
 		value: 'critical',
 		label: 'Critical',
 		title: 'Critical edition',
-		visible: false
+		visible: true
 	}, {
 		value: 'diplomatic',
 		label: 'Diplomatic',
 		title: 'Diplomatic edition',
-		visible: true
+		visible: false
 	}, {
 		value: 'interpretative',
 		label: 'Interpretative',
 		title: 'Interpretative edition',
-		visible: true
+		visible: false
 	}],
+	
+	mainDocId: 'tr',
 
 	showDocumentSelector: true,
 
