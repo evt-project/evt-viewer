@@ -235,7 +235,7 @@ angular.module('evtviewer.dataHandler')
 							if (element.attributes && element.getAttribute('xml:id')) {
 								divId = element.getAttribute('xml:id');
 							} else {
-								divId = arser.xpath(element).substr(1);
+								divId = parser.xpath(element).substr(1);
 							}
 							newElement.setAttribute('id', divId);
 						}
@@ -901,7 +901,6 @@ angular.module('evtviewer.dataHandler')
 				};
 				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
 				if (docFront && docFront[0]) {
-					parser.parseDivs(docFront[0], newDoc.value, 'front');
 					var frontElem = docFront[0].cloneNode(true),
 						biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
 					if (biblRefs) {
@@ -939,6 +938,10 @@ angular.module('evtviewer.dataHandler')
 					var back = element.querySelector('back');
 					if (back) {
 						parser.parseDivs(back, newDoc.value, 'back');
+					}
+					var front = element.querySelector('front');
+					if (front) {
+						parser.parseDivs(front, newDoc.value, 'front');
 					}
 				} else {
 					parser.parseDivs(element, newDoc.value, 'body');
@@ -988,6 +991,8 @@ angular.module('evtviewer.dataHandler')
 		newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
 		if (newDiv.type) {
 			newDiv.title += newDiv.type.substr(0,1).toUpperCase() + newDiv.type.substr(1);
+		} else {
+			newDiv.title += 'Div';
 		}
 		if (newDiv.subtype) {
 			newDiv.title += ' - ' + newDiv.subtype.substr(0,1).toUpperCase() + newDiv.subtype.substr(1);

@@ -282,7 +282,7 @@ angular.module('evtviewer.select')
 										evtInterface.removeWitness(wit);
 									}
 								});
-								evtBox.alignScrollToDiv(newOption.value)
+								evtBox.alignScrollToDiv(newOption.value);
 							}
 							evtInterface.updateUrl();
 						}
@@ -290,8 +290,11 @@ angular.module('evtviewer.select')
 					formatOptionList = function(optionList, formattedList) {
 						var allDivs = parsedData.getDivs();
 						optionList.forEach((divId) => {
+							if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
+								allDivs[divId].type = 'groupTitle';
+							}
 							formattedList.push(allDivs[divId]);
-							if (parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+							if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
 								formatOptionList(allDivs[divId].subDivs, formattedList);
 							}
 						});
