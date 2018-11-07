@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements) {
+.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -132,9 +132,13 @@ angular.module('evtviewer.select')
                 }, true); 
             }
 
-            if (scope.type === 'div') {
+            if (scope.type === 'div' || scope.type === 'witnessDiv') {
                 scope.$watch(function() {
                     var currentDoc = evtInterface.getState('currentDoc');
+                    if (scope.type === 'witnessDiv') {
+                        var witness = scope.$parent.vm.witness;
+                        currentDoc = parsedData.getWitness(witness).corresp;
+                    }
                     return evtInterface.getState('currentDivs')[currentDoc];
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {

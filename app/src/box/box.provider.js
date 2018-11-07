@@ -945,7 +945,7 @@ angular.module('evtviewer.box')
 
 						if (vm.witness !== undefined) {
 							// Main content
-							var currentDocId = evtInterface.getState('currentDoc'),
+							var currentDocId = parsedData.getWitness(vm.witness).corresp || evtInterface.getState('currentDoc'),
 								newContent = parsedData.getWitnessText(vm.witness, currentDocId) || undefined;
 							if (newContent === undefined) {
 								var documents = parsedData.getDocuments(),

@@ -262,7 +262,9 @@ angular.module('evtviewer.select')
 							if (currentView === 'collation' && newOption.doc === config.mainDocId) {
 								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
 								var witDocs = corresp.map(divId => {
-									return parsedData.getDiv(divId).doc;
+									var doc = parsedData.getDiv(divId).doc;
+									evtInterface.updateDiv(doc, divId);
+									return doc;
 								});
 								var witsList = parsedData.getWitnessesList();
 								var wits = witDocs.map(doc => {
