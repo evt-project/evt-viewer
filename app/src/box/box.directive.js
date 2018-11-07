@@ -527,12 +527,11 @@ angular.module('evtviewer.box')
 
                 // TODO-POLO: aggiorna capitolo in tutti i box, se 
             if (currentBox.type === 'text' || currentBox.type === 'witness') {
-                var docId, all = false;
+                var docId, all = evtInterface.getState('currentViewMode') === 'collation' && config.mainDocId;
                 if (currentBox.type === 'witness') {
-                    docId = parsedData.getWitness(scope.witness).corresp;
+                    docId = parsedData.getWitness(scope.witness).corresp || parsedData.getDocuments()._indexes[0];
                 } else {
                     docId = config.mainDocId || parsedData.getDocuments()._indexes[0];
-                    all = evtInterface.getState('currentViewMode') === 'collation';
                 }
                 scope.$watch(function() {
                     return evtInterface.getState('currentDivs')[docId];

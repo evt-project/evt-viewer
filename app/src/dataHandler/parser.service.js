@@ -991,6 +991,8 @@ angular.module('evtviewer.dataHandler')
 		newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
 		if (newDiv.type) {
 			newDiv.title += newDiv.type.substr(0,1).toUpperCase() + newDiv.type.substr(1);
+		} else {
+			newDiv.title += 'Div';
 		}
 		if (newDiv.subtype) {
 			newDiv.title += ' - ' + newDiv.subtype.substr(0,1).toUpperCase() + newDiv.subtype.substr(1);
