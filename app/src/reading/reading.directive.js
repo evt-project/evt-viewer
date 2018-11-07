@@ -52,19 +52,13 @@ angular.module('evtviewer.reading')
             if (scope.vm.overlap && scope.vm.range) {
                 scope.vm.range.forEach(el => {
                     el.onmouseover = () => {
-                        evtReading.mouseOverByAppId(currentReading.appId);
-                        if (scope.currentViewMode !== 'collation') {
-                            evtCriticalApparatusEntry.mouseOverByAppId(currentReading.appId);
-                        }
+                        currentReading.toggleOverAppEntries();
                     };
                     el.onmouseout = () => {
-                        evtReading.mouseOutAll(currentReading.appId);
-                        if (scope.currentViewMode !== 'collation') {
-                            evtCriticalApparatusEntry.mouseOutAll(currentReading.appId);
-                        }
+                        currentReading.toggleOverAppEntries();
                     };
                     el.onclick = () => {
-                        currentReading.toggleSelectAppEntries();
+                        currentReading.callbackClick();
                     }
                 });
             }

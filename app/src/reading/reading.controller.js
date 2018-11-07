@@ -159,7 +159,9 @@ angular.module('evtviewer.reading')
      * @param {event} $event mouseover/mouseout event
      */
     this.toggleOverAppEntries = function($event) {
-        $event.stopPropagation();
+        if ($event) {
+            $event.stopPropagation();
+        }
         if ( !vm.hidden ) {
             if ( vm.over === false ) {
                 evtReading.mouseOverByAppId(vm.appId);
@@ -238,7 +240,9 @@ angular.module('evtviewer.reading')
      * @param {event} $event click event
      */
     this.callbackClick = function($event) {
-        $event.stopPropagation();
+        if ($event) {
+            $event.stopPropagation();
+        }
         if (vm.over) {
             vm.toggleSelectAppEntries($event);
             if (!vm.isSelect() || (vm.apparatus.inline && !vm.apparatus.opened)){
