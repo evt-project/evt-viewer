@@ -334,7 +334,9 @@ angular.module('evtviewer.dataHandler')
 				} break;
 				default: {
 					// If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
-					if (entry.type === 'recensioApp') {
+					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+						evtDepaParser.setInternalAppInText(appNode, entry, wit, doc);
+					} else if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
 						// Otherwise it is transformed in a evt-reading directive 
 					} else {
