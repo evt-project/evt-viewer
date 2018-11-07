@@ -26,8 +26,8 @@ angular.module('evtviewer.dataHandler')
     startEntryIds.forEach(entryId => {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
-        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, true)
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit, true);
+        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit)
+          : evtCriticalElementsParser.getEntryLemmaText(entry, wit);
         var method = parsedData.getEncodingDetail('variantEncodingMethod');
         rdgElement.setAttribute('data-method', method);
 
@@ -40,7 +40,7 @@ angular.module('evtviewer.dataHandler')
           fromAnchor = from;
         }
         // If the text needs to be substitute by the entry
-        if (rdgElement.firstChild && rdgElement.firstChild.className !== 'emptyText') {
+        if (!rdgElement.firstChild || (!rdgElement.firstChild.className || rdgElement.firstChild.className.indexOf('empty') < 0)) {
           if (startId === endId) {
             index = fromAnchor.childNodes.length - 1;
             while (index >= 0) {
@@ -100,8 +100,8 @@ angular.module('evtviewer.dataHandler')
   };
 
   parser.setInternalAppInText = function(app, entry, wit, doc) {
-    var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit, true)
-    : evtCriticalElementsParser.getEntryLemmaText(entry, wit, true);
+    var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit)
+    : evtCriticalElementsParser.getEntryLemmaText(entry, wit);
     
     var startId = entry.attributes['from'].replace('#', ''),
         endId = entry.attributes['to'] ? entry.attributes['to'].replace('#', '') : null,
@@ -110,7 +110,7 @@ angular.module('evtviewer.dataHandler')
     if (endId) {
       toAnchor = doc.querySelector('[*|id="' + endId + '"]');
     } else {
-      toAnchor = app.previousSibling;
+      toAnchor = app;
     }
     if (startId) {
       fromAnchor = doc.querySelector('[*|id="' + startId + '"]');
@@ -121,7 +121,17 @@ angular.module('evtviewer.dataHandler')
       }
     }
     var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
-    if (rdgElement.firstChild && rdgElement.firstChild.className === 'emptyText') {
+    if (!rdgElement.firstChild || (!rdgElement.firstChild.className || rdgElement.firstChild.className.indexOf('empty') < 0)) {
+      elems.forEach(el => {
+        var text = document.createTextNode('');
+        el.parentNode.replaceChild(text, el);
+      });
+      if (fromAnchor.childNodes && fromAnchor.childNodes.length > 0) {
+        fromAnchor.insertBefore(rdgElement, fromAnchor.firstChild);
+      } else {
+        fromAnchor.parentNode.insertBefore(rdgElement, fromAnchor.nextSibling);
+      }      
+    } else {
       rdgElement.setAttribute('data-overlap', true);
       var anchorElement = document.createElement('span');
           anchorElement.setAttribute('data-app-id', entry.id);
@@ -152,15 +162,6 @@ angular.module('evtviewer.dataHandler')
         toAnchor.appendChild(rdgElement);
       } else {
         toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
-      }
-    } else {
-      elems.forEach(el => {
-        el.parentNode.removeChild(el);
-      });
-      if (fromAnchor.childNodes && fromAnchor.childNodes.length > 0) {
-        fromAnchor.insertBefore(rdgElement, fromAnchor.firstChild);
-      } else {
-        fromAnchor.parentNode.insertBefore(rdgElement, fromAnchor.nextSibling);
       }
     }
     return rdgElement;
