@@ -739,16 +739,7 @@ angular.module('evtviewer.dataHandler')
     parser.getEntryWitnessReadingText = function(entry, wit) {
 		var spanElement;
 		if (entry) {
-			var entryReadings = entry._indexes.readings._indexes;
 			spanElement = document.createElement('evt-reading');
-
-			if (entry.lemma !== '' && !entry._lacuna && entryReadings.length === 1) {
-				var entryWits = entry.content[entryReadings[0]].wits || [];
-				if (entryWits.length === parsedData.getWitnessesList().length) {
-					spanElement = document.createElement('span');
-					spanElement.className = entry.content[entryReadings[0]]._xmlTagName;
-				}
-			}
 			spanElement.setAttribute('data-app-id', entry.id);
 			/* 
 			    IMPORTANT: data-app-id should be the first attribute added to the element
