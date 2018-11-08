@@ -135,8 +135,8 @@ angular.module('evtviewer.select')
             if (scope.type === 'div' || scope.type === 'witnessDiv') {
                 scope.$watch(function() {
                     var currentDoc = evtInterface.getState('currentDoc');
-                    if (scope.type === 'witnessDiv') {
-                        var witness = scope.$parent.vm.witness;
+                    var witness = scope.$parent.vm.witness;
+                    if (scope.type === 'witnessDiv' && witness) {
                         currentDoc = parsedData.getWitness(witness).corresp;
                     }
                     return evtInterface.getState('currentDivs')[currentDoc];
