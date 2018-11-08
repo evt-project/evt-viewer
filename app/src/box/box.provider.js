@@ -663,11 +663,18 @@ angular.module('evtviewer.box')
 							initValue: evtInterface.getState('currentPage')
 						});
 					} else {
-						topMenuList.selectors.push({
-							id: 'div_' + currentId,
-							type: 'div',
-							initValue: evtInterface.getState('currentDiv')
-						});
+						if (parsedData.getDivs().length > 0) {
+							var docId = evtInterface.getState('currentDocument');
+							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
+							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs[0];
+							if (currentDiv) {
+								topMenuList.selectors.push({
+									id: 'div_' + currentId,
+									type: 'witnessDiv',
+									initValue: currentDiv
+								});
+							}
+						}
 						topMenuList.buttons.push({
 							title: 'BUTTONS.WITNESSES_LIST',
 							label: '',
@@ -882,9 +889,6 @@ angular.module('evtviewer.box')
 					break;
 				case 'witness':
 					var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness + '-' + vm.witPage : '';
-					var docId = parsedData.getWitness(vm.witness).corresp;
-					var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
-					: parsedData.getDocument(Object.keys(evtInterface.getState('currentDivs'))[0]).divs[0];
 					topMenuList.selectors.push({
 						id: 'witnesses_' + currentId,
 						type: 'witness',
@@ -893,12 +897,19 @@ angular.module('evtviewer.box')
 						id: 'page_' + currentId,
 						type: 'witness-page',
 						initValue: witPageId
-					}, {
-						id: 'div_' + currentId,
-						type: 'witnessDiv',
-						initValue: currentDiv
 					});
-
+					if (parsedData.getDivs().length > 0) {
+						var docId = parsedData.getWitness(vm.witness).corresp;
+						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
+						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs[0];
+						if (currentDiv) {
+							topMenuList.selectors.push({
+								id: 'div_' + currentId,
+								type: 'witnessDiv',
+								initValue: currentDiv
+							});
+						}
+					}
 					topMenuList.buttons.push({
 						title: 'BUTTONS.INFO_ABOUT_TEXT',
 						label: 'BUTTONS.INFO',
@@ -945,7 +956,7 @@ angular.module('evtviewer.box')
 
 						if (vm.witness !== undefined) {
 							// Main content
-							var currentDocId = evtInterface.getState('currentDoc'),
+							var currentDocId = parsedData.getWitness(vm.witness).corresp || evtInterface.getState('currentDoc'),
 								newContent = parsedData.getWitnessText(vm.witness, currentDocId) || undefined;
 							if (newContent === undefined) {
 								var documents = parsedData.getDocuments(),

@@ -202,6 +202,7 @@ angular.module('evtviewer.select')
                     option = vm.formatOption(parsedData.getDocument(optionValue));
                     break;
                 case 'div':
+                case 'witnessDiv':
                     option = vm.formatOption(parsedData.getDiv(optionValue));
                     break;
                 case 'edition': 
