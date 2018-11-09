@@ -20,7 +20,7 @@ angular.module('evtviewer.reference')
 
 .directive('ref', function(evtRef) {
     return { //rivedere dipendenze
-        restrict: 'C',
+        restrict: 'E, C',
         scope: {
             target: '@',
             type: '@'
@@ -36,7 +36,7 @@ angular.module('evtviewer.reference')
             data-tooltip="{{vm.tooltip}}"
             data-parent-ref="{{vm.parentRef}}">
             <span class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>
-        <evt-popover>
+        </evt-popover>
         </span>`,
         link: function(scope) {
             // Initialize reading
