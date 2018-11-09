@@ -69,8 +69,8 @@ angular.module('evtviewer.search')
             });
          };
    
-         vm.scrollToCurrentResult = function() {
-            var promise = goToAnchor();
+         vm.scrollToCurrentResult = function(result) {
+            var promise = goToAnchor(result);
             promise.then(
                function() {
                   vm.scrollTo(vm.currentLineId);
@@ -89,6 +89,7 @@ angular.module('evtviewer.search')
             window.event.preventDefault();
             eventElement = window.event.currentTarget;
             $(eventElement).addClass('selected');
+            if (result) {}
             vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
             goToAnchorPage();
             $(eventElement).removeClass('selected');

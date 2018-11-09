@@ -270,6 +270,12 @@ angular.module('evtviewer.dataHandler')
                interpretativeResults.forEach(function (result) {
                   currentResults.push(result);
                });
+            },
+               'critical': function () {
+               var results = searchResults.interpretative || searchResults.diplomatic;
+               results.forEach(function (result) {
+                  currentResults.push(result);
+               });
             }
             };
          
@@ -288,6 +294,9 @@ angular.module('evtviewer.dataHandler')
                },
                'interpretative': function () {
                   return parsedData[lineId].content.interpretative;
+               },
+               'critical': function () {
+                  return parsedData[lineId].content.diplomatic || parsedData[lineId].content;
                }
             };
          return edition[currentEdition]();
