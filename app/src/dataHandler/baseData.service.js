@@ -192,11 +192,11 @@ angular.module('evtviewer.dataHandler')
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
 
-        // Parse documents
-        evtParser.parseDocuments(docElements);
-
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);
+        
+        // Parse documents
+        evtParser.parseDocuments(docElements);
 
         // Parse the Sources Apparatus entries (@author: CM)
         if (config.quoteDef !== '') {

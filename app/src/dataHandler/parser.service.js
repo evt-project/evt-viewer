@@ -892,13 +892,34 @@ angular.module('evtviewer.dataHandler')
 			function(element) {
 				var newDoc = {
 					value: element.getAttribute('xml:id') || parser.xpath(doc).substr(1) || 'doc_' + (parsedData.getDocuments()._indexes.length + 1),
-					label: element.getAttribute('n') || 'Doc ' + (parsedData.getDocuments()._indexes.length + 1),
-					title: element.getAttribute('n') || 'Document ' + (parsedData.getDocuments()._indexes.length + 1),
+					label: '',
+					title: '',
 					content: element,
 					front: undefined,
 					pages: [], // Pages will be added later
 					divs: []
 				};
+				if (element.getAttribute('type')) {
+					newDoc.title += element.getAttribute('type').substr(0,1).toUpperCase() + element.getAttribute('type').substr(1);
+				} else {
+					newDoc.title += 'Doc';
+				}
+				if (element.getAttribute('subtype')) {
+					newDoc.title += ' - ' + element.getAttribute('subtype').substr(0,1).toUpperCase() + element.getAttribute('subtype').substr(1);
+				}
+				newDoc.title += ' ';
+				var wit, corresp = parsedData.getWitnessesList().find(witId => {
+					wit = witId;
+					return parsedData.getWitness(witId).corresp === newDoc.value;
+				});
+				if (corresp) {
+					newDoc.title += wit;
+				} else if (element.getAttribute('n')) {
+					newDoc.title += element.getAttribute('n');
+				} else {
+					newDoc.title += parsedData.getDocuments()._indexes.length + 1;
+				}
+				newDoc.label = newDoc.title;
 				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
 				if (docFront && docFront[0]) {
 					var frontElem = docFront[0].cloneNode(true),
