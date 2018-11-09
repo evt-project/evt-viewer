@@ -129,9 +129,27 @@ angular.module('evtviewer.namedEntity')
             if (occurrence.pageId) {
                 evtInterface.updateState('currentPage', occurrence.pageId);
             } else if (occurrence.divId) {
-                evtInterface.updateState('currentDiv', occurrence.divId);
+                evtInterface.updateDiv(occurrence.docId, occurrence.divId);
             }
-            evtInterface.updateState('currentDoc', occurrence.docId);
+            var wit, corresp = parsedData.getWitnessesList().find(witId => {
+                wit = witId
+                return parsedData.getWitness(witId).corresp === occurrence.docId;
+            });
+            if (config.mainDocId && corresp) {
+                var view = evtInterface.getState('currentViewMode');
+                if (view !== 'collation') {
+                    evtInterface.updateState('currentViewMode', 'collation');
+                }
+                var currentWits = evtInterface.getState('currentWits');
+                var index = currentWits.indexOf(wit);
+                if (index === -1) {
+                    evtInterface.addWitnessAtIndex(wit, 0);
+                } else if (index > 0) {
+                    evtInterface.switchWitnesses(currentWits[0], wit);
+                }
+            } else {
+                evtInterface.updateState('currentDoc', occurrence.docId);
+            }
             evtInterface.updateUrl();
             if (evtInterface.getState('secondaryContent') === 'entitiesList') {
                 evtInterface.updateState('secondaryContent', '');

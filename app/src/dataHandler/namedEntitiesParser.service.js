@@ -696,7 +696,8 @@ angular.module('evtviewer.dataHandler')
 			switch(type) {
 				case 'person': entityTagName = 'persName'; break;
 				case 'place': entityTagName = 'placeName'; break;
-				default: entityTagName = 'orgName';
+				case 'org': entityTagName = 'orgName'; break;
+				default: entityTagName = 'term';
 			}
 			if (docObj.pages.length > 0) {
 				occurLocations = NEparser.getOccurencesInPages(docObj, refId, entityTagName);
