@@ -101,7 +101,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 				criticalEntry = parsedData.getCriticalEntryById(id);
 			}
 
-			if (criticalEntry !== undefined) {
+			if (criticalEntry) {
 				content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
 				witnessesGroups = content.witnessesGroups;
 				if (content.criticalNote !== '') {

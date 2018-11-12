@@ -738,7 +738,6 @@ angular.module('evtviewer.dataHandler')
      */
     parser.getEntryWitnessReadingText = function(entry, wit) {
 		var spanElement;
-		console.log(entry)
 		if (entry) {
 			spanElement = document.createElement('evt-reading');
 			spanElement.setAttribute('data-app-id', entry.id);
@@ -773,8 +772,11 @@ angular.module('evtviewer.dataHandler')
 							} else if (readingContent[i].type === 'genericElement') {
 								var genericElement = getGenericElementText(readingContent[i], wit);
 								spanElement.appendChild(genericElement);
-							} else {
+							} else if (readingContent[i].nodeType === 1) {
 								spanElement.appendChild(readingContent[i]);
+							} else if (readingContent[i].nodeType === 3) {
+								var text = document.createTextNode(readingContent[i]);
+								spanElement.appendChild(text);
 							}
 						}
 					}

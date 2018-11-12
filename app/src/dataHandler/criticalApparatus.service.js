@@ -272,7 +272,7 @@ angular.module('evtviewer.dataHandler')
 					reading.content[i].type === 'analogue') {
 					readingText += apparatus.getCriticalElementContent(reading.content[i], scopeWit);
 				} else {
-					readingText += reading.content[i].outerHTML;
+					readingText += reading.content[i].outerHTML || apparatus.getText(reading.content[i]);
 				}
 			}
 		}
@@ -428,7 +428,7 @@ angular.module('evtviewer.dataHandler')
 					reading.content[i].type === 'analogue') {
 					readingText += apparatus.getCriticalElementContent(reading.content[i], scopeWit);
 				} else {
-					readingText += reading.content[i].outerHTML;
+					readingText += reading.content[i].outerHTML || apparatus.getText(reading.content[i]);
 				}
 			}
 		}
@@ -517,11 +517,11 @@ angular.module('evtviewer.dataHandler')
 	apparatus.getText = function(entry) {
 		var result = '';
 		var content = entry.content;
-		if (content !== undefined) {
+		if (content) {
 			for (var i = 0; i < content.length; i++) {
 				if (typeof content[i] === 'string') {
 					result += '<span class="textNode">' + content[i] + '</span>';
-				} else if (content[i].content !== undefined) {
+				} else if (content[i].content) {
 					result += apparatus.getText(content[i]);
 				}
 			}
@@ -545,9 +545,8 @@ angular.module('evtviewer.dataHandler')
      */
 	var getAppText = function(entry, scopeWit) {
 		var result = '';
-		if (scopeWit === '' ||
-			scopeWit === undefined ||
-			entry._indexes.witMap[scopeWit] === undefined) {
+		if (!scopeWit ||
+			!entry._indexes.witMap[scopeWit]) {
 			var lem = entry.lemma;
 			result += apparatus.getText(entry.content[lem]);
 		} else {
