@@ -1817,11 +1817,16 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	var findExp = function(number, exponent) {
-		if (number < 26) {
+		if (number <= 26) {
 			return String.fromCharCode(number + 96) + exponent;
 		} else {
-			var mod = number % 26, div = Math.floor(number / 26);
-			return findExp(div, exponent) + String.fromCharCode(mod + 97) + exponent;
+			var mod = number % 26, div = Math.floor(number / 26), exp;
+			if (mod === 0) {
+				exp = findExp(div - 1, exponent) + 'z' + exponent;
+			} else {
+				exp = findExp(div, exponent) + String.fromCharCode(mod + 96) + exponent;
+			}
+			return exp;
 		}
 	}
 
