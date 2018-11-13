@@ -109,6 +109,14 @@ angular.module('evtviewer.dataHandler')
          return node.getAttribute('xml:id') || 'page_' + node.getAttribute('n');
       };
       
+      XmlDoc.prototype.getCurrentDiv = function(node) {
+         return node.getAttribute('n');
+      };
+      
+      XmlDoc.prototype.getCurrentDivId = function(node, divId) {
+         return node.getAttribute('xml:id') || 'div_' + (node.getAttribute('n') || divId);
+      };
+      
       XmlDoc.prototype.getCurrentPageNodes = function (xmlDocDom, nodes) {
          var currentPageNodes = [];
    

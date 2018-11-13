@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils',
-      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils) {
+   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config',
+      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config) {
          var vm = this;
          
          vm.currentEdition = evtInterface.getState('currentEdition');
@@ -69,15 +69,15 @@ angular.module('evtviewer.search')
             });
          };
    
-         vm.scrollToCurrentResult = function(result) {
-            var promise = goToAnchor(result);
+         vm.scrollToCurrentResult = function(result, index) {
+            var promise = goToAnchor(result, index);
             promise.then(
                function() {
                   vm.scrollTo(vm.currentLineId);
                });
          }
          
-         function goToAnchor() {
+         function goToAnchor(result, index) {
             var deferred = $q.defer(),
                eventElement,
                mainBoxId = $scope.$parent.vm.parentBoxId;
@@ -89,9 +89,14 @@ angular.module('evtviewer.search')
             window.event.preventDefault();
             eventElement = window.event.currentTarget;
             $(eventElement).addClass('selected');
-            if (result) {}
-            vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
-            goToAnchorPage();
+            if (result && index) {
+                  vm.currentLineId = result.metadata.lbId[index];
+            }
+            if (parsedData.getPages().length > 0) {
+                  goToAnchorPage();
+            } else if (parsedData.getDivs().length > 0) {
+                  goToDiv(result, index);
+            }
             $(eventElement).removeClass('selected');
    
             setTimeout(function() {
@@ -108,6 +113,29 @@ angular.module('evtviewer.search')
             evtInterface.updateState('currentPage', anchorPageId);
             evtInterface.updateState('currentDoc', anchorDocId);
             evtInterface.updateUrl();
+         }
+
+         function goToDiv(result, index) {
+               var targetDoc = result.metadata.xmlDocId[index],
+                   targetDiv = result.metadata.divId[index];
+               if (config.mainDocId && targetDoc !== config.mainDocId) {
+                  var wit = parsedData.getWitnessesList().find(witId => {
+                        return parsedData.getWitness(witId).corresp === targetDoc;
+                  });
+                  if (wit) {
+                        var wits = evtInterface.getState('currentWits'),
+                            witIndex = wits.indexOf(wit);
+                        if (witIndex >= 0) {
+                              evtInterface.removeWitness(wit);
+                        }
+                        evtInterface.addWitnessAtIndex(wit, witIndex + 1);
+                  }
+                  if (evtInterface.getState('currentViewMode') !== 'collation') {
+                        evtInterface.updateState('currentViewMode', 'collation');
+                  }
+            }
+               evtInterface.updateDiv(targetDoc, targetDiv);
+               evtInterface.updateUrl();
          }
          
          vm.scrollTo = function(id) {
