@@ -69,26 +69,10 @@ angular.module('evtviewer.dataHandler')
           } else {
             elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
           }
-          rdgElement.setAttribute('data-overlap', true);
           if (endId === startId) {
             fromAnchor = fromAnchor.firstChild;
             toAnchor = toAnchor.lastChild;
           }
-          var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
-          elems.forEach(el => {
-            var newNode;
-            if (el.nodeType === 3) {
-              newNode = document.createElement('span');
-              newNode.setAttribute('class', 'depaContent');
-              newNode.textContent = el.textContent;
-            } else if (!el.className || el.className.indexOf('depaContent') < 0) {
-              var newNode = evtParser.parseXMLElement(dom, el, { skip: skipFromBeingParsed });
-              newNode.className += ' depaContent';
-            }
-            if (newNode) {
-              el.parentNode.replaceChild(newNode, el);
-            }
-          });
           if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
             toAnchor.appendChild(rdgElement);
           } else {
