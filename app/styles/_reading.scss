@@ -15,12 +15,6 @@ $reading-background-selected: rgb(208, 220, 255);
     }
 }
 
-evt-reading + evt-reading:not(.autoLemma) .reading {
-    &:not(.hidden), &:not(.invisible) {
-        margin-left: 2px;
-    }
-}
-
 .filterNotActive {
     .autoLemma {
         .reading:not(.blurred) {
@@ -36,34 +30,19 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
     }
 }
 
+span.emptyText {
+    padding: 0 !important;
+}
+
 .reading {
-    .reading__text {
-        .w {
-            &:after {
-                content: " ";
-            }
-            &:last-of-type:after {
-                content: "";
-            }
-        }
-    }
     &:not(.hidden) {
         padding: 0;
         cursor: pointer;
-
-        .reading__text {
-            background: $reading-background-default;
-        }
+        background: $reading-background-default;
 
         &.over,
         &.over .reading {
-            .reading__text, .reading .reading__text {
-                background: $reading-background-hover;
-
-            }
-        }
-        .empty {
-            padding: 0 5px;
+            background: $reading-background-hover;
         }
 
 
@@ -75,23 +54,18 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
         }
 
         &.expansed:not(.invisible) {
-            > .reading__text {
-                // background: $reading-background-selected;
-                border-top: 1px solid rgb(125, 125, 125);
-
-                &:first-child {
-                    border-left: 1px solid rgb(125, 125, 125);
-                }
-
-                &:last-child {
-                    border-right: 1px solid rgb(125, 125, 125);
-                }
-
-                border-bottom: 5px solid $critical-apparatus-entry-background-color;
-                position: relative;
-                z-index: 9;
-                margin-bottom: -1px;
+            // background: $reading-background-selected;
+            border-top: 1px solid rgb(125, 125, 125);
+            &:first-child {
+                border-left: 1px solid rgb(125, 125, 125);
             }
+            &:last-child {
+                border-left: 1px solid rgb(125, 125, 125);
+            }
+            border-bottom: 5px solid $critical-apparatus-entry-background-color;
+            position: relative;
+            z-index: 9;
+                margin-bottom: -1px;
 
             &.blurred, &.blurred * {
                 color: transparent !important;
@@ -101,9 +75,7 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
         }
 
         &.selected {
-            .reading__text {
-                background: $reading-background-hover;
-            }
+            background: $reading-background-hover;
         }
 
         .reading_exponent{
@@ -111,7 +83,7 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
             position: relative;
             background-color: transparent;
             padding: 0;
-            font-size: 0.7em;
+            font-size: 0.8em;
             color: $base-color-dark;
             left: -4px;
             vertical-align: super;
@@ -120,11 +92,9 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
     }
 
     &.invisible {
-        > .reading__text {
-            background: transparent !important;
-            border: none;
-            cursor: default;
-        }
+        background: transparent !important;
+        border: none;
+        cursor: default;
 
         > .reading__apparatus {
             display: none !important;
@@ -136,24 +106,18 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
         .reading {
             &:not(.hidden) {
                 &:not(.blurred) {
-                    .reading__text {
-                        border: 1px solid #999;
-                    }
+                    border: 1px solid #999;
 
-                    > .reading__text:hover {
+                    &:hover {
                         border-color: #000;
                     }
 
                     &.expansed {
-                        > .reading__text {
-                            border-bottom: 5px solid $critical-apparatus-entry-background-color;
-                        }
+                        border-bottom: 5px solid $critical-apparatus-entry-background-color;
                     }
 
                     &.selected {
-                        .reading__text {
-                            background: $reading-background-hover;
-                        }
+                        background: $reading-background-hover;
                     }
                 }
             }
