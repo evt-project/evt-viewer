@@ -1,7 +1,8 @@
 <span 
     class="reading"
     ng-mouseover="vm.toggleOverAppEntries($event);"
-    ng-mouseout="vm.toggleOverAppEntries($event)"
+    ng-mouseout="vm.toggleOverAppEntries($event);"
+    ng-click="vm.callbackClick($event);"
     ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
                 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
                 'over'     : vm.over, 
@@ -11,7 +12,6 @@
         class="reading__text"
         style="{{vm.backgroundColor()}}"
         title="{{vm.attributes | translate}}"
-        ng-click="vm.callbackClick($event);"
         ng-transclude></span>
     
     <span
