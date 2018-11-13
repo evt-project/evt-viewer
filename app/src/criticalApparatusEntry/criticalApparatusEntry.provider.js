@@ -116,18 +116,11 @@ angular.module('evtviewer.criticalApparatusEntry')
 						label: 'CRITICAL_APPARATUS.TABS.ORTHOGRAPHIC_VARIANTS'
 					};
 				}
-				// if (content.attributes._keys.length > 0 ){
-				tabs._indexes.push('moreInfo');
-				tabs.moreInfo = {
-					label: 'CRITICAL_APPARATUS.TABS.MORE_INFO'
-				};
-				// }
-				if (criticalEntry._xmlSource !== '') {
-					tabs._indexes.push('xmlSource');
-					tabs.xmlSource = {
-						label: 'CRITICAL_APPARATUS.TABS.XML'
+				if (content.attributes._keys.length > 0 ){
+					tabs._indexes.push('moreInfo');
+					tabs.moreInfo = {
+						label: 'CRITICAL_APPARATUS.TABS.MORE_INFO'
 					};
-					content.xmlSource = criticalEntry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 				}
 				if (tabs._indexes.length > 0 && defaults.firstSubContentOpened !== '') {
 					if (tabs._indexes.indexOf(defaults.firstSubContentOpened) < 0) {
@@ -314,6 +307,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 			angular.forEach(collection, function(currentEntry) {
 				if (currentEntry.appId === appId) {
 					currentEntry.setSelected();
+					var content = currentEntry.tabs.criticalNote;
+					if (content) {
+						currentEntry.toggleSubContent('criticalNote');
+					}
 				} else {
 					currentEntry.unselect();
 				}
