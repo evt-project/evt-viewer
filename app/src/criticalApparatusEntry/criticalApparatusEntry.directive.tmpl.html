@@ -78,7 +78,8 @@
       </div>
       <div
         class="critical-apparatus-entry_other-content_panels"
-        ng-class="{'closed': vm._subContentOpened === ''}">
+        ng-class="{'closed': vm._subContentOpened === '',
+                    'fullHeight': vm.currentViewMode === 'readingTxt'}">
           <div class="critical-apparatus-entry_other-content_panel"
                 ng-repeat="tab in ::vm.tabs._indexes track by $index"
                 ng-class="{'active' : vm._subContentOpened == tab}"

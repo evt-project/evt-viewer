@@ -13,7 +13,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     z-index:0;
     background: $critical-apparatus-entry-background-color;
     color: $base-color-dark;
-    font-size: 90%;
+    font-size: 95%;
     border-left: 1px solid $critical-apparatus-entry-border-color;
     border-right: 1px solid $critical-apparatus-entry-border-color;
     
@@ -154,7 +154,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             span {
                 padding: 5px;
                 display: inline-block;
-                font-size: 90%;
+                font-size: 95%;
                 cursor: pointer;
                 border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                 &:first-child {
@@ -181,7 +181,10 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             &:not(.closed){
                 padding: 10px 15px;
             }
-            max-height: 150px;
+            // max-height: 150px;
+            &:not(.fullHeight) {
+                max-height: 150px;
+            }
             overflow-x: hidden;
             overflow-y: auto;
             background-color: $critical-apparatus-entry-background-color-darker;
