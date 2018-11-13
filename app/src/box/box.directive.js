@@ -415,7 +415,7 @@ angular.module('evtviewer.box')
 
             //TODO: aggiungere scroll per sources view
 
-            if (currentBox.type === 'text') {
+            if (currentBox.type === 'text' || currentBox.type === 'witness') {
                 if (currentBox.subtype === 'comparing') {
                   scope.$watch(function() {
                       return evtInterface.getState('currentComparingEdition');
@@ -446,7 +446,7 @@ angular.module('evtviewer.box')
                          evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
                          $timeout(function() {
                             var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+                               searchInput = evtSearchBox.getInputValue('mainText');
       
                             if(searchInput !== '') {
                                evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
