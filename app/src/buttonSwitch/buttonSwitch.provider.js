@@ -808,7 +808,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchToolsExternal':
                btnType = 'standAlone';
                callback = function() {
-                  window.alert('External position coming soon!');
+									evtInterface.updateState('secondaryContent', 'externalSearch');
+									evtDialog.openByType('externalSearch');
+									vm.active = !vm.active;
                };
                break;
             case 'searchVirtualKeyboard':
