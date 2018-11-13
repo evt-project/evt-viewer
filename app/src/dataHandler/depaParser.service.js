@@ -34,7 +34,7 @@ angular.module('evtviewer.dataHandler')
         var startId = depaStartIds[entryId], endId = depaEndIds[entryId],
             fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
             toAnchor = dom.querySelector('[*|id="' + endId + '"]');
-        if (toAnchor.parentNode === fromAnchor) {
+        if (toAnchor && toAnchor.parentNode === fromAnchor) {
           var from = document.createTextNode('');
           fromAnchor.parentNode.insertBefore(from, fromAnchor);
           fromAnchor = from;
@@ -47,7 +47,7 @@ angular.module('evtviewer.dataHandler')
               fromAnchor.removeChild(fromAnchor.childNodes[index]);
               index--;
             }
-          } else {
+          } else if (fromAnchor && toAnchor) {
             var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
             elems.forEach(el => {
               el.parentNode.removeChild(el);
@@ -74,7 +74,7 @@ angular.module('evtviewer.dataHandler')
             fromAnchor = fromAnchor.firstChild;
             toAnchor = toAnchor.lastChild;
           }
-          var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+          var elems = fromAnchor && toAnchor ? Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor) : [];
           elems.forEach(el => {
             var newNode;
             if (el.nodeType === 3) {
@@ -89,9 +89,9 @@ angular.module('evtviewer.dataHandler')
               el.parentNode.replaceChild(newNode, el);
             }
           });
-          if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
+          if (toAnchor && toAnchor.childNodes && toAnchor.childNodes.length > 0) {
             toAnchor.appendChild(rdgElement);
-          } else {
+          } else if (toAnchor) {
             toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
           }
         }
