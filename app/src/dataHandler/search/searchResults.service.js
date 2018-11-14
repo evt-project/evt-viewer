@@ -333,7 +333,7 @@ angular.module('evtviewer.dataHandler')
          currentBoxes.forEach((box) => {
                if (box.type === 'text' || box.type === 'witness') {
                   var instance = new Mark(document.querySelector('[id="' + box.id + '"]')),
-                  isCaseSensitive = evtSearchBox.getStatus('mainText', 'searchCaseSensitive');
+                  isCaseSensitive = evtSearchBox.getStatus(boxId, 'searchCaseSensitive');
                
                   instance.unmark(inputValue);
                   instance.mark(inputValue, {

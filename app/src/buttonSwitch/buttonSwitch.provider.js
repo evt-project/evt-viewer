@@ -654,7 +654,7 @@ angular.module('evtviewer.buttonSwitch')
 					break;
             case 'search':
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
                      inputValue = evtSearchBox.getInputValue(parentBoxId),
                      input,
                      placeholder = '';
@@ -671,7 +671,7 @@ angular.module('evtviewer.buttonSwitch')
                      'default': function() {
                         var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
                            results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
-                           currentEdition = evtBox.getEditionById(parentBoxId),
+                           currentEdition = evtInterface.getState('currentEdition'),
                            currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
                            visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
                         
@@ -769,7 +769,7 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchCaseSensitive':
                btnType = 'standAlone';
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
                      searchInput = evtSearchBox.getInputValue(parentBoxId);
                   
                   evtSearchBox.updateStatus(parentBoxId, 'searchCaseSensitive');
@@ -837,7 +837,7 @@ angular.module('evtviewer.buttonSwitch')
 										'default': function() {
 											var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
 													results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
-													currentEdition = evtBox.getEditionById('mainText'),
+													currentEdition = evtInterface.getState('currentEdition'),
 													currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
 													visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
 											
@@ -858,12 +858,7 @@ angular.module('evtviewer.buttonSwitch')
 								promise.then(
 									function() {
 										var xmlDocDom = baseData.getXML(),
-												searchToolsBtn,
-												searchIndexBtn;
-			
-										searchIndexBtn = button.getByType('searchIndex')[0];
-										searchIndexBtn.active = false;
-										searchIndexBtn.disable();
+												searchToolsBtn;
 										evtSearch.initSearch(xmlDocDom);
 										evtInterface.setToolStatus('isDocumentIndexed', 'true');
 			

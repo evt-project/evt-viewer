@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config',
-      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config) {
+   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config', 'evtDialog',
+      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config, evtDialog) {
          var vm = this;
          
          vm.currentEdition = evtInterface.getState('currentEdition');
@@ -27,7 +27,11 @@ angular.module('evtviewer.search')
          };
    
          vm.getCurrentBoxEdition = function (boxId) {
-            return evtSearchBox.getCurrentBoxEdition(boxId);
+            if (!boxId || boxId === 'externalSearchDialog') {
+                  return evtInterface.getState('currentEdition');
+            } else {
+                  return evtSearchBox.getCurrentBoxEdition(boxId);
+            }
          };
          
          //TODO move in provider
@@ -92,13 +96,15 @@ angular.module('evtviewer.search')
             if (result && index) {
                   vm.currentLineId = result.metadata.lbId[index];
             }
+            evtInterface.updateState('secondaryContent', '');
+		evtDialog.closeByType('externalSearch');
             if (parsedData.getPages().length > 0) {
                   goToAnchorPage();
             } else if (parsedData.getDivs().length > 0) {
                   goToDiv(result, index);
             }
             $(eventElement).removeClass('selected');
-   
+            
             setTimeout(function() {
                deferred.resolve();
             }, 100);
