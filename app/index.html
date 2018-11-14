@@ -172,9 +172,9 @@
 				<evt-dialog data-type="bookmark" data-title="DIALOGS.BOOKMARK">
 					<div compile="getBookmark()"></div>
 				</evt-dialog>
-				<evt-dialog data-type="externalSearch" data-title="SEARCH">
+				<evt-dialog id="externalSearchDialog" data-type="externalSearch" data-title="SEARCH">
 					<div>GLOBAL SEARCH</div>
-					<evt-search-box></evt-search-box>
+					<evt-search-box data-parent-id="externalSearchDialog" ng-if="isFileLoaded()"></evt-search-box>
 				</evt-dialog>
 			</section>
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
