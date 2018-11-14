@@ -415,63 +415,6 @@ angular.module('evtviewer.box')
 
             //TODO: aggiungere scroll per sources view
 
-            if (currentBox.type === 'text' || currentBox.type === 'witness') {
-                if (currentBox.subtype === 'comparing') {
-                  scope.$watch(function() {
-                      return evtInterface.getState('currentComparingEdition');
-                  }, function(newItem, oldItem) {
-                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                         scope.vm.edition = newItem;
-                         currentBox.updateContent();
-   
-                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
-                         $timeout(function() {
-                            var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue(currentBoxId);
-      
-                            if(searchInput !== '') {
-                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                            }
-                         });
-                      }
-                  }, true);
-                } else {
-                  scope.$watch(function() {
-                      return evtInterface.getState('currentEdition');
-                  }, function(newItem, oldItem) {
-                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                          scope.vm.edition = newItem;
-                          currentBox.updateContent();
-                          
-                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
-                         $timeout(function() {
-                            var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue('mainText');
-      
-                            if(searchInput !== '') {
-                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                            }
-                         });
-                      }
-                  }, true);
-                }
-
-                scope.$watch(function() {
-                    return evtInterface.getState('currentPage');
-                }, function(newItem, oldItem) {
-                    currentBox.updateContent();
-   
-                   $timeout(function() {
-                      var currentBoxId = scope.id,
-                         searchInput = evtSearchBox.getInputValue(currentBoxId);
-   
-                      if(searchInput !== '') {
-                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                      }
-                   });
-                }, true);
-            }
-
             if (currentBox.type === 'image') {
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
