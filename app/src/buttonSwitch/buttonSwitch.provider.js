@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard, evtSearchIndex) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -806,11 +806,86 @@ angular.module('evtviewer.buttonSwitch')
                };
                break;
             case 'searchToolsExternal':
-               btnType = 'standAlone';
-               callback = function() {
-									evtInterface.updateState('secondaryContent', 'externalSearch');
-									evtDialog.openByType('externalSearch');
-									vm.active = !vm.active;
+							btnType = 'standAlone';
+							function indexingInProgress() {
+								var deferred = $q.defer();
+								evtInterface.updateState('indexingInProgress', true);
+								setTimeout(function() {
+									 deferred.resolve();
+								}, 100);
+								return deferred.promise;
+							}
+							function openDialog() {
+								evtInterface.updateState('secondaryContent', 'externalSearch');
+								evtDialog.openByType('externalSearch');
+							}
+							function setSearch() {
+								var parentBoxId = 'externalSearchDialog',
+										inputValue = evtSearchBox.getInputValue(parentBoxId),
+										input,
+										placeholder = '';
+								
+								evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+								evtSearchBox.setSearchedTerm(parentBoxId, inputValue);
+								
+								input = {
+										'': function() {
+											placeholder = 'Enter your query in the search box above';
+											evtSearchResult.setVisibleRes(parentBoxId, []);
+											evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+										},
+										'default': function() {
+											var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
+													results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
+													currentEdition = evtBox.getEditionById('mainText'),
+													currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
+													visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
+											
+											evtSearchResult.setCurrentEditionResults(parentBoxId, currentEditionResults);
+											evtSearchResult.setVisibleRes(parentBoxId, visibleResults);
+										}
+								};
+								
+								(input[inputValue] || input['default'])();
+								
+								evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);
+								evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
+								evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
+								evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);								
+							}
+							function indexingCallback() {
+								var promise = indexingInProgress();
+								promise.then(
+									function() {
+										var xmlDocDom = baseData.getXML(),
+												searchToolsBtn,
+												searchIndexBtn;
+			
+										searchIndexBtn = button.getByType('searchIndex')[0];
+										searchIndexBtn.active = false;
+										searchIndexBtn.disable();
+										evtSearch.initSearch(xmlDocDom);
+										evtInterface.setToolStatus('isDocumentIndexed', 'true');
+			
+										searchToolsBtn = button.getByType('searchToolsInternal');
+										for(var z in searchToolsBtn) {
+												searchToolsBtn[z].disabled = false;
+										}
+ 
+										evtInterface.updateState('indexingInProgress', false);
+										openDialog();
+										setSearch();
+									}
+								);
+							}
+							callback = function() {
+								if (Object.keys(evtSearchIndex.getIndex()).length === 0) {
+									indexingCallback();
+								} else {
+									openDialog();
+									setSearch();
+								}
+								vm.active = !vm.active;
                };
                break;
             case 'searchVirtualKeyboard':
