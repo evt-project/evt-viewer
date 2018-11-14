@@ -1,7 +1,8 @@
 <div class="evt-dialog"
     ng-show="vm.opened"
     ng-class="::{'evt-dialog-error': vm.type === 'error',
-               'evt-dialog-small': vm.type === 'bookmark' }">
+               'evt-dialog-small': vm.type === 'bookmark',
+               'evt-dialog-fit': vm.type === 'externalSearch' }">
     <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
 
 
