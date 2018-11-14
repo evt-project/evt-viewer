@@ -93,7 +93,7 @@ angular.module('evtviewer.search')
             window.event.preventDefault();
             eventElement = window.event.currentTarget;
             $(eventElement).addClass('selected');
-            if (result && index) {
+            if (result && result.metadata.lbId && index) {
                   vm.currentLineId = result.metadata.lbId[index];
             }
             evtInterface.updateState('secondaryContent', '');
