@@ -746,7 +746,7 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsShow':
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
                      placeholder = 'Enter your query in the search box above';
    
                   evtSearchResult.setPlaceholder(parentBoxId, placeholder);
@@ -758,7 +758,7 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsHide':
                callback = function() {
-                  var parentBoxId = scope.$parent.id;
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog';
                   
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
@@ -848,10 +848,7 @@ angular.module('evtviewer.buttonSwitch')
 								
 								(input[inputValue] || input['default'])();
 								
-								evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);
-								evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
-								evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
-								evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);								
+								evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);							
 							}
 							function indexingCallback() {
 								var promise = indexingInProgress();
