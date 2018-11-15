@@ -47,17 +47,20 @@ angular.module('evtviewer.dataHandler')
                }
             }
          });
+         console.log(JSON.stringify(this.index));
          console.timeEnd('INDEX');
          return this.index;
       };
       
       Index.prototype.getIndex = function () {
-        var index = JSON.parse(BUILTINDEX.index);
-        if (BUILTINDEX.dataUrl === config.dataUrl && index && Object.keys(index).length > 0) {
-          return index;
-        } else {
-          return this.index;
-        }
+        // var index = JSON.parse(BUILTINDEX.index);
+        // var elements = JSON.parse(BUILTINDEX.elements);
+        // if (BUILTINDEX.dataUrl === config.dataUrl
+        //       && elements && Object.keys(elements).length > 0
+        //       && index && Object.keys(index).length > 0) {
+        //   this.index = lunr.Index.load(index);
+        // }
+        return this.index;
       };
       
       // serve per dire all'indice dove si trovano i campi nella mia struttura
