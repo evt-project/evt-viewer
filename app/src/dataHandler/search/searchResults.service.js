@@ -11,7 +11,7 @@ angular.module('evtviewer.dataHandler')
          
          var input = {
             '': function () {
-               searchResults = 'Enter your query into the search box above';
+               searchResults = '{{ \'SEARCH.PLACEHOLDER\' | translate }}';
             },
             'default': function () {
                searchResults = getResultsMetadata(inputValue, isCaseSensitive);

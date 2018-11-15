@@ -3,14 +3,14 @@
    <div ng-show="$parent.vm.getSearchedTerm() !== ''" infinite-scroll="vm.loadMoreElements()" infinite-scroll-parent="true">
 
       <div class="search-info">
-         <p>Search for <strong>{{$parent.vm.getSearchedTerm()}}</strong></p>
-         <p>We have found <span>{{vm.getResultsNumber()}}</span> results in the selected edition</p>
+         <p><span>{{ 'SEARCH.INFO1' | translate }}</span> <strong>{{$parent.vm.getSearchedTerm()}}</strong></p>
+         <p>{{ 'SEARCH.INFO2' | translate:{number: vm.getResultsNumber()} }}</p>
       </div>
 
       <div class="token-results">
          <div class="token" ng-repeat="result in vm.visibleRes track by $index">
             <span ng-click="vm.toggle()" class="icon"></span>
-            Results for <span class="result-token">{{result.token}}</span>
+            {{ 'SEARCH.TOKEN' | translate }} <span class="result-token">{{result.token}}</span>
             in <span class="result-doc">{{result.metadata.xmlDocTitle[$index]}}</span>
             <span class="results-number">({{result.resultsNumber}})</span>
 
@@ -20,12 +20,12 @@
                         ng-bind-html="vm.getHighlightedOriginalText(result.metadata.docId[$index], vm.getCurrentBoxEdition($parent.vm.parentBoxId), result.token, result.metadata.position[$index])">
                   </span>
                   <a class="resultInfo" href="#" ng-click="vm.scrollToCurrentResult(result, $index)">
-                     Found in <span class="resultDoc" id="{{result.metadata.xmlDocId[$index]}}">{{result.metadata.xmlDocTitle[$index]}}</span>
+                     {{ 'SEARCH.RESULT.TITLE' | translate }} <span class="resultDoc" id="{{result.metadata.xmlDocId[$index]}}">{{result.metadata.xmlDocTitle[$index]}}</span>
                      <span class="resultSection" ng-if="result.metadata.sectionTitle">({{result.metadata.sectionTitle[$index]}})</span>
-                     <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.page">page {{result.metadata.page[$index]}}</span>
-                     <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.div">chapter {{result.metadata.div[$index]}}</span>
-                     <span class="resultPar" ng-if="result.metadata.paragraph">paragraph {{result.metadata.paragraph[$index]}}</span>
-                     <span class="resultLine" id="{{result.metadata.lbId[$index]}}" ng-if="result.metadata.line">(line {{result.metadata.line[$index]}})</span>
+                     <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.page">{{ 'SEARCH.RESULT.PAGE' | translate }} {{result.metadata.page[$index]}}</span>
+                     <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.div">{{ 'SEARCH.RESULT.SECTION' | translate }} {{result.metadata.div[$index]}}</span>
+                     <span class="resultPar" ng-if="result.metadata.paragraph">{{ 'SEARCH.RESULT.PARAGRAPH' | translate }} {{result.metadata.paragraph[$index]}}</span>
+                     <span class="resultLine" id="{{result.metadata.lbId[$index]}}" ng-if="result.metadata.line">({{ 'SEARCH.RESULT.LINE' | translate }} {{result.metadata.line[$index]}})</span>
                   </a>
                </li>
             </ul>
@@ -35,6 +35,6 @@
 
    </div>
 
-   <div class="search-info" ng-show="$parent.vm.getInputValue() === ''">{{vm.placeholder}}</div>
+   <div class="search-info" ng-show="$parent.vm.getInputValue() === ''">{{vm.placeholder | translate}}</div>
 
 </div>

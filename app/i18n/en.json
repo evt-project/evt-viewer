@@ -219,6 +219,21 @@
 		"QUOTE_START": "Quote start",
 		"QUOTE_END": "Quote end"
 	},
+	"SEARCH": {
+		"MAIN": "Search",
+		"HEADER": "Lexical search",
+		"PLACEHOLDER": "Enter your query in the search box above",
+		"INFO1": "Search for",
+		"INFO2": "We have found {{number}} results in the selected edition",
+		"TOKEN": "Risultati per",
+		"RESULT": {
+			"TITLE": "Found in",
+			"PAGE": "page",
+			"SECTION": "chapter",
+			"PARAGRAPH": "paragraph",
+			"LINE": "line"
+		}
+	},
 	"SELECTS": {
 		"CLEAR": "Clear",
 		"CLEAR_SELECTION": "Clear Selection",

@@ -664,7 +664,7 @@ angular.module('evtviewer.buttonSwitch')
                   
                   input = {
                      '': function() {
-                        placeholder = 'Enter your query in the search box above';
+                        placeholder = 'SEARCH.PLACEHOLDER';
                         evtSearchResult.setVisibleRes(parentBoxId, []);
                         evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                      },
@@ -747,7 +747,7 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchResultsShow':
                callback = function() {
                   var parentBoxId = scope.$parent.id || 'externalSearchDialog',
-                     placeholder = 'Enter your query in the search box above';
+                        placeholder = 'SEARCH.PLACEHOLDER';
    
                   evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
@@ -830,7 +830,7 @@ angular.module('evtviewer.buttonSwitch')
 								
 								input = {
 										'': function() {
-											placeholder = 'Enter your query in the search box above';
+											placeholder = '{{ \'SEARCH.PLACEHOLDER\' | translate }}';
 											evtSearchResult.setVisibleRes(parentBoxId, []);
 											evtSearchResult.setPlaceholder(parentBoxId, placeholder);
 										},

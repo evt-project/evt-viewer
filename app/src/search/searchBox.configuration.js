@@ -3,11 +3,11 @@ angular.module('evtviewer.search')
       diplomaticSearchBoxBtn: {
          virtualKeyboard: {title: 'Virtual Keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
          caseSensitive: {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
-         search: {title: 'Search', label: '', icon: 'search', type: 'search'}
+         search: {title: '{{ \'SEARCH.MAIN\' | translate}}', label: '', icon: 'search', type: 'search'}
       },
       interpretativeSearchBoxBtn: {
          caseSensitive: {title: 'Case Sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
-         search: {title: 'Search', label: '', icon: 'search', type: 'search'}
+         search: {title: '{{ \'SEARCH.MAIN\' | translate}}', label: '', icon: 'search', type: 'search'}
       }
    })
    
