@@ -1,120 +1,118 @@
-/* *************************** */
-/* SEARCH BOX EXTERNAL         */
-/* *************************** */
-
 .search-box.external {
-  button-switch {
-     margin-right: 0;
-     &[data-type="searchCaseSensitive"],
-     &[data-type="searchVirtualKeyboard"] {
+  form {
+    padding: 0;
+    margin-right: 15px;
+    margin-left: 15px;
+    border: $mainContainer-border-width solid $base-color-dark;
+    & > * {
+      margin: 0;
+      width: 30px;
+      height: 30px;
+    }
+    button-switch {
+      margin-right: 0;
+      &[data-type="searchCaseSensitive"],
+      &[data-type="searchVirtualKeyboard"] {
         .buttonSwitch-active {
-           background-color: $buttonSwitch-active-background-color;
+          background-color: $buttonSwitch-active-background-color;
         }
-     }
-  }
-  .buttonSwitch {
-     width: 30px;
-     @include border($mainContainer-border-width, 'right', $base-color-dark);
-     background-color: $search-buttons-background;
-     .icon {
-        line-height: 16px;
-     }
-  }
-  .btn-left, .btn-right {
-     button-switch:first-child .buttonSwitch {
-        @include border($mainContainer-border-width, 'left', $base-color-dark);
-     }
-  }
-  .btn-left {
-     float: left;
-     button-switch[data-type='searchResultsHide'] {
-        @include border($mainContainer-border-width, left, $base-color-dark);
-     }
-  }
-  .btn-right {
-     float: right;
-  }
-  input[type="text"] {
-     font-family: Junicode;
-     font-size: 18px;
-     height: $search-input-height;
-     min-width: calc(100% - 180px);
-     padding: 0 10px 0 5px;
-     border: transparent;
+      }
+    }
+    .btn-left {
+      border-right: $mainContainer-border-width solid $base-color-dark;
+      float: left;
+    }
+    .btn-right {
+      border-left: $mainContainer-border-width solid $base-color-dark;
+      float: right;
+    }
+    input {
+      width: calc(100% - 60px);
+      border: 1px solid transparent;
+      padding: 0px 7px 0px 7px;
+      font-family: Junicode;
+      font-size: 18px;
+    }
   }
   .search-results {
-     padding: $base-padding;
-     max-height: 400px;
-     overflow-y: scroll;
-     background-color: #fff;
-     p {
+    p {
         display: block;
         margin-top: 0;
-     }
-     .token {
+    }
+    .token-results {
+      max-height: 400px;
+      overflow-y: auto;
+      border-top: $mainContainer-border-width/2 solid $border-light;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    .token {
         padding-bottom: 5px;
-     }
-     .icon:before {
+    }
+    .icon:before {
         content: '\25B6';
         font-size: 12px;
         position: relative;
         bottom: 2px;
         left: 3px;
         cursor: pointer;
-     }
-     .icon.active:before {
+    }
+    .icon.active:before {
         content: '\25BC';
         cursor: pointer;
-     }
-     .search-info {
+    }
+    .search-info {
         text-align: center;
+        width: calc(100% - #{$mainContainer-border-width*8});
+        top: $search-box-height + $mainContainer-border-width*2;
         left: 0;
+        padding-top: 15px;
         p:first-child {
-           margin-bottom: 0;
+          margin-bottom: 0;
         }
         + .token-results {
-           padding-top: 20px;
+          padding-top: 15px;
         }
-     }
-     .result-token,
-     .result-doc {
+    }
+    .result-token,
+    .result-doc {
         font-style: italic;
-     }
-     .result-token {
+    }
+    .result-token {
         font-weight: bold;
-     }
-     .results-number {
+    }
+    .results-number {
         font-size: 16px;
         padding-left: 5px;
-     }
-     .search-result {
+    }
+    .search-result {
         display: none;
         margin-bottom: 30px;
         .original-text {
-           display: block;
-           font-style: italic;
+          display: block;
+          font-style: italic;
         }
         .resultInfo {
-           font-size: 17px;
-           background-color: $search-result-info;
-           color: $base-color-active;
-           padding: 7px;
-           position: relative;
-           top: 6px;
-           border-radius: 4px;
+          font-size: 17px;
+          background-color: $search-result-info;
+          color: $base-color-active;
+          padding: 7px;
+          position: relative;
+          top: 6px;
+          border-radius: 4px;
         }
         li {
-           list-style: none;
-           margin-bottom: 25px;
-           &:not(:last-child) {
+          list-style: none;
+          margin-bottom: 25px;
+          &:not(:last-child) {
               @include border($mainContainer-border-width/2, 'bottom', $border-light);
               padding-bottom: 25px;
-           }
+          }
         }
         &.open {
-           display: block;
-           padding-left: 35px;
+          display: block;
+          padding-left: 35px;
         }
-     }
+    }
   }
 }

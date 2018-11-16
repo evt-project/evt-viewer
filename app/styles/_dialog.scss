@@ -62,17 +62,12 @@
         &-content {
             padding:20px;
         }
-    }
-}
-.evt-dialog.evt-dialog-fit{
-    .evt-dialog-container {
-        width: auto;
-        height: auto;
-        padding: 0;
-        top: 25%;
-        &-content {
-            @include calc(padding-top, 40px + #{$mainContainer-menu-height});
+        &.externalSearch {
+            width: 50%;
             height: auto;
+            .evt-dialog-container-content {
+                padding: 20px 0 20px 0;
+            }
         }
     }
 }
