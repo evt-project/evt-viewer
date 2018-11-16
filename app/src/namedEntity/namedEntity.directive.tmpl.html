@@ -44,7 +44,8 @@
             </span>
           </div>
 
-          <div class="namedEntity__details-panels closed">
+          <div class="namedEntity__details-panels closed"
+                ng-class="{'largeMap': vm.location === 'list' && vm._subContentOpened === 'map'}">
                   <div class="namedEntity__details-panel"
                         ng-switch="vm._subContentOpened">
                         <div ng-switch-when="moreInfo">
