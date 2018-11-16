@@ -544,6 +544,10 @@ angular.module('evtviewer.dataHandler')
             case 'relation':
             	icon = 'fa-share-alt';
             	break;
+            case 'term':
+            case 'generic':
+            	icon = 'fa-font';
+            	break;
             default:
                 icon = 'fa-list-ul';
                 break;
