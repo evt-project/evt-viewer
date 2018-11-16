@@ -515,6 +515,17 @@ $orgColor-darker: #ffb74d;
 	}
 }
 
+.term-active, .term-active {
+	.namedEntityRef {
+		&-generic, &-generic {
+			background-color: $named-entities-background-color-darker;
+			&:hover:not(.active) {
+				background-color: $named-entities-background-color;
+			}
+		}
+	}
+}
+
 [data-value="person"], [data-value="pers"], [data-value="persName"] {
 	.option-icon-label {
 		color: $personColor-darker;

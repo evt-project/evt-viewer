@@ -21,7 +21,7 @@ angular.module('evtviewer.dataHandler')
 	var defPageElement = 'pb',
 		defLineBreak = '<lb>',
 		defLine = '<l>',
-		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
+		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>, <term>',
 		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
 
 	var projectInfoDefs = {
@@ -609,7 +609,7 @@ angular.module('evtviewer.dataHandler')
 		if (entityId && entityId !== '') {
 			entityElem.setAttribute('data-entity-id', entityId);
 		}
-		var listType = entityNode.tagName ? entityNode.tagName : 'generic';
+		var listType = entityNode.tagName && entityNode.tagName !== 'term' ? entityNode.tagName : 'generic';
 		entityElem.setAttribute('data-entity-type', listType);
 
 		for (var i = 0; i < entityNode.childNodes.length; i++) {

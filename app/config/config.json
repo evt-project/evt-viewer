@@ -83,22 +83,12 @@
         "label": "Places",
         "available": true
     },{
-        "tagName": "orgName",
-        "label": "Organizations",
+        "tagName": "term",
+        "label": "Realia",
         "available": true
     }],
 
-    "otherEntitiesToHandle": [{
-        "tagName": "rolename",
-        "label": "Role Name",
-        "available": false,
-        "color": "#cfc"
-    }, {
-        "tagName": "measure",
-        "label": "Measure",
-        "available": false,
-        "color": "#ffecb3"
-    }],
+    "otherEntitiesToHandle": [],
 
     "listsMainContentDef": "<back>",
 
