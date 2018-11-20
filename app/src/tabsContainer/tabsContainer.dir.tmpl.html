@@ -9,8 +9,7 @@
             ng-click="vm.toggleSubTab(tab)"
             ng-class="{'active' : vm.subContentOpened === tab && vm.tabs[tab].subTabs._indexes.length === 0,
                         'hasSubTabs': vm.tabs[tab].showSubTabs }">
-            <i ng-click="vm.toggleSubTabs(tab)"
-               ng-if="vm.tabs[tab].subTabs && vm.tabs[tab].subTabs._indexes.length > 0"
+            <i ng-if="vm.tabs[tab].subTabs && vm.tabs[tab].subTabs._indexes.length > 0"
                class="fa fa-caret-right"
                id="{{tab + '_subTabsIcon'}}"></i>
             <i ng-if="::vm.tabs[tab].icon" class="fa {{::vm.tabs[tab].icon}} evt-tabs-container_header-icon"></i>
