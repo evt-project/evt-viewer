@@ -8,11 +8,11 @@
             ng-repeat-start="tab in ::vm.tabs._indexes"
             ng-click="vm.toggleSubTab(tab)"
             ng-class="{'active' : vm.subContentOpened === tab && vm.tabs[tab].subTabs._indexes.length === 0,
-                        'hasSubTabs': vm.tabs[tab].subTabs && vm.tabs[tab].subTabs._indexes.length > 0 && vm.showSubTabs }">
+                        'hasSubTabs': vm.tabs[tab].showSubTabs }">
             <i ng-click="vm.toggleSubTabs(tab)"
                ng-if="vm.tabs[tab].subTabs && vm.tabs[tab].subTabs._indexes.length > 0"
                class="fa fa-caret-right"
-               id="subTabsIcon"></i>
+               id="{{tab + '_subTabsIcon'}}"></i>
             <i ng-if="::vm.tabs[tab].icon" class="fa {{::vm.tabs[tab].icon}} evt-tabs-container_header-icon"></i>
             {{ ::vm.tabs[tab].label | translate }}
             {{DIALOGS._BOOKMARK | translate}}
@@ -46,6 +46,10 @@
         class="evt-tabs-container_panels"
         ng-if="vm.subTabOpened !== ''">
         <div class="evt-tabs-container_panel active"
-        compile="vm.tabs[vm.subContentOpened].subTabs[vm.subTabOpened].content"></div>
+            id="{{'subTab_' + subTab}}"
+            ng-repeat="subTab in vm.tabs[vm.subContentOpened].subTabs._indexes"
+            ng-class="{'active' : vm.subTabOpened === subTab,
+                       'noscroll': vm.tabs[tab].scrollDisabled }"
+            compile="vm.tabs[vm.subContentOpened].subTabs[subTab].content"></div>
     </div>
 </div>

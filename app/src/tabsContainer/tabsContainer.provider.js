@@ -71,12 +71,11 @@ angular.module('evtviewer.tabsContainer')
 		var toggleSubTabs = function(tab) {
 			var vm = this;
 			vm.tabs[tab].showSubTabs = !vm.tabs[tab].showSubTabs;
-			var icon = document.getElementById('subTabsIcon');
+			var icon = document.getElementById(tab + '_subTabsIcon');
 			icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
 		}
 
-		var scrollToSubTab = function(tab, subTab) {
-			var vm = this;
+		var scrollToSubTab = function(vm, tab, subTab) {
 			if (!vm.tabs[tab].scrollDisabled) {
 				// 
 				console.log('to do')
@@ -89,16 +88,18 @@ angular.module('evtviewer.tabsContainer')
 			if (subTab) {
 					switch(tab) {
 							case 'projectInfo':
-							case 'entitiesList':
+							case 'entitiesLists':
 							vm.subTabOpened = subTab;
 							break;
 							default:
 							vm.subTabOpened = '';
-							scrollToSubTab(tab, subTab);
+							scrollToSubTab(vm, tab, subTab);
 					}
 			} else {
 					vm.subTabOpened = '';
 			}
+			console.log(vm);
+
 	};
 		//
 		// TabsContainer builder
@@ -253,7 +254,7 @@ angular.module('evtviewer.tabsContainer')
 					tabs.projectInfo = {
 						label: 'DIALOGS.PROJECT_INFO',
 						name: 'projectInfo',
-						content: noContent,
+						content: '',
 						subTabs: {
 							_indexes: []
 						},
@@ -316,7 +317,7 @@ angular.module('evtviewer.tabsContainer')
 
 					tabs._indexes.push('projectInfo');
 
-					// Bibliography //
+					// BIBLIOGRAPHY //
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
 						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
 						tabs.bibliography = {
@@ -327,6 +328,33 @@ angular.module('evtviewer.tabsContainer')
 						};
 						tabs._indexes.push('bibliography');
 					}
+
+					// ENTITIES LIST
+					var entitiesCollection = parsedData.getNamedEntitiesCollection();
+					tabs.entitiesLists = {
+						label: 'DIALOGS.NAMED_ENTITIES',
+						name: 'entitiesLists',
+						content: '',
+						subTabs: {
+							_indexes: []
+						},
+						showSubTabs: false
+					};
+					tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
+					for (var i = 0; i < entitiesCollection._indexes.length; i++) {
+						var listId = entitiesCollection._indexes[i],
+							listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
+							listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
+							listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
+						tabs.entitiesLists.subTabs[listId] = {
+							label: listTitle,
+							icon: listIcon,
+							name: listId,
+							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
+							scrollDisabled: true
+						};
+					}
+					tabs._indexes.push('entitiesLists');
 					break;
 
 			}
