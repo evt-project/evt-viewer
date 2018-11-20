@@ -39,6 +39,8 @@ angular.module('evtviewer.tabsContainer')
             orientation : '@'
         },
         templateUrl: 'src/tabsContainer/tabsContainer.dir.tmpl.html',
+        controllerAs: 'vm',
+        controller: 'TabsContainerCtrl',
         link: function(scope, element, attrs) {
             // Add attributes in vm
             scope.vm = {

@@ -104,6 +104,11 @@
 								<i class="icon icon-evt_info-alt"></i>
 								{{'MAIN_MENU.PROJECT_INFO' | translate}}</span>
 						</li>
+						<li>
+							<span ng-click="openToc()">
+								<i class="icon icon-evt_info-alt"></i>
+								{{'MAIN_MENU.TOC' | translate}}</span>
+						</li>
 						<li ng-if="getProperty('namedEntitiesLists')">
 							<span ng-click="openGlobalDialogLists()">
 								<i class="icon icon-evt_list"></i>
@@ -163,6 +168,12 @@
 				<evt-dialog data-type="globalInfo" data-title="DIALOGS.PROJECT_INFO">
 					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
 						data-type="projectInfo"
+						data-orientation="vertical">
+					</evt-tabs-container>
+				</evt-dialog>
+				<evt-dialog data-type="toc" data-title="TOC">
+					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'toc'"
+						data-type="toc"
 						data-orientation="vertical">
 					</evt-tabs-container>
 				</evt-dialog>

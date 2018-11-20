@@ -68,6 +68,38 @@ angular.module('evtviewer.tabsContainer')
 			vm.subContentOpened = vm.subContentOpened !== subContentName ? subContentName : '';
 		};
 
+		var toggleSubTabs = function(tab) {
+			var vm = this;
+			vm.tabs[tab].showSubTabs = !vm.tabs[tab].showSubTabs;
+			var icon = document.getElementById('subTabsIcon');
+			icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
+		}
+
+		var scrollToSubTab = function(tab, subTab) {
+			var vm = this;
+			if (!vm.tabs[tab].scrollDisabled) {
+				// 
+				console.log('to do')
+			}
+		};
+
+		var toggleSubTab = function(tab, subTab) {
+			vm = this;
+			vm.subContentOpened = tab;
+			if (subTab) {
+					switch(tab) {
+							case 'projectInfo':
+							case 'entitiesList':
+							vm.subTabOpened = subTab;
+							break;
+							default:
+							vm.subTabOpened = '';
+							scrollToSubTab(tab, subTab);
+					}
+			} else {
+					vm.subTabOpened = '';
+			}
+	};
 		//
 		// TabsContainer builder
 		//
@@ -215,6 +247,87 @@ angular.module('evtviewer.tabsContainer')
 						};
 					}
 					break;
+				case 'toc':
+					// INTRODUCTION
+					// PROJECT INFO
+					tabs.projectInfo = {
+						label: 'DIALOGS.PROJECT_INFO',
+						name: 'projectInfo',
+						content: noContent,
+						subTabs: {
+							_indexes: []
+						},
+						showSubTabs: false
+					}
+					// fileDescription //
+					var fileDescriptionContent = parsedData.getProjectInfo().fileDescription || '';
+					if (fileDescriptionContent && fileDescriptionContent !== '') {
+						tabs.projectInfo.subTabs.fileDescription = {
+							label: 'PROJECT_INFO.FILE_DESCRIPTION',
+							name: 'fileDescription',
+							content: fileDescriptionContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('fileDescription');
+					}
+
+					// encodingDescription //
+					var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
+					if (encodingDescriptionContent && encodingDescriptionContent !== '') {
+						tabs.projectInfo.subTabs.encodingDescription = {
+							label: 'PROJECT_INFO.ENCODING_DESCRIPTION',
+							name: 'encodingDescription',
+							content: encodingDescriptionContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('encodingDescription');
+					}
+
+					// textProfile //
+					var textProfileContent = parsedData.getProjectInfo().textProfile || '';
+					if (textProfileContent && textProfileContent !== '') {
+						tabs.projectInfo.subTabs.textProfile = {
+							label: 'PROJECT_INFO.TEXT_PROFILE',
+							name: 'textProfile',
+							content: textProfileContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('textProfile');
+					}
+
+					// outsideMetadata //
+					var outsideMetadataContent = parsedData.getProjectInfo().outsideMetadata || '';
+					if (outsideMetadataContent && outsideMetadataContent !== '') {
+						tabs.projectInfo.subTabs.outsideMetadata = {
+							label: 'PROJECT_INFO.OUTSIDE_METADATA',
+							name: 'outsideMetadata',
+							content: outsideMetadataContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('outsideMetadata');
+					}
+
+					// revisionHistory //
+					var revisionHistoryContent = parsedData.getProjectInfo().revisionHistory || '';
+					if (revisionHistoryContent && revisionHistoryContent !== '') {
+						tabs.projectInfo.subTabs.revisionHistory = {
+							label: 'PROJECT_INFO.REVISION_HISTORY',
+							name: 'revisionHistory',
+							content: revisionHistoryContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('revisionHistory');
+					}
+
+					tabs._indexes.push('projectInfo');
+
+					// Bibliography //
+					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
+						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
+						tabs.bibliography = {
+							label: 'PROJECT_INFO.BIBLIOGRAPHY',
+							name: 'bibliography',
+							content: bibliographyContent || noContent,
+							scrollDisabled: true
+						};
+						tabs._indexes.push('bibliography');
+					}
+					break;
 
 			}
 			
@@ -230,9 +343,12 @@ angular.module('evtviewer.tabsContainer')
 
 				// model
 				subContentOpened: subContentOpened,
+				subTabOpened: false,
 
 				// function
+				toggleSubTabs: toggleSubTabs,
 				toggleSubContent: toggleSubContent,
+				toggleSubTab: toggleSubTab,
 				destroy: destroy
 			};
 

@@ -28,6 +28,9 @@
                 text-align: left;
                 padding: 10px;
                 cursor: pointer;
+                &.hasSubTabs {
+                    border-bottom: 1px solid $base-color-light;
+                }
                 &.active, &:hover{
                     background: $base-color-middle;
                     color: $base-color-light;
@@ -40,6 +43,35 @@
                     min-width: 18px;
                     margin-right: 3px;
                     text-align: center;
+                }
+                &_subTabs {
+                    margin: 0;
+                    padding: 0;
+                    list-style-type: none !important;
+                    &.hide {
+                        display: none;
+                    }
+                    &_tab {
+                        padding: 5px 10px 5px 30px;
+                        display: block;
+                        border-bottom: 1px solid $base-color-light;
+                        color: $base-color-dark;
+                        font-variant: small-caps;
+                        font-size: 0.93em;
+                        text-align: left;
+                        cursor: pointer;
+                        &.active, &:hover{
+                            background: $base-color-middle;
+                            color: $base-color-light;
+                        }
+                        &.active{
+                            background: $base-color-dark;
+                            color: $base-color-light;
+                        }
+                        &:last-child {
+                            border-bottom: 1px solid $base-color-dark;
+                        }
+                    }
                 }
             }
 
