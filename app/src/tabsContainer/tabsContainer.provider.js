@@ -318,6 +318,15 @@ angular.module('evtviewer.tabsContainer')
 
 					tabs._indexes.push('projectInfo');
 
+					// TOC
+					// evtToc
+					tabs.toc = {
+						label: 'TOC',
+						name: 'toc',
+						content: '<evt-toc></evt-toc>'
+					};
+					tabs._indexes.push('toc');
+
 					// BIBLIOGRAPHY //
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
 						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';

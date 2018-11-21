@@ -1,0 +1,17 @@
+<div>
+    <div ng-repeat="doc in vm.docsId">
+        {{vm.docs[doc].title}}
+        <ul ng-if="vm.docs[doc].pages.length > 0">
+            <li>PAGES</li>
+            <li ng-repeat="page in vm.docs[doc].pages">
+                {{vm.pages[page].title}}
+            </li>
+        </ul>
+        <ul ng-if="vm.docs[doc].divs.length > 0">
+            <li>DIVS</li>
+            <li ng-repeat="div in vm.docs[doc].divs">
+                {{vm.divs[div].title}}
+            </li>
+        </ul>
+    </div>
+</div>
