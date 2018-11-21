@@ -46,10 +46,7 @@ angular.module('evtviewer.toc')
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentToc){
-                    if (currentToc.type === 'projectInfo') {
-                        evtInterface.setHomePanel('');
-                    }
-                    currentToc.destroy();
+                    evtToc.destroy(currentToc.currentId);
                 }
             });
         }

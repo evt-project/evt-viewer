@@ -1,15 +1,19 @@
-<div>
-    <div ng-repeat="doc in vm.docsId">
+<div class="toc">
+    <div class="toc_doc" ng-repeat="doc in vm.docsId">
         {{vm.docs[doc].title}}
-        <ul ng-if="vm.docs[doc].pages.length > 0">
-            <li>PAGES</li>
-            <li ng-repeat="page in vm.docs[doc].pages">
+        <span class="list-head">PAGES</span>
+        <ul ng-if="vm.docs[doc].pages.length > 0"
+            ng-class="{ 'float-left' : vm.docs[doc].divs.length > 0 }">
+            <li ng-repeat="page in vm.docs[doc].pages"
+                ng-click="vm.goToPage(doc, page)">
                 {{vm.pages[page].title}}
             </li>
         </ul>
-        <ul ng-if="vm.docs[doc].divs.length > 0">
-            <li>DIVS</li>
-            <li ng-repeat="div in vm.docs[doc].divs">
+        <span class="list-head">DIVS</span>
+        <ul ng-if="vm.docs[doc].divs.length > 0"
+            ng-class="{ 'float-right' : vm.docs[doc].pages.length > 0 }">
+            <li ng-repeat="div in vm.docs[doc].divs"
+                ng-click="vm.goToDiv(doc, div)">
                 {{vm.divs[div].title}}
             </li>
         </ul>

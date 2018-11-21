@@ -94,6 +94,7 @@ angular.module('evtviewer.toc')
 					pages = parsedData.getPages();
 
 			scopeHelper = {
+				currentId,
 				docs,
 				docsId,
 				divs,
@@ -113,6 +114,10 @@ angular.module('evtviewer.toc')
 		//
 		// Service function
 		//
+
+		toc.destroy = function(tempId) {
+			delete collection[tempId];
+		}
 
 		return toc;
 	};
