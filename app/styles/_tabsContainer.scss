@@ -80,6 +80,9 @@
                 height: 100%;
                 left: 20%;
                 width: 80%;
+                &.noPadding {
+                    padding: 0;
+                }
             }
         }
     }

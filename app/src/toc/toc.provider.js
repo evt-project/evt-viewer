@@ -90,7 +90,8 @@ angular.module('evtviewer.toc')
 					divs = parsedData.getDivs();
 					mainDivs = parsedData.getDivs()._indexes.main,
 					subDivs = parsedData.getDivs()._indexes.subDivs,
-					pages = parsedData.getPages();
+					pages = parsedData.getPages(),
+					open = {};
 			var docs = docsId.map(docId => {
 				var doc = parsedData.getDocument(docId);
 				var newDoc = {
@@ -104,6 +105,7 @@ angular.module('evtviewer.toc')
 					newDoc.divs[div.section].push(divId);
 					newDoc.divs.length++;
 				});
+				open[docId] = false;
 				return newDoc;
 			});
 			scopeHelper = {
@@ -114,7 +116,8 @@ angular.module('evtviewer.toc')
 				mainDivs,
 				subDivs,
 				pages,
-				keys: ['front', 'body', 'back']
+				keys: ['front', 'body', 'back'],
+				open
 			};
 
 			collection[currentId] = angular.extend(scope.vm, scopeHelper);

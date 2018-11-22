@@ -51,6 +51,9 @@ angular.module('evtviewer.toc')
         console.log(doc, page)
     }
     
+    this.openDetails = function(doc) {
+        vm.open[doc] = !vm.open[doc];
+    }
 
     _console.log('TocCtrl running');
 });
