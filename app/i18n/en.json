@@ -257,6 +257,15 @@
 		"XML_SOURCE_QUOTE": "XML Source for Quote",
 		"XML_SOURCE_FOR": "XML Source for "
 	},
+	"TOC": {
+		"BACK": "Back matter",
+		"BODY": "Text",
+		"DIVS": "Sections",
+		"FRONT": "Front matter",
+		"HEADER": "Toc, front matter and back matter",
+		"PAGES": "Pages",
+		"TITLE": "Table of contents"
+	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Critical Note",
         "METADATA_FOR": "Metadata for ",

@@ -248,6 +248,15 @@
 		"SELECT_ALL_NAMED_ENTITIES": "Seleziona Tutte le Named Entities",
 		"SELECT_ALL_TYPES": "Seleziona tutte le tipologie"
 	},
+	"TOC": {
+		"BACK": "Appendici",
+		"BODY": "Testo",
+		"DIVS": "Sezioni",
+		"FRONT": "Introduzione",
+		"HEADER": "Paratesto e indici",
+		"PAGES": "Pagine",
+		"TITLE": "Indice"
+	},
 	"SOURCES": {
 		"BIBLIOGRAPHIC_REFERENCE": "Riferimento Bibliografico",
 		"COMPARE_TEXTS": "Confronta testi",

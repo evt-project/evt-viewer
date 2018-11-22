@@ -846,108 +846,90 @@ angular.module('evtviewer.dataHandler')
 		parser.parserProperties['defDocElement'] = defDocElement;
 		parser.parserProperties['defContentEdition'] = defContentEdition;
 
-		var frontDef = '<front>',
-			biblDef = '<biblStruct>';
-
 		parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef.replace(/[<>]/g, '')).length > 0);
 
 		angular.forEach(currentDocument.find(defDocElement),
 			function(element) {
-				var newDoc = {
-					value: element.getAttribute('xml:id') || parser.xpath(doc).substr(1) || 'doc_' + (parsedData.getDocuments()._indexes.length + 1),
-					label: '',
-					title: '',
-					content: element,
-					front: undefined,
-					pages: [], // Pages will be added later
-					divs: []
-				};
-				if (element.getAttribute('type')) {
-					newDoc.title += element.getAttribute('type').substr(0,1).toUpperCase() + element.getAttribute('type').substr(1);
-				} else {
-					newDoc.title += 'Doc';
-				}
-				if (element.getAttribute('subtype')) {
-					newDoc.title += ' - ' + element.getAttribute('subtype').substr(0,1).toUpperCase() + element.getAttribute('subtype').substr(1);
-				}
-				newDoc.title += ' ';
-				var wit, corresp = parsedData.getWitnessesList().find(witId => {
-					wit = witId;
-					return parsedData.getWitness(witId).corresp === newDoc.value;
-				});
-				if (corresp) {
-					newDoc.title += wit;
-				} else if (element.getAttribute('n')) {
-					newDoc.title += element.getAttribute('n');
-				} else {
-					newDoc.title += parsedData.getDocuments()._indexes.length + 1;
-				}
-				newDoc.label = newDoc.title;
-				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
-				if (docFront && docFront[0]) {
-					var frontElem = docFront[0].cloneNode(true),
-						biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
-					if (biblRefs) {
-						for (var i = biblRefs.length - 1; i >= 0; i--) {
-							var evtBiblElem = document.createElement('evt-bibl-elem'),
-								biblElem = biblRefs[i],
-								biblId = biblElem.getAttribute('xml:id') || parser.xpath(biblElem).substr(1);
-
-							evtBiblElem.setAttribute('data-bibl-id', biblId);
-							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
-						}
-					}
-					var parsedContent = parser.parseXMLElement(element, frontElem, {
-							skip: biblDef + '<evt-bibl-elem>'
-						}),
-						frontAttributes = parser.parseElementAttributes(frontElem);
-					newDoc.front = {
-						attributes: frontAttributes,
-						parsedContent: parsedContent && parsedContent.outerHTML ? parsedContent.outerHTML.trim() : '',
-						originalContent: frontElem.outerHTML
-					};
-				}
-
-				for (var j = 0; j < element.attributes.length; j++) {
-					var attrib = element.attributes[j];
-					if (attrib.specified) {
-						newDoc[attrib.name.replace(':', '-')] = attrib.value;
-					}
-				}
-				parsedData.addDocument(newDoc);
-				parser.parsePages(element, newDoc.value);
-				if (defContentEdition === 'body') {
-					var body = element.querySelector('body');
-					parser.parseDivs(body, newDoc.value, 'body');
-					var back = element.querySelector('back');
-					if (back) {
-						parser.parseDivs(back, newDoc.value, 'back');
-					}
-					var front = element.querySelector('front');
-					if (front) {
-						parser.parseDivs(front, newDoc.value, 'front');
-					}
-				} else {
-					parser.parseDivs(element, newDoc.value, 'body');
-				}
-				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
-					// Split pages works only on diplomatic/interpretative edition
-					// In critical edition, text will be splitted into pages for each witness
-					config.defaultEdition = 'diplomatic';
-					var pages = parsedData.getPages();
-					var newDocPages = newDoc.pages;
-					angular.forEach(angular.element(element).find(defContentEdition),
-						function(editionElement) {
-							//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-							parser.splitPages(pages, editionElement, newDoc.value, defContentEdition, newDocPages);
-						});
-				}
+				parser.parseDocument(element, doc);
 			});
 		console.log('## PAGES ##', parsedData.getPages());
 		console.log('## Documents ##', parsedData.getDocuments());
 		console.log('## DIVS ##', parsedData.getDivs())
 		return parsedData.getDocuments();
 	};
+
+	parser.parseDocument = function(element, doc) {
+		var newDoc = {
+			value: element.getAttribute('xml:id') || parser.xpath(doc).substr(1) || 'doc_' + (parsedData.getDocuments()._indexes.length + 1),
+			label: '',
+			title: '',
+			content: element,
+			front: undefined,
+			pages: [], // Pages will be added later
+			divs: []
+		};
+		for (var j = 0; j < element.attributes.length; j++) {
+			var attrib = element.attributes[j];
+			if (attrib.specified) {
+				newDoc[attrib.name.replace(':', '-')] = attrib.value;
+			}
+		}
+		parser.createTitle(newDoc, 'Doc');
+		var frontDef = '<front>',
+			  biblDef = '<biblStruct>';
+		var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
+		if (docFront && docFront[0]) {
+			var frontElem = docFront[0].cloneNode(true),
+					biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
+			if (biblRefs) {
+				for (var i = biblRefs.length - 1; i >= 0; i--) {
+					var evtBiblElem = document.createElement('evt-bibl-elem'),
+						biblElem = biblRefs[i],
+						biblId = biblElem.getAttribute('xml:id') || parser.xpath(biblElem).substr(1);
+
+					evtBiblElem.setAttribute('data-bibl-id', biblId);
+					biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
+				}
+			}
+			var parsedContent = parser.parseXMLElement(element, frontElem, {
+					skip: biblDef + '<evt-bibl-elem>'
+				}),
+				frontAttributes = parser.parseElementAttributes(frontElem);
+			newDoc.front = {
+				attributes: frontAttributes,
+				parsedContent: parsedContent && parsedContent.outerHTML ? parsedContent.outerHTML.trim() : '',
+				originalContent: frontElem.outerHTML
+			};
+		}
+		parsedData.addDocument(newDoc);
+		parser.parsePages(element, newDoc.value);
+		if (parser.parserProperties['defContentEdition'] === 'body') {
+			var front = element.querySelector('front'),
+					body = element.querySelector('body'),
+					back = element.querySelector('back');
+			if (front) {
+				parser.parseDivs(front, newDoc.value, 'front');
+			}
+			parser.parseDivs(body, newDoc.value, 'body');
+			if (back) {
+				parser.parseDivs(back, newDoc.value, 'back');
+			}			
+		} else {
+			parser.parseDivs(element, newDoc.value, 'body');
+		}
+		if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
+			// Split pages works only on diplomatic/interpretative edition
+			// In critical edition, text will be splitted into pages for each witness
+			config.defaultEdition = 'diplomatic';
+			var pages = parsedData.getPages();
+			var newDocPages = newDoc.pages;
+			angular.forEach(angular.element(element).find(parser.parserProperties['defContentEdition']),
+				function(editionElement) {
+					//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
+					parser.splitPages(pages, editionElement, newDoc.value, defContentEdition, newDocPages);
+				});
+		}
+	}
 
 	parser.parseDivs = function(doc, docId, section) {
 		var currentDocument = angular.element(doc);
@@ -973,27 +955,42 @@ angular.module('evtviewer.dataHandler')
 			newDiv.corresp = newDiv.corresp.replace('#', '').split(' ');
 		}
 		newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
-		if (newDiv.type) {
-			newDiv.title += newDiv.type.substr(0,1).toUpperCase() + newDiv.type.substr(1);
-		} else {
-			newDiv.title += 'Div';
-		}
-		if (newDiv.subtype) {
-			newDiv.title += ' - ' + newDiv.subtype.substr(0,1).toUpperCase() + newDiv.subtype.substr(1);
-		}
-		newDiv.title += ' ';
-		if (newDiv.n) {
-			newDiv.title += newDiv.n;
-		} else {
-			newDiv.title += parsedData.getDivs().length + 1;
-		}
-		newDiv.label = newDiv.title;
+		parser.createTitle(newDiv, 'Div');
 		var elem = angular.element(element);
 		angular.forEach(elem.children('div'), function(child) {
 			newDiv.subDivs.push(parser.parseDiv(child, docId, section).value);
 		});
 		parsedData.addDiv(newDiv, docId);
 		return newDiv;
+	}
+
+	parser.createTitle = function(parsedElement, tag) {
+		if (parsedElement.type) {
+			parsedElement.title += parsedElement.type.substr(0,1).toUpperCase() + parsedElement.type.substr(1);
+		} else {
+			parsedElement.title += tag;
+		}
+		if (parsedElement.subtype) {
+			parsedElement.title += ' - ' + parsedElement.subtype.substr(0,1).toUpperCase() + parsedElement.subtype.substr(1);
+		}
+		parsedElement.title += ' ';
+		switch (tag) {
+			case 'Div': {
+				parsedElement.title += parsedElement.n || parsedData.getDivs().length + 1;
+			} break;
+			case 'Doc': {
+				var wit, corresp = parsedData.getWitnessesList().find(witId => {
+					wit = witId;
+					return parsedData.getWitness(witId).corresp === parsedElement.value;
+				});
+				if (corresp) {
+					parsedElement.title += wit;
+				} else {
+					parsedElement.title += parsedElement.n || parsedData.getDocuments()._indexes.length + 1;
+				}
+			}
+		}
+		parsedElement.label = parsedElement.title;
 	}
 
 	/**

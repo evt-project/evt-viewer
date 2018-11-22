@@ -321,7 +321,7 @@ angular.module('evtviewer.tabsContainer')
 					// TOC
 					// evtToc
 					tabs.toc = {
-						label: 'TOC',
+						label: 'TOC.TITLE',
 						name: 'toc',
 						content: '<evt-toc></evt-toc>'
 					};
