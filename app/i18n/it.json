@@ -115,7 +115,9 @@
 	},
 	"MAIN_MENU": {
 		"GENERATE_BOOKMARK": "Genera Segnalibro",
-		"DOWNLOAD_XML": "Scarica XML",
+		"GITHUB_ISSUE": "Segnala un problema",
+		"HELP": "Help",
+		"DOWNLOAD": "Scarica file",
 		"KEYBOARD_SHORT_CUTS": "Scorciatoie da tastiera",
 		"LANGUAGES": "Lingue",
 		"OPEN_LISTS": "Apri liste",
@@ -254,7 +256,7 @@
 		"DIVS": "Sezioni",
 		"FRONT": "Introduzione",
 		"HEADER": "Paratesto e indici",
-		"PAGES": "Pagine",
+		"PAGES": "Folia",
 		"TITLE": "Indice"
 	},
 	"SOURCES": {

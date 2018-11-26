@@ -100,21 +100,6 @@
 				<div class="mainMenu" ng-if="getState('mainMenu') === true">
 					<ul>
 						<li>
-							<span ng-click="openGlobalDialogInfo()">
-								<i class="icon icon-evt_info-alt"></i>
-								{{'MAIN_MENU.PROJECT_INFO' | translate}}</span>
-						</li>
-						<li>
-							<span ng-click="openToc()">
-								<i class="icon icon-evt_info-alt"></i>
-								{{'MAIN_MENU.TOC' | translate}}</span>
-						</li>
-						<li ng-if="getProperty('namedEntitiesLists')">
-							<span ng-click="openGlobalDialogLists()">
-								<i class="icon icon-evt_list"></i>
-								{{'MAIN_MENU.OPEN_LISTS' | translate}}</span>
-						</li>
-						<li>
 							<span ng-click="generateBookmark()">
 								<i class="icon icon-evt_bookmark"></i>
 								{{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
@@ -122,7 +107,24 @@
 						<li ng-if="getProperty('enableXMLdownload')">
 							<span ng-click="downloadXML()">
 								<i class="icon fa fa-download"></i>
-								{{'MAIN_MENU.DOWNLOAD_XML' | translate}}</span>
+								{{'MAIN_MENU.DOWNLOAD' | translate}}</span>
+						</li>
+					</ul>
+					<hr/>
+					<ul>
+						<li>
+							<span>
+								<a href="#" target="_blank">
+										<i class="icon fa fa-question-circle"></i>
+										{{'MAIN_MENU.HELP' | translate}}</a>
+							</span>
+						</li>
+						<li>
+							<span>
+								<a href="https://github.com/evt-project/evt-viewer/issues" target="_blank">
+									<i class="icon fa fa-github"></i>
+									{{'MAIN_MENU.GITHUB_ISSUE' | translate}}</a>
+							</span>
 						</li>
 					</ul>
 					<hr/>

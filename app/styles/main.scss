@@ -450,6 +450,11 @@ pre {
                 box-sizing: border-box;
                 white-space: nowrap;
 
+                > a {
+                    text-decoration: none;
+                    color: #444444;
+                }
+
                 .icon {
                     margin-right: 14px;
                 }
