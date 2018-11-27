@@ -69,7 +69,9 @@ angular.module('evtviewer.dataHandler')
                   currentLineNodes = [];
                }
             };
-            (nodes[node.nodeName] || nodes['default'])();
+            if (currentXmlDoc) {
+              (nodes[node.nodeName] || nodes['default'])();
+            }
             node = lbNodes.iterateNext();
             line = {};
          }

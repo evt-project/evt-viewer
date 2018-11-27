@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config', 'evtDialog',
-      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config, evtDialog) {
+   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config', 'evtDialog', 'evtBox',
+      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config, evtDialog, evtBox) {
          var vm = this;
          
          vm.currentEdition = evtInterface.getState('currentEdition');
@@ -97,12 +97,15 @@ angular.module('evtviewer.search')
                   vm.currentLineId = result.metadata.lbId[index];
             }
             evtInterface.updateState('secondaryContent', '');
-		evtDialog.closeByType('externalSearch');
+            evtDialog.closeByType('externalSearch');
+            evtSearchResults.removeHighlights(result.token);
+            var scrollInfo;
             if (parsedData.getPages().length > 0) {
                   goToAnchorPage();
             } else if (parsedData.getDivs().length > 0) {
-                  goToDiv(result, index);
+                  scrollInfo = goToDiv(result, index);
             }
+            scrollToNode(evtSearchResults.highlightResult(result, index), scrollInfo);
             $(eventElement).removeClass('selected');
             
             setTimeout(function() {
@@ -139,9 +142,31 @@ angular.module('evtviewer.search')
                   if (evtInterface.getState('currentViewMode') !== 'collation') {
                         evtInterface.updateState('currentViewMode', 'collation');
                   }
-            }
+               }
                evtInterface.updateDiv(targetDoc, targetDiv);
                evtInterface.updateUrl();
+               return { targetDoc, wit };
+         }
+
+         function scrollToNode(node, scroll) {
+            if (!node) {
+                  return;
+            }
+            var currentBoxes = evtBox.getList(), boxId;
+            currentBoxes.forEach((box) => {
+               if (scroll.wit && box.type === 'witness' && box.witness === scroll.wit) {
+                  boxId = box.id;
+               } else if (scroll.targetDoc === config.mainDocId) {
+                  boxId = 'mainText';
+               }
+            });
+            var boxElem = document.getElementById(boxId),
+                boxBody = angular.element(boxElem).find('.box-body')[0],
+                padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+            boxBody.scrollTop = node.parentElement.offsetTop - padding;
+            setTimeout(function() {
+               evtSearchResults.removeHighlights();
+            }, 8000);
          }
          
          vm.scrollTo = function(id) {

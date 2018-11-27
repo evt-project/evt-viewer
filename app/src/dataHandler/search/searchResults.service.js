@@ -351,4 +351,46 @@ angular.module('evtviewer.dataHandler')
                }
          });         
       };
+      
+      SearchResults.prototype.removeHighlights = function (inputValue) {
+         var currentBoxes = evtBox.getList();
+         currentBoxes.forEach((box) => {
+               if (box.type === 'text' || box.type === 'witness') {
+                  var instance = new Mark(document.querySelector('[id="' + box.id + '"]'));               
+                  instance.unmark(inputValue);
+               }
+         });         
+      };
+      
+      SearchResults.prototype.highlightResult = function (result, index) {
+            var instance = new Mark(document.querySelector('[id="' + result.metadata.divId[index] + '"]')),
+            matches = [];
+            result.metadata.divId.map((id, i) => {
+                  if (id === result.metadata.divId[index]) {
+                        matches.push(i);
+                  }
+            });
+            var matchIndex = matches.indexOf(index),
+                  markIndex = 0,
+                  regex = new RegExp("[\\s|\-|(]" + result.token +"[\\s|.|,|;|:|\\|/|\'|\"|)|?|!|\-|\`|\~|]", 'g'),
+                  currentNode;
+
+            instance.markRegExp(regex, {
+                  'wildcards': 'enable',
+                  'acrossElements': true,
+                  'caseSensitive': false,
+                  'accuracy': {
+                  'value': 'partially',
+                  'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+                  },
+                  'filter': function(node) {
+                        markIndex++;
+                        if ((markIndex - 1) === matchIndex) {
+                              currentNode = node;
+                        }
+                        return (markIndex - 1) === matchIndex;
+                  }
+            });
+            return currentNode;
+      };
    }]);
