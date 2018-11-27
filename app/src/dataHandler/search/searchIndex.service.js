@@ -47,7 +47,8 @@ angular.module('evtviewer.dataHandler')
                }
             }
          });
-         console.log(JSON.stringify(this.index));
+        //  console.log(JSON.stringify(this.index));
+         console.log(this.index);
          console.timeEnd('INDEX');
          return this.index;
       };

@@ -109,8 +109,9 @@ angular.module('evtviewer.search')
             $(eventElement).removeClass('selected');
             
             setTimeout(function() {
+               evtSearchResults.removeHighlights()
                deferred.resolve();
-            }, 100);
+            }, 5000);
             
             return deferred.promise;
          }
@@ -164,9 +165,6 @@ angular.module('evtviewer.search')
                 boxBody = angular.element(boxElem).find('.box-body')[0],
                 padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
             boxBody.scrollTop = node.parentElement.offsetTop - padding;
-            setTimeout(function() {
-               evtSearchResults.removeHighlights();
-            }, 8000);
          }
          
          vm.scrollTo = function(id) {
