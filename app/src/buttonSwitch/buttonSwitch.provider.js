@@ -229,6 +229,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'next':
 					evtIcon = 'icon-evt_next';
 					break;
+				case 'list-alt':
+					evtIcon = 'fa fa-list-alt';
+					break;
 				case 'pin':
 					evtIcon = 'icon-evt_pin-alt-on';
 					break;
@@ -627,6 +630,15 @@ angular.module('evtviewer.buttonSwitch')
 				case 'openEntity':
 					callback = function() {
 						var vm = this;
+						vm.active = !vm.active;
+					};
+					break;
+				case 'openToc':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						evtInterface.updateState('secondaryContent', 'toc');
+						evtDialog.openByType('toc');
 						vm.active = !vm.active;
 					};
 					break;

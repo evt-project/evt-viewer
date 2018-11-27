@@ -247,6 +247,11 @@ section > div {
             border-radius: 0;
             width: 0px;
 
+            &[data-type="openToc"] {
+                font-size: 1.3em;
+                margin-right: 3px;
+            }
+
             &-label {
                 font-variant: small-caps;
                 font-size: 80%;
