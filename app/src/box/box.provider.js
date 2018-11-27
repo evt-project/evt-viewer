@@ -630,7 +630,6 @@ angular.module('evtviewer.box')
 							var docId = evtInterface.getState('currentDocument');
 							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(id => { return parsedData.getDiv(id).section === 'body'})
 							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(id => { return parsedData.getDiv(id).section === 'body'});
-							console.log(currentDiv);
 							if (currentDiv) {
 								topMenuList.selectors.push({
 									id: 'div_' + currentId,
