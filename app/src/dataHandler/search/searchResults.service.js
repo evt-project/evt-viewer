@@ -93,7 +93,9 @@ angular.module('evtviewer.dataHandler')
                         content: getCaseInsensitiveResults(resultByTokenObjects.content)
                      };
                   }
-                  results['diplomatic'] = [];
+                  if (!results.diplomatic) {
+                      results['diplomatic'] = [];
+                  }
                   results.diplomatic = results.diplomatic.concat(resultToken.content);
                }
             }
@@ -257,7 +259,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       SearchResults.prototype.getCurrentEditionResults = function (searchResults, currentEdition) {
-         var currentResults = [],
+            var currentResults = [],
             edition = {
                'diplomatic': function () {
                var diplomaticResults = searchResults.diplomatic;
