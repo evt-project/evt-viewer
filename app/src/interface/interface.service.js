@@ -1033,9 +1033,10 @@ angular.module('evtviewer.interface')
                 divId = params.s;
             } else {
                 var divs = parsedData.getDocument(docId).divs;
-                if (divs.length > 0) {
-                    divId = divs[0];
-                }
+                divId = divs.find(id => {
+                    var div = parsedData.getDiv(id);
+                    return div && div.section === 'body';
+                });
             }
             // WITNESSES
             var totWits;
