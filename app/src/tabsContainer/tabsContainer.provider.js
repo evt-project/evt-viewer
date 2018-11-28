@@ -389,8 +389,6 @@ angular.module('evtviewer.tabsContainer')
 				tabs[subContentOpened].showSubTabs = true;
 			}
 
-			console.log(subContentOpened, subTabOpened)
-
 			scopeHelper = {
 				// expansion
 				uid: currentId,

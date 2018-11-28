@@ -30,7 +30,7 @@
     </div>
     <div 
         class="evt-tabs-container_panels"
-        ng-if="vm.subTabOpened === ''"
+        ng-if="!vm.subTabOpened"
         ng-class="{'closed': vm.subContentOpened === '', 'noPadding' : vm.subContentOpened === 'toc'}">
         
         <div class="evt-tabs-container_panel"
@@ -43,8 +43,8 @@
     </div>
     <div 
         class="evt-tabs-container_panels"
-        ng-if="vm.subTabOpened !== ''">
-        <div class="evt-tabs-container_panel active"
+        ng-if="vm.subTabOpened">
+        <div class="evt-tabs-container_panel"
             id="{{'subTab_' + subTab}}"
             ng-repeat="subTab in vm.tabs[vm.subContentOpened].subTabs._indexes"
             ng-class="{'active' : vm.subTabOpened === subTab,
