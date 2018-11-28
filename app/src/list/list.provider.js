@@ -33,7 +33,7 @@ angular.module('evtviewer.list')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function(parsedData) {
+    this.$get = function(parsedData, evtInterface) {
         var collection = {},
             list       = [];
         
@@ -153,11 +153,22 @@ angular.module('evtviewer.list')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-            
-            var parsedElements = parsedData.getNamedEntitiesCollectionByName(currentId),
-                selectedLetter = parsedElements ? parsedElements._listKeys[0] : undefined,
-                elementsInListKey = getVisibleElements(currentId, selectedLetter),
-                visibleElements = elementsInListKey ? elementsInListKey.slice(0, 40) : [];
+
+            var currentEntity = evtInterface.getState('currentNamedEntity'),
+                entity = currentEntity ? parsedData.getNamedEntity(currentEntity) : undefined,
+                parsedElements = parsedData.getNamedEntitiesCollectionByName(currentId),
+                selectedLetter;
+
+            if (entity && listType === parsedData.getNamedEntityType(currentEntity)) {
+                selectedLetter = entity._listPos || undefined;
+            } else {
+                selectedLetter = parsedElements ? parsedElements._listKeys[0] : undefined;
+            }
+
+            var elementsInListKey = getVisibleElements(currentId, selectedLetter),
+                startPos = 0,
+                endPos = 41,
+                visibleElements = elementsInListKey ? elementsInListKey.slice(startPos, endPos) : [];
 
             scopeHelper = {
                 // expansion

@@ -259,6 +259,7 @@ angular.module('evtviewer.namedEntity')
             var list = parsedData.getNamedEntities()[vm.entityId].collectionId;
             evtInterface.updateProperty('tabsContainerOpenedContent', 'entitiesLists');
             evtInterface.updateProperty('tabsContainerOpenedTab', list);
+            evtInterface.updateState('currentNamedEntity', vm.entityId);
         }
         /**
          * @ngdoc method

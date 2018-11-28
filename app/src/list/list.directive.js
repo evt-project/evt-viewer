@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.list')
 
-.directive('evtList', function(evtList, parsedData) {
+.directive('evtList', function(evtList) {
     return {
         restrict: 'E',
         scope: {

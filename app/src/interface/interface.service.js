@@ -87,6 +87,7 @@ angular.module('evtviewer.interface')
         currentApparatus   : undefined,
         currentQuote       : undefined,
         currentAnalogue    : undefined,
+        currentNamedEntity    : undefined,
         currentSource      : undefined,
         currentSourceText  : undefined,
         currentVersions    : undefined,
