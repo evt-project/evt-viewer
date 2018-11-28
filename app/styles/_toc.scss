@@ -1,8 +1,11 @@
 .toc {
     &_doc {
         margin: 0;
-        &:nth-child(odd) {
+        &.open {
             background-color: $base-color-light;
+        }
+        &:not(:last-child) {
+            border-bottom: 1px solid $base-color-light;
         }
         &_head {
             cursor: pointer;
@@ -36,14 +39,18 @@
                 font-variant: small-caps;
                 &_sub {
                     font-style: italic;
+                    margin-left: -20px;
                 }
             }
             ul {
                 margin: 3px 0 5px 0;
                 padding-left: 20px;
-            }
-            li {
-                cursor: pointer;
+                li {
+                    cursor: pointer;
+                    span.indexLink:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
         }
     }
