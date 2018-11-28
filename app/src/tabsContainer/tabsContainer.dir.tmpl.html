@@ -31,7 +31,7 @@
     <div 
         class="evt-tabs-container_panels"
         ng-if="!vm.subTabOpened"
-        ng-class="{'closed': vm.subContentOpened === '', 'noPadding' : vm.subContentOpened === 'toc'}">
+        ng-class="{'closed': vm.subContentOpened === '', 'noPadding' : vm.subContentOpened === 'toc' || vm.subContentOpened === 'entitiesLists'}">
         
         <div class="evt-tabs-container_panel"
             id="{{'subTab_' + tab}}"

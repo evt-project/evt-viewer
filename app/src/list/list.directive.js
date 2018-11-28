@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.list')
 
-.directive('evtList', function(evtList) {
+.directive('evtList', function(evtList, $timeout) {
     return {
         restrict: 'E',
         scope: {
@@ -46,7 +46,16 @@ angular.module('evtviewer.list')
                 listType: scope.listType
             };
             var currentList = evtList.build(scope.listId, scope);
-            
+
+            scope.vm.scrollToElement = function(entityId) {
+                $timeout(function() {
+                    var scrollDiv = angular.element(element).find('.scrollableDiv')[0];
+                    var entity = angular.element(scrollDiv).find('[data-entity-id="' + entityId +'"]');
+                    if (entity.length > 0 && entity[0]) {
+                        scrollDiv.scrollTop = entity[0].offsetTop;
+                    }
+                });
+            }
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentList){

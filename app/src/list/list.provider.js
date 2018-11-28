@@ -73,7 +73,7 @@ angular.module('evtviewer.list')
                 i = 0; 
             while (i < 10 && i < vm.elementsInListKey.length) {
                 var newElement = vm.elementsInListKey[last+i];
-                if (newElement && vm.visibleElements.indexOf(newElement) <= 0) {
+                if (newElement && vm.visibleElements.indexOf(newElement) < 0) {
                     vm.visibleElements.push(newElement);                    
                 }
                 i++;
@@ -167,7 +167,8 @@ angular.module('evtviewer.list')
 
             var elementsInListKey = getVisibleElements(currentId, selectedLetter),
                 startPos = 0,
-                endPos = 41,
+                entityPos = entity && listType === parsedData.getNamedEntityType(currentEntity) ? elementsInListKey.indexOf(currentEntity) : undefined,
+                endPos = entityPos ? entityPos + 10 : startPos + 41,
                 visibleElements = elementsInListKey ? elementsInListKey.slice(startPos, endPos) : [];
 
             scopeHelper = {
@@ -211,6 +212,14 @@ angular.module('evtviewer.list')
         list.destroy = function(tempId) {
             delete collection[tempId];
         };
+
+        list.scrollToElemById = function(listId, entityId) {
+            list.forEach(currentList => {
+                if (currentList.id === listId) {
+                    collection[listId].scrollToElement(entityId);
+                }
+            });
+        }
 
         return list;
     };

@@ -260,6 +260,9 @@ angular.module('evtviewer.namedEntity')
             evtInterface.updateProperty('tabsContainerOpenedContent', 'entitiesLists');
             evtInterface.updateProperty('tabsContainerOpenedTab', list);
             evtInterface.updateState('currentNamedEntity', vm.entityId);
+            setTimeout(function() {
+                evtList.scrollToElemById(list, vm.entityId);
+            }, 1000);
         }
         /**
          * @ngdoc method
