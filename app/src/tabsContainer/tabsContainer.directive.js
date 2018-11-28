@@ -66,6 +66,8 @@ angular.module('evtviewer.tabsContainer')
                     if (currentTabContainer.type === 'projectInfo') {
                         evtInterface.setHomePanel('');
                     }
+                    evtInterface.updateProperty('tabsContainerOpenedContent', '');
+                    evtInterface.updateProperty('tabsContainerOpenedTab', '');
                     currentTabContainer.destroy();
                 }
             });

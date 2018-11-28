@@ -514,6 +514,10 @@ angular.module('evtviewer.dataHandler')
 		encodingDetails[detailName] = value;
 	};
 
+	parsedData.getNamedEntities = function() {
+		return namedEntities;
+	}
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getNamedEntityTypeIcon

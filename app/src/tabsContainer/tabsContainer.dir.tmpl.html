@@ -7,7 +7,7 @@
             class="evt-tabs-container_header"
             ng-repeat-start="tab in ::vm.tabs._indexes"
             ng-click="vm.toggleSubTab(tab)"
-            ng-class="{'active' : vm.subContentOpened === tab && (!vm.tabs[tab].subTabs || vm.tabs[tab].subTabs._indexes.length === 0),
+            ng-class="{'active' : vm.subContentOpened === tab,
                         'hasSubTabs': vm.tabs[tab].showSubTabs }">
             <i ng-if="vm.tabs[tab].subTabs && vm.tabs[tab].subTabs._indexes.length > 0"
                class="fa fa-caret-right"

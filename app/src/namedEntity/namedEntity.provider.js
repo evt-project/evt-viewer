@@ -151,7 +151,7 @@ angular.module('evtviewer.namedEntity')
                 evtInterface.updateState('currentDoc', occurrence.docId);
             }
             evtInterface.updateUrl();
-            if (evtInterface.getState('secondaryContent') === 'entitiesList') {
+            if (evtInterface.getState('secondaryContent') === 'toc') {
                 evtInterface.updateState('secondaryContent', '');
             }
             $timeout(function() {
@@ -254,9 +254,11 @@ angular.module('evtviewer.namedEntity')
 
         var openEntity = function() {
             var vm = this;
-            evtInterface.updateState('secondaryContent', 'entitiesList');
-            evtDialog.openByType('entitiesList');
-            // evtInterface.setHomePanel('');
+            evtInterface.updateState('secondaryContent', 'toc');
+            evtDialog.openByType('toc');
+            var list = parsedData.getNamedEntities()[vm.entityId].collectionId;
+            evtInterface.updateProperty('tabsContainerOpenedContent', 'entitiesLists');
+            evtInterface.updateProperty('tabsContainerOpenedTab', list);
         }
         /**
          * @ngdoc method

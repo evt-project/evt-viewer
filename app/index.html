@@ -165,19 +165,6 @@
 			<section
 				class="secondary-container"
 				ng-show="getSecondaryContentOpened() !== ''">
-				<evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
-					ng-if="getProperty('namedEntitiesLists')">
-					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
-						data-type="entitiesList"
-						data-orientation="vertical">
-					</evt-tabs-container>
-				</evt-dialog>
-				<evt-dialog data-type="globalInfo" data-title="DIALOGS.PROJECT_INFO">
-					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
-						data-type="projectInfo"
-						data-orientation="vertical">
-					</evt-tabs-container>
-				</evt-dialog>
 				<evt-dialog data-type="toc" data-title="TOC.HEADER">
 					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'toc'"
 						data-type="toc"

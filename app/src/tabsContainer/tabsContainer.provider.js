@@ -368,8 +368,28 @@ angular.module('evtviewer.tabsContainer')
 					break;
 
 			}
-			
-			var subContentOpened = tabs._indexes.length > 0 ? tabs._indexes[0] : '';
+			var content = evtInterface.getProperty('tabsContainerOpenedContent'),
+					tab = evtInterface.getProperty('tabsContainerOpenedTab'),
+					subContentOpened, subTabOpened;
+			if (content) {
+				subContentOpened = content;
+			} else if (tabs._indexes.length > 0) {
+				subContentOpened = tabs._indexes[0];
+			} else {
+				subContentOpened = '';
+			}
+			if (tab) {
+				subTabOpened = tab;
+			} else if (tabs[subContentOpened].subTabs && tabs[subContentOpened].subTabs._indexes.length > 0) {
+				subTabOpened = tabs[subContentOpened].subTabs._indexes[0];
+			} else {
+				subTabOpened = '';
+			}
+			if (subTabOpened) {
+				tabs[subContentOpened].showSubTabs = true;
+			}
+
+			console.log(subContentOpened, subTabOpened)
 
 			scopeHelper = {
 				// expansion
@@ -381,7 +401,7 @@ angular.module('evtviewer.tabsContainer')
 
 				// model
 				subContentOpened: subContentOpened,
-				subTabOpened: false,
+				subTabOpened: subTabOpened,
 
 				// function
 				toggleSubTabs: toggleSubTabs,
