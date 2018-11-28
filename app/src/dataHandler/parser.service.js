@@ -926,7 +926,7 @@ angular.module('evtviewer.dataHandler')
 			angular.forEach(angular.element(element).find(parser.parserProperties['defContentEdition']),
 				function(editionElement) {
 					//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-					parser.splitPages(pages, editionElement, newDoc.value, defContentEdition, newDocPages);
+					parser.splitPages(pages, editionElement, newDoc.value, parser.parserProperties['defContentEdition'], newDocPages);
 				});
 		}
 	}
