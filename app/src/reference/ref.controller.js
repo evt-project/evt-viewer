@@ -46,12 +46,16 @@ angular.module('evtviewer.reference')
      */
 	vm.handleRefClick = function(event) {
 		event.stopPropagation();
+		if (vm.hasPopup) {
+			vm.showPopup = !vm.showPopup;
+			return;
+		}
 		if (vm.target.substr(0, 1) === '#') {
 			switch (vm.type) {
 				case 'biblRef':
 				case 'biblio':
 				case 'bibl': {
-					handleBiblRef();
+					vm.handleBiblRef();
 				} break;
 				case 'witlink': {
 					handleWitRef();
@@ -68,7 +72,7 @@ angular.module('evtviewer.reference')
 		}
 	};
 
-	var handleBiblRef = function() {
+	vm.handleBiblRef = function() {
 		var target = vm.target.replace('#', ''),
 		bibliographicRef = parsedData.getBibliographicRefById(target);
 		if (bibliographicRef) {
@@ -105,14 +109,6 @@ angular.module('evtviewer.reference')
 			}
 			evtInterface.updateUrl();
 		}
-	}
-
-	vm.togglePopup = function(event) {
-		event.stopPropagation();
-		if (!vm.hasPopup) {
-			return;
-		}
-		vm.tooltip.toggle();
 	}
 
 	/**

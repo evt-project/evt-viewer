@@ -72,19 +72,19 @@ angular.module('evtviewer.reference')
                 return;
             }
 
-            var tooltipTitle = '',
+            var popupText = '',
                 target = currentTarget.replace('#', ''),
                 hasPopup = (currentType === 'bibl' || currentType === 'biblio')
                     && parsedData.getBibliographicRefsCollection()._indexes.indexOf(target) >= 0;
             if (hasPopup) {
-                tooltipTitle = parsedData.getBibliographicRefsCollection()[target].plainText;
+                popupText = parsedData.getBibliographicRefsCollection()[target].plainText;
             }
 
             scopeHelper = {
                 // expansion
                 uid           : currentId,
                 defaults      : angular.copy(defaults),
-                tooltipTitle,
+                popupText,
                 hasPopup,
 
                 // model

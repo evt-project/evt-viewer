@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.reference')
 
-.directive('ref', function(evtRef, $timeout) {
+.directive('ref', function(evtRef) {
     return { //rivedere dipendenze
         restrict: 'E, C',
         scope: {
@@ -30,19 +30,9 @@ angular.module('evtviewer.reference')
         controllerAs: 'vm',
         controller: 'RefCtrl',
         templateUrl: 'src/reference/ref.dir.tmpl.html',
-        link: function(scope, element) {
+        link: function(scope) {
             // Initialize reading
             var currentRef = evtRef.build(scope);
-            $timeout(function() {
-                var tooltipReference = angular.element(element).find('.evtRef_ref')[0];
-                var tooltip = new Tooltip(tooltipReference, {
-                    title: currentRef.tooltipTitle,
-                    placement: 'top',
-                    boundariesElement: tooltipReference.parentElement,
-                    popperOptions: {}
-                });
-                currentRef.tooltip = tooltip;
-            });
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentRef && currentRef.destroy) {

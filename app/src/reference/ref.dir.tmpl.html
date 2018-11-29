@@ -1,8 +1,23 @@
-<span class="evtRef">
+<span
+  class="evtRef"
+  ng-click="vm.handleRefClick($event)">
   <span
     class="evtRef_ref"
-    ng-mouseout="vm.togglePopup($event)"
-    ng-mouseover="vm.togglePopup($event)"
-    ng-click="vm.handleRefClick($event)"
+    ng-class="{ 'hasPopup': vm.hasPopup }"
     ng-transclude></span>
+  <span ng-if="vm.showPopup" class="evtRef_popup_arrow"></span>
+  <div
+    ng-if="vm.showPopup"
+    class="evtRef_popup">
+    <p>
+      <i class="icon fa fa-book"></i>
+      {{vm.popupText}}
+    </p>
+    <button-switch
+      data-type="openEntity"
+      data-icon="list"
+      data-title="BUTTONS.OPEN_LIST"
+      ng-click="vm.handleBiblRef()"></button-switch>
+    </p>
+  </div>
 </span>
