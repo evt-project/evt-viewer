@@ -74,27 +74,18 @@ angular.module('evtviewer.tabsContainer')
 			icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
 		}
 
-		var scrollToSubTab = function(vm, tab, subTab) {
-			if (!vm.tabs[tab].scrollDisabled) {
-				// 
-				console.log('to do')
-			}
-		};
-
 		var toggleSubTab = function(tab, subTab) {
 			vm = this;
+			if (vm.subContentOpened === tab) {
+				vm.subContentOpened = '';
+				if (vm.tabs[tab].subTabs && vm.tabs[tab].showTabs) {
+					toggleSubTabs(vm, tab);
+				}
+				return;
+			}
 			vm.subContentOpened = tab;
 			if (subTab) {
 				vm.subTabOpened = subTab;
-					// switch(tab) {
-					// 		case 'projectInfo':
-					// 		case 'entitiesLists':
-					// 			vm.subTabOpened = subTab;
-					// 			break;
-					// 		default:
-					// 			vm.subTabOpened = '';
-					// 			scrollToSubTab(vm, tab, subTab);
-					// }
 			} else if (vm.tabs[tab].subTabs) {
 					toggleSubTabs(vm, tab);
 					vm.subTabOpened = vm.tabs[tab].subTabs._indexes[0] || '';
