@@ -76,19 +76,14 @@ angular.module('evtviewer.tabsContainer')
 
 		var toggleSubTab = function(tab, subTab) {
 			vm = this;
-			if (vm.subContentOpened === tab) {
-				vm.subContentOpened = '';
-				if (vm.tabs[tab].subTabs && vm.tabs[tab].showTabs) {
-					toggleSubTabs(vm, tab);
-				}
-				return;
-			}
 			vm.subContentOpened = tab;
 			if (subTab) {
 				vm.subTabOpened = subTab;
 			} else if (vm.tabs[tab].subTabs) {
 					toggleSubTabs(vm, tab);
-					vm.subTabOpened = vm.tabs[tab].subTabs._indexes[0] || '';
+					if (vm.tabs[tab].subTabs.indexOf(vm.subTabOpened) < 0) {
+						vm.subTabOpened = vm.tabs[tab].subTabs._indexes[0] || '';
+					}
 			} else {
 				vm.subTabOpened = '';
 			}
