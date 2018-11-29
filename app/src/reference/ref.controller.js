@@ -71,13 +71,13 @@ angular.module('evtviewer.reference')
 		var target = vm.target.replace('#', ''),
 		bibliographicRef = parsedData.getBibliographicRefById(target);
 		if (bibliographicRef) {
-			evtInterface.updateState('secondaryContent', 'globalInfo');
-			evtDialog.openByType('globalInfo');
-			evtInterface.setHomePanel('bibliography');
+			evtInterface.updateState('secondaryContent', 'toc');
+			evtDialog.openByType('toc');
+			evtInterface.updateProperty('tabsContainerOpenedContent', 'bibliography');
 			evtHighlight.setHighlighted(target);
 			$timeout(function() {
 				evtHighlight.setHighlighted('');
-			}, 2000);
+			}, 2500);
 		}
 	}
 
