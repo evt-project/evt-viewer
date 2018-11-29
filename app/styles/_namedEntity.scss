@@ -60,7 +60,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 	&__details {
 		display: none;
 		//padding-left: 16px;
-		font-size: 85%;
+		font-size: 95%;
 
 		border-top: 3px double $base-color-middle;
 		
@@ -75,7 +75,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 			span {
 				padding: 5px;
 				display: inline-block;
-				font-size: 90%;
+				font-size: 95%;
 				cursor: pointer;
 				border-left: 1px solid $named-entities-background-color-darker;
 				&:first-child {

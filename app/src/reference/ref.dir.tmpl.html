@@ -3,21 +3,39 @@
   ng-click="vm.handleRefClick($event)">
   <span
     class="evtRef_ref"
-    ng-class="{ 'hasPopup': vm.hasPopup }"
+    ng-class="{ 'hasPopup': vm.showPopup }"
     ng-transclude></span>
-  <span ng-if="vm.showPopup" class="evtRef_popup_arrow"></span>
   <div
     ng-if="vm.showPopup"
     class="evtRef_popup">
-    <p>
-      <i class="icon fa fa-book"></i>
-      {{vm.popupText}}
-    </p>
-    <button-switch
-      data-type="openEntity"
-      data-icon="list"
-      data-title="BUTTONS.OPEN_LIST"
-      ng-click="vm.handleBiblRef()"></button-switch>
-    </p>
+    <span class="evtRef_popup_header">
+        <!-- HEADER -->
+        <div class="evtRef_popup_tools">
+          <button-switch
+            data-type="openEntity"
+            data-icon="list"
+            data-title="BUTTONS.OPEN_LIST"
+            ng-click="vm.handleBiblRef()"></button-switch>
+          <!-- <button-switch 
+                title="BUTTONS.PIN_REMOVE"
+                ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"
+                data-label=""
+                data-icon="remove"
+                data-type="pin-off"
+                ng-click="vm.togglePin()"></button-switch>
+          <button-switch 
+                title="BUTTONS.PIN_TOGGLE"
+                ng-if="::vm.isPinAvailable() && vm.location !== 'pinned'"
+                data-label=""
+                data-icon="pin"
+                data-type="pin"
+                ng-class="{'active' : vm.isPinned()}"
+                ng-click="vm.togglePin()"></button-switch> -->
+        </div>
+        <div>
+          <i class="icon fa fa-book"></i>
+          {{vm.popupText}}
+        </div>
+    </span>
   </div>
 </span>
