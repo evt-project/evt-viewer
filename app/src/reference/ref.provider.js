@@ -162,6 +162,12 @@ angular.module('evtviewer.reference')
                 }
             });  
         };
+        
+        reference.closeAllPopups = function() {
+            angular.forEach(collection, function(currentRef) {
+                currentRef.showPopup = false;
+            });  
+        };
 
         return reference;
     };

@@ -47,6 +47,9 @@ angular.module('evtviewer.reference')
 	vm.handleRefClick = function(event) {
 		event.stopPropagation();
 		if (vm.hasPopup) {
+			if (!vm.showPopup) {
+				evtRef.closeAllPopups();
+			}
 			vm.showPopup = !vm.showPopup;
 			return;
 		}
