@@ -8,18 +8,18 @@
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
 
-    "defaultViewMode": "imgTxt",
+    "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
                                 "viewMode" : "readingTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "MULTIPLE_RECENSIONS",
                                 "icon"     : "mode-versions",
                                 "viewMode" : "versions",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "IMAGE_TEXT",
@@ -37,7 +37,7 @@
                                 "label"    : "COLLATION",
                                 "icon"     : "mode-collation",
                                 "viewMode" : "collation",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "SOURCE_TEXT",
@@ -65,7 +65,7 @@
         "visible": true
     }],
 
-    "enableXMLdownload" : false,
+    "enableXMLdownload" : true,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": false,
+    "showDocumentSelector": true,
 
 	"variantColors": {
 		"type": {
@@ -136,30 +136,17 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-
-    "versions" : ["rec2", "rec1", "rec3"],
-    "witnessesGroups": [
-        {
-            "groupName" : "Group 1",
-            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
-        },
-        {
-            "groupName" : "Group 2",
-            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
-        }
-    ],
+    "versions" : [],
+    "witnessesGroups": [ ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
     "showReadingExponent": true,
 
-    "showInlineCriticalApparatus": true,
-    "showInlineSources": true,
-    "showInlineAnalogues": true,
-
-
-
+    "showInlineCriticalApparatus": false,
+    "showInlineSources": false,
+    "showInlineAnalogues": false,
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {
@@ -176,6 +163,8 @@
 			"enabled": true
 		}
 	},
+
+   "virtualKeyboardKeys": [],
 
     "languages": ["en", "it"]
 }

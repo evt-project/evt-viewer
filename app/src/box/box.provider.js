@@ -472,6 +472,7 @@ angular.module('evtviewer.box')
 		box.build = function(scope, vm) {
 			var currentId = vm.id || idx++,
 				currentType = vm.type || 'default',
+            currentEdition = vm.edition,
 				topMenuList = {
 					selectors: [],
 					buttons: [],
@@ -487,7 +488,8 @@ angular.module('evtviewer.box')
 					topBoxOpened: false,
 					fontSizeBtn: false,
 					fontSize: '100',
-					topBoxContent: ''
+					topBoxContent: '',
+               searchBox: false
 				},
 				appFilters = [],
 				updateContent,
@@ -580,8 +582,8 @@ angular.module('evtviewer.box')
 						label: 'BUTTONS.MSD',
 						type: 'msDesc'
 					});
-                    
-                    
+     
+     
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						console.log("function update content Image");
@@ -592,8 +594,45 @@ angular.module('evtviewer.box')
 						scope.vm.isLoading = false;
 					};
 					break;
-				case 'text':
-					//TODO: Differentiate main text from second one
+            case 'text':
+               if(currentId === 'mainText' || currentId === 'mainText1') {
+                  bottomMenuList.buttons.push({
+                     title: 'Search',
+                     label: 'Search',
+                     icon: 'search',
+                     type: 'searchToolsInternal',
+                     show: function() {
+                        return true;
+                     },
+                     disabled: function() {
+                        return true;
+                     }
+                  });
+                  bottomMenuList.buttons.push({
+                     title: 'Create index for enable search',
+                     label: 'Create index',
+                     icon: '',
+                     type: 'searchIndex',
+                     show: function() {
+                        return true;
+                     }
+                  });
+               }
+               else {
+                  bottomMenuList.buttons.push({
+                     title: 'Search',
+                     label: 'Search',
+                     icon: 'search',
+                     type: 'searchToolsInternal',
+                     show: function() {
+                        return true;
+                     },
+                     disabled: function() {
+                        return true;
+                     }
+                  });
+               }
+               
 					if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
 						topMenuList.selectors.push({
 							id: 'document_' + currentId,
@@ -874,7 +913,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "'+vm.witness+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "' + vm.witness + '" }\' }}</span>';
 
 						if (vm.witness !== undefined) {
 							// Main content
@@ -910,13 +949,13 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-				// /////////// //
-				// Case source //
-				// ////////////////////////////////////////////////////////////////////////////
-				// It loads the parsed text of the current source text. Available a selector //
-				// to choose the source to show, a button for bibliographic reference and a  //
-				// button to change font size. | author --> CM                               //
-				// ////////////////////////////////////////////////////////////////////////////
+					// /////////// //
+					// Case source //
+					// ////////////////////////////////////////////////////////////////////////////
+					// It loads the parsed text of the current source text. Available a selector //
+					// to choose the source to show, a button for bibliographic reference and a  //
+					// button to change font size. | author --> CM                               //
+					// ////////////////////////////////////////////////////////////////////////////
 				case 'source':
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,
@@ -943,7 +982,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "'+scope.vm.source+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
 
 						// Main content
 						var sourceObj = parsedData.getSource(scope.vm.source),
@@ -961,7 +1000,7 @@ angular.module('evtviewer.box')
 										scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
 										scope.vm.isLoading = false;
 									});
-									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
+									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText')));
 									if (sourceBibl) { updateTopBoxContent(sourceBibl); }
 								} catch (err) {
 									_console.log(err);
@@ -1014,7 +1053,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "'+vm.version+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "' + vm.version + '" }\' }}</span>';
 
 						if (vm.version !== undefined) {
 							var currentDocId = evtInterface.getState('currentDoc'),
@@ -1081,6 +1120,7 @@ angular.module('evtviewer.box')
 			}
 
 			scopeHelper = {
+            currentEdition: currentEdition,
 				// expansion
 				uid: currentId,
 				defaults: angular.copy(defaults),
@@ -1270,8 +1310,20 @@ angular.module('evtviewer.box')
 				}
 			}
 		};
-
+		
+		//TODO Add documentation
+		box.getEditionById = function (currentBoxId) {
+         return collection[currentBoxId].edition;
+      };
+		
+		box.getState = function (currentBoxId, key) {
+         return collection[currentBoxId].state[key];
+      };
+		
+		box.updateState = function (currentBoxId, key, value) {
+        collection[currentBoxId].state[key] = value;
+      };
+		
 		return box;
 	};
-
 });

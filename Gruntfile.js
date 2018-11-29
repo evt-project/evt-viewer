@@ -26,7 +26,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ngdocs');
 
   grunt.loadNpmTasks('grunt-markdown');
-  
+
   grunt.loadNpmTasks('grunt-text-replace'); // Used to automatically replace the path to config.json in GLOBALCONFIGS
 
   // Define the configuration for all the tasks
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
       installation: {
         src: ['<%= yeoman.docs %>/installation/*.ngdoc'],
         title: 'Development Enviroment Preparation'
-      }, 
+      },
       api: {
         src: ['<%= yeoman.docs %>/index.ngdoc', '<%= yeoman.app %>/src/evtviewer.js', '<%= yeoman.app %>/src/**/*.js', '!<%= yeoman.app %>/src/mobile/*.js'],
         title: 'EVT 2 Dev Documentation'
@@ -106,6 +106,18 @@ module.exports = function (grunt) {
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
+      },
+      /*babel: {
+        files: ['<%= yeoman.app %>/src/dataHandler/search/searchDocument.service.js',
+                '<%= yeoman.app %>/src/dataHandler/search/searchPoetry.service.js',
+                '<%= yeoman.app %>/src/dataHandler/search/criticalEditionHandler.service.js'],
+        tasks: ['babel']
+      },*/
+      webpack: {
+        files: ['<%= yeoman.app %>/src/dataHandler/search/searchIndex.service.js',
+               '<%= yeoman.app %>/src/dataHandler/search/searchQuery.service.js',
+               '<%= yeoman.app %>/src/dataHandler/search/searchResults.service.js'],
+         tasks: ['webpack']
       },
       // gruntfile: {
       //   files: ['Gruntfile.js']
@@ -285,6 +297,29 @@ module.exports = function (grunt) {
           debugInfo: true
         }
       }
+    },
+
+    // Compiles ES6 to ES5
+    /*babel: {
+       options: {
+             sourceMap: true,
+             presets: ['env']
+       },
+       dist: {
+          files: {
+             'app/dist/comp/searchDocument.service.js': 'app/src/dataHandler/search/searchDocument.service.js',
+             'app/dist/comp/searchPoetry.service.js': 'app/src/dataHandler/search/searchPoetry.service.js',
+             'app/dist/comp/criticalEditionHandler.service.js': 'app/src/dataHandler/search/criticalEditionHandler.service.js',
+          }
+       }
+     },*/
+
+    // Module bundler
+    webpack: {
+      options: {
+        progress: true
+      },
+      app: require('./webpack.config')
     },
 
     // Renames files for browser caching purposes
@@ -522,6 +557,8 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
+      /*babel*/
+      'webpack',
       'connect:livereload',
       'watch'
     ]);
@@ -531,7 +568,7 @@ module.exports = function (grunt) {
   //   grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
   //   grunt.task.run(['serve:' + target]);
   // });
-
+   //grunt.registerTask('default', ['babel']);
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
