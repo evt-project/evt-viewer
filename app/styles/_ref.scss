@@ -3,11 +3,14 @@
 /* *************************** */
 
 .evtRef {
-    display: inline;
-    text-decoration: underline;
-
-    &:hover {
-    	cursor: pointer;
-    	color: #666;
+    &_ref {
+        display: inline;
+        text-decoration: underline;
+    
+        &:hover {
+            cursor: pointer;
+            color: #666;
+        }
     }
+
 }

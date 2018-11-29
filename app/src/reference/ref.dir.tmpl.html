@@ -1,1 +1,8 @@
-<span ng-click="handleRefClick($event)" ng-transclude></span>
+<span class="evtRef">
+  <span
+    class="evtRef_ref"
+    ng-mouseout="vm.togglePopup($event)"
+    ng-mouseover="vm.togglePopup($event)"
+    ng-click="vm.handleRefClick($event)"
+    ng-transclude></span>
+</span>

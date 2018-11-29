@@ -44,7 +44,8 @@ angular.module('evtviewer.reference')
      * @author MR
      * @author CDP
      */
-	vm.handleRefClick = function(oEvent) {
+	vm.handleRefClick = function(event) {
+		event.stopPropagation();
 		if (vm.target.substr(0, 1) === '#') {
 			switch (vm.type) {
 				case 'biblRef':
@@ -104,6 +105,14 @@ angular.module('evtviewer.reference')
 			}
 			evtInterface.updateUrl();
 		}
+	}
+
+	vm.togglePopup = function(event) {
+		event.stopPropagation();
+		if (!vm.hasPopup) {
+			return;
+		}
+		vm.tooltip.toggle();
 	}
 
 	/**

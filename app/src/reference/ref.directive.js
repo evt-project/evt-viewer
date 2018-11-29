@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.reference')
 
-.directive('ref', function(evtRef) {
+.directive('ref', function(evtRef, $timeout) {
     return { //rivedere dipendenze
         restrict: 'E, C',
         scope: {
@@ -29,19 +29,20 @@ angular.module('evtviewer.reference')
         transclude: true,
         controllerAs: 'vm',
         controller: 'RefCtrl',
-        template: `<span><span ng-if="!vm.hasPopover" class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>
-        <evt-popover
-            ng-if="vm.hasPopover"
-            data-trigger="over"
-            data-tooltip="{{vm.tooltip}}"
-            data-parent-ref="{{vm.parentRef}}">
-            <span class="evtRef" ng-click="vm.handleRefClick($event)" ng-transclude></span>
-        </evt-popover>
-        </span>`,
-        link: function(scope) {
+        templateUrl: 'src/reference/ref.dir.tmpl.html',
+        link: function(scope, element) {
             // Initialize reading
             var currentRef = evtRef.build(scope);
-
+            $timeout(function() {
+                var tooltipReference = angular.element(element).find('.evtRef_ref')[0];
+                var tooltip = new Tooltip(tooltipReference, {
+                    title: currentRef.tooltipTitle,
+                    placement: 'top',
+                    boundariesElement: tooltipReference.parentElement,
+                    popperOptions: {}
+                });
+                currentRef.tooltip = tooltip;
+            });
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentRef && currentRef.destroy) {

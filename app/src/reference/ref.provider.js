@@ -72,26 +72,25 @@ angular.module('evtviewer.reference')
                 return;
             }
 
-            var tooltip = '',
-                hasPopover = currentType === 'bibl' || currentType === 'biblio',
+            var tooltipTitle = '',
                 target = currentTarget.replace('#', ''),
-                parentRef;
-            if (hasPopover && parsedData.getBibliographicRefsCollection()._indexes.indexOf(target) >= 0) {
-                tooltip = parsedData.getBibliographicRefsCollection()[target].plainText;
-                // parentRef = scope.$parent;
+                hasPopup = (currentType === 'bibl' || currentType === 'biblio')
+                    && parsedData.getBibliographicRefsCollection()._indexes.indexOf(target) >= 0;
+            if (hasPopup) {
+                tooltipTitle = parsedData.getBibliographicRefsCollection()[target].plainText;
             }
 
             scopeHelper = {
                 // expansion
                 uid           : currentId,
                 defaults      : angular.copy(defaults),
-                tooltip,
-                hasPopover,
-                parentRef,
+                tooltipTitle,
+                hasPopup,
 
                 // model
                 type         : currentType,
-                target       : currentTarget
+                target       : currentTarget,
+                showPopup    : false
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
@@ -117,6 +116,9 @@ angular.module('evtviewer.reference')
          * @param {string} tempId id of <code>&lt;ref&gt;</code> to destroy
          */
         reference.destroy = function(tempId) {
+            if (collection[tempId].tooltip) {
+                collection[tempId].tooltip.dispose();
+            }
             delete collection[tempId];
         };
         /**
