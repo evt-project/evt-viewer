@@ -42,7 +42,7 @@
     .box-top-box, .box-bottom-box{
         background: #fff;
         text-align: left;
-        font-size: 90%;
+        font-size: 95%;
         margin-top: 42px;
         margin-bottom: 42px;
         display: none;
@@ -302,8 +302,8 @@
     // BODY
     &.topBoxOpened {
         .box-body {
-            color: transparent !important;
-            text-shadow: 0 0 5px #000;
+            color: $box-top-box-backgound-color !important;
+            // text-shadow: 0 0 5px #000;
             * {
                 background: transparent !important;
             }

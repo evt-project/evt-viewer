@@ -42,10 +42,7 @@ angular.module('evtviewer.toc')
             changeView();
             updateWits(doc);
         }
-        var section = parsedData.getDiv(div).section;
-        if (section === 'body') {
-            evtInterface.updateDiv(doc, div);
-        }
+        evtInterface.updateDiv(doc, div);
         evtInterface.updateState('secondaryContent', '');
         evtInterface.updateUrl();
     }

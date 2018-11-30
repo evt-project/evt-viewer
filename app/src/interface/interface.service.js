@@ -1036,11 +1036,7 @@ angular.module('evtviewer.interface')
             if (params.s && parsedData.getDiv(params.s)) {
                 divId = params.s;
             } else {
-                var divs = parsedData.getDocument(docId).divs;
-                divId = divs.find(id => {
-                    var div = parsedData.getDiv(id);
-                    return div && div.section === 'body';
-                });
+                divId = parsedData.getDocument(docId).divs[0] || '';
             }
             // WITNESSES
             var totWits;

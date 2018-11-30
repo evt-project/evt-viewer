@@ -289,16 +289,16 @@ angular.module('evtviewer.select')
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList, formattedList) {
+					formatOptionList = function(optionList, formattedList, section) {
 						var allDivs = parsedData.getDivs();
 						optionList.forEach((divId) => {
-							if (allDivs[divId].section === 'body') {
+							if (allDivs[divId].section === section) {
 								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
 									allDivs[divId].type = 'groupTitle';
 								}
 								formattedList.push(allDivs[divId]);
 								if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
-									formatOptionList(allDivs[divId].subDivs, formattedList);
+									formatOptionList(allDivs[divId].subDivs, formattedList, section);
 								}	
 							}
 						});
@@ -307,7 +307,9 @@ angular.module('evtviewer.select')
 						return option;
 					};
 					var currentDoc = evtInterface.getState('currentDoc');
-					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
+					var div = parsedData.getDiv(evtInterface.getState('currentDivs')[currentDoc]);
+					var section = div ? div.section : 'body';
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList, section);
 					break;
 				case 'witnessDiv':
 					callback = function(oldOption, newOption) {
@@ -318,16 +320,16 @@ angular.module('evtviewer.select')
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList, formattedList) {
+					formatOptionList = function(optionList, formattedList, section) {
 						var allDivs = parsedData.getDivs();
 						optionList.forEach((divId) => {
-							if (allDivs[divId].section === 'body') {
+							if (allDivs[divId].section === section) {
 								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
 									allDivs[divId].type = 'groupTitle';
 								}
 								formattedList.push(allDivs[divId]);
 								if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
-									formatOptionList(allDivs[divId].subDivs, formattedList);
+									formatOptionList(allDivs[divId].subDivs, formattedList, section);
 								}
 							}
 						});
@@ -336,7 +338,9 @@ angular.module('evtviewer.select')
 						return option;
 					};
 					var currentDoc = parsedData.getDiv(initValue).doc;
-					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
+					var div = parsedData.getDiv(evtInterface.getState('currentDivs')[currentDoc]);
+					var section = div ? div.section : 'body';
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList, section);
 					break;
 				case 'edition':
 				case 'comparingEdition':

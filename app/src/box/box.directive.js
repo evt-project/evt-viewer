@@ -99,7 +99,8 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
-                boxBody = angular.element(element).find('.box-body')[0];
+                boxBody = angular.element(element).find('.box-body')[0],
+                boxTopBox = angular.element(element).find('.box-top-box')[0];
 
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
@@ -265,7 +266,11 @@ angular.module('evtviewer.box')
                         var divElem = $('#'+currentBox.uid).find('#'+divId);
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (divElem.length > 0 && divElem[0] !== undefined) {
-                            boxBody.scrollTop = divElem[0].offsetTop-padding;
+                            if (parsedData.getDiv(divId).section === 'front') {
+                                boxTopBox.scrollTop = divElem[0].offsetTop-padding;
+                            } else {
+                                boxBody.scrollTop = divElem[0].offsetTop-padding;
+                            }
                         }
                     });
                 };
@@ -497,8 +502,9 @@ angular.module('evtviewer.box')
 
                 // TODO-POLO: aggiorna capitolo in tutti i box, se 
             if (currentBox.type === 'text' || currentBox.type === 'witness') {
-                var syncActive = false;
-                var docId, all = evtInterface.getState('currentViewMode') === 'collation' && config.mainDocId && syncActive;
+                var syncActive = evtInterface.getProperty('syncDiv');
+                var docId,
+                    all = evtInterface.getState('currentViewMode') === 'collation' && config.mainDocId && syncActive && currentBox.type === 'text';
                 if (currentBox.type === 'witness') {
                     docId = parsedData.getWitness(scope.witness).corresp || parsedData.getDocuments()._indexes[0];
                 } else {
@@ -506,8 +512,17 @@ angular.module('evtviewer.box')
                 }
                 scope.$watch(function() {
                     return evtInterface.getState('currentDivs')[docId];
-                }, function(newItem, oldItem) {
-                    if (!all) {
+                }, function(newItem) {
+                    if (newItem && parsedData.getDiv(newItem).section === 'front') {
+                        if (scope.vm.state.topBoxContent !== 'front') {
+                            var doc = parsedData.getDocument(docId),
+                                front = doc && doc.front && doc.front.parsedContent ? doc.front.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                            scope.vm.updateTopBoxContent(front);
+                            scope.vm.updateState('topBoxContent', 'front');
+                        }
+                        scope.vm.updateState('topBoxOpened', true);
+                    }
+                    if (newItem && !all) {
                         scope.vm.scrollToDiv(newItem);
                     }
                 });

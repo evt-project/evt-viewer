@@ -905,15 +905,11 @@ angular.module('evtviewer.dataHandler')
 		parser.parsePages(element, newDoc.value);
 		if (parser.parserProperties['defContentEdition'] === 'body') {
 			var front = element.querySelector('front'),
-					body = element.querySelector('body'),
-					back = element.querySelector('back');
+					body = element.querySelector('body');
 			if (front) {
 				parser.parseDivs(front, newDoc.value, 'front');
 			}
-			parser.parseDivs(body, newDoc.value, 'body');
-			if (back) {
-				parser.parseDivs(back, newDoc.value, 'back');
-			}			
+			parser.parseDivs(body, newDoc.value, 'body');		
 		} else {
 			parser.parseDivs(element, newDoc.value, 'body');
 		}
