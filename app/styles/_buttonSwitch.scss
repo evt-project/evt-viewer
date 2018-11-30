@@ -9,7 +9,9 @@ $buttonSwitch-shadow-color: rgba(0, 0, 0, 0.4);
 $buttonSwitch-active-background-color: $base-color-active-background;
 $buttonSwitch-active-color: $base-color-active;
 button-switch {
-    margin-right: 5px;
+    &:not([data-type="syncDiv"]) {
+        margin-right: 5px;
+    }
     display: inline-block;
 
     .buttonSwitch {
@@ -191,5 +193,20 @@ button-switch {
         margin: 8px 0;
         font-size: 1.4em;
         top: 14px;
+    }
+}
+
+button-switch {
+    &[data-type="syncDiv"] {
+        .buttonSwitch {
+            box-shadow: none;
+            text-shadow: none;
+            width: 100%;
+            padding: 4px 5px;
+            border-bottom: 0.8px solid $base-color-dark;
+            &-active {
+                background-color: $base-color-light;
+            }
+        }
     }
 }
