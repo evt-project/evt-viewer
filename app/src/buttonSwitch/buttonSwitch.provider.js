@@ -201,6 +201,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'list':
 					evtIcon = 'icon-evt_list';
 					break;
+				case 'sync-div':
+					evtIcon = 'fa fa-chain-broken';
+					break;
 				case 'menu':
 				case 'menu-vert':
 					evtIcon = 'icon-evt_more-vert';

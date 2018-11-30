@@ -136,6 +136,7 @@ angular.module('evtviewer.interface')
         parsedSourcesTexts : [ ],
         availableVersions  : [ ],
         versionSelector    : false,
+        syncDiv            : false,
         tabsContainerOpenedContent: '',
         tabsContainerOpenedTab: ''
     };

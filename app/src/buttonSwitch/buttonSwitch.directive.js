@@ -106,6 +106,15 @@ angular.module('evtviewer.buttonSwitch')
                $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
             }
 
+            if (scope.type === 'syncDiv') {
+                scope.$watch(function() {
+                    return evtInterface.getProperty('syncDiv');
+                }, function(newItem) {
+                    scope.vm.active = newItem ? true : false;
+					scope.vm.icon = newItem ? 'fa fa-link' : 'fa fa-chain-broken';
+                });
+            }
+
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentButton){

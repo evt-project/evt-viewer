@@ -633,7 +633,7 @@ angular.module('evtviewer.box')
 							if (currentDiv) {
 								topMenuList.selectors.push({
 									id: 'div_' + currentId,
-									type: 'witnessDiv',
+									type: 'div',
 									initValue: currentDiv
 								});
 							}

@@ -259,7 +259,7 @@ angular.module('evtviewer.select')
 							var docId = newOption.doc;
 							evtInterface.updateDiv(docId, newOption.value);
 							var currentView = evtInterface.getState('currentViewMode');
-							if (currentView === 'collation' && newOption.doc === config.mainDocId) {
+							if (currentView === 'collation' && newOption.doc === config.mainDocId && evtInterface.getProperty('syncDiv')) {
 								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
 								var witDocs = corresp.map(divId => {
 									var doc = parsedData.getDiv(divId).doc;
