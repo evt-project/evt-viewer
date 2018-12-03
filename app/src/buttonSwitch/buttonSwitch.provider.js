@@ -531,10 +531,15 @@ angular.module('evtviewer.buttonSwitch')
 							var currentDiv = parsedData.getDivs()._indexes.main[doc].find(id => {
 								return parsedData.getDiv(id).section === 'front';
 							});
-							evtInterface.updateDiv(doc, currentDiv);
+							evtInterface.updateDiv(doc, currentDiv || parsedData.getDivs()._indexes.main[doc].find(id => {
+								return parsedData.getDiv(id).section === 'front';
+							}));
 						} else {
-							evtInterface.updateDiv(doc, formerDiv || parsedData.getDivs()._indexes.main[doc][0]);
+							evtInterface.updateDiv(doc, formerDiv || parsedData.getDivs()._indexes.main[doc].find(id => {
+								return parsedData.getDiv(id).section === 'body';
+							}));
 						}
+						evtInterface.updateUrl();
 					}
 					getDoc = function(scope) {
 						var doc;
@@ -579,7 +584,7 @@ angular.module('evtviewer.buttonSwitch')
 						var parentBox = scope.$parent.vm;
 						vm.active = !vm.active;
 						parentBox.updateState('topBoxOpened', false);
-						evtInterface.updateDiv(getDoc(scope), scope.$parent.vm.state.topBoxOpened);
+						evtInterface.updateDiv(getDoc(scope), false);
 					};
 					break;
 				case 'msDesc':

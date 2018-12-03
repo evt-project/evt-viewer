@@ -119,7 +119,7 @@ angular.module('evtviewer.buttonSwitch')
                 scope.$watch(function() {
                     return scope.$parent.vm.state.topBoxOpened;
                 }, function(newItem) {
-                    scope.vm.active = newItem;
+                    scope.vm.active = newItem && scope.$parent.vm.state.topBoxContent === 'front';
                 });
             }
 

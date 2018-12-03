@@ -627,7 +627,7 @@ angular.module('evtviewer.box')
 						});
 					} else {
 						if (parsedData.getDivs().length > 0) {
-							var docId = evtInterface.getState('currentDocument');
+							var docId = config.mainDocId || evtInterface.getState('currentDocument');
 							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(id => { return parsedData.getDiv(id).section === 'body'})
 							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(id => { return parsedData.getDiv(id).section === 'body'});
 							if (currentDiv) {
