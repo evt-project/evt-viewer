@@ -114,6 +114,14 @@ angular.module('evtviewer.buttonSwitch')
 					scope.vm.icon = newItem ? 'fa fa-link' : 'fa fa-chain-broken';
                 });
             }
+            
+            if (scope.type === 'front') {
+                scope.$watch(function() {
+                    return scope.$parent.vm.state.topBoxOpened;
+                }, function(newItem) {
+                    scope.vm.active = newItem;
+                });
+            }
 
             // Garbage collection
             scope.$on('$destroy', function() {

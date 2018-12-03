@@ -145,7 +145,8 @@ angular.module('evtviewer.select')
                         var oldDiv = parsedData.getDiv(oldItem),
                             newDiv = parsedData.getDiv(newItem);
                         if (oldDiv && newDiv && oldDiv.section !== newDiv.section) {
-                            currentSelect.formatOptionList(parsedData.getDivs()._indexes.main[newDiv.doc], [], newDiv.section)
+                            currentSelect.optionList = []
+                            currentSelect.formatOptionList(parsedData.getDivs()._indexes.main[newDiv.doc], currentSelect.optionList, newDiv.section)
                         }
                         currentSelect.selectOptionByValue(newItem);
                     }

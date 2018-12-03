@@ -628,8 +628,8 @@ angular.module('evtviewer.box')
 					} else {
 						if (parsedData.getDivs().length > 0) {
 							var docId = evtInterface.getState('currentDocument');
-							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
-							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs[0];
+							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(id => { return parsedData.getDiv(id).section === 'body'})
+							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(id => { return parsedData.getDiv(id).section === 'body'});
 							if (currentDiv) {
 								topMenuList.selectors.push({
 									id: 'div_' + currentId,
@@ -846,8 +846,8 @@ angular.module('evtviewer.box')
 					});
 					if (parsedData.getDivs().length > 0) {
 						var docId = parsedData.getWitness(vm.witness).corresp;
-						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
-						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs[0];
+						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(id => { return parsedData.getDiv(id).section === 'body'})
+						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(id => { return parsedData.getDiv(id).section === 'body'});
 						if (currentDiv) {
 							topMenuList.selectors.push({
 								id: 'div_' + currentId,

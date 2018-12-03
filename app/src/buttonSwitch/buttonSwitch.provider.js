@@ -524,33 +524,62 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'front':
 					btnType = 'toggler';
+					var formerDiv;
+					updateDiv = function(doc, topBoxOpened) {
+						if (topBoxOpened) {
+							formerDiv = evtInterface.getState('currentDivs')[doc];
+							var currentDiv = parsedData.getDivs()._indexes.main[doc].find(id => {
+								return parsedData.getDiv(id).section === 'front';
+							});
+							evtInterface.updateDiv(doc, currentDiv);
+						} else {
+							evtInterface.updateDiv(doc, formerDiv);
+						}
+					}
+					getDoc = function(scope) {
+						var doc;
+						if (type === 'text' && config.mainDocId) {
+							doc = config.mainDocId;
+						} else if (config.mainDocId && type === 'witness' && parsedData.getWitness(scope.$parent.witness).corresp) {
+							doc = parsedData.getWitness(scope.$parent.witness).corresp;               
+						} else {
+							doc = parsedData.getDocuments()._indexes[0];
+						}
+						return doc;
+					}
 					callback = function() {
-						var parentBox = scope.$parent.vm;
+						var parentBox = scope.$parent.vm,
+								warningMsg = '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>',
+								errorMsg = '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>',
+								newTopBoxContent,
+								currentDocument = getDoc(scope);
 						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'front') {
 							parentBox.toggleTopBox();
 						} else {
 							var content;
-							var currentDocument = evtInterface.getState('currentDoc');
 							if (currentDocument) {
 								var docObj = parsedData.getDocument(currentDocument),
-									docFront = docObj ? docObj.front : undefined;
-
-								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+										docFront = docObj ? docObj.front : undefined;
+								content = docFront && docFront.parsedContent ? docFront.parsedContent : warningMsg;
 								scope.$parent.vm.updateTopBoxContent(content);
 								scope.$parent.vm.toggleTopBox();
 							}
-							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+							newTopBoxContent = content || errorMsg;
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'front');
 							if (!parentBox.getState('topBoxOpened')) {
 								parentBox.toggleTopBox();
 							}
 						}
+						if (newTopBoxContent !== errorMsg && newTopBoxContent !== warningMsg) {
+							updateDiv(currentDocument, scope.$parent.vm.state.topBoxOpened);
+						}
 					};
 					fakeCallback = function() {
 						var parentBox = scope.$parent.vm;
 						vm.active = !vm.active;
 						parentBox.updateState('topBoxOpened', false);
+						evtInterface.updateDiv(getDoc(scope), scope.$parent.vm.state.topBoxOpened);
 					};
 					break;
 				case 'msDesc':
