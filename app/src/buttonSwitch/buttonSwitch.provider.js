@@ -533,7 +533,7 @@ angular.module('evtviewer.buttonSwitch')
 							});
 							evtInterface.updateDiv(doc, currentDiv);
 						} else {
-							evtInterface.updateDiv(doc, formerDiv);
+							evtInterface.updateDiv(doc, formerDiv || parsedData.getDivs()._indexes.main[doc][0]);
 						}
 					}
 					getDoc = function(scope) {
