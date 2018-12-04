@@ -993,7 +993,7 @@ angular.module('evtviewer.dataHandler')
 		divsCollection.length++;
 		documentsCollection[docId].divs.push(divId);
 		if (div.corresp) {
-			div.corresp.forEach(corresp => {
+			angular.forEach(div.corresp, function(corresp) {
 				if (!divsCollection._indexes.corresp[corresp]) {
 					divsCollection._indexes.corresp[corresp] = [];
 				}

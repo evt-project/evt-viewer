@@ -22,8 +22,8 @@ angular.module('evtviewer.dataHandler')
       return;
     }
     var entry,
-        startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
-    startEntryIds.forEach(entryId => {
+        startEntryIds = Object.keys(depaStartIds).filter(function(key) { return depaStartIds[key] === elemId }) || [];
+    angular.forEach(startEntryIds, function(entryId) {
       entry = parsedData.getCriticalEntryById(entryId);
       if (entry) {
         var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit)
@@ -49,7 +49,7 @@ angular.module('evtviewer.dataHandler')
             }
           } else {
             var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
-            elems.forEach(el => {
+            angular.forEach(elems, function(el) {
               el.parentNode.removeChild(el);
             });
           }
@@ -106,7 +106,7 @@ angular.module('evtviewer.dataHandler')
     }
     var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
     if (!rdgElement.firstChild || (!rdgElement.firstChild.className || rdgElement.firstChild.className.indexOf('empty') < 0)) {
-      elems.forEach(el => {
+      angular.forEach(elems, function(el) {
         var text = document.createTextNode('');
         el.parentNode.replaceChild(text, el);
       });
@@ -126,7 +126,7 @@ angular.module('evtviewer.dataHandler')
       } else {
         fromAnchor.parentNode.insertBefore(anchorElement, fromAnchor.nextSibling);
       }
-      elems.forEach(el => {
+      angular.forEach(elems, function(el) {
         var newNode;
         if (el.nodeType === 3) {
           newNode = document.createElement('span');

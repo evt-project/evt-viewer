@@ -41,7 +41,7 @@ angular.module('evtviewer.dataHandler')
             results = {};
          
          res = makeQuery(inputValue.toLowerCase());
-         res.forEach(function (result) {
+         angular.forEach(res, function (result) {
             var metadata = result.matchData.metadata,
                newMetadata = {},
                resultToken,
@@ -263,19 +263,19 @@ angular.module('evtviewer.dataHandler')
             edition = {
                'diplomatic': function () {
                var diplomaticResults = searchResults.diplomatic;
-               diplomaticResults.forEach(function (result) {
+               angular.forEach(diplomaticResults, function (result) {
                   currentResults.push(result);
                });
             },
                'interpretative': function () {
                var interpretativeResults = searchResults.interpretative;
-               interpretativeResults.forEach(function (result) {
+               angular.forEach(interpretativeResults, function (result) {
                   currentResults.push(result);
                });
             },
                'critical': function () {
                var results = searchResults.interpretative || searchResults.diplomatic;
-               results.forEach(function (result) {
+               angular.forEach(results, function (result) {
                   currentResults.push(result);
                });
             }
@@ -332,7 +332,7 @@ angular.module('evtviewer.dataHandler')
       
       SearchResults.prototype.highlightSearchResults = function (boxId, inputValue) {
          var currentBoxes = evtBox.getList();
-         currentBoxes.forEach((box) => {
+         angular.forEach(currentBoxes, function(box) {
                if (box.type === 'text' || box.type === 'witness') {
                   var instance = new Mark(document.querySelector('[id="' + box.id + '"]')),
                   isCaseSensitive = evtSearchBox.getStatus(boxId, 'searchCaseSensitive');
@@ -356,7 +356,7 @@ angular.module('evtviewer.dataHandler')
       
       SearchResults.prototype.removeHighlights = function (inputValue) {
          var currentBoxes = evtBox.getList();
-         currentBoxes.forEach((box) => {
+         angular.forEach(currentBoxes, function(box) {
                if (box.type === 'text' || box.type === 'witness') {
                   var instance = new Mark(document.querySelector('[id="' + box.id + '"]'));               
                   instance.unmark(inputValue);
@@ -367,7 +367,7 @@ angular.module('evtviewer.dataHandler')
       SearchResults.prototype.highlightResult = function (result, index) {
             var instance = new Mark(document.querySelector('[id="' + result.metadata.divId[index] + '"]')),
             matches = [];
-            result.metadata.divId.map((id, i) => {
+            result.metadata.divId.map(function(id, i) {
                   if (id === result.metadata.divId[index]) {
                         matches.push(i);
                   }

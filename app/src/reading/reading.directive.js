@@ -50,14 +50,14 @@ angular.module('evtviewer.reading')
                 currentReading.openApparatus();
             }
             if (scope.vm.overlap && scope.vm.range) {
-                scope.vm.range.forEach(el => {
-                    el.onmouseover = () => {
+                angular.forEach(scope.vm.range, function(el) {
+                    el.onmouseover = function() {
                         currentReading.toggleOverAppEntries();
                     };
-                    el.onmouseout = () => {
+                    el.onmouseout = function() {
                         currentReading.toggleOverAppEntries();
                     };
-                    el.onclick = () => {
+                    el.onclick = function() {
                         currentReading.callbackClick();
                     }
                 });

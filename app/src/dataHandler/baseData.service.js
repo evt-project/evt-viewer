@@ -304,7 +304,7 @@ angular.module('evtviewer.dataHandler')
     };
 
     var findXPointerElem = function(xpointer, doc) {
-        doc.childNodes.forEach((node) => {
+        doc.childNodes.forEach(function(node) {
             if (node.attributes && node.hasAttribute('xml:id') && node.getAttribute('xml:id') === xpointer) {
                 XPointersElem[xpointer] = node;
                 return node;

@@ -131,7 +131,7 @@ angular.module('evtviewer.namedEntity')
             } else if (occurrence.divId) {
                 evtInterface.updateDiv(occurrence.docId, occurrence.divId);
             }
-            var wit, corresp = parsedData.getWitnessesList().find(witId => {
+            var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
                 wit = witId
                 return parsedData.getWitness(witId).corresp === occurrence.docId;
             });

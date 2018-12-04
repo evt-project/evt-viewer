@@ -710,7 +710,7 @@ angular.module('evtviewer.dataHandler')
 
 	NEparser.getOccurencesInPages = function(docObj, refId, entityTagName) {
 		var pages = [];
-		docObj.pages.forEach((pageId) => {
+		angular.forEach(docObj.pages, function(pageId) {
 			var pageText = parsedData.getPageText(pageId, docObj.value, 'original');
 					pageText = evtParser.balanceXHTML(pageText),
 					pageObj = parsedData.getPage(pageId);
@@ -736,7 +736,7 @@ angular.module('evtviewer.dataHandler')
 		var divs = [],
 				doc = docObj && docObj.content ? docObj.content : undefined,
 				dom = angular.element(doc);				
-		docObj.divs.forEach((divId) => {
+		angular.forEach(docObj.divs, function(divId) {
 			var divObj = parsedData.getDiv(divId),
 					divElem;
 			angular.forEach(dom.find('div'), function(div) {

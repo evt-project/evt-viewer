@@ -528,14 +528,14 @@ angular.module('evtviewer.buttonSwitch')
 					updateDiv = function(doc, topBoxOpened) {
 						if (topBoxOpened) {
 							formerDiv = evtInterface.getState('currentDivs')[doc];
-							var currentDiv = parsedData.getDivs()._indexes.main[doc].find(id => {
+							var currentDiv = parsedData.getDivs()._indexes.main[doc].find(function(id) {
 								return parsedData.getDiv(id).section === 'front';
 							});
-							evtInterface.updateDiv(doc, currentDiv || parsedData.getDivs()._indexes.main[doc].find(id => {
+							evtInterface.updateDiv(doc, currentDiv || parsedData.getDivs()._indexes.main[doc].find(function(id) {
 								return parsedData.getDiv(id).section === 'front';
 							}));
 						} else {
-							evtInterface.updateDiv(doc, formerDiv || parsedData.getDivs()._indexes.main[doc].find(id => {
+							evtInterface.updateDiv(doc, formerDiv || parsedData.getDivs()._indexes.main[doc].find(function(id) {
 								return parsedData.getDiv(id).section === 'body';
 							}));
 						}

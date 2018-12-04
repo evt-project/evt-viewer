@@ -942,7 +942,7 @@ angular.module('evtviewer.dataHandler')
 			title: '',
 			_isSubDiv: parser.isNestedInElem(element, 'div')
 		};
-		Object.values(element.attributes).forEach((attr) => {
+		angular.forEach(Object.values(element.attributes), function(attr) {
 			if (attr.specified) {
 				newDiv[attr.name.replace(':', '-')] = attr.value;
 			}
@@ -975,7 +975,7 @@ angular.module('evtviewer.dataHandler')
 				parsedElement.title += parsedElement.n || parsedData.getDivs().length + 1;
 			} break;
 			case 'Doc': {
-				var wit, corresp = parsedData.getWitnessesList().find(witId => {
+				var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
 					wit = witId;
 					return parsedData.getWitness(witId).corresp === parsedElement.value;
 				});

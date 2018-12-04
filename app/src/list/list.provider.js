@@ -214,7 +214,7 @@ angular.module('evtviewer.list')
         };
 
         list.scrollToElemById = function(listId, entityId) {
-            list.forEach(currentList => {
+            angular.forEach(list, function(currentList) {
                 if (currentList.id === listId) {
                     collection[listId].scrollToElement(entityId);
                 }

@@ -90,7 +90,7 @@ angular.module('evtviewer.dataHandler')
             xmlDocsTitles = [],
             doc = {};
          
-         docIndexes.forEach(function (index) {
+         angular.forEach(docIndexes, function (index) {
             doc.id = index;
             doc.title = documents[doc.id].title;
             doc.textNode = documents[doc.id].content;
@@ -220,7 +220,7 @@ angular.module('evtviewer.dataHandler')
             currentGlyph,
             text = '';
    
-         nodes.forEach(function (node) {
+         angular.forEach(nodes, function (node) {
             nodeName = {
                'g': function () {
                   currentGlyph = evtGlyph.getGlyph(node, editionType);

@@ -22,7 +22,7 @@ angular.module('evtviewer.toc')
     }
 
     var updateWits = function(doc) {
-        var wit, corresp = parsedData.getWitnessesList().find(witId => {
+        var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
             wit = witId
             return parsedData.getWitness(witId).corresp === doc;
         });

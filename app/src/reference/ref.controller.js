@@ -92,7 +92,7 @@ angular.module('evtviewer.reference')
 	var handleWitRef = function() {
 		var target = vm.target.replace('#', '').split(' ')[0];
 		var divId = target.indexOf('_') !== target.lastIndexOf('_') ? target.substr(0, target.lastIndexOf('_')) : target;
-		var newWit = parsedData.getWitnessesList().find(witId => {
+		var newWit = parsedData.getWitnessesList().find(function(witId) {
 			if (parsedData.getDiv(divId)) {
 				return parsedData.getWitness(witId).corresp === parsedData.getDiv(divId).doc;
 			}

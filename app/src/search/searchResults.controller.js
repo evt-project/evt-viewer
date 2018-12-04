@@ -14,7 +14,7 @@ angular.module('evtviewer.search')
                resNumber = 0;
             
             if (results) {
-               results.forEach(function (result) {
+               angular.forEach(results, function (result) {
                   resNumber += result.resultsNumber;
                });
             }
@@ -129,7 +129,7 @@ angular.module('evtviewer.search')
                var targetDoc = result.metadata.xmlDocId[index],
                    targetDiv = result.metadata.divId[index];
                if (config.mainDocId && targetDoc !== config.mainDocId) {
-                  var wit = parsedData.getWitnessesList().find(witId => {
+                  var wit = parsedData.getWitnessesList().find(function(witId) {
                         return parsedData.getWitness(witId).corresp === targetDoc;
                   });
                   if (wit) {
@@ -154,7 +154,7 @@ angular.module('evtviewer.search')
                   return;
             }
             var currentBoxes = evtBox.getList(), boxId;
-            currentBoxes.forEach((box) => {
+            angular.forEach(currentBoxes, function(box) {
                if (scroll.wit && box.type === 'witness' && box.witness === scroll.wit) {
                   boxId = box.id;
                } else if (scroll.targetDoc === config.mainDocId) {

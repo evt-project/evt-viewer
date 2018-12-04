@@ -628,8 +628,8 @@ angular.module('evtviewer.box')
 					} else {
 						if (parsedData.getDivs().length > 0) {
 							var docId = config.mainDocId || evtInterface.getState('currentDocument');
-							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(id => { return parsedData.getDiv(id).section === 'body'})
-							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(id => { return parsedData.getDiv(id).section === 'body'});
+							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
 							if (currentDiv) {
 								topMenuList.selectors.push({
 									id: 'div_' + currentId,
@@ -846,8 +846,8 @@ angular.module('evtviewer.box')
 					});
 					if (parsedData.getDivs().length > 0) {
 						var docId = parsedData.getWitness(vm.witness).corresp;
-						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(id => { return parsedData.getDiv(id).section === 'body'})
-						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(id => { return parsedData.getDiv(id).section === 'body'});
+						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
 						if (currentDiv) {
 							topMenuList.selectors.push({
 								id: 'div_' + currentId,
@@ -1256,7 +1256,7 @@ angular.module('evtviewer.box')
 					var docId = collection[i].type === 'witness' ? parsedData.getWitness(collection[i].witness).corresp : undefined;
 					if (docId) {
 						var corresp = parsedData.getDivs()._indexes.corresp[divId], div;
-						corresp.map(id => {
+						corresp.map(function(id) {
 							if (parsedData.getDiv(id).doc === docId) {
 								div = id;
 							}

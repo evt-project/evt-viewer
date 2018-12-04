@@ -261,15 +261,15 @@ angular.module('evtviewer.select')
 							var currentView = evtInterface.getState('currentViewMode');
 							if (currentView === 'collation' && newOption.doc === config.mainDocId && evtInterface.getProperty('syncDiv')) {
 								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
-								var witDocs = corresp.map(divId => {
+								var witDocs = corresp.map(function(divId) {
 									var doc = parsedData.getDiv(divId).doc;
 									evtInterface.updateDiv(doc, divId);
 									return doc;
 								});
 								var witsList = parsedData.getWitnessesList();
-								var wits = witDocs.map(doc => {
+								var wits = witDocs.map(function(doc) {
 									var witness;
-									witsList.forEach(wit => {
+									angular.forEach(witsList, function(wit) {
 										if (parsedData.getWitness(wit).corresp === doc) {
 											witness = wit;
 										}
@@ -277,7 +277,7 @@ angular.module('evtviewer.select')
 									return witness;
 								});
 								var currentWits = evtInterface.getState('currentWits');
-								witsList.forEach(wit => {
+								angular.forEach(witsList, function(wit) {
 									if (wits.indexOf(wit) >= 0 && currentWits.indexOf(wit) < 0) {
 										evtInterface.addWitness(wit);
 									} else if (wits.indexOf(wit) < 0 && currentWits.indexOf(wit) >= 0) {
@@ -291,7 +291,7 @@ angular.module('evtviewer.select')
 					};
 					formatOptionList = function(optionList, formattedList, section) {
 						var allDivs = parsedData.getDivs();
-						optionList.forEach((divId) => {
+						angular.forEach(optionList, function(divId) {
 							if (allDivs[divId].section === section) {
 								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
 									allDivs[divId].type = 'groupTitle';
@@ -322,7 +322,7 @@ angular.module('evtviewer.select')
 					};
 					formatOptionList = function(optionList, formattedList, section) {
 						var allDivs = parsedData.getDivs();
-						optionList.forEach((divId) => {
+						angular.forEach(optionList, function(divId) {
 							if (allDivs[divId].section === section) {
 								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
 									allDivs[divId].type = 'groupTitle';

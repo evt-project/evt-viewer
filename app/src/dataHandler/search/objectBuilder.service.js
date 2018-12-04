@@ -38,7 +38,7 @@ angular.module('evtviewer.dataHandler')
             if (interface.constructor !== evtSearchInterface.constructor) {
                throw new Error('Function Interface.ensureImplements expects arguments two and above to be instances of Interface.');
             }
-            interface.methods.forEach(function (method) {
+            angular.forEach(interface.methods, function (method) {
                if (!evtSearchParser.prototype[method] || typeof evtSearchParser.prototype[method] !== 'function') {
                   throw new Error('Function Interface.ensureImplements: object ' +
                      'does not implement the ' + interface.name + ' interface. ' +

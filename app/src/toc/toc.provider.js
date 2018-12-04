@@ -92,7 +92,7 @@ angular.module('evtviewer.toc')
 					subDivs = parsedData.getDivs()._indexes.subDivs,
 					pages = parsedData.getPages(),
 					open = {};
-			var docs = docsId.map(docId => {
+			var docs = docsId.map(function(docId) {
 				var doc = parsedData.getDocument(docId);
 				var newDoc = {
 					value: doc.value,
@@ -100,7 +100,7 @@ angular.module('evtviewer.toc')
 					pages: doc.pages,
 					divs: { front: [], body: [], back: [], length: 0 }
 				};
-				mainDivs[docId].forEach(divId => {
+				angular.forEach(mainDivs[docId], function(divId) {
 					var div = parsedData.getDiv(divId);
 					newDoc.divs[div.section].push(divId);
 					newDoc.divs.length++;
