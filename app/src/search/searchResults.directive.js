@@ -29,7 +29,7 @@ angular.module('evtviewer.search')
            return evtInterface.getState('secondaryContent');
          }, function(newItem) {
            if (newItem !== 'externalSearch') {
-            evtSearchResults.removeHighlights('');
+            // evtSearchResults.removeHighlights('');
            }
          }, true);
 

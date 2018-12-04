@@ -458,7 +458,7 @@ angular.module('evtviewer.namedEntity')
                 togglePin: togglePin,
                 openEntity: openEntity,
                 lfCenter: center,
-                lfMarkers: { mainMarker }
+                lfMarkers: { mainMarker : mainMarker }
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

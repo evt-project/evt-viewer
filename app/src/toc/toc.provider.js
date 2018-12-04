@@ -109,15 +109,15 @@ angular.module('evtviewer.toc')
 				return newDoc;
 			});
 			scopeHelper = {
-				currentId,
-				docs,
-				docsId,
-				divs,
-				mainDivs,
-				subDivs,
-				pages,
-				keys: ['front', 'body', 'back'],
-				open
+				currentId : currentId,
+				docs 			: docs,
+				docsId 		: docsId,
+				divs 			: divs,
+				mainDivs  : mainDivs,
+				subDivs 	: subDivs,
+				pages 		: pages,
+				keys			: ['front', 'body', 'back'],
+				open 			: open
 			};
 
 			collection[currentId] = angular.extend(scope.vm, scopeHelper);

@@ -146,7 +146,7 @@ angular.module('evtviewer.search')
                }
                evtInterface.updateDiv(targetDoc, targetDiv);
                evtInterface.updateUrl();
-               return { targetDoc, wit };
+               return { targetDoc: targetDoc, wit: wit };
          }
 
          function scrollToNode(node, scroll) {

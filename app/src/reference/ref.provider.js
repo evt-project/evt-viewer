@@ -84,8 +84,8 @@ angular.module('evtviewer.reference')
                 // expansion
                 uid           : currentId,
                 defaults      : angular.copy(defaults),
-                popupText,
-                hasPopup,
+                popupText     : popupText,
+                hasPopup      : hasPopup,
 
                 // model
                 type         : currentType,
