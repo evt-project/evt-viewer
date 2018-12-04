@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
 
-.directive('evtSearchResults', ['$timeout', 'evtSearchResult', 'evtSearchBox', 'evtInterface', function($timeout, evtSearchResult, evtSearchBox, evtInterface) {
+.directive('evtSearchResults', ['$timeout', 'evtSearchResult', 'evtSearchBox', 'evtInterface', 'evtSearchResults', function($timeout, evtSearchResult, evtSearchBox, evtInterface, evtSearchResults) {
    return {
       restrict: 'E',
       templateUrl : 'src/search/searchResults.directive.tmpl.html',
@@ -8,7 +8,7 @@ angular.module('evtviewer.search')
       controllerAs: 'vm',
       controller: 'SearchResultsCtrl',
       link: function(scope) {
-         evtSearchResult.build(scope, scope.vm);
+         var currentSearchResult = evtSearchResult.build(scope, scope.vm);
          
          scope.$watch(function() {
             return evtInterface.getState('currentEdition');
@@ -24,6 +24,20 @@ angular.module('evtviewer.search')
                });
             }
          }, true);
+
+         scope.$watch(function() {
+           return evtInterface.getState('secondaryContent');
+         }, function(newItem) {
+           if (newItem !== 'externalSearch') {
+            evtSearchResults.removeHighlights('');
+           }
+         }, true);
+
+         scope.$on('$destroy', function() {
+          if (currentSearchResult) {
+            currentSearchResult.destroy();
+          }
+        });
       }
    };
 }]);
