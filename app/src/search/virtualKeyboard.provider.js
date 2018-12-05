@@ -2,7 +2,7 @@ angular.module('evtviewer.search')
    .provider('evtVirtualKeyboard', function() {
       var vm = this;
       
-      vm.$get = function(evtKeyboard, config) {
+      vm.$get = ['evtKeyboard', 'config', function(evtKeyboard, config) {
          var keyboard = [],
             keyboardCollection = {},
             parentBoxId,
@@ -83,5 +83,5 @@ angular.module('evtviewer.search')
          };
          
          return keyboard;
-      };
+      }];
    });
