@@ -28,8 +28,8 @@ angular.module('evtviewer.search')
          scope.$watch(function() {
            return evtInterface.getState('secondaryContent');
          }, function(newItem) {
-           if (newItem !== 'externalSearch') {
-            // evtSearchResults.removeHighlights('');
+           if (newItem !== 'externalSearch' && !scope.vm.selectedResult) {
+            evtSearchResults.removeHighlights('');
            }
          }, true);
 

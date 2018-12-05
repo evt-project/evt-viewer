@@ -74,6 +74,7 @@ angular.module('evtviewer.search')
          };
    
          vm.scrollToCurrentResult = function(result, index) {
+            vm['selectedResult'] = result;
             var promise = goToAnchor(result, index);
             promise.then(
                function() {
