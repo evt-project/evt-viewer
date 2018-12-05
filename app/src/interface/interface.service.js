@@ -1036,7 +1036,7 @@ angular.module('evtviewer.interface')
             if (params.s && parsedData.getDiv(params.s)) {
                 divId = params.s;
             } else {
-                divId = parsedData.getDocument(docId).divs[0] || '';
+                divId = parsedData && parsedData.getDocument(docId) ? parsedData.getDocument(docId).divs[0] : '';
             }
             // WITNESSES
             var totWits;
