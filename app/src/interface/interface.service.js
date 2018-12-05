@@ -960,11 +960,7 @@ angular.module('evtviewer.interface')
                 witIds = [],
                 witPageIds = {},
                 appId,
-                divId,
-                quoteId,
-                analogueId,
-                sourceId,
-                apparatusId;
+                divId;
 
             // VIEW MODE
             if (params.viewMode !== undefined) {
@@ -1035,8 +1031,8 @@ angular.module('evtviewer.interface')
             // DIV/SECTION
             if (params.s && parsedData.getDiv(params.s)) {
                 divId = params.s;
-            } else {
-                divId = parsedData && parsedData.getDocument(docId) ? parsedData.getDocument(docId).divs[0] : '';
+            } else if (parsedData && parsedData.getDocument(docId)) {
+                divId = parsedData.getDocument(docId).divs[0];
             }
             // WITNESSES
             var totWits;

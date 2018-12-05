@@ -174,7 +174,7 @@ angular.module('evtviewer.box')
                         }
                     }
                     var timer;
-                    angular.element(boxBody).on('DOMMouseScroll mousewheel', function() {
+                    angular.element(boxBody).on('DOMMouseScroll mousewheel scroll', function() {
                         if (timer) {
                             window.clearTimeout(timer);
                         }
