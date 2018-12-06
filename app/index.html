@@ -110,7 +110,7 @@
 								{{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
 						</li>
 						<li ng-if="getProperty('enableXMLdownload')">
-							<span ng-click="downloadXML()">
+							<span ng-click="downloadPDF()()">
 								<i class="icon fa fa-download"></i>
 								{{'MAIN_MENU.DOWNLOAD' | translate}}</span>
 						</li>
@@ -436,6 +436,8 @@
 		<script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
 		<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 		<script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+		<script src="bower_components/pdfmake/build/pdfmake.js"></script>
+		<script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
 		<!-- endbower -->
 		<!-- endbuild -->
 

@@ -27,7 +27,7 @@
 **/
 angular.module('evtviewer.interface')
 
-	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog, baseData) {
+	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog, baseData, evtPdfMaker) {
 		var _console = $log.getInstance('interface');
 		/**
          * @ngdoc method
@@ -592,6 +592,10 @@ angular.module('evtviewer.interface')
          */
 		$scope.downloadXML = function() {
 			window.open(evtInterface.getProperty('dataUrl'), '_blank');
+		};
+        
+        $scope.downloadPDF = function() {
+            return evtPdfMaker.getPdf();
 		};
 
 		// UI Translation
