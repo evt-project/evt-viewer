@@ -172,7 +172,7 @@
 					</evt-tabs-container>
 				</evt-dialog>
 				<evt-dialog data-type="download" data-title="MAIN_MENU.DOWNLOAD">
-					<!-- <evt-download ng-if="getSecondaryContentOpened() === 'download'"></evt-download> -->
+					<evt-download ng-if="getSecondaryContentOpened() === 'download'"></evt-download>
 				</evt-dialog>
 				<evt-dialog data-type="witnessesList" data-title="DIALOGS.WITNESSES">
 					<div compile="getWitnessesListFormatted()"></div>
@@ -660,6 +660,9 @@
       <script src="/src/search/virtualKeyboard.provider.js"></script>
 
 			<script src="/src/download/download.js"></script>
+			<script src="/src/download/download.provider.js"></script>
+			<script src="/src/download/download.controller.js"></script>
+			<script src="/src/download/download.directive.js"></script>
 			<script src="/src/download/pdfMaker.service.js"></script>
 		<!-- endinjector -->
 		<!-- endbuild -->

@@ -596,6 +596,7 @@ angular.module('evtviewer.interface')
         
         $scope.openDownloadDialog = function() {
             evtInterface.updateState('secondaryContent', 'download');
+			evtDialog.openByType('download');
 		};
 
 		// UI Translation
