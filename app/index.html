@@ -110,7 +110,7 @@
 								{{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
 						</li>
 						<li ng-if="getProperty('enableXMLdownload')">
-							<span ng-click="downloadPDF()()">
+							<span ng-click="openDownloadDialog()()">
 								<i class="icon fa fa-download"></i>
 								{{'MAIN_MENU.DOWNLOAD' | translate}}</span>
 						</li>
@@ -170,6 +170,9 @@
 						data-type="toc"
 						data-orientation="vertical">
 					</evt-tabs-container>
+				</evt-dialog>
+				<evt-dialog data-type="download" data-title="MAIN_MENU.DOWNLOAD">
+					<!-- <evt-download ng-if="getSecondaryContentOpened() === 'download'"></evt-download> -->
 				</evt-dialog>
 				<evt-dialog data-type="witnessesList" data-title="DIALOGS.WITNESSES">
 					<div compile="getWitnessesListFormatted()"></div>
@@ -655,6 +658,9 @@
       <script src="/src/search/searchResults.provider.js"></script>
       <script src="/src/search/virtualKeyboard.directive.js"></script>
       <script src="/src/search/virtualKeyboard.provider.js"></script>
+
+			<script src="/src/download/download.js"></script>
+			<script src="/src/download/pdfMaker.service.js"></script>
 		<!-- endinjector -->
 		<!-- endbuild -->
 	</body>
