@@ -1,3 +1,22 @@
 <div class="download">
-SCARICA I FILE
+Document:
+<select
+  ng-model="vm.currentDocIndex">
+  <option
+    ng-repeat="file in vm.files track by $index"
+    value="{{$index}}">
+    {{file.title}}</option>
+</select>
+Format:
+<select
+  ng-model="vm.currentFormat">
+  <option
+    ng-repeat="(format, url) in vm.files[vm.currentDocIndex].formats"
+    value="{{format}}">
+    {{format}}</option>
+</select>
+<button
+  ng-click="vm.download()"
+  >Download</button>
+<p>{{vm | json}}</p>
 </div>

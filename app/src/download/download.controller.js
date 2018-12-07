@@ -6,7 +6,6 @@
  * # DownloadCtrl
  * This is the controller for the {@link evtviewer.download.directive:evtDownload evtDownload} directive.
  * @requires $log
- * @requires evtviewer.interface.evtInterface
 **/
 angular.module('evtviewer.download')
 
@@ -14,6 +13,10 @@ angular.module('evtviewer.download')
     var _console = $log.getInstance('download');
 
     var vm = this;
+
+    this.download = function() {
+        console.log('download running')
+    }
 
     _console.log('DownloadCtrl running');
 });
