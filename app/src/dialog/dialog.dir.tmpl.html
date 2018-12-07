@@ -5,7 +5,7 @@
     <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
 
 
-    <div class="evt-dialog-container" ng-class="{ 'externalSearch': vm.type === 'externalSearch'}">
+    <div class="evt-dialog-container" ng-class="{ 'externalSearch': vm.type === 'externalSearch', 'fitHeight': vm.type === 'download'}">
         <div class="evt-dialog-container-top">
             <span class="evt-dialog-container-top-title">{{ vm.title | translate }}</span>
             <button-switch 

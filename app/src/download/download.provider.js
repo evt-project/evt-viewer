@@ -49,7 +49,8 @@ angular.module('evtviewer.download')
 			var scopeHelper = {
 				files: files,
 				currentDocIndex: 0,
-				currentFormat: Object.keys(files[0].formats)[0]
+				currentFormat: Object.keys(files[0].formats)[0],
+				openedSelectors: []
 			};
 			collection[currentId] = angular.extend(scope.vm, scopeHelper);
 			list.push({
