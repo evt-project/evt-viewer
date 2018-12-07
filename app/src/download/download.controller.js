@@ -14,9 +14,5 @@ angular.module('evtviewer.download')
 
     var vm = this;
 
-    this.download = function() {
-        console.log('download running')
-    }
-
     _console.log('DownloadCtrl running');
 });

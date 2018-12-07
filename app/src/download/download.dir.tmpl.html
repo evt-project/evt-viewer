@@ -15,8 +15,8 @@ Format:
     value="{{format}}">
     {{format}}</option>
 </select>
-<button
-  ng-click="vm.download()"
-  >Download</button>
-<p>{{vm | json}}</p>
+<a
+  href="{{vm.files[vm.currentDocIndex].formats[vm.currentFormat]}}"
+  download="{{vm.files[vm.currentDocIndex].title}}">
+  Download</a>
 </div>
