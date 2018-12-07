@@ -89,6 +89,11 @@
 		"PROJECT_INFO": "Informazioni sul progetto",
 		"WITNESSES": "Testimoni"
 	},
+	"DOWNLOAD": {
+		"DOCUMENT": "Documento",
+		"DOWNLOAD": "Scarica",
+		"FORMAT": "Formato"
+	},
 	"LANGUAGES": {
 		"EN": "Inglese",
 		"IT": "Italiano"

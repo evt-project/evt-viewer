@@ -1,5 +1,5 @@
 <div class="download">
-Document:
+{{ 'DOWNLOAD.DOCUMENT' | translate }}:
 <select
   ng-model="vm.currentDocIndex">
   <option
@@ -7,7 +7,7 @@ Document:
     value="{{$index}}">
     {{file.title}}</option>
 </select>
-Format:
+{{ 'DOWNLOAD.FORMAT' | translate }}:
 <select
   ng-model="vm.currentFormat">
   <option
@@ -18,5 +18,5 @@ Format:
 <a
   href="{{vm.files[vm.currentDocIndex].formats[vm.currentFormat]}}"
   download="{{vm.files[vm.currentDocIndex].title}}">
-  Download</a>
+  {{ 'DOWNLOAD.DOWNLOAD' | translate }}</a>
 </div>
