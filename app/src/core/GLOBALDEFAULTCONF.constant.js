@@ -56,17 +56,35 @@ angular.module('evtviewer.core')
 	logoUrl: '',
 
 	enableXMLdownload: true,
+	downloadableFiles: [
+		{
+			"title": "Translated Critical Text",
+			"formats": {
+				"pdf": "../data/polo/download/Edizione_critica.pdf",
+                "xml": "../data/polo/trad.xml",
+                "txt": "../data/polo/download/Edizione_critica.txt"
+			}
+		},
+		{
+			"title": "Version F",
+			"formats": {
+				"pdf": "../data/polo/download/Redazione_F.pdf",
+                "xml": "../data/polo/redazioni/F.xml",
+                "txt": "../data/polo/download/Redazione_F.txt"
+			}
+		}
+	],
     // sourcesUrl //
     // Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.//
-    sourcesUrl       : '',
+  sourcesUrl       : '',
     // sourcesTextsUrl //
     // Path of the folder containing the xml files of the sources texts //
-    sourcesTextsUrl : '',
+  sourcesTextsUrl : '',
     //analoguesUrl//
     //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
-    analoguesUrl     : '',
+  analoguesUrl     : '',
 
-    preferredWitness: '',
+  preferredWitness: '',
 	skipWitnesses: '',
 
 	indexTitle: 'EVT Critical Viewer',
