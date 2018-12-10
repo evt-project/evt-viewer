@@ -17,19 +17,16 @@ angular.module('evtviewer.download')
     this.selectDoc = function(docIndex) {
         vm.currentDocIndex = docIndex;
         vm.currentFormat = Object.keys(vm.files[docIndex].formats)[0];
+        vm.openedSelector = '';
     }
     
     this.selectFormat = function(format) {
         vm.currentFormat = format;
+        vm.openedSelector = '';
     }
 
     this.toggleSelector = function(selector) {
-        var index = vm.openedSelectors.indexOf(selector);
-        if (index < 0) {
-            vm.openedSelectors.push(selector);
-        } else {
-            vm.openedSelectors.splice(index, 1);
-        }
+        vm.openedSelector = vm.openedSelector === selector ? '' : selector;
     }
 
     _console.log('DownloadCtrl running');

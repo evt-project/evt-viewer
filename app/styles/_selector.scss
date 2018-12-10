@@ -22,7 +22,10 @@ $selector-option-background-color-hover: $base-color-middle;
 	
 	margin: 0 4px;
 	position: relative;
-    left: 0;
+  left: 0;
+	&.inDownlaod {
+		position: static !important;
+	}
 
 	display: inline-block;
 	
@@ -81,6 +84,9 @@ $selector-option-background-color-hover: $base-color-middle;
 		position: absolute;
 		left: 0;
 		top:30px;
+		&.inDownload {
+			position: static;
+		}
 
 		overflow-y:auto;
 		background:$selector-background-color;

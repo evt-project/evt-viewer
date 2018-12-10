@@ -1,8 +1,8 @@
 <div class="download">
   <span>
     {{ 'DOWNLOAD.DOCUMENT' | translate }}:
-    </span>
-  <div class="selector">
+  </span>
+  <div class="selector inDownload" ng-class="{ 'expanded': vm.openedSelector === 'document' }">
     <span
       class="label_selected"
       value="{{vm.currentDocIndex}}">
@@ -14,8 +14,8 @@
       <i class="fa fa-sort-desc"></i>
     </div>
     <div
-      class="option_container"
-      ng-class="{ 'expanded': vm.openedSelectors.indexOf('document') >= 0 }">
+      class="option_container inDownload"
+      ng-class="{ 'expanded': vm.openedSelector === 'document' }">
       <div
         class="option"
         ng-repeat="file in vm.files track by $index"
@@ -29,7 +29,7 @@
   <span>
     {{ 'DOWNLOAD.FORMAT' | translate }}:
   </span>
-  <div class="selector">
+  <div class="selector inDownload" ng-class="{ 'expanded': vm.openedSelector === 'format' }">
     <span
       class="label_selected"
       value="{{vm.currentFormat}}">
@@ -41,8 +41,8 @@
       <i class="fa fa-sort-desc"></i>
     </div>
     <div
-      class="option_container"
-      ng-class="{ 'expanded': vm.openedSelectors.indexOf('format') >= 0 }">
+      class="option_container inDownload"
+      ng-class="{ 'expanded': vm.openedSelector === 'format' }">
       <div
         class="option"
         ng-repeat="(format, url) in vm.files[vm.currentDocIndex].formats"
