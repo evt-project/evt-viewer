@@ -73,10 +73,10 @@ angular.module('evtviewer.search')
 
          var scrollInfo;
    
-         vm.scrollToCurrentResult = function(result, index) {
+         vm.scrollToCurrentResult = function(event, result, index) {
             scrollInfo = {};
             vm['selectedResult'] = result;
-            var promise = goToAnchor(result, index);
+            var promise = goToAnchor(event, result, index);
             promise.then(
                function() {
                   setTimeout(function() {
@@ -88,19 +88,16 @@ angular.module('evtviewer.search')
                });
          }
 
-         function goToAnchor(result, index) {
+         function goToAnchor(event, result, index) {
             var deferred = $q.defer(),
-               eventElement,
                mainBoxId = $scope.$parent.vm.parentBoxId;
             
             evtSearchBox.closeBox(mainBoxId, 'searchResultBox');
             evtSearchBox.showBtn(mainBoxId, 'searchResultsShow');
             evtSearchBox.hideBtn(mainBoxId, 'searchResultsHide');
-            
-            window.event.preventDefault();
-            eventElement = window.event.currentTarget;
-            $(eventElement).addClass('selected');
-            if (result && result.metadata.lbId && index) {
+
+            $(event.target).addClass('selected');
+            if (result && result.metadata && result.metadata.lbId && index) {
                   vm.currentLineId = result.metadata.lbId[index];
             }
             evtInterface.updateState('secondaryContent', '');
@@ -111,7 +108,7 @@ angular.module('evtviewer.search')
             } else if (parsedData.getDivs().length > 0) {
                   goToDiv(result, index);
             }
-            $(eventElement).removeClass('selected');
+            $(event.target).removeClass('selected');
             deferred.resolve();
             
             return deferred.promise;
@@ -127,6 +124,9 @@ angular.module('evtviewer.search')
          }
 
          function goToDiv(result, index) {
+               if (!result.metadata) {
+                     return;
+               }
                var targetDoc = result.metadata.xmlDocId[index],
                    targetDiv = result.metadata.divId[index];
                if (config.mainDocId && targetDoc !== config.mainDocId) {

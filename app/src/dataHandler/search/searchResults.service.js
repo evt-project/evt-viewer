@@ -365,6 +365,9 @@ angular.module('evtviewer.dataHandler')
       };
       
       SearchResults.prototype.highlightResult = function (result, index) {
+            if (!result.metadata) {
+                  return;
+            }
             var instance = new Mark(document.querySelector('[id="' + result.metadata.divId[index] + '"]')),
             matches = [];
             result.metadata.divId.map(function(id, i) {
