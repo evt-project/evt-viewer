@@ -180,6 +180,13 @@ angular.module('evtviewer.box')
                         }
                         timer = window.setTimeout(updateParams(), 1000);
                     });
+                    var topTimer;
+                    angular.element(boxTopBox).on('DOMMouseScroll mousewheel scroll', function() {
+                        if (topTimer) {
+                            window.clearTimeout(topTimer);
+                        }
+                        topTimer = window.setTimeout(updateParams(), 1000);
+                    });
                 }
                 displayResult(scope, config.xsltUrl);
             });

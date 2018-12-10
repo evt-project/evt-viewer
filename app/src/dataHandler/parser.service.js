@@ -231,6 +231,10 @@ angular.module('evtviewer.dataHandler')
 						}
 						newElement.setAttribute('id', divId);
 					}
+					if (element.tagName === 'seg' && element.hasAttribute('n')) {
+						var number = document.createTextNode('[' + element.getAttribute('n') + '] ');
+						newElement.appendChild(number);
+					}
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
 							var childElement = element.childNodes[j].cloneNode(true);

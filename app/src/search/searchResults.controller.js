@@ -72,16 +72,24 @@ angular.module('evtviewer.search')
                $(event.target).siblings('.search-result').toggleClass('open');
             });
          };
+
+         var scrollInfo;
    
          vm.scrollToCurrentResult = function(result, index) {
+            scrollInfo = {};
             vm['selectedResult'] = result;
             var promise = goToAnchor(result, index);
             promise.then(
                function() {
-                  vm.scrollTo(vm.currentLineId);
+                  setTimeout(function() {
+                        scrollToNode(evtSearchResults.highlightResult(result, index), scrollInfo);
+                  }, 200)
+                  setTimeout(function() {
+                        evtSearchResults.removeHighlights()
+                  }, 10000);
                });
          }
-         
+
          function goToAnchor(result, index) {
             var deferred = $q.defer(),
                eventElement,
@@ -100,19 +108,13 @@ angular.module('evtviewer.search')
             evtInterface.updateState('secondaryContent', '');
             evtDialog.closeByType('externalSearch');
             evtSearchResults.removeHighlights(result.token);
-            var scrollInfo;
             if (parsedData.getPages().length > 0) {
                   goToAnchorPage();
             } else if (parsedData.getDivs().length > 0) {
-                  scrollInfo = goToDiv(result, index);
+                  goToDiv(result, index);
             }
-            scrollToNode(evtSearchResults.highlightResult(result, index), scrollInfo);
             $(eventElement).removeClass('selected');
-            
-            setTimeout(function() {
-               evtSearchResults.removeHighlights()
-               deferred.resolve();
-            }, 5000);
+            deferred.resolve();
             
             return deferred.promise;
          }
@@ -139,7 +141,7 @@ angular.module('evtviewer.search')
                         if (witIndex >= 0) {
                               evtInterface.removeWitness(wit);
                         }
-                        evtInterface.addWitnessAtIndex(wit, witIndex + 1);
+                        evtInterface.addWitnessAtIndex(wit, 0);
                   }
                   if (evtInterface.getState('currentViewMode') !== 'collation') {
                         evtInterface.updateState('currentViewMode', 'collation');
@@ -147,7 +149,7 @@ angular.module('evtviewer.search')
                }
                evtInterface.updateDiv(targetDoc, targetDiv);
                evtInterface.updateUrl();
-               return { targetDoc: targetDoc, wit: wit };
+               scrollInfo = { targetDoc: targetDoc, wit: wit };
          }
 
          function scrollToNode(node, scroll) {

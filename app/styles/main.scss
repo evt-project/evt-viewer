@@ -626,9 +626,3 @@ pre {
 span.div {
     counter-reset: pericope;
 }
-
-span.seg::before {
-    counter-increment: pericope;
-    content: "["counter(pericope)"] ";
-    font-size: 0.8em;
-}

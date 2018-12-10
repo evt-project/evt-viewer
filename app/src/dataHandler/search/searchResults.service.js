@@ -380,7 +380,7 @@ angular.module('evtviewer.dataHandler')
             instance.markRegExp(regex, {
                   'wildcards': 'enable',
                   'acrossElements': true,
-                  'caseSensitive': false,
+                  'caseSensitive': true,
                   'accuracy': {
                   'value': 'partially',
                   'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
