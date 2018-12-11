@@ -9,7 +9,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 	display: block;
 	background: inherit;
 	font-size: 95%;
-	//padding: 5px;
 
 	&__icon {
 		margin-right: 5px;
@@ -22,7 +21,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 		
 		&:hover {
 			cursor: pointer;
-			//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
 		}
 		.opener:before {
 			content: "\f0da";
@@ -80,9 +78,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 				border-left: 1px solid $named-entities-background-color-darker;
 				&:first-child {
 					border-left: none;
-				}
-				&:hover {
-					//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
 				}
 				&.active{
 					@include set(box-shadow, inset 0 2px 2px -1px $named-entities-border-color);
@@ -161,12 +156,6 @@ $named-entities-border-color : rgb(125, 125, 125);
     			padding-top: 0.2rem;
 				&:first-letter {
 					text-transform: uppercase;
-				}
-
-				&:first-of-type {
-					&:before {
-						//content: "(";
-					}
 				}
 
 				&:after {
@@ -279,10 +268,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 		.namedEntity__details {
 			border-bottom: 1px solid $base-color-middle;
 		}
-	}
-
-	&.location-list {
-
 	}
 
 	// 
@@ -557,4 +542,10 @@ $orgColor-darker: #ffb74d;
 	    bottom: 5px;
 	    right: -7px;
 	}
+}
+
+.namedEntityRef.blurred, .namedEntityRef.blurred * {
+	color: transparent !important;
+	background: transparent !important;
+	border: 0;
 }
