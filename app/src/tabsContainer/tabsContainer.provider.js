@@ -245,6 +245,45 @@ angular.module('evtviewer.tabsContainer')
 					};
 					tabs._indexes.push('toc');
 					// INTRODUCTION
+
+					// ENTITIES LIST
+					var entitiesCollection = parsedData.getNamedEntitiesCollection();
+					tabs.entitiesLists = {
+						label: 'DIALOGS.NAMED_ENTITIES',
+						name: 'entitiesLists',
+						content: '',
+						subTabs: {
+							_indexes: []
+						},
+						showSubTabs: false
+					};
+					tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
+					for (var i = 0; i < entitiesCollection._indexes.length; i++) {
+						var listId = entitiesCollection._indexes[i],
+							listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
+							listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
+							listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
+						tabs.entitiesLists.subTabs[listId] = {
+							label: listTitle,
+							icon: listIcon,
+							name: listId,
+							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
+							scrollDisabled: true
+						};
+					}
+					tabs._indexes.push('entitiesLists');
+
+					// BIBLIOGRAPHY //
+					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
+						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
+						tabs.bibliography = {
+							label: 'PROJECT_INFO.BIBLIOGRAPHY',
+							name: 'bibliography',
+							content: bibliographyContent || noContent,
+							scrollDisabled: true
+						};
+						tabs._indexes.push('bibliography');
+					}
 					// PROJECT INFO
 					tabs.projectInfo = {
 						label: 'DIALOGS.PROJECT_INFO',
@@ -311,45 +350,6 @@ angular.module('evtviewer.tabsContainer')
 					}
 
 					tabs._indexes.push('projectInfo');
-
-					// ENTITIES LIST
-					var entitiesCollection = parsedData.getNamedEntitiesCollection();
-					tabs.entitiesLists = {
-						label: 'DIALOGS.NAMED_ENTITIES',
-						name: 'entitiesLists',
-						content: '',
-						subTabs: {
-							_indexes: []
-						},
-						showSubTabs: false
-					};
-					tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
-					for (var i = 0; i < entitiesCollection._indexes.length; i++) {
-						var listId = entitiesCollection._indexes[i],
-							listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
-							listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
-							listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
-						tabs.entitiesLists.subTabs[listId] = {
-							label: listTitle,
-							icon: listIcon,
-							name: listId,
-							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
-							scrollDisabled: true
-						};
-					}
-					tabs._indexes.push('entitiesLists');
-
-					// BIBLIOGRAPHY //
-					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
-						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
-						tabs.bibliography = {
-							label: 'PROJECT_INFO.BIBLIOGRAPHY',
-							name: 'bibliography',
-							content: bibliographyContent || noContent,
-							scrollDisabled: true
-						};
-						tabs._indexes.push('bibliography');
-					}
 					break;
 
 			}

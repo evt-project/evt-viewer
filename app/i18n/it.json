@@ -85,7 +85,7 @@
 	"DIALOGS": {
 		"BOOKMARK": "Segnalibro da condividere",
 		"CLOSE": "Chiudi",
-		"NAMED_ENTITIES": "Named Entities",
+		"NAMED_ENTITIES": "Appendici",
 		"PROJECT_INFO": "Informazioni sul progetto",
 		"WITNESSES": "Testimoni"
 	},
@@ -264,7 +264,7 @@
 		"FRONT": "Introduzione",
 		"HEADER": "Paratesto e indici",
 		"PAGES": "Folia",
-		"TITLE": "Indice"
+		"TITLE": "Indice dei contenuti"
 	},
 	"SOURCES": {
 		"BIBLIOGRAPHIC_REFERENCE": "Riferimento Bibliografico",
