@@ -664,14 +664,14 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
-
-					topMenuList.buttons.push({
-						title: 'BUTTONS.INFO_ABOUT_TEXT',
-						label: 'BUTTONS.INFO',
-						icon: 'info-alt',
-						type: 'front'
-					});
-
+					if (config.mainDocId && parsedData.getDocument(config.mainDocId).front) {
+						topMenuList.buttons.push({
+							title: 'BUTTONS.INFO_ABOUT_TEXT',
+							label: 'BUTTONS.INFO',
+							icon: 'info-alt',
+							type: 'toggleInfoWit'
+						});
+					}
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
@@ -864,12 +864,16 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
+					var currentDoc = parsedData.getWitness(scope.witness).corresp;
+					if (currentDoc && parsedData.getDocument(currentDoc).front) {
+						topMenuList.buttons.push({
+							title: 'BUTTONS.INFO_ABOUT_TEXT',
+							label: 'BUTTONS.INFO',
+							icon: 'info-alt',
+							type: 'toggleInfoWit'
+						});
+					}
 					topMenuList.buttons.push({
-						title: 'BUTTONS.INFO_ABOUT_TEXT',
-						label: 'BUTTONS.INFO',
-						icon: 'info-alt',
-						type: 'toggleInfoWit'
-					}, {
 						title: 'BUTTONS.WITNESS_CLOSE',
 						label: '',
 						icon: 'remove',

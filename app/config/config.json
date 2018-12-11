@@ -4,7 +4,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "../data/polo/main.xml",
+	"dataUrl": "../data/main.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -73,17 +73,17 @@
 		{
 			"title": "Translated Critical Text",
 			"formats": {
-				"pdf": "../data/polo/download/Edizione_critica.pdf",
-                "xml": "../data/polo/trad.xml",
-                "txt": "../data/polo/download/Edizione_critica.txt"
+				"pdf": "../data/download/Edizione_critica.pdf",
+                "xml": "../data/trad.xml",
+                "txt": "../data/download/Edizione_critica.txt"
 			}
 		},
 		{
 			"title": "Version F",
 			"formats": {
-				"pdf": "../data/polo/download/Redazione_F.pdf",
-                "xml": "../data/polo/redazioni/F.xml",
-                "txt": "../data/polo/download/Redazione_F.txt"
+				"pdf": "../data/download/Redazione_F.pdf",
+                "xml": "../data/redazioni/F.xml",
+                "txt": "../data/download/Redazione_F.txt"
 			}
 		}
 	],

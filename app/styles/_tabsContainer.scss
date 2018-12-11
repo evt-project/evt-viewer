@@ -87,14 +87,6 @@
         }
     }
 
-    &_headers {
-       
-    }
-
-    &_panels{
-        
-    }
-
     &_panel {
         display: none;
         padding: 10px 15px;
@@ -110,6 +102,9 @@
             overflow-y: hidden !important;
             padding: 0;
             margin-bottom: 0;
+        }
+        &.addPadding {
+            padding: 20px !important;
         }
     }
 }

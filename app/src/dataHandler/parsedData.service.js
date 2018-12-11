@@ -50,6 +50,8 @@ angular.module('evtviewer.dataHandler')
 		msDesc: ''
 	};
 
+	var mainFront = {};
+
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#bibliographicRefsCollection
@@ -486,6 +488,16 @@ angular.module('evtviewer.dataHandler')
 		},
 		_indexes: []
 	};
+
+	parsedData.getMainFront = function() {
+		return mainFront;
+	}
+
+	parsedData.updateMainFront = function(front) {
+		if (front) {
+			mainFront = front;
+		}
+	}
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getEncodingDetail

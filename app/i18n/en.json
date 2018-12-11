@@ -85,6 +85,7 @@
 	"DIALOGS": {
 		"BOOKMARK": "Bookmark to share",
 		"CLOSE": "Close",
+		"INTRO": "Introduction",
 		"NAMED_ENTITIES": "Named Entities",
 		"PROJECT_INFO": "Project Info",
 		"WITNESSES": "Witnesses"

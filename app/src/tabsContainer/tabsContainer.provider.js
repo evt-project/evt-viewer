@@ -245,7 +245,15 @@ angular.module('evtviewer.tabsContainer')
 					};
 					tabs._indexes.push('toc');
 					// INTRODUCTION
-
+					var intro = parsedData.getMainFront();
+					if (intro && intro.parsedContent) {
+						tabs.intro = {
+							label: 'DIALOGS.INTRO',
+							name: 'intro',
+							content: intro.parsedContent
+						}
+						tabs._indexes.push('intro');
+					}
 					// ENTITIES LIST
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();
 					tabs.entitiesLists = {

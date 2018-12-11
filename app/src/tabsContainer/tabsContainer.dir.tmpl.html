@@ -37,6 +37,7 @@
             id="{{'subTab_' + tab}}"
             ng-repeat="tab in vm.tabs._indexes"
             ng-class="{'active' : vm.subContentOpened === tab,
+                        'addPadding': tab === 'intro',
                         'noscroll': vm.tabs[tab].scrollDisabled }"
             compile="vm.tabs[tab].content">
         </div>
