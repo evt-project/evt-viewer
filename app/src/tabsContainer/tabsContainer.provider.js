@@ -236,6 +236,14 @@ angular.module('evtviewer.tabsContainer')
 					}
 					break;
 				case 'toc':
+					// TOC
+					// evtToc
+					tabs.toc = {
+						label: 'TOC.TITLE',
+						name: 'toc',
+						content: '<evt-toc></evt-toc>'
+					};
+					tabs._indexes.push('toc');
 					// INTRODUCTION
 					// PROJECT INFO
 					tabs.projectInfo = {
@@ -304,27 +312,6 @@ angular.module('evtviewer.tabsContainer')
 
 					tabs._indexes.push('projectInfo');
 
-					// TOC
-					// evtToc
-					tabs.toc = {
-						label: 'TOC.TITLE',
-						name: 'toc',
-						content: '<evt-toc></evt-toc>'
-					};
-					tabs._indexes.push('toc');
-
-					// BIBLIOGRAPHY //
-					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
-						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
-						tabs.bibliography = {
-							label: 'PROJECT_INFO.BIBLIOGRAPHY',
-							name: 'bibliography',
-							content: bibliographyContent || noContent,
-							scrollDisabled: true
-						};
-						tabs._indexes.push('bibliography');
-					}
-
 					// ENTITIES LIST
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();
 					tabs.entitiesLists = {
@@ -351,6 +338,18 @@ angular.module('evtviewer.tabsContainer')
 						};
 					}
 					tabs._indexes.push('entitiesLists');
+
+					// BIBLIOGRAPHY //
+					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
+						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
+						tabs.bibliography = {
+							label: 'PROJECT_INFO.BIBLIOGRAPHY',
+							name: 'bibliography',
+							content: bibliographyContent || noContent,
+							scrollDisabled: true
+						};
+						tabs._indexes.push('bibliography');
+					}
 					break;
 
 			}
