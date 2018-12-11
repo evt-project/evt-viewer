@@ -81,7 +81,7 @@ angular.module('evtviewer.tabsContainer')
 				vm.subTabOpened = subTab;
 			} else if (vm.tabs[tab].subTabs) {
 					toggleSubTabs(vm, tab);
-					if (vm.tabs[tab].subTabs.indexOf(vm.subTabOpened) < 0) {
+					if (vm.tabs[tab].subTabs._indexes.indexOf(vm.subTabOpened) < 0) {
 						vm.subTabOpened = vm.tabs[tab].subTabs._indexes[0] || '';
 					}
 			} else {
