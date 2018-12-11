@@ -638,6 +638,14 @@ angular.module('evtviewer.box')
 								});
 							}
 						}
+						if (evtInterface.getState('currentViewMode') === 'collation') {
+							topMenuList.buttons.splice(0, 0, {
+								title: 'BUTTONS.SYNC_DIV',
+								label: '',
+								icon: 'sync-div',
+								type: 'syncDiv'
+							});
+						}
 						topMenuList.buttons.push({
 							title: 'BUTTONS.WITNESSES_LIST',
 							label: '',

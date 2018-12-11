@@ -295,11 +295,6 @@ angular.module('evtviewer.select')
         }
 
     };
-    vm.toggleSyncDiv = function() {
-        var syncDiv = evtInterface.getProperty('syncDiv');
-        evtInterface.updateProperty('syncDiv', !syncDiv);
-        vm.expanded = true;
-    }
     /**
      * @ngdoc method
      * @name evtviewer.select.controller:SelectCtrl#destroy

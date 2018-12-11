@@ -105,15 +105,6 @@ angular.module('evtviewer.buttonSwitch')
                var parentBoxId = scope.$parent.id;
                $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
             }
-
-            if (scope.type === 'syncDiv') {
-                scope.$watch(function() {
-                    return evtInterface.getProperty('syncDiv');
-                }, function(newItem) {
-                    scope.vm.active = newItem ? true : false;
-					scope.vm.icon = newItem ? 'fa fa-link' : 'fa fa-chain-broken';
-                });
-            }
             
             if (scope.type === 'front') {
                 scope.$watch(function() {

@@ -959,6 +959,15 @@ angular.module('evtviewer.buttonSwitch')
 						alert(window.location);
 					};
 					break;
+				case 'syncDiv':
+					btnType='standAlone';
+					callback = function() {
+						var vm = this, syncDiv = evtInterface.getProperty('syncDiv');
+						evtInterface.updateProperty('syncDiv', !syncDiv);
+						vm.active = !syncDiv ? true : false;
+						vm.icon = !syncDiv ? 'fa fa-link' : 'fa fa-chain-broken';
+					};
+					break;
 				case 'toggleInfoWit':
 					btnType = 'toggler';
 					callback = function() {
