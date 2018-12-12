@@ -404,6 +404,14 @@ angular.module('evtviewer.namedEntity')
                 focus: true,
                 draggable: false
             };
+            var lfDefaults = {
+                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                tileLayerOptions: {
+                    opacity: 0.9,
+                    detectRetina: true,
+                    reuseTiles: true,
+                }
+            };
             // POLO-TODO: implementare parsing di coordinate e controllo.
             if ((entityType === 'place' || entityType === 'placeName') && namedEntity.map) {
                 tabs._indexes.push('map');
@@ -458,6 +466,7 @@ angular.module('evtviewer.namedEntity')
                 togglePin: togglePin,
                 openEntity: openEntity,
                 lfCenter: center,
+                lfDefaults: lfDefaults,
                 lfMarkers: { mainMarker : mainMarker }
             };
 
