@@ -112,8 +112,9 @@ angular.module('evtviewer.interface')
 				evtInterface.updateUrl();
 			}
 			$timeout(function() {
-				var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
-				document.getElementById('compareWits_box').scrollLeft = singleBoxWidth * (evtInterface.getState('currentWits').length + 1);
+                var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[1]).width.replace('px', '');
+                var pos = evtInterface.getState('currentWits').indexOf(wit);
+				document.getElementById('compareWits_box').scrollLeft = singleBoxWidth * pos;
 			});
 			evtInterface.updateProperty('witnessSelector', false);
 		};
