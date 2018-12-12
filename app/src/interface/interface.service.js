@@ -814,13 +814,22 @@ angular.module('evtviewer.interface')
          * @todo Add scroll to new box added
          */
         mainInterface.addWitness = function(newWit) {
-            // if (mainInterface.existCriticalText()) {
-            //     state.currentWits.unshift(newWit);
-            // } else {
-                state.currentWits.push(newWit);
-            // }
+            var pos = findWitnessPosition(newWit, state.currentWits);
+            state.currentWits.splice(pos, 0, newWit);
             mainInterface.removeAvailableWitness(newWit);
         };
+
+        var findWitnessPosition = function(wit, list) {
+            var witList = parsedData.getWitnessesList();
+            var witPosition = witList.indexOf(wit),
+                itemPosition = witList.indexOf(list[0]),
+                position = 0;
+            while (position < list.length && itemPosition <= witPosition) {
+                position++
+                itemPosition = witList.indexOf(list[position]);
+            }
+            return position;
+        }
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#addWitnessAtIndex
@@ -849,7 +858,8 @@ angular.module('evtviewer.interface')
                 delete state.currentWitsPages[wit];
             }
             if (properties.availableWitnesses.indexOf(wit) < 0) {
-                properties.availableWitnesses.push(wit);
+                var pos = findWitnessPosition(wit, properties.availableWitnesses);
+                properties.availableWitnesses.splice(pos, 0, wit);
             }
         };
         /**
