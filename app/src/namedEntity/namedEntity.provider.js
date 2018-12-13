@@ -96,6 +96,13 @@ angular.module('evtviewer.namedEntity')
             vm.occurrencesOpened = !vm.occurrencesOpened;
             vm.toggleSection('occurrencesOpened');
         };
+
+        var toggleFormOccurrences = function(form, $event) {
+            var vm = this;
+            $event.stopPropagation();
+            var elem = document.getElementById(form + '_occurrences');
+            elem.classList.toggle('visible');
+        }
         /**
          * @ngdoc method
          * @name evtviewer.namedEntity.controller:NamedEntityCtrl#toggleMoreInfo
@@ -124,16 +131,20 @@ angular.module('evtviewer.namedEntity')
          * @param {Object} occurrence Object representing the occurence we want to navigate to.
          * It contains all the information about document and page to which navigate.
          */
-        var goToOccurrence = function(occurrence) {
+        var goToOccurrence = function(docLabel, divLabel) {
             var vm = this;
-            if (occurrence.pageId) {
-                evtInterface.updateState('currentPage', occurrence.pageId);
-            } else if (occurrence.divId) {
-                evtInterface.updateDiv(occurrence.docId, occurrence.divId);
-            }
+            var docId = parsedData.getDocuments()._indexes.find(function(id) {
+                return parsedData.getDocument(id).label === docLabel;
+            });
+            if (!docId) {return;}
+            var divId = parsedData.getDocument(docId).divs.find(function(divId) {
+                return parsedData.getDiv(divId).label === divLabel;
+            });
+            if (!divId) {return;}
+            evtInterface.updateDiv(docId, divId);
             var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
                 wit = witId
-                return parsedData.getWitness(witId).corresp === occurrence.docId;
+                return parsedData.getWitness(witId).corresp === docId;
             });
             if (config.mainDocId && corresp) {
                 var view = evtInterface.getState('currentViewMode');
@@ -148,7 +159,7 @@ angular.module('evtviewer.namedEntity')
                     evtInterface.switchWitnesses(currentWits[0], wit);
                 }
             } else {
-                evtInterface.updateState('currentDoc', occurrence.docId);
+                evtInterface.updateState('currentDoc', docId);
             }
             evtInterface.updateUrl();
             if (evtInterface.getState('secondaryContent') === 'toc') {
@@ -455,6 +466,7 @@ angular.module('evtviewer.namedEntity')
                 toggle            : toggle,
                 toggleMoreInfo    : toggleMoreInfo,
                 toggleOccurrences : toggleOccurrences,
+                toggleFormOccurrences : toggleFormOccurrences,
                 goToOccurrence    : goToOccurrence,
                 toggleSubContent  : toggleSubContent,
                 isCurrentPageDoc  : isCurrentPageDoc,
@@ -499,19 +511,15 @@ angular.module('evtviewer.namedEntity')
          */
         namedEntity.getOccurrences = function(refId) {
             var entityObj = parsedData.getNamedEntity(refId);
-            if (!entityObj._occurrences) {
+            if (!entityObj._forms) {
                 var documentsCollection = parsedData.getDocuments(),
-                documentsIndexes = documentsCollection._indexes || [],
-                totOccurrences = [];
+                    documentsIndexes = documentsCollection._indexes || [];
                 for (var i = 0; i < documentsIndexes.length; i++) {
-                    var currentDoc = documentsCollection[documentsIndexes[i]],
-                        docPages = evtNamedEntitiesParser.parseEntitiesOccurrences(currentDoc, refId);
-                    totOccurrences = totOccurrences.concat(docPages);
+                    var currentDoc = documentsCollection[documentsIndexes[i]];
+                    evtNamedEntitiesParser.parseEntitiesForms(currentDoc, refId);
                 }
-                return totOccurrences;
-            } else {
-                return entityObj._occurrences;
             }
+            return entityObj._forms;
         };
         /**
          * @ngdoc method
