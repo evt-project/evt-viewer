@@ -46,7 +46,8 @@
 
          viewerHandler.openPage = function (page) {
             console.log('openHandler with page', page);
-            viewerHandler.viewer.goToPage(page.userData);
+            var p = page.userData-1;
+            viewerHandler.viewer.goToPage(p);
          };
 
          viewerHandler.home = function () {
