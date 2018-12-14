@@ -183,7 +183,7 @@ angular.module('evtviewer.interface')
 
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);
-                var userLangKey = evtTranslation.getUserLanguage(),
+                var userLangKey = config.defaultLanguage ? config.defaultLanguage : evtTranslation.getUserLanguage(),
                     fallbackLangKey = evtTranslation.getFallbackLanguage();
                 evtTranslation.setFallbackLanguage(fallbackLangKey);
                 evtTranslation.setLanguage(userLangKey);

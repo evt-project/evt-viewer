@@ -3,8 +3,9 @@
     "indexTitle": "Marco Polo Digitale",
     "webSite": "",
     "logoUrl": "",
+    "defaultLanguage": "en",
 
-	"dataUrl": "../data/main.xml",
+	"dataUrl": "../data/main1.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",

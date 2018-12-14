@@ -54,6 +54,7 @@ angular.module('evtviewer.core')
   dataUrl: '',
 
 	logoUrl: '',
+	defaultLanguage: "en",
 
 	enableXMLdownload: true,
 	downloadableFiles: [
