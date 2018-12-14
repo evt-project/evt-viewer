@@ -56,19 +56,25 @@
                imageViewerHandler.setViewer(viewer);
                imageViewerHandler.setScope(scope);
 
-               scope.osd.addOnceHandler("open", imageViewerHandler.open,null,1);
-               scope.osd.addHandler("home", imageViewerHandler.home);
+               scope.osd.addOnceHandler("open", imageViewerHandler.openPage,evtInterface.getState('currentPage').slice(-1)-1,1);
+               //scope.osd.addHandler("home", imageViewerHandler.home);
 
-               scope.osd.addHandler('navigator-scroll', imageViewerHandler.navigatorScroll);
+               //scope.osd.addHandler('navigator-scroll', imageViewerHandler.navigatorScroll);
 
-               scope.osd.addHandler('pan', imageViewerHandler.pan);
+               //scope.osd.addHandler('pan', imageViewerHandler.pan);
 
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                   if (oldItem !== newItem) {
                     console.log("aggiorno contenuto viewer per pagina del testo");
-                    imageViewerHandler.updateViewerBounds(newItem);
+                    var doctype="page"
+                    if(doctype==="scroll")
+                      imageViewerHandler.updateViewerBounds(newItem);
+                    else if(doctype==="page")
+                      imageViewerHandler.updateViewerPage(newItem.slice(-1)-1);
+                    else
+                      console.error('problema con la paginazione!!!');
                   }
                 }, true);
             
