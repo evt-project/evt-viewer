@@ -42,11 +42,11 @@
             //navigatorId: "navscroll",
             //visibilityRatio: 0.8,
             visibilityRatio: 1, 
-            defaultZoomLevel: 0.8,
+            defaultZoomLevel: 0.7,
             panHorizontal: true,
             constrainDuringPan: true,
             //minZoomLevel: 0.8,
-            minZoomLevel: 0.8,
+            minZoomLevel: 0.5,
             maxZoomLevel: 2.0,
     
             wrapVertical: false,
