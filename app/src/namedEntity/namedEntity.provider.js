@@ -399,17 +399,16 @@ angular.module('evtviewer.namedEntity')
             var occurrences;
             if (namedEntity && namedEntity.occurrences) {
                 occurrences = namedEntity.occurrences;
-            } else {
-                // Ask interface to calculate occurrences for entity
-                //occurrences = [{ pageId: "fol_214v", pageLabel: "214v", docId: "CI_118", docLabel: "CI (118)" }];
             }
             var tabs = {
                 _indexes : []
             };
-            tabs._indexes.push('moreInfo');
-            tabs.moreInfo = { label: 'NAMED_ENTITIES.MORE_INFO' };
+            if (defaults.allowedTabs.indexOf('moreInfo') >= 0) {
+                tabs._indexes.push('moreInfo');
+                tabs.moreInfo = { label: 'NAMED_ENTITIES.MORE_INFO' };
+            }
 
-            if (entityType !== 'relation') {
+            if (entityType !== 'relation' && defaults.allowedTabs.indexOf('occurrences') >= 0) {
                 tabs._indexes.push('occurrences');
                 tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES.MAIN' };
             }
@@ -430,7 +429,7 @@ angular.module('evtviewer.namedEntity')
                 }
             };
             // POLO-TODO: implementare parsing di coordinate e controllo.
-            if ((entityType === 'place' || entityType === 'placeName') && namedEntity.map) {
+            if (defaults.allowedTabs.indexOf('map') >= 0 && (entityType === 'place' || entityType === 'placeName') && namedEntity.map) {
                 tabs._indexes.push('map');
                 tabs.map = { label: 'NAMED_ENTITIES.MAP' };
                 var lat = parseFloat(namedEntity.map.lat);
@@ -440,9 +439,10 @@ angular.module('evtviewer.namedEntity')
                 mainMarker.lat = lat;
                 mainMarker.lng = lng;
             }
-
-            tabs._indexes.push('xmlSource');
-            tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
+            if (defaults.allowedTabs.indexOf('xmlSource') >= 0) {
+                tabs._indexes.push('xmlSource');
+                tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
+            }
 
             var firstSubContentOpened = tabs && tabs._indexes && tabs._indexes.length > 0 ? tabs._indexes[0] : '';
             scopeHelper = {

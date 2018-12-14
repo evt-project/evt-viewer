@@ -108,20 +108,20 @@ angular.module('evtviewer.sourcesApparatusEntry')
                     srcList[sources[i].id].tabs = {
                         _indexes: []
                     };
-                    if (srcList[sources[i].id].text !== '' || srcList[sources[i].id].url !== '') {
+                    if ((srcList[sources[i].id].text !== '' || srcList[sources[i].id].url !== '') && defaults.allowedTabs.indexOf('text') >= 0) {
                         srcList[sources[i].id].tabs._indexes.push('text');
                         srcList[sources[i].id].tabs.text = {
                             label: 'SOURCES.TEXT'
                         };
                     }
                     if (srcList[sources[i].id].bibl !== '') {
-                        srcList[sources[i].id].tabs._indexes.push('biblRef');
+                        srcList[sources[i].id].tabs._indexes.push('biblRef' && defaults.allowedTabs.indexOf('biblRef') >= 0);
                         srcList[sources[i].id].tabs.biblRef = {
                             label: 'SOURCES.BIBLIOGRAPHIC_REFERENCE'
                         };
                     }
                     //TO DO: More Info a partire dagli attributes di quote e di source
-                    if (srcList[sources[i].id]._xmlSource !== '') {
+                    if (srcList[sources[i].id]._xmlSource !== '' && defaults.allowedTabs.indexOf('xmlSource') >= 0) {
                         srcList[sources[i].id].tabs._indexes.push('xmlSource');
                         srcList[sources[i].id].tabs.xmlSource = {
                             label: 'SOURCES.XML'

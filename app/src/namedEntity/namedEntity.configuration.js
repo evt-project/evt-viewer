@@ -1,7 +1,7 @@
 angular.module('evtviewer.namedEntity')
 
 .constant('NAMEDENTITYDEFAULTS', {
-    
+    allowedTabs: ['moreInfo', 'occurrences', 'map']
 })
 
 .config(function(evtNamedEntityProvider, configProvider, NAMEDENTITYDEFAULTS) {

@@ -104,22 +104,28 @@ angular.module('evtviewer.criticalApparatusEntry')
 			if (criticalEntry !== undefined) {
 				content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
 				witnessesGroups = content.witnessesGroups;
-				if (content.criticalNote !== '') {
+				if (content.criticalNote !== '' && defaults.allowedTabs.indexOf('criticalNote') >= 0) {
 					tabs._indexes.push('criticalNote');
 					tabs.criticalNote = {
 						label: 'CRITICAL_APPARATUS.TABS.CRITICAL_NOTE'
 					};
 				}
-				if (content.notSignificantReadings.length > 0) {
+				if (content.notSignificantReadings.length > 0 && defaults.allowedTabs.indexOf('notSignificantReadings') >= 0) {
 					tabs._indexes.push('notSignificantReadings');
 					tabs.notSignificantReadings = {
 						label: 'CRITICAL_APPARATUS.TABS.ORTHOGRAPHIC_VARIANTS'
 					};
 				}
-				if (content.attributes._keys.length > 0 ){
+				if (content.attributes._keys.length > 0 && defaults.allowedTabs.indexOf('moreInfo') >= 0){
 					tabs._indexes.push('moreInfo');
 					tabs.moreInfo = {
 						label: 'CRITICAL_APPARATUS.TABS.MORE_INFO'
+					};
+				}
+				if (content._xmlSource && defaults.allowedTabs.indexOf('xmlSource') >= 0){
+					tabs._indexes.push('xmlSource');
+					tabs.moreInfo = {
+						label: 'CRITICAL_APPARATUS.TABS.XML'
 					};
 				}
 				if (tabs._indexes.length > 0 && defaults.firstSubContentOpened !== '') {

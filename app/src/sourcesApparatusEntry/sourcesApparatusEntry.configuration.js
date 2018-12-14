@@ -1,7 +1,8 @@
 angular.module('evtviewer.sourcesApparatusEntry')
 
 .constant('SOURCESAPPENTRY', {
-    firstSubContentOpened : ''
+    firstSubContentOpened : '',
+    allowedTabs: ['text', 'biblRef', 'xmlSource']
 })
 
 .config(function(evtSourcesApparatusEntryProvider, configProvider, SOURCESAPPENTRY) {
