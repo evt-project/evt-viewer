@@ -44,6 +44,11 @@
 
          };
 
+         viewerHandler.openPage = function (page) {
+            console.log('openHandler with page', page);
+            viewerHandler.viewer.goToPage(page.userData);
+         };
+
          viewerHandler.home = function () {
             console.log('pigiato home');
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
@@ -136,6 +141,14 @@
                console.log('updateViewerBounds', page);
                imageScrollMap.updateBounds(viewerHandler.viewer, page);
             }
+
+         };
+
+
+         viewerHandler.updateViewerPage = function (page) {
+            console.log('updateViewerPages: ', viewerHandler.viewer, page);
+            viewerHandler.viewer.goToPage(page);
+           
 
          };
 
