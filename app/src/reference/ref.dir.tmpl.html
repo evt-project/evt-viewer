@@ -2,7 +2,7 @@
   class="evtRef"
   ng-click="vm.handleRefClick($event)">
   <span
-    class="evtRef_ref"
+    class="evtRef_ref {{vm.type}}"
     ng-class="{ 'hasPopup': vm.showPopup }"
     ng-transclude></span>
   <div
