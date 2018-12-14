@@ -234,8 +234,13 @@ $named-entities-border-color : rgb(125, 125, 125);
 						}
 						margin-left: 0 !important;
 						list-style-type: disc !important;
-						li {
+						&_link {
 							margin-left: 15px;
+							text-decoration: underline;
+							&:hover {
+								font-weight: bold;
+								cursor: pointer;
+							}
 						}
 					}
 				}

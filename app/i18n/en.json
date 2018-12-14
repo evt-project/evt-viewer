@@ -161,7 +161,11 @@
 	},
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "More Info",
-		"OCCURRENCES": "Occurrences",
+		"OCCURRENCES": {
+			"MAIN": "Occurrences",
+			"SMALL": "occorrenze",
+			"TITLE": "{{totalLength}} occurrences found in {{formLength}} different forms"
+		},
 		"XML": "XML",
 		"MAP": "Map"
 	},

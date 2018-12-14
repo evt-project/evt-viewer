@@ -116,8 +116,7 @@
                         </div>
                         <div ng-switch-when="occurrences">
                             <div class="forms_title">
-                                {{vm.occurrences._length}}
-                                <span>occurrences found</span> in {{vm.occurrences._indexes.length}} different forms
+                                {{ 'NAMED_ENTITIES.OCCURRENCES.TITLE' | translate:{totalLength: vm.occurrences._length, formLength: vm.occurrences._indexes.length} }}
                             </div>
                             <div class="forms_cards">
                                 <div
@@ -126,14 +125,15 @@
                                     <div class="form_card_title"
                                         ng-click="vm.toggleFormOccurrences(form, $event)">
                                             <span class="form_form">{{form}}</span><br>
-                                            ({{vm.occurrences[form]._length}} <span>occurrences</span>)
+                                            ({{vm.occurrences[form]._length}} <span>{{'NAMED_ENTITIES.OCCURRENCES.SMALL' | translate}}</span>)
                                     </div>
                                     <ul class="form_card_occurrences"
                                         id="{{form + '_occurrences'}}"
                                         ng-repeat="(key, values) in vm.occurrences[form]._docs">
-                                        <span>In document</span>
                                         {{key}}
-                                        <li ng-repeat="label in values" ng-click="vm.goToOccurrence(key, label)">
+                                        <li class="form_card_occurrences_link"
+                                            ng-repeat="label in values"
+                                            ng-click="vm.goToOccurrence(key, label)">
                                             {{label}}
                                         </li>
                                     </ul>

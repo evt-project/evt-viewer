@@ -131,17 +131,23 @@ angular.module('evtviewer.namedEntity')
          * @param {Object} occurrence Object representing the occurence we want to navigate to.
          * It contains all the information about document and page to which navigate.
          */
-        var goToOccurrence = function(docLabel, divLabel) {
+        var goToOccurrence = function(docLabel, label) {
             var vm = this;
             var docId = parsedData.getDocuments()._indexes.find(function(id) {
                 return parsedData.getDocument(id).label === docLabel;
             });
             if (!docId) {return;}
-            var divId = parsedData.getDocument(docId).divs.find(function(divId) {
-                return parsedData.getDiv(divId).label === divLabel;
+            var divId = parsedData.getDocument(docId).divs.find(function(id) {
+                return parsedData.getDiv(id).label === label;
             });
-            if (!divId) {return;}
-            evtInterface.updateDiv(docId, divId);
+            var pageId = parsedData.getDocument(docId).pages.find(function(id) {
+                return parsedData.getPage(id).label === label;
+            });
+            if (divId) {
+                evtInterface.updateDiv(docId, divId);
+            } else if (pageId) {
+                evtInterface.updateState('currentPage', pageId);
+            } else if (!divId && !pageId) {return;}
             var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
                 wit = witId
                 return parsedData.getWitness(witId).corresp === docId;
@@ -405,7 +411,7 @@ angular.module('evtviewer.namedEntity')
 
             if (entityType !== 'relation') {
                 tabs._indexes.push('occurrences');
-                tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES' };
+                tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES.MAIN' };
             }
 
             var center = {
