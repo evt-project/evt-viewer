@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config) {
+.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config, xmlParser) {
   var parser = {};
 
   var apparatusEntryDef = '<app>',
@@ -105,19 +105,21 @@ angular.module('evtviewer.dataHandler')
       if (startId === endId) {
         var elem = doc.querySelector('[*|id=' + startId + ']');
         if (elem) {
-          lemma = elem.innerHTML;
+          lemma = elem.outerHTML;
         }
       } else {
         var docString = doc.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
         lemma = parser.findReadingString(docString, endId, startId, entry);
+        lemma = evtParser.balanceXHTML(lemma);
       }
       lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
-      parser.parseLemma(entry, lemma);
+      parser.parseLemma(entry, lemma, doc);
     }
   };
 
   parser.findReadingString = function(docString, endId, startId, entry) {
-    var startPos = docString.indexOf('xml:id="' + startId),
+    var fromId = docString.indexOf('xml:id="' + startId),
+        startPos = docString.substring(0, fromId).lastIndexOf('<'),
         endPos = 0,
         location = parsedData.getEncodingDetail('variantEncodingLocation'),
         readingString;
@@ -135,11 +137,14 @@ angular.module('evtviewer.dataHandler')
     return readingString;
   }
 
-  parser.parseLemma = function(entry, lemma) {
+  parser.parseLemma = function(entry, lemma, doc) {
+    var lemmaElem = xmlParser.parse(lemma);
+    var content = evtParser.parseXMLElement(doc, lemmaElem, { slip: skipFromBeingParsed });
+    content = content.textContent ? content.textContent : lemmaElem.textContent;
     var parsedLemma = {
       id: entry.id + '-depa-lem',
       attributes: [],
-      content: [lemma],
+      content: [content],
       note: '',
       _significant: true,
       _group: undefined,
