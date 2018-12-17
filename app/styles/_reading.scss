@@ -5,130 +5,36 @@ $reading-background-default: rgb(208, 220, 255);
 $reading-background-hover: rgb(101, 138, 255);
 $reading-background-selected: rgb(208, 220, 255);
 
-.depaContent {
-    background: $reading-background-default;
-    &.selected, &.over {
-        background: $reading-background-hover;
-    }
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.filterNotActive {
-    .autoLemma {
-        .reading:not(.blurred) {
-            .reading__text, .reading__text .empty {
-                background: url("../images/autoLemma.png") !important;
-                opacity: .7;
-
-                &:hover {
-                    opacity: 1;
-                }
-            }
-        }
-    }
-}
-
-span.emptyText {
-    padding: 0 !important;
-}
-
 .reading {
-    &:not(.hidden) {
-        padding: 0;
-        cursor: pointer;
-        background: $reading-background-default;
-
-        &.over,
-        &.over .reading {
-            background: $reading-background-hover;
-        }
-
-
-        &.blurred {
-            .reading_exponent {
-                color: transparent !important;
-                text-shadow: 0 0 5px #000 !important;
-            }
-        }
-
-        &.expansed:not(.invisible) {
-            // background: $reading-background-selected;
-            border-top: 1px solid rgb(125, 125, 125);
-            &:first-child {
-                border-left: 1px solid rgb(125, 125, 125);
-            }
-            &:last-child {
-                border-left: 1px solid rgb(125, 125, 125);
-            }
-            border-bottom: 5px solid $critical-apparatus-entry-background-color;
-            position: relative;
-            z-index: 9;
-                margin-bottom: -1px;
-
-            &.blurred, &.blurred * {
-                color: transparent !important;
-                text-shadow: 0 0 5px #000 !important;
-                background: transparent !important;
-            }
-        }
-
-        &.selected {
-            background: $reading-background-hover;
-        }
-
-        .reading_exponent{
-            margin: 0;
-            position: relative;
-            background-color: transparent;
-            padding: 0;
-            font-size: 0.8em;
-            color: $base-color-dark;
-            left: -4px;
-            vertical-align: super;
-            margin-right: -4px;
-        }
-    }
-
-    &.invisible {
+    padding: 0 !important;
+    margin: 0 -8px 0 0 !important;
+    display: inline;
+    &.blurred, &.blurred * {
+        color: transparent !important;
         background: transparent !important;
-        border: none;
-        cursor: default;
-
-        > .reading__apparatus {
-            display: none !important;
+    }
+    &_exponent {
+        display: inline-block;
+        position: relative;
+        left: -4px;
+        bottom: 3px;
+        min-width: 15px;
+        min-height: 15px;
+        margin: 0;
+        padding: 0.05em;
+        background-color: $base-color-light;
+        border-radius: 3px;
+        color: $base-color-dark;
+        font-size: 0.8em;
+        font-weight: bold;
+        word-spacing:-0.25em;
+        vertical-align: super;
+        text-align:center;
+    }
+    &.over,&.selected {
+        .reading_exponent {
+            background-color: $reading-background-default;
+            cursor: pointer;
         }
     }
-
-    // Nested
-    &:not(.invisible) {
-        .reading {
-            &:not(.hidden) {
-                &:not(.blurred) {
-                    border: 1px solid #999;
-
-                    &:hover {
-                        border-color: #000;
-                    }
-
-                    &.expansed {
-                        border-bottom: 5px solid $critical-apparatus-entry-background-color;
-                    }
-
-                    &.selected {
-                        background: $reading-background-hover;
-                    }
-                }
-            }
-        }
-    }
-}
-
-.filters__reading__color {
-    min-width: 10px;
-    min-height: 10px;
-    width: 10px;
-    height: 10px;
-    display: inline-block;
 }
