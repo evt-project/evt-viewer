@@ -226,24 +226,20 @@ angular.module('evtviewer.dataHandler')
 		if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
 					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
 			var depaAppsStartIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.start),
-					depaAppsEndIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.end),
 					anchorsIds = [];
 			depaAppsStartIds.map(function(id) {
 				if (anchorsIds.indexOf(id) < 0) {
 					anchorsIds.push(id)
 				}
-			});	
-			depaAppsEndIds.map(function(id) {
-				if (anchorsIds.indexOf(id) < 0) {
-					anchorsIds.push(id)
-				}
-			});	
-			anchorsIds.map(function(elemId) {
-				var el = dom.querySelector('[*|id=' + elemId + ']');
+			});
+			var index = anchorsIds.length - 1;
+			while (index >= 0) {
+				var el = dom.querySelector('[*|id=' + anchorsIds[index] + ']');
 				if (el) {
 					evtDepaParser.setAppInText(el, wit, dom);
 				}
-			});
+				index--;
+			}
 		}
 		// quotes
 		if (config.quoteDef) {
