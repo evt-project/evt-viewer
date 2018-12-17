@@ -119,6 +119,7 @@ angular.module('evtviewer.reading')
                 variance         : scope.variance,
                 type             : scope.type,
                 overlap          : scope.overlap,
+                noText           : scope.noText,
                 range            : range,
                 attributes       : attributes,
                 exponent         : exponent,
