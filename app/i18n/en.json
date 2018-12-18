@@ -163,7 +163,7 @@
 		"MORE_INFO": "More Info",
 		"OCCURRENCES": {
 			"MAIN": "Occurrences",
-			"SMALL": "occorrenze",
+			"SMALL": "occurrences",
 			"TITLE": "{{totalLength}} occurrences found in {{formLength}} different forms"
 		},
 		"XML": "XML",

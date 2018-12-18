@@ -3,8 +3,7 @@
 						 'blurred': $parent.vm.state.topBoxOpened,
 						 'highlighted': vm.initHighlight }"
 	title="{{ 'LISTS.ENTITY_TYPE_'+vm.entityType | uppercase | translate }}"
-	ng-click="vm.goToEntityInList($event)" ng-transclude></span>
-<evt-named-entity 
+	ng-click="vm.goToEntityInList($event)" ng-transclude></span><evt-named-entity 
 	ng-if="!vm.detailsInPopup && vm.active && !$parent.vm.state.topBoxOpened"
 	data-location='mainText'
 	data-entity-id="{{::vm.entityId}}" data-entity-type="{{::vm.entityType}}"></evt-named-entity>
