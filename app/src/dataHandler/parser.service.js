@@ -566,12 +566,14 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
+     /* Modifiche aggiunte da FS per visualizzazione note con esponente numerico e alfabetico */
 	parser.parseNote = function(noteNode) {
 		var popoverElem = document.createElement('evt-popover');
-
 		popoverElem.setAttribute('data-trigger', 'click');
 		popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
-		popoverElem.innerHTML = '<i class="icon-evt_note"></i>';
+		popoverElem.setAttribute('data-n', a.getAttribute('n'));		
+		popoverElem.setAttribute("data-type", a.getAttribute('type'));
+		b.innerHTML='<i class="icon-evt_note">'+'<span class="'+a.getAttribute('type')+'">'+a.getAttribute('n')+'<span>'+'</i>';
 		return popoverElem;
 	};
 	/**
@@ -586,7 +588,6 @@ angular.module('evtviewer.dataHandler')
      * @param {element} doc XML element to be parsed
      * @param {element} entityNode node to be transformed
      * @param {string} skip names of sub elements to skip from transformation
-     * 
      * @returns {element} <code>evt-named-entity-ref</code> generated
      *
      * @author CDP
