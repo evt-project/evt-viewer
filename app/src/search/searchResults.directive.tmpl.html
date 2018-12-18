@@ -23,8 +23,8 @@
                      {{ 'SEARCH.RESULT.TITLE' | translate }} <span class="resultDoc" id="{{result.metadata.xmlDocId[$index]}}">{{result.metadata.xmlDocTitle[$index]}}</span>
                      <span class="resultSection" ng-if="result.metadata.sectionTitle">({{result.metadata.sectionTitle[$index]}})</span>
                      <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.page">{{ 'SEARCH.RESULT.PAGE' | translate }} {{result.metadata.page[$index]}}</span>
-                     <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.div">{{ 'SEARCH.RESULT.SECTION' | translate }} {{result.metadata.div[$index]}}</span>
-                     <span class="resultPar" ng-if="result.metadata.paragraph">{{ 'SEARCH.RESULT.PARAGRAPH' | translate }} {{result.metadata.paragraph[$index]}}</span>
+                     <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.div">{{result.metadata.div[$index]}}</span>
+                     <span class="resultPar" ng-if="result.metadata.paragraph">{{result.metadata.paragraph[$index]}}</span>
                      <span class="resultLine" id="{{result.metadata.lbId[$index]}}" ng-if="result.metadata.line">({{ 'SEARCH.RESULT.LINE' | translate }} {{result.metadata.line[$index]}})</span>
                   </span>
                </li>

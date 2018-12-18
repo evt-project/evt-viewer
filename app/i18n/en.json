@@ -238,7 +238,7 @@
 		"HEADER": "Lexical search",
 		"PLACEHOLDER": "Enter your query in the search box above",
 		"INFO1": "Search for",
-		"INFO2": "We have found {{number}} results in the selected edition",
+		"INFO2": "{{number}} results found in the current edition",
 		"TOKEN": "Risultati per",
 		"RESULT": {
 			"TITLE": "Found in",

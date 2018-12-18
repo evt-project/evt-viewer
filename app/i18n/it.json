@@ -238,7 +238,7 @@
 		"HEADER": "Ricerca lessicale",
 		"PLACEHOLDER": "Inserisci la chiave di ricerca nel campo sopra",
 		"INFO1": "Termine cercato:",
-		"INFO2": "Abbiamo trovato {{number}} risultati nell'edizione selezionata",
+		"INFO2": "{{number}} risultati trovati nell'edizione corrente",
 		"TOKEN": "Risultati per",
 		"RESULT": {
 			"TITLE": "Trovato in",
