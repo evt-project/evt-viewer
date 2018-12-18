@@ -32,9 +32,16 @@ $reading-background-selected: rgb(208, 220, 255);
         text-align:center;
     }
     &.over,&.selected {
-        .reading_exponent {
+        .reading_exponent, .reading__text {
             background-color: $reading-background-default;
             cursor: pointer;
+        }
+    }
+    &.expansed {
+        .reading__text {
+            border: 1px solid $critical-apparatus-entry-border-color;
+            border-bottom: 5px solid $critical-apparatus-entry-background-color;
+            margin-bottom: -5px !important;
         }
     }
 }
