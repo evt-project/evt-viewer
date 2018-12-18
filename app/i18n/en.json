@@ -236,7 +236,7 @@
 	"SEARCH": {
 		"MAIN": "Search",
 		"HEADER": "Lexical search",
-		"PLACEHOLDER": "Enter your query in the search box above",
+		"PLACEHOLDER": "Enter query in the search box above",
 		"INFO1": "Search for",
 		"INFO2": "{{number}} results found in the current edition",
 		"TOKEN": "Risultati per",

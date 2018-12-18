@@ -174,6 +174,9 @@ angular.module('evtviewer.namedEntity')
             $timeout(function() {
                 evtNamedEntityRef.highlightByEntityId(vm.entityId);
             }, 500);
+            $timeout(function() {
+                evtNamedEntityRef.highlightByEntityId('');
+            }, 5000);
         };
         /**
          * @ngdoc method

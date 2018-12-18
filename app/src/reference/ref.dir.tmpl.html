@@ -11,11 +11,12 @@
     <span class="evtRef_popup_header">
         <!-- HEADER -->
         <div class="evtRef_popup_tools">
-          <button-switch
-            data-type="openEntity"
-            data-icon="list"
-            data-title="BUTTONS.OPEN_LIST"
-            ng-click="vm.handleBiblRef()"></button-switch>
+          <span
+            class="openList"
+            title="{{ 'BUTTONS.OPEN_LIST' | translate }}"
+            ng-click="vm.handleBiblRef()">
+            <i class="icon fa fa-list"></i>
+          </span>
           <!-- <button-switch 
                 title="BUTTONS.PIN_REMOVE"
                 ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"

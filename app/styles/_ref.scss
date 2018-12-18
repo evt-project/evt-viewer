@@ -5,16 +5,15 @@
 .evtRef {
     &_ref {
         &:not(.witlink) {
-            // text-shadow:
-            //     -2px -2px white,
-            //     -2px 2px white,
-            //     2px -2px white,
-            //     2px 2px white;
             border-bottom: 0.5px solid $base-color-dark;
-            &:hover {
+            &:hover:not(.hasPopup) {
                 cursor: pointer;
                 color: #666;
                 border-bottom: 0.5px solid #666;
+            }
+            &.hasPopup:hover {
+                cursor: pointer;
+                color: #666;
             }
         }
         &.witlink {
@@ -29,7 +28,7 @@
             border-left: 1px solid $critical-apparatus-entry-border-color;
             border-right: 1px solid $critical-apparatus-entry-border-color;
             background-color: $base-color-light !important;
-            border-bottom: 5px solid $critical-apparatus-entry-background-color;
+            border-bottom: 5px solid $base-color-light;
             position: relative;
             z-index: 9;
             margin-bottom: -1px;
@@ -40,36 +39,27 @@
         font-size: 95%;
         background-color: $base-color-light !important;
         color: $base-color-dark;
+        padding: 10px;
         border: 1px solid $critical-apparatus-entry-border-color;
         &_header {
             display: block;
-            padding: 7px;
-            padding-bottom: 4px;
         }
         &_tools{
-            padding: 0;
-            float: right;
+            float: right !important;
             display: block;
-            position: relative;
-            bottom: 5px;
-            right: -2px;
             background: transparent;
             text-align: center;
-            button-switch{
-                margin-right: 0;
-                font-size: 70%;
+            .openList {
+                min-height: 23px;
+                min-width: 25px;
+                font-size: 85%;
                 float: right;
-                .buttonSwitch {
-                    box-shadow: none;
-                    background: none;
-                    border: none;
-                }
+                padding-top: 4px;
                 &.active, &:hover {
-                    .buttonSwitch {
-                        @include set(box-shadow, inset 0 1px 2px 0 rgba(0,0,0,.1));
-                        background-color: $base-color-light;
-                        border: 1px solid $critical-apparatus-entry-border-color;
-                    }
+                    cursor: pointer;
+                    @include set(box-shadow, inset 0 1px 2px 0 rgba(0,0,0,.1));
+                    background-color: $base-color-light;
+                    border: 1px solid $critical-apparatus-entry-border-color;
                 }
             }
         }
