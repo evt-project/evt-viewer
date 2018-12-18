@@ -266,7 +266,7 @@
                hrefElt.dataset.id = id;
                hrefElt.dataset.content = content;
                hrefElt.onclick = function () {
-                  toggle = showDivHotSpot(toggle, this);
+                  toggle = showDivHotSpot(toggle, this); //Funzione che si attiva al click
                }; //function(){console.log('hot spot');};
                hrefElt.onmouseleave = function () {
                   toggle = hiddenDivHotSpot(toggle, this);
@@ -299,30 +299,31 @@
                var topLeft = viewerHandler.viewer.viewport.pointFromPixel(point1);
                var bottomRight = viewerHandler.viewer.viewport.pointFromPixel(point2);
                var DivTopLeft = 0;
-               if (topLeft.x <= 0.4) {
-                   DivTopLeft = topLeft.x + (bottomRight.x - topLeft.x) + 0.050;
+               if (topLeft.x <= 0) {
+                   DivTopLeft = topLeft.x + (bottomRight.x - topLeft.x) + 0;
                } else {
-                     DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0.3);
+                     DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0);
 
                }
                var rect = new OpenSeadragon.Rect(
                   DivTopLeft,
                   topLeft.y,
-                  0.3,
-                  0.35);
+                  0,
+                  0);
                //bottomRight.x - topLeft.x
                //bottomRight.y - topLeft.y
 
+/* Modifiche effettuate da FS per il progetto San Matteo */
 
                var divElt = document.createElement('div');
                divElt.id = 'div-hotspot-overlay_selected-' + elem.dataset.id;
                divElt.className = 'hotspot-dida';
                
-
+               
                var divTitleElt = document.createElement('div');
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
-               divTitleElt.innerHTML = 'HotSpot n.: '+elem.dataset.id;
+               divTitleElt.innerHTML = 'Hotspot'+ elem.dataset.id;
 
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
@@ -337,6 +338,7 @@
                var OSDOverlay = {
                   element: divElt,
                   location: rect
+                  //aggiungere opzioni
                };
 
 

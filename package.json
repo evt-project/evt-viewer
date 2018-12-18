@@ -43,6 +43,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "bower": "^1.8.2"
+    "bower": "^1.8.2",
+    "cli": "^1.0.1",
+    "jarfile": "^2.0.0"
   }
 }

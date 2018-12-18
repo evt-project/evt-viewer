@@ -31,7 +31,7 @@
                imageViewerHandler.setViewer(viewer);
                imageViewerHandler.setScope(scope);
 
-               scope.osd.addOnceHandler("open", imageViewerHandler.open,null,1);
+               //scope.osd.addOnceHandler("open", imageViewerHandler.open,null,1);
                scope.osd.addHandler("home", imageViewerHandler.home);
 
                scope.osd.addHandler('navigator-scroll', imageViewerHandler.navigatorScroll);
@@ -64,7 +64,7 @@
                //scope.mouse.destroy();
                //optionsWatcher();
                //Remove event handlers
-               scope.osd.removeHandler("open", imageViewerHandler.open);
+               //scope.osd.removeHandler("open", imageViewerHandler.open);
                scope.osd.removeHandler("home", imageViewerHandler.home);
                scope.osd.removeHandler("navigator-scroll", imageViewerHandler.navigatorScroll);
                scope.osd.removeHandler("pan", imageViewerHandler.pan);

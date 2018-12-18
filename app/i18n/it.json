@@ -48,7 +48,7 @@
 		"LIST": "Liste",
 		"MENU": "Apri Menu",
 		"MS": "Descrizione del manoscritto",
-		"MSD": "MS Desc",
+		"MSD": "Descrizione MS",
 		"NO_VERSION_AVAILABLE": "Nessun altra versione disponibile",
 		"NO_WITNESSES_AVAILABLE": "Nessun altro testimone disponibile",
 		"PIN_REMOVE": "Rimuovi Pin",
@@ -59,7 +59,7 @@
 		"THUMBNAILS": "Miniature",
 		"VERSION_CLOSE": "Chiudi versione",
 		"WITNESS_CLOSE": "Chiudi testimone",
-		"WITNESSES_LIST": "Lista testimoni"
+		"WITNESSES_LIST": "Lista testimoni"		
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "inizio di una lacuna in ",
