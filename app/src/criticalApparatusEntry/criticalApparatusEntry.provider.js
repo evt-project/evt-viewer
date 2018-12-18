@@ -27,11 +27,29 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 	var currentAppEntry = '';
 
-	this.$get = function(config, parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements) {
+	this.$get = function(config, parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements, xmlParser) {
 		var appEntry = {},
 			collection = {},
 			list = [],
 			idx = 0;
+
+		
+		var truncateLemma = function(lemma) {
+			var contentElem = xmlParser.parse(lemma.content).documentElement;
+			if (!contentElem) { return; }
+			var maxLength = defaults.lemMaxLength || 100;
+					text = contentElem.childNodes[0];
+			if (text.textContent.length > maxLength) {
+				var start = text.textContent.substring(0, maxLength / 2);
+				start = start.substring(0, start.lastIndexOf(' '));
+				var end = text.textContent.substring(text.textContent.length - (maxLength / 2) - 1, text.textContent.length - 1);
+				end = end.substring(end.indexOf(' '));
+				var newString = start + ' [...] ' + end;
+				var shortenedText = document.createTextNode(newString);
+				contentElem.replaceChild(shortenedText, text);
+			}
+			return contentElem.outerHTML;
+		}
 
 		// 
 		// Reading builder
@@ -87,7 +105,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 			// Get Apparatus Entry content 
 			var content,
-                witnessesGroups = '',
+        witnessesGroups = '',
 				firstSubContentOpened = '',
 				tabs = {
 					_indexes: []
@@ -135,6 +153,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 						firstSubContentOpened = defaults.firstSubContentOpened;
 					}
 				}
+			}
+
+			if (defaults.lemMaxLength) {
+				content.lemma.content = truncateLemma(content.lemma);
 			}
 
 			var exponent = scope.exponent === undefined ? parsedData.getCriticalEntryExponent(scope.appId) : scope.exponent;
