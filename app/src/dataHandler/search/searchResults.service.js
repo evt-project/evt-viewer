@@ -329,12 +329,13 @@ angular.module('evtviewer.dataHandler')
             'acrossElements': true,
             'caseSensitive': isCaseSensitive,
             'accuracy': {
-               'value': 'partially',
+               'value': 'complementary',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
             'filter': function() {
                return inputValue.match(regex) ? false : true;
-            }
+            },
+            'exclude': ['.lineN']
          });
       };
    }]);
