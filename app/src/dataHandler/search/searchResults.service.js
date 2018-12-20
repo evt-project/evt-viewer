@@ -4,7 +4,7 @@ angular.module('evtviewer.dataHandler')
    .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
       function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
    
-      var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
+      var regex = /[.,\/#!$%\^&;:{}=_`~()]/;
       
       SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive) {
          var searchResults;
@@ -329,12 +329,13 @@ angular.module('evtviewer.dataHandler')
             'acrossElements': true,
             'caseSensitive': isCaseSensitive,
             'accuracy': {
-               'value': 'partially',
+               'value': 'complementary',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
             'filter': function() {
                return inputValue.match(regex) ? false : true;
-            }
+            },
+            'exclude': ['.lineN']
          });
       };
    }]);
