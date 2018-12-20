@@ -4,7 +4,7 @@ angular.module('evtviewer.dataHandler')
    .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
       function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
    
-      var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
+      var regex = /[.,\/#!$%\^&;:{}=_`~()]/;
       
       SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive) {
          var searchResults;
