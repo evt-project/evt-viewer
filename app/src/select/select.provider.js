@@ -491,15 +491,31 @@ angular.module('evtviewer.select')
 					break;
 				case 'witness':
 					optionSelectedValue = initValue;
+					var removeAvailableWit = function(wit) {
+						var currentWits = evtInterface.getState('currentWits');
+						var index = currentWits.indexOf(wit);
+						if (index < 0) {
+							evtInterface.removeAvailableWitness(wit);
+						}
+					};
+					var addAvailableWit = function(wit) {
+						var currentWits = evtInterface.getState('currentWits');
+						var index = currentWits.indexOf(wit);
+						if (index < 0) {
+							evtInterface.addAvailableWitness(wit);
+						}
+					};
 					callback = function(optionSelected, newOption) {
 						vm.collapse();
-						if (optionSelected !== undefined && optionSelected[0] !== undefined) {
-							if (newOption !== undefined) {
-								evtInterface.switchWitnesses(optionSelected[0].value, newOption.value);
-								evtInterface.updateUrl();
-							}
-						} else if (newOption !== undefined) {
+						if (optionSelected && optionSelected[0] && newOption) {
+							removeAvailableWit(newOption.value);
+							evtInterface.switchWitnesses(optionSelected[0].value, newOption.value);
+							addAvailableWit(optionSelected[0].value);
+							evtInterface.updateUrl();
+						} else if (newOption) {
+							removeAvailableWit(newOption.value);
 							evtInterface.addWitness(newOption.value);
+							addAvailableWit(optionSelected[0].value);
 							evtInterface.updateUrl();
 						}
 					};

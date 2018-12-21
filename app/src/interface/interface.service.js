@@ -830,6 +830,13 @@ angular.module('evtviewer.interface')
             }
             return position;
         }
+
+        mainInterface.addAvailableWitness = function(wit) {
+            if (properties.availableWitnesses.indexOf(wit) < 0) {
+                var pos = findWitnessPosition(wit, properties.availableWitnesses);
+                properties.availableWitnesses.splice(pos, 0, wit);
+            }
+        }
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#addWitnessAtIndex
@@ -857,10 +864,7 @@ angular.module('evtviewer.interface')
                 state.currentWits.splice(witIndex, 1);
                 delete state.currentWitsPages[wit];
             }
-            if (properties.availableWitnesses.indexOf(wit) < 0) {
-                var pos = findWitnessPosition(wit, properties.availableWitnesses);
-                properties.availableWitnesses.splice(pos, 0, wit);
-            }
+            mainInterface.addAvailableWitness(wit);
         };
         /**
          * @ngdoc method
