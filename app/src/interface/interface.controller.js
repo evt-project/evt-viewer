@@ -27,7 +27,7 @@
 **/
 angular.module('evtviewer.interface')
 
-	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
+	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog, baseData) {
 		var _console = $log.getInstance('interface');
 		/**
          * @ngdoc method
@@ -112,8 +112,9 @@ angular.module('evtviewer.interface')
 				evtInterface.updateUrl();
 			}
 			$timeout(function() {
-				var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[0]).width.replace('px', '');
-				document.getElementById('compareWits_box').scrollLeft = singleBoxWidth * (evtInterface.getState('currentWits').length + 1);
+                var singleBoxWidth = window.getComputedStyle(document.getElementsByClassName('box')[1]).width.replace('px', '');
+                var pos = evtInterface.getState('currentWits').indexOf(wit);
+				document.getElementById('compareWits_box').scrollLeft = singleBoxWidth * pos;
 			});
 			evtInterface.updateProperty('witnessSelector', false);
 		};
@@ -266,6 +267,11 @@ angular.module('evtviewer.interface')
          */
         $scope.getSecondaryContentOpened = function() {
 			return evtInterface.getState('secondaryContent');
+		};
+        
+        $scope.isFileLoaded = function() {
+            var file = baseData.getXML();
+			return file !== null && file !== undefined;
 		};
 		/**
          * @ngdoc method
@@ -553,6 +559,11 @@ angular.module('evtviewer.interface')
 			evtInterface.updateState('secondaryContent', 'globalInfo');
 			evtDialog.openByType('globalInfo');
 		};
+        
+        $scope.openToc = function() {
+			evtInterface.updateState('secondaryContent', 'toc');
+			evtDialog.openByType('toc');
+		};
 		/**
          * @ngdoc method
          * @name evtviewer.interface.controller:InterfaceCtrl#openGlobalDialogLists
@@ -582,6 +593,11 @@ angular.module('evtviewer.interface')
          */
 		$scope.downloadXML = function() {
 			window.open(evtInterface.getProperty('dataUrl'), '_blank');
+		};
+        
+        $scope.openDownloadDialog = function() {
+            evtInterface.updateState('secondaryContent', 'download');
+			evtDialog.openByType('download');
 		};
 
 		// UI Translation

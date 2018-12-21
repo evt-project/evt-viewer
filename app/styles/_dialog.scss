@@ -62,6 +62,13 @@
         &-content {
             padding:20px;
         }
+        &.externalSearch {
+            width: 50%;
+            height: auto;
+            .evt-dialog-container-content {
+                padding: 20px 0 20px 0;
+            }
+        }
     }
 }
 

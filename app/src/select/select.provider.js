@@ -259,17 +259,17 @@ angular.module('evtviewer.select')
 							var docId = newOption.doc;
 							evtInterface.updateDiv(docId, newOption.value);
 							var currentView = evtInterface.getState('currentViewMode');
-							if (currentView === 'collation' && newOption.doc === config.mainDocId) {
+							if (currentView === 'collation' && newOption.doc === config.mainDocId && evtInterface.getProperty('syncDiv')) {
 								var corresp = parsedData.getDivs()._indexes.corresp[newOption.value];
-								var witDocs = corresp.map(divId => {
+								var witDocs = corresp.map(function(divId) {
 									var doc = parsedData.getDiv(divId).doc;
 									evtInterface.updateDiv(doc, divId);
 									return doc;
 								});
 								var witsList = parsedData.getWitnessesList();
-								var wits = witDocs.map(doc => {
+								var wits = witDocs.map(function(doc) {
 									var witness;
-									witsList.forEach(wit => {
+									angular.forEach(witsList, function(wit) {
 										if (parsedData.getWitness(wit).corresp === doc) {
 											witness = wit;
 										}
@@ -277,7 +277,7 @@ angular.module('evtviewer.select')
 									return witness;
 								});
 								var currentWits = evtInterface.getState('currentWits');
-								witsList.forEach(wit => {
+								angular.forEach(witsList, function(wit) {
 									if (wits.indexOf(wit) >= 0 && currentWits.indexOf(wit) < 0) {
 										evtInterface.addWitness(wit);
 									} else if (wits.indexOf(wit) < 0 && currentWits.indexOf(wit) >= 0) {
@@ -289,15 +289,17 @@ angular.module('evtviewer.select')
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList, formattedList) {
+					formatOptionList = function(optionList, formattedList, section) {
 						var allDivs = parsedData.getDivs();
-						optionList.forEach((divId) => {
-							if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
-								allDivs[divId].type = 'groupTitle';
-							}
-							formattedList.push(allDivs[divId]);
-							if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
-								formatOptionList(allDivs[divId].subDivs, formattedList);
+						angular.forEach(optionList, function(divId) {
+							if (allDivs[divId].section === section) {
+								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
+									allDivs[divId].type = 'groupTitle';
+								}
+								formattedList.push(allDivs[divId]);
+								if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+									formatOptionList(allDivs[divId].subDivs, formattedList, section);
+								}	
 							}
 						});
 					};
@@ -305,7 +307,9 @@ angular.module('evtviewer.select')
 						return option;
 					};
 					var currentDoc = evtInterface.getState('currentDoc');
-					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
+					var div = parsedData.getDiv(evtInterface.getState('currentDivs')[currentDoc]);
+					var section = div ? div.section : 'body';
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList, section);
 					break;
 				case 'witnessDiv':
 					callback = function(oldOption, newOption) {
@@ -316,15 +320,17 @@ angular.module('evtviewer.select')
 							evtInterface.updateUrl();
 						}
 					};
-					formatOptionList = function(optionList, formattedList) {
+					formatOptionList = function(optionList, formattedList, section) {
 						var allDivs = parsedData.getDivs();
-						optionList.forEach((divId) => {
-							if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
-								allDivs[divId].type = 'groupTitle';
-							}
-							formattedList.push(allDivs[divId]);
-							if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
-								formatOptionList(allDivs[divId].subDivs, formattedList);
+						angular.forEach(optionList, function(divId) {
+							if (allDivs[divId].section === section) {
+								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
+									allDivs[divId].type = 'groupTitle';
+								}
+								formattedList.push(allDivs[divId]);
+								if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+									formatOptionList(allDivs[divId].subDivs, formattedList, section);
+								}
 							}
 						});
 					};
@@ -332,7 +338,9 @@ angular.module('evtviewer.select')
 						return option;
 					};
 					var currentDoc = parsedData.getDiv(initValue).doc;
-					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList);
+					var div = parsedData.getDiv(evtInterface.getState('currentDivs')[currentDoc]);
+					var section = div ? div.section : 'body';
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList, section);
 					break;
 				case 'edition':
 				case 'comparingEdition':
@@ -483,15 +491,31 @@ angular.module('evtviewer.select')
 					break;
 				case 'witness':
 					optionSelectedValue = initValue;
+					var removeAvailableWit = function(wit) {
+						var currentWits = evtInterface.getState('currentWits');
+						var index = currentWits.indexOf(wit);
+						if (index < 0) {
+							evtInterface.removeAvailableWitness(wit);
+						}
+					};
+					var addAvailableWit = function(wit) {
+						var currentWits = evtInterface.getState('currentWits');
+						var index = currentWits.indexOf(wit);
+						if (index < 0) {
+							evtInterface.addAvailableWitness(wit);
+						}
+					};
 					callback = function(optionSelected, newOption) {
 						vm.collapse();
-						if (optionSelected !== undefined && optionSelected[0] !== undefined) {
-							if (newOption !== undefined) {
-								evtInterface.switchWitnesses(optionSelected[0].value, newOption.value);
-								evtInterface.updateUrl();
-							}
-						} else if (newOption !== undefined) {
+						if (optionSelected && optionSelected[0] && newOption) {
+							removeAvailableWit(newOption.value);
+							evtInterface.switchWitnesses(optionSelected[0].value, newOption.value);
+							addAvailableWit(optionSelected[0].value);
+							evtInterface.updateUrl();
+						} else if (newOption) {
+							removeAvailableWit(newOption.value);
 							evtInterface.addWitness(newOption.value);
+							addAvailableWit(optionSelected[0].value);
 							evtInterface.updateUrl();
 						}
 					};

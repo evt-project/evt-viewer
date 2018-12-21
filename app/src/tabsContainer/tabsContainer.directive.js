@@ -39,6 +39,8 @@ angular.module('evtviewer.tabsContainer')
             orientation : '@'
         },
         templateUrl: 'src/tabsContainer/tabsContainer.dir.tmpl.html',
+        controllerAs: 'vm',
+        controller: 'TabsContainerCtrl',
         link: function(scope, element, attrs) {
             // Add attributes in vm
             scope.vm = {
@@ -64,6 +66,8 @@ angular.module('evtviewer.tabsContainer')
                     if (currentTabContainer.type === 'projectInfo') {
                         evtInterface.setHomePanel('');
                     }
+                    evtInterface.updateProperty('tabsContainerOpenedContent', '');
+                    evtInterface.updateProperty('tabsContainerOpenedTab', '');
                     currentTabContainer.destroy();
                 }
             });

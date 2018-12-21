@@ -87,6 +87,7 @@ angular.module('evtviewer.interface')
         currentApparatus   : undefined,
         currentQuote       : undefined,
         currentAnalogue    : undefined,
+        currentNamedEntity    : undefined,
         currentSource      : undefined,
         currentSourceText  : undefined,
         currentVersions    : undefined,
@@ -134,7 +135,10 @@ angular.module('evtviewer.interface')
         isSourceLoading    : false,
         parsedSourcesTexts : [ ],
         availableVersions  : [ ],
-        versionSelector    : false
+        versionSelector    : false,
+        syncDiv            : false,
+        tabsContainerOpenedContent: '',
+        tabsContainerOpenedTab: ''
     };
     /**
      * @ngdoc property
@@ -179,7 +183,7 @@ angular.module('evtviewer.interface')
 
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);
-                var userLangKey = evtTranslation.getUserLanguage(),
+                var userLangKey = config.defaultLanguage ? config.defaultLanguage : evtTranslation.getUserLanguage(),
                     fallbackLangKey = evtTranslation.getFallbackLanguage();
                 evtTranslation.setFallbackLanguage(fallbackLangKey);
                 evtTranslation.setLanguage(userLangKey);
@@ -810,13 +814,29 @@ angular.module('evtviewer.interface')
          * @todo Add scroll to new box added
          */
         mainInterface.addWitness = function(newWit) {
-            // if (mainInterface.existCriticalText()) {
-            //     state.currentWits.unshift(newWit);
-            // } else {
-                state.currentWits.push(newWit);
-            // }
+            var pos = findWitnessPosition(newWit, state.currentWits);
+            state.currentWits.splice(pos, 0, newWit);
             mainInterface.removeAvailableWitness(newWit);
         };
+
+        var findWitnessPosition = function(wit, list) {
+            var witList = parsedData.getWitnessesList();
+            var witPosition = witList.indexOf(wit),
+                itemPosition = witList.indexOf(list[0]),
+                position = 0;
+            while (position < list.length && itemPosition <= witPosition) {
+                position++
+                itemPosition = witList.indexOf(list[position]);
+            }
+            return position;
+        }
+
+        mainInterface.addAvailableWitness = function(wit) {
+            if (properties.availableWitnesses.indexOf(wit) < 0) {
+                var pos = findWitnessPosition(wit, properties.availableWitnesses);
+                properties.availableWitnesses.splice(pos, 0, wit);
+            }
+        }
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#addWitnessAtIndex
@@ -844,9 +864,7 @@ angular.module('evtviewer.interface')
                 state.currentWits.splice(witIndex, 1);
                 delete state.currentWitsPages[wit];
             }
-            if (properties.availableWitnesses.indexOf(wit) < 0) {
-                properties.availableWitnesses.push(wit);
-            }
+            mainInterface.addAvailableWitness(wit);
         };
         /**
          * @ngdoc method
@@ -956,11 +974,7 @@ angular.module('evtviewer.interface')
                 witIds = [],
                 witPageIds = {},
                 appId,
-                divId,
-                quoteId,
-                analogueId,
-                sourceId,
-                apparatusId;
+                divId;
 
             // VIEW MODE
             if (params.viewMode !== undefined) {
@@ -1031,11 +1045,8 @@ angular.module('evtviewer.interface')
             // DIV/SECTION
             if (params.s && parsedData.getDiv(params.s)) {
                 divId = params.s;
-            } else {
-                var divs = parsedData.getDocument(docId).divs;
-                if (divs.length > 0) {
-                    divId = divs[0];
-                }
+            } else if (parsedData && parsedData.getDocument(docId)) {
+                divId = parsedData.getDocument(docId).divs[0];
             }
             // WITNESSES
             var totWits;

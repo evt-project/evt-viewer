@@ -142,6 +142,12 @@ angular.module('evtviewer.select')
                     return evtInterface.getState('currentDivs')[currentDoc];
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
+                        var oldDiv = parsedData.getDiv(oldItem),
+                            newDiv = parsedData.getDiv(newItem);
+                        if (oldDiv && newDiv && oldDiv.section !== newDiv.section) {
+                            currentSelect.optionList = []
+                            currentSelect.formatOptionList(parsedData.getDivs()._indexes.main[newDiv.doc], currentSelect.optionList, newDiv.section)
+                        }
                         currentSelect.selectOptionByValue(newItem);
                     }
                 }, true); 

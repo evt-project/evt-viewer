@@ -205,7 +205,7 @@ angular.module('evtviewer.dataHandler')
 		var root = parser.getDocRoot(origDoc),
 				copyRoot = root.cloneNode(true),
 				doc;
-		angular.forEach(angular.element(copyRoot).find(evtParser.parserProperties.defDocElement), elem => {
+		angular.forEach(angular.element(copyRoot).find(evtParser.parserProperties.defDocElement), function(elem) {
 				if (elem.outerHTML.localeCompare(origDoc.outerHTML) === 0) {
 					doc = elem;
 				}
@@ -226,31 +226,27 @@ angular.module('evtviewer.dataHandler')
 		if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
 					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
 			var depaAppsStartIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.start),
-					depaAppsEndIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.end),
 					anchorsIds = [];
-			depaAppsStartIds.map(id => {
+			depaAppsStartIds.map(function(id) {
 				if (anchorsIds.indexOf(id) < 0) {
 					anchorsIds.push(id)
 				}
-			});	
-			depaAppsEndIds.map(id => {
-				if (anchorsIds.indexOf(id) < 0) {
-					anchorsIds.push(id)
-				}
-			});	
-			anchorsIds.map(elemId => {
-				var el = dom.querySelector('[*|id=' + elemId + ']');
+			});
+			var index = anchorsIds.length - 1;
+			while (index >= 0) {
+				var el = dom.querySelector('[*|id=' + anchorsIds[index] + ']');
 				if (el) {
 					evtDepaParser.setAppInText(el, wit, dom);
 				}
-			});
+				index--;
+			}
 		}
 		// quotes
 		if (config.quoteDef) {
 			var quotes = [];
 			// Retrieves all quote definitions
 			var quoteDefs = quoteDef.split(',');
-			quoteDefs.forEach((def) => {
+			angular.forEach(quoteDefs, function(def) {
 				var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
 				quotes = quotes.concat(q);
 			});
@@ -264,9 +260,9 @@ angular.module('evtviewer.dataHandler')
 		if (config.analogueDef) {
 			var analogues = [],
 					defs = analogueDef.split(',') || [];
-			defs.forEach(def => {
+			angular.forEach(defs, function(def) {
 				var an = dom.querySelectorAll(def.replace('<', '').replace('>', ''));
-				an.forEach(analogue => { analogues.push(analogue); });
+				angular.forEach(an, function(analogue) { analogues.push(analogue); });
 			});
 			var analoguesIndex = analogues.length - 1;
 			while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
@@ -314,7 +310,7 @@ angular.module('evtviewer.dataHandler')
 			} else {
 				evtCriticalElementsParser.handleAppEntry(appNode);
 				var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-				Object.values(subApps).forEach((sub) => {
+				angular.forEach(Object.values(subApps), function(sub) {
 					evtCriticalElementsParser.handleAppEntry(sub);
 				});
 				entry = parsedData.getCriticalEntryById(appId);

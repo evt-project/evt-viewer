@@ -117,14 +117,16 @@ section > div {
 @import "quote.scss";
 @import "analogue.scss";
 @import "dialog.scss";
+@import "download.scss";
 @import "ref.scss";
 @import "tabsContainer.scss";
 @import "list.scss";
 @import "namedEntity.scss";
+@import "searchBox.scss";
 @import "sourceSeg.scss";
+@import "toc.scss";
 @import "versionReading.scss";
 @import "versionApparatusEntry";
-@import "searchBox.scss";
 
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
@@ -245,6 +247,11 @@ section > div {
             box-shadow: none;
             border-radius: 0;
             width: 0px;
+
+            &[data-type="openToc"] {
+                font-size: 1.3em;
+                margin-right: 3px;
+            }
 
             &-label {
                 font-variant: small-caps;
@@ -448,6 +455,11 @@ pre {
                 cursor: pointer;
                 box-sizing: border-box;
                 white-space: nowrap;
+
+                > a {
+                    text-decoration: none;
+                    color: #444444;
+                }
 
                 .icon {
                     margin-right: 14px;

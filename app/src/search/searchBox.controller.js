@@ -67,11 +67,11 @@ angular.module('evtviewer.search')
          var vm = this,
             searchBoxBtnNumber = vm.searchBoxBtn.length;
          
-         if(searchBoxBtnNumber === 6) {
-            return 3;
+         if(searchBoxBtnNumber === 3) {
+            return 2;
          }
          else {
-            return 4;
+            return 1;
          }
       };
       

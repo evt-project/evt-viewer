@@ -6,7 +6,7 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function (SEARCHBOXDEFAULTS, parsedData) {
+      this.$get = function (SEARCHBOXDEFAULTS, parsedData, evtInterface) {
          var searchBox = [],
             searchBoxCollection = {},
             parentBoxId,
@@ -22,7 +22,7 @@ angular.module('evtviewer.search')
             };
             var searchBoxBtn = [],
                defaultSearchBoxBtn,
-               currentBoxEdition = scope.$parent.edition;
+               currentBoxEdition = scope.$parent.edition || evtInterface.getState('currentEdition');
             
             defaultSearchBoxBtn = currentBoxEdition === 'diplomatic' ? SEARCHBOXDEFAULTS.diplomaticSearchBoxBtn : SEARCHBOXDEFAULTS.interpretativeSearchBoxBtn;
             
@@ -37,7 +37,7 @@ angular.module('evtviewer.search')
                }
             }
             
-            parentBoxId = scope.$parent.id;
+            parentBoxId = scope.parentId || scope.$parent.id || 'externalSearchDialog';
             searchBoxId = parentBoxId + 'SearchBox';
             
             var scopeHelper = {

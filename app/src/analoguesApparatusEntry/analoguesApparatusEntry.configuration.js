@@ -1,7 +1,8 @@
 angular.module('evtviewer.analoguesApparatusEntry')
 
 .constant('ANALOGUESAPPENTRY', {
-    firstSubContentOpened : ''
+    firstSubContentOpened : '',
+    allowedTabs: ['text', 'biblRef', 'xmlSource']
 })
 
 .config(function(evtAnaloguesApparatusEntryProvider, configProvider, ANALOGUESAPPENTRY) {

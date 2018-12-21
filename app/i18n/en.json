@@ -51,10 +51,12 @@
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "No more versions available",
 		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+		"OPEN_LIST": "Show entry in full list",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
 		"SHOW_PINNED_ENTRIES": "Show pinned elements",
 		"SHOW_PINNED_APP_ENTRIES": "Show pinned apparatus entries",
+		"SYNC_DIV": "Open corresponding chapters",
 		"THUMBS": "Thumbs",
 		"THUMBNAILS": "Thumbnails",
 		"VERSION_CLOSE": "Close version",
@@ -83,9 +85,15 @@
 	"DIALOGS": {
 		"BOOKMARK": "Bookmark to share",
 		"CLOSE": "Close",
+		"INTRO": "Introduction",
 		"NAMED_ENTITIES": "Named Entities",
 		"PROJECT_INFO": "Project Info",
 		"WITNESSES": "Witnesses"
+	},
+	"DOWNLOAD": {
+		"DOCUMENT": "Document",
+		"DOWNLOAD": "Download",
+		"FORMAT": "Format"
 	},
 	"LANGUAGES": {
 		"EN": "English",
@@ -115,7 +123,9 @@
 	},
 	"MAIN_MENU": {
 		"GENERATE_BOOKMARK": "Get Bookmark",
-		"DOWNLOAD_XML": "Download XML",
+		"GITHUB_ISSUE": "Report an issue",
+		"HELP": "Help",
+		"DOWNLOAD": "Download file",
 		"KEYBOARD_SHORT_CUTS": "Keyboard short cuts",
 		"LANGUAGES": "Languages",
 		"OPEN_LISTS": "Open Lists",
@@ -151,7 +161,11 @@
 	},
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "More Info",
-		"OCCURRENCES": "Occurrences",
+		"OCCURRENCES": {
+			"MAIN": "Occurrences",
+			"SMALL": "occurrences",
+			"TITLE": "{{totalLength}} occurrences found in {{formLength}} different forms"
+		},
 		"XML": "XML",
 		"MAP": "Map"
 	},
@@ -219,6 +233,21 @@
 		"QUOTE_START": "Quote start",
 		"QUOTE_END": "Quote end"
 	},
+	"SEARCH": {
+		"MAIN": "Search",
+		"HEADER": "Lexical search",
+		"PLACEHOLDER": "Enter query in the search box above",
+		"INFO1": "Search for",
+		"INFO2": "{{number}} results found in the current edition",
+		"TOKEN": "Risultati per",
+		"RESULT": {
+			"TITLE": "Found in",
+			"PAGE": "page",
+			"SECTION": "chapter",
+			"PARAGRAPH": "paragraph",
+			"LINE": "line"
+		}
+	},
 	"SELECTS": {
 		"CLEAR": "Clear",
 		"CLEAR_SELECTION": "Clear Selection",
@@ -241,6 +270,15 @@
 		"XML": "XML",
 		"XML_SOURCE_QUOTE": "XML Source for Quote",
 		"XML_SOURCE_FOR": "XML Source for "
+	},
+	"TOC": {
+		"BACK": "Back matter",
+		"BODY": "Text",
+		"DIVS": "Sections",
+		"FRONT": "Front matter",
+		"HEADER": "Toc, front matter and back matter",
+		"PAGES": "Folia",
+		"TITLE": "Table of contents"
 	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Critical Note",

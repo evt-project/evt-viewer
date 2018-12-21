@@ -9,7 +9,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 	display: block;
 	background: inherit;
 	font-size: 95%;
-	//padding: 5px;
 
 	&__icon {
 		margin-right: 5px;
@@ -22,7 +21,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 		
 		&:hover {
 			cursor: pointer;
-			//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
 		}
 		.opener:before {
 			content: "\f0da";
@@ -60,7 +58,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 	&__details {
 		display: none;
 		//padding-left: 16px;
-		font-size: 85%;
+		font-size: 95%;
 
 		border-top: 3px double $base-color-middle;
 		
@@ -75,14 +73,11 @@ $named-entities-border-color : rgb(125, 125, 125);
 			span {
 				padding: 5px;
 				display: inline-block;
-				font-size: 90%;
+				font-size: 95%;
 				cursor: pointer;
 				border-left: 1px solid $named-entities-background-color-darker;
 				&:first-child {
 					border-left: none;
-				}
-				&:hover {
-					//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
 				}
 				&.active{
 					@include set(box-shadow, inset 0 2px 2px -1px $named-entities-border-color);
@@ -106,7 +101,9 @@ $named-entities-border-color : rgb(125, 125, 125);
 			overflow-x: hidden;
 			overflow-y: auto;
 			background-color: $named-entities-background-color-darker;
-
+			&.largeMap {
+				max-height: 100%;
+			}
 		}
 
 		&-panel {
@@ -161,12 +158,6 @@ $named-entities-border-color : rgb(125, 125, 125);
 					text-transform: uppercase;
 				}
 
-				&:first-of-type {
-					&:before {
-						//content: "(";
-					}
-				}
-
 				&:after {
 					content: ", ";
 					vertical-align: top;
@@ -211,22 +202,51 @@ $named-entities-border-color : rgb(125, 125, 125);
 	}
 
 
-	&__occurrences {
-
-		&-occurrence {
-			border-radius: 4px;
-			padding: 3px 6px;
-			display: inline-block;
-			border: 1px solid rgba($base-color-middle, .3);
-			margin-right: 3px;
-			font-size: 85%;
-			margin-bottom: 3px;
-			display: inline-block !important;
-			cursor: pointer;
-
-			&:hover, &.active {
-				//text-shadow: 0px 0px 1px #000;
-				background: rgba($base-color-middle, .2);
+	.forms {
+		&_title {
+			font-style: italic;
+		}
+		&_cards {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: flex-start;
+			.form {
+				&_card {
+					// min-width: 30%;
+					// max-width: 50%;
+					border: 1px solid rgba($base-color-middle, .3);
+					border-radius: 4px;
+					margin: 5px;
+					padding: 3px 6px;
+					&:hover {
+						background: rgba($base-color-middle, .2);
+					}
+					&_title {
+						text-align: center !important;
+						&:hover {
+							cursor: pointer;
+						}
+					}
+					&_occurrences {
+						display: none;
+						&.visible {
+							display: block;
+						}
+						margin-left: 0 !important;
+						list-style-type: disc !important;
+						&_link {
+							margin-left: 15px;
+							text-decoration: underline;
+							&:hover {
+								font-weight: bold;
+								cursor: pointer;
+							}
+						}
+					}
+				}
+				&_form {
+					font-weight: bold !important;
+				}
 			}
 		}
 	}
@@ -509,6 +529,17 @@ $orgColor-darker: #ffb74d;
 	}
 }
 
+.term-active, .term-active {
+	.namedEntityRef {
+		&-generic, &-generic {
+			background-color: $named-entities-background-color-darker;
+			&:hover:not(.active) {
+				background-color: $named-entities-background-color;
+			}
+		}
+	}
+}
+
 [data-value="person"], [data-value="pers"], [data-value="persName"] {
 	.option-icon-label {
 		color: $personColor-darker;
@@ -540,4 +571,10 @@ $orgColor-darker: #ffb74d;
 	    bottom: 5px;
 	    right: -7px;
 	}
+}
+
+.namedEntityRef.blurred, .namedEntityRef.blurred * {
+	color: transparent !important;
+	background: transparent !important;
+	border: 0;
 }

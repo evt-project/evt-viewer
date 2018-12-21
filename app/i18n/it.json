@@ -51,10 +51,12 @@
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "Nessun altra versione disponibile",
 		"NO_WITNESSES_AVAILABLE": "Nessun altro testimone disponibile",
+		"OPEN_LIST": "Mostra nell'elenco completo",
 		"PIN_REMOVE": "Rimuovi Pin",
 		"PIN_TOGGLE": "Aggiungi Pin",
 		"SHOW_PINNED_ENTRIES": "Mostra elementi \"pinnati\"",
 		"SHOW_PINNED_APP_ENTRIES": "Mostra entrate critiche \"pinnate\"",
+		"SYNC_DIV": "Apri capitoli correlati",
 		"THUMBS": "Miniature",
 		"THUMBNAILS": "Miniature",
 		"VERSION_CLOSE": "Chiudi versione",
@@ -83,9 +85,15 @@
 	"DIALOGS": {
 		"BOOKMARK": "Segnalibro da condividere",
 		"CLOSE": "Chiudi",
-		"NAMED_ENTITIES": "Named Entities",
+		"INTRO": "Introduzione",
+		"NAMED_ENTITIES": "Appendici",
 		"PROJECT_INFO": "Informazioni sul progetto",
 		"WITNESSES": "Testimoni"
+	},
+	"DOWNLOAD": {
+		"DOCUMENT": "Documento",
+		"DOWNLOAD": "Scarica",
+		"FORMAT": "Formato"
 	},
 	"LANGUAGES": {
 		"EN": "Inglese",
@@ -115,7 +123,9 @@
 	},
 	"MAIN_MENU": {
 		"GENERATE_BOOKMARK": "Genera Segnalibro",
-		"DOWNLOAD_XML": "Scarica XML",
+		"GITHUB_ISSUE": "Segnala un problema",
+		"HELP": "Help",
+		"DOWNLOAD": "Scarica file",
 		"KEYBOARD_SHORT_CUTS": "Scorciatoie da tastiera",
 		"LANGUAGES": "Lingue",
 		"OPEN_LISTS": "Apri liste",
@@ -151,7 +161,11 @@
 	},
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "Informazioni aggiuntive",
-		"OCCURRENCES": "Occorrenze",
+		"OCCURRENCES": {
+			"MAIN": "Occorrenze",
+			"SMALL": "occorrenze",
+			"TITLE": "{{totalLength}} occorrenze trovate in {{formLength}} forme diverse"
+		},
 		"XML": "XML",
 		"MAP": "Mappa"
 	},
@@ -219,6 +233,21 @@
 		"QUOTE_START": "Inizio citazione",
 		"QUOTE_END": "Fine citazione"
 	},
+	"SEARCH": {
+		"MAIN": "Cerca",
+		"HEADER": "Ricerca lessicale",
+		"PLACEHOLDER": "Inserisci la chiave di ricerca nel campo sopra",
+		"INFO1": "Termine cercato:",
+		"INFO2": "{{number}} risultati trovati nell'edizione corrente",
+		"TOKEN": "Risultati per",
+		"RESULT": {
+			"TITLE": "Trovato in",
+			"PAGE": "pagina",
+			"SECTION": "capitolo",
+			"PARAGRAPH": "paragrafo",
+			"LINE": "riga"
+		}
+	},
 	"SELECTS": {
 		"CLEAR": "Cancella Selezione",
 		"CLEAR_SELECTION": "Cancella Selezione",
@@ -232,6 +261,15 @@
 		"SELECT_ALL": "Seleziona Tutto",
 		"SELECT_ALL_NAMED_ENTITIES": "Seleziona Tutte le Named Entities",
 		"SELECT_ALL_TYPES": "Seleziona tutte le tipologie"
+	},
+	"TOC": {
+		"BACK": "Appendici",
+		"BODY": "Testo",
+		"DIVS": "Sezioni",
+		"FRONT": "Introduzione",
+		"HEADER": "Paratesto e indici",
+		"PAGES": "Folia",
+		"TITLE": "Indice dei contenuti"
 	},
 	"SOURCES": {
 		"BIBLIOGRAPHIC_REFERENCE": "Riferimento Bibliografico",

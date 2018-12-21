@@ -44,32 +44,28 @@ angular.module('evtviewer.reference')
      * @author MR
      * @author CDP
      */
-	vm.handleRefClick = function(oEvent) {
-		if (vm.type === 'biblRef' || vm.type === 'biblio' || vm.type === 'bibl' || vm.target.substr(0, 1) === '#') {
-
-			// Cliccando, guardiamo il valore di type e se non è un riferimento interno allora:
-			// passiamo a evtHighlight l'id dell'entrata da evidenziare
-			// (ci penserà il template della bibliografia al resto)
-			// apriamo il dialog con tipo globalInfo
-			// scegliamo di visualizzare come pannello iniziale quello della bibliografia
-
-			//Andiamo a vedere se il campo target fa riferimento a un elemento bibliografico estratto in precedenza
-			//Se abbiamo trovato il riferimento tra quelli estratti allora apriamo il pannello bibliografia e evidenziamo
-			var target = vm.target.replace('#', ''),
-				bibliographicRef = parsedData.getBibliographicRefById(target);
-			if (bibliographicRef) {
-				evtInterface.updateState('secondaryContent', 'globalInfo');
-				evtDialog.openByType('globalInfo');
-				evtInterface.setHomePanel('bibliography');
-				evtHighlight.setHighlighted(target);
-				//dopo 2s viene rimosso l'attributo highlight
-				$timeout(function() {
-					evtHighlight.setHighlighted('');
-				}, 2000);
+	vm.handleRefClick = function(event) {
+		event.stopPropagation();
+		if (vm.hasPopup) {
+			if (!vm.showPopup) {
+				evtRef.closeAllPopups();
 			}
-			//Se il riferimento non esiste, c'è un errore allora
-			else {
-				evtCommunication.err('MESSAGES.REFERENCE_NOT_FOUND', '', '405', true);
+			vm.showPopup = !vm.showPopup;
+			return;
+		}
+		if (vm.target.substr(0, 1) === '#') {
+			switch (vm.type) {
+				case 'biblRef':
+				case 'biblio':
+				case 'bibl': {
+					vm.handleBiblRef();
+				} break;
+				case 'witlink': {
+					handleWitRef();
+				} break;
+				default: {
+					evtCommunication.err('MESSAGES.REFERENCE_NOT_FOUND', '', '405', true);
+				}
 			}
 		} else { // Generic link
 			if (vm.target && vm.target !== '') {
@@ -78,6 +74,45 @@ angular.module('evtviewer.reference')
 			}
 		}
 	};
+
+	vm.handleBiblRef = function() {
+		var target = vm.target.replace('#', ''),
+		bibliographicRef = parsedData.getBibliographicRefById(target);
+		if (bibliographicRef) {
+			evtInterface.updateState('secondaryContent', 'toc');
+			evtDialog.openByType('toc');
+			evtInterface.updateProperty('tabsContainerOpenedContent', 'bibliography');
+			evtHighlight.setHighlighted(target);
+			$timeout(function() {
+				evtHighlight.setHighlighted('');
+			}, 2500);
+		}
+	}
+
+	var handleWitRef = function() {
+		var target = vm.target.replace('#', '').split(' ')[0];
+		var divId = target.indexOf('_') !== target.lastIndexOf('_') ? target.substr(0, target.lastIndexOf('_')) : target;
+		var newWit = parsedData.getWitnessesList().find(function(witId) {
+			if (parsedData.getDiv(divId)) {
+				return parsedData.getWitness(witId).corresp === parsedData.getDiv(divId).doc;
+			}
+		});
+		if (newWit) {
+			evtInterface.updateDiv(parsedData.getDiv(divId).doc, divId);
+			var witnesses = evtInterface.getState('currentWits'),
+					scopeWitnessIndex = witnesses.indexOf(newWit);
+			if (witnesses.indexOf(newWit) >= 0) {
+				evtInterface.removeWitness(newWit);
+			}
+			if (scopeWitnessIndex !== undefined) {
+				evtInterface.addWitnessAtIndex(newWit, scopeWitnessIndex + 1);
+			}
+			if (evtInterface.getCurrentView !== 'collation') {
+				evtInterface.updateState('currentViewMode', 'collation');
+			}
+			evtInterface.updateUrl();
+		}
+	}
 
 	/**
 	 * @ngdoc method

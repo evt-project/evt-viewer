@@ -619,43 +619,6 @@ angular.module('evtviewer.box')
 					};
 					break;
             case 'text':
-               if(currentId === 'mainText' || currentId === 'mainText1') {
-                  bottomMenuList.buttons.push({
-                     title: 'Search',
-                     label: 'Search',
-                     icon: 'search',
-                     type: 'searchToolsInternal',
-                     show: function() {
-                        return true;
-                     },
-                     disabled: function() {
-                        return true;
-                     }
-                  });
-                  bottomMenuList.buttons.push({
-                     title: 'Create index for enable search',
-                     label: 'Create index',
-                     icon: '',
-                     type: 'searchIndex',
-                     show: function() {
-                        return true;
-                     }
-                  });
-               }
-               else {
-                  bottomMenuList.buttons.push({
-                     title: 'Search',
-                     label: 'Search',
-                     icon: 'search',
-                     type: 'searchToolsInternal',
-                     show: function() {
-                        return true;
-                     },
-                     disabled: function() {
-                        return true;
-                     }
-                  });
-               }
 					if (!parsedData.isCriticalEditionAvailable()) {
 						topMenuList.selectors.push({
 							id: 'page_' + currentId,
@@ -664,16 +627,24 @@ angular.module('evtviewer.box')
 						});
 					} else {
 						if (parsedData.getDivs().length > 0) {
-							var docId = evtInterface.getState('currentDocument');
-							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
-							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs[0];
+							var docId = config.mainDocId || evtInterface.getState('currentDocument');
+							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
 							if (currentDiv) {
 								topMenuList.selectors.push({
 									id: 'div_' + currentId,
-									type: 'witnessDiv',
+									type: 'div',
 									initValue: currentDiv
 								});
 							}
+						}
+						if (evtInterface.getState('currentViewMode') === 'collation') {
+							topMenuList.buttons.splice(0, 0, {
+								title: 'BUTTONS.SYNC_DIV',
+								label: '',
+								icon: 'sync-div',
+								type: 'syncDiv'
+							});
 						}
 						topMenuList.buttons.push({
 							title: 'BUTTONS.WITNESSES_LIST',
@@ -693,31 +664,14 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
-
-
-					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
-						if (scope.subtype === 'comparing') {
-							topMenuList.selectors.push({
-								id: 'comparingEditionLevel_' + currentId,
-								type: 'comparingEdition',
-								initValue: evtInterface.getState('currentComparingEdition')
-							});
-						} else {
-							topMenuList.selectors.push({
-								id: 'editionLevel_' + currentId,
-								type: 'edition',
-								initValue: evtInterface.getState('currentEdition')
-							});
-						}
+					if (config.mainDocId && parsedData.getDocument(config.mainDocId).front) {
+						topMenuList.buttons.push({
+							title: 'BUTTONS.INFO_ABOUT_TEXT',
+							label: 'BUTTONS.INFO',
+							icon: 'info-alt',
+							type: 'toggleInfoWit'
+						});
 					}
-
-					topMenuList.buttons.push({
-						title: 'BUTTONS.INFO_ABOUT_TEXT',
-						label: 'BUTTONS.INFO',
-						icon: 'info-alt',
-						type: 'front'
-					});
-
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
@@ -900,8 +854,8 @@ angular.module('evtviewer.box')
 					});
 					if (parsedData.getDivs().length > 0) {
 						var docId = parsedData.getWitness(vm.witness).corresp;
-						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs[0]
-						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs[0];
+						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
 						if (currentDiv) {
 							topMenuList.selectors.push({
 								id: 'div_' + currentId,
@@ -910,12 +864,16 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
+					var currentDoc = parsedData.getWitness(scope.witness).corresp;
+					if (currentDoc && parsedData.getDocument(currentDoc).front) {
+						topMenuList.buttons.push({
+							title: 'BUTTONS.INFO_ABOUT_TEXT',
+							label: 'BUTTONS.INFO',
+							icon: 'info-alt',
+							type: 'toggleInfoWit'
+						});
+					}
 					topMenuList.buttons.push({
-						title: 'BUTTONS.INFO_ABOUT_TEXT',
-						label: 'BUTTONS.INFO',
-						icon: 'info-alt',
-						type: 'toggleInfoWit'
-					}, {
 						title: 'BUTTONS.WITNESS_CLOSE',
 						label: '',
 						icon: 'remove',
@@ -1197,7 +1155,8 @@ angular.module('evtviewer.box')
 			collection[currentId] = angular.extend(vm, scopeHelper);
 			list.push({
 				id: currentId,
-				type: currentType
+				type: currentType,
+				witness: scope.witness
 			});
 
 			return collection[currentId];
@@ -1309,7 +1268,7 @@ angular.module('evtviewer.box')
 					var docId = collection[i].type === 'witness' ? parsedData.getWitness(collection[i].witness).corresp : undefined;
 					if (docId) {
 						var corresp = parsedData.getDivs()._indexes.corresp[divId], div;
-						corresp.map(id => {
+						corresp.map(function(id) {
 							if (parsedData.getDiv(id).doc === docId) {
 								div = id;
 							}

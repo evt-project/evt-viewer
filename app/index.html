@@ -47,6 +47,11 @@
 				<i class="fa fa-external-link"></i>
 			</a>
 			<div class="globalMenu">
+				<button-switch
+					title="TOC.HEADER"
+					data-icon="list-alt"
+					data-type="openToc">
+				</button-switch>
 				<div class="viewModeMenu">
 					<button-switch
 							title="VIEW_MODES.{{::mode.label}}"
@@ -100,24 +105,31 @@
 				<div class="mainMenu" ng-if="getState('mainMenu') === true">
 					<ul>
 						<li>
-							<span ng-click="openGlobalDialogInfo()">
-								<i class="icon icon-evt_info-alt"></i>
-								{{'MAIN_MENU.PROJECT_INFO' | translate}}</span>
-						</li>
-						<li ng-if="getProperty('namedEntitiesLists')">
-							<span ng-click="openGlobalDialogLists()">
-								<i class="icon icon-evt_list"></i>
-								{{'MAIN_MENU.OPEN_LISTS' | translate}}</span>
-						</li>
-						<li>
 							<span ng-click="generateBookmark()">
 								<i class="icon icon-evt_bookmark"></i>
 								{{'MAIN_MENU.GENERATE_BOOKMARK' | translate}}</span>
 						</li>
 						<li ng-if="getProperty('enableXMLdownload')">
-							<span ng-click="downloadXML()">
+							<span ng-click="openDownloadDialog()()">
 								<i class="icon fa fa-download"></i>
-								{{'MAIN_MENU.DOWNLOAD_XML' | translate}}</span>
+								{{'MAIN_MENU.DOWNLOAD' | translate}}</span>
+						</li>
+					</ul>
+					<hr/>
+					<ul>
+						<li>
+							<span>
+								<a href="#" target="_blank">
+										<i class="icon fa fa-question-circle"></i>
+										{{'MAIN_MENU.HELP' | translate}}</a>
+							</span>
+						</li>
+						<li>
+							<span>
+								<a href="https://github.com/evt-project/evt-viewer/issues" target="_blank">
+									<i class="icon fa fa-github"></i>
+									{{'MAIN_MENU.GITHUB_ISSUE' | translate}}</a>
+							</span>
 						</li>
 					</ul>
 					<hr/>
@@ -153,24 +165,23 @@
 			<section
 				class="secondary-container"
 				ng-show="getSecondaryContentOpened() !== ''">
-				<evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
-					ng-if="getProperty('namedEntitiesLists')">
-					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
-						data-type="entitiesList"
+				<evt-dialog data-type="toc" data-title="TOC.HEADER">
+					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'toc'"
+						data-type="toc"
 						data-orientation="vertical">
 					</evt-tabs-container>
 				</evt-dialog>
-				<evt-dialog data-type="globalInfo" data-title="DIALOGS.PROJECT_INFO">
-					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'globalInfo'"
-						data-type="projectInfo"
-						data-orientation="vertical">
-					</evt-tabs-container>
+				<evt-dialog data-type="download" data-title="MAIN_MENU.DOWNLOAD">
+					<evt-download ng-if="getSecondaryContentOpened() === 'download'"></evt-download>
 				</evt-dialog>
 				<evt-dialog data-type="witnessesList" data-title="DIALOGS.WITNESSES">
 					<div compile="getWitnessesListFormatted()"></div>
 				</evt-dialog>
 				<evt-dialog data-type="bookmark" data-title="DIALOGS.BOOKMARK">
 					<div compile="getBookmark()"></div>
+				</evt-dialog>
+				<evt-dialog id="externalSearchDialog" data-type="externalSearch" data-title="{{ 'SEARCH.HEADER' | translate }}">
+					<evt-search-box data-parent-id="externalSearchDialog" ng-if="isFileLoaded()"></evt-search-box>
 				</evt-dialog>
 			</section>
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
@@ -428,6 +439,8 @@
 		<script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
 		<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 		<script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+		<script src="bower_components/pdfmake/build/pdfmake.js"></script>
+		<script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
 		<!-- endbower -->
 		<!-- endbuild -->
 
@@ -465,23 +478,24 @@
 		<script src="/src/dataHandler/versionApparatus.service.js"></script>
 		<script src="/src/dataHandler/bibliographyParser.service.js"></script>
 		<script src="/src/dataHandler/glyphParser.service.js"></script>
+		<script src="/src/dataHandler/depaParser.service.js"></script>			
 
-      <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
-      <script src="/src/dataHandler/search/search.service.js"></script>
-      <script src="/src/dataHandler/search/searchInterface.service.js"></script>
-      <script src="/src/dataHandler/search/searchDocument.service.js"></script>
-      <script src="/src/dataHandler/search/searchParser.service.js"></script>
-      <script src="/src/dataHandler/search/searchParagraphLineParser.service.js"></script>
-      <script src="/src/dataHandler/search/searchLbParser.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticEditionHandler.service.js"></script>
-      <script src="/src/dataHandler/search/interpretativeEditionHandler.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticParagraphLineHandler.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticInterpretativeParagraphLineHandler.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticLbHandler.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticInterpretativeLbHandler.service.js"></script>
-			<script src="/src/dataHandler/search/virtualKeyboard.service.js"></script>
-			<script src="/src/dataHandler/depaParser.service.js"></script>			
-      <script src="/dist/search.service.js"></script>
+		<script src="/src/dataHandler/search/objectBuilder.service.js"></script>
+		<script src="/src/dataHandler/search/search.service.js"></script>
+		<script src="/src/dataHandler/search/searchInterface.service.js"></script>
+		<script src="/src/dataHandler/search/searchDocument.service.js"></script>
+		<script src="/src/dataHandler/search/searchParser.service.js"></script>
+		<script src="/src/dataHandler/search/searchParagraphLineParser.service.js"></script>
+		<script src="/src/dataHandler/search/searchLbParser.service.js"></script>
+		<script src="/src/dataHandler/search/diplomaticEditionHandler.service.js"></script>
+		<script src="/src/dataHandler/search/interpretativeEditionHandler.service.js"></script>
+		<script src="/src/dataHandler/search/diplomaticParagraphLineHandler.service.js"></script>
+		<script src="/src/dataHandler/search/diplomaticInterpretativeParagraphLineHandler.service.js"></script>
+		<script src="/src/dataHandler/search/diplomaticLbHandler.service.js"></script>
+		<script src="/src/dataHandler/search/diplomaticInterpretativeLbHandler.service.js"></script>
+		<script src="/src/dataHandler/search/virtualKeyboard.service.js"></script>
+		<script src="/src/dataHandler/search/builtIndex.constant.js"></script>
+		<script src="/dist/search.service.js"></script>
 
 		<script src="/src/bibliography/bibliography.js"></script>
 		<script src="/src/bibliography/scrollif.directive.js"></script>
@@ -581,6 +595,11 @@
 		<script src="/src/tabsContainer/tabsContainer.controller.js"></script>
 		<script src="/src/tabsContainer/tabsContainer.directive.js"></script>
 
+		<script src="/src/toc/toc.js"></script>
+		<script src="/src/toc/toc.provider.js"></script>
+		<script src="/src/toc/toc.controller.js"></script>
+		<script src="/src/toc/toc.directive.js"></script>
+
 		<script src="/src/quote/quote.js"></script>
 		<script src="/src/quote/quote.configuration.js"></script>
 		<script src="/src/quote/quote.provider.js"></script>
@@ -639,6 +658,12 @@
       <script src="/src/search/searchResults.provider.js"></script>
       <script src="/src/search/virtualKeyboard.directive.js"></script>
       <script src="/src/search/virtualKeyboard.provider.js"></script>
+
+			<script src="/src/download/download.js"></script>
+			<script src="/src/download/download.provider.js"></script>
+			<script src="/src/download/download.controller.js"></script>
+			<script src="/src/download/download.directive.js"></script>
+			<script src="/src/download/pdfMaker.service.js"></script>
 		<!-- endinjector -->
 		<!-- endbuild -->
 	</body>

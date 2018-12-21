@@ -1,5 +1,5 @@
 angular.module('evtviewer.dataHandler')
-   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', function Search(evtSearchDocument, evtBuilder, evtSearchIndex) {
+   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', 'BUILTINDEX', function Search(evtSearchDocument, evtBuilder, evtSearchIndex, BUILTINDEX) {
       var prevDocsInfo = 0,
          parsedElementsForIndexing = {};
       
@@ -16,13 +16,17 @@ angular.module('evtviewer.dataHandler')
             prevDocsInfo = searchParser.getPrevDocsInfo();
             parsedElementsForIndexing = angular.extend(parsedElementsForIndexing, parsedElements);
          }
-         console.log(parsedElementsForIndexing);
+        //  console.log(JSON.stringify(parsedElementsForIndexing));
          
          evtSearchIndex.createIndex(parsedElementsForIndexing);
       };
       
       Search.prototype.getParsedElementsForIndexing = function () {
-         return parsedElementsForIndexing;
+        // var elements = BUILTINDEX.elements ? JSON.parse(BUILTINDEX.elements) : {};
+        // if (Object.keys(elements).length > 0) {
+        //   parsedElementsForIndexing = elements;
+        // }
+        return parsedElementsForIndexing;
       };
       
       Search.prototype.getPrevDocsInfo = function () {

@@ -31,7 +31,6 @@
  * @requires evtviewer.namedEntity
  * @requires evtviewer.criticalApparatusEntry
  * @requires evtviewer.reading
- * @requires evtviewer.depaReading
  * @requires evtviewer.dialog
  * @requires evtviewer.bibliography
  * @requires evtviewer.reference
@@ -46,6 +45,7 @@
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
  * @requires evtviewer.search
+ * @requires evtviewer.toc
  */
  //* @requires evtviewer.mobile
 angular
@@ -76,6 +76,7 @@ angular
 		'evtviewer.criticalApparatusEntry',
 		'evtviewer.reading',
 		'evtviewer.dialog',
+		'evtviewer.download',
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
@@ -89,5 +90,6 @@ angular
 		'evtviewer.versionApparatusEntry',
 		'evtviewer.UItools',
 		'evtviewer.search',
+		'evtviewer.toc',
 		'ui-leaflet'
   ]);

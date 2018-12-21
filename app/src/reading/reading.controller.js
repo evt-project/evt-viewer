@@ -29,7 +29,7 @@ angular.module('evtviewer.reading')
     // 
 
     var changeRangeStatus = function(property, className) {
-        vm.range.forEach(el => {
+        angular.forEach(vm.range, function(el) {
             if (property && el.className.indexOf(className) < 0) {
                 el.className += ' ' + className;
             } else if (!property && el.className.indexOf(className) >= 0) {

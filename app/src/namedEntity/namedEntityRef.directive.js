@@ -244,7 +244,6 @@ angular.module('evtviewer.namedEntity')
                     }
                 }
             };
-
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (scope.vm.uid) {

@@ -1,0 +1,62 @@
+<div class="download">
+  <span>
+    {{ 'DOWNLOAD.DOCUMENT' | translate }}:
+  </span>
+  <div class="selector inDownload" ng-class="{ 'expanded': vm.openedSelector === 'document' }">
+    <span
+      class="label_selected"
+      value="{{vm.currentDocIndex}}">
+      {{vm.files[vm.currentDocIndex].title}}
+    </span>
+    <div 
+      class="open_options" 
+      ng-click="vm.toggleSelector('document')">
+      <i class="fa fa-sort-desc"></i>
+    </div>
+    <div
+      class="option_container inDownload"
+      ng-class="{ 'expanded': vm.openedSelector === 'document' }">
+      <div
+        class="option"
+        ng-repeat="file in vm.files track by $index"
+        ng-click="vm.selectDoc($index)"
+        ng-class="{ 'selected': vm.currentDocIndex === vm.files.indexOf(file) }"
+        data-value="{{$index}}">
+        {{file.title}}
+      </div>
+    </div>
+  </div>
+  <span>
+    {{ 'DOWNLOAD.FORMAT' | translate }}:
+  </span>
+  <div class="selector inDownload" ng-class="{ 'expanded': vm.openedSelector === 'format' }">
+    <span
+      class="label_selected"
+      value="{{vm.currentFormat}}">
+      {{vm.currentFormat}}
+    </span>
+    <div 
+      class="open_options" 
+      ng-click="vm.toggleSelector('format')">
+      <i class="fa fa-sort-desc"></i>
+    </div>
+    <div
+      class="option_container inDownload"
+      ng-class="{ 'expanded': vm.openedSelector === 'format' }">
+      <div
+        class="option"
+        ng-repeat="(format, url) in vm.files[vm.currentDocIndex].formats"
+        ng-click="vm.selectFormat(format)"
+        ng-class="{ 'selected': vm.currentFormat === format }"
+        data-value="{{format}}">
+        {{format}}
+      </div>
+    </div>
+  </div>
+  <div class="download_button">
+    <a
+      href="{{vm.files[vm.currentDocIndex].formats[vm.currentFormat]}}"
+      download="{{vm.files[vm.currentDocIndex].title}}">
+      {{ 'DOWNLOAD.DOWNLOAD' | translate }}</a>
+  </div>
+</div>

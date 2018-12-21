@@ -8,6 +8,9 @@ angular.module('evtviewer.dataHandler')
             currentPage,
             currentPageId,
             pageId = 1,
+            currentDiv,
+            currentDivId,
+            divId = 1,
             paragraph,
             parId = 1,
             line = {},
@@ -29,6 +32,11 @@ angular.module('evtviewer.dataHandler')
                   pageId++;
                   lineId = 0;
                },
+               'div': function () {
+                  currentDiv = evtSearchDocument.getCurrentDiv(node);
+                  currentDivId = evtSearchDocument.getCurrentDivId(node, divId);
+                  divId++;
+               },
                'p': function () {
                   paragraph = evtSearchDocument.getParagraph(node, parId);
                   parId++;
@@ -37,6 +45,10 @@ angular.module('evtviewer.dataHandler')
                   if (currentPage) {
                      line.page = currentPage;
                      line.pageId = currentPageId;
+                  }
+                  if (currentDiv) {
+                     line.div = currentDiv;
+                     line.divId = currentDivId;
                   }
                   if (paragraph) {
                      line.paragraph = paragraph;
@@ -57,7 +69,9 @@ angular.module('evtviewer.dataHandler')
                   currentLineNodes = [];
                }
             };
-            (nodes[node.nodeName] || nodes['default'])();
+            if (currentXmlDoc) {
+              (nodes[node.nodeName] || nodes['default'])();
+            }
             node = lbNodes.iterateNext();
             line = {};
          }

@@ -27,11 +27,29 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 	var currentAppEntry = '';
 
-	this.$get = function(config, parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements) {
+	this.$get = function(config, parsedData, baseData, evtCriticalApparatusParser, evtCriticalApparatus, evtPinnedElements, xmlParser) {
 		var appEntry = {},
 			collection = {},
 			list = [],
 			idx = 0;
+
+		
+		var truncateLemma = function(lemma) {
+			var contentElem = xmlParser.parse(lemma.content).documentElement;
+			if (!contentElem) { return; }
+			var maxLength = defaults.lemMaxLength || 100;
+					text = contentElem.childNodes[0];
+			if (text.textContent.length > maxLength) {
+				var start = text.textContent.substring(0, maxLength / 2);
+				start = start.substring(0, start.lastIndexOf(' '));
+				var end = text.textContent.substring(text.textContent.length - (maxLength / 2) - 1, text.textContent.length - 1);
+				end = end.substring(end.indexOf(' '));
+				var newString = start + ' [...] ' + end;
+				var shortenedText = document.createTextNode(newString);
+				contentElem.replaceChild(shortenedText, text);
+			}
+			return contentElem.outerHTML;
+		}
 
 		// 
 		// Reading builder
@@ -87,7 +105,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 			// Get Apparatus Entry content 
 			var content,
-                witnessesGroups = '',
+        witnessesGroups = '',
 				firstSubContentOpened = '',
 				tabs = {
 					_indexes: []
@@ -104,30 +122,29 @@ angular.module('evtviewer.criticalApparatusEntry')
 			if (criticalEntry) {
 				content = evtCriticalApparatus.getContent(criticalEntry, criticalEntry._subApp, scopeWit);
 				witnessesGroups = content.witnessesGroups;
-				if (content.criticalNote !== '') {
+				if (content.criticalNote !== '' && defaults.allowedTabs.indexOf('criticalNote') >= 0) {
 					tabs._indexes.push('criticalNote');
 					tabs.criticalNote = {
 						label: 'CRITICAL_APPARATUS.TABS.CRITICAL_NOTE'
 					};
 				}
-				if (content.notSignificantReadings.length > 0) {
+				if (content.notSignificantReadings.length > 0 && defaults.allowedTabs.indexOf('notSignificantReadings') >= 0) {
 					tabs._indexes.push('notSignificantReadings');
 					tabs.notSignificantReadings = {
 						label: 'CRITICAL_APPARATUS.TABS.ORTHOGRAPHIC_VARIANTS'
 					};
 				}
-				// if (content.attributes._keys.length > 0 ){
-				tabs._indexes.push('moreInfo');
-				tabs.moreInfo = {
-					label: 'CRITICAL_APPARATUS.TABS.MORE_INFO'
-				};
-				// }
-				if (criticalEntry._xmlSource !== '') {
+				if (content.attributes._keys.length > 0 && defaults.allowedTabs.indexOf('moreInfo') >= 0){
+					tabs._indexes.push('moreInfo');
+					tabs.moreInfo = {
+						label: 'CRITICAL_APPARATUS.TABS.MORE_INFO'
+					};
+				}
+				if (content._xmlSource && defaults.allowedTabs.indexOf('xmlSource') >= 0){
 					tabs._indexes.push('xmlSource');
-					tabs.xmlSource = {
+					tabs.moreInfo = {
 						label: 'CRITICAL_APPARATUS.TABS.XML'
 					};
-					content.xmlSource = criticalEntry._xmlSource.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
 				}
 				if (tabs._indexes.length > 0 && defaults.firstSubContentOpened !== '') {
 					if (tabs._indexes.indexOf(defaults.firstSubContentOpened) < 0) {
@@ -136,6 +153,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 						firstSubContentOpened = defaults.firstSubContentOpened;
 					}
 				}
+			}
+
+			if (defaults.lemMaxLength) {
+				content.lemma.content = truncateLemma(content.lemma);
 			}
 
 			var exponent = scope.exponent === undefined ? parsedData.getCriticalEntryExponent(scope.appId) : scope.exponent;
@@ -314,6 +335,10 @@ angular.module('evtviewer.criticalApparatusEntry')
 			angular.forEach(collection, function(currentEntry) {
 				if (currentEntry.appId === appId) {
 					currentEntry.setSelected();
+					var content = currentEntry.tabs.criticalNote;
+					if (content) {
+						currentEntry.toggleSubContent('criticalNote');
+					}
 				} else {
 					currentEntry.unselect();
 				}

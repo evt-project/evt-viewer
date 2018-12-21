@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard, evtSearchIndex) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -201,6 +201,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'list':
 					evtIcon = 'icon-evt_list';
 					break;
+				case 'sync-div':
+					evtIcon = 'fa fa-chain-broken';
+					break;
 				case 'menu':
 				case 'menu-vert':
 					evtIcon = 'icon-evt_more-vert';
@@ -228,6 +231,9 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'next':
 					evtIcon = 'icon-evt_next';
+					break;
+				case 'list-alt':
+					evtIcon = 'fa fa-list-alt';
 					break;
 				case 'pin':
 					evtIcon = 'icon-evt_pin-alt-on';
@@ -517,33 +523,68 @@ angular.module('evtviewer.buttonSwitch')
 					};
 					break;
 				case 'front':
-					btnType = 'standAlone';
+					btnType = 'toggler';
+					var formerDiv;
+					updateDiv = function(doc, topBoxOpened) {
+						if (topBoxOpened) {
+							formerDiv = evtInterface.getState('currentDivs')[doc];
+							var currentDiv = parsedData.getDivs()._indexes.main[doc].find(function(id) {
+								return parsedData.getDiv(id).section === 'front';
+							});
+							evtInterface.updateDiv(doc, currentDiv || parsedData.getDivs()._indexes.main[doc].find(function(id) {
+								return parsedData.getDiv(id).section === 'front';
+							}));
+						} else {
+							evtInterface.updateDiv(doc, formerDiv || parsedData.getDivs()._indexes.main[doc].find(function(id) {
+								return parsedData.getDiv(id).section === 'body';
+							}));
+						}
+						evtInterface.updateUrl();
+					}
+					getDoc = function(scope) {
+						var doc;
+						if (type === 'text' && config.mainDocId) {
+							doc = config.mainDocId;
+						} else if (config.mainDocId && type === 'witness' && parsedData.getWitness(scope.$parent.witness).corresp) {
+							doc = parsedData.getWitness(scope.$parent.witness).corresp;               
+						} else {
+							doc = parsedData.getDocuments()._indexes[0];
+						}
+						return doc;
+					}
 					callback = function() {
-						var parentBox = scope.$parent.vm;
+						var parentBox = scope.$parent.vm,
+								warningMsg = '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>',
+								errorMsg = '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>',
+								newTopBoxContent,
+								currentDocument = getDoc(scope);
 						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'front') {
 							parentBox.toggleTopBox();
 						} else {
 							var content;
-							var currentDocument = evtInterface.getState('currentDoc');
 							if (currentDocument) {
 								var docObj = parsedData.getDocument(currentDocument),
-									docFront = docObj ? docObj.front : undefined;
-
-								content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+										docFront = docObj ? docObj.front : undefined;
+								content = docFront && docFront.parsedContent ? docFront.parsedContent : warningMsg;
 								scope.$parent.vm.updateTopBoxContent(content);
 								scope.$parent.vm.toggleTopBox();
 							}
-							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+							newTopBoxContent = content || errorMsg;
 							parentBox.updateTopBoxContent(newTopBoxContent);
 							parentBox.updateState('topBoxContent', 'front');
 							if (!parentBox.getState('topBoxOpened')) {
 								parentBox.toggleTopBox();
 							}
 						}
+						if (newTopBoxContent !== errorMsg && newTopBoxContent !== warningMsg) {
+							updateDiv(currentDocument, scope.$parent.vm.state.topBoxOpened);
+						}
 					};
 					fakeCallback = function() {
 						var parentBox = scope.$parent.vm;
+						vm.active = !vm.active;
 						parentBox.updateState('topBoxOpened', false);
+						evtInterface.updateDiv(getDoc(scope), false);
 					};
 					break;
 				case 'msDesc':
@@ -630,6 +671,15 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				case 'openToc':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						evtInterface.updateState('secondaryContent', 'toc');
+						evtDialog.openByType('toc');
+						vm.active = !vm.active;
+					};
+					break;
 				/*case 'msDesc':
 				    callback= function() {
 				        var doc=evtInterface.getState('currentDoc');
@@ -654,7 +704,7 @@ angular.module('evtviewer.buttonSwitch')
 					break;
             case 'search':
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
                      inputValue = evtSearchBox.getInputValue(parentBoxId),
                      input,
                      placeholder = '';
@@ -664,14 +714,14 @@ angular.module('evtviewer.buttonSwitch')
                   
                   input = {
                      '': function() {
-                        placeholder = 'Enter your query in the search box above';
+                        placeholder = 'SEARCH.PLACEHOLDER';
                         evtSearchResult.setVisibleRes(parentBoxId, []);
                         evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                      },
                      'default': function() {
                         var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
                            results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
-                           currentEdition = evtBox.getEditionById(parentBoxId),
+                           currentEdition = evtInterface.getState('currentEdition'),
                            currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
                            visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
                         
@@ -746,8 +796,8 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsShow':
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
-                     placeholder = 'Enter your query in the search box above';
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
+                        placeholder = 'SEARCH.PLACEHOLDER';
    
                   evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
@@ -758,7 +808,7 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsHide':
                callback = function() {
-                  var parentBoxId = scope.$parent.id;
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog';
                   
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
@@ -769,7 +819,7 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchCaseSensitive':
                btnType = 'standAlone';
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
                      searchInput = evtSearchBox.getInputValue(parentBoxId);
                   
                   evtSearchBox.updateStatus(parentBoxId, 'searchCaseSensitive');
@@ -806,9 +856,78 @@ angular.module('evtviewer.buttonSwitch')
                };
                break;
             case 'searchToolsExternal':
-               btnType = 'standAlone';
-               callback = function() {
-                  window.alert('External position coming soon!');
+							btnType = 'standAlone';
+							function indexingInProgress() {
+								var deferred = $q.defer();
+								evtInterface.updateState('indexingInProgress', true);
+								setTimeout(function() {
+									 deferred.resolve();
+								}, 100);
+								return deferred.promise;
+							}
+							function openDialog() {
+								evtInterface.updateState('secondaryContent', 'externalSearch');
+								evtDialog.openByType('externalSearch');
+							}
+							function setSearch() {
+								var parentBoxId = 'externalSearchDialog',
+										inputValue = evtSearchBox.getInputValue(parentBoxId),
+										input,
+										placeholder = '';
+								
+								evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+								evtSearchBox.setSearchedTerm(parentBoxId, inputValue);
+								
+								input = {
+										'': function() {
+											placeholder = '{{ \'SEARCH.PLACEHOLDER\' | translate }}';
+											evtSearchResult.setVisibleRes(parentBoxId, []);
+											evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+										},
+										'default': function() {
+											var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
+													results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
+													currentEdition = evtInterface.getState('currentEdition'),
+													currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
+													visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
+											
+											evtSearchResult.setCurrentEditionResults(parentBoxId, currentEditionResults);
+											evtSearchResult.setVisibleRes(parentBoxId, visibleResults);
+										}
+								};
+								
+								(input[inputValue] || input['default'])();
+								
+								evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);							
+							}
+							function indexingCallback() {
+								var promise = indexingInProgress();
+								promise.then(
+									function() {
+										var xmlDocDom = baseData.getXML(),
+												searchToolsBtn;
+										evtSearch.initSearch(xmlDocDom);
+										evtInterface.setToolStatus('isDocumentIndexed', 'true');
+			
+										searchToolsBtn = button.getByType('searchToolsInternal');
+										for(var z in searchToolsBtn) {
+												searchToolsBtn[z].disabled = false;
+										}
+ 
+										evtInterface.updateState('indexingInProgress', false);
+										openDialog();
+										setSearch();
+									}
+								);
+							}
+							callback = function() {
+								if (Object.keys(evtSearchIndex.getIndex()).length === 0) {
+									indexingCallback();
+								} else {
+									openDialog();
+									setSearch();
+								}
+								vm.active = !vm.active;
                };
                break;
             case 'searchVirtualKeyboard':
@@ -838,6 +957,15 @@ angular.module('evtviewer.buttonSwitch')
 				case 'share':
 					callback = function() {
 						alert(window.location);
+					};
+					break;
+				case 'syncDiv':
+					btnType='standAlone';
+					callback = function() {
+						var vm = this, syncDiv = evtInterface.getProperty('syncDiv');
+						evtInterface.updateProperty('syncDiv', !syncDiv);
+						vm.active = !syncDiv ? true : false;
+						vm.icon = !syncDiv ? 'fa fa-link' : 'fa fa-chain-broken';
 					};
 					break;
 				case 'toggleInfoWit':

@@ -50,6 +50,8 @@ angular.module('evtviewer.dataHandler')
 		msDesc: ''
 	};
 
+	var mainFront = {};
+
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#bibliographicRefsCollection
@@ -486,6 +488,16 @@ angular.module('evtviewer.dataHandler')
 		},
 		_indexes: []
 	};
+
+	parsedData.getMainFront = function() {
+		return mainFront;
+	}
+
+	parsedData.updateMainFront = function(front) {
+		if (front) {
+			mainFront = front;
+		}
+	}
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getEncodingDetail
@@ -513,6 +525,10 @@ angular.module('evtviewer.dataHandler')
 	parsedData.setEncodingDetail = function(detailName, value) {
 		encodingDetails[detailName] = value;
 	};
+
+	parsedData.getNamedEntities = function() {
+		return namedEntities;
+	}
 
 	/**
      * @ngdoc method
@@ -543,6 +559,10 @@ angular.module('evtviewer.dataHandler')
                 break;
             case 'relation':
             	icon = 'fa-share-alt';
+            	break;
+            case 'term':
+            case 'generic':
+            	icon = 'fa-font';
             	break;
             default:
                 icon = 'fa-list-ul';
@@ -985,7 +1005,7 @@ angular.module('evtviewer.dataHandler')
 		divsCollection.length++;
 		documentsCollection[docId].divs.push(divId);
 		if (div.corresp) {
-			div.corresp.forEach(corresp => {
+			angular.forEach(div.corresp, function(corresp) {
 				if (!divsCollection._indexes.corresp[corresp]) {
 					divsCollection._indexes.corresp[corresp] = [];
 				}

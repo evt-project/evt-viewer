@@ -3,11 +3,64 @@
 /* *************************** */
 
 .evtRef {
-    display: inline;
-    text-decoration: underline;
-
-    &:hover {
-    	cursor: pointer;
-    	color: #666;
+    &_ref {
+        &:not(.witlink) {
+            border-bottom: 0.5px solid $base-color-dark;
+            &:hover:not(.hasPopup) {
+                cursor: pointer;
+                color: #666;
+                border-bottom: 0.5px solid #666;
+            }
+            &.hasPopup:hover {
+                cursor: pointer;
+                color: #666;
+            }
+        }
+        &.witlink {
+            font-weight: bold;
+            &:hover {
+                cursor: pointer;
+                text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+            }
+        }
+        &.hasPopup {
+            border-top: 1px solid $critical-apparatus-entry-border-color;
+            border-left: 1px solid $critical-apparatus-entry-border-color;
+            border-right: 1px solid $critical-apparatus-entry-border-color;
+            background-color: $base-color-light !important;
+            border-bottom: 5px solid $base-color-light;
+            position: relative;
+            z-index: 9;
+            margin-bottom: -1px;
+        }
+    }
+    &_popup {
+        display: block !important;
+        font-size: 95%;
+        background-color: $base-color-light !important;
+        color: $base-color-dark;
+        padding: 10px;
+        border: 1px solid $critical-apparatus-entry-border-color;
+        &_header {
+            display: block;
+        }
+        &_tools{
+            float: right !important;
+            display: block;
+            background: transparent;
+            text-align: center;
+            .openList {
+                min-height: 23px;
+                min-width: 25px;
+                float: right;
+                padding-top: 4px;
+                &.active, &:hover {
+                    cursor: pointer;
+                    @include set(box-shadow, inset 0 1px 2px 0 rgba(0,0,0,.1));
+                    background-color: $base-color-light;
+                    border: 1px solid $critical-apparatus-entry-border-color;
+                }
+            }
+        }
     }
 }

@@ -90,7 +90,7 @@ angular.module('evtviewer.dataHandler')
             xmlDocsTitles = [],
             doc = {};
          
-         docIndexes.forEach(function (index) {
+         angular.forEach(docIndexes, function (index) {
             doc.id = index;
             doc.title = documents[doc.id].title;
             doc.textNode = documents[doc.id].content;
@@ -107,6 +107,14 @@ angular.module('evtviewer.dataHandler')
       
       XmlDoc.prototype.getCurrentPageId = function(node) {
          return node.getAttribute('xml:id') || 'page_' + node.getAttribute('n');
+      };
+      
+      XmlDoc.prototype.getCurrentDiv = function(node) {
+         return node.getAttribute('n');
+      };
+      
+      XmlDoc.prototype.getCurrentDivId = function(node, divId) {
+         return node.getAttribute('xml:id') || 'div_' + (node.getAttribute('n') || divId);
       };
       
       XmlDoc.prototype.getCurrentPageNodes = function (xmlDocDom, nodes) {
@@ -212,7 +220,7 @@ angular.module('evtviewer.dataHandler')
             currentGlyph,
             text = '';
    
-         nodes.forEach(function (node) {
+         angular.forEach(nodes, function (node) {
             nodeName = {
                'g': function () {
                   currentGlyph = evtGlyph.getGlyph(node, editionType);

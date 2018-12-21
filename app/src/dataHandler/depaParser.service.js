@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config) {
+.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config, xmlParser) {
   var parser = {};
 
   var apparatusEntryDef = '<app>',
@@ -11,90 +11,46 @@ angular.module('evtviewer.dataHandler')
 		analogueDef = config.analogueDef,
 	  skipFromBeingParsed = '<evt-reading>,<pb>,' + apparatusEntryDef + ',' + readingDef + ',' + readingGroupDef + ',' + quoteDef + ',' + analogueDef + ',<evt-quote>,<evt-analogue>,<evt-version-reading>';
 
-  parser.setAppInText = function(elem, wit, dom) {
+  parser.setAppInText = function(fromAnchor, wit, dom) {
     if (!parsedData.getCriticalEntries()._indexes.depa) {
       return;
     }
     var depaStartIds = parsedData.getCriticalEntries()._indexes.depa.start,
-        depaEndIds = parsedData.getCriticalEntries()._indexes.depa.end,
-        elemId = elem.getAttribute('xml:id');
-    if (Object.values(depaStartIds).indexOf(elemId) < 0) {
-      return;
-    }
-    var entry,
-        startEntryIds = Object.keys(depaStartIds).filter(key => { return depaStartIds[key] === elemId }) || [];
-    startEntryIds.forEach(entryId => {
-      entry = parsedData.getCriticalEntryById(entryId);
-      if (entry) {
-        var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit)
-          : evtCriticalElementsParser.getEntryLemmaText(entry, wit);
-        var method = parsedData.getEncodingDetail('variantEncodingMethod');
-        rdgElement.setAttribute('data-method', method);
+        elemId = fromAnchor.getAttribute('xml:id'),
+        startEntryIds = Object.keys(depaStartIds).filter(function(key) { return depaStartIds[key] === elemId }) || [];
+    angular.forEach(startEntryIds, function(entryId) {
+      var entry = parsedData.getCriticalEntryById(entryId);
+      if (!entry) { return; }
+      var endId = parsedData.getCriticalEntries()._indexes.depa.end[entryId],
+          toAnchor = dom.querySelector('[*|id="' + endId + '"]');
+      if (!toAnchor) { return; }
+      var rdgElement = wit ? evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit)
+        : evtCriticalElementsParser.getEntryLemmaText(entry, wit);
+      var method = parsedData.getEncodingDetail('variantEncodingMethod');
+      rdgElement.setAttribute('data-method', method || 'double-end-point');
 
-        var startId = depaStartIds[entryId], endId = depaEndIds[entryId],
-            fromAnchor = dom.querySelector('[*|id="' + startId + '"]'),
-            toAnchor = dom.querySelector('[*|id="' + endId + '"]');
-        if (toAnchor && toAnchor.parentNode === fromAnchor) {
-          var from = document.createTextNode('');
-          fromAnchor.parentNode.insertBefore(from, fromAnchor);
-          fromAnchor = from;
-        }
-        // If the text needs to be substitute by the entry
-        if (!rdgElement.firstChild || (!rdgElement.firstChild.className || rdgElement.firstChild.className.indexOf('empty') < 0)) {
-          if (startId === endId) {
-            index = fromAnchor.childNodes.length - 1;
-            while (index >= 0) {
-              fromAnchor.removeChild(fromAnchor.childNodes[index]);
-              index--;
-            }
-          } else if (fromAnchor && toAnchor) {
-            var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
-            elems.forEach(el => {
-              el.parentNode.removeChild(el);
-            });
-          }
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(rdgElement, elem.firstChild);
-          } else {
-            elem.parentNode.insertBefore(rdgElement, elem.nextSibling);
-          }
+      // If the text needs to be replaced by the entry
+      if (!rdgElement.firstChild || (!rdgElement.firstChild.className || rdgElement.firstChild.className.indexOf('empty') < 0)) {
+        if (fromAnchor === toAnchor) {
+          parser.removeChildNodes(fromAnchor);
         } else {
-          // The text doesn't have to be substituted, but an anchor must be inserted
-          var anchorElement = document.createElement('span');
-          anchorElement.setAttribute('data-app-id', entry.id);
-          anchorElement.setAttribute('class', 'depaAnchor');
-          anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
-          if (elem.childNodes && elem.childNodes.length > 0) {
-            elem.insertBefore(anchorElement, elem.firstChild);
-          } else {
-            elem.parentNode.insertBefore(anchorElement, elem.nextSibling);
+          if ((fromAnchor.childNodes && fromAnchor.childNodes.length > 0) || parser.isDescendant(fromAnchor, toAnchor)) {
+            var from = document.createTextNode('');
+            fromAnchor.parentNode.insertBefore(from, fromAnchor);
+            fromAnchor = from;
           }
-          rdgElement.setAttribute('data-overlap', true);
-          if (endId === startId) {
-            fromAnchor = fromAnchor.firstChild;
-            toAnchor = toAnchor.lastChild;
-          }
-          var elems = fromAnchor && toAnchor ? Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor) : [];
-          elems.forEach(el => {
-            var newNode;
-            if (el.nodeType === 3) {
-              newNode = document.createElement('span');
-              newNode.setAttribute('class', 'depaContent');
-              newNode.textContent = el.textContent;
-            } else if (!el.className || el.className.indexOf('depaContent') < 0) {
-              var newNode = evtParser.parseXMLElement(dom, el, { skip: skipFromBeingParsed });
-              newNode.className += ' depaContent';
-            }
-            if (newNode) {
-              el.parentNode.replaceChild(newNode, el);
-            }
+          var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+          angular.forEach(elems, function(el) {
+            el.parentNode.removeChild(el);
           });
-          if (toAnchor && toAnchor.childNodes && toAnchor.childNodes.length > 0) {
-            toAnchor.appendChild(rdgElement);
-          } else if (toAnchor) {
-            toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
-          }
         }
+        fromAnchor.parentNode.insertBefore(rdgElement, fromAnchor);
+      } else {
+        // The text doesn't have to be substituted, but an anchor must be inserted
+        var anchor = parser.createAnchorElement(entry, wit);
+        fromAnchor.parentNode.insertBefore(anchor, fromAnchor);
+        rdgElement.setAttribute('data-no-text', true);
+        toAnchor.parentNode.insertBefore(rdgElement, toAnchor.nextSibling);
       }
     });
   };
@@ -105,64 +61,35 @@ angular.module('evtviewer.dataHandler')
     
     var startId = entry.attributes['from'].replace('#', ''),
         endId = entry.attributes['to'] ? entry.attributes['to'].replace('#', '') : null,
-        fromAnchor, toAnchor;
-    
-    if (endId) {
-      toAnchor = doc.querySelector('[*|id="' + endId + '"]');
-    } else {
-      toAnchor = app;
-    }
-    if (startId) {
-      fromAnchor = doc.querySelector('[*|id="' + startId + '"]');
-      if (toAnchor.parentNode === fromAnchor) {
-        var from = document.createTextNode('');
-        fromAnchor.parentNode.insertBefore(from, fromAnchor);
-        fromAnchor = from;
-      }
+        fromAnchor = startId ? doc.querySelector('[*|id="' + startId + '"]') || null : null,
+        toAnchor = endId ? doc.querySelector('[*|id="' + endId + '"]') || null : app;
+    if (!fromAnchor || !toAnchor) { return; }
+
+    if ((fromAnchor.childNodes && fromAnchor.childNodes.length > 0) || parser.isDescendant(fromAnchor, toAnchor)) {
+      var from = document.createTextNode('');
+      fromAnchor.parentNode.insertBefore(from, fromAnchor);
+      fromAnchor = from;
     }
     var elems = Utils.DOMutils.getElementsBetweenTree(fromAnchor, toAnchor);
+
     if (!rdgElement.firstChild || (!rdgElement.firstChild.className || rdgElement.firstChild.className.indexOf('empty') < 0)) {
-      elems.forEach(el => {
+      angular.forEach(elems, function(el) {
         var text = document.createTextNode('');
         el.parentNode.replaceChild(text, el);
       });
-      if (fromAnchor.childNodes && fromAnchor.childNodes.length > 0) {
-        fromAnchor.insertBefore(rdgElement, fromAnchor.firstChild);
-      } else {
-        fromAnchor.parentNode.insertBefore(rdgElement, fromAnchor.nextSibling);
-      }      
+      fromAnchor.parentNode.insertBefore(rdgElement, fromAnchor.nextSibling);     
     } else {
       rdgElement.setAttribute('data-overlap', true);
-      var anchorElement = document.createElement('span');
-          anchorElement.setAttribute('data-app-id', entry.id);
-          anchorElement.setAttribute('class', 'depaAnchor');
-          anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
-      if (fromAnchor.childNodes && fromAnchor.childNodes.length > 0) {
-        fromAnchor.insertBefore(anchorElement, fromAnchor.firstChild);
-      } else {
-        fromAnchor.parentNode.insertBefore(anchorElement, fromAnchor.nextSibling);
-      }
-      elems.forEach(el => {
-        var newNode;
-        if (el.nodeType === 3) {
-          newNode = document.createElement('span');
-          newNode.setAttribute('class', 'depaContent');
-          newNode.textContent = el.textContent;
-        } else if (!el.className || el.className.indexOf('depaContent') < 0) {
-          var newNode = evtParser.parseXMLElement(doc, el, { skip: skipFromBeingParsed });
-          newNode.className += ' depaContent';
-        }
+      var anchorElement = parser.createAnchorElement(entry, wit);
+      fromAnchor.parentNode.insertBefore(anchorElement, fromAnchor.nextSibling);
+      angular.forEach(elems, function(el) {
+        var newNode = parser.createDepaContentNode(el, doc);
         if (newNode) {
           el.parentNode.replaceChild(newNode, el);
         }
       });
-      if (toAnchor === app) {
-        toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
-      } else if (toAnchor.childNodes && toAnchor.childNodes.length > 0) {
-        toAnchor.appendChild(rdgElement);
-      } else {
-        toAnchor.parentNode.insertBefore(rdgElement, toAnchor);
-      }
+      rdgElement.setAttribute('data-no-text', true);
+      toAnchor.parentNode.insertBefore(rdgElement, toAnchor.nextSibling);
     }
     return rdgElement;
   };
@@ -178,19 +105,21 @@ angular.module('evtviewer.dataHandler')
       if (startId === endId) {
         var elem = doc.querySelector('[*|id=' + startId + ']');
         if (elem) {
-          lemma = elem.innerHTML;
+          lemma = elem.outerHTML;
         }
       } else {
         var docString = doc.outerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
         lemma = parser.findReadingString(docString, endId, startId, entry);
+        lemma = evtParser.balanceXHTML(lemma);
       }
       lemma = lemma.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '').trim();
-      parser.parseLemma(entry, lemma);
+      parser.parseLemma(entry, lemma, doc);
     }
   };
 
   parser.findReadingString = function(docString, endId, startId, entry) {
-    var startPos = docString.indexOf('xml:id="' + startId),
+    var fromId = docString.indexOf('xml:id="' + startId),
+        startPos = docString.substring(0, fromId).lastIndexOf('<'),
         endPos = 0,
         location = parsedData.getEncodingDetail('variantEncodingLocation'),
         readingString;
@@ -208,11 +137,14 @@ angular.module('evtviewer.dataHandler')
     return readingString;
   }
 
-  parser.parseLemma = function(entry, lemma) {
+  parser.parseLemma = function(entry, lemma, doc) {
+    var lemmaElem = xmlParser.parse(lemma);
+    var content = evtParser.parseXMLElement(doc, lemmaElem, { slip: skipFromBeingParsed });
+    content = content.textContent ? content.textContent : lemmaElem.textContent;
     var parsedLemma = {
       id: entry.id + '-depa-lem',
       attributes: [],
-      content: [lemma],
+      content: [content],
       note: '',
       _significant: true,
       _group: undefined,
@@ -221,6 +153,50 @@ angular.module('evtviewer.dataHandler')
     };
     entry.content[parsedLemma.id] = parsedLemma;
     entry.lemma = parsedLemma.id;
+  }
+
+  parser.removeChildNodes = function(element) {
+    if (!element.childNodes || element.childNodes.length <= 0) {
+      return;
+    }
+    var index = element.childNodes.length - 1;
+    while (index >= 0) {
+      element.removeChild(element.childNodes[index]);
+      index--;
+    }
+  }
+  
+  parser.isDescendant = function(parent, child) {
+    var node = child.parentNode;
+    while (node) {
+      if (node === parent) {
+        return true;
+      } else {
+        return parser.isDescendant(parent, node.parentNode);
+      }
+    }
+    return false;
+  }
+
+  parser.createAnchorElement = function(entry, wit) {
+    var anchorElement = document.createElement('span');
+    anchorElement.setAttribute('data-app-id', entry.id);
+    anchorElement.setAttribute('class', 'depaAnchor');
+    anchorElement.setAttribute('id', 'depaAnchor-' + entry.id + '-' + wit);
+    return anchorElement;
+  }
+
+  parser.createDepaContentNode = function(element, doc) {
+    var depaNode;
+    if (element.nodeType === 3) {
+      depaNode = document.createElement('span');
+      depaNode.setAttribute('class', 'depaContent');
+      depaNode.textContent = element.textContent;
+    } else if (!element.className || element.className.indexOf('depaContent') < 0) {
+      depaNode = evtParser.parseXMLElement(doc, element, { skip: skipFromBeingParsed });
+      depaNode.className += ' depaContent';
+    }
+    return depaNode;
   }
 
   return parser;

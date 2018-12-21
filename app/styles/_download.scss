@@ -1,0 +1,29 @@
+.download {
+  min-height: $mainContainer-menu-height;
+  display: inline-block;
+  span, div.selector:not(.expanded) {
+    vertical-align: top;
+  } 
+  &_button {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 1em;
+    background-color: $base-color-light;
+    height: 28px;
+    @include set(border-radius, 2px);
+    @include set(box-shadow, 0px 2px 4px $selector-shadow-color);
+    &:hover {
+      cursor: pointer;
+      color: $base-color-light;
+      background-color: $base-color-middle;
+    }
+    a {
+      color: $base-color-dark;
+      text-decoration: none;
+      margin: 0.3em;
+      &:hover {
+        color: $base-color-light;
+      }
+    }
+  }
+}

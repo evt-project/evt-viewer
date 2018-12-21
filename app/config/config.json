@@ -3,8 +3,9 @@
     "indexTitle": "Marco Polo Digitale",
     "webSite": "",
     "logoUrl": "",
+    "defaultLanguage": "en",
 
-	"dataUrl": "../data/polo/polo.xml",
+	"dataUrl": "../data/main1.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -69,6 +70,24 @@
     "mainDocId": "tr",
 
     "enableXMLdownload" : true,
+    "downloadableFiles": [
+		{
+			"title": "Translated Critical Text",
+			"formats": {
+				"pdf": "../data/download/Edizione_critica.pdf",
+                "xml": "../data/trad.xml",
+                "txt": "../data/download/Edizione_critica.txt"
+			}
+		},
+		{
+			"title": "Version F",
+			"formats": {
+				"pdf": "../data/download/Redazione_F.pdf",
+                "xml": "../data/redazioni/F.xml",
+                "txt": "../data/download/Redazione_F.txt"
+			}
+		}
+	],
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
@@ -83,22 +102,12 @@
         "label": "Places",
         "available": true
     },{
-        "tagName": "orgName",
-        "label": "Organizations",
+        "tagName": "term",
+        "label": "Realia",
         "available": true
     }],
 
-    "otherEntitiesToHandle": [{
-        "tagName": "rolename",
-        "label": "Role Name",
-        "available": false,
-        "color": "#cfc"
-    }, {
-        "tagName": "measure",
-        "label": "Measure",
-        "available": false,
-        "color": "#ffecb3"
-    }],
+    "otherEntitiesToHandle": [],
 
     "listsMainContentDef": "<back>",
 

@@ -1,1 +1,42 @@
-<span ng-click="handleRefClick($event)" ng-transclude></span>
+<span
+  class="evtRef"
+  ng-click="vm.handleRefClick($event)">
+  <span
+    class="evtRef_ref {{vm.type}}"
+    ng-class="{ 'hasPopup': vm.showPopup }"
+    ng-transclude></span>
+  <div
+    ng-if="vm.showPopup"
+    class="evtRef_popup">
+    <span class="evtRef_popup_header">
+        <!-- HEADER -->
+        <div class="evtRef_popup_tools">
+          <span
+            class="openList"
+            title="{{ 'BUTTONS.OPEN_LIST' | translate }}"
+            ng-click="vm.handleBiblRef()">
+            <i class="icon icon-evt_list"></i>
+          </span>
+          <!-- <button-switch 
+                title="BUTTONS.PIN_REMOVE"
+                ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"
+                data-label=""
+                data-icon="remove"
+                data-type="pin-off"
+                ng-click="vm.togglePin()"></button-switch>
+          <button-switch 
+                title="BUTTONS.PIN_TOGGLE"
+                ng-if="::vm.isPinAvailable() && vm.location !== 'pinned'"
+                data-label=""
+                data-icon="pin"
+                data-type="pin"
+                ng-class="{'active' : vm.isPinned()}"
+                ng-click="vm.togglePin()"></button-switch> -->
+        </div>
+        <div>
+          <i class="icon fa fa-book"></i>
+          {{vm.popupText}}
+        </div>
+    </span>
+  </div>
+</span>

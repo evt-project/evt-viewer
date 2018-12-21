@@ -105,6 +105,14 @@ angular.module('evtviewer.buttonSwitch')
                var parentBoxId = scope.$parent.id;
                $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
             }
+            
+            if (scope.type === 'front') {
+                scope.$watch(function() {
+                    return scope.$parent.vm.state.topBoxOpened;
+                }, function(newItem) {
+                    scope.vm.active = newItem && scope.$parent.vm.state.topBoxContent === 'front';
+                });
+            }
 
             // Garbage collection
             scope.$on('$destroy', function() {

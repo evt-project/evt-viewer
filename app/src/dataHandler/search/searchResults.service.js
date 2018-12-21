@@ -1,8 +1,8 @@
 var Mark = require('mark.js');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
-      function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
+   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils', 'evtBox',
+      function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils, evtBox) {
    
       var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
       
@@ -11,7 +11,7 @@ angular.module('evtviewer.dataHandler')
          
          var input = {
             '': function () {
-               searchResults = 'Enter your query into the search box above';
+               searchResults = '{{ \'SEARCH.PLACEHOLDER\' | translate }}';
             },
             'default': function () {
                searchResults = getResultsMetadata(inputValue, isCaseSensitive);
@@ -41,7 +41,7 @@ angular.module('evtviewer.dataHandler')
             results = {};
          
          res = makeQuery(inputValue.toLowerCase());
-         res.forEach(function (result) {
+         angular.forEach(res, function (result) {
             var metadata = result.matchData.metadata,
                newMetadata = {},
                resultToken,
@@ -93,7 +93,9 @@ angular.module('evtviewer.dataHandler')
                         content: getCaseInsensitiveResults(resultByTokenObjects.content)
                      };
                   }
-                  results['diplomatic'] = [];
+                  if (!results.diplomatic) {
+                      results['diplomatic'] = [];
+                  }
                   results.diplomatic = results.diplomatic.concat(resultToken.content);
                }
             }
@@ -257,17 +259,23 @@ angular.module('evtviewer.dataHandler')
       }
       
       SearchResults.prototype.getCurrentEditionResults = function (searchResults, currentEdition) {
-         var currentResults = [],
+            var currentResults = [],
             edition = {
                'diplomatic': function () {
                var diplomaticResults = searchResults.diplomatic;
-               diplomaticResults.forEach(function (result) {
+               angular.forEach(diplomaticResults, function (result) {
                   currentResults.push(result);
                });
             },
                'interpretative': function () {
                var interpretativeResults = searchResults.interpretative;
-               interpretativeResults.forEach(function (result) {
+               angular.forEach(interpretativeResults, function (result) {
+                  currentResults.push(result);
+               });
+            },
+               'critical': function () {
+               var results = searchResults.interpretative || searchResults.diplomatic;
+               angular.forEach(results, function (result) {
                   currentResults.push(result);
                });
             }
@@ -288,6 +296,9 @@ angular.module('evtviewer.dataHandler')
                },
                'interpretative': function () {
                   return parsedData[lineId].content.interpretative;
+               },
+               'critical': function () {
+                  return parsedData[lineId].content.diplomatic || parsedData[lineId].content;
                }
             };
          return edition[currentEdition]();
@@ -319,22 +330,72 @@ angular.module('evtviewer.dataHandler')
          return textPreview;
       };
       
-      SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
-         var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
-            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
-         
-         instance.unmark(inputValue);
-         instance.mark(inputValue, {
-            'wildcards': 'enable',
-            'acrossElements': true,
-            'caseSensitive': isCaseSensitive,
-            'accuracy': {
-               'value': 'partially',
-               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
-            },
-            'filter': function() {
-               return inputValue.match(regex) ? false : true;
+      SearchResults.prototype.highlightSearchResults = function (boxId, inputValue) {
+         var currentBoxes = evtBox.getList();
+         angular.forEach(currentBoxes, function(box) {
+               if (box.type === 'text' || box.type === 'witness') {
+                  var instance = new Mark(document.querySelector('[id="' + box.id + '"]')),
+                  isCaseSensitive = evtSearchBox.getStatus(boxId, 'searchCaseSensitive');
+               
+                  instance.unmark(inputValue);
+                  instance.mark(inputValue, {
+                        'wildcards': 'enable',
+                        'acrossElements': true,
+                        'caseSensitive': isCaseSensitive,
+                        'accuracy': {
+                        'value': 'partially',
+                        'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+                        },
+                        'filter': function() {
+                        return inputValue.match(regex) ? false : true;
+                        }
+                  });
+               }
+         });         
+      };
+      
+      SearchResults.prototype.removeHighlights = function (inputValue) {
+         var currentBoxes = evtBox.getList();
+         angular.forEach(currentBoxes, function(box) {
+               if (box.type === 'text' || box.type === 'witness') {
+                  var instance = new Mark(document.querySelector('[id="' + box.id + '"]'));               
+                  instance.unmark(inputValue);
+               }
+         });         
+      };
+      
+      SearchResults.prototype.highlightResult = function (result, index) {
+            if (!result.metadata) {
+                  return;
             }
-         });
+            var instance = new Mark(document.querySelector('[id="' + result.metadata.divId[index] + '"]')),
+            matches = [];
+            result.metadata.divId.map(function(id, i) {
+                  if (id === result.metadata.divId[index]) {
+                        matches.push(i);
+                  }
+            });
+            var matchIndex = matches.indexOf(index),
+                  markIndex = 0,
+                  regex = new RegExp("[\\s|\-|(]" + result.token +"[\\s|.|,|;|:|\\|/|\'|\"|)|?|!|\-|\`|\~|]", 'g'),
+                  currentNode;
+
+            instance.markRegExp(regex, {
+                  'wildcards': 'enable',
+                  'acrossElements': true,
+                  'caseSensitive': true,
+                  'accuracy': {
+                  'value': 'partially',
+                  'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+                  },
+                  'filter': function(node) {
+                        markIndex++;
+                        if ((markIndex - 1) === matchIndex) {
+                              currentNode = node;
+                        }
+                        return (markIndex - 1) === matchIndex;
+                  }
+            });
+            return currentNode;
       };
    }]);

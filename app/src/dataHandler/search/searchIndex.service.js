@@ -1,7 +1,7 @@
 var lunr = require('lunr');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchIndex', function Index() {
+   .service('evtSearchIndex', ['BUILTINDEX', 'config', function Index(BUILTINDEX, config) {
       this.index = {};
       
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
@@ -32,6 +32,8 @@ angular.module('evtviewer.dataHandler')
             this.use(addParagraphMetadata, parsedElementsForIndexing);
             this.use(addPageMetadata, parsedElementsForIndexing);
             this.use(addPageIdMetadata, parsedElementsForIndexing);
+            this.use(addDivMetadata, parsedElementsForIndexing);
+            this.use(addDivIdMetadata, parsedElementsForIndexing);
             this.use(addLineMetadata, parsedElementsForIndexing);
             this.use(addLbIdMetadata, parsedElementsForIndexing);
             this.use(addDocIdMetadata, parsedElementsForIndexing);
@@ -45,12 +47,21 @@ angular.module('evtviewer.dataHandler')
                }
             }
          });
+        //  console.log(JSON.stringify(this.index));
+         console.log(this.index);
          console.timeEnd('INDEX');
          return this.index;
       };
       
       Index.prototype.getIndex = function () {
-         return this.index;
+        // var index = JSON.parse(BUILTINDEX.index);
+        // var elements = JSON.parse(BUILTINDEX.elements);
+        // if (BUILTINDEX.dataUrl === config.dataUrl
+        //       && elements && Object.keys(elements).length > 0
+        //       && index && Object.keys(index).length > 0) {
+        //   this.index = lunr.Index.load(index);
+        // }
+        return this.index;
       };
       
       // serve per dire all'indice dove si trovano i campi nella mia struttura
@@ -149,6 +160,36 @@ angular.module('evtviewer.dataHandler')
             builder.metadataWhitelist.push('pageId');
          }
       }
+
+      function addDivMetadata(builder, parsedElementsForIndexing) {
+        var docIndex = 0;
+        var pipelineFunction = function (token) {
+           var docIndex = builder.documentCount - 1;
+           token.metadata['div'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].div;
+           return token;
+        };
+  
+        if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].div) {
+           lunr.Pipeline.registerFunction(pipelineFunction, 'div');
+           builder.pipeline.add(pipelineFunction);
+           builder.metadataWhitelist.push('div');
+        }
+     }
+      
+      function addDivIdMetadata(builder, parsedElementsForIndexing) {
+        var docIndex = 0;
+        var pipelineFunction = function (token) {
+           var docIndex = builder.documentCount - 1;
+           token.metadata['divId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].divId;
+           return token;
+        };
+  
+        if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].divId) {
+           lunr.Pipeline.registerFunction(pipelineFunction, 'divId');
+           builder.pipeline.add(pipelineFunction);
+           builder.metadataWhitelist.push('divId');
+        }
+     }
       
       function addLineMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
@@ -257,4 +298,4 @@ angular.module('evtviewer.dataHandler')
          }
          return tokens;
       };
-   });
+   }]);

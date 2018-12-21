@@ -34,9 +34,9 @@
             data-type="alignReadings"
             ng-click="vm.alignReadings()"></button-switch>
     </div>
-    <span class="apparatus_exponent"
+    <strong class="apparatus_exponent"
             ng-if="::vm.showExponent"
-            compile="vm.exponent"></span>
+            compile="vm.exponent"></strong>
 
       <span
         class="app_lemma"
@@ -78,7 +78,8 @@
       </div>
       <div
         class="critical-apparatus-entry_other-content_panels"
-        ng-class="{'closed': vm._subContentOpened === ''}">
+        ng-class="{'closed': vm._subContentOpened === '',
+                    'fullHeight': vm.currentViewMode === 'readingTxt'}">
           <div class="critical-apparatus-entry_other-content_panel"
                 ng-repeat="tab in ::vm.tabs._indexes track by $index"
                 ng-class="{'active' : vm._subContentOpened == tab}"

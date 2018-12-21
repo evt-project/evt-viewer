@@ -11,7 +11,7 @@
  **/
 angular.module('evtviewer.select')
 
-.controller('SelectCtrl', function($log, evtSelect, parsedData) {    
+.controller('SelectCtrl', function($log, evtSelect, parsedData, evtInterface) {    
     var vm = this;
     
     var _console = $log.getInstance('select');

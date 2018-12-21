@@ -99,7 +99,8 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
-                boxBody = angular.element(element).find('.box-body')[0];
+                boxBody = angular.element(element).find('.box-body')[0],
+                boxTopBox = angular.element(element).find('.box-top-box')[0];
 
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
@@ -108,50 +109,84 @@ angular.module('evtviewer.box')
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
                     // Scrol box to update page numbers
                     //BIND DEPRECATED, USE ON
-                    angular.element(boxBody).bind('DOMMouseScroll mousewheel', function() {
-                        var i       = 0,
-                            visible = false,
-                            id      = '',
-                            pbElems = angular.element(element).find('.pb');
-                        while ( i < pbElems.length && !visible ) {
-                            var docViewTop = boxElem.scrollTop + 42,
-                                docViewBottom = docViewTop + angular.element(boxElem).height();
-                            id = pbElems[i].getAttribute('data-id');
+                    var docViewTop = boxElem.scrollTop + 42,
+                        docViewBottom = docViewTop + angular.element(boxElem).height();
+                    var updateDiv = function() {
+                        if (currentBox.type !== 'text') {
+                            return;
+                        }
+                        var divs = angular.element(element).find('.div'),
+                            divCount = 0,
+                            divVisible = false,
+                            divId = '';
+                        while ( divCount < divs.length && !divVisible ) {
+                            divId = divs[divCount].getAttribute('id');
 
-                            var elemOffset = $('span.pb[data-id=\''+id+'\']').offset();
+                            var elemOffset = $('span.div[id=\''+divId+'\']').offset();
                             var elemTop;
                             if (elemOffset) {
                                 elemTop =  elemOffset.top;
                             }
                             if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
-                                visible = true;
+                                divVisible = true;
                             } else {
-                                i++;
+                                divCount++;
                             }
                         }
-                        if (visible) {
-                            if (currentBox.type === 'witness') {
-                                if (evtInterface.getCurrentWitnessPage(scope.witness) !== id.split('-')[1]) {
-                                    evtInterface.updateWitnessesPage(scope.witness, id.split('-')[1]);
-                                    evtInterface.updateUrl();
-                                }
-                            }
+                        if (divVisible) {
+                            evtInterface.updateDiv(parsedData.getDiv(divId).doc, divId);
+                            evtInterface.updateUrl();
                         }
-                    });
-                }
+                    }
+                    var updatePage = function() {
+                        if (currentBox.type !== 'witness') {
+                            return;
+                        }
+                        var pbs = angular.element(element).find('.pb'),
+                            pbCount = 0,
+                            pbVisible = false,
+                            pbId = '';
+                        while ( pbCount < pbs.length && !pbVisible ) {
+                            pbId = pbs[pbCount].getAttribute('data-id');
 
-                if ( currentBox.type === 'witness' ) {
-                    // Align new witness to selected app entry
-                    // scope.$watch(function() {
-                    //     var witnesses = evtInterface.getState('currentWits'),
-                    //     scopeWitnessIndex = witnesses.indexOf(scope.vm.witness);
-                    //     return scopeWitnessIndex;
-                    // }, function(newItem, oldItem) {
-                    //     if (oldItem !== newItem) {
-                    //         var appId = evtInterface.getState('currentAppEntry');
-                    //         scope.vm.scrollToAppEntry(appId);
-                    //     }
-                    // }, true);
+                            var elemOffset = $('span.pb[data-id=\''+pbId+'\']').offset();
+                            var elemTop;
+                            if (elemOffset) {
+                                elemTop =  elemOffset.top;
+                            }
+                            if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
+                                pbVisible = true;
+                            } else {
+                                pbCount++;
+                            }
+                        }
+                        if (pbVisible && evtInterface.getCurrentWitnessPage(scope.witness) !== id.split('-')[1]) {
+                            evtInterface.updateWitnessPage(scope.witness, id.split('-')[1]);
+                            evtInterface.updateUrl();
+                        }
+                    }
+                    var updateParams = function() {
+                        if (parsedData.getDivs().length > 0) {
+                            updateDiv();
+                        }
+                        if (parsedData.getPages().length > 0) {
+                            updatePage();
+                        }
+                    }
+                    var timer;
+                    angular.element(boxBody).on('DOMMouseScroll mousewheel scroll', function() {
+                        if (timer) {
+                            window.clearTimeout(timer);
+                        }
+                        timer = window.setTimeout(updateParams(), 1000);
+                    });
+                    var topTimer;
+                    angular.element(boxTopBox).on('DOMMouseScroll mousewheel scroll', function() {
+                        if (topTimer) {
+                            window.clearTimeout(topTimer);
+                        }
+                        topTimer = window.setTimeout(updateParams(), 1000);
+                    });
                 }
                 displayResult(scope, config.xsltUrl);
             });
@@ -238,7 +273,11 @@ angular.module('evtviewer.box')
                         var divElem = $('#'+currentBox.uid).find('#'+divId);
                         var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
                         if (divElem.length > 0 && divElem[0] !== undefined) {
-                            boxBody.scrollTop = divElem[0].offsetTop-padding;
+                            if (parsedData.getDiv(divId).section === 'front') {
+                                boxTopBox.scrollTop = divElem[0].offsetTop-padding;
+                            } else {
+                                boxBody.scrollTop = divElem[0].offsetTop-padding;
+                            }
                         }
                     });
                 };
@@ -415,63 +454,6 @@ angular.module('evtviewer.box')
 
             //TODO: aggiungere scroll per sources view
 
-            if (currentBox.type === 'text') {
-                if (currentBox.subtype === 'comparing') {
-                  scope.$watch(function() {
-                      return evtInterface.getState('currentComparingEdition');
-                  }, function(newItem, oldItem) {
-                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                         scope.vm.edition = newItem;
-                         currentBox.updateContent();
-   
-                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
-                         $timeout(function() {
-                            var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue(currentBoxId);
-      
-                            if(searchInput !== '') {
-                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                            }
-                         });
-                      }
-                  }, true);
-                } else {
-                  scope.$watch(function() {
-                      return evtInterface.getState('currentEdition');
-                  }, function(newItem, oldItem) {
-                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                          scope.vm.edition = newItem;
-                          currentBox.updateContent();
-                          
-                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
-                         $timeout(function() {
-                            var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue(currentBoxId);
-      
-                            if(searchInput !== '') {
-                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                            }
-                         });
-                      }
-                  }, true);
-                }
-
-                scope.$watch(function() {
-                    return evtInterface.getState('currentPage');
-                }, function(newItem, oldItem) {
-                    currentBox.updateContent();
-   
-                   $timeout(function() {
-                      var currentBoxId = scope.id,
-                         searchInput = evtSearchBox.getInputValue(currentBoxId);
-   
-                      if(searchInput !== '') {
-                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                      }
-                   });
-                }, true);
-            }
-
             if (currentBox.type === 'image') {
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
@@ -527,8 +509,9 @@ angular.module('evtviewer.box')
 
                 // TODO-POLO: aggiorna capitolo in tutti i box, se 
             if (currentBox.type === 'text' || currentBox.type === 'witness') {
-                var syncActive = false;
-                var docId, all = evtInterface.getState('currentViewMode') === 'collation' && config.mainDocId && syncActive;
+                var syncActive = evtInterface.getProperty('syncDiv');
+                var docId,
+                    all = evtInterface.getState('currentViewMode') === 'collation' && config.mainDocId && syncActive && currentBox.type === 'text';
                 if (currentBox.type === 'witness') {
                     docId = parsedData.getWitness(scope.witness).corresp || parsedData.getDocuments()._indexes[0];
                 } else {
@@ -536,8 +519,17 @@ angular.module('evtviewer.box')
                 }
                 scope.$watch(function() {
                     return evtInterface.getState('currentDivs')[docId];
-                }, function(newItem, oldItem) {
-                    if (!all) {
+                }, function(newItem) {
+                    if (newItem && parsedData.getDiv(newItem).section === 'front') {
+                        if (scope.vm.state.topBoxContent !== 'front') {
+                            var doc = parsedData.getDocument(docId),
+                                front = doc && doc.front && doc.front.parsedContent ? doc.front.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                            scope.vm.updateTopBoxContent(front);
+                            scope.vm.updateState('topBoxContent', 'front');
+                        }
+                        scope.vm.updateState('topBoxOpened', true);
+                    }
+                    if (newItem && !all) {
                         scope.vm.scrollToDiv(newItem);
                     }
                 });
