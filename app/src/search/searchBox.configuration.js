@@ -13,6 +13,7 @@ angular.module('evtviewer.search')
       interpretativeSearchBoxBtn: {
          showResults: {title: 'Show results', label: '', icon: 'search-results-show', type: 'searchResultsShow'},
          hideResults: {title: 'Hide results', label: '', icon: 'search-results-hide', type: 'searchResultsHide', hide: true},
+         virtualKeyboard: {title: 'Virtual keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
          caseSensitive: {title: 'Case sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
          exactWord: {title: 'Exact word', label: '', icon: 'exact-word', type: 'searchExactWord'},
          previous: {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},

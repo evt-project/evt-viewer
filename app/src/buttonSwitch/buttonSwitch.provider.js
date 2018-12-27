@@ -815,13 +815,22 @@ angular.module('evtviewer.buttonSwitch')
                   var vm = this,
                      parentBoxId = scope.$parent.id,
                      keyboardId = evtVirtualKeyboard.getKeyboardId(parentBoxId),
-                     keyboard =  $('#'+keyboardId).getkeyboard();
+                     keyboard =  $('#'+keyboardId).getkeyboard(),
+                     btnKeyboard = button.getByType('searchVirtualKeyboard');
    
                   if(keyboard.isOpen || vm.active === false) {
                      keyboard.close();
                   }
                   else {
                      keyboard.reveal();
+                     
+                     if(btnKeyboard.length > 1) {
+                        for(var i in btnKeyboard) {
+                           if(btnKeyboard[i].uid !== vm.currentId) {
+                              btnKeyboard[i].setActive(false);
+                           }
+                        }
+                     }
                   }
                };
                break;
