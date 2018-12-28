@@ -101,10 +101,15 @@ angular.module('evtviewer.buttonSwitch')
                 }, true);
             }
             
+            var parentBoxId;
             if (scope.type === 'search') {
-               var parentBoxId = scope.$parent.id;
-               $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
-            }
+              parentBoxId = scope.$parent.id;
+              $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
+           }
+           if (scope.type === 'searchVirtualKeyboard') {
+              parentBoxId = scope.$parent.id;
+              $rootScope.$broadcast('keyboardBtn', {parentId:parentBoxId, btn: currentButton});
+           }
 
             // Garbage collection
             scope.$on('$destroy', function() {
