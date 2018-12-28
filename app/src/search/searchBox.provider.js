@@ -67,6 +67,10 @@ angular.module('evtviewer.search')
          searchBox.getInputValue = function (parentBoxId) {
             return searchBoxCollection[parentBoxId].searchInput;
          };
+   
+         searchBox.clearInputValue = function (parentBoxId) {
+            searchBoxCollection[parentBoxId].searchInput = '';
+         };
          
          searchBox.getStatus = function (parentBoxId, key) {
             if(searchBoxCollection[parentBoxId].status) {

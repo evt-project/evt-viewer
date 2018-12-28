@@ -158,6 +158,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'color-legend':
 					evtIcon = 'icon-evt_color-legend';
 					break;
+            case 'close':
+               evtIcon = 'icon-evt_close';
+               break;
 				case 'download':
 					evtIcon = 'fa fa-download'; //TODO: add icon in EVT font
 					break;
@@ -851,6 +854,13 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchNextResult':
                disabled = true;
                callback = function() {}
+               break;
+            case 'searchClear':
+               btnType = 'standAlone';
+               callback = function () {
+                  var parentBoxId = scope.$parent.id;
+                  evtSearchBox.clearInputValue(parentBoxId);
+               };
                break;
 				case 'share':
 					callback = function() {

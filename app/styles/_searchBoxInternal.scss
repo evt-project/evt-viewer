@@ -21,8 +21,16 @@
       width: 30px;
       @include border($mainContainer-border-width, 'right', $base-color-dark);
       background-color: $search-buttons-background;
-      .icon {
-         line-height: 16px;
+      .icon-evt_close {
+         font-size: 14px;
+         font-weight: bold;
+         top: 4px;
+         left: 4px;
+      }
+      &.buttonSwitch-active {
+         .icon-evt_close {
+            color: $base-color-dark;
+         }
       }
    }
    .btn-left, .btn-right {
@@ -38,16 +46,25 @@
    }
    .btn-right {
       float: right;
+      button-switch:first-child .buttonSwitch {
+         border: 0;
+      }
+      .buttonSwitch-disabled[title="Previous"] {
+         border-left: 2px solid;
+      }
    }
    input[type="text"] {
       font-family: Junicode;
       font-size: 18px;
       height: $search-input-height;
-      width: calc(100% - 210px);
+      width: calc(100% - 225px);
       position: absolute;
       top: 0.9px;
-      padding: 0 10px 0 5px;
+      padding: 0 5px;
       border: transparent;
+      &:focus {
+         outline: 0;
+      }
    }
    .search-results {
       height: 95%;
