@@ -2,16 +2,16 @@ angular.module('evtviewer.search')
    .provider('evtVirtualKeyboard', function() {
       var vm = this;
       
-      vm.$get = ['evtKeyboard', 'config', function(evtKeyboard, config) {
+      vm.$get = ['evtKeyboard', 'config', '$rootScope', function(evtKeyboard, config, $rootScope) {
          var keyboard = [],
             keyboardCollection = {},
             parentBoxId,
             keyboardId,
+            keyboardBtns = [],
             defaultKeyboardKeys,
             configKeys,
             keyboardKeys,
             configKeyboardKeys;
-            
          
          keyboard.build = function(scope, vm) {
             parentBoxId = scope.$parent.id;
@@ -51,7 +51,8 @@ angular.module('evtviewer.search')
             });
            
            var scopeHelper = {
-              keyboardId: keyboardId
+              keyboardId: keyboardId,
+              keyboardBtns: keyboardBtns
            };
            
            keyboardCollection[parentBoxId] = angular.extend(vm, scopeHelper);
@@ -71,16 +72,23 @@ angular.module('evtviewer.search')
          };
          
          keyboard.unselectCurrentKeyboard = function(button, parentBoxId) {
-            var keyboardBtn = button.getByType('searchVirtualKeyboard'),
-               keyboard = $('#' + parentBoxId + 'Keyboard').getkeyboard();
+            var keyboard = $('#' + parentBoxId + 'Keyboard').getkeyboard(),
+               currentKeyboardBtn;
             
             if(keyboard !== undefined) {
-               if(keyboardBtn.length === 1) {
-                  keyboardBtn[0].setActive(false);
+               for(var i in keyboardBtns) {
+                  if(keyboardBtns[i].parentId === parentBoxId) {
+                     currentKeyboardBtn = keyboardBtns[i].btn;
+                  }
                }
                keyboard.close();
+               currentKeyboardBtn.setActive(false);
             }
          };
+   
+         $rootScope.$on('keyboardBtn', function(e, data){
+            keyboardBtns.push(data);
+         });
          
          return keyboard;
       }];
