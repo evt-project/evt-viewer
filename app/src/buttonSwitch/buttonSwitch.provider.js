@@ -164,6 +164,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'download-xml':
 					evtIcon = 'fa fa-file-code-o'; //TODO: add icon in EVT font
 					break;
+            case 'exact-word':
+               evtIcon = 'icon-evt_exact-match';
+               break;
 				case 'filter':
 				case 'filters':
 					evtIcon = 'icon-evt_filter';
@@ -667,7 +670,8 @@ angular.module('evtviewer.buttonSwitch')
                      },
                      'default': function() {
                         var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
-                           results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
+                           isExactMatch = evtSearchBox.getStatus(parentBoxId, 'searchExactWord'),
+                           results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive, isExactMatch),
                            currentEdition = evtBox.getEditionById(parentBoxId),
                            currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
                            visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
@@ -822,7 +826,17 @@ angular.module('evtviewer.buttonSwitch')
                   else {
                      keyboard.reveal();
                   }
-               }
+               };
+               break;
+            case 'searchExactWord':
+               btnType = 'standAlone';
+               callback = function () {
+                  var parentBoxId = scope.$parent.id,
+                     searchInput = evtSearchBox.getInputValue(parentBoxId);
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchExactWord');
+                  evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
+               };
                break;
             case 'searchPrevResult':
                disabled = true;
