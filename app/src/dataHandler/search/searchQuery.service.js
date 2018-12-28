@@ -25,4 +25,13 @@ angular.module('evtviewer.dataHandler')
          });
          return searchResults;
       };
+      
+      Search.prototype.exactMatchQuery = function (index, token) {
+         searchResults = index.query(function (q) {
+            q.term(token, {
+               usePipeline: false
+            });
+         });
+         return searchResults;
+      };
    });
