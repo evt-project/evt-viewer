@@ -10,7 +10,8 @@
    button-switch {
       margin-right: 0;
       &[data-type="searchCaseSensitive"],
-      &[data-type="searchVirtualKeyboard"] {
+      &[data-type="searchVirtualKeyboard"],
+      &[data-type="searchExactWord"] {
          .buttonSwitch-active {
             background-color: $buttonSwitch-active-background-color;
          }
@@ -42,7 +43,7 @@
       font-family: Junicode;
       font-size: 18px;
       height: $search-input-height;
-      min-width: calc(100% - 180px);
+      width: calc(100% - 210px);
       position: absolute;
       top: 0.9px;
       padding: 0 10px 0 5px;
@@ -76,7 +77,7 @@
          position: absolute;
          z-index: 1;
          width: calc(100% - #{$mainContainer-border-width*8});
-         top: $search-box-height + $mainContainer-border-width*2;
+         top: $search-box-height;
          left: 0;
          padding-top: 15px;
          p:first-child {

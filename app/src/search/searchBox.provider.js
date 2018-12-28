@@ -17,6 +17,7 @@ angular.module('evtviewer.search')
             var status = {
                searchResultBox: false,
                searchCaseSensitive : false,
+               searchExactWord: false,
                virtualKeyboard: false,
                progressBar : false
             };
