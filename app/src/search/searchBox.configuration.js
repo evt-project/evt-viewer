@@ -6,6 +6,7 @@ angular.module('evtviewer.search')
          virtualKeyboard: {title: 'Virtual keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
          caseSensitive: {title: 'Case sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
          exactWord: {title: 'Exact word', label: '', icon: 'exact-word', type: 'searchExactWord'},
+         searchClear: {title: 'Clear search', label: '', icon: 'close', type: 'searchClear'},
          previous: {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},
          next: {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
          search: {title: 'Search', label: '', icon: 'search', type: 'search'}
@@ -16,6 +17,7 @@ angular.module('evtviewer.search')
          virtualKeyboard: {title: 'Virtual keyboard', label: '', icon: 'keyboard', type: 'searchVirtualKeyboard'},
          caseSensitive: {title: 'Case sensitive', label: '', icon: 'case-sensitive', type: 'searchCaseSensitive'},
          exactWord: {title: 'Exact word', label: '', icon: 'exact-word', type: 'searchExactWord'},
+         searchClear: {title: 'Clear search', label: '', icon: 'close', type: 'searchClear'},
          previous: {title: 'Previous', label: '', icon: 'previous', type: 'searchPrevResult'},
          next: {title: 'Next', label: '', icon: 'next', type: 'searchNextResult'},
          search: {title: 'Search', label: '', icon: 'search', type: 'search'}
