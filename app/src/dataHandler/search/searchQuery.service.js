@@ -14,24 +14,53 @@ var lunr = require('lunr');
  */
 angular.module('evtviewer.dataHandler')
    .service('evtSearchQuery', function Search() {
-      var searchResults;
+      var searchResults,
+         tokens;
       
       Search.prototype.query = function (index, token) {
-         searchResults = index.query(function (q) {
-            q.term(token, {
-               usePipeline: false,
-               wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING
+         tokens = lunr.tokenizer(token);
+         
+         // multiple terms query
+         if(tokens.length > 1) {
+            searchResults = index.query(function (q) {
+               q.term(tokens, {
+                  usePipeline: false,
+                  wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING
+               });
             });
-         });
+         }
+         else {
+            searchResults = index.query(function (q) {
+               q.term(token, {
+                  usePipeline: false,
+                  wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING
+               });
+            });
+         }
+         
          return searchResults;
       };
       
       Search.prototype.exactMatchQuery = function (index, token) {
-         searchResults = index.query(function (q) {
-            q.term(token, {
-               usePipeline: false
+         tokens = lunr.tokenizer(token);
+   
+         // multiple terms query
+         if(tokens.length > 1) {
+            searchResults = index.query(function (q) {
+               q.term(tokens, {
+                  usePipeline: false
+               });
             });
-         });
+         }
+         else {
+            searchResults = index.query(function (q) {
+               q.term(token, {
+                  usePipeline: false
+               });
+            });
+         }
+         
          return searchResults;
       };
+      
    });
