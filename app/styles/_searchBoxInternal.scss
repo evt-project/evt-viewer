@@ -4,7 +4,7 @@
 
 .search-box.internal {
    &.results-open {
-      @include calc(max-height, #{setInsideFrameHeight()} - 5px);
+      @include calc(max-height, #{setInsideFrameHeight()} - 6px);
       transition: max-height .5s;
    }
    button-switch {
@@ -57,7 +57,7 @@
       font-family: Junicode;
       font-size: 18px;
       height: $search-input-height;
-      width: calc(100% - 225px);
+      width: calc(100% - 230px);
       position: absolute;
       top: 0.9px;
       padding: 0 5px;
@@ -144,5 +144,8 @@
             padding-left: 35px;
          }
       }
+   }
+   .ui-keyboard-input-current {
+      @include noBoxShadow();
    }
 }
