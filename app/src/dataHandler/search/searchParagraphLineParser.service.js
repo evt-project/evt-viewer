@@ -7,7 +7,7 @@ angular.module('evtviewer.dataHandler')
          this.xmlDocBody = xmlDocBody;
       }
    
-      ParagraphLineParser.prototype.getPrevDocsInfo = function () {};
+      ParagraphLineParser.prototype.getPrevDocsLines = function () {};
       
       ParagraphLineParser.prototype.parseElements = function() {
          var ns,

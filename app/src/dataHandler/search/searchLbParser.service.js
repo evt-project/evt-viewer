@@ -22,7 +22,7 @@ angular.module('evtviewer.dataHandler')
          this.xmlDocBody = xmlDocBody;
       }
       
-      LbParser.prototype.getPrevDocsInfo = function () {
+      LbParser.prototype.getPrevDocsLines = function () {
          return this.parsedElementsForIndexing.countAllLines;
       };
       
