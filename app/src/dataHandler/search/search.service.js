@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
    .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', function Search(evtSearchDocument, evtBuilder, evtSearchIndex) {
-      var prevDocsInfo = 0,
+      var prevDocsLines = 0,
          parsedElementsForIndexing = {};
       
       Search.prototype.initSearch = function (xmlDocDom) {
@@ -12,8 +12,8 @@ angular.module('evtviewer.dataHandler')
          
          for (var i = 0; i < xmlDocsBody.length; i++) {
             searchParser = evtBuilder.createParser(xmlDocsBody[i]);
-            parsedElements = searchParser.parseElements(prevDocsInfo);
-            prevDocsInfo = searchParser.getPrevDocsInfo();
+            parsedElements = searchParser.parseElements(prevDocsLines);
+            prevDocsLines = searchParser.getPrevDocsLines();
             parsedElementsForIndexing = angular.extend(parsedElementsForIndexing, parsedElements);
          }
          console.log(parsedElementsForIndexing);
@@ -25,7 +25,7 @@ angular.module('evtviewer.dataHandler')
          return parsedElementsForIndexing;
       };
       
-      Search.prototype.getPrevDocsInfo = function () {
-         return prevDocsInfo;
+      Search.prototype.getPrevDocsLines = function () {
+         return prevDocsLines;
       };
    }]);
