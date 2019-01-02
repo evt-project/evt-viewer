@@ -45,7 +45,7 @@ angular.module('evtviewer.dataHandler')
          return xmlDoc.ns;
       };
       
-      XmlDoc.prototype.isDiplomaticEdition = function (xmlDocBody) {
+      XmlDoc.prototype.isOnlyDiplomaticEdition = function (xmlDocBody) {
          return xmlDocBody.getElementsByTagName('choice').length === 0;
       };
       

@@ -33,7 +33,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getParLineInfo (xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
-         return evtSearchDocument.isDiplomaticEdition(xmlDocBody) ? evtSearchDiplomaticParLineHandler.getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver)
+         return evtSearchDocument.isOnlyDiplomaticEdition(xmlDocBody) ? evtSearchDiplomaticParLineHandler.getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver)
                                                                   : evtSearchDiploInterprParLineHandler.getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
       }
       
