@@ -57,7 +57,6 @@ angular.module('evtviewer.dataHandler')
                         line.content = {
                            diplomatic: evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic'),
                            interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
-      
                         };
    
                         lineId++;
