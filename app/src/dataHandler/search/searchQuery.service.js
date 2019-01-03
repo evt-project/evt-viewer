@@ -31,8 +31,8 @@ angular.module('evtviewer.dataHandler')
       };
       
       Search.prototype.exactMatchQuery = function (index, token) {
-         tokens = lunr.tokenizer(token);
-   
+         tokens = token.match('-') ? token : lunr.tokenizer(token);
+        
          searchResults = index.query(function (q) {
             q.term(tokens, {
                usePipeline: false
