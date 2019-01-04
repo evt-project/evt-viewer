@@ -47,24 +47,28 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : false
                             }],
+<<<<<<< HEAD
     "defaultEdition": "critical",
+=======
+    "defaultEdition": "diplomatic",
+>>>>>>> 08cb30cd65b3532499b4bd9b9c041d3bbd972919
     "showEditionLevelSelector": false,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "mainDocId": "tr",
@@ -90,7 +94,7 @@
 	],
 
     "toolPinAppEntries": true,
-    "toolImageTextLinking": true,
+    "toolImageTextLinking": false,
     "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
@@ -109,7 +113,7 @@
 
     "otherEntitiesToHandle": [],
 
-    "listsMainContentDef": "<back>",
+    "listsMainContentDef": "<sourceDesc>",
 
     "toolHeatMap": true,
     "preferredWitness": "",

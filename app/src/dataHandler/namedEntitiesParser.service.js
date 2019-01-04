@@ -785,5 +785,43 @@ angular.module('evtviewer.dataHandler')
 		}		
 	};
 
+	NEparser.getOccurencesInDivs = function(docObj, refId, entityTagName) {
+		var divs = [],
+				doc = docObj && docObj.content ? docObj.content : undefined,
+				dom = angular.element(doc);				
+		docObj.divs.forEach((divId) => {
+			var divObj = parsedData.getDiv(divId),
+					divElem;
+			angular.forEach(dom.find('div'), function(div) {
+				if (div.getAttribute('xml:id') === divId) {
+					divElem = angular.element(div);
+				}
+			});
+			angular.forEach(divElem.find(entityTagName), function(entityElem) {
+				if (entityElem.attributes && entityElem.getAttribute('ref') && entityElem.getAttribute('ref').replace('#', '') === refId) {
+					var occurrence = { 
+						divId: divId, 
+						divLabel: divObj ? divObj.label : divId,
+						docId: docObj ? docObj.value : '',
+						docLabel: docObj ? docObj.label : '',
+						text: entityElem.innerHTML 
+					};
+					NEparser.addOccurrence(refId, occurrence);
+					divs.push(occurrence);
+				}
+			});
+		});
+		return divs;
+	};
+
+	NEparser.addOccurrence = function(refId, occurrence) {
+		var c = refId.charAt(0),
+				NEObj = parsedData.getNamedEntity(refId);
+		if (!NEObj._occurrences) {
+			NEObj._occurrences = [];
+		}
+		NEObj._occurrences.push(occurrence);
+	};
+
 	return NEparser;
 });
