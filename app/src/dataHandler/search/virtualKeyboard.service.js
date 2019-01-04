@@ -3,10 +3,7 @@ angular.module('evtviewer.dataHandler')
       function VirtualKeyboard(evtSearchDocument, baseData, parsedData, XPATH) {
       
       VirtualKeyboard.prototype.getDefaultKeyboardKeys = function() {
-         var xmlDocDom = getXmlDom(),
-            namespace = getXmlNamespace(xmlDocDom),
-            gNodes = getGlyphNode(xmlDocDom, namespace.ns, namespace.nsResolver),
-            glyphsInXmlDoc = getGlyphInXmlDoc(gNodes),
+         var glyphsInXmlDoc = VirtualKeyboard.prototype.getGlyphInXmlDoc(),
             glyphFrequency = getGlyphFrequency(glyphsInXmlDoc),
             glyphFreqDescendingOrder = getGlyphFreqInDescendingOrder(glyphFrequency),
             moreFrequentGlyph = getMoreFreqGlyphInDoc(glyphFreqDescendingOrder);
@@ -28,7 +25,29 @@ angular.module('evtviewer.dataHandler')
          return configKeyboardKeys;
          
       };
-      
+   
+       VirtualKeyboard.prototype.getGlyphInXmlDoc = function() {
+          var xmlDocDom = getXmlDom(),
+             namespace = getXmlNamespace(xmlDocDom),
+             gNodes = getGlyphNode(xmlDocDom, namespace.ns, namespace.nsResolver),
+             glyphs = parsedData.getGlyphs(),
+             currentNode = gNodes.iterateNext(),
+             glyphId,
+             glyphsInXmlDoc = {};
+          
+          while(currentNode !== null) {
+             glyphId = currentNode.getAttribute('ref').replace('#', '');
+             for (var glyph in glyphs) {
+                if (glyphId === glyph) {
+                   glyphsInXmlDoc[glyphId] = glyphs[glyph].mapping.diplomatic.content;
+                }
+             }
+             currentNode = gNodes.iterateNext();
+          }
+   
+          return glyphsInXmlDoc;
+       };
+       
       function getXmlDom() {
          return baseData.getXML();
       }
@@ -44,21 +63,6 @@ angular.module('evtviewer.dataHandler')
       function getGlyphNode(xmlDocDom, ns, nsResolver) {
          return ns ? xmlDocDom.evaluate(XPATH.ns.getGlyphNodes, xmlDocDom, nsResolver, XPathResult.ANY_TYPE, null)
                     : xmlDocDom.evaluate(XPATH.getGlyphNodes, xmlDocDom, null, XPathResult.ANY_TYPE, null);
-      }
-      
-      function getGlyphInXmlDoc(glyphNodes) {
-         var currentNode,
-            glyphId,
-            glyphsInXmlDoc = [];
-         
-         currentNode = glyphNodes.iterateNext();
-         while(currentNode !== null) {
-            glyphId = currentNode.getAttribute('ref').replace('#', '');
-            glyphsInXmlDoc.push(glyphId);
-            currentNode = glyphNodes.iterateNext();
-         }
-         
-         return glyphsInXmlDoc;
       }
       
       function getGlyphFrequency(glyphInXmlDoc) {

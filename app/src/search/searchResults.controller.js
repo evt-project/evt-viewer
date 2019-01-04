@@ -75,7 +75,7 @@ angular.module('evtviewer.search')
                function() {
                   vm.scrollTo(vm.currentLineId);
                });
-         }
+         };
          
          function goToAnchor() {
             var deferred = $q.defer(),
