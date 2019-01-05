@@ -19,7 +19,6 @@ angular.module('evtviewer.search')
             keyboardId = parentBoxId + 'Keyboard';
             keyboardKeys = '';
             configKeys = config.virtualKeyboardKeys;
-            defaultKeyboardKeys = getDefaultKeyboardKeys();
             glyphInXmlDoc = evtKeyboard.getGlyphInXmlDoc();
             
             if(configKeys.length !== 0){
@@ -27,12 +26,13 @@ angular.module('evtviewer.search')
                for (var k in configKeyboardKeys) {
                   for (var g in glyphInXmlDoc) {
                      if(g === k) {
-                        keyboardKeys += glyphInXmlDoc[k] + ':' + k + ' ';
+                        keyboardKeys += glyphInXmlDoc[g] + ':' + k + ' ';
                      }
                   }
                }
             }
             else {
+               defaultKeyboardKeys = getDefaultKeyboardKeys();
                for (var kbKey in defaultKeyboardKeys) {
                   keyboardKeys += defaultKeyboardKeys[kbKey] + ':' + kbKey + ' ';
                }
