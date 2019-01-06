@@ -115,11 +115,11 @@ angular.module('evtviewer.dataHandler')
       
       function getCaseSensitiveResults(inputValue, tokenList) {
          var results = [],
-            matchStarWildcard = inputValue.match(/[*]/);
+            inputMatchStarWildcard = inputValue.match(/[*]/);
          
          for (var token in tokenList) {
    
-            if(matchStarWildcard) {
+            if(inputMatchStarWildcard) {
                inputValue.toLowerCase();
                var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard);
                if(result) {
@@ -140,9 +140,9 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
    
-      function handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard) {
+      function handleWildcardInCaseSensitive(inputValue, token, tokenList, inputMatchStarWildcard) {
          var inputValueLength = inputValue.length,
-            wildcardPos = matchStarWildcard.index,
+            wildcardPos = inputMatchStarWildcard.index,
             tokenFirstChars = token.toString().slice(0, wildcardPos),
             inputFirstChars = inputValue.slice(0, wildcardPos),
             tokenLastChars,
