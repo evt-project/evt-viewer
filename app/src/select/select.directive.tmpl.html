@@ -3,9 +3,10 @@
      ng-show="::vm.optionList.length > 0">
    <span 
       class="label_selected" 
-      title="{{ vm.getOptionSelected().title | translate }}"
+      title="{{ vm.getOptionSelected().title | translate}}"
       data-value="{{ vm.getOptionSelected().value }}">
-      {{ vm.getOptionSelected().label | translate | camelToSpaces | underscoresToSpaces | capitalize  }}
+      {{ vm.getOptionSelected().label | translate}}
+      <i ng-if="vm.currentType === 'view-mode' && vm.getOptionSelected().icon" class="icon {{ vm.getOptionSelected().icon }}"></i>
    </span>
    <div 
       class="open_options" 
@@ -18,20 +19,21 @@
                   'openUp': vm.openUp }" >
       <div ng-repeat="option in vm.optionList" ng-switch="::option.type">
          <div ng-switch-when="groupTitle" class="option groupTitle">
-            {{ option.label | translate | camelToSpaces | underscoresToSpaces | capitalize }}
+            {{ option.label | translate}}
          </div>
          <div 
             ng-switch-default
             class="option {{ ::option.additionalClass }}" 
-            title="{{option.title | translate | camelToSpaces | underscoresToSpaces | capitalize  }}" 
+            title="{{option.title | translate }}" 
             data-value="{{::option.value }}"
             data-wit="{{::option.ed}}"
             ng-click="vm.callback(vm.optionSelected, option);"
             ng-class="{'selected': vm.isOptionSelected(option)}">
             <i class="fa {{::option.icon}} option-icon-label" 
                style="color: {{ ::option.color }}"
-               ng-if="::option.icon"></i>
-            {{ option.label  | translate | camelToSpaces | underscoresToSpaces | capitalize }}
+               ng-if="::option.icon && vm.currentType !== 'view-mode'"></i>
+            {{ option.label  | translate}}
+            <i ng-if="vm.currentType === 'view-mode' && option.icon" class="icon {{ option.icon }}"></i>
          </div>
       </div>
    </div>

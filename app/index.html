@@ -47,41 +47,19 @@
 				<i class="fa fa-external-link"></i>
 			</a>
 			<div class="globalMenu">
+				<div class="viewModeMenu">
+					<evt-select
+						ng-if="getAvailableViewModes().length > 0"
+						data-id="viewModeSelector"
+						data-type="view-mode"
+						data-init="getCurrentViewMode()"></evt-select>
+				</div>
 				<button-switch
 					title="TOC.HEADER"
 					data-icon="list-alt"
 					data-type="openToc">
 				</button-switch>
-				<div class="viewModeMenu">
-					<button-switch
-							title="VIEW_MODES.{{::mode.label}}"
-							class="mode-view"
-							data-label=""
-							data-icon="{{::mode.icon}}"
-							data-value="{{::mode.viewMode}}"
-							data-type="changeViewMode"
-							ng-repeat="mode in getAvailableViewModes() track by $index"
-							ng-if="mode.visible">
-					</button-switch>
-				</div>
 				<!-- <button-switch
-						title="Witnesses"
-						data-icon="witnesses"
-						data-type="openGlobalDialogWitnesses">
-				</button-switch>
-				<button-switch
-					title="BUTTONS.LIST"
-					ng-if="getProperty('namedEntitiesLists')"
-					data-icon="list"
-					data-type="openGlobalDialogLists">
-				</button-switch>
-				<button-switch
-					class="smaller"
-					title="BUTTONS.INFO"
-					data-icon="info"
-					data-type="openGlobalDialogInfo">
-				</button-switch>
-				<button-switch
 					title="BUTTONS.BOOKMARK"
 					data-icon="bookmark"
 					data-type="bookmark">

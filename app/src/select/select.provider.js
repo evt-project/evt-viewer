@@ -741,6 +741,69 @@ angular.module('evtviewer.select')
 					};
 					optionList = formatOptionList(parsedData.getVersionEntries());
 					break;
+				case 'view-mode': {
+					callback = function(oldOption, newOption) {
+						vm.selectOption(newOption);
+						vm.collapse();
+						if (newOption.value
+								&& oldOption.value !== newOption.value
+								&& newOption.value !== evtInterface.getState('currentViewMode')) {
+							evtInterface.updateState('currentViewMode', newOption.value);
+						}
+					};
+					setInitValue = function(initValue, optionList) {
+						var value = initValue ? initValue : optionList.find(function(option) {
+							return option.value === evtInterface.getState('currentViewMode');
+						}) || optionList[0];
+						return value;
+					}
+					setIcon = function(iconType) {
+						var evtIcon = '';
+						switch(iconType) {
+							case 'mode-imgtxt':
+								evtIcon = 'icon-evt_imgtxt';
+								break;
+							case 'mode-txttxt':
+								evtIcon = 'icon-evt_txttxt';
+								break;
+							case 'mode-collation':
+								evtIcon = 'icon-evt_collation';
+								break;
+							case 'mode-srctxt':
+								evtIcon = 'iconbis-evt_srctxt';
+								break;
+							case 'mode-versions':
+								evtIcon = 'iconbis-evt_versions';
+								break;
+							default:
+								evtIcon = 'icon-evt_txt';
+								break;
+						}
+						return evtIcon;
+					}
+					formatOptionList = function(optionList) {
+						var formattedList = [];
+						for (var i in optionList) {
+							var currentOption = formatOption(optionList[i]);
+							formattedList.push(currentOption);
+						}
+						return formattedList;
+					};
+					formatOption = function(viewMode) {
+						var option = {
+							value: viewMode.viewMode,
+							label: 'VIEW_MODES.' + viewMode.label,
+							title: 'VIEW_MODES.' + viewMode.label,
+							icon: setIcon(viewMode.icon)
+						}
+						return option;
+					};
+					var viewModes = evtInterface.getProperty('availableViewModes').filter(function(viewMode) {
+						return viewMode.visible === true;
+					});
+					optionList = formatOptionList(viewModes);
+					optionSelected = setInitValue(initValue, optionList);
+				} break;
 			}
 
 			scopeHelper = {
