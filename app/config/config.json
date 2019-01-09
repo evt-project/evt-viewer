@@ -68,7 +68,7 @@
     }],
 
     "mainDocId": "tr",
-    "elementsWithNumbers": ["seg"],
+    "elementsWithNumbers": [],
     "enableXMLdownload" : true,
     "downloadableFiles": [
 		{

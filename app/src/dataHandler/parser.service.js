@@ -302,7 +302,7 @@ angular.module('evtviewer.dataHandler')
 		if (element.hasAttribute('n')) {
 			var numberElem = document.createElement('span');
 			numberElem.setAttribute('class', 'number ' + element.tagName + '-number');
-			var numberText = document.createTextNode(element.getAttribute('n') + ' ');
+			var numberText = document.createTextNode(element.getAttribute('n'));
 			numberElem.appendChild(numberText);
 			newElement.appendChild(numberElem);
 		}
