@@ -921,6 +921,23 @@ angular.module('evtviewer.dataHandler')
 		return parsedData.getDocuments();
 	};
 
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#parseDocument
+   * @methodOf evtviewer.dataHandler.evtParser
+	 * @description
+	 * The function creates an object that represents all the information about the document
+	 * and that will be stored in the parsed data. The object's properties are:
+	 * - value: a unique identifier to refer the document in the document collection
+	 * - label and title: the strings that will be used in the GUI to refer the document
+	 * - content: the XML element taht represents the document itself
+	 * - front: an object that represents the front matter of the document if defined
+	 * - pages: an array of the id of the pages that are contained in the document
+	 * - divs: an array of the id of the divs that are contained in the document
+	 * @param {element} element the XML element that represents the document
+	 * @param {element} doc the XML file that contains the edition
+	 * @author CM
+	 */
 	parser.parseDocument = function(element, doc) {
 		var newDoc = {
 			value: element.getAttribute('xml:id') || parser.xpath(doc).substr(1) || 'doc_' + (parsedData.getDocuments()._indexes.length + 1),
@@ -964,7 +981,18 @@ angular.module('evtviewer.dataHandler')
 				});
 		}
 	}
-
+	/**
+	* @ngdoc method
+  * @name evtviewer.dataHandler.evtParser#parseDivs
+  * @methodOf evtviewer.dataHandler.evtParser
+	* @description
+	* The function loops through the divs in the document XML element and calls the
+	* parseDiv function for each.
+	* @param {element} doc the document XML element
+	* @param {string} docId the id of the document object
+	* @param {string} section the section as XML structural tag where the div is located (front, text, back)
+	* @author CM
+	*/
 	parser.parseDivs = function(doc, docId, section) {
 		var currentDocument = angular.element(doc);
 		angular.forEach(currentDocument.children('div'), function(element) {
@@ -972,12 +1000,31 @@ angular.module('evtviewer.dataHandler')
 		});
 	};
 
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#parseDiv
+   * @methodOf evtviewer.dataHandler.evtParser
+	 * @description
+	 * The function creates an object that represents all the information about the div
+	 * and that will be stored in the parsed data. The object's properties are:
+	 * - doc: the id of the document the div is contained in
+	 * - section: the section where the div is located
+	 * - subDivs: an array of ids of the divs that are contained inside the div
+	 * - title: the name of the div that has to be shown in the GUI
+	 * - value: the id of the div
+	 * - _isSubDiv: a boolean that states whether the div is nested in another div element
+	 * @param {element} element the XML element that represents the div
+	 * @param {string} docId the id of the document object
+	 * @param {string} section the section as XML structural tag where the div is located (front, text, back)
+	 * @author CM
+	 */
 	parser.parseDiv = function(element, docId, section) {
 		var newDiv = {
 			doc: docId,
 			section: section,
 			subDivs: [],
 			title: '',
+			value: '',
 			_isSubDiv: parser.isNestedInElem(element, 'div')
 		};
 		angular.forEach(Object.values(element.attributes), function(attr) {
@@ -998,6 +1045,16 @@ angular.module('evtviewer.dataHandler')
 		return newDiv;
 	}
 
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#createTitle
+   * @methodOf evtviewer.dataHandler.evtParser
+	 * @description
+	 * The function creates for different types of objects the label that will be used in the GUI.
+	 * @param {object} parsedElement the object that represents the information retrieved by the parsed element
+	 * @param {string} tag the tagName of the XML element
+	 * @author CM
+	 */
 	parser.createTitle = function(parsedElement, tag) {
 		if (parsedElement.type) {
 			parsedElement.title += parsedElement.type.substr(0,1).toUpperCase() + parsedElement.type.substr(1);
@@ -1027,6 +1084,16 @@ angular.module('evtviewer.dataHandler')
 		parsedElement.label = parsedElement.title;
 	}
 
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#parseFront
+	 * @description
+	 * The function parses the front contents and possible biblographic references.
+	 * The data is then stored in the document object as the "front" property.
+	 * @param {object} newDoc the object that contains the data parsed about the document
+	 * @param {element} element the XML element that represents the front matter of the document
+	 * @author CM
+	 */
 	parser.parseFront = function(newDoc, element) {
 		var frontDef = '<front>',
 			  biblDef = '<biblStruct>';
