@@ -22,7 +22,8 @@ angular.module('evtviewer.dataHandler')
 		defLineBreak = '<lb>',
 		defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>, <term>',
-		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
+		elementsWithNumbers = config.elementsWithNumbers || [];
 
 	var projectInfoDefs = {
 		sectionHeaders: '<sourceDesc>, ',
@@ -222,19 +223,8 @@ angular.module('evtviewer.dataHandler')
 							}
 						}
 					}
-					if (element.tagName === 'div') {
-						var divId;
-						if (element.attributes && element.getAttribute('xml:id')) {
-							divId = element.getAttribute('xml:id');
-						} else {
-							divId = parser.xpath(element).substr(1);
-						}
-						newElement.setAttribute('id', divId);
-					}
-					if (element.tagName === 'seg' && element.hasAttribute('n')) {
-						var number = document.createTextNode('[' + element.getAttribute('n') + '] ');
-						newElement.appendChild(number);
-					}
+					parser.parseDivElementInText(element, newElement);
+					parser.addElementNumberInText(element, newElement);
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
 							var childElement = element.childNodes[j].cloneNode(true);
@@ -246,41 +236,7 @@ angular.module('evtviewer.dataHandler')
 	
 					if (options.context && options.context === 'projectInfo') {
 						if (newElement.innerHTML.replace(/\s/g, '') !== '') {
-							var labelElement = document.createElement('span'),
-								addLabel = false;
-							labelElement.className = 'label-' + element.tagName;
-							labelElement.innerHTML = '{{ \'PROJECT_INFO.' + parser.camelToUnderscore(element.tagName).toUpperCase() + '\' | translate }}';
-							if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-sectionHeader';
-								addLabel = true;
-							} else if (projectInfoDefs.sectionSubHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-sectionSubHeader';
-								addLabel = true;
-							} else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-blockLabel';
-								addLabel = true;
-							} else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								labelElement.className += ' projectInfo-inlineLabel';
-								labelElement.innerHTML += ': ';
-								addLabel = true;
-							}
-							if (projectInfoDefs.changeDef.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
-								var changeText = '';
-								var changeWhen = element.getAttribute(projectInfoDefs.changeWhenDef.replace(/[\[\]]/g, ''));
-								if (changeWhen) {
-									changeText += changeWhen + ' ';
-								}
-								var changeBy = element.getAttribute(projectInfoDefs.changeByDef.replace(/[\[\]]/g, ''));
-								if (changeBy) {
-									changeText += '[' + changeBy + ']';
-								}
-								if (changeText !== '') {
-									newElement.innerHTML = changeText + ' - ' + newElement.innerHTML;
-								}
-							}
-							if (addLabel) {
-								newElement.insertBefore(labelElement, newElement.childNodes[0]);
-							}
+							parser.parseProjectInfo(element, newElement, tagName);
 						}
 					}
 	
@@ -303,6 +259,101 @@ angular.module('evtviewer.dataHandler')
 			return newElement;
 		} else {
 			return document.createTextNode('');
+		}
+	};
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#parseDivElementInText
+   * @methodOf evtviewer.dataHandler.evtParser
+	 * @description
+	 * The function adds to the new HTML element the id of div in order to guarantee
+	 * a proper functioning of the synchronization and alignment mechanisms in the GUI.
+	 * @param {element} element the XML element that is currently parsed and transformed
+	 * @param {element} newElement the new HTML element corresponding to the XML element that will be
+	 * inserted in the text
+	 * @author CM
+	 */
+	parser.parseDivElementInText = function(element, newElement) {
+		if (!element.tagName || element.tagName !== 'div') { return; }
+		var divId;
+		if (element.attributes && element.getAttribute('xml:id')) {
+			divId = element.getAttribute('xml:id');
+		} else {
+			divId = parser.xpath(element).substr(1);
+		}
+		newElement.setAttribute('id', divId);
+	};
+
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#addElementNumberInText
+   * @methodOf evtviewer.dataHandler.evtParser
+	 * @description
+	 * The function checks if the number of the element should be shown in the text (according to the
+	 * configuration settings) and creates an HTML span element that has as classes "number" and tag name
+	 * of the element plus "-number", so that the graphic rendering of the number can be modified by the
+	 * editor in the custom-style.css file.
+	 * @param {element} element The XML element that is currently parsed and transformed
+	 * @param {element} newElement The new HTML element corresponding to the XML element that will be inserted in the text
+	 * @author CM
+	 */
+	parser.addElementNumberInText = function(element, newElement) {
+		if (!element.tagName || elementsWithNumbers.indexOf(element.tagName) < 0) { return; }
+		if (element.hasAttribute('n')) {
+			var numberElem = document.createElement('span');
+			numberElem.setAttribute('class', 'number ' + element.tagName + '-number');
+			var numberText = document.createTextNode(element.getAttribute('n') + ' ');
+			numberElem.appendChild(numberText);
+			newElement.appendChild(numberElem);
+		}
+	};
+
+	/**
+	 * @ngdoc method
+   * @name evtviewer.dataHandler.evtParser#parseProjectInfo
+   * @methodOf evtviewer.dataHandler.evtParser
+	 * @description
+	 * The function parses the project info contained in the header of the document
+	 * @param {element} element the XML element that is currently parsed and transformed
+	 * @param {element} newElement the new HTML element that will be inserted in the text
+	 * @param {string} tagName the tagname of the element
+	 * @author CM
+	 */
+	parser.parseProjectInfo = function(element, newElement, tagName) {
+		var labelElement = document.createElement('span'),
+			addLabel = false;
+		labelElement.className = 'label-' + element.tagName;
+		labelElement.innerHTML = '{{ \'PROJECT_INFO.' + parser.camelToUnderscore(element.tagName).toUpperCase() + '\' | translate }}';
+		if (projectInfoDefs.sectionHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+			labelElement.className += ' projectInfo-sectionHeader';
+			addLabel = true;
+		} else if (projectInfoDefs.sectionSubHeaders.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+			labelElement.className += ' projectInfo-sectionSubHeader';
+			addLabel = true;
+		} else if (projectInfoDefs.blockLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+			labelElement.className += ' projectInfo-blockLabel';
+			addLabel = true;
+		} else if (projectInfoDefs.inlineLabels.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+			labelElement.className += ' projectInfo-inlineLabel';
+			labelElement.innerHTML += ': ';
+			addLabel = true;
+		}
+		if (projectInfoDefs.changeDef.toLowerCase().indexOf('<' + tagName + '>') >= 0) {
+			var changeText = '';
+			var changeWhen = element.getAttribute(projectInfoDefs.changeWhenDef.replace(/[\[\]]/g, ''));
+			if (changeWhen) {
+				changeText += changeWhen + ' ';
+			}
+			var changeBy = element.getAttribute(projectInfoDefs.changeByDef.replace(/[\[\]]/g, ''));
+			if (changeBy) {
+				changeText += '[' + changeBy + ']';
+			}
+			if (changeText !== '') {
+				newElement.innerHTML = changeText + ' - ' + newElement.innerHTML;
+			}
+		}
+		if (addLabel) {
+			newElement.insertBefore(labelElement, newElement.childNodes[0]);
 		}
 	};
 	/**
@@ -344,7 +395,7 @@ angular.module('evtviewer.dataHandler')
 	};
 	/**
      * @ngdoc method
-     * @name evtviewer.dataHandler.evtParser#parseElementAttributes
+     * @name evtviewer.dataHandler.evtParser#parseExternalDocuments
      * @methodOf evtviewer.dataHandler.evtParser
      *
      * @description

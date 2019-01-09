@@ -5,7 +5,7 @@
     "logoUrl": "",
     "defaultLanguage": "en",
 
-	"dataUrl": "../data/main1.xml",
+	"dataUrl": "../data/polo/main1.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -47,32 +47,28 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : false
                             }],
-<<<<<<< HEAD
     "defaultEdition": "critical",
-=======
-    "defaultEdition": "diplomatic",
->>>>>>> 08cb30cd65b3532499b4bd9b9c041d3bbd972919
     "showEditionLevelSelector": false,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "mainDocId": "tr",
-
+    "elementsWithNumbers": ["seg"],
     "enableXMLdownload" : true,
     "downloadableFiles": [
 		{

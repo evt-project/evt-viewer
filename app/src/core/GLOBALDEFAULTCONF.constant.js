@@ -154,7 +154,7 @@ angular.module('evtviewer.core')
                                 viewMode : 'srcTxt',
                                 visible  : true
                             }],
-
+	elementsWithNumbers: ['seg'],
 	toolHeatMap: true,
 	toolPinAppEntries: false,
 	toolImageTextLinking: true,
