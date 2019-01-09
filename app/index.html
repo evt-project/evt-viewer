@@ -49,10 +49,10 @@
 			<div class="globalMenu">
 				<div class="viewModeMenu">
 					<evt-select
-						ng-if="getAvailableViewModes().length > 0"
+						ng-if="getAvailableViewModes().length > 0 && getCurrentViewMode() !== undefined"
 						data-id="viewModeSelector"
 						data-type="view-mode"
-						data-init="getCurrentViewMode()"></evt-select>
+						data-init="{{getCurrentViewMode()}}"></evt-select>
 				</div>
 				<button-switch
 					title="TOC.HEADER"

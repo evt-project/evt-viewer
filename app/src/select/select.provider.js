@@ -742,21 +742,15 @@ angular.module('evtviewer.select')
 					optionList = formatOptionList(parsedData.getVersionEntries());
 					break;
 				case 'view-mode': {
+					optionSelectedValue = initValue;
 					callback = function(oldOption, newOption) {
-						vm.selectOption(newOption);
 						vm.collapse();
+						vm.selectOption(newOption);
 						if (newOption.value
-								&& oldOption.value !== newOption.value
 								&& newOption.value !== evtInterface.getState('currentViewMode')) {
 							evtInterface.updateState('currentViewMode', newOption.value);
 						}
 					};
-					setInitValue = function(initValue, optionList) {
-						var value = initValue ? initValue : optionList.find(function(option) {
-							return option.value === evtInterface.getState('currentViewMode');
-						}) || optionList[0];
-						return value;
-					}
 					setIcon = function(iconType) {
 						var evtIcon = '';
 						switch(iconType) {
@@ -802,7 +796,6 @@ angular.module('evtviewer.select')
 						return viewMode.visible === true;
 					});
 					optionList = formatOptionList(viewModes);
-					optionSelected = setInitValue(initValue, optionList);
 				} break;
 			}
 

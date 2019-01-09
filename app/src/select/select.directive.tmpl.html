@@ -1,6 +1,7 @@
 <div class="selector" 
      data-parent="{{ ::vm.parent }}"
-     ng-show="::vm.optionList.length > 0">
+     ng-show="::vm.optionList.length > 0"
+     ng-class="{ 'invertColors': vm.currentType === 'view-mode' }">
    <span 
       class="label_selected" 
       title="{{ vm.getOptionSelected().title | translate}}"

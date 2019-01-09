@@ -228,6 +228,11 @@ angular.module('evtviewer.select')
                 case 'version':
                     option = vm.formatOption(optionValue);
                     break;
+                case 'view-mode':
+                    option = vm.optionList.find(function(viewMode) {
+                        return viewMode.value === optionValue;
+                    });
+                    break;
                 default:
                     if (optionValue === 'NONE' && vm.multiselect ) {
                         option = {

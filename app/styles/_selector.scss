@@ -16,7 +16,7 @@ $selector-option-background-color-hover: $base-color-middle;
 
 
 
-.selector{
+.selector {
 	height: 28px;
 	min-width: 80px;
 	
@@ -164,6 +164,26 @@ $selector-option-background-color-hover: $base-color-middle;
 				background: $selector-option-color;
 				color: $selector-option-background-color;
 			}
+		}
+	}
+
+	&.invertColors {
+		height: 100%;
+		overflow: visible;
+		background: $selector-color;
+		color: $selector-background-color;
+		border: 1px solid $selector-open-option-border-color;
+		font-size: 0.65em;
+		.icon {
+			font-size: 1.8em;
+			position: relative;
+			top: 0.3em;
+		}
+		.option_container {
+			top: 34px;
+		}
+		.open_options {
+			height: 100%;
 		}
 	}
 }

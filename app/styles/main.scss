@@ -309,6 +309,11 @@ section > div {
     .viewModeMenu {
         display: inline;
     }
+
+    evt-select[data-type="view-mode"] {
+        position: relative;
+        top: -0.25em;
+    }
 }
 
 .global-loading-container,
