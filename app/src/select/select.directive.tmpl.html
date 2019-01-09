@@ -6,8 +6,8 @@
       class="label_selected" 
       title="{{ vm.getOptionSelected().title | translate}}"
       data-value="{{ vm.getOptionSelected().value }}">
-      {{ vm.getOptionSelected().label | translate}}
       <i ng-if="vm.currentType === 'view-mode' && vm.getOptionSelected().icon" class="icon {{ vm.getOptionSelected().icon }}"></i>
+      {{ vm.getOptionSelected().label | translate}}
    </span>
    <div 
       class="open_options" 
@@ -33,8 +33,8 @@
             <i class="fa {{::option.icon}} option-icon-label" 
                style="color: {{ ::option.color }}"
                ng-if="::option.icon && vm.currentType !== 'view-mode'"></i>
-            {{ option.label  | translate}}
             <i ng-if="vm.currentType === 'view-mode' && option.icon" class="icon {{ option.icon }}"></i>
+            {{ option.label  | translate}}
          </div>
       </div>
    </div>

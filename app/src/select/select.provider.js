@@ -753,7 +753,7 @@ angular.module('evtviewer.select')
 					};
 					setIcon = function(iconType) {
 						var evtIcon = '';
-						switch(iconType) {
+						switch(iconType.toLowerCase()) {
 							case 'mode-imgtxt':
 								evtIcon = 'icon-evt_imgtxt';
 								break;
