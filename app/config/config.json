@@ -114,6 +114,8 @@
     "toolHeatMap": true,
     "preferredWitness": "",
     "skipWitnesses": "",
+    "witnessesGroups": [ ],
+    "showReadingExponent": true,
 
 	"listDef": "<listWit>, <listChange>",
 	"versionDef": "<witness>, <change>",
@@ -149,12 +151,9 @@
 	"heatmapColor": "",
 
     "versions" : [],
-    "witnessesGroups": [ ],
 
     "quoteDef"              : "",
     "analogueDef"           : "",
-
-    "showReadingExponent": true,
 
     "showInlineCriticalApparatus": false,
     "showInlineSources": false,
