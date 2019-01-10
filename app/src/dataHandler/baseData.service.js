@@ -199,7 +199,7 @@ angular.module('evtviewer.dataHandler')
         evtParser.parseDocuments(docElements);
 
         // Parse the Sources Apparatus entries (@author: CM)
-        if (config.quoteDef !== '') {
+        if (config.quoteDef) {
             var promiseQuote = [];
             promiseQuote.push(evtSourcesParser.parseQuotes(docElements));
             $q.all(promiseQuote).then(function() {
@@ -212,7 +212,7 @@ angular.module('evtviewer.dataHandler')
         }
 
         // Parse the Analogues Apparatus entries (@author: CM)
-        if (config.analogueDef !== '') {
+        if (config.analogueDef) {
             if (config.analoguesUrl === '') {
                 evtAnaloguesParser.parseAnalogues(docElements, '');
             } else {

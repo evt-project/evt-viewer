@@ -1032,6 +1032,9 @@ angular.module('evtviewer.dataHandler')
 				newDiv[attr.name.replace(':', '-')] = attr.value;
 			}
 		});
+		if (!newDiv["xml-id"]) {
+			newDiv["xml-id"] = parser.xpath(element).substr(1);
+		}
 		if (newDiv.corresp) {
 			newDiv.corresp = newDiv.corresp.replace('#', '').split(' ');
 		}
