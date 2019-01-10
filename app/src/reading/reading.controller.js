@@ -274,9 +274,9 @@ angular.module('evtviewer.reading')
      * @returns {string} style rules to customize the background color
      */
     this.backgroundColor = function(){
-        if (vm.type === 'variant') {
+        if (vm.type === 'variant' && $scope.$parent.vm.state.filters && $scope.$parent.vm.state.filters._totActive > 0) {
             return colorFilters();
-        } else {
+        } else if ($scope.$parent.vm.state.heatmap) {
             return colorVariance();
         }
     };
