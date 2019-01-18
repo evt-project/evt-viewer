@@ -116,7 +116,7 @@
     "skipWitnesses": "",
     "witnessesGroups": [ ],
     "showReadingExponent": true,
-
+    "alwaysPositiveApparatus": false,
 	"listDef": "<listWit>, <listChange>",
 	"versionDef": "<witness>, <change>",
 	"fragmentMilestone": "<witStart>, <witEnd>",

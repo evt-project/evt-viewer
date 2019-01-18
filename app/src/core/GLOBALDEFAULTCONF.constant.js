@@ -169,6 +169,7 @@ angular.module('evtviewer.core')
 
 	loadCriticalEntriesImmediately: true,
 	maxWitsLoadTogether: 5,
+	alwaysPositiveApparatus: false,
 
     /*Versions*/
     /*Array to encode cases of double or multiple redactions of the text*/

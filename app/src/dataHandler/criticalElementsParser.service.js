@@ -551,7 +551,7 @@ angular.module('evtviewer.dataHandler')
 
 		var entryLemmaObj = entry.content[entry.lemma];
 		if (entryLemmaObj) {
-			if (!entryLemmaObj.wits || entryLemmaObj.wits.length === 0) {
+			if (config.alwaysPositiveApparatus && (!entryLemmaObj.wits || entryLemmaObj.wits.length === 0)) {
 				entryLemmaObj.autoWits = missingWits;
 			}
 		}
