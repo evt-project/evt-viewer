@@ -112,9 +112,6 @@ angular.module('evtviewer.box')
                     var docViewTop = boxElem.scrollTop + 42,
                         docViewBottom = docViewTop + angular.element(boxElem).height();
                     var updateDiv = function() {
-                        if (currentBox.type !== 'text') {
-                            return;
-                        }
                         var divs = angular.element(element).find('.div'),
                             divCount = 0,
                             divVisible = false,
@@ -135,7 +132,9 @@ angular.module('evtviewer.box')
                         }
                         if (divVisible) {
                             evtInterface.updateDiv(parsedData.getDiv(divId).doc, divId);
-                            evtInterface.updateUrl();
+                            if (currentBox.type === 'text') {
+                                evtInterface.updateUrl();
+                            }                            
                         }
                     }
                     var updatePage = function() {
