@@ -2,8 +2,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 
 .constant('APPENTRYDEFAULTS', {
     firstSubContentOpened : '',
-    allowedTabs: ['criticalNote', 'notSignificantReadings'],
-    lemMaxLength: 100
+    allowedTabs: ['criticalNote', 'notSignificantReadings', 'moreInfo', 'xmlSource']
 })
 
 .config(function(evtCriticalApparatusEntryProvider, configProvider, APPENTRYDEFAULTS) {

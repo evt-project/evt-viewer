@@ -12,7 +12,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalApparatus', function(parsedData, evtParser, config) {
+.service('evtCriticalApparatus', function(parsedData, config, evtCriticalElementsParser) {
 	var apparatus = {};
 
 	var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
@@ -70,6 +70,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			},
 			significantReadings: [],
+			subApps: [],
 			notSignificantReadings: [],
 			readingGroups: [],
 			criticalNote: '',
@@ -85,8 +86,6 @@ angular.module('evtviewer.dataHandler')
 			appContent.lemma.attributes.values = lemma.attributes || {};
 			appContent.lemma.attributes._keys = Object.keys(lemma.attributes) || [];
 		}
-
-		//significant
 
 		//Significant Readings
 		var readings = entry._indexes.readings;
@@ -135,6 +134,10 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 		appContent.criticalNote += entry.note;
+
+		for (var i in entry._indexes.subApps) {
+			appContent.subApps.push(apparatus.getSubApparatus(entry._indexes.subApps[i], scopeWit));
+		}
 
 		return appContent;
 	};
@@ -264,7 +267,7 @@ angular.module('evtviewer.dataHandler')
 				readingText += reading.content[i];
 			} else {
 				if (reading.content[i].type === 'subApp') {
-					readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
+					readingText += apparatus.getSubAppText(reading.content[i].id, scopeWit);
 				} else if (reading.content[i].type === 'genericElement') {
 					readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
 					//Added by CM    
@@ -307,7 +310,7 @@ angular.module('evtviewer.dataHandler')
 			if (typeof(element.content[i]) === 'string') {
 				genericContentText += element.content[i];
 			} else if (element.content[i].type === 'subApp') {
-				genericContentText += apparatus.getSubApparatus(element.content[i].id, scopeWit);
+				genericContentText += apparatus.getSubAppText(element.content[i].id, scopeWit);
 			} else if (element.content[i].type === 'genericElement') {
 				genericContentText += apparatus.getGenericContent(element.content[i], scopeWit);
 			} else {
@@ -335,7 +338,7 @@ angular.module('evtviewer.dataHandler')
 		// lemma content
 		for (var i = 0; i < lemma.content.length; i++) {
 			if (lemma.content[i].type === 'subApp') {
-				lemmaText += apparatus.getSubApparatus(lemma.content[i].id, scopeWit);
+				lemmaText += apparatus.getSubAppText(lemma.content[i].id, scopeWit);
 			} else if (lemma.content[i].type === 'quote' ||
 				lemma.content[i].type === 'analogue') {
 				lemmaText += apparatus.getCriticalElementContent(lemma.content[i], scopeWit);
@@ -376,14 +379,19 @@ angular.module('evtviewer.dataHandler')
 		var subApp = parsedData.getCriticalEntryById(subAppId);
 		var subAppContent = apparatus.getContent(subApp, true, scopeWit);
 
-		subAppText += '<span class="sub_app"> ((' + subAppContent.lemma.content + ' ';
+		subAppText += subAppContent.lemma.content + ' ';
 		for (var i = 0; i < subAppContent.significantReadings.length; i++) {
 			subAppText += subAppContent.significantReadings[i].content;
 			if (i < subAppContent.significantReadings.length - 1) {
 				subAppText += '; ';
 			}
 		}
-		subAppText += ')) </span>';
+		return subAppText;
+	};
+
+	apparatus.getSubAppText = function(subAppId, scopeWit) {
+		var subApp = parsedData.getCriticalEntryById(subAppId);
+		var subAppText = ' ' + getAppText(subApp, scopeWit) + ' ';
 		return subAppText;
 	};
 	/**
@@ -420,7 +428,7 @@ angular.module('evtviewer.dataHandler')
 				readingText += reading.content[i];
 			} else {
 				if (reading.content[i].type === 'subApp') {
-					readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
+					readingText += apparatus.getSubAppText(reading.content[i].id, scopeWit);
 				} else if (reading.content[i].type === 'genericElement') {
 					readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
 					//Added by CM    
