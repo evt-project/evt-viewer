@@ -212,7 +212,10 @@ angular.module('evtviewer.dataHandler')
 				}
 			} else if (child.nodeType === 1) {
 				if (child.tagName === 'note') {
-					reading.note = child.innerHTML;
+					if (reading.note !== '') {
+						reading.note += ' ';
+					}
+					reading.note += child.innerHTML;
 				} else if (apparatusEntryDef.indexOf('<' + child.tagName + '>') >= 0) {
 					// Sub apparatus
 					var entryApp = parser.handleAppEntry(child, entry.id);
@@ -460,7 +463,10 @@ angular.module('evtviewer.dataHandler')
 					entry._indexes.encodingStructure.push(entryObj.id);
 					entry._indexes.subApp.push(entryObj.id);
 				} else if (child.tagName === 'note') {
-					entry.note = child.innerHTML;
+					if (entry.note !== '') {
+						entry.note += ' ';
+					}
+					entry.note += child.innerHTML;
 				}
 			}
 		});
@@ -682,6 +688,7 @@ angular.module('evtviewer.dataHandler')
 				//lem
 				//rdg*
 			},
+			note: '',
 			_indexes: {
 				witMap: {},
 			},
@@ -707,7 +714,10 @@ angular.module('evtviewer.dataHandler')
 		angular.forEach(app.childNodes, function(child) {
 			if (child.nodeType === 1) {
 				if (child.tagName === 'note') {
-					entry.note = child.innerHTML;
+					if (entry.note !== '') {
+						entry.note += ' ';
+					}
+					entry.note += child.innerHTML;
 				} else if (readingGroupDef.indexOf('<' + child.tagName + '>') >= 0) {
 					var ver = parseVersionGroup(entry, child);
 					var bo = ver.lemma !== '';
