@@ -349,6 +349,10 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 
+		if (lemma.note) {
+			lemmaText += ' ' + lemma.note;
+		}
+
 		lemmaText = apparatus.transformCriticalEntryLacunaMilestones(lemmaText);
 
 		if (lemmaText !== '') {
@@ -442,6 +446,10 @@ angular.module('evtviewer.dataHandler')
 		}
 		if (readingText === '') {
 			readingText = ' <i>omit.</i> ';
+		}
+
+		if (reading.note) {
+			readingText += ' ' + reading.note;
 		}
 		readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
 

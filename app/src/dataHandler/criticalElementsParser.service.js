@@ -112,6 +112,32 @@ angular.module('evtviewer.dataHandler')
 
 	};
 	/**
+ 	 * @ngdoc function
+   * @name evtviewer.dataHandler.evtCriticalElementsParser#parseElemContents
+   * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
+   *
+   * @description
+   * [PRIVATE] This function will parse a generic XML textual element to
+	 * turn it into a general HTML span element that has the original tagName
+	 * as class.
+	 * @param {element} elem the XML element that has to be parsed
+	 * @returns {element} a HTML element
+	 * @author CM
+	 */
+	var parseElemContents = function(elem) {
+		var htmlElem = document.createElement('span');
+		htmlElem.setAttribute('class', elem.tagName);
+		angular.forEach(elem.childNodes, function(child) {
+			if (child.nodeType === 3) {
+				htmlElem.appendChild(child);
+			} else {
+				childElem = parseElemContents(child);
+				htmlElem.appendChild(childElem);
+			}
+		});
+		return htmlElem;
+	}
+	/**
      * @ngdoc function
      * @name evtviewer.dataHandler.evtCriticalElementsParser#parseAppReading
      * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
@@ -215,7 +241,7 @@ angular.module('evtviewer.dataHandler')
 					if (reading.note !== '') {
 						reading.note += ' ';
 					}
-					reading.note += child.innerHTML;
+					reading.note += parseElemContents(child).innerHTML;
 				} else if (apparatusEntryDef.indexOf('<' + child.tagName + '>') >= 0) {
 					// Sub apparatus
 					var entryApp = parser.handleAppEntry(child, entry.id);
