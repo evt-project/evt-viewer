@@ -42,7 +42,7 @@
         class="app_lemma"
         ng-if="::vm.content.lemma.content !== ''"
         compile="::vm.content.lemma.content"></span>
-    <div class="critical-apparatus-entry_main-content_list" ng-class="{ 'increaseMargin': vm.content.subApps.length > 0 }">
+    <div class="critical-apparatus-entry_main-content_list">
       <span
         class="app_reading"
         ng-if="::vm.witnessesGroups.length === 0"
@@ -65,7 +65,8 @@
     </div>
     <div
       class="sub_app"
-      ng-repeat="subApp in vm.content.subApps"
+      ng-repeat="subApp in vm.content.subApps track by $index"
+      ng-class="{ 'firstSubApp': $index === 0 }"
       compile="subApp"></div>
   </div>
   <div class="critical-apparatus-entry_other-content"

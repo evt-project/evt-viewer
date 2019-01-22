@@ -129,9 +129,6 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
                     }
                 }
         }
-        .increaseMargin {
-            margin-bottom: 20px !important;
-        }
         .app_lemma::after {
             content: "]";
         }
@@ -141,6 +138,9 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
         .sub_app {
             margin-left: 30px;
             margin-top: 5px;
+            &.firstSubApp {
+                margin-top: 15px !important;
+            }
         }
     }
 
