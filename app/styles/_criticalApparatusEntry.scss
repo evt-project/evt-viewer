@@ -87,6 +87,9 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
         // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
+        &_list {
+            display: inline;
+        }
         ul {
             display: inline;
             margin: 0;
@@ -101,7 +104,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             }
         }
         ul.app_reading_list {
-                display: block;
+                // display: block;
                 list-style-type: initial !important;
                 position: relative;
                 left: 1em;
