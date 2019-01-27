@@ -806,10 +806,10 @@ angular.module('evtviewer.buttonSwitch')
                   }
                };
                break;
-            case 'searchToolsExternal':
+            case 'searchAdvanced':
                btnType = 'standAlone';
                callback = function() {
-                  window.alert('External position coming soon!');
+                  window.alert('Advanced search coming soon!');
                };
                break;
             case 'searchVirtualKeyboard':
