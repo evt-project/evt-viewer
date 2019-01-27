@@ -21,7 +21,6 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
 
     span:not(.app_lemma), span:not(.app_lemma_content) {
         background: transparent;
-        display: inline;
         word-wrap:break-word;
     }
 
@@ -43,7 +42,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     &.over {
         -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
         -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
-        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1); 
+        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
     }
 
     &.selected {
@@ -70,7 +69,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             .buttonSwitch {
                 box-shadow: none;
                 border: 1px solid $critical-apparatus-entry-background-color;
-                display: inline-block;
+                top: 5px;
             }
             &.active, &:hover {
                 .buttonSwitch {
@@ -81,7 +80,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             }
         }
     }
-    
+
     &_main-content {
         padding: 5px;
         // width:90%;
@@ -247,7 +246,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             }
         }
     }
-    
+
     .attributes {
         &::before {
             content: " – ";
@@ -298,7 +297,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             border: 0;
         }
         &_other-content {
-            display: none;   
+            display: none;
         }
     }
     &.active {

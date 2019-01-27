@@ -110,7 +110,6 @@ button-switch {
             &-icon{
                 // color: $base-color-light;
                 font-size: 1.3em;
-                top:7px;
             }
             &-active, &:hover{
                 .icon {
@@ -136,7 +135,6 @@ button-switch {
             &-icon {
                 right: 0px;
                 font-weight: bold;
-                top: 8px;
             }
         }
     }
@@ -190,6 +188,5 @@ button-switch {
         margin-left: 8px;
         margin: 8px 0;
         font-size: 1.4em;
-        top: 14px;
     }
 }
