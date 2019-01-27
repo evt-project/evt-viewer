@@ -67,6 +67,7 @@ angular.module('evtviewer.dataHandler')
                         interpretative: getCaseInsensitiveResults(resultByTokenObjects.interpretative)
                      };
                   }
+                  
                   if(resultToken.diplomatic) {
                      if(!results.diplomatic) {
                         results['diplomatic'] = [];
@@ -121,13 +122,13 @@ angular.module('evtviewer.dataHandler')
    
             if(inputMatchStarWildcard) {
                inputValue.toLowerCase();
-               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard);
+               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, inputMatchStarWildcard);
                if(result) {
                   results.push(result);
                }
             }
             
-            if (inputValue === token.toString()) {
+            if (inputValue === token.toString() || token.toString().includes(inputValue) || inputValue.includes(token.toString())) {
                results.push(
                   {
                      token: token.toString(),

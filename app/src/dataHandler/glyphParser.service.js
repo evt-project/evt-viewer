@@ -29,15 +29,32 @@ angular.module('evtviewer.dataHandler')
        * @author GC
        */
       Glyph.prototype.getGlyph = function (node, editionType) {
-         var currentGlyph = getCurrentGlyph(node);
-         var edition = {
-            'diplomatic': function () {
-               return currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
-            },
-            'interpretative': function () {
-               return currentGlyph.normalized !== undefined ? currentGlyph.normalized.content : '';
-            }
-         };
+         var currentGlyph = getCurrentGlyph(node),
+            isRune = currentGlyph.runic,
+            edition = {};
+         
+         if(isRune) {
+            edition = {
+               'diplomatic': function () {
+                  return currentGlyph.runic !== undefined ? currentGlyph.runic.content : '';
+               },
+               'interpretative': function () {
+                  return currentGlyph.transliterated !== undefined ? currentGlyph.transliterated.content : '';
+               }
+            };
+         }
+         else {
+            edition = {
+               'diplomatic': function () {
+                  return currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
+               },
+               'interpretative': function () {
+                  return currentGlyph.normalized !== undefined ? currentGlyph.normalized.content : '';
+               }
+            };
+         }
+         
+         
          return edition[editionType]();
       };
       
