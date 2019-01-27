@@ -858,8 +858,11 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchClear':
                btnType = 'standAlone';
                callback = function () {
-                  var parentBoxId = scope.$parent.id;
+                  var parentBoxId = scope.$parent.id,
+                     inputValue;
                   evtSearchBox.clearInputValue(parentBoxId);
+                  inputValue = evtSearchBox.getInputValue(parentBoxId);
+                  evtSearchResults.highlightSearchResults(parentBoxId, inputValue);
                };
                break;
 				case 'share':
