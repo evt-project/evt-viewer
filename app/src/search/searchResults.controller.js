@@ -62,11 +62,10 @@ angular.module('evtviewer.search')
             return new Array(lenght);
          };
          
-         vm.toggle = function () {
-            $(function () {
-               $(event.target).toggleClass('active');
-               $(event.target).siblings('.search-result').toggleClass('open');
-            });
+         vm.toggle = function (event) {
+            var eventTarget = $(event.target) || $(event.srcElement);
+            eventTarget.toggleClass('active');
+            eventTarget.siblings('.search-result').toggleClass('open');
          };
    
          vm.scrollToCurrentResult = function() {
