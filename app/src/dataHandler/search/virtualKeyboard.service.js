@@ -33,13 +33,13 @@ angular.module('evtviewer.dataHandler')
              glyphs = parsedData.getGlyphs(),
              currentNode = gNodes.iterateNext(),
              glyphId,
-             glyphsInXmlDoc = {};
+             glyphsInXmlDoc = [];
           
           while(currentNode !== null) {
              glyphId = currentNode.getAttribute('ref').replace('#', '');
              for (var glyph in glyphs) {
                 if (glyphId === glyph) {
-                   glyphsInXmlDoc[glyphId] = glyphs[glyph].mapping.diplomatic.content;
+                   glyphsInXmlDoc.push(glyphId);
                 }
              }
              currentNode = gNodes.iterateNext();
@@ -116,7 +116,7 @@ angular.module('evtviewer.dataHandler')
       function getMoreFreqGlyphInDoc(glyphFreqInDescendingOrder) {
          var moreFrequentGlyph = [],
             glyphsNumber = glyphFreqInDescendingOrder.length,
-            defaultGlyphNumber = 20;
+            defaultGlyphNumber = 30;
          
          while(glyphsNumber < defaultGlyphNumber) {
             defaultGlyphNumber--;
@@ -130,12 +130,19 @@ angular.module('evtviewer.dataHandler')
       
       function getDefaultKeyboardKeys(moreFrequentGlyph) {
          var glyphs = parsedData.getGlyphs(),
-            keyboardGlyphs = {};
+            keyboardGlyphs = {},
+            isRune;
          
          for(var glyph in glyphs) {
             for(var j = 0; j < moreFrequentGlyph.length; j++) {
                if(moreFrequentGlyph[j] === glyph) {
-                  keyboardGlyphs[moreFrequentGlyph[j]] = glyphs[glyph].mapping.diplomatic.content;
+                  isRune = glyphs[glyph].mapping.runic;
+                  if(isRune) {
+                     keyboardGlyphs[moreFrequentGlyph[j]] = glyphs[glyph].mapping.runic.content;
+                  }
+                  else {
+                     keyboardGlyphs[moreFrequentGlyph[j]] = glyphs[glyph].mapping.diplomatic.content;
+                  }
                }
             }
          }
