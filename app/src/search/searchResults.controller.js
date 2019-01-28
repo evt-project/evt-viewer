@@ -63,7 +63,7 @@ angular.module('evtviewer.search')
          };
          
          vm.toggle = function (event) {
-            var eventTarget = $(event.target) || $(event.srcElement);
+            var eventTarget = $(event.currentTarget);
             eventTarget.toggleClass('active');
             eventTarget.siblings('.search-result').toggleClass('open');
          };
