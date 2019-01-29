@@ -341,12 +341,9 @@ angular.module('evtviewer.dataHandler')
                   'value': 'exactly',
                   'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
                },
-               'filter':
-                  function(node) {
-                     if (node.nextSibling !== null) {
-                        return true;
-                     }
-                  },
+               'filter': function() {
+                  return inputValue.match(regex) ? false : true;
+               },
                'exclude': ['.lineN']
             });
          }
@@ -359,12 +356,9 @@ angular.module('evtviewer.dataHandler')
                   'value': 'complementary',
                   'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
                },
-               'filter':
-                  function(node) {
-                     if (node.nextSibling !== null) {
-                        return true;
-                     }
-                  },
+               'filter': function() {
+                  return inputValue.match(regex) ? false : true;
+               },
                'exclude': ['.lineN']
             });
          }
