@@ -75,17 +75,18 @@
       .token {
          padding-bottom: 5px;
       }
+      .icon {
+         cursor: pointer;
+      }
       .icon:before {
          content: '\25B6';
          font-size: 12px;
          position: relative;
          bottom: 2px;
          left: 3px;
-         cursor: pointer;
       }
       .icon.active:before {
          content: '\25BC';
-         cursor: pointer;
       }
       .search-info {
          text-align: center;
