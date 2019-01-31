@@ -333,34 +333,43 @@ angular.module('evtviewer.dataHandler')
          
          instance.unmark(inputValue);
          if(isExactMatch) {
-            instance.mark(inputValue, {
-               'wildcards': 'enable',
-               'acrossElements': true,
-               'caseSensitive': isCaseSensitive,
-               'accuracy': {
-                  'value': 'exactly',
-                  'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
-               },
-               'filter': function() {
-                  return inputValue.match(regex) ? false : true;
-               },
-               'exclude': ['.lineN']
-            });
+            markExactly(instance, inputValue, isCaseSensitive);
          }
          else {
-            instance.mark(inputValue, {
-               'wildcards': 'enable',
-               'acrossElements': true,
-               'caseSensitive': isCaseSensitive,
-               'accuracy': {
-                  'value': 'partially',
-                  'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
-               },
-               'filter': function() {
-                  return inputValue.match(regex) ? false : true;
-               },
-               'exclude': ['.lineN']
-            });
+            markPartially(instance, inputValue, isCaseSensitive);
          }
       };
+      
+      function markExactly(instance, inputValue, isCaseSensitive) {
+         instance.mark(inputValue, {
+            'wildcards': 'enable',
+            'acrossElements': true,
+            'caseSensitive': isCaseSensitive,
+            'accuracy': {
+               'value': 'exactly',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter': function() {
+               return inputValue.match(regex) ? false : true;
+            },
+            'exclude': ['.lineN']
+         });
+      }
+      
+      function markPartially(instance, inputValue, isCaseSensitive) {
+         instance.mark(inputValue, {
+            'wildcards': 'enable',
+            'acrossElements': true,
+            'caseSensitive': isCaseSensitive,
+            'accuracy': {
+               'value': 'partially',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter':
+               function(node) {
+                  return inputValue.match(regex) ? false : true;
+               },
+            'exclude': ['.lineN']
+         });
+      }
    }]);
