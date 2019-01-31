@@ -353,7 +353,7 @@ angular.module('evtviewer.dataHandler')
                'acrossElements': true,
                'caseSensitive': isCaseSensitive,
                'accuracy': {
-                  'value': 'complementary',
+                  'value': 'partially',
                   'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
                },
                'filter': function() {
