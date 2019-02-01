@@ -10,7 +10,8 @@
    button-switch {
       margin-right: 0;
       &[data-type="searchCaseSensitive"],
-      &[data-type="searchVirtualKeyboard"] {
+      &[data-type="searchVirtualKeyboard"],
+      &[data-type="searchExactWord"] {
          .buttonSwitch-active {
             background-color: $buttonSwitch-active-background-color;
          }
@@ -20,8 +21,16 @@
       width: 30px;
       @include border($mainContainer-border-width, 'right', $base-color-dark);
       background-color: $search-buttons-background;
-      .icon {
-         line-height: 16px;
+      .icon-evt_close {
+         font-size: 14px;
+         font-weight: bold;
+         top: 4px;
+         left: 4px;
+      }
+      &.buttonSwitch-active {
+         .icon-evt_close {
+            color: $base-color-dark;
+         }
       }
    }
    .btn-left, .btn-right {
@@ -37,16 +46,25 @@
    }
    .btn-right {
       float: right;
+      button-switch:first-child .buttonSwitch {
+         border: 0;
+      }
+      .buttonSwitch-disabled[title="Previous"] {
+         border-left: 2px solid;
+      }
    }
    input[type="text"] {
       font-family: Junicode;
       font-size: 18px;
       height: $search-input-height;
-      min-width: calc(100% - 180px);
+      width: calc(100% - 225px);
       position: absolute;
       top: 0.9px;
-      padding: 0 10px 0 5px;
+      padding: 0 5px;
       border: transparent;
+      &:focus {
+         outline: 0;
+      }
    }
    .search-results {
       height: 95%;
@@ -76,7 +94,7 @@
          position: absolute;
          z-index: 1;
          width: calc(100% - #{$mainContainer-border-width*8});
-         top: $search-box-height + $mainContainer-border-width*2;
+         top: $search-box-height;
          left: 0;
          padding-top: 15px;
          p:first-child {

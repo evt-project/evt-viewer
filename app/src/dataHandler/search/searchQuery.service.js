@@ -19,6 +19,16 @@ angular.module('evtviewer.dataHandler')
       Search.prototype.query = function (index, token) {
          searchResults = index.query(function (q) {
             q.term(token, {
+               usePipeline: false,
+               wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING
+            });
+         });
+         return searchResults;
+      };
+      
+      Search.prototype.exactMatchQuery = function (index, token) {
+         searchResults = index.query(function (q) {
+            q.term(token, {
                usePipeline: false
             });
          });
