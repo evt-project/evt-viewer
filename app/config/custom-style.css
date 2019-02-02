@@ -221,13 +221,56 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
 .interpretativeEdition .choice .expan {
     font-style: normal;
 }
-.gap{
+.interpretativeEdition .supplied:before{ 
+    content:"["
+}
+.interpretativeEdition .supplied:after{
+    content:"]"
+}
+
+.interpretativeEdition .supplied[data-reason="omitted"]:before{ 
+    content:"<"
+}
+.interpretativeEdition .supplied[data-reason="omitted"]:after{
+    content:">"
+}
+.del{
     text-align: left;
     color: grey;
     display: block;
     margin-left: 30px;
     margin-bottom: 0;
+    background-color: transparent !important;
+    text-decoration: none !important;
 }
+
 .namedEntity__icon {
+    display: none;
+}
+.namedEntity__detail-text {
+    margin-left: 0;
+    margin-right: 0 !important;
+    display: block;
+}
+.namedEntity__detail-icon {
+    display: none;
+}
+.namedEntity__detail-text-attribute::after {
+    margin-right: 0 !important;
+}
+.namedEntity__detail-text-attribute:last-of-type::after {
+    content: ":" !important;
+    margin-right: 0;
+}
+.namedEntity__detail-text-attribute {
+    padding-right: 0;
+}
+.namedEntity__details {
+    margin: 0 !important;
+}
+.evt-tabs-container.vertical .evt-tabs-container_header-icon {
+    display: none;
+}
+.selector .option_container .option-icon-label {
     display: none;
 }

@@ -302,7 +302,7 @@
 
          var showDivHotSpot = function (toggle, elem) {
             if (!toggle) {
-               console.log("elem id", elem.id);
+               console.log("elem ident", elem.id);
                var _$elem = $(elem);
                var x = _$elem.position().left;
                var y = _$elem.position().top;
@@ -346,13 +346,18 @@
 
                divElt.appendChild(divTitleElt);
                divElt.appendChild(divBodyElt);
+               divElt.style.transform = "rotate(90deg)";
+               
 
-               console.log('content', divElt);
+               console.log('contenthotspot', divElt);
+               console.log('stylehotspot', divElt.style);
+            
 
                var OSDOverlay = {
                   element: divElt,
-                  location: rect
+                  location: rect,
                   //aggiungere opzioni
+                  rotationMode: OpenSeadragon.OverlayRotationMode.NO_ROTATION
                };
 
 

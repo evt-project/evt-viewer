@@ -5,7 +5,7 @@ angular.module('evtviewer.openseadragonService')
       var key = 'yPage';
 
       var imageScrollMap = this;
-      // DATI DI PROVA PER IL ROTULO DI SAN TEOBALDO
+      // DATI DI PROVA
       var map = {
          yPage1: {
             from: 0.00,

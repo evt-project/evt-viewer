@@ -576,6 +576,12 @@ angular.module('evtviewer.box')
 							icon: 'itl',
 							type: 'itl'
 						});
+						topMenuList.buttons.push({
+							title: 'BUTTONS.HOTSPOTS',
+							label: '',
+							icon: 'hts',
+							type: 'hts'
+						});
 					}
 					topMenuList.buttons.push({
 						title: 'BUTTONS.MS',

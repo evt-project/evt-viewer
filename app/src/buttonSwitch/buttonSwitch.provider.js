@@ -201,6 +201,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'keyboard':
 					evtIcon = 'icon-evt_keyboard';
 					break;
+				case 'hts':
+					evtIcon = 'icon-evt_hts'; // Bottone hotspots - FS
+					break;	
 				case 'language':
 					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
 					break;
@@ -328,7 +331,7 @@ angular.module('evtviewer.buttonSwitch')
 		 * <p>To see details of callback function just open the file and read.</p>
 		 * <p>You can add your own type of button, if the same button used in different places should always have the same behaviour.</p>
 		 * <p>You can also overwrite the call back to trigger event with <code>ng-click</code> directive</p>
-		 * <pre><button-switch ng-click="myCustomCallback()"></button-switch></pre>
+		 * <pre><button-switch ng-click="myCustomCallback()"></></pre>
 		 *
 		 * @param {Object} scope initial scope of the directive:
 		 	<pre>
@@ -604,6 +607,20 @@ angular.module('evtviewer.buttonSwitch')
 							evtImageTextLinking.turnOffITL();
 						}
 					};
+					break;
+					/*case 'hts':
+					active = evtInterface.getToolState('ITL') === 'active';
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						if (vm.active) { // Activate ITL
+							console.log("hts turnon");
+							evtImageTextLinking.turnOnITL();
+						} else { // Deactivate ITL
+							console.log("hts turnoff");
+							evtImageTextLinking.turnOffITL();
+						}
+					};*/
 					break;
 				case 'mainMenu':
 					btnType = 'standAlone';
@@ -1053,7 +1070,7 @@ angular.module('evtviewer.buttonSwitch')
 		 *
 		 * @param {string} currentId id of button to retrieve
 		 *
-		 * @returns {Object} reference of the instance of <code>&lt;button-switch&gt;</code> with given id
+		 * @returns {Object} reference of the instance of <code>&lt;&gt;</code> with given id
 	     */
 		button.getById = function(currentId) {
 			if (collection[currentId] !== 'undefined') {
