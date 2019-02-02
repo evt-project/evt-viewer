@@ -74,27 +74,27 @@
 
     "namedEntitiesToHandle": [{
         "tagName": "persName",
-        "label": "Persons",
+        "label": "Persone",
         "available": true
     },{
         "tagName": "placeName",
-        "label": "Places",
+        "label": "Luoghi",
         "available": true
     },{
         "tagName": "orgName",
-        "label": "Organizations",
+        "label": "Organizzazioni",
         "available": true
     }],
 
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
-        "label": "Role Name",
-        "available": true,
+        "label": "Ruolo",
+        "available": false,
         "color": "#cfc"
     }, {
         "tagName": "measure",
-        "label": "Measure",
-        "available": true,
+        "label": "Misura",
+        "available": false,
         "color": "#ffecb3"
     }],
 
