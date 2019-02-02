@@ -22,7 +22,7 @@ angular.module('evtviewer.dataHandler')
          this.xmlDocBody = xmlDocBody;
       }
       
-      LbParser.prototype.getPrevDocsInfo = function () {
+      LbParser.prototype.getPrevDocsLines = function () {
          return this.parsedElementsForIndexing.countAllLines;
       };
       
@@ -53,7 +53,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
-         return evtSearchDocument.isDiplomaticEdition(xmlDocBody) ? evtSearchDiplomaticLbHandler.getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver)
+         return evtSearchDocument.isOnlyDiplomaticEdition(xmlDocBody) ? evtSearchDiplomaticLbHandler.getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver)
                                                                   : evtSearchDiploInterprLbHandler.getLineInfo(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver);
       }
       

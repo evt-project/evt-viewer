@@ -4,7 +4,6 @@ angular.module('evtviewer.dataHandler')
    
          var countAllDocsLine = 0;
          DiploInterprLbHandler.prototype.getLineInfo = function(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
-            console.time('Get Line Info');
             var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
                diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
                interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
@@ -57,7 +56,6 @@ angular.module('evtviewer.dataHandler')
                         line.content = {
                            diplomatic: evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic'),
                            interpretative: evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative')
-      
                         };
    
                         lineId++;
@@ -78,7 +76,6 @@ angular.module('evtviewer.dataHandler')
                line = {};
             }
             lines.countAllLines = countAllDocsLine;
-            console.timeEnd('Get Line Info');
             return lines;
          };
    }]);
