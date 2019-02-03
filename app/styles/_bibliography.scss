@@ -1,0 +1,562 @@
+/* *************************** */
+/* BIBLIOGRAPHY                */
+/* *************************** */
+
+.evt-bibliography {
+    &__header {
+        position: relative;
+        background: #FFF;
+        margin-top: 0;
+        padding: 10px;
+        height: 45px;
+        max-height: 45px;
+        text-align: center;
+    }
+
+    &__content {
+        @include calc(height, #{calc(100% - 45px)});
+
+        &.noSorter {
+            height: 100% !important;
+        }
+
+        width: 100%;
+        overflow: auto;
+        position: absolute;
+        padding: 10px;
+    }
+}
+
+.evt-bibliography__header > div {
+    display: initial;
+}
+
+/* ************************** */
+/* SINGLE BIBLIOGRAPHIC ENTRY */
+/* ************************** */
+
+/* .biblRef > span[data-style=unstructuredBibl] span:last-of-type:after {
+	content: '';
+} */
+
+.biblRef, .evtBiblRef {
+    background-color: initial;
+
+    @include set(transition-property, background-color);
+    @include set(transition-duration, 2s);
+}
+
+.biblRef[highlight=true], .evtBiblRef[highlight=true] {
+    background-color: antiquewhite;
+}
+
+.biblRef * {
+    color: #666;
+    font-size: 90%;
+}
+.front .evtBiblRef {
+    text-indent: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.biblRef, .evtBiblRef {
+
+    &:before {
+        content: ' ';
+    }
+
+    .titleAnalytic, .author, .titleMonogr, .biblscope
+    .pubPlace, .date, .note, .idno, .edition, .accessed, .url
+    .vol, .pp, .editors, .date, .publisher {
+        
+        &:before {
+            content: ' ';
+        }
+    }
+
+    > span:last-of-type:after {
+        content: '.' !important;
+    }
+
+    > span:last-child:after {
+        content: '.' !important;
+    }
+
+    > span[data-style=mla]:last-of-type:after {
+        content: '. Print.' !important;
+    }
+
+    .name:before, .surname:before {
+        content: ' ';
+    }
+
+    .accessed {
+        content: ' accessed ';
+    }
+
+    .url:before {
+        content: ' url: ';
+    }
+
+    .author {
+        .name {
+            &[data-style=chicago]:after {
+                content: ', ';
+            }
+
+            &[data-style=mla]:after {
+                content: ", ";
+            }
+        }
+
+        > .name[data-style=apa]:after {
+            content: ', ';
+        }
+
+        .surname {
+            &[data-style=chicago]:after {
+                content: ', ';
+            }
+
+            &[data-style=mla]:after {
+                content: ", ";
+            }
+        }
+
+        > .surname[data-style=apa]:after {
+            content: ', ';
+        }
+
+        &[data-style=apa]:not(:first-child):before {
+            content: ' ';
+        }
+    }
+
+    .authors {
+        &[data-style=chicago] {
+            > .author {
+                /* prima dell'ultimo autore deve esserci and*/
+                &:last-child:before {
+                    content: 'and ';
+
+                    /*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
+                    span:last-child:after {
+                        content: '.';
+                    }
+                }
+
+                /* se c'├¿ solo un autore il before deve essere vuoto*/
+                &:first-child:before {
+                    content: ' ';
+                }
+            }
+        }
+
+        &[data-style=apa] {
+            > .author:last-child {
+                /*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
+                span:last-child:after {
+                    content: '';
+                }
+
+                /* prima dell'ultimo autore deve esserci &*/
+                &:before {
+                    content: '& ';
+                }
+            }
+
+            /* se c'├¿ solo un autore il before deve essere vuoto*/
+            > .author:first-child:before {
+                content: ' ';
+            }
+        }
+
+        &[data-style=mla] {
+            > .author:last-child {
+                /*nell'ultimo figlio  dell'ultimo autore non deve esserci nulla*/
+                span:last-child:after {
+                    content: '';
+                }
+
+                /* prima dell'ultimo autore deve esserci &*/
+                &:before {
+                    content: 'and ';
+                }
+            }
+
+            /* se c'├¿ solo un autore il before deve essere vuoto*/
+            > .author:first-child:before {
+                content: ' ';
+            }
+        }
+    }
+
+    .date {
+        &[data-style=chicago]:after {
+            content: '. ';
+        }
+
+        &[data-style=apa]:before {
+            content: ' (';
+        }
+
+        &[data-style=apa]:after {
+            content: '). ';
+        }
+
+        &[data-style=mla]:after {
+            content: '. ';
+        }
+    }
+
+    .edition[data-style=apa] {
+        &:before {
+            content: " ";
+        }
+
+        &:after {
+            content: ". ";
+        }
+    }
+
+    .editor {
+        &[data-style=mla] {
+            &:after {
+                content: '. ';
+            }
+        }
+    }
+
+    > .editors[data-style=chicago] > .editor[data-style=chicago]:after {
+        content: ',';
+    }
+
+    .editors[data-style=chicago] {
+        > .editor:first-child:before {
+            content: ' edited by ';
+        }
+
+        > .editor:last-child:not(:first-child):before {
+            content: ' and ';
+        }
+
+        > .editor:last-child:after {
+            content: '';
+        }
+    }
+
+    .idno {
+        &[data-type=DOI]:before {
+            content: ' DOI:';
+        }
+
+        &[data-type=ISSN]:before {
+            content: ' ISSN:';
+        }
+
+        &[data-type=ISBN]:before {
+            content: ' ISBN:';
+        }
+
+        &[data-type=URI]:before {
+            content: ' URI:';
+        }
+
+        &[data-type=VIAF]:before {
+            content: ' VIAF:';
+        }
+
+        &[data-type=ESTC]:before {
+            content: ' ESTC:';
+        }
+
+        &[data-type=OCLC]:before {
+            content: ' OCLC:';
+        }
+    }
+
+    .issue[data-style=chicago]:before {
+        content: ' no. ';
+    }
+
+    > .pubPlace[data-style=chicago] {
+        &:not(:last-child):after {
+            content: ': ';
+        }
+
+        &:after {
+            content: '. ';
+        }
+    }
+
+    .pubPlace {
+        &[data-style=apa]:after {
+            content: ":";
+        }
+
+        &[data-style=mla]:after {
+            content: ": " !important;
+        }
+
+        &[data-style=mla]:after {
+            content: '. ';
+        }
+    }
+
+    .publisher {
+        &[data-style=apa] {
+            &:before {
+                content: ' ';
+            }
+
+            &:after {
+                content: '. ';
+            }
+        }
+
+        &[data-style=mla]:after {
+            content: ', ';
+        }
+    }
+
+    .titleMonogr {
+        &[data-style=chicago], &[data-style=apa], &[data-style=mla] {
+            font-style: italic;
+
+            &:after {
+                content: '.';
+            }
+        }
+    }
+
+    .titleAnalytic {
+        &[data-style=chicago] {
+            &:before {
+                content: ' "';
+            }
+
+            &:after {
+                content: '", ';
+            }
+
+            + .titleMonogr[data-style=chicago]:before {
+                font-style: initial;
+                content: 'in ';
+            }
+        }
+
+        &[data-style=apa]:after {
+            content: '. ';
+        }
+
+        &[data-style=mla]:after {
+            content: '. ';
+        }
+    }
+
+    .url[data-style=apa] {
+        &:before {
+            content: ' ';
+        }
+
+        &:after {
+            content: '. ';
+        }
+    }
+
+    .vol {
+        &[data-style=chicago] {
+            &:not(:last-child):after {
+                content: ',';
+            }
+        }
+
+        &[data-style=apa] {
+            &:not(:last-child):after {
+                content: ',';
+            }
+        }
+    }
+
+    &[pubblicationtype=m] {
+        .edition[data-style=chicago]:after {
+            content: '.';
+        }
+
+        .pp[data-style=apa] {
+            &:before {
+                content: ' (pp. ';
+            }
+
+            &:after {
+                content: '). ';
+            }
+        }
+
+        > .publisher[data-style=chicago] {
+            &:not(:last-child):after {
+                content: ',';
+            }
+
+            &:after {
+                content: '.';
+            }
+        }
+
+        .vol[data-style=chicago]:after {
+            content: '.';
+        }
+    }
+
+    &[pubblicationtype=a] {
+        .pp[data-style=apa] {
+            &:before {
+                content: '  ';
+            }
+
+            &:after {
+                content: '  ';
+            }
+        }
+    }
+
+    &[pubblicationtype=am], &[pubblicationtype=ma] {
+        .pp[data-style=apa] {
+            &:before {
+                content: ' (pp. ';
+            }
+
+            &:after {
+                content: '). ';
+            }
+        }
+    }
+
+    &[pubblicationtype=j], &[pubblicationtype=u] {
+        .pp[data-style=apa]:after {
+            content: '. ';
+        }
+    }
+
+    &[pubblicationtype=j] {
+        .date {
+            &[data-style=mla]:before {
+                content: " (";
+            }
+
+            &:last-of-type:after {
+                content: '). Print. ' !important;
+            }
+        }
+
+        > .date[data-style=mla]:not(:last-child):after {
+            content: "): ";
+        }
+
+        .titleAnalytic {
+            &[data-style=mla] {
+                &:before {
+                    content: ' "';
+                }
+
+                &:after {
+                    content: '." ';
+                }
+            }
+        }
+
+        .titleMonogr[data-style=mla]:after {
+            content: ". ";
+        }
+
+        .pp[data-style=mla]:after {
+            content: ". ";
+        }
+
+        .vol[data-style=mla]:after {
+            content: ". ";
+        }
+    }
+
+    &[pubblicationtype=a] {
+        .date[data-style=mla] {
+            &:before {
+                content: " (";
+            }
+
+            &:last-of-type:after {
+                content: '). Print. ' !important;
+            }
+        }
+
+        > .date[data-style=mla]:not(:last-child):after {
+            content: "): ";
+        }
+
+        .pp[data-style=mla]:after {
+            content: ". ";
+        }
+
+        .titleAnalytic[data-style=mla] {
+            &:before {
+                content: ' "';
+            }
+
+            &:after {
+                content: '." ';
+            }
+        }
+
+        .titleMonogr[data-style=mla]:after {
+            content: ". ";
+        }
+
+        .vol[data-style=mla]:after {
+            content: ". ";
+        }
+    }
+
+    &[pubblicationtype=u] {
+        .date[data-style=mla] {
+            &:before {
+                content: " ";
+            }
+
+            &:last-child:after {
+                content: '. Print.' !important;
+            }
+        }
+
+        > .date[data-style=mla] + :not(span.generic):after {
+            content: " ";
+        }
+
+        .pp[data-style=mla]:after {
+            content: ". ";
+        }
+
+        .titleAnalytic[data-style=mla] {
+            &:before {
+                content: ' "';
+            }
+
+            &:after {
+                content: '." ';
+            }
+        }
+
+        .titleMonogr[data-style=mla]:after {
+            content: ". ";
+        }
+
+        .vol[data-style=mla]:after {
+            content: ". ";
+        }
+    }
+	
+	.unstructuredBibl {
+	    &.emph {
+	        font-style: italic;
+	    }
+	}
+}

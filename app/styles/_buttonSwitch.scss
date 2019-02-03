@@ -10,6 +10,7 @@ $buttonSwitch-active-background-color: $base-color-active-background;
 $buttonSwitch-active-color: $base-color-active;
 button-switch {
     margin-right: 5px;
+<<<<<<< HEAD
     display: inline-block;
 
     .buttonSwitch {
@@ -22,6 +23,16 @@ button-switch {
         display: inline-flex;
         justify-content: center;
         align-items: center;
+=======
+
+    .buttonSwitch {
+        min-height: 28px;
+        min-width: 30px;
+        width: auto;
+
+        position: relative;
+        display: inline-block;
+>>>>>>> Add some style rules
         overflow: visible;
         left: 0px;
 
@@ -64,11 +75,20 @@ button-switch {
         &-label {
             margin: 0px;
             margin-left: 4px;
+<<<<<<< HEAD
+=======
+            top: 3.5px;
+            position: relative;
+>>>>>>> Add some style rules
         }
 
         &-icon {
             position: relative;
             right: 0px;
+<<<<<<< HEAD
+=======
+            top: 9px;
+>>>>>>> Add some style rules
             font-size: 1.4em;
 
             &.fa {
@@ -110,6 +130,10 @@ button-switch {
             &-icon{
                 // color: $base-color-light;
                 font-size: 1.3em;
+<<<<<<< HEAD
+=======
+                top:7px;
+>>>>>>> Add some style rules
             }
             &-active, &:hover{
                 .icon {
@@ -135,6 +159,10 @@ button-switch {
             &-icon {
                 right: 0px;
                 font-weight: bold;
+<<<<<<< HEAD
+=======
+                top: 8px;
+>>>>>>> Add some style rules
             }
         }
     }
@@ -188,5 +216,11 @@ button-switch {
         margin-left: 8px;
         margin: 8px 0;
         font-size: 1.4em;
+<<<<<<< HEAD
     }
 }
+=======
+        top: 14px;
+    }
+}
+>>>>>>> Add some style rules

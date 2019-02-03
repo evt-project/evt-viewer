@@ -1,4 +1,5 @@
 /* *************************** */
+<<<<<<< HEAD
 /* DIPLOMATIC EDITION 		   */
 /* *************************** */
 
@@ -222,3 +223,256 @@ span.dipl-choice_popup.hover span.dipl-orig {
 	color: #561c0a;
 	text-decoration: underline;
 }
+=======
+/* DIPLOMATIC EDITION      */
+/* *************************** */
+
+.diplomaticEdition {
+    // Abbreviations and Their Expansions
+    .choice {
+        > .abbr {
+            color: purple;
+        }
+        
+        .expan {
+            display : none;
+        }
+    }
+
+    // 3.4.3 Additions, Deletions, and Omissions
+    .add {
+        background-color: #00FF00;
+
+        &[data-place='above'] {}
+    }
+
+    .del {
+        background-color: #FF6347;
+        text-decoration: line-through;
+    }
+
+    // 11.3.3.1 Damage, Illegibility, and Supplied Text
+    .damage {
+        background-color: rgba(193, 193, 193, 0.7);
+    }
+
+    .supplied {
+        background-color: #ADFF2F;
+
+        &[data-reason='omitted'] {}
+
+        &[data-reason='illeggibile'] {}
+
+         &:before{
+            content: "[["
+        }
+
+        &:after{
+            content: "]]"
+        }
+    }
+
+
+     //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+    .glyph {
+        .glyphname, .mapping {
+            display: none;
+        }
+
+        .mapping[data-type="diplomatic"] {
+            display: inline;
+        }
+    }
+
+    .char {
+        .charname, .mapping {
+            display: none;
+        }
+
+        .mapping[data-type="diplomatic"] {
+            display: inline;
+        }
+    }
+
+    .choice {
+        display: inline;
+
+        &:before, &:after {
+            content: "";
+        }
+
+        > .expan, > .corr, > .reg {
+            margin-left:-5%;
+            font-size: 80%;
+            position: absolute;
+            line-height: 16px;
+            display: none;
+            border: 1.5px solid black;
+            border-radius: 3px;
+
+            @include set(box-shadow, 2px 2px 2px #7e7067);
+
+            padding: 0.4%;
+            margin-top: 30px;
+
+            &:before {
+                left: 15%;
+                position: absolute;
+                top: -13px;
+            }
+        }
+
+        > .corr {
+            &:before {
+                content: url("../images/popup_before_corr.png");
+            }
+        }
+
+        .corr, .corr * {
+            background: #f99069 !important;
+        }
+
+        > .reg {
+            &:before {
+                content: url("../images/popup_before.png");
+            }
+        }
+
+        .reg, .reg * {
+            background: #e5dac4 !important;
+        }
+
+        > .expan {
+            &:before {
+                content: url("../images/popup_before_grey.png");
+            }
+        }
+
+        .expan, .expan * {
+            background: #E5E5E5 !important;
+        }
+
+        .orig {
+            color: #69513a;
+
+            &:hover, &.hover {
+                color: #561c0a;
+            }
+        }
+
+        &:hover, &.hover {
+            .expan, .reg, .corr {
+                
+                display:inline;
+                min-width: 30px;
+                text-align: center;
+                z-index: 9;
+            }
+
+            
+
+            .orig {
+                background-color: #FFD700;
+            }
+        }
+
+        .sic {
+            color: #934d4d;
+        }
+
+        &:hover, &.hover {
+            .abbr{
+            background-colo:pink;
+            }
+        }
+
+        &:hover, &.hover {
+            .sic{
+            background-color:#CCD700;
+            }
+        }
+
+        .sup {
+            line-height: 20px;
+            vertical-align: 20%;
+        }
+
+        .under {
+            line-height: 20px;
+            vertical-align: -20%;
+        }
+    }
+
+    //TODO: reorder
+    .attachment {
+        border: 1px solid black;
+        padding: 5px 0px 0px 10px;
+    }
+
+    .ex {
+        font-style: italic;
+    }
+
+    .lineN {
+        color: grey;
+        font-size: 0.8em;
+    }
+
+    .resp {
+        font-weight: bold;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .hi {
+        &[data-rend="7init"] {
+            font-size: 140%;
+        }
+
+        &[data-rend="init3.1"] {
+            font-size: 120%;
+
+            /*font-weight: bold;*/
+        }
+
+        &[data-rend="cap"] {
+            text-transform: uppercase;
+        }
+
+        &[data-rend="double"] {
+            font-size: 120%;
+        }
+    }
+
+    .ex {
+        font-style: italic;
+    }
+
+    .zone {
+        margin-bottom: 5px;
+    }
+
+    .p {
+        display: block;
+    }
+
+    .center, [rend="center"] {
+        text-align: center;
+        width: 92%;
+        display: inline-table;
+        background: #FFF;
+    }
+
+    .right, [rend="right"] {
+        text-align: right;
+        display: inline-table;
+        background: #FFF;
+    }
+
+    .left, [rend="left"] {
+        display: inline-table;
+    }
+}
+>>>>>>> Add some style rules

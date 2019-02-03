@@ -1,0 +1,214 @@
+/* SEARCH  ====================================== */ 
+
+@include border-box-sizing;
+
+/* Search ------------------------- */ 
+
+@mixin buttonSearch($width){
+    width: $width;
+    height: 1.6em;
+    float:left;
+    display: inline-block;
+    cursor: pointer;
+    border:none;
+    overflow: hidden;
+    line-height: 1.5em;
+    text-align: center;
+    font-size: 1.4em;
+    text-shadow: 2px 1px 1px #333;
+    .fa {
+        font-size: 0.9em;
+        line-height: 1.5em;
+        height: 1.3em;
+        overflow: hidden;
+    }
+}
+
+.toolbarSearch{
+    width:100%;
+    height:100%;
+    margin: 0 auto;
+    padding: 1em 0.5em;
+    background: #333;
+}
+
+.boxOptions {
+    width:30%;
+    float:left;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.boxSearch{
+    width: 70%;
+    height: 2.5em;
+    float:left;
+    display: inline-block;
+    overflow: hidden;
+    background: #FFF;
+
+    input {
+        width: 85%;
+        height: 2.8em;
+        padding-left:0.5em;
+        float:left;
+        display: inline-block;
+        border:none;
+        font-size: 11pt;
+    }
+}
+
+.buttonOption {
+    @include buttonSearch(42%);
+    margin: 1%;
+    color: #CCC;
+    background: #666;
+    box-shadow: 1px 1px 3px 0px #000;
+    .fa {
+        color:#CCC;
+    }
+}
+
+.buttonSearch {
+    @include buttonSearch(15%);
+    color: #666;
+    background: none;
+    display: inline-block;
+    text-align: right;
+    .fa {
+        width: 100%;
+        color:#666;
+    }
+}
+
+.activeOption {
+    text-shadow: none;
+    box-shadow: none;
+}
+
+/* end Search ------------------------- */ 
+/* Options---------------------------------- */ 
+
+@mixin widthContainerOptions($width){
+    padding: gutter(15);
+    display: inline-block;
+}
+
+.toolbarOptions{
+    text-align:center;
+    background: #666;
+    box-shadow: inset 0px 0px 0px 1px #222;
+}
+
+.listOption {
+    @include widthContainerOptions(2 of 15);
+    margin-bottom: gutter(15);
+    display:table-cell;
+}
+
+.letters {
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0.3em;
+    overflow: hidden;
+    color: #333;
+    background: #CCC;
+    border-radius: 10%;
+    text-align: center;
+    line-height: 2.5em;
+    font-size: 14pt;
+    box-shadow: 1px 1px 3px 0px #000;    
+}
+
+.filters {
+    margin: 1em;
+    overflow: hidden;
+    color: #FFF;
+    text-align: center;
+    font-size: 12pt; 
+}
+
+input[type=checkbox] { 
+    display:none; 
+} 
+
+input[type=checkbox] + label:before {
+    content: "\f096";
+    font-family: FontAwesome;
+    letter-spacing: 5px;
+    cursor: pointer;
+}
+
+input[type=checkbox]:checked + label:before {
+    content: "\f046";
+    font-family: FontAwesome;
+    cursor: pointer;
+}
+
+/* end Options------------------------------- */ 
+/* List Reasults------------------------------------- */ 
+
+.listResults{
+    padding:0 0.5em;
+    display:inline-block;
+    text-align:left;
+    background: #333;
+    
+    h3 {
+        margin: 0.5em 0;
+    } 
+
+    li {
+        height: 5em;
+        margin: 0.1em;
+        margin-bottom: 0.4em;  
+        background:#FFF; 
+        overflow: hidden;
+        border: 1px solid #222;
+        box-shadow: 1px 1px 3px 0px #000;   
+    }
+}
+
+.resultInfo {
+    span {
+        color: #333;
+    }
+
+}
+
+.resultText {
+
+    p{
+        margin: -2.5em -2em 0 -2em;
+        color: #666;        
+    }
+    
+}
+/* end List Reasults------------------------------------- */ 
+    
+
+
+
+
+/* Smartphone ================================================ */ 
+@media screen and (max-width: 479px) {
+    
+    .boxOptions {
+        width:100%;
+        margin-top: 3em;
+    }
+
+    .boxSearch {
+        width:100%;
+        margin-top: -5.5em;
+    }
+
+    .buttonOption {
+        @include buttonSearch(48%);
+        margin: 1%;
+    }
+   
+} 
+/* end Smartphone ============================================= */
+
+/* END SEARCH ====================================== */

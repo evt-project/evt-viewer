@@ -1,0 +1,70 @@
+/* *************************** */
+/* DIALOG                      */
+/* *************************** */
+
+.evt-dialog {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    &-shadow{
+        position: fixed;
+        background: rgba(0, 0, 0, 0.6);
+        width: 100%;
+        height: 100%;
+    }
+    &-container{
+        border-radius: 2px;
+        font-size: 60%;
+        background: #fff;
+        min-width: 80%;
+        height: 2000px;
+        max-height: 80%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        @include set(box-shadow, 0px 0px 8px #000);
+
+        div[ng-switch] {
+            @include calc(height, 100% - #{$mainContainer-menu-height});
+        }
+        &-top{
+            height: $mainContainer-menu-height;
+            background: $base-color-dark;
+            color: $base-color-light;
+            padding: 10px;
+            padding-right: 50px;
+            text-align: center;
+            font-size: 1.2em;
+            button-switch{
+                font-size: 90%;
+                top: 4px;
+            }
+        }
+
+        &-content {
+            overflow-y: auto;
+            height: 100%;
+            // @include calc(height, 100% - #{$mainContainer-menu-height});
+        }
+    }
+}
+
+.evt-dialog.evt-dialog-error,
+.evt-dialog.evt-dialog-small{
+    .evt-dialog-container {
+        min-width: 10%;
+        max-width: 60%;
+        height: auto;
+        &-content {
+            padding:20px;
+        }
+    }
+}
+
+.evt-dialog.evt-dialog-error .evt-dialog-container-top {
+    background: #990000;
+}

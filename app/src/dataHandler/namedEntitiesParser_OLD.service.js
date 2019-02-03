@@ -729,7 +729,7 @@ angular.module('evtviewer.dataHandler')
 		var collection = {
 			id : 'place',
 			type : 'place',
-			title : 'Lista di luoghi'
+			title : 'List of places'
 		};
 		var data = $(element).find('sourceDesc > listPlace > place');
 		angular.forEach(data, function(el) {
@@ -744,7 +744,7 @@ angular.module('evtviewer.dataHandler')
 		collection = {
 			id : 'org',
 			type : 'org',
-			title : 'Lista di organizzazioni'
+			title : 'List of organizations'
 		};
 		data = $(element).find('sourceDesc > listOrg > org');
 		angular.forEach(data, function(el) {
@@ -759,7 +759,7 @@ angular.module('evtviewer.dataHandler')
 		collection = {
 			id : 'person',
 			type : 'person',
-			title : 'Lista di persone'
+			title : 'List of persons'
 		};
 		data = $(element).find('sourceDesc > listPerson > person');
 		angular.forEach(data, function(el) {

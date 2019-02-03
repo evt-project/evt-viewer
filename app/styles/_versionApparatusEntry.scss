@@ -1,59 +1,26 @@
-$critical-apparatus-entry-background-color : transparent;
-$critical-apparatus-entry-background-color-darker : #f5f8f8;
-$critical-apparatus-entry-border-color : rgb(125, 125, 125);
-
-$critical-apparatus-entry-selected-background-color:$base-color-light;
-$critical-apparatus-entry-selected-content-color: #f5f8f8;
-$critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
-
-.critical-apparatus-entry {
+.version-apparatus-entry {
     margin:0;
     margin-bottom: 10px;
     position: relative;
     z-index:0;
     background: $critical-apparatus-entry-background-color;
     color: $base-color-dark;
-    font-size: 95%;
+    font-size: 90%;
     border-left: 1px solid $critical-apparatus-entry-border-color;
     border-right: 1px solid $critical-apparatus-entry-border-color;
-
+    
     cursor: text !important;
 
-    span:not(.app_lemma), span:not(.app_lemma_content) {
+    span {
         background: transparent;
-        display: inline;
-        word-wrap:break-word;
+        display: inline-block;
     }
 
-    &.active {
-        display: block;
-    }
     &.blurred {
         border: none;
         color: transparent !important;
         text-shadow: 0 0 5px #000;
     }
-    &.hidden {
-        opacity:0;
-        background: transparent !important;
-    }
-
-    /*Styles added for the highlighting of the selected box within the appratuses panel*/
-    /*@author --> CM*/
-    &.over {
-        -webkit-box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
-        -moz-box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
-        box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
-    }
-
-    &.selected {
-        background-color: $critical-apparatus-entry-selected-background-color;
-        border-color: $critical-apparatus-entry-border-color;
-        .critical-apparatus-entry-panels {
-            background-color: $critical-apparatus-entry-selected-content-color;
-        }
-    }
-    /*--End of addition--*/
 
     &_tools{
         padding: 0;
@@ -70,8 +37,6 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             .buttonSwitch {
                 box-shadow: none;
                 border: 1px solid $critical-apparatus-entry-background-color;
-                top: 5px;
-                display: inline-block;
             }
             &.active, &:hover {
                 .buttonSwitch {
@@ -82,67 +47,11 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             }
         }
     }
-
+    
     &_main-content {
         padding: 5px;
-        // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
-        &_list {
-            display: inline;
-        }
-        ul {
-            display: inline;
-            margin: 0;
-            padding: 0;
-            li {
-                display: inline-block;
-                margin-right: 5px;
-                &:not(:last-child)::after {
-                    content:"; ";
-                }
-
-            }
-        }
-        ul.app_reading_list {
-                // display: block;
-                list-style-type: initial !important;
-                position: relative;
-                left: 1em;
-                margin-top: 0.7em;
-                margin-bottom: 0.4em;
-                margin-left: 0.4em;
-                margin-right: 0.4em;
-                li {
-                    display: list-item;
-                    margin-bottom: 0.2em;
-                    &:not(:last-child)::after {
-                    content: none;
-                }
-                    span.witGrp_name {
-                        display: inline;
-                        font-weight: bold;
-                        font-style: italic;
-                        font-variant: small-caps;
-                    }
-                    span.witGrp_content {
-                        display: inline;
-                    }
-                }
-        }
-        .app_lemma::after {
-            content: "]";
-        }
-        .sub_app .app_lemma_content::after {
-            content: "]";
-        }
-        .sub_app {
-            margin-left: 30px;
-            margin-top: 5px;
-            &.firstSubApp {
-                margin-top: 15px !important;
-            }
-        }
     }
 
     &_other-content{
@@ -162,7 +71,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             span {
                 padding: 5px;
                 display: inline-block;
-                font-size: 95%;
+                font-size: 90%;
                 cursor: pointer;
                 border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                 &:first-child {
@@ -189,10 +98,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             &:not(.closed){
                 padding: 10px 15px;
             }
-            // max-height: 150px;
-            &:not(.fullHeight) {
-                max-height: 150px;
-            }
+            max-height: 150px;
             overflow-x: hidden;
             overflow-y: auto;
             background-color: $critical-apparatus-entry-background-color-darker;
@@ -210,7 +116,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
                 list-style-type: none;
                 margin: 5px 0px;
             }
-            .app_lemma {
+            .app_version {
                 em {
                     font-weight: bold;
                 }
@@ -258,7 +164,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             }
         }
     }
-
+    
     .attributes {
         &::before {
             content: " – ";
@@ -279,14 +185,14 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
         }
     }
 }
-.critical-apparatus-entry.noTools{
-    .critical-apparatus-entry_main-content, .critical-apparatus-entry_other-content {
+.version-apparatus-entry.noTools{
+    .version-apparatus-entry_main-content, .version-apparatus-entry_other-content {
         width: 100%;
     }
     border-right: 1px solid $critical-apparatus-entry-border-color;
 }
-.in_critical_apparatus {
-    .critical-apparatus-entry {
+.in_version_apparatus {
+    .version-apparatus-entry {
         cursor: pointer !important;
         border: 0;
         background: transparent;
@@ -309,16 +215,16 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             border: 0;
         }
         &_other-content {
-            display: none;
+            display: none;   
         }
     }
     &.active {
-        .critical-apparatus-entry {
+        .version-apparatus-entry {
             background: $critical-apparatus-entry-background-color;
         }
     }
 }
-.blurred .critical-apparatus-entry, .blurred .critical-apparatus-entry * {
+.blurred .version-apparatus-entry, .blurred .version-apparatus-entry * {
     border: none !important;
     @include set(box-shadow, 'none');
     color: transparent !important;
@@ -351,26 +257,30 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
     margin-bottom: 20px !important;
 }
 
-[data-type="pinnedBoard"] {
-    .critical-apparatus-entry {
-        &_tools {
-            position: absolute;
-            top: -3px;
-            right: 0;
-            bottom: auto;
+/* VERSION REF */
+.evt-version-ref {
+    margin: 0 3px;
+    cursor: pointer;
+    text-decoration: underline !important;
+
+    &:hover {
+        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+    }
+    &::after {
+        text-decoration: none !important;
+    }
+    &.selected {
+        cursor: default;
+        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+        text-decoration: none;
+    }
+    &_text {
+        &:not(.selected):not( .not-select) {
+            text-decoration: underline !important;
+        }
+        &.not-select {
+            font-weight: bold;
+            cursor: default;
         }
     }
-}
-// Style for exponent
-// @author --> CM
-.apparatus_exponent{
-    margin: 0;
-    position: relative;
-    bottom: 0.3em;
-    word-spacing: -0.25em;
-    padding: 0.05em;
-    font-size: 0.8em;
-    color: $base-color-dark;
-    text-align: center;
-    vertical-align: center;
 }

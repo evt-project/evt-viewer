@@ -1,0 +1,64 @@
+/* *************************** */
+/* APPARATUSES CONTAINER       */
+/* *************************** */
+.apparatuses_main {
+	height: 100%;
+	overflow-y: hidden;
+
+	.loading {
+		height: 100%;
+		z-index: 999;
+		background: rgba(0,0,0,.3);
+	}
+
+	.apparatuses_tabs {
+		height: 100%;
+		overflow: hidden;
+
+		.appLabel {
+            @include span(1 of 3);
+            cursor: pointer;
+            height: $apparatus-label-height;
+            padding: 6px;
+            background-color: $apparatus-label;
+            color: $apparatus-label-text;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 18px;
+            border-left: 1px solid $apparatus-label-text;
+            &:hover {
+            	background-color: rgba($apparatus-label, .5); 
+                color: $apparatus-label-selected-text;
+            }
+            &.selected, &.selected:hover {
+                color: $apparatus-label-selected-text;
+                background-color: $apparatus-label-selected;
+            	@include set(box-shadow, inset 0 2px 2px -1px #7d7d7d);
+            	cursor: default;
+            }
+        }
+        &_header {
+			display: block;
+			width: 100%;
+			position: relative;
+			height:  $apparatus-label-height;
+			background: $apparatus-label;
+        }
+		&_body {
+			@include calc(height, 100% - #{$apparatus-label-height});
+			padding: 4%;
+			overflow-y: auto;
+		}
+
+		&_fakeTopSpace {
+		    display: block;
+			width: calc(100% - 23px);
+			height: 4px;
+			position: absolute;
+			top: #{$apparatus-label-height} + 2;
+			@include calc(top, #{$apparatus-label-height} + 2px);
+			z-index: 1;
+			background: #fff;
+		}
+	}
+}

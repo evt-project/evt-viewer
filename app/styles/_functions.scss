@@ -1,0 +1,38 @@
+/* *************************** */
+/* FUNCTIONS */
+
+@function setGlobalFrameHeight(){
+	@if($base-footer == false){
+		@return "100% -  #{$base-header-height + 2}";
+	}
+	@else if($base-footer == true){	
+		@return "100% -  #{$base-header-height*2 + 2}";
+	}
+	@else {
+		@return 100%;	
+	}
+	
+}
+
+@function setInsideFrameHeight(){
+	@if($mainContainer-top-menu == true and $mainContainer-bottom-menu == true){
+		@return "100% -  #{$mainContainer-menu-height*2}";
+	}
+	@else if($mainContainer-top-menu == true or $mainContainer-bottom-menu == true){
+		@return "100% -  #{$mainContainer-menu-height+$mainContainer-border-width*2}";
+	} 
+	@else {
+		@return 100%;	
+	}
+	
+}
+
+@function setVisibility($visible){
+	@if($visible == true){
+		@return inline-block;
+	} @else {
+		@return none;
+	}
+}
+
+/* =========================== */

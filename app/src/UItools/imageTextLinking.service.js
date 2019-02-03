@@ -98,15 +98,13 @@ angular.module('evtviewer.UItools')
              zones.push(zonesCollection[zoneid]);
          }
          */
-         
-         /* Modificato da FS : gestione hotspot per Mappa san Matteo */
 
          for (var index = 0; index < zonesIdx.length; index++) {
             var zoneId = zonesIdx[index];
             if (zoneId) {
                //console.log('nel for', zoneId);
                var h = zonesCollection[zoneId];
-               var hotspotId = zoneId.replace(/SM_hs_/, 'SM_div_hs_');
+               var hotspotId = zoneId.replace(/ST_hs_/, 'ST_div_hs_');
                var tmpHotSpot
                console.log('hotSpotId', hotspotId);
                tmpHotSpot = parsedData.getHotSpot(hotspotId);
@@ -241,7 +239,7 @@ angular.module('evtviewer.UItools')
        * class "inLine" and an attribute data-line with line ID reference      
        *
        * @param {element} elementInLine element that rests inside a line       
-       * @param {string} lineId id of line in which element appears  
+       * @param {string} lineId id of line in qhich element appears  
        */
       ITLutils.preapareElementInLine = function (elementInLine, lineId) {
          if (elementInLine.className && elementInLine.className.indexOf('inLine') < 0) {
