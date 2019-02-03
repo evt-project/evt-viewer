@@ -1,0 +1,38 @@
+/* INFO ------------------------------------------------- */
+.dvbText{
+    padding: 2.5em;
+    background: #333;
+}
+
+.dvbList {
+    width:100%;
+    height:100%;
+    margin: 0 auto;
+    padding: 1em 2.5em;
+    background: #666;
+    border-top:3px solid #222;
+    text-align: center;
+    
+    li {
+        width: 100%;
+        height:  auto;
+        margin: 0 auto;
+        padding: 0.5em 1em;
+        display: inline-block;
+        background: #333;
+        box-shadow: 1px 1px 3px 0px #000;
+    }
+
+    span {
+        width: 100%;
+    }
+    .fa {
+        font-size: 0.8em;
+    }
+    
+    a{
+        color: #FFF;
+    }
+}
+
+/* END INFO ------------------------------------------------- */

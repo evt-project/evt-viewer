@@ -9,7 +9,11 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-
+        <!-- build:css(.) styles/vendor.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
+        <!-- endbower -->
+        <!-- endbuild -->
 
         <!-- TODO: temp -->
         <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
@@ -20,8 +24,11 @@
         <link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css"></link>
         <!-- endbuild -->
 
-        <link rel="stylesheet" href="styles/main.d1ef5013.css">
-        <link rel="stylesheet" type="text/css" href="config/custom-style.css"></link>
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/tei.css">
+        <link rel="stylesheet" href="config/custom-style.css">
+        <!-- endbuild -->
 
     </head>
     <body ng-app="evtviewer"
@@ -394,13 +401,225 @@
     </script>
     -->
 
+    <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
-    <script src="scripts/oldieshim.77528eaf.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
     <![endif]-->
+    <!-- endbuild -->
 
-    <script src="scripts/lib.b5a4b09b.js"></script>
+    <!-- build:js(.) scripts/lib.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-xml/angular-xml.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
+    <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <script src="scripts/evtviewer.277a3a73.js"></script>
+    <!-- build:js({.tmp,app}) scripts/evtviewer.js -->
+    <script src="tmpl/templates.js"></script>
+    <script src="/src/evtviewer.js"></script>
+
+    <!-- injector:js -->
+    <script src="/src/core/core.js"></script>
+    <script src="/src/core/GLOBALDEFAULTCONF.constant.js"></script>
+    <script src="/src/core/utils.provider.js"></script>
+    <script src="/src/core/config.provider.js"></script>
+    <script src="/src/core/log.enhance.js"></script>
+    <script src="/src/core/eventDispatcher.service.js"></script>
+    <script src="/src/core/compile.directive.js"></script>
+    <script src="/src/core/filters.js"></script>
+
+    <script src="/src/dataHandler/dataHandler.js"></script>
+    <script src="/src/dataHandler/baseData.service.js"></script>
+
+    <script src="/src/dataHandler/parsedData.service.js"></script>
+    <script src="/src/dataHandler/parser.service.js"></script>
+    <script src="/src/dataHandler/criticalApparatusParser.service.js"></script>
+    <script src="/src/dataHandler/criticalApparatus.service.js"></script>
+    <script src="/src/dataHandler/namedEntitiesParser.service.js"></script>
+    <script src="/src/dataHandler/primarySourcesParser.service.js"></script>
+    <script src="/src/dataHandler/projectInfoParser.service.js"></script>
+    <script src="/src/dataHandler/criticalParser.service.js"></script>
+    <script src="/src/dataHandler/sourcesParser.service.js"></script>
+    <script src="/src/dataHandler/sourcesApparatus.service.js"></script>
+    <script src="/src/dataHandler/analoguesParser.service.js"></script>
+    <script src="/src/dataHandler/analoguesApparatus.service.js"></script>
+    <script src="/src/dataHandler/criticalElementsParser.service.js"></script>
+    <script src="/src/dataHandler/versionApparatus.service.js"></script>
+    <script src="/src/dataHandler/bibliographyParser.service.js"></script>
+    <script src="/src/dataHandler/hotspotParser.service.js"></script>
+
+    <script src="/src/bibliography/bibliography.js"></script>
+    <script src="/src/bibliography/scrollif.directive.js"></script>
+    <script src="/src/bibliography/highlight.service.js"></script>
+    <script src="/src/bibliography/bibliography.provider.js"></script>
+    <script src="/src/bibliography/bibliography.controller.js"></script>
+    <script src="/src/bibliography/bibliography.directive.js"></script>
+    <script src="/src/bibliography/biblElem.controller.js"></script>
+    <script src="/src/bibliography/biblElem.directive.js"></script>
+
+    <script src="/src/interface/interface.js"></script>
+    <script src="/src/interface/interface.configuration.js"></script>
+    <script src="/src/interface/interface.controller.js"></script>
+    <script src="/src/interface/interface.service.js"></script>
+
+    <script src="/src/reference/ref.js"></script>
+    <script src="/src/reference/ref.configuration.js"></script>
+    <script src="/src/reference/ref.provider.js"></script>
+    <script src="/src/reference/ref.controller.js"></script>
+    <script src="/src/reference/ref.directive.js"></script>
+
+    <script src="/src/communication/communication.js"></script>
+    <script src="/src/communication/communication.service.js"></script>
+
+    <script src="/src/translation/translation.js"></script>
+    <script src="/src/translation/translation.service.js"></script>
+
+    <script src="/src/UItools/UItools.service.js"></script>
+    <script src="/src/UItools/imageTextLinking.service.js"></script>
+    <script src="/src/UItools/pinnedElements.service.js"></script>
+
+    <script src="/src/box/box.js"></script>
+    <script src="/src/box/box.configuration.js"></script>
+    <script src="/src/box/box.provider.js"></script>
+    <script src="/src/box/box.directive.js"></script>
+
+    <script src="/src/select/select.js"></script>
+    <script src="/src/select/select.configuration.js"></script>
+    <script src="/src/select/select.provider.js"></script>
+    <script src="/src/select/select.controller.js"></script>
+    <script src="/src/select/select.directive.js"></script>
+
+    <script src="/src/buttonSwitch/buttonSwitch.js"></script>
+    <script src="/src/buttonSwitch/buttonSwitch.provider.js"></script>
+    <script src="/src/buttonSwitch/buttonSwitch.directive.js"></script>
+
+    <script src="/src/popover/popover.js"></script>
+    <script src="/src/popover/popover.configuration.js"></script>
+    <script src="/src/popover/popover.provider.js"></script>
+    <script src="/src/popover/popover.controller.js"></script>
+    <script src="/src/popover/popover.directive.js"></script>
+
+    <script src="/src/list/list.js"></script>
+    <script src="/src/list/list.provider.js"></script>
+    <script src="/src/list/list.directive.js"></script>
+
+    <script src="/src/namedEntity/namedEntity.js"></script>
+    <script src="/src/namedEntity/namedEntity.configuration.js"></script>
+    <script src="/src/namedEntity/namedEntity.provider.js"></script>
+    <script src="/src/namedEntity/namedEntity.directive.js"></script>
+    <script src="/src/namedEntity/namedEntityRef.provider.js"></script>
+    <script src="/src/namedEntity/namedEntityRef.directive.js"></script>
+    <script src="/src/namedEntity/genericEntity.service.js"></script>
+
+    <!--<script src="/src/mobile/mobile.js"></script>
+    <script src="/src/mobile/mobile.dir.js"></script>
+    <script src="/src/mobile/mobile.provider.js"></script>
+    <script src="/src/mobile/mobileMenu.ctrl.js"></script>
+    <script src="/src/mobile/mobileMenu.dir.js"></script>
+    <script src="/src/mobile/mobileInfo.ctrl.js"></script>
+    <script src="/src/mobile/mobileInfo.dir.js"></script>
+    <script src="/src/mobile/mobileSearch.ctrl.js"></script>
+    <script src="/src/mobile/mobileSearch.dir.js"></script>
+    <script src="/src/mobile/mobileView.ctrl.js"></script>
+    <script src="/src/mobile/mobileView.dir.js"></script>-->
+
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.configuration.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.provider.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.controller.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.directive.js"></script>
+    <script src="/src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.js"></script>
+
+    <script src="/src/reading/reading.js"></script>
+    <script src="/src/reading/reading.configuration.js"></script>
+    <script src="/src/reading/reading.provider.js"></script>
+    <script src="/src/reading/reading.controller.js"></script>
+    <script src="/src/reading/reading.directive.js"></script>
+
+    <script src="/src/dialog/dialog.js"></script>
+    <script src="/src/dialog/dialog.configuration.js"></script>
+    <script src="/src/dialog/dialog.provider.js"></script>
+    <script src="/src/dialog/dialog.directive.js"></script>
+
+    <script src="/src/tabsContainer/tabsContainer.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.provider.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.controller.js"></script>
+    <script src="/src/tabsContainer/tabsContainer.directive.js"></script>
+
+    <script src="/src/quote/quote.js"></script>
+    <script src="/src/quote/quote.configuration.js"></script>
+    <script src="/src/quote/quote.provider.js"></script>
+    <script src="/src/quote/quote.controller.js"></script>
+    <script src="/src/quote/quote.directive.js"></script>
+
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.configuration.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.provider.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.controller.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourcesApparatusEntry.directive.js"></script>
+        <!--evt-source-ref-->
+    <script src="/src/sourcesApparatusEntry/sourceRef.directive.js"></script>
+        <!--evt-source-seg-->
+    <script src="/src/sourcesApparatusEntry/sourceSeg.provider.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.controller.js"></script>
+    <script src="/src/sourcesApparatusEntry/sourceSeg.directive.js"></script>
+
+    <script src="/src/analogue/analogue.js"></script>
+    <script src="/src/analogue/analogue.configuration.js"></script>
+    <script src="/src/analogue/analogue.provider.js"></script>
+    <script src="/src/analogue/analogue.controller.js"></script>
+    <script src="/src/analogue/analogue.directive.js"></script>
+
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.configuration.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.provider.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.controller.js"></script>
+    <script src="/src/analoguesApparatusEntry/analoguesApparatusEntry.directive.js"></script>
+
+    <script src="/src/apparatuses/apparatuses.js"></script>
+    <script src="/src/apparatuses/apparatuses.configuration.js"></script>
+    <script src="/src/apparatuses/apparatuses.provider.js"></script>
+    <script src="/src/apparatuses/apparatuses.controller.js"></script>
+    <script src="/src/apparatuses/apparatuses.directive.js"></script>
+
+    <script src="/src/versionReading/versionReading.js"></script>
+    <script src="/src/versionReading/versionReading.provider.js"></script>
+    <script src="/src/versionReading/versionReading.controller.js"></script>
+    <script src="/src/versionReading/versionReading.directive.js"></script>
+
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.js"></script>
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.provider.js"></script>
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.controller.js"></script>
+    <script src="/src/versionApparatusEntry/versionApparatusEntry.directive.js"></script>
+    <script src="/src/versionApparatusEntry/versionRef.provider.js"></script>
+    <script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
+
+    <!--  image Viewer lib js -->
+    <script src="/src/imageViewer/imageViewer.js"></script>
+    <script src="/src/imageViewer/viewerOSD.js"></script>
+    <script src="/src/imageViewer/imageViewer.service.js"></script>
+    <script src="/src/imageViewer/viewerOSD.service.js"></script> 
+    <script src="/src/imageViewer/scrollmap.service.js"></script>
+    
+    <!-- endinjector -->
+    <!-- endbuild -->
 
 </body>
 </html>

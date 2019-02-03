@@ -48,8 +48,8 @@
   "dependencies": {
     "lunr": "^2.3.5",
     "mark.js": "^8.11.1",
+    "angular": "^1.3.0",
     "bower": "^1.8.2",
-    "cli": "^1.0.1",
-    "jarfile": "^2.0.0"
+    "openseadragon": "^2.3.1"
   }
 }

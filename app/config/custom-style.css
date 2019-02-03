@@ -274,3 +274,17 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
 .selector .option_container .option-icon-label {
     display: none;
 }
+.lb .lineN {
+    text-align: left !important;
+    color: grey !important;
+    font-size: .8em !important;
+    height: 100% !important;
+    width: 20px !important;
+    display: inline-block !important;
+    margin: 0px 10px 32px 0px !important;
+    float: left !important;
+}
+.div {
+    display: unset;
+    margin: 5px 0 !important;
+}

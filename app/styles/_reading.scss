@@ -1,0 +1,160 @@
+/* *************************** */
+/* READING                     */
+/* *************************** */
+$reading-background-default: rgb(208, 220, 255);
+$reading-background-hover: rgb(101, 138, 255);
+$reading-background-selected: rgb(208, 220, 255);
+
+evt-reading + evt-reading:not(.autoLemma) .reading {
+    &:not(.hidden), &:not(.invisible) {
+        margin-left: 2px;
+    }
+}
+
+.filterNotActive {
+    .autoLemma {
+        .reading:not(.blurred) {
+            .reading__text, .reading__text .empty {
+                background: url("../images/autoLemma.png") !important;
+                opacity: .7;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+.reading {
+    .reading__text {
+        .w {
+            &:after {
+                content: " ";
+            }
+            &:last-of-type:after {
+                content: "";
+            }
+        }
+    }
+    &:not(.hidden) {
+        padding: 0;
+        cursor: pointer;
+
+        .reading__text {
+            background: $reading-background-default;
+        }
+
+        &.over,
+        &.over .reading {
+            .reading__text, .reading .reading__text {
+                background: $reading-background-hover;
+
+            }
+        }
+        .empty {
+            padding: 0 5px;
+        }
+
+
+        &.blurred {
+            .reading_exponent {
+                color: transparent !important;
+                text-shadow: 0 0 5px #000 !important;
+            }
+        }
+
+        &.expansed:not(.invisible) {
+            > .reading__text {
+                // background: $reading-background-selected;
+                border-top: 1px solid rgb(125, 125, 125);
+
+                &:first-child {
+                    border-left: 1px solid rgb(125, 125, 125);
+                }
+
+                &:last-child {
+                    border-right: 1px solid rgb(125, 125, 125);
+                }
+
+                border-bottom: 5px solid $critical-apparatus-entry-background-color;
+                position: relative;
+                z-index: 9;
+                margin-bottom: -1px;
+            }
+
+            &.blurred, &.blurred * {
+                color: transparent !important;
+                text-shadow: 0 0 5px #000 !important;
+                background: transparent !important;
+            }
+        }
+
+        &.selected {
+            .reading__text {
+                background: $reading-background-hover;
+            }
+        }
+
+        .reading_exponent{
+            margin: 0;
+            position: relative;
+            background-color: transparent;
+            padding: 0;
+            font-size: 0.7em;
+            color: $base-color-dark;
+            left: -4px;
+            vertical-align: super;
+            margin-right: -4px;
+        }
+    }
+
+    &.invisible {
+        > .reading__text {
+            background: transparent !important;
+            border: none;
+            cursor: default;
+        }
+
+        > .reading__apparatus {
+            display: none !important;
+        }
+    }
+
+    // Nested
+    &:not(.invisible) {
+        .reading {
+            &:not(.hidden) {
+                &:not(.blurred) {
+                    .reading__text {
+                        border: 1px solid #999;
+                    }
+
+                    > .reading__text:hover {
+                        border-color: #000;
+                    }
+
+                    &.expansed {
+                        > .reading__text {
+                            border-bottom: 5px solid $critical-apparatus-entry-background-color;
+                        }
+                    }
+
+                    &.selected {
+                        .reading__text {
+                            background: $reading-background-hover;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.filters__reading__color {
+    min-width: 10px;
+    min-height: 10px;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}

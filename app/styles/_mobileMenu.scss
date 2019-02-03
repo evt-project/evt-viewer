@@ -1,0 +1,100 @@
+/* MENU' ====================================== */ 
+
+.nav{
+    width: 100%;
+    height: auto;
+    top:0;
+    margin: 0;
+    padding:0;
+    position:fixed;
+    display: block;
+    z-index: 20;
+    cursor: pointer;
+    color:#CCC;
+    text-align: center;
+    font-size: 1.7em;
+
+    ul{
+        background: #333;
+        margin-bottom: 0.2em;
+        border-bottom: 1px solid #222;
+        box-shadow: 0 5px 5px -5px #000;
+    }
+
+    .active, .active .fa {
+        color: #FFF;
+    }
+}
+       
+.navItem {
+    float:left;
+    height: 50px;
+    padding-top:0.3em;
+    overflow: hidden;
+}
+
+.nav li, .dropdown {
+    width: 15%;
+}
+
+.nav li:first-child {
+    width: 70%;
+    float: left;
+    text-align: left;
+}
+
+.dropdown{
+    float:right;
+    margin-top: -0.2em;
+    border: 1px solid #222;
+
+    li {
+        width: 100%;
+        height: 55px;
+        padding-top:0.4em;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    li:first-child {
+        width: 100%;
+        text-align: center;
+    }
+
+    li+li {
+        border:none;
+    } 
+} 
+
+       
+/* Smartphone ================================================ */ 
+@media screen and (max-width: 699px) {
+
+    .nav li, .dropdown {
+        width: 20%;
+        font-size: 0.9em;
+    }
+    .nav li:first-child {
+        width: 60%;
+        font-size: 0.7em;
+        line-height: 35px;
+    }
+
+    .dropdown {
+        margin-top: -0.25em;
+    }
+    .dropdown li, .dropdown li:first-child {
+        width: 100%;
+        padding-top: 0.5em;
+        font-size: 0.9em;
+    }
+
+    .imageimage, .imagetext, .texttext {display: none;}
+
+} 
+/* end Smartphone ============================================= */
+
+
+
+
+/* END MENU ====================================== */ 

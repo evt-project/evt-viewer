@@ -45,7 +45,6 @@
 		"INFO": "Info",
 		"INFO_ABOUT_TEXT": "Informazioni su questo testo",
 		"IMAGE_TEXT_LINKING": "Collegamento Testo Immagine",
-		"HOTSPOTS": "Hotspots",
 		"LIST": "Liste",
 		"MENU": "Apri Menu",
 		"MS": "Descrizione del manoscritto",
@@ -60,7 +59,7 @@
 		"THUMBNAILS": "Miniature",
 		"VERSION_CLOSE": "Chiudi versione",
 		"WITNESS_CLOSE": "Chiudi testimone",
-		"WITNESSES_LIST": "Lista testimoni"		
+		"WITNESSES_LIST": "Lista testimoni"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "inizio di una lacuna in ",

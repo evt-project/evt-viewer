@@ -67,6 +67,7 @@
     }
 }
 
+<<<<<<< HEAD
 @mixin border($width, $direction, $color) {
     @if($direction == 'all' or $direction == '') {
         border: $width solid $color;
@@ -82,3 +83,7 @@
 }
 /* == END Mixins */
 /* =========================== */
+=======
+/* == END Mixins */
+/* =========================== */
+>>>>>>> Add some style rules

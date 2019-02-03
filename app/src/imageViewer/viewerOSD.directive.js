@@ -33,22 +33,8 @@
 
             $timeout(function () {
 
-               console.log("scope in timeout osd directive", scope);
-               var _options = scope.$parent.options; 
-               console.log("options in timeout osd directive", _options);
-               //var viewer = OpenSeadragon(scope.$parent.$parent.options);
-               console.log('div OSD', document.getElementById('osd-img'));
-               var viewer = null;
-               try{
-                viewer = new OpenSeadragon.Viewer(_options);
-              }
-               catch (err){
-
-              console.log("viewer in timeout osd directive errore", err);
-
-             }
-
-             console.log("viewer in timeout osd directive OK", viewer);
+               console.log("in timeout osd", imageViewerHandler.testFun());
+               var viewer = OpenSeadragon(scope.$parent.options);
 
                scope.osd = viewer;
                scope.$parent[attrs.name] = viewer;
