@@ -9,7 +9,11 @@
         console.log("#!!# page di parsedData #!!#", parsedData.getPage('page1').source);
     
         var options = {
+<<<<<<< HEAD
             id: "osd-img",
+=======
+            id: "box_body_mainImage",
+>>>>>>> Update imageviewer.service.js to manage Error for openseadragon
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
             tileSources: "data/tails/sanmatteo.dzi", // immagine SanMatteo
             
