@@ -222,7 +222,8 @@ angular.module('evtviewer.dataHandler')
                tokens.push(
                   new lunr.Token (token, {
                      position: [startIndex, tokenLength],
-                     index: tokens.length
+                     index: tokens.length,
+                     originalToken: token
                   })
                );
             }
@@ -238,7 +239,8 @@ angular.module('evtviewer.dataHandler')
                   tokens.push(
                      new lunr.Token (tok, {
                         position: [prevTokenEndIndex + 1, tokenLength],
-                        index: tokens.length
+                        index: tokens.length,
+                        originalToken: tok
                      })
                   );
                }

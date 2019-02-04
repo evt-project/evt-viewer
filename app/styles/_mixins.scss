@@ -74,5 +74,11 @@
         border-#{$direction}: $width solid $color;
     }
 }
+
+@mixin noBoxShadow() {
+   -webkit-box-shadow: none;
+   -moz-box-shadow: none;
+   box-shadow: none;
+}
 /* == END Mixins */
 /* =========================== */

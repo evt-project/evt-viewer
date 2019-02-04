@@ -62,36 +62,33 @@ angular.module('evtviewer.search')
             return new Array(lenght);
          };
          
-         vm.toggle = function () {
-            $(function () {
-               $(event.target).toggleClass('active');
-               $(event.target).siblings('.search-result').toggleClass('open');
-            });
+         vm.toggle = function (event) {
+            var eventTarget = $(event.currentTarget);
+            eventTarget.toggleClass('active');
+            eventTarget.siblings('.search-result').toggleClass('open');
          };
    
-         vm.scrollToCurrentResult = function() {
-            var promise = goToAnchor();
+         vm.scrollToCurrentResult = function(event) {
+            var promise = goToAnchor(event);
             promise.then(
                function() {
                   vm.scrollTo(vm.currentLineId);
                });
-         }
+         };
          
-         function goToAnchor() {
+         function goToAnchor(event) {
             var deferred = $q.defer(),
-               eventElement,
                mainBoxId = $scope.$parent.vm.parentBoxId;
             
             evtSearchBox.closeBox(mainBoxId, 'searchResultBox');
             evtSearchBox.showBtn(mainBoxId, 'searchResultsShow');
             evtSearchBox.hideBtn(mainBoxId, 'searchResultsHide');
             
-            window.event.preventDefault();
-            eventElement = window.event.currentTarget;
-            $(eventElement).addClass('selected');
+            event.preventDefault();
+            $(event.currentTarget).addClass('selected');
             vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
             goToAnchorPage();
-            $(eventElement).removeClass('selected');
+            $(event.currentTarget).removeClass('selected');
    
             setTimeout(function() {
                deferred.resolve();

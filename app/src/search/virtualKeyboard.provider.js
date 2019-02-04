@@ -11,22 +11,28 @@ angular.module('evtviewer.search')
             defaultKeyboardKeys,
             configKeys,
             keyboardKeys,
-            configKeyboardKeys;
+            configKeyboardKeys,
+            glyphInXmlDoc;
          
          keyboard.build = function(scope, vm) {
             parentBoxId = scope.$parent.id;
             keyboardId = parentBoxId + 'Keyboard';
             keyboardKeys = '';
             configKeys = config.virtualKeyboardKeys;
-            defaultKeyboardKeys = getDefaultKeyboardKeys();
+            glyphInXmlDoc = evtKeyboard.getGlyphInXmlDoc();
             
             if(configKeys.length !== 0){
                configKeyboardKeys = getConfigKeyboardKeys(configKeys);
                for (var k in configKeyboardKeys) {
-                  keyboardKeys += defaultKeyboardKeys[k] + ':' + k + ' ';
+                  for (var g in glyphInXmlDoc) {
+                     if(g === k) {
+                        keyboardKeys += glyphInXmlDoc[g] + ':' + k + ' ';
+                     }
+                  }
                }
             }
             else {
+               defaultKeyboardKeys = getDefaultKeyboardKeys();
                for (var kbKey in defaultKeyboardKeys) {
                   keyboardKeys += defaultKeyboardKeys[kbKey] + ':' + kbKey + ' ';
                }

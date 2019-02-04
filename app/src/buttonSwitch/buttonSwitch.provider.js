@@ -809,10 +809,10 @@ angular.module('evtviewer.buttonSwitch')
                   }
                };
                break;
-            case 'searchToolsExternal':
+            case 'searchAdvanced':
                btnType = 'standAlone';
                callback = function() {
-                  window.alert('External position coming soon!');
+                  window.alert('Advanced search coming soon!');
                };
                break;
             case 'searchVirtualKeyboard':
@@ -861,8 +861,11 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchClear':
                btnType = 'standAlone';
                callback = function () {
-                  var parentBoxId = scope.$parent.id;
+                  var parentBoxId = scope.$parent.id,
+                     inputValue;
                   evtSearchBox.clearInputValue(parentBoxId);
+                  inputValue = evtSearchBox.getInputValue(parentBoxId);
+                  evtSearchResults.highlightSearchResults(parentBoxId, inputValue);
                };
                break;
 				case 'share':

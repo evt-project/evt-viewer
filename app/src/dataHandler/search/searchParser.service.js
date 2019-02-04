@@ -15,5 +15,5 @@
 
 angular.module('evtviewer.dataHandler')
    .factory('evtAbstractSearchParserInterface', ['EvtSearchInterface', function (EvtSearchInterface) {
-      return new EvtSearchInterface('evtAbstractSearchParserInterface', ['parseElements', 'getPrevDocsInfo']);
+      return new EvtSearchInterface('evtAbstractSearchParserInterface', ['parseElements', 'getPrevDocsLines']);
    }]);
