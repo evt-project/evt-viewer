@@ -7,7 +7,7 @@
         console.log("caricato servizio  imageViewerService");
     
         var options = {
-            id: "osd_img",
+            id: "osd-img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
             tileSources: "data/tiles/scaled_70_verticale.dzi", // immagine per rotulo Alba
             //tileSources: "data/test-img/quamusdzi/QuamusImgManuscript.dzi", // immagine per Marocco

@@ -100,8 +100,8 @@ div.hotspot-dida-body {
 }
 
 
-div#osd_img * img {
-    display: initial !important;
+div#osd-img * img {
+    display: block !important;
 }
 /* regola per la demo in arabo */
 

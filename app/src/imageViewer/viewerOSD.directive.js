@@ -1,29 +1,54 @@
 "use strict";
-(function () {
-   var module = angular.module("evtviewer.openseadragon", ['evtviewer.openseadragonService', "evtviewer.interface"]);
-   console.log("caricato modulo openseadragon");
+
+   var module = angular.module("evtviewer.openseadragon", ["evtviewer.imageViewer",'evtviewer.openseadragonService', "evtviewer.interface"]);
+  
 
    module.directive("osd", ['$timeout', 'imageViewerHandler', "evtInterface", function ($timeout, imageViewerHandler, evtInterface) {
       return {
-         restrict: "E",
+         
+        restrict: "E",
+         
          scope: {
             options: "=",
             name: "=",
             tilesource: "=",
             prefixUrl: "=",
          },
-         controller: ["$scope", function ($scope) {
-            $scope.osd = null;
-         }],
-         template: "<div id='osd_img' class='box-image box-body Edition noBottomMenu'></div>",
+         
+        //  controller: ["$scope", function ($scope) {
+        //     $scope.osd = null;
+        //  }],
+
+         controller: "imageViewerCtrl",
+
+         template: "<div id='osd-img' class='box-image box-body Edition noBottomMenu'></div>",
+
+         transclude: true,
+         //templateUrl: 'src/imageViewer/imageViewer.directive.tmpl.html',
+
          link: function (scope, element, attrs) {
 
             console.log("funzione link della direttiva seadragon");
+                      
 
             $timeout(function () {
 
-               //console.log("in timeout osd", imageViewerHandler.testFun());
-               var viewer = OpenSeadragon(scope.$parent.options);
+               console.log("scope in timeout osd directive", scope);
+               var _options = scope.$parent.options; 
+               console.log("options in timeout osd directive", _options);
+               //var viewer = OpenSeadragon(scope.$parent.$parent.options);
+               console.log('div OSD', document.getElementById('osd-img'));
+               var viewer = null;
+               try{
+                viewer = new OpenSeadragon.Viewer(_options);
+              }
+               catch (err){
+
+              console.log("viewer in timeout osd directive errore", err);
+
+             }
+
+             console.log("viewer in timeout osd directive OK", viewer);
 
                scope.osd = viewer;
                scope.$parent[attrs.name] = viewer;
@@ -193,4 +218,4 @@
          },
       };
    }]);
-})();
+
