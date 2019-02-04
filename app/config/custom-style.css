@@ -288,3 +288,6 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
     display: unset;
     margin: 5px 0 !important;
 }
+.openseadragon-canvas {
+    background-color: #263238 !important;
+}
