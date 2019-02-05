@@ -275,7 +275,7 @@
             }
             console.log('hotspots: ', hrefElts);
 
-            viewerHandler.viewer.zoomPerClick = 1;
+            //viewerHandler.viewer.zoomPerClick = 1; // Fixato
             for (var k = 0; k < zones.length; k++) {
                viewerHandler.viewer.addOverlay({
                   element: hrefElts[k],
