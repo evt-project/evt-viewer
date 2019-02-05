@@ -612,6 +612,20 @@ angular.module('evtviewer.buttonSwitch')
 						}
 					};
 					break;
+					case 'hts':
+					active = evtInterface.getToolState('HTS') === 'active';
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						if (vm.active) { // Activate HTS
+							console.log("hts turnon");
+							evtImageTextLinking.turnOnHTS();
+						} else { // Deactivate HTS
+							console.log("hts turnoff");
+							evtImageTextLinking.turnOffHTS();
+						}
+					};
+					break;
 				case 'mainMenu':
 					btnType = 'standAlone';
 					callback = function() {
