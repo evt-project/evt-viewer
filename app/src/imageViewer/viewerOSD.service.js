@@ -289,7 +289,7 @@
             }
             console.log('hotspots: ', hrefElts);
 
-            //viewerHandler.viewer.zoomPerClick = 1; // Fixato
+            viewerHandler.viewer.zoomPerClick = 1;
             for (var k = 0; k < zones.length; k++) {
                viewerHandler.viewer.addOverlay({
                   element: hrefElts[k],
@@ -382,7 +382,7 @@
                for (var i = 0; i < zones.length; i++) {
                   viewerHandler.viewer.removeOverlay('hotspot-overlay_selected-' + zones[i].id);
                }
-               viewerHandler.viewer.zoomPerClick = 2;
+               //viewerHandler.viewer.zoomPerClick = 2;
             } catch (error) {
                console.error('no hotspot overlay', error);
             }
