@@ -147,7 +147,7 @@ angular.module('evtviewer.UItools')
                //console.log('nel for', zoneId);
                //HOTSPOTS SAN MATTEO
                var h = zonesCollection[zoneId];
-               var hotspotId = zoneId.replace(/SM_hs_/, 'SM_div_hs_');
+               var hotspotId = zoneId.replace(/SM_hs_/ , 'SM_div_hs_');
                var tmpHotSpot
                console.log('hotSpotId', hotspotId);
                tmpHotSpot = parsedData.getHotSpot(hotspotId);

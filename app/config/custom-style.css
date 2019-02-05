@@ -25,7 +25,7 @@
     padding-left: 5px !important;
 }
 .lineN {
-    text-align: left;
+    text-align: left !important;
 }
 .highlight {
     /* opacity: 0.4; */
@@ -129,30 +129,30 @@ div#osd-img * img {
     opacity: 0.5;
 }
 .popover_trigger {
-    color: #263238;
-    opacity: 10;
+    color: #263238 !important;
+    opacity: 10 !important;
 }
 span.comment{
-    background-color: #b46138;
-padding: 1px 4px 4px 4px;
+    background-color: #b46138 !important;
+padding: 1px 4px 4px 4px !important;
     opacity: 10 !important;
-border-radius: 4px;
-vertical-align: top;
-font-variant-position: normal;
-font-size: 12px;
-top: 4px;
-position: relative; 
+border-radius: 4px !important;
+vertical-align: top !important;
+font-variant-position: normal !important;
+font-size: 12px !important;
+top: 4px !important;
+position: relative !important; 
 }
 span.critic{
-    background-color: #c3a27a;
-    padding: 0px 4px 4px 4px;
-    border-radius: 4px;
+    background-color: #c3a27a !important;
+    padding: 0px 4px 4px 4px !important;
+    border-radius: 4px !important;
     opacity: 10 !important;
-vertical-align: top;
-font-variant-position: normal;
-font-size: 12px;
-top: 4px;
-position: relative;    
+vertical-align: top !important;
+font-variant-position: normal !important;
+font-size: 12px !important;
+top: 4px !important;
+position: relative !important;    
 }
 
 span.buttonSwitch[title = "Thumbnails"],
@@ -219,7 +219,7 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
     background-color: #000 !important;
 }
 .interpretativeEdition .choice .expan {
-    font-style: normal;
+    font-style: normal !important;
 }
 .interpretativeEdition .supplied:before{ 
     content:"["
@@ -235,44 +235,44 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
     content:">"
 }
 .del{
-    text-align: left;
-    color: grey;
-    display: block;
-    margin-left: 30px;
-    margin-bottom: 0;
+    text-align: left !important;
+    color: grey !important;
+    display: block !important;
+    margin-left: 30px !important;
+    margin-bottom: 0 !important;
     background-color: transparent !important;
     text-decoration: none !important;
 }
 
 .namedEntity__icon {
-    display: none;
+    display: none !important;
 }
 .namedEntity__detail-text {
-    margin-left: 0;
+    margin-left: 0 !important;
     margin-right: 0 !important;
-    display: block;
+    display: block !important;
 }
 .namedEntity__detail-icon {
-    display: none;
+    display: none !important;
 }
 .namedEntity__detail-text-attribute::after {
     margin-right: 0 !important;
 }
 .namedEntity__detail-text-attribute:last-of-type::after {
     content: ":" !important;
-    margin-right: 0;
+    margin-right: 0 !important;
 }
 .namedEntity__detail-text-attribute {
-    padding-right: 0;
+    padding-right: 0 !important;
 }
 .namedEntity__details {
     margin: 0 !important;
 }
 .evt-tabs-container.vertical .evt-tabs-container_header-icon {
-    display: none;
+    display: none !important;
 }
 .selector .option_container .option-icon-label {
-    display: none;
+    display: none !important;
 }
 .lb .lineN {
     text-align: left !important;
@@ -294,3 +294,6 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
 div#box_body_mainImage * img {
     display: block !important;
 }
+.del{ 
+    background-color: white !important;
+ }  

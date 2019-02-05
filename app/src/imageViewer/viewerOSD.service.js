@@ -332,11 +332,11 @@
                divElt.id = 'div-hotspot-overlay_selected-' + elem.dataset.id;
                divElt.className = 'hotspot-dida';
                
-
+// Modifiche effettuate per Mappa San Matteo
                var divTitleElt = document.createElement('div');
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
-               divTitleElt.innerHTML = 'HotSpot n.: '+elem.dataset.id;
+               divTitleElt.innerHTML = 'Sepoltura '+elem.dataset.id.replace(/SM_hs_/ , 'n° ');
 
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
