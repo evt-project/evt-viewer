@@ -5,17 +5,12 @@
         var viewerModel = this;
         
         console.log("caricato servizio  imageViewerService");
-        console.log("#!!# con parsedData #!!#", parsedData);
-        console.log("#!!# page di parsedData #!!#", parsedData.getPage('page1').source);
+        var tileSources = [];
     
         var options = {
-<<<<<<< HEAD
             id: "osd-img",
-=======
-            id: "box_body_mainImage",
->>>>>>> Update imageviewer.service.js to manage Error for openseadragon
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
-            tileSources: "data/tails/sanmatteo.dzi", // immagine SanMatteo
+            tileSources: tileSources, // immagine SanMatteo
             
             //overlays: [{
             //    id: 'example-overlay',
@@ -41,7 +36,9 @@
             minZoomLevel: 1,
             maxZoomLevel: 8.0,   
             wrapVertical: false,
-            //navigatorPosition: "ABSOLUTE",
+            navigatorPosition: "ABSOLUTE",
+            nextButton: 'next',
+            previousButton: 'previous',
             //navigatorTop: "0",
             //navigatorLeft: "94%",
             //navigatorHeight: "100%",
@@ -51,6 +48,8 @@
             navigatorHeight:"95%",
             navigatorWidth:"6%"
          };
+
+         
          // {id:"box_body_mainImage",prefixUrl:"images/",tileSources:"data/tails/scaled_70_verticale.dzi",showNavigator:!0,visibilityRatio:1,defaultZoomLevel:1,panHorizontal:!0,constrainDuringPan:!0,minZoomLevel:1,wrapVertical:!0,navigatorPosition:"ABSOLUTE",navigatorTop:"1%",navigatorLeft:"98%",navigatorHeight:"95%",navigatorWidth:"8%"}
     
          viewerModel.getOptions = function(){
