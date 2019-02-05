@@ -291,3 +291,6 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
 .openseadragon-canvas {
     background-color: #263238 !important;
 }
+div#box_body_mainImage * img {
+    display: block !important;
+}
