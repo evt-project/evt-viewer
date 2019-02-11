@@ -198,14 +198,10 @@ angular.module('evtviewer.buttonSwitch')
 				case 'itl':
 					evtIcon = 'icon-evt_link';
 					break;
-<<<<<<< HEAD
 				case 'keyboard':
 					evtIcon = 'icon-evt_keyboard';
 					break;
 				case 'hts':
-=======
-					case 'hts':
->>>>>>> Add some style rules
 					evtIcon = 'icon-evt_hts'; // Bottone hotspots - FS
 					break;	
 				case 'language':
@@ -286,6 +282,19 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
+					break;
+				case 'schema':
+					evtIcon = 'icon-evt_schema';
+					break;
+				//icone per bottoni osd aggiunti da federica				
+				case 'zoom-in':
+					evtIcon = 'icon-evt_zoom-in';
+					break;
+				case 'zoom-out':
+					evtIcon = 'icon-evt_zoom-out';
+					break;
+				case 'zoom-reset':
+					evtIcon = 'icon-evt_zoom-reset';
 					break;
 			}
 			return evtIcon;
@@ -525,8 +534,8 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'fontSizeTools':
 					callback = function() {
-						var fontSizeBtnState = scope.$parent.vm.getState('fontSizeBtn') || false;
-						scope.$parent.vm.updateState('fontSizeBtn', !fontSizeBtnState);
+						var zoomState = scope.$parent.vm.getState('fontSizeBtn') || false;
+						scope.$parent.vm.updateState('fontSizeBtn', !zoomState);
 					};
 					fakeCallback = function() {
 						scope.$parent.vm.updateState('fontSizeBtn', false);
@@ -996,7 +1005,49 @@ angular.module('evtviewer.buttonSwitch')
                         var s = scope.$parent.vm;
                         return s;
                     };
-                    break;
+					break;
+				
+					//aggiunta per bottoni osd federica
+				case 'zoomOut':
+				active = evtInterface.getToolState('zoomOut') === 'active';
+				btnType = 'standAlone';
+				callback = function() {
+					var vm = this;
+					if (vm.active) { // zoom out
+						console.log("zoomOut turnon");
+						evtImageTextLinking.turnOnZoomOut();
+					} else { // Deactivate ITL
+						console.log("itl turnoff");
+						evtImageTextLinking.turnOffZoomOut();
+					}
+				};
+					break;
+				case 'zoomIn':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						scope.$parent.vm.zoomIn();
+						vm.active = !vm.active;
+					};
+					break;
+				case 'zoomReset':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						scope.$parent.vm.zoomReset();
+						vm.active = !vm.active;
+					};
+					break;
+				case 'zoomTools':
+					callback = function() {
+						var zoomBtnState = scope.$parent.vm.getState('zoomBtn') || false;
+						scope.$parent.vm.updateState('zoomBtn', !zoomBtnState);
+					};
+					fakeCallback = function() {
+						scope.$parent.vm.updateState('zoomBtn', false);
+					};
+					break;
+				
 				default:
 					break;
 			}
