@@ -3,20 +3,19 @@ angular.module('evtviewer.openseadragonService')
    .service('imageScrollMap', function (evtInterface) {
       console.log('in service imageScrollMap');
       var key = 'yPage';
-
       var imageScrollMap = this;
-      // DATI PER SCROLL MAPPA SAN MATTEO
+      /* DATI PER SCROLL MAPPA SAN MATTEO
       var map = {
          yPage1: {
-            from: 0.00,
-            to: 1.15
+            from: 0.1,
+            to: 0.7
          },
          yPage2: {
-            from: 1.15,
-            to: 2.30
+            from: 0.7,
+            to: 0.14
          },
-         size: 18
-      };
+         size: 14
+      };*/
 
       imageScrollMap.mapDown = function (bounds) {
          return mapFun(bounds, 'down');
@@ -25,8 +24,10 @@ angular.module('evtviewer.openseadragonService')
          return mapFun(bounds, 'up');
       };
 
-      var mapFun = function (bounds, type) {
+     var mapFun = function (bounds, type) {
          var box = bounds.getBoundingBox();
+         var map;
+         var key;
          console.log('mapping boungs-pages', box);
          console.log(map);
          console.log(key);
@@ -38,7 +39,7 @@ angular.module('evtviewer.openseadragonService')
                if (box.y < map[key + '1'].to) {
                   return (key + '1').substr(1).toLowerCase();
                } else {
-                  for (var i = 2; i <= map.size; i++) {
+                  for (var i = 1; i <= map.size; i++) {
                      if (box.y < map[key + i].to && box.y > map[key + i].from) {
                         console.log(key + i);
                         return (key + i).substr(1).toLowerCase();
@@ -76,13 +77,14 @@ angular.module('evtviewer.openseadragonService')
          //var ypage = "y"+ page.charAt(0).toUpperCase() + page.slice(1);
          // FIXME
          var ypage = undefined;
-         if (page.length == 5)
+         if (page.length == 10)
             ypage = key + page.substr(page.length - 1);
          else
             ypage = key + page.substr(page.length - 2);
 
 
          console.log('isInBounds', ypage);
+         var map;
          if (y >= map[ypage].from && y < map[ypage].to) {
             console.log('true');
             return true;
@@ -96,7 +98,8 @@ angular.module('evtviewer.openseadragonService')
          console.log('updateBounds');
          var oldBounds = viewer.viewport.getBounds();
          var ypage = undefined;
-         if (page.length == 5)
+         var map;
+         if (page.length == 10)
             ypage = key + page.substr(page.length - 1);
          else
             ypage = key + page.substr(page.length - 2);

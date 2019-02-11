@@ -60,7 +60,8 @@
 		"THUMBNAILS": "Miniature",
 		"VERSION_CLOSE": "Chiudi versione",
 		"WITNESS_CLOSE": "Chiudi testimone",
-		"WITNESSES_LIST": "Lista testimoni"
+		"WITNESSES_LIST": "Lista testimoni",
+		"SCHEMA": "Schema"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "inizio di una lacuna in ",

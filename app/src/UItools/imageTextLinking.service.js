@@ -165,6 +165,7 @@ angular.module('evtviewer.UItools')
             //console.log('zone in prepare hot spot', zone);
             return ("HotSpot" === zone.rendition);
          });
+         
 
          console.log('hotspotzones', hotspotZones);
 
@@ -188,7 +189,6 @@ angular.module('evtviewer.UItools')
 
          return hotspotZones;
       };
-
       /**
        * @ngdoc method
        * @name evtviewer.UItools.evtImageTextLinking#turnOffITL

@@ -19,10 +19,12 @@
 
      imageModule.controller("imageViewerCtrl", ["$scope","imageViewerModel", function ($scope,imageViewerModel) {
          $scope.options = imageViewerModel.getOptions();
-         //$scope.interface = evtInterface;
-         //evtInterface.updateState('currentPage','pippo');
+         //$scope.interface = evtInterface.getState('currentPage');
+         //modificato da FS per update immagine con selezione pagina
+         //evtInterface.updateState('currentPage', 'pippo');      
+            //console.log("aggiorno contenuto viewer per pagina del testo");
+            
          
-         //console.log("caricato controller evtviewer.imageViewer", $scope.interface);
       }]);
    console.log("caricato modulo per immagine!");
 })();

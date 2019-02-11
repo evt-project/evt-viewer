@@ -269,19 +269,19 @@
 .icon-evt_txttxt:before {
     content: "\e92f";
 }
-.icon-evt_zoom-fit:before {
+.icon-evt_zoom-in:before {
     content: "\e930";
 }
-.icon-evt_zoom-in:before {
+.icon-evt_zoom-reset:before {
     content: "\e931";
 }
-.icon-evt_zoom-one:before {
+.icon-evt_zoom-out:before {
     content: "\e932";
 }
-.icon-evt_zoom-out:before {
+.icon-evt_zoom:before {
     content: "\e933";
 }
-.icon-evt_zoom:before {
+.icon-evt_zoom-fit:before {
     content: "\e934";
 }
 .icon-evt_align:before {
@@ -321,6 +321,9 @@
     content: "\e942";
 }
 .iconbis-evt_analogue:before{
+    content: "\e93f"
+}
+.iconbis-evt_schema:before{
     content: "\e93f"
 }
 

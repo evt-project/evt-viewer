@@ -133,6 +133,39 @@ div#osd-img * img {
     opacity: 10 !important;
 }
 span.comment{
+    color: #263238 !important;
+    opacity: 10 !important;
+    vertical-align: top !important;
+    font-variant-position: normal !important;
+    font-size: 15px !important;
+    top: 4px !important;
+    position: relative !important; 
+}
+span.comment:before{ 
+    content:"("
+}
+span.comment:after{
+    content:")"
+}
+span.critic{
+    color: #263238 !important;
+    opacity: 10 !important;
+    vertical-align: top !important;
+    font-variant-position: normal !important;
+    font-size: 15px !important;
+    top: 4px !important;
+    position: relative !important;    
+}
+span.critic:before{ 
+    content:"("
+}
+span.critic:after{
+    content:")"
+}
+
+/* Regole per note con quadratino colorato */
+/*
+span.comment{
     background-color: #b46138 !important;
 padding: 1px 4px 4px 4px !important;
     opacity: 10 !important;
@@ -153,13 +186,16 @@ font-variant-position: normal !important;
 font-size: 12px !important;
 top: 4px !important;
 position: relative !important;    
-}
+}*/
 
 span.buttonSwitch[title = "Thumbnails"],
 span.buttonSwitch[title = "Information about this text"],
 span.buttonSwitch[title = "Miniature"],
 span.buttonSwitch[title = "Informazioni su questo testo"] {
     display: none;
+}
+section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-child(1){
+    padding-right: 4px;
 }
 .selector {
 }
@@ -268,6 +304,13 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
 .namedEntity__details {
     margin: 0 !important;
 }
+/* Nascondo label occorrenze e xml*/
+span.namedEntity__details-header:nth-child(2){
+    display: none;
+}
+span.namedEntity__details-header:nth-child(3) {
+    display: none;
+}
 .evt-tabs-container.vertical .evt-tabs-container_header-icon {
     display: none !important;
 }
@@ -296,4 +339,10 @@ div#box_body_mainImage * img {
 }
 .del{ 
     background-color: white !important;
- }  
+ } 
+ #box_body_mainImage > div:nth-child(1){
+        background: #263238 !important;
+ }
+ section.box-text > div:nth-child(1) > evt-select:nth-child(1) > div:nth-child(1){
+     display: none;
+ }

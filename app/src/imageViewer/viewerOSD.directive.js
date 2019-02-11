@@ -62,10 +62,12 @@
                     else
                       console.error('problema con la paginazione!!!');
                   }
-                }, true);
+                }, false);
             
 
-            }, 50);
+            }, 10);
+
+                       
 
 
 
@@ -80,9 +82,8 @@
                //Destroy mouse handler
                //scope.mouse.destroy();
                //optionsWatcher();
-               //Remove event 
-               // scope.osd.removeHandler("open", imageViewerHandler.open);
-               // scope.osd.removeHandler("open", imageViewerHandler.openPage);
+               //Remove event handlers
+               scope.osd.removeHandler("open", imageViewerHandler.open);
                scope.osd.removeHandler("home", imageViewerHandler.home);
                scope.osd.removeHandler("navigator-scroll", imageViewerHandler.navigatorScroll);
                scope.osd.removeHandler("pan", imageViewerHandler.pan);

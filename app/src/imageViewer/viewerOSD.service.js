@@ -21,12 +21,13 @@
 
          viewerHandler.open = function () {
             console.log('openHandler');
+            var viewBounds = viewer.viewport.getBounds();
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
             console.log('openHandler', oldBounds);
             var h = oldBounds.height / oldBounds.width;
-            var newBounds = new OpenSeadragon.Rect(0, 0.1, 1, h);
+            var newBounds = new OpenSeadragon.Rect(0, 0, 0, h);
             console.log(newBounds);
-            viewerHandler.viewer.viewport.fitBounds(newBounds, true);
+            viewerHandler.viewer.viewport.fitBounds(newBounds, false);
             //viewer.navigator.element.parentElement.parentElement.style.overflow = "visible";
             //viewer.navigator.element.parentElement.style.overflow = "visible";
             //viewer.navigator.element.style.overflow = "visible";
@@ -58,6 +59,8 @@
             viewerHandler.viewer.viewport.fitBounds(newBounds, true);
          };
 
+         /* Trying to fix Home bug*/
+
          viewerHandler.navigatorScroll = function (event) {
             console.log("navigator-scroll", evtInterface);
             console.log("navigator-scroll", event);
@@ -66,7 +69,7 @@
                //console.log("scope.$parent.$parent", scope.$parent.$parent.vm);
                //scope.$parent.$parent.vm.updateState('position',event.eventSource.viewport.getBounds());
                //    viewerHandler.scope.$apply(function () {
-               //       evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
+               //       evtInterface.updateState("", imageScrollMap.map(event.eventSource.viewport.getBounds()));
                //       console.log("in handler:", evtInterface.getState('currentPage'));
                //       //scope.$parent.$parent.vm.updateContent();
                //    });
@@ -86,7 +89,7 @@
          viewerHandler.pan = function (event) {
             try {
                console.log('pan', event);
-               //if (event.immediately === undefined) {
+               if (event.immediately === undefined) {
                var newY = event.center.y;
                var oldY = event.eventSource.viewport._oldCenterY;
                console.log('ok event pan', newY);
@@ -127,8 +130,8 @@
                }
 
                //event.stopBubbling = true;
-            } catch (err) {
-               console.log('error in pan', err);
+            }} catch (err) {
+               //console.log('error in pan', err);
 
             }
 
@@ -238,8 +241,8 @@
             console.log('old center y', oldCenter.y);
             console.log('zone y normalized', normalizedZoney);
             console.log('differential y', oldCenter.y - normalizedZoney);
-            //var newY = (zone.uly / ImageNormalizationCoefficient < oldCenter.y) ? oldCenter.y : zone.uly / ImageNormalizationCoefficient;
-            var newY = ( (normalizedZoney < currentBounds.y + currentBounds.height) && normalizedZoney > currentBounds.y)  ? oldCenter.y :  (normalizedZoney < currentBounds.y) ? (currentBounds.y) :(currentBounds.y + currentBounds.height);
+            var newY = (zone.uly / ImageNormalizationCoefficient < oldCenter.y) ? oldCenter.y : zone.uly / ImageNormalizationCoefficient;
+            //var newY = ( (normalizedZoney < currentBounds.y + currentBounds.height) && normalizedZoney > currentBounds.y)  ? oldCenter.y :  (normalizedZoney < currentBounds.y) ? (currentBounds.y) :(currentBounds.y + currentBounds.height);
             console.log('new center y',newY);
             var newCenter = new OpenSeadragon.Point(oldCenter.x, newY);
             console.log('new center', newCenter);
@@ -350,7 +353,7 @@
 
                var OSDOverlay = {
                   element: divElt,
-                  location: rect
+                  location: rect,
                };
 
 
