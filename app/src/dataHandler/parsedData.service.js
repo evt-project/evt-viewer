@@ -2744,7 +2744,7 @@ angular.module('evtviewer.dataHandler')
          if (hotspot && hotspot.id !== '') {
             hotSpotId = hotspot.id;
          } else {
-            hotSpotId = hotspot.id = 'hotspot_' + (zoneIndexes + 1);
+            hotSpotId = hotspot.id = 'hotspot_' + (hotSpotIndexes + 1);
          }
          if (hotspotCollection[hotSpotId] === undefined) {
             hotSpotIndexes[hotSpotIndexes.length] = hotSpotId;

@@ -147,8 +147,8 @@ angular.module('evtviewer.UItools')
                //console.log('nel for', zoneId);
                //HOTSPOTS SAN MATTEO
                var h = zonesCollection[zoneId];
-               var hotspotId = zoneId.replace(/SM_hs_/ , 'SM_div_hs_');
-               var tmpHotSpot
+               var hotspotId = zoneId.replace(/ST_hs_/, 'ST_div_hs_');
+               var tmpHotSpot;
                console.log('hotSpotId', hotspotId);
                tmpHotSpot = parsedData.getHotSpot(hotspotId);
                if (tmpHotSpot) {
@@ -161,9 +161,10 @@ angular.module('evtviewer.UItools')
          }
 
          console.log(zones);
+         // probabilmente da spostare sopra
          var hotspotZones = zones.filter(function (zone) {
             //console.log('zone in prepare hot spot', zone);
-            return ("HotSpot" === zone.rendition);
+            return ('HotSpot' === zone.rendition);
          });
          
 
@@ -397,19 +398,36 @@ angular.module('evtviewer.UItools')
        * @todo Adapt to real viewer, once this is implemented
        */
       ITLutils.prepareZoneInImgInteractions = function () {
-         console.log("prepare zone in Image");
-         var zones = document.getElementsByClassName('zoneInImg');
-         console.log("zones in Image:", zones);
-         for (var i = 0; i < zones.length; i++) {
-            var zone = zones[i];
+         console.log('prepare zone in Image for line linking');
+         var tmpZones = document.getElementsByClassName('line-overlay');
+         console.log('div precedentemente create:', tmpZones);
+         
+         if(tmpZones.length == 0){
+            console.log('preparo le line zones:');
+            var _zones = parsedData.getZones();
+            var allZones = _zones._indexes;
+            var lineZones = allZones.filter(function(zone){return zone.includes('line')});
+         // var zones = _zones.filter(function (zone) {
+         //    //console.log('zone in prepare hot spot', zone);
+         //    return ('Line' === zone.rendition);
+         // });
 
-            zone.onmouseover = zoneMouseOver;
+            console.log('zones in Image for line:', allZones);
+            console.log('Filtered zones in Image for line:', lineZones);
+         // imageViewerHandler
+            for (var i = 0; i < lineZones.length; i++) {
+               var lineZone = lineZones[i];
+               var divZone = imageViewerHandler.lineZone(parsedData.getZone(lineZone));
+            
+               console.log('GESTIRE QUI LE FUNZIONI DI GESTIONE RIGHE', divZone);
+            //divZone.onmouseover = zoneMouseOver;
 
-            zone.onmouseout = zoneMouseOut;
+            //divZone.onmouseout = zoneMouseOut;
 
-            zone.onclick = zoneClick;
+            //divZone.onclick = zoneClick;
+            }
          }
-      };
+       };
 
       var zoneMouseOver = function () {
          var zoneId = this.getAttribute('data-corresp-id');
