@@ -2,7 +2,7 @@
    console.log('caricato modulo openseadragonService');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
-      .service('imageViewerHandler', function (evtInterface, imageScrollMap) {
+      .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler) {
          const ImageNormalizationCoefficient = 3500;
          const YminPan = 0.5;
 
@@ -18,7 +18,7 @@
             viewerHandler.scope = scope;
          };
 
-
+        
          viewerHandler.open = function () {
             console.log('openHandler');
             var viewBounds = viewer.viewport.getBounds();
@@ -391,16 +391,90 @@
             }
          };
 
+         viewerHandler.lineZone = function(zone){
+            console.log('in viewerHandler to handle zone line:', zone);
+            overlayHandler.test('funge');
+            var rectObj = convertZoneToOSD(zone);
+            var elt = document.createElement("div");
+            elt.id = "line-div-overlay_"+zone.id;
+            elt.dataset['lb'] = zone.id.replace('line','lb');
+            elt.className = "line-overlay";
+
+            elt.onmouseover = function(){
+              console.log('illuminare riga corrispondente a '+ this.dataset['lb']);
+               var ITLactive = evtInterface.getToolState('ITL') === 'active';
+               var currentViewMode = evtInterface.getState('currentViewMode');
+               
+               if (ITLactive && currentViewMode === 'imgTxt'){
+
+                  overlayHandler.test('funge on mouseover');
+                  this.className += ' selectedHighlight';
+                  
+                  var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
+                  
+                  if(elemsInLine.length == 0){
+                     var dataLine = this.dataset['lb'].replace('reg','orig');
+                     console.log('In alternativa riga corrispondente a '+ dataLine);
+                     elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
+                  }
+                  
+                  console.log('selettori di riga:', elemsInLine);
+                  for(var i=0; i < elemsInLine.length; i++){
+                     elemsInLine[i].className += ' lineHover';
+                  }
+
+               } 
+
+
+
+               
+               //alert('overlay da img');
+            }
+
+            elt.onmouseout = function(){
+               console.log('de spegnere riga corrispondente a '+ this.dataset['lb']);
+
+               var ITLactive = evtInterface.getToolState('ITL') === 'active';
+               var currentViewMode = evtInterface.getState('currentViewMode');
+               
+               if (ITLactive && currentViewMode === 'imgTxt') {
+
+                  overlayHandler.test('funge on mouseout');
+                  this.className = this.className.replace(' selectedHighlight', '') || '';
+                  var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
+                  if(elemsInLine.length == 0){
+                     var dataLine = this.dataset['lb'].replace('reg','orig');
+                     console.log('In alternativa riga corrispondente a '+ dataLine);
+                     elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
+                  }
+                  console.log('selettori di riga:', elemsInLine);
+                  for(var i=0; i < elemsInLine.length; i++){
+                   elemsInLine[i].className = elemsInLine[i].className.replace(' lineHover', '') || '';
+                  }
+               //alert('overlay da img');
+
+               }
+            }
+
+            elt.onclick = function(){
+               overlayHandler.test('funge on click');
+            }
+
+            viewerHandler.viewer.addOverlay({
+               element: elt,
+               location: rectObj
+            });
+
+            return elt;
+         }
+
 
 
 
          viewerHandler.testFun = function () {
-            console.log("testFunction: ", viewerHandler);
-            return "test ok";
+            console.log('testFunction: ', viewerHandler);
+            return 'test ok';
          };
-
-         console.log("caricato servizio imageViewerHandler");
-
       });
 
 })();
