@@ -24,13 +24,6 @@
     text-align: center !important;
     padding-left: 5px !important;
 }
-.lineN {
-<<<<<<< HEAD
-    text-align: left !important;
-=======
-    /*text-align: left !important;*/
->>>>>>> Upload config.json for San Matteo edition
-}
 .highlight {
     /* opacity: 0.4; */
     /* filter: alpha(opacity=40);*/
@@ -201,10 +194,6 @@ span.buttonSwitch[title = "Informazioni su questo testo"] {
 section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-child(1){
     padding-right: 4px;
 }
-.selector {
-}
-.displayregioncontainer {
-}
 
 /* navigatore */
 .navigator {
@@ -217,7 +206,7 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
     opacity: 0.3;
 }
 
-/* regole per collegamento immagine testo san matteo */
+/* regole per collegamento immagine testo san matteo 
 .zoneInImg.lineHover {
     border: 1px solid #4c2f2f !important;
     background-color: #9c4837 !important;
@@ -228,7 +217,7 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
     border: 1px solid #4c2f2f !important;
     background-color: #9c4837 !important;
     opacity: .5
-}
+}*/
 .ITLactive.box-image img {
     display: none
 }
@@ -238,6 +227,7 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
 .ITLactive.box-image .zoneInImg {
     background-color: #9c4837 !important;
 }
+/*
 .ITLactive .lineHover,
 .ITLactive .lineHover:after {
     cursor: pointer;
@@ -249,14 +239,15 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
     cursor: pointer;
     background-color: rgba(213, 177, 125, .9) !important;
     color: #000
-}
+}*/
 .italic {
     font-style: italic
 }
-.selectedHighlight {
-}
 #line-overlay-selected {
     background-color: #000 !important;
+}
+.interpretativeEdition .p {
+    display: inline !important;
 }
 .interpretativeEdition .choice .expan {
     font-style: normal !important;
@@ -267,7 +258,6 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
 .interpretativeEdition .supplied:after{
     content:"]"
 }
-
 .interpretativeEdition .supplied[data-reason="omitted"]:before{ 
     content:"<"
 }
@@ -291,17 +281,10 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
     margin-left: 0 !important;
     margin-right: 0 !important;
     display: block !important;
-<<<<<<< HEAD
 }
 .namedEntity__detail-icon {
     display: none !important;
 }
-=======
-}
-.namedEntity__detail-icon {
-    display: none !important;
-}
->>>>>>> Upload config.json for San Matteo edition
 .namedEntity__detail-text-attribute::after {
     margin-right: 0 !important;
 }
@@ -334,23 +317,19 @@ span.namedEntity__details-header:nth-child(3) {
     font-size: .8em !important;
     height: 100% !important;
     width: 20px !important;
-    display: inline-block !important;
-    margin: 0px 10px 32px 0px !important;
+    display: block !important;
     float: left !important;
-<<<<<<< HEAD
+
+    clear: both;
+
+    
 }
 .div {
-    display: unset;
     margin: 5px 0 !important;
-}
-=======
+    float: left !important;
+    display: block !important;
     clear: both;
 }
-/*.div {
-    display: unset;
-    margin: 5px 0 !important;
-}*/
->>>>>>> Upload config.json for San Matteo edition
 .openseadragon-canvas {
     background-color: #263238 !important;
 }
@@ -366,7 +345,7 @@ div#box_body_mainImage * img {
  section.box-text > div:nth-child(1) > evt-select:nth-child(1) > div:nth-child(1){
      display: none;
  }
- orig.ng-scope{
+orig {
      font-style: italic;
  }
 span.namedEntity__detail-text-content span.orig.ng-scope{

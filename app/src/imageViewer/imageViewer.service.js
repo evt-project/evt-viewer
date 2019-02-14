@@ -29,9 +29,9 @@
             //navigatorLeft: "94%",
             //navigatorHeight: "100%",
             //navigatorWidth: "6%",
-            navigatorTop:"1%",
+            navigatorTop:"0%",
             navigatorLeft:"94%",
-            navigatorHeight:"95%",
+            navigatorHeight:"100%",
             navigatorWidth:"6%",
             //per sequetnza immagini
             sequenceMode: true,
