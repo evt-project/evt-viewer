@@ -9,7 +9,7 @@
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
 
-    "defaultViewMode": "readingTxt",
+    "defaultViewMode": "imgTxt",
 	"availableViewModes": [{
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
@@ -20,7 +20,7 @@
                                 "label"    : "MULTIPLE_RECENSIONS",
                                 "icon"     : "mode-versions",
                                 "viewMode" : "versions",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "IMAGE_TEXT",
@@ -38,7 +38,7 @@
                                 "label"    : "COLLATION",
                                 "icon"     : "mode-collation",
                                 "viewMode" : "collation",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "SOURCE_TEXT",
@@ -66,7 +66,7 @@
         "visible": false
     }],
 
-    "enableXMLdownload" : true,
+    "enableXMLdownload" : false,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": true,
+    "showDocumentSelector": false,
 
 	"variantColors": {
 		"type": {
@@ -136,17 +136,30 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-    "versions" : [],
-    "witnessesGroups": [ ],
+
+    "versions" : ["rec2", "rec1", "rec3"],
+    "witnessesGroups": [
+        {
+            "groupName" : "Group 1",
+            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
+        },
+        {
+            "groupName" : "Group 2",
+            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
+        }
+    ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
     "showReadingExponent": true,
 
-    "showInlineCriticalApparatus": false,
-    "showInlineSources": false,
-    "showInlineAnalogues": false,
+    "showInlineCriticalApparatus": true,
+    "showInlineSources": true,
+    "showInlineAnalogues": true,
+
+
+
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {
@@ -163,8 +176,6 @@
 			"enabled": true
 		}
 	},
-
-   "virtualKeyboardKeys": [],
 
     "languages": ["en", "it"]
 }
