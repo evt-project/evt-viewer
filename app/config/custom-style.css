@@ -25,7 +25,11 @@
     padding-left: 5px !important;
 }
 .lineN {
+<<<<<<< HEAD
     text-align: left !important;
+=======
+    /*text-align: left !important;*/
+>>>>>>> Upload config.json for San Matteo edition
 }
 .highlight {
     /* opacity: 0.4; */
@@ -114,7 +118,7 @@ div.hotspot-dida-body {
 
 
 div#osd-img * img {
-    display: block !important;
+    display: initial !important;
 }
 
 /* regola per note con esponente numerico e alfabetico */
@@ -287,10 +291,17 @@ section.box-image > div:nth-child(1) > button-switch:nth-child(3) > span:nth-chi
     margin-left: 0 !important;
     margin-right: 0 !important;
     display: block !important;
+<<<<<<< HEAD
 }
 .namedEntity__detail-icon {
     display: none !important;
 }
+=======
+}
+.namedEntity__detail-icon {
+    display: none !important;
+}
+>>>>>>> Upload config.json for San Matteo edition
 .namedEntity__detail-text-attribute::after {
     margin-right: 0 !important;
 }
@@ -326,11 +337,20 @@ span.namedEntity__details-header:nth-child(3) {
     display: inline-block !important;
     margin: 0px 10px 32px 0px !important;
     float: left !important;
+<<<<<<< HEAD
 }
 .div {
     display: unset;
     margin: 5px 0 !important;
 }
+=======
+    clear: both;
+}
+/*.div {
+    display: unset;
+    margin: 5px 0 !important;
+}*/
+>>>>>>> Upload config.json for San Matteo edition
 .openseadragon-canvas {
     background-color: #263238 !important;
 }

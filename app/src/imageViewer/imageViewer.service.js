@@ -11,7 +11,6 @@
             id: "osd-img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
             tileSources: tileSources, // immagine SanMatteo
-            
             showRotationControl: true,                
             showNavigator: true,
             //navigatorId: "navscroll",
@@ -37,19 +36,6 @@
             //per sequetnza immagini
             sequenceMode: true,
             preserveOverlays: false,
-            //per toolbar personalizzata federica
-            //toolbar: "osdnavbar",
-        
-            //per pulsanti personalizzati aggiunto da federica
-            /*autoHideControls: true,
-            homeButton: 'zoom-fit',
-            fullPageButton: 'zoom-full',
-            zoomInButton: 'zoom-in',
-            zoomOutButton: 'zoom-out',
-            nextButton: 'next',
-            previousButton: 'previous',
-            rotateLeftButton: 'rotate-left',
-            rotateRightButton: 'rotate-right',*/
          };
   
 
