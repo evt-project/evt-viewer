@@ -346,3 +346,9 @@ div#box_body_mainImage * img {
  section.box-text > div:nth-child(1) > evt-select:nth-child(1) > div:nth-child(1){
      display: none;
  }
+ orig.ng-scope{
+     font-style: italic;
+ }
+span.namedEntity__detail-text-content span.orig.ng-scope{
+    font-style: italic;
+}
