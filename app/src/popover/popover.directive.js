@@ -260,8 +260,7 @@ angular.module('evtviewer.popover')
                         'max-width' : settings.tooltipMaxWidth+'px'
                     });
                 }
-            };
-
+            };            
             // Initialize popover
             var currentPopover = evtPopover.build(scope.trigger, scope.tooltip, scope.vm);
 
