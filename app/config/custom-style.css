@@ -366,6 +366,19 @@ div.box-menu:nth-child(4) > button-switch:nth-child(1){
 div.box-menu:nth-child(4) > button-switch:nth-child(2){
     display: none;
 }
+<<<<<<< HEAD
 .box.box-image .box-body{
     height: 100%;
 }
+=======
+
+
+.fa-times{
+   float: right;
+}
+
+
+.fa-times:hover{
+   cursor: pointer;
+}
+>>>>>>> prima versione div hotspot popup con pulsante close
