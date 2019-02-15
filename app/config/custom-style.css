@@ -119,3 +119,13 @@ span.buttonSwitch[title="Miniature"],
 span.buttonSwitch[title="Informazioni su questo testo"] {
    display: none;
 }
+
+
+.fa-times{
+   float: right;
+}
+
+
+.fa-times:hover{
+   cursor: pointer;
+}
