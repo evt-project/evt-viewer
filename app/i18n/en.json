@@ -61,7 +61,8 @@
 		"VERSION_CLOSE": "Close version",
 		"WITNESS_CLOSE": "Close witness",
 		"WITNESSES_LIST": "Witnesses List",
-		"SCHEMA": "Schema"
+		"SCHEMA": "Schema",
+		"SEARCH": "Search"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "beginning of a lacuna in",
