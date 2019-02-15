@@ -5,6 +5,7 @@
       .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler) {
          const ImageNormalizationCoefficient = 3500;
          const YminPan = 0.5;
+         var divHotSpotToggle = false;
 
          var viewerHandler = this;
 
@@ -252,7 +253,7 @@
 
          viewerHandler.showHotSpot = function (zones) {
             //showHotSpots -> for(){showHotSpot}
-            var toggle = false;
+            //var toggle = false;
             console.log('in showHotSpot di ViewerHandler', zones);
 
             var rectObjs = [];
@@ -282,12 +283,22 @@
                hrefElt.className = 'hotspot';
                hrefElt.dataset.id = id;
                hrefElt.dataset.content = content;
-               hrefElt.onclick = function () {
-                  toggle = showDivHotSpot(toggle, this);
-               }; //function(){console.log('hot spot');};
-               hrefElt.onmouseleave = function () {
-                  toggle = hiddenDivHotSpot(toggle, this);
+               hrefElt.onmouseover = function () {
+                  viewerHandler.viewer.zoomPerClick = 1;
+                  
                };
+               hrefElt.onmouseout = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;
+               };
+               hrefElt.onclick = function(){
+                  showDivHotSpot(this);
+               };
+               
+               //function(){console.log('hot spot');};
+               // hrefElt.onmouseleave = function () {
+               //    toggle = hiddenDivHotSpot(toggle, this);
+               // };
+
                hrefElts.push(hrefElt);
             }
             console.log('hotspots: ', hrefElts);
@@ -303,8 +314,8 @@
             }
          };
 
-         var showDivHotSpot = function (toggle, elem) {
-            if (!toggle) {
+         var showDivHotSpot = function (elem) {
+            if (!divHotSpotToggle) {
                console.log("elem id", elem.id);
                var _$elem = $(elem);
                var x = _$elem.position().left;
@@ -339,7 +350,32 @@
                var divTitleElt = document.createElement('div');
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
-               divTitleElt.innerHTML = 'Sepoltura '+elem.dataset.id.replace(/SM_hs_/ , 'n° ');
+               divTitleElt.innerHTML = ''
+               var divCloser = document.createElement('div');
+               divCloser.className='PopupCloser';
+               divCloser.dataset.id = elem.dataset.id;
+               
+               divCloser.onclick = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;      
+                  hiddenDivHotSpot(this);
+            };
+
+               var closeIcon = document.createElement('i');
+               closeIcon.className = 'fa fa-times';
+
+               closeIcon.onmouseover = function(){
+                  viewerHandler.viewer.zoomPerClick = 1;
+                  console.log('closeIcon.onmouseover zoom per click: ', viewerHandler.viewer.zoomPerClick)
+               };
+               closeIcon.onmouseout = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;
+                  console.log('closeIcon.onmouseout zoom per click: ', viewerHandler.viewer.zoomPerClick)
+               };
+
+               
+
+               divCloser.appendChild(closeIcon);
+               divTitleElt.appendChild(divCloser);
 
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
@@ -359,13 +395,13 @@
 
                console.log(OSDOverlay.element);
                viewerHandler.viewer.addOverlay(OSDOverlay);
-               toggle = !toggle;
+               divHotSpotToggle = !divHotSpotToggle;
             }
-            return toggle;
+            return divHotSpotToggle; // non dovrebbe servire più
          };
 
-         var hiddenDivHotSpot = function (toggle, elem) {
-            console.log('hiddenDivHotSpot: ' + toggle);
+         var hiddenDivHotSpot = function (elem) {
+            console.log('hiddenDivHotSpot: ' + divHotSpotToggle);
             try {
                var id = elem.dataset.id;
                viewerHandler.viewer.removeOverlay('div-hotspot-overlay_selected-' + id);
@@ -373,8 +409,8 @@
                console.error('no hotspot overlay', error);
             }
 
-            toggle = false;
-            return toggle;
+            divHotSpotToggle = false;
+            return divHotSpotToggle;
 
 
          };
@@ -424,12 +460,9 @@
                   }
 
                } 
-
-
-
-               
+              
                //alert('overlay da img');
-            }
+            };
 
             elt.onmouseout = function(){
                console.log('de spegnere riga corrispondente a '+ this.dataset['lb']);
@@ -454,11 +487,11 @@
                //alert('overlay da img');
 
                }
-            }
+            };
 
             elt.onclick = function(){
                overlayHandler.test('funge on click');
-            }
+            };
 
             viewerHandler.viewer.addOverlay({
                element: elt,
@@ -466,7 +499,7 @@
             });
 
             return elt;
-         }
+         };
 
 
 
