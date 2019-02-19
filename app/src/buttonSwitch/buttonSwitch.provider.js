@@ -144,7 +144,8 @@ angular.module('evtviewer.buttonSwitch')
 	     */
 		var getIcon = function(icon) {
 			var evtIcon = '';
-			switch (angular.lowercase(icon)) {
+			if (!icon) { return ''; }
+			switch (icon.toLowerCase()) {
 				case 'add':
 					evtIcon = 'icon-evt_add';
 					break;
@@ -835,7 +836,7 @@ angular.module('evtviewer.buttonSwitch')
 						var startState = evtInterface.getState('isNavBarOpened') ;
 						evtInterface.updateState('isNavBarOpened', !startState);
 						vm.active = !vm.active;
-					}
+					};
 					break;
 				case 'thumbNails':
 					callback = function() {
@@ -852,6 +853,7 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateState('isVisCollOpened', !startState);
 						vm.active = !vm.active;
 					};
+					break;
 				default:
 					break;
 			}
