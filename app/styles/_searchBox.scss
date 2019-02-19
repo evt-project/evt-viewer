@@ -1,0 +1,45 @@
+/* *************************** */
+/* SEARCH BOX                  */
+/* *************************** */
+
+.search-box {
+   max-height: $search-box-height;
+   transition: max-height .5s;
+   display: none;
+   min-width: calc(100% - #{$mainContainer-border-width*2*2});
+   position: absolute;
+   bottom: 7px;
+   left: $mainContainer-border-width*2;
+   margin: 40px 0;
+   background: $box-background-color;
+   @include border($mainContainer-border-width, 'top',$base-color-dark);
+   &.open {
+      display: inline-block;
+   }
+   form {
+      height: 30px;
+      @include border($mainContainer-border-width, 'bottom', $base-color-dark);
+   }
+   .search-results {
+      overflow: auto;
+   }
+}
+
+/* helpers */
+.show {
+   display: block!important;
+}
+.hide {
+   display: none;
+}
+.show-visibility {
+   visibility: visible;
+}
+.hide-visibility {
+   visibility: hidden;
+}
+
+@import "searchBoxInternal.scss";
+@import "searchBoxExternal.scss";
+@import "searchBoxIndex.scss";
+@import "searchBoxKeyboard.scss";

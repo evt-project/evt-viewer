@@ -67,7 +67,7 @@
 **/
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox, evtVirtualKeyboard, evtButtonSwitch) {
 
     return {
         restrict: 'E',
@@ -291,6 +291,12 @@ angular.module('evtviewer.box')
                               var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                               scope.vm.updateTopBoxContent(content);
                       }
+                      /* aggiunta per msDesc*/
+                      else if (scope.vm.currentType === 'image'){
+                          var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                          scope.vm.updateTopBoxContent(msDescObj); 
+                      }
+                      /* fine aggiunta*/
                   }
               }, true);
 
@@ -401,20 +407,59 @@ angular.module('evtviewer.box')
             //TODO: aggiungere scroll per sources view
 
             if (currentBox.type === 'text') {
-                scope.$watch(function() {
-                    return evtInterface.getState('currentEdition');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                        scope.vm.edition = newItem;
-                        currentBox.updateContent();
-
-                    }
-                }, true);
+                if (currentBox.subtype === 'comparing') {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentComparingEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                         scope.vm.edition = newItem;
+                         currentBox.updateContent();
+   
+                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
+                         $timeout(function() {
+                            var currentBoxId = scope.id,
+                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+      
+                            if(searchInput !== '') {
+                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                            }
+                         });
+                      }
+                  }, true);
+                } else {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                          scope.vm.edition = newItem;
+                          currentBox.updateContent();
+                          
+                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
+                         $timeout(function() {
+                            var currentBoxId = scope.id,
+                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+      
+                            if(searchInput !== '') {
+                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                            }
+                         });
+                      }
+                  }, true);
+                }
 
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     currentBox.updateContent();
+   
+                   $timeout(function() {
+                      var currentBoxId = scope.id,
+                         searchInput = evtSearchBox.getInputValue(currentBoxId);
+   
+                      if(searchInput !== '') {
+                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                      }
+                   });
                 }, true);
             }
 

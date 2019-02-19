@@ -104,6 +104,7 @@
     }
     .lineContent {
         display: inline-block;
+        width: 90%;
     }
 
     &-hasLineN[data-rend='indent'] {
@@ -122,6 +123,8 @@
         height: 100%;
         width: 24px !important;
         display: inline-block;
+        vertical-align: top;
+        margin-top: 2.5px;
     }
 }
 
@@ -253,15 +256,18 @@
     position: relative;
 }
 .list{
+    margin-top:1.5%;
+    margin-bottom:1.5%;
+    margin-left:2%;
+    display:block;
+
     .item {
-        display: block;
-        &:before{
-            content : "\2022";
-            margin-right: 10px;
-            margin-left: 10px;
+        display: list-item;
+        position: relative;
+        left: 20px;
         }
     }
-}
+
 
 .listChange {
     .change {
@@ -279,6 +285,16 @@
         margin-bottom: 8px; 
     }
 
+    //TODO: spaziatura MSDesc
+
+    .history, .handDesc, .decoDesc {
+        &:before{
+            content: "\a";
+            display: inline-block;
+            white-space: pre;
+        }
+        
+    }
     
     .msIdentifier {
         display: block;
@@ -456,19 +472,29 @@
             display:none;
         }
     }
+
+
+    //TODO : gestione titoli
     .titleStmt {
         margin-bottom: 10px;
+        margin-left:25%;
+
         .title {
-            display: block;
+            display: inline;
             text-align: center;
             font-weight: bold;
             font-size: 1.2em;
             margin-bottom: 10px;
         }
         [data-type='sub']{
-            display: block;
             font-weight: bold;
             font-size: 1em;   
+        }
+        [data-type='main']{
+            
+            &:after{
+                content:" -";
+            }
         }
     }
     .editionStmt {
@@ -574,4 +600,94 @@
 .em {
     font-weight: bolder;
     font-style: italic;
+}
+
+
+.gap{
+    &[data-unit="chars"]{
+
+        &[data-quantity='1']{
+            &:before{
+                content: "[."
+            }
+            &:after{
+            content: "]"}
+            }
+
+        &[data-quantity='2']{
+            &:before{
+                content: "[.."
+            }
+            &:after{
+            content: "]"}
+            }
+
+        &[data-quantity='3']{
+            &:before{
+                content: "[..."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='4']{
+            &:before{
+                content: "[...."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='5']{
+            &:before{
+                content: "[....."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='6']{
+            &:before{
+                content: "[......"
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='7']{
+            &:before{
+                content: "[......."
+            }
+            &:after{
+            content: "]"}
+            }
+        
+
+        &[data-quantity='8']{
+            &:before{
+                content: "[........"
+            }
+            &:after{
+            content: "]"}
+            }
+
+        &[data-quantity='unknown']{
+            &:before{
+                content: "[..."
+            }
+            &:after{
+            content: "]"}
+            }   
+
+        &[data-extent]{
+                &:before{
+                    content: "[***]"
+                }
+            }
+        }
+   
 }

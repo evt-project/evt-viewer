@@ -283,14 +283,14 @@ angular.module('evtviewer.reading')
             app     = parsedData.getCriticalEntryById(vm.appId);
             reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
             if (reading !== undefined){
-                readingAttributes = reading.attributes || {};
-            
+                readingAttributes = parsedData.getReadingAttributes(vm.readingId, vm.appId) || {};
+                
                 filterLabels = parsedData.getCriticalEntriesFilters();
-
                 possibleFilters = $scope.$parent.vm.type === 'witness' ? possibleVariantFilters : possibleLemmaFilters;
                 if (Object.keys(readingAttributes).length > 0) {
                     var colors = '';
                     var opacity = (vm.over || vm.isSelect() || parentStatusOver) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
+                    
                     for (var label in filterLabels) {
                         var filterLabel = filterLabels[label].name;
                         if (possibleFilters.indexOf(filterLabel) >= 0) {
@@ -388,11 +388,11 @@ angular.module('evtviewer.reading')
             values,
             value,
             key;
+        readingAttributes = parsedData.getReadingAttributes(vm.readingId, vm.appId) || {};
+                
         if (app !== undefined){
             reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
             if (reading !== undefined){
-                readingAttributes = reading.attributes || {};
-            
                 var filters = $scope.$parent.vm.state.filters || {};
                 var filterKeys = Object.keys(filters);
                 if (condizione === 'OR') {
@@ -407,8 +407,10 @@ angular.module('evtviewer.reading')
                                 i = 0;
                                 values = filter.values;
                                 while ( i < values.length && !match) {
-                                    value = values[values[i]].name;
-                                    match = match || readingAttributes[filterLabel] === value;
+                                    if (values[values[i]].active) {
+                                        value = values[values[i]].name;
+                                        match = match || readingAttributes[filterLabel] === value;
+                                    }
                                     i++;
                                 }
                             }

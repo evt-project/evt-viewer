@@ -188,7 +188,7 @@ angular.module('evtviewer.dataHandler')
                 }
             } else {
                 if (!parsedData.getEncodingDetail('usesLineBreaks') && tagName === 'l') {
-                    newElement = parser.parseLine(element);
+                    newElement = parser.parseLine(doc, element, options);
                 } else if (tagName === 'note' && skip.indexOf('<evtNote>') < 0) {
                     newElement = parser.parseNote(element);
                 } else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
@@ -206,7 +206,6 @@ angular.module('evtviewer.dataHandler')
                         }
                     }
                     newElement.textContent = textContent.slice(0, -1);
-
                 } else if (config.namedEntitiesSelector &&
                     possibleNamedEntitiesDef.toLowerCase().indexOf('<' + tagName + '>') >= 0 &&
                     element.getAttribute('ref') !== undefined) { //TODO: Rivedere
@@ -296,7 +295,8 @@ angular.module('evtviewer.dataHandler')
             return document.createTextNode('');
         }
     };
-    /**
+
+    /** 
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseElementAttributes
      * @methodOf evtviewer.dataHandler.evtParser
@@ -551,9 +551,8 @@ angular.module('evtviewer.dataHandler')
     parser.analyzeEncoding = function(doc) {
         // Check if uses line breaks to divide lines
         var currentDocument = angular.element(doc);
-        var lineBreaks = currentDocument.find(defLineBreak.replace(/[<>]/g, ''));
-        parsedData.setEncodingDetail('usesLineBreaks', lineBreaks.length > 0);
-
+        var lineBreaks = currentDocument.find('body '+defLineBreak.replace(/[<>]/g, ''));
+		parsedData.setEncodingDetail('usesLineBreaks', lineBreaks.length > 0);
         var lineNums = currentDocument.find(defLine.replace(/[<>]/g, '') + '[n]');
         parsedData.setEncodingDetail('lineNums', lineNums.length > 0);
     };
@@ -636,11 +635,12 @@ angular.module('evtviewer.dataHandler')
         var n = 0;
         while (n < lines.length) {
             var lineNode = lines[n],
-                newElement = parser.parseLine(lineNode);
+                newElement = parser.parseLine(docDOM, lineNode, {});
             lineNode.parentNode.replaceChild(newElement, lineNode);
         }
     };
-    /**
+
+    /** 
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseLine
      * @methodOf evtviewer.dataHandler.evtParser
@@ -656,7 +656,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-    parser.parseLine = function(lineNode) {
+    parser.parseLine = function(doc, lineNode, options) {
         var newElement = document.createElement('div');
         newElement.className = lineNode.tagName + ' l-block';
         for (var i = 0; i < lineNode.attributes.length; i++) {
@@ -672,12 +672,12 @@ angular.module('evtviewer.dataHandler')
             lineNumElem.className = 'lineN';
             lineNumElem.textContent = lineNum;
             newElement.className += ' l-hasLineN';
-            newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">' + newElement.innerHTML + '</span>';
+            var parsedElement = parser.parseXMLElement(doc, newElement, options);
+			newElement.innerHTML = lineNumElem.outerHTML + '<span class="lineContent">' + parsedElement.outerHTML + '</span>';
             //newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
         } else if (parsedData.getEncodingDetail('lineNums')) {
             newElement.className += ' l-indent';
         }
-
         return newElement;
     };
     /**
@@ -1018,7 +1018,6 @@ angular.module('evtviewer.dataHandler')
                         originalContent: frontElem.outerHTML
                     };
                 }
-
                 for (var j = 0; j < element.attributes.length; j++) {
                     var attrib = element.attributes[j];
                     if (attrib.specified) {
@@ -1031,10 +1030,12 @@ angular.module('evtviewer.dataHandler')
                     // Split pages works only on diplomatic/interpretative edition
                     // In critical edition, text will be splitted into pages for each witness
                     config.defaultEdition = 'diplomatic';
+                    var pages = parsedData.getPages();
+					var newDocPages = newDoc.pages;
                     angular.forEach(angular.element(element).find(defContentEdition),
                         function(editionElement) {
                             //editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-                            parser.splitPages(editionElement, newDoc.value, defContentEdition);
+                            parser.splitPages(pages, editionElement, newDoc.value, defContentEdition, newDocPages);
                         });
                 }
             });
@@ -1103,35 +1104,45 @@ angular.module('evtviewer.dataHandler')
      
      * @author CDP
      */
-    parser.splitPages = function(docElement, docId, defContentEdition) {
-        var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
-            sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
-            matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
-        if (matchesOrphanText && matchesOrphanText.length > 0) {
-            var previousDoc = parsedData.getPreviousDocument(docId);
-            if (previousDoc && previousDoc.pages && previousDoc.pages.length > 0) {
-                var parentPageId = previousDoc.pages[previousDoc.pages.length - 1];
-                if (parentPageId && parentPageId !== '') {
-                    parsedData.setPageText(parentPageId, docId, 'original', matchesOrphanText[0]);
-                }
+	parser.splitPages = function(pages, docElement, docId, defContentEdition, currentDocPages) {
+		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
+			sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
+			matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
+      
+      var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
+      var sRegExInput = new RegExp(match, 'ig');
+      var matches = docElement.outerHTML.match(sRegExInput);
+      var pageId;
+      
+		if (matchesOrphanText && matchesOrphanText.length > 0) {
+			var previousDoc = parsedData.getPreviousDocument(docId);
+			
+			if (previousDoc && previousDoc.pages && previousDoc.pages.length > 0) {
+				var parentPageId = previousDoc.pages[previousDoc.pages.length - 1];
+				var currentDocPos = pages.length - currentDocPages.length;
+				
+				if (parentPageId && parentPageId !== '') {
+				   var matchId = 0;
+               for (var j = currentDocPos; j < pages.length; j++) {
+                  pageId = pages[j];
+                  if (pageId && pageId !== '') {
+                     parsedData.setPageText(pageId, docId, 'original', matches[matchId]);
+                     matchId++;
+                  }
+               }
+				}
+			}
+         else {
+            for (var i = 0; i < pages.length; i++) {
+               pageId = pages[i];
+               if (pageId && pageId !== '') {
+                  parsedData.setPageText(pageId, docId, 'original', matches[i]);
+               }
             }
-        }
-        var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
-        var sRegExInput = new RegExp(match, 'ig');
-        var matches = docElement.outerHTML.match(sRegExInput);
-        var totMatches = matches ? matches.length : 0;
-        for (var i = 0; i < totMatches; i++) {
-            var matchPbIdAttr = 'xml:id=".*"',
-                sRegExPbIdAttr = new RegExp(matchPbIdAttr, 'ig'),
-                pbHTMLString = matches[i].match(sRegExPbIdAttr);
-            sRegExPbIdAttr = new RegExp('xml:id=(?:"[^"]*"|^[^"]*$)', 'ig');
-            var idAttr = pbHTMLString ? pbHTMLString[0].match(sRegExPbIdAttr) : undefined,
-                pageId = idAttr ? idAttr[0].replace(/xml:id/, '').replace(/(=|\"|\')/ig, '') : '';
-            if (pageId && pageId !== '') {
-                parsedData.setPageText(pageId, docId, 'original', matches[i]);
-            }
-        }
-    };
+         }
+		}
+	};
+	/**
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseTextForEditionLevel
@@ -1155,93 +1166,94 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-    parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
-        var balancedHTMLString = parser.balanceXHTML(docHTML);
-        balancedHTMLString = balancedHTMLString.replace(/> </g, '>__SPACE__<');
-        var deferred = $q.defer(),
-            editionText = balancedHTMLString, //TEMP
-            doc = xmlParser.parse('<div id="mainContentToTranform" class="' + editionLevel + '">' + balancedHTMLString + '</div>');
-        if (doc !== undefined) {
-            var docDOM = doc.getElementById('mainContentToTranform');
-            //remove <pb>s
-            var pbNode,
-                pbs = docDOM.getElementsByTagName('pb'),
-                k = 0;
-            while (k < pbs.length) {
-                pbNode = pbs[k];
-                pbNode.parentNode.removeChild(pbNode);
-            }
+	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
+		var balancedHTMLString = parser.balanceXHTML(docHTML);
+		balancedHTMLString = balancedHTMLString.replace(/>\s+</g, '>__SPACE__<');
+		var deferred = $q.defer(),
+			editionText = balancedHTMLString, //TEMP
 
-            //remove <lb>s
-            var invalidLbsSuffix;
-            if (editionLevel === 'diplomatic') {
-                invalidLbsSuffix = '_reg';
-            } else if (editionLevel === 'interpretative') {
-                invalidLbsSuffix = '_orig';
-            }
-            if (invalidLbsSuffix) {
-                var lbs = docDOM.getElementsByTagName('lb');
-                k = 0;
-                while (k < lbs.length) {
-                    var lbNode = lbs[k];
-                    var lbNodeId = lbNode.getAttribute('xml:id');
-                    if (lbNodeId && lbNodeId !== null && lbNodeId.indexOf(invalidLbsSuffix) >= 0) {
-                        lbNode.parentNode.removeChild(lbNode);
-                    } else {
-                        k++;
-                    }
-                }
-            }
+			doc = xmlParser.parse('<div id="mainContentToTranform" class="' + editionLevel + '">' + balancedHTMLString + '</div>');
+			if (doc !== undefined) {
+				var docDOM = doc.getElementById('mainContentToTranform');
+				//remove <pb>s
+				var pbNode,
+					pbs = docDOM.getElementsByTagName('pb'),
+					k = 0;
+				while (k < pbs.length) {
+					pbNode = pbs[k];
+					pbNode.parentNode.removeChild(pbNode);
+				}
 
-            var Gs = docDOM.getElementsByTagName('g');
-            k = 0;
-            while (k < Gs.length) {
-                var gNode = Gs[k],
-                    ref = gNode.getAttribute('ref'),
-                    glyphNode = document.createElement('span');
-                glyphNode.className = 'glyph';
+				//remove <lb>s
+				var invalidLbsSuffix;
+				if (editionLevel === 'diplomatic') {
+					invalidLbsSuffix = '_reg';
+				} else if (editionLevel === 'interpretative') {
+					invalidLbsSuffix = '_orig';
+				}
+				if (invalidLbsSuffix) {
+					var lbs = docDOM.getElementsByTagName('lb');
+					k = 0;
+					while (k < lbs.length) {
+						var lbNode = lbs[k];
+						var lbNodeId = lbNode.getAttribute('xml:id');
+						if (lbNodeId && lbNodeId !== null && lbNodeId.indexOf(invalidLbsSuffix) >= 0) {
+							lbNode.parentNode.removeChild(lbNode);
+						} else {
+							k++;
+						}
+					}
+				}
 
-                if (ref && ref !== '') {
-                    ref = ref.replace('#', '');
-                    var edition = editionLevel;
-                    edition = edition === 'interpretative' ? 'normalized' : edition;
-                    if (parser.isNestedInElem(gNode, 'abbr') || parser.isNestedInElem(gNode, 'orig')) {
-                        edition = 'diplomatic';
-                    }
-                    var glyphMappingForEdition = parsedData.getGlyphMappingForEdition(ref, edition);
-                    if (glyphMappingForEdition) {
-                        glyphNode.appendChild(angular.element(glyphMappingForEdition.element)[0]);
-                    }
-                }
-                if (glyphNode) {
-                    //TODO Creare direttiva apposita per GLYPHs
-                    gNode.parentNode.insertBefore(glyphNode, gNode.nextSibling);
-                }
-                gNode.parentNode.removeChild(gNode);
-            }
-            docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
+				var Gs = docDOM.getElementsByTagName('g');
+				k = 0;
+				while (k < Gs.length) {
+					var gNode = Gs[k],
+						ref = gNode.getAttribute('ref'),
+						glyphNode = document.createElement('span');
+					glyphNode.className = 'glyph';
 
-            angular.forEach(docDOM.children, function(elem) {
-                var skip = '<pb>,<g>';
-                elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {
-                    skip: skip
-                }), elem);
-            });
-            editionText = docDOM.outerHTML;
-        } else {
-            editionText = '<span> {{ \'TEXT_NOT_AVAILABLE\' | translate }}</span>';
-        }
+					if (ref && ref !== '') {
+						ref = ref.replace('#', '');
+						var edition = editionLevel;
+						edition = edition === 'interpretative' ? 'normalized' : edition;
+						if (parser.isNestedInElem(gNode, 'abbr') || parser.isNestedInElem(gNode, 'orig')) {
+							edition = 'diplomatic';
+						}
+						var glyphMappingForEdition = parsedData.getGlyphMappingForEdition(ref, edition);
+						if (glyphMappingForEdition) {
+							glyphNode.appendChild(angular.element(glyphMappingForEdition.element)[0]);
+						}
+					}
+					if (glyphNode) {
+						//TODO Creare direttiva apposita per GLYPHs
+						gNode.parentNode.insertBefore(glyphNode, gNode.nextSibling);
+					}
+					gNode.parentNode.removeChild(gNode);
+				}
+				docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
-        if (editionText === undefined) {
-            var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
-            editionText = errorMsg;
-        }
+				angular.forEach(docDOM.children, function(elem) {
+					var skip = '<pb>,<g>';
+					elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {
+						skip: skip
+					}), elem);
+				});
+				editionText = docDOM.outerHTML;
+			} else {
+				editionText = '<span> {{ \'TEXT_NOT_AVAILABLE\' | translate }}</span>';
+			}
 
-        parsedData.setPageText(pageId, docId, editionLevel, editionText);
+			if (editionText === undefined) {
+				var errorMsg = '<span class="alert-msg alert-msg-error">{{\'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate}} <br />{{\'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate}}</span>';
+				editionText = errorMsg;
+			}
+			editionText = editionText.replace(/__SPACE__/g, ' ');
+			parsedData.setPageText(pageId, docId, editionLevel, editionText);
 
-        deferred.resolve('success');
-        return deferred;
-    };
+			deferred.resolve('success');
+			return deferred;
+		};
 
     return parser;
 });

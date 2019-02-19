@@ -46,7 +46,8 @@ angular.module('evtviewer.dataHandler')
 		encodingDescription: '',
 		textProfile: '',
 		outsideMetadata: '',
-		revisionHistory: ''
+		revisionHistory: '',
+		msDesc: ''
 	};
 
 	/**
@@ -2104,7 +2105,11 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getReadingAttributes = function(readingId, appId) {
 		var attributes = [];
 		if (criticalAppCollection[appId].content[readingId] !== undefined) {
-			attributes = criticalAppCollection[appId].content[readingId].attributes;
+			attributes = criticalAppCollection[appId].attributes;
+			var readingAttributes = criticalAppCollection[appId].content[readingId].attributes;
+			for (var key in readingAttributes) {
+				attributes[key] = readingAttributes[key];
+			}
 		}
 		return attributes;
 	};
@@ -2208,7 +2213,7 @@ angular.module('evtviewer.dataHandler')
 				if (color) {
                     filtersCollection.colors.push(color);
                 }
-
+                
 				var valueObj = {
 					name: value,
 					color: color
@@ -2636,7 +2641,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
-
+   
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -2659,7 +2664,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
 	};
-
 
 	// ////// //
 	// GLYPHS //
@@ -2782,7 +2786,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      */
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
-		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
+		return glyphsCollection[glyphId] ? glyphsCollection[glyphId].mapping[editionLevel] : undefined;
 	};
 
 	// ///////////////// //

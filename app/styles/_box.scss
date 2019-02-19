@@ -55,16 +55,29 @@
             display: block;
         }
     }
-    .box-top-box { 
+    .box-top-box:not(#msDesc) { 
         background: $box-top-box-backgound-color;
         overflow-y: auto;
         overflow-x: hidden;
         top: $mainContainer-border-width;
         right: $mainContainer-border-width+1;
         left: $mainContainer-border-width+1;
-        @include calc(height, #{setInsideFrameHeight()} - ($mainContainer-border-width*2));
+		@include calc(height, #{setInsideFrameHeight()} - ($mainContainer-border-width*2));
         @include calc(width, #{calc(100% - $mainContainer-border-width)});
-    }
+	}
+	
+	#msDesc {
+		background: $box-top-box-backgound-color;
+        overflow-y: auto;
+        overflow-x: hidden;
+        top: $mainContainer-border-width;
+        right: $mainContainer-border-width+1;
+        left: $mainContainer-border-width+1;
+        @include calc(width, #{calc(100% - $mainContainer-border-width)});
+		z-index:30;
+	}
+		
+    
     .box-bottom-box{
         bottom: 0px;
         right: $mainContainer-border-width;
@@ -417,7 +430,6 @@
             margin-left: 8px;
             margin: 8px 0;
             font-size: 2.2em;
-            top: 19px;
         }
     }
 }

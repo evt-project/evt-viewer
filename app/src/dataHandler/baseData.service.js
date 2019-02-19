@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.baseData
- * @description 
+ * @description
  * # baseData
  * Service containing methods to handle the initial source of data.
  * It stores the XML documents loaded, allows to launch initial parsers
@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -34,7 +34,8 @@ angular.module('evtviewer.dataHandler')
             //Added by CM to save references to sources text documents
             XMLSrcDocuments: [],
             XMLStrings: []
-        };
+        },
+        docElements;
 
     var _console = $log.getInstance('baseData');
 
@@ -56,6 +57,10 @@ angular.module('evtviewer.dataHandler')
         var promises = [];
         promises.push(addXMLDocument(xmlString).promise);
         return $q.all(promises);
+    };
+
+    baseData.getXML = function() {
+      return docElements;
     };
 
     /**
@@ -99,7 +104,7 @@ angular.module('evtviewer.dataHandler')
      */
     var addXMLDocument = function(doc) {
         var deferred = $q.defer();
-        var docElements = xmlParser.parse(doc);
+        docElements = xmlParser.parse(doc);
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
             loadXIinclude(docElements).promise.then(function(){
@@ -133,7 +138,7 @@ angular.module('evtviewer.dataHandler')
             state.XMLExtDocuments[type] = docElements;
             state.XMLExtDocuments.length++;
             var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
-            
+
             /*if (type === 'sources') {
                 evtSourcesParser.parseExternalSources(docElements);
             } else if (type === 'analogues') {
@@ -230,19 +235,16 @@ angular.module('evtviewer.dataHandler')
         evtParser.analyzeEncoding(docElements);
         // Parse pages
         // evtParser.parsePages(docElements);
-        
-        // Parse Glyphs
-        evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
-        
+
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
-        
+
         // Parse documents
         evtParser.parseDocuments(docElements);
 
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);
-        
+
         // Parse the Sources Apparatus entries (@author: CM)
         if (config.quoteDef !== '') {
             var promiseQuote = [];
@@ -267,12 +269,17 @@ angular.module('evtviewer.dataHandler')
         //Parse named entity
         evtNamedEntitiesParser.parseEntities(docElements);
 
-        // Parse projet info 
+        // Parse projet info
         evtProjectInfoParser.parseProjectInfo(docElements);
-
+      
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
-
+   
+       // Parse Glyphs
+       evtParser.parseGlyphs(docElements);
+   
+       // Init Search
+       //evtSearch.initSearch(docElements);
     };
 
     /**

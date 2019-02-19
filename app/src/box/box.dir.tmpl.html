@@ -1,4 +1,4 @@
-<section class="box box-{{::vm.type}}" 
+<section class="box box-{{::vm.type}}"
          id="{{::vm.uid}}"
          data-position="left"
          data-getTotElementsOfType="{{vm.getTotElementsOfType('witness')}}"
@@ -8,19 +8,19 @@
                     'topBoxOpened': vm.state.topBoxOpened,
                     'filterNotActive': vm.state.filters._totActive <= 0,
                     'ITLactive': vm.isITLactive()}">
-    
-    <div 
-        class="box-menu" 
+
+    <div
+        class="box-menu"
         data-position="top"
         ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'"">
-        
-        <evt-select 
+
+        <evt-select
             data-id="{{::selector.id}}"
             data-type="{{::selector.type}}"
             data-init="{{::selector.initValue}}"
             ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
         </evt-select>
-        <button-switch 
+        <button-switch
             title="{{::button.title}}"
             data-label="{{::button.label}}"
             data-icon="{{::button.icon}}"
@@ -29,24 +29,24 @@
             ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
     </div>
-    <div 
-        class="box-top-box avoidBlur" 
+    <div
+        class="box-top-box avoidBlur"
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
     <div class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
          style="{{vm.fontSize();}}"
-         id="box_body_{{::vm.uid}}" 
+         id="box_body_{{::vm.uid}}"
          compile="::vm.content" ng-transclude></div>
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>
-    <div class="filters-in-box" 
+    <div class="filters-in-box"
          ng-if="(vm.type=='witness' || vm.type=='text') && vm.state.filters._totActive > 0">
-        <span 
+        <span
             class="filter-group"
             ng-repeat="filter in vm.state.filters track by $index"
             ng-if="filter.totActive > 0">
-            <span 
+            <span
                 class="filter-value"
                 ng-repeat="value in filter.values track by $index"
                 ng-if="filter.values[value].active"
@@ -58,19 +58,19 @@
         </span>
     </div>
     <!-- <div class="box-bottom-box"> </div> -->
-    <div 
+    <div
         class="filters-box"
         ng-if="::vm.type=='witness' || vm.type=='text'"
         ng-class="{'open': vm.state.filterBox}">
-        
+
         <div class="filter-group"
              ng-repeat="filter in vm.appFilters track by $index"
              ng-if="::(vm.type=='witness' && filter.possibleFor.variant) || (vm.type=='text' && filter.possibleFor.lemma)">
             <div class="filters-section-title">{{::filter.name}}</div>
             <div class="filter-value-outer">
-                <div 
+                <div
                     class="filter-value">
-                    <span 
+                    <span
                         class="filter-value-label filter-any"
                         title="Toggle ''any''"
                         ng-class="{'active': vm.state.filters[filter.name] === undefined || vm.state.filters[filter.name].totActive === 0}"
@@ -78,27 +78,36 @@
                 </div>
             </div>
             <div class="filter-value-outer" ng-repeat="value in filter.values track by $index">
-                <div 
-                    style="background:{{::value.color}}" 
+                <div
+                    style="background:{{::value.color}}"
                     class="filter-value">
-                    <span 
+                    <span
                         class="filter-value-label"
                         title="Toggle ''{{::value.name}}''"
                         ng-class="{'active': vm.state.filters[filter.name].values[value.name].active !== undefined && vm.state.filters[filter.name].values[value.name].active}"
-                        ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);"> 
+                        ng-click="vm.toggleCriticalAppFilter(filter.name, value.name);">
                         {{::value.name}}</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div 
+   <evt-search-box
+        ng-if="vm.type=='text'"
+        ng-controller="SearchBoxCtrl as searchBox">
+    </evt-search-box>
+
+   <!--<evt-search-box-index
+      ng-if="vm.type=='text'">
+   </evt-search-box-index>-->
+
+    <div
         class="tools-group-box"
         ng-if="::vm.type!=='image'"
         ng-class="{'open': vm.getState('fontSizeBtn')}">
-        <div 
+        <div
             class="fontSizeBtnGroup">
-            <button-switch 
+            <button-switch
                 class="no-background"
                 title="{{::button.title}}"
                 data-label="{{::button.label}}"
@@ -110,11 +119,11 @@
         </div>
     </div>
 
-    <div 
-        class="box-menu" 
+    <div
+        class="box-menu"
         data-position="bottom"
         ng-if="::vm.bottomMenuList.buttons.length > 0 || vm.bottomMenuList.selectors.length > 0">
-        <evt-select 
+        <evt-select
             data-id="{{::selector.id}}"
             data-type="{{::selector.type}}"
             data-init="{{::selector.initValue}}"
@@ -122,8 +131,8 @@
             data-multiselect="{{::selector.multiselect}}"
             ng-repeat="selector in ::vm.bottomMenuList.selectors track by $index">
         </evt-select>
-        
-        <button-switch 
+
+        <button-switch
             title="{{::button.title}}"
             data-label="{{::button.label}}"
             data-icon="{{::button.icon}}"

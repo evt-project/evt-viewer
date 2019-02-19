@@ -28,7 +28,7 @@
 **/
 angular.module('evtviewer.buttonSwitch')
 
-.directive('buttonSwitch', function(evtButtonSwitch, evtInterface) {
+.directive('buttonSwitch', function($rootScope, evtButtonSwitch, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -98,14 +98,24 @@ angular.module('evtviewer.buttonSwitch')
                             scope.vm.active = false;
                         }
                     // }
-                }, true); 
+                }, true);
             }
+            
+            var parentBoxId;
+            if (scope.type === 'search') {
+              parentBoxId = scope.$parent.id;
+              $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
+           }
+           if (scope.type === 'searchVirtualKeyboard') {
+              parentBoxId = scope.$parent.id;
+              $rootScope.$broadcast('keyboardBtn', {parentId:parentBoxId, btn: currentButton});
+           }
 
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentButton){
                     currentButton.destroy();
-                }     
+                }
             });
         }
     };

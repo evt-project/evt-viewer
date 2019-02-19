@@ -1,7 +1,9 @@
 node_modules
-dist
+app/dist
 .tmp
 .sass-cache
+docs
+package-lock.json
 bower_components
 build
 devDocs

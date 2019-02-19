@@ -48,6 +48,7 @@
  * @requires evtviewer.versionReading
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
+ * @requires evtviewer.search
  */
  //* @requires evtviewer.mobile
 angular
@@ -94,5 +95,6 @@ angular
         'evtviewer.versionApparatusEntry',
         'evtviewer.UItools',
 		'evtviewer.navBar',
-		'evtviewer.visColl'
+		'evtviewer.visColl',
+    	'evtviewer.search'
     ]);

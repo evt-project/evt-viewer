@@ -1,0 +1,43 @@
+/* ********************** */
+/* SEARCH BOX KEYBOARD    */
+/* ********************** */
+.ui-keyboard {
+   width: $virtual-keyboard-width;
+   top: auto!important;
+   left: 30px!important;
+   bottom: 35px;
+   padding: 10px;
+   text-align: left;
+   @include border($mainContainer-border-width, 'all',$base-color-dark);
+   background-color: $virtual-keyboard-background;
+   .ui-keyboard-button {
+      margin-right: 6px;
+      margin-bottom: 3px;
+      border-radius: 2px;
+      border: 1px solid $virtual-keyboard-btn-border;
+      font-family: Junicode;
+      font-size: 15px;
+      line-height: .8em;
+      &:hover {
+         box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
+      }
+   }
+   .ui-keyboard-keyset {
+      text-align: left;
+      white-space: initial;
+   }
+   .ui-keyboard-actionkey-wrapper {
+      display: flex;
+      justify-content: flex-end;
+   }
+   .ui-keyboard-button-endrow {
+      display: none;
+   }
+}
+
+.results-open {
+   .ui-keyboard {
+      top: 35px!important;
+      bottom: auto;
+   }
+}

@@ -3,222 +3,222 @@
 /* *************************** */
 
 .diplomaticEdition {
-    // Abbreviations and Their Expansions
-    .choice {
-        .abbr {
-            color: purple;
-        }
+	// Abbreviations and Their Expansions
+	.choice {
+		.abbr {
+			color: purple;
+		}
 
-        > .expan {
-            display: none;
-        }
-    }
+		> .expan {
+			display: none;
+		}
+	}
 
-    // 3.3.2 Emphasis, Foreign Words, and Unusual Language
-    // 3.3.2.2 Emphatic Words and Phrases
-    .hi {
-        &[data-rend="7init"] {
-            font-size: 200%;
-            font-weight: bold;
-        }
+	// 3.3.2 Emphasis, Foreign Words, and Unusual Language
+	// 3.3.2.2 Emphatic Words and Phrases
+	.hi {
+		&[data-rend="7init"] {
+			font-size: 200%;
+			font-weight: bold;
+		}
 
-        &[data-rend="init3.1"] {
-            font-size: 180%;
-            font-weight: bold;
-        }
+		&[data-rend="init3.1"] {
+			font-size: 180%;
+			font-weight: bold;
+		}
 
-        &[data-rend="cap"] {
-            text-transform: uppercase;
-        }
+		&[data-rend="cap"] {
+			text-transform: uppercase;
+		}
 
-        &[data-rend="double"] {
-            font-size: 120%;
-        }
-    }
+		&[data-rend="double"] {
+			font-size: 120%;
+		}
+	}
 
-    // 3.4 Simple Editorial Changes
-    .choice {}
+	// 3.4 Simple Editorial Changes
+	.choice {}
 
-    // 3.4.2 Regularization and Normalization
-    .choice {
-        position: relative;
+	// 3.4.2 Regularization and Normalization
+	.choice {
+		position: relative;
 
-        &:before, &:after {
-            content: "";
-        }
+		&:before, &:after {
+			content: "";
+		}
 
-        &:hover .reg, &.hover .reg {
-            display: inline;
-            min-width: 20px;
-            text-align: center;
-            z-index: 99;
-        }
+		&:hover .reg, &.hover .reg {
+			display: inline;
+			min-width: 20px;
+			text-align: center;
+			z-index: 99;
+		}
 
-        .orig {
-            color: #69513a;
-        }
+		.orig {
+			color: #69513a;
+		}
 
-        &:hover .orig, &.hover .orig {
-            color: #561c0a;
-            text-decoration: underline;
-            z-index: 9;
-        }
+		&:hover .orig, &.hover .orig {
+			color: #561c0a;
+			text-decoration: underline;
+			z-index: 9;
+		}
 
-        .corr {
-            display: none;
-        }
-    }
+		.corr {
+			display: none;
+		}
+	}
 
-    .reg {
-        font-size: 80%;
-        position: absolute;
-        line-height: 16px;
-        display: none;
-        border: 1.5px solid black;
-        border-radius: 3px;
-        padding: 0.4%;
-        margin-top: 30px;
+	.reg {
+		font-size: 80%;
+		position: absolute;
+		line-height: 16px;
+		display: none;
+		border: 1.5px solid black;
+		border-radius: 3px;
+		padding: 0.4%;
+		margin-top: 30px;
 
-        @include set(box-shadow, 2px 2px 2px #7e7067);
+		@include set(box-shadow, 2px 2px 2px #7e7067);
 
-        position: absolute;
-        left: 0;
+		position: absolute;
+		left: 0;
 
-        &:before {
-            content: url("../images/popup_before.png");
-            left: 15%;
-            position: absolute;
-            top: -13px;
-        }
+		&:before {
+			content: url("../images/popup_before.png");
+			left: 15%;
+			position: absolute;
+			top: -13px;
+		}
 
-        span {
-            background: transparent;
-        }
-    }
+		span {
+			background: transparent;
+		}
+	}
 
-    .reg, .reg * {
-        background: #e5dac4 !important;
-    }
+	.reg, .reg * {
+		background: #e5dac4 !important;
+	}
 
-    .orig {
-        .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-        }
+	.orig {
+		.sup {
+			line-height: 20px;
+			vertical-align: 20%;
+		}
 
-        .under {
-            line-height: 20px;
-            vertical-align: -20%;
-        }
-    }
+		.under {
+			line-height: 20px;
+			vertical-align: -20%;
+		}
+	}
 
-    // 3.4.3 Additions, Deletions, and Omissions
-    .add {
-        background-color: rgba(0, 128, 0, 0.8);
+	// 3.4.3 Additions, Deletions, and Omissions
+	.add {
+		background-color: rgba(0, 128, 0, 0.8);
 
-        &[data-place='above'] {}
-    }
+		&[data-place='above'] {}
+	}
 
-    .del {
-        background-color: red;
-        text-decoration: line-through;
-    }
+	.del {
+		background-color: red;
+		text-decoration: line-through;
+	}
 
-    // 11.3.3.1 Damage, Illegibility, and Supplied Text
-    .damage {
-        background-color: rgba(193, 193, 193, 0.7);
-    }
+	// 11.3.3.1 Damage, Illegibility, and Supplied Text
+	.damage {
+		background-color: rgba(193, 193, 193, 0.7);
+	}
 
-    .supplied {
-        &[data-reason='omitted'] {}
+	.supplied {
+		&[data-reason='omitted'] {}
 
-        &[data-reason='illeggibile'] {}
-    }
+		&[data-reason='illeggibile'] {}
+	}
 
-    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-    .glyph {
-        .glyphname, .mapping {
-            display: none;
-        }
+	//TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+	.glyph {
+		.glyphname, .mapping {
+			display: none;
+		}
 
-        .mapping[data-type="diplomatic"] {
-            display: inline;
-        }
-    }
+		.mapping[data-type="diplomatic"] {
+			display: inline;
+		}
+	}
 
-    .char {
-        .charname, .mapping {
-            display: none;
-        }
+	.char {
+		.charname, .mapping {
+			display: none;
+		}
 
-        .mapping[data-type="diplomatic"] {
-            display: inline;
-        }
-    }
+		.mapping[data-type="diplomatic"] {
+			display: inline;
+		}
+	}
 
-    //TO CHECK AND REORDER
-    .center, [rend="center"] {
-        text-align: center;
-        width: 92%;
-        display: inline-table;
-        background: #FFF;
-    }
+	//TO CHECK AND REORDER
+	.center, [rend="center"] {
+		text-align: center;
+		width: 92%;
+		display: inline-table;
+		background: #FFF;
+	}
 
-    .right, [rend="right"] {
-        text-align: right;
-        display: inline-table;
-        background: #FFF;
-    }
+	.right, [rend="right"] {
+		text-align: right;
+		display: inline-table;
+		background: #FFF;
+	}
 
-    .left, [rend="left"] {
-        display: inline-table;
-    }
+	.left, [rend="left"] {
+		display: inline-table;
+	}
 
-    [data-rend="red"] {
-        color: red;
-    }
+	[data-rend="red"] {
+		color: red;
+	}
 
-    .attachment {
-        border: 1px solid black;
-        padding: 5px 0px 0px 10px;
-    }
+	.attachment {
+		border: 1px solid black;
+		padding: 5px 0px 0px 10px;
+	}
 
-    .lineN {
-        color: grey;
-        font-size: 0.8em;
-    }
+	.lineN {
+		color: grey;
+		font-size: 0.8em;
+	}
 
-    .subst {
-        text-decoration: underline;
-    }
+	.subst {
+		text-decoration: underline;
+	}
 
-    .zone {
-        margin-bottom: 5px;
-    }
+	.zone {
+		margin-bottom: 5px;
+	}
 }
 
 .choice_popup {
-    display: inline-table;
+	display: inline-table;
 
-    /*white-space: nowrap;*/
+	/*white-space: nowrap;*/
 }
 
 span.dipl-choice_popup:hover span.dipl-reg,
 span.dipl-choice_popup.hover span.dipl-reg {
-    display: inline;
-    min-width: 20px;
-    text-align: center;
+	display: inline;
+	min-width: 20px;
+	text-align: center;
 }
 
 span.dipl-choice_popup span.dipl-orig {
-    /*color: #999966;*/
-    color: #69513a;
+	/*color: #999966;*/
+	color: #69513a;
 
-    /*background-color: rgba(255,255,204,0.8);*/
+	/*background-color: rgba(255,255,204,0.8);*/
 }
 
 span.dipl-choice_popup:hover span.dipl-orig,
 span.dipl-choice_popup.hover span.dipl-orig {
-    color: #561c0a;
-    text-decoration: underline;
+	color: #561c0a;
+	text-decoration: underline;
 }
