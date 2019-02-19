@@ -13,10 +13,10 @@
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css" />
     <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
-    <link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -289,21 +289,24 @@
                 <p>{{ getErrorMsg().info | translate }}</p><!-- TODO: Add translation -->
             </div>
         </section>
-        <section class="popup-container" ng-hide="isThumbNailsOpened() === false">
-            <div>
-                <p> prova Thumbnails </p>
-            </div>
+        <section class="popup-container thumb_cont" ng-if="isThumbNailsOpened()">
+            <figure class="thumbnail thumb_single" data-value="{{ thumb.value }}" data-src="{{ thumb.image }}" ng-click="goToPageFromThumb(thumb)"
+                ng-repeat="thumb in getThumbnails() track by $index" ng-class="{'active': getCurrentPage() === thumb.value}"> <!-- TEMP -->
+                <img class="thumb_single_img" ng-src="{{ thumb.image }}" onerror="this.setAttribute('src', 'images/empty-image.jpg')"/>
+                <figcaption>{{ thumb.label }}</figcaption>
+            </figure>
         </section>
-        <section class="popup-container" ng-hide="isVisCollOpened() === false">
+        <section class="popup-container" ng-hide="!isVisCollOpened()">
             <div>
                 <evt-viscoll></evt-viscoll>
             </div>
         </section>
 
-        <button-switch ng-hide="isNavBarOpened() === false" title="hideBar" data-icon="show-bar" data-type="hideBar"
-            class="hider"></button-switch>
-        <button-switch ng-hide="isNavBarOpened() === true" title="hideBar" data-icon="hide-bar" data-type="hideBar"
-            class="hider"></button-switch>
+        <button-switch class="inverted-color"
+            ng-class="{'navBar-opener': !isNavBarOpened(), 'navBar-closer': isNavBarOpened()}"    
+            title="BUTTONS.TOGGLE_NAVBAR" 
+            data-icon="{{isNavBarOpened() ? 'hide-bar' : 'show-bar'}}" 
+            data-type="toggler" on-btn-clicked="toggleNavBar()"></button-switch>
         <evt-navbar ng-hide="isNavBarOpened() === true"></evt-navbar>
     </div>
 
@@ -344,6 +347,7 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
@@ -356,6 +360,8 @@
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <script src="bower_components/ngprogress/build/ngprogress.min.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>

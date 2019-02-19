@@ -1,34 +1,31 @@
 /* *************************** */
+
 /* BUTTON SWITCH               */
+
 /* *************************** */
 
 $buttonSwitch-background-color: $base-color-light;
 $buttonSwitch-color: $base-color-dark;
 $buttonSwitch-shadow-color: rgba(0, 0, 0, 0.4);
-
 $buttonSwitch-active-background-color: $base-color-active-background;
 $buttonSwitch-active-color: $base-color-active;
 button-switch {
     margin-right: 5px;
     display: inline-block;
-
     .buttonSwitch {
-		font-family: Junicode, Times, serif;
+        font-family: Junicode, Times, serif;
         min-height: 28px;
         min-height: 27.5px;
         min-width: 30px;
         width: auto;
         vertical-align: middle;
-
         position: relative;
         display: inline-flex;
         justify-content: center;
         align-items: center;
         overflow: visible;
-
         font-size: 1em;
         text-align: left;
-
         &.only-icon {
             text-align: center;
         }
@@ -36,114 +33,110 @@ button-switch {
             padding-right: 10px;
             text-align: center;
         }
-
         background: $buttonSwitch-background-color;
         color: $buttonSwitch-color;
-
         box-shadow: 0px 2px 4px $buttonSwitch-shadow-color;
         border-radius: 2px;
-
-        &:hover{
+        &:hover {
             box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
             text-shadow: none !important;
             cursor: pointer;
         }
-
-        &-active{
+        &-active {
             background: $buttonSwitch-active-background-color;
             color: $buttonSwitch-active-color;
         }
-        &-disabled{
-            opacity: .5;
-            cursor: default !important;
-            &:hover{
-                box-shadow: none !important;
-                text-shadow: none !important;
-            }
-        }
-
         &-label {
             margin: 0px;
             margin-left: 4px;
         }
-
         &-icon {
             position: relative;
             right: 0px;
             font-size: 1.4em;
-
             &.fa {
                 font-size: 1.1em !important;
-				top: 2px;
-				
-				&.fa-angle-double-down {
-				top: -4px;
-				}
+                top: 0px;
+                &.fa-angle-double-down {
+                    top: -4px;
+                }
             }
         }
         &.iconLeft {
             .buttonSwitch-icon {
                 top: 8px;
             }
-
             .buttonSwitch-label {
                 margin-left: 0;
                 margin-right: 4px;
             }
         }
     }
-
-	&.sliders {
-		.buttonSwitch {
-			background: #ECEFF1;
-			border-radius: 3px;
-			font-size: 0.8em;
-			margin-right: 3px;
-			top: 0.25rem;
-			}
-		}
-	
-	
-	&.hider {
-		.buttonSwitch {
-			position: absolute;
-			left: 1315px;
-			bottom: 5px;
-			height: 35px;
-			width: 35px;
-			background: #7a96a5;
-			border-radius: 12px;
-			z-index: 3;
-			font-size: 1em;
-			}
-		}
-	
-	
+    .buttonSwitch-disabled, &[data-disabled="true"] .buttonSwitch{
+        opacity: .5;
+        cursor: not-allowed !important;
+        &:hover {
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+    }
+    &.sliders {
+        margin-right: 0;
+        .buttonSwitch {
+            font-size: 0.5em;
+        }
+    }
+    &.navBar-opener, &.navBar-closer {
+        .buttonSwitch {
+            position: fixed;
+            right: 0;
+            bottom: $base-slider-height;
+            background: rgba($buttonSwitch-background-color,.4);
+            &:hover {
+                background: rgba($buttonSwitch-background-color,1);
+            }
+            z-index: 999999;
+            font-size: 0.8em;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        &.inverted-color {
+            .buttonSwitch {
+                background: rgba($buttonSwitch-color,.4);
+                &:hover {
+                    background: rgba($buttonSwitch-color,1);
+                }
+            }
+        }
+    }
+    &.navBar-closer {
+        .buttonSwitch {
+            bottom: 0;
+        }        
+    }
     &.inverted-color {
         .buttonSwitch {
             color: $buttonSwitch-background-color;
             background: $buttonSwitch-color;
         }
     }
-
     &.no-background {
         .buttonSwitch {
             background: none;
             box-shadow: none;
             border-radius: 0;
-            width: 0px;
-            // color: $buttonSwitch-background-color;
-            &-label{
+            width: 0px; // color: $buttonSwitch-background-color;
+            &-label {
                 font-variant: small-caps;
                 font-size: 80%;
-                top: 0;
-                // color: $base-color-light;
+                top: 0; // color: $base-color-light;
             }
-            &-icon{
+            &-icon {
                 // color: $base-color-light;
                 font-size: 1.3em;
             }
-            &-active, &:hover{
+            &-active,
+            &:hover {
                 .icon {
                     // color:$base-color-active;
                     cursor: pointer;
@@ -151,11 +144,11 @@ button-switch {
             }
         }
     }
-
-    &[data-type='removeWit'], &[data-type*='remove'], &[data-type*='close']{
+    &[data-type='removeWit'],
+    &[data-type*='remove'],
+    &[data-type*='close'] {
         position: absolute;
         right: 6px;
-
         .buttonSwitch {
             border-radius: 100px;
             height: 22px;
@@ -163,17 +156,14 @@ button-switch {
             min-width: 22px;
             width: 22px;
             font-size: 0.7em;
-            
             &-icon {
                 right: 0px;
                 font-weight: bold;
             }
         }
-    }
-
-    //Temp
-    &.smaller{
-        .buttonSwitch{
+    } //Temp
+    &.smaller {
+        .buttonSwitch {
             font-size: 90%;
             top: -2px;
         }
@@ -208,8 +198,7 @@ button-switch {
         font-weight: bold;
         color: #000;
         background: $buttonSwitch-active-background-color;
-
-        &.buttonSwitch-disabled{
+        &.buttonSwitch-disabled {
             display: none;
         }
     }

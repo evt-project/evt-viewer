@@ -213,7 +213,8 @@ angular.module('evtviewer.select')
 						}
 					};
 					formatOptionList = function(optionList) {
-						var formattedList = [];
+						var formattedList = []; 
+						// TODO: Handle duplicates ('_orig', '_reg')
 						for (var i = 0; i < optionList.length; i++) {
 							formattedList.push(optionList[optionList[i]]);
 						}
@@ -632,8 +633,22 @@ angular.module('evtviewer.select')
 					};
 					optionList = formatOptionList(parsedData.getVersionEntries());
 					break;
+				case 'generic':
+					optionList = scope.options;
+					optionSelectedValue = initValue;
+					callback = function(oldOption, newOption) {
+						vm.collapse();
+						vm.selectOption(newOption);
+					};
+					break;
 			}
-
+			if (scope.emptyOption && optionList && (!optionList[0] || optionList[0].value)) {
+				optionList.unshift({
+					value: '',
+                    label: '---',
+                    title: ''
+				});
+			}
 			scopeHelper = {
 				// expansion
 				uid: currentId,
@@ -643,6 +658,9 @@ angular.module('evtviewer.select')
 				currentType: currentType,
 				multiselect: multiselect,
 				openUp: openUp,
+				smaller: scope.smaller,
+				selectedOption: scope.selectedOption,
+
 				// model
 				optionList: optionList,
 				optionSelected: optionSelected,

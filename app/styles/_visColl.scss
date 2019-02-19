@@ -6,53 +6,39 @@
 	height: 100%;
 	vertical-align: top;
     width: 100%;
-    overflow: hidden;
-    max-height: 300px
-}
-
-.viscollImage {
-	display: inline-block;
-	position: relative;
-	border-radius: 4px;
-	margin: 5px;
-    max-height: 250px;
-    width: 20%;
-	@include set(box-shadow, '0 2px 4px #000');
-
-	&:hover {
-		cursor: pointer;
-		@include set(box-shadow, 'none');
+	max-height: 300px;
+	padding-bottom: 20px;
+	&:not(:last-child) {
+		margin-bottom: 20px;
+		border-bottom: 1px solid lightgray;
 	}
 }
 
 .selectorViscoll {
 	font-size: 0.5em;
-	display: inline;
+	margin-bottom: 5px;
+	label {
+		display: block;
+	}
+	.selector {
+		margin: 0;
+	}
 }
 
 .imgSelectorViscoll {
-	font-size: 0.5em;
 	display: block;
-
 	&_empty {
+		padding-top: 10px;
 		font-size: 0.5em;
-		height: 195px;
-		color: grey;
-		vertical-align: middle;
-		display: table;
-		text-align: center;
+		height: 170px;
 		width: 100%;
-
-		span {
-			display:table-cell;
- 			vertical-align:middle;
-		}
+		font-style: italic;
 	}
 }
 
 .quireSelector {
     width: 100%;
-    padding: 2% 3%;
+    padding: 30px;
     font-size: 0.5em;
     position: relative;
 }
@@ -62,36 +48,52 @@
 }
 
 .quireNumber {
-	color: #ffffff;
 	position: relative;
 	display: block;
-	/*bottom: 150px;*/
+	font-size: 1.3rem;
+	font-variant: small-caps;
+	margin-bottom: 10px;
 }
-
+.viscollItemsContainer {
+	padding: 0 30px;
+}
 .viscollItem-leftContainer {
-    width: 25%;
+    width: 20%;
     display: inline-block;
-    overflow: hidden;
-    text-align: center;
 }
 
 .viscollItem-rightContainer {
-    width: 73%;
+    width: 77%;
     display: inline-block;
-    overflow-x: auto;
-    overflow-y: hidden;
-    position: relative;
-    height: 100%;
     vertical-align: top;
-    padding-left: 20px;
 }
 
 .viscollContainer svg { 
 	position: relative; 
 	background: #396f7b; 
-	height: 90%;
-	width: 90%;
-	margin-left: 15px; 
+	height: auto;
+	width: 70%;
 	border-radius: 8px; 
-	margin-bottom: 5px; 
+	margin-bottom: 5px;
+	> g:hover .leaf {
+		cursor: pointer;
+		stroke: $base-color-active-background;
+	}
+	.active_unit .leaf {
+		stroke: $base-color-active-background;
+		cursor: default;
+	}
+}
+
+.viscollContainer {
+	.thumbnail {
+		img {
+			height: auto;
+			width: 120px;
+		}
+		figcaption {
+			width: 120px;
+		}
+	}
+
 }

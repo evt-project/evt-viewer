@@ -39,7 +39,7 @@ angular.module('evtviewer.visColl')
                 return evtInterface.visCollTextUrl;
             },function(newValue, oldValue) {
             	if (oldValue !== newValue) {
-					evtInterface.updateProperty(visCollTextUrl, newValue);
+					evtInterface.updateProperty('visCollTextUrl', newValue);
 				}
 			}, true);
 			
@@ -47,12 +47,12 @@ angular.module('evtviewer.visColl')
                 return evtInterface.visCollStyleUrl;
             },function(newValue, oldValue) {
             	if (oldValue !== newValue) {
-					evtInterface.updateProperty(visCollStyleUrl, newValue);
+					evtInterface.updateProperty('visCollStyleUrl', newValue);
 				}
 			}, true);
 
             scope.$watch(function() {
-                return parsedData.areViscollSvgsLoaded()
+                return parsedData.areViscollSvgsLoaded();
             },function(newValue, oldValue) {
                 if (oldValue !== newValue && newValue === true) {
                     currentViscoll.displayResult();

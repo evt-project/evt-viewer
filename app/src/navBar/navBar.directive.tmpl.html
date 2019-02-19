@@ -1,38 +1,37 @@
 <section class="navBarSliderWrapper">
-		
+	<button-switch
+		title="{{ 'BUTTONS.THUMBNAILS' | translate }}"
+		data-icon="thumb-nails"
+		data-type="thumbNails"
+		class="sliders"></button-switch>
+	<button-switch
+		title="{{ 'BUTTONS.VISCOLL' | translate }}"		
+		data-icon="viscoll"
+		data-type="visColl"
+		class="sliders"></button-switch>
 	<div class="navBarSlider">
-		<button-switch
-			title="thumbNails"
-			data-icon="thumb-nails"
-			data-type="thumbNails"
-			class="sliders"></button-switch>
-		<button-switch
-			title="visColl"
-			data-icon="viscoll"
-			data-type="visColl"
-			class="sliders"></button-switch>
-		<p id="sliderValue">{{vm.folio}}</p>
-		<rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider" {{vm.folio}}></rzslider>
-			<button-switch
-				title="firstPage"
-				data-icon="first-page" 
-				data-type="firstPage"
-				class="sliders"></button-switch>
-			<button-switch
-				title="beforePage"
-				data-icon="prev-page"
-				data-type="prevPage"
-				class="sliders"></button-switch>
-			<button-switch
-				title="nextPage"
-				data-icon="next-page" 
-				data-type="nextPage"
-				class="sliders"></button-switch>
-			<button-switch
-				title="lastPage"
-				data-icon="last-page" 
-				data-type="lastPage"
-				class="sliders"></button-switch>
+		<rzslider rz-slider-model="vm.pageSlider.value" rz-slider-options="vm.pageSlider.options" id="slider" data-folio="{{vm.folio}}"></rzslider>
 	</div>
+	
+	<button-switch data-disabled="{{!vm.showNavigator()}}"
+		title="{{ 'BUTTONS.PAGE_FIRST' | translate }}"
+		data-icon="first-page" 
+		data-type="firstPage"
+		class="sliders"></button-switch>
+	<button-switch data-disabled="{{!vm.showNavigator()}}"
+		title="{{ 'BUTTONS.PAGE_PREVIOUS' | translate }}"
+		data-icon="prev-page"
+		data-type="prevPage"
+		class="sliders"></button-switch>
+	<button-switch data-disabled="{{!vm.showNavigator()}}"
+		title="{{ 'BUTTONS.PAGE_NEXT' | translate }}"
+		data-icon="next-page" 
+		data-type="nextPage"
+		class="sliders"></button-switch>
+	<button-switch data-disabled="{{!vm.showNavigator()}}"
+		title="{{ 'BUTTONS.PAGE_LAST' | translate }}"
+		data-icon="last-page" 
+		data-type="lastPage"
+		class="sliders"></button-switch>
 </section>
 <!-- avanti e fine a sx, dietro e inizio a dx-->

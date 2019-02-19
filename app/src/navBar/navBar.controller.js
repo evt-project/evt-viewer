@@ -15,10 +15,15 @@
 **/
 angular.module('evtviewer.navBar')
 
-.controller('NavbarCtrl', function(config, $log, $scope, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
+.controller('NavbarCtrl', function($log, evtInterface) {
     var vm = this;
     
     var _console = $log.getInstance('navBar');
+
+    vm.showNavigator = function(){
+        return !evtInterface.getState('isThumbNailsOpened') && !evtInterface.getState('isVisCollOpened');
+    };
+
     // 
     // Control function
     // 

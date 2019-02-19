@@ -39,11 +39,12 @@ angular.module('evtviewer.navBar')
                 return parsedData.getPages();
             }, function(newCollection, oldCollection) {
                 if (oldCollection !== newCollection) {
-                    var options = {
-                      floor: 0,
-                      ceil: newCollection ? newCollection.length - 1 : 0
-                    };
-                    currentNavbar.updateOptions(options);
+                    currentNavbar.updateOptionsValue('floor', 0);
+                    currentNavbar.updateOptionsValue('ceil', newCollection ? newCollection.length - 1 : 0);
+                    currentNavbar.updateOptionsValue('translate', function(value, sliderId, label) {
+                        var pageId = newCollection[value];
+                        return newCollection[pageId] ? newCollection[pageId].label : value;
+                    });
                 }
             }, true);
 			
@@ -51,7 +52,7 @@ angular.module('evtviewer.navBar')
 			scope.$watch(function() {
                 return currentNavbar.pageSlider.value;
             },function(newValue, oldValue) {
-            	if (oldValue !== newValue) {
+                if (oldValue !== newValue) {
 					currentNavbar.updatePage(newValue);
 				}
 			}, true);
@@ -64,6 +65,14 @@ angular.module('evtviewer.navBar')
 				}
 			}, true);
 
+            scope.$watch(function() {
+				return currentNavbar.showNavigator();
+			}, function(newValue, oldValue) {
+				if (oldValue !== newValue) {
+                    currentNavbar.updateOptionsValue('disabled', !newValue);                    
+				}
+            }, true);
+            
             // Garbage collection
             scope.$on('$destroy', function() {
               if (currentNavbar) {

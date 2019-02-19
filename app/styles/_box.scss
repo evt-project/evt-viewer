@@ -254,7 +254,7 @@
         }
 
         .box-body {
-            //overflow-y: scroll;
+            //overflow-y: auto;
             border-color: $box-witness-structure-color-dark;
             background: $box-witness-background-color;
         }
@@ -286,7 +286,7 @@
     
     &.box-source {
         .box-body {
-            overflow-y: scroll;
+            overflow-y: auto;
         }
     }
 

@@ -286,7 +286,10 @@ angular.module('evtviewer.interface')
                                     $q.all(svgViscollPromises).then(function () {
                                         parsedData.setViscollSvgsLoaded(true);
                                     });
+
                                 });
+
+
 
                                 // END VISCOLL DATA IMPORT //
                                 // /////////////////////// //
@@ -1010,6 +1013,16 @@ angular.module('evtviewer.interface')
             }
         };
 
+        mainInterface.setCurrentPage = function(page) {
+            if (page !== undefined) {
+                var currentDocument = mainInterface.getState('currentDoc');
+                mainInterface.updateState('currentPage', page.value);
+                if (page.docs.length > 0 && page.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+                    mainInterface.updateState('currentDoc', page.docs[0]);
+                }
+                mainInterface.updateUrl();
+            }
+        };
         /**
          * @ngdoc method
          * @name evtviewer.interface.evtInterface#updateParams
@@ -1160,7 +1173,7 @@ angular.module('evtviewer.interface')
                 mainInterface.updateState('currentEdition', 'critical');
             }
 
-            mainInterface.updateState('currentComparingEdition', comparingEdition)
+            mainInterface.updateState('currentComparingEdition', comparingEdition);
 
             if (pageId !== undefined) {
                 mainInterface.updateState('currentPage', pageId);
@@ -1204,8 +1217,8 @@ angular.module('evtviewer.interface')
                     if (searchPath !== '') {
                         searchPath += '&';
                     }
-                    searchPath += 'ws=';
                     for (var w in state.currentWits) {
+                        searchPath += searchPath.indexOf('ws=') < 0 ? 'ws=' : '';
                         var wit = state.currentWits[w],
                             currentPage = mainInterface.getCurrentWitnessPage(wit);
                         searchPath += wit;
@@ -1216,18 +1229,6 @@ angular.module('evtviewer.interface')
                             searchPath += ',';
                         }
                     }
-                }
-            }
-            searchPath += 'ws=';
-            for (var w in state.currentWits) {
-                var wit = state.currentWits[w],
-                    currentPage = mainInterface.getCurrentWitnessPage(wit);
-                searchPath += wit;
-                if (currentPage !== undefined) {
-                    searchPath += '@' + currentPage;
-                }
-                if (w < state.currentWits.length - 1) {
-                    searchPath += ',';
                 }
             }
 

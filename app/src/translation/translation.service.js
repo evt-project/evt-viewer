@@ -99,9 +99,6 @@ angular.module('evtviewer.translation')
         } if (navigatorLang.indexOf('-') >= 0) {
             langParts = navigatorLang.split('-'); 
             userLang = langParts[0];
-        } if (navigatorLang.indexOf('-') >= 0) {
-            var langParts = navigatorLang.split('-');
-            userLang = langParts[0];
         } else {
             userLang = navigatorLang;
         }

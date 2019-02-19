@@ -251,7 +251,7 @@ angular.module('evtviewer.tabsContainer')
 							currentTabsContainer.subContentOpened = subContentOpenedName;
 					}
 			});
-		}
+		};
 		//
 		// Service function
 		//

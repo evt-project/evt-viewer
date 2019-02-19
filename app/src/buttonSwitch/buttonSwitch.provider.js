@@ -589,8 +589,8 @@ angular.module('evtviewer.buttonSwitch')
 				    btnType = 'standAlone';
 				    callback = function() {
 				        var parentBox = scope.$parent.vm;
-				        var topBox=document.getElementsByClassName("box-top-box");
-				        topBox[0].setAttribute("id","msDesc");
+				        var topBox=document.getElementsByClassName('box-top-box');
+				        topBox[0].setAttribute('id','msDesc');
 						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'msDesc') {
 							parentBox.toggleTopBox();
 						} else {
@@ -882,11 +882,11 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchPrevResult':
                disabled = true;
-               callback = function() {}
+               callback = function() {};
                break;
             case 'searchNextResult':
                disabled = true;
-               callback = function() {}
+               callback = function() {};
                break;
             case 'searchClear':
                btnType = 'standAlone';
@@ -1101,25 +1101,35 @@ angular.module('evtviewer.buttonSwitch')
 				case 'hideBar':
 					callback = function() {
 						var vm = this;
-						var startState = evtInterface.getState('isNavBarOpened') ;
+						var startState = evtInterface.getState('isNavBarOpened');
 						evtInterface.updateState('isNavBarOpened', !startState);
 						vm.active = !vm.active;
 					};
 					break;
 				case 'thumbNails':
+					btnType = 'toggler';
 					callback = function() {
 						var vm = this;
-						var startState = evtInterface.getState('isThumbNailsOpened') ;
+						evtInterface.updateState('isVisCollOpened', false);
+						var viscollBtn = button.getByType('visColl');
+						if (viscollBtn) {
+							viscollBtn.forEach(function(btn){ btn.setActive(false) });
+						}
+						var startState = evtInterface.getState('isThumbNailsOpened');
 						evtInterface.updateState('isThumbNailsOpened', !startState);
-						vm.active = !vm.active;
 					};
 					break;
 				case 'visColl':
+					btnType = 'toggler';
 					callback = function() {
 						var vm = this;
-						var startState = evtInterface.getState('isVisCollOpened') ;
+						evtInterface.updateState('isThumbNailsOpened', false);
+						var thumbNailsBtn = button.getByType('thumbNails');
+						if (thumbNailsBtn) {
+							thumbNailsBtn.forEach(function(btn){ btn.setActive(false) });
+						}
+						var startState = evtInterface.getState('isVisCollOpened');
 						evtInterface.updateState('isVisCollOpened', !startState);
-						vm.active = !vm.active;
 					};
 					break;
 				default:
@@ -1139,10 +1149,17 @@ angular.module('evtviewer.buttonSwitch')
 		     */
 			var doCallback = function() {
 				var vm = this;
-				button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
-				evtSelect.closeAll();
-				vm.toggleActive();
-				vm.callback();
+				if (!vm.disabled || vm.disabled === 'false') {
+					button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
+					evtSelect.closeAll();
+					vm.toggleActive();
+					if (vm.callback) {
+						vm.callback();
+					} 
+					if (vm.onBtnClicked) {
+						vm.onBtnClicked();
+					}
+				}
 			};
 
 			scopeHelper = {
@@ -1166,6 +1183,7 @@ angular.module('evtviewer.buttonSwitch')
 
 				// function
 				callback: callback,
+				onBtnClicked: scope.onBtnClicked,
 				doCallback: doCallback,
 				fakeCallback: fakeCallback,
 				toggleActive: toggleActive,

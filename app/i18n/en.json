@@ -59,7 +59,14 @@
 		"THUMBNAILS": "Thumbnails",
 		"VERSION_CLOSE": "Close version",
 		"WITNESS_CLOSE": "Close witness",
-		"WITNESSES_LIST": "Witnesses List"
+		"WITNESSES_LIST": "Witnesses List",
+		"VISCOLL": "Viscoll results",
+		"PAGE_FIRST": "Beginning",
+		"PAGE_LAST": "End",
+		"PAGE_PREVIOUS": "Previous Page",
+		"PAGE_NEXT": "Next Page",
+		"GO_TO_PAGE": "Go to page",
+		"TOGGLE_NAVBAR": "Toggle navbar"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "beginning of a lacuna in",
@@ -262,7 +269,16 @@
 		"COLLATION": "Collation",
 		"SOURCE_TEXT": "Source Text"
 	},
+	"VISCOLL": {
+		"SELECT_QUIRE":"Select a quire",
+		"QUIRE_NUM": "Quire n.",
+		"SELECT_UNIT":"Select a unit",
+		"UNIT": "Unit",
+		"SELECT_UNIT_MSG": "Select a unit to see its composition."
+	},
+	"PAGES": "Pages",
 	"AND": "and",
+	"BETWEEN": "between",
 	"ERROR" : "Error",
 	"PUBLISHED_BY": "Published by"
 }

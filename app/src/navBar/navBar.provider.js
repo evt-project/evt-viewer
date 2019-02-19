@@ -62,8 +62,7 @@ angular.module('evtviewer.navBar')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-			
-			
+						
             var pagesCollection = parsedData.getPages();
 			var documentsCollection = parsedData.getDocuments();
 			
@@ -76,6 +75,12 @@ angular.module('evtviewer.navBar')
                 options: {
                     floor: 0,
                     ceil: pagesCollection ? pagesCollection.length : 0,
+                    translate: function(value, sliderId, label) {
+                        var pageId = pagesCollection[value];
+                        return pagesCollection[pageId] ? pagesCollection[pageId].label : value;
+                    },
+                    showSelectionBar: true,
+                    hideLimitLabels: true
                 }
             };
 			
@@ -83,7 +88,11 @@ angular.module('evtviewer.navBar')
                 var vm = this;
                 vm.pageSlider.options = options;
             };
-			
+			var updateOptionsValue = function(key, value) {
+                var vm = this;
+                vm.pageSlider.options = vm.pageSlider.options ? vm.pageSlider.options : {};
+                vm.pageSlider.options[key] = value;
+            };
 			var updatePage = function(value) {
 				var vm = this;
 				var pageId = vm.pagesCollection[value];
@@ -104,9 +113,10 @@ angular.module('evtviewer.navBar')
 				var vm = this;
 				var sliderValue = vm.pageSlider.value;
 				var pageId = vm.pagesCollection[value];
-				for (var i in vm.pagesCollection) {
+                var newPage;
+                for (var i in vm.pagesCollection) {
 					if (value === vm.pagesCollection[i]){
-						var newPage = i;
+						newPage = i;
 					}
 				}
 				if (vm.pageSlider.value !== newPage){
@@ -131,15 +141,14 @@ angular.module('evtviewer.navBar')
                 // Functions
                 updateOptions: updateOptions,
 				updateSlider: updateSlider,
-				updatePage: updatePage,
+                updatePage: updatePage,
+                updateOptionsValue: updateOptionsValue,
                 destroy: destroy
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);
-            list.push({
-                id: currentId
+            list.push({                id: currentId
             });
-
             return collection[currentId];
         };
 		

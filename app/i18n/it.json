@@ -59,7 +59,14 @@
 		"THUMBNAILS": "Miniature",
 		"VERSION_CLOSE": "Chiudi versione",
 		"WITNESS_CLOSE": "Chiudi testimone",
-		"WITNESSES_LIST": "Lista testimoni"
+		"WITNESSES_LIST": "Lista testimoni",
+		"VISCOLL": "Risultati Viscoll",
+		"PAGE_FIRST": "Inizio",
+		"PAGE_LAST": "Fine",
+		"PAGE_PREVIOUS": "Pagina precedente",
+		"PAGE_NEXT": "Pagina successiva",
+		"GO_TO_PAGE": "Vai alla pagina",
+		"TOGGLE_NAVBAR": "Apri/chiudi barra di navigazione"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "inizio di una lacuna in ",
@@ -262,7 +269,16 @@
 		"COLLATION": "Collazione",
 		"SOURCE_TEXT": "Testo Fonti"
 	},
+	"VISCOLL": {
+		"SELECT_QUIRE":"Seleziona un fascicolo",
+		"QUIRE_NUM": "Fascicolo n.",
+		"SELECT_UNIT":"Seleziona un'unità",
+		"UNIT": "Unità",
+		"SELECT_UNIT_MSG": "Seleziona un'unità per visualizzare la sua composizione."
+	},
+	"PAGES": "Pagine",
 	"AND": "e",
+	"BETWEEN": "tra",
 	"ERROR" : "Errore",
 	"PUBLISHED_BY": "Pubblicato da"
 }

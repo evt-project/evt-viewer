@@ -344,21 +344,20 @@ angular.module('evtviewer.interface')
          * @todo: Add more cases
          */
 		$scope.handleGenericClick = function($event) {
-         console.log($event);
 			var target = $event.target;
-			if ($(target).parents('evt-select').length === 0) {
+			if (angular.element(target).parents('evt-select').length === 0) {
 				evtSelect.closeAll();
 			}
-			if ($(target).parents('button-switch').length === 0) {
+			if (angular.element(target).parents('button-switch').length === 0) {
 				var skipBtnTypes = ['standAlone', 'toggler'];
 				evtButtonSwitch.unselectAllSkipByBtnType('', skipBtnTypes);
 				evtInterface.updateState('mainMenu', false);
 			}
-			if ($(target).parents('evt-popover').length === 0) {
+			if (angular.element(target).parents('evt-popover').length === 0) {
 				evtPopover.closeAll();
 			}
 			//Temp
-			if ($(target).parents('.witnessSelector').length === 0) {
+			if (angular.element(target).parents('.witnessSelector').length === 0) {
 				if (evtInterface.getProperty('witnessSelector')) {
 					evtInterface.updateProperty('witnessSelector', false);
 				}
@@ -624,7 +623,7 @@ angular.module('evtviewer.interface')
 		 * @returns {boolean} if is true or not
 		 */
 		 $scope.isNavBarOpened = function() { 
-			return evtInterface.getState("isNavBarOpened"); 
+			return evtInterface.getState('isNavBarOpened'); 
 		};
 		/**
 		 * @ngdoc method
@@ -634,7 +633,7 @@ angular.module('evtviewer.interface')
          * @returns {boolean} if is true or not
          */
 		 $scope.isVisCollOpened = function() {
-			 return evtInterface.getState("isVisCollOpened");
+			 return evtInterface.getState('isVisCollOpened');
 		 };
 		 /**
 		 * @ngdoc method
@@ -644,9 +643,24 @@ angular.module('evtviewer.interface')
          * @returns {boolean} if is true or not
          */
 		 $scope.isThumbNailsOpened = function() {
-			 return evtInterface.getState("isThumbNailsOpened");
-		 };
+			 return evtInterface.getState('isThumbNailsOpened');
+       };
+       
+       $scope.getThumbnails = function() {
+         return parsedData.getThumbnails();
+       };
+       
+       $scope.goToPageFromThumb = function(page) {
+         if (evtInterface.getState('currentPage') !== page.value) {
+            evtInterface.updateState('isThumbNailsOpened', false);
+            evtInterface.setCurrentPage(page);
+         }
+       };
 
+       $scope.toggleNavBar = function() {
+         var startState = evtInterface.getState('isNavBarOpened');
+         evtInterface.updateState('isNavBarOpened', !startState);
+       }
 		_console.log('InterfaceCtrl running');
 	})
 

@@ -15,26 +15,30 @@
 **/
 angular.module('evtviewer.visColl')
 
-.controller('ViscollCtrl', function(config, $log, $scope, $filter, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
-    var vm = this;
-    
-    var _console = $log.getInstance('visColl');
-    // 
-    // Control function
-    // 
-    // metodi vari
+    .controller('ViscollCtrl', function (config, $log, $scope, $filter, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
+        var vm = this;
 
-    vm.updateCurrentPage = function(value){
-        var pagesCollection = parsedData.getPages();
-        for (page in pagesCollection){
-            if(pagesCollection[page].n != undefined){
-                if(pagesCollection[page].n == value){
-                    evtInterface.updateState('currentPage', page);
-                    evtInterface.updateState('isVisCollOpened', false);
+        var _console = $log.getInstance('visColl');
+        // 
+        // Control function
+        // 
+        // metodi vari
+
+        vm.updateCurrentPage = function (value) {
+            var pagesCollection = parsedData.getPages();
+            for (var page in pagesCollection) {
+                if (pagesCollection[page].n !== undefined) {
+                    if (pagesCollection[page].n === value) {
+                        evtInterface.updateState('currentPage', page);
+                        evtInterface.updateState('isVisCollOpened', false);
+                    }
                 }
             }
-        }
-        evtInterface.updateUrl();
-    };
+            var viscollBtn = evtButtonSwitch.getByType('visColl');
+            if (viscollBtn) {
+                viscollBtn.forEach(function(btn){ btn.setActive(false) });
+            }
+            evtInterface.updateUrl();
+        };
 
-});
+    });

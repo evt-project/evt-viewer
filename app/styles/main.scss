@@ -120,9 +120,9 @@ footer {
 @import "namedEntity.scss";
 @import "sourceSeg.scss";
 @import "versionReading.scss";
-@import "versionApparatusEntry";
-@import "navBar";
-@import "visColl";
+@import "versionApparatusEntry.scss";
+@import "navBar.scss";
+@import "visColl.scss";
 @import "searchBox.scss";
 
 @import "diplomaticEdition.scss";
@@ -327,15 +327,18 @@ footer {
 }
 
 .popup-container {
-	@include calc(height, unquote("#{setVisCollFrameHeight()} + 1px"));
-	overflow-y: scroll;
+	@include calc(height, unquote("#{setPopupContainerFrameHeight()}"));
+	overflow-y: auto;
 	position: absolute;
-	width: 99.6%;
-	left: 4px;
-	bottom: 45.5px;
-	background-color: #bdbdbd;
-	border: 2px #FFFFFF;
-    z-index: 999;   
+	width: 100%;
+	left: 0;
+	bottom: $base-slider-height;
+	background-color: #607d8b;
+    border: 1px solid #FFFFFF;
+    border-left: none;
+    border-right: none;
+    z-index: 999;
+    top: $base-header-height;
 }
 
 
@@ -622,4 +625,38 @@ pre {
     font-size: 95%;
     padding: 10px 0;
     border-top: 1px solid;
+}
+
+.thumbnail {
+    display: inline-block;
+    padding: 9px 3px;
+    margin: 3px;
+    cursor: pointer;
+    img {
+        height: 150px;
+        width: 100px;
+        border: 2px solid black;
+    }
+    &.active img {
+        border-color: $base-color-active-background;
+    }
+    figcaption {
+        color: white;
+        position: relative;
+        margin-top: -52px;
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 0.7em;
+        width: 100px;
+        text-align: center;
+    }
+    &:hover figcaption {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+    &.active {
+        cursor: default;
+        figcaption {
+            background: rgba($base-color-active-background, .7) !important;
+            color: #000;
+        }
+    }
 }

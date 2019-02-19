@@ -14,8 +14,8 @@
 	
 }
 
-@function setVisCollFrameHeight() {
-	@return "100% - #{$base-header-height + $base-slider-height + 2}";
+@function setPopupContainerFrameHeight() {
+	@return "100% - #{$base-header-height + $base-slider-height}";
 	}
 
 @function setInsideFrameHeight(){

@@ -37,14 +37,23 @@ angular.module('evtviewer.buttonSwitch')
             icon  : '@',
             type  : '@',
             value : '@',
-            iconPos : '@'
+            iconPos : '@',
+            disabled: '@',
+            onBtnClicked: '&'
         },
         templateUrl: 'src/buttonSwitch/buttonSwitch.dir.tmpl.html',
         link: function(scope, element) {
             // Add attributes in vm
             scope.vm = {};
-
             var currentButton = evtButtonSwitch.build(scope, scope.vm);
+            scope.$watch(function() {
+                return scope.disabled;
+            }, function(newItem, oldItem) {
+                if (newItem !== oldItem) {
+                    scope.vm.disabled = newItem
+                }
+            });
+
             if (scope.type === 'addWit') {
                  if (evtInterface.getProperty('availableWitnesses').length === 0) {
                     scope.vm.disabled = true;

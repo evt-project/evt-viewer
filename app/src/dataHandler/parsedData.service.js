@@ -109,6 +109,7 @@ angular.module('evtviewer.dataHandler')
 	var pagesCollection = {
 		length: 0
 	};
+	var thumbnails = [];
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#viscollSvgCollection
@@ -959,6 +960,12 @@ angular.module('evtviewer.dataHandler')
 		if (docId && docId !== '' && documentsCollection[docId] !== undefined) {
 			documentsCollection[docId].pages.push(pageId);
 		}
+		thumbnails[pagesCollection.length-1] = {
+			value: page.value,
+			image: page.image,
+			label: page.label,
+			docs: page.docs
+		 };
 	};
 	
 	/**
@@ -973,6 +980,19 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getPages = function() {
 		return pagesCollection;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getThumbnails
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of parsed thumbnails.
+     * @returns {Object} Object representing the list of parsed thumbnails.
+     */
+	parsedData.getThumbnails = function() {
+		return thumbnails;
+	};
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPage
@@ -1103,7 +1123,7 @@ angular.module('evtviewer.dataHandler')
      * @todo add attribute for the original xml reference
      */
 	parsedData.addViscollSvg = function(svg) {
-		var svgId = 'svg_'+viscollSvgCollection.svgs._indexes.length
+		var svgId = 'svg_'+viscollSvgCollection.svgs._indexes.length;
 		viscollSvgCollection.svgs[svgId] = svg;
 		viscollSvgCollection.svgs._indexes.push(svgId);
 	};
@@ -1141,7 +1161,7 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parsedData.setViscollSvgsLoaded = function(loaded) {
-		return viscollSvgCollection.loaded = loaded;
+		viscollSvgCollection.loaded = loaded;
 	};
 	parsedData.areViscollSvgsLoaded = function() {
 		return viscollSvgCollection.loaded;

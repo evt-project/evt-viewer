@@ -791,7 +791,7 @@ angular.module('evtviewer.dataHandler')
                 } else {
                     newPage.value = element.getAttribute('xml:id') || 'page_' + (parsedData.getPages().length + 1);
                 }
-                newPage.imag = element.getAttribute('src') || config.singleImagesUrl + '{{newPage.value}}.jpg';
+                newPage.image = element.getAttribute('src') || config.singleImagesUrl + newPage.value + '.jpg';
                 newPage.svgId = element.getAttribute('svg:id') || (parsedData.getPages().length + 1);
                 newPage.label = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
                 newPage.title = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
@@ -836,15 +836,17 @@ angular.module('evtviewer.dataHandler')
                 //id di g recuperare la prima cifra con getAttribute sull'ID
                 svgLeaves: [], //array con tutti i G
                 textSvg: xmlSvg
-            }
+            };
             // ciclo sui g --> aggiungere a svg leaves gli id hasAttribute
         var svgCollection = parsedData.getViscollSvgs();
         angular.forEach(currentDocument.find(defG),
             function(element) {
-                if (element.hasAttribute("id")) {
+                if (element.hasAttribute('id')) {
                     var svgLeaf = {
-                    	id: element.id.replace('#', '')
-                    }
+                        id: element.id.replace('#', ''),
+                        value: element.id.replace('#', ''),
+                        label: element.id.replace('#', '')
+                    };
                    
                     angular.forEach(svgCollection.imglist._indexes, function(imgId) {
 		                if (svgLeaf.id === imgId.slice(0, -2)) {
@@ -853,34 +855,34 @@ angular.module('evtviewer.dataHandler')
                                 svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
                                 svgLeaf.imageId = svgCollection.imglist[imgId].value;
                                 if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
-                                    for (a in svgCollection.imglist){
-                                        if (svgCollection.imglist[imgId].id == svgCollection.imglist[a].conjoin){
+                                    for (var a in svgCollection.imglist){
+                                        if (svgCollection.imglist[imgId].id === svgCollection.imglist[a].conjoin){
                                                 svgLeaf.conjoinId = svgCollection.imglist[a].value;
                                             }
                                     }
                                 } else {
-                                    svgLeaf.imgConjoin = "images/empty-image.jpg";
-                                    svgLeaf.conjoinId = 'no folio'
-                                    }
+                                    svgLeaf.imgConjoin = 'images/empty-image.jpg';
+                                    svgLeaf.conjoinId = 'no folio';
+                                }
 		                    } else {
 		                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
                                 svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
                                 svgLeaf.imageId2 = svgCollection.imglist[imgId].value;
                                 if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
-                                    for (b in svgCollection.imglist){
+                                    for (var b in svgCollection.imglist){
                                         if (svgCollection.imglist[imgId].id == svgCollection.imglist[b].conjoin){
                                                 svgLeaf.conjoinId2 = svgCollection.imglist[b].value;
                                             }
                                     }
                                 } else {
-                                    svgLeaf.imgConjoin2 = "images/empty-image.jpg";
-                                    svgLeaf.conjoinId2 = 'no folio'
+                                    svgLeaf.imgConjoin2 = 'images/empty-image.jpg';
+                                    svgLeaf.conjoinId2 = 'no folio';
                                 }
 		                    }  
 		                }
 		            });
 		            newSvg.svgLeaves.push(svgLeaf);
-                };
+                }
             });
         
         parsedData.addViscollSvg(newSvg);
@@ -905,16 +907,17 @@ angular.module('evtviewer.dataHandler')
         angular.forEach(currentDocument.find(defLeaf),
             function(element) {
                 var qElem = element.lastElementChild,
-                	conjoinElems = qElem.childNodes;
+                    conjoinElems = qElem.childNodes;
                 var conjoinElem = conjoinElems[1] == undefined ? conjoinElems[0] : conjoinElems[1];
                 var newLeaf = {
-                	value: element.getAttribute('xml:id') || '',
-                	quire: element.lastElementChild.getAttribute('target').replace('#', '') || 'target',
+                    value: element.getAttribute('xml:id') || '',
+                    label: qElem.getAttribute('leafno') || '',
+                	quire: qElem.getAttribute('target').replace('#', '') || 'target',
                 	conjoin: conjoinElem.getAttribute('target').replace('#', '') || 'target'
                 };
                 parsedData.addViscollLeaf(newLeaf);
             });
-        console.log("## parseViscollDatamodel ##", parsedData.getViscollSvgs());
+        console.log('## parseViscollDatamodel ##', parsedData.getViscollSvgs());
     };
 
 

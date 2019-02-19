@@ -55,6 +55,6 @@ angular.module('evtviewer.core')
 **/
 .filter('stringtohtml', function() {
 	return function(input, all) {
-		return (!!input && input.replace) ? input.replace(/="[^"]+"/g,function($0){return $0.replace(/&lt;/g,"<").replace(/&gt;/g,">");}) : '';
+		return (!!input && input.replace) ? input.replace(/="[^"]+"/g,function($0){return $0.replace(/&lt;/g,'<').replace(/&gt;/g,'>');}) : '';
 	};
-})
+});
