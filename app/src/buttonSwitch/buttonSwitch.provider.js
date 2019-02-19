@@ -158,12 +158,18 @@ angular.module('evtviewer.buttonSwitch')
 				case 'color-legend':
 					evtIcon = 'icon-evt_color-legend';
 					break;
+            case 'close':
+               evtIcon = 'icon-evt_close';
+               break;
 				case 'download':
 					evtIcon = 'fa fa-download'; //TODO: add icon in EVT font
 					break;
 				case 'download-xml':
 					evtIcon = 'fa fa-file-code-o'; //TODO: add icon in EVT font
 					break;
+            case 'exact-word':
+               evtIcon = 'icon-evt_exact-match';
+               break;
 				case 'filter':
 				case 'filters':
 					evtIcon = 'icon-evt_filter';
@@ -667,7 +673,8 @@ angular.module('evtviewer.buttonSwitch')
                      },
                      'default': function() {
                         var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
-                           results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
+                           isExactMatch = evtSearchBox.getStatus(parentBoxId, 'searchExactWord'),
+                           results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive, isExactMatch),
                            currentEdition = evtBox.getEditionById(parentBoxId),
                            currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
                            visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
@@ -802,10 +809,10 @@ angular.module('evtviewer.buttonSwitch')
                   }
                };
                break;
-            case 'searchToolsExternal':
+            case 'searchAdvanced':
                btnType = 'standAlone';
                callback = function() {
-                  window.alert('External position coming soon!');
+                  window.alert('Advanced search coming soon!');
                };
                break;
             case 'searchVirtualKeyboard':
@@ -814,15 +821,34 @@ angular.module('evtviewer.buttonSwitch')
                   var vm = this,
                      parentBoxId = scope.$parent.id,
                      keyboardId = evtVirtualKeyboard.getKeyboardId(parentBoxId),
-                     keyboard =  $('#'+keyboardId).getkeyboard();
+                     keyboard =  $('#'+keyboardId).getkeyboard(),
+                     btnKeyboard = button.getByType('searchVirtualKeyboard');
    
                   if(keyboard.isOpen || vm.active === false) {
                      keyboard.close();
                   }
                   else {
                      keyboard.reveal();
+                     
+                     if(btnKeyboard.length > 1) {
+                        for(var i in btnKeyboard) {
+                           if(btnKeyboard[i].uid !== vm.currentId) {
+                              btnKeyboard[i].setActive(false);
+                           }
+                        }
+                     }
                   }
-               }
+               };
+               break;
+            case 'searchExactWord':
+               btnType = 'standAlone';
+               callback = function () {
+                  var parentBoxId = scope.$parent.id,
+                     searchInput = evtSearchBox.getInputValue(parentBoxId);
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchExactWord');
+                  evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
+               };
                break;
             case 'searchPrevResult':
                disabled = true;
@@ -831,6 +857,16 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchNextResult':
                disabled = true;
                callback = function() {}
+               break;
+            case 'searchClear':
+               btnType = 'standAlone';
+               callback = function () {
+                  var parentBoxId = scope.$parent.id,
+                     inputValue;
+                  evtSearchBox.clearInputValue(parentBoxId);
+                  inputValue = evtSearchBox.getInputValue(parentBoxId);
+                  evtSearchResults.highlightSearchResults(parentBoxId, inputValue);
+               };
                break;
 				case 'share':
 					callback = function() {

@@ -2,31 +2,37 @@ angular.module('evtviewer.search')
    .provider('evtVirtualKeyboard', function() {
       var vm = this;
       
-      vm.$get = ['evtKeyboard', 'config', function(evtKeyboard, config) {
+      vm.$get = ['evtKeyboard', 'config', '$rootScope', function(evtKeyboard, config, $rootScope) {
          var keyboard = [],
             keyboardCollection = {},
             parentBoxId,
             keyboardId,
+            keyboardBtns = [],
             defaultKeyboardKeys,
             configKeys,
             keyboardKeys,
-            configKeyboardKeys;
-            
+            configKeyboardKeys,
+            glyphInXmlDoc;
          
          keyboard.build = function(scope, vm) {
             parentBoxId = scope.$parent.id;
             keyboardId = parentBoxId + 'Keyboard';
             keyboardKeys = '';
             configKeys = config.virtualKeyboardKeys;
-            defaultKeyboardKeys = getDefaultKeyboardKeys();
+            glyphInXmlDoc = evtKeyboard.getGlyphInXmlDoc();
             
             if(configKeys.length !== 0){
                configKeyboardKeys = getConfigKeyboardKeys(configKeys);
                for (var k in configKeyboardKeys) {
-                  keyboardKeys += defaultKeyboardKeys[k] + ':' + k + ' ';
+                  for (var g in glyphInXmlDoc) {
+                     if(g === k) {
+                        keyboardKeys += glyphInXmlDoc[g] + ':' + k + ' ';
+                     }
+                  }
                }
             }
             else {
+               defaultKeyboardKeys = getDefaultKeyboardKeys();
                for (var kbKey in defaultKeyboardKeys) {
                   keyboardKeys += defaultKeyboardKeys[kbKey] + ':' + kbKey + ' ';
                }
@@ -51,7 +57,8 @@ angular.module('evtviewer.search')
             });
            
            var scopeHelper = {
-              keyboardId: keyboardId
+              keyboardId: keyboardId,
+              keyboardBtns: keyboardBtns
            };
            
            keyboardCollection[parentBoxId] = angular.extend(vm, scopeHelper);
@@ -71,16 +78,23 @@ angular.module('evtviewer.search')
          };
          
          keyboard.unselectCurrentKeyboard = function(button, parentBoxId) {
-            var keyboardBtn = button.getByType('searchVirtualKeyboard'),
-               keyboard = $('#' + parentBoxId + 'Keyboard').getkeyboard();
+            var keyboard = $('#' + parentBoxId + 'Keyboard').getkeyboard(),
+               currentKeyboardBtn;
             
             if(keyboard !== undefined) {
-               if(keyboardBtn.length === 1) {
-                  keyboardBtn[0].setActive(false);
+               for(var i in keyboardBtns) {
+                  if(keyboardBtns[i].parentId === parentBoxId) {
+                     currentKeyboardBtn = keyboardBtns[i].btn;
+                  }
                }
                keyboard.close();
+               currentKeyboardBtn.setActive(false);
             }
          };
+   
+         $rootScope.$on('keyboardBtn', function(e, data){
+            keyboardBtns.push(data);
+         });
          
          return keyboard;
       }];

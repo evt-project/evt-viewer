@@ -17,7 +17,7 @@
 (function () {
    var imageModule = angular.module('evtviewer.imageViewer', ["evtviewer.openseadragon","evtviewer.imageViewerService"]);
 
-     imageModule.controller("evtviewer.imageViewerCtrl", ["$scope","imageViewerModel", function ($scope,imageViewerModel) {
+     imageModule.controller("imageViewerCtrl", ["$scope","imageViewerModel", function ($scope,imageViewerModel) {
          $scope.options = imageViewerModel.getOptions();
          //$scope.interface = evtInterface;
          //evtInterface.updateState('currentPage','pippo');

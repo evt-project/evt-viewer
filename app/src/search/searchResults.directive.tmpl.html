@@ -9,17 +9,18 @@
 
       <div class="token-results">
          <div class="token" ng-repeat="result in vm.visibleRes track by $index">
-            <span ng-click="vm.toggle()" class="icon"></span>
-            Results for <span class="result-token">{{result.token}}</span>
-            in <span class="result-doc">{{result.metadata.xmlDocTitle[$index]}}</span>
-            <span class="results-number">({{result.resultsNumber}})</span>
+            <div ng-click="vm.toggle($event)" class="icon">
+               Results for <span class="result-token">{{result.token}}</span>
+               in <span class="result-doc">{{result.metadata.xmlDocTitle[0]}}</span>
+               <span class="results-number">({{result.resultsNumber}})</span>
+            </div>
 
             <ul class="search-result">
                <li ng-repeat="i in vm.range(result.resultsNumber) track by $index">
                   <span class="original-text" id="{{result.metadata.docId[$index]}}"
                         ng-bind-html="vm.getHighlightedOriginalText(result.metadata.docId[$index], vm.getCurrentBoxEdition($parent.vm.parentBoxId), result.token, result.metadata.position[$index])">
                   </span>
-                  <a class="resultInfo" href="#" ng-click="vm.scrollToCurrentResult()">
+                  <a class="resultInfo" href="#" ng-click="vm.scrollToCurrentResult($event)">
                      Found in <span class="resultDoc" id="{{result.metadata.xmlDocId[$index]}}">{{result.metadata.xmlDocTitle[$index]}}</span>
                      <span class="resultSection" ng-if="result.metadata.sectionTitle">({{result.metadata.sectionTitle[$index]}})</span>
                      <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.page">page {{result.metadata.page[$index]}}</span>

@@ -17,6 +17,7 @@ angular.module('evtviewer.search')
             var status = {
                searchResultBox: false,
                searchCaseSensitive : false,
+               searchExactWord: false,
                virtualKeyboard: false,
                progressBar : false
             };
@@ -65,6 +66,10 @@ angular.module('evtviewer.search')
          
          searchBox.getInputValue = function (parentBoxId) {
             return searchBoxCollection[parentBoxId].searchInput;
+         };
+   
+         searchBox.clearInputValue = function (parentBoxId) {
+            searchBoxCollection[parentBoxId].searchInput = '';
          };
          
          searchBox.getStatus = function (parentBoxId, key) {

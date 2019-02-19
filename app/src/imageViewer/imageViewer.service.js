@@ -9,7 +9,7 @@
         console.log("#!!# page di parsedData #!!#", parsedData.getPage('page1').source);
     
         var options = {
-            id: "osd_img",
+            id: "osd-img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
             //data/test-img/vb/VB_fol_104v_big.jpg
             tileSources:[] , // immagine per rotulo Alba

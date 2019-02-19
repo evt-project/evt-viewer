@@ -64,15 +64,14 @@ angular.module('evtviewer.search')
       };
       
       vm.getBtnLimit = function() {
-         var vm = this,
-            searchBoxBtnNumber = vm.searchBoxBtn.length;
+         var vm = this;
          
-         if(searchBoxBtnNumber === 6) {
-            return 3;
+         for (var i in vm.searchBoxBtn) {
+            if (vm.searchBoxBtn[i].type === "searchVirtualKeyboard") {
+               return 5;
+            }
          }
-         else {
-            return 4;
-         }
+         return 4;
       };
       
       $rootScope.$on('searchBtn', function(e, data){

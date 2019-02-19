@@ -4,13 +4,14 @@
 
 .search-box.internal {
    &.results-open {
-      @include calc(max-height, #{setInsideFrameHeight()} - 5px);
+      @include calc(max-height, #{setInsideFrameHeight()} - 6px);
       transition: max-height .5s;
    }
    button-switch {
       margin-right: 0;
       &[data-type="searchCaseSensitive"],
-      &[data-type="searchVirtualKeyboard"] {
+      &[data-type="searchVirtualKeyboard"],
+      &[data-type="searchExactWord"] {
          .buttonSwitch-active {
             background-color: $buttonSwitch-active-background-color;
          }
@@ -20,8 +21,15 @@
       width: 30px;
       @include border($mainContainer-border-width, 'right', $base-color-dark);
       background-color: $search-buttons-background;
-      .icon {
-         line-height: 16px;
+      .icon-evt_close {
+         font-size: 14px;
+         font-weight: bold;
+         left: 4px;
+      }
+      &.buttonSwitch-active {
+         .icon-evt_close {
+            color: $base-color-dark;
+         }
       }
    }
    .btn-left, .btn-right {
@@ -37,16 +45,25 @@
    }
    .btn-right {
       float: right;
+      button-switch:first-child .buttonSwitch {
+         border: 0;
+      }
+      .buttonSwitch-disabled[title="Previous"] {
+         border-left: 2px solid;
+      }
    }
    input[type="text"] {
       font-family: Junicode;
       font-size: 18px;
       height: $search-input-height;
-      min-width: calc(100% - 180px);
+      width: calc(100% - 230px);
       position: absolute;
       top: 0.9px;
-      padding: 0 10px 0 5px;
+      padding: 0 5px;
       border: transparent;
+      &:focus {
+         outline: 0;
+      }
    }
    .search-results {
       height: 95%;
@@ -58,17 +75,18 @@
       .token {
          padding-bottom: 5px;
       }
+      .icon {
+         cursor: pointer;
+      }
       .icon:before {
          content: '\25B6';
          font-size: 12px;
          position: relative;
          bottom: 2px;
          left: 3px;
-         cursor: pointer;
       }
       .icon.active:before {
          content: '\25BC';
-         cursor: pointer;
       }
       .search-info {
          text-align: center;
@@ -76,7 +94,7 @@
          position: absolute;
          z-index: 1;
          width: calc(100% - #{$mainContainer-border-width*8});
-         top: $search-box-height + $mainContainer-border-width*2;
+         top: $search-box-height;
          left: 0;
          padding-top: 15px;
          p:first-child {
@@ -126,5 +144,8 @@
             padding-left: 35px;
          }
       }
+   }
+   .ui-keyboard-input-current {
+      @include noBoxShadow();
    }
 }

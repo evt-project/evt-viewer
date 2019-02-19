@@ -100,8 +100,8 @@ div.hotspot-dida-body {
 }
 
 
-div#osd_img * img {
-    display: initial !important;
+div#osd-img * img {
+    display: block !important;
 }
 /* regola per la demo in arabo */
 
@@ -118,4 +118,14 @@ span.buttonSwitch[title="Information about this text"],
 span.buttonSwitch[title="Miniature"],
 span.buttonSwitch[title="Informazioni su questo testo"] {
    display: none;
+}
+
+
+.fa-times{
+   float: right;
+}
+
+
+.fa-times:hover{
+   cursor: pointer;
 }

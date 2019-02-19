@@ -1,5 +1,5 @@
 angular.module('evtviewer.dataHandler')
-   .service('EvtSearchDiplomaticParLineHandler', ['evtSearchDocument', 'XPATH', function DiplomaticParLineHandler(evtSearchDocument, XPATH) {
+   .service('evtSearchDiplomaticParLineHandler', ['evtSearchDocument', 'XPATH', function DiplomaticParLineHandler(evtSearchDocument, XPATH) {
       
       DiplomaticParLineHandler.prototype.getParLineInfo = function(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
          var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),

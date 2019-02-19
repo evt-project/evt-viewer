@@ -2,9 +2,10 @@
    console.log('caricato modulo openseadragonService');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
-      .service('imageViewerHandler', function (evtInterface, imageScrollMap) {
+      .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler) {
          const ImageNormalizationCoefficient = 3500;
          const YminPan = 0.5;
+         var divHotSpotToggle = false;
 
          var viewerHandler = this;
 
@@ -18,7 +19,7 @@
             viewerHandler.scope = scope;
          };
 
-
+        
          viewerHandler.open = function () {
             console.log('openHandler');
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
@@ -249,7 +250,7 @@
 
          viewerHandler.showHotSpot = function (zones) {
             //showHotSpots -> for(){showHotSpot}
-            var toggle = false;
+            //var toggle = false;
             console.log('in showHotSpot di ViewerHandler', zones);
 
             var rectObjs = [];
@@ -279,17 +280,27 @@
                hrefElt.className = 'hotspot';
                hrefElt.dataset.id = id;
                hrefElt.dataset.content = content;
-               hrefElt.onclick = function () {
-                  toggle = showDivHotSpot(toggle, this);
-               }; //function(){console.log('hot spot');};
-               hrefElt.onmouseleave = function () {
-                  toggle = hiddenDivHotSpot(toggle, this);
+               hrefElt.onmouseover = function () {
+                  viewerHandler.viewer.zoomPerClick = 1;
+                  
                };
+               hrefElt.onmouseout = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;
+               };
+               hrefElt.onclick = function(){
+                  showDivHotSpot(this);
+               };
+               
+               //function(){console.log('hot spot');};
+               // hrefElt.onmouseleave = function () {
+               //    toggle = hiddenDivHotSpot(toggle, this);
+               // };
+
                hrefElts.push(hrefElt);
             }
             console.log('hotspots: ', hrefElts);
 
-            viewerHandler.viewer.zoomPerClick = 1;
+            //viewerHandler.viewer.zoomPerClick = 1; // Fixato
             for (var k = 0; k < zones.length; k++) {
                viewerHandler.viewer.addOverlay({
                   element: hrefElts[k],
@@ -300,8 +311,8 @@
             }
          };
 
-         var showDivHotSpot = function (toggle, elem) {
-            if (!toggle) {
+         var showDivHotSpot = function (elem) {
+            if (!divHotSpotToggle) {
                console.log("elem id", elem.id);
                var _$elem = $(elem);
                var x = _$elem.position().left;
@@ -336,7 +347,35 @@
                var divTitleElt = document.createElement('div');
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
-               divTitleElt.innerHTML = 'HotSpot n.: '+elem.dataset.id;
+               //divTitleElt.innerHTML = 'HotSpot n.: '+elem.dataset.id;
+
+               //<div class="PopupCloser" onclick="HideAnnHS('Ann_VB_hs_106r_01')"><i class="fa fa-times"></i></div>
+
+               var divCloser = document.createElement('div');
+               divCloser.className='PopupCloser';
+               divCloser.dataset.id = elem.dataset.id;
+               
+               divCloser.onclick = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;      
+                  hiddenDivHotSpot(this);
+            };
+
+               var closeIcon = document.createElement('i');
+               closeIcon.className = 'fa fa-times';
+
+               closeIcon.onmouseover = function(){
+                  viewerHandler.viewer.zoomPerClick = 1;
+                  console.log('closeIcon.onmouseover zoom per click: ', viewerHandler.viewer.zoomPerClick)
+               };
+               closeIcon.onmouseout = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;
+                  console.log('closeIcon.onmouseout zoom per click: ', viewerHandler.viewer.zoomPerClick)
+               };
+
+               
+
+               divCloser.appendChild(closeIcon);
+               divTitleElt.appendChild(divCloser);
 
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
@@ -356,13 +395,13 @@
 
                console.log(OSDOverlay.element);
                viewerHandler.viewer.addOverlay(OSDOverlay);
-               toggle = !toggle;
+               divHotSpotToggle = !divHotSpotToggle;
             }
-            return toggle;
+            return divHotSpotToggle; // non dovrebbe servire più
          };
 
-         var hiddenDivHotSpot = function (toggle, elem) {
-            console.log('hiddenDivHotSpot: ' + toggle);
+         var hiddenDivHotSpot = function (elem) {
+            console.log('hiddenDivHotSpot: ' + divHotSpotToggle);
             try {
                var id = elem.dataset.id;
                viewerHandler.viewer.removeOverlay('div-hotspot-overlay_selected-' + id);
@@ -370,8 +409,8 @@
                console.error('no hotspot overlay', error);
             }
 
-            toggle = false;
-            return toggle;
+            divHotSpotToggle = false;
+            return divHotSpotToggle;
 
 
          };
@@ -382,21 +421,95 @@
                for (var i = 0; i < zones.length; i++) {
                   viewerHandler.viewer.removeOverlay('hotspot-overlay_selected-' + zones[i].id);
                }
-               viewerHandler.viewer.zoomPerClick = 2;
+               //viewerHandler.viewer.zoomPerClick = 2;
             } catch (error) {
                console.error('no hotspot overlay', error);
             }
+         };
+
+         viewerHandler.lineZone = function(zone){
+            console.log('in viewerHandler to handle zone line:', zone);
+            overlayHandler.test('funge');
+            var rectObj = convertZoneToOSD(zone);
+            var elt = document.createElement("div");
+            elt.id = "line-div-overlay_"+zone.id;
+            elt.dataset['lb'] = zone.id.replace('line','lb');
+            elt.className = "line-overlay";
+
+            elt.onmouseover = function(){
+              console.log('illuminare riga corrispondente a '+ this.dataset['lb']);
+               var ITLactive = evtInterface.getToolState('ITL') === 'active';
+               var currentViewMode = evtInterface.getState('currentViewMode');
+               
+               if (ITLactive && currentViewMode === 'imgTxt'){
+
+                  overlayHandler.test('funge on mouseover');
+                  this.className += ' selectedHighlight';
+                  
+                  var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
+                  
+                  if(elemsInLine.length == 0){
+                     var dataLine = this.dataset['lb'].replace('reg','orig');
+                     console.log('In alternativa riga corrispondente a '+ dataLine);
+                     elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
+                  }
+                  
+                  console.log('selettori di riga:', elemsInLine);
+                  for(var i=0; i < elemsInLine.length; i++){
+                     elemsInLine[i].className += ' lineHover';
+                  }
+
+               } 
+              
+               //alert('overlay da img');
+            };
+
+            elt.onmouseout = function(){
+               console.log('de spegnere riga corrispondente a '+ this.dataset['lb']);
+
+               var ITLactive = evtInterface.getToolState('ITL') === 'active';
+               var currentViewMode = evtInterface.getState('currentViewMode');
+               
+               if (ITLactive && currentViewMode === 'imgTxt') {
+
+                  overlayHandler.test('funge on mouseout');
+                  this.className = this.className.replace(' selectedHighlight', '') || '';
+                  var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
+                  if(elemsInLine.length == 0){
+                     var dataLine = this.dataset['lb'].replace('reg','orig');
+                     console.log('In alternativa riga corrispondente a '+ dataLine);
+                     elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
+                  }
+                  console.log('selettori di riga:', elemsInLine);
+                  for(var i=0; i < elemsInLine.length; i++){
+                   elemsInLine[i].className = elemsInLine[i].className.replace(' lineHover', '') || '';
+                  }
+               //alert('overlay da img');
+
+               }
+            };
+
+            elt.onclick = function(){
+               overlayHandler.test('funge on click');
+            };
+
+            viewerHandler.viewer.addOverlay({
+               element: elt,
+               location: rectObj
+            });
+
+            return elt;
          };
 
 
 
 
          viewerHandler.testFun = function () {
-            console.log("testFunction: ", viewerHandler);
-            return "test ok";
+            console.log('testFunction: ', viewerHandler);
+            return 'test ok';
          };
 
-         console.log("caricato servizio  imageViewerHandler");
+         console.log('caricato servizio  imageViewerHandler');
 
       });
 

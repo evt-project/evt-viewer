@@ -4,9 +4,9 @@ angular.module('evtviewer.dataHandler')
    .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
       function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
    
-      var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
+      var regex = /[.,\/#!$%\^&;:{}=_`~()]/;
       
-      SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive) {
+      SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive, isExactMatch) {
          var searchResults;
          
          var input = {
@@ -14,7 +14,7 @@ angular.module('evtviewer.dataHandler')
                searchResults = 'Enter your query into the search box above';
             },
             'default': function () {
-               searchResults = getResultsMetadata(inputValue, isCaseSensitive);
+               searchResults = getResultsMetadata(inputValue, isCaseSensitive, isExactMatch);
             }
          };
          (input[inputValue] || input['default'])();
@@ -36,11 +36,11 @@ angular.module('evtviewer.dataHandler')
          return evtSearchIndex.getIndex();
       }
       
-      function getResultsMetadata(inputValue, isCaseSensitive) {
+      function getResultsMetadata(inputValue, isCaseSensitive, isExactMatch) {
          var res,
             results = {};
          
-         res = makeQuery(inputValue.toLowerCase());
+         res = makeQuery(inputValue.toLowerCase(), isExactMatch);
          res.forEach(function (result) {
             var metadata = result.matchData.metadata,
                newMetadata = {},
@@ -67,6 +67,7 @@ angular.module('evtviewer.dataHandler')
                         interpretative: getCaseInsensitiveResults(resultByTokenObjects.interpretative)
                      };
                   }
+                  
                   if(resultToken.diplomatic) {
                      if(!results.diplomatic) {
                         results['diplomatic'] = [];
@@ -102,26 +103,32 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
       
-      function makeQuery(inputValue) {
+      function makeQuery(inputValue, isExactMatch) {
          var index = getIndex();
-         return evtSearchQuery.query(index, inputValue);
+         
+         if(isExactMatch) {
+            return evtSearchQuery.exactMatchQuery(index, inputValue);
+         }
+         else {
+            return evtSearchQuery.query(index, inputValue);
+         }
       }
       
       function getCaseSensitiveResults(inputValue, tokenList) {
          var results = [],
-            matchStarWildcard = inputValue.match(/[*]/);
+            inputMatchStarWildcard = inputValue.match(/[*]/);
          
          for (var token in tokenList) {
    
-            if(matchStarWildcard) {
+            if(inputMatchStarWildcard) {
                inputValue.toLowerCase();
-               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard);
+               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, inputMatchStarWildcard);
                if(result) {
                   results.push(result);
                }
             }
             
-            if (inputValue === token.toString()) {
+            if (inputValue === token.toString() || token.toString().includes(inputValue) || inputValue.includes(token.toString())) {
                results.push(
                   {
                      token: token.toString(),
@@ -134,9 +141,9 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
    
-      function handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard) {
+      function handleWildcardInCaseSensitive(inputValue, token, tokenList, inputMatchStarWildcard) {
          var inputValueLength = inputValue.length,
-            wildcardPos = matchStarWildcard.index,
+            wildcardPos = inputMatchStarWildcard.index,
             tokenFirstChars = token.toString().slice(0, wildcardPos),
             inputFirstChars = inputValue.slice(0, wildcardPos),
             tokenLastChars,
@@ -321,9 +328,35 @@ angular.module('evtviewer.dataHandler')
       
       SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
          var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
-            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
+            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive'),
+            isExactMatch = evtSearchBox.getStatus(mainBoxId, 'searchExactWord');
          
          instance.unmark(inputValue);
+         if(isExactMatch) {
+            markExactly(instance, inputValue, isCaseSensitive);
+         }
+         else {
+            markPartially(instance, inputValue, isCaseSensitive);
+         }
+      };
+      
+      function markExactly(instance, inputValue, isCaseSensitive) {
+         instance.mark(inputValue, {
+            'wildcards': 'enable',
+            'acrossElements': true,
+            'caseSensitive': isCaseSensitive,
+            'accuracy': {
+               'value': 'exactly',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter': function() {
+               return inputValue.match(regex) ? false : true;
+            },
+            'exclude': ['.lineN']
+         });
+      }
+      
+      function markPartially(instance, inputValue, isCaseSensitive) {
          instance.mark(inputValue, {
             'wildcards': 'enable',
             'acrossElements': true,
@@ -332,9 +365,11 @@ angular.module('evtviewer.dataHandler')
                'value': 'partially',
                'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
             },
-            'filter': function() {
-               return inputValue.match(regex) ? false : true;
-            }
+            'filter':
+               function(node) {
+                  return inputValue.match(regex) ? false : true;
+               },
+            'exclude': ['.lineN']
          });
-      };
+      }
    }]);

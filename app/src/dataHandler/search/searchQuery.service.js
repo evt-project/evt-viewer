@@ -14,14 +14,32 @@ var lunr = require('lunr');
  */
 angular.module('evtviewer.dataHandler')
    .service('evtSearchQuery', function Search() {
-      var searchResults;
+      var searchResults,
+         tokens;
       
       Search.prototype.query = function (index, token) {
+         tokens = lunr.tokenizer(token);
+         
          searchResults = index.query(function (q) {
-            q.term(token, {
+            q.term(tokens, {
+               usePipeline: false,
+               wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING
+            });
+         });
+         
+         return searchResults;
+      };
+      
+      Search.prototype.exactMatchQuery = function (index, token) {
+         tokens = token.match('-') ? token : lunr.tokenizer(token);
+        
+         searchResults = index.query(function (q) {
+            q.term(tokens, {
                usePipeline: false
             });
          });
+         
          return searchResults;
       };
+      
    });
