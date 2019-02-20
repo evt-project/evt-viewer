@@ -146,6 +146,10 @@ angular.module('evtviewer.buttonSwitch')
 		var getIcon = function(icon) {
 			var evtIcon = '';
 			switch (angular.lowercase(icon)) {
+				case '3dhop':
+				case 'mode-3dhop':
+					evtIcon = 'fa fa-cube';
+					break;
 				case 'add':
 					evtIcon = 'icon-evt_add';
 					break;
