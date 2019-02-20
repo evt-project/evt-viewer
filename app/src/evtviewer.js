@@ -69,6 +69,7 @@ angular
 		'prettyXml',
 		'infinite-scroll',
 		'pascalprecht.translate',
+		'oc.lazyLoad',
 		'evtviewer.core',
 		'evtviewer.communication',
 		'evtviewer.translation',
