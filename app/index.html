@@ -31,7 +31,7 @@
     <!-- endbuild -->
 
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">>
+    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="config/custom-style.css">
     <!-- endbuild -->
 
@@ -128,6 +128,14 @@
                         <span>
                             <i class="icon fa fa-keyboard-o"></i>
                             {{ 'MAIN_MENU.KEYBOARD_SHORT_CUTS' | translate }}</span></li>
+                    <li>
+                        <span><!-- TODO: ng-click="aboutEVT()" -->
+                            <a href="http://evt.labcd.unipi.it/" target="_blank" title="{{ 'MAIN_MENU.GO_TO_EVT_WEB_PAGE' | translate }}">
+                                <i class="icon fa fa-copyright"></i>
+                                {{ 'MAIN_MENU.ABOUT_EVT' | translate }}
+                            </a>
+                        </span>
+                    </li>
                 </ul>
             </div>
             <!-- <button-switch
@@ -138,7 +146,7 @@
             </button-switch> -->
         </div>
     </header>
-    <div id="global-container-ext" ng-show="!isLoading()">
+    <div id="global-container-ext" ng-show="!isLoading()" ng-class="{'navbar-opened': isNavBarOpened()}">
 
         <section class="secondary-container" ng-show="getSecondaryContentOpened() !== ''">
             <evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES" ng-if="getProperty('namedEntitiesLists')">
@@ -300,12 +308,12 @@
             </div>
         </section>
 
-        <button-switch class="inverted-color"
-            ng-class="{'navBar-opener': !isNavBarOpened(), 'navBar-closer': isNavBarOpened()}"    
+        <button-switch ng-if="getProperty('enableNavBar') && !isThumbNailsOpened() && !isVisCollOpened()"
+            ng-class="{'navBar-opener': isNavBarOpened(), 'navBar-closer': !isNavBarOpened()}"    
             title="BUTTONS.TOGGLE_NAVBAR" 
             data-icon="{{isNavBarOpened() ? 'hide-bar' : 'show-bar'}}" 
             data-type="toggler" on-btn-clicked="toggleNavBar()"></button-switch>
-        <evt-navbar ng-hide="isNavBarOpened() === true"></evt-navbar>
+        <evt-navbar ng-hide="!isNavBarOpened()"></evt-navbar>
     </div>
 
     <section class="global-loading-container" ng-show="isLoading()">

@@ -107,7 +107,8 @@ angular.module('evtviewer.dataHandler')
     	</pre>
      */
 	var pagesCollection = {
-		length: 0
+		length: 0,
+		_indexes: [] // TODO: use only this in future
 	};
 	var thumbnails = [];
 	/**
@@ -949,6 +950,7 @@ angular.module('evtviewer.dataHandler')
 			page.indexInCollection = pagesCollection.length;
 			pagesCollection[pageId] = page;
 			pagesCollection.length++;
+			pagesCollection._indexes.push(pageId); // TODO: remove duplicate list of page ids. Use only _indexes.
 			// _console.log('parsedData - addPage ', page);
 		} else {
 			var parsedPage = pagesCollection[pageId];

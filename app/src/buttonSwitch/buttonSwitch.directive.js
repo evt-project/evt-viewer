@@ -119,7 +119,24 @@ angular.module('evtviewer.buttonSwitch')
               parentBoxId = scope.$parent.id;
               $rootScope.$broadcast('keyboardBtn', {parentId:parentBoxId, btn: currentButton});
            }
-
+            if (scope.type === 'prevPage' || scope.type === 'firstPage') {
+                scope.$watch(function() {
+                    return evtInterface.isCurrentPageFirst();
+                }, function(newItem, oldItem) {
+                    if (newItem !== oldItem) {
+                        scope.vm.disabled = newItem;
+                    }
+                }, true);
+            }
+            if (scope.type === 'nextPage' || scope.type === 'lastPage') {
+                scope.$watch(function() {
+                    return evtInterface.isCurrentPageLast();
+                }, function(newItem, oldItem) {
+                    if (newItem !== oldItem) {
+                        scope.vm.disabled = newItem;
+                    }
+                }, true);
+            }
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentButton){

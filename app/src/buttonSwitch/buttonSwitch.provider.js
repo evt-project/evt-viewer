@@ -988,115 +988,28 @@ angular.module('evtviewer.buttonSwitch')
                         return s;
                     };
                     break;
-				case 'nextPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[currentPageIndex+1];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-						if (newPageId !== pagesCollection[pagesCollection.length - 1]) {
-							vm.disabled = false;
-						} else {
-							vm.disabled = true;
-						}
-					};
-					break;
 				case 'prevPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[currentPageIndex-1];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-						if (newPageId === pagesCollection[0]) {
-							vm.disabled = true;
-						} else {
-							vm.disabled = false;
-						}
-					};
-					break;
+				case 'nextPage':
 				case 'firstPage':
-					callback = function() {
-						var vm = this;
-						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[currentPageIndex-currentPageIndex];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
-						}
-					};
-					break;
 				case 'lastPage':
 					callback = function() {
 						var vm = this;
 						vm.active = false;
-						var pagesCollection = parsedData.getPages();
-
-						var currentPage = evtInterface.getState('currentPage');
-						var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-						
-						var currentDocument = evtInterface.getState('currentDoc');
-						var newPageId = pagesCollection[pagesCollection.length - 1];
-						if (newPageId) {
-							var newPage = pagesCollection[newPageId];
-							evtInterface.updateState('currentPage', newPageId);
-							
-							if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							if (newPage.docs.length > 1) { //The page has two different docs
-								evtInterface.updateState('currentDoc', newPage.docs[0]);
-							}
-							evtInterface.updateUrl();
+						if (type === 'prevPage') {
+							evtInterface.goToPrevPage();
+						} else if (type === 'nextPage') {
+							evtInterface.goToNextPage();
+						} else if (type === 'firstPage') {
+							evtInterface.goToFirstPage();
+						} else if (type === 'lastPage') {
+							evtInterface.goToLastPage();
 						}
 					};
+					if (type === 'prevPage' || type === 'firstPage') {
+						disabled = evtInterface.isCurrentPageFirst();
+					} else if (type === 'nextPage' || type === 'lastPage') {
+						disabled = evtInterface.isCurrentPageLast();
+					}
 					break;
 				case 'hideBar':
 					callback = function() {

@@ -25,20 +25,22 @@ angular.module('evtviewer.visColl')
         // metodi vari
 
         vm.updateCurrentPage = function (value) {
-            var pagesCollection = parsedData.getPages();
-            for (var page in pagesCollection) {
-                if (pagesCollection[page].n !== undefined) {
-                    if (pagesCollection[page].n === value) {
-                        evtInterface.updateState('currentPage', page);
-                        evtInterface.updateState('isVisCollOpened', false);
+            if (value) {
+                var pagesCollection = parsedData.getPages();
+                for (var page in pagesCollection) {
+                    if (pagesCollection[page].n !== undefined) {
+                        if (pagesCollection[page].n === value) {
+                            evtInterface.updateState('currentPage', page);
+                            evtInterface.updateState('isVisCollOpened', false);
+                        }
                     }
                 }
+                var viscollBtn = evtButtonSwitch.getByType('visColl');
+                if (viscollBtn) {
+                    viscollBtn.forEach(function(btn){ btn.setActive(false) });
+                }
+                evtInterface.updateUrl();
             }
-            var viscollBtn = evtButtonSwitch.getByType('visColl');
-            if (viscollBtn) {
-                viscollBtn.forEach(function(btn){ btn.setActive(false) });
-            }
-            evtInterface.updateUrl();
         };
 
     });

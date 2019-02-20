@@ -76,7 +76,7 @@ angular.module('evtviewer.interface')
             currentHighlightedZone: undefined,
             isLoading: true,
             isPinnedAppBoardOpened: false,
-            isNavBarOpened: false,
+            isNavBarOpened: true,
             isVisCollOpened: false,
             isThumbNailsOpened: false,
             indexingInProgress: false,
@@ -140,7 +140,8 @@ angular.module('evtviewer.interface')
             availableVersions: [],
             versionSelector: false,
             visCollTextUrl: '',
-            visCollStyleUrl: ''
+            visCollStyleUrl: '',
+            enableNavBar: true
         };
         /**
          * @ngdoc property
@@ -184,7 +185,8 @@ angular.module('evtviewer.interface')
                 properties.availableViewModes = config.availableViewModes;
                 properties.visCollTextUrl = config.visCollTextUrl;
                 properties.visCollStyleUrl = config.visCollStyleUrl;
-
+                properties.enableNavBar = angular.isDefined(config.enableNavBar) ? config.enableNavBar : state.enableNavBar;
+                state.isNavBarOpened = angular.isDefined(config.initNavBarOpened) ? config.initNavBarOpened : state.isNavBarOpened;
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);
                 var userLangKey = evtTranslation.getUserLanguage(),
@@ -1022,6 +1024,119 @@ angular.module('evtviewer.interface')
                 }
                 mainInterface.updateUrl();
             }
+        };
+
+        mainInterface.goToNextPage = function() {
+            var pagesCollection = parsedData.getPages();
+    
+            var currentPage = mainInterface.getState('currentPage');
+            var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+            
+            var currentDocument = mainInterface.getState('currentDoc');
+            var newPageId = pagesCollection[currentPageIndex+1];
+            if (newPageId) {
+                var newPage = pagesCollection[newPageId];
+                mainInterface.updateState('currentPage', newPageId);
+                
+                if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                if (newPage.docs.length > 1) { //The page has two different docs
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                mainInterface.updateUrl();
+            }
+            return {
+                newPageId: newPageId,
+                isFirst: newPageId === pagesCollection[0],
+                isLast: newPageId === pagesCollection[pagesCollection.length - 1]
+            };
+        };
+
+        mainInterface.goToPrevPage = function() {
+            var pagesCollection = parsedData.getPages();
+
+            var currentPage = mainInterface.getState('currentPage');
+            var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+            
+            var currentDocument = mainInterface.getState('currentDoc');
+            var newPageId = pagesCollection[currentPageIndex-1];
+            if (newPageId) {
+                var newPage = pagesCollection[newPageId];
+                mainInterface.updateState('currentPage', newPageId);
+                
+                if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                if (newPage.docs.length > 1) { //The page has two different docs
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                mainInterface.updateUrl();
+            }
+            return {
+                newPageId: newPageId,
+                isFirst: newPageId === pagesCollection[0],
+                isLast: newPageId === pagesCollection[pagesCollection.length - 1]
+            };
+        };
+
+        mainInterface.goToFirstPage = function() {
+            var pagesCollection = parsedData.getPages();
+            var currentPage = mainInterface.getState('currentPage');
+            var currentPageIndex = pagesCollection[currentPage].indexInCollection;
+            var currentDocument = mainInterface.getState('currentDoc');
+            var newPageId = pagesCollection[currentPageIndex-currentPageIndex];
+            if (newPageId) {
+                var newPage = pagesCollection[newPageId];
+                mainInterface.updateState('currentPage', newPageId);
+                
+                if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                if (newPage.docs.length > 1) { //The page has two different docs
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                mainInterface.updateUrl();
+            }
+            return {
+                newPageId: newPageId,
+                isFirst: newPageId === pagesCollection[0],
+                isLast: newPageId === pagesCollection[pagesCollection.length - 1]
+            };
+        };
+        mainInterface.goToLastPage = function() {
+            var pagesCollection = parsedData.getPages();
+            var currentDocument = mainInterface.getState('currentDoc');
+            var newPageId = pagesCollection[pagesCollection.length - 1];
+            if (newPageId) {
+                var newPage = pagesCollection[newPageId];
+                mainInterface.updateState('currentPage', newPageId);
+                
+                if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                if (newPage.docs.length > 1) { //The page has two different docs
+                    mainInterface.updateState('currentDoc', newPage.docs[0]);
+                }
+                mainInterface.updateUrl();
+            }
+            return  {
+                newPageId: newPageId,
+                isFirst: newPageId === pagesCollection[0],
+                isLast: newPageId === pagesCollection[pagesCollection.length - 1]
+            };
+        };
+
+        mainInterface.isCurrentPageFirst = function() {
+            var currentPageId = mainInterface.getState('currentPage');
+            var pagesCollection = parsedData.getPages();
+            return currentPageId === pagesCollection[0];
+        };
+
+        mainInterface.isCurrentPageLast = function() {
+            var currentPageId = mainInterface.getState('currentPage');
+            var pagesCollection = parsedData.getPages();
+            return currentPageId === pagesCollection[pagesCollection.length - 1]
         };
         /**
          * @ngdoc method

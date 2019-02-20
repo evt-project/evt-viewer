@@ -125,7 +125,9 @@
 		"KEYBOARD_SHORT_CUTS": "Keyboard short cuts",
 		"LANGUAGES": "Languages",
 		"OPEN_LISTS": "Open Lists",
-		"PROJECT_INFO": "Project Info"
+		"PROJECT_INFO": "Project Info",
+		"ABOUT_EVT": "About EVT",
+		"GO_TO_EVT_WEB_PAGE": "Go to EVT web page"
 	},
 	"MESSAGES" : {
 		"BIBL_REF_NOT_FOUND": "Could not find bibliography referement",
@@ -274,7 +276,8 @@
 		"QUIRE_NUM": "Quire n.",
 		"SELECT_UNIT":"Select a unit",
 		"UNIT": "Unit",
-		"SELECT_UNIT_MSG": "Select a unit to see its composition."
+		"SELECT_UNIT_MSG": "Select a unit to see its composition.",
+		"MISSING": "Missing"
 	},
 	"PAGES": "Pages",
 	"AND": "and",

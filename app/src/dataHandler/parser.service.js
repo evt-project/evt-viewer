@@ -860,9 +860,6 @@ angular.module('evtviewer.dataHandler')
                                                 svgLeaf.conjoinId = svgCollection.imglist[a].value;
                                             }
                                     }
-                                } else {
-                                    svgLeaf.imgConjoin = 'images/empty-image.jpg';
-                                    svgLeaf.conjoinId = 'no folio';
                                 }
 		                    } else {
 		                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
@@ -874,9 +871,6 @@ angular.module('evtviewer.dataHandler')
                                                 svgLeaf.conjoinId2 = svgCollection.imglist[b].value;
                                             }
                                     }
-                                } else {
-                                    svgLeaf.imgConjoin2 = 'images/empty-image.jpg';
-                                    svgLeaf.conjoinId2 = 'no folio';
                                 }
 		                    }  
 		                }
@@ -911,7 +905,7 @@ angular.module('evtviewer.dataHandler')
                 var conjoinElem = conjoinElems[1] == undefined ? conjoinElems[0] : conjoinElems[1];
                 var newLeaf = {
                     value: element.getAttribute('xml:id') || '',
-                    label: qElem.getAttribute('leafno') || '',
+                    leafno: qElem.getAttribute('leafno') || '',
                 	quire: qElem.getAttribute('target').replace('#', '') || 'target',
                 	conjoin: conjoinElem.getAttribute('target').replace('#', '') || 'target'
                 };

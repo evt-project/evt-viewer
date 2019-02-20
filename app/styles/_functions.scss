@@ -11,7 +11,18 @@
 	@else {
 		@return 100%;	
 	}
-	
+}
+
+@function setGlobalFrameHeightWithNavbar(){
+	@if($base-footer == false){
+		@return "100% -  #{$base-header-height + 2} - #{$base-slider-height}";
+	}
+	@else if($base-footer == true){	
+		@return "100% -  #{$base-header-height*2 + 2} - #{$base-slider-height}";
+	}
+	@else {
+		@return "100% - #{$base-slider-height}";	
+	}
 }
 
 @function setPopupContainerFrameHeight() {

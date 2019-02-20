@@ -79,7 +79,9 @@ footer {
     width: 100%;
 }
 
-
+div#global-container-ext.navbar-opened #global-container {
+    @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+}
 
 #left-nav {
     @include mainNavArrow;
@@ -482,6 +484,10 @@ pre {
                 background-color: #f5f5f5;
                 color: #ccc;
                 cursor: default;
+            }
+            a {
+                color: #444444;
+                text-decoration: none;
             }
         }
     }

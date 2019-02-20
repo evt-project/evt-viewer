@@ -1,39 +1,41 @@
 /* *************************** */
+
 /* VISCOLL                     */
+
 /* *************************** */
 
 .viscollContainer {
-	height: 100%;
-	vertical-align: top;
+    height: 100%;
+    vertical-align: top;
     width: 100%;
-	max-height: 300px;
-	padding-bottom: 20px;
-	&:not(:last-child) {
-		margin-bottom: 20px;
-		border-bottom: 1px solid lightgray;
-	}
+    max-height: 300px;
+    padding-bottom: 20px;
+    &:not(:last-child) {
+        margin-bottom: 20px;
+        border-bottom: 1px solid lightgray;
+    }
 }
 
 .selectorViscoll {
-	font-size: 0.5em;
-	margin-bottom: 5px;
-	label {
-		display: block;
-	}
-	.selector {
-		margin: 0;
-	}
+    font-size: 0.5em;
+    margin-bottom: 5px;
+    label {
+        display: block;
+    }
+    .selector {
+        margin: 0;
+    }
 }
 
 .imgSelectorViscoll {
-	display: block;
-	&_empty {
-		padding-top: 10px;
-		font-size: 0.5em;
-		height: 170px;
-		width: 100%;
-		font-style: italic;
-	}
+    display: block;
+    &_empty {
+        padding-top: 10px;
+        font-size: 0.5em;
+        height: 170px;
+        width: 100%;
+        font-style: italic;
+    }
 }
 
 .quireSelector {
@@ -44,19 +46,21 @@
 }
 
 .selectorDiv {
-	height: 100%;
+    height: 100%;
 }
 
 .quireNumber {
-	position: relative;
-	display: block;
-	font-size: 1.3rem;
-	font-variant: small-caps;
-	margin-bottom: 10px;
+    position: relative;
+    display: block;
+    font-size: 1.3rem;
+    font-variant: small-caps;
+    margin-bottom: 10px;
 }
+
 .viscollItemsContainer {
-	padding: 0 30px;
+    padding: 0 30px;
 }
+
 .viscollItem-leftContainer {
     width: 20%;
     display: inline-block;
@@ -68,32 +72,55 @@
     vertical-align: top;
 }
 
-.viscollContainer svg { 
-	position: relative; 
-	background: #396f7b; 
-	height: auto;
-	width: 70%;
-	border-radius: 8px; 
-	margin-bottom: 5px;
-	> g:hover .leaf {
-		cursor: pointer;
-		stroke: $base-color-active-background;
-	}
-	.active_unit .leaf {
-		stroke: $base-color-active-background;
-		cursor: default;
-	}
+$viscoll_first_unit_color: #ff9800;
+$viscoll_second_unit_color: #ff5722;
+.viscollContainer svg {
+    position: relative;
+    background: #396f7b;
+    height: auto;
+    width: 70%;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    >g:hover .leaf, .over_unit .leaf {
+        cursor: pointer;
+        stroke: $base-color-active-background;
+    }
+    .active_unit {
+		&.first_unit {
+			.leaf {
+				stroke: $viscoll_first_unit_color;
+				cursor: default;
+			}
+		}
+		&.second_unit {
+			.leaf {
+				stroke: $viscoll_second_unit_color;
+				cursor: default;
+			}
+		}
+    }
 }
 
 .viscollContainer {
-	.thumbnail {
-		img {
-			height: auto;
-			width: 120px;
+    .thumbnail {
+		&.first_unit img{
+			border-color: $viscoll_first_unit_color;
 		}
-		figcaption {
-			width: 120px;
+		&.second_unit img{
+			border-color: $viscoll_second_unit_color;
 		}
-	}
-
+        img {
+            height: auto;
+            width: 120px;
+        }
+        figcaption {
+            width: 120px;
+        }
+        &.missing-page {
+            cursor: not-allowed;
+            &:hover figcaption {
+                background: rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+    }
 }

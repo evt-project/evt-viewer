@@ -37,34 +37,38 @@
 	        </div>
 	        <div class="imgSelectorViscoll" 
 	        	ng-if="vm.selectedFolios[vm.getSvgQuireN(svgId)]">
-				<figure class="thumbnail thumb_single" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId)">
+				<figure class="thumbnail thumb_single second_unit" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId)"
+					ng-class="{'missing-page': !vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId }">
 					<img class="thumb_single_img"
 						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imgConjoin}}"
-						title="{{ 'BUTTONS.GO_TO_PAGE' | translate }}"
+						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imgConjoin || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"
 						></img>
-					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId}}</figcaption>
+					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId || 'VISCOLL.MISSING' | translate}}</figcaption>
 				</figure>
-				<figure class="thumbnail thumb_single" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId)">
+				<figure class="thumbnail thumb_single first_unit" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId)"
+					ng-class="{'missing-page': !vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId }">
 					<img class="thumb_single_img" 
 						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].img}}"
-						title="{{ 'BUTTONS.GO_TO_PAGE' | translate }}"></img>
-					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId}}</figcaption>
+						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].img || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"></img>
+					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId || 'VISCOLL.MISSING' | translate}}</figcaption>
 				</figure>
-				<figure class="thumbnail thumb_single" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId2)">
+				<figure class="thumbnail thumb_single first_unit" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId2)"
+					ng-class="{'missing-page': !vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId2 }">
 					<img class="thumb_single_img" 
 						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].img2}}"
-						title="{{ 'BUTTONS.GO_TO_PAGE' | translate }}"></img>
-					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId2}}</figcaption>
+						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].img2 || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId2 ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"></img>
+					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imageId2 || 'VISCOLL.MISSING' | translate}}</figcaption>
 				</figure>
-	            <figure class="thumbnail thumb_single" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId2)">
+				<figure class="thumbnail thumb_single second_unit" ng-click="vm.updateCurrentPage(vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId2)"
+					ng-class="{'missing-page': !vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId2 }">
 					<img class="thumb_single_img" 
 						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
-						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imgConjoin2}}"
-						title="{{ 'BUTTONS.GO_TO_PAGE' | translate }}"></img>
-					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId2}}</figcaption>
+						ng-src="{{vm.selectedFolios[vm.getSvgQuireN(svgId)].imgConjoin2 || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId2 ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"></img>
+					<figcaption>{{vm.selectedFolios[vm.getSvgQuireN(svgId)].conjoinId2 || 'VISCOLL.MISSING' | translate}}</figcaption>
 				</figure>
 	        </div>
 	        <div  class="imgSelectorViscoll_empty" 

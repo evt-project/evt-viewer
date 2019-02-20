@@ -373,9 +373,25 @@ angular.module('evtviewer.interface')
          * @todo: Add more cases. Think about creating a dedicated directive
          */
 		$scope.handleKeydownEvent = function($event) {
-			if ($event.keyCode === 27) {
+			if ($event.keyCode === 27) { // ESC
 				evtDialog.closeAll();
-			}
+			} else if ($event.keyCode === 37) { // LEFT ARROW
+            if (!$scope.isVisCollOpened() && !$scope.isThumbNailsOpened()) {
+               if ($event.metaKey) {
+                  evtInterface.goToFirstPage();
+               } else {
+                  evtInterface.goToPrevPage();
+               }
+            }
+         } else if ($event.keyCode === 39) { // RIGHT ARROW
+            if (!$scope.isVisCollOpened() && !$scope.isThumbNailsOpened()) {
+               if ($event.metaKey) {
+                  evtInterface.goToLastPage();               
+               } else {
+                  evtInterface.goToNextPage();
+               }
+            }
+         } 
 		};
 		/**
          * @ngdoc method
@@ -623,7 +639,7 @@ angular.module('evtviewer.interface')
 		 * @returns {boolean} if is true or not
 		 */
 		 $scope.isNavBarOpened = function() { 
-			return evtInterface.getState('isNavBarOpened'); 
+			return evtInterface.getProperty('enableNavBar') && evtInterface.getState('isNavBarOpened'); 
 		};
 		/**
 		 * @ngdoc method
@@ -660,6 +676,9 @@ angular.module('evtviewer.interface')
        $scope.toggleNavBar = function() {
          var startState = evtInterface.getState('isNavBarOpened');
          evtInterface.updateState('isNavBarOpened', !startState);
+         $timeout(function() {
+            $scope.$broadcast('rzSliderForceRender')
+        });
        }
 		_console.log('InterfaceCtrl running');
 	})

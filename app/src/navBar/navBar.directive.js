@@ -22,7 +22,7 @@
 **/
 angular.module('evtviewer.navBar')
 
-.directive('evtNavbar', function(evtNavbar, parsedData, evtInterface) {
+.directive('evtNavbar', function($timeout, evtNavbar, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -34,7 +34,6 @@ angular.module('evtviewer.navBar')
         controller: 'NavbarCtrl',
         link: function(scope, element, attrs){
             var currentNavbar = evtNavbar.build(scope);
-
             scope.$watch(function() {
                 return parsedData.getPages();
             }, function(newCollection, oldCollection) {
@@ -45,22 +44,24 @@ angular.module('evtviewer.navBar')
                         var pageId = newCollection[value];
                         return newCollection[pageId] ? newCollection[pageId].label : value;
                     });
+                    $timeout(function() {
+                        scope.$broadcast('rzSliderForceRender')
+                    });
                 }
             }, true);
-			
 			
 			scope.$watch(function() {
                 return currentNavbar.pageSlider.value;
             },function(newValue, oldValue) {
                 if (oldValue !== newValue) {
-					currentNavbar.updatePage(newValue);
+                    currentNavbar.updatePage(newValue);
 				}
 			}, true);
 			
 			scope.$watch(function() {
 				return evtInterface.getState('currentPage');
 			}, function(newValue, oldValue) {
-				if (oldValue !== newValue) {
+                if (oldValue !== newValue) {
 					currentNavbar.updateSlider(newValue);
 				}
 			}, true);

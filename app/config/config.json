@@ -79,6 +79,8 @@
         }
     ],
     "enableXMLdownload": true,
+    "initNavBarOpened": true,
+    "enableNavBar": true,
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
     "namedEntitiesSelector": false,

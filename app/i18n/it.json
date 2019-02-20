@@ -125,7 +125,9 @@
 		"KEYBOARD_SHORT_CUTS": "Scorciatoie da tastiera",
 		"LANGUAGES": "Lingue",
 		"OPEN_LISTS": "Apri liste",
-		"PROJECT_INFO": "Informazioni sul progetto"
+		"PROJECT_INFO": "Informazioni sul progetto",
+		"ABOUT_EVT": "Informazioni su EVT",
+		"GO_TO_EVT_WEB_PAGE": "Vai al sito di EVT"
 	},
 	"MESSAGES" : {
 		"BIBL_REF_NOT_FOUND": "Impossibile trovare i riferimenti bibliografici",
@@ -274,7 +276,8 @@
 		"QUIRE_NUM": "Fascicolo n.",
 		"SELECT_UNIT":"Seleziona un'unità",
 		"UNIT": "Unità",
-		"SELECT_UNIT_MSG": "Seleziona un'unità per visualizzare la sua composizione."
+		"SELECT_UNIT_MSG": "Seleziona un'unità per visualizzare la sua composizione.",
+		"MISSING": "Persa"
 	},
 	"PAGES": "Pagine",
 	"AND": "e",

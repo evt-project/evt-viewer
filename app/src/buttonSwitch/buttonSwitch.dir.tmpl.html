@@ -7,11 +7,11 @@
                'only-text': vm.icon === undefined || vm.icon === '',
                'iconLeft': vm.iconPos && vm.iconPos === 'left' }">
     
-    <i ng-if=":: vm.iconPos && vm.iconPos === 'left'" class="icon {{ ::vm.icon }} buttonSwitch-icon"></i>
+    <i ng-if=":: vm.iconPos && vm.iconPos === 'left'" class="icon {{ vm.icon }} buttonSwitch-icon"></i>
     
     <span
       class="buttonSwitch-label"
       ng-if="::vm.label !== undefined && vm.label !== ''">{{ vm.label | translate}}</span>
     
-    <i ng-if=":: !vm.iconPos || vm.iconPos === 'right'" class="icon {{ ::vm.icon }} buttonSwitch-icon"></i>
+    <i ng-if=":: !vm.iconPos || vm.iconPos === 'right'" class="icon {{ vm.icon }} buttonSwitch-icon"></i>
 </span>
