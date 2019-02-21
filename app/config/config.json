@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "favicon.ico",
 
-    "dataUrl":"data/INDEX-SEPULTURARUM.xml",
+    "dataUrl":"data/bellini/encodings/LL1_16.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
