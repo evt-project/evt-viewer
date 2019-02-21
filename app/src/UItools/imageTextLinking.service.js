@@ -127,7 +127,17 @@ angular.module('evtviewer.UItools')
       ITLutils.activateHotSpots = function () {
          console.log('in activateHotSpots');
          var hotspotzones = ITLutils.prepareHotSpotZones();
-         imageViewerHandler.showHotSpot(hotspotzones);
+         var hotspotzonesInPage = hotspotzones.filter(
+            function(hotspotInPage){
+               console.log('#!# ZONE #!#', hotspotInPage);
+               console.log('#!# EVT PAGE #!#', evtInterface.getState('currentPage'));
+               return (hotspotInPage.page === evtInterface.getState('currentPage'));
+            }
+
+
+         );
+         console.log('#!# ZONE #!#', hotspotzonesInPage);
+         imageViewerHandler.showHotSpot(hotspotzonesInPage); // cambiare in hotspotzonesInPage
       };
 
       ITLutils.prepareHotSpotZones = function () {
@@ -147,11 +157,15 @@ angular.module('evtviewer.UItools')
                //console.log('nel for', zoneId);
                //HOTSPOTS SAN MATTEO
                var h = zonesCollection[zoneId];
-               var hotspotId = zoneId.replace(/ST_hs_/, 'ST_div_hs_');
+               console.log('##PREPARO GLI HOTSPOT -> H##', h);
+               var hotspotId = h.corresp ? h.corresp.replace('#',''): h.start ? h.start.replace('#','') : zoneId; //zoneId.replace(/ST_hs_/, 'ST_div_hs_');
+               console.log('##PREPARO GLI HOTSPOT -> hotspotId ##', hotspotId);
+
                var tmpHotSpot;
                console.log('hotSpotId', hotspotId);
                tmpHotSpot = parsedData.getHotSpot(hotspotId);
                if (tmpHotSpot) {
+                  // gestire il content prendendo da h.start
                   h.content = tmpHotSpot.content;
                }
                console.log('hot spot in prepare hotspot', h);
@@ -160,7 +174,7 @@ angular.module('evtviewer.UItools')
 
          }
 
-         console.log(zones);
+         console.log('LISTA DI ZONES PREPARATE NON FILTRATRE', zones);
          // probabilmente da spostare sopra
          var hotspotZones = zones.filter(function (zone) {
             //console.log('zone in prepare hot spot', zone);
@@ -168,7 +182,7 @@ angular.module('evtviewer.UItools')
          });
          
 
-         console.log('hotspotzones', hotspotZones);
+         console.log('hotspotzones FILTRATE', hotspotZones);
 
          //  zones.push(zone);
          //  zones.push({
@@ -406,20 +420,28 @@ angular.module('evtviewer.UItools')
             console.log('preparo le line zones:');
             var _zones = parsedData.getZones();
             var allZones = _zones._indexes;
-            var lineZones = allZones.filter(function(zone){return zone.includes('line')});
+            var lineZonesID = allZones.filter(function(zone){return zone.includes('line')});
          // var zones = _zones.filter(function (zone) {
          //    //console.log('zone in prepare hot spot', zone);
          //    return ('Line' === zone.rendition);
          // });
 
             console.log('zones in Image for line:', allZones);
-            console.log('Filtered zones in Image for line:', lineZones);
+            console.log('Filtered zones in Image for line:', lineZonesID);
          // imageViewerHandler
-            for (var i = 0; i < lineZones.length; i++) {
-               var lineZone = lineZones[i];
-               var divZone = imageViewerHandler.lineZone(parsedData.getZone(lineZone));
+            for (var i = 0; i < lineZonesID.length; i++) {
+               var lineZoneID = lineZonesID[i];
+               var lineZone = parsedData.getZone(lineZoneID)
+               console.log('##!line zone!## ', lineZoneID);
+               console.log('##!current page!##', evtInterface.getState('currentPage'));
+               console.log('##!parsed zone for line!## ', lineZone);
+
+               if(lineZone.page === evtInterface.getState('currentPage')){
+                  var divZone = imageViewerHandler.lineZone(parsedData.getZone(lineZoneID));
+                  console.log('GESTIRE QUI LE FUNZIONI DI GESTIONE RIGHE', divZone);
+               }
             
-               console.log('GESTIRE QUI LE FUNZIONI DI GESTIONE RIGHE', divZone);
+               
             //divZone.onmouseover = zoneMouseOver;
 
             //divZone.onmouseout = zoneMouseOut;
