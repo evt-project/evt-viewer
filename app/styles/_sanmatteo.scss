@@ -59,20 +59,19 @@ div.hotspot {
     /* #0A7EbE; */
 }
 div.hotspot:hover {
-    cursor: help;
+    cursor: pointer;
     border: 1px solid #4c2f2f;
     background-color: #9c4837;
     opacity: 0.4;
 }
-
 a.hotspot {
-    /*  width: 30px;
-   height: 10px;*/
+    width: 30px;
+    height: 10px;
 }
 
 img.hotspot {
-    /* width: 30px !important;
-   height: 10px !important;*/
+    width: 30px !important;
+    height: 10px !important;
     display: block !important;
 }
 
@@ -96,6 +95,8 @@ div.hotspot-dida-title {
     text-align: center;
     background-color: #9c4837;
     opacity: 0.8;
+    height: 20px;
+    
 }
 
 div.hotspot-dida-body {
@@ -108,8 +109,6 @@ div.hotspot-dida-body {
     opacity: 0.8;
     background-color: #fff;
 }
-
-
 div#osd-img * img {
     display: initial !important;
 }
@@ -354,10 +353,10 @@ div.box-menu:nth-child(4){
     display: none;
 }
 section.box-image > div:nth-child(1) > button-switch:nth-child(5){
-    display: none;
+    display: inline !important;
 }
 section.box-image > div:nth-child(1) > button-switch:nth-child(3){
-    display: none;
+    display: none !important;
 }
 div.box-menu:nth-child(4) > button-switch:nth-child(1){
     display: none;
@@ -367,4 +366,10 @@ div.box-menu:nth-child(4) > button-switch:nth-child(2){
 }
 .box.box-image .box-body{
     height: 100%;
+}
+.fa-times{
+   float: right;
+}
+.fa-times:hover{
+   cursor: pointer;
 }

@@ -128,6 +128,7 @@
                         });
                      }
                   }
+                  //aggiungere scroll con coordinate asse x - FS
                }
 
                //event.stopBubbling = true;
@@ -308,6 +309,8 @@
                viewerHandler.viewer.addOverlay({
                   element: hrefElts[k],
                   location: rectObjs[k],
+                  
+                 
                   //placement: OpenSeadragon.Placement.CENTER,
                   //checkResize: false
                });
@@ -344,10 +347,11 @@
 
                var divElt = document.createElement('div');
                divElt.id = 'div-hotspot-overlay_selected-' + elem.dataset.id;
-               divElt.className = 'hotspot-dida';
+               divElt.className = 'hotspot-dida';        
                
 // Modifiche effettuate per Mappa San Matteo
                var divTitleElt = document.createElement('div');
+               
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
                divTitleElt.innerHTML = ''
@@ -380,7 +384,9 @@
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
                divBodyElt.className = 'hotspot-dida-body';
+               
                divBodyElt.innerHTML = elem.dataset.content;
+
 
                divElt.appendChild(divTitleElt);
                divElt.appendChild(divBodyElt);
@@ -390,6 +396,8 @@
                var OSDOverlay = {
                   element: divElt,
                   location: rect,
+                  // aggiunto da FS - no rotazione dell'hotspot
+                  rotationMode: OpenSeadragon.OverlayRotationMode.NO_ROTATION,
                };
 
 

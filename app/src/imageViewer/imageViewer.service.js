@@ -36,6 +36,7 @@
             //per sequetnza immagini
             sequenceMode: true,
             preserveOverlays: false,
+            //OpenSeadragon.OverlayRotationMode.NO_ROTATION
          };
   
 

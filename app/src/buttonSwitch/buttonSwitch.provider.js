@@ -280,9 +280,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
 					break;
-				case 'schema':
-					evtIcon = 'icon-evt_schema';
-					break;
+				//case 'schema':
+				//	evtIcon = 'icon-evt_schema';
+				//	break;
 				//icone per bottoni osd aggiunti da federica				
 				case 'zoom-in':
 					evtIcon = 'icon-evt_zoom-in';
