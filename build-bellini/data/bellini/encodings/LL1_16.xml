@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" schematypens="http://relaxng.org/ns/structure/1.0"?-->
+<!DOCTYPE TEI SYSTEM "tei_all.dtd">
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+	<teiHeader>
+		<fileDesc>
+			<titleStmt>
+				<title>Vincenzo Bellini a Carlo Pepoli, in Puteaux, 26 giugno 1834 </title>
+				<!--formato titolo: mittente a destinatario, in luogo, data di scrittura della lettera -->
+				<author ref="#VB">Vincenzo Bellini</author>
+				<respStmt>
+					<resp>transcription by</resp>
+					<name xml:id="GS">Graziella Seminara</name>
+				</respStmt>
+			</titleStmt>
+			<editionStmt>
+				<edition>Digital Edition
+					<date when="2018-06">June 2018</date>
+				</edition>
+				<respStmt>
+					<resp>encoding by</resp>
+					<name xml:id="AMDG">Angelo Mario Del Grosso</name>
+					<name xml:id="EC">Erica Capizzi</name>
+					<name xml:id="DS">Daria Spampinato</name>
+				</respStmt>
+			</editionStmt>
+			<publicationStmt>
+				<publisher />
+				<!-- editore sarà la Fondazione Bellini -->
+				<availability>
+					<licence target="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</licence>
+				</availability>
+				<!-- <idno type="url">http://xxxxxx</idno>
+                <date when="yyyyyy" /> va indicato l'uri dell'edizione digitale delle lettere -->
+			</publicationStmt>
+			<sourceDesc>
+				<bibl>
+					<ref target="TEI-ListBibl.xml#Seminara2017" />
+					<biblScope unit="page">368</biblScope>
+					<!-- nel caso di più pagine aggiungere gli attributi from="368" e to="369" e poi i valori separati dal trattino-->
+				</bibl>
+				<msDesc>
+					<msIdentifier>
+						<country>Italy</country>
+						<settlement>Catania</settlement>
+						<repository role="museum" ref="http://www.rism.info/typo3conf/ext/user_apachesolr/result.php?q=id:30003436" n="I-CATm">Museo Belliniano Catania</repository>
+						<!-- riferimento al catalogo delle sigle dei musei in cui è definito I-CATm -->
+						<!-- mettere come secondo valore di ref diel tag repository l'URI del nodo museo del dataset del Belliniano -->
+						<idno type="inventory">LL1.16</idno> <!-- segnatura della singola lettera -->
+						<altIdentifier>
+							<idno type="collocation">in esposizione Casa Natale, sala B, vetrina 4, ripiano 2, I</idno>
+						</altIdentifier>
+						<!-- collocazione della lettera al museo -->
+					</msIdentifier>
+					<msContents>
+						<msItem>
+							<author xml:lang="ita" ref="#VB">Vincenzo Bellini</author>
+							<title type="uniform" xml:lang="ita">
+								<persName ref="#VB" role="composer">Vincenzo Bellini</persName> a								<persName ref="#CP" role="librettist">Carlo Pepoli</persName>, in								<placeName ref="#Put">Puteaux</placeName>,								<date when="1834-06-26">26 giugno 1834</date>
+							</title>
+							<textLang mainLang="ita">Italy</textLang>
+						</msItem>
+					</msContents>
+					<physDesc>
+						<objectDesc>
+							<supportDesc>
+								<support>
+									<material>Carta sottile.</material>
+									<watermark>
+										<!-- info sulla filigrana: se c'è viene descritta in linguaggio naturale (es. forma della filigrana [circolare, lineare], la scuola di appartenenza -->
+									</watermark>
+									<stamp> Sono presenti un timbro di partenza nel folio verso centrale, un timbro di arrivo a cavallo su due piegature del folio verso (superiore e inferiore) e un'ombra di un sigillo del tutto mancante nel folio verso superiore.
+					 						<!-- E' la descrizione in linguaggio naturale dei francobolli e dei timbri  -->
+									</stamp>
+									<p>Lettera in buone condizioni fisiche, composta da un solo folio, piegato in più parti e con testo solo nel fronte e retro bianco. Carta sottile senza filigrana, colore beige, inchiostro nero. La parte centrale del verso presenta l’indirizzo e il timbro di partenza; la piegatura inferiore il timbro di arrivo nonché appunti di altre mani con scrittura orientata dall'alto in basso e da destra verso sinistra. Timbro di arrivo parzialmente leggibile.
+					 																	<!-- descrizione fisica della lettera -->
+									</p>
+								</support>
+								<extent>
+									<measure type="folio">1</measure> <!--  va inserita la quantità dell'oggetto, indicando in type il tipo descritto -->
+									<dimensions unit="mm">
+										<height>135</height>
+										<width>204</width>
+									</dimensions>
+								</extent>
+								<foliation>
+									<!-- es. folio verso a sx, folio recto a dx con suddivisioni ulteriori. -->
+											Il fronte è piegato in recto (a dx) e verso (a sx), con l'indirizzo nel verso. Il folio presenta una duplice piegatura asimmetrica, con il margine inferiore piegato più ampio. 
+								
+								
+								
+								
+								
+								
+								</foliation>
+								<condition>
+									<!-- descrizione delle condizioni fisiche di conservazione della lettera -->
+									<p>Lettera in buone condizioni fisiche.</p>
+								</condition>
+							</supportDesc>
+						</objectDesc>
+						<handDesc>
+							<handNote>
+								<p>Scrittura a mano libera leggibile. Il folio fronte, nel verso inferiore, presenta due annotazioni di seconda e terza mano le cui righe sono per entrambe orientate da dx a sx e dall'alto al basso. 
+							</p>
+							</handNote>
+							<handNote xml:id="h2">
+								<!-- indica la terza mano del catalogatore -->
+								<p>Una annotazione è probabilmente dovuta ad un catalogatore e presenta il numero 27 e la dicitura Lettera del Bellini sul									<term subtype="music-term" ref="TEI-ListTerm.xml#duetto">duetto</term> del p:°									<term subtype="music-term" ref="TEI-ListTerm.xml#atto">Atto</term> dei									<rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>.
+								
+								
+								
+								
+								
+								
+								</p>
+							</handNote>
+							<handNote xml:id="h1">
+								<!-- indica la seconda mano con la firma probabilmente di Pepoli-->
+								<p> L'altra annotazione sembra composta dalla firma autografa di									<persName ref="#CP" role="librettist">Pepoli</persName> e da due piccoli disegni.
+								
+								
+								
+								
+								
+								
+								</p>
+							</handNote>
+						</handDesc>
+						<sealDesc>
+							<!-- inserire eventuali sigilli presenti -->
+							<seal>
+								<p>La piegatura superiore (folio verso superiore) presenta l'ombra di un sigillo (del tutto mancante).</p>
+							</seal>
+						</sealDesc>
+					</physDesc>
+					<additional>
+						<adminInfo>
+							<note>
+								<!-- descrizione del significato della segnatura della lettera -->
+									All'interno del carteggio belliniano (LL), la segnatura LL1.16 identifica la sedicesima missiva in ordine cronologico del primo sottogruppo, che corrisponde alle lettere scritte da Vincenzo Bellini.
+																	<!-- Note aggiuntive non strutturabili con altri tag TEI -->
+							</note>
+						</adminInfo>
+					</additional>
+				</msDesc>
+				<listPerson>
+					<person xml:id="VB">
+						<bibl>
+							<author ref="#MRDL" />
+							<ref target="TEI-ListBibl.xml#Musica2018" />
+							<biblScope unit="page" from="408" to="420">408-420</biblScope>
+						</bibl>
+						<persName role="composer">
+							<!-- esempi: composer, librettist, tenore, editor, ...-->
+							<ref target="http://data.rism.info/id/rismauthorities/pe11648 http://www.treccani.it/enciclopedia/vincenzo-bellini_(Dizionario-Biografico)" />
+							<forename>Vincenzo</forename>
+							<surname>Bellini</surname>
+							<soCalled>il cigno</soCalled> <!-- esempi: il cigno, la diva, ... -->
+						</persName>
+						<sex>M </sex>
+						<birth when="1801-11-03">
+							<placeName type="city" ref="TEI-ListPlace#CT">Catania</placeName>
+							<country key="IT"> Italia</country>
+						</birth>
+						<death when="1835-09-23">
+							<placeName type="city" ref="#Put">Puteaux</placeName>
+							<country key="FR"> France</country>
+						</death>
+						<note resp="#EC">
+							<!--  note da creare con l'indicazione di dove e' vissuto durante quali periodi  -->
+						</note>
+					</person>
+					<person xml:id="CP">
+						<persName role="librettist">
+							<!-- esempi sono: composer, librettist, tenore, editor, ...-->
+							<ref target="http://data.rism.info/id/rismauthorities/pe30101038 http://www.treccani.it/enciclopedia/carlo-pepoli_(Dizionario-Biografico)" />
+							<forename>Carlo</forename>
+							<surname>Pepoli</surname>
+							<roleName>count</roleName>
+						</persName>
+						<sex>M </sex>
+						<birth when="1796-07-22">
+							<placeName type="city">Bologna</placeName>
+							<country key="IT"> Italia</country>
+						</birth>
+						<death when="1881-12-07">
+							<placeName type="city">Bologna</placeName>
+							<country key="IT"> Italia</country>
+						</death>
+						<note resp="#GS" ana="551">
+							<bibl>
+								<ref target="TEI-ListBibl.xml#Seminara2017" />
+								<!--  note dell'edizione critica della Seminara -->
+								<biblScope unit="page" from="331" to="331">331</biblScope>
+							</bibl>
+							<p>Carlo Pepoli (Bologna, 1796 - 1881) aveva predisposto il <term subtype="music-term" ref="TEI-ListTerm.xml#libretto">libretto</term> dei <rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>. Amico di Giacomo Leopardi, aveva partecipato ai moti carbonari del 1831 e - dopo esser stato detenuto in carcere a Venezia - nel 1833 si era recato in esilio a Parigi; in quello stesso anno aveva pubblicato una raccolta di scritti in due volumi (Prose. Volume primo e Versi. Volume primo) presso l'editore Vignier di Ginevra. Il poeta bolognese conobbe <persName ref="#VB" role="composer">Bellini</persName> nel salotto di <persName ref="#CTB" role="writer">Cristina Trivulzio di Belgiojoso</persName>, nel quale si fece apprezzare anche come autore di testi per musica: i suoi versi furono intonati da <persName ref="#MC" role="composer">Michele Costa</persName>, <persName ref="#VG">Vincenzo Gabussi</persName>, <persName ref="#GR">Rossini</persName> e <persName ref="#NV">Vaccaj</persName>, nonche' dallo stesso <persName ref="#VB" role="composer">Bellini</persName>.
+							
+							
+							</p>
+						</note>
+					</person>
+					<person xml:id="GBR">
+						<persName role="tenore">
+							<!-- esempi sono: composer, librettist, tenore, editor, ...-->
+							<ref target="http://data.rism.info/id/rismauthorities/pe67506 http://www.treccani.it/enciclopedia/giovanni-battista-rubini_(Dizionario-Biografico)" />
+							<forename> Giovanni Battista</forename>
+							<surname> Rubini</surname>
+						</persName>
+						<sex>M </sex>
+						<birth when="1794-04-07">
+							<placeName type="city">Romano di Lombardia</placeName>
+							<placeName type="provincia" key="BG">Bergamo</placeName>
+							<country key="IT"> Italia</country>
+						</birth>
+						<death when="1854-03-03">
+							<placeName type="city">Romano di Lombardia</placeName>
+							<placeName type="provincia" key="BG">Bergamo</placeName>
+							<country key="IT"> Italia</country>
+						</death>
+						<note resp="#GS" ana="43">
+							<bibl>
+								<ref target="TEI-ListBibl.xml#Seminara2017" />
+								<!--  note dell'edizione critica della Seminara -->
+								<biblScope unit="page" from="77" to="77">77</biblScope>
+							</bibl>
+							<p>         
+                Giovanni Battista Rubini (Bergamo, 1794 - 1854) era un <term subtype="music-term" ref="TEI-ListTerm.xml#tenore">tenore</term> di straordinario talento, dotato di una grande estensione nel <term subtype="music-term" ref="TEI-ListTerm.xml#registro">registro</term> acuto. Tenne il ruolo di Gernando nella prima rappresentazione di <rs type="work" ref="TEI-ListWork.xml#Bianca_e_Gernando">Bianca e Gernando</rs> e fu creatore delle parti di Gualtiero nel <rs type="work" ref="TEI-ListWork.xml#Pirata">Pirata</rs>, di Elvino in <rs type="work" ref="TEI-ListWork.xml#Sonnambula">Sonnambula</rs> e di Arturo nei <rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>; con queste interpretazioni contribui' al successo delle tre opere belliniane e si impose come prototipo del <term subtype="music-term" ref="TEI-ListTerm.xml#tenore">tenore</term> romantico. 
+                
+							
+							
+							</p>
+						</note>
+					</person>
+				</listPerson>
+				<listPlace>
+					<place xml:id="Put">
+						<placeName ref="http://www.geonames.org/2985034 http://www.treccani.it/enciclopedia/puteaux_(Enciclopedia-Italiana)">Puteaux</placeName>
+						<settlement type="city">Paris</settlement>
+						<district type="arrondissement">Nanterre</district>
+						<district type="near">Neuilly-sur-Seine</district>
+						<country key="FR">France</country>
+						<note resp="TEI-ListPerson.xml#GS" ana="580">
+							<bibl>
+								<ref target="TEI-ListBibl.xml#Seminara2017" />
+								<biblScope unit="page" from="346" to="346">346</biblScope>
+							</bibl>
+							<p>Puteaux era un sobborgo di <placeName ref="#Paris">Parigi</placeName>, immerso nel verde e situato sulla rive gauche della Senna. Qui Bellini si stabilì dal 26 maggio al 1° novembre 1834 e di nuovo nel 1835 dall'11 maggio al 23 settembre (giorno della morte) nella residenza di Solomon Levy (o Lewis), un facoltoso ebreo inglese che verosimilmente aveva conosciuto nel 1830 a Milano. Levy, che negli anni 1834-35 si trattenne stabilmente a Parigi, apparteneva alla cerchia delle più ristrette frequentazioni francesi del musicista; risiedeva in un lussuoso appartamento in Boulevard des Capucines, ma possedeva anche la residenza di Puteaux.
+															
+							
+							</p>
+						</note>
+					</place>
+					<place xml:id="NSS">
+						<placeName ref="http://www.geonames.org/2990611 http://www.treccani.it/enciclopedia/ricerca/Neuilly-sur-Seine/">Neuilly-sur-Seine</placeName>
+						<settlement type="city">Paris</settlement>
+						<district type="arrondissement">Nanterre</district>
+						<district type="near">Puteaux</district>
+						<country key="FR">France</country>
+						<note></note>
+					</place>
+					<place xml:id="Paris">
+						<placeName ref="http://www.geonames.org/2988507 http://www.treccani.it/enciclopedia/parigi/">Paris</placeName>
+						<country key="FR">France</country>
+						<note></note>
+					</place>
+				</listPlace>
+			</sourceDesc>
+		</fileDesc>
+		<profileDesc>
+			<correspDesc>
+				<correspAction type="sent">
+					<persName ref="#VB" role="composer">Vincenzo Bellini</persName>
+					<placeName ref="#Put">Puteaux</placeName>
+					<date when="1834-06-27">27 giugno 1834</date> <!--potrebbe essere uno span temporale -->
+				</correspAction>
+				<correspAction type="received">
+					<persName ref="#CP" role="librettist">Carlo Pepoli</persName>
+					<placeName ref="#Paris"> Paris</placeName>
+					<date when="1834-06-27">27 giugno 1834</date> <!-- potrebbe essere uno span temporale -->
+				</correspAction>
+				<correspContext>
+					<p>non è presente un contesto di riferimento</p>
+					<!-- previous -->
+					<!-- forward -->
+					<!-- eventuale riferimento a altre lettere appartenenti a una stessa corrispondenza -->
+				</correspContext>
+			</correspDesc>
+			<textClass>
+				<keywords scheme="http://thes.bncf.firenze.sbn.it">
+					<!-- soggettario della Biblioteca Nazionale di Firenze -->
+					<term> lettera 							<!-- un termine tra:  lettera, biglietto, minuta -->
+					</term>
+				</keywords>
+			</textClass>
+			<langUsage xml:id="ita">
+				<language ident="it-IT">italiano</language>
+			</langUsage>
+		</profileDesc>
+	</teiHeader>
+	<facsimile>
+		<surface n="1" xml:id="LL1.16_folio_1fr" corresp="#page1">
+			<!-- FRONTE RECTO -->
+			<graphic url="LL1.16_0001.jpg" width="'1265px'" height="'1639px'" />
+			<zone ulx="43" uly="31" lrx="1236" lry="134" rendition="Line" xml:id="LL1.16_line_1fr_01" />
+			<zone ulx="43" uly="109" lrx="1236" lry="210" rendition="Line" xml:id="LL1.16_line_1fr_02" />
+			<zone ulx="43" uly="200" lrx="1236" lry="292" rendition="Line" xml:id="LL1.16_line_1fr_03" />
+			<zone ulx="43" uly="349" lrx="1236" lry="456" rendition="Line" xml:id="LL1.16_line_1fr_04" />
+			<zone ulx="43" uly="468" lrx="1236" lry="627" rendition="Line" xml:id="LL1.16_line_1fr_05" />
+			<zone ulx="43" uly="632" lrx="1236" lry="753" rendition="Line" xml:id="LL1.16_line_1fr_06" />
+			<zone ulx="43" uly="758" lrx="1236" lry="909" rendition="Line" xml:id="LL1.16_line_1fr_07" />
+			<zone ulx="43" uly="915" lrx="1236" lry="1112" rendition="Line" xml:id="LL1.16_line_1fr_08" />
+			<zone ulx="43" uly="1100" lrx="1236" lry="1257" rendition="Line" xml:id="LL1.16_line_1fr_09" />
+			<zone ulx="43" uly="1258" lrx="1236" lry="1395" rendition="Line" xml:id="LL1.16_line_1fr_10" />
+			<zone ulx="43" uly="1363" lrx="1236" lry="1490" rendition="Line" xml:id="LL1.16_line_1fr_11" />
+			<zone ulx="43" uly="1457" lrx="1236" lry="1594" rendition="Line" xml:id="LL1.16_line_1fr_12" />
+			<zone ulx="43" uly="1521" lrx="1236" lry="1610" rendition="Line" xml:id="LL1.16_line_1fr_13" />
+		</surface>
+		<surface n="2" xml:id="LL1.16_folio_1rr" corresp="#page2">
+			<!-- RETRO RECTO -->
+			<graphic url="LL1.16_0002.jpg" width="'1283px'" height="'1646px'" />
+		</surface>
+		<surface n="3" xml:id="LL1.16_folio_1rv" corresp="#page3">
+			<!-- RETRO VERSO -->
+			<graphic url="LL1.16_0003.jpg" width="'1265px'" height="'1639px'" />
+		</surface>
+		<surface n="4" xml:id="LL1.16_folio_1fv" corresp="#page4">
+			<!-- FRONTE VERSO -->
+			<graphic url="LL1.16_0004.jpg" width="'1268px'" height="'1646px'" />
+			<!-- zona con l'indirizzo del destinario -->
+			<zone ulx="43" uly="529" lrx="1236" lry="646" rendition="Line" xml:id="LL1.16_line_1fv_01" />
+			<zone ulx="43" uly="643" lrx="1236" lry="761" rendition="Line" xml:id="LL1.16_line_1fv_02" />
+			<zone ulx="43" uly="761" lrx="1236" lry="884" rendition="Line" xml:id="LL1.16_line_1fv_03" />
+			<zone ulx="43" uly="840" lrx="1236" lry="962" rendition="Line" xml:id="LL1.16_line_1fv_04" />
+			<zone ulx="365" uly="1017" lrx="684" lry="1502" rendition="HotSpot" xml:id="LL1.16_hs_1fv_01" start="#LL1.16_hs_1fv_01_div" corresp="#LL1.16_hs_1fv_01_div" />
+			<!-- seconda mano-->
+			<zone ulx="654" uly="977" lrx="1186" lry="1588" rendition="HotSpot" xml:id="LL1.16_hs_1fv_02" start="#LL1.16_hs_1fv_02_div" corresp="#LL1.16_hs_1fv_02_div" />
+			<!--terza mano -->
+			<zone ulx="45" uly="36" lrx="382" lry="226" rendition="HotSpot" xml:id="LL1.16_hs_1fv_03" start="#LL1.16_hs_1fv_03-1fv_04_div" corresp="#LL1.16_hs_1fv_03-1fv_04_div" />
+			<!-- timbro incompleto in alto a sinistra destinatario -->
+			<zone ulx="52" uly="1143" lrx="413" lry="1445" rendition="HotSpot" xml:id="LL1.16_hs_1fv_04" start="#LL1.16_hs_1fv_03-1fv_04_div" corresp="#LL1.16_hs_1fv_03-1fv_04_div" />
+			<!-- timbro incompleto in basso a sinistra destinatario -->
+			<zone ulx="795" uly="357" lrx="1165" lry="724" rendition="HotSpot" xml:id="LL1.16_hs_1fv_05" start="#LL1.16_hs_1fv_05_div" corresp="#LL1.16_hs_1fv_05_div" />
+			<!-- timbro al centro a destra mittente -->
+		</surface>
+	</facsimile>
+	<!-- PROBLEMA FRONT -->
+	<!-- NOTE INLINE: al momento non supportato ptr -->
+	<text type="letter" xml:id="LL1.16" n="LL1.16">
+		<front>
+			<!-- FRONTE VERSO -->
+			<div xml:id="LL1.16_hs_1fv_05-front" facs="#LL1.16_hotspot_1fv_05" type="envelop" subtype="sent">
+                <head>Imbustamento della lettera</head>
+				<ab>
+					<!-- inserire l'id del timbro -->
+					<stamp type="postage">
+						<!-- timbro del mittente con data -->
+						<mentioned>
+							<placeName ref="#NSS">NEUILLY - SUR - SEINE</placeName>
+							<date when="1834-06-27">27  JUIN 1834</date>
+						</mentioned>
+					</stamp>
+				</ab>
+			</div>
+			<div xml:id="LL1.16_hs_1fv_03-1fv_04-front" facs="#LL1.16_hotspot_1fv_03 #LL1.16_hotspot_1fv_04" type="destination">
+				<ab>
+					<!-- inserire id del timbro del destinatario che è composto da 2 immagini incomplete -->
+					<stamp type="postage">
+						<!-- timbro del destinatario con data -->
+						<placeName>
+							<unclear reason="illegible" />
+						</placeName>
+						<date when="1834-06-27">
+							27
+							<unclear reason="illegible">juin</unclear>
+							1834
+						
+						</date>
+					</stamp>
+				</ab>
+				<ab>
+					<address>
+						<!--  informazioni del destinatario -->
+						<lb xml:id="LL1.16_lb_1fv_01-front" n="1" facs="#LL1.16_line_1fv_01" />
+						<addrLine>à Monsieur</addrLine>
+						<lb xml:id="LL1.16_lb_1fv_02-front" n="2" facs="#LL1.16_line_1fv_02" />
+						<addrLine>
+							Monsieur le Comte
+							<persName ref="#CP" role="librettist">Pepoli</persName>
+						</addrLine>
+						<lb xml:id="LL1.16_lb_1fv_03-front" n="3" facs="#LL1.16_line_1fv_03" />
+						<addrLine>N:° 1: passage des petits Pères</addrLine>
+						<lb xml:id="LL1.16_lb_1fv_04-front" n="4" facs="#LL1.16_line_1fv_04" />
+						<addrLine>
+							à
+							<placeName ref="#Paris">Paris</placeName>
+						</addrLine>
+					</address>
+				</ab>
+			</div>
+		</front>
+		<body xml:lang="ita">
+			<div type="fronte-recto">
+				<!--pb n="1" xml:id="LL1.16_fol_1fr" facs="#LL1.16_folio_1fr"/ -->
+				<pb n="1" xml:id="page1" facs="data/bellini/LL1.16-jpeg300/LL1.16_0001.jpg" />
+				<div type="opener" n="o_01">
+					<dateline n="ab_01">
+						<s type="sentence" n="s_01">
+							<lb xml:id="LL1.16_lb_1fr_01" n="1" facs="#LL1.16_line_1fr_01" />
+							<date when="">Juin 26</date>:
+							<address>
+								<addrLine rend="inline">
+									<placeName ref="#Put">Puteau</placeName> –				<placeName>N:° 19 bis rampe</placeName>
+								</addrLine>
+								<lb xml:id="LL1.16_lb_1fr_02" n="2" facs="#LL1.16_line_1fr_02" />
+								<addrLine>
+									<hi rend="underline">
+										<placeName ref="#NSS">de Neuilly</placeName>
+									</hi>
+								</addrLine>
+							</address>
+						</s>
+					</dateline>
+				</div>
+				<div type="letter-body" n="t_01">
+					<!-- . -->
+					<salute n="ab_02">
+						<s type="sentence" n="s_02">
+							<lb xml:id="LL1.16_lb_1fr_03" n="3" facs="#LL1.16_line_1fr_03" />
+							<hi rend="align(left)">Mio caro									<persName ref="#CP" role="librettist">Carluccio</persName>
+								<ptr target="#LL1_16_note1" />
+								<note xml:id="LL1_16_note1-inline" resp="#EC">
+									<p>
+										<!--  codificare i nomi, le opere, i luoghi e i termini in tutta la nota solo se sono pertinenti col testo di Bellini e non bisogna fare un lessico della Seminara -->
+										<persName ref="#VB" role="composer">Bellini</persName> si riferiva al conte <persName ref="#CP" role="librettist">Carlo Pepoli</persName>, che aveva predisposto il <term subtype="music-term" ref="TEI-ListTerm.xml#libretto">libretto</term> dei <rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>. 
+						
+						
+									
+									
+									
+									
+									</p>
+								</note>
+								<!-- verificare notazione rif -->
+							</hi>
+						</s>
+					</salute>
+					<ab type="parag" n="ab_03">
+						<s type="sentence" n="s_03">
+							<lb xml:id="LL1.16_lb_1fr_04" n="4" facs="#LL1.16_line_1fr_04" />
+							<hi rend="align(right)">Avendo steso l'intero								<term subtype="music-term" ref="TEI-ListTerm.xml#duetto">duetto</term>
+								<ptr target="#LL1_16_note2" />
+							</hi>
+							<lb xml:id="LL1.16_lb_1fr_05" n="5" facs="#LL1.16_line_1fr_05" />
+ e mancando in esso qualche
+							<lb xml:id="LL1.16_lb_1fr_06" n="6" facs="#LL1.16_line_1fr_06" />
+cosetta, desidererei che tu
+							<lb xml:id="LL1.16_lb_1fr_07" n="7" facs="#LL1.16_line_1fr_07" />
+t'incommodassi a venire à
+							<lb xml:id="LL1.16_lb_1fr_08" n="8" facs="#LL1.16_line_1fr_08" />
+							<placeName ref="#Put">Puteau</placeName> per tutto fissare, e
+							<lb xml:id="LL1.16_lb_1fr_09" n="9" facs="#LL1.16_line_1fr_09" />
+nell'istesso tempo darmi la
+							<lb xml:id="LL1.16_lb_1fr_10" n="10" facs="#LL1.16_line_1fr_10" />
+							<term subtype="music-term" ref="TEI-ListTerm.xml#sortita">sortita</term> di							<persName ref="#GBR" role="tenore">Rubini</persName>
+							<ptr target="#LL1_16_note3" />
+, se è							<w>termi
+								<lb xml:id="LL1.16_lb_1fr_11" n="11" facs="#LL1.16_line_1fr_11" break="no" />
+nata
+							
+							
+							
+							
+							
+							</w>.
+						
+						
+						
+						
+						
+						
+						</s>
+						<s type="sentence" n="s_04"> T'aspetto in qual giorno
+							<lb xml:id="LL1.16_lb_1fr_12" n="12" facs="#LL1.16_line_1fr_12" />
+ed in qual'ora vorrai. 
+						
+						
+						
+						
+						
+						
+						</s>
+					</ab>
+				</div>
+				<div type="closer" n="c_01">
+					<salute n="ab_04">
+						<s type="sentence" n="s_05">
+
+							
+					- Addio
+								<lb xml:id="LL1.16_lb_1fr_13" n="13" facs="#LL1.16_line_1fr_13" />
+							<hi rend="align(right)">Il tuo <persName ref="#VB" role="composer">
+									<hi rend="underline">Vincenzillo</hi>
+								</persName>
+							</hi>
+						</s>
+					</salute>
+				</div>
+			</div>
+			<div type="retro-recto">
+				<!--pb n="2" xml:id="LL1.16_fol_1rr" facs="#LL1.16_folio_1rr"/ -->
+				<pb n="2" xml:id="page2" facs="data/bellini/LL1.16-jpeg300/LL1.16_0002.jpg" />
+				<p>
+					<hi rend="bold">Pagina vuota</hi>
+				</p>
+			</div>
+			<div type="retro-verso">
+				<!--pb n="3" xml:id="LL1.16_fol_1rv" facs="#LL1.16_folio_1rv"/ -->
+				<pb n="3" xml:id="page3" facs="data/bellini/LL1.16-jpeg300/LL1.16_0003.jpg" />
+				<p>
+					<hi rend="bold">Pagina vuota</hi>
+				</p>
+			</div>
+			<div type="fronte-verso">
+				<!--pb n="4" xml:id="LL1.16_fol_1fv_body" facs="#LL1.16_folio_1fv"/  -->
+				<pb n="4" xml:id="page4" facs="data/bellini/LL1.16-jpeg300/LL1.16_0004.jpg" />
+				<div xml:id="LL1.16_hotspot_1fv_05_div" facs="#LL1.16_hs_1fv_05" type="sent">
+					<ab>
+						<add>
+							<!-- inserire l'id del timbro -->
+							<stamp type="postage">
+								<!-- timbro del mittente con data -->
+								<mentioned>
+									<placeName ref="#NSS">NEUILLY - SUR - SEINE</placeName>
+									<date when="1834-06-27"> 27  JUIN 1834 </date>
+								</mentioned>
+							</stamp>
+						</add>
+					</ab>
+				</div>
+				<div xml:id="LL1.16_hotspot_1fv_03-1fv_04" facs="#LL1.16_hs_1fv_03 #LL1.16_hs_1fv_04" type="destination">
+					<ab>
+						<add>
+							<!-- inserire id del timbro del destinatario che è composto da 2 immagini incomplete -->
+							<stamp type="postage">
+								<!-- timbro del destinatario con data -->
+								<placeName>
+									<unclear reason="illegible"></unclear>
+								</placeName>
+								<date when="1834-06-27"> 27
+							<unclear reason="illegible"> juin </unclear> 1834
+						
+							
+								
+								
+								
+								</date>
+							</stamp>
+						</add>
+					</ab>
+					<ab type="receiver">
+						<address>
+							<!--  informazioni del destinatario -->
+							<lb xml:id="LL1.16_lb_1fv_01" n="1" facs="#LL1.16_line_1fv_01" />
+							<addrLine> à Monsieur	</addrLine>
+							<lb xml:id="LL1.16_lb_1fv_02" n="2" facs="#LL1.16_line_1fv_02" />
+							<addrLine>Monsieur le Comte	<persName ref="#CP" role="librettist">Pepoli</persName>
+							</addrLine>
+							<lb xml:id="LL1.16_lb_1fv_03" n="3" facs="#LL1.16_line_1fv_03" />
+							<addrLine>N:° 1: passage des petits Pères</addrLine>
+							<lb xml:id="LL1.16_lb_1fv_04" n="4" facs="#LL1.16_line_1fv_04" />
+							<addrLine> à <placeName ref="#Paris">Paris</placeName>
+							</addrLine>
+						</address>
+					</ab>
+				</div>
+				<div facs="#LL1.16_hs_1fv_02" xml:id="LL1.16_hotspot_1fv_02">
+					<ab type="paratext" subtype="addition" hand="#h2">
+						<add>
+							<!-- terza mano del bibliotecario -->
+							<lb />27 <pc>-</pc>
+							<lb />Lettera del Bellini sul <term subtype="music-term" ref="TEI-ListTerm.xml#duetto">duetto</term>
+							<lb />del p:° <term subtype="music-term" ref="TEI-ListTerm.xml#atto">Atto</term> dei <rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>
+						</add>
+					</ab>
+					<ab type="paratext" subtype="addition" hand="#h1" facs="#LL1.16_hs_1fv_01" xml:id="LL1.16_hotspot_1fv_01">
+						<lb />
+						<add>
+							<!-- seconda mano di Pepoli -->
+							<persName ref="#CP" role="librettist">
+								<choice>
+									<abbr>C</abbr>
+									<expan>C<ex>arlo</ex>
+									</expan>
+								</choice> Pepoli
+					
+					
+							
+							
+							
+							
+							</persName>
+						</add>
+					</ab>
+				</div>
+			</div>
+		</body>
+		<back>
+			<div type="hotspot">
+				<div facs="#LL1.16_hs_1fv_01" xml:id="LL1.16_hs_1fv_01_div">
+					<p>HOTSPOT CARLO PEPOLI</p>
+				</div>
+				<div facs="#LL1.16_hs_1fv_02" xml:id="LL1.16_hs_1fv_02_div">
+					<p>HOTSPOT SECONDA MANO CATALOGATORE</p>
+				</div>
+				<div facs="#LL1.16_hs_1fv_03 #LL1.16_hs_1fv_04" xml:id="LL1.16_hs_1fv_03-1fv_04_div">
+					<p>
+						<stamp type="postage">
+							<!-- timbro del destinatario con data -->
+							<placeName>
+								<unclear reason="illegible"></unclear>
+							</placeName>
+							<date when="1834-06-27"> 27
+							<unclear reason="illegible"> juin </unclear> 1834
+						
+							
+							
+							
+							
+							</date>
+						</stamp>
+					</p>
+				</div>
+				<div facs="#LL1.16_hs_1fv_01" xml:id="LL1.16_hs_1fv_05_div">
+					<p>
+						<stamp>
+							<mentioned>
+								<placeName ref="#NSS">NEUILLY - SUR - SEINE</placeName>
+								<date when="1834-06-27"> 27  JUIN 1834 </date>
+							</mentioned>
+						</stamp>
+					</p>
+				</div>
+			</div>
+			<!-- inserire le note -->
+			<div type="notes">
+				<div type="ann_notes">
+					<!-- indicare con resp se le note sono dell'edizione critica o di altra responsabilità-->
+					<note xml:id="LL1_16_note1" resp="#EC">
+						<p>
+							<!--  codificare i nomi, le opere, i luoghi e i termini in tutta la nota solo se sono pertinenti col testo di Bellini e non bisogna fare un lessico della Seminara -->
+							<persName ref="#VB" role="composer">Bellini</persName> si riferiva al conte <persName ref="#CP" role="librettist">Carlo Pepoli</persName>, che aveva predisposto il <term subtype="music-term" ref="TEI-ListTerm.xml#libretto">libretto</term> dei <rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>. 
+						
+						
+						
+						
+						
+						
+						</p>
+					</note>
+					<note xml:id="LL1_16_note2" resp="#EC">
+						<p>
+							<persName ref="#VB" role="composer">Bellini</persName> si riferisce al terzo numero musicale del primo	<term subtype="music-term" ref="TEI-ListTerm.xml#atto">atto</term> dei							<rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>, il							<term subtype="music-term" ref="TEI-ListTerm.xml#duetto">duetto</term> fra Elvira e Giorgio "Sai come arde in petto mio".
+						
+						
+						
+						
+						
+						
+						</p>
+					</note>
+					<note xml:id="LL1_16_note3" resp="#EC">
+						<p>
+							<persName ref="#VB" role="composer">Bellini</persName> si riferisce alla							<term subtype="music-term" ref="TEI-ListTerm.xml#cavatina">cavatina</term> di Arturo "Ad Arturo - A te, o cara, amor talora", che segue il							<term subtype="music-term" ref="TEI-ListTerm.xml#coro">Coro </term>nel quarto numero musicale del primo							<term subtype="music-term" ref="TEI-ListTerm.xml#atto">atto</term> dei							<rs type="work" ref="TEI-ListWork.xml#Puritani">Puritani</rs>.
+						
+						
+						
+						
+						
+						
+						</p>
+					</note>
+				</div>
+				<div type="bibliography">
+					<listBibl xml:id="LL1_16_bibliography">
+						<head>Bibliography of the letter LL1.16 </head>
+						<bibl xml:id="LL1_16_Pastura" corresp="TEI-ListBibl.xml#Pastura1959">
+							<author>Pastura</author>
+							<biblScope unit="page" from="422" to="422">422</biblScope>
+							<date when="1959">1959</date>
+						</bibl>
+						<bibl xml:id="LL1_16_Neri" corresp="TEI-ListBibl.xml#Neri2005">
+							<author>Neri</author>
+							<biblScope unit="page" from="301" to="302">301-302</biblScope>
+							<date when="2005">2005</date>
+						</bibl>
+					</listBibl>
+				</div>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,10 +1,9 @@
 {
-
-    "indexTitle": "",
+    "indexTitle": "Edizione digitale delle Lettere di Bellini",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "../data/polo/main1.xml",
+    "dataUrl":"data/bellini/encodings/LL1_16.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -14,31 +13,31 @@
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
                                 "viewMode" : "readingTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "MULTIPLE_RECENSIONS",
                                 "icon"     : "mode-versions",
                                 "viewMode" : "versions",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "IMAGE_TEXT",
                                 "icon"     : "mode-imgTxt",
                                 "viewMode" : "imgTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "COLLATION",
                                 "icon"     : "mode-collation",
                                 "viewMode" : "collation",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "SOURCE_TEXT",
@@ -46,30 +45,31 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "critical",
+    "defaultEdition": "diplomatic",
     "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "enableXMLdownload" : false,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
+
     "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
@@ -89,17 +89,17 @@
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
         "label": "Role Name",
-        "available": false,
+        "available": true,
         "color": "#cfc"
     }, {
         "tagName": "measure",
         "label": "Measure",
-        "available": false,
+        "available": true,
         "color": "#ffecb3"
     }],
 
 
-    "toolHeatMap": true,
+    "toolHeatMap": false,
     "preferredWitness": "",
     "skipWitnesses": "",
 
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": false,
+    "showDocumentSelector": true,
 
 	"variantColors": {
 		"type": {
@@ -136,30 +136,17 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-
-    "versions" : ["rec2", "rec1", "rec3"],
-    "witnessesGroups": [
-        {
-            "groupName" : "Group 1",
-            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
-        },
-        {
-            "groupName" : "Group 2",
-            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
-        }
-    ],
+    "versions" : [],
+    "witnessesGroups": [ ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
 
     "showReadingExponent": true,
 
-    "showInlineCriticalApparatus": true,
-    "showInlineSources": true,
-    "showInlineAnalogues": true,
-
-
-
+    "showInlineCriticalApparatus": false,
+    "showInlineSources": false,
+    "showInlineAnalogues": false,
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {

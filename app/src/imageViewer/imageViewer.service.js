@@ -3,14 +3,10 @@
     
     .service('imageViewerModel',function(parsedData){
         var viewerModel = this;
-        
-        console.log("caricato servizio  imageViewerService");
-        var tileSources = [];
-    
         var options = {
             id: "osd-img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
-            tileSources: tileSources, // immagine SanMatteo
+            tileSources: [], // immagine SanMatteo
             showRotationControl: true,                
             showNavigator: true,
             //navigatorId: "navscroll",
