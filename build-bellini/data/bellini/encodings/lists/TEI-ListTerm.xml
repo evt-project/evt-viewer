@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI     xmlns="http://www.tei-c.org/ns/1.0" 
+    xmlns:svg="http://www.w3.org/2000/svg" 
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>
+                    <!-- Insert title for this digital text -->
+                </title>
+            </titleStmt>
+            <publicationStmt>
+                <p>
+                    <!-- Insert information about the publication of this digital text -->
+                </p>
+            </publicationStmt>
+            <sourceDesc>
+                <p>
+                    <!-- Insert a bibliographic description of the source for this digital text -->
+                </p>
+                <list type="terminology">
+                    <head>Music vocabulary</head>                   
+                                      
+                    <label>
+                        <term subtype="music-term" xml:lang="it" xml:id="sortita" key="lesmu_1828B/sortita.14063">Aria di sortita</term>
+                    </label>
+                    <item>
+                        <gloss xml:lang="it" target="#sortita" resp="TEI-ListBibl.xml#DellaSeta2010">
+                        	Nell'opera del Settecento e del primo Ottocento, aria di sortita cantata da un personaggio quando compare in scena la prima volta (e quindi al momento di "sortire" dalle quinte). Nell'Ottocento un'aria di sortita in questa posizione era detta <term subtype="music-term" ref="TEI-ListTerm.xml#cavatina">cavatina</term>.
+                        </gloss>
+                    </item>
+                    
+                    <label>
+                        <term subtype="music-term" xml:lang="it" xml:id="atto" key="lesmu_">Atto</term>
+                    </label>
+                    <item>
+                        <gloss xml:lang="it" target="#atto" resp="TEI-ListBibl.xml#DellaSeta2010">
+                        	Unità di suddivisione principale di un dramma, di un’opera o di un <term subtype="music-term" ref="TEI-ListTerm.xml#balletto">balletto</term>, che può essere ulteriormente suddivisa in <term subtype="music-term" ref="TEI-ListTerm.xml#quadro">quadri</term> – sezioni di norma caratterizzate da unità di luogo e tempo – e in <term subtype="music-term" ref="TEI-ListTerm.xml#scena">scene</term>. Implicita nella struttura della tragedia greca, la divisione in atti, di solito cinque separati da intervalli, fu introdotta in epoca romana e fu istituzionalizzata dalle poetiche classicistiche del Cinquecento. Essa fu adottata, all’inizio del XVII sec., nei primi esempi di opera e restò in uso soprattutto nel teatro francese parlato e in musica, dalla <term subtype="music-term" ref="TEI-ListTerm.xml#tragedie_en_musique">tragédie en musique</term> al <term subtype="music-term" ref="TEI-ListTerm.xml#grand-opera">grand-opéra</term>. Nell’opera italiana si affermarono presto altri modelli: il <term subtype="music-term" ref="TEI-ListTerm.xml#dramma_per_musica">dramma per musica</term> tra Sei e Settecento era sempre in tre atti (separati da due <term subtype="music-term" ref="TEI-ListTerm.xml#intermezzo">intermezzi</term> e spesso seguiti da un <term subtype="music-term" ref="TEI-ListTerm.xml#balletto">ballo</term>conclusivo), tra Settecento e Ottocento prevalse la divisione in due atti (con un ballo nell’intervallo e un altro in conclusione), nel pieno Ottocento furono adottati modelli che andavano da due a quattro atti, eventualmente preceduti da un <term subtype="music-term" ref="TEI-ListTerm.xml#prologo">prologo</term>. Tra Otto e Novecento fu praticato, anche sul piano internazionale, anche il modello dell’<term subtype="music-term" ref="TEI-ListTerm.xml#atto_unico">atto unico</term>. In Germania, invece, <persName ref="TEI-ListPerson.xml#RW">Wagner</persName> e i suoi successori si attennero quasi sempre alla divisione in tre atti.
+                        </gloss>
+                    </item>
+                    
+                    <label>
+                        <term subtype="music-term" xml:lang="it" xml:id="duetto" key="">Duetto</term>
+                    </label>
+                    <item>
+                        <gloss xml:lang="it" target="#duetto" resp="TEI-ListBibl.xml#DellaSeta2010">
+                        	Brano per due voci sole. Sin dalle origini dell'opera, il duetto fu usato, in forme simili a quelle dell'<term subtype="music-term" ref="TEI-ListTerm.xml#aria">aria</term>, come mezzo elettivo per rappresentare il contrasto o la consonanza sentimentale tra due personaggi. Nel Settecento il duetto è presente raramente nell'<term subtype="music-term" ref="TEI-ListTerm.xml#opera_seria">opera seria</term>, dove di solito è collocato alla fine di un <term subtype="music-term" ref="TEI-ListTerm.xml#atto">atto</term>, mentre è frequente nell'<term subtype="music-term" ref="TEI-ListTerm.xml#opera_buffa">opera buffa</term>, soprattutto per le scene di vivace confronto; il suo impiego si moltiplica dall'Ottocento nelle opere italiane, francesi e tedesche di ogni genere, in cui diviene il mezzo principale per esprimere il rapporto amoroso. Nel <term subtype="music-term" ref="TEI-ListTerm.xml#melodramma">melodramma</term> prevale il modello formale codificato da <persName ref="TEI-ListPerson.xml#GR">Rossini</persName> (<term subtype="music-term" ref="TEI-ListTerm.xml#numero">numero</term>), che può essere variato in molti modi. Il duetto è lo strumento elettivo della <term subtype="music-term" ref="TEI-ListTerm.xml#drammaturgia_musicale">drammaturgia</term> di <persName ref="TEI-ListPerson.xml#GV">Verdi</persName>, incentrata sull'analisi dei rapporti umani. Lo stesso <persName ref="TEI-ListPerson.xml#RW">Wagner</persName> utilizzò ampiamente il duetto nelle sue prime opere; nei <term subtype="music-term" ref="TEI-ListTerm.xml#Musikdrama">Musikdramen</term> della maturità si trovano scene a due che, pur presentando strutture formali assai varie, si possono considerare giganteschi duetti (per es. nel secondo atto di Tristan und Isolde, 1865) che servirono da modello alla maggior parte delle scene analoghe nel tardo Ottocento e per buona parte del Novecento.
+                        </gloss>
+                    </item>
+                    
+                    
+                    <label>
+                        <term subtype="music-term" xml:lang="it" xml:id="libretto" key="">Libretto</term>
+                    </label>
+                    <item>
+                        <gloss xml:lang="it" target="#libretto" resp="TEI-ListBibl.xml#DellaSeta2010">
+                        Libro di piccolo formato contenente il testo letterario di un’opera o di altra composizione vocale di carattere drammatico e, per estensione, il testo stesso, costituito dalle parole destinate a essere cantate, in versi o, più raramente, in prosa, dalle descrizioni della <term subtype="music-term" ref="#scenografia">scenografia</term> e dalle didascalie relative ai movimenti dei cantanti; può inoltre contenere indicazioni riguardanti uno specifico <term subtype="music-term" ref="#allestimento">allestimento</term> dell’opera, il contesto storico della sua prima rappresentazione, a volte, dichiarazioni di poetica dell’autore o degli autori. Molte di queste informazioni, quali il nome del compositore, del coreografo e delle altre figure che collaborarono alla messa in scena della prima rappresentazione, l’elenco dei cantanti e dei ballerini che vi parteciparono, l’organico strumentale, l’esposizione dell’antefatto con la dichiarazione della fonte letteraria, la dedica e la lettera al lettore, hanno oggi un’importanza capitale per la comprensione storica della singola opera e del sistema produttivo in cui essa nacque. Dal punto di vista strettamente letterario, il libretto è da considerarsi principalmente come parte integrante di un’opera d’arte complessiva da cui dipende e che lo trascende. Sebbene in alcuni casi esso tenda a rivendicare una propria dignità letteraria, è innegabile che molti aspetti della sua struttura siano predeterminati dalle esigenze specifiche del teatro musicale (prima fra tutte quella della declamazione cantata) e dalle innumerevoli convenzioni specifiche dei diversi generi operistici e dei diversi contesti storico-sociali. Così, la suddivisione in <term subtype="music-term" ref="#atto">atti</term> e <term subtype="music-term" ref="#scena">scene</term>, la successione dei <term subtype="music-term" ref="#numero">numeri</term> chiusi, la quantità di <term subtype="music-term" ref="#aria">arie</term> affidate a un personaggio (<term subtype="music-term" ref="#convenienze">convenienze</term>), la maggiore o minor presenza di <term subtype="music-term" ref="#pezzo d’assieme">pezzi d’assieme</term>, l’impiego di determinate tipologie metriche e strofiche, ma anche il tipo di soggetto trattato (mitologico, storico o letterario), le modalità del suo svolgimento e del suo scioglimento (tragico o lieto) possono essere ricondotti a convenzioni, rispetto alle quali l’autore può disporre di una maggiore o minore libertà d’azione. Sebbene la paternità del libretto sia generalmente riconosciuta al poeta che lo ha prodotto (<term subtype="music-term" ref="#librettista">librettista</term>), sono frequenti i casi in cui l’intervento del compositore ne modifica in modo sostanziale l’assetto, conducendo a divergenze anche notevoli fra la versione pubblicata e quella riportata in partitura (il che rende opportuno pubblicarle entrambe in forma distinta). Altrettanto significativi sono i casi in cui il compositore decide di contravvenire intenzionalmente alle indicazioni implicite del libretto, per esempio trasformando un <term subtype="music-term" ref="#recitativo">recitativo</term> in aria o viceversa, o ancora concependo situazioni musicali che contraddicono palesemente il senso del testo poetico.
+                        </gloss>
+                    </item>
+                    
+                    
+                   <label>
+                        <term subtype="music-term" xml:lang="it" xml:id="tenore" key="">Tenore</term>
+                    </label>
+                    <item>
+                        <gloss xml:lang="it" target="#tenore" resp="TEI-ListBibl.xml#DellaSeta2010">
+                        	La <term subtype="music-term" ref="#voce">voce</term> maschile più acuta. Nei primi decenni della fortuna dell’opera si incontrano spesso tenori protagonisti (Ulisse in Il ritorno di Ulisse in patria, 1639-40), ma di fatto queste parti avevano una tessitura che oggi definiremmo baritonale ed erano interpretate da un <term subtype="music-term" ref="#baritenore">baritenore</term>. Nel secondo Seicento e per buona parte del Settecento al tenore vennero attribuite parti di carattere: figure comiche di donne anziane en <term subtype="music-term" ref="#travesti">travesti</term>, oppure tiranni e despoti. Anche nell’<term subtype="music-term" ref="#opera_buffa">opera buffa</term> tardo settecentesca il tenore era di solito un ruolo secondario, quello del giovane innamorato, e nel primo Ottocento conservò tale connotazione, aggiungendovi però una tessitura acutissima e notevole virtuosismo (Lindoro in L’italiana in Algeri, 1813); questa tipologia, detta tenore contraltino, fu presto soppiantata da nuove forme di vocalità tenorile, anche se il carattere leggero rimase in alcuni protagonisti di opere successive, definiti come tenori di grazia. Nel <term subtype="music-term" ref="#melodramma">melodramma</term> serio il tenore divenne un protagonista verso la fine degli anni venti dell’Ottocento, quando il ruolo dell’innamorato passò in primo piano per formare con il <term subtype="music-term" ref="#soprano ">soprano</term> la coppia principale. Fin da subito si delinearono i due tipi fondamentali di carattere che può assumere il tenore moderno: quello eroico, connotato da slancio passionale e grande veemenza vocale (Edgardo in Lucia di Lammermoor, 1835), e quello più languido, caratterizzato da una vocalità più cantabile (Nemorino in L’elisir d’amore, 1832). Nella <term subtype="music-term" ref="#critica">critica</term> e nella trattatistica italiana questi due tipi verranno denominati rispettivamente tenore drammatico (o “di forza”) e tenore lirico. La preminenza del tenore rispetto alle altre voci maschili perdurò per tutto l’Ottocento, anche in tradizioni operistiche differenti da quella italiana (le parti di protagonista nel <term subtype="music-term" ref="#grand-opera">grand-opéra</term> e lo <term subtype="music-term" ref="#Heldentenor">Heldenteno</term> wagneriano), e ancor oggi il tenore è la voce maschile che più spesso dà origine a fenomeni di <term subtype="music-term" ref="#divismo">divismo</term>. È probabilmente collegato a questo “abuso” del mito tenorile il fatto che nel teatro musicale del Novecento al tenore vengono sempre meno spesso affidate parti di protagonista positivo, ma piuttosto di personaggi nettamente malvagi (Aegisthus in Elektra, 1909) o equivoci e interiormente tormentati (Captain Vere in Billy Budd, 1951).
+                        </gloss>
+                    </item>
+                    <label>
+                        <term subtype="music-term" xml:lang="it" xml:id="" key=""></term>
+                    </label>
+                    <item>
+                        <gloss xml:lang="it" target="#" resp="TEI-ListBibl.xml#DellaSeta2010">
+                        
+                        </gloss>
+                    </item>
+                      	
+                </list>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>This is a template for a minimal TEI header with the mandatory components:</p>
+        </body>
+    </text>
+</TEI>
+

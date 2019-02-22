@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI 
+  xmlns="http://www.tei-c.org/ns/1.0" 
+  xmlns:svg="http://www.w3.org/2000/svg" 
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>
+                    <!-- Insert title for this digital text -->
+                </title>
+            </titleStmt>
+            <publicationStmt>
+                <p>
+                    <!-- Insert information about the publication of this digital text -->
+                </p>
+            </publicationStmt>
+            <sourceDesc>
+                <p>
+                    <!-- Insert a bibliographic description of the source for this digital text -->
+                </p>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>This is a template for a minimal TEI header with the mandatory components:</p>
+        </body>
+        <back>
+            <div type="biblCompleta">
+                <listBibl>
+
+                    <bibl xml:id="Amore1894" type="print">
+                        <author xml:id="AA">
+                        	<forename>Antonino</forename>
+                        	<surname>Amore</surname>
+                        </author>
+                        <title level="m">Vincenzo Bellini. Vita. Studi e ricerche</title>
+                        <pubPlace>Catania</pubPlace>
+                        <publisher>Giannotta</publisher>
+                        <date when="1894">1894</date>
+                     </bibl>
+
+                   <bibl xml:id="Cambi1943" type="print">
+                        <author xml:id="LC"> 
+                        	<forename>Luisa</forename>
+                        	<surname>Cambi</surname> 
+                        </author>
+                        <title level="m">Bellini. Epistolario</title>
+                        <pubPlace>Milano</pubPlace>
+                        <publisher>Mondadori</publisher>
+                        <date when="1943">1943</date>
+                    </bibl>
+                    
+                   <bibl xml:id="Musica2018" type="print">
+                        <editor xml:id="SC">
+                        	<forename>Sandro</forename>
+                        	<surname>Cappelletto</surname>
+                        </editor>
+                        <title level="m">Il contributo italiano alla storia del pensiero. Musica e Letteratura</title>
+                        <title level="s">Enciclopedia Italiana di Scienze, Lettere ed Arti</title>
+                     		<biblScope unit="volume">Appendice IX</biblScope>
+  											<pubPlace>Roma</pubPlace>
+                        <publisher>Istituto dell'Enciclopedia Italiana fondata da Giovanni Treccani</publisher>
+                        <date when="2018">2018</date>
+                    </bibl>
+                     
+                   <bibl xml:id="DellaSeta2010" type="print">
+                        <editor xml:id="FDS">
+                        	<forename>Fabrizio</forename>
+                        	<surname>Della Seta</surname>
+                        </editor>
+                        <title level="m">Le parole del teatro musicale</title>
+                        <pubPlace>Roma</pubPlace>
+                        <publisher>Carocci</publisher>
+                        <date when="2010">2010</date>
+                    </bibl>
+                    
+                    <bibl xml:id="Delogu1931" type="print">
+                        <author xml:id="GD">
+                        	<forename>Giuseppe</forename>
+                        	<surname>Delogu</surname>
+                        </author>
+                      <title level="a">La casa di Bellini (nel primo centenario della Sonnambula)</title>
+                      <title level="j">Emporium. Rivista mensile illustrata d'arte e cultura</title>
+                     	<biblScope unit="volume">LXXIII</biblScope>
+  										<biblScope unit="issue">435</biblScope>
+  										<biblScope unit="page" from="164" to="175">164-175</biblScope>
+                      <date when="1931-03">marzo 1931</date>
+                    </bibl>
+                    
+                    <bibl xml:id="Libertini1935" type="print">
+                        <author xml:id="GL">
+                        	<forename>Guido</forename>
+                        	<surname>Libertini</surname>
+                        </author>
+                        <title level="a">Ricerche tra gli autografi del Museo Belliniano</title>
+                         <title level="j">Vincenzo Bellini. Numero commemorativo della Rivista del Comune di Catania</title>
+                     		<biblScope unit="volume">XIII</biblScope>
+  											<biblScope unit="page" from="1" to="8">1-8</biblScope>
+                        <date when="1935">1935</date>
+                    </bibl>
+                    
+                    <bibl xml:id="Neri2005" type="print">
+                        <author xml:id="CN">
+                        	<forename>Carmelo</forename>
+                        	<surname>Neri</surname>
+                        </author>
+                        <title level="m">Vincenzo Bellini. Nuovo Epistolario. 1819-1835</title>
+                        <pubPlace>Catania</pubPlace>
+                        <publisher>Agorà</publisher>
+                        <date when="2005">2005</date>
+                     </bibl>
+ 
+                   <bibl xml:id="Nicolodi_Trovato2007" type="print">
+                        <editor xml:id="FN">
+                        	<forename>Fiamma</forename>
+                        	<surname>Nicolodi</surname>
+                        </editor>
+                         <editor xml:id="PT">
+                        	<forename>Paolo</forename>
+                        	<surname>Trovato</surname>
+                        </editor>
+                       <title level="m">Lessico della letteratura musicale italiana 1490-1950</title>
+                        <pubPlace>Firenze</pubPlace>
+                        <publisher>Franco Cesati Editore</publisher>
+                        <date when="2007">2007</date>
+                    </bibl>
+ 
+                    <bibl xml:id="Pastura1959" type="print">
+                        <author xml:id="FPa">
+                        	<forename>Francesco</forename>
+                        	<surname>Pastura</surname>
+                        </author>
+                        <title level="m">Bellini secondo la storia</title>
+                        <pubPlace>Parma</pubPlace>
+                        <publisher>Guanda</publisher>
+                        <date when="1959">1959</date>
+                    </bibl>
+  
+                    <bibl xml:id="Seminara2017" type="print">
+                        <editor xml:id="GS">
+                        	<forename>Graziella</forename>
+                        	<surname>Seminara</surname>
+                        </editor>
+                        <title level="m">Vincenzo Bellini. Carteggi</title>
+                        <title level="s">Historiae Musicae Cultores</title>
+                     		<biblScope unit="volume">CXXXI</biblScope>
+  											<pubPlace>Firenze</pubPlace>
+                        <publisher>Leo S. Olschki Editore</publisher>
+                        <date when="2017">2017</date>
+                    </bibl>
+                </listBibl>
+            </div>
+        </back>
+    </text>
+</TEI>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI     xmlns="http://www.tei-c.org/ns/1.0" 
+    xmlns:svg="http://www.w3.org/2000/svg" 
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>
+                    <!-- Insert title for this digital text -->
+                </title>
+            </titleStmt>
+            <publicationStmt>
+                <p>
+                    <!-- Insert information about the publication of this digital text -->
+                </p>
+            </publicationStmt>
+            <sourceDesc>
+                <p>
+                    <!-- Insert a bibliographic description of the source for this digital text -->
+                </p>
+                
+                <listOrg>
+                    <head>Teatri</head>
+                    
+                   <org type="teatre" xml:id="Carcano">
+                        <orgName ref="https://it.wikipedia.org/wiki/Teatro_Carcano">Teatro Carcano</orgName>
+                    		<placeName ref="#MI">Milano</placeName>
+                        <desc>
+                          
+                        </desc>
+                    </org>
+                    
+                       <org type="teatre" xml:id="Comedie_italienne">
+                        <orgName ref="https://it.wikipedia.org/wiki/Th%C3%A9%C3%A2tre_de_la_com%C3%A9die_italienne">Théâtre de la comédie italienne</orgName>
+                   			 <placeName ref="#Paris">Paris</placeName>
+                        <desc>
+                          
+                        </desc>
+                    </org> 
+                    
+                    <org type="teatre" xml:id="Fenice">
+                        <orgName ref="http://www.treccani.it/enciclopedia/teatro-la-fenice/" >Teatro La Fenice</orgName>
+                   			 <placeName ref="#VE">Venezia</placeName>
+                        <desc>
+                          
+                        </desc>
+                    </org>
+
+                    
+                    <org type="teatre" xml:id="San_Carlo">
+                        <orgName ref="https://it.wikipedia.org/wiki/Teatro_di_San_Carlo">Teatro San Carlo</orgName>
+                         <placeName ref="#NA">Napoli</placeName>
+                        <desc>
+                          
+                        </desc>
+                    </org>
+                    
+                    <org type="teatre" xml:id="Scala">
+                        <orgName ref="http://www.treccani.it/enciclopedia/teatro-alla-scala/">Teatro alla Scala</orgName>
+                    		<placeName ref="#MI">Milano</placeName>
+                      <desc>
+                      </desc>
+                    </org>
+              
+                    
+                </listOrg>
+                
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>This is a template for a minimal TEI header with the mandatory components:</p>
+        </body>
+    </text>
+</TEI>
