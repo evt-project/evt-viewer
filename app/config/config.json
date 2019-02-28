@@ -1,10 +1,10 @@
 {
 
-    "indexTitle": "",
+    "indexTitle": "Prova integrazione 3DHOP",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "",
+	"dataUrl": "data/3dhop.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
