@@ -8,10 +8,10 @@ angular.module('evtviewer.core')
       getPrevBody:'count(.//preceding::body)',
       getPrevPb:'count(.//preceding::pb)',
       
-      getDiplomaticNodes: './/node()[self::lb or self::g or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
+      getDiplomaticNodes: './/node()[self::lb or self::pb or self::g or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
       getDiplomaticChildNodes: './/node()[self::g or self::pb or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
       
-      getInterpretativeNodes: '//body//node()[self::lb or self::g or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
+      getInterpretativeNodes: '//body//node()[self::lb or self::pb or self::g or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       getInterpretativeChildNodes: './/node()[self::g or self::pb or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       
       getChildNodes: './/node()[self::g or self::pb or self::text()]',
@@ -32,10 +32,10 @@ angular.module('evtviewer.core')
          getPrevBody:'count(.//preceding::ns:body)',
          getPrevP:'count(.//preceding::ns:p)',
    
-         getDiplomaticNodes: './/node()[self::ns:lb or self::ns:g or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
+         getDiplomaticNodes: './/node()[self::ns:lb or self::ns:pb or self::ns:g or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
          getDiplomaticChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
          
-         getInterpretativeNodes: './/node()[self::ns:lb or self::ns:g or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
+         getInterpretativeNodes: './/node()[self::ns:lb or self::ns:pb or self::ns:g or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          getInterpretativeChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          
          getChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
