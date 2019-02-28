@@ -4,7 +4,7 @@ angular.module('evtviewer.core')
       getLineNodes: './/node()[self::lb or self::p or self::pb or self::head]',
       getParLineNodes: './/node()[self::p or self:l or self::pb or self::head]',
       
-      getPrevLb:'count(preceding::lb)',
+      getPrevLb:'count(preceding::lb)[ancestor::body]',
       getPrevBody:'count(.//preceding::body)',
       getPrevPb:'count(.//preceding::pb)',
       
@@ -28,7 +28,7 @@ angular.module('evtviewer.core')
          getLineNodes: './/node()[self::ns:lb or self::ns:p or self::ns:pb or self::ns:head]',
          getParLineNodes: './/node()[self::ns:p or self::ns:l or self::ns:pb or self::ns:head]',
         
-         getPrevLb:'count(.//preceding::ns:lb)',
+         getPrevLb:'count(.//preceding::ns:lb[ancestor::ns:body])',
          getPrevBody:'count(.//preceding::ns:body)',
          getPrevP:'count(.//preceding::ns:p)',
    
