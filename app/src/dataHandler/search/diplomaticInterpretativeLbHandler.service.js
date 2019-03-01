@@ -7,6 +7,8 @@ angular.module('evtviewer.dataHandler')
             var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
                diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
                interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
+               cleanedDiplomaticNodes = [],
+               cleanedInterpretativeNodes = [],
                currentPage,
                currentPageId,
                pageId = 1,
@@ -50,8 +52,14 @@ angular.module('evtviewer.dataHandler')
                         line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
                         line.lbId = node.getAttribute('xml:id');
    
-                        lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                        lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                        do {
+                           lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                           lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                           cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
+                           cleanedInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.interpretative);
+                        }
+                        while(cleanedDiplomaticNodes.length === 0 && cleanedInterpretativeNodes.length === 0 &&
+                        lineNodes.diplomatic.length !== 0 && lineNodes.interpretative.length !== 0);
                         
                         line.content = {
                            diplomatic: evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic'),
