@@ -15,7 +15,7 @@ angular.module('evtviewer.core')
       getInterpretativeChildNodes: './/node()[self::g or self::pb or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       
       getChildNodes: './/node()[self::g or self::pb or self::text()]',
-      getTextGlyphNodes: './/node()[self::g or self::text()]',
+      getTextGlyphNodes: './/node()[self::g or self::lb or self::pb or self::text()]',
       getGlyphNodes: './/node()[self::g]',
       
       //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',
@@ -39,7 +39,7 @@ angular.module('evtviewer.core')
          getInterpretativeChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          
          getChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()]',
-         getTextGlyphNodes: './/node()[self::ns:g or self::text()]',
+         getTextGlyphNodes: './/node()[self::ns:g or self::ns:lb or self::ns:pb or self::text()]',
          getGlyphNodes: './/node()[self::ns:g]',
          
          //getCriticalChildNodes: './/((ns:lem | ns:rdg)[@wit]|text())',

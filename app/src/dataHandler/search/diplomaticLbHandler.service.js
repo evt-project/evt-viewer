@@ -12,7 +12,8 @@ angular.module('evtviewer.dataHandler')
             parId = 1,
             line = {},
             lineId,
-            currentLineNodes = {},
+            currentLineNodes = [],
+            cleanedCurrentLineNodes = [],
             lines = {},
             countLine = 1,
             
@@ -47,14 +48,21 @@ angular.module('evtviewer.dataHandler')
                   lineId++;
                   line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
    
-                  currentLineNodes = evtSearchDocument.getLineNodes(xmlDocDom, bodyTextGlyphNodes, prevDocsLbNumber, countLine, ns, nsResolver)
+                  do {
+                     currentLineNodes = evtSearchDocument.getLineNodes(xmlDocDom, bodyTextGlyphNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                     cleanedCurrentLineNodes = evtSearchDocument.removeEmptyTextNodes(currentLineNodes);
+                  }
+                  while (cleanedCurrentLineNodes.length === 0 && bodyTextGlyphNodes.length !== 0);
                   
-                  line.content = evtSearchDocument.getContent(currentLineNodes, '');
-                  
-                  countLine++;
-                  countAllDocsLine++;
-                  lines[line.docId] = line;
-                  currentLineNodes = [];
+                  if(currentLineNodes !== undefined) {
+                     if(currentLineNodes.length !== 0) {
+                        line.content = evtSearchDocument.getContent(currentLineNodes, '');
+                        countLine++;
+                        countAllDocsLine++;
+                        lines[line.docId] = line;
+                        currentLineNodes = [];
+                     }
+                  }
                }
             };
             (nodes[node.nodeName] || nodes['default'])();
