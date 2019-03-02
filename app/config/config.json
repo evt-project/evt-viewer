@@ -171,13 +171,14 @@
        "showRotationControl": true,
        "showNavigator": true,
        "visibilityRatio": 1, 
-       "defaultZoomLevel": 0.8,
+       "defaultZoomLevel": 0.7,
        "panHorizontal": true,
        "constrainDuringPan": true,
        "minZoomLevel": 0.7,
        "maxZoomLevel": 2.0,
        "wrapVertical": false
     },
+    "imageNormalizationCoefficient": 1265,
 
     "languages": ["en", "it"]
 }
