@@ -94,6 +94,7 @@ div.hotspot-dida-title {
 div.hotspot-dida-body {
     border-top: 2px solid #4E443C;
     font-size: 16px;
+    height: 80%;
     overflow-y: scroll;
     text-align: justify;
     padding: 2px;
@@ -111,7 +112,7 @@ div#osd-img * img {
 
 /* }*/
 
-/* regole per rotulo */
+/* regole per rotulo 
 
 span.buttonSwitch[title="Thumbnails"],
 /*span.buttonSwitch[title="Information about this text"],*/
@@ -119,6 +120,7 @@ span.buttonSwitch[title="Thumbnails"],
 span.buttonSwitch[title="Miniature"] {
    display: none;
 }
+*/
 
 .namedEntity__icon {
     display: none !important;
