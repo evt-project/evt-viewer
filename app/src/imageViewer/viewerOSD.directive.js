@@ -3,7 +3,7 @@
    var module = angular.module("evtviewer.openseadragon", ["evtviewer.imageViewer",'evtviewer.openseadragonService', "evtviewer.interface"]);
   
 
-   module.directive("osd", ['$timeout', 'imageViewerHandler', "evtInterface", function ($timeout, imageViewerHandler, evtInterface) {
+   module.directive("osd", ['$timeout', 'imageViewerHandler', "evtInterface","osd", function ($timeout, imageViewerHandler, evtInterface, osd) {
       return {
          
         restrict: "E",
@@ -29,12 +29,16 @@
          link: function (scope, element, attrs) {
 
             console.log("funzione link della direttiva seadragon");
+            console.log("test provider: ", osd.test('PROVIDER FUNGE?!'));
                       
 
             $timeout(function () {
 
                console.log("scope in timeout osd directive", scope);
-               var _options = scope.$parent.options; 
+               console.log("imageviewer in timeout osd build", osd.build(attrs.name));
+               //var _options = scope.$parent.options; 
+                var _options = osd.build(attrs.name); 
+               
                console.log("options in timeout osd directive", _options);
                //var viewer = OpenSeadragon(scope.$parent.$parent.options);
                console.log('div OSD', document.getElementById('osd-img'));
