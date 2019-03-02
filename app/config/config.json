@@ -166,5 +166,10 @@
 
    "virtualKeyboardKeys": [],
 
+   "imageViewerOptions": {
+       "showRotationControl": true,
+       "showNavigator": true
+    },
+
     "languages": ["en", "it"]
 }
