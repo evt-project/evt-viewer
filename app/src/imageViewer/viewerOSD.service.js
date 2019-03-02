@@ -3,7 +3,7 @@
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler) {
-         const ImageNormalizationCoefficient = 1265; // per il rotulo 3500;
+         var ImageNormalizationCoefficient = 1; // per il rotulo 3500;
          const YminPan = 0.5;
          var divHotSpotToggle = false;
 
@@ -17,6 +17,10 @@
          };
          viewerHandler.setScope = function (scope) {
             viewerHandler.scope = scope;
+            if(scope.coeff)
+               ImageNormalizationCoefficient = scope.coeff;
+            console.log('scope in imageViewerHandler', viewerHandler.scope);
+            console.log('scope in imageViewerHandler', ImageNormalizationCoefficient);
          };
 
         

@@ -56,6 +56,8 @@
 
                scope.osd = viewer;
                scope.$parent[attrs.name] = viewer;
+               scope.coeff = osd.getCoeff();
+               console.log('image coeff', scope.coeff);
 
                imageViewerHandler.setViewer(viewer);
                imageViewerHandler.setScope(scope);

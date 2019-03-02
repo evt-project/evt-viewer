@@ -179,5 +179,7 @@
        "wrapVertical": false
     },
 
+    "imageNormalizationCoefficient": 1265,
+
     "languages": ["en", "it"]
 }
