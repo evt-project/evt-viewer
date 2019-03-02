@@ -180,8 +180,16 @@
    "virtualKeyboardKeys": [],
 
    "imageViewerOptions": {
+       "prefixUrl": "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
        "showRotationControl": true,
-       "showNavigator": true
+       "showNavigator": true,
+       "visibilityRatio": 1, 
+       "defaultZoomLevel": 0.8,
+       "panHorizontal": true,
+       "constrainDuringPan": true,
+       "minZoomLevel": 0.7,
+       "maxZoomLevel": 2.0,
+       "wrapVertical": false
     },
 
     "languages": ["en", "it"]
