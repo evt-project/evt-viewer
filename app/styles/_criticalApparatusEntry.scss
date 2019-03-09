@@ -1,8 +1,8 @@
-$critical-apparatus-entry-background-color : #f5f8f8;
-$critical-apparatus-entry-background-color-darker : $base-color-light;
+$critical-apparatus-entry-background-color : transparent;
+$critical-apparatus-entry-background-color-darker : #f5f8f8;
 $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
-$critical-apparatus-entry-selected-background-color:#f5f8f8;
+$critical-apparatus-entry-selected-background-color:$base-color-light;
 $critical-apparatus-entry-selected-content-color: #f5f8f8;
 $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
 

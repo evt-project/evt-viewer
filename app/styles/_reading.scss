@@ -33,7 +33,8 @@ $reading-background-selected: rgb(208, 220, 255);
     }
     &.over,&.selected {
         .reading_exponent, .reading__text {
-            background-color: $reading-background-default;
+            background-color: $base-color-dark;
+            color: $base-color-light;
             cursor: pointer;
         }
     }
