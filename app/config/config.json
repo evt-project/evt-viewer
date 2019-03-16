@@ -167,11 +167,11 @@
    "virtualKeyboardKeys": [],
 
    "imageViewerOptions": {
-       "prefixUrl": "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
+       "prefixUrl": "data/osd-images/",
        "showRotationControl": true,
        "showNavigator": true,
        "visibilityRatio": 1, 
-       "defaultZoomLevel": 0.7,
+       "defaultZoomLevel": 0.9,
        "panHorizontal": true,
        "constrainDuringPan": true,
        "minZoomLevel": 0.7,

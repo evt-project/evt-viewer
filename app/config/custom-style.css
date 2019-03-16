@@ -82,7 +82,7 @@ div.hotspot-dida {
 }
 
 div.hotspot-dida-title {
-    height: 20px;
+    height: 25px;
     color: #bebaba;
     cursor: move;
     margin: 0;
@@ -118,10 +118,10 @@ div#osd-img * img {
 /*span.buttonSwitch[title="Information about this text"],*/
 /*span.buttonSwitch[title="Informazioni su questo testo"],*/ 
 
-span.buttonSwitch[title="Thumbnails"],
-span.buttonSwitch[title="Miniature"] {
+/*span.buttonSwitch[title="Thumbnails"],*/
+/*span.buttonSwitch[title="Miniature"] {
    display: none;
-}
+}*/
 
 
 .namedEntity__icon {

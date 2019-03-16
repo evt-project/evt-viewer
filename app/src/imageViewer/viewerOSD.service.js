@@ -333,7 +333,7 @@
                if (topLeft.x <= 0.4) {
                    DivTopLeft = topLeft.x + (bottomRight.x - topLeft.x) + 0.050;
                } else {
-                     DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0.2);
+                     DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0.1);
 
                }
                var rect = new OpenSeadragon.Rect(
