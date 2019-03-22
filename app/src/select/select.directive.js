@@ -71,7 +71,8 @@ angular.module('evtviewer.select')
                     if (scope.init !== undefined && scope.init !== '') {
                         currentSelect.selectOptionByValue(scope.init);
                     } else if (!scope.multiselect) {
-                        currentSelect.callback(undefined, scope.vm.optionList[0]);
+                        var firstOption = scope.vm.optionList ? scope.vm.optionList[0] : undefined;
+                        currentSelect.callback(undefined, firstOption);
                     }
                 }
             });

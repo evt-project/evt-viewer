@@ -37,7 +37,7 @@ angular.module('evtviewer.visColl')
                 }
                 var viscollBtn = evtButtonSwitch.getByType('visColl');
                 if (viscollBtn) {
-                    viscollBtn.forEach(function(btn){ btn.setActive(false) });
+                    viscollBtn.forEach(function(btn){ btn.setActive(false); });
                 }
                 evtInterface.updateUrl();
             }

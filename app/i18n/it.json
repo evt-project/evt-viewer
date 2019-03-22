@@ -283,5 +283,9 @@
 	"AND": "e",
 	"BETWEEN": "tra",
 	"ERROR" : "Errore",
-	"PUBLISHED_BY": "Pubblicato da"
+	"PUBLISHED_BY": "Pubblicato da",
+
+	"NO_INFO": "Dati mancanti",
+	"missing": "Persa",
+	"notLeaf": "---"
 }

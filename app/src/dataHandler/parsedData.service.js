@@ -118,19 +118,47 @@ angular.module('evtviewer.dataHandler')
      * @description [Private] Internal property where information about svg are stored.
     	<pre>
 			var viscollSvgCollection = {
-				[pageId]: {
-					value,
-					label,
-					title,
-					source,
-					text: {
-						[docId] : {
-							[editionLevel]: ''
-						}
-					},
-					docs: []
-				},
 				length: 1
+				svgs: {
+					[svgId]: {
+						leavesInsertedInSelector: [],
+						quireLeaves: [{label, title, value}],
+						quireN: '',
+						svgLeaves: [{ conjoinId, conjoinId2, id, imageId, imageId2, img, img2, imgConjoin, imgConjoin2, label, value, }],
+						textSvg: HTMLElement
+					},
+					_indexes: []
+				},
+				quires: {
+					[quireId]: {
+						leaves: {
+							[leafId]: { 
+								conjoin: '', 
+								label: '', 
+								leafno: '', 
+								quire: '', 
+								value: '' 
+							},
+							_indexes: [],
+							length: 0
+						},
+						n: '',
+						value: ''
+					}
+					_indexes: []
+				},
+				imglist: {
+					[imgId]: { 
+						conjoin: '', 
+						conjoinUrl: '', 
+						id: '', 
+						url: '', 
+						value: ''
+					},
+					_indexes: []
+				},
+				svgToLoad: [],
+				loaded: false
 			};
     	</pre>
      */
@@ -144,6 +172,7 @@ angular.module('evtviewer.dataHandler')
 		imglist: {
 			_indexes: []
 		},
+		svgToLoad: [],
 		loaded: false
 	};
 	/**
@@ -1125,8 +1154,11 @@ angular.module('evtviewer.dataHandler')
      * @todo add attribute for the original xml reference
      */
 	parsedData.addViscollSvg = function(svg) {
-		var svgId = 'svg_'+viscollSvgCollection.svgs._indexes.length;
+		var svgId = svg.id || 'svg_'+viscollSvgCollection.svgs._indexes.length;
 		viscollSvgCollection.svgs[svgId] = svg;
+		if (viscollSvgCollection.quires[svgId]) {
+			viscollSvgCollection.quires[svgId].svg = svg;
+		}
 		viscollSvgCollection.svgs._indexes.push(svgId);
 	};
 	
@@ -1149,6 +1181,22 @@ angular.module('evtviewer.dataHandler')
 		viscollSvgCollection.quires[quireId].leaves._indexes.push(leafId);
 	};
 	
+	parsedData.setViscollSVGToLoad = function(svgList) {
+		viscollSvgCollection.svgToLoad = svgList;
+	};
+
+	parsedData.getViscollSVGToLoad = function() {
+		return viscollSvgCollection.svgToLoad;
+	};
+
+	parsedData.updateLeafDataInQuire = function(quireId, leaf) {
+		if (viscollSvgCollection.quires[quireId].leaves[leaf.id]) {
+			for (var attrname in leaf) { 
+				viscollSvgCollection.quires[quireId].leaves[leaf.id][attrname] = leaf[attrname]; 
+			}
+		}
+	};
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getViscollSvgs

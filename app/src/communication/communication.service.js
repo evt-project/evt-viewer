@@ -103,16 +103,12 @@ angular.module('evtviewer.communication')
      * @param {string} url file containing the edition data
      * @returns {httpPromise} resolve with fetched data, or fails with error description.
      */
-    communication.getViscollSvgs = function(url) {
+    communication.getViscollSvgs = function(url, svgId) {
         return $http.get(url)
             .then(function(response) {
-                return baseData.handleViscollSvg(response.data);
+                return baseData.handleViscollSvg(response.data, svgId);
             }, function(error) {
-                if (defaults.errorMsgs[error.status]) {
-                    communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
-                } else {
-                    communication.err(defaults.errorMsgs['404'].msg, url, error.status, true);
-                }
+                // TODO: Show error in a toast (EVT can work without viscoll)
             });
     };
 	

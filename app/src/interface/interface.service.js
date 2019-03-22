@@ -280,9 +280,10 @@ angular.module('evtviewer.interface')
                                 $q.all(viscollPromises).then(function () {
                                     var svgViscollPromises = [];
                                     // Parse the external SVG files, if defined.
-                                    if (config.visCollSvg !== '' && config.svgFilesNames.length > 0) {
-                                        config.svgFilesNames.forEach(function (fileName) {
-                                            svgViscollPromises.push(evtCommunication.getViscollSvgs(config.visCollSvg + fileName));
+                                    var svgToLoad = parsedData.getViscollSVGToLoad();
+                                    if (config.visCollSvg !== '' && svgToLoad.length > 0) {
+                                        svgToLoad.forEach(function (svgData) {
+                                            svgViscollPromises.push(evtCommunication.getViscollSvgs(config.visCollSvg + svgData.fileName, svgData.id));
                                         });
                                     }
                                     $q.all(svgViscollPromises).then(function () {

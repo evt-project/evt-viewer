@@ -68,42 +68,38 @@ angular.module('evtviewer.visColl')
 			var displayResult = function(){
 				var vm = this;
                 vm.svgCollection = parsedData.getViscollSvgs();
-                for (var i in vm.svgCollection.svgs._indexes) {
-                    var svgId = vm.svgCollection.svgs._indexes[i];
-                    if (vm.svgCollection.svgs[svgId].hasOwnProperty('textSvg')){
-                        var svg = vm.svgCollection.svgs[svgId].textSvg;
-                        vm.totSvg.push(svg);
-                    }
-                    vm.svgCollection.svgs[svgId].quireLeaves = vm.getFilteredQuireLeavesBySvgId(svgId).leaves;
-                    vm.svgCollection.svgs[svgId].leavesInserted = vm.getFilteredQuireLeavesBySvgId(svgId).leavesInserted;
-                }
+                
                 var quireOptions = [];
-                for (var i = 0; i < svgCollection.quires._indexes.length; i++) {
-                    var quireId = svgCollection.quires._indexes[i];
-                    var quire = svgCollection.quires[quireId];
-                    quireOptions.push({
-                        value: quire.value,
-                        label: quire.n,
-                        title: quire.n
-                    });
+                if (vm.svgCollection.quires._indexes) {
+                    for (var i = 0; i < vm.svgCollection.quires._indexes.length; i++) {
+                        var quireId = vm.svgCollection.quires._indexes[i];
+                        var quire = vm.svgCollection.quires[quireId];
+                        quireOptions.push({
+                            value: quire.value,
+                            label: quire.n,
+                            title: quire.n
+                        });
+                        var filteredLeaves = vm.getFilteredQuireLeaves(quireId);
+                        quire.leavesList = filteredLeaves.leaves;
+                        quire.leavesInsertedInSelector = filteredLeaves.leavesInsertedInSelector;
+                    }
                 }
                 vm.quireOptions = quireOptions;
+                
                 $timeout(function(){
                     var svgGs = angular.element('.viscollContainer svg > g');
                     if (svgGs) {
                         svgGs.click(function(e){
                             try {
-                                var svgId = angular.element(e.delegateTarget).parents('.viscollContainer')[0].id;
+                                var quireId = angular.element(e.delegateTarget).parents('.viscollContainer')[0].id;
                                 var gID = e.delegateTarget.id;
-                                var option = vm.svgCollection.svgs[svgId].svgLeaves.filter(function(leaf) { return leaf.value === gID; })[0];
-                                if (vm.svgCollection.svgs[svgId].leavesInserted && vm.svgCollection.svgs[svgId].leavesInserted.indexOf(gID) > -1) {
-                                    vm.setSelectedFolioForQuire(svgId, option);
+                                var option = vm.svgCollection.quires[quireId].leaves[gID];
+                                if (vm.svgCollection.quires[quireId].leavesInsertedInSelector && vm.svgCollection.quires[quireId].leavesInsertedInSelector.indexOf(gID) > -1) {
+                                    vm.setSelectedFolioForQuire(quireId, option);
                                 } else {
                                     // Find and select conjoin folio
-                                    var quireLeaves = vm.getAllQuireLeavesBySvgId(svgId);
-                                    var optionLeaf = quireLeaves.filter(function(leaf) { return leaf.value === gID; })[0];
-                                    var conjoinOption = vm.svgCollection.svgs[svgId].svgLeaves.filter(function(leaf) { return leaf.value === optionLeaf.conjoin; })[0];
-                                    vm.setSelectedFolioForQuire(svgId, conjoinOption, option);
+                                    var conjoinOption = vm.svgCollection.quires[quireId].leaves[option.conjoin];
+                                    vm.setSelectedFolioForQuire(quireId, conjoinOption);
                                 }
                             } catch(e) {
                                 console.log(e);
@@ -111,21 +107,21 @@ angular.module('evtviewer.visColl')
                         });
                         svgGs.hover(function(e){
                             try {
-                                var svgId = angular.element(e.delegateTarget).parents('.viscollContainer')[0].id;
+                                var quireId = angular.element(e.delegateTarget).parents('.viscollContainer')[0].id;
                                 var gID = e.delegateTarget.id;
-                                var option = vm.svgCollection.svgs[svgId].svgLeaves.filter(function(leaf) { return leaf.value === gID; })[0];
-                                var svgElem = angular.element('#'+option.value);
-                                var overUnit = angular.element('.over_unit');
-                                if (overUnit) {
-                                    overUnit.removeClass('over_unit');
+                                var option = vm.svgCollection.quires[quireId].leaves[gID];
+                                if (option) {
+                                    var svgElem = angular.element('#'+option.value);
+                                    var overUnit = angular.element('.over_unit');
+                                    if (overUnit) {
+                                        overUnit.removeClass('over_unit');
+                                    }
+                                    svgElem.addClass('over_unit');
                                 }
-                                svgElem.addClass('over_unit');
                                 
-                                if (!vm.svgCollection.svgs[svgId].leavesInserted || vm.svgCollection.svgs[svgId].leavesInserted.indexOf(gID) < 0) {
+                                if (!vm.svgCollection.quires[quireId].leavesInsertedInSelector || vm.svgCollection.quires[quireId].leavesInsertedInSelector.indexOf(gID) < 0) {
                                     // Find and select conjoin folio
-                                    var quireLeaves = vm.getAllQuireLeavesBySvgId(svgId);
-                                    var optionLeaf = quireLeaves.filter(function(leaf) { return leaf.value === gID; })[0];
-                                    var svgConjoinElem = angular.element('#'+optionLeaf.conjoin);
+                                    var svgConjoinElem = angular.element('#'+option.conjoin);
                                     svgConjoinElem.addClass('over_unit');
                                 }
                             } catch(e) {
@@ -141,18 +137,12 @@ angular.module('evtviewer.visColl')
                     }
                 });
             };
-            
-            var totSvg = [];
 
-            var getTotSvgOuterHTML = function(index) {
+            var getSvgByQuire = function(quireId) {
                 var vm = this;
-                if (index !== undefined && vm.totSvg[index] !== undefined) {
-                    return vm.totSvg[index].outerHTML;
-                } else {
-                    return '<span>No data</span>';
-                }
+                return vm.svgCollection.svgs[quireId] && vm.svgCollection.svgs[quireId].textSvg ? vm.svgCollection.svgs[quireId].textSvg.outerHTML : '<span>No data</span>';
             };
-
+            
             var getSvgQuireN = function(svgId) {
                 var vm = this;
                 return vm.svgCollection.svgs[svgId].quireN;
@@ -189,12 +179,12 @@ angular.module('evtviewer.visColl')
                 return vm.svgCollection.quires[quireId] || {};
             };
 
-            var isSelectedQuire = function(quireN) {
+            var isSelectedQuire = function(quireId) {
                 var vm = this;
                 if (!vm.selectedQuire) {
                     return true;
                 } else {
-                    return quireN === vm.selectedQuire.n;
+                    return quireId === vm.selectedQuire.value;
                 }
             };
             var quireOptions = [];
@@ -209,12 +199,11 @@ angular.module('evtviewer.visColl')
                     vm.selectedQuire = undefined;
                 }
             };
-            var getFilteredQuireLeavesBySvgId = function(svgId) {
+            var getFilteredQuireLeaves = function(quireId) {
                 var vm = this;
-                var quireId = vm.getQuireIdBySvgId(svgId);
                 var leavesCollection = vm.svgCollection.quires[quireId].leaves;
                 var leaves = [];
-                var leavesInserted = [];
+                var leavesInsertedInSelector = [];
                 for (var i = 0; i < leavesCollection._indexes.length; i++) {
                     var leafId = leavesCollection._indexes[i];
                     var leaf = leavesCollection[leafId];
@@ -223,20 +212,19 @@ angular.module('evtviewer.visColl')
                         var conjoinInserted = false;
                         if (conjoinLeaf) {
                             leaf.label = leaf.leafno + ' - ' + conjoinLeaf.leafno;
-                            conjoinInserted = leavesInserted.indexOf(conjoinLeaf.value) > -1;
+                            conjoinInserted = leavesInsertedInSelector.indexOf(conjoinLeaf.value) > -1;
                         }
                         if (!conjoinInserted) {
                             leaves.push(leaf);
-                            leavesInserted.push(leafId);
+                            leavesInsertedInSelector.push(leafId);
                         }
                     }
                 }
-                return { leaves: leaves, leavesInserted: leavesInserted };
+                return { leaves: leaves, leavesInsertedInSelector: leavesInsertedInSelector };
             };
 
-            var getAllQuireLeavesBySvgId = function(svgId) {
+            var getAllQuireLeaves = function(quireId) {
                 var vm = this;
-                var quireId = vm.getQuireIdBySvgId(svgId);
                 var leavesCollection = vm.svgCollection.quires[quireId].leaves;
                 var leaves = [];
                 for (var i = 0; i < leavesCollection._indexes.length; i++) {
@@ -245,25 +233,13 @@ angular.module('evtviewer.visColl')
                 return leaves;
             };
 
-            var setSelectedFolioForQuire = function(svgId, option, conjoinOption) {
+            var setSelectedFolioForQuire = function(quireId, option) {
                 var vm = this;
                 vm.selectedFolios = vm.selectedFolios ? vm.selectedFolios : {};
-                var svgLeaf = vm.svgCollection.svgs[svgId].svgLeaves.filter(function(leaf) {
-                    return leaf.value === option.value
-                });
-                svgLeaf = svgLeaf ? svgLeaf[0]: undefined;
+                var svgLeaf = vm.svgCollection.quires[quireId].leaves[option.value];
                 if (svgLeaf) {
                     if (!svgLeaf.imageId || !svgLeaf.imageId2 || !svgLeaf.conjoinId || !svgLeaf.conjoinId2) {
-                        var conjoinLeaf;
-                        try {
-                            conjoinLeaf = vm.svgCollection.svgs[svgId].svgLeaves.filter(function(leaf) {
-                                if (conjoinOption) {
-                                    return leaf.value === conjoinOption.id;
-                                } else {
-                                    return leaf.value === option.conjoin;
-                                }
-                            })[0];
-                        } catch(e) {}
+                        var conjoinLeaf = vm.svgCollection.quires[quireId].leaves[option.conjoin];
                         if (conjoinLeaf) {
                             if (!svgLeaf.imageId) {
                                 svgLeaf.img = conjoinLeaf.imgConjoin;
@@ -285,8 +261,8 @@ angular.module('evtviewer.visColl')
                     }
                     svgLeaf.unitN = option.label;
                 }
-                vm.selectedFolios[vm.getSvgQuireN(svgId)] = svgLeaf;
-                var activeUnit = angular.element('#' + svgId + ' .active_unit');
+                vm.selectedFolios[quireId] = svgLeaf;
+                var activeUnit = angular.element('#' + quireId + ' .active_unit');
                 if (activeUnit) {
                     activeUnit.removeClass('active_unit');
                     activeUnit.removeClass('first_unit');
@@ -298,7 +274,7 @@ angular.module('evtviewer.visColl')
                     svgElem.addClass('first_unit');
                 }
                 try {
-                    var quire = vm.getQuireBySvgId(svgId);
+                    var quire =vm.svgCollection.quires[quireId];
                     var quireLeaf;
                     var i = 0;
                     while (!quireLeaf && i < quire.leaves._indexes.length) {
@@ -321,21 +297,20 @@ angular.module('evtviewer.visColl')
                 // Scope expansion
                 uid: currentId,
                 svgCollection: svgCollection,
-                totSvg: totSvg,
                 selectedQuire: undefined,
                 quireOptions: quireOptions,
                 selectedFolios: undefined,
                 // Functions
+                getSvgByQuire: getSvgByQuire,
                 getSvgQuireN: getSvgQuireN,
                 getQuire: getQuire,
                 getQuireBySvgId: getQuireBySvgId,
                 getQuireByNumber: getQuireByNumber,
                 getQuireIdBySvgId: getQuireIdBySvgId,
-                getFilteredQuireLeavesBySvgId: getFilteredQuireLeavesBySvgId,
-                getAllQuireLeavesBySvgId: getAllQuireLeavesBySvgId,
+                getFilteredQuireLeaves: getFilteredQuireLeaves,
+                getAllQuireLeaves: getAllQuireLeaves,
                 isSelectedQuire: isSelectedQuire,
                 displayResult: displayResult,
-                getTotSvgOuterHTML: getTotSvgOuterHTML,
                 setSelectedQuire: setSelectedQuire,
                 setSelectedFolioForQuire: setSelectedFolioForQuire,
                 destroy: destroy

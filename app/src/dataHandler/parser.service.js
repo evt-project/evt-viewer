@@ -24,12 +24,16 @@ angular.module('evtviewer.dataHandler')
         defLine = '<l>',
         possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
         possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
-        defImage = 'svg',
-        defG = 'g',
-        defLeaf = 'leaf',
-        defQuire = 'quire',
         defImageList = 'image';
-
+    var viscollDefs = {
+        leaf: 'leaf',
+        leafMode: 'mode',
+        folioNumber: 'folioNumber',
+        quire: 'quire',
+        quireInfo: 'q',
+        imageList: 'image',
+        svgElements: 'g'
+    }
     var projectInfoDefs = {
         sectionHeaders: '<sourceDesc>, ',
         sectionSubHeaders: '',
@@ -827,19 +831,25 @@ angular.module('evtviewer.dataHandler')
      *
      * @author FD
      */
-    parser.parseSvgsForViscoll = function(svgDoc) {
+    parser.parseSvgsForViscoll = function(svgDoc, svgId) {
         var currentDocument = angular.element(svgDoc);
         var xmlSvg = svgDoc.lastChild;
-        var xmlTitle = xmlSvg.firstElementChild;
+        var xmlTitle = '';
+        try {
+            // soluzione non bellissima, ma finché non abbiamo altri attributi 
+            // nell'svg di Viscoll non possiamo fare altrimenti
+            xmlTitle = xmlSvg.firstElementChild.innerHTML.match(/quire\s\d*\sfor/)[0].match(/\d+/)[0];
+        } catch(e){}
         var newSvg = {
-                quireN: xmlTitle.innerHTML.charAt(27), // soluzione non bellissima, ma finché non abbiamo altri attributi nell'svg di Viscoll non possiamo fare altrimenti
-                //id di g recuperare la prima cifra con getAttribute sull'ID
-                svgLeaves: [], //array con tutti i G
-                textSvg: xmlSvg
-            };
-            // ciclo sui g --> aggiungere a svg leaves gli id hasAttribute
+            id: svgId,
+            quireN: xmlTitle, 
+            // id di g recuperare la prima cifra con getAttribute sull'ID
+            svgLeaves: [], //array con tutti i G
+            textSvg: xmlSvg
+        };
+        // ciclo sui g --> aggiungere a svg leaves gli id hasAttribute
         var svgCollection = parsedData.getViscollSvgs();
-        angular.forEach(currentDocument.find(defG),
+        angular.forEach(currentDocument.find(viscollDefs.svgElements),
             function(element) {
                 if (element.hasAttribute('id')) {
                     var svgLeaf = {
@@ -875,7 +885,8 @@ angular.module('evtviewer.dataHandler')
 		                    }  
 		                }
 		            });
-		            newSvg.svgLeaves.push(svgLeaf);
+                    newSvg.svgLeaves.push(svgLeaf);
+                    parsedData.updateLeafDataInQuire(svgId, svgLeaf);
                 }
             });
         
@@ -884,8 +895,10 @@ angular.module('evtviewer.dataHandler')
 
     parser.parseViscollDatamodel = function(doc) {
         var currentDocument = angular.element(doc);
+        var shelfmark = angular.element(currentDocument.find('shelfmark'));
+        var svgToLoad = [];
         // Handle quires
-        angular.forEach(currentDocument.find(defQuire),
+        angular.forEach(currentDocument.find(viscollDefs.quire),
             function(element) {
                 var newQuire = {
                 	value: element.getAttribute('xml:id') || '',
@@ -896,21 +909,33 @@ angular.module('evtviewer.dataHandler')
 	                }
                 };
                 parsedData.addViscollQuire(newQuire);
+                if (shelfmark) {
+                    svgToLoad.push({
+                        fileName: 'id-' + shelfmark.text() + '-' + newQuire.n + '.svg',
+                        id: newQuire.value
+                    });
+                }
             });
         // Handle leafs
-        angular.forEach(currentDocument.find(defLeaf),
+        angular.forEach(currentDocument.find(viscollDefs.leaf),
             function(element) {
-                var qElem = element.lastElementChild,
-                    conjoinElems = qElem.childNodes;
-                var conjoinElem = conjoinElems[1] == undefined ? conjoinElems[0] : conjoinElems[1];
-                var newLeaf = {
-                    value: element.getAttribute('xml:id') || '',
-                    leafno: qElem.getAttribute('leafno') || '',
-                	quire: qElem.getAttribute('target').replace('#', '') || 'target',
-                	conjoin: conjoinElem.getAttribute('target').replace('#', '') || 'target'
-                };
-                parsedData.addViscollLeaf(newLeaf);
+                var quireElem = angular.element(element).find(viscollDefs.quireInfo);
+                quireElem = quireElem ? quireElem[0] : undefined;
+                if (quireElem) {
+                    var leafMode = angular.element(element).find(viscollDefs.leafMode);
+                    var conjoinElems = quireElem.childNodes;
+                    var conjoinElem = conjoinElems[1] == undefined ? conjoinElems[0] : conjoinElems[1];
+                    var newLeaf = {
+                        value: element.getAttribute('xml:id') || '',
+                        leafno: quireElem.getAttribute('leafno') || '',
+                        quire: quireElem.getAttribute('target').replace('#', '') || 'target',
+                        conjoin: conjoinElem.getAttribute('target').replace('#', '') || 'target',
+                        mode: leafMode && leafMode[0] ? leafMode[0].getAttribute('val') : ''
+                    };
+                    parsedData.addViscollLeaf(newLeaf);
+                }
             });
+        parsedData.setViscollSVGToLoad(svgToLoad);
         console.log('## parseViscollDatamodel ##', parsedData.getViscollSvgs());
     };
 

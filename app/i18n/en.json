@@ -283,5 +283,9 @@
 	"AND": "and",
 	"BETWEEN": "between",
 	"ERROR" : "Error",
-	"PUBLISHED_BY": "Published by"
+	"PUBLISHED_BY": "Published by",
+
+	"NO_INFO": "No data",
+	"missing": "Missing",
+	"notLeaf": "---"
 }

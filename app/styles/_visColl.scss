@@ -116,8 +116,25 @@ $viscoll_second_unit_color: #ff5722;
         figcaption {
             width: 120px;
         }
-        &.missing-page {
+        &.missing {
             cursor: not-allowed;
+            &:hover figcaption {
+                background: rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+        &.notLeaf {
+            // visibility: hidden;
+            cursor: default;
+            opacity: .3;
+            border: 2px solid;
+            background: lightgray;
+            img {
+                visibility: hidden;
+            }
+            i {
+                top: 3px;
+                position: relative;
+            }
             &:hover figcaption {
                 background: rgba(0, 0, 0, 0.2) !important;
             }

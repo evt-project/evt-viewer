@@ -184,10 +184,10 @@ angular.module('evtviewer.dataHandler')
      * @param {string} srcDoc String representing the Source Document to be parsed
      * @author FD
      */
-	baseData.handleViscollSvg = function(sourceSvg) {
+	baseData.handleViscollSvg = function(sourceSvg, svgId) {
         var svgElement = xmlParser.parse(sourceSvg);
         //Parse svgs
-        evtParser.parseSvgsForViscoll(svgElement);
+        evtParser.parseSvgsForViscoll(svgElement, svgId);
 	};
 	
 	/**
