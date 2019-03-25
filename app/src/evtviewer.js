@@ -3,10 +3,10 @@
 /**
  * @ngdoc overview
  * @name evtviewer
- * 
+ *
  * @description
  * # evtviewer
- * Main module of the application. 
+ * Main module of the application.
  *
  * @requires {@link https://docs.angularjs.org/api/ngAnimate ngAnimate}
  * @requires {@link https://docs.angularjs.org/api/ngCookies ngCookies}
@@ -44,6 +44,8 @@
  * @requires evtviewer.versionReading
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
+ * @requires evtviewer.search
+ * @requires evtviewer.imageViewer
  */
  //* @requires evtviewer.mobile
 angular
@@ -54,7 +56,7 @@ angular
 		'ngResource',
 		'ngSanitize',
 		'ngTouch',
-		'templates-main', 
+		'templates-main',
 		'ngRoute',
 		'xml',
 		'prettyXml',
@@ -85,5 +87,7 @@ angular
         'evtviewer.apparatuses',
         'evtviewer.versionReading',
         'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools'
+        'evtviewer.UItools',
+    	'evtviewer.search',
+        'evtviewer.imageViewer'
     ]);

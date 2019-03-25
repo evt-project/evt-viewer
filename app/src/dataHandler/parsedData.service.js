@@ -46,7 +46,8 @@ angular.module('evtviewer.dataHandler')
 		encodingDescription: '',
 		textProfile: '',
 		outsideMetadata: '',
-		revisionHistory: ''
+		revisionHistory: '',
+		msDesc: ''
 	};
 
 	/**
@@ -430,10 +431,19 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      */
-	var zonesCollection = {
-		_indexes: []
-	};
-	/**
+      var zonesCollection = {
+         _indexes: []
+      };
+
+
+      /**
+       * TODO: add the documentation info
+       */
+
+      var hotspotCollection = {
+         _indexes: []
+      };
+      /**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#namedEntities
      * @propertyOf evtviewer.dataHandler.parsedData
@@ -1967,7 +1977,11 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getReadingAttributes = function(readingId, appId) {
 		var attributes = [];
 		if (criticalAppCollection[appId].content[readingId] !== undefined) {
-			attributes = criticalAppCollection[appId].content[readingId].attributes;
+			attributes = criticalAppCollection[appId].attributes;
+			var readingAttributes = criticalAppCollection[appId].content[readingId].attributes;
+			for (var key in readingAttributes) {
+				attributes[key] = readingAttributes[key];
+			}
 		}
 		return attributes;
 	};
@@ -2499,7 +2513,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
-
+ 
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -2522,7 +2536,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getProjectInfo = function() {
 		return projectInfo;
 	};
-
 
 	// ////// //
 	// GLYPHS //
@@ -2645,7 +2658,7 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      */
 	parsedData.getGlyphMappingForEdition = function(glyphId, editionLevel) {
-		return glyphsCollection[glyphId].mapping[editionLevel] || undefined;
+		return glyphsCollection[glyphId] ? glyphsCollection[glyphId].mapping[editionLevel] : undefined;
 	};
 
 	// ///////////////// //
@@ -2718,18 +2731,55 @@ angular.module('evtviewer.dataHandler')
 		return zonesCollection[zoneId];
 	};
 
-	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#isITLAvailable
-     * @methodOf evtviewer.dataHandler.parsedData
-     *
-     * @description
-     * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
-     * @returns {boolean} Whether the Image-Text Linking tool is available or not
-     */
-	parsedData.isITLAvailable = function() {
-		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
-	};
+
+      /**
+       * TODO:add documentation
+       */
+
+      parsedData.addHotSpot = function (hotspot) {
+		  console.log('addHotSpot', hotspot);
+         var hotSpotId,
+            hotSpotIndexes = hotspotCollection._indexes;
+
+         if (hotspot && hotspot.id !== '') {
+            hotSpotId = hotspot.id;
+         } else {
+            hotSpotId = hotspot.id = 'hotspot_' + (hotSpotIndexes + 1);
+         }
+         if (hotspotCollection[hotSpotId] === undefined) {
+            hotSpotIndexes[hotSpotIndexes.length] = hotSpotId;
+            hotspotCollection[hotSpotId] = hotspot;
+            hotSpotIndexes.length++;
+            _console.log('parsedData - addHotSpot ', hotspot);
+         }
+      };
+
+      parsedData.getHotSpots = function () {
+
+         return hotspotCollection;
+
+      };
+
+      parsedData.getHotSpot = function (hotspotId) {
+		  console.log('getHotSpot', hotspotId);
+
+         return hotspotCollection[hotspotId];
+
+      };
+
+
+      /**
+       * @ngdoc method
+       * @name evtviewer.dataHandler.parsedData#isITLAvailable
+       * @methodOf evtviewer.dataHandler.parsedData
+       *
+       * @description
+       * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
+       * @returns {boolean} Whether the Image-Text Linking tool is available or not
+       */
+      parsedData.isITLAvailable = function () {
+         return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
+      };
 
 	// ///////////////// //
 	// SOURCES APPARATUS //

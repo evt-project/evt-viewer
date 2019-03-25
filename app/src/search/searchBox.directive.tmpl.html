@@ -1,0 +1,35 @@
+<div class="search-box internal"
+     ng-class="{'open' : $parent.vm.getState('searchBox'), 'results-open' : vm.getState('searchResultBox')} ">
+
+   <!-- search form -->
+   <form ng-submit="vm.doSearchCallback()">
+      <div class="searchBtnGroup">
+         <div class="btn-left">
+
+            <button-switch
+               ng-repeat="button in vm.searchBoxBtn|limitTo: vm.getBtnLimit()"
+               class="no-background"
+               title="{{::button.title}}"
+               data-label="{{::button.label}}"
+               data-icon="{{::button.icon}}"
+               data-type="{{::button.type}}"
+               ng-hide="button.hide">
+            </button-switch>
+         </div>
+         <div class="btn-right">
+            <button-switch
+               ng-repeat="button in vm.searchBoxBtn|limitTo: -4"
+               class="no-background"
+               title="{{::button.title}}"
+               data-label="{{::button.label}}"
+               data-icon="{{::button.icon}}"
+               data-type="{{::button.type}}">
+            </button-switch>
+         </div>
+      </div>
+
+      <input type="text" id="{{::vm.keyboardId}}" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.parentBoxId, vm.searchInput)" autocomplete="off" autofocus>
+   </form>
+   <evt-virtual-keyboard></evt-virtual-keyboard>
+   <evt-search-results ng-controller="SearchResultsCtrl as searchResults"></evt-search-results>
+</div>

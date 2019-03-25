@@ -67,7 +67,7 @@
 **/
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData) {
+.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox, evtVirtualKeyboard, evtButtonSwitch) {
 
     return {
         restrict: 'E',
@@ -100,10 +100,19 @@ angular.module('evtviewer.box')
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
                 boxBody = angular.element(element).find('.box-body')[0];
-
+            
+            //$timeout(function(){console.log("timeout 2000", scope, scope.vm)},2000);
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
                 currentBox.updateContent();
+               
+                // tentativo di mettere OSD - FIXME - non va bene qui!!
+                if (currentBox.type === 'image') {
+                        console.log("box di tipo immagine");
+                                                           
+                       
+
+                }
 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
                     // Scrol box to update page numbers
@@ -291,6 +300,12 @@ angular.module('evtviewer.box')
                               var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                               scope.vm.updateTopBoxContent(content);
                       }
+                      /* aggiunta per msDesc*/
+                      else if (scope.vm.currentType === 'image'){
+                          var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                          scope.vm.updateTopBoxContent(msDescObj); 
+                      }
+                      /* fine aggiunta*/
                   }
               }, true);
 
@@ -401,20 +416,60 @@ angular.module('evtviewer.box')
             //TODO: aggiungere scroll per sources view
 
             if (currentBox.type === 'text') {
-                scope.$watch(function() {
-                    return evtInterface.getState('currentEdition');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                        scope.vm.edition = newItem;
-                        currentBox.updateContent();
-
-                    }
-                }, true);
+                if (currentBox.subtype === 'comparing') {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentComparingEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                         scope.vm.edition = newItem;
+                         currentBox.updateContent();
+   
+                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
+                         $timeout(function() {
+                            var currentBoxId = scope.id,
+                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+      
+                            if(searchInput !== '') {
+                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                            }
+                         });
+                      }
+                  }, true);
+                } else {
+                  scope.$watch(function() {
+                      return evtInterface.getState('currentEdition');
+                  }, function(newItem, oldItem) {
+                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                          scope.vm.edition = newItem;
+                          currentBox.updateContent();
+                          
+                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
+                         $timeout(function() {
+                            var currentBoxId = scope.id,
+                               searchInput = evtSearchBox.getInputValue(currentBoxId);
+      
+                            if(searchInput !== '') {
+                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                            }
+                         });
+                      }
+                  }, true);
+                }
 
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
+                    console.log("aggiorno contenuto pagina testo");
                     currentBox.updateContent();
+   
+                   $timeout(function() {
+                      var currentBoxId = scope.id,
+                         searchInput = evtSearchBox.getInputValue(currentBoxId);
+   
+                      if(searchInput !== '') {
+                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                      }
+                   });
                 }, true);
             }
 

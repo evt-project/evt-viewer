@@ -91,6 +91,7 @@ section > div {
 
 #main-container {
     @include main-frame;
+    line-height: 22px;
 
     //@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
     // @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
@@ -124,6 +125,7 @@ section > div {
 @import "sourceSeg.scss";
 @import "versionReading.scss";
 @import "versionApparatusEntry";
+@import "searchBox.scss";
 
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
@@ -239,6 +241,7 @@ section > div {
 
         .buttonSwitch {
             height: auto;
+            display: inline-block;
             padding: 0 3px;
             background: none;
             box-shadow: none;
@@ -281,9 +284,8 @@ section > div {
                 }
 
                 &-icon {
-                    font-size: 1.3em;
+                    font-size: 1.2em;
                     margin-right: 3px;
-                    top: 0.4rem;
                 }
 
                 .iconbis-evt_versions, .iconbis-evt_srctxt {
@@ -502,7 +504,7 @@ pre {
         border-bottom: 1px dotted #666;
         margin-bottom: 5px;
         font-variant: small-caps;
-        color: #666;
+        color: #000000;
         font-size: 90%;
         display:block;
         margin-top: 14px;

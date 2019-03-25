@@ -28,6 +28,7 @@ angular.module('evtviewer.buttonSwitch')
 	this.setDefaults = function(_defaults) {
 		defaults = _defaults;
 	};
+
 	/**
 	 * @ngdoc object
 	 * @module evtviewer.buttonSwitch
@@ -40,13 +41,13 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-    this.$get = function($timeout, $log, config, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus) {
-        var button    = {},
-            collection = {},
-            list       = [],
-            idx        = 0;
-
-        var _console = $log.getInstance('buttonSwitch');
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
+		var button    = {},
+			collection = {},
+			list       = [],
+			idx        = 0;
+		
+		var _console = $log.getInstance('buttonSwitch');
 
         /**
 	     * @ngdoc method
@@ -151,15 +152,24 @@ angular.module('evtviewer.buttonSwitch')
 				case 'bookmark':
 					evtIcon = 'icon-evt_bookmark';
 					break;
+            case 'case-sensitive' :
+               evtIcon = 'icon-evt_case-sensitive';
+               break;
 				case 'color-legend':
 					evtIcon = 'icon-evt_color-legend';
 					break;
+            case 'close':
+               evtIcon = 'icon-evt_close';
+               break;
 				case 'download':
 					evtIcon = 'fa fa-download'; //TODO: add icon in EVT font
 					break;
 				case 'download-xml':
 					evtIcon = 'fa fa-file-code-o'; //TODO: add icon in EVT font
 					break;
+            case 'exact-word':
+               evtIcon = 'icon-evt_exact-match';
+               break;
 				case 'filter':
 				case 'filters':
 					evtIcon = 'icon-evt_filter';
@@ -188,6 +198,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'itl':
 					evtIcon = 'icon-evt_link';
 					break;
+				case 'keyboard':
+					evtIcon = 'icon-evt_keyboard';
+					break;
 				case 'language':
 					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
 					break;
@@ -210,14 +223,17 @@ angular.module('evtviewer.buttonSwitch')
 				case 'mode-collation':
 					evtIcon = 'icon-evt_collation';
 					break;
-                case 'mode-srctxt':
-                    evtIcon = 'iconbis-evt_srctxt';
-                    break;
-                case 'mode-versions':
-                    evtIcon = 'iconbis-evt_versions';
-                    break;
+				case 'mode-srctxt':
+					evtIcon = 'iconbis-evt_srctxt';
+					break;
+				case 'mode-versions':
+					evtIcon = 'iconbis-evt_versions';
+					break;
 				case 'mode-bookreader':
 					evtIcon = 'icon-evt_bookreader';
+					break;
+				case 'next':
+					evtIcon = 'icon-evt_next';
 					break;
 				case 'pin':
 					evtIcon = 'icon-evt_pin-alt-on';
@@ -228,11 +244,23 @@ angular.module('evtviewer.buttonSwitch')
 				case 'pin-on':
 					evtIcon = 'icon-evt_pin-on';
 					break;
+				case 'previous':
+					evtIcon = 'icon-evt_previous';
+					break;
 				case 'remove':
 					evtIcon = 'icon-evt_close';
 					break;
 				case 'search':
 					evtIcon = 'icon-evt_search';
+					break;
+				case 'search-advanced':
+					evtIcon = 'icon-evt_advanced-search';
+					break;
+				case 'search-results-hide':
+					evtIcon = 'icon-evt_search-results-close';
+					break;
+				case 'search-results-show':
+					evtIcon = 'icon-evt_search-results-open';
 					break;
 				case 'thumb':
 				case 'thumbs':
@@ -524,6 +552,35 @@ angular.module('evtviewer.buttonSwitch')
 						parentBox.updateState('topBoxOpened', false);
 					};
 					break;
+				case 'msDesc':
+				    btnType = 'standAlone';
+				    callback = function() {
+				        var parentBox = scope.$parent.vm;
+				        var topBox=document.getElementsByClassName("box-top-box");
+				        topBox[0].setAttribute("id","msDesc");
+						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'msDesc') {
+							parentBox.toggleTopBox();
+						} else {
+							var content;
+							var currentDocument = evtInterface.getState('currentDoc');
+							if (currentDocument) {
+								content = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+								scope.$parent.vm.updateTopBoxContent(content);
+								scope.$parent.vm.toggleTopBox();
+							}
+							var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+							parentBox.updateTopBoxContent(newTopBoxContent);
+							parentBox.updateState('topBoxContent', 'msDesc');
+							if (!parentBox.getState('topBoxOpened')) {
+								parentBox.toggleTopBox();
+							}
+						}
+				    };
+				    fakeCallback = function() {
+						var parentBox = scope.$parent.vm;
+						parentBox.updateState('topBoxOpened', false);
+					};
+				    break;
 				case 'heatmap':
 					btnType = 'standAlone';
 					callback = function() {
@@ -533,11 +590,14 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'itl':
 					active = evtInterface.getToolState('ITL') === 'active';
+					btnType = 'standAlone';
 					callback = function() {
 						var vm = this;
 						if (vm.active) { // Activate ITL
+							console.log("itl turnon");
 							evtImageTextLinking.turnOnITL();
 						} else { // Deactivate ITL
+							console.log("itl turnoff");
 							evtImageTextLinking.turnOffITL();
 						}
 					};
@@ -573,6 +633,16 @@ angular.module('evtviewer.buttonSwitch')
 						vm.active = !vm.active;
 					};
 					break;
+				/*case 'msDesc':
+				    callback= function() {
+				        var doc=evtInterface.getState('currentDoc');
+				         var docElements = xmlParser.parse(doc);
+                         if (docElements.documentElement.nodeName === 'TEI'){
+                             console.log("dE "+docElements);
+				             //evtProjectInfoParser.msDescription(docElements);
+                         }
+				    };
+				    break;*/
 				case 'pin':
 				case 'pin-on':
 				case 'pin-off':
@@ -585,18 +655,219 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateUrl();
 					};
 					break;
-				case 'searchInEdition':
-					callback = function() {
-						var edition = scope.$parent.vm.edition;
-						alert('Search in edition level ' + edition + '. Coming Soon...');
-					};
-					break;
-				case 'searchInWit':
-					callback = function() {
-						var wit = scope.$parent.vm.witness;
-						alert('Search in witness ' + wit + '. Coming Soon...');
-					};
-					break;
+            case 'search':
+               callback = function() {
+                  var parentBoxId = scope.$parent.id,
+                     inputValue = evtSearchBox.getInputValue(parentBoxId),
+                     input,
+                     placeholder = '';
+                  
+                  evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+                  evtSearchBox.setSearchedTerm(parentBoxId, inputValue);
+                  
+                  input = {
+                     '': function() {
+                        placeholder = 'Enter your query in the search box above';
+                        evtSearchResult.setVisibleRes(parentBoxId, []);
+                        evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+                     },
+                     'default': function() {
+                        var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
+                           isExactMatch = evtSearchBox.getStatus(parentBoxId, 'searchExactWord'),
+                           results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive, isExactMatch),
+                           currentEdition = evtBox.getEditionById(parentBoxId),
+                           currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
+                           visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
+                        
+                        evtSearchResult.setCurrentEditionResults(parentBoxId, currentEditionResults);
+                        evtSearchResult.setVisibleRes(parentBoxId, visibleResults);
+                     }
+                  };
+                  
+                  (input[inputValue] || input['default'])();
+                  
+                  evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);
+               };
+               break;
+            case 'searchIndex':
+               btnType = 'standAlone';
+               disabled = (
+                  function() {
+                     if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                        return true;
+                     }
+                  })();
+               active = (
+                  function() {
+                     if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                        return false;
+                     }
+                  }
+               )();
+               function indexingInProgress() {
+                  var deferred = $q.defer();
+                  evtInterface.updateState('indexingInProgress', true);
+                  setTimeout(function() {
+                     deferred.resolve();
+                  }, 100);
+                  return deferred.promise;
+               }
+               function indexingCallback() {
+                  var promise = indexingInProgress();
+                  promise.then(
+                     function() {
+                        var xmlDocDom = baseData.getXML(),
+                           searchToolsBtn,
+                           searchIndexBtn;
+         
+                        searchIndexBtn = button.getByType('searchIndex')[0];
+                        searchIndexBtn.active = false;
+                        searchIndexBtn.disable();
+                        evtSearch.initSearch(xmlDocDom);
+                        evtInterface.setToolStatus('isDocumentIndexed', 'true');
+         
+                        searchToolsBtn = button.getByType('searchToolsInternal');
+                        for(var z in searchToolsBtn) {
+                           searchToolsBtn[z].disabled = false;
+                        }
+   
+                        evtInterface.updateState('indexingInProgress', false);
+                     }
+                  );
+               }
+               
+               callback = function () {
+                  if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                     scope.vm.active = false;
+                  }
+                  else {
+                     return indexingCallback();
+                  }
+               };
+               break;
+            case 'searchResultsShow':
+               callback = function() {
+                  var parentBoxId = scope.$parent.id,
+                     placeholder = 'Enter your query in the search box above';
+   
+                  evtSearchResult.setPlaceholder(parentBoxId, placeholder);
+                  evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);
+               };
+               break;
+            case 'searchResultsHide':
+               callback = function() {
+                  var parentBoxId = scope.$parent.id;
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
+                  evtVirtualKeyboard.unselectCurrentKeyboard(button, parentBoxId);
+               };
+               break;
+            case 'searchCaseSensitive':
+               btnType = 'standAlone';
+               callback = function() {
+                  var parentBoxId = scope.$parent.id,
+                     searchInput = evtSearchBox.getInputValue(parentBoxId);
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchCaseSensitive');
+                  evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
+               };
+               break;
+            case 'searchToolsInternal':
+               btnType = 'standAlone';
+               disabled = (
+                  function() {
+                     if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                        return false;
+                     }
+                     else {
+                        return true;
+                     }
+                  })();
+               var activeCallback = function () {
+                  var parentBoxId = scope.$parent.id,
+                     searchBoxStatus = evtBox.getState(parentBoxId, 'searchBox');
+   
+                  evtBox.updateState(parentBoxId, 'searchBox', !searchBoxStatus);
+                  evtSearchBox.closeBox(parentBoxId, 'searchResultBox');
+                  evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
+                  evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
+               };
+               callback = function () {
+                  if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
+                     return activeCallback();
+                  }
+                  else {
+                     scope.vm.active = false;
+                  }
+               };
+               break;
+            case 'searchAdvanced':
+               btnType = 'standAlone';
+               callback = function() {
+                  window.alert('Advanced search coming soon!');
+               };
+               break;
+            case 'searchVirtualKeyboard':
+               btnType='standAlone';
+               callback = function() {
+                  var vm = this,
+                     parentBoxId = scope.$parent.id,
+                     keyboardId = evtVirtualKeyboard.getKeyboardId(parentBoxId),
+                     keyboard =  $('#'+keyboardId).getkeyboard(),
+                     btnKeyboard = button.getByType('searchVirtualKeyboard');
+   
+                  if(keyboard.isOpen || vm.active === false) {
+                     keyboard.close();
+                  }
+                  else {
+                     keyboard.reveal();
+                     
+                     if(btnKeyboard.length > 1) {
+                        for(var i in btnKeyboard) {
+                           if(btnKeyboard[i].uid !== vm.currentId) {
+                              btnKeyboard[i].setActive(false);
+                           }
+                        }
+                     }
+                  }
+               };
+               break;
+            case 'searchExactWord':
+               btnType = 'standAlone';
+               callback = function () {
+                  var parentBoxId = scope.$parent.id,
+                     searchInput = evtSearchBox.getInputValue(parentBoxId);
+                  
+                  evtSearchBox.updateStatus(parentBoxId, 'searchExactWord');
+                  evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
+               };
+               break;
+            case 'searchPrevResult':
+               disabled = true;
+               callback = function() {}
+               break;
+            case 'searchNextResult':
+               disabled = true;
+               callback = function() {}
+               break;
+            case 'searchClear':
+               btnType = 'standAlone';
+               callback = function () {
+                  var parentBoxId = scope.$parent.id,
+                     inputValue;
+                  evtSearchBox.clearInputValue(parentBoxId);
+                  inputValue = evtSearchBox.getInputValue(parentBoxId);
+                  evtSearchResults.highlightSearchResults(parentBoxId, inputValue);
+               };
+               break;
 				case 'share':
 					callback = function() {
 						alert(window.location);
@@ -703,6 +974,7 @@ angular.module('evtviewer.buttonSwitch')
 			 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 		     */
 			var doCallback = function() {
+				console.log("nella doCallback di button");
 				var vm = this;
 				button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
 				evtSelect.closeAll();
@@ -783,6 +1055,16 @@ angular.module('evtviewer.buttonSwitch')
 		button.getList = function() {
 			return list;
 		};
+		
+		button.getByType = function(type) {
+		   var buttons = [];
+		   for(var i in collection) {
+		      if(collection[i].type === type) {
+		         buttons.push(collection[i]);
+            }
+         }
+         return buttons;
+      };
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.buttonSwitch.evtButtonSwitch#unselectAll

@@ -472,6 +472,7 @@ angular.module('evtviewer.box')
 		box.build = function(scope, vm) {
 			var currentId = vm.id || idx++,
 				currentType = vm.type || 'default',
+            currentEdition = vm.edition,
 				topMenuList = {
 					selectors: [],
 					buttons: [],
@@ -487,7 +488,8 @@ angular.module('evtviewer.box')
 					topBoxOpened: false,
 					fontSizeBtn: false,
 					fontSize: '100',
-					topBoxContent: ''
+					topBoxContent: '',
+               searchBox: false
 				},
 				appFilters = [],
 				updateContent,
@@ -575,43 +577,62 @@ angular.module('evtviewer.box')
 							type: 'itl'
 						});
 					}
-
+					topMenuList.buttons.push({
+						title: 'BUTTONS.MS',
+						label: 'BUTTONS.MSD',
+						type: 'msDesc'
+					});
+     
+     
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var currentPage = evtInterface.getState('currentPage'),
-							currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
-							pageSource = currentPageObj ? currentPageObj.source : '';
-						pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
-						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/empty-image.jpg\')"/>';
-						// TODO: Add translation for alt text
-						// TEMP... TODO: creare direttiva per gestire le zone sull'immagine
-						var zonesHTML = '',
-							zones = parsedData.getZones();
-						for (var zoneId in zones._indexes) {
-							var zone = zones[zones._indexes[zoneId]];
-							if (zone) {
-								if (zone.page === currentPage) {
-									zonesHTML += '<div class="zoneInImg" data-zone-id="' + zone.id + '" data-zone-name="' + zone.rendition + '"';
-									if (zone.corresp && zone.corresp !== '') {
-										var correspId = zone.corresp.replace('#', '');
-										zonesHTML += ' data-corresp-id="' + correspId + '"';
-										if (zone.rendition === 'Line') {
-											zonesHTML += ' data-line="' + correspId + '"';
-										} else if (zone.rendition === 'HotSpot') {
-											zonesHTML += ' data-hs="' + correspId + '"';
-										}
-									}
-									zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', ' + zone.lry + ') (' + zone.ulx + ', ' + zone.uly + ') </div>';
-								}
-							}
-						}
-						scope.vm.content += zonesHTML;
-						// =/ END TEMP
+						console.log("function update content Image");
+
+						console.log("func update image: current page:", evtInterface.getState('currentPage'));
+						evtInterface.updateState('currentPage',evtInterface.getState('currentPage'));
+
 						scope.vm.isLoading = false;
 					};
 					break;
-				case 'text':
-					//TODO: Differentiate main text from second one
+            case 'text':
+               if(currentId === 'mainText' || currentId === 'mainText1') {
+                  bottomMenuList.buttons.push({
+                     title: 'Search',
+                     label: 'Search',
+                     icon: 'search',
+                     type: 'searchToolsInternal',
+                     show: function() {
+                        return true;
+                     },
+                     disabled: function() {
+                        return true;
+                     }
+                  });
+                  bottomMenuList.buttons.push({
+                     title: 'Create index for enable search',
+                     label: 'Create index',
+                     icon: '',
+                     type: 'searchIndex',
+                     show: function() {
+                        return true;
+                     }
+                  });
+               }
+               else {
+                  bottomMenuList.buttons.push({
+                     title: 'Search',
+                     label: 'Search',
+                     icon: 'search',
+                     type: 'searchToolsInternal',
+                     show: function() {
+                        return true;
+                     },
+                     disabled: function() {
+                        return true;
+                     }
+                  });
+               }
+               
 					if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
 						topMenuList.selectors.push({
 							id: 'document_' + currentId,
@@ -647,11 +668,19 @@ angular.module('evtviewer.box')
 
 
 					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
-						topMenuList.selectors.push({
-							id: 'editionLevel_' + currentId,
-							type: 'edition',
-							initValue: evtInterface.getState('currentEdition')
-						});
+						if (scope.subtype === 'comparing') {
+							topMenuList.selectors.push({
+								id: 'comparingEditionLevel_' + currentId,
+								type: 'comparingEdition',
+								initValue: evtInterface.getState('currentComparingEdition')
+							});
+						} else {
+							topMenuList.selectors.push({
+								id: 'editionLevel_' + currentId,
+								type: 'edition',
+								initValue: evtInterface.getState('currentEdition')
+							});
+						}
 					}
 
 					topMenuList.buttons.push({
@@ -789,7 +818,7 @@ angular.module('evtviewer.box')
 							// parsedData.getDocument(scope.vm.state.docId).content
 							var currentPage = evtInterface.getState('currentPage'),
 								currentDoc = evtInterface.getState('currentDoc'),
-								currentEdition = evtInterface.getState('currentEdition');
+								currentEdition = scope.subtype === 'comparing' ? evtInterface.getState('currentComparingEdition') : evtInterface.getState('currentEdition');
 							newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
 							if (newDoc === undefined) {
 								newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
@@ -884,7 +913,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "'+vm.witness+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_WITNESS_NOT_AVAILABLE\' | translate:\'{ witness:  "' + vm.witness + '" }\' }}</span>';
 
 						if (vm.witness !== undefined) {
 							// Main content
@@ -920,13 +949,13 @@ angular.module('evtviewer.box')
 						}
 					};
 					break;
-				// /////////// //
-				// Case source //
-				// ////////////////////////////////////////////////////////////////////////////
-				// It loads the parsed text of the current source text. Available a selector //
-				// to choose the source to show, a button for bibliographic reference and a  //
-				// button to change font size. | author --> CM                               //
-				// ////////////////////////////////////////////////////////////////////////////
+					// /////////// //
+					// Case source //
+					// ////////////////////////////////////////////////////////////////////////////
+					// It loads the parsed text of the current source text. Available a selector //
+					// to choose the source to show, a button for bibliographic reference and a  //
+					// button to change font size. | author --> CM                               //
+					// ////////////////////////////////////////////////////////////////////////////
 				case 'source':
 					topMenuList.selectors.push({
 						id: 'sources_' + currentId,
@@ -953,7 +982,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "'+scope.vm.source+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
 
 						// Main content
 						var sourceObj = parsedData.getSource(scope.vm.source),
@@ -971,7 +1000,7 @@ angular.module('evtviewer.box')
 										scope.vm.content = parsedData.getSource(scope.vm.source).text || noTextAvailableMsg;
 										scope.vm.isLoading = false;
 									});
-									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText') ));
+									var sourceBibl = evtSourcesApparatus.getSource(parsedData.getSource(evtInterface.getState('currentSourceText')));
 									if (sourceBibl) { updateTopBoxContent(sourceBibl); }
 								} catch (err) {
 									_console.log(err);
@@ -1024,7 +1053,7 @@ angular.module('evtviewer.box')
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
-							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "'+vm.version+'" }\' }}</span>';
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "' + vm.version + '" }\' }}</span>';
 
 						if (vm.version !== undefined) {
 							var currentDocId = evtInterface.getState('currentDoc'),
@@ -1091,6 +1120,7 @@ angular.module('evtviewer.box')
 			}
 
 			scopeHelper = {
+            currentEdition: currentEdition,
 				// expansion
 				uid: currentId,
 				defaults: angular.copy(defaults),
@@ -1280,8 +1310,20 @@ angular.module('evtviewer.box')
 				}
 			}
 		};
-
+		
+		//TODO Add documentation
+		box.getEditionById = function (currentBoxId) {
+         return collection[currentBoxId].edition;
+      };
+		
+		box.getState = function (currentBoxId, key) {
+         return collection[currentBoxId].state[key];
+      };
+		
+		box.updateState = function (currentBoxId, key, value) {
+        collection[currentBoxId].state[key] = value;
+      };
+		
 		return box;
 	};
-
 });

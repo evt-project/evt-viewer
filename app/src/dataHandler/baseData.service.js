@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.baseData
- * @description 
+ * @description
  * # baseData
  * Service containing methods to handle the initial source of data.
  * It stores the XML documents loaded, allows to launch initial parsers
@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -34,7 +34,8 @@ angular.module('evtviewer.dataHandler')
             //Added by CM to save references to sources text documents
             XMLSrcDocuments: [],
             XMLStrings: []
-        };
+        },
+        docElements;
 
     var _console = $log.getInstance('baseData');
 
@@ -45,17 +46,21 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Add string representing an XML document to collection of stored XML sources.
-     * It uses the private method {@link evtviewer.dataHandler.baseData#addXMLDocument addXMLDocument} 
-     * that will check if the XML is encoded using the xi:include method. If so, it will load every 
+     * It uses the private method {@link evtviewer.dataHandler.baseData#addXMLDocument addXMLDocument}
+     * that will check if the XML is encoded using the xi:include method. If so, it will load every
      * XML included before adding it to collection.
-     * 
+     *
      * @param {string} xmlString String representing the XML source text to be parsed and stored
-     * @returns {promise} promise that the parser will end and complete XML string is stored in collection 
+     * @returns {promise} promise that the parser will end and complete XML string is stored in collection
      */
     baseData.addXMLString = function(xmlString) {
         var promises = [];
         promises.push(addXMLDocument(xmlString).promise);
         return $q.all(promises);
+    };
+
+    baseData.getXML = function() {
+      return docElements;
     };
 
     /**
@@ -92,14 +97,14 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] Add an XML Document to collection of stored ones (both in string and document format).
      * It also launches the initial parsers that allow to extract the basic information needed.
-     * It checks if the XML is encoded using the xi:include method. 
+     * It checks if the XML is encoded using the xi:include method.
      * If so, it will load every XML included before launching the parsers.
      * @param {string} doc String representing the XML Document to be stored and parsed
      * @returns {promise} promise that the parser will end and complete XML string is stored in collection
      */
     var addXMLDocument = function(doc) {
         var deferred = $q.defer();
-        var docElements = xmlParser.parse(doc);
+        docElements = xmlParser.parse(doc);
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
             loadXIinclude(docElements).promise.then(function(){
@@ -169,28 +174,32 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-    /**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.baseData#launchXMLParsers
-     * @methodOf evtviewer.dataHandler.baseData
-     *
-     * @description
-     * [PRIVATE] Launch XML basic parser, needed at the very first loading of the application.
-     * @param {element} docElements Element representing the tree of the XML document to be parsed.
-     */
-    var launchXMLParsers = function(docElements) {
-        evtParser.analyzeEncoding(docElements);
-        // Parse pages
-        // evtParser.parsePages(docElements);
-        
-        // Parse Glyphs
-        evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
-        
-        // Parse Zones
-        evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
-        
-        // Parse documents
-        evtParser.parseDocuments(docElements);
+      /**
+       * @ngdoc method
+       * @name evtviewer.dataHandler.baseData#launchXMLParsers
+       * @methodOf evtviewer.dataHandler.baseData
+       *
+       * @description
+       * [PRIVATE] Launch XML basic parser, needed at the very first loading of the application.
+       * @param {element} docElements Element representing the tree of the XML document to be parsed.
+       */
+      var launchXMLParsers = function (docElements) {
+         evtParser.analyzeEncoding(docElements);
+         // Parse pages
+         // evtParser.parsePages(docElements);
+
+         // Parse Glyphs
+         evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
+
+         // Parse Zones
+         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
+
+
+          // Parse HotSpots
+         evtHotSpotParser.parseHotSpots(docElements);
+
+         // Parse documents
+         evtParser.parseDocuments(docElements);
 
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);
@@ -219,12 +228,17 @@ angular.module('evtviewer.dataHandler')
         //Parse named entity
         evtNamedEntitiesParser.parseEntities(docElements);
 
-        // Parse projet info 
+        // Parse projet info
         evtProjectInfoParser.parseProjectInfo(docElements);
-
+      
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
-
+   
+         // Parse Glyphs
+         evtParser.parseGlyphs(docElements);
+   
+         // Init Search
+         //evtSearch.initSearch(docElements);
     };
 
     /**
@@ -244,7 +258,7 @@ angular.module('evtviewer.dataHandler')
         var deferred = $q.defer(),
             mainUrl = config.dataUrl,
             includedFilesLoaded = 0,
-            filesToInclude = doc.getElementsByTagName('include');
+            filesToInclude = doc.getElementsByTagName('xi:include');
         mainUrl = mainUrl.substring(0, mainUrl.lastIndexOf('/') + 1);
         if (filesToInclude && filesToInclude.length > 0) {
             var totFilesToInclude = filesToInclude.length;

@@ -67,5 +67,18 @@
     }
 }
 
+@mixin border($width, $direction, $color) {
+    @if($direction == 'all' or $direction == '') {
+        border: $width solid $color;
+    } @else {
+        border-#{$direction}: $width solid $color;
+    }
+}
+
+@mixin noBoxShadow() {
+   -webkit-box-shadow: none;
+   -moz-box-shadow: none;
+   box-shadow: none;
+}
 /* == END Mixins */
 /* =========================== */

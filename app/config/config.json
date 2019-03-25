@@ -1,19 +1,19 @@
 {
-    "indexTitle": "",
+    "indexTitle": "Edizione digitale del Rotulo di San Teobaldo",
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "data/PhiBor_Esempio_codifica.xml",
-    "sourcesUrl"       : "data/sources.xml",
-    "analoguesUrl"     : "data/analogues.xml",
-    "sourcesTextsUrl" : "data/sources/",
+    "dataUrl":"data/bellini/encodings/LL1_16.xml",
+    "sourcesUrl"       : "",
+    "analoguesUrl"     : "",
+    "sourcesTextsUrl" : "",
 
     "defaultViewMode": "readingTxt",
 	"availableViewModes": [{
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
                                 "viewMode" : "readingTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "MULTIPLE_RECENSIONS",
@@ -31,7 +31,7 @@
                                 "label"    : "TEXT_TEXT",
                                 "icon"     : "mode-txtTxt",
                                 "viewMode" : "txtTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "COLLATION",
@@ -45,24 +45,24 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "critical",
+    "defaultEdition": "diplomatic",
     "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": false
+        "visible": true
     }],
 
     "enableXMLdownload" : true,
@@ -70,7 +70,7 @@
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
 
-    "namedEntitiesSelector": false,
+    "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
         "tagName": "persName",
@@ -89,17 +89,17 @@
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
         "label": "Role Name",
-        "available": false,
+        "available": true,
         "color": "#cfc"
     }, {
         "tagName": "measure",
         "label": "Measure",
-        "available": false,
+        "available": true,
         "color": "#ffecb3"
     }],
 
 
-    "toolHeatMap": true,
+    "toolHeatMap": false,
     "preferredWitness": "",
     "skipWitnesses": "",
 
@@ -113,7 +113,7 @@
 
 	"maxWitsLoadTogether": 5,
 
-    "showDocumentSelector": false,
+    "showDocumentSelector": true,
 
 	"variantColors": {
 		"type": {
@@ -136,18 +136,8 @@
 	"variantColorDark": "",
 	"heatmapColor": "",
 
-
-    "versions" : ["rec2", "rec1", "rec3"],
-    "witnessesGroups": [
-        {
-            "groupName" : "Grp_1",
-            "witnesses" : ["V", "P", "N", "M", "G", "C", "R"]
-        },
-        {
-            "groupName" : "Grp_2",
-            "witnesses" : ["F", "D", "O", "W", "M5mg", "B", "U"]
-        }
-    ],
+    "versions" : [],
+    "witnessesGroups": [ ],
 
     "quoteDef"              : "<quote>",
     "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
@@ -157,9 +147,6 @@
     "showInlineCriticalApparatus": false,
     "showInlineSources": false,
     "showInlineAnalogues": false,
-
-
-
 
     "defaultBibliographicStyle": "Chicago",
 	"allowedBibliographicStyles": {
@@ -176,6 +163,23 @@
 			"enabled": true
 		}
 	},
+
+   "virtualKeyboardKeys": [],
+
+   "imageViewerOptions": {
+       "prefixUrl": "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
+       "showRotationControl": true,
+       "showNavigator": true,
+       "visibilityRatio": 1, 
+       "defaultZoomLevel": 0.8,
+       "panHorizontal": true,
+       "constrainDuringPan": true,
+       "minZoomLevel": 0.7,
+       "maxZoomLevel": 2.0,
+       "wrapVertical": false
+    },
+
+    "imageNormalizationCoefficient": 1265,
 
     "languages": ["en", "it"]
 }

@@ -3,247 +3,247 @@
 /* *************************** */
 
 .interpretativeEdition {
-    // Abbreviations and Their Expansions
-    .choice {
-        > .abbr {
-            display: none;
-        }
-        
-        .expan {}
-    }
+	// Abbreviations and Their Expansions
+	.choice {
+		> .abbr {
+			display: none;
+		}
 
-    // Additions, Deletions, and Omissions
-    .add {
-        &[data-place='above'] {}
-    }
+		.expan {}
+	}
 
-    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-    .glyph {
-        .glyphname, .mapping {
-            display: none;
-        }
+	// Additions, Deletions, and Omissions
+	.add {
+		&[data-place='above'] {}
+	}
 
-        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
-            display: inline;
-        }
-    }
+	//TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+	.glyph {
+		.glyphname, .mapping {
+			display: none;
+		}
 
-    .char {
-        .charname, .mapping {
-            display: none;
-        }
+		.mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+			display: inline;
+		}
+	}
 
-        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
-            display: inline;
-        }
-    }
+	.char {
+		.charname, .mapping {
+			display: none;
+		}
 
-    .choice {
-        display: inline;
+		.mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
+			display: inline;
+		}
+	}
 
-        &:before, &:after {
-            content: "";
-        }
+	.choice {
+		display: inline;
 
-        .corr, .orig {
-            font-size: 80%;
-            position: absolute;
-            line-height: 16px;
-            display: none;
-            border: 1.5px solid black;
-            border-radius: 3px;
+		&:before, &:after {
+			content: "";
+		}
 
-            @include set(box-shadow, 2px 2px 2px #7e7067);
+		.corr, .orig {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
 
-            padding: 0.4%;
-            margin-top: 30px;
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-            &:before {
-                left: 15%;
-                position: absolute;
-                top: -13px;
-            }
-        }
+			padding: 0.4%;
+			margin-top: 30px;
 
-        .corr {
-            &:before {
-                content: url("../images/popup_before_corr.png");
-            }
-        }
+			&:before {
+				left: 15%;
+				position: absolute;
+				top: -13px;
+			}
+		}
 
-        .corr, .corr * {
-            background: #f99069 !important;
-        }
+		.corr {
+			&:before {
+				content: url("../images/popup_before_corr.png");
+			}
+		}
 
-        .orig {
-            &:before {
-                content: url("../images/popup_before.png");
-            }
-        }
+		.corr, .corr * {
+			background: #f99069 !important;
+		}
 
-        .orig, .orig * {
-            background: #e5dac4 !important;
-        }
+		.orig {
+			&:before {
+				content: url("../images/popup_before.png");
+			}
+		}
 
-        .reg {
-            color: #69513a;
+		.orig, .orig * {
+			background: #e5dac4 !important;
+		}
 
-            &:hover, &.hover {
-                color: #561c0a;
-            }
-        }
+		.reg {
+			color: #69513a;
 
-        &:hover, &.hover {
-            .orig, .corr {
-                display: inline;
-                min-width: 30px;
-                text-align: center;
-                z-index: 9;
-            }
+			&:hover, &.hover {
+				color: #561c0a;
+			}
+		}
 
-            .corr {
-                @include set(transform, translate(-80%, 0));
-            }
+		&:hover, &.hover {
+			.orig, .corr {
+				display: inline;
+				min-width: 30px;
+				text-align: center;
+				z-index: 9;
+			}
 
-            .reg {
-                text-decoration: underline;
-            }
-        }
+			.corr {
+				@include set(transform, translate(-80%, 0));
+			}
 
-        .sic {
-            color: #934d4d;
-        }
+			.reg {
+				text-decoration: underline;
+			}
+		}
 
-        .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-        }
+		.sic {
+			color: #934d4d;
+		}
 
-        .under {
-            line-height: 20px;
-            vertical-align: -20%;
-        }
-    }
+		.sup {
+			line-height: 20px;
+			vertical-align: 20%;
+		}
 
-    .sic {
-        display: inline-table;
+		.under {
+			line-height: 20px;
+			vertical-align: -20%;
+		}
+	}
 
-        &:before, &:after {
-            content: " ";
-        }
+	.sic {
+		display: inline-table;
 
-        .corr {
-            font-size: 80%;
-            position: absolute;
-            line-height: 16px;
-            display: none;
-            background: #f99069;
-            border: 1.5px solid black;
-            border-radius: 3px;
+		&:before, &:after {
+			content: " ";
+		}
 
-            @include set(box-shadow, 2px 2px 2px #7e7067);
+		.corr {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			background: #f99069;
+			border: 1.5px solid black;
+			border-radius: 3px;
 
-            padding: 0.4%;
-            margin-top: 30px;
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-            &:before {
-                content: url("../images/popup_before_corr.png");
-                left: 15%;
-                position: absolute;
-                top: -13px;
-            }
-        }
+			padding: 0.4%;
+			margin-top: 30px;
 
-        .sic {
-            color: #934d4d;
+			&:before {
+				content: url("../images/popup_before_corr.png");
+				left: 15%;
+				position: absolute;
+				top: -13px;
+			}
+		}
 
-            &:hover, &.hover {
-                color: #561c0a;
-            }
-        }
+		.sic {
+			color: #934d4d;
 
-        &:hover, &.hover {
-            .corr {
-                display: inline;
-                min-width: 20px;
-                text-align: center;
-            }
+			&:hover, &.hover {
+				color: #561c0a;
+			}
+		}
 
-            .sic {
-                text-decoration: underline;
-            }
-        }
-    }
+		&:hover, &.hover {
+			.corr {
+				display: inline;
+				min-width: 20px;
+				text-align: center;
+			}
 
-    //TODO: reorder
-    .attachment {
-        border: 1px solid black;
-        padding: 5px 0px 0px 10px;
-    }
+			.sic {
+				text-decoration: underline;
+			}
+		}
+	}
 
-    .ex {
-        font-style: italic;
-    }
+	//TODO: reorder
+	.attachment {
+		border: 1px solid black;
+		padding: 5px 0px 0px 10px;
+	}
 
-    .lineN {
-        color: grey;
-        font-size: 0.8em;
-    }
+	.ex {
+		font-style: italic;
+	}
 
-    .resp {
-        font-weight: bold;
-    }
+	.lineN {
+		color: grey;
+		font-size: 0.8em;
+	}
 
-    .red {
-        color: red;
-    }
+	.resp {
+		font-weight: bold;
+	}
 
-    .hi {
-        &[data-rend="7init"] {
-            font-size: 140%;
-        }
+	.red {
+		color: red;
+	}
 
-        &[data-rend="init3.1"] {
-            font-size: 120%;
+	.hi {
+		&[data-rend="7init"] {
+			font-size: 140%;
+		}
 
-            /*font-weight: bold;*/
-        }
+		&[data-rend="init3.1"] {
+			font-size: 120%;
 
-        &[data-rend="cap"] {
-            text-transform: uppercase;
-        }
+			/*font-weight: bold;*/
+		}
 
-        &[data-rend="double"] {
-            font-size: 120%;
-        }
-    }
+		&[data-rend="cap"] {
+			text-transform: uppercase;
+		}
 
-    .ex {
-        font-style: italic;
-    }
+		&[data-rend="double"] {
+			font-size: 120%;
+		}
+	}
 
-    .zone {
-        margin-bottom: 5px;
-    }
+	.ex {
+		font-style: italic;
+	}
 
-    .p {
-        display: block;
-    }
+	.zone {
+		margin-bottom: 5px;
+	}
 
-    .center, [rend="center"] {
-        text-align: center;
-        width: 92%;
-        display: inline-table;
-        background: #FFF;
-    }
+	.p {
+		display: block;
+	}
 
-    .right, [rend="right"] {
-        text-align: right;
-        display: inline-table;
-        background: #FFF;
-    }
+	.center, [rend="center"] {
+		text-align: center;
+		width: 92%;
+		display: inline-table;
+		background: #FFF;
+	}
 
-    .left, [rend="left"] {
-        display: inline-table;
-    }
+	.right, [rend="right"] {
+		text-align: right;
+		display: inline-table;
+		background: #FFF;
+	}
+
+	.left, [rend="left"] {
+		display: inline-table;
+	}
 }

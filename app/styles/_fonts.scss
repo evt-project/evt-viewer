@@ -76,6 +76,9 @@
 .icon-evt_add:before {
     content: "\e900";
 }
+.icon-evt_advanced-search:before {
+    content: "\f013";
+}
 .icon-evt_book:before {
     content: "\e901";
 }
@@ -90,6 +93,9 @@
 }
 .icon-evt_books:before {
     content: "\e905";
+}
+.icon-evt_case-sensitive:before {
+   content: "\e93c";
 }
 .icon-evt_close:before {
     content: "\e906";
@@ -117,6 +123,9 @@
 }
 .icon-evt_drop-up:before {
     content: "\e90e";
+}
+.icon-evt_exact-match:before {
+   content: '\e93d';
 }
 .icon-evt_filter:before {
     content: "\e90f";
@@ -172,6 +181,9 @@
 .icon-evt_info:before {
     content: "\e920";
 }
+.icon-evt_keyboard:before {
+    content: "\f11c";
+}
 .icon-evt_link:before {
     content: "\e921";
 }
@@ -193,6 +205,9 @@
 .icon-evt_more-vert:before {
     content: "\e927";
 }
+.icon-evt_next:before {
+    content: "\f105";
+}
 .icon-evt_note:before {
     // content: "\e928";
     content: "\2022";
@@ -209,8 +224,17 @@
 .icon-evt_pin-on:before {
     content: "\e92c";
 }
+.icon-evt_previous:before {
+    content: "\f104";
+}
 .icon-evt_search:before {
     content: "\e92d";
+}
+.icon-evt_search-results-close:before {
+    content: "\f103";
+}
+.icon-evt_search-results-open:before {
+    content: "\f102";
 }
 .icon-evt_txt:before {
     content: "\e92e";
