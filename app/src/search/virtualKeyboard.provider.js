@@ -24,10 +24,8 @@ angular.module('evtviewer.search')
             if(configKeys.length !== 0){
                configKeyboardKeys = getConfigKeyboardKeys(configKeys);
                for (var k in configKeyboardKeys) {
-                  for (var g in glyphInXmlDoc) {
-                     if(g === k) {
-                        keyboardKeys += glyphInXmlDoc[g] + ':' + k + ' ';
-                     }
+                  if(glyphInXmlDoc.includes(k)) {
+                     keyboardKeys += configKeyboardKeys[k] + ':' + k + ' ';
                   }
                }
             }

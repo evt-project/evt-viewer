@@ -624,7 +624,7 @@ angular.module('evtviewer.box')
                      title: 'Search',
                      label: 'Search',
                      icon: 'search',
-                     type: 'searchToolsInternal',
+                     type: 'searchInternal',
                      show: function() {
                         return true;
                      },
@@ -647,7 +647,7 @@ angular.module('evtviewer.box')
                      title: 'Search',
                      label: 'Search',
                      icon: 'search',
-                     type: 'searchToolsInternal',
+                     type: 'searchInternal',
                      show: function() {
                         return true;
                      },
