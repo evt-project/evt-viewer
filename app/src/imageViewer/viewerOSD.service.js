@@ -2,7 +2,7 @@
    console.log('caricato modulo openseadragonService');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
-      .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler) {
+      .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler, parsedData) {
          var ImageNormalizationCoefficient = undefined; // per il rotulo 3500;
          //const ImageNormalizationCoefficient = 1265; // per il rotulo 3500;
          const YminPan = 0.5;
@@ -18,7 +18,7 @@
          viewerHandler.setImgCoeff = function (coeff) {
             //viewerHandler.ImageNormalizationCoefficient = coeff;
             ImageNormalizationCoefficient = coeff;
-            console.log('imageNormalizationCoefficient: ', viewerHandler.ImageNormalizationCoefficient);
+            console.log('imageNormalizationCoefficient: ', ImageNormalizationCoefficient);
          };
 
          viewerHandler.setViewer = function (viewer) {
@@ -57,8 +57,28 @@
 
          viewerHandler.openPage = function (page) {
             console.log('openHandler with page', page);
-            var p = page.userData-1;
+            console.log('openHandler pages', parsedData.getPages());
+            console.log('openHandler page', parsedData.getPage(page.userData));
+            console.log('test openHandler page', parsedData.getPages()[1]);
+            var pageValue = page.userData;
+            var pidx = 0;
+            while(parsedData.getPages()[pidx] !== pageValue){
+               pidx = pidx+1;
+               if(pidx > parsedData.getPages().length){
+                console.error('error in open page');
+                break;
+               }
+            }
+            var p = pidx;
             viewerHandler.viewer.goToPage(p);
+            currPage = evtInterface.getState('currentPage');
+                     if (pageValue !== currPage) {
+                        viewerHandler.scope.$apply(function () {
+                           evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
+                           console.log("in openHanderl:", evtInterface.getState('currentPage'));
+                           //scope.$parent.$parent.vm.updateContent();
+                        });
+                     }
          };
 
          viewerHandler.home = function () {
@@ -162,9 +182,25 @@
 
          viewerHandler.updateViewerPage = function (page) {
             console.log('updateViewerPages: ', viewerHandler.viewer, page);
-            viewerHandler.viewer.goToPage(page);
-           
-
+            var pageValue = page;
+            var pidx = 0;
+            while(parsedData.getPages()[pidx] !== pageValue){
+               pidx = pidx+1;
+               if(pidx > parsedData.getPages().length){
+                console.error('error in update page');
+                break;
+               }
+            }
+            var p = pidx;
+            viewerHandler.viewer.goToPage(p);
+            currPage = evtInterface.getState('currentPage');
+                     if (pageValue !== currPage) {
+                        viewerHandler.scope.$apply(function () {
+                           evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
+                           console.log("in updateViewerPage:", evtInterface.getState('currentPage'));
+                           //scope.$parent.$parent.vm.updateContent();
+                        });
+                     }
          };
 
          viewerHandler.highlightOverlay = function (zone) {
