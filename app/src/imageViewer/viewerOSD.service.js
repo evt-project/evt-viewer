@@ -3,14 +3,23 @@
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler) {
-         const ImageNormalizationCoefficient = 1265; // per il rotulo 3500;
+         var ImageNormalizationCoefficient = undefined; // per il rotulo 3500;
+         //const ImageNormalizationCoefficient = 1265; // per il rotulo 3500;
          const YminPan = 0.5;
          var divHotSpotToggle = false;
 
          var viewerHandler = this;
 
+         //viewerHandler.ImageNormalizationCoefficient = undefined;
          viewerHandler.viewer = undefined;
          viewerHandler.scope = undefined;
+
+
+         viewerHandler.setImgCoeff = function (coeff) {
+            //viewerHandler.ImageNormalizationCoefficient = coeff;
+            ImageNormalizationCoefficient = coeff;
+            console.log('imageNormalizationCoefficient: ', viewerHandler.ImageNormalizationCoefficient);
+         };
 
          viewerHandler.setViewer = function (viewer) {
             viewerHandler.viewer = viewer;

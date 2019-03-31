@@ -16,6 +16,11 @@ angular.module('evtviewer.openseadragon')
                 return true;
             }
 
+            imageViewer.imgCoeff = function(){
+                console.log('CHIAMATA PROVIDER for parameter: ', config.imageNormalizationCoefficient);
+                return config.imageNormalizationCoefficient;
+            }
+
              imageViewer.build = function(name){
                  console.log('instanziating the OSD named: ' + name );
                  
