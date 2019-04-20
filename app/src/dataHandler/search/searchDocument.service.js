@@ -11,7 +11,7 @@
  * @requires evtviewer.dataHandler.parsedData
  */
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchDocument', ['parsedData', 'evtGlyph', 'XPATH', 'Utils', function XmlDoc(parsedData, evtGlyph, XPATH, Utils) {
+   .service('evtSearchDocument', ['parsedData', 'evtGlyph', 'XPATH', 'Utils', 'config', function XmlDoc(parsedData, evtGlyph, XPATH, Utils, config) {
       var xmlDoc = this;
       
       xmlDoc.ns = false;
@@ -44,9 +44,22 @@ angular.module('evtviewer.dataHandler')
          }
          return xmlDoc.ns;
       };
-      
-      XmlDoc.prototype.isOnlyDiplomaticEdition = function (xmlDocBody) {
-         return xmlDocBody.getElementsByTagName('choice').length === 0;
+   
+      XmlDoc.prototype.isAlsoInterpEdition = function () {
+         var availableEditionLevel = config.availableEditionLevel,
+            diplIsAvailable,
+            interpIsAvailable;
+         
+         availableEditionLevel.forEach(function (el) {
+            if(el.value === 'diplomatic') {
+               diplIsAvailable = el.visible;
+            }
+            if(el.value === 'interpretative') {
+               interpIsAvailable = el.visible;
+            }
+         });
+         
+         return diplIsAvailable && interpIsAvailable;
       };
       
       XmlDoc.prototype.hasLbElement = function(xmlDocBody) {

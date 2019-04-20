@@ -4,6 +4,8 @@ angular.module('evtviewer.dataHandler')
          parsedElementsForIndexing = {};
       
       Search.prototype.initSearch = function (xmlDocDom) {
+         console.time('PARSING TIME');
+         
          var parsedElements,
             searchParser = {},
             xmlDocsBody = evtSearchDocument.getXmlDocBody(xmlDocDom);
@@ -17,9 +19,12 @@ angular.module('evtviewer.dataHandler')
             prevDocsLines = searchParser.getPrevDocsLines();
             parsedElementsForIndexing = angular.extend(parsedElementsForIndexing, parsedElements);
          }
+   
+         console.timeEnd('PARSING TIME');
          console.log(parsedElementsForIndexing);
          
-         evtSearchIndex.createIndex(parsedElementsForIndexing);
+         var index = evtSearchIndex.createIndex(parsedElementsForIndexing);
+         console.log(index);
       };
       
       Search.prototype.getParsedElementsForIndexing = function () {
