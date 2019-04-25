@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
-   .factory('EvtParagraphLineParser',['evtSearchDocument', 'evtSearchDiplomaticParLineHandler', 'evtSearchDiploInterprParLineHandler', 'XPATH',
-      function ParagraphLineParser(evtSearchDocument, evtSearchDiplomaticParLineHandler, evtSearchDiploInterprParLineHandler, XPATH) {
+   .factory('EvtParagraphLineParser',['evtSearchDocument', 'evtSearchDiplomaticParLineHandler', 'XPATH',
+      function ParagraphLineParser(evtSearchDocument, evtSearchDiplomaticParLineHandler, XPATH) {
       
       function ParagraphLineParser(xmlDocBody) {
          this.parsedElementsForIndexing = {};
@@ -33,8 +33,7 @@ angular.module('evtviewer.dataHandler')
       }
       
       function getParLineInfo (xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
-         return evtSearchDocument.isOnlyDiplomaticEdition(xmlDocBody) ? evtSearchDiplomaticParLineHandler.getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver)
-                                                                  : evtSearchDiploInterprParLineHandler.getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
+         return evtSearchDiplomaticParLineHandler.getParLineInfo(xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver);
       }
       
       return ParagraphLineParser;
