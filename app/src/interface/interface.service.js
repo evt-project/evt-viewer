@@ -300,9 +300,19 @@ angular.module('evtviewer.interface')
                   });
                 }
    
-               Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexUrl, 'index.txt');
-               Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexDocumentUrl, 'parsedElements.txt');
-              
+               $.get(GLOBALDEFAULTCONF.indexUrl)
+                  .done(function() {
+                     Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexUrl, 'index.txt');
+                  }).fail(function() {
+                     console.log("Devi creare il file! Premi Create Index!");
+               });
+   
+               $.get(GLOBALDEFAULTCONF.indexDocumentUrl)
+                  .done(function() {
+                     Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexDocumentUrl, 'parsedElements.txt');
+                  }).fail(function() {
+                  console.log("Devi creare il file!  Premi Create Index!");
+               });
             });
         };
 
