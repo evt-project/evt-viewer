@@ -1,7 +1,9 @@
 var lunr = require('lunr');
+var JSZip = require('jszip');
+var JSZipUtils = require('jszip-utils');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchIndex', function Index(evtSearchDocument) {
+   .service('evtSearchIndex', ['$rootScope','GLOBALDEFAULTCONF', 'evtCommunication', 'evtSearchDocument', function Index($rootScope,GLOBALDEFAULTCONF, evtCommunication, evtSearchDocument) {
       this.index = {};
       
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
@@ -54,6 +56,18 @@ angular.module('evtviewer.dataHandler')
       Index.prototype.getIndex = function () {
          return this.index;
       };
+   
+      Index.prototype.setIndex = function (index) {
+         this.index = index;
+      };
+      
+      Index.prototype.loadIndex = function () {
+         var serializedIndex = window.localStorage.getItem('index.txt');
+         var index = lunr.Index.load(JSON.parse(serializedIndex));
+         this.index = index;
+         return this.index;
+      };
+   
       
       // serve per dire all'indice dove si trovano i campi nella mia struttura
       function map(xmlDoc) {
@@ -261,4 +275,4 @@ angular.module('evtviewer.dataHandler')
          }
          return tokens;
       };
-   });
+   }]);

@@ -26,7 +26,7 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q) {
+.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q, evtSearchIndex, Utils, GLOBALDEFAULTCONF) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -299,6 +299,10 @@ angular.module('evtviewer.interface')
                       }
                   });
                 }
+   
+               Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexUrl, 'index.txt');
+               Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexDocumentUrl, 'parsedElements.txt');
+              
             });
         };
 

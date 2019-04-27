@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
+	this.$get = function(GLOBALDEFAULTCONF,$q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard, evtSearchIndex) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -732,6 +732,7 @@ angular.module('evtviewer.buttonSwitch')
                         }
    
                         evtInterface.updateState('indexingInProgress', false);
+                        var indexBtn = $('[data-type=searchIndex]').remove();
                      }
                   );
                }
@@ -789,6 +790,14 @@ angular.module('evtviewer.buttonSwitch')
                      }
                   })();
                var activeCallback = function () {
+                  var index = evtSearchIndex.getIndex();
+                  var indexExist = Object.keys(index).length !== 0;
+                  if(!indexExist) {
+                     evtSearchIndex.loadIndex();
+                     evtSearch.loadParsedElementsForIndexing();
+                     this.localStorage.clear();
+                  }
+                  
                   var parentBoxId = scope.$parent.id,
                      searchBoxStatus = evtBox.getState(parentBoxId, 'searchBox');
    
@@ -798,6 +807,8 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
                };
                callback = function () {
+                  //to test search
+                  //return activeCallback();
                   if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
                      return activeCallback();
                   }

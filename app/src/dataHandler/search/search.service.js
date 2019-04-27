@@ -1,5 +1,6 @@
 angular.module('evtviewer.dataHandler')
-   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', function Search(evtSearchDocument, evtBuilder, evtSearchIndex) {
+   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', 'Utils',
+      function Search(evtSearchDocument, evtBuilder, evtSearchIndex, Utils) {
       var prevDocsLines = 0,
          parsedElementsForIndexing = {};
       
@@ -8,7 +9,10 @@ angular.module('evtviewer.dataHandler')
          
          var parsedElements,
             searchParser = {},
-            xmlDocsBody = evtSearchDocument.getXmlDocBody(xmlDocDom);
+            xmlDocsBody = evtSearchDocument.getXmlDocBody(xmlDocDom),
+            index,
+            stringifyIndex,
+            stringifyParsedElementsForIndexing;
          
          evtSearchDocument.removeNoteElements(xmlDocDom);
          evtSearchDocument.removeAddElements(xmlDocDom);
@@ -23,15 +27,26 @@ angular.module('evtviewer.dataHandler')
          console.timeEnd('PARSING TIME');
          console.log(parsedElementsForIndexing);
          
-         var index = evtSearchIndex.createIndex(parsedElementsForIndexing);
-         console.log(index);
+         index = evtSearchIndex.createIndex(parsedElementsForIndexing);
+         
+         stringifyIndex = JSON.stringify(index);
+         stringifyParsedElementsForIndexing = JSON.stringify(parsedElementsForIndexing);
+         Utils.compressAndSaveFile(stringifyIndex, 'index');
+         Utils.compressAndSaveFile(stringifyParsedElementsForIndexing, 'parsedElements');
       };
       
       Search.prototype.getParsedElementsForIndexing = function () {
          return parsedElementsForIndexing;
       };
       
+      Search.prototype.loadParsedElementsForIndexing = function () {
+         var serializedElements = window.localStorage.getItem('parsedElements.txt');
+         parsedElementsForIndexing = JSON.parse(serializedElements);
+         return parsedElementsForIndexing;
+      };
+      
       Search.prototype.getPrevDocsLines = function () {
          return prevDocsLines;
       };
+      
    }]);

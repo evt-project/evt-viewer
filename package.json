@@ -46,6 +46,9 @@
     "test": "grunt test"
   },
   "dependencies": {
+    "file-saver": "^2.0.1",
+    "jszip": "^3.2.1",
+    "jszip-utils": "0.0.2",
     "lunr": "^2.3.5",
     "mark.js": "^8.11.1"
   }
