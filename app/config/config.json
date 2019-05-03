@@ -1,9 +1,9 @@
 {
-    "indexTitle": "Edizione digitale delle Lettere di Bellini",
+    "indexTitle": "Edizione digitale Demo F. de Saussure",
     "webSite": "",
     "logoUrl": "",
 
-    "dataUrl":"data/bellini/encodings/LL1_16.xml",
+    "dataUrl":"data/saussure/demo-Saussure.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -171,14 +171,14 @@
        "showRotationControl": true,
        "showNavigator": true,
        "visibilityRatio": 1, 
-       "defaultZoomLevel": 0.7,
+       "defaultZoomLevel": 0.9,
        "panHorizontal": true,
        "constrainDuringPan": true,
        "minZoomLevel": 0.7,
        "maxZoomLevel": 3.0,
        "wrapVertical": false
     },
-    "imageNormalizationCoefficient": 1265,
+    "imageNormalizationCoefficient": 1008,
 
     "languages": ["en", "it"]
 }
