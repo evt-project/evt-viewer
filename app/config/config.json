@@ -183,7 +183,7 @@
        "prefixUrl": "data/osd-images/",
        "showRotationControl": true,
        "showNavigator": true,
-       "visibilityRatio": 1, 
+       "visibilityRatio": 1,
        "defaultZoomLevel": 0.7,
        "panHorizontal": true,
        "constrainDuringPan": true,
