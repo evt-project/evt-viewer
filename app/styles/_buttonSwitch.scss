@@ -60,6 +60,9 @@ button-switch {
                 text-shadow: none !important;
             }
         }
+        &-hidden {
+           display: none;
+        }
 
         &-label {
             margin: 0px;

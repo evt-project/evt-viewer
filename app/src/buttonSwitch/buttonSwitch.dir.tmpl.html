@@ -3,6 +3,7 @@
     ng-click="vm.doCallback()"
     ng-class="{'buttonSwitch-active': vm.active,
                'buttonSwitch-disabled': vm.disabled,
+               'buttonSwitch-hidden': vm.hidden,
                'only-icon': vm.label === undefined || vm.label === '',
                'only-text': vm.icon === undefined || vm.icon === '',
                'iconLeft': vm.iconPos && vm.iconPos === 'left' }">

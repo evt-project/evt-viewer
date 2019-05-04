@@ -3,7 +3,7 @@ var JSZip = require('jszip');
 var JSZipUtils = require('jszip-utils');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchIndex', ['$rootScope','GLOBALDEFAULTCONF', 'evtCommunication', 'evtSearchDocument', function Index($rootScope,GLOBALDEFAULTCONF, evtCommunication, evtSearchDocument) {
+   .service('evtSearchIndex', ['GLOBALDEFAULTCONF', 'evtSearchDocument', function Index(GLOBALDEFAULTCONF, evtSearchDocument) {
       this.index = {};
       
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
@@ -55,10 +55,6 @@ angular.module('evtviewer.dataHandler')
       
       Index.prototype.getIndex = function () {
          return this.index;
-      };
-   
-      Index.prototype.setIndex = function (index) {
-         this.index = index;
       };
       
       Index.prototype.loadIndex = function () {

@@ -26,8 +26,11 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q, evtSearchIndex, Utils, GLOBALDEFAULTCONF) {
-    var mainInterface = {};
+.service('evtInterface', function($rootScope, $timeout, $q, $http, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, evtSearchIndex, Utils, GLOBALDEFAULTCONF) {
+    var mainInterface = {},
+       indexFileExist = false,
+       parsedElementsFileExist = false;
+       
     /**
      * @ngdoc property
      * @name evtviewer.interface.evtInterface#state
@@ -148,7 +151,9 @@ angular.module('evtviewer.interface')
      </pre>
      */
     var tools = {
-
+       isDocumentIndexed: {
+          status: false
+       }
     };
 
         /**
@@ -231,7 +236,10 @@ angular.module('evtviewer.interface')
 
                       var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                       if (currentDocFirstLoad !== undefined){
-
+                         var checkIfFilesExist = checkFiles();
+                         promises.push(checkIfFilesExist);
+                         
+                         
                           // Parse critical entries
                           if (config.loadCriticalEntriesImmediately){
                               promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
@@ -250,8 +258,13 @@ angular.module('evtviewer.interface')
                                   promises.push(evtCriticalParser.parseCriticalText(currentDocFirstLoad.content, state.currentDoc).promise);
                               }
                           }
-
+                          
                           $q.all(promises).then(function() {
+                             if(indexFileExist && parsedElementsFileExist) {
+                                tools.isDocumentIndexed.status = true;
+                                Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexDocumentUrl, 'parsedElements.txt');
+                                Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexUrl, 'index.txt');
+                             }
                               // Update current app entry
                               if (state.currentAppEntry !== undefined &&
                                   parsedData.getCriticalEntryById(state.currentAppEntry) === undefined) {
@@ -299,20 +312,6 @@ angular.module('evtviewer.interface')
                       }
                   });
                 }
-   
-               $.get(GLOBALDEFAULTCONF.indexUrl)
-                  .done(function() {
-                     Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexUrl, 'index.txt');
-                  }).fail(function() {
-                     console.log("Devi creare il file! Premi Create Index!");
-               });
-   
-               $.get(GLOBALDEFAULTCONF.indexDocumentUrl)
-                  .done(function() {
-                     Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexDocumentUrl, 'parsedElements.txt');
-                  }).fail(function() {
-                  console.log("Devi creare il file!  Premi Create Index!");
-               });
             });
         };
 
@@ -1163,5 +1162,34 @@ angular.module('evtviewer.interface')
                 window.location = '#/'+viewMode+'?'+searchPath;
             }
         };
+        
+        function checkFiles () {
+           var deferred = $q.defer();
+           
+           $http({
+              method: 'GET',
+              url: GLOBALDEFAULTCONF.indexUrl
+           }).then(function successCallback() {
+              indexFileExist = true;
+              }, function errorCallback() {
+              console.log('Devi creare il file! Premi Create Index!');
+           });
+           
+           $http({
+              method: 'GET',
+              url: GLOBALDEFAULTCONF.indexDocumentUrl
+           }).then(function successCallback() {
+              parsedElementsFileExist = true;
+              }, function errorCallback() {
+              console.log('Devi creare il file! Premi Create Index!');
+           });
+           
+           setTimeout(function() {
+              deferred.resolve();
+              }, 100);
+           
+           return deferred.promise;
+        }
+        
     return mainInterface;
 });
