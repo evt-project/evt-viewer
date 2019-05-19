@@ -236,8 +236,10 @@ angular.module('evtviewer.interface')
 
                       var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                       if (currentDocFirstLoad !== undefined){
-                         var checkIfFilesExist = checkFiles();
-                         promises.push(checkIfFilesExist);
+                         var checkIndexZip = checkIndexZipFile(),
+                            checkParsedElementsZip = checkParsedElementsZipFile();
+                         promises.push(checkIndexZip);
+                         promises.push(checkParsedElementsZip);
                          
                          
                           // Parse critical entries
@@ -1163,30 +1165,32 @@ angular.module('evtviewer.interface')
             }
         };
         
-        function checkFiles () {
+        function checkIndexZipFile () {
            var deferred = $q.defer();
            
-           $http({
-              method: 'GET',
-              url: GLOBALDEFAULTCONF.indexUrl
-           }).then(function successCallback() {
-              indexFileExist = true;
-              }, function errorCallback() {
-              console.log('Devi creare il file! Premi Create Index!');
-           });
+           $http.get(GLOBALDEFAULTCONF.indexUrl)
+              .success(function() {
+                 indexFileExist = true;
+                 deferred.resolve();
+              }).error(function() {
+                 deferred.resolve();
+                 window.alert('Per attivare la ricerca devi creare il file "Index.zip"! Premi Create Index!');
+              });
            
-           $http({
-              method: 'GET',
-              url: GLOBALDEFAULTCONF.indexDocumentUrl
-           }).then(function successCallback() {
-              parsedElementsFileExist = true;
-              }, function errorCallback() {
-              console.log('Devi creare il file! Premi Create Index!');
-           });
+           return deferred.promise;
+        }
+        
+        function checkParsedElementsZipFile () {
+           var deferred = $q.defer();
            
-           setTimeout(function() {
-              deferred.resolve();
-              }, 100);
+           $http.get(GLOBALDEFAULTCONF.indexDocumentUrl)
+              .success(function() {
+                 parsedElementsFileExist = true;
+                 deferred.resolve();
+              }).error(function() {
+                 deferred.resolve();
+                 window.alert('Per attivare la ricerca devi creare il file "parsedElements.zip"! Premi Create Index!');
+              });
            
            return deferred.promise;
         }
