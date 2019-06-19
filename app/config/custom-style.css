@@ -21,11 +21,6 @@
 /* ***************************************************************** */
 
 .highlight {
-   /* opacity: 0.4; */
-   /* filter: alpha(opacity=40);*/
-   /*outline: 10px auto red; */
-   /* #0A7EbE; */
-   /*background-color: greenyellow;*/
    border: 1px solid #4c2f2f;
    background-color: #c67261;
    opacity: 0.4;
@@ -35,9 +30,6 @@
 
 .selectedHighlight {
    filter: alpha(opacity=50);
-   /*outline: 10px auto red;*/
-   /* #0A7EbE; */
-   /*background-color: greenyellow;*/
    border: 1px solid #4c2f2f;
    background-color: #9c4837;
    opacity: 0.5;
@@ -49,9 +41,6 @@
 
 div.hotspot {
    filter: alpha(opacity=50);
-   /*outline: 10px auto red;*/
-   /* #0A7EbE; */
-   /*background-color: greenyellow;*/
    border: 1px solid #4c2f2f;
    background-color: #9c4837;
    opacity: 0.5;
@@ -79,98 +68,32 @@ div.hotspot-dida {
     border-radius: 2px;
     padding: 0;
     text-align: left;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.7);
 }
 
 div.hotspot-dida-title {
     height: 25px;
-    color: #bebaba;
-    cursor: move;
     margin: 0;
     text-align: center;
     width: 100%;
-    background-color: #4E443C;
+    background: #263238;
+    color: #fff;
+    padding: 0px 2px;
+    opacity: 1;
 }
 
 div.hotspot-dida-body {
-    border-top: 2px solid #4E443C;
     font-size: 16px;
     height: 80%;
     overflow-y: scroll;
     text-align: justify;
-    padding: 2px;
+    border: none !important;
+    padding: 6px !important;
 }
-
 
 div#osd-img * img {
     display: block !important;
 }
-/* regola per la demo in arabo */
-
-/*#mainContentToTranform { */
-
-/*     direction: rtl; */
-
-/* }*/
-
-/* regole per rotulo 
-
-
-/*span.buttonSwitch[title="Information about this text"],*/
-/*span.buttonSwitch[title="Informazioni su questo testo"],*/ 
-
-/*span.buttonSwitch[title="Thumbnails"],*/
-/*span.buttonSwitch[title="Miniature"] {
-   display: none;
-}*/
-
-
-.namedEntity__icon {
-    display: none !important;
-}
-.namedEntity__detail-text {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    display: block !important;
-}
-.namedEntity__detail-icon {
-    display: none !important;
-}
-.namedEntity__detail-text-attribute::after {
-    margin-right: 0 !important;
-}
-.namedEntity__detail-text-attribute:last-of-type::after {
-    content: ":" !important;
-    margin-right: 0 !important;
-}
-.namedEntity__detail-text-attribute {
-    padding-right: 0 !important;
-}
-.namedEntity__details {
-    margin: 0 !important;
-}
-/* Nascondo label occorrenze e xml*/
-span.namedEntity__details-header:nth-child(2){
-    display: none;
-}
-span.namedEntity__details-header:nth-child(3) {
-    display: none;
-}
-.evt-tabs-container.vertical .evt-tabs-container_header-icon {
-    display: none !important;
-}
-.selector .option_container .option-icon-label {
-    display: none !important;
-}
-.lb .lineN {
-    text-align: left !important;
-    color: grey !important;
-    font-size: .8em !important;
-    height: 100% !important;
-    width: 20px !important;
-    display: block !important;
-    float: left !important;
-
-    clear: both;
 
     
 }
