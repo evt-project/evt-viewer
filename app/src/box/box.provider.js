@@ -701,14 +701,31 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
-					if (config.mainDocId && parsedData.getDocument(config.mainDocId).front) {
-						topMenuList.buttons.push({
-							title: 'BUTTONS.INFO_ABOUT_TEXT',
-							label: 'BUTTONS.INFO',
-							icon: 'info-alt',
-							type: 'toggleInfoWit'
-						});
+
+
+					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
+						if (scope.subtype === 'comparing') {
+							topMenuList.selectors.push({
+								id: 'comparingEditionLevel_' + currentId,
+								type: 'comparingEdition',
+								initValue: evtInterface.getState('currentComparingEdition')
+							});
+						} else {
+							topMenuList.selectors.push({
+								id: 'editionLevel_' + currentId,
+								type: 'edition',
+								initValue: evtInterface.getState('currentEdition')
+							});
+						}
 					}
+
+					topMenuList.buttons.push({
+						title: 'BUTTONS.INFO_ABOUT_TEXT',
+						label: 'BUTTONS.INFO',
+						icon: 'info-alt',
+						type: 'front'
+					});
+
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
