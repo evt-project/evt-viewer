@@ -69,14 +69,15 @@ angular.module('evtviewer.search')
          };
    
          vm.scrollToCurrentResult = function(result, index) {
+            vm['selectedResult'] = result;
             var promise = goToAnchor(result, index);
             promise.then(
                function() {
                   vm.scrollTo(vm.currentLineId);
                });
-         };
+         }
          
-         function goToAnchor() {
+         function goToAnchor(result, index) {
             var deferred = $q.defer(),
                mainBoxId = $scope.$parent.vm.parentBoxId;
             
@@ -91,17 +92,32 @@ angular.module('evtviewer.search')
                   vm.currentLineId = result.metadata.lbId[index];
             }
             evtInterface.updateState('secondaryContent', '');
+<<<<<<< HEAD
 		evtDialog.closeByType('externalSearch');
+=======
+            evtDialog.closeByType('externalSearch');
+            evtSearchResults.removeHighlights(result.token);
+            var scrollInfo;
+>>>>>>> parent of 993fcb0... Fix search highlight bugs
             if (parsedData.getPages().length > 0) {
                   goToAnchorPage();
             } else if (parsedData.getDivs().length > 0) {
-                  goToDiv(result, index);
+                  scrollInfo = goToDiv(result, index);
             }
+            scrollToNode(evtSearchResults.highlightResult(result, index), scrollInfo);
             $(eventElement).removeClass('selected');
+<<<<<<< HEAD
    
             setTimeout(function() {
                deferred.resolve();
             }, 100);
+=======
+            
+            setTimeout(function() {
+               evtSearchResults.removeHighlights()
+               deferred.resolve();
+            }, 5000);
+>>>>>>> parent of 993fcb0... Fix search highlight bugs
             
             return deferred.promise;
          }
@@ -136,7 +152,11 @@ angular.module('evtviewer.search')
             }
                evtInterface.updateDiv(targetDoc, targetDiv);
                evtInterface.updateUrl();
+<<<<<<< HEAD
                return { targetDoc, wit };
+=======
+               return { targetDoc: targetDoc, wit: wit };
+>>>>>>> parent of 993fcb0... Fix search highlight bugs
          }
 
          function scrollToNode(node, scroll) {

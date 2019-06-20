@@ -223,8 +223,15 @@ angular.module('evtviewer.dataHandler')
 							}
 						}
 					}
-					parser.parseDivElementInText(element, newElement);
-					parser.addElementNumberInText(element, newElement);
+					if (element.tagName === 'div') {
+						var divId;
+						if (element.attributes && element.getAttribute('xml:id')) {
+							divId = element.getAttribute('xml:id');
+						} else {
+							divId = parser.xpath(element).substr(1);
+						}
+						newElement.setAttribute('id', divId);
+					}
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
 							var childElement = element.childNodes[j].cloneNode(true);

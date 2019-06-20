@@ -627,3 +627,13 @@ pre {
     padding: 10px 0;
     border-top: 1px solid;
 }
+
+span.div {
+    counter-reset: pericope;
+}
+
+span.seg::before {
+    counter-increment: pericope;
+    content: "["counter(pericope)"] ";
+    font-size: 0.8em;
+}
