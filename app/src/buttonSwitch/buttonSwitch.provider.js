@@ -856,78 +856,9 @@ angular.module('evtviewer.buttonSwitch')
                };
                break;
             case 'searchToolsExternal':
-							btnType = 'standAlone';
-							function indexingInProgress() {
-								var deferred = $q.defer();
-								evtInterface.updateState('indexingInProgress', true);
-								setTimeout(function() {
-									 deferred.resolve();
-								}, 100);
-								return deferred.promise;
-							}
-							function openDialog() {
-								evtInterface.updateState('secondaryContent', 'externalSearch');
-								evtDialog.openByType('externalSearch');
-							}
-							function setSearch() {
-								var parentBoxId = 'externalSearchDialog',
-										inputValue = evtSearchBox.getInputValue(parentBoxId),
-										input,
-										placeholder = '';
-								
-								evtSearchResult.setPlaceholder(parentBoxId, placeholder);
-								evtSearchBox.setSearchedTerm(parentBoxId, inputValue);
-								
-								input = {
-										'': function() {
-											placeholder = '{{ \'SEARCH.PLACEHOLDER\' | translate }}';
-											evtSearchResult.setVisibleRes(parentBoxId, []);
-											evtSearchResult.setPlaceholder(parentBoxId, placeholder);
-										},
-										'default': function() {
-											var isCaseSensitive = evtSearchBox.getStatus(parentBoxId, 'searchCaseSensitive'),
-													results = evtSearchResults.getSearchResults(inputValue, isCaseSensitive),
-													currentEdition = evtInterface.getState('currentEdition'),
-													currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
-													visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
-											
-											evtSearchResult.setCurrentEditionResults(parentBoxId, currentEditionResults);
-											evtSearchResult.setVisibleRes(parentBoxId, visibleResults);
-										}
-								};
-								
-								(input[inputValue] || input['default'])();
-								
-								evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);							
-							}
-							function indexingCallback() {
-								var promise = indexingInProgress();
-								promise.then(
-									function() {
-										var xmlDocDom = baseData.getXML(),
-												searchToolsBtn;
-										evtSearch.initSearch(xmlDocDom);
-										evtInterface.setToolStatus('isDocumentIndexed', 'true');
-			
-										searchToolsBtn = button.getByType('searchToolsInternal');
-										for(var z in searchToolsBtn) {
-												searchToolsBtn[z].disabled = false;
-										}
- 
-										evtInterface.updateState('indexingInProgress', false);
-										openDialog();
-										setSearch();
-									}
-								);
-							}
-							callback = function() {
-								if (Object.keys(evtSearchIndex.getIndex()).length === 0) {
-									indexingCallback();
-								} else {
-									openDialog();
-									setSearch();
-								}
-								vm.active = !vm.active;
+               btnType = 'standAlone';
+               callback = function() {
+                  window.alert('External position coming soon!');
                };
                break;
             case 'searchVirtualKeyboard':
