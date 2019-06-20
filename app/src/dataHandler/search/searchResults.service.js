@@ -328,16 +328,21 @@ angular.module('evtviewer.dataHandler')
       
       SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
          var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
-            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive'),
-            isExactMatch = evtSearchBox.getStatus(mainBoxId, 'searchExactWord');
+            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
          
          instance.unmark(inputValue);
-         if(isExactMatch) {
-            markExactly(instance, inputValue, isCaseSensitive);
-         }
-         else {
-            markPartially(instance, inputValue, isCaseSensitive);
-         }
+         instance.mark(inputValue, {
+            'wildcards': 'enable',
+            'acrossElements': true,
+            'caseSensitive': isCaseSensitive,
+            'accuracy': {
+               'value': 'partially',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter': function() {
+               return inputValue.match(regex) ? false : true;
+            }
+         });
       };
       
       function markExactly(instance, inputValue, isCaseSensitive) {
