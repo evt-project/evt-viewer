@@ -19,8 +19,8 @@
                   <span class="original-text" id="{{result.metadata.docId[$index]}}"
                         ng-bind-html="vm.getHighlightedOriginalText(result.metadata.docId[$index], vm.getCurrentBoxEdition($parent.vm.parentBoxId), result.token, result.metadata.position[$index])">
                   </span>
-                  <span class="resultInfo" ng-click="vm.scrollToCurrentResult($event, result, $index)">
-                     {{ 'SEARCH.RESULT.TITLE' | translate }} <span class="resultDoc" id="{{result.metadata.xmlDocId[$index]}}">{{result.metadata.xmlDocTitle[$index]}}</span>
+                  <a class="resultInfo" href="#" ng-click="vm.scrollToCurrentResult()">
+                     Found in <span class="resultDoc" id="{{result.metadata.xmlDocId[$index]}}">{{result.metadata.xmlDocTitle[$index]}}</span>
                      <span class="resultSection" ng-if="result.metadata.sectionTitle">({{result.metadata.sectionTitle[$index]}})</span>
                      <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.page">{{ 'SEARCH.RESULT.PAGE' | translate }} {{result.metadata.page[$index]}}</span>
                      <span class="resultPage" id="{{result.metadata.pageId[$index]}}" ng-if="result.metadata.div">{{result.metadata.div[$index]}}</span>
