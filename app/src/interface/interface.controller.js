@@ -27,7 +27,7 @@
 **/
 angular.module('evtviewer.interface')
 
-	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog, baseData) {
+	.controller('InterfaceCtrl', function($log, $timeout, $injector, $scope, $route, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
 		var _console = $log.getInstance('interface');
 		/**
          * @ngdoc method
@@ -267,11 +267,6 @@ angular.module('evtviewer.interface')
          */
         $scope.getSecondaryContentOpened = function() {
 			return evtInterface.getState('secondaryContent');
-		};
-        
-        $scope.isFileLoaded = function() {
-            var file = baseData.getXML();
-			return file !== null && file !== undefined;
 		};
 		/**
          * @ngdoc method
