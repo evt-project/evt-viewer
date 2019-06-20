@@ -714,7 +714,7 @@ angular.module('evtviewer.buttonSwitch')
                   
                   input = {
                      '': function() {
-                        placeholder = 'SEARCH.PLACEHOLDER';
+                        placeholder = 'Enter your query in the search box above';
                         evtSearchResult.setVisibleRes(parentBoxId, []);
                         evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                      },
@@ -796,7 +796,7 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchResultsShow':
                callback = function() {
-                  var parentBoxId = scope.$parent.id,
+                  var parentBoxId = scope.$parent.id || 'externalSearchDialog',
                      placeholder = 'Enter your query in the search box above';
    
                   evtSearchResult.setPlaceholder(parentBoxId, placeholder);
