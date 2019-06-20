@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils',
-      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils) {
+   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config',
+      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config) {
          var vm = this;
          
          vm.currentEdition = evtInterface.getState('currentEdition');
@@ -87,9 +87,14 @@ angular.module('evtviewer.search')
             window.event.preventDefault();
             eventElement = window.event.currentTarget;
             $(eventElement).addClass('selected');
-            if (result) {}
-            vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
-            goToAnchorPage();
+            if (result && index) {
+                  vm.currentLineId = result.metadata.lbId[index];
+            }
+            if (parsedData.getPages().length > 0) {
+                  goToAnchorPage();
+            } else if (parsedData.getDivs().length > 0) {
+                  goToDiv(result, index);
+            }
             $(eventElement).removeClass('selected');
    
             setTimeout(function() {

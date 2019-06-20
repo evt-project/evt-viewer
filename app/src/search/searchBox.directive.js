@@ -2,9 +2,6 @@ angular.module('evtviewer.search')
    .directive('evtSearchBox',['evtSearchBox', 'evtInterface', function (evtSearchBox, evtInterface) {
       return {
          restrict: 'E',
-         scope: {
-           parentId: '@'
-         },
          templateUrl: 'src/search/searchBox.directive.tmpl.html',
          replace: true,
          controllerAs: 'vm',

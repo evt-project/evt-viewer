@@ -326,23 +326,28 @@ angular.module('evtviewer.dataHandler')
          return textPreview;
       };
       
-      SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
-         var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
-            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive');
-         
-         instance.unmark(inputValue);
-         instance.mark(inputValue, {
-            'wildcards': 'enable',
-            'acrossElements': true,
-            'caseSensitive': isCaseSensitive,
-            'accuracy': {
-               'value': 'partially',
-               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
-            },
-            'filter': function() {
-               return inputValue.match(regex) ? false : true;
-            }
-         });
+      SearchResults.prototype.highlightSearchResults = function (boxId, inputValue) {
+         var currentBoxes = evtBox.getList();
+         currentBoxes.forEach((box) => {
+               if (box.type === 'text' || box.type === 'witness') {
+                  var instance = new Mark(document.querySelector('[id="' + box.id + '"]')),
+                  isCaseSensitive = evtSearchBox.getStatus('mainText', 'searchCaseSensitive');
+               
+                  instance.unmark(inputValue);
+                  instance.mark(inputValue, {
+                        'wildcards': 'enable',
+                        'acrossElements': true,
+                        'caseSensitive': isCaseSensitive,
+                        'accuracy': {
+                        'value': 'partially',
+                        'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+                        },
+                        'filter': function() {
+                        return inputValue.match(regex) ? false : true;
+                        }
+                  });
+               }
+         });         
       };
       
       function markExactly(instance, inputValue, isCaseSensitive) {

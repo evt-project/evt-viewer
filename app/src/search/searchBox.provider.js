@@ -37,7 +37,7 @@ angular.module('evtviewer.search')
                }
             }
             
-            parentBoxId = scope.parentId || scope.$parent.id || 'externalSearchDialog';
+            parentBoxId = scope.$parent.id;
             searchBoxId = parentBoxId + 'SearchBox';
             
             var scopeHelper = {

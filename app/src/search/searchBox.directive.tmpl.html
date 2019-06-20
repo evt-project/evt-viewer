@@ -1,8 +1,5 @@
-<div class="search-box"
-     ng-class="{'open' : $parent.vm.getState('searchBox') || parentId === 'externalSearchDialog',
-                'internal': parentId !== 'externalSearchDialog',
-                'external': parentId === 'externalSearchDialog',
-                'results-open' : vm.getState('searchResultBox')} ">
+<div class="search-box internal"
+     ng-class="{'open' : $parent.vm.getState('searchBox'), 'results-open' : vm.getState('searchResultBox')} ">
 
    <!-- search form -->
    <form ng-submit="vm.doSearchCallback()">
