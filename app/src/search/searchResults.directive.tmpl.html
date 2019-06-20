@@ -9,11 +9,10 @@
 
       <div class="token-results">
          <div class="token" ng-repeat="result in vm.visibleRes track by $index">
-            <div ng-click="vm.toggle($event)" class="icon">
-               Results for <span class="result-token">{{result.token}}</span>
-               in <span class="result-doc">{{result.metadata.xmlDocTitle[0]}}</span>
-               <span class="results-number">({{result.resultsNumber}})</span>
-            </div>
+            <span ng-click="vm.toggle()" class="icon"></span>
+            {{ 'SEARCH.TOKEN' | translate }} <span class="result-token">{{result.token}}</span>
+            in <span class="result-doc">{{result.metadata.xmlDocTitle[$index]}}</span>
+            <span class="results-number">({{result.resultsNumber}})</span>
 
             <ul class="search-result">
                <li ng-repeat="i in vm.range(result.resultsNumber) track by $index">
