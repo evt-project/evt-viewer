@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard, evtSearchIndex) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -858,7 +858,9 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchToolsExternal':
                btnType = 'standAlone';
                callback = function() {
-                  window.alert('External position coming soon!');
+									evtInterface.updateState('secondaryContent', 'externalSearch');
+									evtDialog.openByType('externalSearch');
+									vm.active = !vm.active;
                };
                break;
             case 'searchVirtualKeyboard':
