@@ -24,6 +24,20 @@ angular.module('evtviewer.search')
                });
             }
          }, true);
+
+         scope.$watch(function() {
+           return evtInterface.getState('secondaryContent');
+         }, function(newItem) {
+           if (newItem !== 'externalSearch') {
+            // evtSearchResults.removeHighlights('');
+           }
+         }, true);
+
+         scope.$on('$destroy', function() {
+          if (currentSearchResult) {
+            currentSearchResult.destroy();
+          }
+        });
       }
    };
 }]);

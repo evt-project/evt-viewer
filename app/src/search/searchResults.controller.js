@@ -68,8 +68,8 @@ angular.module('evtviewer.search')
             eventTarget.siblings('.search-result').toggleClass('open');
          };
    
-         vm.scrollToCurrentResult = function(result) {
-            var promise = goToAnchor(result);
+         vm.scrollToCurrentResult = function(result, index) {
+            var promise = goToAnchor(result, index);
             promise.then(
                function() {
                   vm.scrollTo(vm.currentLineId);
