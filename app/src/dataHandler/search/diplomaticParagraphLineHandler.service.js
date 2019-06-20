@@ -74,9 +74,7 @@ angular.module('evtviewer.dataHandler')
                   //parId++;
                }
             };
-            if (currentXmlDoc) {
-              (nodes[node.nodeName] || nodes['default'])();
-            }
+            (nodes[node.nodeName] || nodes['default'])();
             node = parLineNodes.iterateNext();
          }
          return documentsToIndex;
