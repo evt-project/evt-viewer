@@ -1,7 +1,7 @@
 var lunr = require('lunr');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchIndex', ['BUILTINDEX', 'config', function Index(BUILTINDEX, config) {
+   .service('evtSearchIndex', function Index() {
       this.index = {};
       
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
@@ -52,14 +52,7 @@ angular.module('evtviewer.dataHandler')
       };
       
       Index.prototype.getIndex = function () {
-        // var index = JSON.parse(BUILTINDEX.index);
-        // var elements = JSON.parse(BUILTINDEX.elements);
-        // if (BUILTINDEX.dataUrl === config.dataUrl
-        //       && elements && Object.keys(elements).length > 0
-        //       && index && Object.keys(index).length > 0) {
-        //   this.index = lunr.Index.load(index);
-        // }
-        return this.index;
+         return this.index;
       };
       
       // serve per dire all'indice dove si trovano i campi nella mia struttura
@@ -266,4 +259,4 @@ angular.module('evtviewer.dataHandler')
          }
          return tokens;
       };
-   }]);
+   });
