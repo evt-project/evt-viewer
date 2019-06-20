@@ -1,20 +1,20 @@
 var Mark = require('mark.js');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils', 'evtBox',
-      function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils, evtBox) {
+   .service('evtSearchResults', ['evtSearchQuery', 'evtSearchIndex', 'evtSearch', 'evtSearchBox', 'Utils',
+      function SearchResults(evtSearchQuery, evtSearchIndex, evtSearch, evtSearchBox, Utils) {
    
-      var regex = /[.,\/#!$%\^&\*;:{}=_`~()]/;
+      var regex = /[.,\/#!$%\^&;:{}=_`~()]/;
       
-      SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive) {
+      SearchResults.prototype.getSearchResults = function (inputValue, isCaseSensitive, isExactMatch) {
          var searchResults;
          
          var input = {
             '': function () {
-               searchResults = '{{ \'SEARCH.PLACEHOLDER\' | translate }}';
+               searchResults = 'Enter your query into the search box above';
             },
             'default': function () {
-               searchResults = getResultsMetadata(inputValue, isCaseSensitive);
+               searchResults = getResultsMetadata(inputValue, isCaseSensitive, isExactMatch);
             }
          };
          (input[inputValue] || input['default'])();
@@ -36,12 +36,12 @@ angular.module('evtviewer.dataHandler')
          return evtSearchIndex.getIndex();
       }
       
-      function getResultsMetadata(inputValue, isCaseSensitive) {
+      function getResultsMetadata(inputValue, isCaseSensitive, isExactMatch) {
          var res,
             results = {};
          
-         res = makeQuery(inputValue.toLowerCase());
-         angular.forEach(res, function (result) {
+         res = makeQuery(inputValue.toLowerCase(), isExactMatch);
+         res.forEach(function (result) {
             var metadata = result.matchData.metadata,
                newMetadata = {},
                resultToken,
@@ -67,6 +67,7 @@ angular.module('evtviewer.dataHandler')
                         interpretative: getCaseInsensitiveResults(resultByTokenObjects.interpretative)
                      };
                   }
+                  
                   if(resultToken.diplomatic) {
                      if(!results.diplomatic) {
                         results['diplomatic'] = [];
@@ -93,9 +94,7 @@ angular.module('evtviewer.dataHandler')
                         content: getCaseInsensitiveResults(resultByTokenObjects.content)
                      };
                   }
-                  if (!results.diplomatic) {
-                      results['diplomatic'] = [];
-                  }
+                  results['diplomatic'] = [];
                   results.diplomatic = results.diplomatic.concat(resultToken.content);
                }
             }
@@ -104,26 +103,32 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
       
-      function makeQuery(inputValue) {
+      function makeQuery(inputValue, isExactMatch) {
          var index = getIndex();
-         return evtSearchQuery.query(index, inputValue);
+         
+         if(isExactMatch) {
+            return evtSearchQuery.exactMatchQuery(index, inputValue);
+         }
+         else {
+            return evtSearchQuery.query(index, inputValue);
+         }
       }
       
       function getCaseSensitiveResults(inputValue, tokenList) {
          var results = [],
-            matchStarWildcard = inputValue.match(/[*]/);
+            inputMatchStarWildcard = inputValue.match(/[*]/);
          
          for (var token in tokenList) {
    
-            if(matchStarWildcard) {
+            if(inputMatchStarWildcard) {
                inputValue.toLowerCase();
-               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard);
+               var result = handleWildcardInCaseSensitive(inputValue, token, tokenList, inputMatchStarWildcard);
                if(result) {
                   results.push(result);
                }
             }
             
-            if (inputValue === token.toString()) {
+            if (inputValue === token.toString() || token.toString().includes(inputValue) || inputValue.includes(token.toString())) {
                results.push(
                   {
                      token: token.toString(),
@@ -136,9 +141,9 @@ angular.module('evtviewer.dataHandler')
          return results;
       }
    
-      function handleWildcardInCaseSensitive(inputValue, token, tokenList, matchStarWildcard) {
+      function handleWildcardInCaseSensitive(inputValue, token, tokenList, inputMatchStarWildcard) {
          var inputValueLength = inputValue.length,
-            wildcardPos = matchStarWildcard.index,
+            wildcardPos = inputMatchStarWildcard.index,
             tokenFirstChars = token.toString().slice(0, wildcardPos),
             inputFirstChars = inputValue.slice(0, wildcardPos),
             tokenLastChars,
@@ -259,28 +264,19 @@ angular.module('evtviewer.dataHandler')
       }
       
       SearchResults.prototype.getCurrentEditionResults = function (searchResults, currentEdition) {
-            var currentResults = [],
+         var currentResults = [],
             edition = {
                'diplomatic': function () {
                var diplomaticResults = searchResults.diplomatic;
-               angular.forEach(diplomaticResults, function (result) {
+               diplomaticResults.forEach(function (result) {
                   currentResults.push(result);
                });
             },
                'interpretative': function () {
                var interpretativeResults = searchResults.interpretative;
-               angular.forEach(interpretativeResults, function (result) {
+               interpretativeResults.forEach(function (result) {
                   currentResults.push(result);
                });
-<<<<<<< HEAD
-            },
-               'critical': function () {
-               var results = searchResults.interpretative || searchResults.diplomatic;
-               angular.forEach(results, function (result) {
-                  currentResults.push(result);
-               });
-=======
->>>>>>> parent of 5103e4e... Fix search for critical edition
             }
             };
          
@@ -330,72 +326,50 @@ angular.module('evtviewer.dataHandler')
          return textPreview;
       };
       
-      SearchResults.prototype.highlightSearchResults = function (boxId, inputValue) {
-         var currentBoxes = evtBox.getList();
-         angular.forEach(currentBoxes, function(box) {
-               if (box.type === 'text' || box.type === 'witness') {
-                  var instance = new Mark(document.querySelector('[id="' + box.id + '"]')),
-                  isCaseSensitive = evtSearchBox.getStatus(boxId, 'searchCaseSensitive');
-               
-                  instance.unmark(inputValue);
-                  instance.mark(inputValue, {
-                        'wildcards': 'enable',
-                        'acrossElements': true,
-                        'caseSensitive': isCaseSensitive,
-                        'accuracy': {
-                        'value': 'partially',
-                        'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
-                        },
-                        'filter': function() {
-                        return inputValue.match(regex) ? false : true;
-                        }
-                  });
-               }
-         });         
+      SearchResults.prototype.highlightSearchResults = function (mainBoxId, inputValue) {
+         var instance = new Mark(document.querySelector('#' + mainBoxId + ' #mainContentToTranform')),
+            isCaseSensitive = evtSearchBox.getStatus(mainBoxId, 'searchCaseSensitive'),
+            isExactMatch = evtSearchBox.getStatus(mainBoxId, 'searchExactWord');
+         
+         instance.unmark(inputValue);
+         if(isExactMatch) {
+            markExactly(instance, inputValue, isCaseSensitive);
+         }
+         else {
+            markPartially(instance, inputValue, isCaseSensitive);
+         }
       };
       
-      SearchResults.prototype.removeHighlights = function (inputValue) {
-         var currentBoxes = evtBox.getList();
-         angular.forEach(currentBoxes, function(box) {
-               if (box.type === 'text' || box.type === 'witness') {
-                  var instance = new Mark(document.querySelector('[id="' + box.id + '"]'));               
-                  instance.unmark(inputValue);
-               }
-         });         
-      };
+      function markExactly(instance, inputValue, isCaseSensitive) {
+         instance.mark(inputValue, {
+            'wildcards': 'enable',
+            'acrossElements': true,
+            'caseSensitive': isCaseSensitive,
+            'accuracy': {
+               'value': 'exactly',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter': function() {
+               return inputValue.match(regex) ? false : true;
+            },
+            'exclude': ['.lineN']
+         });
+      }
       
-      SearchResults.prototype.highlightResult = function (result, index) {
-            if (!result.metadata) {
-                  return;
-            }
-            var instance = new Mark(document.querySelector('[id="' + result.metadata.divId[index] + '"]')),
-            matches = [];
-            result.metadata.divId.map(function(id, i) {
-                  if (id === result.metadata.divId[index]) {
-                        matches.push(i);
-                  }
-            });
-            var matchIndex = matches.indexOf(index),
-                  markIndex = 0,
-                  regex = new RegExp("[\\s|\-|(]" + result.token +"[\\s|.|,|;|:|\\|/|\'|\"|)|?|!|\-|\`|\~|]", 'g'),
-                  currentNode;
-
-            instance.markRegExp(regex, {
-                  'wildcards': 'enable',
-                  'acrossElements': true,
-                  'caseSensitive': true,
-                  'accuracy': {
-                  'value': 'partially',
-                  'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
-                  },
-                  'filter': function(node) {
-                        markIndex++;
-                        if ((markIndex - 1) === matchIndex) {
-                              currentNode = node;
-                        }
-                        return (markIndex - 1) === matchIndex;
-                  }
-            });
-            return currentNode;
-      };
+      function markPartially(instance, inputValue, isCaseSensitive) {
+         instance.mark(inputValue, {
+            'wildcards': 'enable',
+            'acrossElements': true,
+            'caseSensitive': isCaseSensitive,
+            'accuracy': {
+               'value': 'partially',
+               'limiters': ['.', ',', ';', ':', '\\', '/', '!', '?', '#', '$', '%', '^', '&', '*', '{', '}', '=', '-', '_', '`', '~', '(', ')']
+            },
+            'filter':
+               function(node) {
+                  return inputValue.match(regex) ? false : true;
+               },
+            'exclude': ['.lineN']
+         });
+      }
    }]);
