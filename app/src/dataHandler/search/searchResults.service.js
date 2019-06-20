@@ -272,12 +272,15 @@ angular.module('evtviewer.dataHandler')
                angular.forEach(interpretativeResults, function (result) {
                   currentResults.push(result);
                });
+<<<<<<< HEAD
             },
                'critical': function () {
                var results = searchResults.interpretative || searchResults.diplomatic;
                angular.forEach(results, function (result) {
                   currentResults.push(result);
                });
+=======
+>>>>>>> parent of 5103e4e... Fix search for critical edition
             }
             };
          
@@ -296,9 +299,6 @@ angular.module('evtviewer.dataHandler')
                },
                'interpretative': function () {
                   return parsedData[lineId].content.interpretative;
-               },
-               'critical': function () {
-                  return parsedData[lineId].content.diplomatic || parsedData[lineId].content;
                }
             };
          return edition[currentEdition]();

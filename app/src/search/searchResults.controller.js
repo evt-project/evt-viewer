@@ -73,10 +73,15 @@ angular.module('evtviewer.search')
 
          var scrollInfo;
    
+<<<<<<< HEAD
          vm.scrollToCurrentResult = function(event, result, index) {
             scrollInfo = {};
             vm['selectedResult'] = result;
             var promise = goToAnchor(event, result, index);
+=======
+         vm.scrollToCurrentResult = function() {
+            var promise = goToAnchor();
+>>>>>>> parent of 5103e4e... Fix search for critical edition
             promise.then(
                function() {
                   setTimeout(function() {
@@ -95,6 +100,7 @@ angular.module('evtviewer.search')
             evtSearchBox.closeBox(mainBoxId, 'searchResultBox');
             evtSearchBox.showBtn(mainBoxId, 'searchResultsShow');
             evtSearchBox.hideBtn(mainBoxId, 'searchResultsHide');
+<<<<<<< HEAD
 
             $(event.target).addClass('selected');
             if (result && result.metadata && result.metadata.lbId && index) {
@@ -110,6 +116,19 @@ angular.module('evtviewer.search')
             }
             $(event.target).removeClass('selected');
             deferred.resolve();
+=======
+            
+            window.event.preventDefault();
+            eventElement = window.event.currentTarget;
+            $(eventElement).addClass('selected');
+            vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
+            goToAnchorPage();
+            $(eventElement).removeClass('selected');
+   
+            setTimeout(function() {
+               deferred.resolve();
+            }, 100);
+>>>>>>> parent of 5103e4e... Fix search for critical edition
             
             return deferred.promise;
          }
