@@ -136,6 +136,28 @@ angular.module('evtviewer.search')
             }
                evtInterface.updateDiv(targetDoc, targetDiv);
                evtInterface.updateUrl();
+               return { targetDoc, wit };
+         }
+
+         function scrollToNode(node, scroll) {
+            if (!node) {
+                  return;
+            }
+            var currentBoxes = evtBox.getList(), boxId;
+            currentBoxes.forEach((box) => {
+               if (scroll.wit && box.type === 'witness' && box.witness === scroll.wit) {
+                  boxId = box.id;
+               } else if (scroll.targetDoc === config.mainDocId) {
+                  boxId = 'mainText';
+               }
+            });
+            var boxElem = document.getElementById(boxId),
+                boxBody = angular.element(boxElem).find('.box-body')[0],
+                padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+            boxBody.scrollTop = node.parentElement.offsetTop - padding;
+            setTimeout(function() {
+               evtSearchResults.removeHighlights();
+            }, 8000);
          }
          
          vm.scrollTo = function(id) {
