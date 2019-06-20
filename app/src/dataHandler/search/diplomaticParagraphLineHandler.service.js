@@ -14,6 +14,8 @@ angular.module('evtviewer.dataHandler')
             documentsToIndex = {},
    
             node = parLineNodes.iterateNext();
+
+            console.log(currentXmlDoc)
    
          while(node !== null) {
             var nodes = {

@@ -1210,8 +1210,7 @@ angular.module('evtviewer.box')
 			collection[currentId] = angular.extend(vm, scopeHelper);
 			list.push({
 				id: currentId,
-				type: currentType,
-				witness: scope.witness
+				type: currentType
 			});
 
 			return collection[currentId];

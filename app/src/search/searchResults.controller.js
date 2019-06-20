@@ -1,6 +1,6 @@
 angular.module('evtviewer.search')
-   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config',
-      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config) {
+   .controller('SearchResultsCtrl', ['$q', '$scope', '$location', '$anchorScroll', 'evtSearchResults', 'evtSearchBox', 'evtInterface', 'Utils', 'parsedData', 'config', 'evtDialog',
+      function ($q, $scope, $location, $anchorScroll, evtSearchResults, evtSearchBox, evtInterface, Utils, parsedData, config, evtDialog) {
          var vm = this;
          
          vm.currentEdition = evtInterface.getState('currentEdition');
@@ -90,6 +90,8 @@ angular.module('evtviewer.search')
             if (result && index) {
                   vm.currentLineId = result.metadata.lbId[index];
             }
+            evtInterface.updateState('secondaryContent', '');
+		evtDialog.closeByType('externalSearch');
             if (parsedData.getPages().length > 0) {
                   goToAnchorPage();
             } else if (parsedData.getDivs().length > 0) {
@@ -111,6 +113,29 @@ angular.module('evtviewer.search')
             evtInterface.updateState('currentPage', anchorPageId);
             evtInterface.updateState('currentDoc', anchorDocId);
             evtInterface.updateUrl();
+         }
+
+         function goToDiv(result, index) {
+               var targetDoc = result.metadata.xmlDocId[index],
+                   targetDiv = result.metadata.divId[index];
+               if (config.mainDocId && targetDoc !== config.mainDocId) {
+                  var wit = parsedData.getWitnessesList().find(witId => {
+                        return parsedData.getWitness(witId).corresp === targetDoc;
+                  });
+                  if (wit) {
+                        var wits = evtInterface.getState('currentWits'),
+                            witIndex = wits.indexOf(wit);
+                        if (witIndex >= 0) {
+                              evtInterface.removeWitness(wit);
+                        }
+                        evtInterface.addWitnessAtIndex(wit, witIndex + 1);
+                  }
+                  if (evtInterface.getState('currentViewMode') !== 'collation') {
+                        evtInterface.updateState('currentViewMode', 'collation');
+                  }
+            }
+               evtInterface.updateDiv(targetDoc, targetDiv);
+               evtInterface.updateUrl();
          }
          
          vm.scrollTo = function(id) {
