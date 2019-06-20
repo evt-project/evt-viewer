@@ -13,7 +13,6 @@ angular.module('evtviewer.UItools')
 
    .service('evtImageTextLinking', function (evtInterface, Utils, parsedData, imageViewerHandler) {
       var ITLutils = {};
-      var zonePrefix = "zone_";
       const linetozoneRegExp = /lb/;
       const zonereplacedString = 'line';
 
@@ -30,10 +29,7 @@ angular.module('evtviewer.UItools')
        */
       ITLutils.turnOnITL = function () {
          this.activateITL();
-         //this.activateHotSpots();
          evtInterface.setToolStatus('ITL', 'active');
-         console.log("TurnONITL");
-         //document.getElementById("example-overlay").className = "highlight";
       };
 
        /**
@@ -50,8 +46,6 @@ angular.module('evtviewer.UItools')
       ITLutils.turnOnHTS = function () {
          this.activateHotSpots();
          evtInterface.setToolStatus('HTS', 'active');
-         console.log("turnOnHTS");
-         //document.getElementById("example-overlay").className = "highlight";
       };
 
       /**
@@ -69,14 +63,10 @@ angular.module('evtviewer.UItools')
        */
       ITLutils.turnOffITL = function () {
          this.deactivateITL();
-         //this.deactivateHotSpots();
          evtInterface.setToolStatus('ITL', 'inactive');
          evtInterface.updateCurrentHighlightedZone(undefined);
          this.switchingOffHighlightInImage();
          this.switchingOffHighlightInImageSelected();
-         console.log("TurnOFFITL");
-         //document.getElementById("example-overlay").className = "nohighlight";
-
       };
 
       /**
@@ -97,10 +87,7 @@ angular.module('evtviewer.UItools')
          evtInterface.setToolStatus('HTS', 'inactive');
          evtInterface.updateCurrentHighlightedZone(undefined);
          this.switchingOffHighlightInImage();
-         this.switchingOffHighlightInImageSelected();
-         console.log("TurnOFFHTS");
-         //document.getElementById("example-overlay").className = "nohighlight";
- 
+         this.switchingOffHighlightInImageSelected(); 
       }; 
 
       /**
@@ -115,7 +102,6 @@ angular.module('evtviewer.UItools')
        * the preparazion of zones in image ({@link evtviewer.UItools.evtImageTextLinking#prepareZoneInImgInteractions prepareZoneInImgInteractions} method).
        */
       ITLutils.activateITL = function () {
-         console.log('in activateITL');
          this.prepareLines();
          this.prepareZoneInImgInteractions();
       };
@@ -125,83 +111,40 @@ angular.module('evtviewer.UItools')
        */
 
       ITLutils.activateHotSpots = function () {
-         console.log('in activateHotSpots');
          var hotspotzones = ITLutils.prepareHotSpotZones();
          var hotspotzonesInPage = hotspotzones.filter(
             function(hotspotInPage){
-               console.log('#!# ZONE #!#', hotspotInPage);
-               console.log('#!# EVT PAGE #!#', evtInterface.getState('currentPage'));
                return (hotspotInPage.page === evtInterface.getState('currentPage'));
             }
-
-
          );
-         console.log('#!# ZONE #!#', hotspotzonesInPage);
-         imageViewerHandler.showHotSpot(hotspotzonesInPage); // cambiare in hotspotzonesInPage
+         imageViewerHandler.showHotSpot(hotspotzonesInPage);
       };
 
       ITLutils.prepareHotSpotZones = function () {
          var zonesCollection = parsedData.getZones();
          var zonesIdx = zonesCollection._indexes;
          var zones = [];
-
-         /*
-         * zoneid => {
-             zones.push(zonesCollection[zoneid]);
-         }
-         */
-
+        
          for (var index = 0; index < zonesIdx.length; index++) {
             var zoneId = zonesIdx[index];
             if (zoneId) {
-               //console.log('nel for', zoneId);
-               //HOTSPOTS SAN MATTEO
                var h = zonesCollection[zoneId];
-               console.log('##PREPARO GLI HOTSPOT -> H##', h);
-               var hotspotId = h.corresp ? h.corresp.replace('#',''): h.start ? h.start.replace('#','') : zoneId; //zoneId.replace(/ST_hs_/, 'ST_div_hs_');
-               console.log('##PREPARO GLI HOTSPOT -> hotspotId ##', hotspotId);
-
+               var hotspotId = h.corresp ? h.corresp.replace('#',''): h.start ? h.start.replace('#','') : zoneId;
                var tmpHotSpot;
-               console.log('hotSpotId', hotspotId);
                tmpHotSpot = parsedData.getHotSpot(hotspotId);
                if (tmpHotSpot) {
-                  // gestire il content prendendo da h.start
                   h.content = tmpHotSpot.content;
                }
-               console.log('hot spot in prepare hotspot', h);
                zones.push(h);
             }
 
          }
 
-         console.log('LISTA DI ZONES PREPARATE NON FILTRATRE', zones);
-         // probabilmente da spostare sopra
          var hotspotZones = zones.filter(function (zone) {
-            //console.log('zone in prepare hot spot', zone);
             return ('HotSpot' === zone.rendition);
          });
          
-
-         console.log('hotspotzones FILTRATE', hotspotZones);
-
-         //  zones.push(zone);
-         //  zones.push({
-         //     id: '1',
-         //     x: 0.2008,
-         //     y: 0.2778,
-         //     w: 0.15,
-         //     h: 0.10,
-         //     content: 'contenuto primo'
-         //  });
-         //  zones.push({
-         //     id: '2',
-         //     x: 0.2508,
-         //     y: 0.2998,
-         //     w: 0.15,
-         //     h: 0.10,
-         //     content: 'contenuto secondo'
-         //  });
-
+    
          return hotspotZones;
       };
       /**
@@ -217,7 +160,6 @@ angular.module('evtviewer.UItools')
       ITLutils.deactivateITL = function () {
          var currentHzone = evtInterface.getState('currentHighlightedZone');
          // Deselect current selected
-         console.log('currentHzone in deactivateITL ' + currentHzone);
          if (currentHzone) {
             this.changeLinesHighlightStatus(currentHzone.id, 'unselect');
          }
@@ -225,7 +167,6 @@ angular.module('evtviewer.UItools')
       };
 
       ITLutils.deactivateHotSpots = function () {
-         console.log('in deactivateHotSpots');
          var hotspotzones = ITLutils.prepareHotSpotZones();
          imageViewerHandler.hiddenHotSpot(hotspotzones);
       };
@@ -242,7 +183,6 @@ angular.module('evtviewer.UItools')
        * to add/remove "lineHover" and "lineSelected" classes
        */
       ITLutils.prepareLines = function () {
-         console.log('in prepareLines');
          var lbs = document.getElementsByClassName('lb');
          for (var i = 0; i < lbs.length; i++) {
             var lbId;
@@ -307,8 +247,7 @@ angular.module('evtviewer.UItools')
                var lineId = this.getAttribute('data-line');
                ITLutils.changeLinesHighlightStatus(lineId, 'over');
                var zoneId = lineId.replace(linetozoneRegExp, zonereplacedString);
-               console.log('zoneID in onmouseover', zoneId);
-               ITLutils.highlightZoneInImage(zoneId); //FIXME: il nome della zona deve essere valutata a runtime.
+               ITLutils.highlightZoneInImage(zoneId);
             };
             elementInLine.onmouseout = function () {
                var lineId = this.getAttribute('data-line');
@@ -318,7 +257,6 @@ angular.module('evtviewer.UItools')
             elementInLine.onclick = function () {
                var lineId = this.getAttribute('data-line'),
                   currentHzone = evtInterface.getState('currentHighlightedZone');
-               console.log("onclick: ", lineId, currentHzone);
 
                if (currentHzone && currentHzone.name === 'Line') {
                   // Deselect current selected
@@ -351,11 +289,9 @@ angular.module('evtviewer.UItools')
        * Transform back <span class="textNode"> into actual textNode      
        */
       ITLutils.resetTextNodes = function () {
-         console.log("in reset Text Nodes");
          var textNodes = document.getElementsByClassName('textNode');
          for (var i in textNodes) {
             var element = textNodes[i];
-            console.log('text node', element);
             if (element && element.textContent) {
                var newTextNode = document.createTextNode(element.textContent);
                element.parentElement.replaceChild(newTextNode, element);
@@ -412,36 +348,21 @@ angular.module('evtviewer.UItools')
        * @todo Adapt to real viewer, once this is implemented
        */
       ITLutils.prepareZoneInImgInteractions = function () {
-         console.log('prepare zone in Image for line linking');
          var tmpZones = document.getElementsByClassName('line-overlay');
-         console.log('div precedentemente create:', tmpZones);
          
          if(tmpZones.length == 0){
-            console.log('preparo le line zones:');
             var _zones = parsedData.getZones();
             var allZones = _zones._indexes;
             var lineZonesID = allZones.filter(function(zone){return zone.includes('line')});
-         // var zones = _zones.filter(function (zone) {
-         //    //console.log('zone in prepare hot spot', zone);
-         //    return ('Line' === zone.rendition);
-         // });
-
-            console.log('zones in Image for line:', allZones);
-            console.log('Filtered zones in Image for line:', lineZonesID);
-         // imageViewerHandler
+        
             for (var i = 0; i < lineZonesID.length; i++) {
                var lineZoneID = lineZonesID[i];
                var lineZone = parsedData.getZone(lineZoneID)
-               console.log('##!line zone!## ', lineZoneID);
-               console.log('##!current page!##', evtInterface.getState('currentPage'));
-               console.log('##!parsed zone for line!## ', lineZone);
-
+              
                if(lineZone.page === evtInterface.getState('currentPage')){
                   var divZone = imageViewerHandler.lineZone(parsedData.getZone(lineZoneID));
-                  console.log('GESTIRE QUI LE FUNZIONI DI GESTIONE RIGHE', divZone);
                }
-            
-               
+                           
             //divZone.onmouseover = zoneMouseOver;
 
             //divZone.onmouseout = zoneMouseOut;
@@ -498,33 +419,23 @@ angular.module('evtviewer.UItools')
       ITLutils.highlightZoneInImage = function (zoneId) {
          var ITLactive = evtInterface.getToolState('ITL') === 'active';
          if (ITLactive) {
-            console.log('zoneId in highlight ITLutils', zoneId);
             var zone = parsedData.getZone(zoneId);
             if (zone) {
-               console.log('## HIGHLIGHT ZONE : ', zone);
-               // prendi riferimento al viewer
-               console.log('## PRENDERE RIFERIMENTO al VIEWER ##');
                imageViewerHandler.highlightOverlay(zone);
-               // inserisci overlay alla posizione indicata in zone
-               console.log('GESTIRE OVERLAY A PARTIRE DAI DATI ESTRATTI DA ZONE');
             }
          }
       };
 
       ITLutils.switchingOffHighlightInImage = function () {
          imageViewerHandler.turnOffOverlay();
-         //imageViewerHandler.turnOffOverlaySelected();
       };
       ITLutils.switchingOffHighlightInImageSelected = function () {
          imageViewerHandler.turnOffOverlaySelected();
-         //imageViewerHandler.turnOffOverlaySelected();
       };
 
       ITLutils.selectHighlightedZone = function (lineId) {
-         console.log("selectHighlightedZone: ", lineId);
          var ITLactive = evtInterface.getToolState('ITL') === 'active';
          if (ITLactive) {
-            console.log("ITLactive true - selectHighlightedZone: ", lineId);
             var zone = parsedData.getZone(lineId.replace(linetozoneRegExp, zonereplacedString));
             imageViewerHandler.turnOffOverlaySelected();
             imageViewerHandler.highlightSelectedOverlay(zone, lineId.replace(linetozoneRegExp, zonereplacedString));
