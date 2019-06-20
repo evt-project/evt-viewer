@@ -1,11 +1,12 @@
 <div class="evt-dialog"
     ng-show="vm.opened"
     ng-class="::{'evt-dialog-error': vm.type === 'error',
-               'evt-dialog-small': vm.type === 'bookmark' }">
+               'evt-dialog-small': vm.type === 'bookmark',
+               'evt-dialog-fit': vm.type === 'externalSearch' }">
     <div class="evt-dialog-shadow" ng-click="vm.close()"></div>
 
 
-    <div class="evt-dialog-container" ng-class="{ 'externalSearch': vm.type === 'externalSearch'}">
+    <div class="evt-dialog-container">
         <div class="evt-dialog-container-top">
             <span class="evt-dialog-container-top-title">{{ vm.title | translate }}</span>
             <button-switch 

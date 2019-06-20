@@ -18,7 +18,7 @@
          </div>
          <div class="btn-right">
             <button-switch
-               ng-repeat="button in vm.searchBoxBtn|limitTo: -3"
+               ng-repeat="button in vm.searchBoxBtn|limitTo: -1"
                class="no-background"
                title="{{::button.title}}"
                data-label="{{::button.label}}"
@@ -29,15 +29,6 @@
       </div>
 
       <input type="text" id="{{::vm.keyboardId}}" ng-model="vm.searchInput" ng-change="vm.highlightSearchResults(vm.parentBoxId, vm.searchInput)" autocomplete="off" autofocus>
-      <button-switch
-        ng-repeat="button in vm.searchBoxBtn|limitTo: -1"
-        class="no-background btn-right"
-        title="{{::button.title}}"
-        data-label="{{::button.label}}"
-        data-icon="{{::button.icon}}"
-        data-type="{{::button.type}}"
-        ng-hide="button.hide">
-      </button-switch>
    </form>
    <evt-virtual-keyboard></evt-virtual-keyboard>
    <evt-search-results ng-controller="SearchResultsCtrl as searchResults"></evt-search-results>

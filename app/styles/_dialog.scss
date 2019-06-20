@@ -64,6 +64,18 @@
         }
     }
 }
+.evt-dialog.evt-dialog-fit{
+    .evt-dialog-container {
+        width: auto;
+        height: auto;
+        padding: 0;
+        top: 25%;
+        &-content {
+            @include calc(padding-top, 40px + #{$mainContainer-menu-height});
+            height: auto;
+        }
+    }
+}
 
 .evt-dialog.evt-dialog-error .evt-dialog-container-top {
     background: #990000;
