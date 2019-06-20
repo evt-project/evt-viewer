@@ -25,8 +25,8 @@ angular.module('evtviewer.core')
       getCurrentTextNode: './/ancestor::text[1]',
       
       ns : {
-         getLineNodes: './/node()[self::ns:lb or self::ns:p or self::ns:div or self::ns:pb or self::ns:head]',
-         getParLineNodes: './/node()[self::ns:p or self::ns:l or self::ns:div or self::ns:pb or self::ns:head]',
+         getLineNodes: './/node()[self::ns:lb or self::ns:p or self::ns:pb or self::ns:head]',
+         getParLineNodes: './/node()[self::ns:p or self::ns:l or self::ns:pb or self::ns:head]',
         
          getPrevLb:'count(.//preceding::ns:lb)',
          getPrevBody:'count(.//preceding::ns:body)',

@@ -68,15 +68,15 @@ angular.module('evtviewer.search')
             eventTarget.siblings('.search-result').toggleClass('open');
          };
    
-         vm.scrollToCurrentResult = function(event) {
-            var promise = goToAnchor(event);
+         vm.scrollToCurrentResult = function(result) {
+            var promise = goToAnchor(result);
             promise.then(
                function() {
                   vm.scrollTo(vm.currentLineId);
                });
          };
          
-         function goToAnchor(event) {
+         function goToAnchor() {
             var deferred = $q.defer(),
                mainBoxId = $scope.$parent.vm.parentBoxId;
             
@@ -84,11 +84,13 @@ angular.module('evtviewer.search')
             evtSearchBox.showBtn(mainBoxId, 'searchResultsShow');
             evtSearchBox.hideBtn(mainBoxId, 'searchResultsHide');
             
-            event.preventDefault();
-            $(event.currentTarget).addClass('selected');
+            window.event.preventDefault();
+            eventElement = window.event.currentTarget;
+            $(eventElement).addClass('selected');
+            if (result) {}
             vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
             goToAnchorPage();
-            $(event.currentTarget).removeClass('selected');
+            $(eventElement).removeClass('selected');
    
             setTimeout(function() {
                deferred.resolve();

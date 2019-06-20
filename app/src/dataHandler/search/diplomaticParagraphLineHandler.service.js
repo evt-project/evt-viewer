@@ -6,9 +6,6 @@ angular.module('evtviewer.dataHandler')
             currentPage,
             currentPageId,
             pageId = 1,
-            currentDiv,
-            currentDivId,
-            divId = 1,
             paragraph,
             parId = 1,
             line,
@@ -27,11 +24,6 @@ angular.module('evtviewer.dataHandler')
                   currentPage = evtSearchDocument.getCurrentPage(node);
                   currentPageId = evtSearchDocument.getCurrentPageId(node, pageId);
                   pageId++;
-               },
-               'div': function() {
-                  currentDiv = evtSearchDocument.getCurrentDiv(node);
-                  currentDivId = evtSearchDocument.getCurrentDivId(node, divId);
-                  divId++;
                },
                'default': function () {
                   var childNodes = evtSearchDocument.getChildNodes(xmlDocDom, node, ns, nsResolver);
@@ -52,11 +44,6 @@ angular.module('evtviewer.dataHandler')
                      if(currentPage) {
                         documentToIndex.page = currentPage;
                         documentToIndex.pageId = currentPageId;
-                     }
-                     
-                     if (currentDiv) {
-                        documentToIndex.div = currentDiv;
-                        documentToIndex.divId = currentDivId;
                      }
                      
                      var nodeName = {
