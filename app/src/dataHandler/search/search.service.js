@@ -1,5 +1,5 @@
 angular.module('evtviewer.dataHandler')
-   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', 'BUILTINDEX', function Search(evtSearchDocument, evtBuilder, evtSearchIndex, BUILTINDEX) {
+   .service('evtSearch', ['evtSearchDocument', 'evtBuilder', 'evtSearchIndex', function Search(evtSearchDocument, evtBuilder, evtSearchIndex) {
       var prevDocsInfo = 0,
          parsedElementsForIndexing = {};
       
