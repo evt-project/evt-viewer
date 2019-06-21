@@ -4,7 +4,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "",
+	"dataUrl": "../data/pseudoEdition-ext.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -46,14 +46,14 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "diplomatic",
+    "defaultEdition": "critical",
     "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
