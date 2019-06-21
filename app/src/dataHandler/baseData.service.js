@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, parsedData) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -229,6 +229,17 @@ angular.module('evtviewer.dataHandler')
    
        // Parse Glyphs
        evtParser.parseGlyphs(docElements);
+
+       if (parsedData.getEncodingDetail('variantEncodingLocation') !== 'internal') {
+        if (config.loadCriticalEntriesImmediately){
+            evtCriticalApparatusParser.parseCriticalEntries(docElements);
+        }
+
+        // Parse the versions entries
+        if (config.versions.length > 1) {
+            evtCriticalApparatusParser.parseVersionEntries(docElements);
+        }
+       }
    
        // Init Search
        //evtSearch.initSearch(docElements);

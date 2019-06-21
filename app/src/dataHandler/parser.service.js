@@ -37,6 +37,7 @@ angular.module('evtviewer.dataHandler')
 	projectInfoDefs.sectionSubHeaders += '<principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>, <msIdentifier>, <physDesc>, <history>, <extent>, <editionStmt>';
 	projectInfoDefs.blockLabels += '<edition>, <correction>, <hyphenation>, <interpretation>, <normalization>, <punctuation>, <interpGrp>';
 	projectInfoDefs.blockLabels += '<quotation>, <segmentation>, <stdVals>, <colophon>, <handDesc>, <decoDesc>, <supportDesc>, <origin>';
+	parser.parserProperties = {};
 	// ///////// //
 	// UTILITIES //
 	// ///////// //
@@ -160,7 +161,10 @@ angular.module('evtviewer.dataHandler')
 			// newElement = document.createElement('span');
 			// newElement.className = "textNode";
 			// newElement.appendChild(element);
-		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+		} else if (element.tagName !== undefined &&
+			(skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0
+			|| element.className.indexOf('depaAnchor') >= 0
+			|| element.className.indexOf('depaContent') >= 0)) {
 			newElement = element;
 		} else if (element.tagName !== undefined && exclude !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = document.createTextNode('');
@@ -284,7 +288,8 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-		if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
+		if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')
+		|| (newElement.className && (newElement.className.indexOf('depaAnchor') >= 0 || newElement.className.indexOf('depaContent') >= 0))) {
 			return newElement;
 		} else {
 			return document.createTextNode('');
@@ -832,6 +837,9 @@ angular.module('evtviewer.dataHandler')
 			defDocElement = 'div[subtype="edition_text"]';
 			defContentEdition = 'div';
 		}
+
+		parser.parserProperties['defDocElement'] = defDocElement;
+		parser.parserProperties['defContentEdition'] = defContentEdition;
 
 		var frontDef = '<front>',
 			biblDef = '<biblStruct>';

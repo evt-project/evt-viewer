@@ -231,16 +231,18 @@ angular.module('evtviewer.interface')
 
                       var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                       if (currentDocFirstLoad !== undefined){
+                          
+                        // Parse critical entries
+                          if (parsedData.getEncodingDetail('variantEncodingLocation') === 'internal') {
+                            if (config.loadCriticalEntriesImmediately) {
+                                promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
+                            }
 
-                          // Parse critical entries
-                          if (config.loadCriticalEntriesImmediately){
-                              promises.push(evtCriticalApparatusParser.parseCriticalEntries(currentDocFirstLoad.content).promise);
-                          }
-
-                          // Parse the versions entries
-                          if (config.versions.length > 1) {
-                              promises.push(evtCriticalApparatusParser.parseVersionEntries(currentDocFirstLoad.content).promise);
-                          }
+                            // Parse the versions entries
+                            if (config.versions.length > 1) {
+                                promises.push(evtCriticalApparatusParser.parseVersionEntries(currentDocFirstLoad.content).promise);
+                            }
+                        }
 
                           // Parse critical text
                           if ((config.editionType === 'critical' || config.editionType === 'multiple') && parsedData.isCriticalEditionAvailable()) {
