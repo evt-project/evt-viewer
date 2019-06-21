@@ -233,6 +233,21 @@
 		"QUOTE_START": "Inizio citazione",
 		"QUOTE_END": "Fine citazione"
 	},
+	"SEARCH": {
+		"MAIN": "Cerca",
+		"HEADER": "Ricerca lessicale",
+		"PLACEHOLDER": "Inserisci la chiave di ricerca nel campo sopra",
+		"INFO1": "Termine cercato:",
+		"INFO2": "Abbiamo trovato {{number}} risultati nell'edizione selezionata",
+		"TOKEN": "Risultati per",
+		"RESULT": {
+			"TITLE": "Trovato in",
+			"PAGE": "pagina",
+			"SECTION": "capitolo",
+			"PARAGRAPH": "paragrafo",
+			"LINE": "riga"
+		}
+	},
 	"SELECTS": {
 		"CLEAR": "Cancella Selezione",
 		"CLEAR_SELECTION": "Cancella Selezione",
