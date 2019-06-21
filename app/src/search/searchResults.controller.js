@@ -70,6 +70,7 @@ angular.module('evtviewer.search')
          };
    
          vm.scrollToCurrentResult = function(result, index) {
+            scrollInfo = {};
             vm['selectedResult'] = result;
             var promise = goToAnchor(result, index);
             promise.then(
@@ -77,9 +78,9 @@ angular.module('evtviewer.search')
                   vm.scrollTo(vm.currentLineId);
                });
          }
-         
          function goToAnchor(result, index) {
             var deferred = $q.defer(),
+               eventElement,
                mainBoxId = $scope.$parent.vm.parentBoxId;
             
             evtSearchBox.closeBox(mainBoxId, 'searchResultBox');
@@ -89,7 +90,7 @@ angular.module('evtviewer.search')
             window.event.preventDefault();
             eventElement = window.event.currentTarget;
             $(eventElement).addClass('selected');
-            if (result && index) {
+            if (result && result.metadata.lbId && index) {
                   vm.currentLineId = result.metadata.lbId[index];
             }
             evtInterface.updateState('secondaryContent', '');
@@ -101,13 +102,8 @@ angular.module('evtviewer.search')
             } else if (parsedData.getDivs().length > 0) {
                   scrollInfo = goToDiv(result, index);
             }
-            scrollToNode(evtSearchResults.highlightResult(result, index), scrollInfo);
             $(eventElement).removeClass('selected');
-            
-            setTimeout(function() {
-               evtSearchResults.removeHighlights()
-               deferred.resolve();
-            }, 5000);
+            deferred.resolve();
             
             return deferred.promise;
          }
