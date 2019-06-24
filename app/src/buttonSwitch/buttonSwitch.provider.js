@@ -202,7 +202,7 @@ angular.module('evtviewer.buttonSwitch')
 					evtIcon = 'icon-evt_keyboard';
 					break;
 				case 'hts':
-					evtIcon = 'icon-evt_hts'; // Bottone hotspots - FS
+					evtIcon = 'icon-evt_hts';
 					break;	
 				case 'language':
 					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
@@ -283,10 +283,6 @@ angular.module('evtviewer.buttonSwitch')
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
 					break;
-				//case 'schema':
-				//	evtIcon = 'icon-evt_schema';
-				//	break;
-				//icone per bottoni osd aggiunti da federica				
 				case 'zoom-in':
 					evtIcon = 'icon-evt_zoom-in';
 					break;
@@ -626,11 +622,9 @@ angular.module('evtviewer.buttonSwitch')
 					btnType = 'standAlone';
 					callback = function() {
 						var vm = this;
-						if (vm.active) { // Activate HTS
-							console.log("hts turnon");
+						if (vm.active) { 
 							evtImageTextLinking.turnOnHTS();
-						} else { // Deactivate HTS
-							console.log("hts turnoff");
+						} else {
 							evtImageTextLinking.turnOffHTS();
 						}
 					};
