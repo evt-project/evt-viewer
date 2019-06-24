@@ -229,6 +229,18 @@ angular.module('evtviewer.namedEntity')
                 }
             }
         };
+        var openEntity = function() {
+            var vm = this;
+            evtInterface.updateState('secondaryContent', 'toc');
+            evtDialog.openByType('toc');
+            var list = parsedData.getNamedEntities()[vm.entityId].collectionId;
+            evtInterface.updateProperty('tabsContainerOpenedContent', 'entitiesLists');
+            evtInterface.updateProperty('tabsContainerOpenedTab', list);
+            evtInterface.updateState('currentNamedEntity', vm.entityId);
+            setTimeout(function() {
+                evtList.scrollToElemById(list, vm.entityId);
+            }, 1000);
+        }
         /**
          * @ngdoc method
          * @name evtviewer.namedEntity.controller:NamedEntityCtrl#isCurrentPageDoc
@@ -354,16 +366,46 @@ angular.module('evtviewer.namedEntity')
             var tabs = {
                 _indexes : []
             };
-            tabs._indexes.push('moreInfo');
-            tabs.moreInfo = { label: 'NAMED_ENTITIES.MORE_INFO' };
+            if (defaults.allowedTabs.indexOf('moreInfo') >= 0) {
+                tabs._indexes.push('moreInfo');
+                tabs.moreInfo = { label: 'NAMED_ENTITIES.MORE_INFO' };
+            }
 
             if (entityType !== 'relation') {
                 tabs._indexes.push('occurrences');
                 tabs.occurrences = { label: 'NAMED_ENTITIES.OCCURRENCES' };
             }
 
-            tabs._indexes.push('xmlSource');
-            tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
+            var center = {
+                zoom: 8
+            };
+            var mainMarker = {
+                focus: true,
+                draggable: false
+            };
+            var lfDefaults = {
+                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                tileLayerOptions: {
+                    opacity: 0.9,
+                    detectRetina: true,
+                    reuseTiles: true,
+                }
+            };
+            // POLO-TODO: implementare parsing di coordinate e controllo.
+            if (defaults.allowedTabs.indexOf('map') >= 0 && (entityType === 'place' || entityType === 'placeName') && namedEntity.map) {
+                tabs._indexes.push('map');
+                tabs.map = { label: 'NAMED_ENTITIES.MAP' };
+                var lat = parseFloat(namedEntity.map.lat);
+                var lng = parseFloat(namedEntity.map.lng);
+                center.lat = lat;
+                center.lng = lng;
+                mainMarker.lat = lat;
+                mainMarker.lng = lng;
+            }
+            if (defaults.allowedTabs.indexOf('xmlSource') >= 0) {
+                tabs._indexes.push('xmlSource');
+                tabs.xmlSource = { label: 'NAMED_ENTITIES.XML' };
+            }
 
             var firstSubContentOpened = tabs && tabs._indexes && tabs._indexes.length > 0 ? tabs._indexes[0] : '';
             scopeHelper = {
@@ -401,8 +443,11 @@ angular.module('evtviewer.namedEntity')
                 isPinAvailable : isPinAvailable,
                 isPinned: isPinned,
                 getPinnedState: getPinnedState,
-                togglePin: togglePin
-
+                togglePin: togglePin,
+                openEntity: openEntity,
+                lfCenter: center,
+                lfDefaults: lfDefaults,
+                lfMarkers: { mainMarker : mainMarker }
             };
 
             collection[currentId] = angular.extend(scope.vm, scopeHelper);

@@ -151,7 +151,8 @@
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "More Info",
 		"OCCURRENCES": "Occurrences",
-		"XML": "XML"
+		"XML": "XML",
+		"MAP": "Map"
 	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Author",

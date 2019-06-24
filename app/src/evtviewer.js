@@ -78,14 +78,15 @@ angular
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
-        'evtviewer.quote',
-        'evtviewer.tabsContainer',
-        'evtviewer.sourcesApparatusEntry',
-        'evtviewer.analogue',
-        'evtviewer.analoguesApparatusEntry',
-        'evtviewer.apparatuses',
-        'evtviewer.versionReading',
-        'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools',
-    	'evtviewer.search'
-    ]);
+		'evtviewer.quote',
+		'evtviewer.tabsContainer',
+		'evtviewer.sourcesApparatusEntry',
+		'evtviewer.analogue',
+		'evtviewer.analoguesApparatusEntry',
+		'evtviewer.apparatuses',
+		'evtviewer.versionReading',
+		'evtviewer.versionApparatusEntry',
+		'evtviewer.UItools',
+		'evtviewer.search',
+		'ui-leaflet'
+  ]);
