@@ -47,6 +47,11 @@
 				<i class="fa fa-external-link"></i>
 			</a>
 			<div class="globalMenu">
+				<button-switch
+					title="TOC.HEADER"
+					data-icon="list-alt"
+					data-type="openToc">
+				</button-switch>
 				<div class="viewModeMenu">
 					<button-switch
 							title="VIEW_MODES.{{::mode.label}}"
@@ -153,6 +158,12 @@
 			<section
 				class="secondary-container"
 				ng-show="getSecondaryContentOpened() !== ''">
+				<evt-dialog data-type="toc" data-title="TOC.HEADER">
+					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'toc'"
+						data-type="toc"
+						data-orientation="vertical">
+					</evt-tabs-container>
+				</evt-dialog>
 				<evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
 					ng-if="getProperty('namedEntitiesLists')">
 					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
