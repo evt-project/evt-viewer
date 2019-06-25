@@ -38,6 +38,7 @@ angular.module('evtviewer.dataHandler')
         docElements;
 
     var _console = $log.getInstance('baseData');
+    var XPointersElem = {};
 
     /**
      * @ngdoc method
@@ -273,7 +274,14 @@ angular.module('evtviewer.dataHandler')
                     .then(function(response) {
                         includedFilesLoaded++;
                         var includedDoc = xmlParser.parse(response.data),
+                        includedTextElem;
+                        if (fileXpointer) {
+                            var dom = angular.element(includedDoc)[0];
+                            findXPointerElem(fileXpointer, dom);
+                            includedTextElem = XPointersElem[fileXpointer];
+                        } else {
                             includedTextElem = includedDoc.getElementsByTagName('text')[0];
+                        }
                         element.parentNode.replaceChild(includedTextElem, element);
                         if (includedFilesLoaded === totFilesToInclude) {
                             deferred.resolve('success');
@@ -293,6 +301,17 @@ angular.module('evtviewer.dataHandler')
             deferred.resolve('success');
         }
         return deferred;
+    };
+
+    var findXPointerElem = function(xpointer, doc) {
+        doc.childNodes.forEach(function(node) {
+            if (node.attributes && node.hasAttribute('xml:id') && node.getAttribute('xml:id') === xpointer) {
+                XPointersElem[xpointer] = node;
+                return node;
+            } else if (node.childNodes && node.childNodes.length > 0) {
+                return findXPointerElem(xpointer, node);
+            }
+        });
     };
 
     return baseData;
