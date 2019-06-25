@@ -37,6 +37,7 @@
  * @requires evtviewer.list
  * @requires evtviewer.quote
  * @requires evtviewer.tabsContainer
+ * @requires evtviewer.toc
  * @requires evtviewer.sourcesApparatusEntry
  * @requires evtviewer.analogue
  * @requires evtviewer.analoguesApparatusEntry
@@ -88,5 +89,6 @@ angular
 		'evtviewer.versionApparatusEntry',
 		'evtviewer.UItools',
 		'evtviewer.search',
+		'evtviewer.toc',
 		'ui-leaflet'
   ]);

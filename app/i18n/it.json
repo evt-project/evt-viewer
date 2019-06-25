@@ -241,6 +241,15 @@
 		"XML_SOURCE_QUOTE": "Codice XML della fonte",
 		"XML_SOURCE_FOR": "Codice XML per "
 	},
+	"TOC": {
+		"BACK": "Appendici",
+		"BODY": "Testo",
+		"DIVS": "Sezioni",
+		"FRONT": "Introduzione",
+		"HEADER": "Paratesto e indici",
+		"PAGES": "Folia",
+		"TITLE": "Indice dei contenuti"
+	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Nota critica",
         "METADATA_FOR": "Metadata per ",

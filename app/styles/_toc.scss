@@ -1,0 +1,57 @@
+.toc {
+    &_doc {
+        margin: 0;
+        &.open {
+            background-color: $base-color-light;
+        }
+        &:not(:last-child) {
+            border-bottom: 1px solid $base-color-light;
+        }
+        &_head {
+            cursor: pointer;
+            display: block;
+            padding: 10px;
+            padding-left: 20px;
+            &:before {
+                content: '\25B6';
+                font-size: 12px;
+                position: relative;
+                bottom: 2px;
+                left: -5px;
+            }
+            &.open:before  {
+                content: '\25BC';
+            }
+        }
+        &_details {
+            display: none;
+            padding-left: 20px;
+            padding-bottom: 7px;
+            &.open {
+                display: inline-flex;
+            }
+            div {
+                display: block;
+                margin-right: 3em;
+            }
+            .list_head {
+                display: block;
+                font-variant: small-caps;
+                &_sub {
+                    font-style: italic;
+                    margin-left: -20px;
+                }
+            }
+            ul {
+                margin: 3px 0 5px 0;
+                padding-left: 20px;
+                li {
+                    cursor: pointer;
+                    span.indexLink:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
