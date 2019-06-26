@@ -133,7 +133,9 @@ angular.module('evtviewer.interface')
         isSourceLoading    : false,
         parsedSourcesTexts : [ ],
         availableVersions  : [ ],
-        versionSelector    : false
+        versionSelector    : false,
+        tabsContainerOpenedContent: '',
+        tabsContainerOpenedTab: ''
     };
     /**
      * @ngdoc property

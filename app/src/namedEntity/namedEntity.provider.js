@@ -39,7 +39,7 @@ angular.module('evtviewer.namedEntity')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function($timeout, config, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef, evtPinnedElements) {
+    this.$get = function($timeout, config, parsedData, evtNamedEntitiesParser, baseData, evtInterface, evtNamedEntityRef, evtPinnedElements, evtDialog, evtList) {
         var namedEntity    = {},
             collection = {},
             list       = [],
@@ -231,11 +231,17 @@ angular.module('evtviewer.namedEntity')
         };
         var openEntity = function() {
             var vm = this;
-            evtInterface.updateState('secondaryContent', 'toc');
-            evtDialog.openByType('toc');
+            // var secondaryContent = config.globalMenuAvailable ? 'toc' : 'entitiesList';
+            var secondaryContent = 'toc';
+            evtInterface.updateState('secondaryContent', secondaryContent);
+            evtDialog.openByType(secondaryContent);
             var list = parsedData.getNamedEntities()[vm.entityId].collectionId;
-            evtInterface.updateProperty('tabsContainerOpenedContent', 'entitiesLists');
-            evtInterface.updateProperty('tabsContainerOpenedTab', list);
+            // if (config.globalMenuAvailable) {
+                evtInterface.updateProperty('tabsContainerOpenedContent', 'entitiesLists');
+                evtInterface.updateProperty('tabsContainerOpenedTab', list);                
+            // } else {
+            //     evtInterface.updateProperty('tabsContainerOpenedContent', list);
+            // }
             evtInterface.updateState('currentNamedEntity', vm.entityId);
             setTimeout(function() {
                 evtList.scrollToElemById(list, vm.entityId);

@@ -4,6 +4,13 @@
         <!-- HEADER -->
         <div class="namedEntity_tools"
           ng-if="::vm.isPinAvailable()">
+          <button-switch
+            ng-if="vm.location !== 'list'"
+            title="BUTTONS.OPEN_LIST"
+            data-label=""
+            data-icon="list"
+            data-type="openEntity"
+            ng-click="vm.openEntity()"></button-switch>
           <button-switch 
                 title="BUTTONS.PIN_REMOVE"
                 ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"

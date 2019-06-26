@@ -609,6 +609,12 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateState('mainMenu', !mainMenuState);
 					};
 					break;
+				case 'openEntity':
+					callback = function() {
+						var vm = this;
+						vm.active = !vm.active;
+					};
+					break;
 				case 'openGlobalDialogInfo':
 					callback = function() {
 						var vm = this;

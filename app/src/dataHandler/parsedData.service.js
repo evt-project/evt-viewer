@@ -640,6 +640,10 @@ angular.module('evtviewer.dataHandler')
 		namedEntities._collections[collectionId][listKey]._indexes.push(entityId);
 	};
 
+	parsedData.getNamedEntities = function() {
+		return namedEntities;
+	}
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollection

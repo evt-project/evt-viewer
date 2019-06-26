@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.list')
 
-.directive('evtList', function(evtList, parsedData) {
+.directive('evtList', function($timeout, evtList, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -46,6 +46,23 @@ angular.module('evtviewer.list')
                 listType: scope.listType
             };
             var currentList = evtList.build(scope.listId, scope);
+            
+            scope.vm.scrollToElement = function(entityId) {
+                var scrollDiv = angular.element(element).find('.scrollableDiv')[0];
+                var entity = angular.element(scrollDiv).find('[data-entity-id="' + entityId +'"]');
+                if (entity.length > 0 && entity[0]) {
+                    scrollDiv.scrollTop = entity[0].offsetTop;
+                }
+                console.log(scrollDiv.scrollTop)
+            }
+            
+            scope.$watch(function() {
+                return evtInterface.getState('currentNamedEntity');
+            }, function(newItem, oldItem) {
+                if (newItem !== oldItem) {
+                    currentList.selectLetter(newItem.charAt(0));
+                }
+            });
             
             // Garbage collection
             scope.$on('$destroy', function() {

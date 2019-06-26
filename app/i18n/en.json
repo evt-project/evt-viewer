@@ -51,6 +51,7 @@
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "No more versions available",
 		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+		"OPEN_LIST": "Show entry in full list",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
 		"SHOW_PINNED_ENTRIES": "Show pinned elements",
