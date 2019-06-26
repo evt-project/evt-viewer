@@ -237,13 +237,12 @@ angular.module('evtviewer.tabsContainer')
 					break;
 				case 'toc':
 					// TOC
-					// evtToc
-					// tabs.toc = {
-					// 	label: 'TOC.TITLE',
-					// 	name: 'toc',
-					// 	content: '<evt-toc></evt-toc>'
-					// };
-					// tabs._indexes.push('toc');
+					tabs.toc = {
+						label: 'TOC.TITLE',
+						name: 'toc',
+						content: '<evt-toc></evt-toc>'
+					};
+					tabs._indexes.push('toc');
 					
 					// ENTITIES LIST
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();
