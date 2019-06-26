@@ -37,18 +37,36 @@ angular.module('evtviewer.toc')
         }
     }
 
-    this.goToDiv = function (doc, div) {
-        if (config.mainDocId && config.mainDocId !== doc) {
-            changeView();
-            updateWits(doc);
+    var getAvailableEditionLevels = function() {
+        var editions = parsedData.getEditions();
+        var availableEditions = [];
+        for (var i = 0; i < editions.length; i++) {
+            if (editions[i].visible) {
+                availableEditions.push(editions[i].value);
+            }
         }
-        evtInterface.updateDiv(doc, div);
-        evtInterface.updateState('secondaryContent', '');
-        evtInterface.updateUrl();
+        return availableEditions;
+    }
+
+    this.goToDiv = function (doc, div) {
+        var editions = getAvailableEditionLevels();
+        if (evtInterface.getState('currentEdition') !== 'critical' && editions.indexOf('critical') > -1) {
+            evtInterface.updateState(currentEdition, 'critical');
+            evtInterface.updateDiv(doc, div);
+            evtInterface.updateState('secondaryContent', '');
+            evtInterface.updateUrl();
+        }
     }
 
     this.goToPage = function (doc, page) {
-        console.log(doc, page)
+        var editions = getAvailableEditionLevels();
+        if (evtInterface.getState('currentEdition') === 'critical' && editions > 0) {
+            var edition = editions.indexOf(config.defaultEdition) > -1 ? config.defaultEdition : editions[0];
+            evtInterface.updateState(currentEdition, edition);
+        }
+        evtInterface.updateState('currentPage', page);
+        evtInterface.updateState('secondaryContent', '');
+        evtInterface.updateUrl();
     }
     
     this.openDetails = function(doc) {
