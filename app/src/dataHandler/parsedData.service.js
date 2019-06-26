@@ -174,6 +174,15 @@ angular.module('evtviewer.dataHandler')
 		length: 0
 	};
 
+	var divsCollection = {
+		length: 0,
+		_indexes: {
+			corresp : {},
+			subDivs: {},
+			main: {}
+		}
+	};
+
 	// var pagesCollectionTexts = [];
 	/**
      * @ngdoc property
@@ -1285,6 +1294,75 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getSourceDocument = function(extDocId) {
 		return sourcesDocsCollection[extDocId];
 	};
+
+	// DIVS //
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#addDiv
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method adds a div object to the divsCollection, after retrieving some
+	 * information to insert inside of the divsCollection indexes.
+	 *
+	 * @param {object} div the JSON object with all the info about the parsed div
+	 * @param {string} docId the id of the document the div belongs to
+	 *
+	 * @author CM
+	 */
+	parsedData.addDiv = function(div, docId) {
+		var divId = div.value;
+		divsCollection[divsCollection.length] = divId;
+		divsCollection[divId] = div;
+		divsCollection.length++;
+		documentsCollection[docId].divs.push(divId);
+		if (div.corresp) {
+			angular.forEach(div.corresp, function(corresp) {
+				if (!divsCollection._indexes.corresp[corresp]) {
+					divsCollection._indexes.corresp[corresp] = [];
+				}
+				divsCollection._indexes.corresp[corresp].push(div.value);
+			});
+		}
+		if (!div._isSubDiv) {
+			divsCollection._indexes.subDivs[div.value] = div.subDivs || [];
+			if (!divsCollection._indexes.main[div.doc]) {
+				divsCollection._indexes.main[div.doc] = []
+			}
+			divsCollection._indexes.main[div.doc].push(div.value);
+		}
+	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#getDivs
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method returns all the divs in the divsCollection
+	 *
+	 * @author CM
+	 */
+	parsedData.getDivs = function() {
+		return divsCollection;
+	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#getDiv
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method retrieves one of the divs stored in the divsCollection through
+	 * its id.
+	 *
+	 * @param {string} divId the id of the div that has to be retrieved
+	 *
+	 * @author CM
+	 */
+	parsedData.getDiv = function(divId) {
+		return divsCollection[divId];
+	}
 
 	/* EDITION */
 	/**
