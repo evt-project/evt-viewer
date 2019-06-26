@@ -3,20 +3,16 @@
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler, parsedData) {
-         var ImageNormalizationCoefficient = undefined; // per il rotulo 3500;
-         //const ImageNormalizationCoefficient = 1265; // per il rotulo 3500;
-         const YminPan = 0.5;
+         var ImageNormalizationCoefficient = undefined;
          var divHotSpotToggle = false;
 
          var viewerHandler = this;
 
-         //viewerHandler.ImageNormalizationCoefficient = undefined;
          viewerHandler.viewer = undefined;
          viewerHandler.scope = undefined;
 
 
          viewerHandler.setImgCoeff = function (coeff) {
-            //viewerHandler.ImageNormalizationCoefficient = coeff;
             ImageNormalizationCoefficient = coeff;
             console.log('imageNormalizationCoefficient: ', ImageNormalizationCoefficient);
          };
@@ -30,36 +26,14 @@
 
         
          viewerHandler.open = function () {
-            console.log('openHandler');
             var viewBounds = viewer.viewport.getBounds();
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
-            console.log('openHandler', oldBounds);
             var h = oldBounds.height / oldBounds.width;
             var newBounds = new OpenSeadragon.Rect(0, 0, 0, h);
-            console.log(newBounds);
             viewerHandler.viewer.viewport.fitBounds(newBounds, false);
-            //viewer.navigator.element.parentElement.parentElement.style.overflow = "visible";
-            //viewer.navigator.element.parentElement.style.overflow = "visible";
-            //viewer.navigator.element.style.overflow = "visible";
-            //viewer.navigator.element.firstChild.style.overflow = "visible";
-            //viewer.navigator.element.firstChild.children[0]  = "hidden"; 
-            //viewer.navigator.element.firstChild.children[1]  = "hidden"; 
-            //viewer.navigator.element.firstChild.firstChild.style.overflow = "hidden";
-            console.log('element navigator', viewerHandler.viewer.navigator.element);
-            //console.log("evtInterface", evtInterface);
-            //console.log("scope", scope);
-            //console.log("element", element);
-            //console.log("scope.$parent", scope.$parent);
-            //console.log("scope.$parent.$parent", scope.$parent.$parent.vm);
-
-
          };
 
          viewerHandler.openPage = function (page) {
-            console.log('openHandler with page', page);
-            console.log('openHandler pages', parsedData.getPages());
-            console.log('openHandler page', parsedData.getPage(page.userData));
-            console.log('test openHandler page', parsedData.getPages()[1]);
             var pageValue = page.userData;
             var pidx = 0;
             while(parsedData.getPages()[pidx] !== pageValue){
@@ -75,94 +49,56 @@
                      if (pageValue !== currPage) {
                         viewerHandler.scope.$apply(function () {
                            evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
-                           console.log("in openHanderl:", evtInterface.getState('currentPage'));
-                           //scope.$parent.$parent.vm.updateContent();
                         });
                      }
          };
 
          viewerHandler.home = function () {
-            console.log('pigiato home');
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
             var h = oldBounds.height / oldBounds.width;
             var newBounds = new OpenSeadragon.Rect(0, 0.1, 1, h);
             viewerHandler.viewer.viewport.fitBounds(newBounds, true);
          };
 
-         /* Trying to fix Home bug*/
-
          viewerHandler.navigatorScroll = function (event) {
             console.log("navigator-scroll", evtInterface);
             console.log("navigator-scroll", event);
             if (event.scroll > 0) {
-               console.log("scroll-in");
-               //console.log("scope.$parent.$parent", scope.$parent.$parent.vm);
-               //scope.$parent.$parent.vm.updateState('position',event.eventSource.viewport.getBounds());
-               //    viewerHandler.scope.$apply(function () {
-               //       evtInterface.updateState("", imageScrollMap.map(event.eventSource.viewport.getBounds()));
-               //       console.log("in handler:", evtInterface.getState('currentPage'));
-               //       //scope.$parent.$parent.vm.updateContent();
-               //    });
-
             } else {
-               console.log("scroll-out");
-               //    viewerHandler.scope.$apply(function () {
-               //       evtInterface.updateState("currentPage", imageScrollMap.map(event.eventSource.viewport.getBounds()));
-               //       console.log("in handler:", evtInterface.getState('currentPage'));
-               //       //scope.$parent.$parent.vm.updateContent();
-               //    });
             }
-
-
          };
 
          viewerHandler.pan = function (event) {
             try {
-               console.log('pan', event);
+              
                if (event.immediately === undefined) {
                var newY = event.center.y;
                var oldY = event.eventSource.viewport._oldCenterY;
-               console.log('ok event pan', newY);
-               console.log('ok viewer pan', oldY);
-               // evento scroll verso il basso
+             
                if (viewerHandler.viewer.viewport.getZoom() === 1) {
                   var newPage, currPage;
-                  console.log('aggiorna testo');
                   var oldBounds = viewerHandler.viewer.viewport.getBounds();
                   if (newY > oldY) {
-                     console.log('mostro riga sotto');
-                     console.log('bounds:', oldBounds);
-                     //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
                      newPage = imageScrollMap.mapDown(event.eventSource.viewport.getBounds());
                      currPage = evtInterface.getState('currentPage');
                      if (newPage !== currPage) {
                         viewerHandler.scope.$apply(function () {
                            evtInterface.updateState('currentPage', newPage);
-                           console.log('in pan handler:', evtInterface.getState('currentPage'));
-                           //scope.$parent.$parent.vm.updateContent();
                         });
                      }
-                     //evento scroll verso l'alto    
                   } else if (newY < oldY) {
-                     console.log('mostro riga sopra');
-                     console.log('bounds:', oldBounds);
-                     //angular.element(document).find('.box-text')[1].innerHTML = "<span> PRENDERE IL TESTO IN" + oldBounds + "</span>";
                      newPage = imageScrollMap.mapUP(event.eventSource.viewport.getBounds());
                      currPage = evtInterface.getState('currentPage');
                      if (newPage !== currPage) {
                         viewerHandler.scope.$apply(function () {
                            evtInterface.updateState("currentPage", newPage !== '' ? newPage : currPage);
-                           console.log("in pan handler:", evtInterface.getState('currentPage'));
-                           //scope.$parent.$parent.vm.updateContent();
                         });
                      }
                   }
-                  //aggiungere scroll con coordinate asse x - FS
                }
-
                //event.stopBubbling = true;
             }} catch (err) {
-               //console.log('error in pan', err);
+               console.err('error in pan', err);
 
             }
 
