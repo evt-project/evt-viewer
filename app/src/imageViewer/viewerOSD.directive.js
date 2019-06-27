@@ -32,7 +32,7 @@
               }
                catch (err){
 
-              console.err("viewer in timeout osd directive errore", err);
+              console.error("viewer in timeout osd directive errore", err);
 
              }
                scope.osd = viewer;

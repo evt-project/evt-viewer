@@ -11,7 +11,6 @@
          viewerHandler.viewer = undefined;
          viewerHandler.scope = undefined;
 
-
          viewerHandler.setImgCoeff = function (coeff) {
             ImageNormalizationCoefficient = coeff;
          };
@@ -96,18 +95,15 @@
                   }
                }
             }} catch (err) {
-               console.err('error in pan', err);
+               console.error('error in pan', err);
 
             }
 
          };
 
          viewerHandler.updateViewerBounds = function (page) {
-            console.log('updateViewerBounds: ', viewerHandler.viewer, page);
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
-            console.log('updateViewerBounds: ', oldBounds);
             if (!imageScrollMap.isInBounds(oldBounds.y, page)) {
-               console.log('updateViewerBounds', page);
                imageScrollMap.updateBounds(viewerHandler.viewer, page);
             }
 
@@ -115,13 +111,11 @@
 
 
          viewerHandler.updateViewerPage = function (page) {
-            console.log('updateViewerPages: ', viewerHandler.viewer, page);
             var pageValue = page;
             var pidx = 0;
             while(parsedData.getPages()[pidx] !== pageValue){
                pidx = pidx+1;
                if(pidx > parsedData.getPages().length){
-                console.error('error in update page');
                 break;
                }
             }
@@ -131,14 +125,11 @@
                      if (pageValue !== currPage) {
                         viewerHandler.scope.$apply(function () {
                            evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
-                           console.log("in updateViewerPage:", evtInterface.getState('currentPage'));
-                           //scope.$parent.$parent.vm.updateContent();
                         });
                      }
          };
 
          viewerHandler.highlightOverlay = function (zone) {
-            console.log('in highlight Overlay: ', zone);
             if (!zone) {
                throw 'problem in zone data extraction';
             }
@@ -146,7 +137,6 @@
             try {
                viewerHandler.viewer.removeOverlay('line-overlay');
             } catch (error) {
-               console.error('no line overlay', error);
             }
             var rectObj = convertZoneToOSD(zone);
             var elt = document.createElement("div");
@@ -160,7 +150,6 @@
          };
 
          viewerHandler.highlightSelectedOverlay = function (zone, zoneName) {
-            console.log('in highlight Overlay: ', zone);
             if (!zone) {
                throw "problem in zone data extraction";
             }
@@ -198,13 +187,11 @@
          };
 
          function convertZoneToOSD(zone) {
-            // TODO, This is just a test
             var tmp = {};
             tmp.x = _(zone.ulx);
             tmp.y = _(zone.uly);
             tmp.width = _(zone.lrx - zone.ulx);
             tmp.hight = _(zone.lry - zone.uly);
-            console.log("in convert zone to OSD", tmp);
             return new OpenSeadragon.Rect(tmp.x / ImageNormalizationCoefficient, tmp.y / ImageNormalizationCoefficient, tmp.width / ImageNormalizationCoefficient, tmp.hight / ImageNormalizationCoefficient);
          }
 
@@ -213,32 +200,18 @@
          }
 
          viewerHandler.moveToZone = function (zone) {
-            console.log('moveTo: ', zone);
-            console.log('viewport center: ', viewerHandler.viewer.viewport.getCenter());
             var oldCenter = viewerHandler.viewer.viewport.getCenter();
             var currentBounds = viewerHandler.viewer.viewport.getBounds(true);
-            console.log('current bounds', currentBounds);
             var normalizedZoney = zone.uly/ImageNormalizationCoefficient;
-            console.log('old center y', oldCenter.y);
-            console.log('zone y normalized', normalizedZoney);
-            console.log('differential y', oldCenter.y - normalizedZoney);
-            var newY = (zone.uly / ImageNormalizationCoefficient < oldCenter.y) ? oldCenter.y : zone.uly / ImageNormalizationCoefficient;
-            //var newY = ( (normalizedZoney < currentBounds.y + currentBounds.height) && normalizedZoney > currentBounds.y)  ? oldCenter.y :  (normalizedZoney < currentBounds.y) ? (currentBounds.y) :(currentBounds.y + currentBounds.height);
-            console.log('new center y',newY);
+            var newY = ((zone.uly / ImageNormalizationCoefficient) < oldCenter.y) ? oldCenter.y : zone.uly / ImageNormalizationCoefficient;
             var newCenter = new OpenSeadragon.Point(oldCenter.x, newY);
-            console.log('new center', newCenter);
             viewerHandler.viewer.viewport.panTo(newCenter);
-            console.log('center after pan', viewerHandler.viewer.viewport.getCenter());
          };
 
          viewerHandler.showHotSpot = function (zones) {
-            //showHotSpots -> for(){showHotSpot}
-            //var toggle = false;
-            console.log('in showHotSpot di ViewerHandler', zones);
 
             var rectObjs = [];
             for (var i = 0; i < zones.length; i++) {
-               console.log('zona iesima', zones[i]);
 
                var r = new OpenSeadragon.Rect(
                   zones[i].ulx / ImageNormalizationCoefficient,
@@ -248,24 +221,20 @@
 
                rectObjs.push(r);
             }
-            console.log('point hotspot: ', rectObjs);
 
             var hrefElts = [];
             for (var j = 0; j < zones.length; j++) {
                var content = zones[j].content;
                var id = zones[j].id;
                var zone = zones[j];
-               console.log('content', zone);
 
                var hrefElt = document.createElement('div');
                hrefElt.id = 'hotspot-overlay_selected-' + id;
-               //hrefElt.href = '#';
                hrefElt.className = 'hotspot';
                hrefElt.dataset.id = id;
                hrefElt.dataset.content = content;
                hrefElt.onmouseover = function () {
                   viewerHandler.viewer.zoomPerClick = 1;
-                  
                };
                hrefElt.onmouseout = function(){
                   viewerHandler.viewer.zoomPerClick = 1.5;
@@ -273,32 +242,20 @@
                hrefElt.onclick = function(){
                   showDivHotSpot(this);
                };
-               
-               //function(){console.log('hot spot');};
-               // hrefElt.onmouseleave = function () {
-               //    toggle = hiddenDivHotSpot(toggle, this);
-               // };
-
                hrefElts.push(hrefElt);
             }
-            console.log('hotspots: ', hrefElts);
 
             viewerHandler.viewer.zoomPerClick = 1;
             for (var k = 0; k < zones.length; k++) {
                viewerHandler.viewer.addOverlay({
                   element: hrefElts[k],
                   location: rectObjs[k],
-                  
-                 
-                  //placement: OpenSeadragon.Placement.CENTER,
-                  //checkResize: false
                });
             }
          };
 
          var showDivHotSpot = function (elem) {
             if (!divHotSpotToggle) {
-               console.log("elem id", elem.id);
                var _$elem = $(elem);
                var x = _$elem.position().left;
                var y = _$elem.position().top;
@@ -320,15 +277,11 @@
                   topLeft.y,
                   0.3,
                   0.35);
-               //bottomRight.x - topLeft.x
-               //bottomRight.y - topLeft.y
-
 
                var divElt = document.createElement('div');
                divElt.id = 'div-hotspot-overlay_selected-' + elem.dataset.id;
                divElt.className = 'hotspot-dida';        
                
-// Modifiche effettuate per Mappa San Matteo
                var divTitleElt = document.createElement('div');
                
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
@@ -341,21 +294,18 @@
                divCloser.onclick = function(){
                   viewerHandler.viewer.zoomPerClick = 1.5;      
                   hiddenDivHotSpot(this);
-            };
+               };
 
                var closeIcon = document.createElement('i');
                closeIcon.className = 'fa fa-times';
 
                closeIcon.onmouseover = function(){
                   viewerHandler.viewer.zoomPerClick = 1;
-                  console.log('closeIcon.onmouseover zoom per click: ', viewerHandler.viewer.zoomPerClick)
-               };
-               closeIcon.onmouseout = function(){
-                  viewerHandler.viewer.zoomPerClick = 1.5;
-                  console.log('closeIcon.onmouseout zoom per click: ', viewerHandler.viewer.zoomPerClick)
                };
 
-               
+               closeIcon.onmouseout = function(){
+                  viewerHandler.viewer.zoomPerClick = 1.5;
+               };
 
                divCloser.appendChild(closeIcon);
                divTitleElt.appendChild(divCloser);
@@ -379,8 +329,6 @@
                   rotationMode: OpenSeadragon.OverlayRotationMode.NO_ROTATION,
                };
 
-
-               console.log();
                divHotSpotToggle = !divHotSpotToggle;
                viewerHandler.viewer.addOverlay(OSDOverlay);
                $(OSDOverlay.element).draggable();
@@ -391,7 +339,6 @@
          };
 
          var hiddenDivHotSpot = function (elem) {
-            console.log('hiddenDivHotSpot: ' + divHotSpotToggle);
             try {
                var id = elem.dataset.id;
                viewerHandler.viewer.removeOverlay('div-hotspot-overlay_selected-' + id);
@@ -406,20 +353,16 @@
          };
 
          viewerHandler.hiddenHotSpot = function (zones) {
-            console.log('in hiddenHotSpot di ViewerHandler');
             try {
                for (var i = 0; i < zones.length; i++) {
                   viewerHandler.viewer.removeOverlay('hotspot-overlay_selected-' + zones[i].id);
                }
-               //viewerHandler.viewer.zoomPerClick = 2;
             } catch (error) {
                console.error('no hotspot overlay', error);
             }
          };
 
          viewerHandler.lineZone = function(zone){
-            console.log('in viewerHandler to handle zone line:', zone);
-            overlayHandler.test('funge');
             var rectObj = convertZoneToOSD(zone);
             var elt = document.createElement("div");
             elt.id = "line-div-overlay_"+zone.id;
@@ -427,58 +370,41 @@
             elt.className = "line-overlay";
 
             elt.onmouseover = function(){
-              console.log('illuminare riga corrispondente a '+ this.dataset['lb']);
                var ITLactive = evtInterface.getToolState('ITL') === 'active';
                var currentViewMode = evtInterface.getState('currentViewMode');
                
                if (ITLactive && currentViewMode === 'imgTxt'){
-
-                  overlayHandler.test('funge on mouseover');
                   this.className += ' selectedHighlight';
-                  
                   var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
-                  
                   if(elemsInLine.length == 0){
                      var dataLine = this.dataset['lb'].replace('reg','orig');
-                     console.log('In alternativa riga corrispondente a '+ dataLine);
                      elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
                   }
-                  
-                  console.log('selettori di riga:', elemsInLine);
                   for(var i=0; i < elemsInLine.length; i++){
                      elemsInLine[i].className += ' lineHover';
                   }
-
                } 
             };
 
             elt.onmouseout = function(){
-               console.log('de spegnere riga corrispondente a '+ this.dataset['lb']);
-
                var ITLactive = evtInterface.getToolState('ITL') === 'active';
                var currentViewMode = evtInterface.getState('currentViewMode');
                
                if (ITLactive && currentViewMode === 'imgTxt') {
 
-                  overlayHandler.test('funge on mouseout');
                   this.className = this.className.replace(' selectedHighlight', '') || '';
                   var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
                   if(elemsInLine.length == 0){
                      var dataLine = this.dataset['lb'].replace('reg','orig');
-                     console.log('In alternativa riga corrispondente a '+ dataLine);
                      elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
                   }
-                  console.log('selettori di riga:', elemsInLine);
                   for(var i=0; i < elemsInLine.length; i++){
                    elemsInLine[i].className = elemsInLine[i].className.replace(' lineHover', '') || '';
                   }
-               //alert('overlay da img');
-
                }
             };
 
             elt.onclick = function(){
-               overlayHandler.test('funge on click');
             };
 
             viewerHandler.viewer.addOverlay({
@@ -489,13 +415,8 @@
             return elt;
          };
 
-
-
-
          viewerHandler.testFun = function () {
-            console.log('testFunction: ', viewerHandler);
-            return 'test ok';
+            return 'ok';
          };
       });
-
 })();
