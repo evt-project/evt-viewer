@@ -1,37 +1,23 @@
 angular.module('evtviewer.openseadragon')
      .provider('osd', function(){
-    //     var defaults = this.defaults;
-        
-    //     this.setDefaults = function (_defaults) {
-    //         defaults = _defaults;
-    //   };
 
                
         this.$get = function(parsedData, config) {
             var imageViewer = {};
 
             imageViewer.test = function(param){
-                console.log('CHIAMATA PROVIDER for parameter: ', param);
-                console.log('CONFIG IN PROVIDER OSD: ', config.imageViewerOptions);
-                return true;
+                return (param)?true:true;
             }
 
             imageViewer.imgCoeff = function(){
-                console.log('CHIAMATA PROVIDER for parameter: ', config.imageNormalizationCoefficient);
                 return config.imageNormalizationCoefficient;
             }
 
              imageViewer.build = function(name){
-                 console.log('instanziating the OSD named: ' + name );
-                 
                  var options = config.imageViewerOptions;
-                 console.log('option for image viewer in conf: ', options);
 
-                 
                  var pages = parsedData.getPages();
-                 console.log('******pages*******: ', pages);
                  var lenght = pages.length;
-                 console.log('lunghezza pagine: ', lenght);
                  var p;
                  var pp;
                  var source="";
@@ -42,16 +28,11 @@ angular.module('evtviewer.openseadragon')
                      pp = parsedData.getPage(p);
                      source = pp.source;
                      if(source!==undefined && source!=='' && source!==' ' && source!==null){
-                     console.log('***** pp ******', source);  
                      imgobj.url = source;
                      options.tileSources.push(imgobj);
                      }
      
                  }
-                 // options.tileSources.push(imgobj2);
-                 // options.tileSources.push(imgobj1);
-                 //options.tileSources[1].url= "data/test-img/vb/VB_fol_105r_big.jpg";
-                 //parsedData.getPage('page1').source;
                  options.id = "osd-img";
                  return options;
 
