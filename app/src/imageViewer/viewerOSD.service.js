@@ -14,7 +14,6 @@
 
          viewerHandler.setImgCoeff = function (coeff) {
             ImageNormalizationCoefficient = coeff;
-            console.log('imageNormalizationCoefficient: ', ImageNormalizationCoefficient);
          };
 
          viewerHandler.setViewer = function (viewer) {
@@ -61,10 +60,10 @@
          };
 
          viewerHandler.navigatorScroll = function (event) {
-            console.log("navigator-scroll", evtInterface);
-            console.log("navigator-scroll", event);
             if (event.scroll > 0) {
+               // scroll-up
             } else {
+               // scroll-down
             }
          };
 
@@ -96,7 +95,6 @@
                      }
                   }
                }
-               //event.stopBubbling = true;
             }} catch (err) {
                console.err('error in pan', err);
 
@@ -378,7 +376,6 @@
                var OSDOverlay = {
                   element: divElt,
                   location: rect,
-                  // aggiunto da FS - no rotazione dell'hotspot
                   rotationMode: OpenSeadragon.OverlayRotationMode.NO_ROTATION,
                };
 
@@ -390,7 +387,7 @@
                
                
             }
-            return divHotSpotToggle; // non dovrebbe servire più
+            return divHotSpotToggle;
          };
 
          var hiddenDivHotSpot = function (elem) {
@@ -453,8 +450,6 @@
                   }
 
                } 
-              
-               //alert('overlay da img');
             };
 
             elt.onmouseout = function(){
