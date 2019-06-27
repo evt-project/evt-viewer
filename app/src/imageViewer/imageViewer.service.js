@@ -3,49 +3,44 @@
     
     .service('imageViewerModel',function(parsedData){
         var viewerModel = this;
+      
         var options = {
             id: "osd-img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
-            tileSources: [], // immagine SanMatteo
+            tileSources:[],
             showRotationControl: true,                
             showNavigator: true,
-            //navigatorId: "navscroll",
-            //visibilityRatio: 0.8,
             visibilityRatio: 1, 
             defaultZoomLevel: 1,
             panHorizontal: true,
             constrainDuringPan: true,
-            //minZoomLevel: 0.8,
             minZoomLevel: 0.8,
-            maxZoomLevel: 8.0,
-    
+            maxZoomLevel: 2.0,
             wrapVertical: false,
-            navigatorPosition: "ABSOLUTE",
-            //navigatorTop: "0",
-            //navigatorLeft: "94%",
-            //navigatorHeight: "100%",
-            //navigatorWidth: "6%",
-            navigatorTop:"0%",
-            navigatorLeft:"94%",
-            navigatorHeight:"100%",
-            navigatorWidth:"6%",
-            //per sequetnza immagini
-            sequenceMode: true,
-            preserveOverlays: false,
-            //OpenSeadragon.OverlayRotationMode.NO_ROTATION
+            navigatorLeft: "94%",
+            navigatorHeight: "100%",
+            navigatorWidth: "50%",
+            navigatorTop:"1%",
          };
-  
-
-         
-         // {id:"box_body_mainImage",prefixUrl:"images/",tileSources:"data/tails/scaled_70_verticale.dzi",showNavigator:!0,visibilityRatio:1,defaultZoomLevel:1,panHorizontal:!0,constrainDuringPan:!0,minZoomLevel:1,wrapVertical:!0,navigatorPosition:"ABSOLUTE",navigatorTop:"1%",navigatorLeft:"98%",navigatorHeight:"95%",navigatorWidth:"8%"}
     
          viewerModel.getOptions = function(){
+            
+            var pages = parsedData.getPages();
+            var lenght = pages.length;
+            var p;
+            var pp;
+            var source="";
+            for(var i = 0; i < lenght; i++){
+                var imgobj = {type:"image", url:""};
+                p = pages[i];
+                pp = parsedData.getPage(p);
+                source = pp.source;
+                if(source!==undefined && source!=='' && source!==' ' && source!==null){
+                imgobj.url = source;
+                options.tileSources.push(imgobj);
+                }
+            }
              return options;
          };
-    
-    
-    
-    
-    });
-    console.log("prova caricato modulo evtviewer.imageViewerService");
+     });
 })();

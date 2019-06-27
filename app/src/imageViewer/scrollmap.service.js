@@ -4,7 +4,8 @@ angular.module('evtviewer.openseadragonService')
       console.log('in service imageScrollMap');
       var key = 'yPage';
       var imageScrollMap = this;
-      /* DATI PER SCROLL MAPPA SAN MATTEO
+     
+      /*
       var map = {
          yPage1: {
             from: 0.1,
@@ -35,7 +36,6 @@ angular.module('evtviewer.openseadragonService')
          switch (type) {
 
             case 'down':
-               console.log('mapping moving down');
                if (box.y < map[key + '1'].to) {
                   return (key + '1').substr(1).toLowerCase();
                } else {
@@ -50,14 +50,8 @@ angular.module('evtviewer.openseadragonService')
 
 
             case 'up':
-               console.log('mapping moving up');
                for (var i = 1; i <= map.size; i++) {
-                  console.log('nel for di scrolling up', (map[key + i].from + map[key + i].to) / 2);
-                  console.log('box y:', box.y);
-                  console.log('from:', map[key + i].from);
                   if (box.y < ((map[key + i].from + map[key + i].to) / 2) && box.y > map[key + i].from) {
-                     console.log('nel if di scrolling up', i);
-                     console.log(key + i);
                      return (key + i).substr(1).toLowerCase();
                   }
                }
