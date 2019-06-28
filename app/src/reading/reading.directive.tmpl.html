@@ -8,6 +8,7 @@
                 'invisible': !vm.fitFilters(),
                 'blurred'  : $parent.vm.state.topBoxOpened}">
     <span 
+        ng-if="!vm.noText" 
         class="reading__text"
         style="{{vm.backgroundColor()}}"
         title="{{vm.attributes | translate}}"

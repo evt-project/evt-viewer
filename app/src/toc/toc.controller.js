@@ -52,10 +52,11 @@ angular.module('evtviewer.toc')
         var editions = getAvailableEditionLevels();
         if (evtInterface.getState('currentEdition') !== 'critical' && editions.indexOf('critical') > -1) {
             evtInterface.updateState(currentEdition, 'critical');
-            evtInterface.updateDiv(doc, div);
-            evtInterface.updateState('secondaryContent', '');
-            evtInterface.updateUrl();
         }
+        evtInterface.updateState('currentDoc', doc);
+        evtInterface.updateDiv(doc, div);
+        evtInterface.updateState('secondaryContent', '');
+        evtInterface.updateUrl();
     }
 
     this.goToPage = function (doc, page) {
@@ -64,6 +65,7 @@ angular.module('evtviewer.toc')
             var edition = editions.indexOf(config.defaultEdition) > -1 ? config.defaultEdition : editions[0];
             evtInterface.updateState(currentEdition, edition);
         }
+        evtInterface.updateState('currentDoc', doc);
         evtInterface.updateState('currentPage', page);
         evtInterface.updateState('secondaryContent', '');
         evtInterface.updateUrl();

@@ -4,7 +4,7 @@
     "webSite": "",
     "logoUrl": "",
 
-	"dataUrl": "../data/pseudoEdition-ext.xml",
+	"dataUrl": "../data/polo/main1.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -58,19 +58,19 @@
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "enableXMLdownload" : true,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
-    "namedEntitiesSelector": false,
+    "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
         "tagName": "persName",
