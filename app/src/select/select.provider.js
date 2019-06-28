@@ -234,6 +234,9 @@ angular.module('evtviewer.select')
 							if (newOption.pages.length > 0 && newOption.pages.indexOf(currentPage) < 0) { // The page is not part of the document
 								evtInterface.updateState('currentPage', newOption.pages[0]);
 							}
+							if (newOption.divs.length > 0) {
+								evtInterface.updateDiv(newOption.value, newOption.divs[0]);
+							}
 							evtInterface.updateUrl();
 						}
 					};
@@ -248,6 +251,37 @@ angular.module('evtviewer.select')
 						return option;
 					};
 					optionList = formatOptionList(parsedData.getDocuments());
+					break;
+				case 'div':
+					callback = function(oldOption, newOption) {
+						if (newOption) {
+							vm.selectOption(newOption);
+							var docId = newOption.doc;
+							evtInterface.updateDiv(docId, newOption.value);
+							evtInterface.updateUrl();
+						}
+					};
+					formatOptionList = function(optionList, formattedList, section) {
+						var allDivs = parsedData.getDivs();
+						angular.forEach(optionList, function(divId) {
+							if (allDivs[divId].section === section) {
+								if (!allDivs[divId]._isSubDiv && allDivs[divId].subDivs.length > 0) {
+									allDivs[divId].type = 'groupTitle';
+								}
+								formattedList.push(allDivs[divId]);
+								if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
+									formatOptionList(allDivs[divId].subDivs, formattedList, section);
+								}	
+							}
+						});
+					};
+					formatOption = function(option) {
+						return option;
+					};
+					var currentDoc = evtInterface.getState('currentDoc');
+					var div = parsedData.getDiv(evtInterface.getState('currentDivs')[currentDoc]);
+					var section = div ? div.section : 'body';
+					formatOptionList(parsedData.getDivs()._indexes.main[currentDoc], optionList, section);
 					break;
 				case 'edition':
 				case 'comparingEdition':

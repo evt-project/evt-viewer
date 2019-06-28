@@ -641,8 +641,7 @@ angular.module('evtviewer.box')
                         return true;
                      }
                   });
-               }
-               else {
+               } else {
                   bottomMenuList.buttons.push({
                      title: 'Search',
                      label: 'Search',
@@ -671,6 +670,18 @@ angular.module('evtviewer.box')
 							initValue: evtInterface.getState('currentPage')
 						});
 					} else {
+						if (parsedData.getDivs().length > 0) {
+							var docId = evtInterface.getState('currentDocument');
+							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
+							if (currentDiv) {
+								topMenuList.selectors.push({
+									id: 'div_' + currentId,
+									type: 'div',
+									initValue: currentDiv
+								});
+							}
+						}
 						topMenuList.buttons.push({
 							title: 'BUTTONS.WITNESSES_LIST',
 							label: '',
@@ -894,6 +905,19 @@ angular.module('evtviewer.box')
 						type: 'witness-page',
 						initValue: witPageId
 					});
+
+					if (parsedData.getDivs().length > 0) {
+						var docId = evtInterface.getState('currentDocument');
+						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
+						if (currentDiv) {
+							topMenuList.selectors.push({
+								id: 'div_' + currentId + '_' + vm.witness,
+								type: 'div',
+								initValue: currentDiv
+							});
+						}
+					}
 
 					topMenuList.buttons.push({
 						title: 'BUTTONS.INFO_ABOUT_TEXT',
