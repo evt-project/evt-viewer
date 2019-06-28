@@ -456,6 +456,17 @@ angular.module('evtviewer.box')
                   }, true);
                 }
 
+                scope.$watch(function () {
+                   var currentBoxId = scope.id;
+                   return evtBox.getState(currentBoxId, 'searchBox');
+                }, function (newItem, oldItem) {
+                   if (newItem === true) {
+                      $timeout(function(){
+                         $('input').trigger('focus');
+                      }, 100);
+                   }
+                }, true);
+                
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {

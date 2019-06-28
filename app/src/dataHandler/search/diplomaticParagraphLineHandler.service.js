@@ -29,7 +29,8 @@ angular.module('evtviewer.dataHandler')
                   var childNodes = evtSearchDocument.getChildNodes(xmlDocDom, node, ns, nsResolver);
                   
                   for(var i = 0; i < childNodes.length;) {
-                     var currentElementNodes;
+                     var currentElementNodes,
+                        cleanedElementsNodes;
                      
                      if(childNodes[i].nodeName === 'pb') {
                         currentPage = evtSearchDocument.getCurrentPage(childNodes[i]);
@@ -65,6 +66,12 @@ angular.module('evtviewer.dataHandler')
                      nodeName[node.nodeName]();
                      
                      currentElementNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, childNodes);
+                     cleanedElementsNodes = evtSearchDocument.removeEmptyTextNodes(currentElementNodes);
+                     if(cleanedElementsNodes.length === 0) {
+                        documentToIndex = {};
+                        continue;
+                     }
+                     
                      documentToIndex.content = evtSearchDocument.getContent(currentElementNodes, '');
    
                      documentsToIndex[documentToIndex.docId] = documentToIndex;

@@ -24,10 +24,8 @@ angular.module('evtviewer.search')
             if(configKeys.length !== 0){
                configKeyboardKeys = getConfigKeyboardKeys(configKeys);
                for (var k in configKeyboardKeys) {
-                  for (var g in glyphInXmlDoc) {
-                     if(g === k) {
-                        keyboardKeys += glyphInXmlDoc[g] + ':' + k + ' ';
-                     }
+                  if(glyphInXmlDoc.includes(k)) {
+                     keyboardKeys += configKeyboardKeys[k] + ':' + k + ' ';
                   }
                }
             }
@@ -51,8 +49,10 @@ angular.module('evtviewer.search')
                autoAccept : true,
                appendTo: '#' + parentBoxId +' .search-box .keyboard-container',
                change: function(e, kb) {
+                  parentBoxId = scope.$parent.id;
                   kb.originalContent = kb.$preview.val();
                   scope.vm.searchInput = kb.originalContent;
+                  scope.vm.highlightSearchResults(parentBoxId, scope.vm.searchInput);
                }
             });
            

@@ -130,6 +130,7 @@ angular.module('evtviewer.dataHandler')
             prevLb,
             nodeHasPrevLb,
             nodeIsLb,
+            nodeIsPb,
             countPrevLb;
    
          for (var i = 0; i < nodes.length;) {
@@ -153,12 +154,18 @@ angular.module('evtviewer.dataHandler')
    
             nodeHasPrevLb = countPrevLb !== 0;
             nodeIsLb = nodes[i].nodeName === 'lb';
-      
+            nodeIsPb = nodes[i].nodeName === 'pb';
+            
             if (nodeHasPrevLb || nodeIsLb) {
-               if(nodeIsLb) {
+               while(nodeIsLb || nodeIsPb) {
                   nodes.splice(0, 1);
+                  if(nodes.length === 0) {
+                     return;
+                  }
+                  nodeIsLb = nodes[i].nodeName === 'lb';
+                  nodeIsPb = nodes[i].nodeName === 'pb';
                }
-               while(nodes[i] !== undefined && nodes[i].nodeName !== 'lb') {
+               while(nodes[i] !== undefined && nodes[i].nodeName !== 'lb' && nodes[i].nodeName !== 'pb') {
                   lineNodes.push(nodes[i]);
                   nodes.splice(0, 1);
                }
@@ -169,6 +176,16 @@ angular.module('evtviewer.dataHandler')
             }
          }
          return lineNodes;
+      };
+   
+      /* from array */
+      XmlDoc.prototype.removeEmptyTextNodes = function (nodes) {
+        return nodes.filter(
+           function (node) {
+              var isEmptyTextNode = node.nodeName === '#text' && node.textContent.trim() === '',
+                isTextNode = node.nodeName === '#text';
+              return !isEmptyTextNode || !isTextNode;
+         });
       };
       
       XmlDoc.prototype.getChildNodes = function (xmlDocDom, node, ns, nsResolver) {
@@ -233,6 +250,14 @@ angular.module('evtviewer.dataHandler')
          
          while (noteElements.length > 0) {
             noteElements[0].parentNode.removeChild(noteElements[0]);
+         }
+      };
+   
+      XmlDoc.prototype.removeAddElements = function (xmlDocDom) {
+         var addElements = xmlDocDom.getElementsByTagName('add');
+      
+         while (addElements.length > 0) {
+            addElements[0].parentNode.removeChild(addElements[0]);
          }
       };
    }]);

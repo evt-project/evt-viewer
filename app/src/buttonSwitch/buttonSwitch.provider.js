@@ -729,7 +729,7 @@ angular.module('evtviewer.buttonSwitch')
                         evtSearch.initSearch(xmlDocDom);
                         evtInterface.setToolStatus('isDocumentIndexed', 'true');
          
-                        searchToolsBtn = button.getByType('searchToolsInternal');
+                        searchToolsBtn = button.getByType('searchInternal');
                         for(var z in searchToolsBtn) {
                            searchToolsBtn[z].disabled = false;
                         }
@@ -780,7 +780,7 @@ angular.module('evtviewer.buttonSwitch')
                   evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
                };
                break;
-            case 'searchToolsInternal':
+            case 'searchInternal':
                btnType = 'standAlone';
                disabled = (
                   function() {

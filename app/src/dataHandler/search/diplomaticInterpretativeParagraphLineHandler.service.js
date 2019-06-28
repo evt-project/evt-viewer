@@ -54,7 +54,9 @@ angular.module('evtviewer.dataHandler')
                   
                   for(var i = 0; i < diplomaticNodes.length;) {
                      var currentElementDiplomaticNodes,
-                        currentElementInterpretativeNodes;
+                        currentElementInterpretativeNodes,
+                        cleanedCurrentElementDiplomaticNodes,
+                        cleanedCurrentElementInterpretativeNodes;
                      
                      if(diplomaticNodes[i].nodeName === 'pb') {
                         currentPage = evtSearchDocument.getCurrentPage(diplomaticNodes[i]);
@@ -98,6 +100,13 @@ angular.module('evtviewer.dataHandler')
    
                      currentElementDiplomaticNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, diplomaticNodes);
                      currentElementInterpretativeNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, interpretativeNodes);
+                     cleanedCurrentElementDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(currentElementDiplomaticNodes);
+                     cleanedCurrentElementInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(currentElementInterpretativeNodes);
+                     
+                     if(cleanedCurrentElementDiplomaticNodes.length === 0 && cleanedCurrentElementInterpretativeNodes.length === 0) {
+                        documentToIndex = {};
+                        continue;
+                     }
    
                      documentToIndex.content = {
                         diplomatic: evtSearchDocument.getContent(currentElementDiplomaticNodes, 'diplomatic'),
