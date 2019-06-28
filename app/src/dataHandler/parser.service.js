@@ -212,9 +212,6 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					newElement = document.createElement('span');
 					newElement.className = element.tagName !== undefined ? element.tagName : '';
-
-
-
 					if (element.attributes) {
 						for (var k = 0; k < element.attributes.length; k++) {
 							var attribK = element.attributes[k];
@@ -224,6 +221,15 @@ angular.module('evtviewer.dataHandler')
 								}
 							}
 						}
+					}
+					if (element.tagName === 'div') {
+						var divId;
+						if (element.attributes && element.getAttribute('xml:id')) {
+							divId = element.getAttribute('xml:id');
+						} else {
+							divId = parser.xpath(element).substr(1);
+						}
+						newElement.setAttribute('id', divId);
 					}
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
