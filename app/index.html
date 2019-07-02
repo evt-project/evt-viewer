@@ -91,6 +91,11 @@
                 data-type="download-xml">
             </button-switch> -->
             <button-switch
+            title="Search"
+            data-icon="search"
+            data-type="searchAdvanced">
+        </button-switch>
+        <button-switch
                 title="BUTTONS.MENU"
                 data-icon="menu"
                 data-type="mainMenu">
@@ -357,7 +362,13 @@
             <section id="main-container" class="viewMode" ng-switch-default>
                 <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
             </section>
+        
             <!-- <div id="right-nav"><span><i class="fa fa-chevron-circle-right"></i></span></div> -->
+            <section id="main-container"
+            class="viewMode indexingInProgress"
+            ng-show="getState('indexingInProgress')">
+            <div class="loading"><i class="fa fa-spinner fa-pulse loader"></i></div>
+         </section>
         </section>
 
         <section class="global-msg-container"
@@ -467,16 +478,19 @@
     <script src="/src/dataHandler/bibliographyParser.service.js"></script>
     <script src="/src/dataHandler/hotspotParser.service.js"></script>
    
+    <script src="/src/dataHandler/search/searchIndex.service.js"></script>
     <script src="/src/dataHandler/search/diplomaticEditionHandler.service.js"></script>
-    <script src="/src/dataHandler/search/diplomaticInterpretativeLbHandler.service"></script>
-    <script src="/src/dataHandler/search/diplomaticInterpretativeParagraphLineHandler.service"></script>
+    <script src="/src/dataHandler/search/diplomaticInterpretativeParagraphLineHandler.service.js"></script>
+    <script src="/src/dataHandler/search/diplomaticInterpretativeLbHandler.service.js"></script>
     <script src="/src/dataHandler/search/diplomaticLbHandler.service.js"></script>
     <script src="src/dataHandler/search/diplomaticParagraphLineHandler.service.js"></script>
     <script src="/src/dataHandler/search/interpretativeEditionHandler.service.js"></script>
+    
     <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
+    
+    
     <script src="/src/dataHandler/search/search.service.js"></script>
     <script src="/src/dataHandler/search/searchDocument.service.js"></script>
-    <script src="/src/dataHandler/search/searchIndex.service.js"></script>
     <script src="/src/dataHandler/search/searchInterface.service.js"></script>
     <script src="/src/dataHandler/search/searchLbParser.service.js"></script>
     <script src="/src/dataHandler/search/searchParagraphLineParser.service.js"></script>
