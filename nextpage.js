@@ -3,6 +3,6 @@
      * @function
      * @return {Number}
      */
-    currentPage: function() {
+    currentPage: function currentPage() {
         return this._sequenceIndex;
     }
