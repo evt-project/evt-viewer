@@ -21,136 +21,90 @@
 /* ***************************************************************** */
 
 .highlight {
-   border: 1px solid #4c2f2f;
-   background-color: #c67261;
-   opacity: 0.4;
-   filter: alpha(opacity=40);
-   /* For IE8 and earlier */
-}
-
-.selectedHighlight {
-   filter: alpha(opacity=50);
-   border: 1px solid #4c2f2f;
-   background-color: #9c4837;
-   opacity: 0.5;
-}
-
-.nohighlight {
-   display: none;
-}
-
-div.hotspot {
-   filter: alpha(opacity=50);
-   border: 1px solid #4c2f2f;
-   background-color: #9c4837;
-   opacity: 0.5;
-}
-div.hotspot:hover {
-    cursor: help;
-
+    border: 1px solid #4c2f2f;
+    background-color: #c67261;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    /* For IE8 and earlier */
  }
-
-a.hotspot {
-   width: 30px;
-   height: 30px;
-}
-
-img.hotspot {
-   width: 30px !important;
-   height: 30px !important;
-   display: block !important;
-}
-
-div.hotspot-dida {
-    background-color: #ffffff;
-    color: #000000;
-    border: 2px solid #4E443C;
-    border-radius: 2px;
-    padding: 0;
-    text-align: left;
-    box-shadow: 0px 1px 4px rgba(0,0,0,0.7);
-}
-
-div.hotspot-dida-title {
-    height: 25px;
-    margin: 0;
-    text-align: center;
-    width: 100%;
-    background: #263238;
-    color: #fff;
-    padding: 0px 2px;
-    opacity: 1;
-}
-
-div.hotspot-dida-body {
-    font-size: 16px;
-    height: 80%;
-    overflow-y: scroll;
-    text-align: justify;
-    border: none !important;
-    padding: 6px !important;
-}
-
-div#osd-img * img {
+ 
+ .selectedHighlight {
+    filter: alpha(opacity=50);
+    border: 1px solid #4c2f2f;
+    background-color: #9c4837;
+    opacity: 0.5;
+ }
+ 
+ .nohighlight {
+    display: none;
+ }
+ 
+ div.hotspot {
+    filter: alpha(opacity=50);
+    border: 1px solid #4c2f2f;
+    background-color: #9c4837;
+    opacity: 0.5;
+ }
+ div.hotspot:hover {
+     cursor: help;
+ 
+  }
+ 
+ a.hotspot {
+    width: 30px;
+    height: 30px;
+ }
+ 
+ img.hotspot {
+    width: 30px !important;
+    height: 30px !important;
     display: block !important;
-}
-
-    
-}
-.div {
-    margin: 5px 0 !important;
-    float: left !important;
-    display: block !important;
-    clear: both;
-}
-.openseadragon-canvas {
-    background-color: #263238 !important;
-}
-div#box_body_mainImage * img {
-    display: block !important;
-}
-.del{ 
-    background-color: white !important;
- } 
- #box_body_mainImage > div:nth-child(1){
-        background: #263238 !important;
  }
- section.box-text > div:nth-child(1) > evt-select:nth-child(1) > div:nth-child(1){
-     display: none;
+ 
+ div.hotspot-dida {
+     background-color: #ffffff;
+     color: #000000;
+     border: 2px solid #4E443C;
+     border-radius: 2px;
+     padding: 0;
+     text-align: left;
+     box-shadow: 0px 1px 4px rgba(0,0,0,0.7);
  }
-orig {
-     font-style: italic;
+ 
+ div.hotspot-dida-title {
+     height: 25px;
+     margin: 0;
+     text-align: center;
+     width: 100%;
+     background: #263238;
+     color: #fff;
+     padding: 0px 2px;
+     opacity: 1;
  }
-span.namedEntity__detail-text-content span.orig.ng-scope{
-    font-style: italic;
-}
-div.box-menu:nth-child(4){
-    display: none;
-}
-section.box-image > div:nth-child(1) > button-switch:nth-child(5){
-    display: inline !important;
-}
-section.box-image > div:nth-child(1) > button-switch:nth-child(3){
-    display: none;
-}
-div.box-menu:nth-child(4) > button-switch:nth-child(1){
-    display: none;
-}
-div.box-menu:nth-child(4) > button-switch:nth-child(2){
-    display: none;
-}
-.box.box-image .box-body{
-    height: 100%;
-}
-.fa-times{
-   float: right;
-}
-
-
-.fa-times:hover{
-   cursor: pointer;
-}
-
-.term {
-   background-color: coral;
-}
+ 
+ div.hotspot-dida-body {
+     font-size: 16px;
+     height: 80%;
+     overflow-y: scroll;
+     text-align: justify;
+     border: none !important;
+     padding: 6px !important;
+ }
+ 
+ div#osd-img * img {
+     display: block !important;
+ }
+ 
+ .fa-times{
+    float: right;
+ }
+ 
+ 
+ .fa-times:hover{
+    cursor: pointer;
+ }
+ 
+ .term {
+    background-color: coral;
+ }
+ 

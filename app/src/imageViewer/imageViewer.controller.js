@@ -2,7 +2,7 @@
     .controller('imageViewerCtrl',['$scope', function($scope) {
         //   var vm = this;
 
-         $scope.test = 'CIAO!';   
+         $scope.test = '';   
          console.log("caricato controller evtviewer.imageViewer", $scope);
       }]);
 
