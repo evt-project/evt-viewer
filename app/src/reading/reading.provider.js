@@ -105,6 +105,9 @@ angular.module('evtviewer.reading')
                 parentEntryId = appObj._indexes._parentEntry || '';
             }
 
+            var selected = entryId === reading.getCurrentAppEntry(),
+                range;
+
             scopeHelper = {
                 // expansion
                 uid              : currentId,
@@ -115,6 +118,9 @@ angular.module('evtviewer.reading')
                 readingType      : scope.readingType,
                 variance         : scope.variance,
                 type             : scope.type,
+                overlap          : scope.overlap,
+                noText           : scope.noText,
+                range            : range,
                 attributes       : attributes,
                 exponent         : exponent,
                 showExponent     : showExponent,
@@ -127,7 +133,7 @@ angular.module('evtviewer.reading')
                     _subContentOpened : 'criticalNote',
                     inline            : scope.inlineApparatus
                 },
-                selected         : entryId === reading.getCurrentAppEntry(),
+                selected         : selected,
                 openTriggerEvent : angular.copy(defaults.openTriggerEvent),
                 defaults         : angular.copy(defaults)
             };
