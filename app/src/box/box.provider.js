@@ -788,10 +788,9 @@ angular.module('evtviewer.box')
 							isITLon = evtInterface.getToolState('ITL') === 'active',
 							errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
 							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_NOT_AVAILABLE\' | translate }}</span>';
-
-						if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (vm.version === '' || vm.version === undefined)) { // Critical edition
+						if (scope.vm.edition && scope.vm.edition === 'critical' && !vm.version) { // Critical edition
 							newDoc = parsedData.getCriticalText(scope.vm.state.docId);
-							if (newDoc === undefined) {
+							if (!newDoc) {
 								newDoc = parsedData.getDocument(scope.vm.state.docId);
 
 								if (newDoc !== undefined) {
@@ -821,7 +820,7 @@ angular.module('evtviewer.box')
 									evtGenericEntity.highlightActiveTypes();
 								});
 							}
-						} else if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (scope.vm.version !== '' && scope.vm.version !== undefined)) {
+						} else if (scope.vm.edition && scope.vm.edition === 'critical' && scope.vm.version) {
 							var currentDocId = evtInterface.getState('currentDoc');
 							if (scope.vm.version === config.versions[0]) {
 								newDoc = parsedData.getCriticalText(currentDocId) || undefined;

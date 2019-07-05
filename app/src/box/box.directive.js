@@ -133,7 +133,7 @@ angular.module('evtviewer.box')
                                 divCount++;
                             }
                         }
-                        if (divVisible) {
+                        if (divVisible && parsedData.getDiv(divId)) {
                             evtInterface.updateDiv(parsedData.getDiv(divId).doc, divId);
                             evtInterface.updateUrl();
                         }
@@ -329,16 +329,15 @@ angular.module('evtviewer.box')
               scope.$watch(function() {
                   return evtInterface.getState('currentDoc');
               }, function(newItem, oldItem) {
-                  if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
+                    if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
                       scope.vm.state.docId = newItem;
                       scope.vm.isLoading = true;
                       currentBox.updateContent();
                       if (scope.vm.currentType === 'text') {
-                          var docObj = parsedData.getDocument(newItem),
-                              docFront = docObj ? docObj.front : undefined;
-
-                              var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                              scope.vm.updateTopBoxContent(content);
+                        var docObj = parsedData.getDocument(newItem),
+                            docFront = docObj ? docObj.front : undefined;
+                        var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                        scope.vm.updateTopBoxContent(content);
                       }
                       /* aggiunta per msDesc*/
                       else if (scope.vm.currentType === 'image'){
