@@ -138,9 +138,12 @@ angular.module('evtviewer.dataHandler')
   }
 
   parser.parseLemma = function(entry, lemma, doc) {
-    var lemmaElem = xmlParser.parse(lemma);
-    var content = evtParser.parseXMLElement(doc, lemmaElem, { slip: skipFromBeingParsed });
-    content = content.textContent ? content.textContent : lemmaElem.textContent;
+    var lemmaElem; content = lemma;
+    if (typeof lemma !== 'string') {
+      lemmaElem = xmlParser.parse(lemma);
+      content = evtParser.parseXMLElement(doc, lemmaElem, { skip: skipFromBeingParsed });
+      content = content.textContent ? content.textContent : lemmaElem.textContent;
+    }
     var parsedLemma = {
       id: entry.id + '-depa-lem',
       attributes: [],
@@ -167,6 +170,9 @@ angular.module('evtviewer.dataHandler')
   }
   
   parser.isDescendant = function(parent, child) {
+    if (!child) {
+      return;
+    }
     var node = child.parentNode;
     while (node) {
       if (node === parent) {
