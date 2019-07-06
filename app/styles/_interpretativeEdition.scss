@@ -3,526 +3,559 @@
 /* *************************** */
 
 .interpretativeEdition {
-	// Abbreviations and Their Expansions
-	.choice {
-		> .abbr {
-			display: none;
-		}
-
-		.expan {}
-	}
-
-	// Additions, Deletions, and Omissions
-	.add {
-		&[data-place='above'] {}
-	}
-
-	//TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-	.glyph {
-		.glyphname, .mapping {
-			display: none;
-		}
-
-		.mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
-			display: inline;
-		}
-	}
-
-	.char {
-		.charname, .mapping {
-			display: none;
-		}
-
-		.mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
-			display: inline;
-		}
-	}
-
-	.choice {
-		display: inline;
-
-		&:before, &:after {
-			content: "";
-		}
-
-		.corr, .orig {
-			font-size: 80%;
-			position: absolute;
-			line-height: 16px;
-			display: none;
-			border: 1.5px solid black;
-			border-radius: 3px;
-
-			@include set(box-shadow, 2px 2px 2px #7e7067);
-
-			padding: 0.4%;
-			margin-top: 30px;
-
-			&:before {
-				left: 15%;
-				position: absolute;
-				top: -13px;
-			}
-		}
-
-		.corr {
-			&:before {
-				content: url("../images/popup_before_corr.png");
-			}
-		}
-
-		.corr, .corr * {
-			background: #f99069 !important;
-		}
-
-		.orig {
-			&:before {
-				content: url("../images/popup_before.png");
-			}
-		}
-
-		.orig, .orig * {
-			background: #e5dac4 !important;
-		}
-
-		.reg {
-			color: #69513a;
-
-			&:hover, &.hover {
-				color: #561c0a;
-			}
-		}
-
-		&:hover, &.hover {
-			.orig, .corr {
-				display: inline;
-				min-width: 30px;
-				text-align: center;
-				z-index: 9;
-			}
-
-			.corr {
-				@include set(transform, translate(-80%, 0));
-			}
-
-			.reg {
-				text-decoration: underline;
-			}
-		}
-
-		.sic {
-			color: #934d4d;
-		}
-
-		.sup {
-			line-height: 20px;
-			vertical-align: 20%;
-		}
-
-		.under {
-			line-height: 20px;
-			vertical-align: -20%;
-		}
-	}
-
-	.sic {
-		display: inline-table;
-
-		&:before, &:after {
-			content: " ";
-		}
-
-		.corr {
-			font-size: 80%;
-			position: absolute;
-			line-height: 16px;
-			display: none;
-			background: #f99069;
-			border: 1.5px solid black;
-			border-radius: 3px;
-
-			@include set(box-shadow, 2px 2px 2px #7e7067);
-
-			padding: 0.4%;
-			margin-top: 30px;
-
-			&:before {
-				content: url("../images/popup_before_corr.png");
-				left: 15%;
-				position: absolute;
-				top: -13px;
-			}
-		}
-
-		.sic {
-			color: #934d4d;
-
-			&:hover, &.hover {
-				color: #561c0a;
-			}
-		}
-
-		&:hover, &.hover {
-			.corr {
-				display: inline;
-				min-width: 20px;
-				text-align: center;
-			}
-
-			.sic {
-				text-decoration: underline;
-			}
-		}
-	}
-
-	//TODO: reorder
-	.attachment {
-		border: 1px solid black;
-		padding: 5px 0px 0px 10px;
-	}
-
-	.ex {
-		font-style: italic;
-	}
-
-	.lineN {
-		color: grey;
-		font-size: 0.8em;
-	}
-
-	.resp {
-		font-weight: bold;
-	}
-
-	.red {
-		color: red;
-	}
-
-	.hi {
-		&[data-rend="7init"] {
-			font-size: 140%;
-		}
-
-		&[data-rend="init3.1"] {
-			font-size: 120%;
-
-			/*font-weight: bold;*/
-		}
-
-		&[data-rend="cap"] {
-			text-transform: uppercase;
-		}
-
-		&[data-rend="double"] {
-			font-size: 120%;
-		}
-	}
-
-	.ex {
-		font-style: italic;
-	}
-
-	.zone {
-		margin-bottom: 5px;
-	}
-
-	.p {
-		display: block;
-	}
-
-	.center, [rend="center"] {
-		text-align: center;
-		width: 92%;
-		display: inline-table;
-		background: #FFF;
-	}
-
-	.right, [rend="right"] {
-		text-align: right;
-		display: inline-table;
-		background: #FFF;
-	}
-
-	.left, [rend="left"] {
-		display: inline-table;
-	}
-}
-    // Abbreviations and Their Expansions
-    .choice {
-        > .abbr {
-            display: none;
-        }
-        
-        .expan {
-            font-style: italic;
-        }
+   // Abbreviations and Their Expansions
+  .choice {
+    > .abbr {
+      display: none;
     }
 
-    // Additions, Deletions, and Omissions
-    .add {
-        background-color: #00FF00;
+    .expan {
+    }
+  }
 
-        &[data-place='above'] {}
+  // Additions, Deletions, and Omissions
+  .add {
+    &[data-place="above"] {
+    }
+  }
+
+  //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+  .glyph {
+    .glyphname,
+    .mapping {
+      display: none;
     }
 
-    .del {
+    .mapping[data-type="interpretative"],
+    .mapping[data-type="normalized"] {
+      display: inline;
+    }
+  }
+
+  .char {
+    .charname,
+    .mapping {
+      display: none;
     }
 
-    // 11.3.3.1 Damage, Illegibility, and Supplied Text
+    .mapping[data-type="interpretative"],
+    .mapping[data-type="normalized"] {
+      display: inline;
+    }
+  }
 
+  .choice {
+    display: inline;
 
-    .supplied {
-        &[data-reason='omitted'] {}
-        &[data-reason='illeggibile'] {}
-
-        &:before{
-            content: "[["
-        }
-
-        &:after{
-            content: "]]"
-        }
+    &:before,
+    &:after {
+      content: "";
     }
 
-    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-    .glyph {
-        .glyphname, .mapping {
-            display: none;
-        }
+    .corr,
+    .orig {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
+      display: none;
+      border: 1.5px solid black;
+      border-radius: 3px;
 
-        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
-            display: inline;
-        }
+      @include set(box-shadow, 2px 2px 2px #7e7067);
+
+      padding: 0.4%;
+      margin-top: 30px;
+
+      &:before {
+        left: 15%;
+        position: absolute;
+        top: -13px;
+      }
     }
 
-    .char {
-        .charname, .mapping {
-            display: none;
-        }
-
-        .mapping[data-type="interpretative"], .mapping[data-type="normalized"] {
-            display: inline;
-        }
+    .corr {
+      &:before {
+        content: url("../images/popup_before_corr.png");
+      }
     }
 
-    .choice {
+    .corr,
+    .corr * {
+      background: #f99069 !important;
+    }
+
+    .orig {
+      &:before {
+        content: url("../images/popup_before.png");
+      }
+    }
+
+    .orig,
+    .orig * {
+      background: #e5dac4 !important;
+    }
+
+    .reg {
+      color: #69513a;
+
+      &:hover,
+      &.hover {
+        color: #561c0a;
+      }
+    }
+
+    &:hover,
+    &.hover {
+      .orig,
+      .corr {
         display: inline;
-
-        &:before, &:after {
-            content: "";
-        }
-
-        > .abbr, > .sic, > .orig {
-            font-size: 80%;
-            position: absolute;
-            line-height: 16px;
-            display: none;
-            border: 1.5px solid black;
-            border-radius: 3px;
-
-            @include set(box-shadow, 2px 2px 2px #7e7067);
-
-            padding: 0.4%;
-            margin-top: 30px;
-
-            &:before {
-                left: 15%;
-                position: absolute;
-                top: -13px;
-            }
-        }
-
-        > .sic {
-            &:before {
-                content: url("../images/popup_before_corr.png");
-            }
-        }
-
-        .sic, .sic * {
-            background: #f99069 !important;
-        }
-        
-
-        > .orig {
-            &:before {
-                content: url("../images/popup_before.png");
-            }
-        }
-
-        .orig, .orig * {
-            background: #e5dac4 !important;
-        }
-
-        .reg {
-            color: #69513a;
-
-            &:hover, &.hover {
-                color: #561c0a;
-            }
-        }
-
-        > .abbr {
-            &:before {
-                content: url("../images/popup_before_grey.png");
-            }
-        }
-
-        .abbr, .abbr * {
-            background: #E5E5E5 !important;
-        }
-
-        &:hover, &.hover {
-            .abbr, .sic, .orig{
-                display: inline;
-                min-width: 30px;
-                text-align: center;
-                z-index: 9;
-            }
-            
-            .reg {
-                background-color: #FFD700;
-            }
-
-            .corr{
-                background-color: #CCD700;
-            }
-
-        }
-
-        .corr {
-            display:inline;
-            color: #934d4d;
-        }
-
-        .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-        }
-
-        .under {
-            line-height: 20px;
-            vertical-align: -20%;
-        }
-    }
-
-
-    //TODO: reorder
-    .attachment {
-        border: 1px solid black;
-        padding: 5px 0px 0px 10px;
-    }
-
-    .ex {
-        font-style: italic;
-    }
-
-    .lineN {
-        color: grey;
-        font-size: 0.8em;
-    }
-
-    .resp {
-        font-weight: bold;
-    }
-
-    .red {
-        color: red;
-    }
-
-    .hi {
-        &[data-rend="7init"] {
-            font-size: 140%;
-        }
-
-        &[data-rend="init3.1"] {
-            font-size: 120%;
-
-            /*font-weight: bold;*/
-        }
-
-        &[data-rend="cap"] {
-            text-transform: uppercase;
-        }
-
-        &[data-rend="double"] {
-            font-size: 120%;
-        }
-    }
-
-    .ex {
-        font-style: italic;
-    }
-
-    .zone {
-        margin-bottom: 5px;
-    }
-
-    .p {
-        display: block;
-    }
-
-    .center, [rend="center"] {
+        min-width: 30px;
         text-align: center;
-        width: 92%;
-        display: inline-table;
-        background: #FFF;
+        z-index: 9;
+      }
+
+      .corr {
+        @include set(transform, translate(-80%, 0));
+      }
+
+      .reg {
+        text-decoration: underline;
+      }
     }
 
-    .right, [rend="right"] {
-        text-align: right;
-        display: inline-table;
-        background: #FFF;
+    .sic {
+      color: #934d4d;
     }
 
-    .left, [rend="left"] {
-        display: inline-table;
+    .sup {
+      line-height: 20px;
+      vertical-align: 20%;
     }
 
+    .under {
+      line-height: 20px;
+      vertical-align: -20%;
+    }
+  }
+
+  .sic {
+    display: inline-table;
+
+    &:before,
+    &:after {
+      content: " ";
+    }
+
+    .corr {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
+      display: none;
+      background: #f99069;
+      border: 1.5px solid black;
+      border-radius: 3px;
+
+      @include set(box-shadow, 2px 2px 2px #7e7067);
+
+      padding: 0.4%;
+      margin-top: 30px;
+
+      &:before {
+        content: url("../images/popup_before_corr.png");
+        left: 15%;
+        position: absolute;
+        top: -13px;
+      }
+    }
+
+    .sic {
+      color: #934d4d;
+
+      &:hover,
+      &.hover {
+        color: #561c0a;
+      }
+    }
+
+    &:hover,
+    &.hover {
+      .corr {
+        display: inline;
+        min-width: 20px;
+        text-align: center;
+      }
+
+      .sic {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  //TODO: reorder
+  .attachment {
+    border: 1px solid black;
+    padding: 5px 0px 0px 10px;
+  }
+
+  .ex {
+    font-style: italic;
+  }
+
+  .lineN {
+    color: grey;
+    font-size: 0.8em;
+  }
+
+  .resp {
+    font-weight: bold;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .hi {
+    &[data-rend="7init"] {
+      font-size: 140%;
+    }
+
+    &[data-rend="init3.1"] {
+      font-size: 120%;
+
+      /*font-weight: bold;*/
+    }
+
+    &[data-rend="cap"] {
+      text-transform: uppercase;
+    }
+
+    &[data-rend="double"] {
+      font-size: 120%;
+    }
+  }
+
+  .ex {
+    font-style: italic;
+  }
+
+  .zone {
+    margin-bottom: 5px;
+  }
+
+  .p {
+    display: block;
+  }
+
+  .center,
+  [rend="center"] {
+    text-align: center;
+    width: 92%;
+    display: inline-table;
+    background: #fff;
+  }
+
+  .right,
+  [rend="right"] {
+    text-align: right;
+    display: inline-table;
+    background: #fff;
+  }
+
+  .left,
+  [rend="left"] {
+    display: inline-table;
+  }
+}
+// Abbreviations and Their Expansions
+.choice {
+  > .abbr {
+    display: none;
+  }
+
+  .expan {
+    font-style: italic;
+  }
+}
+
+// Additions, Deletions, and Omissions
+.add {
+  background-color: #00ff00;
+
+  &[data-place="above"] {
+  }
+}
+
+.del {
+}
+
+// 11.3.3.1 Damage, Illegibility, and Supplied Text
+
+.supplied {
+  &[data-reason="omitted"] {
+  }
+  &[data-reason="illeggibile"] {
+  }
+
+  &:before {
+    content: "[[";
+  }
+
+  &:after {
+    content: "]]";
+  }
+}
+
+//TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+.glyph {
+  .glyphname,
+  .mapping {
+    display: none;
+  }
+
+  .mapping[data-type="interpretative"],
+  .mapping[data-type="normalized"] {
+    display: inline;
+  }
+}
+
+.char {
+  .charname,
+  .mapping {
+    display: none;
+  }
+
+  .mapping[data-type="interpretative"],
+  .mapping[data-type="normalized"] {
+    display: inline;
+  }
+}
+
+.choice {
+  display: inline;
+
+  &:before,
+  &:after {
+    content: "";
+  }
+
+  > .abbr,
+  > .sic,
+  > .orig {
+    font-size: 80%;
+    position: absolute;
+    line-height: 16px;
+    display: none;
+    border: 1.5px solid black;
+    border-radius: 3px;
+
+    @include set(box-shadow, 2px 2px 2px #7e7067);
+
+    padding: 0.4%;
+    margin-top: 30px;
+
+    &:before {
+      left: 15%;
+      position: absolute;
+      top: -13px;
+    }
+  }
+
+  > .sic {
+    &:before {
+      content: url("../images/popup_before_corr.png");
+    }
+  }
+
+  .sic,
+  .sic * {
+    background: #f99069 !important;
+  }
+
+  > .orig {
+    &:before {
+      content: url("../images/popup_before.png");
+    }
+  }
+
+  .orig,
+  .orig * {
+    background: #e5dac4 !important;
+  }
+
+  .reg {
+    color: #69513a;
+
+    &:hover,
+    &.hover {
+      color: #561c0a;
+    }
+  }
+
+  > .abbr {
+    &:before {
+      content: url("../images/popup_before_grey.png");
+    }
+  }
+
+  .abbr,
+  .abbr * {
+    background: #e5e5e5 !important;
+  }
+
+  &:hover,
+  &.hover {
+    .abbr,
+    .sic,
+    .orig {
+      display: inline;
+      min-width: 30px;
+      text-align: center;
+      z-index: 9;
+    }
+
+    .reg {
+      background-color: #ffd700;
+    }
+
+    .corr {
+      background-color: #ccd700;
+    }
+  }
+
+  .corr {
+    display: inline;
+    color: #934d4d;
+  }
+
+  .sup {
+    line-height: 20px;
+    vertical-align: 20%;
+  }
+
+  .under {
+    line-height: 20px;
+    vertical-align: -20%;
+  }
+}
+
+//TODO: reorder
+.attachment {
+  border: 1px solid black;
+  padding: 5px 0px 0px 10px;
+}
+
+.ex {
+  font-style: italic;
+}
+
+.lineN {
+  color: grey;
+  font-size: 0.8em;
+}
+
+.resp {
+  font-weight: bold;
+}
+
+.red {
+  color: red;
+}
+
+.hi {
+  &[data-rend="7init"] {
+    font-size: 140%;
+  }
+
+  &[data-rend="init3.1"] {
+    font-size: 120%;
+
+    /*font-weight: bold;*/
+  }
+
+  &[data-rend="cap"] {
+    text-transform: uppercase;
+  }
+
+  &[data-rend="double"] {
+    font-size: 120%;
+  }
+}
+
+.ex {
+  font-style: italic;
+}
+
+.zone {
+  margin-bottom: 5px;
+}
+
+.p {
+  display: block;
+}
+
+.center,
+[rend="center"] {
+  text-align: center;
+  width: 92%;
+  display: inline-table;
+  background: #fff;
+}
+
+.right,
+[rend="right"] {
+  text-align: right;
+  display: inline-table;
+  background: #fff;
+}
+
+.left,
+[rend="left"] {
+  display: inline-table;
+}
 
 .only-text {
-    font-size: 12px !important;
-    text-align: center !important;
-    padding-left: 5px !important;
+  font-size: 12px !important;
+  text-align: center !important;
+  padding-left: 5px !important;
 }
 .lineN {
-    text-align: left !important;
+  text-align: left !important;
 }
 
 /* regola per note con esponente numerico e alfabetico */
 .icon-evt_note {
-    font-size: 17px !important;
-    color: #fff;
-    margin-top: 10px!important;
-    text-align: center; 
-    font-weight:200;
+  font-size: 17px !important;
+  color: #fff;
+  margin-top: 10px !important;
+  text-align: center;
+  font-weight: 200;
 }
 .popover_trigger.active:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 .popover_trigger {
-    color: #263238 !important;
-    opacity: 10 !important;
+  color: #263238 !important;
+  opacity: 10 !important;
 }
-span.comment{
-    background-color: #b46138 !important;
-padding: 1px 4px 4px 4px !important;
-    opacity: 10 !important;
-border-radius: 4px !important;
-vertical-align: top !important;
-font-variant-position: normal !important;
-font-size: 12px !important;
-top: 4px !important;
-position: relative !important; 
+span.comment {
+  background-color: #b46138 !important;
+  padding: 1px 4px 4px 4px !important;
+  opacity: 10 !important;
+  border-radius: 4px !important;
+  vertical-align: top !important;
+  font-variant-position: normal !important;
+  font-size: 12px !important;
+  top: 4px !important;
+  position: relative !important;
 }
-span.critic{
-    background-color: #c3a27a !important;
-    padding: 0px 4px 4px 4px !important;
-    border-radius: 4px !important;
-    opacity: 10 !important;
-vertical-align: top !important;
-font-variant-position: normal !important;
-font-size: 12px !important;
-top: 4px !important;
-position: relative !important;    
+span.critic {
+  background-color: #c3a27a !important;
+  padding: 0px 4px 4px 4px !important;
+  border-radius: 4px !important;
+  opacity: 10 !important;
+  vertical-align: top !important;
+  font-variant-position: normal !important;
+  font-size: 12px !important;
+  top: 4px !important;
+  position: relative !important;
 }
-
