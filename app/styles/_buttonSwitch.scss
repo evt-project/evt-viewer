@@ -62,16 +62,13 @@ button-switch {
         }
 
         &-label {
-            margin: 0px;
-            margin-left: 4px;
-            top: 3.5px;
-            position: relative;
+           margin: 0px;
+           margin-left: 4px;
         }
 
         &-icon {
             position: relative;
             right: 0px;
-            top: 9px;
             font-size: 1.4em;
 
             &.fa {
