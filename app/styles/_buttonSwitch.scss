@@ -177,7 +177,7 @@ button-switch {
         text-align: center;
         opacity: 1;
         font-weight: bold;
-        color: rgb(41, 29, 29);
+        color: #000;
         background: $buttonSwitch-active-background-color;
 
         &.buttonSwitch-disabled{
@@ -186,5 +186,11 @@ button-switch {
     }
     .buttonSwitch-label {
         display: none;
+    }
+    .buttonSwitch-icon {
+        margin-left: 8px;
+        margin: 8px 0;
+        font-size: 1.4em;
+        top: 14px;
     }
 }
