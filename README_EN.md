@@ -84,7 +84,7 @@ Short instructions to install and configure the development framework for EVT 2.
 | $ gem install susy
 
 * NODEJS
-| Install nodejs from https://nodejs.org/ or https://nodejs.org/en/download/package­manager
+| Install nodejs from https://nodejs.org/fr/blog/release/v8.11.3/ (Windows 32-bit Installer or Windows 64-bit Installer depending on your OS)
 
 * BOWER AT SYSTEM LEVEL
 | $ npm install -g bower 

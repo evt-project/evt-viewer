@@ -83,7 +83,7 @@ Istruzioni per l'installazione e la configurazione dell'ambiente di sviluppo di 
 | $ gem install susy
 
 * NODEJS
-| Installare nodejs da https://nodejs.org/ o https://nodejs.org/en/download/package­manager
+| Installare nodejs da https://nodejs.org/fr/blog/release/v8.11.3/ (Windows 32-bit Installer o Windows 64-bit Installer a seconda del tuo sistema operativo)
 
 * BOWER A LIVELLO GLOBALE
 | $ npm install -g bower 
