@@ -99,19 +99,18 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
-                boxBody = angular.element(element).find('.box-body')[0];
-            
+                boxBody;
+
             //$timeout(function(){console.log("timeout 2000", scope, scope.vm)},2000);
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
+                boxBody = angular.element(element).find('.box-body')[0];
+
                 currentBox.updateContent();
                
                 // tentativo di mettere OSD - FIXME - non va bene qui!!
                 if (currentBox.type === 'image') {
-                        console.log("box di tipo immagine");
-                                                           
-                       
-
+                    console.log("box di tipo immagine");
                 }
 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
