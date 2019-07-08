@@ -579,7 +579,7 @@ angular.module('evtviewer.box')
 						id: 'page_' + currentId,
 						type: 'page',
 						initValue: evtInterface.getState('currentPage')
-					});					
+					});
 
 					topMenuList.buttons.push({
 						title: 'BUTTONS.THUMBNAILS',
@@ -593,7 +593,7 @@ angular.module('evtviewer.box')
 						icon: 'schema',
 						type: 'schema'
 					});
-					//pulsanti per navigazione immagine osdnavbar
+					/*pulsanti per navigazione immagine osdnavbar
 					bottomMenuList.buttons.push({
 						title: 'BUTTONS.ZOOM-IN',
 						label: '',
@@ -620,7 +620,7 @@ angular.module('evtviewer.box')
 						show: function() {
 							return true;
 						}
-					});
+					});*/
 					if (parsedData.isITLAvailable()) {
 						topMenuList.buttons.push({
 							title: 'BUTTONS.IMAGE_TEXT_LINKING',
@@ -640,8 +640,8 @@ angular.module('evtviewer.box')
 						label: 'BUTTONS.MSD',
 						type: 'msDesc'
 					});
-     
-     
+
+
 					updateContent = function() {
 						scope.vm.isLoading = true;
 						console.log("function update content Image");
@@ -689,7 +689,7 @@ angular.module('evtviewer.box')
                      }
                   });
                }
-               
+
 					if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
 						topMenuList.selectors.push({
 							id: 'document_' + currentId,
@@ -1392,20 +1392,20 @@ angular.module('evtviewer.box')
 				}
 			}
 		};
-		
+
 		//TODO Add documentation
 		box.getEditionById = function (currentBoxId) {
          return collection[currentBoxId].edition;
       };
-		
+
 		box.getState = function (currentBoxId, key) {
          return collection[currentBoxId].state[key];
       };
-		
+
 		box.updateState = function (currentBoxId, key, value) {
         collection[currentBoxId].state[key] = value;
       };
-		
+
 		return box;
 	};
 });
