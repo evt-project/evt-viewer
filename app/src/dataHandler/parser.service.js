@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtParser
- * @description 
+ * @description
  * # evtParser
  * Service containing methods to parse data
  *
@@ -48,11 +48,11 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will check if an element is nested into another particular element.
      *
-     * @param {element} element XML element to be checked  
+     * @param {element} element XML element to be checked
      * @param {string} parentTagName tagName of the element that does not be a parent of @element
      *
      * @returns {boolean} whether the element is nested in the given other element or not
-     * 
+     *
      * @author CDP
      */
 	parser.isNestedInElem = function(element, parentTagName) {
@@ -91,10 +91,10 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will check if an element belongs to the main version of the text.
      *
-     * @param {element} element XML element to be checked  
+     * @param {element} element XML element to be checked
      *
      * @returns {boolean} whether the element belongs to the main version of the text or not
-     * 
+     *
      * @author CM
      */
 	parser.isInMainVersion = function(element) {
@@ -127,7 +127,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will a generic XML element in a quite generic way
-     * - It will transform a generic XML element into an <code>span</code> element 
+     * - It will transform a generic XML element into an <code>span</code> element
      *  - with a data-* attribute for each @attribute of the XML element
      *  - and a class name that is equal to the tag name of the original XML element
 	 * - It will also transform its children
@@ -137,14 +137,14 @@ angular.module('evtviewer.dataHandler')
 	 *
      * @param {element} doc XML element of global document to be parsed
      * @param {element} element XML element to be parsed
-     * @param {Object} options object indicating some specifig options, 
-     * e.g. skip (which elements to skip from being transformed), 
+     * @param {Object} options object indicating some specifig options,
+     * e.g. skip (which elements to skip from being transformed),
      * exclude (which elements to exclude from final result),
-     * context (in which context the parser was called). 
+     * context (in which context the parser was called).
      * This parameter is ready to be used for further options needed when expanding the generic parser.
      *
      * @returns {element} XHTML element with the same data as the XML element read.
-     * 
+     *
      * @author CDP
      */
 	parser.parseXMLElement = function(doc, element, options) {
@@ -308,7 +308,7 @@ angular.module('evtviewer.dataHandler')
 				_indexes: ['attribName1', 'attribName2']
 			}
      	</pre>
-     * 
+     *
      * @author CDP
      */
 	parser.parseElementAttributes = function(element) {
@@ -368,7 +368,7 @@ angular.module('evtviewer.dataHandler')
      * - Looks for the closing square bracket and for the equals sign
      * - Adds the name of the attribute , the regular expression operators and and the value of the attribute
      *
-     * @param {string} def string of the element definition, contained in config file. 
+     * @param {string} def string of the element definition, contained in config file.
      * It may contain more than one definition separated by commas
      *
      * @returns {RegExp} the regular expression created
@@ -426,7 +426,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will take a string and transforms it into an abbreviated <code>textNode</code> contained in a <code>span</code> element.
      *
-     * @param {string} string string to abbreviate 
+     * @param {string} string string to abbreviate
      * @param {number} maxLength maximum length of the string to show
      *
      * @returns {string} the abbreviated string
@@ -463,12 +463,12 @@ angular.module('evtviewer.dataHandler')
 	 *    - when it founds a start tag, it push it onto the stack
 	 *    - then it founds a self-closing tag, it do nothing
 	 *  - At the end of the loop, <code>stack</code> should contain only the start tags of the broken elements, most deeply-nested at the top
-	 *  - It loops over stack array 
+	 *  - It loops over stack array
 	 *    - pops the unmatched tag off the stack
 	 *    - gets just the tag name
 	 *    - and appends the end tag
 	 *
-     * @param {string} XHTMLstring string to balanced 
+     * @param {string} XHTMLstring string to balanced
      *
      * @returns {string} well-balanced XHTML string
      *
@@ -532,13 +532,13 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtParser
      *
      * @description
-     * This method will analyze the encoding and save the encoding details in 
+     * This method will analyze the encoding and save the encoding details in
      * {@link evtviewer.dataHandler.parsedData parsedData}.
      * Details handled are:
      * - whether the edition uses line breaks of not
      * - whether the edition has line numbers encoded or not
 	 *
-     * @param {string} XHTMLstring string to balanced 
+     * @param {string} XHTMLstring string to balanced
      *
      * @author CDP
      */
@@ -566,19 +566,20 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-	
 
 	parser.parseNote = function(noteNode) {
-		var popoverElem = document.createElement('evt-popover');
+      var popoverElem = document.createElement('evt-popover');
+      var popoverN = noteNode.getAttribute('n') ? noteNode.getAttribute('n') : '';
+      var popoverType = noteNode.getAttribute('type');
+		   popoverElem.setAttribute('data-trigger', 'click');
+         popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
+         popoverElem.setAttribute('data-n', popoverN);
+         popoverElem.setAttribute("data-type", popoverType);
+         popoverElem.innerHTML='<i class="icon-evt_note">'+
+         '<span class="'+popoverType+'">'+popoverN+'</span>'+'</i>';
 
-		popoverElem.setAttribute('data-trigger', 'click');
-		popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
-		popoverElem.setAttribute('data-n', noteNode.getAttribute('n'));		
-		popoverElem.setAttribute("data-type", noteNode.getAttribute('type'));
-		popoverElem.innerHTML='<i class="icon-evt_note">'+'<span class="'+noteNode.getAttribute('type')+'">'+noteNode.getAttribute('n')+'</span>'+'</i>';
-
-		return popoverElem;
-	};
+      return popoverElem;
+   }
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseNamedEntity
@@ -591,7 +592,7 @@ angular.module('evtviewer.dataHandler')
      * @param {element} doc XML element to be parsed
      * @param {element} entityNode node to be transformed
      * @param {string} skip names of sub elements to skip from transformation
-     * 
+     *
      * @returns {element} <code>evt-named-entity-ref</code> generated
      *
      * @author CDP
@@ -646,7 +647,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will parse an XML element representing a line
-     * and transform it in a <code>div</code> element with specific data-* attributes 
+     * and transform it in a <code>div</code> element with specific data-* attributes
      * indicating some specific properties of the line and line number.
 	 *
      * @param {element} lineNode XML element to be parsed
@@ -886,7 +887,7 @@ angular.module('evtviewer.dataHandler')
 				}
 				parsedData.addDocument(newDoc);
 				parser.parsePages(element, newDoc.value);
-				
+
 				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
 					// Split pages works only on diplomatic/interpretative edition
 					// In critical edition, text will be splitted into pages for each witness
@@ -911,7 +912,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will parse a given XML document and split it into lines.
-     * It will uses regular expression to divide the XML into pieces 
+     * It will uses regular expression to divide the XML into pieces
      * and then balance the generated XHTML in order to handle the last line break.
 	 *
      * @param {element} docElement XML element to parse
@@ -937,7 +938,7 @@ angular.module('evtviewer.dataHandler')
 		// var sRegExLbElem = new RegExp(/<lb(.|[\r\n])*?\/>/, 'ig');
 		// var lbHTMLString = matches[i].match(sRegExLbElem);
 
-		// Other Line Breaks 
+		// Other Line Breaks
 		var lineMatch = '<lb(.|[\r\n])*?(?=(<lb|<\/' + defContentEdition + '>))',
 			sRegExLine = new RegExp(lineMatch, 'ig'),
 			matches = docElement.outerHTML.match(sRegExLine),
@@ -955,7 +956,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will parse a given XML document and split it into pages.
-     * It will uses regular expression to divide the XML into pieces 
+     * It will uses regular expression to divide the XML into pieces
      * and then balance the generated XHTML in order to handle the last page break.
      * Finally it stores the result into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
 	 *
@@ -969,19 +970,19 @@ angular.module('evtviewer.dataHandler')
 		var matchOrphanText = '<body(.|[\r\n])*?(?=<pb)',
 			sRegExInputOrphanText = new RegExp(matchOrphanText, 'ig'),
 			matchesOrphanText = docElement.outerHTML.match(sRegExInputOrphanText);
-      
+
       var match = '<pb(.|[\r\n])*?(?=(<pb|<\/' + defContentEdition + '>))';
       var sRegExInput = new RegExp(match, 'ig');
       var matches = docElement.outerHTML.match(sRegExInput);
       var pageId;
-      
+
 		if (matchesOrphanText && matchesOrphanText.length > 0) {
 			var previousDoc = parsedData.getPreviousDocument(docId);
-			
+
 			if (previousDoc && previousDoc.pages && previousDoc.pages.length > 0) {
 				var parentPageId = previousDoc.pages[previousDoc.pages.length - 1];
 				var currentDocPos = pages.length - currentDocPages.length;
-				
+
 				if (parentPageId && parentPageId !== '') {
 				   var matchId = 0;
                for (var j = currentDocPos; j < pages.length; j++) {
@@ -1021,9 +1022,9 @@ angular.module('evtviewer.dataHandler')
 	 * @param {string} docId id of the edition document being parsed
 	 * @param {string} editionLevel id of the edition level being parsed
      * @param {string} docHTML string representing the original XML of the edition
-	 * 
+	 *
 	 * @returns {promise} promise that the parser will end
-	 * 
+	 *
      * @author CDP
      */
 	parser.parseTextForEditionLevel = function(pageId, docId, editionLevel, docHTML) {
