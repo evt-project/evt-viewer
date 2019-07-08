@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** 
  * @ngdoc overview
@@ -8,11 +8,12 @@
  * Module referring to viewer, intended as a single content of image
  */
 
- angular.module('evtviewer.imageViewer', ["evtviewer.openseadragon","evtviewer.imageViewerService"]);
+ angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.imageViewerService']);
 
 (function () {
-   var imageModule = angular.module('evtviewer.imageViewer', ["evtviewer.openseadragon","evtviewer.imageViewerService"]);
-     imageModule.controller("imageViewerCtrl", ["$scope","imageViewerModel", function ($scope,imageViewerModel) {
+   var imageModule = angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.imageViewerService']);
+
+     imageModule.controller('imageViewerCtrl', ['$scope','imageViewerModel', function ($scope,imageViewerModel) {
          $scope.options = imageViewerModel.getOptions(); 
       }]);
 })();

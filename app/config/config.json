@@ -3,7 +3,7 @@
     "webSite": "",
     "logoUrl": "",
 
-    "dataUrl":"data/saussure/demo-Saussure.xml",
+    "dataUrl":"data/VB-23-DOTR.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -13,7 +13,7 @@
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
                                 "viewMode" : "readingTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "MULTIPLE_RECENSIONS",
@@ -65,7 +65,7 @@
         "visible": true
     }],
 
-    "enableXMLdownload" : false,
+    "enableXMLdownload" : true,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
@@ -167,7 +167,7 @@
    "virtualKeyboardKeys": [],
 
    "imageViewerOptions": {
-       "prefixUrl": "data/osd-images/",
+       "prefixUrl": "images/osd-images/",
        "showRotationControl": true,
        "showNavigator": true,
        "visibilityRatio": 1, 
@@ -178,7 +178,7 @@
        "maxZoomLevel": 3.0,
        "wrapVertical": false
     },
-    "imageNormalizationCoefficient": 1008,
+    "imageNormalizationCoefficient": 1200,
 
     "languages": ["en", "it"]
 }
