@@ -612,3 +612,47 @@ pre {
     padding: 10px 0;
     border-top: 1px solid;
 }
+/* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
+.icon-evt_note {
+   font-size: 17px !important;
+   color: #fff;
+   margin-top: 10px!important;
+   text-align: center;
+   font-weight:200;
+ }
+span.null {
+  font-size: 20px !important;
+  color: #263238 !important;
+  //margin-top: 10px!important;
+  text-align: center;
+  font-weight: 200;
+}
+.popover_trigger.active:hover {
+   opacity: 0.5;
+ }
+.popover_trigger {
+   color: #263238 !important;
+   opacity: 10 !important;
+}
+span.comment{
+   background-color: #b46138 !important;
+   padding: 1px 4px 4px 4px !important;
+   opacity: 10 !important;
+   border-radius: 4px !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 12px !important;
+   top: 4px !important;
+   position: relative !important;
+}
+span.critic{
+   background-color: #c3a27a !important;
+   padding: 0px 4px 4px 4px !important;
+   border-radius: 4px !important;
+   opacity: 10 !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 12px !important;
+   top: 4px !important;
+   position: relative !important;
+}
