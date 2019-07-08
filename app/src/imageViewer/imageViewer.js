@@ -12,15 +12,7 @@
 
 (function () {
    var imageModule = angular.module('evtviewer.imageViewer', ["evtviewer.openseadragon","evtviewer.imageViewerService"]);
-
      imageModule.controller("imageViewerCtrl", ["$scope","imageViewerModel", function ($scope,imageViewerModel) {
-         $scope.options = imageViewerModel.getOptions();
-         //$scope.interface = evtInterface.getState('currentPage');
-         //modificato da FS per update immagine con selezione pagina
-         //evtInterface.updateState('currentPage', 'pippo');      
-            //console.log("aggiorno contenuto viewer per pagina del testo");
-            
-         
+         $scope.options = imageViewerModel.getOptions(); 
       }]);
-   console.log("caricato modulo per immagine!");
 })();
