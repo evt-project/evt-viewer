@@ -1043,8 +1043,8 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 
 				default:
-					break;
-			}*/
+					break;*/
+			}
 
 			/**
 		     * @ngdoc method
