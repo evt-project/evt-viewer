@@ -31,11 +31,10 @@ button-switch {
         &.only-icon {
             text-align: center;
         }
-        /* it must be eliminated and made specific only for the use case
         &.only-text {
             padding-right: 10px;
             text-align: center;
-        }*/
+        }
 
         background: $buttonSwitch-background-color;
         color: $buttonSwitch-color;
@@ -137,7 +136,6 @@ button-switch {
             &-icon {
                 right: 0px;
                 font-weight: bold;
-                top: 8px;
             }
         }
     }
