@@ -37,6 +37,7 @@
  * @requires evtviewer.list
  * @requires evtviewer.quote
  * @requires evtviewer.tabsContainer
+ * @requires evtviewer.toc
  * @requires evtviewer.sourcesApparatusEntry
  * @requires evtviewer.analogue
  * @requires evtviewer.analoguesApparatusEntry
@@ -79,15 +80,16 @@ angular
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
-        'evtviewer.quote',
-        'evtviewer.tabsContainer',
-        'evtviewer.sourcesApparatusEntry',
-        'evtviewer.analogue',
-        'evtviewer.analoguesApparatusEntry',
-        'evtviewer.apparatuses',
-        'evtviewer.versionReading',
-        'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools',
-    	'evtviewer.search',
-        'evtviewer.imageViewer'
-    ]);
+		'evtviewer.quote',
+		'evtviewer.tabsContainer',
+		'evtviewer.sourcesApparatusEntry',
+		'evtviewer.analogue',
+		'evtviewer.analoguesApparatusEntry',
+		'evtviewer.apparatuses',
+		'evtviewer.versionReading',
+		'evtviewer.versionApparatusEntry',
+		'evtviewer.UItools',
+		'evtviewer.search',
+		'evtviewer.toc',
+		'ui-leaflet'
+  ]);

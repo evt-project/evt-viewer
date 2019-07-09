@@ -52,6 +52,7 @@
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "No more versions available",
 		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+		"OPEN_LIST": "Show entry in full list",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
 		"SHOW_PINNED_ENTRIES": "Show pinned elements",
@@ -154,7 +155,8 @@
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "More Info",
 		"OCCURRENCES": "Occurrences",
-		"XML": "XML"
+		"XML": "XML",
+		"MAP": "Map"
 	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Author",
@@ -242,6 +244,15 @@
 		"XML": "XML",
 		"XML_SOURCE_QUOTE": "XML Source for Quote",
 		"XML_SOURCE_FOR": "XML Source for "
+	},
+	"TOC": {
+		"BACK": "Back matter",
+		"BODY": "Text",
+		"DIVS": "Sections",
+		"FRONT": "Front matter",
+		"HEADER": "Toc, front matter and back matter",
+		"PAGES": "Folia",
+		"TITLE": "Table of contents"
 	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Critical Note",
