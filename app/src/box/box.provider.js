@@ -644,11 +644,7 @@ angular.module('evtviewer.box')
 
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						console.log("function update content Image");
-
-						console.log("func update image: current page:", evtInterface.getState('currentPage'));
-						evtInterface.updateState('currentPage',evtInterface.getState('currentPage'));
-
+						evtInterface.updateState('currentPage', evtInterface.getState('currentPage'));
 						scope.vm.isLoading = false;
 					};
 					break;

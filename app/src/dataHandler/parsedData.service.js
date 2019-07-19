@@ -2860,7 +2860,6 @@ angular.module('evtviewer.dataHandler')
        */
 
       parsedData.addHotSpot = function (hotspot) {
-		  console.log('addHotSpot', hotspot);
          var hotSpotId,
             hotSpotIndexes = hotspotCollection._indexes;
 
@@ -2873,7 +2872,6 @@ angular.module('evtviewer.dataHandler')
             hotSpotIndexes[hotSpotIndexes.length] = hotSpotId;
             hotspotCollection[hotSpotId] = hotspot;
             hotSpotIndexes.length++;
-            _console.log('parsedData - addHotSpot ', hotspot);
          }
       };
 
@@ -2884,8 +2882,6 @@ angular.module('evtviewer.dataHandler')
       };
 
       parsedData.getHotSpot = function (hotspotId) {
-		  console.log('getHotSpot', hotspotId);
-
          return hotspotCollection[hotspotId];
 
       };

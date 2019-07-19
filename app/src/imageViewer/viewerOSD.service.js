@@ -1,5 +1,4 @@
 (function () {
-   console.log('caricato modulo openseadragonService');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler, parsedData) {
@@ -22,7 +21,6 @@
             viewerHandler.scope = scope;
          };
 
-        
          viewerHandler.open = function () {
             var viewBounds = viewer.viewport.getBounds();
             var oldBounds = viewerHandler.viewer.viewport.getBounds();
@@ -319,9 +317,6 @@
 
                divElt.appendChild(divTitleElt);
                divElt.appendChild(divBodyElt);
-
-               
-               console.log('content', divElt);
 
                var OSDOverlay = {
                   element: divElt,

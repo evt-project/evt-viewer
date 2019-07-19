@@ -22,11 +22,9 @@ angular.module('evtviewer.dataHandler')
 	/**
      * TODO: add documentation
     */
-	parser.parseHotSpots = function(back) { 
-        console.log('parseHotSpots', back);
+	parser.parseHotSpots = function(back) {
         var currentBackElement = angular.element(back);
-        console.log('currentHotSpots', currentBackElement);
-		angular.forEach(currentBackElement.find("div[type='hotspot']"), 
+		angular.forEach(currentBackElement.find("div[type='hotspot']"),
 			function(HotSpotDivGroup) {
 				//var surfaceId = surfaceElement.getAttribute('xml:id'),
 				//	surfaceCorresp = surfaceElement.getAttribute('corresp');
@@ -47,7 +45,6 @@ angular.module('evtviewer.dataHandler')
 						}
                         newHotSpot.content = angular.element(child).text();
                         newHotSpot.images = angular.element(child).find('graphic');
-                        console.log('newHotSpot:',newHotSpot);
 						parsedData.addHotSpot(newHotSpot);
 						
 					}

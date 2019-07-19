@@ -609,10 +609,8 @@ angular.module('evtviewer.buttonSwitch')
 					callback = function() {
 						var vm = this;
 						if (vm.active) { // Activate ITL
-							console.log("itl turnon");
 							evtImageTextLinking.turnOnITL();
 						} else { // Deactivate ITL
-							console.log("itl turnoff");
 							evtImageTextLinking.turnOffITL();
 						}
 					};
@@ -1058,7 +1056,6 @@ angular.module('evtviewer.buttonSwitch')
 			 * {@link evtviewer.buttonSwitch.evtButtonSwitch evtButtonSwitch} provider file.</p>
 		     */
 			var doCallback = function() {
-				console.log("nella doCallback di button");
 				var vm = this;
 				button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
 				evtSelect.closeAll();
