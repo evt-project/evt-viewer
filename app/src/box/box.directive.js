@@ -99,11 +99,13 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
-                boxBody = angular.element(element).find('.box-body')[0],
-                boxTopBox = angular.element(element).find('.box-top-box')[0];
+                boxBody,
+                boxTopBox;
 
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
+                boxBody = angular.element(element).find('.box-body')[0];
+                boxTopBox = angular.element(element).find('.box-top-box')[0];
                 currentBox.updateContent();
                
                 // tentativo di mettere OSD - FIXME - non va bene qui!!
