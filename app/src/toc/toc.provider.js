@@ -87,7 +87,7 @@ angular.module('evtviewer.toc')
 				return;
 			}
 			var	docsId = parsedData.getDocuments()._indexes,
-					divs = parsedData.getDivs();
+					divs = parsedData.getDivs(),
 					mainDivs = parsedData.getDivs()._indexes.main,
 					subDivs = parsedData.getDivs()._indexes.subDivs,
 					pages = parsedData.getPages(),
