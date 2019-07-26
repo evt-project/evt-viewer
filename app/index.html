@@ -11,6 +11,7 @@
 		<!-- build:css(.) styles/vendor.css -->
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
+		<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 		<!-- endbower -->
 		<!-- endbuild -->
 
@@ -54,6 +55,11 @@
 				<i class="fa fa-external-link"></i>
 			</a>
 			<div class="globalMenu">
+				<button-switch
+					title="TOC.HEADER"
+					data-icon="list-alt"
+					data-type="openToc">
+				</button-switch>
 				<div class="viewModeMenu">
 					<button-switch
 							title="VIEW_MODES.{{::mode.label}}"
@@ -160,6 +166,12 @@
 			<section
 				class="secondary-container"
 				ng-show="getSecondaryContentOpened() !== ''">
+				<evt-dialog data-type="toc" data-title="TOC.HEADER">
+					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'toc'"
+						data-type="toc"
+						data-orientation="vertical">
+					</evt-tabs-container>
+				</evt-dialog>
 				<evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
 					ng-if="getProperty('namedEntitiesLists')">
 					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
@@ -433,6 +445,9 @@
 		<script src="bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
 		<script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
+		<script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+		<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+		<script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
 		<!-- endbower -->
 		<!-- endbuild -->
 
@@ -471,6 +486,7 @@
 		<script src="/src/dataHandler/bibliographyParser.service.js"></script>
         <script src="/src/dataHandler/hotspotParser.service.js"></script>
 		<script src="/src/dataHandler/glyphParser.service.js"></script>
+		<script src="/src/dataHandler/depaParser.service.js"></script>			
 
       <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
       <script src="/src/dataHandler/search/search.service.js"></script>
@@ -585,6 +601,11 @@
 		<script src="/src/tabsContainer/tabsContainer.provider.js"></script>
 		<script src="/src/tabsContainer/tabsContainer.controller.js"></script>
 		<script src="/src/tabsContainer/tabsContainer.directive.js"></script>
+
+		<script src="/src/toc/toc.js"></script>
+		<script src="/src/toc/toc.provider.js"></script>
+		<script src="/src/toc/toc.controller.js"></script>
+		<script src="/src/toc/toc.directive.js"></script>
 
 		<script src="/src/quote/quote.js"></script>
 		<script src="/src/quote/quote.configuration.js"></script>

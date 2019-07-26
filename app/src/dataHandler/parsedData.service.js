@@ -174,6 +174,15 @@ angular.module('evtviewer.dataHandler')
 		length: 0
 	};
 
+	var divsCollection = {
+		length: 0,
+		_indexes: {
+			corresp : {},
+			subDivs: {},
+			main: {}
+		}
+	};
+
 	// var pagesCollectionTexts = [];
 	/**
      * @ngdoc property
@@ -291,6 +300,10 @@ angular.module('evtviewer.dataHandler')
 			encodingStructure: [],
 			appEntries: [],
 			exponents: [],
+			depa: {
+				start: {},
+				end: {}
+			}
 		}
 	};
 	/**
@@ -636,6 +649,10 @@ angular.module('evtviewer.dataHandler')
 		namedEntities._collections[collectionId][listKey]._indexes.push(entityId);
 	};
 
+	parsedData.getNamedEntities = function() {
+		return namedEntities;
+	}
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollection
@@ -1291,6 +1308,75 @@ angular.module('evtviewer.dataHandler')
 		return sourcesDocsCollection[extDocId];
 	};
 
+	// DIVS //
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#addDiv
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method adds a div object to the divsCollection, after retrieving some
+	 * information to insert inside of the divsCollection indexes.
+	 *
+	 * @param {object} div the JSON object with all the info about the parsed div
+	 * @param {string} docId the id of the document the div belongs to
+	 *
+	 * @author CM
+	 */
+	parsedData.addDiv = function(div, docId) {
+		var divId = div.value;
+		divsCollection[divsCollection.length] = divId;
+		divsCollection[divId] = div;
+		divsCollection.length++;
+		documentsCollection[docId].divs.push(divId);
+		if (div.corresp) {
+			angular.forEach(div.corresp, function(corresp) {
+				if (!divsCollection._indexes.corresp[corresp]) {
+					divsCollection._indexes.corresp[corresp] = [];
+				}
+				divsCollection._indexes.corresp[corresp].push(div.value);
+			});
+		}
+		if (!div._isSubDiv) {
+			divsCollection._indexes.subDivs[div.value] = div.subDivs || [];
+			if (!divsCollection._indexes.main[div.doc]) {
+				divsCollection._indexes.main[div.doc] = []
+			}
+			divsCollection._indexes.main[div.doc].push(div.value);
+		}
+	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#getDivs
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method returns all the divs in the divsCollection
+	 *
+	 * @author CM
+	 */
+	parsedData.getDivs = function() {
+		return divsCollection;
+	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#getDiv
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method retrieves one of the divs stored in the divsCollection through
+	 * its id.
+	 *
+	 * @param {string} divId the id of the div that has to be retrieved
+	 *
+	 * @author CM
+	 */
+	parsedData.getDiv = function(divId) {
+		return divsCollection[divId];
+	}
+
 	/* EDITION */
 	/**
      * @ngdoc method
@@ -1847,7 +1933,44 @@ angular.module('evtviewer.dataHandler')
 		if (entry._variance > criticalAppCollection._maxVariance) {
 			criticalAppCollection._maxVariance = entry._variance;
 		}
+		if (encodingDetails.variantEncodingMethod === 'double-end-point') {
+			parsedData.addCriticalEntryDepaInfo(entry);
+		}
 	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#addCriticalEntryDepaInfo
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * Adds the value of the from and the to attributes to the indexes of the app entries collection.
+	 * If the to attribute is not defined, it is created according to the variant ecoding location.
+	 * @param {Objects} entry the critical apparatus entry that has been added to the app entries collection
+	 * @author CM
+	 */
+	parsedData.addCriticalEntryDepaInfo = function(entry) {
+		if (!criticalAppCollection._indexes.depa) {
+			criticalAppCollection._indexes['depa'] = {
+				start: {},
+				end: {}
+			};
+		}
+		if (entry.attributes.from) {
+			var from = entry.attributes.from.charAt(0) === '#' ? entry.attributes.from.substr(1) : entry.attributes.from
+			criticalAppCollection._indexes.depa.start[entry.id] = from;
+		}
+		if (entry.attributes.to) {
+			var to = entry.attributes.to.charAt(0) === '#' ? entry.attributes.to.substr(1) : entry.attributes.to
+			criticalAppCollection._indexes.depa.end[entry.id] = to;
+		} else {
+			if (encodingDetails.variantEncodingLocation === 'internal') {
+				criticalAppCollection._indexes.depa.end[entry.id] = entry.id;
+			} else if (encodingDetails.variantEncodingLocation === 'external' && entry.attributes.from) {
+				criticalAppCollection._indexes.depa.end[entry.id] = entry.attributes.from.substr(1);
+			}
+		}
+	}
 
 	/**
      * @ngdoc method

@@ -52,5 +52,9 @@
 		> div > *:hover {
 		    background: rgba($base-color-middle, .2);
 		}
-    }
+		}
+		.scrollableDiv {
+			overflow-y: scroll;
+			height: 100%; 
+		}
 }

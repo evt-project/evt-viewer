@@ -37,6 +37,7 @@ angular.module('evtviewer.dataHandler')
 	projectInfoDefs.sectionSubHeaders += '<principal>, <langUsage>, <particDesc>, <textClass>, <variantEncoding>, <editorialDecl>, <msIdentifier>, <physDesc>, <history>, <extent>, <editionStmt>';
 	projectInfoDefs.blockLabels += '<edition>, <correction>, <hyphenation>, <interpretation>, <normalization>, <punctuation>, <interpGrp>';
 	projectInfoDefs.blockLabels += '<quotation>, <segmentation>, <stdVals>, <colophon>, <handDesc>, <decoDesc>, <supportDesc>, <origin>';
+	parser.parserProperties = {};
 	// ///////// //
 	// UTILITIES //
 	// ///////// //
@@ -160,7 +161,10 @@ angular.module('evtviewer.dataHandler')
 			// newElement = document.createElement('span');
 			// newElement.className = "textNode";
 			// newElement.appendChild(element);
-		} else if (element.tagName !== undefined && skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
+		} else if (element.tagName !== undefined &&
+			(skip.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0
+			|| element.className.indexOf('depaAnchor') >= 0
+			|| element.className.indexOf('depaContent') >= 0)) {
 			newElement = element;
 		} else if (element.tagName !== undefined && exclude !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = document.createTextNode('');
@@ -208,9 +212,6 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					newElement = document.createElement('span');
 					newElement.className = element.tagName !== undefined ? element.tagName : '';
-
-
-
 					if (element.attributes) {
 						for (var k = 0; k < element.attributes.length; k++) {
 							var attribK = element.attributes[k];
@@ -220,6 +221,15 @@ angular.module('evtviewer.dataHandler')
 								}
 							}
 						}
+					}
+					if (element.tagName === 'div') {
+						var divId;
+						if (element.attributes && element.getAttribute('xml:id')) {
+							divId = element.getAttribute('xml:id');
+						} else {
+							divId = parser.xpath(element).substr(1);
+						}
+						newElement.setAttribute('id', divId);
 					}
 					if (element.childNodes) {
 						for (var j = 0; j < element.childNodes.length; j++) {
@@ -284,7 +294,8 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-		if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')) {
+		if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')
+		|| (newElement.className && (newElement.className.indexOf('depaAnchor') >= 0 || newElement.className.indexOf('depaContent') >= 0))) {
 			return newElement;
 		} else {
 			return document.createTextNode('');
@@ -807,25 +818,28 @@ angular.module('evtviewer.dataHandler')
 			});
 		//console.log('## Pages ##', parsedData.getPages());
 	};
+
 	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.evtParser#parseDocuments
-     * @methodOf evtviewer.dataHandler.evtParser
-     *
-     * @description
-     * This method will parse the documents of a given XML document
-     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtParser#parseDocuments
+	 * @methodOf evtviewer.dataHandler.evtParser
 	 *
-     * @param {string} doc string representing the XML element to parse
-     *
-     * @author CDP
-     */
+	 * @description
+	 * This method will parse the documents of a given XML document
+	 * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+ *
+	 * @param {string} doc string representing the XML element to parse
+	 *
+	 * @author CDP
+	 * @author CM (refactoring)
+	 */
 	parser.parseDocuments = function(doc) {
 		var currentDocument = angular.element(doc),
 			defDocElement,
 			defContentEdition = 'body';
 		if (currentDocument.find('text group text').length > 0) {
 			defDocElement = 'text group text';
+			checkMainFront = true;
 		} else if (currentDocument.find('text').length > 0) {
 			defDocElement = 'text';
 		} else if (currentDocument.find('div[subtype="edition_text"]').length > 0) {
@@ -833,72 +847,227 @@ angular.module('evtviewer.dataHandler')
 			defContentEdition = 'div';
 		}
 
-		var frontDef = '<front>',
-			biblDef = '<biblStruct>';
+		parser.parserProperties['defDocElement'] = defDocElement;
+		parser.parserProperties['defContentEdition'] = defContentEdition;
 
 		parsedData.setCriticalEditionAvailability(currentDocument.find(config.listDef.replace(/[<>]/g, '')).length > 0);
 
 		angular.forEach(currentDocument.find(defDocElement),
 			function(element) {
-				var newDoc = {
-					value: element.getAttribute('xml:id') || parser.xpath(doc).substr(1) || 'doc_' + (parsedData.getDocuments()._indexes.length + 1),
-					label: element.getAttribute('n') || 'Doc ' + (parsedData.getDocuments()._indexes.length + 1),
-					title: element.getAttribute('n') || 'Document ' + (parsedData.getDocuments()._indexes.length + 1),
-					content: element,
-					front: undefined,
-					pages: [] // Pages will be added later
-				};
-				var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
-				if (docFront && docFront[0]) {
-					var frontElem = docFront[0].cloneNode(true),
-						biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
-					if (biblRefs) {
-						for (var i = biblRefs.length - 1; i >= 0; i--) {
-							var evtBiblElem = document.createElement('evt-bibl-elem'),
-								biblElem = biblRefs[i],
-								biblId = biblElem.getAttribute('xml:id') || parser.xpath(biblElem).substr(1);
-
-							evtBiblElem.setAttribute('data-bibl-id', biblId);
-							biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
-						}
-					}
-					var parsedContent = parser.parseXMLElement(element, frontElem, {
-							skip: biblDef + '<evt-bibl-elem>'
-						}),
-						frontAttributes = parser.parseElementAttributes(frontElem);
-					newDoc.front = {
-						attributes: frontAttributes,
-						parsedContent: parsedContent && parsedContent.outerHTML ? parsedContent.outerHTML.trim() : '',
-						originalContent: frontElem.outerHTML
-					};
-				}
-
-				for (var j = 0; j < element.attributes.length; j++) {
-					var attrib = element.attributes[j];
-					if (attrib.specified) {
-						newDoc[attrib.name.replace(':', '-')] = attrib.value;
-					}
-				}
-				parsedData.addDocument(newDoc);
-				parser.parsePages(element, newDoc.value);
-				
-				if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
-					// Split pages works only on diplomatic/interpretative edition
-					// In critical edition, text will be splitted into pages for each witness
-					config.defaultEdition = 'diplomatic';
-					var pages = parsedData.getPages();
-					var newDocPages = newDoc.pages;
-					angular.forEach(angular.element(element).find(defContentEdition),
-						function(editionElement) {
-							//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
-							parser.splitPages(pages, editionElement, newDoc.value, defContentEdition, newDocPages);
-						});
-				}
+				parser.parseDocument(element, doc);
 			});
 		console.log('## PAGES ##', parsedData.getPages());
 		console.log('## Documents ##', parsedData.getDocuments());
+		console.log('## DIVS ##', parsedData.getDivs());
 		return parsedData.getDocuments();
 	};
+/**
+ * @ngdoc method
+ * @name evtviewer.dataHandler.evtParser#parseDocument
+ * @methodOf evtviewer.dataHandler.evtParser
+ *
+ * @description
+ * This method will parse a portion of the given XML document that can be considered as an individual textual document
+ * and store it in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+ *
+ * @param {element} element the XML element to parse
+ * @param {string} doc string representing the XML element to parse
+ *
+ * @author CM
+ */
+	parser.parseDocument = function(element, doc) {
+		var newDoc = {
+			value: element.getAttribute('xml:id') || parser.xpath(doc).substr(1) || 'doc_' + (parsedData.getDocuments()._indexes.length + 1),
+			label: '',
+			title: '',
+			content: element,
+			front: undefined,
+			pages: [], // Pages will be added later
+			divs: []
+		};
+		for (var j = 0; j < element.attributes.length; j++) {
+			var attrib = element.attributes[j];
+			if (attrib.specified) {
+				newDoc[attrib.name.replace(':', '-')] = attrib.value;
+			}
+		}
+		parser.createTitle(newDoc, 'Doc');
+		parser.parseFront(newDoc, element);
+		parsedData.addDocument(newDoc);
+		parser.parsePages(element, newDoc.value);
+		if (parser.parserProperties['defContentEdition'] === 'body') {
+			var front = element.querySelector('front'),
+					body = element.querySelector('body');
+			if (front) {
+				parser.parseDivs(front, newDoc.value, 'front');
+			}
+			parser.parseDivs(body, newDoc.value, 'body');		
+		} else {
+			parser.parseDivs(element, newDoc.value, 'body');
+		}
+		if (config.defaultEdition !== 'critical' || !parsedData.isCriticalEditionAvailable()) {
+			// Split pages works only on diplomatic/interpretative edition
+			// In critical edition, text will be splitted into pages for each witness
+			config.defaultEdition = 'diplomatic';
+			var pages = parsedData.getPages();
+			var newDocPages = newDoc.pages;
+			angular.forEach(angular.element(element).find(parser.parserProperties['defContentEdition']),
+				function(editionElement) {
+					//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
+					parser.splitPages(pages, editionElement, newDoc.value, parser.parserProperties['defContentEdition'], newDocPages);
+				});
+		}
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtParser#parseDivs
+	 * @methodOf evtviewer.dataHandler.evtParser
+	 *
+	 * @description
+	 * This method will parse all the divs inside of an individual textual document.
+	 *
+	 * @param {element} doc the XML element to parse
+	 * @param {string} docId the id of the document whose divs are currently getting parsed
+	 * @param {string} section tagName of the element where the div is contained (ex.: 'body', 'front' or 'back')
+	 *
+	 * @author CM
+	 */	
+	parser.parseDivs = function(doc, docId, section) {
+		var lang = doc.getAttribute('xml:lang') ? doc.getAttribute('xml:lang') : '';
+		var currentDocument = angular.element(doc);
+		angular.forEach(currentDocument.children('div'), function(element) {
+			parser.parseDiv(element, docId, section, lang);
+		});
+	};
+	
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtParser#parseDiv
+	 * @methodOf evtviewer.dataHandler.evtParser
+	 *
+	 * @description
+	 * This method will parse the info about a single div inside of an individual textual document
+	 * and then stores it in parsedData for future use.
+	 *
+	 * @param {element} element the XML element to parse
+	 * @param {string} docId the id of the document whose divs are currently getting parsed
+	 * @param {string} section tagName of the element where the div is contained (ex.: 'body', 'front' or 'back')
+	 *
+	 * @author CM
+	 */
+	parser.parseDiv = function(element, docId, section) {
+		var newDiv = {
+			doc: docId,
+			section: section,
+			subDivs: [],
+			title: '',
+			_isSubDiv: parser.isNestedInElem(element, 'div')
+		};
+		angular.forEach(Object.values(element.attributes), function(attr) {
+			if (attr.specified) {
+				newDiv[attr.name.replace(':', '-')] = attr.value;
+			}
+		});
+		if (newDiv.corresp) {
+			newDiv.corresp = newDiv.corresp.replace('#', '').split(' ');
+		}
+		newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
+		parser.createTitle(newDiv, 'Div');
+		var elem = angular.element(element);
+		angular.forEach(elem.children('div'), function(child) {
+			newDiv.subDivs.push(parser.parseDiv(child, docId, section).value);
+		});
+		parsedData.addDiv(newDiv, docId);
+		return newDiv;
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtParser#createTitle
+	 * @methodOf evtviewer.dataHandler.evtParser
+	 *
+	 * @description
+	 * This method creates the name for the nuew parsed element object
+	 * by using the attributes of the element or a default solution.
+	 *
+	 * @param {object} parsedElement the JSON object with all the info about the parsed element
+	 * @param {string} tag the type of element that was parsed ('doc', 'div')
+	 *
+	 * @author CM
+	 */
+	parser.createTitle = function(parsedElement, tag) {
+		if (parsedElement.type) {
+			parsedElement.title += parsedElement.type.substr(0,1).toUpperCase() + parsedElement.type.substr(1);
+		} else {
+			parsedElement.title += tag;
+		}
+		if (parsedElement.subtype) {
+			parsedElement.title += ' - ' + parsedElement.subtype.substr(0,1).toUpperCase() + parsedElement.subtype.substr(1);
+		}
+		parsedElement.title += ' ';
+		switch (tag) {
+			case 'Div': {
+				parsedElement.title += parsedElement.n || parsedData.getDivs().length + 1;
+			} break;
+			case 'Doc': {
+				var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
+					wit = witId;
+					return parsedData.getWitness(witId).corresp === parsedElement.value;
+				});
+				if (corresp) {
+					parsedElement.title += wit;
+				} else {
+					parsedElement.title += parsedElement.n || parsedData.getDocuments()._indexes.length + 1;
+				}
+			}
+		}
+		parsedElement.label = parsedElement.title;
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.evtParser#parseFront
+	 * @methodOf evtviewer.dataHandler.evtParser
+	 *
+	 * @description
+	 * This method retrieves the information about the front element within the document and
+	 * the bibliographic references in particular, storing all the info in a property within the 
+	 * document object that will be saved in parsedData.
+	 *
+	 * @param {object} newDoc the JSON object with all the info about the parsed document
+	 * @param {element} element the front element within the XML document
+	 *
+	 * @author CM
+	 */	
+	parser.parseFront = function(newDoc, element) {
+		var frontDef = '<front>',
+				biblDef = '<biblStruct>';
+		var docFront = element.querySelectorAll(frontDef.replace(/[<\/>]/ig, ''));
+		if (docFront && docFront[0]) {
+			var frontElem = docFront[0].cloneNode(true),
+					biblRefs = frontElem.querySelectorAll(biblDef.replace(/[<\/>]/ig, ''));
+			if (biblRefs) {
+				for (var i = biblRefs.length - 1; i >= 0; i--) {
+					var evtBiblElem = document.createElement('evt-bibl-elem'),
+						biblElem = biblRefs[i],
+						biblId = biblElem.getAttribute('xml:id') || parser.xpath(biblElem).substr(1);
+
+					evtBiblElem.setAttribute('data-bibl-id', biblId);
+					biblElem.parentNode.replaceChild(evtBiblElem, biblElem);
+				}
+			}
+			var parsedContent = parser.parseXMLElement(element, frontElem, {
+					skip: biblDef + '<evt-bibl-elem>'
+				}),
+				frontAttributes = parser.parseElementAttributes(frontElem);
+			newDoc.front = {
+				attributes: frontAttributes,
+				parsedContent: parsedContent && parsedContent.outerHTML ? parsedContent.outerHTML.trim() : '',
+				originalContent: frontElem.outerHTML
+			};
+		}
+	}
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#splitLineBreaks

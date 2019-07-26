@@ -106,7 +106,9 @@ $named-entities-border-color : rgb(125, 125, 125);
 			overflow-x: hidden;
 			overflow-y: auto;
 			background-color: $named-entities-background-color-darker;
-
+			&.largeMap {
+				max-height: 100%;
+			}
 		}
 
 		&-panel {

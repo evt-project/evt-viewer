@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser, parsedData) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -38,6 +38,7 @@ angular.module('evtviewer.dataHandler')
         docElements;
 
     var _console = $log.getInstance('baseData');
+    var XPointersElem = {};
 
     /**
      * @ngdoc method
@@ -138,7 +139,7 @@ angular.module('evtviewer.dataHandler')
             state.XMLExtDocuments[type] = docElements;
             state.XMLExtDocuments.length++;
             var parsedDocuments = evtParser.parseExternalDocuments(docElements, type);
-            
+
             /*if (type === 'sources') {
                 evtSourcesParser.parseExternalSources(docElements);
             } else if (type === 'analogues') {
@@ -174,28 +175,24 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
-      /**
-       * @ngdoc method
-       * @name evtviewer.dataHandler.baseData#launchXMLParsers
-       * @methodOf evtviewer.dataHandler.baseData
-       *
-       * @description
-       * [PRIVATE] Launch XML basic parser, needed at the very first loading of the application.
-       * @param {element} docElements Element representing the tree of the XML document to be parsed.
-       */
-      var launchXMLParsers = function (docElements) {
-         evtParser.analyzeEncoding(docElements);
-         // Parse pages
-         // evtParser.parsePages(docElements);
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#launchXMLParsers
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * [PRIVATE] Launch XML basic parser, needed at the very first loading of the application.
+     * @param {element} docElements Element representing the tree of the XML document to be parsed.
+     */
+    var launchXMLParsers = function(docElements) {
+        evtParser.analyzeEncoding(docElements);
+        // Parse pages
+        // evtParser.parsePages(docElements);
 
-         // Parse Glyphs
-         evtParser.parseGlyphs(docElements); //TODO: Decide if it is necessary to move this somewhere else
-
-         // Parse Zones
-         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
-
-
-          // Parse HotSpots
+        // Parse Zones
+        evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
+       
+         // Parse HotSpots
          evtHotSpotParser.parseHotSpots(docElements);
 
          // Parse documents
@@ -203,7 +200,7 @@ angular.module('evtviewer.dataHandler')
 
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);
-        
+
         // Parse the Sources Apparatus entries (@author: CM)
         if (config.quoteDef !== '') {
             var promiseQuote = [];
@@ -234,11 +231,22 @@ angular.module('evtviewer.dataHandler')
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
    
-         // Parse Glyphs
-         evtParser.parseGlyphs(docElements);
+       // Parse Glyphs
+       evtParser.parseGlyphs(docElements);
+
+       if (parsedData.getEncodingDetail('variantEncodingLocation') !== 'internal') {
+        if (config.loadCriticalEntriesImmediately){
+            evtCriticalApparatusParser.parseCriticalEntries(docElements);
+        }
+
+        // Parse the versions entries
+        if (config.versions.length > 1) {
+            evtCriticalApparatusParser.parseVersionEntries(docElements);
+        }
+       }
    
-         // Init Search
-         //evtSearch.initSearch(docElements);
+       // Init Search
+       //evtSearch.initSearch(docElements);
     };
 
     /**
@@ -269,7 +277,14 @@ angular.module('evtviewer.dataHandler')
                     .then(function(response) {
                         includedFilesLoaded++;
                         var includedDoc = xmlParser.parse(response.data),
+                        includedTextElem;
+                        if (fileXpointer) {
+                            var dom = angular.element(includedDoc)[0];
+                            findXPointerElem(fileXpointer, dom);
+                            includedTextElem = XPointersElem[fileXpointer];
+                        } else {
                             includedTextElem = includedDoc.getElementsByTagName('text')[0];
+                        }
                         element.parentNode.replaceChild(includedTextElem, element);
                         if (includedFilesLoaded === totFilesToInclude) {
                             deferred.resolve('success');
@@ -289,6 +304,17 @@ angular.module('evtviewer.dataHandler')
             deferred.resolve('success');
         }
         return deferred;
+    };
+
+    var findXPointerElem = function(xpointer, doc) {
+        doc.childNodes.forEach(function(node) {
+            if (node.attributes && node.hasAttribute('xml:id') && node.getAttribute('xml:id') === xpointer) {
+                XPointersElem[xpointer] = node;
+                return node;
+            } else if (node.childNodes && node.childNodes.length > 0) {
+                return findXPointerElem(xpointer, node);
+            }
+        });
     };
 
     return baseData;

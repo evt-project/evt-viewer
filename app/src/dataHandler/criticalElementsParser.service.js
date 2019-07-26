@@ -805,9 +805,9 @@ angular.module('evtviewer.dataHandler')
 				//     }
 				// }
 
-			} else if (entry.lemma) {
+			} else if (entry.lemma && entry.lemma.indexOf('depa-lem') < 0) {
 				spanElement = parser.getEntryLemmaText(entry, wit);
-			} else {
+			} else if (parsedData.getEncodingDetail('variantEncodingMethod') !== 'double-end-point') {
 				var noRdgElement = document.createElement('span');
 				noRdgElement.className = 'empty';
 				noRdgElement.setAttribute('title', 'noRdg');
@@ -1089,7 +1089,7 @@ angular.module('evtviewer.dataHandler')
 				var lacunaElement = document.createElement('span');
 				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
 				spanElement.appendChild(lacunaElement);
-			} else if (entry.lemma !== undefined && entry.lemma !== '') {
+			} else if (entry.lemma && entry.lemma.indexOf('depa-lem') < 0) {
 				spanElement.setAttribute('data-reading-id', entry.lemma);
 				var lemmaContent = entry.content[entry.lemma].content;
 				for (var i in lemmaContent) {
@@ -1122,7 +1122,7 @@ angular.module('evtviewer.dataHandler')
 					if (spanElement !== null) {
 						spanElement.className = 'autoLemma';
 					}
-				} else {
+				} else if (parsedData.getEncodingDetail('variantEncodingMethod') !== 'double-end-point') {
 					errorElement = document.createElement('span');
 					errorElement.className = 'encodingError';
 					errorElement.setAttribute('title', 'General error');

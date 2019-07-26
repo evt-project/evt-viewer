@@ -207,6 +207,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'list':
 					evtIcon = 'icon-evt_list';
 					break;
+				case 'list-alt':
+					evtIcon = 'fa fa-list-alt';
+					break;
 				case 'menu':
 				case 'menu-vert':
 					evtIcon = 'icon-evt_more-vert';
@@ -609,6 +612,12 @@ angular.module('evtviewer.buttonSwitch')
 						evtInterface.updateState('mainMenu', !mainMenuState);
 					};
 					break;
+				case 'openEntity':
+					callback = function() {
+						var vm = this;
+						vm.active = !vm.active;
+					};
+					break;
 				case 'openGlobalDialogInfo':
 					callback = function() {
 						var vm = this;
@@ -630,6 +639,15 @@ angular.module('evtviewer.buttonSwitch')
 						var vm = this;
 						evtInterface.updateState('secondaryContent', 'entitiesList');
 						evtDialog.openByType('entitiesList');
+						vm.active = !vm.active;
+					};
+					break;
+				case 'openToc':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						evtInterface.updateState('secondaryContent', 'toc');
+						evtDialog.openByType('toc');
 						vm.active = !vm.active;
 					};
 					break;

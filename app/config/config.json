@@ -1,9 +1,10 @@
 {
-    "indexTitle": "Edizione digitale del Rotulo di San Teobaldo",
+
+    "indexTitle": "",
     "webSite": "",
     "logoUrl": "",
 
-    "dataUrl":"data/rotoloSanTeobaldo.xml",
+	"dataUrl": "../data/polo/main1.xml",
     "sourcesUrl"       : "",
     "analoguesUrl"     : "",
     "sourcesTextsUrl" : "",
@@ -13,7 +14,7 @@
                                 "label"    : "READING_TEXT",
                                 "icon"     : "reading-txt",
                                 "viewMode" : "readingTxt",
-                                "visible"  : false
+                                "visible"  : true
                             },
                             {
                                 "label"    : "MULTIPLE_RECENSIONS",
@@ -25,7 +26,7 @@
                                 "label"    : "IMAGE_TEXT",
                                 "icon"     : "mode-imgTxt",
                                 "viewMode" : "imgTxt",
-                                "visible"  : true
+                                "visible"  : false
                             },
                             {
                                 "label"    : "TEXT_TEXT",
@@ -45,31 +46,30 @@
                                 "viewMode" : "srcTxt",
                                 "visible"  : true
                             }],
-    "defaultEdition": "diplomatic",
+    "defaultEdition": "critical",
     "showEditionLevelSelector": true,
 
     "availableEditionLevel": [{
         "value": "critical",
         "label": "Critical",
         "title": "Critical edition",
-        "visible": false
+        "visible": true
     }, {
         "value": "diplomatic",
         "label": "Diplomatic",
         "title": "Diplomatic edition",
-        "visible": true
+        "visible": false
     }, {
         "value": "interpretative",
         "label": "Interpretative",
         "title": "Interpretative edition",
-        "visible": true
+        "visible": false
     }],
 
     "enableXMLdownload" : true,
 
     "toolPinAppEntries": true,
     "toolImageTextLinking": true,
-
     "namedEntitiesSelector": true,
 
     "namedEntitiesToHandle": [{
@@ -89,17 +89,17 @@
     "otherEntitiesToHandle": [{
         "tagName": "rolename",
         "label": "Role Name",
-        "available": true,
+        "available": false,
         "color": "#cfc"
     }, {
         "tagName": "measure",
         "label": "Measure",
-        "available": true,
+        "available": false,
         "color": "#ffecb3"
     }],
 
 
-    "toolHeatMap": false,
+    "toolHeatMap": true,
     "preferredWitness": "",
     "skipWitnesses": "",
 
