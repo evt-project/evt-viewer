@@ -107,10 +107,6 @@ angular.module('evtviewer.box')
                 boxBody = angular.element(element).find('.box-body')[0];
                 boxTopBox = angular.element(element).find('.box-top-box')[0];
                 currentBox.updateContent();
-               
-                // tentativo di mettere OSD - FIXME - non va bene qui!!
-                if (currentBox.type === 'image') {
-                }
 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
                     // Scrol box to update page numbers

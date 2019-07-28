@@ -19,7 +19,7 @@ button-switch {
         vertical-align: middle;
 
         position: relative;
-        display: inline-flex;
+        display: inline-flex!important;
         justify-content: center;
         align-items: center;
         overflow: visible;
@@ -184,4 +184,9 @@ button-switch {
     .buttonSwitch-label {
         display: none;
     }
+   .buttonSwitch-icon {
+      margin-left: 8px;
+      margin: 8px 0;
+      font-size: 1.4em;
+   }
 }

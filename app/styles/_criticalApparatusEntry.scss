@@ -70,7 +70,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             .buttonSwitch {
                 box-shadow: none;
                 border: 1px solid $critical-apparatus-entry-background-color;
-                top: 5px;
+                top: 3px;
                 display: inline-block;
             }
             &.active, &:hover {

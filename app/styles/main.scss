@@ -129,7 +129,6 @@ section > div {
 @import "toc.scss";
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
-//import "sanmatteo.scss";
 @import "osdViewer.scss";
 
 // Temporary
@@ -230,7 +229,8 @@ section > div {
 
 .globalMenu {
     width: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     position: absolute;
     right: 8px;
     top: 0px;
@@ -243,12 +243,12 @@ section > div {
 
         .buttonSwitch {
             height: auto;
-            display: inline-block;
+            display: inline-block!important;
             padding: 0 3px;
             background: none;
             box-shadow: none;
             border-radius: 0;
-            width: 0px;
+            width: auto;
 
             &-label {
                 font-variant: small-caps;
@@ -304,6 +304,8 @@ section > div {
 
     .viewModeMenu {
         display: inline;
+        position: relative;
+        top: 2px;
     }
 }
 

@@ -206,7 +206,7 @@
             @include colors($box-structure-color-light, #000);
             overflow: hidden;
             text-align: center;
-            padding: 0ex;
+            padding: 0px;
             img {
                 height: 100%;
             }
@@ -432,7 +432,6 @@
             margin-left: 8px;
             margin: 8px 0;
             font-size: 2.2em;
-            top: 19px;
         }
     }
 }
