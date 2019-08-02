@@ -56,13 +56,17 @@ angular.module('evtviewer.dataHandler')
                         line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
                         line.lbId = node.getAttribute('xml:id');
                         
-                        lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                        cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
-                        
-                        if(editionIsInterp) {
-                           lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                           cleanedInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.interpretative);
+                        do {
+                           lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                           cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
+                           
+                           if(editionIsInterp) {
+                              lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                              cleanedInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.interpretative);
+                           }
                         }
+                        while(cleanedDiplomaticNodes.length === 0 && cleanedInterpretativeNodes.length === 0 &&
+                        lineNodes.diplomatic.length !== 0 && lineNodes.interpretative.length !== 0);
                         
                         line.content = {};
                         line.content.diplomatic = evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic');
