@@ -46,7 +46,7 @@ angular.module('evtviewer.buttonSwitch')
 			collection = {},
 			list       = [],
 			idx        = 0;
-		
+
 		var _console = $log.getInstance('buttonSwitch');
 
         /**
@@ -201,6 +201,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'keyboard':
 					evtIcon = 'icon-evt_keyboard';
 					break;
+				case 'hts':
+					evtIcon = 'icon-evt_hts';
+					break;
 				case 'language':
 					evtIcon = 'fa fa-language'; //TODO: add icon in EVT font
 					break;
@@ -279,6 +282,15 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
+					break;
+				case 'zoom-in':
+					evtIcon = 'icon-evt_zoom-in';
+					break;
+				case 'zoom-out':
+					evtIcon = 'icon-evt_zoom-out';
+					break;
+				case 'zoom-reset':
+					evtIcon = 'icon-evt_zoom-reset';
 					break;
 			}
 			return evtIcon;
@@ -518,8 +530,8 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'fontSizeTools':
 					callback = function() {
-						var fontSizeBtnState = scope.$parent.vm.getState('fontSizeBtn') || false;
-						scope.$parent.vm.updateState('fontSizeBtn', !fontSizeBtnState);
+						var zoomState = scope.$parent.vm.getState('fontSizeBtn') || false;
+						scope.$parent.vm.updateState('fontSizeBtn', !zoomState);
 					};
 					fakeCallback = function() {
 						scope.$parent.vm.updateState('fontSizeBtn', false);
@@ -593,12 +605,25 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'itl':
 					active = evtInterface.getToolState('ITL') === 'active';
+					btnType = 'standAlone';
 					callback = function() {
 						var vm = this;
 						if (vm.active) { // Activate ITL
 							evtImageTextLinking.turnOnITL();
 						} else { // Deactivate ITL
 							evtImageTextLinking.turnOffITL();
+						}
+					};
+					break;
+					case 'hts':
+					active = evtInterface.getToolState('HTS') === 'active';
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						if (vm.active) {
+							evtImageTextLinking.turnOnHTS();
+						} else {
+							evtImageTextLinking.turnOffHTS();
 						}
 					};
 					break;
@@ -676,10 +701,10 @@ angular.module('evtviewer.buttonSwitch')
                      inputValue = evtSearchBox.getInputValue(parentBoxId),
                      input,
                      placeholder = '';
-                  
+
                   evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                   evtSearchBox.setSearchedTerm(parentBoxId, inputValue);
-                  
+
                   input = {
                      '': function() {
                         placeholder = 'Enter your query in the search box above';
@@ -693,14 +718,14 @@ angular.module('evtviewer.buttonSwitch')
                            currentEdition = evtBox.getEditionById(parentBoxId),
                            currentEditionResults = evtSearchResults.getCurrentEditionResults(results, currentEdition),
                            visibleResults = evtSearchResults.getVisibleResults(currentEditionResults);
-                        
+
                         evtSearchResult.setCurrentEditionResults(parentBoxId, currentEditionResults);
                         evtSearchResult.setVisibleRes(parentBoxId, visibleResults);
                      }
                   };
-                  
+
                   (input[inputValue] || input['default'])();
-                  
+
                   evtSearchBox.setStatus(parentBoxId, 'searchResultBox', true);
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
                   evtSearchBox.showBtn(parentBoxId, 'searchResultsHide');
@@ -737,23 +762,23 @@ angular.module('evtviewer.buttonSwitch')
                         var xmlDocDom = baseData.getXML(),
                            searchToolsBtn,
                            searchIndexBtn;
-         
+
                         searchIndexBtn = button.getByType('searchIndex')[0];
                         searchIndexBtn.active = false;
                         searchIndexBtn.disable();
                         evtSearch.initSearch(xmlDocDom);
                         evtInterface.setToolStatus('isDocumentIndexed', 'true');
-         
+
                         searchToolsBtn = button.getByType('searchInternal');
                         for(var z in searchToolsBtn) {
                            searchToolsBtn[z].disabled = false;
                         }
-   
+
                         evtInterface.updateState('indexingInProgress', false);
                      }
                   );
                }
-               
+
                callback = function () {
                   if(evtInterface.getToolState('isDocumentIndexed') === 'true') {
                      scope.vm.active = false;
@@ -767,7 +792,7 @@ angular.module('evtviewer.buttonSwitch')
                callback = function() {
                   var parentBoxId = scope.$parent.id,
                      placeholder = 'Enter your query in the search box above';
-   
+
                   evtSearchResult.setPlaceholder(parentBoxId, placeholder);
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsShow');
@@ -778,7 +803,7 @@ angular.module('evtviewer.buttonSwitch')
             case 'searchResultsHide':
                callback = function() {
                   var parentBoxId = scope.$parent.id;
-                  
+
                   evtSearchBox.updateStatus(parentBoxId, 'searchResultBox');
                   evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
                   evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
@@ -790,7 +815,7 @@ angular.module('evtviewer.buttonSwitch')
                callback = function() {
                   var parentBoxId = scope.$parent.id,
                      searchInput = evtSearchBox.getInputValue(parentBoxId);
-                  
+
                   evtSearchBox.updateStatus(parentBoxId, 'searchCaseSensitive');
                   evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
                };
@@ -809,7 +834,7 @@ angular.module('evtviewer.buttonSwitch')
                var activeCallback = function () {
                   var parentBoxId = scope.$parent.id,
                      searchBoxStatus = evtBox.getState(parentBoxId, 'searchBox');
-   
+
                   evtBox.updateState(parentBoxId, 'searchBox', !searchBoxStatus);
                   evtSearchBox.closeBox(parentBoxId, 'searchResultBox');
                   evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
@@ -838,13 +863,13 @@ angular.module('evtviewer.buttonSwitch')
                      keyboardId = evtVirtualKeyboard.getKeyboardId(parentBoxId),
                      keyboard =  $('#'+keyboardId).getkeyboard(),
                      btnKeyboard = button.getByType('searchVirtualKeyboard');
-   
+
                   if(keyboard.isOpen || vm.active === false) {
                      keyboard.close();
                   }
                   else {
                      keyboard.reveal();
-                     
+
                      if(btnKeyboard.length > 1) {
                         for(var i in btnKeyboard) {
                            if(btnKeyboard[i].uid !== vm.currentId) {
@@ -860,7 +885,7 @@ angular.module('evtviewer.buttonSwitch')
                callback = function () {
                   var parentBoxId = scope.$parent.id,
                      searchInput = evtSearchBox.getInputValue(parentBoxId);
-                  
+
                   evtSearchBox.updateStatus(parentBoxId, 'searchExactWord');
                   evtSearchResults.highlightSearchResults(parentBoxId, searchInput);
                };
@@ -972,9 +997,51 @@ angular.module('evtviewer.buttonSwitch')
                         var s = scope.$parent.vm;
                         return s;
                     };
-                    break;
-				default:
 					break;
+
+				/*aggiunta per bottoni osd federica
+				case 'zoomOut':
+				active = evtInterface.getToolState('zoomOut') === 'active';
+				btnType = 'standAlone';
+				callback = function() {
+					var vm = this;
+					if (vm.active) { // zoom out
+						console.log("zoomOut turnon");
+						evtImageTextLinking.turnOnZoomOut();
+					} else { // Deactivate ITL
+						console.log("itl turnoff");
+						evtImageTextLinking.turnOffZoomOut();
+					}
+				};
+					break;
+				case 'zoomIn':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						scope.$parent.vm.zoomIn();
+						vm.active = !vm.active;
+					};
+					break;
+				case 'zoomReset':
+					btnType = 'standAlone';
+					callback = function() {
+						var vm = this;
+						scope.$parent.vm.zoomReset();
+						vm.active = !vm.active;
+					};
+					break;
+				case 'zoomTools':
+					callback = function() {
+						var zoomBtnState = scope.$parent.vm.getState('zoomBtn') || false;
+						scope.$parent.vm.updateState('zoomBtn', !zoomBtnState);
+					};
+					fakeCallback = function() {
+						scope.$parent.vm.updateState('zoomBtn', false);
+					};
+					break;
+
+				default:
+					break;*/
 			}
 
 			/**
@@ -1069,7 +1136,7 @@ angular.module('evtviewer.buttonSwitch')
 		button.getList = function() {
 			return list;
 		};
-		
+
 		button.getByType = function(type) {
 		   var buttons = [];
 		   for(var i in collection) {

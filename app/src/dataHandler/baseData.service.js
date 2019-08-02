@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, parsedData) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser, parsedData) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -47,12 +47,12 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Add string representing an XML document to collection of stored XML sources.
-     * It uses the private method {@link evtviewer.dataHandler.baseData#addXMLDocument addXMLDocument} 
-     * that will check if the XML is encoded using the xi:include method. If so, it will load every 
+     * It uses the private method {@link evtviewer.dataHandler.baseData#addXMLDocument addXMLDocument}
+     * that will check if the XML is encoded using the xi:include method. If so, it will load every
      * XML included before adding it to collection.
-     * 
+     *
      * @param {string} xmlString String representing the XML source text to be parsed and stored
-     * @returns {promise} promise that the parser will end and complete XML string is stored in collection 
+     * @returns {promise} promise that the parser will end and complete XML string is stored in collection
      */
     baseData.addXMLString = function(xmlString) {
         var promises = [];
@@ -98,7 +98,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] Add an XML Document to collection of stored ones (both in string and document format).
      * It also launches the initial parsers that allow to extract the basic information needed.
-     * It checks if the XML is encoded using the xi:include method. 
+     * It checks if the XML is encoded using the xi:include method.
      * If so, it will load every XML included before launching the parsers.
      * @param {string} doc String representing the XML Document to be stored and parsed
      * @returns {promise} promise that the parser will end and complete XML string is stored in collection
@@ -191,9 +191,12 @@ angular.module('evtviewer.dataHandler')
 
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
+       
+         // Parse HotSpots
+         evtHotSpotParser.parseHotSpots(docElements);
 
-        // Parse documents
-        evtParser.parseDocuments(docElements);
+         // Parse documents
+         evtParser.parseDocuments(docElements);
 
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);

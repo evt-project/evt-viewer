@@ -104,7 +104,6 @@
     }
     .lineContent {
         display: inline-block;
-        width: 90%;
     }
 
     &-hasLineN[data-rend='indent'] {
@@ -123,8 +122,6 @@
         height: 100%;
         width: 24px !important;
         display: inline-block;
-        vertical-align: top;
-        margin-top: 2.5px;
     }
 }
 

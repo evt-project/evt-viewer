@@ -19,7 +19,7 @@ button-switch {
         vertical-align: middle;
 
         position: relative;
-        display: inline-flex;
+        display: inline-flex!important;
         justify-content: center;
         align-items: center;
         overflow: visible;
@@ -62,8 +62,8 @@ button-switch {
         }
 
         &-label {
-            margin: 0px;
-            margin-left: 4px;
+           margin: 0px;
+           margin-left: 4px;
         }
 
         &-icon {
@@ -131,7 +131,7 @@ button-switch {
             min-width: 22px;
             width: 22px;
             font-size: 0.7em;
-            
+
             &-icon {
                 right: 0px;
                 font-weight: bold;
@@ -174,7 +174,7 @@ button-switch {
         text-align: center;
         opacity: 1;
         font-weight: bold;
-        color: #000;
+        color: rgb(41, 29, 29);
         background: $buttonSwitch-active-background-color;
 
         &.buttonSwitch-disabled{
@@ -184,9 +184,9 @@ button-switch {
     .buttonSwitch-label {
         display: none;
     }
-    .buttonSwitch-icon {
-        margin-left: 8px;
-        margin: 8px 0;
-        font-size: 1.4em;
-    }
+   .buttonSwitch-icon {
+      margin-left: 8px;
+      margin: 8px 0;
+      font-size: 1.4em;
+   }
 }

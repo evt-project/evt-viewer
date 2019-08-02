@@ -201,7 +201,6 @@ angular.module('evtviewer.select')
 			switch (currentType) {
 				case 'page':
 					callback = function(oldOption, newOption) {
-						_console.log('page select callback ', newOption);
 						if (newOption !== undefined) {
 							vm.selectOption(newOption);
 							var currentDocument = evtInterface.getState('currentDoc');

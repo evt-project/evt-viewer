@@ -17,8 +17,8 @@ angular.module('evtviewer.dataHandler')
             prevDocsLines = searchParser.getPrevDocsLines();
             parsedElementsForIndexing = angular.extend(parsedElementsForIndexing, parsedElements);
          }
-         console.log(parsedElementsForIndexing);
-         
+         //console.log(parsedElementsForIndexing);
+
          evtSearchIndex.createIndex(parsedElementsForIndexing);
       };
       

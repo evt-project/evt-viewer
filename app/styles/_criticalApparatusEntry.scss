@@ -16,7 +16,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
     font-size: 95%;
     border-left: 1px solid $critical-apparatus-entry-border-color;
     border-right: 1px solid $critical-apparatus-entry-border-color;
-    
+
     cursor: text !important;
 
     span:not(.app_lemma), span:not(.app_lemma_content) {
@@ -43,7 +43,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
     &.over {
         -webkit-box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
         -moz-box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
-        box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8); 
+        box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
     }
 
     &.selected {
@@ -70,7 +70,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             .buttonSwitch {
                 box-shadow: none;
                 border: 1px solid $critical-apparatus-entry-background-color;
-                top: 5px;
+                top: 3px;
                 display: inline-block;
             }
             &.active, &:hover {
@@ -82,7 +82,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             }
         }
     }
-    
+
     &_main-content {
         padding: 5px;
         // width:90%;
@@ -258,7 +258,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             }
         }
     }
-    
+
     .attributes {
         &::before {
             content: " – ";
@@ -309,7 +309,7 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
             border: 0;
         }
         &_other-content {
-            display: none;   
+            display: none;
         }
     }
     &.active {

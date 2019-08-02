@@ -99,11 +99,13 @@ angular.module('evtviewer.box')
             // Initialize box
             var currentBox = evtBox.build(scope, scope.vm);
             var boxElem = angular.element(element).find('.box')[0],
-                boxBody = angular.element(element).find('.box-body')[0],
-                boxTopBox = angular.element(element).find('.box-top-box')[0];
+                boxBody,
+                boxTopBox;
 
             $timeout(function(){
                 // We used $timeout to be sure that the view has been instantiated
+                boxBody = angular.element(element).find('.box-body')[0];
+                boxTopBox = angular.element(element).find('.box-top-box')[0];
                 currentBox.updateContent();
 
                 if (currentBox.type === 'witness' || currentBox.type === 'text') {
@@ -342,7 +344,7 @@ angular.module('evtviewer.box')
                       /* aggiunta per msDesc*/
                       else if (scope.vm.currentType === 'image'){
                           var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                          scope.vm.updateTopBoxContent(msDescObj); 
+                          scope.vm.updateTopBoxContent(msDescObj);
                       }
                       /* fine aggiunta*/
                   }
