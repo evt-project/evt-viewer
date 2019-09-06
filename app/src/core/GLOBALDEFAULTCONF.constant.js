@@ -92,7 +92,7 @@ angular.module('evtviewer.core')
 		value: 'critical',
 		label: 'Critical',
 		title: 'Critical edition',
-		visible: false
+		visible: true
 	}, {
 		value: 'diplomatic',
 		label: 'Diplomatic',

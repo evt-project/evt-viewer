@@ -1,0 +1,35 @@
+<div class="toc">
+    <div class="toc_doc" ng-repeat="doc in vm.docs" ng-class="{ 'open' : vm.open[doc.value] }">
+        <span class="toc_doc_head"
+            ng-click="vm.openDetails(doc.value)"
+            ng-class="{ 'open' : vm.open[doc.value] }">{{doc.title}}</span>
+        <div ng-class="{ 'open' : vm.open[doc.value] }" class="toc_doc_details">
+            <div ng-if="doc.divs.length > 0">
+                <span class="list_head">{{ 'TOC.DIVS' | translate }}</span>
+                <ul ng-repeat="key in vm.keys">
+                    <span class="list_head_sub"
+                            ng-if="doc.divs[key].length > 0">{{ 'TOC.' + key.toUpperCase() | translate }}</span>
+                  <li ng-repeat="div in doc.divs[key]"
+                      ng-click="vm.goToDiv(doc.value, div)">
+                      <span class="indexLink">{{vm.divs[div].title}}</span>
+                      <ul ng-if="vm.subDivs[div].length > 0">
+                          <li ng-repeat="subDiv in vm.subDivs[div]"
+                              ng-click="vm.goToDiv(doc.value, subDiv)">
+                              <span class="indexLink">{{vm.divs[subDiv].title}}</span>
+                          </li>
+                      </ul>
+                  </li>
+                </ul>
+            </div>
+            <div ng-if="doc.pages.length > 0">
+                <span class="list_head">{{ 'TOC.PAGES' | translate }}</span>
+                <ul>
+                    <li ng-repeat="page in doc.pages"
+                        ng-click="vm.goToPage(doc.value, page)">
+                        <span class="indexLink">{{page}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

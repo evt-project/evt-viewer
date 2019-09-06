@@ -187,6 +187,12 @@
 .icon-evt_link:before {
     content: "\e921";
 }
+.icon-evt_link:before {
+    content: "\e921";
+}
+.icon-evt_hts:before {
+    content: "\e91b";
+}
 .icon-evt_list-alt:before {
     content: "\e922";
 }
@@ -208,7 +214,7 @@
 .icon-evt_next:before {
     content: "\f105";
 }
-.icon-evt_note:before {
+.icon-evt_note span.null:before {
     // content: "\e928";
     content: "\2022";
 }
@@ -236,25 +242,26 @@
 .icon-evt_search-results-open:before {
     content: "\f102";
 }
+
 .icon-evt_txt:before {
     content: "\e92e";
 }
 .icon-evt_txttxt:before {
     content: "\e92f";
 }
-.icon-evt_zoom-fit:before {
+.icon-evt_zoom-in:before {
     content: "\e930";
 }
-.icon-evt_zoom-in:before {
+.icon-evt_zoom-reset:before {
     content: "\e931";
 }
-.icon-evt_zoom-one:before {
+.icon-evt_zoom-out:before {
     content: "\e932";
 }
-.icon-evt_zoom-out:before {
+.icon-evt_zoom:before {
     content: "\e933";
 }
-.icon-evt_zoom:before {
+.icon-evt_zoom-fit:before {
     content: "\e934";
 }
 .icon-evt_align:before {
@@ -294,6 +301,9 @@
     content: "\e942";
 }
 .iconbis-evt_analogue:before{
+    content: "\e93f"
+}
+.iconbis-evt_schema:before{
     content: "\e93f"
 }
 

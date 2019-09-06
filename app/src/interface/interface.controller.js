@@ -578,6 +578,10 @@ angular.module('evtviewer.interface')
 		$scope.openGlobalDialogLists = function() {
 			evtInterface.updateState('secondaryContent', 'entitiesList');
 			evtDialog.openByType('entitiesList');
+      };
+      $scope.openToc = function() {
+			evtInterface.updateState('secondaryContent', 'toc');
+			evtDialog.openByType('toc');
 		};
 		/**
          * @ngdoc method

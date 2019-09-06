@@ -34,7 +34,9 @@ angular.module('evtviewer.reading')
             readingType : '@',
             variance    : '@',
             scopeWit    : '@',
-            type        : '@'
+            type        : '@',
+            overlap     : '@',
+            noText      : '@'
         },
         transclude: true,
         templateUrl: 'src/reading/reading.directive.tmpl.html',
@@ -48,6 +50,21 @@ angular.module('evtviewer.reading')
             if (scope.inlineApparatus && evtInterface.getState('currentAppEntry') === scope.appId) {
                 currentReading.openApparatus();
             }
+
+            if (scope.vm.overlap && scope.vm.range) {
+                angular.forEach(scope.vm.range, function(el) {
+                    el.onmouseover = function() {
+                        currentReading.toggleOverAppEntries();
+                    };
+                    el.onmouseout = function() {
+                        currentReading.toggleOverAppEntries();
+                    };
+                    el.onclick = function() {
+                        currentReading.callbackClick();
+                    }
+                });
+            }
+
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentReading){

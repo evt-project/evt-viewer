@@ -45,12 +45,14 @@
 		"INFO": "Info",
 		"INFO_ABOUT_TEXT": "Information about this text",
 		"IMAGE_TEXT_LINKING": "Image-Text Linking",
+		"HOTSPOTS": "Hotspots",
 		"LIST": "Lists",
 		"MENU": "Open Menu",
 		"MS": "Manuscript description",
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "No more versions available",
 		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+		"OPEN_LIST": "Show entry in full list",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
 		"SHOW_PINNED_ENTRIES": "Show pinned elements",
@@ -66,7 +68,9 @@
 		"PAGE_PREVIOUS": "Previous Page",
 		"PAGE_NEXT": "Next Page",
 		"GO_TO_PAGE": "Go to page",
-		"TOGGLE_NAVBAR": "Toggle navbar"
+		"TOGGLE_NAVBAR": "Toggle navbar",
+      "SCHEMA": "Schema",
+      "SEARCH": "Search"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "beginning of a lacuna in",
@@ -160,7 +164,8 @@
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "More Info",
 		"OCCURRENCES": "Occurrences",
-		"XML": "XML"
+		"XML": "XML",
+		"MAP": "Map"
 	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Author",
@@ -248,6 +253,15 @@
 		"XML": "XML",
 		"XML_SOURCE_QUOTE": "XML Source for Quote",
 		"XML_SOURCE_FOR": "XML Source for "
+	},
+	"TOC": {
+		"BACK": "Back matter",
+		"BODY": "Text",
+		"DIVS": "Sections",
+		"FRONT": "Front matter",
+		"HEADER": "Toc, front matter and back matter",
+		"PAGES": "Folia",
+		"TITLE": "Table of contents"
 	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Critical Note",

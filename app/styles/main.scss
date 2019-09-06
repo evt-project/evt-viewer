@@ -80,7 +80,13 @@ footer {
 }
 
 div#global-container-ext.navbar-opened #global-container {
-    @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+   @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+}
+
+section > div {
+    height: 100%;
+    display: block;
+    vertical-align: middle;
 }
 
 #left-nav {
@@ -126,10 +132,10 @@ div#global-container-ext.navbar-opened #global-container {
 @import "navBar.scss";
 @import "visColl.scss";
 @import "searchBox.scss";
-
+@import "toc.scss";
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
-
+@import "osdViewer.scss";
 @import "collation.scss";
 @import "tei.scss";
 
@@ -231,7 +237,8 @@ div#global-container-ext.navbar-opened #global-container {
 
 .globalMenu {
     width: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     position: absolute;
     right: 8px;
     top: 0px;
@@ -241,16 +248,16 @@ div#global-container-ext.navbar-opened #global-container {
 
     button-switch {
         margin: 0px;
-		display: inline;
+		  display: inline;
 
         .buttonSwitch {
             height: auto;
-            display: inline-block;
+            display: inline-block!important;
             padding: 0 3px;
             background: none;
             box-shadow: none;
             border-radius: 0;
-            width: 0px;
+            width: auto;
 
             &-label {
                 font-variant: small-caps;
@@ -306,6 +313,8 @@ div#global-container-ext.navbar-opened #global-container {
 
     .viewModeMenu {
         display: inline;
+        position: relative;
+        top: 2px;
     }
 }
 
@@ -634,6 +643,50 @@ pre {
     font-size: 95%;
     padding: 10px 0;
     border-top: 1px solid;
+}
+/* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
+.icon-evt_note {
+   font-size: 17px !important;
+   color: #fff;
+   margin-top: 10px!important;
+   text-align: center;
+   font-weight:200;
+ }
+span.null {
+  font-size: 20px !important;
+  color: #263238 !important;
+  //margin-top: 10px!important;
+  text-align: center;
+  font-weight: 200;
+}
+.popover_trigger.active:hover {
+   opacity: 0.5;
+ }
+.popover_trigger {
+   color: #263238 !important;
+   opacity: 10 !important;
+}
+span.comment{
+   background-color: #b46138 !important;
+   padding: 1px 4px 4px 4px !important;
+   opacity: 10 !important;
+   border-radius: 4px !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 12px !important;
+   top: 4px !important;
+   position: relative !important;
+}
+span.critic{
+   background-color: #c3a27a !important;
+   padding: 0px 4px 4px 4px !important;
+   border-radius: 4px !important;
+   opacity: 10 !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 12px !important;
+   top: 4px !important;
+   position: relative !important;
 }
 
 .thumbnail {

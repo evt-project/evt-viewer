@@ -3,10 +3,10 @@
 /**
  * @ngdoc overview
  * @name evtviewer
- * 
+ *
  * @description
  * # evtviewer
- * Main module of the application. 
+ * Main module of the application.
  *
  * @requires {@link https://docs.angularjs.org/api/ngAnimate ngAnimate}
  * @requires {@link https://docs.angularjs.org/api/ngCookies ngCookies}
@@ -41,6 +41,7 @@
  * @requires evtviewer.list
  * @requires evtviewer.quote
  * @requires evtviewer.tabsContainer
+ * @requires evtviewer.toc
  * @requires evtviewer.sourcesApparatusEntry
  * @requires evtviewer.analogue
  * @requires evtviewer.analoguesApparatusEntry
@@ -49,6 +50,7 @@
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
  * @requires evtviewer.search
+ * @requires evtviewer.imageViewer
  */
  //* @requires evtviewer.mobile
 angular
@@ -58,9 +60,8 @@ angular
 		'ngMessages',
 		'ngResource',
 		'ngSanitize',
-		'rzModule',
 		'ngTouch',
-		'templates-main', 
+		'templates-main',
 		'ngRoute',
 		'rzModule',
 		'xml',
@@ -85,16 +86,19 @@ angular
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
-        'evtviewer.quote',
-        'evtviewer.tabsContainer',
-        'evtviewer.sourcesApparatusEntry',
-        'evtviewer.analogue',
-        'evtviewer.analoguesApparatusEntry',
-        'evtviewer.apparatuses',
-        'evtviewer.versionReading',
-        'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools',
+      'evtviewer.quote',
+      'evtviewer.tabsContainer',
+      'evtviewer.sourcesApparatusEntry',
+      'evtviewer.analogue',
+      'evtviewer.analoguesApparatusEntry',
+      'evtviewer.apparatuses',
+      'evtviewer.versionReading',
+      'evtviewer.versionApparatusEntry',
+      'evtviewer.UItools',
 		'evtviewer.navBar',
-		'evtviewer.visColl',
-    	'evtviewer.search'
+      'evtviewer.visColl',
+    	'evtviewer.search',
+      'evtviewer.imageViewer',
+      'evtviewer.toc',
+      'ui-leaflet'
     ]);
