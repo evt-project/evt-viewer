@@ -70,7 +70,7 @@ angular.module('evtviewer.dataHandler')
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
-			parser.parseCriticalElementsInText(docDOM, doc, wit);
+			parser.parseCriticalElementsInText(docDOM, doc, wit, null);
 
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
@@ -153,7 +153,7 @@ angular.module('evtviewer.dataHandler')
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
 			//      parsedData.getWitness(config.preferredWitness) !== '') ) {
 
-			parser.parseCriticalElementsInText(docDOM, doc, '');
+			parser.parseCriticalElementsInText(docDOM, doc, '', scopeVersion);
 
 			// remove <pb>
 			var pbs = docDOM.getElementsByTagName('pb');
@@ -213,13 +213,13 @@ angular.module('evtviewer.dataHandler')
 		return doc ? doc : origDoc;
 	}
 
-	parser.parseCriticalElementsInText = function(dom, doc, wit) {
+	parser.parseCriticalElementsInText = function(dom, doc, wit, scopeVersion) {
 		// apparatus entries in the text body
 		var apps = dom.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
 				appsIndex = apps.length - 1;
 		while (appsIndex < apps.length && appsIndex >= 0) {
 			if (!evtParser.isNestedInElem(apps[appsIndex], apparatusEntryDef.replace(/[<>]/g, ''))) {
-				parser.appendAppNode(apps[appsIndex], doc, wit);
+				parser.appendAppNode(apps[appsIndex], doc, wit, scopeVersion);
 			}
 			appsIndex--;
 		}
@@ -277,7 +277,7 @@ angular.module('evtviewer.dataHandler')
 				entry = parsedData.getAnalogue(analogueId),
 				spanElement;
 		if (entry) {
-			spanElement = evtCriticalElementsParser.getAnalogueText(antry, wit, doc);
+			spanElement = evtCriticalElementsParser.getAnalogueText(entry, wit, doc);
 		}
 		if (spanElement) {
 			analogueNode.parentNode.replaceChild(spanElement, analogueNode);
@@ -296,7 +296,7 @@ angular.module('evtviewer.dataHandler')
 		}
 	};
 
-	parser.appendAppNode = function(appNode, doc, wit) {
+	parser.appendAppNode = function(appNode, doc, wit, scopeVersion) {
 		// TODO-POLO: gestire app depa nel body
 		var appId = parser.getParsedNodeId(appNode),
 				entry = appNode.getAttribute('type') === 'recensio' ?
