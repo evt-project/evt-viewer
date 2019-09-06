@@ -32,9 +32,6 @@
 	text-align: initial;
 	.rzslider {
 		margin: auto;
-		.rz-bar-wrapper {
-			padding-top: 24px;
-		}
 		.rz-bar {
 			height: 8px;
 			margin-top: -2px;
@@ -45,7 +42,7 @@
 		.rz-bubble{
 			background: #fff;
 			font-size: 0.85rem;
-			bottom: 2px;
+			bottom: 10px;
 			border: 1px solid;
 			border-radius: 4px;
 			opacity: 0.8;
@@ -57,7 +54,7 @@
 			opacity: .8;
 		}
 		.rz-pointer{
-			top: 3.5px;
+			top: -4px;
 			width: 22px;
 			height: 13px;
 			background-color: #ECEFF1;

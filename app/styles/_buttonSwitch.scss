@@ -106,8 +106,9 @@ button-switch {
     }
     &.navBar-opener, &.navBar-closer {
         .buttonSwitch {
-            position: fixed;
+            position: absolute;
             right: 2px;
+            left: auto;
             bottom: $base-slider-height;
             background: rgba($buttonSwitch-background-color,.4);
             &:hover {
