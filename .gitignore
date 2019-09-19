@@ -13,3 +13,4 @@ app/data/*
 .idea
 .DS_STORE
 package
+yarn.lock

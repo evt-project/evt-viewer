@@ -4,14 +4,58 @@
 
 .interpretativeEdition {
    // Abbreviations and Their Expansions
-  .choice {
-    > .abbr {
-      display: none;
-    }
+   .choice {
+      .abbr {
+         font-size: 80%;
+         position: absolute;
+         line-height: 16px;
+         display: none;
+         border: 1.5px solid black;
+         border-radius: 3px;
 
-    .expan {
-    }
+         @include set(box-shadow, 2px 2px 2px #7e7067);
+
+         padding: 0.4%;
+         margin-top: 30px;
+
+         &:before {
+            left: 15%;
+            position: absolute;
+            top: -13px;
+         }
+      }
+      .expan {
+      }
+      .abbr {
+         &:before {
+           content: url("../images/popup_before.png");
+         }
+       }
+
+      .abbr,
+      .abbr * {
+         background: #e5dac4 !important;
+      }
+
+      .expan {
+         color: #69513a;
+
+         &:hover,
+         &.hover {
+           color: #561c0a;
+         }
+      }
+
+      &:hover,
+      &.hover {
+         .abbr {
+           display: inline;
+           min-width: 30px;
+           text-align: center;
+           z-index: 9;
+      }
   }
+}
 
   // Additions, Deletions, and Omissions
   .add {
@@ -43,7 +87,6 @@
       display: inline;
     }
   }
-
   .choice {
     display: inline;
 
@@ -51,7 +94,7 @@
     &:after {
       content: "";
     }
-
+   // 3.4.2 Regularization and Normalization
     .corr,
     .orig {
       font-size: 80%;

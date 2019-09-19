@@ -8,10 +8,67 @@
 		.abbr {
 			color: purple;
 		}
+      position: relative;
 
-		> .expan {
-			display: none;
+		&:before, &:after {
+			content: "";
 		}
+
+		&:hover .expan, &.hover .expan {
+			display: inline;
+			min-width: 20px;
+			text-align: center;
+			z-index: 99;
+      }
+
+		&:hover .abbr, &.hover .abbr {
+			color: #561c0a;
+			text-decoration: underline;
+			z-index: 9;
+      }
+
+	   .expan {
+		font-size: 80%;
+		position: absolute;
+		line-height: 16px;
+		display: none;
+		border: 1.5px solid black;
+		border-radius: 3px;
+		padding: 0.4%;
+		margin-top: 30px;
+
+		@include set(box-shadow, 2px 2px 2px #7e7067);
+
+		position: absolute;
+		left: 0;
+
+		&:before {
+			content: url("../images/popup_before.png");
+			left: 15%;
+			position: absolute;
+			top: -13px;
+		}
+
+		span {
+			background: transparent;
+		}
+	}
+
+	.expan, .expan * {
+		background: #e5dac4 !important;
+	}
+
+	.abbr {
+		.sup {
+			line-height: 20px;
+			vertical-align: 20%;
+		}
+
+		.under {
+			line-height: 20px;
+			vertical-align: -20%;
+		}
+   }
 	}
 
 	// 3.3.2 Emphasis, Foreign Words, and Unusual Language
@@ -203,6 +260,8 @@
 	/*white-space: nowrap;*/
 }
 
+//TOOLTIP - Regularization and Normalization
+
 span.dipl-choice_popup:hover span.dipl-reg,
 span.dipl-choice_popup.hover span.dipl-reg {
 	display: inline;
@@ -219,6 +278,28 @@ span.dipl-choice_popup span.dipl-orig {
 
 span.dipl-choice_popup:hover span.dipl-orig,
 span.dipl-choice_popup.hover span.dipl-orig {
+	color: #561c0a;
+	text-decoration: underline;
+}
+
+//TOOLTIP - Abbreviations and Their Expansions
+
+span.dipl-choice_popup:hover span.dipl-expan,
+span.dipl-choice_popup.hover span.dipl-expan {
+	display: inline;
+	min-width: 20px;
+	text-align: center;
+}
+
+span.dipl-choice_popup span.dipl-abbr {
+	/*color: #999966;*/
+	color: #69513a;
+
+	/*background-color: rgba(255,255,204,0.8);*/
+}
+
+span.dipl-choice_popup:hover span.dipl-abbr,
+span.dipl-choice_popup.hover span.dipl-abbr {
 	color: #561c0a;
 	text-decoration: underline;
 }
