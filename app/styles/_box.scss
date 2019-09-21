@@ -21,11 +21,13 @@
 
         &[data-position='top']{
             display: setVisibility($mainContainer-top-menu);
+            align-items: center;
             border-radius: 2px 2px 0 0;
         }
 
         &[data-position='bottom']{
             display: setVisibility($mainContainer-bottom-menu);
+            align-items: center;
             border-radius: 0 0 2px 2px;
         }
     }

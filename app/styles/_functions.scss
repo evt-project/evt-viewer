@@ -44,7 +44,7 @@
 
 @function setVisibility($visible){
 	@if($visible == true){
-		@return inline-block;
+		@return inline-flex;
 	} @else {
 		@return none;
 	}
