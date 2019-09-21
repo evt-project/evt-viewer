@@ -245,6 +245,12 @@ section > div {
     height: 54px;
     padding: 10px;
     font-size: 100%;
+    > button-switch {
+       &:first-child {
+          position: relative;
+          top: -1px;
+       }
+    }
 
     button-switch {
         margin: 0;
