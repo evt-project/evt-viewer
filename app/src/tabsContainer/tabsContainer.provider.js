@@ -406,7 +406,7 @@ angular.module('evtviewer.tabsContainer')
 							currentTabsContainer.subContentOpened = subContentOpenedName;
 					}
 			});
-		}
+		};
 		tabsContainer.setSubTabOpened = function(containerType, subContentOpenedName, subTab) {
 			angular.forEach(collection, function(currentTabsContainer) {
 					if (currentTabsContainer.type === containerType) {
@@ -414,7 +414,7 @@ angular.module('evtviewer.tabsContainer')
 							currentTabsContainer.subTabOpened = subTab;
 					}
 			});
-		}
+		};
 		//
 		// Service function
 		//

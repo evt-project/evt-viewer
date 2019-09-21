@@ -85,7 +85,7 @@ angular.module('evtviewer.UItools')
 			pinned._indexesByType._types.push(element.type);
 		}
 		pinned._indexesByType[element.type].push(element.id);
-		document.cookie = 'pinned' + '=' + JSON.stringify(pinned) + '; 1'
+		document.cookie = 'pinned' + '=' + JSON.stringify(pinned) + '; 1';
 	};
 	/**
      * @ngdoc method

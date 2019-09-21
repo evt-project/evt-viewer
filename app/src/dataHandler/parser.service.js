@@ -16,14 +16,24 @@ angular.module('evtviewer.dataHandler')
 .service('evtParser', function($q, xmlParser, parsedData, config) {
 	var parser = {};
 	var idx = 0;
+   var svgs = config.visCollSvg;
 	// TODO: create module provider and add default configuration
 	// var defAttributes = ['n', 'n', 'n'];
 	var defPageElement = 'pb',
 		defLineBreak = '<lb>',
 		defLine = '<l>',
 		possibleNamedEntitiesDef = '<placeName>, <geogName>, <persName>, <orgName>',
-		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>';
-
+		possibleNamedEntitiesListsDef = '<listPlace>, <listPerson>, <listOrg>, <list>',
+      defImageList = 'image';
+   var viscollDefs = {
+      leaf: 'leaf',
+      leafMode: 'mode',
+      folioNumber: 'folioNumber',
+      quire: 'quire',
+      quireInfo: 'q',
+      imageList: 'image',
+      svgElements: 'g'
+   };
 	var projectInfoDefs = {
 		sectionHeaders: '<sourceDesc>, ',
 		sectionSubHeaders: '',
@@ -577,8 +587,6 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CDP
      */
-	
-
 	parser.parseNote = function(noteNode) {
       var popoverElem = document.createElement('evt-popover');
       var popoverN = noteNode.getAttribute('n') ? noteNode.getAttribute('n') : '';
@@ -805,6 +813,8 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					newPage.value = element.getAttribute('xml:id') || 'page_' + (parsedData.getPages().length + 1);
 				}
+            newPage.image = element.getAttribute('src') || config.singleImagesUrl + newPage.value + '.jpg';
+            newPage.svgId = element.getAttribute('svg:id') || (parsedData.getPages().length + 1);
 				newPage.label = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
 				newPage.title = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
 				for (var i = 0; i < element.attributes.length; i++) {
@@ -813,46 +823,203 @@ angular.module('evtviewer.dataHandler')
 						newPage[attrib.name.replace(':', '-')] = attrib.value;
 					}
 				}
-
+				
 				// Get image source URL
-				if (element.getAttribute('facs')) {
-					newPage.source = element.getAttribute('facs');
-				} else {
-					// TODO: handle other cases (e.g. <surface>)
-					newPage.source = '';
-				}
-				parsedData.addPage(newPage, docId);
-			});
+            if (element.getAttribute('facs')) {
+               newPage.source = element.getAttribute('facs');
+            } else {
+               // TODO: handle other cases (e.g. <surface>)
+               newPage.source = '';
+            }
+            parsedData.addPage(newPage, docId);
+		});
 		//console.log('## Pages ##', parsedData.getPages());
-	};
+    };
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseSvgsForViscoll
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the svgs of the resource
+     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {string} doc string representing the XML element to parse
+     * @param {string} docId id of the document to analyze and to whom add parsed pages
+     *
+     * @author FD
+     */
+    parser.parseSvgsForViscoll = function(svgDoc, svgId) {
+        var currentDocument = angular.element(svgDoc);
+        var xmlSvg = svgDoc.lastChild;
+        var xmlTitle = '';
+        try {
+            // soluzione non bellissima, ma finché non abbiamo altri attributi
+            // nell'svg di Viscoll non possiamo fare altrimenti
+            xmlTitle = xmlSvg.firstElementChild.innerHTML.match(/quire\s\d*\sfor/)[0].match(/\d+/)[0];
+        } catch(e){}
+        var newSvg = {
+            id: svgId,
+            quireN: xmlTitle,
+            // id di g recuperare la prima cifra con getAttribute sull'ID
+            svgLeaves: [], //array con tutti i G
+            textSvg: xmlSvg
+        };
+        // ciclo sui g --> aggiungere a svg leaves gli id hasAttribute
+        var svgCollection = parsedData.getViscollSvgs();
+        angular.forEach(currentDocument.find(viscollDefs.svgElements),
+            function(element) {
+                if (element.hasAttribute('id')) {
+                    var svgLeaf = {
+                        id: element.id.replace('#', ''),
+                        value: element.id.replace('#', ''),
+                        label: element.id.replace('#', '')
+                    };
+                   
+                    angular.forEach(svgCollection.imglist._indexes, function(imgId) {
+		                if (svgLeaf.id === imgId.slice(0, -2)) {
+		                    if (svgLeaf.img == undefined){
+		                        svgLeaf.img = svgCollection.imglist[imgId].url;
+                                svgLeaf.imgConjoin = svgCollection.imglist[imgId].conjoinUrl;
+                                svgLeaf.imageId = svgCollection.imglist[imgId].value;
+                                if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
+                                    for (var a in svgCollection.imglist){
+                                        if (svgCollection.imglist[imgId].id === svgCollection.imglist[a].conjoin){
+                                                svgLeaf.conjoinId = svgCollection.imglist[a].value;
+                                            }
+                                    }
+                                }
+		                    } else {
+		                        svgLeaf.img2 = svgCollection.imglist[imgId].url;
+                                svgLeaf.imgConjoin2 = svgCollection.imglist[imgId].conjoinUrl;
+                                svgLeaf.imageId2 = svgCollection.imglist[imgId].value;
+                                if (svgCollection.imglist[imgId].conjoinUrl !== undefined){
+                                    for (var b in svgCollection.imglist){
+                                        if (svgCollection.imglist[imgId].id == svgCollection.imglist[b].conjoin){
+                                                svgLeaf.conjoinId2 = svgCollection.imglist[b].value;
+                                            }
+                                    }
+                                }
+		                    }
+		                }
+		            });
+                    newSvg.svgLeaves.push(svgLeaf);
+                    parsedData.updateLeafDataInQuire(svgId, svgLeaf);
+                }
+            });
+        
+        parsedData.addViscollSvg(newSvg);
+    };
 
-	/**
-	 * @ngdoc method
-	 * @name evtviewer.dataHandler.evtParser#parseDocuments
-	 * @methodOf evtviewer.dataHandler.evtParser
-	 *
-	 * @description
-	 * This method will parse the documents of a given XML document
-	 * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
- *
-	 * @param {string} doc string representing the XML element to parse
-	 *
-	 * @author CDP
-	 * @author CM (refactoring)
-	 */
-	parser.parseDocuments = function(doc) {
-		var currentDocument = angular.element(doc),
-			defDocElement,
-			defContentEdition = 'body';
-		if (currentDocument.find('text group text').length > 0) {
-			defDocElement = 'text group text';
-			checkMainFront = true;
-		} else if (currentDocument.find('text').length > 0) {
-			defDocElement = 'text';
-		} else if (currentDocument.find('div[subtype="edition_text"]').length > 0) {
-			defDocElement = 'div[subtype="edition_text"]';
-			defContentEdition = 'div';
-		}
+    parser.parseViscollDatamodel = function(doc) {
+        var currentDocument = angular.element(doc);
+        var shelfmark = angular.element(currentDocument.find('shelfmark'));
+        var svgToLoad = [];
+        // Handle quires
+        angular.forEach(currentDocument.find(viscollDefs.quire),
+            function(element) {
+                var newQuire = {
+                	value: element.getAttribute('xml:id') || '',
+                	n: element.getAttribute('n') || 'quire' + (parsedData.getViscollQuires().length + 1),
+	                leaves: {
+	                    length: 0,
+						_indexes: []
+	                }
+                };
+                parsedData.addViscollQuire(newQuire);
+                if (shelfmark) {
+                    svgToLoad.push({
+                        fileName: 'id-' + shelfmark.text() + '-' + newQuire.n + '.svg',
+                        id: newQuire.value
+                    });
+                }
+            });
+        // Handle leafs
+        angular.forEach(currentDocument.find(viscollDefs.leaf),
+            function(element) {
+                var quireElem = angular.element(element).find(viscollDefs.quireInfo);
+                quireElem = quireElem ? quireElem[0] : undefined;
+                if (quireElem) {
+                    var leafMode = angular.element(element).find(viscollDefs.leafMode);
+                    var conjoinElems = quireElem.childNodes;
+                    var conjoinElem = conjoinElems[1] == undefined ? conjoinElems[0] : conjoinElems[1];
+                    var newLeaf = {
+                        value: element.getAttribute('xml:id') || '',
+                        leafno: quireElem.getAttribute('leafno') || '',
+                        quire: quireElem.getAttribute('target').replace('#', '') || 'target',
+                        conjoin: conjoinElem.getAttribute('target').replace('#', '') || 'target',
+                        mode: leafMode && leafMode[0] ? leafMode[0].getAttribute('val') : ''
+                    };
+                    parsedData.addViscollLeaf(newLeaf);
+                }
+            });
+        parsedData.setViscollSVGToLoad(svgToLoad);
+        console.log('## parseViscollDatamodel ##', parsedData.getViscollSvgs());
+    };
+
+
+    parser.parseViscollImageList = function(doc) {
+        var currentDocument = angular.element(doc);
+        var svgCollection = parsedData.getViscollSvgs();
+        angular.forEach(currentDocument.find(defImageList),
+            function(element) {
+                var newImage = {
+                	value: element.getAttribute('val') || 'val',
+            		url: element.getAttribute('url') || 'url',
+                	id: element.getAttribute('id') || 'id'
+                };
+                var id = newImage.id.slice(0,-2);
+                angular.forEach(svgCollection.quires._indexes, function(quireId) {
+                    var leaves = svgCollection.quires[quireId].leaves;
+                    angular.forEach(leaves._indexes, function(leafId) {
+                        var leafObj = leaves[leafId];
+                        if (id === leafObj.value) {
+                            newImage.conjoin = leafObj.conjoin;
+                            if(newImage.id.substr(newImage.id.length-1) === 'v'){
+                                newImage.conjoin += '-r';
+                            } else {
+                                newImage.conjoin += '-v';
+                            }
+                        }
+                    });
+                });
+                parsedData.addViscollImageList(newImage);
+            });
+        angular.forEach(svgCollection.imglist._indexes, function(id1) {
+            angular.forEach(svgCollection.imglist._indexes, function(id2) {
+                if (id2 === svgCollection.imglist[id1].conjoin) {
+                    svgCollection.imglist[id1].conjoinUrl = svgCollection.imglist[id2].url;
+                }
+            });
+        });
+    };
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtParser#parseDocuments
+     * @methodOf evtviewer.dataHandler.evtParser
+     *
+     * @description
+     * This method will parse the documents of a given XML document
+     * and store them in {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {string} doc string representing the XML element to parse
+     *
+     * @author CDP
+     * @author CM (refactoring)
+     */
+    parser.parseDocuments = function(doc) {
+        var currentDocument = angular.element(doc),
+            defDocElement,
+            defContentEdition = 'body';
+        if (currentDocument.find('text group text').length > 0) {
+            defDocElement = 'text group text';
+            checkMainFront = true;
+        } else if (currentDocument.find('text').length > 0) {
+            defDocElement = 'text';
+        } else if (currentDocument.find('div[subtype="edition_text"]').length > 0) {
+            defDocElement = 'div[subtype="edition_text"]';
+            defContentEdition = 'div';
+        }
 
 		parser.parserProperties['defDocElement'] = defDocElement;
 		parser.parserProperties['defContentEdition'] = defContentEdition;

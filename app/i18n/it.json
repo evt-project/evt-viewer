@@ -62,9 +62,16 @@
 		"VERSION_CLOSE": "Chiudi versione",
 		"WITNESS_CLOSE": "Chiudi testimone",
 		"WITNESSES_LIST": "Lista testimoni",
-		"SCHEMA": "Schema",
-		"search": "Ricerca",
-		"searchIndex": "Indice"
+		"VISCOLL": "Risultati Viscoll",
+		"PAGE_FIRST": "Inizio",
+		"PAGE_LAST": "Fine",
+		"PAGE_PREVIOUS": "Pagina precedente",
+		"PAGE_NEXT": "Pagina successiva",
+		"GO_TO_PAGE": "Vai alla pagina",
+		"TOGGLE_NAVBAR": "Apri/chiudi barra di navigazione",
+      "SCHEMA": "Schema",
+      "search": "Ricerca",
+      "searchIndex": "Indice"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "inizio di una lacuna in ",
@@ -123,7 +130,9 @@
 		"KEYBOARD_SHORT_CUTS": "Scorciatoie da tastiera",
 		"LANGUAGES": "Lingue",
 		"OPEN_LISTS": "Apri liste",
-		"PROJECT_INFO": "Informazioni sul progetto"
+		"PROJECT_INFO": "Informazioni sul progetto",
+		"ABOUT_EVT": "Informazioni su EVT",
+		"GO_TO_EVT_WEB_PAGE": "Vai al sito di EVT"
 	},
 	"MESSAGES" : {
 		"BIBL_REF_NOT_FOUND": "Impossibile trovare i riferimenti bibliografici",
@@ -277,7 +286,21 @@
 		"COLLATION": "Collazione",
 		"SOURCE_TEXT": "Testo Fonti"
 	},
+	"VISCOLL": {
+		"SELECT_QUIRE":"Seleziona un fascicolo",
+		"QUIRE_NUM": "Fascicolo n.",
+		"SELECT_UNIT":"Seleziona un'unità",
+		"UNIT": "Unità",
+		"SELECT_UNIT_MSG": "Seleziona un'unità per visualizzare la sua composizione.",
+		"MISSING": "Persa"
+	},
+	"PAGES": "Pagine",
 	"AND": "e",
+	"BETWEEN": "tra",
 	"ERROR" : "Errore",
-	"PUBLISHED_BY": "Pubblicato da"
+	"PUBLISHED_BY": "Pubblicato da",
+
+	"NO_INFO": "Dati mancanti",
+	"missing": "Persa",
+	"notLeaf": "---"
 }

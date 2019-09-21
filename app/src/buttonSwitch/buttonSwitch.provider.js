@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
+	this.$get = function($q, $timeout, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, Utils, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard, evtNavbar) {
 		var button    = {},
 			collection = {},
 			list       = [],
@@ -137,7 +137,7 @@ angular.module('evtviewer.buttonSwitch')
 	     * **language**, **list**, **menu**, **menu-vert**, **mode-imgtxt**, **mode-txttxt**,
 	     * **reading-txt**, **mode-collation**, **mode-srctxt**, **mode-versions**, **mode-bookreader**,
 	     * **pin**, **pin-off**, **pin-on**, **remove**, **search**, **thumb**, **thumbs**, **thumbnail**.
-	     * **thumbnails**, **txt**, **v-align**, **witnesses**.</p>
+	     * **thumbnails**, **txt**, **v-align**, **witnesses**, **nextPage**, **beforePage**, **dropNavBar**.</p>
 	     * <p>Output icons can be retrieve both from EVT font set of from font-awesome.
 	     * If you want to add a custom icon set you should add it among font faces and remember to add the related css file.</p>
 	     *
@@ -145,7 +145,8 @@ angular.module('evtviewer.buttonSwitch')
 	     */
 		var getIcon = function(icon) {
 			var evtIcon = '';
-			switch (angular.lowercase(icon)) {
+			if (!icon) { return ''; }
+			switch (icon.toLowerCase()) {
 				case 'add':
 					evtIcon = 'icon-evt_add';
 					break;
@@ -235,6 +236,9 @@ angular.module('evtviewer.buttonSwitch')
 				case 'mode-versions':
 					evtIcon = 'iconbis-evt_versions';
 					break;
+				case 'mode-viscoll':
+					evtIcon = 'iconbis-evt_srctxt';
+					break;
 				case 'mode-bookreader':
 					evtIcon = 'icon-evt_bookreader';
 					break;
@@ -283,14 +287,38 @@ angular.module('evtviewer.buttonSwitch')
 				case 'witnesses':
 					evtIcon = 'icon-evt_books';
 					break;
-				case 'zoom-in':
-					evtIcon = 'icon-evt_zoom-in';
+            case 'zoom-in':
+               evtIcon = 'icon-evt_zoom-in';
+               break;
+            case 'zoom-out':
+               evtIcon = 'icon-evt_zoom-out';
+               break;
+            case 'zoom-reset':
+               evtIcon = 'icon-evt_zoom-reset';
+               break;
+				case 'next-page':
+					evtIcon = 'fa fa-caret-right';
 					break;
-				case 'zoom-out':
-					evtIcon = 'icon-evt_zoom-out';
+				case 'prev-page':
+					evtIcon = 'fa fa-caret-left';
 					break;
-				case 'zoom-reset':
-					evtIcon = 'icon-evt_zoom-reset';
+				case 'first-page':
+					evtIcon = 'fa fa-step-backward';
+					break;
+				case 'last-page':
+					evtIcon = 'fa fa-step-forward';
+					break;
+				case 'hide-bar':
+					evtIcon = 'fa fa-caret-down';
+					break;
+				case 'show-bar':
+					evtIcon = 'fa fa-caret-up';
+					break;
+				case 'thumb-nails':
+					evtIcon = 'fa fa-th';
+					break;
+				case 'viscoll':
+					evtIcon = 'fa fa-stack-overflow';
 					break;
 			}
 			return evtIcon;
@@ -336,7 +364,12 @@ angular.module('evtviewer.buttonSwitch')
 		 * 		<li>'*toggleInfoSrc*': open/close information box about source;</li>
 		 * 		<li>'*addVer*': open selector of available witnesses to add a version in text-version view;</li>
 		 * 		<li>'*removeVer*': remove version from view;</li>
-		 * 		<li>'*cropText*': crop text.</li></ul></p>
+		 * 		<li>'*cropText*': crop text.</li>
+		 *		   <li>'*nextPage*': next page.</li>
+		 *		   <li>'*beforePage*': before page.</li>
+		 *		   <li>'*firstPage*': first page.</li>
+		 *		   <li>'*lastPage*': last page.</li>
+		 *		   <li>'*hideBar*': hide navBar.</li></ul></p>
 		 * <p>To see details of callback function just open the file and read.</p>
 		 * <p>You can add your own type of button, if the same button used in different places should always have the same behaviour.</p>
 		 * <p>You can also overwrite the call back to trigger event with <code>ng-click</code> directive</p>
@@ -571,8 +604,8 @@ angular.module('evtviewer.buttonSwitch')
 				    btnType = 'standAlone';
 				    callback = function() {
 				        var parentBox = scope.$parent.vm;
-				        var topBox=document.getElementsByClassName("box-top-box");
-				        topBox[0].setAttribute("id","msDesc");
+				        var topBox=document.getElementsByClassName('box-top-box');
+				        topBox[0].setAttribute('id','msDesc');
 						if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'msDesc') {
 							parentBox.toggleTopBox();
 						} else {
@@ -892,11 +925,11 @@ angular.module('evtviewer.buttonSwitch')
                break;
             case 'searchPrevResult':
                disabled = true;
-               callback = function() {}
+               callback = function() {};
                break;
             case 'searchNextResult':
                disabled = true;
-               callback = function() {}
+               callback = function() {};
                break;
             case 'searchClear':
                btnType = 'standAlone';
@@ -997,51 +1030,66 @@ angular.module('evtviewer.buttonSwitch')
                         var s = scope.$parent.vm;
                         return s;
                     };
-					break;
-
-				/*aggiunta per bottoni osd federica
-				case 'zoomOut':
-				active = evtInterface.getToolState('zoomOut') === 'active';
-				btnType = 'standAlone';
-				callback = function() {
-					var vm = this;
-					if (vm.active) { // zoom out
-						console.log("zoomOut turnon");
-						evtImageTextLinking.turnOnZoomOut();
-					} else { // Deactivate ITL
-						console.log("itl turnoff");
-						evtImageTextLinking.turnOffZoomOut();
-					}
-				};
-					break;
-				case 'zoomIn':
-					btnType = 'standAlone';
-					callback = function() {
-						var vm = this;
-						scope.$parent.vm.zoomIn();
-						vm.active = !vm.active;
-					};
-					break;
-				case 'zoomReset':
-					btnType = 'standAlone';
-					callback = function() {
-						var vm = this;
-						scope.$parent.vm.zoomReset();
-						vm.active = !vm.active;
-					};
-					break;
-				case 'zoomTools':
-					callback = function() {
-						var zoomBtnState = scope.$parent.vm.getState('zoomBtn') || false;
-						scope.$parent.vm.updateState('zoomBtn', !zoomBtnState);
-					};
-					fakeCallback = function() {
-						scope.$parent.vm.updateState('zoomBtn', false);
-					};
-					break;
-
-				default:
-					break;*/
+                    break;
+                    case 'prevPage':
+                    case 'nextPage':
+                    case 'firstPage':
+                    case 'lastPage':
+                       callback = function() {
+                          var vm = this;
+                          vm.active = false;
+                          if (type === 'prevPage') {
+                             evtInterface.goToPrevPage();
+                          } else if (type === 'nextPage') {
+                             evtInterface.goToNextPage();
+                          } else if (type === 'firstPage') {
+                             evtInterface.goToFirstPage();
+                          } else if (type === 'lastPage') {
+                             evtInterface.goToLastPage();
+                          }
+                       };
+                       if (type === 'prevPage' || type === 'firstPage') {
+                          disabled = evtInterface.isCurrentPageFirst();
+                       } else if (type === 'nextPage' || type === 'lastPage') {
+                          disabled = evtInterface.isCurrentPageLast();
+                       }
+                       break;
+                       case 'hideBar':
+                          callback = function() {
+                             var vm = this;
+                             var startState = evtInterface.getState('isNavBarOpened');
+                             evtInterface.updateState('isNavBarOpened', !startState);
+                             vm.active = !vm.active;
+                          };
+                          break;
+                          case 'thumbNails':
+                             btnType = 'toggler';
+                             callback = function() {
+                                var vm = this;
+                                evtInterface.updateState('isVisCollOpened', false);
+                                var viscollBtn = button.getByType('visColl');
+                                if (viscollBtn) {
+                                   viscollBtn.forEach(function(btn){ btn.setActive(false) });
+                                }
+                                var startState = evtInterface.getState('isThumbNailsOpened');
+                                evtInterface.updateState('isThumbNailsOpened', !startState);
+                             };
+                             break;
+                             case 'visColl':
+                                btnType = 'toggler';
+                                callback = function() {
+                                   var vm = this;
+                                   evtInterface.updateState('isThumbNailsOpened', false);
+                                   var thumbNailsBtn = button.getByType('thumbNails');
+                                   if (thumbNailsBtn) {
+                                      thumbNailsBtn.forEach(function(btn){ btn.setActive(false) });
+                                   }
+                                   var startState = evtInterface.getState('isVisCollOpened');
+                                   evtInterface.updateState('isVisCollOpened', !startState);
+                                };
+                                break;
+                                default:
+                                   break;
 			}
 
 			/**
@@ -1057,10 +1105,17 @@ angular.module('evtviewer.buttonSwitch')
 		     */
 			var doCallback = function() {
 				var vm = this;
-				button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
-				evtSelect.closeAll();
-				vm.toggleActive();
-				vm.callback();
+				if (!vm.disabled || vm.disabled === 'false') {
+					button.unselectAllSkipByBtnType(vm.uid, 'standAlone');
+					evtSelect.closeAll();
+					vm.toggleActive();
+					if (vm.callback) {
+						vm.callback();
+					}
+					if (vm.onBtnClicked) {
+						vm.onBtnClicked();
+					}
+				}
 			};
 
 			scopeHelper = {
@@ -1084,6 +1139,7 @@ angular.module('evtviewer.buttonSwitch')
 
 				// function
 				callback: callback,
+				onBtnClicked: scope.onBtnClicked,
 				doCallback: doCallback,
 				fakeCallback: fakeCallback,
 				toggleActive: toggleActive,

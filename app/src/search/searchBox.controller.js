@@ -67,7 +67,7 @@ angular.module('evtviewer.search')
          var vm = this;
          
          for (var i in vm.searchBoxBtn) {
-            if (vm.searchBoxBtn[i].type === "searchVirtualKeyboard") {
+            if (vm.searchBoxBtn[i].type === 'searchVirtualKeyboard') {
                return 5;
             }
          }

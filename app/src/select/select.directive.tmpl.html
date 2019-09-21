@@ -1,4 +1,4 @@
-<div class="selector" 
+<div class="selector" ng-class="{'smaller': vm.smaller}"
      data-parent="{{ ::vm.parent }}"
      ng-show="::vm.optionList.length > 0">
    <span 
@@ -26,7 +26,7 @@
             title="{{option.title | translate | camelToSpaces | underscoresToSpaces | capitalize  }}" 
             data-value="{{::option.value }}"
             data-wit="{{::option.ed}}"
-            ng-click="vm.callback(vm.optionSelected, option);"
+            ng-click="vm.doCallback(vm.optionSelected, option);"
             ng-class="{'selected': vm.isOptionSelected(option)}">
             <i class="fa {{::option.icon}} option-icon-label" 
                style="color: {{ ::option.color }}"

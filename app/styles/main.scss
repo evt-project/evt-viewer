@@ -79,6 +79,10 @@ footer {
     width: 100%;
 }
 
+div#global-container-ext.navbar-opened #global-container {
+   @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+}
+
 section > div {
     height: 100%;
     display: block;
@@ -124,12 +128,16 @@ section > div {
 @import "namedEntity.scss";
 @import "sourceSeg.scss";
 @import "versionReading.scss";
-@import "versionApparatusEntry";
+@import "versionApparatusEntry.scss";
+@import "navBar.scss";
+@import "visColl.scss";
 @import "searchBox.scss";
 @import "toc.scss";
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
 @import "osdViewer.scss";
+@import "collation.scss";
+@import "tei.scss";
 
 // Temporary
 .secondary-container {
@@ -239,11 +247,11 @@ section > div {
     font-size: 100%;
 
     button-switch {
-        margin: 0px;
+        margin: 0;
 
         .buttonSwitch {
-            height: auto;
-            display: inline-block!important;
+            height: 0;
+            display: block!important;
             padding: 0 3px;
             background: none;
             box-shadow: none;
@@ -260,7 +268,7 @@ section > div {
             &-icon {
                 color: $base-color-light;
                 font-size: 1em;
-                top: .1rem;
+                top: -1px;
             }
 
             &:hover, &:hover > * {
@@ -288,11 +296,12 @@ section > div {
                 &-icon {
                     font-size: 1.2em;
                     margin-right: 3px;
+                    top: 0;
                 }
 
                 .iconbis-evt_versions, .iconbis-evt_srctxt {
-                    font-size: .9em;
-                    top: 0.1rem;
+                    font-size: .85em;
+                    top: -4px;
                 }
             }
         }
@@ -301,12 +310,9 @@ section > div {
             margin-right: 0;
         }
     }
-
-    .viewModeMenu {
-        display: inline;
-        position: relative;
-        top: 2px;
-    }
+   .viewModeMenu {
+      display: flex;
+   }
 }
 
 .global-loading-container,
@@ -330,6 +336,22 @@ section > div {
         padding: 20px;
     }
 }
+
+.popup-container {
+	@include calc(height, unquote("#{setPopupContainerFrameHeight()}"));
+	overflow-y: auto;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: $base-slider-height;
+	background-color: #607d8b;
+    border: 1px solid #FFFFFF;
+    border-left: none;
+    border-right: none;
+    z-index: 999;
+    top: $base-header-height;
+}
+
 
 .global-loading-container {
     display: block;
@@ -468,6 +490,10 @@ pre {
                 background-color: #f5f5f5;
                 color: #ccc;
                 cursor: default;
+            }
+            a {
+                color: #444444;
+                text-decoration: none;
             }
         }
     }
@@ -658,4 +684,38 @@ span.critic{
    font-size: 12px !important;
    top: 4px !important;
    position: relative !important;
+}
+
+.thumbnail {
+    display: inline-block;
+    padding: 9px 3px;
+    margin: 3px;
+    cursor: pointer;
+    img {
+        height: 150px;
+        width: 100px;
+        border: 2px solid black;
+    }
+    &.active img {
+        border-color: $base-color-active-background;
+    }
+    figcaption {
+        color: white;
+        position: relative;
+        margin-top: -52px;
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 0.7em;
+        width: 100px;
+        text-align: center;
+    }
+    &:hover figcaption {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+    &.active {
+        cursor: default;
+        figcaption {
+            background: rgba($base-color-active-background, .7) !important;
+            color: #000;
+        }
+    }
 }

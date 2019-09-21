@@ -593,34 +593,6 @@ angular.module('evtviewer.box')
 						icon: 'schema',
 						type: 'schema'
 					});
-					/*pulsanti per navigazione immagine osdnavbar
-					bottomMenuList.buttons.push({
-						title: 'BUTTONS.ZOOM-IN',
-						label: '',
-						icon: 'zoom-in',
-						type: 'zoomIn',
-						show: function() {
-							return true;
-						}
-					});
-					bottomMenuList.buttons.push({
-						title: 'BUTTONS.ZOOM-OUT',
-						label: '',
-						icon: 'zoom-out',
-						type: 'zoomOut',
-						show: function() {
-							return true;
-						}
-					});
-					bottomMenuList.buttons.push({
-						title: 'BUTTONS.ZOOM-RESET',
-						label: '',
-						icon: 'zoom-reset',
-						type: 'zoomReset',
-						show: function() {
-							return true;
-						}
-					});*/
 					if (parsedData.isITLAvailable()) {
 						topMenuList.buttons.push({
 							title: 'BUTTONS.IMAGE_TEXT_LINKING',
@@ -647,7 +619,7 @@ angular.module('evtviewer.box')
                   var currentPage = evtInterface.getState('currentPage'),
                      currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
                      pageSource = currentPageObj ? currentPageObj.source : '';
-                  pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
+                  pageSource = pageSource === '' ? config.singleImagesUrl + currentPage + '.jpg' : pageSource;
                   scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/fol_214v.jpg\')"/>';
                   // TODO: Add translation for alt text
                   // TEMP... TODO: creare direttiva per gestire le zone sull'immagine
@@ -699,7 +671,8 @@ angular.module('evtviewer.box')
                         return true;
                      }
                   });
-               } else {
+               }
+               else {
                   bottomMenuList.buttons.push({
                      title: 'Search',
                      label: 'Search',

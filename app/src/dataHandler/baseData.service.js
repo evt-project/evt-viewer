@@ -175,6 +175,54 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#handleViscollSvg
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store SVG documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
+     */
+	baseData.handleViscollSvg = function(sourceSvg, svgId) {
+        var svgElement = xmlParser.parse(sourceSvg);
+        //Parse svgs
+        evtParser.parseSvgsForViscoll(svgElement, svgId);
+	};
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addViscollDataModel
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store DataModel documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
+     */
+	baseData.addViscollDataModel = function(sourceXML) {
+        var xmlElement = xmlParser.parse(sourceXML);
+		//Parse imagelist
+		evtParser.parseViscollDatamodel(xmlElement);
+	};
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addViscollImageList
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store ImageList documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
+     */
+	baseData.addViscollImageList = function(sourceXML) {
+		var xmlElement = xmlParser.parse(sourceXML);
+        //Parse imagelist
+		evtParser.parseViscollImageList(xmlElement);
+	};
+	
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#launchXMLParsers

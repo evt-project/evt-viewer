@@ -1,0 +1,60 @@
+/* style.css */
+
+.leaf{
+    stroke:#ffffff;
+    stroke-width:2pt;
+	left: 50px;
+    fill:none;
+    stroke-linecap:round;
+}
+
+.leaf:hover{
+	stroke: #d3d3d3;
+}
+
+.leaf:active{
+	stroke: #000000;
+}
+
+.missingLeaf{
+    stroke:#D3D3D3;
+    stroke-width:1pt;
+    fill:none;
+    stroke-linecap:round;
+}
+
+.replacedLeaf{
+    stroke:#000000;
+    stroke-dasharray:0.25, 2;
+    stroke-width:1pt;
+    fill:none;
+    stroke-linecap:round;
+}
+
+.addedLeaf{
+    stroke:#000000;
+    stroke-dasharray:0.8, 2;
+    stroke-width:0.8pt;
+    fill:none;
+    stroke-linecap:square;
+}
+
+.addedLeaf2{
+    stroke:#000000;
+    stroke-dasharray:0.8, 2;
+    stroke-width:1.8pt;
+    fill:none;
+}
+
+.notLeaf{
+    stroke: transparent;
+    stroke-width:0.8pt;
+    fill:none;
+    stroke-linecap:square;
+}
+
+.glued{
+    stroke:grey;
+    stroke-width:0.5;
+    stroke-linecap:round;
+}

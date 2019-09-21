@@ -92,6 +92,80 @@ angular.module('evtviewer.communication')
             });
     };
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.communication.evtCommunication#getViscollSvgs
+     * @methodOf evtviewer.communication.evtCommunication
+     *
+     * @description
+     * Method to access Svgs data from an URL. Different base parsers will be launched depending on type of read file.
+     *
+     * @param {string} url file containing the edition data
+     * @returns {httpPromise} resolve with fetched data, or fails with error description.
+     */
+    communication.getViscollSvgs = function(url, svgId) {
+        return $http.get(url)
+            .then(function(response) {
+                return baseData.handleViscollSvg(response.data, svgId);
+            }, function(error) {
+                // TODO: Show error in a toast (EVT can work without viscoll)
+            });
+    };
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.communication.evtCommunication#getViscollDataModel
+     * @methodOf evtviewer.communication.evtCommunication
+     *
+     * @description
+     * Method to access DataModel data from an URL. Different base parsers will be launched depending on type of read file.
+     *
+     * @param {string} url file containing the edition data
+     * @returns {httpPromise} resolve with fetched data, or fails with error description.
+     */
+	communication.getViscollDataModel = function(url) {
+		return $http.get(url)
+            .then(function(response) {
+                if (typeof(response.data) === 'string') {
+                    _console.log('XML Data received');
+                    return baseData.addViscollDataModel(response.data);
+                } 
+            }, function(error) {
+                if (defaults.errorMsgs[error.status]) {
+                    communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg, url, error.status, true);
+                }
+            });
+    };
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.communication.evtCommunication#getViscollImageList
+     * @methodOf evtviewer.communication.evtCommunication
+     *
+     * @description
+     * Method to access ImageList data from an URL. Different base parsers will be launched depending on type of read file.
+     *
+     * @param {string} url file containing the edition data
+     * @returns {httpPromise} resolve with fetched data, or fails with error description.
+     */
+	communication.getViscollImageList = function(url) {
+		return $http.get(url)
+            .then(function(response) {
+                if (typeof(response.data) === 'string') {
+                    _console.log('XML Data received');
+                    return baseData.addViscollImageList(response.data);
+                } 
+            }, function(error) {
+                if (defaults.errorMsgs[error.status]) {
+                    communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
+                } else {
+                    communication.err(defaults.errorMsgs['404'].msg, url, error.status, true);
+                }
+            });
+    };
+			
     /**
      * @ngdoc method
      * @name evtviewer.communication.evtCommunication#getExternalData
