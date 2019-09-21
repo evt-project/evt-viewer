@@ -271,13 +271,15 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'search-results-show':
 					evtIcon = 'icon-evt_search-results-open';
-					break;
+               break;
+// Commented because related to the thumbnail button not working
+					/*
 				case 'thumb':
 				case 'thumbs':
 				case 'thumbnail':
 				case 'thumbnails':
 					evtIcon = 'icon-evt_thumbnails';
-					break;
+					break;*/
 				case 'txt':
 					evtIcon = 'icon-evt_txt';
 					break;
