@@ -580,19 +580,20 @@ angular.module('evtviewer.box')
 						type: 'page',
 						initValue: evtInterface.getState('currentPage')
 					});
-
-					topMenuList.buttons.push({
+   // Commented because related to the thumbnail button not working
+					/*topMenuList.buttons.push({
 						title: 'BUTTONS.THUMBNAILS',
 						label: 'BUTTONS.THUMBS',
 						icon: 'thumbnails',
 						type: 'thumbs'
-					});
-					topMenuList.buttons.push({
+               });*/
+   // Commented because related to the schema button not working
+					/*topMenuList.buttons.push({
 						title: 'BUTTONS.SCHEMA',
 						label: 'BUTTONS.SCHEMA',
 						icon: 'schema',
 						type: 'schema'
-					});
+					});*/
 					if (parsedData.isITLAvailable()) {
 						topMenuList.buttons.push({
 							title: 'BUTTONS.IMAGE_TEXT_LINKING',
@@ -612,8 +613,8 @@ angular.module('evtviewer.box')
 						label: 'BUTTONS.MSD',
 						type: 'msDesc'
 					});
-               
-               
+
+
                updateContent = function() {
                   scope.vm.isLoading = true;
                   var currentPage = evtInterface.getState('currentPage'),
