@@ -58,6 +58,15 @@ angular.module('evtviewer.visColl')
                     currentViscoll.displayResult();
                 }
             }, true);
+            
+            scope.$watch(function () {
+               return evtInterface.getState('currentViewMode');
+            }, function (newValue, oldValue) {
+               if (oldValue !== newValue) {
+                  evtInterface.updateState('isThumbNailsOpened', false);
+                  evtInterface.updateState('isVisCollOpened', false);
+               }
+            }, true);
 
             // Garbage collection
             scope.$on('$destroy', function() {
