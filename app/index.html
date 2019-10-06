@@ -10,10 +10,10 @@
 
 		<!-- build:css(.) styles/vendor.css -->
 		<!-- bower:css -->
+		<link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
 		<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
 		<link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css" />
 		<link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
-		<link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
 		<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 		<!-- endbower -->
 		<!-- endbuild -->
@@ -204,13 +204,17 @@
                 <section id="main-container" class="viewMode" ng-switch-when="3dhop">
                     <box data-type="empty" id="empty">
                         <div 3dhop data-canvas="draw-canvas" style="height: 100%"></div>
-					</box>
+               </box>
+               <box data-type="text"
+						 data-edition="{{getCurrentEdition()}}"
+                   id="mainText">
+               </box>
 					<!--
                     <box data-type="generic" id="generic">
                         <div>Eventuale testo affiancato</div>
                     </box>-->
                 </section>
-                <!-- READING TEXT -->
+            <!-- READING TEXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="readingTxt">
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
@@ -477,13 +481,14 @@
       <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
       <script src="bower_components/angular-translate/angular-translate.js"></script>
       <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+      <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+      <script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
+      <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
       <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
       <script src="bower_components/ngprogress/build/ngprogress.min.js"></script>
       <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
       <script src="bower_components/angular-xslt/src/ng-xslt.js"></script>
       <script src="bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.js"></script>
-      <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-      <script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
       <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
       <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
       <script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
