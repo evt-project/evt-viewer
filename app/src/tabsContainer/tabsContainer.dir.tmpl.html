@@ -5,23 +5,51 @@
         
         <span 
             class="evt-tabs-container_header"
-            ng-repeat="tab in ::vm.tabs._indexes"
-            ng-click="vm.toggleSubContent(tab)"
-            ng-class="{'active' : vm.subContentOpened === tab }">
+            ng-repeat-start="tab in ::vm.tabs._indexes"
+            ng-click="vm.toggleSubTab(tab)"
+            ng-class="{'active' : vm.subContentOpened === tab,
+                        'hasSubTabs': vm.tabs[tab].showSubTabs }">
+            <i ng-if="vm.tabs[tab].subTabs && vm.tabs[tab].subTabs._indexes.length > 0"
+               class="fa fa-caret-right"
+               id="{{tab + '_subTabsIcon'}}"></i>
             <i ng-if="::vm.tabs[tab].icon" class="fa {{::vm.tabs[tab].icon}} evt-tabs-container_header-icon"></i>
             {{ ::vm.tabs[tab].label | translate }}
             {{DIALOGS._BOOKMARK | translate}}
         </span>
+        <ul ng-repeat-end
+            class="evt-tabs-container_header_subTabs"
+            ng-class="{ 'hide' : !vm.tabs[tab].subTabs || vm.tabs[tab].subTabs._indexes.length === 0 || !vm.tabs[tab].showSubTabs}">
+            <li class="evt-tabs-container_header_subTabs_tab"
+                ng-repeat="subTab in vm.tabs[tab].subTabs._indexes"
+                ng-click="vm.toggleSubTab(tab, subTab)"
+                ng-class="{'active' : vm.subTabOpened === subTab }">
+                <i ng-if="::vm.tabs[tab].subTabs[subTab].icon" class="fa {{::vm.tabs[tab].subTabs[subTab].icon}} evt-tabs-container_header-icon"></i>
+                {{ vm.tabs[tab].subTabs[subTab].label | translate }}
+            </li>
+        </ul>
     </div>
     <div 
         class="evt-tabs-container_panels"
-        ng-class="{'closed': vm.subContentOpened === ''}">
+        ng-if="!vm.subTabOpened"
+        ng-class="{'closed': vm.subContentOpened === '', 'noPadding' : vm.subContentOpened === 'toc' || vm.subContentOpened === 'entitiesLists'}">
         
         <div class="evt-tabs-container_panel"
+            id="{{'subTab_' + tab}}"
             ng-repeat="tab in vm.tabs._indexes"
             ng-class="{'active' : vm.subContentOpened === tab,
+                        'addPadding': tab === 'intro',
                         'noscroll': vm.tabs[tab].scrollDisabled }"
             compile="vm.tabs[tab].content">
         </div>
+    </div>
+    <div 
+        class="evt-tabs-container_panels"
+        ng-if="vm.subTabOpened">
+        <div class="evt-tabs-container_panel"
+            id="{{'subTab_' + subTab}}"
+            ng-repeat="subTab in vm.tabs[vm.subContentOpened].subTabs._indexes"
+            ng-class="{'active' : vm.subTabOpened === subTab,
+                       'noscroll': vm.tabs[tab].scrollDisabled }"
+            compile="vm.tabs[vm.subContentOpened].subTabs[subTab].content"></div>
     </div>
 </div>

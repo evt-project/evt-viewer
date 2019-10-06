@@ -79,6 +79,10 @@ footer {
     width: 100%;
 }
 
+div#global-container-ext.navbar-opened #global-container {
+   @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+}
+
 section > div {
     height: 100%;
     display: block;
@@ -124,11 +128,16 @@ section > div {
 @import "namedEntity.scss";
 @import "sourceSeg.scss";
 @import "versionReading.scss";
-@import "versionApparatusEntry";
+@import "versionApparatusEntry.scss";
+@import "navBar.scss";
+@import "visColl.scss";
 @import "searchBox.scss";
-
+@import "toc.scss";
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
+@import "osdViewer.scss";
+@import "collation.scss";
+@import "tei.scss";
 
 // Temporary
 .secondary-container {
@@ -228,25 +237,32 @@ section > div {
 
 .globalMenu {
     width: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     position: absolute;
     right: 8px;
     top: 0px;
     height: 54px;
     padding: 10px;
     font-size: 100%;
+    > button-switch {
+       &:first-child {
+          position: relative;
+          top: -1px;
+       }
+    }
 
     button-switch {
-        margin: 0px;
+        margin: 0;
 
         .buttonSwitch {
-            height: auto;
-            display: inline-block;
+            height: 0;
+            display: block!important;
             padding: 0 3px;
             background: none;
             box-shadow: none;
             border-radius: 0;
-            width: 0px;
+            width: auto;
 
             &-label {
                 font-variant: small-caps;
@@ -258,7 +274,7 @@ section > div {
             &-icon {
                 color: $base-color-light;
                 font-size: 1em;
-                top: .1rem;
+                top: -1px;
             }
 
             &:hover, &:hover > * {
@@ -286,11 +302,12 @@ section > div {
                 &-icon {
                     font-size: 1.2em;
                     margin-right: 3px;
+                    top: 0;
                 }
 
                 .iconbis-evt_versions, .iconbis-evt_srctxt {
-                    font-size: .9em;
-                    top: 0.1rem;
+                    font-size: .85em;
+                    top: -4px;
                 }
             }
         }
@@ -299,10 +316,9 @@ section > div {
             margin-right: 0;
         }
     }
-
-    .viewModeMenu {
-        display: inline;
-    }
+   .viewModeMenu {
+      display: flex;
+   }
 }
 
 .global-loading-container,
@@ -326,6 +342,22 @@ section > div {
         padding: 20px;
     }
 }
+
+.popup-container {
+	@include calc(height, unquote("#{setPopupContainerFrameHeight()}"));
+	overflow-y: auto;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: $base-slider-height;
+	background-color: #607d8b;
+    border: 1px solid #FFFFFF;
+    border-left: none;
+    border-right: none;
+    z-index: 999;
+    top: $base-header-height;
+}
+
 
 .global-loading-container {
     display: block;
@@ -464,6 +496,10 @@ pre {
                 background-color: #f5f5f5;
                 color: #ccc;
                 cursor: default;
+            }
+            a {
+                color: #444444;
+                text-decoration: none;
             }
         }
     }
@@ -617,7 +653,6 @@ pre {
     border-top: 1px solid;
 }
 
-
 .viewer3dhopBtn {
     margin: 4px;
     width: 50px;
@@ -658,4 +693,82 @@ pre {
     -ms-touch-action: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
+}
+/* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
+.icon-evt_note {
+   font-size: 17px !important;
+   color: #fff;
+   margin-top: 10px!important;
+   text-align: center;
+   font-weight:200;
+ }
+span.null {
+  font-size: 20px !important;
+  color: #263238 !important;
+  //margin-top: 10px!important;
+  text-align: center;
+  font-weight: 200;
+}
+.popover_trigger.active:hover {
+   opacity: 0.5;
+ }
+.popover_trigger {
+   color: #263238 !important;
+   opacity: 10 !important;
+}
+span.comment{
+   background-color: #b46138 !important;
+   padding: 1px 4px 4px 4px !important;
+   opacity: 10 !important;
+   border-radius: 4px !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 12px !important;
+   top: 4px !important;
+   position: relative !important;
+}
+span.critic{
+   background-color: #c3a27a !important;
+   padding: 0px 4px 4px 4px !important;
+   border-radius: 4px !important;
+   opacity: 10 !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 12px !important;
+   top: 4px !important;
+   position: relative !important;
+}
+
+.thumbnail {
+    display: inline-block;
+    padding: 9px 3px;
+    margin: 3px;
+    cursor: pointer;
+    img {
+        height: 150px;
+        width: 100px;
+        border: 2px solid black;
+    }
+    &.active img {
+        border-color: $base-color-active-background;
+    }
+    figcaption {
+        color: white;
+        position: relative;
+        margin-top: -52px;
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 0.7em;
+        width: 100px;
+        text-align: center;
+    }
+    &:hover figcaption {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+    &.active {
+        cursor: default;
+        figcaption {
+            background: rgba($base-color-active-background, .7) !important;
+            color: #000;
+        }
+    }
 }

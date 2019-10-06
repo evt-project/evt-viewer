@@ -1,11 +1,24 @@
 /* ************************* */
+
 /* EVT 2.0 CUSTOM STYLESHEET */
+
 /* ***************************************************************** */
+
 /*                                                                   */
+
 /* Add here your CSS to customize the style of the elements          */
+
 /* If you'll not see any changes, try adding !important to the rule  */
+
 /*                                                                   */
+
 /* For generic TEI elements, use the tagName as class                */
-/* e.g. <del/> => .del{ # your style goes here # }                   */  
+
+/* e.g. <del/> => .del{ # your style goes here # }                   */
+
 /*                                                                   */
+
 /* ***************************************************************** */
+.term {
+   background-color: coral;
+}

@@ -513,6 +513,24 @@ angular.module('evtviewer.box')
 					type: 'fontSizeIncrease'
 				}]
 			};
+			var osdTools = {
+				osdBtn: [{
+					title: 'BUTTONS.ZOOM-RESET',
+					label: '',
+					icon: 'zoom-reset',
+					type: 'zoomReset'
+				}, {
+					title: 'BUTTONS.ZOOM-OUT',
+					label: '',
+					icon: 'zoom-out',
+					type: 'zoomOut'
+				}, {
+					title: 'BUTTONS.ZOOM-IN',
+					label: '',
+					icon: 'zoom-in',
+					type: 'zoomIn'
+				}]
+			};
 
 			var scopeHelper = {};
 
@@ -562,13 +580,20 @@ angular.module('evtviewer.box')
 						type: 'page',
 						initValue: evtInterface.getState('currentPage')
 					});
-
-					topMenuList.buttons.push({
+   // Commented because related to the thumbnail button not working
+					/*topMenuList.buttons.push({
 						title: 'BUTTONS.THUMBNAILS',
 						label: 'BUTTONS.THUMBS',
 						icon: 'thumbnails',
 						type: 'thumbs'
-					});
+               });*/
+   // Commented because related to the schema button not working
+					/*topMenuList.buttons.push({
+						title: 'BUTTONS.SCHEMA',
+						label: 'BUTTONS.SCHEMA',
+						icon: 'schema',
+						type: 'schema'
+					});*/
 					if (parsedData.isITLAvailable()) {
 						topMenuList.buttons.push({
 							title: 'BUTTONS.IMAGE_TEXT_LINKING',
@@ -576,47 +601,53 @@ angular.module('evtviewer.box')
 							icon: 'itl',
 							type: 'itl'
 						});
+						topMenuList.buttons.push({
+							title: 'BUTTONS.HOTSPOTS',
+							label: '',
+							icon: 'hts',
+							type: 'hts'
+						});
 					}
 					topMenuList.buttons.push({
 						title: 'BUTTONS.MS',
 						label: 'BUTTONS.MSD',
 						type: 'msDesc'
 					});
-     
-     
-					updateContent = function() {
-						scope.vm.isLoading = true;
-						var currentPage = evtInterface.getState('currentPage'),
-							currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
-							pageSource = currentPageObj ? currentPageObj.source : '';
-						pageSource = pageSource === '' ? 'data/images/' + currentPage + '.png' : pageSource;
-						scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/fol_214v.jpg\')"/>';
-						// TODO: Add translation for alt text
-						// TEMP... TODO: creare direttiva per gestire le zone sull'immagine
-						var zonesHTML = '',
-							zones = parsedData.getZones();
-						for (var zoneId in zones._indexes) {
-							var zone = zones[zones._indexes[zoneId]];
-							if (zone) {
-								if (zone.page === currentPage) {
-									zonesHTML += '<div class="zoneInImg" data-zone-id="' + zone.id + '" data-zone-name="' + zone.rendition + '"';
-									if (zone.corresp && zone.corresp !== '') {
-										var correspId = zone.corresp.replace('#', '');
-										zonesHTML += ' data-corresp-id="' + correspId + '"';
-										if (zone.rendition === 'Line') {
-											zonesHTML += ' data-line="' + correspId + '"';
-										} else if (zone.rendition === 'HotSpot') {
-											zonesHTML += ' data-hs="' + correspId + '"';
-										}
-									}
-									zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', ' + zone.lry + ') (' + zone.ulx + ', ' + zone.uly + ') </div>';
-								}
-							}
-						}
-						scope.vm.content += zonesHTML;
-						// =/ END TEMP
-						scope.vm.isLoading = false;
-					};
+
+
+               updateContent = function() {
+                  scope.vm.isLoading = true;
+                  var currentPage = evtInterface.getState('currentPage'),
+                     currentPageObj = currentPage ? parsedData.getPage(currentPage) : undefined,
+                     pageSource = currentPageObj ? currentPageObj.source : '';
+                  pageSource = pageSource === '' ? config.singleImagesUrl + currentPage + '.jpg' : pageSource;
+                  scope.vm.content = '<img src="' + pageSource + '" alt="Image of page ' + currentPage + ' of ' + evtInterface.getState('currentDoc') + '" onerror="this.setAttribute(\'src\', \'images/fol_214v.jpg\')"/>';
+                  // TODO: Add translation for alt text
+                  // TEMP... TODO: creare direttiva per gestire le zone sull'immagine
+                  var zonesHTML = '',
+                     zones = parsedData.getZones();
+                  for (var zoneId in zones._indexes) {
+                     var zone = zones[zones._indexes[zoneId]];
+                     if (zone) {
+                        if (zone.page === currentPage) {
+                           zonesHTML += '<div class="zoneInImg" data-zone-id="' + zone.id + '" data-zone-name="' + zone.rendition + '"';
+                           if (zone.corresp && zone.corresp !== '') {
+                              var correspId = zone.corresp.replace('#', '');
+                              zonesHTML += ' data-corresp-id="' + correspId + '"';
+                              if (zone.rendition === 'Line') {
+                                 zonesHTML += ' data-line="' + correspId + '"';
+                              } else if (zone.rendition === 'HotSpot') {
+                                 zonesHTML += ' data-hs="' + correspId + '"';
+                              }
+                           }
+                           zonesHTML += '>' + zone.id + ' (' + zone.lrx + ', ' + zone.lry + ') (' + zone.ulx + ', ' + zone.uly + ') </div>';
+                        }
+                     }
+                  }
+                  scope.vm.content += zonesHTML;
+                  // =/ END TEMP
+                  scope.vm.isLoading = false;
+               };
 					break;
             case 'text':
                if(currentId === 'mainText' || currentId === 'mainText1') {
@@ -624,7 +655,7 @@ angular.module('evtviewer.box')
                      title: 'Search',
                      label: 'Search',
                      icon: 'search',
-                     type: 'searchToolsInternal',
+                     type: 'searchInternal',
                      show: function() {
                         return true;
                      },
@@ -647,7 +678,7 @@ angular.module('evtviewer.box')
                      title: 'Search',
                      label: 'Search',
                      icon: 'search',
-                     type: 'searchToolsInternal',
+                     type: 'searchInternal',
                      show: function() {
                         return true;
                      },
@@ -656,7 +687,7 @@ angular.module('evtviewer.box')
                      }
                   });
                }
-               
+
 					if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
 						topMenuList.selectors.push({
 							id: 'document_' + currentId,
@@ -671,6 +702,18 @@ angular.module('evtviewer.box')
 							initValue: evtInterface.getState('currentPage')
 						});
 					} else {
+						if (parsedData.getDivs().length > 0) {
+							var docId = evtInterface.getState('currentDocument');
+							var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+							: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
+							if (currentDiv) {
+								topMenuList.selectors.push({
+									id: 'div_' + currentId,
+									type: 'div',
+									initValue: currentDiv
+								});
+							}
+						}
 						topMenuList.buttons.push({
 							title: 'BUTTONS.WITNESSES_LIST',
 							label: '',
@@ -777,10 +820,9 @@ angular.module('evtviewer.box')
 							isITLon = evtInterface.getToolState('ITL') === 'active',
 							errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
 							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_NOT_AVAILABLE\' | translate }}</span>';
-
-						if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (vm.version === '' || vm.version === undefined)) { // Critical edition
+						if (scope.vm.edition && scope.vm.edition === 'critical' && !vm.version) { // Critical edition
 							newDoc = parsedData.getCriticalText(scope.vm.state.docId);
-							if (newDoc === undefined) {
+							if (!newDoc) {
 								newDoc = parsedData.getDocument(scope.vm.state.docId);
 
 								if (newDoc !== undefined) {
@@ -810,7 +852,7 @@ angular.module('evtviewer.box')
 									evtGenericEntity.highlightActiveTypes();
 								});
 							}
-						} else if (scope.vm.edition !== undefined && scope.vm.edition === 'critical' && (scope.vm.version !== '' && scope.vm.version !== undefined)) {
+						} else if (scope.vm.edition && scope.vm.edition === 'critical' && scope.vm.version) {
 							var currentDocId = evtInterface.getState('currentDoc');
 							if (scope.vm.version === config.versions[0]) {
 								newDoc = parsedData.getCriticalText(currentDocId) || undefined;
@@ -894,6 +936,19 @@ angular.module('evtviewer.box')
 						type: 'witness-page',
 						initValue: witPageId
 					});
+
+					if (parsedData.getDivs().length > 0) {
+						var docId = evtInterface.getState('currentDocument');
+						var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+						: parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
+						if (currentDiv) {
+							topMenuList.selectors.push({
+								id: 'div_' + currentId + '_' + vm.witness,
+								type: 'div',
+								initValue: currentDiv
+							});
+						}
+					}
 
 					topMenuList.buttons.push({
 						title: 'BUTTONS.INFO_ABOUT_TEXT',
@@ -1158,6 +1213,7 @@ angular.module('evtviewer.box')
 				appFilters: appFilters,
 				isLoading: isLoading,
 				genericTools: genericTools,
+				osdTools: osdTools,
 
 				// function
 				updateContent: updateContent,
@@ -1334,20 +1390,20 @@ angular.module('evtviewer.box')
 				}
 			}
 		};
-		
+
 		//TODO Add documentation
 		box.getEditionById = function (currentBoxId) {
          return collection[currentBoxId].edition;
       };
-		
+
 		box.getState = function (currentBoxId, key) {
          return collection[currentBoxId].state[key];
       };
-		
+
 		box.updateState = function (currentBoxId, key, value) {
         collection[currentBoxId].state[key] = value;
       };
-		
+
 		return box;
 	};
 });

@@ -4,6 +4,13 @@
         <!-- HEADER -->
         <div class="namedEntity_tools"
           ng-if="::vm.isPinAvailable()">
+          <button-switch
+            ng-if="vm.location !== 'list'"
+            title="BUTTONS.OPEN_LIST"
+            data-label=""
+            data-icon="list"
+            data-type="openEntity"
+            ng-click="vm.openEntity()"></button-switch>
           <button-switch 
                 title="BUTTONS.PIN_REMOVE"
                 ng-if="::vm.isPinAvailable() && vm.location === 'pinned'"
@@ -38,7 +45,8 @@
             </span>
           </div>
 
-          <div class="namedEntity__details-panels closed">
+          <div class="namedEntity__details-panels closed"
+               ng-class="{'largeMap': vm.location === 'list' && (vm._subContentOpened === 'map' || vm._subContentOpened === 'occurrences')}">
                   <div class="namedEntity__details-panel"
                         ng-switch="vm._subContentOpened">
                         <div ng-switch-when="moreInfo">
@@ -125,6 +133,14 @@
                         <div ng-switch-when="xmlSource">
                           <pre ng-if="::vm.entity._xmlSource">{{ ::vm.entity._xmlSource | prettyXml }}</pre>
                           <span ng-if="::!vm.entity._xmlSource">{{ 'MESSAGES.NO_XML_SOURCE' | translate }}</span>
+                        </div>
+                        <div ng-switch-when="map">
+                            <leaflet
+                                width="100%"
+                                height="300px"
+                                lf-center="vm.lfCenter"
+                                defaults="vm.lfDefaults"
+                                markers="vm.lfMarkers"></leaflet>
                         </div>
                   </div>
               </div>

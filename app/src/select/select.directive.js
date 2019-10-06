@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements) {
+.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -33,7 +33,12 @@ angular.module('evtviewer.select')
             type: '@',
             init: '@',
             openUp: '@',
-            multiselect: '@'
+            multiselect: '@',
+            options: '=',
+            smaller: '@',
+            emptyOption: '@',
+            selectedOption: '@',
+            onOptionSelected: '&'
         },
         templateUrl: 'src/select/select.directive.tmpl.html',
         controllerAs: 'vm',
@@ -41,7 +46,7 @@ angular.module('evtviewer.select')
         link: function(scope, element) {
             // Initialize select
             var currentSelect = evtSelect.build(scope, scope.vm);
-
+            
             scope.vm.updateContainerPosition = function(type) {
                 var optionContainer = element.find('.option_container'),
                     selector = element.find('.selector'),
@@ -66,10 +71,19 @@ angular.module('evtviewer.select')
                     if (scope.init !== undefined && scope.init !== '') {
                         currentSelect.selectOptionByValue(scope.init);
                     } else if (!scope.multiselect) {
-                        currentSelect.callback(undefined, scope.vm.optionList[0]);
+                        var firstOption = scope.vm.optionList ? scope.vm.optionList[0] : undefined;
+                        currentSelect.callback(undefined, firstOption);
                     }
                 }
             });
+            
+            scope.$watch(function() {
+                return scope.selectedOption;
+            }, function(newItem, oldItem) {
+                if (oldItem !== newItem) {
+                    currentSelect.selectOptionByValue(scope.selectedOption);
+                }
+            }, true);  
 
             if (scope.type === 'witness-page') {
                 var witness = scope.$parent.vm.witness;
@@ -131,6 +145,23 @@ angular.module('evtviewer.select')
                     }
                 }, true); 
             }
+
+            if (scope.type === 'div') {
+                scope.$watch(function() {
+                    var currentDoc = evtInterface.getState('currentDoc');
+                    return evtInterface.getState('currentDivs')[currentDoc];
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        var oldDiv = parsedData.getDiv(oldItem),
+                            newDiv = parsedData.getDiv(newItem);
+                        if (oldDiv && newDiv) {
+                            currentSelect.optionList = []
+                            currentSelect.formatOptionList(parsedData.getDivs()._indexes.main[newDiv.doc], currentSelect.optionList, newDiv.section)
+                        }
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true); 
+            }            
 
             if (scope.type === 'version' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {

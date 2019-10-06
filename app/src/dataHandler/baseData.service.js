@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser, parsedData) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -38,6 +38,7 @@ angular.module('evtviewer.dataHandler')
         docElements;
 
     var _console = $log.getInstance('baseData');
+    var XPointersElem = {};
 
     /**
      * @ngdoc method
@@ -46,12 +47,12 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Add string representing an XML document to collection of stored XML sources.
-     * It uses the private method {@link evtviewer.dataHandler.baseData#addXMLDocument addXMLDocument} 
-     * that will check if the XML is encoded using the xi:include method. If so, it will load every 
+     * It uses the private method {@link evtviewer.dataHandler.baseData#addXMLDocument addXMLDocument}
+     * that will check if the XML is encoded using the xi:include method. If so, it will load every
      * XML included before adding it to collection.
-     * 
+     *
      * @param {string} xmlString String representing the XML source text to be parsed and stored
-     * @returns {promise} promise that the parser will end and complete XML string is stored in collection 
+     * @returns {promise} promise that the parser will end and complete XML string is stored in collection
      */
     baseData.addXMLString = function(xmlString) {
         var promises = [];
@@ -97,7 +98,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] Add an XML Document to collection of stored ones (both in string and document format).
      * It also launches the initial parsers that allow to extract the basic information needed.
-     * It checks if the XML is encoded using the xi:include method. 
+     * It checks if the XML is encoded using the xi:include method.
      * If so, it will load every XML included before launching the parsers.
      * @param {string} doc String representing the XML Document to be stored and parsed
      * @returns {promise} promise that the parser will end and complete XML string is stored in collection
@@ -174,6 +175,54 @@ angular.module('evtviewer.dataHandler')
         }
     };
 
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#handleViscollSvg
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store SVG documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
+     */
+	baseData.handleViscollSvg = function(sourceSvg, svgId) {
+        var svgElement = xmlParser.parse(sourceSvg);
+        //Parse svgs
+        evtParser.parseSvgsForViscoll(svgElement, svgId);
+	};
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addViscollDataModel
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store DataModel documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
+     */
+	baseData.addViscollDataModel = function(sourceXML) {
+        var xmlElement = xmlParser.parse(sourceXML);
+		//Parse imagelist
+		evtParser.parseViscollDatamodel(xmlElement);
+	};
+	
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.baseData#addViscollImageList
+     * @methodOf evtviewer.dataHandler.baseData
+     *
+     * @description
+     * Store ImageList documents for visColl view
+     * @param {string} srcDoc String representing the Source Document to be parsed
+     * @author FD
+     */
+	baseData.addViscollImageList = function(sourceXML) {
+		var xmlElement = xmlParser.parse(sourceXML);
+        //Parse imagelist
+		evtParser.parseViscollImageList(xmlElement);
+	};
+	
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#launchXMLParsers
@@ -190,9 +239,12 @@ angular.module('evtviewer.dataHandler')
 
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
+       
+         // Parse HotSpots
+         evtHotSpotParser.parseHotSpots(docElements);
 
-        // Parse documents
-        evtParser.parseDocuments(docElements);
+         // Parse documents
+         evtParser.parseDocuments(docElements);
 
         // Parse witnesses list
         evtCriticalApparatusParser.parseWitnesses(docElements);
@@ -229,6 +281,17 @@ angular.module('evtviewer.dataHandler')
    
        // Parse Glyphs
        evtParser.parseGlyphs(docElements);
+
+       if (parsedData.getEncodingDetail('variantEncodingLocation') !== 'internal') {
+        if (config.loadCriticalEntriesImmediately){
+            evtCriticalApparatusParser.parseCriticalEntries(docElements);
+        }
+
+        // Parse the versions entries
+        if (config.versions.length > 1) {
+            evtCriticalApparatusParser.parseVersionEntries(docElements);
+        }
+       }
    
        // Init Search
        //evtSearch.initSearch(docElements);
@@ -262,7 +325,14 @@ angular.module('evtviewer.dataHandler')
                     .then(function(response) {
                         includedFilesLoaded++;
                         var includedDoc = xmlParser.parse(response.data),
+                        includedTextElem;
+                        if (fileXpointer) {
+                            var dom = angular.element(includedDoc)[0];
+                            findXPointerElem(fileXpointer, dom);
+                            includedTextElem = XPointersElem[fileXpointer];
+                        } else {
                             includedTextElem = includedDoc.getElementsByTagName('text')[0];
+                        }
                         element.parentNode.replaceChild(includedTextElem, element);
                         if (includedFilesLoaded === totFilesToInclude) {
                             deferred.resolve('success');
@@ -282,6 +352,17 @@ angular.module('evtviewer.dataHandler')
             deferred.resolve('success');
         }
         return deferred;
+    };
+
+    var findXPointerElem = function(xpointer, doc) {
+        doc.childNodes.forEach(function(node) {
+            if (node.attributes && node.hasAttribute('xml:id') && node.getAttribute('xml:id') === xpointer) {
+                XPointersElem[xpointer] = node;
+                return node;
+            } else if (node.childNodes && node.childNodes.length > 0) {
+                return findXPointerElem(xpointer, node);
+            }
+        });
     };
 
     return baseData;

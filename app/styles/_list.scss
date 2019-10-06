@@ -20,7 +20,7 @@
 			font-size: 90%;
 			cursor: pointer;
 			text-transform: uppercase;
-			
+
 			&.active {
 				color: #000;
 				font-weight: bold;
@@ -35,7 +35,7 @@
         width: 100%;
         overflow: auto;
         position: absolute;
-        
+
         > div  {
         	width: 100%;
         	padding-left: 10px;
@@ -52,5 +52,9 @@
 		> div > *:hover {
 		    background: rgba($base-color-middle, .2);
 		}
-    }
+		}
+		.scrollableDiv {
+			overflow-y: scroll;
+			height: 100%;
+		}
 }

@@ -15,7 +15,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalApparatusParser', function($q, parsedData, evtParser, xmlParser, config, evtCriticalElementsParser) {
+.service('evtCriticalApparatusParser', function($q, parsedData, evtParser, xmlParser, config, evtCriticalElementsParser, evtDepaParser) {
     var parser = {};
 
     var apparatusEntryDef     = '<app>',
@@ -232,7 +232,10 @@ angular.module('evtviewer.dataHandler')
             function(element) {
                 //TODO: if-else per handleRecensioEntry
                 if (!element.hasAttribute('type') || (element.getAttribute('type') !== 'recensio')){
-                    evtCriticalElementsParser.handleAppEntry(element);
+                    var entry = evtCriticalElementsParser.handleAppEntry(element);
+                    if (!entry.lemma && parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+                        evtDepaParser.getLemma(entry, doc);
+                    }
                 }
             });
         // console.log('## Critical entries ##', JSON.stringify(parsedData.getCriticalEntries()));

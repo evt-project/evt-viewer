@@ -11,8 +11,23 @@
 	@else {
 		@return 100%;	
 	}
-	
 }
+
+@function setGlobalFrameHeightWithNavbar(){
+	@if($base-footer == false){
+		@return "100% -  #{$base-header-height + 2} - #{$base-slider-height}";
+	}
+	@else if($base-footer == true){	
+		@return "100% -  #{$base-header-height*2 + 2} - #{$base-slider-height}";
+	}
+	@else {
+		@return "100% - #{$base-slider-height}";	
+	}
+}
+
+@function setPopupContainerFrameHeight() {
+	@return "100% - #{$base-header-height + $base-slider-height}";
+	}
 
 @function setInsideFrameHeight(){
 	@if($mainContainer-top-menu == true and $mainContainer-bottom-menu == true){
@@ -29,7 +44,7 @@
 
 @function setVisibility($visible){
 	@if($visible == true){
-		@return inline-block;
+		@return inline-flex;
 	} @else {
 		@return none;
 	}

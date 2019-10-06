@@ -58,14 +58,14 @@ angular.module('evtviewer.reference')
 			var target = vm.target.replace('#', ''),
 				bibliographicRef = parsedData.getBibliographicRefById(target);
 			if (bibliographicRef) {
-				evtInterface.updateState('secondaryContent', 'globalInfo');
-				evtDialog.openByType('globalInfo');
-				evtInterface.setHomePanel('bibliography');
+				evtInterface.updateState('secondaryContent', 'toc');
+				evtDialog.openByType('toc');
+				evtInterface.updateProperty('tabsContainerOpenedContent', 'bibliography');
 				evtHighlight.setHighlighted(target);
 				//dopo 2s viene rimosso l'attributo highlight
 				$timeout(function() {
 					evtHighlight.setHighlighted('');
-				}, 2000);
+				}, 2500);
 			}
 			//Se il riferimento non esiste, c'è un errore allora
 			else {

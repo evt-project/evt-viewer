@@ -9,6 +9,7 @@ angular.module('evtviewer.dataHandler')
             xmlDocsBody = evtSearchDocument.getXmlDocBody(xmlDocDom);
          
          evtSearchDocument.removeNoteElements(xmlDocDom);
+         evtSearchDocument.removeAddElements(xmlDocDom);
          
          for (var i = 0; i < xmlDocsBody.length; i++) {
             searchParser = evtBuilder.createParser(xmlDocsBody[i]);
@@ -16,8 +17,8 @@ angular.module('evtviewer.dataHandler')
             prevDocsLines = searchParser.getPrevDocsLines();
             parsedElementsForIndexing = angular.extend(parsedElementsForIndexing, parsedElements);
          }
-         console.log(parsedElementsForIndexing);
-         
+         //console.log(parsedElementsForIndexing);
+
          evtSearchIndex.createIndex(parsedElementsForIndexing);
       };
       

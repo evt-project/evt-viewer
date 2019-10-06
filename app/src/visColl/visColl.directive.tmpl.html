@@ -1,0 +1,100 @@
+<!-- <script type="text/javascript" src="./src/visColl/SaxonJS.min.js"></script> -->
+<div class="selectorDiv">
+    <form name="quireForm" class="quireSelector">
+        <label for="quireSelect">{{ 'VISCOLL.SELECT_QUIRE' | translate }}:</label>
+        <evt-select ng-if="vm.quireOptions && vm.quireOptions.length > 0"
+            data-id="viscoll_quire" data-smaller="true"
+            data-type="generic" data-empty-option="true"
+			data-options="vm.quireOptions" 
+			data-init="{{vm.selectedQuire.value}}"
+			on-option-selected="vm.setSelectedQuire(option)">
+        </evt-select>
+	</form>
+</div>
+<div class="viscollItemsContainer">
+    <div class="viscollContainer" id="{{quireId}}"
+		ng-repeat="quireId in vm.svgCollection.quires._indexes track by $index"
+    	ng-show="vm.isSelectedQuire(quireId)"
+    	ng-class="{'selected' : vm.isSelectedQuire(quireId) }">
+        <div class="viscollItem-leftContainer">
+			<span class="quireNumber">{{ 'VISCOLL.QUIRE_NUM' | translate }} {{vm.svgCollection.quires[quireId].n}}</span>
+	        <div class="visCollValue" type="image/svg+xml" 
+	            compile="::vm.getSvgByQuire(quireId)">
+	        </div>
+	    </div>
+        <div class="viscollItem-rightContainer">
+	        <div class="selectorViscoll">
+				<span class="viscollNumber">
+					{{ 'VISCOLL.UNIT' | translate }}:
+				</span>
+				<evt-select ng-if="vm.svgCollection.quires[quireId].leavesList && vm.svgCollection.quires[quireId].leavesList.length > 0"
+					data-id="folioSelect_{{$index}}" data-smaller="true"
+					data-type="generic" data-empty-option="true" 
+					data-init="{{vm.selectedFolios[quireId].value}}"
+					data-selected-option="{{vm.selectedFolios[quireId].value}}"
+					data-options="::vm.svgCollection.quires[quireId].leavesList" 
+					on-option-selected="vm.setSelectedFolioForQuire(quireId, option)">
+				</evt-select>
+	        </div>
+	        <div class="imgSelectorViscoll" 
+	        	ng-if="vm.selectedFolios[quireId]">
+				<figure class="thumbnail thumb_single second_unit {{vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode}}" 
+					ng-click="vm.updateCurrentPage(vm.selectedFolios[quireId].conjoinId)">
+					<img class="thumb_single_img"
+						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+						ng-src="{{vm.selectedFolios[quireId].imgConjoin || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[quireId].conjoinId ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"
+						></img>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode !== 'notLeaf'">
+						{{ vm.selectedFolios[quireId].conjoinId || 
+						(vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode === 'original' ? 'NO_INFO' : vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode) || 
+						'NO_INFO' | translate}}</figcaption>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode === 'notLeaf'">
+						<i class="icon fa fa-remove"></i></figcaption>
+				</figure>
+				<figure class="thumbnail thumb_single first_unit {{vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode}}" 
+					ng-click="vm.updateCurrentPage(vm.selectedFolios[quireId].imageId)">
+					<img class="thumb_single_img" 
+						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+						ng-src="{{vm.selectedFolios[quireId].img || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[quireId].imageId ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"></img>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode !== 'notLeaf'">{{vm.selectedFolios[quireId].imageId || 
+						(vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode === 'original' ? 'NO_INFO' : vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode) || 
+						'NO_INFO' | translate}}</figcaption>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode === 'notLeaf'">
+						<i class="icon fa fa-remove"></i></figcaption>
+				</figure>
+				<figure class="thumbnail thumb_single first_unit {{vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode}}" 
+					ng-click="vm.updateCurrentPage(vm.selectedFolios[quireId].imageId2)">
+					<img class="thumb_single_img" 
+						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+						ng-src="{{vm.selectedFolios[quireId].img2 || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[quireId].imageId2 ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"></img>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode !== 'notLeaf'">
+						{{vm.selectedFolios[quireId].imageId2 || 
+						(vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode === 'original' ? 'NO_INFO' : vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode) || 
+						'NO_INFO' | translate}}</figcaption>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].value].mode === 'notLeaf'">
+						<i class="icon fa fa-remove"></i></figcaption>
+				</figure>
+				<figure class="thumbnail thumb_single second_unit {{vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode}}" 
+					ng-click="vm.updateCurrentPage(vm.selectedFolios[quireId].conjoinId2)">
+					<img class="thumb_single_img" 
+						onerror="this.setAttribute('src', 'images/empty-image.jpg')"
+						ng-src="{{vm.selectedFolios[quireId].imgConjoin2 || 'images/empty-image.jpg'}}"
+						title="{{ vm.selectedFolios[quireId].conjoinId2 ? 'BUTTONS.GO_TO_PAGE' : '' | translate }}"></img>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode !== 'notLeaf'">
+						{{vm.selectedFolios[quireId].conjoinId2 || 
+						(vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode === 'original' ? 'NO_INFO' : vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode) || 
+						'NO_INFO' | translate}}</figcaption>
+					<figcaption ng-if="vm.svgCollection.quires[quireId].leaves[vm.selectedFolios[quireId].conjoin].mode === 'notLeaf'">
+						<i class="icon fa fa-remove"></i></figcaption>
+				</figure>
+	        </div>
+	        <div  class="imgSelectorViscoll_empty" 
+	        	ng-if="!vm.selectedFolios[quireId]">
+	        	<span>{{ 'VISCOLL.SELECT_UNIT_MSG' | translate }}</span>
+	        </div>
+	    </div>
+    </div>
+</div>

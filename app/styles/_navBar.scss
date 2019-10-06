@@ -1,0 +1,96 @@
+/* *************************** */
+
+/* NAVBAR                      */
+
+/* *************************** */
+
+.navBarSliderWrapper {
+    height: $base-slider-height;
+    background: #263238;
+    position: fixed;
+    bottom: 0px;
+	width: 100%;
+	padding: 0 20px;
+	vertical-align: middle;
+    text-align: center;
+}
+
+#sliderValue {
+	font-size: 0.5em;
+	display: inline;
+	color: #ffffff;
+	position: relative;
+}
+
+.navBarSlider {
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    display: inline-block;
+    min-width: 50vw;
+    width: 68vw;
+	text-align: initial;
+	.rzslider {
+		margin: auto;
+		.rz-bar {
+			height: 8px;
+			margin-top: -2px;
+		}
+		.rz-selection {
+			background: #607d8b;
+		}
+		.rz-bubble{
+			background: #fff;
+			font-size: 0.85rem;
+			bottom: 10px;
+			border: 1px solid;
+			border-radius: 4px;
+			opacity: 0.8;
+			&.rz-model-value {
+				opacity: 1;
+			}
+		}
+		&[disabled] .rz-bubble {
+			opacity: .8;
+		}
+		.rz-pointer{
+			top: -4px;
+			width: 22px;
+			height: 13px;
+			background-color: #ECEFF1;
+			border: 1px solid;
+			@include set(box-shadow, 0px 0px 4px rgba(0,0,0,.5));
+			outline: none;
+			&:hover {
+				background: #fff;
+			}
+			&:after {
+				content: none;
+			}
+		}
+	}
+	.buttonSlider {
+        cursor: pointer;
+        position: relative;
+    }
+    #left,
+    #right {
+        background: #bedde0;
+        border-radius: 16px;
+        font-size: 15px;
+        top: 3px;
+    }
+    #leftLeft,
+    #rightRight {
+        background: #bedde0;
+        border-radius: 16px;
+        font-size: 15px;
+        top: 3px;
+    }
+    #thumbnails,
+    #visColl {
+        border-radius: 16px;
+        top: 3px;
+        background: #bedde0;
+    }
+}

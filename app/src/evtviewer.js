@@ -3,10 +3,10 @@
 /**
  * @ngdoc overview
  * @name evtviewer
- * 
+ *
  * @description
  * # evtviewer
- * Main module of the application. 
+ * Main module of the application.
  *
  * @requires {@link https://docs.angularjs.org/api/ngAnimate ngAnimate}
  * @requires {@link https://docs.angularjs.org/api/ngCookies ngCookies}
@@ -19,6 +19,8 @@
  * @requires {@link https://github.com/krtnio/angular-pretty-xml prettyXml}
  * @requires {@link https://sroze.github.io/ngInfiniteScroll/documentation.html infinite-scroll}
  * @requires {@link https://angular-translate.github.io/docs/#/api pascalprecht.translate}
+ * @requires {@link https://github.com/angular-slider/angularjs-slider}
+ * @requires {@link https://github.com/krtnio/angular-xslt}
  * @requires evtviewer.core
  * @requires evtviewer.communication
  * @requires evtviewer.translation
@@ -29,6 +31,8 @@
  * @requires evtviewer.buttonSwitch
  * @requires evtviewer.popover
  * @requires evtviewer.namedEntity
+ * @requires evtviewer.navbar
+ * @requires evtviewer.viscoll
  * @requires evtviewer.criticalApparatusEntry
  * @requires evtviewer.reading
  * @requires evtviewer.dialog
@@ -37,6 +41,7 @@
  * @requires evtviewer.list
  * @requires evtviewer.quote
  * @requires evtviewer.tabsContainer
+ * @requires evtviewer.toc
  * @requires evtviewer.sourcesApparatusEntry
  * @requires evtviewer.analogue
  * @requires evtviewer.analoguesApparatusEntry
@@ -45,6 +50,7 @@
  * @requires evtviewer.versionApparatusEntry
  * @requires evtviewer.UItools
  * @requires evtviewer.search
+ * @requires evtviewer.imageViewer
  */
  //* @requires evtviewer.mobile
 angular
@@ -55,9 +61,11 @@ angular
 		'ngResource',
 		'ngSanitize',
 		'ngTouch',
-		'templates-main', 
+		'templates-main',
 		'ngRoute',
+		'rzModule',
 		'xml',
+		'ngXslt',
 		'prettyXml',
 		'infinite-scroll',
 		'pascalprecht.translate',
@@ -79,15 +87,20 @@ angular
 		'evtviewer.bibliography',
 		'evtviewer.reference',
 		'evtviewer.list',
-        'evtviewer.quote',
-        'evtviewer.tabsContainer',
-        'evtviewer.sourcesApparatusEntry',
-        'evtviewer.analogue',
-        'evtviewer.analoguesApparatusEntry',
-        'evtviewer.apparatuses',
-        'evtviewer.versionReading',
-        'evtviewer.versionApparatusEntry',
-        'evtviewer.UItools',
-    	'evtviewer.search',
-        'evtviewer.3dhop'
-    ]);
+		'evtviewer.quote',
+		'evtviewer.tabsContainer',
+		'evtviewer.sourcesApparatusEntry',
+		'evtviewer.analogue',
+		'evtviewer.analoguesApparatusEntry',
+		'evtviewer.apparatuses',
+		'evtviewer.versionReading',
+		'evtviewer.versionApparatusEntry',
+		'evtviewer.UItools',
+      'evtviewer.navBar',
+      'evtviewer.visColl',
+		'evtviewer.search',
+      'evtviewer.imageViewer',
+		'evtviewer.toc',
+      'ui-leaflet',
+      'evtviewer.3dhop'
+  ]);

@@ -128,12 +128,34 @@ angular.module('evtviewer.dataHandler')
                         var encodingDescParsedElement = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                         encodingDescContent = encodingDescParsedElement ? encodingDescParsedElement : '';
                         encodingDescContent += '<span class="variantEncoding">{{ \'PROJECT_INFO.ENCODING_METHOD_USED\' | translate:\'{ method:  "'+variantEncodingEl.getAttribute('method')+'" }\' }}</span>';
+                        parser.parseVariantEncodingInfo(variantEncodingEl);
                     }
                     parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
                 }
         });
         // console.log('## parseEncodingDescription ##', parsedData.getProjectInfo().encodingDescription);
     };
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtProjectInfoParser#parseVariantEncodingInfo
+     * @methodOf evtviewer.dataHandler.evtProjectInfoParser
+     *
+     * @description
+     * This method will parse the information about the variant encoding method and location
+     * and store them into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {elem} variantEncoding XML element representing the encoding method for variants
+     *
+     * @author CM
+     */
+    parser.parseVariantEncodingInfo = function(elem) {
+        if (elem.hasAttribute('method')) {
+            parsedData.setEncodingDetail('variantEncodingMethod', elem.getAttribute('method'));
+        }
+        if (elem.hasAttribute('location')) {
+            parsedData.setEncodingDetail('variantEncodingLocation', elem.getAttribute('location'));
+        }
+    }
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtProjectInfoParser#parseTextProfile

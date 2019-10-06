@@ -345,19 +345,19 @@ angular.module('evtviewer.interface')
          */
 		$scope.handleGenericClick = function($event) {
 			var target = $event.target;
-			if ($(target).parents('evt-select').length === 0) {
+			if (angular.element(target).parents('evt-select').length === 0) {
 				evtSelect.closeAll();
 			}
-			if ($(target).parents('button-switch').length === 0) {
+			if (angular.element(target).parents('button-switch').length === 0) {
 				var skipBtnTypes = ['standAlone', 'toggler'];
 				evtButtonSwitch.unselectAllSkipByBtnType('', skipBtnTypes);
 				evtInterface.updateState('mainMenu', false);
 			}
-			if ($(target).parents('evt-popover').length === 0) {
+			if (angular.element(target).parents('evt-popover').length === 0) {
 				evtPopover.closeAll();
 			}
 			//Temp
-			if ($(target).parents('.witnessSelector').length === 0) {
+			if (angular.element(target).parents('.witnessSelector').length === 0) {
 				if (evtInterface.getProperty('witnessSelector')) {
 					evtInterface.updateProperty('witnessSelector', false);
 				}
@@ -373,9 +373,25 @@ angular.module('evtviewer.interface')
          * @todo: Add more cases. Think about creating a dedicated directive
          */
 		$scope.handleKeydownEvent = function($event) {
-			if ($event.keyCode === 27) {
+			if ($event.keyCode === 27) { // ESC
 				evtDialog.closeAll();
-			}
+			} else if ($event.keyCode === 37) { // LEFT ARROW
+            if (!$scope.isVisCollOpened() && !$scope.isThumbNailsOpened()) {
+               if ($event.metaKey) {
+                  evtInterface.goToFirstPage();
+               } else {
+                  evtInterface.goToPrevPage();
+               }
+            }
+         } else if ($event.keyCode === 39) { // RIGHT ARROW
+            if (!$scope.isVisCollOpened() && !$scope.isThumbNailsOpened()) {
+               if ($event.metaKey) {
+                  evtInterface.goToLastPage();               
+               } else {
+                  evtInterface.goToNextPage();
+               }
+            }
+         } 
 		};
 		/**
          * @ngdoc method
@@ -562,6 +578,10 @@ angular.module('evtviewer.interface')
 		$scope.openGlobalDialogLists = function() {
 			evtInterface.updateState('secondaryContent', 'entitiesList');
 			evtDialog.openByType('entitiesList');
+      };
+      $scope.openToc = function() {
+			evtInterface.updateState('secondaryContent', 'toc');
+			evtDialog.openByType('toc');
 		};
 		/**
          * @ngdoc method
@@ -615,7 +635,55 @@ angular.module('evtviewer.interface')
 		$scope.setLanguage = function(langKey) {
 			evtTranslation.setLanguage(langKey);
 		};
+		/**
+		 * @ngdoc method
+		 * @name evtviewer.interface.controller:InterfaceCtrl#isNavBarOpened
+		 * @methodOf evtviewer.interface.controller:InterfaceCtrl
+		 * @description Check if navBar is opened
+		 * @returns {boolean} if is true or not
+		 */
+		 $scope.isNavBarOpened = function() { 
+			return evtInterface.getProperty('enableNavBar') && evtInterface.getState('isNavBarOpened'); 
+		};
+		/**
+		 * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isVisCollOpened
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description view the visColl popup
+         * @returns {boolean} if is true or not
+         */
+		 $scope.isVisCollOpened = function() {
+			 return evtInterface.getState('isVisCollOpened');
+		 };
+		 /**
+		 * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#isThumbNailsOpened
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description view the thumbnails popup
+         * @returns {boolean} if is true or not
+         */
+		 $scope.isThumbNailsOpened = function() {
+			 return evtInterface.getState('isThumbNailsOpened');
+       };
+       
+       $scope.getThumbnails = function() {
+         return parsedData.getThumbnails();
+       };
+       
+       $scope.goToPageFromThumb = function(page) {
+         if (evtInterface.getState('currentPage') !== page.value) {
+            evtInterface.updateState('isThumbNailsOpened', false);
+            evtInterface.setCurrentPage(page);
+         }
+       };
 
+       $scope.toggleNavBar = function() {
+         var startState = evtInterface.getState('isNavBarOpened');
+         evtInterface.updateState('isNavBarOpened', !startState);
+         $timeout(function() {
+            $scope.$broadcast('rzSliderForceRender')
+        });
+       }
 		_console.log('InterfaceCtrl running');
 	})
 
@@ -637,7 +705,8 @@ angular.module('evtviewer.interface')
  * (in this case the same HTML will be used for each occurrence of glyph)
  * or if parse the glyph content deeperand use only the character needed.
 **/
-.directive('g', function(parsedData) {
+.directive('evt-g', function(parsedData) {
+	//Ricordarsi di modificare la gestione dei glifi TEI
 	return {
 		restrict: 'E',
 		scope: {

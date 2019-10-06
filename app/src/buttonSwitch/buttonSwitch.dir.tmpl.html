@@ -2,16 +2,16 @@
     title="{{vm.title | translate}}"
     ng-click="vm.doCallback()"
     ng-class="{'buttonSwitch-active': vm.active,
-               'buttonSwitch-disabled': vm.disabled,
+               'buttonSwitch-disabled': vm.disabled === true,
                'only-icon': vm.label === undefined || vm.label === '',
                'only-text': vm.icon === undefined || vm.icon === '',
                'iconLeft': vm.iconPos && vm.iconPos === 'left' }">
     
-    <i ng-if=":: iconPos && iconPos === 'left'" class="icon {{ ::vm.icon }} buttonSwitch-icon"></i>
+    <i ng-if=":: vm.iconPos && vm.iconPos === 'left'" class="icon {{ vm.icon }} buttonSwitch-icon"></i>
     
     <span
       class="buttonSwitch-label"
       ng-if="::vm.label !== undefined && vm.label !== ''">{{ vm.label | translate}}</span>
     
-    <i ng-if=":: !iconPos || iconPos === 'right'" class="icon {{ ::vm.icon }} buttonSwitch-icon"></i>
+    <i ng-if=":: !vm.iconPos || vm.iconPos === 'right'" class="icon {{ vm.icon }} buttonSwitch-icon"></i>
 </span>

@@ -14,13 +14,14 @@ $selector-option-background-color: $selector-background-color;
 $selector-option-color: $selector-color;
 $selector-option-background-color-hover: $base-color-middle;
 
-
+$selector-height: 28;
+$selector-smaller-height: 18;
 
 .selector{
-	height: 28px;
+	height: #{$selector-height}px;
 	min-width: 80px;
-	
-	margin: 0 4px;
+
+	margin-right: 5px;
 	position: relative;
     left: 0;
 
@@ -44,7 +45,7 @@ $selector-option-background-color-hover: $base-color-middle;
 	}
 
 	.open_options{
-		height: 28px;
+		height: #{$selector-height}px;
 		width: $selector-open-option-width;
 		
 		position: absolute;
@@ -70,7 +71,7 @@ $selector-option-background-color-hover: $base-color-middle;
 			text-shadow:none !important;
 		}
 	}
-
+	
 	.option_container {
 		display: none;
 		height:auto;
@@ -80,7 +81,7 @@ $selector-option-background-color-hover: $base-color-middle;
 
 		position: absolute;
 		left: 0;
-		top:30px;
+		top: #{$selector-height + 2}px;		
 
 		overflow-y:auto;
 		background:$selector-background-color;
@@ -157,6 +158,25 @@ $selector-option-background-color-hover: $base-color-middle;
 			&:hover{
 				background: $selector-option-color;
 				color: $selector-option-background-color;
+			}
+		}
+	}
+	&.smaller {
+		height: #{$selector-smaller-height}px;
+		.label_selected {
+			top: 0;
+		}
+		.open_options {
+			height: #{$selector-smaller-height}px;
+			.fa {
+				top: -2px;
+				position: relative;
+			}
+		}
+		.option_container {
+			top: #{$selector-smaller-height + 2}px;
+			.option {
+				padding: 1px 5px;
 			}
 		}
 	}

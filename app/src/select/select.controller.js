@@ -11,7 +11,7 @@
  **/
 angular.module('evtviewer.select')
 
-.controller('SelectCtrl', function($log, evtSelect, parsedData) {    
+.controller('SelectCtrl', function($log, $element, $scope, evtSelect, parsedData) {    
     var vm = this;
     
     var _console = $log.getInstance('select');
@@ -114,6 +114,9 @@ angular.module('evtviewer.select')
         </pre>
      */
     vm.selectOption = function(option) {
+        if (!option) {
+            return;
+        }
         if (vm.expanded) {
             vm.toggleExpand();
         }
@@ -201,6 +204,9 @@ angular.module('evtviewer.select')
                 case 'document':
                     option = vm.formatOption(parsedData.getDocument(optionValue));
                     break;
+                case 'div':
+                    option = vm.formatOption(parsedData.getDiv(optionValue));
+                    break;
                 case 'edition': 
                 case 'comparingEdition': 
                     option = vm.formatOption(parsedData.getEdition(optionValue));
@@ -224,6 +230,13 @@ angular.module('evtviewer.select')
                 case 'version':
                     option = vm.formatOption(optionValue);
                     break;
+                case 'generic':
+                    if (vm.optionList) {
+                        var optionsFiltered;
+                        optionsFiltered = vm.optionList.filter(function(item) { return item.value === optionValue });
+                        option = optionsFiltered ? optionsFiltered[0] : undefined;
+                    }
+                    break;
                 default:
                     if (optionValue === 'NONE' && vm.multiselect ) {
                         option = {
@@ -232,7 +245,15 @@ angular.module('evtviewer.select')
                             title: 'SELECTS.OPEN_TO_SELECT_ELEMENT'
                         };
                     } else {
-                        option = vm.optionList[0];
+                        if (vm.optionList) {
+                            var optionsFiltered;
+                            optionsFiltered = vm.optionList.filter(function(item) { return item && item.value === optionValue });
+                            if (optionsFiltered && optionsFiltered[0]) {
+                                option = optionsFiltered[0];
+                            } else {
+                                option = vm.optionList[0];
+                            }
+                        }
                     } 
                     break;
             }
@@ -290,6 +311,10 @@ angular.module('evtviewer.select')
             }
         }
 
+    };
+    vm.doCallback = function(optionSelected, option) {
+        vm.callback(optionSelected, option);
+        $scope.onOptionSelected({option: option});
     };
     /**
      * @ngdoc method

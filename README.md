@@ -7,7 +7,7 @@ Istruzioni per l'installazione e la configurazione dell'ambiente di sviluppo di 
 # Linux #
 # ##### #
 
-* UPDATE PACCHETTI [da fare per sicurezza]
+* UPDATE PACCHETTI [da fare per sicurezza!]
 | $ sudo apt-get update
 
 * GIT [da fare solo se non si ha già installato git]

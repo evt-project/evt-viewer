@@ -62,9 +62,21 @@ angular.module('evtviewer.core')
     // sourcesTextsUrl //
     // Path of the folder containing the xml files of the sources texts //
     sourcesTextsUrl : '',
+	// visCollSvg //
+	// Path of the folder containing the svg files for visColl //
+	visCollSvg      : '',
     //analoguesUrl//
     //Url of the XML file encoding the list of all the bibliographic references for the analogues apparatus.//
     analoguesUrl     : '',
+	//visCollTextUrl//
+	//Url of the XML file encoding the visColl dataModel.//
+	visCollTextUrl   : '',
+	//visCollStyleUrl//
+	//visCollImageList//
+	visCollImageList : '',
+	//Url of the SEF file encoding the visColl stylesheets for dataModel.//
+	visCollStyleUrl   : '',
+   visCollDataModel: '',
 
     preferredWitness: 'A',
 	skipWitnesses: '',
@@ -81,7 +93,7 @@ angular.module('evtviewer.core')
 		value: 'critical',
 		label: 'Critical',
 		title: 'Critical edition',
-		visible: false
+		visible: true
 	}, {
 		value: 'diplomatic',
 		label: 'Diplomatic',

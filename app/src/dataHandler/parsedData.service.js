@@ -107,7 +107,73 @@ angular.module('evtviewer.dataHandler')
     	</pre>
      */
 	var pagesCollection = {
-		length: 0
+		length: 0,
+		_indexes: [] // TODO: use only this in future
+	};
+	var thumbnails = [];
+	/**
+     * @ngdoc property
+     * @name evtviewer.dataHandler.parsedData#viscollSvgCollection
+     * @propertyOf evtviewer.dataHandler.parsedData
+     * @description [Private] Internal property where information about svg are stored.
+    	<pre>
+			var viscollSvgCollection = {
+				length: 1
+				svgs: {
+					[svgId]: {
+						leavesInsertedInSelector: [],
+						quireLeaves: [{label, title, value}],
+						quireN: '',
+						svgLeaves: [{ conjoinId, conjoinId2, id, imageId, imageId2, img, img2, imgConjoin, imgConjoin2, label, value, }],
+						textSvg: HTMLElement
+					},
+					_indexes: []
+				},
+				quires: {
+					[quireId]: {
+						leaves: {
+							[leafId]: { 
+								conjoin: '', 
+								label: '', 
+								leafno: '', 
+								quire: '', 
+								value: '' 
+							},
+							_indexes: [],
+							length: 0
+						},
+						n: '',
+						value: ''
+					}
+					_indexes: []
+				},
+				imglist: {
+					[imgId]: { 
+						conjoin: '', 
+						conjoinUrl: '', 
+						id: '', 
+						url: '', 
+						value: ''
+					},
+					_indexes: []
+				},
+				svgToLoad: [],
+				loaded: false
+			};
+    	</pre>
+     */
+	var viscollSvgCollection = {
+		svgs: {
+			_indexes: []
+		},
+		quires: {
+			_indexes: []
+		},
+		imglist: {
+			_indexes: []
+		},
+		svgToLoad: [],
+		loaded: false
 	};
 	/**
      * @ngdoc property
@@ -172,6 +238,15 @@ angular.module('evtviewer.dataHandler')
      */
 	var sourcesDocsCollection = {
 		length: 0
+	};
+
+	var divsCollection = {
+		length: 0,
+		_indexes: {
+			corresp : {},
+			subDivs: {},
+			main: {}
+		}
 	};
 
 	// var pagesCollectionTexts = [];
@@ -291,6 +366,10 @@ angular.module('evtviewer.dataHandler')
 			encodingStructure: [],
 			appEntries: [],
 			exponents: [],
+			depa: {
+				start: {},
+				end: {}
+			}
 		}
 	};
 	/**
@@ -431,10 +510,19 @@ angular.module('evtviewer.dataHandler')
 			};
      	</pre>
      */
-	var zonesCollection = {
-		_indexes: []
-	};
-	/**
+      var zonesCollection = {
+         _indexes: []
+      };
+
+
+      /**
+       * TODO: add the documentation info
+       */
+
+      var hotspotCollection = {
+         _indexes: []
+      };
+      /**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#namedEntities
      * @propertyOf evtviewer.dataHandler.parsedData
@@ -627,6 +715,10 @@ angular.module('evtviewer.dataHandler')
 		namedEntities._collections[collectionId][listKey]._indexes.push(entityId);
 	};
 
+	parsedData.getNamedEntities = function() {
+		return namedEntities;
+	}
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollection
@@ -910,8 +1002,10 @@ angular.module('evtviewer.dataHandler')
 		if (pagesCollection[pageId] === undefined) {
 			page.docs = [docId];
 			pagesCollection[pagesCollection.length] = pageId;
+			page.indexInCollection = pagesCollection.length;
 			pagesCollection[pageId] = page;
 			pagesCollection.length++;
+			pagesCollection._indexes.push(pageId); // TODO: remove duplicate list of page ids. Use only _indexes.
 			// _console.log('parsedData - addPage ', page);
 		} else {
 			var parsedPage = pagesCollection[pageId];
@@ -923,7 +1017,14 @@ angular.module('evtviewer.dataHandler')
 		if (docId && docId !== '' && documentsCollection[docId] !== undefined) {
 			documentsCollection[docId].pages.push(pageId);
 		}
+		thumbnails[pagesCollection.length-1] = {
+			value: page.value,
+			image: page.image,
+			label: page.label,
+			docs: page.docs
+		 };
 	};
+	
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPages
@@ -936,6 +1037,19 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getPages = function() {
 		return pagesCollection;
 	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getThumbnails
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of parsed thumbnails.
+     * @returns {Object} Object representing the list of parsed thumbnails.
+     */
+	parsedData.getThumbnails = function() {
+		return thumbnails;
+	};
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPage
@@ -1040,7 +1154,123 @@ angular.module('evtviewer.dataHandler')
 		// return images[i];
 		return {};
 	};
+	
+	/* SVG */
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#addViscollSvg
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Add a svg to stored svg collection. If the svg has already been added it means that it contains
+     * more than one document. In this case the <code>docId</code> will be added to the list
+     * of documents contained in the svg.
+     * The <code>pageId</code> of the new svg will be also added to the list of
+     * pages of the document with <code>id = docId</code>.
+     * @param {Object} svg Svg to be added. It is structured as:
+     	<pre>
+			var svg = {
+				value,
+				label,
+				title,
+				source
+			};
+     	</pre>
+     * @param {string} docId Identifier of document in which the svg is contained
+     * @todo add attribute for the original xml reference
+     */
+	parsedData.addViscollSvg = function(svg) {
+		var svgId = svg.id || 'svg_'+viscollSvgCollection.svgs._indexes.length;
+		viscollSvgCollection.svgs[svgId] = svg;
+		if (viscollSvgCollection.quires[svgId]) {
+			viscollSvgCollection.quires[svgId].svg = svg;
+		}
+		viscollSvgCollection.svgs._indexes.push(svgId);
+	};
+	
+	parsedData.addViscollImageList = function(imageElement){
+		var imageId = imageElement.id;
+		viscollSvgCollection.imglist[imageId] = imageElement;
+		viscollSvgCollection.imglist._indexes.push(imageId);
+	};
 
+	parsedData.addViscollQuire = function(quire) {
+		var quireId = quire.value;
+		viscollSvgCollection.quires[quireId] = quire;
+		viscollSvgCollection.quires._indexes.push(quireId);
+	};
+	
+	parsedData.addViscollLeaf = function(leaf) {
+		var leafId = leaf.value;
+		var quireId = leaf.quire;
+		viscollSvgCollection.quires[quireId].leaves[leafId] = leaf;
+		viscollSvgCollection.quires[quireId].leaves._indexes.push(leafId);
+	};
+	
+	parsedData.setViscollSVGToLoad = function(svgList) {
+		viscollSvgCollection.svgToLoad = svgList;
+	};
+
+	parsedData.getViscollSVGToLoad = function() {
+		return viscollSvgCollection.svgToLoad;
+	};
+
+	parsedData.updateLeafDataInQuire = function(quireId, leaf) {
+		if (viscollSvgCollection.quires[quireId].leaves[leaf.id]) {
+			for (var attrname in leaf) { 
+				viscollSvgCollection.quires[quireId].leaves[leaf.id][attrname] = leaf[attrname]; 
+			}
+		}
+	};
+
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getViscollSvgs
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of parsed svgs.
+     * @returns {Object} Object representing the list of parsed svgs.
+     */
+	parsedData.getViscollSvgs = function() {
+		return viscollSvgCollection;
+	};
+
+	parsedData.setViscollSvgsLoaded = function(loaded) {
+		viscollSvgCollection.loaded = loaded;
+	};
+	parsedData.areViscollSvgsLoaded = function() {
+		return viscollSvgCollection.loaded;
+	};
+	/**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getSvg
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the object representing a particular svg.
+     * @param {stirng} pageId Identifier of the svg to retrieve
+	 * @returns {Object} Object representing the svg with <code>id = pageId</code>.
+	 * It is structured as follow:
+	 	<pre>
+			var svg = {
+				value,
+				label,
+				title,
+				source,
+				text: {
+					[docId] : {
+						[editionLevel]: ''
+					}
+				},
+				docs: []
+			};
+	 	</pre>
+     */
+	parsedData.getViscollSvg = function(pageId) {
+		return viscollSvgCollection[pageId];
+	};
+	
 	/* DOCUMENTS */
 	/**
      * @ngdoc method
@@ -1058,7 +1288,8 @@ angular.module('evtviewer.dataHandler')
 				title,
 				content,
 				front,
-				pages
+				pages,
+				svg
 			};
      	</pre>
      */
@@ -1111,6 +1342,7 @@ angular.module('evtviewer.dataHandler')
 				content,
 				front,
 				pages,
+				svg,
 			};
      	</pre>
      */
@@ -1135,6 +1367,7 @@ angular.module('evtviewer.dataHandler')
 				content,
 				front,
 				pages,
+				svg,
 			};
      	</pre>
      */
@@ -1281,6 +1514,75 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getSourceDocument = function(extDocId) {
 		return sourcesDocsCollection[extDocId];
 	};
+
+	// DIVS //
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#addDiv
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method adds a div object to the divsCollection, after retrieving some
+	 * information to insert inside of the divsCollection indexes.
+	 *
+	 * @param {object} div the JSON object with all the info about the parsed div
+	 * @param {string} docId the id of the document the div belongs to
+	 *
+	 * @author CM
+	 */
+	parsedData.addDiv = function(div, docId) {
+		var divId = div.value;
+		divsCollection[divsCollection.length] = divId;
+		divsCollection[divId] = div;
+		divsCollection.length++;
+		documentsCollection[docId].divs.push(divId);
+		if (div.corresp) {
+			angular.forEach(div.corresp, function(corresp) {
+				if (!divsCollection._indexes.corresp[corresp]) {
+					divsCollection._indexes.corresp[corresp] = [];
+				}
+				divsCollection._indexes.corresp[corresp].push(div.value);
+			});
+		}
+		if (!div._isSubDiv) {
+			divsCollection._indexes.subDivs[div.value] = div.subDivs || [];
+			if (!divsCollection._indexes.main[div.doc]) {
+				divsCollection._indexes.main[div.doc] = []
+			}
+			divsCollection._indexes.main[div.doc].push(div.value);
+		}
+	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#getDivs
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method returns all the divs in the divsCollection
+	 *
+	 * @author CM
+	 */
+	parsedData.getDivs = function() {
+		return divsCollection;
+	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#getDiv
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * This method retrieves one of the divs stored in the divsCollection through
+	 * its id.
+	 *
+	 * @param {string} divId the id of the div that has to be retrieved
+	 *
+	 * @author CM
+	 */
+	parsedData.getDiv = function(divId) {
+		return divsCollection[divId];
+	}
 
 	/* EDITION */
 	/**
@@ -1838,7 +2140,44 @@ angular.module('evtviewer.dataHandler')
 		if (entry._variance > criticalAppCollection._maxVariance) {
 			criticalAppCollection._maxVariance = entry._variance;
 		}
+		if (encodingDetails.variantEncodingMethod === 'double-end-point') {
+			parsedData.addCriticalEntryDepaInfo(entry);
+		}
 	};
+
+	/**
+	 * @ngdoc method
+	 * @name evtviewer.dataHandler.parsedData#addCriticalEntryDepaInfo
+	 * @methodOf evtviewer.dataHandler.parsedData
+	 *
+	 * @description
+	 * Adds the value of the from and the to attributes to the indexes of the app entries collection.
+	 * If the to attribute is not defined, it is created according to the variant ecoding location.
+	 * @param {Objects} entry the critical apparatus entry that has been added to the app entries collection
+	 * @author CM
+	 */
+	parsedData.addCriticalEntryDepaInfo = function(entry) {
+		if (!criticalAppCollection._indexes.depa) {
+			criticalAppCollection._indexes['depa'] = {
+				start: {},
+				end: {}
+			};
+		}
+		if (entry.attributes.from) {
+			var from = entry.attributes.from.charAt(0) === '#' ? entry.attributes.from.substr(1) : entry.attributes.from
+			criticalAppCollection._indexes.depa.start[entry.id] = from;
+		}
+		if (entry.attributes.to) {
+			var to = entry.attributes.to.charAt(0) === '#' ? entry.attributes.to.substr(1) : entry.attributes.to
+			criticalAppCollection._indexes.depa.end[entry.id] = to;
+		} else {
+			if (encodingDetails.variantEncodingLocation === 'internal') {
+				criticalAppCollection._indexes.depa.end[entry.id] = entry.id;
+			} else if (encodingDetails.variantEncodingLocation === 'external' && entry.attributes.from) {
+				criticalAppCollection._indexes.depa.end[entry.id] = entry.attributes.from.substr(1);
+			}
+		}
+	}
 
 	/**
      * @ngdoc method
@@ -2076,7 +2415,7 @@ angular.module('evtviewer.dataHandler')
 				if (color) {
                     filtersCollection.colors.push(color);
                 }
-                
+
 				var valueObj = {
 					name: value,
 					color: color
@@ -2504,7 +2843,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
-   
+ 
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -2722,18 +3061,51 @@ angular.module('evtviewer.dataHandler')
 		return zonesCollection[zoneId];
 	};
 
-	/**
-     * @ngdoc method
-     * @name evtviewer.dataHandler.parsedData#isITLAvailable
-     * @methodOf evtviewer.dataHandler.parsedData
-     *
-     * @description
-     * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
-     * @returns {boolean} Whether the Image-Text Linking tool is available or not
-     */
-	parsedData.isITLAvailable = function() {
-		return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
-	};
+
+      /**
+       * TODO:add documentation
+       */
+
+      parsedData.addHotSpot = function (hotspot) {
+         var hotSpotId,
+            hotSpotIndexes = hotspotCollection._indexes;
+
+         if (hotspot && hotspot.id !== '') {
+            hotSpotId = hotspot.id;
+         } else {
+            hotSpotId = hotspot.id = 'hotspot_' + (hotSpotIndexes + 1);
+         }
+         if (hotspotCollection[hotSpotId] === undefined) {
+            hotSpotIndexes[hotSpotIndexes.length] = hotSpotId;
+            hotspotCollection[hotSpotId] = hotspot;
+            hotSpotIndexes.length++;
+         }
+      };
+
+      parsedData.getHotSpots = function () {
+
+         return hotspotCollection;
+
+      };
+
+      parsedData.getHotSpot = function (hotspotId) {
+         return hotspotCollection[hotspotId];
+
+      };
+
+
+      /**
+       * @ngdoc method
+       * @name evtviewer.dataHandler.parsedData#isITLAvailable
+       * @methodOf evtviewer.dataHandler.parsedData
+       *
+       * @description
+       * Check whether the Image-Text Linking tool is available or not, depending on configuration preferences and parsed information.
+       * @returns {boolean} Whether the Image-Text Linking tool is available or not
+       */
+      parsedData.isITLAvailable = function () {
+         return config.toolImageTextLinking && zonesCollection._indexes.length > 0;
+      };
 
 	// ///////////////// //
 	// SOURCES APPARATUS //

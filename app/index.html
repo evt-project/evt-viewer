@@ -10,22 +10,25 @@
 
 		<!-- build:css(.) styles/vendor.css -->
 		<!-- bower:css -->
+		<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+		<link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css" />
+		<link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
 		<link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
+		<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 		<!-- endbower -->
 		<!-- endbuild -->
 
-		<!-- TODO: temp -->
-		<!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
-		<!-- <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link> -->
-		<!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link> -->
-		<!-- <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link> -->
-		<!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
-		<link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css">
-		<!-- endbuild -->
+        <!-- TODO: temp -->
+        <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
+        <!-- <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link> -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link> -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link> -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
+        <link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css"></link>
+        <!-- endbuild -->
 
 		<!-- build:css(.tmp) styles/main.css -->
 		<link rel="stylesheet" href="styles/main.css">
-		<link rel="stylesheet" href="styles/tei.css">
 		<link rel="stylesheet" href="config/custom-style.css">
 		<!-- endbuild -->
 	</head>
@@ -46,6 +49,11 @@
 				<i class="fa fa-external-link"></i>
 			</a>
 			<div class="globalMenu">
+				<button-switch
+					title="TOC.HEADER"
+					data-icon="list-alt"
+					data-type="openToc">
+				</button-switch>
 				<div class="viewModeMenu">
 					<button-switch
 							title="VIEW_MODES.{{::mode.label}}"
@@ -137,7 +145,16 @@
 						<li class="inactive">
 							<span>
 								<i class="icon fa fa-keyboard-o"></i>
-								{{ 'MAIN_MENU.KEYBOARD_SHORT_CUTS' | translate }}</span></li>
+								{{ 'MAIN_MENU.KEYBOARD_SHORT_CUTS' | translate }}</span>
+                  </li>
+                  <li>
+                        <span><!-- TODO: ng-click="aboutEVT()" -->
+                            <a href="http://evt.labcd.unipi.it/" target="_blank" title="{{ 'MAIN_MENU.GO_TO_EVT_WEB_PAGE' | translate }}">
+                                <i class="icon fa fa-copyright"></i>
+                                {{ 'MAIN_MENU.ABOUT_EVT' | translate }}
+                            </a>
+                        </span>
+                  </li>
 					</ul>
 				</div>
 				<!-- <button-switch
@@ -148,10 +165,16 @@
 				</button-switch> -->
 			</div>
 		</header>
-		<div id="global-container-ext" ng-show="!isLoading()">
+		<div id="global-container-ext" ng-show="!isLoading()" ng-class="{'navbar-opened': isNavBarOpened()}">
 			<section
 				class="secondary-container"
 				ng-show="getSecondaryContentOpened() !== ''">
+				<evt-dialog data-type="toc" data-title="TOC.HEADER">
+					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'toc'"
+						data-type="toc"
+						data-orientation="vertical">
+					</evt-tabs-container>
+				</evt-dialog>
 				<evt-dialog data-type="entitiesList" data-title="DIALOGS.NAMED_ENTITIES"
 					ng-if="getProperty('namedEntitiesLists')">
 					<evt-tabs-container ng-if="getSecondaryContentOpened() === 'entitiesList'"
@@ -380,6 +403,25 @@
 					<p>{{ getErrorMsg().info | translate }}</p>
 				</div>
 			</section>
+         <section class="popup-container thumb_cont" ng-if="isThumbNailsOpened()">
+            <figure class="thumbnail thumb_single" data-value="{{ thumb.value }}" data-src="{{ thumb.image }}" ng-click="goToPageFromThumb(thumb)"
+                    ng-repeat="thumb in getThumbnails() track by $index" ng-class="{'active': getCurrentPage() === thumb.value}"> <!-- TEMP -->
+               <img class="thumb_single_img" ng-src="{{ thumb.image }}" onerror="this.setAttribute('src', 'images/empty-image.jpg')"/>
+               <figcaption>{{ thumb.label }}</figcaption>
+            </figure>
+         </section>
+         <section class="popup-container" ng-hide="!isVisCollOpened()">
+            <div>
+               <evt-viscoll></evt-viscoll>
+            </div>
+         </section>
+
+         <button-switch ng-if="getProperty('enableNavBar') && !isThumbNailsOpened() && !isVisCollOpened()"
+                        ng-class="{'navBar-opener': isNavBarOpened(), 'navBar-closer': !isNavBarOpened()}"
+                        title="BUTTONS.TOGGLE_NAVBAR"
+                        data-icon="{{isNavBarOpened() ? 'hide-bar' : 'show-bar'}}"
+                        data-type="toggler" on-btn-clicked="toggleNavBar()"></button-switch>
+         <evt-navbar ng-hide="!isNavBarOpened()"></evt-navbar>
 		</div>
 
 		<section class="global-loading-container" ng-show="isLoading()">
@@ -415,28 +457,35 @@
 		<![endif]-->
 		<!-- endbuild -->
 
-		<!-- build:js(.) scripts/lib.js -->
-		<!-- bower:js -->
-		<script src="bower_components/jquery/dist/jquery.js"></script>
-		<script src="bower_components/angular/angular.js"></script>
-		<script src="bower_components/json3/lib/json3.min.js"></script>
-		<script src="bower_components/angular-animate/angular-animate.js"></script>
-		<script src="bower_components/angular-cookies/angular-cookies.js"></script>
-		<script src="bower_components/angular-messages/angular-messages.js"></script>
-		<script src="bower_components/angular-resource/angular-resource.js"></script>
-		<script src="bower_components/angular-route/angular-route.js"></script>
-		<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-		<script src="bower_components/angular-xml/angular-xml.js"></script>
-		<script src="bower_components/angular-touch/angular-touch.js"></script>
-		<script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
-		<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
-		<script src="bower_components/angular-translate/angular-translate.js"></script>
-		<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
-		<script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
-		<!-- endbower -->
-		<!-- endbuild -->
+      <!-- build:js(.) scripts/lib.js -->
+      <!-- bower:js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+      <script src="bower_components/angular-animate/angular-animate.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/angular-messages/angular-messages.js"></script>
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-route/angular-route.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-xml/angular-xml.js"></script>
+      <script src="bower_components/angular-touch/angular-touch.js"></script>
+      <script src="bower_components/angular-pretty-xml/src/angular-pretty-xml.js"></script>
+      <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+      <script src="bower_components/angular-translate/angular-translate.js"></script>
+      <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+      <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+      <script src="bower_components/ngprogress/build/ngprogress.min.js"></script>
+      <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
+      <script src="bower_components/angular-xslt/src/ng-xslt.js"></script>
+      <script src="bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.js"></script>
+      <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+      <script src="bower_components/keyboard/dist/js/jquery.keyboard.js"></script>
+      <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+      <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+      <script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+      <!-- endbower -->
+      <!-- endbuild -->
 
 		<!-- build:js({.tmp,app}) scripts/evtviewer.js -->
 		<script src="tmpl/templates.js"></script>
@@ -471,7 +520,9 @@
 		<script src="/src/dataHandler/criticalElementsParser.service.js"></script>
 		<script src="/src/dataHandler/versionApparatus.service.js"></script>
 		<script src="/src/dataHandler/bibliographyParser.service.js"></script>
+      <script src="/src/dataHandler/hotspotParser.service.js"></script>
 		<script src="/src/dataHandler/glyphParser.service.js"></script>
+		<script src="/src/dataHandler/depaParser.service.js"></script>
 
       <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
       <script src="/src/dataHandler/search/search.service.js"></script>
@@ -483,9 +534,7 @@
       <script src="/src/dataHandler/search/diplomaticEditionHandler.service.js"></script>
       <script src="/src/dataHandler/search/interpretativeEditionHandler.service.js"></script>
       <script src="/src/dataHandler/search/diplomaticParagraphLineHandler.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticInterpretativeParagraphLineHandler.service.js"></script>
       <script src="/src/dataHandler/search/diplomaticLbHandler.service.js"></script>
-      <script src="/src/dataHandler/search/diplomaticInterpretativeLbHandler.service.js"></script>
       <script src="/src/dataHandler/search/virtualKeyboard.service.js"></script>
       <script src="/dist/search.service.js"></script>
 
@@ -587,6 +636,11 @@
 		<script src="/src/tabsContainer/tabsContainer.controller.js"></script>
 		<script src="/src/tabsContainer/tabsContainer.directive.js"></script>
 
+		<script src="/src/toc/toc.js"></script>
+		<script src="/src/toc/toc.provider.js"></script>
+		<script src="/src/toc/toc.controller.js"></script>
+		<script src="/src/toc/toc.directive.js"></script>
+
 		<script src="/src/quote/quote.js"></script>
 		<script src="/src/quote/quote.configuration.js"></script>
 		<script src="/src/quote/quote.provider.js"></script>
@@ -635,6 +689,17 @@
 		<script src="/src/versionApparatusEntry/versionRef.provider.js"></script>
 		<script src="/src/versionApparatusEntry/versionRef.directive.js"></script>
 
+      <!--  image Viewer lib js -->
+      <script src="/src/imageViewer/imageViewer.js"></script>
+      <script src="/src/imageViewer/viewerOSD.directive.js"></script>
+      <script src="/src/imageViewer/imageViewer.controller.js"></script>
+      <script src="/src/imageViewer/imageViewer.service.js"></script>
+      <script src="/src/imageViewer/imageViewer.provider.js"></script>
+      <script src="/src/imageViewer/imageViewer.configuration.js"></script>
+      <script src="/src/imageViewer/viewerOSD.service.js"></script>
+      <script src="/src/imageViewer/scrollmap.service.js"></script>
+      <script src="/src/imageViewer/overlayHandler.service.js"></script>
+
       <script src="/src/search/search.js"></script>
       <script src="/src/search/searchBox.directive.js"></script>
       <script src="/src/search/searchBox.controller.js"></script>
@@ -646,9 +711,21 @@
       <script src="/src/search/virtualKeyboard.directive.js"></script>
       <script src="/src/search/virtualKeyboard.provider.js"></script>
 
-        <script src="/src/3dhop/3dhop.js"></script>
-        <script src="/src/3dhop/3dhop.controller.js"></script>
-        <script src="/src/3dhop/3dhop.directive.js"></script>
+      <script src="/src/3dhop/3dhop.js"></script>
+      <script src="/src/3dhop/3dhop.controller.js"></script>
+      <script src="/src/3dhop/3dhop.directive.js"></script>
+
+      <script src="/src/navBar/navBar.js"></script>
+      <script src="/src/navBar/navBar.configuration.js"></script>
+      <script src="/src/navBar/navBar.provider.js"></script>
+      <script src="/src/navBar/navBar.controller.js"></script>
+      <script src="/src/navBar/navBar.directive.js"></script>
+
+      <script src="/src/visColl/visColl.js"></script>
+      <script src="/src/visColl/visColl.configuration.js"></script>
+      <script src="/src/visColl/visColl.provider.js"></script>
+      <script src="/src/visColl/visColl.controller.js"></script>
+      <script src="/src/visColl/visColl.directive.js"></script>
 		<!-- endinjector -->
 		<!-- endbuild -->
 	</body>

@@ -33,7 +33,7 @@ angular.module('evtviewer.list')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function(parsedData) {
+    this.$get = function(parsedData, evtInterface) {
         var collection = {},
             list       = [];
         
@@ -73,7 +73,7 @@ angular.module('evtviewer.list')
                 i = 0; 
             while (i < 10 && i < vm.elementsInListKey.length) {
                 var newElement = vm.elementsInListKey[last+i];
-                if (newElement && vm.visibleElements.indexOf(newElement) <= 0) {
+                if (newElement && vm.visibleElements.indexOf(newElement) < 0) {
                     vm.visibleElements.push(newElement);                    
                 }
                 i++;
@@ -153,11 +153,23 @@ angular.module('evtviewer.list')
             if (typeof(collection[currentId]) !== 'undefined') {
                 return;
             }
-            
-            var parsedElements = parsedData.getNamedEntitiesCollectionByName(currentId),
-                selectedLetter = parsedElements ? parsedElements._listKeys[0] : undefined,
-                elementsInListKey = getVisibleElements(currentId, selectedLetter),
-                visibleElements = elementsInListKey ? elementsInListKey.slice(0, 40) : [];
+
+            var currentEntity = evtInterface.getState('currentNamedEntity'),
+                entity = currentEntity ? parsedData.getNamedEntity(currentEntity) : undefined,
+                parsedElements = parsedData.getNamedEntitiesCollectionByName(currentId),
+                selectedLetter;
+
+            if (entity && listType === parsedData.getNamedEntityType(currentEntity)) {
+                selectedLetter = entity._listPos || undefined;
+            } else {
+                selectedLetter = parsedElements ? parsedElements._listKeys[0] : undefined;
+            }
+
+            var elementsInListKey = getVisibleElements(currentId, selectedLetter),
+                startPos = 0,
+                entityPos = entity && listType === parsedData.getNamedEntityType(currentEntity) ? elementsInListKey.indexOf(currentEntity) : undefined,
+                endPos = entityPos ? entityPos + 10 : startPos + 41,
+                visibleElements = elementsInListKey ? elementsInListKey.slice(startPos, endPos) : [];
 
             scopeHelper = {
                 // expansion
@@ -200,6 +212,14 @@ angular.module('evtviewer.list')
         list.destroy = function(tempId) {
             delete collection[tempId];
         };
+
+        list.scrollToElemById = function(listId, entityId) {
+            angular.forEach(list, function(currentList) {
+                if (currentList.id === listId) {
+                    collection[listId].scrollToElement(entityId);
+                }
+            });
+        }
 
         return list;
     };

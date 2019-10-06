@@ -45,12 +45,14 @@
 		"INFO": "Info",
 		"INFO_ABOUT_TEXT": "Information about this text",
 		"IMAGE_TEXT_LINKING": "Image-Text Linking",
+		"HOTSPOTS": "Hotspots",
 		"LIST": "Lists",
 		"MENU": "Open Menu",
 		"MS": "Manuscript description",
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "No more versions available",
 		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+		"OPEN_LIST": "Show entry in full list",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
 		"SHOW_PINNED_ENTRIES": "Show pinned elements",
@@ -59,7 +61,16 @@
 		"THUMBNAILS": "Thumbnails",
 		"VERSION_CLOSE": "Close version",
 		"WITNESS_CLOSE": "Close witness",
-		"WITNESSES_LIST": "Witnesses List"
+		"WITNESSES_LIST": "Witnesses List",
+		"VISCOLL": "Viscoll results",
+		"PAGE_FIRST": "Beginning",
+		"PAGE_LAST": "End",
+		"PAGE_PREVIOUS": "Previous Page",
+		"PAGE_NEXT": "Next Page",
+		"GO_TO_PAGE": "Go to page",
+		"TOGGLE_NAVBAR": "Toggle navbar",
+      "SCHEMA": "Schema",
+      "SEARCH": "Search"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "beginning of a lacuna in",
@@ -118,7 +129,9 @@
 		"KEYBOARD_SHORT_CUTS": "Keyboard short cuts",
 		"LANGUAGES": "Languages",
 		"OPEN_LISTS": "Open Lists",
-		"PROJECT_INFO": "Project Info"
+		"PROJECT_INFO": "Project Info",
+		"ABOUT_EVT": "About EVT",
+		"GO_TO_EVT_WEB_PAGE": "Go to EVT web page"
 	},
 	"MESSAGES" : {
 		"BIBL_REF_NOT_FOUND": "Could not find bibliography referement",
@@ -151,7 +164,8 @@
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "More Info",
 		"OCCURRENCES": "Occurrences",
-		"XML": "XML"
+		"XML": "XML",
+		"MAP": "Map"
 	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Author",
@@ -240,6 +254,15 @@
 		"XML_SOURCE_QUOTE": "XML Source for Quote",
 		"XML_SOURCE_FOR": "XML Source for "
 	},
+	"TOC": {
+		"BACK": "Back matter",
+		"BODY": "Text",
+		"DIVS": "Sections",
+		"FRONT": "Front matter",
+		"HEADER": "Toc, front matter and back matter",
+		"PAGES": "Folia",
+		"TITLE": "Table of contents"
+	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Critical Note",
         "METADATA_FOR": "Metadata for ",
@@ -262,7 +285,21 @@
 		"COLLATION": "Collation",
 		"SOURCE_TEXT": "Source Text"
 	},
+	"VISCOLL": {
+		"SELECT_QUIRE":"Select a quire",
+		"QUIRE_NUM": "Quire n.",
+		"SELECT_UNIT":"Select a unit",
+		"UNIT": "Unit",
+		"SELECT_UNIT_MSG": "Select a unit to see its composition.",
+		"MISSING": "Missing"
+	},
+	"PAGES": "Pages",
 	"AND": "and",
+	"BETWEEN": "between",
 	"ERROR" : "Error",
-	"PUBLISHED_BY": "Published by"
+	"PUBLISHED_BY": "Published by",
+
+	"NO_INFO": "No data",
+	"missing": "Missing",
+	"notLeaf": "---"
 }

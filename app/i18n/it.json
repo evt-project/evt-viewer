@@ -45,12 +45,14 @@
 		"INFO": "Info",
 		"INFO_ABOUT_TEXT": "Informazioni su questo testo",
 		"IMAGE_TEXT_LINKING": "Collegamento Testo Immagine",
+		"HOTSPOTS": "Hotspots",
 		"LIST": "Liste",
 		"MENU": "Apri Menu",
 		"MS": "Descrizione del manoscritto",
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "Nessun altra versione disponibile",
 		"NO_WITNESSES_AVAILABLE": "Nessun altro testimone disponibile",
+		"OPEN_LIST": "Mostra nell'elenco completo",
 		"PIN_REMOVE": "Rimuovi Pin",
 		"PIN_TOGGLE": "Aggiungi Pin",
 		"SHOW_PINNED_ENTRIES": "Mostra elementi \"pinnati\"",
@@ -59,7 +61,17 @@
 		"THUMBNAILS": "Miniature",
 		"VERSION_CLOSE": "Chiudi versione",
 		"WITNESS_CLOSE": "Chiudi testimone",
-		"WITNESSES_LIST": "Lista testimoni"
+		"WITNESSES_LIST": "Lista testimoni",
+		"VISCOLL": "Risultati Viscoll",
+		"PAGE_FIRST": "Inizio",
+		"PAGE_LAST": "Fine",
+		"PAGE_PREVIOUS": "Pagina precedente",
+		"PAGE_NEXT": "Pagina successiva",
+		"GO_TO_PAGE": "Vai alla pagina",
+		"TOGGLE_NAVBAR": "Apri/chiudi barra di navigazione",
+      "SCHEMA": "Schema",
+      "search": "Ricerca",
+      "searchIndex": "Indice"
 	},
 	"CRITICAL_APPARATUS": {
 		"LACUNA_START": "inizio di una lacuna in ",
@@ -118,7 +130,9 @@
 		"KEYBOARD_SHORT_CUTS": "Scorciatoie da tastiera",
 		"LANGUAGES": "Lingue",
 		"OPEN_LISTS": "Apri liste",
-		"PROJECT_INFO": "Informazioni sul progetto"
+		"PROJECT_INFO": "Informazioni sul progetto",
+		"ABOUT_EVT": "Informazioni su EVT",
+		"GO_TO_EVT_WEB_PAGE": "Vai al sito di EVT"
 	},
 	"MESSAGES" : {
 		"BIBL_REF_NOT_FOUND": "Impossibile trovare i riferimenti bibliografici",
@@ -151,7 +165,8 @@
 	"NAMED_ENTITIES": {
 		"MORE_INFO": "Informazioni aggiuntive",
 		"OCCURRENCES": "Occorrenze",
-		"XML": "XML"
+		"XML": "XML",
+		"MAP": "Mappa"
 	},
 	"PROJECT_INFO": {
 		"AUTHOR": "Autore",
@@ -240,6 +255,15 @@
 		"XML_SOURCE_QUOTE": "Codice XML della fonte",
 		"XML_SOURCE_FOR": "Codice XML per "
 	},
+	"TOC": {
+		"BACK": "Appendici",
+		"BODY": "Testo",
+		"DIVS": "Sezioni",
+		"FRONT": "Introduzione",
+		"HEADER": "Paratesto e indici",
+		"PAGES": "Folia",
+		"TITLE": "Indice dei contenuti"
+	},
 	"VERSIONS": {
 		"CRITICAL_NOTE": "Nota critica",
         "METADATA_FOR": "Metadata per ",
@@ -262,7 +286,21 @@
 		"COLLATION": "Collazione",
 		"SOURCE_TEXT": "Testo Fonti"
 	},
+	"VISCOLL": {
+		"SELECT_QUIRE":"Seleziona un fascicolo",
+		"QUIRE_NUM": "Fascicolo n.",
+		"SELECT_UNIT":"Seleziona un'unità",
+		"UNIT": "Unità",
+		"SELECT_UNIT_MSG": "Seleziona un'unità per visualizzare la sua composizione.",
+		"MISSING": "Persa"
+	},
+	"PAGES": "Pagine",
 	"AND": "e",
+	"BETWEEN": "tra",
 	"ERROR" : "Errore",
-	"PUBLISHED_BY": "Pubblicato da"
+	"PUBLISHED_BY": "Pubblicato da",
+
+	"NO_INFO": "Dati mancanti",
+	"missing": "Persa",
+	"notLeaf": "---"
 }

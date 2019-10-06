@@ -1,176 +1,215 @@
 {
+   "indexTitle": "",
+   "webSite": "",
+   "logoUrl": "",
 
-    "indexTitle": "Prova integrazione 3DHOP",
-    "webSite": "",
-    "logoUrl": "",
+   "dataUrl": "data/3dhop.xml",
+   "sourcesUrl"       : "",
+   "analoguesUrl"     : "",
+   "sourcesTextsUrl" : "",
 
-	"dataUrl": "data/3dhop.xml",
-    "sourcesUrl"       : "",
-    "analoguesUrl"     : "",
-    "sourcesTextsUrl" : "",
+   "singleImagesUrl": "",
+   "visCollTextUrl": "",
+   "visCollStyleUrl": "",
+   "visCollSvg": "",
+   "visCollImageList": "",
+   "visCollDataModel": "",
 
-    "defaultViewMode": "readingTxt",
-	"availableViewModes": [{
-                                "label"    : "READING_TEXT",
-                                "icon"     : "reading-txt",
-                                "viewMode" : "readingTxt",
-                                "visible"  : true
-                            },
-                            {
-                                "label"    : "MULTIPLE_RECENSIONS",
-                                "icon"     : "mode-versions",
-                                "viewMode" : "versions",
-                                "visible"  : true
-                            },
-                            {
-                                "label"    : "IMAGE_TEXT",
-                                "icon"     : "mode-imgTxt",
-                                "viewMode" : "imgTxt",
-                                "visible"  : false
-                            },
-                            {
-                                "label"    : "TEXT_TEXT",
-                                "icon"     : "mode-txtTxt",
-                                "viewMode" : "txtTxt",
-                                "visible"  : true
-                            },
-                            {
-                                "label"    : "COLLATION",
-                                "icon"     : "mode-collation",
-                                "viewMode" : "collation",
-                                "visible"  : true
-                            },
-                            {
-                                "label"    : "SOURCE_TEXT",
-                                "icon"     : "mode-srcTxt",
-                                "viewMode" : "srcTxt",
-                                "visible"  : true
-                            },
-                            {
-                                "label"    : "3DHOP",
-                                "icon"     : "mode-3dhop",
-                                "viewMode" : "3dhop",
-                                "visible"  : true
-                            }],
-    "defaultEdition": "diplomatic",
-    "showEditionLevelSelector": true,
+   "defaultViewMode": "txtTxt",
+   "availableViewModes": [
+      {
+         "label": "READING_TEXT",
+         "icon": "reading-txt",
+         "viewMode": "readingTxt",
+         "visible": true
+      },
+      {
+         "label": "MULTIPLE_RECENSIONS",
+         "icon": "mode-versions",
+         "viewMode": "versions",
+         "visible": false
+      },
+      {
+         "label": "IMAGE_TEXT",
+         "icon": "mode-imgTxt",
+         "viewMode": "imgTxt",
+         "visible": false
+      },
+      {
+         "label": "TEXT_TEXT",
+         "icon": "mode-txtTxt",
+         "viewMode": "txtTxt",
+         "visible": true
+      },
+      {
+         "label": "COLLATION",
+         "icon": "mode-collation",
+         "viewMode": "collation",
+         "visible": false
+      },
+      {
+         "label": "SOURCE_TEXT",
+         "icon": "mode-srcTxt",
+         "viewMode": "srcTxt",
+         "visible": false
+      },
+      {
+         "label"    : "3DHOP",
+         "icon"     : "mode-3dhop",
+         "viewMode" : "3dhop",
+         "visible"  : true
+     }
+   ],
+   "defaultEdition": "diplomatic",
+   "showEditionLevelSelector": true,
 
-    "availableEditionLevel": [{
-        "value": "critical",
-        "label": "Critical",
-        "title": "Critical edition",
-        "visible": false
-    }, {
-        "value": "diplomatic",
-        "label": "Diplomatic",
-        "title": "Diplomatic edition",
-        "visible": true
-    }, {
-        "value": "interpretative",
-        "label": "Interpretative",
-        "title": "Interpretative edition",
-        "visible": true
-    }],
+   "availableEditionLevel": [
+      {
+         "value": "critical",
+         "label": "Critical",
+         "title": "Critical edition",
+         "visible": false
+      },
+      {
+         "value": "diplomatic",
+         "label": "Diplomatic",
+         "title": "Diplomatic edition",
+         "visible": true
+      },
+      {
+         "value": "interpretative",
+         "label": "Interpretative",
+         "title": "Interpretative edition",
+         "visible": true
+      }
+   ],
 
-    "enableXMLdownload" : true,
+   "enableXMLdownload": true,
 
-    "toolPinAppEntries": true,
-    "toolImageTextLinking": true,
-    "namedEntitiesSelector": false,
+   "initNavBarOpened": true,
+   "enableNavBar": false,
 
-    "namedEntitiesToHandle": [{
-        "tagName": "persName",
-        "label": "Persons",
-        "available": true
-    },{
-        "tagName": "placeName",
-        "label": "Places",
-        "available": true
-    },{
-        "tagName": "orgName",
-        "label": "Organizations",
-        "available": true
-    }],
+   "toolPinAppEntries": true,
+   "toolImageTextLinking": false,
 
-    "otherEntitiesToHandle": [{
-        "tagName": "rolename",
-        "label": "Role Name",
-        "available": false,
-        "color": "#cfc"
-    }, {
-        "tagName": "measure",
-        "label": "Measure",
-        "available": false,
-        "color": "#ffecb3"
-    }],
+   "namedEntitiesSelector": false,
+   "namedEntitiesToHandle": [
+      {
+         "tagName": "persName",
+         "label": "Persons",
+         "available": true
+      },
+      {
+         "tagName": "placeName",
+         "label": "Places",
+         "available": true
+      },
+      {
+         "tagName": "orgName",
+         "label": "Organizations",
+         "available": true
+      }
+   ],
+   "otherEntitiesToHandle": [
+      {
+         "tagName": "rolename",
+         "label": "Role Name",
+         "available": false,
+         "color": "#cfc"
+      },
+      {
+         "tagName": "measure",
+         "label": "Measure",
+         "available": false,
+         "color": "#ffecb3"
+      }
+   ],
 
+   "toolHeatMap": true,
+   "preferredWitness": "",
+   "skipWitnesses": "",
 
-    "toolHeatMap": true,
-    "preferredWitness": "",
-    "skipWitnesses": "",
+   "listDef": "<listWit>, <listChange>",
+   "versionDef": "<witness>, <change>",
+   "fragmentMilestone": "<witStart>, <witEnd>",
+   "lacunaMilestone": "<lacunaStart>, <lacunaEnd>",
+   "possibleVariantFilters": "",
+   "possibleLemmaFilters": "resp",
+   "notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
+   "maxWitsLoadTogether": 5,
 
-	"listDef": "<listWit>, <listChange>",
-	"versionDef": "<witness>, <change>",
-	"fragmentMilestone": "<witStart>, <witEnd>",
-	"lacunaMilestone": "<lacunaStart>, <lacunaEnd>",
-	"possibleVariantFilters": "",
-	"possibleLemmaFilters": "resp",
-	"notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
+   "showDocumentSelector": false,
+   "variantColors": {
+      "type": {
+         "lessicographic": "rgb(108, 145, 207)",
+         "orthographic": "rgb(91, 204, 203)",
+         "punctuation": "rgb(248, 253, 136)",
+         "spelling": "rgb(255, 117, 118)",
+         "grammatical": "rgb(229, 103, 175)",
+         "lexical": "rgb(171, 104, 206)",
+         "repetition": "rgb(132, 113, 209)",
+         "transposition": "rgb(255, 192, 126)",
+         "other": "rgb(100, 230, 121)"
+      },
+      "cause": {
+         "unknown": "rgb(125, 125, 125)"
+      }
+   },
+   "variantColorLight": "",
+   "variantColorDark": "",
+   "heatmapColor": "",
+   "versions": ["rec2", "rec1", "rec3"],
+   "witnessesGroups": [
+      {
+         "groupName": "Group 1",
+         "witnesses": ["V", "P", "N", "M", "G", "C", "R"]
+      },
+      {
+         "groupName": "Group 2",
+         "witnesses": ["F", "D", "O", "W", "M5mg", "B", "U"]
+      }
+   ],
 
-	"maxWitsLoadTogether": 5,
+   "quoteDef": "<quote>",
+   "analogueDef": "<seg>,<ref[type=parallelPassage]>",
 
-    "showDocumentSelector": true,
+   "showReadingExponent": true,
 
-	"variantColors": {
-		"type": {
-			"lessicographic": "rgb(108, 145, 207)",
-			"orthographic": "rgb(91, 204, 203)",
-			"punctuation": "rgb(248, 253, 136)",
-			"spelling": "rgb(255, 117, 118)",
-			"grammatical": "rgb(229, 103, 175)",
-			"lexical": "rgb(171, 104, 206)",
-			"repetition": "rgb(132, 113, 209)",
-			"transposition": "rgb(255, 192, 126)",
-			"other": "rgb(100, 230, 121)"
-		},
-		"cause": {
-			"unknown": "rgb(125, 125, 125)"
-		}
-	},
+   "showInlineCriticalApparatus": false,
+   "showInlineSources": false,
+   "showInlineAnalogues": false,
 
-	"variantColorLight": "",
-	"variantColorDark": "",
-	"heatmapColor": "",
-
-    "versions" : [],
-    "witnessesGroups": [ ],
-
-    "quoteDef"              : "<quote>",
-    "analogueDef"           : "<seg>,<ref[type=parallelPassage]>",
-
-    "showReadingExponent": true,
-
-    "showInlineCriticalApparatus": false,
-    "showInlineSources": false,
-    "showInlineAnalogues": false,
-
-    "defaultBibliographicStyle": "Chicago",
-	"allowedBibliographicStyles": {
-		"Chicago": {
-			"label": "Chicago",
-			"enabled": true
-		},
-		"APA": {
-			"label": "APA",
-			"enabled": false
-		},
-		"MLA": {
-			"label": "MLA",
-			"enabled": true
-		}
-	},
+   "defaultBibliographicStyle": "Chicago",
+   "allowedBibliographicStyles": {
+      "Chicago": {
+         "label": "Chicago",
+         "enabled": true
+      },
+      "APA": {
+         "label": "APA",
+         "enabled": false
+      },
+      "MLA": {
+         "label": "MLA",
+         "enabled": true
+      }
+   },
 
    "virtualKeyboardKeys": [],
 
-    "languages": ["en", "it"]
+   "imageViewerOptions": {
+      "prefixUrl": "images/osd-images/",
+      "showRotationControl": true,
+      "showNavigator": true,
+      "visibilityRatio": 1,
+      "defaultZoomLevel": 0.7,
+      "panHorizontal": true,
+      "constrainDuringPan": true,
+      "minZoomLevel": 0.7,
+      "maxZoomLevel": 3.0,
+      "wrapVertical": false
+   },
+   "imageNormalizationCoefficient": 1265,
+
+   "languages": ["en", "it"]
 }

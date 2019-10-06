@@ -18,15 +18,15 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, evtCriticalElementsParser, xmlParser, config) {
+.service('evtCriticalParser', function($q, parsedData, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtAnaloguesParser, evtCriticalElementsParser, xmlParser, config, evtDepaParser) {
 	var parser = {};
 
 	var apparatusEntryDef = '<app>',
 		lemmaDef = '<lem>',
 		readingDef = lemmaDef + ', <rdg>',
 		readingGroupDef = '<rdgGrp>',
-		quoteDef = config.quoteDef || '<quote>',
-		analogueDef = config.analogueDef || '<seg>,<ref[type=parallelPassage]>',
+		quoteDef = config.quoteDef,
+		analogueDef = config.analogueDef,
 		analogueRegExpr = evtParser.createRegExpr(analogueDef);
 	var skipFromBeingParsed = '<evt-reading>,<pb>,' + apparatusEntryDef + ',' + readingDef + ',' + readingGroupDef + ',' + quoteDef + ',' + analogueDef + ',<evt-quote>,<evt-analogue>,<evt-version-reading>',
 		skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
@@ -62,134 +62,15 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      * @author CM
      */
-	parser.parseWitnessText = function(doc, docId, wit) {
+	parser.parseWitnessText = function(origDoc, docId, wit) {
 		var deferred = $q.defer();
 		var witnessText;
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0],
 				witObj = parsedData.getWitness(wit);
 
-			var apps = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')),
-				j = apps.length - 1;
-			while (j < apps.length && j >= 0) {
-				var appNode = apps[j];
-				if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
-					var id;
-					if (appNode.getAttribute('xml:id')) {
-						id = 'app_' + appNode.getAttribute('xml:id');
-					} else {
-						id = evtParser.xpath(appNode).substr(1);
-					}
-					var spanElement, entry;
-
-					if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-						entry = parsedData.getVersionEntry(id);
-					} else {
-						entry = parsedData.getCriticalEntryById(id);
-					}
-					// If I've already parsed all critical entries,
-					// or I've already parsed the current entry...
-					// ...I can simply access the model to get the right output
-					// ... otherwise I parse the DOM and save the entry in the model
-					if (!config.loadCriticalEntriesImmediately && entry === undefined) {
-						// Check if the app is of type recensio
-						if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-							evtCriticalElementsParser.handleVersionEntry(appNode);
-							entry = parsedData.getVersionEntry(id);
-						} else {
-							evtCriticalElementsParser.handleAppEntry(appNode);
-							var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-							if (subApps.length > 0) {
-								for (var z = 0; z < subApps.length; z++) {
-									evtCriticalElementsParser.handleAppEntry(subApps[z]);
-								}
-							}
-							entry = parsedData.getCriticalEntryById(id);
-						}
-					}
-					if (entry !== undefined) {
-						// If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
-						if (entry.type === 'recensioApp') {
-							spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
-							// Otherwise it is transformed in a evt-reading directive 
-						} else {
-							spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
-						}
-					} else {
-						spanElement = document.createElement('span');
-						spanElement.className = 'encodingError';
-					}
-					if (spanElement !== null) {
-						appNode.parentNode.replaceChild(spanElement, appNode);
-					}
-				}
-				j--;
-			}
-			//docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g,'><');
-
-			//docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''))
-			var quotes = [];
-			if (quoteDef.lastIndexOf('<') !== 0) {
-				var tags = quoteDef.split(',');
-				for (var i = 0; i < tags.length; i++) {
-					var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
-					for (var x = 0; x < q.length; x++) {
-						quotes.push(q[x]);
-					}
-				}
-			} else {
-				var quo = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''));
-				for (var f = 0; f < quo.length; f++) {
-					quotes.push(quo[f]);
-				}
-			}
-			var k = quotes.length - 1,
-                c = 0;
-			while (k < quotes.length && k >= 0) {
-				var quoteElem = quotes[k];
-				var quoteId;
-				if (quoteElem.getAttribute('xml:id')) {
-					quoteId = quoteElem.getAttribute('xml:id');
-				} else {
-					quoteId = evtParser.xpath(quoteElem).substr(1);
-				}
-				var quote = parsedData.getQuote(quoteId);
-				if (quote !== undefined) {
-					var quoteText = evtCriticalElementsParser.getQuoteText(quote, wit, doc);
-					quoteElem.parentNode.replaceChild(quoteText, quoteElem);
-				}
-				k--;
-			}
-
-			//ANALOGUES
-			var analogues = [],
-				//TO DO: trovare alternativa meno dispendiosa di memoria
-				allEl = docDOM.getElementsByTagName('*');
-			for (var s = 0; s < allEl.length; s++) {
-				var inner = allEl[s].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-				var el = allEl[s].outerHTML.replace(inner, '');
-				if (analogueRegExpr.test(el)) {
-					analogues.push(allEl[s]);
-				}
-			}
-
-			var h = analogues.length - 1;
-			while (h < analogues.length && h >= 0) {
-				var analogueElem = analogues[h];
-				var analogueId;
-				if (analogueElem.getAttribute('xml:id')) {
-					analogueId = analogueElem.getAttribute('xml:id');
-				} else {
-					analogueId = evtParser.xpath(analogueElem).substr(1);
-				}
-				var analogue = parsedData.getAnalogue(analogueId);
-				if (analogue !== undefined) {
-					var analogueText = evtCriticalElementsParser.getAnalogueText(analogue, wit, doc);
-					analogueElem.parentNode.replaceChild(analogueText, analogueElem);
-				}
-				h--;
-			}
+			parser.parseCriticalElementsInText(docDOM, doc, wit, null);
 
 			docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
@@ -260,146 +141,21 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      * @author CM
      */
-    parser.parseCriticalText = function(doc, docId, scopeVersion) {
-		// console.log('parseCriticalText');
+  parser.parseCriticalText = function(origDoc, docId, scopeVersion) {
 		var deferred = $q.defer();
 		var criticalText;
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);		
 			var docDOM = doc.getElementsByTagName('body')[0];
+			// console.log(docDOM.parentNode, docDOM.parentNode.parentNode)
 			// lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
 			// if (lemmas.length > 0 || 
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
 			//      parsedData.getWitness(config.preferredWitness) !== '') ) {
 
-			//READINGS
-			var apps = docDOM.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
-				j = apps.length - 1,
-				count = 0;
+			parser.parseCriticalElementsInText(docDOM, doc, '', scopeVersion);
 
-			while (j < apps.length && j >= 0) {
-				var appNode = apps[j];
-				if (!evtParser.isNestedInElem(appNode, apparatusEntryDef.replace(/[<>]/g, ''))) {
-					// var id: appNode.getAttribute('xml:id') || evtParser.xpath(appNode).substr(1),
-					var id;
-					if (appNode.getAttribute('xml:id')) {
-						id = 'app_' + appNode.getAttribute('xml:id');
-					} else {
-						id = evtParser.xpath(appNode).substr(1);
-					}
-					var spanElement, entry;
-
-					if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-						entry = parsedData.getVersionEntry(id);
-					} else {
-						entry = parsedData.getCriticalEntryById(id);
-					}
-
-					// If I've already parsed all critical entries,
-					// or I've already parsed the current entry...
-					// ...I can simply access the model to get the right output
-					// ... otherwise I parse the DOM and save the entry in the model
-					if (!config.loadCriticalEntriesImmediately || entry === undefined) {
-						if (appNode.hasAttribute('type') && (appNode.getAttribute('type') === 'recensio')) {
-							evtCriticalElementsParser.handleVersionEntry(appNode);
-							entry = parsedData.getVersionEntry(id);
-						} else {
-							evtCriticalElementsParser.handleAppEntry(appNode);
-							var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
-							if (subApps.length > 0) {
-								for (var z = 0; z < subApps.length; z++) {
-									evtCriticalElementsParser.handleAppEntry(subApps[z]);
-								}
-							}
-							entry = parsedData.getCriticalEntryById(id);
-						}
-					}
-					if (entry !== undefined) {
-						if (entry.type === 'recensioApp') {
-							spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, '', scopeVersion);
-						} else {
-							spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, '');
-						}
-					} else {
-						spanElement = document.createElement('span');
-						spanElement.className = 'errorMsg';
-						spanElement.textContent = 'ERROR';//TODO: Add translation
-					}
-					if (spanElement !== null) {
-						appNode.parentNode.replaceChild(spanElement, appNode);
-					}
-					count++;
-				}
-				j--;
-			}
-
-			//QUOTES
-			var quotes = [];
-			if (quoteDef.lastIndexOf('<') !== 0) {
-				var tags = quoteDef.split(',');
-				for (var i = 0; i < tags.length; i++) {
-					var q = docDOM.getElementsByTagName(tags[i].replace(/[<>]/g, ''));
-					for (var x = 0; x < q.length; x++) {
-						quotes.push(q[x]);
-					}
-				}
-			} else {
-				var quo = docDOM.getElementsByTagName(quoteDef.replace(/[<>]/g, ''));
-				for (var f = 0; f < quo.length; f++) {
-					quotes.push(quo[f]);
-				}
-			}
-			var k = quotes.length - 1,
-				c = 0;
-
-			while (k < quotes.length && k >= 0) {
-				var quoteElem = quotes[k];
-				var quoteId;
-				if (quoteElem.getAttribute('xml:id')) {
-					quoteId = quoteElem.getAttribute('xml:id');
-				} else {
-					quoteId = evtParser.xpath(quoteElem).substr(1);
-				}
-				var quote = parsedData.getQuote(quoteId);
-				if (quote !== undefined) {
-					var quoteText = evtCriticalElementsParser.getQuoteText(quote, '', doc);
-					quoteElem.parentNode.replaceChild(quoteText, quoteElem);
-				}
-				k--;
-			}
-
-			//ANALOGUES
-			var analogues = [],
-				//TO DO: trovare alternativa meno dispendiosa di memoria
-				allEl = docDOM.getElementsByTagName('*');
-			for (var w = 0; w < allEl.length; w++) {
-				var inner = allEl[w].innerHTML.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
-				var el = allEl[w].outerHTML.replace(inner, '');
-				if (analogueRegExpr.test(el)) {
-					analogues.push(allEl[w]);
-				}
-			}
-
-			var h = analogues.length - 1;
-			while (h < quotes.length && h >= 0) {
-				var analogueElem = analogues[h];
-				var analogueId;
-				if (analogueElem.getAttribute('xml:id')) {
-					analogueId = analogueElem.getAttribute('xml:id');
-				} else {
-					analogueId = evtParser.xpath(analogueElem).substr(1);
-				}
-				var analogue = parsedData.getAnalogue(analogueId);
-
-				if (analogue !== undefined) {
-					var analogueText = evtCriticalElementsParser.getAnalogueText(analogue, '', doc);
-					analogueElem.parentNode.replaceChild(analogueText, analogueElem);
-				}
-				h--;
-			}
-
-
-			//remove <pb>
+			// remove <pb>
 			var pbs = docDOM.getElementsByTagName('pb');
 			k = 0;
 			while (k < pbs.length) {
@@ -437,6 +193,183 @@ angular.module('evtviewer.dataHandler')
 		return deferred;
 	};
 
+	parser.getDocRoot = function(doc) {
+		if (doc.tagName.toLowerCase() === 'tei') {
+			return doc;
+		} else {
+			return parser.getDocRoot(doc.parentNode);
+		}
+	}
+
+	parser.getDocToParse = function(origDoc) {
+		var root = parser.getDocRoot(origDoc),
+				copyRoot = root.cloneNode(true),
+				doc;
+		angular.forEach(angular.element(copyRoot).find(evtParser.parserProperties.defDocElement), function(elem) {
+				if (elem.outerHTML.localeCompare(origDoc.outerHTML) === 0) {
+					doc = elem;
+				}
+		});
+		return doc ? doc : origDoc;
+	}
+
+	parser.parseCriticalElementsInText = function(dom, doc, wit, scopeVersion) {
+		// apparatus entries in the text body
+		var apps = dom.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, '')) || [],
+				appsIndex = apps.length - 1;
+		while (appsIndex < apps.length && appsIndex >= 0) {
+			if (!evtParser.isNestedInElem(apps[appsIndex], apparatusEntryDef.replace(/[<>]/g, ''))) {
+				parser.appendAppNode(apps[appsIndex], doc, wit, scopeVersion);
+			}
+			appsIndex--;
+		}
+		if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point'
+					&& parsedData.getEncodingDetail('variantEncodingLocation') === 'external') {
+			var depaAppsStartIds = Object.values(parsedData.getCriticalEntries()._indexes.depa.start),
+					anchorsIds = [];
+			depaAppsStartIds.map(function(id) {
+				if (anchorsIds.indexOf(id) < 0) {
+					anchorsIds.push(id)
+				}
+			});
+			var index = anchorsIds.length - 1;
+			while (index >= 0) {
+				var el = dom.querySelector('[*|id=' + anchorsIds[index] + ']');
+				if (el) {
+					evtDepaParser.setAppInText(el, wit, dom);
+				}
+				index--;
+			}
+		}
+		// quotes
+		if (config.quoteDef) {
+			var quotes = [];
+			// Retrieves all quote definitions
+			var quoteDefs = quoteDef.split(',');
+			angular.forEach(quoteDefs, function(def) {
+				var q = dom.getElementsByTagName(def.replace(/[<>]/g, '')) || [];
+				quotes = quotes.concat(q);
+			});
+			var quotesIndex = quotes.length - 1;
+			while (quotesIndex < quotes.length && quotesIndex >= 0) {
+				parser.appendQuoteNode(quotes[quotesIndex], doc, wit);
+				quotesIndex--;
+			}
+		}
+		// analogues
+		if (config.analogueDef) {
+			var analogues = [],
+					defs = analogueDef.split(',') || [];
+			angular.forEach(defs, function(def) {
+				var an = dom.querySelectorAll(def.replace('<', '').replace('>', ''));
+				angular.forEach(an, function(analogue) { analogues.push(analogue); });
+			});
+			var analoguesIndex = analogues.length - 1;
+			while (analoguesIndex < analogues.length && analoguesIndex >= 0) {
+				parser.appendAnalogueNode(analogues[analoguesIndex], doc, wit);
+				analoguesIndex--;
+			}
+		}
+	};
+
+	parser.appendAnalogueNode = function(analogueNode, doc, wit) {
+		var analogueId = parser.getParsedNodeId(analogueNode),
+				entry = parsedData.getAnalogue(analogueId),
+				spanElement;
+		if (entry) {
+			spanElement = evtCriticalElementsParser.getAnalogueText(entry, wit, doc);
+		}
+		if (spanElement) {
+			analogueNode.parentNode.replaceChild(spanElement, analogueNode);
+		}
+	};
+
+	parser.appendQuoteNode = function(quoteNode, doc, wit) {
+		var quoteId = parser.getParsedNodeId(quoteNode),
+				entry = parsedData.getQuote(quoteId),
+				spanElement;
+		if (entry) {
+			spanElement = evtCriticalElementsParser.getQuoteText(entry, wit, doc);
+		}
+		if (spanElement) {
+			quoteNode.parentNode.replaceChild(spanElement, quoteNode);
+		}
+	};
+
+	parser.appendAppNode = function(appNode, doc, wit, scopeVersion) {
+		// TODO-POLO: gestire app depa nel body
+		var appId = parser.getParsedNodeId(appNode),
+				entry = appNode.getAttribute('type') === 'recensio' ?
+					parsedData.getVersionEntry(appId) : parsedData.getCriticalEntryById(appId),
+				spanElement;
+		// Parse critical entry if it wasn't parsed before
+		if (!config.loadCriticalEntriesImmediately || entry === undefined) {
+			if (appNode.getAttribute('type') === 'recensio') {
+				evtCriticalElementsParser.handleVersionEntry(appNode);
+				entry = parsedData.getVersionEntry(appId);
+			} else {
+				evtCriticalElementsParser.handleAppEntry(appNode);
+				var subApps = appNode.getElementsByTagName(apparatusEntryDef.replace(/[<>]/g, ''));
+				angular.forEach(Object.values(subApps), function(sub) {
+					evtCriticalElementsParser.handleAppEntry(sub);
+				});
+				entry = parsedData.getCriticalEntryById(appId);
+			}
+		}
+		// Get text element to append in the dom
+		if (entry) {
+			switch(wit) {
+				case '': {
+					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+						evtDepaParser.setInternalAppInText(appNode, entry, wit, doc);
+					} else if (entry.type === 'recensioApp') {
+						spanElement = evtCriticalElementsParser.getVersionEntryLemma(entry, wit, scopeVersion);
+					} else {
+						spanElement = evtCriticalElementsParser.getEntryLemmaText(entry, wit);
+					}
+				} break;
+				default: {
+					// If the app is of type "recensio" it is transformed into the evt-recensio-reading directive
+					if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+						evtDepaParser.setInternalAppInText(appNode, entry, wit, doc);
+					} else if (entry.type === 'recensioApp') {
+						spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
+						// Otherwise it is transformed in a evt-reading directive 
+					} else {
+						spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
+					}
+				}
+			}
+		} else {
+			spanElement = parser.createErrorElement(null, 'encodingError');
+		}
+		// Replace app node with new text element
+		if (spanElement) {
+			appNode.parentNode.replaceChild(spanElement, appNode);
+		} else if (parsedData.getEncodingDetail('variantEncodingMethod') === 'double-end-point') {
+			appNode.parentNode.removeChild(appNode);
+		}
+	};
+
+	parser.createErrorElement = function(errClass, errMsg) {
+		var errorElement = document.createElement('span');
+		errorElement.className = errClass || 'errorMsg';
+		// TODO: add translation
+		errorElement.textContent = errMsg || 'ERROR';
+		return errorElement;
+	};
+
+	parser.getParsedNodeId = function(node) {
+		var nodeId;
+		if (node.attributes && node.getAttribute('xml:id')) {
+			nodeId = node.getAttribute('xml:id');
+			nodeId = node.tagName === 'app'? 'app_' + nodeId : nodeId;
+		} else {
+			nodeId = evtParser.xpath(node).substr(1);
+		}
+		return nodeId;
+	}
+
 	// /////////// //
 	// SOURCE TEXT //
 	// /////////// //
@@ -455,13 +388,13 @@ angular.module('evtviewer.dataHandler')
      *
      * @author CM
      */
-	parser.parseSourceText = function(doc, sourceId) {
+	parser.parseSourceText = function(origDoc, sourceId) {
 		var deferred = $q.defer();
 		var sourceText,
 			currentDoc = angular.element(doc);
 
-		if (doc !== undefined) {
-			doc = doc.cloneNode(true);
+		if (origDoc !== undefined) {
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0];
 
 			var segs = docDOM.getElementsByTagName('seg'),

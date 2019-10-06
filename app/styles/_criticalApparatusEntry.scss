@@ -1,10 +1,10 @@
-$critical-apparatus-entry-background-color : $base-color-light;
-$critical-apparatus-entry-background-color-darker : rgb(225, 225, 225);
+$critical-apparatus-entry-background-color : transparent;
+$critical-apparatus-entry-background-color-darker : #f5f8f8;
 $critical-apparatus-entry-border-color : rgb(125, 125, 125);
 
-$critical-apparatus-entry-selected-background-color: rgb(195, 207, 213);
-$critical-apparatus-entry-selected-content-color: rgb(180, 195, 203);
-$critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
+$critical-apparatus-entry-selected-background-color:$base-color-light;
+$critical-apparatus-entry-selected-content-color: #f5f8f8;
+$critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
 
 .critical-apparatus-entry {
     margin:0;
@@ -13,14 +13,15 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     z-index:0;
     background: $critical-apparatus-entry-background-color;
     color: $base-color-dark;
-    font-size: 90%;
+    font-size: 95%;
     border-left: 1px solid $critical-apparatus-entry-border-color;
     border-right: 1px solid $critical-apparatus-entry-border-color;
-    
+
     cursor: text !important;
 
     span:not(.app_lemma), span:not(.app_lemma_content) {
         background: transparent;
+        display: inline;
         word-wrap:break-word;
     }
 
@@ -40,9 +41,9 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
     /*Styles added for the highlighting of the selected box within the appratuses panel*/
     /*@author --> CM*/
     &.over {
-        -webkit-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
-        -moz-box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
-        box-shadow: 4px 4px 5px 0px rgba(125,125,125,1);
+        -webkit-box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
+        -moz-box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
+        box-shadow: 0 10px 10px -10px rgba(125,125,125,0.8);
     }
 
     &.selected {
@@ -69,7 +70,8 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             .buttonSwitch {
                 box-shadow: none;
                 border: 1px solid $critical-apparatus-entry-background-color;
-                top: 5px;
+                top: 3px;
+                display: inline-block;
             }
             &.active, &:hover {
                 .buttonSwitch {
@@ -86,6 +88,9 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         // width:90%;
         font-size:105%;
         border-top: 1px solid $critical-apparatus-entry-border-color;
+        &_list {
+            display: inline;
+        }
         ul {
             display: inline;
             margin: 0;
@@ -100,7 +105,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             }
         }
         ul.app_reading_list {
-                display: block;
+                // display: block;
                 list-style-type: initial !important;
                 position: relative;
                 left: 1em;
@@ -131,8 +136,12 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
         .sub_app .app_lemma_content::after {
             content: "]";
         }
-        .sub_app{
-            margin: 0 5px;
+        .sub_app {
+            margin-left: 30px;
+            margin-top: 5px;
+            &.firstSubApp {
+                margin-top: 15px !important;
+            }
         }
     }
 
@@ -153,7 +162,7 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             span {
                 padding: 5px;
                 display: inline-block;
-                font-size: 90%;
+                font-size: 95%;
                 cursor: pointer;
                 border-left: 1px solid $critical-apparatus-entry-background-color-darker;
                 &:first-child {
@@ -180,7 +189,10 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
             &:not(.closed){
                 padding: 10px 15px;
             }
-            max-height: 150px;
+            // max-height: 150px;
+            &:not(.fullHeight) {
+                max-height: 150px;
+            }
             overflow-x: hidden;
             overflow-y: auto;
             background-color: $critical-apparatus-entry-background-color-darker;
@@ -352,19 +364,13 @@ $critical-apparatus-entry-selected-border-color: rgb(63, 82, 90);
 // Style for exponent
 // @author --> CM
 .apparatus_exponent{
-            margin: 0;
-            position: relative;
-            bottom: 0.3em;
-            border: 1px solid $box-background-color;
-            background-color: $box-background-color !important;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            word-spacing: -0.25em;
-            padding: 0.05em;
-            font-size: 0.7em;
-            color: $base-color-dark;
-            text-align: center;
-            vertical-align: center;
-            width: 20px;
-        }
+    margin: 0;
+    position: relative;
+    bottom: 0.3em;
+    word-spacing: -0.25em;
+    padding: 0.05em;
+    font-size: 0.8em;
+    color: $base-color-dark;
+    text-align: center;
+    vertical-align: center;
+}
