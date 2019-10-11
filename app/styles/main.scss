@@ -1,9 +1,3 @@
-// $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
-// // bower:scss
-// @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
-// endbower
-
-@import "susy/sass/_susy.scss";
 @import "variables.scss";
 @import "functions.scss";
 @import "fonts.scss";
@@ -39,30 +33,33 @@ body {
     width: 100%;
     min-width: 800px;
 
-    > header,
-    > footer,
-    > section {
+    >header,
+    >footer,
+    >section {
         @include span(20 of 20);
     }
 
-    > header,
-    > footer {
+    >header,
+    >footer {
         height: 54px;
         padding: 10px;
 
         @include colors($base-color-light, $base-color-dark);
     }
 
-    > header {
+    >header {
         .logo {
             height: 34px;
             float: left;
             margin-right: 1rem;
         }
+
         .webSiteLink {
             color: #f5f5f5;
             font-size: 1.2rem;
             margin-left: 0.4rem;
+            opacity: .7;
+
             opacity: 0.7;
             &:hover {
                 opacity: 1;
@@ -92,7 +89,7 @@ div#global-container-ext.navbar-opened #global-container {
     @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
 }
 
-section > div {
+section>div {
     height: 100%;
     display: block;
     vertical-align: middle;
@@ -105,12 +102,9 @@ section > div {
 #main-container {
     @include main-frame;
     line-height: 22px;
-
-    //@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
-    // @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
 }
 
-#main-container > div {
+#main-container>div {
     white-space: nowrap;
 }
 
@@ -150,7 +144,6 @@ section > div {
 @import "tdhop.scss";
 @import "3DHpanels.scss";
 
-// Temporary
 .secondary-container {
     position: absolute;
 }
@@ -460,7 +453,7 @@ pre {
 
     @include set(box-shadow, 0px 0px 4px 0px rgba(0, 0, 0, 0.6));
 
-    > span {
+    >span {
         display: block;
         padding: 10px;
         border-bottom: 1px solid #f0f0f0;
@@ -500,7 +493,7 @@ pre {
         color: #4b4b4b;
 
         li {
-            > span {
+            >span {
                 color: #444444;
                 font-size: 1.1rem;
                 height: 40px;
@@ -527,6 +520,7 @@ pre {
                 color: #ccc;
                 cursor: default;
             }
+
             a {
                 color: #444444;
                 text-decoration: none;
@@ -565,6 +559,7 @@ pre {
         font-variant: small-caps;
         text-align: center;
     }
+
     &-sectionSubHeader {
         display: block;
         border-bottom: 1px dotted #666;
@@ -582,17 +577,21 @@ pre {
         color: #666;
         font-size: 90%;
     }
+
     &-blockLabel {
         display: block;
         margin-bottom: 2px;
     }
+
     &-inlineLabel {
         display: inline;
-        + .p {
+
+        +.p {
             display: inline;
         }
     }
 }
+
 .p {
     .projectInfo-inlineLabel {
         display: none;
@@ -607,7 +606,7 @@ pre {
 .noPadding {
     padding: 0 !important;
 
-    > * {
+    >* {
         padding: 0 !important;
     }
 }
@@ -683,6 +682,7 @@ pre {
     padding: 10px 0;
     border-top: 1px solid;
 }
+
 /* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
 .evt_note {
     color: #fff;
@@ -733,14 +733,17 @@ evt-popover[data-n=""] .evt_note span.generic {
     padding: 9px 3px;
     margin: 3px;
     cursor: pointer;
+
     img {
         height: 150px;
         width: 100px;
         border: 2px solid black;
     }
+
     &.active img {
         border-color: $base-color-active-background;
     }
+
     figcaption {
         color: white;
         position: relative;
@@ -750,11 +753,14 @@ evt-popover[data-n=""] .evt_note span.generic {
         width: 100px;
         text-align: center;
     }
+
     &:hover figcaption {
         background: rgba(0, 0, 0, 0.7) !important;
     }
+
     &.active {
         cursor: default;
+
         figcaption {
             background: rgba($base-color-active-background, 0.7) !important;
             color: #000;

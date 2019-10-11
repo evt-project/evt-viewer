@@ -1,30 +1,14 @@
-/* *************************** */
-/* READING                     */
-/* *************************** */
 $reading-background-default: rgb(208, 220, 255);
 $reading-background-hover: rgb(101, 138, 255);
 $reading-background-selected: rgb(208, 220, 255);
 
-evt-reading + evt-reading:not(.autoLemma) .reading {
-    &:not(.hidden), &:not(.invisible) {
+evt-reading+evt-reading:not(.autoLemma) .reading {
+
+    &:not(.hidden),
+    &:not(.invisible) {
         margin-left: 2px;
     }
 }
-
-// .filterNotActive {
-//     .autoLemma {
-//         .reading:not(.blurred) {
-//             .reading__text, .reading__text .empty:not(.notEmpty) {
-//                 background: url("../images/autoLemma.png") !important;
-//                 opacity: .7;
-
-//                 &:hover {
-//                     opacity: 1;
-//                 }
-//             }
-//         }
-//     }
-// }
 
 .reading {
     .reading__text {
@@ -32,11 +16,13 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
             &:after {
                 content: " ";
             }
+
             &:last-of-type:after {
                 content: "";
             }
         }
     }
+
     &:not(.hidden) {
         padding: 0;
         cursor: pointer;
@@ -47,11 +33,14 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
 
         &.over,
         &.over .reading {
-            .reading__text, .reading .reading__text {
+
+            .reading__text,
+            .reading .reading__text {
                 background: $reading-background-hover;
 
             }
         }
+
         .empty {
             padding: 0 5px;
         }
@@ -65,7 +54,7 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
         }
 
         &.expansed:not(.invisible) {
-            > .reading__text {
+            >.reading__text {
                 // background: $reading-background-selected;
                 border-top: 1px solid rgb(125, 125, 125);
 
@@ -83,7 +72,8 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
                 margin-bottom: -1px;
             }
 
-            &.blurred, &.blurred * {
+            &.blurred,
+            &.blurred * {
                 color: transparent !important;
                 text-shadow: 0 0 5px #000 !important;
                 background: transparent !important;
@@ -96,7 +86,7 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
             }
         }
 
-        .reading_exponent{
+        .reading_exponent {
             display: inline-block;
             position: relative;
             left: -4px;
@@ -108,20 +98,20 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
             border-radius: 3px;
             font-size: 0.8em;
             font-weight: bold;
-            word-spacing:-0.25em;
+            word-spacing: -0.25em;
             vertical-align: super;
-            text-align:center;
+            text-align: center;
         }
     }
 
     &.invisible {
-        > .reading__text {
+        >.reading__text {
             background: transparent !important;
             border: none;
             cursor: default;
         }
 
-        > .reading__apparatus {
+        >.reading__apparatus {
             display: none !important;
         }
     }
@@ -135,12 +125,12 @@ evt-reading + evt-reading:not(.autoLemma) .reading {
                         border: 1px solid #999;
                     }
 
-                    > .reading__text:hover {
+                    >.reading__text:hover {
                         border-color: #000;
                     }
 
                     &.expansed {
-                        > .reading__text {
+                        >.reading__text {
                             border-bottom: 5px solid $critical-apparatus-entry-background-color;
                         }
                     }

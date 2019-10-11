@@ -1,22 +1,86 @@
-/* ALL MOBILE DEVICES ====================================== */ 
-
 @import "../../bower_components/susy/sass/_susy.scss";
 
-/* Normalize ---------------------------------------------- */
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
     margin: 0;
     padding: 0;
     min-height: 0;
@@ -25,47 +89,46 @@ time, mark, audio, video {
     display: block;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    font-size: 100%; 
+    font-size: 100%;
 }
 
 a {
-    cursor:pointer;
+    cursor: pointer;
     text-decoration: none;
 }
 
-p, h1, h2, h3 {
-    margin:0;
-    padding:0;
+p,
+h1,
+h2,
+h3 {
+    margin: 0;
+    padding: 0;
     font-style: normal;
     font-weight: normal;
 }
 
-/* END Normalize ------------------------------------------- */
+@font-face {
+    font-family: 'Junicode';
+    src: url('../fonts/Junicode.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
-/* Fonts --------------------------------------------------- */
+@font-face {
+    font-family: 'Junicode-bold';
+    src: url('../fonts/Junicode-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
 
-    @font-face {
-        font-family: 'Junicode';
-        src: url('../fonts/Junicode.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Junicode-bold';
-        src: url('../fonts/Junicode-Bold.woff') format('woff');
-        font-weight: bold;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'Junicode-italic';
-        src: url('../fonts/Junicode-Italic.woff') format('woff');
-        font-weight: normal;
-        font-style: italic;
-    }
+@font-face {
+    font-family: 'Junicode-italic';
+    src: url('../fonts/Junicode-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
 
-/* END Fonts --------------------------------------------- */
-
-body { 
+body {
     min-height: 0;
     font-family: Junicode, Times, serif;
     background: #000;
@@ -74,7 +137,9 @@ body {
 
 span {
     display: inline-block;
-};
+}
+
+;
 
 @import "mobileInfo.scss";
 @import "mobileMenu.scss";

@@ -1,8 +1,25 @@
-/* PAGE DATA ====================================== */ 
-
-    .facs-hi-cap, .facs-sic, .facs-orig, .facs-abbr,.facs-hi-double, .facs-damage, .facs-del, .facs-add, .facs-subst, .facs-am,
-    .dipl-hi-init3_1, .dipl-hi-cap, .dipl-sic, .dipl-reg, .dipl-expan, .dipl-ex, .dipl-hi-double, .dipl-orig,
-    .dipl-damage, .dipl-del, .dipl-add, .dipl-subst {
+    .facs-hi-cap,
+    .facs-sic,
+    .facs-orig,
+    .facs-abbr,
+    .facs-hi-double,
+    .facs-damage,
+    .facs-del,
+    .facs-add,
+    .facs-subst,
+    .facs-am,
+    .dipl-hi-init3_1,
+    .dipl-hi-cap,
+    .dipl-sic,
+    .dipl-reg,
+    .dipl-expan,
+    .dipl-ex,
+    .dipl-hi-double,
+    .dipl-orig,
+    .dipl-damage,
+    .dipl-del,
+    .dipl-add,
+    .dipl-subst {
         display: inline;
     }
 
@@ -10,17 +27,23 @@
         padding-bottom: 4em;
         width: 100%;
         background: none;
-    } 
+    }
 
-    SPAN.facs-damage, SPAN.facs-del, SPAN.facs-add, SPAN.dipl-damage,SPAN.dipl-del,SPAN.dipl-add{
+    SPAN.facs-damage,
+    SPAN.facs-del,
+    SPAN.facs-add,
+    SPAN.dipl-damage,
+    SPAN.dipl-del,
+    SPAN.dipl-add {
         background: none;
         text-decoration: none;
         list-style: none;
     }
 
-    span.facs-reg, span.dipl-choice_popup span.dipl-orig {
+    span.facs-reg,
+    span.dipl-choice_popup span.dipl-orig {
         padding: 0.5%;
-        line-height:22px;
+        line-height: 22px;
         background-color: #333;
         border: 1px solid #000;
         border-radius: 0;
@@ -28,8 +51,9 @@
         color: #FFF;
     }
 
-    span.facs-reg:before, span.dipl-choice_popup span.dipl-orig:before{
+    span.facs-reg:before,
+    span.dipl-choice_popup span.dipl-orig:before {
         content: none;
     }
 
-/* END PAGE DATA ====================================== */ 
+    /* END PAGE DATA ====================================== */

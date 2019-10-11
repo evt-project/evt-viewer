@@ -1,36 +1,34 @@
-/* Settings ====================================== */ 
-
-@mixin floatSettings ($float){
+@mixin floatSettings ($float) {
     width: 40%;
     height: auto;
-    display:inline-block;  
-    float: $float;      
-    overflow: hidden; 
+    display: inline-block;
+    float: $float;
+    overflow: hidden;
 
     .active .fa {
-        color: #FFF;            
-        text-shadow: none;        
+        color: #FFF;
+        text-shadow: none;
     }
 }
 
-@mixin floatButtonSettings ($float){
+@mixin floatButtonSettings ($float) {
     width: 1.8em;
     height: 1.8em;
     margin-top: 2.4em;
     padding-top: 0.4em;
     float: $float;
     overflow: hidden;
-    display:inline-block;
+    display: inline-block;
     background: #333;
     opacity: 0.9;
     font-size: 1.6em;
-    text-align: center;  
+    text-align: center;
 }
 
-@mixin floatSetOptions ($float){
+@mixin floatSetOptions ($float) {
     width: 70%;
     height: 100%;
-    display:inline-block;
+    display: inline-block;
     float: $float;
     background: #666;
     border-top: 1px solid #333;
@@ -48,11 +46,12 @@
     }
 }
 
-.leftSettings{
+.leftSettings {
     @include floatSettings (left);
 }
+
 .rightSettings {
-    @include floatSettings (right);    
+    @include floatSettings (right);
 }
 
 .contentSettings {
@@ -66,13 +65,13 @@
     }
 }
 
-.leftButtonSettings{
+.leftButtonSettings {
     @include floatButtonSettings (left);
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.rightButtonSettings{
+.rightButtonSettings {
     @include floatButtonSettings (right);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -88,8 +87,9 @@
     border-left: 5px solid #333;
 }
 
-.leftSetOptions .active, .rightSetOptions .active {
-    color:#FFF;
+.leftSetOptions .active,
+.rightSetOptions .active {
+    color: #FFF;
     background: #222;
     box-shadow: none;
 }

@@ -11,33 +11,33 @@ require('../../bower_components/angular-route/angular-route.js');
 require('../../bower_components/angular-sanitize/angular-sanitize.js');
 require('../../bower_components/angular-xml/angular-xml.js');
 require('../../bower_components/angular-touch/angular-touch.js');
-require('../../bower_components/angular-pretty-xml/src/angular-pretty-xml.js');
-require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
+// require('../../bower_components/angular-pretty-xml/src/angular-pretty-xml.js');
+// require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
 require('../../bower_components/angular-translate/angular-translate.js');
 require('../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js');
 require('../../bower_components/angular-loading-bar/build/loading-bar.js');
 require('../../bower_components/ngprogress/build/ngprogress.min.js');
-require('../../bower_components/angularjs-slider/dist/rzslider.js');
-require('../../bower_components/angular-xslt/src/ng-xslt.js');
+// require('../../bower_components/angularjs-slider/dist/rzslider.js');
+// require('../../bower_components/angular-xslt/src/ng-xslt.js');
 require('../../bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.js');
-require('../../bower_components/jquery-ui/jquery-ui.js');
-require('../../bower_components/keyboard/dist/js/jquery.keyboard.js');
+// require('../../bower_components/jquery-ui/jquery-ui.js');
+// require('../../bower_components/keyboard/dist/js/jquery.keyboard.js');
 require('../../bower_components/angular-simple-logger/dist/angular-simple-logger.js');
 require('../../bower_components/leaflet/dist/leaflet-src.js');
 require('../../bower_components/ui-leaflet/dist/ui-leaflet.js');
 require('../../bower_components/oclazyload/dist/ocLazyLoad.js');
 
-require('tmpl/templates.js');
+require('./tmpl/templates.js');
 
-require('core/core.js');
-require('core/GLOBALDEFAULTCONF.constant.js');
-require('core/utils.provider.js');
-require('core/config.provider.js');
-require('core/log.enhance.js');
-require('core/eventDispatcher.service.js');
-require('core/compile.directive.js');
-require('core/filters.js');
-require('core/XPATH.constant.js');
+require('./core/core.js');
+require('./core/GLOBALDEFAULTCONF.constant.js');
+require('./core/utils.provider.js');
+require('./core/config.provider.js');
+require('./core/log.enhance.js');
+require('./core/eventDispatcher.service.js');
+require('./core/compile.directive.js');
+require('./core/filters.js');
+require('./core/XPATH.constant.js');
 
 require('./dataHandler/dataHandler.js');
 require('./dataHandler/baseData.service.js');
@@ -308,53 +308,52 @@ require('./visColl/visColl.directive.js');
  * @requires evtviewer.imageViewer
  */
 //* @requires evtviewer.mobile
-angular
-	.module('evtviewer', [
-		'ngAnimate',
-		'ngCookies',
-		'ngMessages',
-		'ngResource',
-		'ngSanitize',
-		'ngTouch',
-		'templates-main',
-		'ngRoute',
-		'rzModule',
-		'xml',
-		'ngXslt',
-		'prettyXml',
-		'infinite-scroll',
-		'pascalprecht.translate',
-		'oc.lazyLoad',
-		'evtviewer.core',
-		'evtviewer.communication',
-		'evtviewer.translation',
-		'evtviewer.dataHandler',
-		'evtviewer.interface',
-		'evtviewer.box',
-		'evtviewer.select',
-		'evtviewer.buttonSwitch',
-		'evtviewer.popover',
-		'evtviewer.namedEntity',
-		'evtviewer.criticalApparatusEntry',
-		'evtviewer.reading',
-		'evtviewer.dialog',
-		'evtviewer.bibliography',
-		'evtviewer.reference',
-		'evtviewer.list',
-		'evtviewer.quote',
-		'evtviewer.tabsContainer',
-		'evtviewer.sourcesApparatusEntry',
-		'evtviewer.analogue',
-		'evtviewer.analoguesApparatusEntry',
-		'evtviewer.apparatuses',
-		'evtviewer.versionReading',
-		'evtviewer.versionApparatusEntry',
-		'evtviewer.UItools',
-		'evtviewer.navBar',
-		'evtviewer.visColl',
-		'evtviewer.search',
-		'evtviewer.imageViewer',
-		'evtviewer.toc',
-		'ui-leaflet',
-		'evtviewer.tdhop'
-	]);
+angular.module('evtviewer', [
+	'ngAnimate',
+	'ngCookies',
+	'ngMessages',
+	'ngResource',
+	'ngSanitize',
+	'ngTouch',
+	'templates-main',
+	'ngRoute',
+	// 'rzModule',
+	'xml',
+	// 'ngXslt',
+	// 'prettyXml',
+	// 'infinite-scroll',
+	'pascalprecht.translate',
+	'oc.lazyLoad',
+	'evtviewer.core',
+	'evtviewer.communication',
+	'evtviewer.translation',
+	'evtviewer.dataHandler',
+	'evtviewer.interface',
+	'evtviewer.box',
+	'evtviewer.select',
+	'evtviewer.buttonSwitch',
+	'evtviewer.popover',
+	'evtviewer.namedEntity',
+	'evtviewer.criticalApparatusEntry',
+	'evtviewer.reading',
+	'evtviewer.dialog',
+	'evtviewer.bibliography',
+	'evtviewer.reference',
+	'evtviewer.list',
+	'evtviewer.quote',
+	'evtviewer.tabsContainer',
+	'evtviewer.sourcesApparatusEntry',
+	'evtviewer.analogue',
+	'evtviewer.analoguesApparatusEntry',
+	'evtviewer.apparatuses',
+	'evtviewer.versionReading',
+	'evtviewer.versionApparatusEntry',
+	'evtviewer.UItools',
+	'evtviewer.navBar',
+	'evtviewer.visColl',
+	'evtviewer.search',
+	'evtviewer.imageViewer',
+	'evtviewer.toc',
+	'ui-leaflet',
+	'evtviewer.tdhop'
+]);
