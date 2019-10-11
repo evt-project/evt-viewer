@@ -1,4 +1,4 @@
-   angular.module('evtviewer.tdhopService', [])
+   angular.module('evtviewer.tdhop', [])
 
    .service('tdhopViewerModel', "$log", function($log, evtInterface){
        var tdhopModel = this;
