@@ -31,7 +31,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 			scopeWit: '@'
 		},
 		transclude: true,
-		templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.tmpl.html',
+      template: require('./criticalApparatusEntry.witnessRef.directive.tmpl.html'),
 		link: function(scope, element, attrs) {
 			scope.translationData = {
 				witness: scope.witness

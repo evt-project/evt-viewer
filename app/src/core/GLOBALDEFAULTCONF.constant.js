@@ -50,7 +50,7 @@ angular.module('evtviewer.core')
 	},
 	// Default:
 	// <pre> configUrl: '../../config/config.json' </pre>
-	configUrl: '../../config/config.json',
+	configUrl: './app/config/config.json',
    dataUrl          : '',
 
 	logoUrl: '',

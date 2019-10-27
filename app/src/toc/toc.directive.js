@@ -36,7 +36,7 @@ angular.module('evtviewer.toc')
         restrict: 'E',
         scope: {},
         transclude: true,
-        templateUrl: 'src/toc/toc.dir.tmpl.html',
+        template: require('./toc.dir.tmpl.html'),
         controllerAs: 'vm',
         controller: 'TocCtrl',
         link: function(scope, element, attrs) {

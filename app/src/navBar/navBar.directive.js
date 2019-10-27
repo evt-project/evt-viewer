@@ -29,7 +29,7 @@ angular.module('evtviewer.navBar')
           // Insert here scope properties to be passed from HTML attributes
         },
         transclude: true,
-        templateUrl: 'src/navBar/navBar.directive.tmpl.html',
+        template: require('./navBar.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'NavbarCtrl',
         link: function(scope, element, attrs){

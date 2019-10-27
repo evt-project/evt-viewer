@@ -40,7 +40,7 @@ angular.module('evtviewer.select')
             selectedOption: '@',
             onOptionSelected: '&'
         },
-        templateUrl: 'src/select/select.directive.tmpl.html',
+        template: require('./select.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'SelectCtrl',
         link: function(scope, element) {

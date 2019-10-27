@@ -29,7 +29,7 @@ angular.module('evtviewer.bibliography')
 .directive('evtBibliography', function(evtBibliography) { 
 	return {
 		restrict: 'E',
-		templateUrl: 'src/bibliography/bibliography.directive.tmpl.html',
+      template: require('./bibliography.directive.tmpl.html'),
 		scope: {
             id   : '@'
         },

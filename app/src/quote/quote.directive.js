@@ -30,7 +30,7 @@ angular.module('evtviewer.quote')
             type: '@'
         },
         transclude: true,
-        templateUrl: 'src/quote/quote.directive.tmpl.html',
+        template: require('./quote.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'QuoteCtrl',
         link: function(scope, element, attrs){

@@ -39,7 +39,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             scopeWit : '@'
         },
         transclude: true,
-        templateUrl: 'src/sourcesApparatusEntry/sourcesApparatusEntry.directive.tmpl.html',
+        template: require('./sourcesApparatusEntry.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'sourcesApparatusEntryCtrl',
         link: function(scope, element, attrs){

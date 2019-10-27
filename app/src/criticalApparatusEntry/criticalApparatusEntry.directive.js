@@ -38,7 +38,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             exponent    : '@'
         },
         transclude: true,
-        templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.directive.tmpl.html',
+        template: require('./criticalApparatusEntry.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'CriticalApparatusEntryCtrl',
         link: function(scope, element, attrs){

@@ -37,7 +37,7 @@ angular.module('evtviewer.versionReading')
             scopeVersion : '@'
         },
         transclude: true,
-        templateUrl: 'src/versionReading/versionReading.directive.tmpl.html',
+        template: require('./versionReading.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'versionReadingCtrl',
         link: function(scope, element, attrs) {

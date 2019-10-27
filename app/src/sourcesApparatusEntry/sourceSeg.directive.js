@@ -28,7 +28,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             sourceId : '@'
         },
         transclude: true,
-        templateUrl: 'src/sourcesApparatusEntry/sourceSeg.directive.tmpl.html',
+        template: require('./sourceSeg.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'sourceSegCtrl',
         link: function(scope, element, attr) {

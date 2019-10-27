@@ -29,7 +29,7 @@ angular.module('evtviewer.visColl')
           // Insert here scope properties to be passed from HTML attributes
         },
         transclude: true,
-        templateUrl: 'src/visColl/visColl.directive.tmpl.html',
+        template: require('./visColl.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'ViscollCtrl',
         link: function(scope, element, attrs){

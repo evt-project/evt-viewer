@@ -30,7 +30,7 @@ angular.module('evtviewer.apparatuses')
             currentApparatus: '@'
         },
         transclude: true,
-        templateUrl: 'src/apparatuses/apparatuses.dir.tmpl.html',
+        template: require('./apparatuses.dir.tmpl.html'),
         controllerAs: 'vm',
         controller: 'apparatusesCtrl',
         link: function(scope, element, attrs) {

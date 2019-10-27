@@ -33,7 +33,7 @@ angular.module('evtviewer.interface')
         // });
 
         $translateProvider.useStaticFilesLoader({
-            prefix: 'i18n/',
+            prefix: './app/i18n/',
             suffix: '.json'
         });
         

@@ -33,7 +33,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
             scopeWit  : '@',
         },
         transclude: true,
-        templateUrl: 'src/analoguesApparatusEntry/analoguesApparatusEntry.directive.tmpl.html',
+        template: require('./analoguesApparatusEntry.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'analoguesApparatusEntryCtrl',
         link: function(scope, element, attrs){

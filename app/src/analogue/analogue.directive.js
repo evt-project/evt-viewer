@@ -28,7 +28,7 @@ angular.module('evtviewer.analogue')
 			scopeWit: '@'
 		},
 		transclude: true,
-		templateUrl: 'src/analogue/analogue.directive.tmpl.html',
+      template: require('./analogue.directive.tmpl.html'),
 		controllerAs: 'vm',
 		controller: 'AnalogueCtrl',
 		link: function(scope, element, attrs) {

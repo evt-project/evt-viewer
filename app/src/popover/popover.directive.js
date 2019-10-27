@@ -27,7 +27,7 @@ angular.module('evtviewer.popover')
 			parentRef : '@'
         },
         transclude: true,
-        templateUrl: 'src/popover/popover.directive.tmpl.html',
+        template: require('./popover.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'PopoverCtrl',
         link: function(scope, element) {

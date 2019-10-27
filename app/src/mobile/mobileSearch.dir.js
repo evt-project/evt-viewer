@@ -10,7 +10,7 @@ angular.module('evtviewer.mobile')
         scope: {
             id: '@'
         },
-        templateUrl: 'src/mobile/mobileSearch.dir.tmpl.html',
+        template: require('./mobile/mobileSearch.dir.tmpl.html'),
         controller: 'MobileSearchCtrl'
     };
 });

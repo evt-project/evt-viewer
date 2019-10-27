@@ -38,7 +38,7 @@ angular.module('evtviewer.list')
             listType: '@'
         },
         transclude: true,
-        templateUrl: 'src/list/list.dir.tmpl.html',
+        template: require('./list.dir.tmpl.html'),
         link: function(scope, element, attrs){
             // Initialize list
             scope.vm = {

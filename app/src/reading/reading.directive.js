@@ -39,7 +39,7 @@ angular.module('evtviewer.reading')
             noText      : '@'
         },
         transclude: true,
-        templateUrl: 'src/reading/reading.directive.tmpl.html',
+        template: require('./reading.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){

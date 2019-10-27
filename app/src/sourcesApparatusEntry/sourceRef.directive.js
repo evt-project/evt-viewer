@@ -25,7 +25,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             sourceAbbr: '@'
         },
         transclude: true,
-        templateUrl: 'src/sourcesApparatusEntry/sourceRef.directive.tmpl.html',
+        template: require('./sourceRef.directive.tmpl.html'),
         link: function(scope, element, attrs) {
 
             /**

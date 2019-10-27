@@ -26,7 +26,7 @@ angular.module('evtviewer.namedEntity')
             entityType : '@'
         },
         transclude: true,
-        templateUrl: 'src/namedEntity/namedEntityRef.directive.tmpl.html',
+        template: require('./namedEntityRef.directive.tmpl.html'),
         link: function(scope, element, attrs){
             // Initialize namedEntity
             scope.vm = {

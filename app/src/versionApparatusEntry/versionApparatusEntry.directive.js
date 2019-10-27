@@ -38,7 +38,7 @@ angular.module('evtviewer.versionApparatusEntry')
             scopeVer  : '@'
         },
         transclude: true,
-        templateUrl: 'src/versionApparatusEntry/versionApparatusEntry.directive.tmpl.html',
+        template: require('./versionApparatusEntry.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'versionApparatusEntryCtrl',
         link: function(scope, element, attrs) {

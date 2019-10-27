@@ -35,7 +35,7 @@ angular.module('evtviewer.namedEntity')
             location   : '@'
         },
         transclude: true,
-        templateUrl: 'src/namedEntity/namedEntity.directive.tmpl.html',
+        template: require('./namedEntity.directive.tmpl.html'),
         link: function(scope, element, attrs){
             // Initialize namedEntity
             scope.vm = {

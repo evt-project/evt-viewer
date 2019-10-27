@@ -32,7 +32,7 @@ angular.module('evtviewer.versionApparatusEntry')
             elId : '@' 
         },
         transclude: true,
-        templateUrl : 'src/versionApparatusEntry/versionRef.directive.tmpl.html',
+        template : require('./versionRef.directive.tmpl.html'),
         link: function(scope, element, attrs) {
             scope.vm = {};
             var currentRef = evtVersionRef.build(scope);

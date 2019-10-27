@@ -41,7 +41,7 @@ angular.module('evtviewer.buttonSwitch')
             disabled: '@',
             onBtnClicked: '&'
         },
-        templateUrl: 'src/buttonSwitch/buttonSwitch.dir.tmpl.html',
+        template: require('./buttonSwitch.dir.tmpl.html'),
         link: function(scope, element) {
             // Add attributes in vm
             scope.vm = {};

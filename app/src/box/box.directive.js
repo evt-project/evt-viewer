@@ -82,7 +82,7 @@ angular.module('evtviewer.box')
             version : '@'
         },
         transclude : true,
-        templateUrl: 'src/box/box.dir.tmpl.html',
+        template: require('./box.dir.tmpl.html'),
         link: function(scope, element, attrs) {
             // Add attributes in vm
             scope.vm = {
