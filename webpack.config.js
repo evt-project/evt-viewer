@@ -1,17 +1,19 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const webpack = require('webpack'); //to access built-in plugins
+const path = require('path');
 
 module.exports = {
    devtool: 'source-map',
+   context: path.resolve(__dirname, 'app'),
    entry: [
-      './app/src/evtviewer.js',
+      './src/evtviewer.js',
    ],
    output: {
-      path: __dirname + '/app/dist',
+      path: path.resolve('dist'),
       filename: 'evtviewer.bundle.js'
    },
    plugins: [
-      new HtmlWebpackPlugin({ template: './app/index.html' })
+      new HtmlWebpackPlugin({ template: './index.html' }),
    ],
    module: {
       rules: [
