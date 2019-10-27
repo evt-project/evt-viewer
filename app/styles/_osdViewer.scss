@@ -67,8 +67,7 @@
  div.hotspot-dida-body {
      font-size: 16px;
      height: 80%;
-     overflow-y: scroll;
-     text-align: justify;
+     overflow-y: auto;
      border: none !important;
      padding: 6px !important;
  }
