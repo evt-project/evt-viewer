@@ -1,5 +1,7 @@
 'use strict';
 
+import '../styles/main.scss';
+
 require('../../bower_components/angular/angular.js');
 require('../../bower_components/json3/lib/json3.min.js');
 require('../../bower_components/angular-animate/angular-animate.js');
