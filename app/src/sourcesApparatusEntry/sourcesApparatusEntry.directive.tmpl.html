@@ -85,7 +85,7 @@
                 </div>
                 <div ng-switch-when="xmlSource">
                     {{ 'SOURCES.XML_SOURCE_QUOTE' | translate }}
-                    <pre>{{ ::vm.xml | prettyXml}}</pre>
+                    <pre>{{ ::vm.xml }}</pre>
                     {{ 'SOURCES.XML_SOURCE_FOR' | translate }} <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
                      <pre>{{ ::vm.srcList[vm._activeSource]._xmlSource | prettyXml }}</pre>
                 </div>

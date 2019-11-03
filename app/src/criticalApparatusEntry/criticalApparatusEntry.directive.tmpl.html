@@ -173,7 +173,7 @@
                   </ul>
                 </div>
                 <div ng-switch-when="xmlSource">
-                  <pre>{{ ::vm.content[tab] | prettyXml }}</pre>
+                  <pre>{{ ::vm.content[tab] }}</pre>
                 </div>
                 <div ng-switch-default
                      compile="::vm.content[tab]">
