@@ -87,7 +87,7 @@
                     {{ 'SOURCES.XML_SOURCE_QUOTE' | translate }}
                     <pre>{{ ::vm.xml }}</pre>
                     {{ 'SOURCES.XML_SOURCE_FOR' | translate }} <span compile="vm.getActiveSourceAbbr(vm._activeSource)"></span>
-                     <pre>{{ ::vm.srcList[vm._activeSource]._xmlSource | prettyXml }}</pre>
+                     <pre>{{ ::vm.srcList[vm._activeSource]._xmlSource }}</pre>
                 </div>
                 <div
                     ng-switch-default
