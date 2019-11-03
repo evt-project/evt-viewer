@@ -1,6 +1,5 @@
 'use strict';
 
-require('../../bower_components/jquery/dist/jquery.js');
 require('../../bower_components/angular/angular.js');
 require('../../bower_components/json3/lib/json3.min.js');
 require('../../bower_components/angular-animate/angular-animate.js');
@@ -11,7 +10,7 @@ require('../../bower_components/angular-route/angular-route.js');
 require('../../bower_components/angular-sanitize/angular-sanitize.js');
 require('../../bower_components/angular-xml/angular-xml.js');
 require('../../bower_components/angular-touch/angular-touch.js');
-require('../../bower_components/angular-pretty-xml/src/angular-pretty-xml.js');
+//require('../../bower_components/angular-pretty-xml/src/angular-pretty-xml.js');
 // require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
 require('../../bower_components/angular-translate/angular-translate.js');
 require('../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js');
@@ -19,9 +18,6 @@ require('../../bower_components/angular-loading-bar/build/loading-bar.js');
 require('../../bower_components/ngprogress/build/ngprogress.min.js');
 // require('../../bower_components/angularjs-slider/dist/rzslider.js');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
-require('../../bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.js');
-// require('../../bower_components/jquery-ui/jquery-ui.js');
-// require('../../bower_components/keyboard/dist/js/jquery.keyboard.js');
 require('../../bower_components/angular-simple-logger/dist/angular-simple-logger.js');
 require('../../bower_components/leaflet/dist/leaflet-src.js');
 require('../../bower_components/ui-leaflet/dist/ui-leaflet.js');
@@ -320,7 +316,7 @@ angular.module('evtviewer', [
 	// 'rzModule',
 	'xml',
 	// 'ngXslt',
-	'prettyXml',
+	//'prettyXml',
 	// 'infinite-scroll',
 	'pascalprecht.translate',
 	'oc.lazyLoad',

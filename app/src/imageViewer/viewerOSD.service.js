@@ -1,4 +1,5 @@
 (function () {
+   var OpenSeadragon = require('openseadragon');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
       .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler, parsedData) {
@@ -41,7 +42,7 @@
             }
             var p = pidx;
             viewerHandler.viewer.goToPage(p);
-            currPage = evtInterface.getState('currentPage');
+            var currPage = evtInterface.getState('currentPage');
                      if (pageValue !== currPage) {
                         viewerHandler.scope.$apply(function () {
                            evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);

@@ -6,7 +6,7 @@
 
         var options = {
             id: "osd-img",
-            prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
+            prefixUrl: "/openseadragon/images/",
             tileSources:[],
             showRotationControl: true,
             showNavigator: true,
