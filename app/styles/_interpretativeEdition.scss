@@ -3,41 +3,53 @@
 /* *************************** */
 
 .interpretativeEdition {
-   // Abbreviations and Their Expansions
+  // Abbreviations and Their Expansions
   .choice {
-    > .abbr {
+    .abbr {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
       display: none;
+      border: 1.5px solid black;
+      border-radius: 3px;
+
+      @include set(box-shadow, 2px 2px 2px #7e7067);
+
+      padding: 0.4%;
+      margin-top: 30px;
+
+        &:before {
+          left: 15%;
+          position: absolute;
+          top: -13px;
+          content: url("../images/popup_before.png");
+        }
+    }
+
+    .abbr,
+    .abbr * {
+      background: #e5dac4 !important;
     }
 
     .expan {
-    }
-  }
+      color: #69513a;
 
-  // Additions, Deletions, and Omissions
-  .add {
-    &[data-place="above"] {
-    }
-  }
-
-  //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-  .glyph {
-    .glyphname,
-    .mapping {
-      display: none;
+        &:hover,
+        &.hover {
+          color: #561c0a;
+        }
     }
 
-    .mapping[data-type="interpretative"],
-    .mapping[data-type="normalized"] {
-      display: inline;
+    &:hover,
+    &.hover {
+      .abbr {
+        display: inline;
+        min-width: 30px;
+        text-align: center;
+        z-index: 9;
+      }
     }
-  }
-
-  .char {
-    .charname,
-    .mapping {
-      display: none;
-    }
-
+    
     .mapping[data-type="interpretative"],
     .mapping[data-type="normalized"] {
       display: inline;
