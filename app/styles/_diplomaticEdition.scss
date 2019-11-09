@@ -8,44 +8,46 @@
 		position: relative;
 		text-align: center;
 
-		.abbr {
-			color: purple;
-			
-			.sup {
-				line-height: 20px;
-				vertical-align: 20%;
-			}
-	
-			.under {
-				line-height: 20px;
-				vertical-align: -20%;
-			}
-		}
-
 		&:before, &:after {
 			content: "";
 		}
 
-		&:hover .expan, &.hover .expan {
-			display: inline;
-			min-width: 20px;
-			z-index: 99;
-	  	}
-	  
-	  	&:hover .abbr, &.hover .abbr {
-			color: #561c0a;
-			text-decoration: underline;
-			z-index: 9;			
-		}
+      &:hover, &.hover {
+         .expan {
+            display: inline;
+            min-width: 20px;
+            z-index: 99;
+            white-space: nowrap;
+         }
+         .abbr {
+            color: #561c0a;
+            text-decoration: underline;
+            z-index: 9;
+         }
+      }
+
+      .abbr {
+         color: purple;
+
+         .sup {
+            line-height: 20px;
+            vertical-align: 20%;
+         }
+
+         .under {
+            line-height: 20px;
+            vertical-align: -20%;
+         }
+      }
 
 		.expan {
-			font-size: 80%;
+			font-size: 85%;
 			position: absolute;
 			line-height: 16px;
 			display: none;
 			border: 1.5px solid black;
 			border-radius: 3px;
-			padding: 0.4%;
+			padding: 5px 8px;
 			margin-top: 30px;
 			left: 0;
 	
@@ -55,7 +57,7 @@
 				content: url("../images/popup_before.png");
 				left: 15%;
 				position: absolute;
-				top: -13px;
+				top: -12px;
 			}
 	
 			span {
@@ -73,8 +75,9 @@
 			font-size: 100%;
 			position: relative;
 			border: none;
-			border-radius: none;
-			margin-top: 0px;
+			border-radius: 0;
+			margin-top: 0;
+         padding: 0;
 
 			@include set(box-shadow, 0px 0px 0px);
 
@@ -111,47 +114,49 @@
 	// 3.4.2 Regularization and Normalization
 	.choice {
 
-		.orig {
-			color: #69513a;
-			.sup {
-				line-height: 20px;
-				vertical-align: 20%;
-			}
-	
-			.under {
-				line-height: 20px;
-				vertical-align: -20%;
-			}
-		}
-
 		&:before, &:after {
 			content: "";
 		}
 
-		&:hover .reg, &.hover .reg {
-			display: inline;	
-			min-width: 20px;
-			z-index: 99;
-		}
-
-		&:hover .orig, &.hover .orig {
-			color: #561c0a;
-			text-decoration: underline;
-			z-index: 9;
-		}
+      &:hover, &.hover {
+         .reg {
+            display: inline;
+            min-width: 20px;
+            z-index: 99;
+            white-space: nowrap;
+         }
+         .orig {
+            color: #561c0a;
+            text-decoration: underline;
+            z-index: 9;
+         }
+      }
 
 		.corr {
 			display: none;
 		}
 
+      .orig {
+         color: #69513a;
+         .sup {
+            line-height: 20px;
+            vertical-align: 20%;
+         }
+
+         .under {
+            line-height: 20px;
+            vertical-align: -20%;
+         }
+      }
+
 		.reg {
-			font-size: 80%;
+			font-size: 85%;
 			position: absolute;
 			line-height: 16px;
 			display: none;
 			border: 1.5px solid black;
 			border-radius: 3px;
-			padding: 0.4%;
+			padding: 5px 8px;
 			margin-top: 30px;
 
 			@include set(box-shadow, 2px 2px 2px #7e7067);
@@ -162,7 +167,7 @@
 				content: url("../images/popup_before.png");
 				left: 15%;
 				position: absolute;
-				top: -13px;
+				top: -12px;
 			}
 
 			span {
