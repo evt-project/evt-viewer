@@ -121,7 +121,9 @@ angular.module('evtviewer.interface')
             availableVersions : [ ],
             versionSelector : false,
             visCollTextUrl     : '',
-            visCollStyleUrl    : ''
+            visCollStyleUrl    : '',
+            meshes: '',
+
         };
         </pre>
      */
@@ -144,7 +146,8 @@ angular.module('evtviewer.interface')
         tabsContainerOpenedTab: '',
         visCollTextUrl: '',
         visCollStyleUrl: '',
-        enableNavBar: true
+        enableNavBar: true,
+        meshes: '',
     };
     /**
      * @ngdoc property
@@ -188,6 +191,7 @@ angular.module('evtviewer.interface')
                 properties.availableViewModes = config.availableViewModes;
                 properties.visCollTextUrl = config.visCollTextUrl;
                 properties.visCollStyleUrl = config.visCollStyleUrl;
+                properties.meshes           = config.meshes;
                 properties.enableNavBar = angular.isDefined(config.enableNavBar) ? config.enableNavBar : state.enableNavBar;
                 state.isNavBarOpened = angular.isDefined(config.initNavBarOpened) ? config.initNavBarOpened : state.isNavBarOpened;
                 
@@ -500,7 +504,8 @@ angular.module('evtviewer.interface')
                 isSourceLoading : false,
                 parsedSourcesTexts : [ ],
                 availableVersions : [ ],
-                versionSelector : false
+                versionSelector : false,
+                meshes: '',
             };
             </pre>
          */
