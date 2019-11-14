@@ -5,21 +5,31 @@
 .interpretativeEdition {
   // Abbreviations and Their Expansions
   .choice {
-    .expan {
-      color: #69513a;
+    position: relative;
+    text-align: center;
 
-        &:hover,
-        &.hover {
-          color: #561c0a;
-        }
+    &:before,
+    &:after {
+      content: "";
     }
 
-    &:hover, &.hover {
+    &:hover, 
+    &.hover {
       .abbr {
         display: inline;
         min-width: 20px;
         z-index: 99;
         white-space: nowrap;
+      }
+
+    .expan {
+      color: #69513a;
+      z-index: 9;
+
+        &:hover,
+        &.hover {
+          color: #561c0a;
+        }
       }
     }
 
@@ -50,14 +60,13 @@
     }
 
     // Abbreviations and Expansions inside Orig and Reg classes
-
 		.orig  > .abbr {
 			font-size: 100%;
 			position: relative;
 			border: none;
 			border-radius: 0;
 			margin-top: 0;
-         	padding: 0;
+      padding: 0;
 
 			@include set(box-shadow, 0px 0px 0px);
 
@@ -74,12 +83,6 @@
   }
 
   .choice {
-    //display: inline;
-
-    &:before,
-    &:after {
-      content: "";
-    }
 
     .corr,
     .orig {

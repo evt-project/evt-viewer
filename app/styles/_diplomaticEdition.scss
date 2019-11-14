@@ -8,26 +8,25 @@
 		position: relative;
 		text-align: center;
 
-		&:before, &:after {
+		&:before, 
+		&:after {
 			content: "";
 		}
 
-      &:hover, &.hover {
+		&:hover,
+		&.hover {
          .expan {
             display: inline;
             min-width: 20px;
             z-index: 99;
             white-space: nowrap;
-         }
-         .abbr {
-            color: #561c0a;
-            text-decoration: underline;
-            z-index: 9;
-         }
+		 }
       }
 
       .abbr {
-         color: purple;
+		 color: purple;		 
+		 text-decoration: underline;
+		 z-index: 9;
 
          .sup {
             line-height: 20px;
@@ -58,10 +57,6 @@
 				left: 15%;
 				position: absolute;
 				top: -12px;
-			}
-	
-			span {
-				background: transparent;
 			}
 		}
 
