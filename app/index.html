@@ -200,15 +200,13 @@
 			</section>
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
-                <!-- 3DHOP -->
+            <!-- 3DHOP -->
                 <section id="main-container" class="viewMode" ng-switch-when="3dhop">
-                    <box data-type="empty" id="empty">
-                        <div 3dhop data-canvas="draw-canvas" style="height: 100%"></div>
-               </box>
-               <box data-type="text"
-						 data-edition="{{getCurrentEdition()}}"
-                   id="mainText">
-               </box>
+                    <box data-type="tredhop" id="tredhop">
+						<div 3dhop data-canvas="draw-canvas" ng-if="getProperty('meshes') !== ''" ng-src="{{getProperty('meshes')}}" style="height: 100%"></div>						
+               		</box>
+               		<box data-type="text" data-edition="{{getCurrentEdition()}}" id="mainText">
+               		</box>
 					<!--
                     <box data-type="generic" id="generic">
                         <div>Eventuale testo affiancato</div>
