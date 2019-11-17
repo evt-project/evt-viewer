@@ -3,54 +3,86 @@
 /* *************************** */
 
 .interpretativeEdition {
-   // Abbreviations and Their Expansions
+  // Abbreviations and Their Expansions
   .choice {
-    > .abbr {
-      display: none;
-    }
-
-    .expan {
-    }
-  }
-
-  // Additions, Deletions, and Omissions
-  .add {
-    &[data-place="above"] {
-    }
-  }
-
-  //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-  .glyph {
-    .glyphname,
-    .mapping {
-      display: none;
-    }
-
-    .mapping[data-type="interpretative"],
-    .mapping[data-type="normalized"] {
-      display: inline;
-    }
-  }
-
-  .char {
-    .charname,
-    .mapping {
-      display: none;
-    }
-
-    .mapping[data-type="interpretative"],
-    .mapping[data-type="normalized"] {
-      display: inline;
-    }
-  }
-
-  .choice {
-    display: inline;
+    position: relative;
+    text-align: center;
 
     &:before,
     &:after {
       content: "";
     }
+
+    &:hover, 
+    &.hover {
+      .abbr {
+        display: inline;
+        min-width: 20px;
+        z-index: 99;
+        white-space: nowrap;
+      }
+
+    .expan {
+      color: #69513a;
+      z-index: 9;
+
+        &:hover,
+        &.hover {
+          color: #561c0a;
+        }
+      }
+    }
+
+    .abbr {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
+      display: none;
+      border: 1.5px solid black;
+      border-radius: 3px;
+      padding: 5px 8px;
+      margin-top: 30px;
+      left: 0;
+
+      @include set(box-shadow, 2px 2px 2px #7e7067);
+
+        &:before {
+          content: url("../images/popup_before.png");
+          left: 15%;
+          position: absolute;
+          top: -12px;
+        }
+    }
+
+    .abbr,
+    .abbr * {
+      background: #e5dac4 !important;
+    }
+
+    // Abbreviations and Expansions inside Orig and Reg classes
+		.orig  > .abbr {
+			font-size: 100%;
+			position: relative;
+			border: none;
+			border-radius: 0;
+			margin-top: 0;
+      padding: 0;
+
+			@include set(box-shadow, 0px 0px 0px);
+
+			&:before {
+				content: none;
+			}
+		}
+	}
+    
+    .mapping[data-type="interpretative"],
+    .mapping[data-type="normalized"] {
+      display: inline;
+    }
+  }
+
+  .choice {
 
     .corr,
     .orig {
@@ -265,4 +297,3 @@
   [rend="left"] {
     display: inline-table;
   }
-}
