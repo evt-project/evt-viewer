@@ -3,7 +3,7 @@
 /* *************************** */
 
 .interpretativeEdition {
-  // Abbreviations and Their Expansions
+  // Abbreviations and Expansions
   .choice {
     position: relative;
     text-align: center;
@@ -21,15 +21,16 @@
         z-index: 99;
         white-space: nowrap;
       }
+    }
+
 
     .expan {
       color: #69513a;
       z-index: 9;
 
-        &:hover,
-        &.hover {
-          color: #561c0a;
-        }
+      &:hover,
+      &.hover {
+        color: #561c0a;
       }
     }
 
@@ -60,7 +61,8 @@
     }
 
     // Abbreviations and Expansions inside Orig and Reg classes
-		.orig  > .abbr {
+    
+    .orig  > .abbr {
 			font-size: 100%;
 			position: relative;
 			border: none;
@@ -74,17 +76,14 @@
 				content: none;
 			}
 		}
-	}
     
     .mapping[data-type="interpretative"],
     .mapping[data-type="normalized"] {
       display: inline;
     }
-  }
 
-  .choice {
-
-    .corr,
+    // 3.4.2 Regularization and Normalization
+    .sic,
     .orig {
       font-size: 80%;
       position: absolute;
@@ -92,11 +91,11 @@
       display: none;
       border: 1.5px solid black;
       border-radius: 3px;
-
-      @include set(box-shadow, 2px 2px 2px #7e7067);
-
       padding: 0.4%;
       margin-top: 30px;
+      left: 0;
+
+      @include set(box-shadow, 2px 2px 2px #7e7067);
 
       &:before {
         left: 15%;
@@ -105,21 +104,15 @@
       }
     }
 
-    .corr {
-      &:before {
-        content: url("../images/popup_before_corr.png");
-      }
-    }
-
-    .corr,
-    .corr * {
-      background: #f99069 !important;
-    }
-
     .orig {
       &:before {
         content: url("../images/popup_before.png");
       }
+    }
+
+    .sic,
+    .sic * {
+      background: #f99069 !important;
     }
 
     .orig,
@@ -139,24 +132,25 @@
     &:hover,
     &.hover {
       .orig,
-      .corr {
+      .sic {
         display: inline;
         min-width: 30px;
         text-align: center;
         z-index: 9;
       }
-
-      .corr {
-        @include set(transform, translate(-80%, 0));
-      }
-
+      
       .reg {
         text-decoration: underline;
       }
     }
 
-    .sic {
+    .corr {
       color: #934d4d;
+
+      &:hover,
+      &.hover {
+        color: #561c0a;
+      }
     }
 
     .sup {
@@ -168,17 +162,17 @@
       line-height: 20px;
       vertical-align: -20%;
     }
-  }
 
-  .sic {
+  .corr {
     display: inline-table;
 
     &:before,
     &:after {
       content: " ";
     }
+  }
 
-    .corr {
+    .sic {
       font-size: 80%;
       position: absolute;
       line-height: 16px;
@@ -186,11 +180,12 @@
       background: #f99069;
       border: 1.5px solid black;
       border-radius: 3px;
+      padding: 0.4%;
+      margin-top: 30px;
+      left:0;
 
       @include set(box-shadow, 2px 2px 2px #7e7067);
 
-      padding: 0.4%;
-      margin-top: 30px;
 
       &:before {
         content: url("../images/popup_before_corr.png");
@@ -200,24 +195,14 @@
       }
     }
 
-    .sic {
-      color: #934d4d;
-
+    .corr {
       &:hover,
       &.hover {
-        color: #561c0a;
-      }
-    }
-
-    &:hover,
-    &.hover {
-      .corr {
-        display: inline;
-        min-width: 20px;
-        text-align: center;
-      }
-
-      .sic {
+        .sic {
+          display: inline;
+          min-width: 20px;
+          text-align: center;
+        }
         text-decoration: underline;
       }
     }
@@ -227,10 +212,6 @@
   .attachment {
     border: 1px solid black;
     padding: 5px 0px 0px 10px;
-  }
-
-  .ex {
-    font-style: italic;
   }
 
   .lineN {
@@ -297,3 +278,4 @@
   [rend="left"] {
     display: inline-table;
   }
+}

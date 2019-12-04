@@ -15,32 +15,26 @@
 
 		&:hover,
 		&.hover {
-         .expan {
-            display: inline;
-            min-width: 20px;
-            z-index: 99;
-            white-space: nowrap;
-		 }
-      }
+        	.expan {
+        		display: inline;
+            	min-width: 20px;
+            	z-index: 99;
+            	white-space: nowrap;
+			}
+    	}
 
       .abbr {
 		 color: purple;		 
-		 text-decoration: underline;
 		 z-index: 9;
 
-         .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-         }
-
-         .under {
-            line-height: 20px;
-            vertical-align: -20%;
-         }
-      }
+			&:hover,
+		 	&.hover {
+				color: #561c0a;
+		 	}
+      	}
 
 		.expan {
-			font-size: 85%;
+			font-size: 80%;
 			position: absolute;
 			line-height: 16px;
 			display: none;
@@ -60,7 +54,8 @@
 			}
 		}
 
-		.expan, .expan * {
+		.expan, 
+		.expan * {
 			background: #e5dac4 !important;
 		}
 		
@@ -80,8 +75,137 @@
 				content: none;
 			}
 		}
+
+		.mapping[data-type="diplomatic"],
+    	.mapping[data-type=""] {
+      		display: inline;
+    	}
+
+	// 3.4.2 Regularization and Normalization
+	.corr,
+	.reg {
+		font-size: 80%;
+		position: absolute;
+		line-height: 16px;
+		display: none;
+		border: 1.5px solid black;
+		border-radius: 3px;
+		padding: 0.4%;
+		margin-top: 30px;
+		left: 0;
+
+		@include set(box-shadow, 2px 2px 2px #7e7067);
+
+		&:before {
+			left: 15%;
+			position: absolute;
+			top: -12px;
+		}
 	}
 
+	.reg {
+		&:before {
+		  content: url("../images/popup_before.png");
+		}
+	}
+
+	.corr,
+    .corr * {
+      background: #f99069 !important;
+    }
+
+	.reg, 
+	.reg * {
+		background: #e5dac4 !important;
+	}
+
+	.orig {
+		color: #69513a;
+
+		&:hover,
+		&.hover {
+		  color: #561c0a;
+		}
+	}
+
+	&:hover, 
+	&.hover {
+		.reg,
+		.corr {
+        	display: inline;
+            min-width: 30px;
+			text-align: center;
+			z-index: 9;
+		}
+
+		.orig {
+			text-decoration: underline;
+		}
+	}
+	.sic {
+		color: #934d4d;
+
+		&:hover,
+		&.hover {
+		  color: #561c0a;
+		}
+	}
+	
+	.sup {
+		line-height: 20px;
+		vertical-align: 20%;
+	}
+  
+	.under {
+		line-height: 20px;
+		vertical-align: -20%;
+	}
+  
+	.sic {
+	  display: inline-table;
+  
+	  &:before,
+	  &:after {
+		content: " ";
+	  }
+	}
+
+	.corr {
+		font-size: 80%;
+		position: absolute;
+		line-height: 16px;
+		display: none;
+		background: #f99069;
+		border: 1.5px solid black;
+		border-radius: 3px;
+		padding: 0.4%;
+		margin-top: 30px;
+		left:0;
+  
+		@include set(box-shadow, 2px 2px 2px #7e7067);
+  
+  
+		&:before {
+		  content: url("../images/popup_before_corr.png");
+		  left: 15%;
+		  position: absolute;
+		  top: -13px;
+		}
+	}
+	
+	.sic {
+		&:hover,
+    	&.hover {
+			.corr {
+				display: inline;
+				min-width: 20px;
+				text-align: center;
+			}
+				text-decoration: underline;
+		}
+	}
+}
+		
 	// 3.3.2 Emphasis, Foreign Words, and Unusual Language
 	// 3.3.2.2 Emphatic Words and Phrases
 	.hi {
@@ -105,75 +229,6 @@
 	}
 
 	// 3.4 Simple Editorial Changes
-
-	// 3.4.2 Regularization and Normalization
-	.choice {
-
-		&:before, &:after {
-			content: "";
-		}
-
-      &:hover, &.hover {
-         .reg {
-            display: inline;
-            min-width: 20px;
-            z-index: 99;
-            white-space: nowrap;
-         }
-         .orig {
-            color: #561c0a;
-            text-decoration: underline;
-            z-index: 9;
-         }
-      }
-
-		.corr {
-			display: none;
-		}
-
-      .orig {
-         color: #69513a;
-         .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-         }
-
-         .under {
-            line-height: 20px;
-            vertical-align: -20%;
-         }
-      }
-
-		.reg {
-			font-size: 85%;
-			position: absolute;
-			line-height: 16px;
-			display: none;
-			border: 1.5px solid black;
-			border-radius: 3px;
-			padding: 5px 8px;
-			margin-top: 30px;
-
-			@include set(box-shadow, 2px 2px 2px #7e7067);
-
-			left: 0;
-
-			&:before {
-				content: url("../images/popup_before.png");
-				left: 15%;
-				position: absolute;
-				top: -12px;
-			}
-
-			span {
-				background: transparent;
-			}
-		}
-
-		.reg, .reg * {
-			background: #e5dac4 !important;
-		}
-	}	
 
 	// 3.4.3 Additions, Deletions, and Omissions
 	.add {
