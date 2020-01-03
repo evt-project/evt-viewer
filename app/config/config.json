@@ -14,8 +14,8 @@
    "visCollSvg": "",
    "visCollImageList": "",
    "visCollDataModel": "",
-   
-   "meshes": "data/3Dmodels/multires/gargo.nxs",
+
+   "meshes": "",
 
    "defaultViewMode": "txtTxt",
    "availableViewModes": [
