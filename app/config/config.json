@@ -3,7 +3,7 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "data/3dhop.xml",
+   "dataUrl": "data/avicenna.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
@@ -15,7 +15,7 @@
    "visCollImageList": "",
    "visCollDataModel": "",
    
-   "meshes": "data/3Dmodels/multires/gargo.nxs",
+   "meshes": "",
 
    "defaultViewMode": "txtTxt",
    "availableViewModes": [
@@ -59,7 +59,7 @@
          "label"    : "3DHOP",
          "icon"     : "mode-3dhop",
          "viewMode" : "3dhop",
-         "visible"  : true
+         "visible"  : false
      }
    ],
    "defaultEdition": "diplomatic",
