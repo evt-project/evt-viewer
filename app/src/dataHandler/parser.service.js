@@ -828,8 +828,9 @@ angular.module('evtviewer.dataHandler')
             if (element.getAttribute('facs')) {
                newPage.source = element.getAttribute('facs');
             } else {
-               // TODO: handle other cases (e.g. <surface>)
-               newPage.source = '';
+			   // TODO: handle other cases (e.g. <surface>)
+			   // handle image source from singleImagesUrl
+			   newPage.source = config.singleImagesUrl + newPage.value + '.jpg';
             }
             parsedData.addPage(newPage, docId);
 		});
