@@ -7,7 +7,7 @@
 			<label for="biblStyleSelect"> {{ 'BIBLIOGRAPHY.STYLE' | translate }} </label>
 			<select id="biblStyleSelect"
 				ng-model="vm.initialSelectedStyle"
-				ng-options="(value.label | translate) disable when !value.enabled for (key, value) in vm.styles"/>
+				ng-options="value as (value.label | translate) for (key, value) in vm.styles"/>
 		</div>
 	
 		<div
