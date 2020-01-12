@@ -813,8 +813,8 @@ angular.module('evtviewer.dataHandler')
 				} else {
 					newPage.value = element.getAttribute('xml:id') || 'page_' + (parsedData.getPages().length + 1);
 				}
-            newPage.image = element.getAttribute('src') || config.singleImagesUrl + newPage.value + '.jpg';
-            newPage.svgId = element.getAttribute('svg:id') || (parsedData.getPages().length + 1);
+				newPage.image = element.getAttribute('src') || config.singleImagesUrl + newPage.value + '.jpg';
+				newPage.svgId = element.getAttribute('svg:id') || (parsedData.getPages().length + 1);
 				newPage.label = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
 				newPage.title = element.getAttribute('n') || 'Page ' + (parsedData.getPages().length + 1);
 				for (var i = 0; i < element.attributes.length; i++) {
@@ -823,19 +823,18 @@ angular.module('evtviewer.dataHandler')
 						newPage[attrib.name.replace(':', '-')] = attrib.value;
 					}
 				}
-				
 				// Get image source URL
-            if (element.getAttribute('facs')) {
-               newPage.source = element.getAttribute('facs');
-            } else {
-			   // TODO: handle other cases (e.g. <surface>)
-			   // handle image source from singleImagesUrl
-			   newPage.source = config.singleImagesUrl + newPage.value + '.jpg';
-            }
-            parsedData.addPage(newPage, docId);
-		});
-		//console.log('## Pages ##', parsedData.getPages());
-    };
+				if (element.getAttribute('facs')) {
+					newPage.source = element.getAttribute('facs');
+				} else {
+					// TODO: handle other cases (e.g. <surface>)
+					// handle image source from singleImagesUrl
+					newPage.source = config.singleImagesUrl + newPage.value + '.jpg';
+				}
+				parsedData.addPage(newPage, docId);
+			});
+			//console.log('## Pages ##', parsedData.getPages());
+		};
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtParser#parseSvgsForViscoll
@@ -1012,6 +1011,7 @@ angular.module('evtviewer.dataHandler')
         var currentDocument = angular.element(doc),
             defDocElement,
             defContentEdition = 'body';
+        
         if (currentDocument.find('text group text').length > 0) {
             defDocElement = 'text group text';
             checkMainFront = true;
@@ -1066,7 +1066,14 @@ angular.module('evtviewer.dataHandler')
 				newDoc[attrib.name.replace(':', '-')] = attrib.value;
 			}
 		}
-		parser.createTitle(newDoc, 'Doc');
+		
+		if(newDoc['xml-id'] === undefined) {
+         parser.createTitle(newDoc, 'Doc');
+      }
+		else {
+         parser.createTitle(newDoc, '');
+      }
+		
 		parser.parseFront(newDoc, element);
 		parsedData.addDocument(newDoc);
 		parser.parsePages(element, newDoc.value);
@@ -1184,18 +1191,27 @@ angular.module('evtviewer.dataHandler')
 		switch (tag) {
 			case 'Div': {
 				parsedElement.title += parsedElement.n || parsedData.getDivs().length + 1;
-			} break;
+			}
+			break;
 			case 'Doc': {
-				var wit, corresp = parsedData.getWitnessesList().find(function(witId) {
-					wit = witId;
-					return parsedData.getWitness(witId).corresp === parsedElement.value;
-				});
+				var wit,
+               corresp = parsedData.getWitnessesList().find(function(witId) {
+                  wit = witId;
+                  return parsedData.getWitness(witId).corresp === parsedElement.value;
+				   });
+				
 				if (corresp) {
 					parsedElement.title += wit;
-				} else {
+				}
+				else {
 					parsedElement.title += parsedElement.n || parsedData.getDocuments()._indexes.length + 1;
 				}
 			}
+			break;
+         default: {
+            parsedElement.title = parsedElement.n || parsedElement['xml-id'];
+         }
+         break;
 		}
 		parsedElement.label = parsedElement.title;
 	}

@@ -8,7 +8,7 @@
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
 
-   "singleImagesUrl": "",
+   "singleImagesUrl": "data/images/single/",
    "visCollTextUrl": "",
    "visCollStyleUrl": "",
    "visCollSvg": "",
@@ -35,7 +35,7 @@
          "label": "IMAGE_TEXT",
          "icon": "mode-imgTxt",
          "viewMode": "imgTxt",
-         "visible": false
+         "visible": true
       },
       {
          "label": "TEXT_TEXT",

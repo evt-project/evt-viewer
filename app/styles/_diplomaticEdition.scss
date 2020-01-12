@@ -3,14 +3,82 @@
 /* *************************** */
 
 .diplomaticEdition {
-	// Abbreviations and Their Expansions
+	// Abbreviations and Expansions
 	.choice {
-		.abbr {
-			color: purple;
+		position: relative;
+		text-align: center;
+
+		&:before, 
+		&:after {
+			content: "";
 		}
 
-		> .expan {
+		&:hover,
+		&.hover {
+         .expan {
+            display: inline;
+            min-width: 20px;
+            z-index: 99;
+            white-space: nowrap;
+		 }
+      }
+
+      .abbr {
+		 color: purple;		 
+		 text-decoration: underline;
+		 z-index: 9;
+
+         .sup {
+            line-height: 20px;
+            vertical-align: 20%;
+         }
+
+         .under {
+            line-height: 20px;
+            vertical-align: -20%;
+         }
+      }
+
+		.expan {
+			font-size: 85%;
+			position: absolute;
+			line-height: 16px;
 			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
+			padding: 5px 8px;
+			margin-top: 30px;
+			left: 0;
+	
+			@include set(box-shadow, 2px 2px 2px #7e7067);
+	
+			&:before {
+				content: url("../images/popup_before.png");
+				left: 15%;
+				position: absolute;
+				top: -12px;
+			}
+		}
+
+		.expan, .expan * {
+			background: #e5dac4 !important;
+		}
+		
+		// Abbreviations and Expansions inside Orig and Reg classes
+
+		.reg  > .expan, .expan > .ex {
+			font-size: 100%;
+			position: relative;
+			border: none;
+			border-radius: 0;
+			margin-top: 0;
+         	padding: 0;
+
+			@include set(box-shadow, 0px 0px 0px);
+
+			&:before {
+				content: none;
+			}
 		}
 	}
 
@@ -37,80 +105,75 @@
 	}
 
 	// 3.4 Simple Editorial Changes
-	.choice {}
 
 	// 3.4.2 Regularization and Normalization
 	.choice {
-		position: relative;
 
 		&:before, &:after {
 			content: "";
 		}
 
-		&:hover .reg, &.hover .reg {
-			display: inline;
-			min-width: 20px;
-			text-align: center;
-			z-index: 99;
-		}
-
-		.orig {
-			color: #69513a;
-		}
-
-		&:hover .orig, &.hover .orig {
-			color: #561c0a;
-			text-decoration: underline;
-			z-index: 9;
-		}
+      &:hover, &.hover {
+         .reg {
+            display: inline;
+            min-width: 20px;
+            z-index: 99;
+            white-space: nowrap;
+         }
+         .orig {
+            color: #561c0a;
+            text-decoration: underline;
+            z-index: 9;
+         }
+      }
 
 		.corr {
 			display: none;
 		}
-	}
 
-	.reg {
-		font-size: 80%;
-		position: absolute;
-		line-height: 16px;
-		display: none;
-		border: 1.5px solid black;
-		border-radius: 3px;
-		padding: 0.4%;
-		margin-top: 30px;
+      .orig {
+         color: #69513a;
+         .sup {
+            line-height: 20px;
+            vertical-align: 20%;
+         }
 
-		@include set(box-shadow, 2px 2px 2px #7e7067);
+         .under {
+            line-height: 20px;
+            vertical-align: -20%;
+         }
+      }
 
-		position: absolute;
-		left: 0;
-
-		&:before {
-			content: url("../images/popup_before.png");
-			left: 15%;
+		.reg {
+			font-size: 85%;
 			position: absolute;
-			top: -13px;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
+			padding: 5px 8px;
+			margin-top: 30px;
+
+			@include set(box-shadow, 2px 2px 2px #7e7067);
+
+			left: 0;
+
+			&:before {
+				content: url("../images/popup_before.png");
+				left: 15%;
+				position: absolute;
+				top: -12px;
+			}
+
+			span {
+				background: transparent;
+			}
 		}
 
-		span {
-			background: transparent;
+		.reg, .reg * {
+			background: #e5dac4 !important;
 		}
-	}
-
-	.reg, .reg * {
-		background: #e5dac4 !important;
-	}
-
-	.orig {
-		.sup {
-			line-height: 20px;
-			vertical-align: 20%;
-		}
-
-		.under {
-			line-height: 20px;
-			vertical-align: -20%;
-		}
-	}
+	}	
 
 	// 3.4.3 Additions, Deletions, and Omissions
 	.add {
@@ -195,30 +258,4 @@
 	.zone {
 		margin-bottom: 5px;
 	}
-}
-
-.choice_popup {
-	display: inline-table;
-
-	/*white-space: nowrap;*/
-}
-
-span.dipl-choice_popup:hover span.dipl-reg,
-span.dipl-choice_popup.hover span.dipl-reg {
-	display: inline;
-	min-width: 20px;
-	text-align: center;
-}
-
-span.dipl-choice_popup span.dipl-orig {
-	/*color: #999966;*/
-	color: #69513a;
-
-	/*background-color: rgba(255,255,204,0.8);*/
-}
-
-span.dipl-choice_popup:hover span.dipl-orig,
-span.dipl-choice_popup.hover span.dipl-orig {
-	color: #561c0a;
-	text-decoration: underline;
 }
