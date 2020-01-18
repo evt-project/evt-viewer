@@ -202,8 +202,9 @@
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
             <!-- 3DHOP -->
                 <section id="main-container" class="viewMode" ng-switch-when="3dhop">
-                    <box data-type="tredhop" id="tredhop">
-						<div 3dhop data-canvas="draw-canvas" ng-if="getProperty('meshes') !== ''" ng-src="{{getProperty('meshes')}}" style="height: 100%"></div>						
+					<box data-type="tredhop"
+						 id="tredhop">
+						<div 3dhop data-canvas="draw-canvas" style="height: 100%"></div>
                		</box>
                		<box data-type="text" data-edition="{{getCurrentEdition()}}" id="mainText">
                		</box>
@@ -527,7 +528,7 @@
 		<script src="/src/dataHandler/criticalElementsParser.service.js"></script>
 		<script src="/src/dataHandler/versionApparatus.service.js"></script>
 		<script src="/src/dataHandler/bibliographyParser.service.js"></script>
-      <script src="/src/dataHandler/hotspotParser.service.js"></script>
+      	<script src="/src/dataHandler/hotspotParser.service.js"></script>
 		<script src="/src/dataHandler/glyphParser.service.js"></script>
 		<script src="/src/dataHandler/depaParser.service.js"></script>
       <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
