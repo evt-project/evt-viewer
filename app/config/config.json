@@ -3,7 +3,7 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "data/avicenna.xml",
+   "dataUrl": "data/VB-23-DOTR.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
@@ -59,7 +59,7 @@
          "label"    : "3DHOP",
          "icon"     : "mode-3dhop",
          "viewMode" : "3dhop",
-         "visible"  : false
+         "visible"  : true
      }
    ],
    "defaultEdition": "diplomatic",

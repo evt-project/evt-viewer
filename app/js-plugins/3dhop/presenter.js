@@ -328,7 +328,8 @@ _createStandardPointNXSProgram : function () {
 			else if((uClipAxis[1] == -1.0)&&((vModelPos[1]-uClipPoint[1])<uClipColorSize)) diffuse = uClipColor; \n\
 			if((uClipAxis[2] == 1.0)&&((uClipPoint[2]-vModelPos[2])<uClipColorSize)) diffuse = uClipColor;       \n\
 			else if((uClipAxis[2] == -1.0)&&((vModelPos[2]-uClipPoint[2])<uClipColorSize)) diffuse = uClipColor; \n\
-																			  \n\			gl_FragColor  = vec4(diffuse, uAlpha);                            \n\
+																			  \n\
+			gl_FragColor  = vec4(diffuse, uAlpha);                            \n\
 			gl_FragDepthEXT = gl_FragCoord.z + 0.0001*(1.0-pow(c, 2.0));      \n\
 		}                                                                     \n\
 	");
@@ -1861,7 +1862,8 @@ _drawScene : function () {
 		gl.depthMask(true);
 		gl.disable(gl.DEPTH_TEST);
 
-		xform.model.pop();	}
+		xform.model.pop();
+	}
 
 	// draw clipping plane (if any)
 	if(config.showClippingPlanes)
@@ -1936,7 +1938,8 @@ _drawScene : function () {
 				"uViewSpaceNormalMatrix"     : xform.viewSpaceNormalMatrix,
 				"uViewSpaceLightDirection"   : this._lightDirection,
 				"uColorID"                   : [0.0, 0.0, 1.0, 0.25]
-			};
+			};
+
 
 			renderer.begin();
 				renderer.setTechnique(CCTechnique);
@@ -2789,7 +2792,7 @@ setScene : function (options) {
 			var nexus = new Nexus.Renderer(gl);
 			mesh.renderable = nexus;
 			mesh.isNexus = true;
-			nexus.targetError = this._nexusTargetError;
+			//nexus.targetError = this._nexusTargetError;
 			//nexus.drawBudget = 0.5*1024*1024;
 			nexus._targetFps = this._nexusTargetFps;
 			nexus._maxCacheSize = this._nexusCacheSize;
@@ -3423,7 +3426,8 @@ setClippingPointZ: function(clz) {
 	this.ui.postDrawEvent();
 },
 
-_calculateBounding: function() {	var meshes    = this._scene.meshes;
+_calculateBounding: function() {
+	var meshes    = this._scene.meshes;
 	var instances = this._scene.modelInstances;
 	this._sceneBboxMin = SglVec3.maxNumber();
 	this._sceneBboxMax = SglVec3.minNumber();
