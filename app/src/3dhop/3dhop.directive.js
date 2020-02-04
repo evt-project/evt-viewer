@@ -64,10 +64,10 @@ angular.module('evtviewer.3dhop', [])
 
 				presenter.setScene({
 					meshes: {
-						"Cage" : { url: "data/3Dmodels/multires/gargo.nxs"}
+						"Gargoyle" : { url: "data/3Dmodels/multires/bewcastle.nxs"}
 					},
 					modelInstances: {
-						"Model1": { mesh: "Cage" }
+						"Model1": { mesh: "Gargoyle" }
 					}
 				});
 			}
