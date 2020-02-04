@@ -597,7 +597,6 @@ _createUtilsProgram : function () {
 	");
 	if(this._isDebugging)
 		console.log("UTILS Vertex Shader Log:\n" + utilsVertexShader.log);
-
 	var utilsFragmentShader = new SglFragmentShader(gl, "\
 		precision highp float;													\n\
 																				\n\
@@ -1518,7 +1517,6 @@ _drawScene : function () {
 	gl.clearColor(bkg[0], bkg[1], bkg[2], bkg[3]);
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 	gl.enable(gl.DEPTH_TEST);
-
 	// draw non-transparent geometries
 	for (var inst in instances) {
 		var instance = instances[inst];
@@ -1895,6 +1893,44 @@ _drawScene : function () {
 		gl.enable(gl.BLEND);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
+		if(SglVec3.length([this._clipPlane[0], this._clipPlane[1], this._clipPlane[2]]) > 0.0) {
+			var planepoint = [0.0, 0.0, 0.0];
+
+			var k = SglVec3.dot(this._sceneBboxCenter, [this._clipPlane[0], this._clipPlane[1], this._clipPlane[2]]) + this._clipPlane[3];
+			planepoint[0] = this._sceneBboxCenter[0] - (this._clipPlane[0] * k);
+			planepoint[1] = this._sceneBboxCenter[1] - (this._clipPlane[1] * k);
+			planepoint[2] = this._sceneBboxCenter[2] - (this._clipPlane[2] * k);
+
+			var rotm = SglMat4.identity();
+			rotm = SglMat4.mul(rotm, SglMat4.rotationAngleAxis(sglDegToRad(this._clipPlaneAH), [0.0, -1.0, 0.0]));
+			rotm = SglMat4.mul(rotm, SglMat4.rotationAngleAxis(sglDegToRad(this._clipPlaneAV), [0.0, 0.0, 1.0]));
+
+			var psize = this._sceneBboxDiag;
+
+			xform.model.push();
+			xform.model.translate(planepoint);
+			xform.model.multiply(rotm);
+			xform.model.scale([psize, psize, psize]);
+
+			var QuadUniforms = {
+				"uWorldViewProjectionMatrix" : xform.modelViewProjectionMatrix,
+				"uViewSpaceNormalMatrix"     : xform.viewSpaceNormalMatrix,
+				"uViewSpaceLightDirection"   : this._lightDirection,
+				"uColorID"                   : [1.0, 0.0, 1.0, 0.25]
+			};
+
+			renderer.begin();
+				renderer.setTechnique(CCTechnique);
+				renderer.setDefaultGlobals();
+				renderer.setPrimitiveMode("FILL");
+				renderer.setGlobals(QuadUniforms);
+				renderer.setModel(this.simpleQuadXModel);
+				renderer.renderModel();
+			renderer.end();
+
+			xform.model.pop();
+		}
+
 		if(this._clipAxis[0] != 0.0) {
 			xform.model.push();
 			xform.model.translate([this._clipPoint[0], this._sceneBboxCenter[1], this._sceneBboxCenter[2]]);
@@ -1978,7 +2014,6 @@ _drawScene : function () {
 		gl.depthMask(true);
 	}
 	Nexus.endFrame(this.ui.gl);
-
 	// saving image, if necessary
 	if(this.isCapturingScreenshot){
 	    this.isCapturingScreenshot = false;
@@ -2468,7 +2503,6 @@ onInitialize : function () {
 	// screenshot support
 	this.isCapturingScreenshot = false;
 	this.screenshotData = null;
-
 	// nexus parameters
 	this._nexusTargetFps   = 15.0;
 	this._nexusTargetError = 1.0;
@@ -2584,7 +2618,6 @@ onDrag : function (button, x, y, e) {
 
 	// if locked trackball, just return. we check AFTER the light-trackball test
 	if (this._scene.trackball.locked) return;
-
 	if(ui.dragDeltaX(button) != 0) this.x += (ui.cursorDeltaX/500);
 	if(ui.dragDeltaY(button) != 0) this.y += (ui.cursorDeltaY/500);
 
@@ -2710,7 +2743,6 @@ onMouseWheel: function (wheelDelta, x, y, e) {
 	else {
 		// if locked trackball, just return.
 		if (this._scene.trackball.locked) return;
-
 		var action = SGL_TRACKBALL_SCALE;
 
 		var factor = wheelDelta > 0.0 ? (0.90) : (1.10);
@@ -2894,7 +2926,6 @@ createPolylineEntity : function (mName, pointList) {
 	nEntity.renderable = null;
 	nEntity.transform = {};
 	nEntity.transform.matrix = SglMat4.identity();
-
 	var modelDescriptor = {};
 	modelDescriptor.primitives = ["lines","points"];
 	modelDescriptor.vertices = {};
