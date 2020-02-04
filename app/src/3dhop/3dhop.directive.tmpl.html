@@ -1,4 +1,4 @@
-<div id="3dhop" class="tredhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+<div id="3dhop" class="tredhop" onmousedown="if (event.preventDefault) event.preventDefault()" height="100%">
 	<div class="tredhopmenu" style="position:absolute;">
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('home')" title="Home" src="js-plugins/3dhop/skins/dark/home.png"/><br/>
 		<!--ZOOM-->
@@ -29,5 +29,6 @@
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/3dhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/3dhop/skins/dark/full.png"/>
 	</div>
-	<canvas id="{{ canvas }}" style="background-image: url(js-plugins/3dhop/skins/backgrounds/light.jpg);" width="150" height="1051" tabindex="0"></canvas>
+	<canvas id="{{ canvas }}" style="background-image: url(js-plugins/3dhop/skins/backgrounds/light.jpg);" tabindex="0"></canvas>
 </div>
+<!--width="150" height="1051"-->
