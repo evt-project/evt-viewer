@@ -26,8 +26,8 @@ angular.module('evtviewer.3dhop', [])
 		link: function (scope, element, attrs) {
 
 			var pluginFolder = 'js-plugins/3dhop/';
-			var jsFiles = ['spidergl.js', 'jquery.js', 'presenter.js', 'nexus.js', 'ply.js', 'trackball_turntable.js',
-				'trackball_turntable_pan.js', 'trackball_pantilt.js', 'trackball_sphere.js', 'init.js']
+			var jsFiles = ['corto.js', 'helpers.js', 'meco.js', 'meshcoder_worker.js', 'spidergl.js', 'jquery.js', 'presenter.js', 'nexus.js', 'ply.js', 'trackball_turntable.js',
+				'trackball_turntable_pan.js', 'trackball_pantilt.js', 'trackball_rail.js', 'trackball_sphere.js', 'init.js']
 
 			var loadFiles = function(fileIndex) {
 				$ocLazyLoad.load(pluginFolder + jsFiles[fileIndex]).then(function() {
@@ -36,7 +36,7 @@ angular.module('evtviewer.3dhop', [])
 					} else {
 						initializeViewer();
 					}
-				console.log('FInished loading js files')
+				console.log('Finished loading js files')
 				})
 			}
 
