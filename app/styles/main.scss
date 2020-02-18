@@ -138,7 +138,6 @@ section > div {
 @import "osdViewer.scss";
 @import "collation.scss";
 @import "tei.scss";
-@import "3dhop.scss";
 
 // Temporary
 .secondary-container {
@@ -536,7 +535,6 @@ pre {
         font-variant: small-caps;
         text-align: center;
     }
-
     &-sectionSubHeader {
         display: block;
         border-bottom: 1px dotted #666;
@@ -544,7 +542,7 @@ pre {
         font-variant: small-caps;
         color: #000000;
         font-size: 90%;
-        display: block;
+        display:block;
         margin-top: 14px;
     }
 
@@ -553,21 +551,17 @@ pre {
         color: #666;
         font-size: 90%;
     }
-
     &-blockLabel {
         display: block;
         margin-bottom: 2px;
     }
-
     &-inlineLabel {
         display: inline;
-
         + .p {
             display: inline;
         }
     }
 }
-
 .p {
     .projectInfo-inlineLabel { display: none; }
 }
@@ -652,48 +646,6 @@ pre {
     font-size: 95%;
     padding: 10px 0;
     border-top: 1px solid;
-}
-
-.viewer3dhopBtn {
-    margin: 4px;
-    width: 50px;
-    height: 50px;
-    opacity: 0.5;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    touch-action: none;
-    -ms-touch-action: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-
-    &:hover {
-        opacity: 1;
-    }
-}
-
-#draw-canvas {
-    background-repeat: no-repeat;
-    background-position: center top;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    outline: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    touch-action: none;
-    -ms-touch-action: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-tap-highlight-color: transparent;
 }
 /* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
 .icon-evt_note {

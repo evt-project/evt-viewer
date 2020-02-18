@@ -144,13 +144,7 @@ angular.module('evtviewer.core')
                                 icon     : 'mode-srcTxt',
                                 viewMode : 'srcTxt',
                                 visible  : true
-							},
-							{
-								label    : "3DHOP",
-								icon     : "mode-3dhop",
-								viewMode : "3dhop",
-								visible  : true
-							}],
+                            }],
 
 	toolHeatMap: true,
 	toolPinAppEntries: false,

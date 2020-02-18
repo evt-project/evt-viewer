@@ -574,14 +574,6 @@ angular.module('evtviewer.box')
 		     */
 			var newContent;
 			switch (currentType) {
-				case '3dhop':
-					updateContent = function() {
-						scope.vm.isLoading = true;
-						scope.vm.content = '<div 3dhop data-canvas="draw-canvas"></div>'// =/ END TEMP
-						scope.vm.isLoading = false;
-					};
-				break;
-				
 				case 'image':
 					topMenuList.selectors.push({
 						id: 'page_' + currentId,

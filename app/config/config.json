@@ -3,7 +3,7 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "data/VB-23-DOTR.xml",
+   "dataUrl": "data/VercelliBook.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
@@ -14,8 +14,6 @@
    "visCollSvg": "",
    "visCollImageList": "",
    "visCollDataModel": "",
-   
-   "meshes": "",
 
    "defaultViewMode": "txtTxt",
    "availableViewModes": [
@@ -54,13 +52,7 @@
          "icon": "mode-srcTxt",
          "viewMode": "srcTxt",
          "visible": false
-      },
-      {
-         "label"    : "3DHOP",
-         "icon"     : "mode-3dhop",
-         "viewMode" : "3dhop",
-         "visible"  : true
-     }
+      }
    ],
    "defaultEdition": "diplomatic",
    "showEditionLevelSelector": true,
