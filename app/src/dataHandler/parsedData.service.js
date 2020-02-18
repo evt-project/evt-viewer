@@ -1052,6 +1052,19 @@ angular.module('evtviewer.dataHandler')
 
 	/**
      * @ngdoc method
+     * @name evtviewer.dataHandler.parsedData#getMeshes
+     * @methodOf evtviewer.dataHandler.parsedData
+     *
+     * @description
+     * Get the list of parsed meshes.
+     * @returns {Object} Object representing the list of parsed Meshes.
+     */
+	parsedData.getMeshes = function() {
+		return meshes;
+	};
+
+	/**
+     * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPage
      * @methodOf evtviewer.dataHandler.parsedData
      *

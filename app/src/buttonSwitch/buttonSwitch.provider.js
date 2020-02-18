@@ -145,6 +145,7 @@ angular.module('evtviewer.buttonSwitch')
 	     */
 		var getIcon = function(icon) {
 			var evtIcon = '';
+
 			if (!icon) { return ''; }
 			switch (icon.toLowerCase()) {
 				case 'add':
@@ -271,6 +272,10 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'search-results-show':
 					evtIcon = 'icon-evt_search-results-open';
+               break;
+            case '3dhop':
+               case 'mode-3dhop':
+                  evtIcon = 'fa fa-cube';
                break;
 // Commented because related to the thumbnail button not working
 					/*
@@ -1091,7 +1096,7 @@ angular.module('evtviewer.buttonSwitch')
                                 };
                                 break;
                                 default:
-                                   break;
+								   break;
 			}
 
 			/**
