@@ -13,7 +13,7 @@ angular.module('evtviewer.openseadragon')
                 return config.imageNormalizationCoefficient;
             }
 
-            imageViewer.build = function(name){
+             imageViewer.build = function(name){
                  var options = config.imageViewerOptions;
 
                  var pages = parsedData.getPages();

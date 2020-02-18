@@ -685,10 +685,7 @@ angular.module('evtviewer.interface')
         });
        }
 		_console.log('InterfaceCtrl running');
-   })
-
-
-
+	})
 
 /**
  * @ngdoc directive

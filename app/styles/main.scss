@@ -138,7 +138,6 @@ section > div {
 @import "osdViewer.scss";
 @import "collation.scss";
 @import "tei.scss";
-@import "3dhop.scss";
 
 // Temporary
 .secondary-container {
@@ -536,7 +535,6 @@ pre {
         font-variant: small-caps;
         text-align: center;
     }
-
     &-sectionSubHeader {
         display: block;
         border-bottom: 1px dotted #666;
@@ -544,7 +542,7 @@ pre {
         font-variant: small-caps;
         color: #000000;
         font-size: 90%;
-        display: block;
+        display:block;
         margin-top: 14px;
     }
 
@@ -553,21 +551,17 @@ pre {
         color: #666;
         font-size: 90%;
     }
-
     &-blockLabel {
         display: block;
         margin-bottom: 2px;
     }
-
     &-inlineLabel {
         display: inline;
-
         + .p {
             display: inline;
         }
     }
 }
-
 .p {
     .projectInfo-inlineLabel { display: none; }
 }
