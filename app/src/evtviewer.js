@@ -68,7 +68,8 @@ angular
 		'ngXslt',
 		'prettyXml',
 		'infinite-scroll',
-		'pascalprecht.translate',
+      'pascalprecht.translate',
+      'oc.lazyLoad',
 		'evtviewer.core',
 		'evtviewer.communication',
 		'evtviewer.translation',
@@ -100,6 +101,6 @@ angular
 		'evtviewer.search',
       'evtviewer.imageViewer',
 		'evtviewer.toc',
-		'ui-leaflet',
+      'ui-leaflet',
       'evtviewer.3dhop'
-    ]);
+  ]);
