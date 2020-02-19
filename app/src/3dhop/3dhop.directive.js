@@ -51,20 +51,20 @@ angular.module('evtviewer.3dhop', [])
 				presenter = new Presenter(scope.canvas);
 				presenter.setScene({
 					meshes: {
-						"Gargoyle": {
-							url: "data/3Dmodels/multires/gargo.nxs"
+						"Bewcastle": {
+							url: "data/3Dmodels/multires/bewcastle.nxs"
 						},
-						"Cage": {
-							url: "data/3Dmodels/singleres/cage.ply"
-						}
+						//"Cage": {
+						//	url: "data/3Dmodels/singleres/"
+						//}
 					},
 					modelInstances: {
 						"Model1": {
-							mesh: "Cage"
+							mesh: "Bewcastle"
 						},
-						"Model2": {
-							mesh: "Gargoyle"
-						}
+						//"Model2": {
+						//	mesh: ""
+						//}
 					}
 				});
 			}
