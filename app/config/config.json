@@ -52,7 +52,13 @@
          "icon": "mode-srcTxt",
          "viewMode": "srcTxt",
          "visible": false
-      }
+      },
+      {
+         "label"    : "3DHOP",
+         "icon"     : "mode-3dhop",
+         "viewMode" : "3dhop",
+         "visible"  : true
+     }
    ],
    "defaultEdition": "diplomatic",
    "showEditionLevelSelector": true,
