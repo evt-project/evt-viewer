@@ -36,19 +36,8 @@ angular.module('evtviewer.3dhop', [])
 					} else {
 						initializeViewer();
 					}
-				console.log('Finished loading js files')
 				})
 			}
-
-			/*	$ocLazyLoad.load(pluginFolder +'spidergl.js', 'jquery.js', 'presenter.js', 'nexus.js', 'ply.js', 'trackball_turntable.js', 'trackball_turntable_pan.js', 'trackball_pantilt.js', 'trackball_sphere.js', 'init.js').then(function() {
-					console.log('loaded!!');
-					initializeViewer();
-					console.log('inizialized!!');
-				}, function(e) {
-					console.log('errr');
-					console.error(e);
-				})
-			*/
 
 			var initializeViewer = function() {
 				init3dhop();
@@ -58,59 +47,38 @@ angular.module('evtviewer.3dhop', [])
 			loadFiles(0);
 
 			var presenter = null;
-			function setup3dhop () {
+			var setup3dhop = function() {
 				presenter = new Presenter(scope.canvas);
-
 				presenter.setScene({
 					meshes: {
-						"Bewcastle" : { url: "data/3Dmodels/multires/bewcastle.nxs"}
+						"Gargoyle": {
+							url: "data/3Dmodels/multires/gargo.nxs"
+						},
+						"Cage": {
+							url: "data/3Dmodels/singleres/cage.ply"
+						}
 					},
 					modelInstances: {
 						"Model1": {
-							mesh: "Bewcastle",
-							color : [0.8, 0.7, 0.75]
-						}
-					},
-					trackball: {
-						type : TurntablePanTrackball,
-						trackOptions : {
-							startPhi: 35.0,
-							startTheta: 15.0,
-							startDistance: 2.5,
-							minMaxPhi: [-180, 180],
-							minMaxTheta: [-30.0, 70.0],
-							minMaxDist: [0.5, 3.0]
+							mesh: "Cage"
+						},
+						"Model2": {
+							mesh: "Gargoyle"
 						}
 					}
 				});
-				//--MEASURE--
-				presenter._onEndMeasurement = onEndMeasure;
-				//--MEASURE--
-
-				//--POINT PICKING--
-				presenter._onEndPickingPoint = onEndPick;
-				//--POINT PICKING--
-
-				//--SECTIONS--
-				sectiontoolInit();
-				//--SECTIONS--
 			}
-
-			scope.actionsToolbar = function(action) {
+			scope.actionOnViewer = function(action) {
 				console.log('action');
 				try {
-					if (action=='home') presenter.resetTrackball();
+					if (action == 'home') presenter.resetTrackball();
 					//--FULLSCREEN--
-					else if (action=='full' || action=='full_on') fullscreenSwitch();
+					else if (action == 'full' || action == 'full_on') fullscreenSwitch();
 					//--FULLSCREEN--
-
 					//--ZOOM--
 					else if (action == 'zoomin') presenter.zoomIn();
 					else if (action == 'zoomout') presenter.zoomOut();
 					//--ZOOM--
-					//--LIGHTING--
-					else if (action=='lighting' || action=='lighting_off') { presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch(); }
-					//--LIGHTING--
 					//--LIGHT--
 					else if (action == 'light' || action == 'light_on') {
 						presenter.enableLightTrackball(!presenter.isLightTrackballEnabled());
