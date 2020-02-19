@@ -197,7 +197,19 @@
 			</section>
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
-				<!-- READING TEXT -->
+            <!-- 3DHOP -->
+            <section id="main-container" class="viewMode" ng-switch-when="3dhop">
+               <box data-type="tredhop" id="tredhop">
+                  <div 3dhop data-canvas="draw-canvas" style="height: 100%"></div>
+               </box>
+         		<box data-type="text" data-edition="{{getCurrentEdition()}}" id="mainText">
+         		</box>
+					<!--
+               <box data-type="generic" id="generic">
+                  <div>Eventuale testo affiancato</div>
+              </box>-->
+            </section>
+            <!-- READING TEXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="readingTxt">
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
@@ -474,6 +486,7 @@
       <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
       <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
       <script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+      <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
       <!-- endbower -->
       <!-- endbuild -->
 
@@ -700,6 +713,11 @@
       <script src="/src/search/searchResults.provider.js"></script>
       <script src="/src/search/virtualKeyboard.directive.js"></script>
       <script src="/src/search/virtualKeyboard.provider.js"></script>
+
+      <script src="/src/3dhop/3dhop.js"></script>
+      <script src="/src/3dhop/3dhop.controller.js"></script>
+      <script src="/src/3dhop/3dhop.directive.js"></script>
+      <!-- script src="/src/3dhop/3dhop.provider.js"></script -->
 
       <script src="/src/navBar/navBar.js"></script>
       <script src="/src/navBar/navBar.configuration.js"></script>

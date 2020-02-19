@@ -1,0 +1,33 @@
+<div id="3dhop" class="tredhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+	<div style="position:absolute;">
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('home')" title="Home" src="js-plugins/3dhop/skins/dark/home.png"/><br/>
+		<!--ZOOM-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('zoomin')" title="Zoom In" src="js-plugins/3dhop/skins/dark/zoomin.png"/><br/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('zoomout')" title="Zoom Out" src="js-plugins/3dhop/skins/dark/zoomout.png"/><br/>
+		<!--ZOOM-->
+		<!--LIGHT-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('light_on')" title="Disable Light Control" src="js-plugins/3dhop/skins/dark/light_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('light')" title="Enable Light Control" src="js-plugins/3dhop/skins/dark/light.png"/><br/>
+		<!--LIGHT-->
+		<!--COLOR-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('color_on')" title="Model color" src="js-plugins/3dhop/skins/dark/color_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('color')" title="Solid color" src="js-plugins/3dhop/skins/dark/color.png"/><br/>
+		<!--COLOR-->
+		<!--MEASURE-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('measure_on')" title="Disable Measure Tool" src="js-plugins/3dhop/skins/dark/measure_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('measure')" title="Enable Measure Tool" src="js-plugins/3dhop/skins/dark/measure.png"/><br/>
+		<!--MEASURE-->
+		<!--POINT PICKING-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('pick_on')" title="Disable PickPoint Mode" src="js-plugins/3dhop/skins/dark/pick_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('pick')" title="Enable PickPoint Mode" src="js-plugins/3dhop/skins/dark/pick.png"/><br/>
+		<!--POINT PICKING-->
+		<!--SECTIONS-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('sections_on')" title="Disable Plane Sections" src="js-plugins/3dhop/skins/dark/sections_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('sections')" title="Enable Plane Sections" src="js-plugins/3dhop/skins/dark/sections.png"/><br/>
+		<!--SECTIONS-->
+		<!--FULLSCREEN-->
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/3dhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/3dhop/skins/dark/full.png"/>
+	</div>
+	<canvas id="{{ canvas }}" style="background-image: url(js-plugins/3dhop/skins/backgrounds/light.jpg);"/>
+</div>
