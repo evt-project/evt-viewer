@@ -597,6 +597,7 @@ _createUtilsProgram : function () {
 	");
 	if(this._isDebugging)
 		console.log("UTILS Vertex Shader Log:\n" + utilsVertexShader.log);
+
 	var utilsFragmentShader = new SglFragmentShader(gl, "\
 		precision highp float;													\n\
 																				\n\
@@ -1517,6 +1518,7 @@ _drawScene : function () {
 	gl.clearColor(bkg[0], bkg[1], bkg[2], bkg[3]);
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 	gl.enable(gl.DEPTH_TEST);
+
 	// draw non-transparent geometries
 	for (var inst in instances) {
 		var instance = instances[inst];
@@ -2014,6 +2016,7 @@ _drawScene : function () {
 		gl.depthMask(true);
 	}
 	Nexus.endFrame(this.ui.gl);
+
 	// saving image, if necessary
 	if(this.isCapturingScreenshot){
 	    this.isCapturingScreenshot = false;
@@ -2926,6 +2929,7 @@ createPolylineEntity : function (mName, pointList) {
 	nEntity.renderable = null;
 	nEntity.transform = {};
 	nEntity.transform.matrix = SglMat4.identity();
+
 	var modelDescriptor = {};
 	modelDescriptor.primitives = ["lines","points"];
 	modelDescriptor.vertices = {};
