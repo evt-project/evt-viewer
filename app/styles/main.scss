@@ -138,6 +138,8 @@ section > div {
 @import "osdViewer.scss";
 @import "collation.scss";
 @import "tei.scss";
+@import "3dhop.scss";
+@import "3DHpanels.scss";
 
 // Temporary
 .secondary-container {
@@ -765,4 +767,7 @@ span.critic{
    -ms-touch-action: none;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
    -webkit-tap-highlight-color: transparent;
+}
+#box_body_tredhop {
+   padding: 0;
 }
