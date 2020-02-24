@@ -37,28 +37,31 @@ angular.module('evtviewer.3dhop', [])
 						initializeViewer();
 					}
 				})
-			}
+         }
+
+         var objurl = scope.url;
 
 			var initializeViewer = function() {
 				init3dhop();
 				setup3dhop();
 			};
 
-			loadFiles(0);
+         loadFiles(0);
 
-			var presenter = null;
 			var setup3dhop = function() {
 				presenter = new Presenter(scope.canvas);
-				presenter.setScene({
+
+            presenter.setScene({
 					meshes: {
 						"Bewcastle": {
-							url: "data/3Dmodels/multires/bewcastle.nxs"
+						   url: objurl
 						},
 						//"Cage": {
 						//	url: "data/3Dmodels/singleres/"
 						//}
 					},
 					modelInstances: {
+
 						"Model1": {
 							mesh: "Bewcastle"
 						},
