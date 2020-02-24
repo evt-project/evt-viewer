@@ -1,0 +1,12 @@
+{
+"3dhopOptions": {
+   "meshes": {
+      "name": "Bewcastle",
+      "url": "data/3Dmodels/multires/bewcastle.nxs"
+   },
+   "modelInstances": {
+      "number" : "Model1",
+      "mesh": "Bewcastle"
+   }
+}
+}
