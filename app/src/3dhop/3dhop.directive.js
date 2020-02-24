@@ -1,13 +1,17 @@
 angular.module('evtviewer.3dhop')
 
-.directive('3dhop', function(evtAnalogue, evtInterface, $ocLazyLoad, $timeout) {
+.directive('3dhop', function(evtAnalogue, evtInterface, $ocLazyLoad, $timeout, $scope) {
 	return {
 		restrict: 'A',
 		scope: {
 			canvas: '@'
 		},
-		templateUrl: 'src/3dhop/3dhop.directive.tmpl.html',
+      templateUrl: 'src/3dhop/3dhop.directive.tmpl.html',
+
 		link: function(scope, element, attrs) {
+
+         var presenter = null;
+
 			var pluginFolder = 'js-plugins/3dhop/';
 			var jsFiles = ['spidergl.js', 'jquery.js', 'presenter.js',
 				'nexus.js', 'ply.js', 'trackball_turntable.js',
@@ -22,28 +26,31 @@ angular.module('evtviewer.3dhop')
 						initializeViewer();
 					}
 				})
-			}
+         }
+
+         var objurl = scope.url;
 
 			var initializeViewer = function() {
 				init3dhop();
 				setup3dhop();
 			};
 
-			loadFiles(0);
+         loadFiles(0);
 
-			var presenter = null;
 			var setup3dhop = function() {
 				presenter = new Presenter(scope.canvas);
-				presenter.setScene({
+
+            presenter.setScene({
 					meshes: {
 						"Bewcastle": {
-							url: "data/3Dmodels/multires/bewcastle.nxs"
+						   url: objurl
 						},
 						//"Cage": {
 						//	url: "data/3Dmodels/singleres/"
 						//}
 					},
 					modelInstances: {
+
 						"Model1": {
 							mesh: "Bewcastle"
 						},
