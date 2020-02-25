@@ -1,18 +1,6 @@
-/**
- * @ngdoc directive
- * @module evtviewer.3dhop
- * @name evtviewer.3dhop.directive:evtTreDHOP
- * @description
- * # evtTreDHOP
- * It uses the {@link evtviewer.3dhop.controller:TreDHOPCtrl TreDHOPCtrl} controller.
- * The initial scope is expanded in {@link evtviewer.3dhop.evtTreDHOP evtTreDHOP} provider.
- *
- * @scope
- *
- * @restrict A
-**/
-angular.module('evtviewer.3dhop', [])
-.directive('3dhop', function(evtInterface, $ocLazyLoad, $timeout) {
+angular.module('evtviewer.3dhop')
+
+.directive('3dhop', function(evtAnalogue, evtInterface, $ocLazyLoad, $timeout) {
 	return {
 		restrict: 'A',
 		scope: {
@@ -39,22 +27,33 @@ angular.module('evtviewer.3dhop', [])
 				})
          }
 
-         var objurl = scope.url;
-
-			var initializeViewer = function() {
-				init3dhop();
-				setup3dhop();
-			};
-
-         loadFiles(0);
-
 			var setup3dhop = function() {
+            function readTextFile(file, callback) {
+               var rawFile = new XMLHttpRequest();
+               rawFile.overrideMimeType("application/json");
+               rawFile.open("GET", file, true);
+               rawFile.onreadystatechange = function() {
+                   if (rawFile.readyState === 4 && rawFile.status == "200") {
+                       callback(rawFile.responseText);
+                   }
+               }
+               rawFile.send(null);
+           }
+
+           //usage:
+           readTextFile("config/config3d.json", function(text){
+               var data = JSON.parse(text);
+               console.log("Caricamento JSON");
+               var myurl=data.meshes.url;
+               var myurl=data.meshes.url;
+               console.log(myurl);
+
 				presenter = new Presenter(scope.canvas);
 
             presenter.setScene({
 					meshes: {
-						"Bewcastle": {
-						   url: objurl
+						"Mesh": {
+						   url: myurl
 						},
 						//"Cage": {
 						//	url: "data/3Dmodels/singleres/"
@@ -63,14 +62,25 @@ angular.module('evtviewer.3dhop', [])
 					modelInstances: {
 
 						"Model1": {
-							mesh: "Bewcastle"
+							mesh: "Mesh"
 						},
 						//"Model2": {
 						//	mesh: ""
 						//}
 					}
-				});
-			}
+            });
+         });
+         }
+
+         var presenter = null;
+
+			var initializeViewer = function() {
+				init3dhop();
+				setup3dhop();
+			};
+
+         loadFiles(0);
+
 			scope.actionOnViewer = function(action) {
 				console.log('action');
 				try {
@@ -116,6 +126,6 @@ angular.module('evtviewer.3dhop', [])
 					console.log(e)
 				}
 			}
-		}
+      }
 	};
 });
