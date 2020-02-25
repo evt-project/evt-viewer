@@ -27,7 +27,10 @@ angular.module('evtviewer.3dhop')
 				})
          }
 
-			var setup3dhop = function() {
+         var presenter = null;
+
+         var setup3dhop = function() {
+
             function readTextFile(file, callback) {
                var rawFile = new XMLHttpRequest();
                rawFile.overrideMimeType("application/json");
@@ -39,20 +42,21 @@ angular.module('evtviewer.3dhop')
                }
                rawFile.send(null);
            }
-
            //usage:
            readTextFile("config/config3d.json", function(text){
+
                var data = JSON.parse(text);
                console.log("Caricamento JSON");
+               var myname=data.meshes.name;
                var myurl=data.meshes.url;
-               var myurl=data.meshes.url;
+               var mymodel=data.modelInstances.mesh;
                console.log(myurl);
 
 				presenter = new Presenter(scope.canvas);
 
             presenter.setScene({
 					meshes: {
-						"Mesh": {
+						"Mesh" : {
 						   url: myurl
 						},
 						//"Cage": {
@@ -60,7 +64,6 @@ angular.module('evtviewer.3dhop')
 						//}
 					},
 					modelInstances: {
-
 						"Model1": {
 							mesh: "Mesh"
 						},
@@ -72,7 +75,7 @@ angular.module('evtviewer.3dhop')
          });
          }
 
-         var presenter = null;
+
 
 			var initializeViewer = function() {
 				init3dhop();
