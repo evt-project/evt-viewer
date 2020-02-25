@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const webpack = require('webpack'); //to access built-in plugins
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
    devtool: 'source-map',
@@ -14,6 +15,9 @@ module.exports = {
    },
    plugins: [
       new HtmlWebpackPlugin({ template: './index.html' }),
+      new CopyPlugin([
+         { from: 'images', to: 'images' },
+      ]),
       new webpack.ProvidePlugin({
          $: 'jquery',
          jQuery: 'jquery',
