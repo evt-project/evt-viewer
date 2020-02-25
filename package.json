@@ -2,6 +2,7 @@
   "name": "evtviewer",
   "version": "0.0.1",
   "devDependencies": {
+    "angular": "1.7.9",
     "@babel/core": "7.4.5",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
