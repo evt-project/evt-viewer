@@ -17,6 +17,7 @@ module.exports = {
       new HtmlWebpackPlugin({ template: './index.html' }),
       new CopyPlugin([
          { from: 'images', to: 'images' },
+         { from: 'fonts', to: 'fonts' },
       ]),
       new webpack.ProvidePlugin({
          $: 'jquery',
