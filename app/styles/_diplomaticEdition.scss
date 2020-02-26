@@ -59,8 +59,8 @@
 		}
 
 		// Abbreviations and Expansions inside Orig and Reg classes
-		.reg>.expan,
-		.expan>.ex {
+		.reg  > .expan,
+		.expan > .ex {
 			font-size: 100%;
 			position: relative;
 			border: none;

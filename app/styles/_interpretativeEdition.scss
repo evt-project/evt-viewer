@@ -1,324 +1,329 @@
 .interpretativeEdition {
-   // Abbreviations and Their Expansions
-   .choice {
-     position: relative;
-     text-align: center;
 
-     &:before,
-     &:after {
-       content: "";
-     }
+	// Abbreviations and Their Expansions
+	.choice {
+		position: relative;
+		text-align: center;
 
-     &:hover,
-     &.hover {
-       .abbr {
-         display: inline;
-         min-width: 20px;
-         z-index: 99;
-         white-space: nowrap;
-       }
-    }
+		&:before,
+		&:after {
+			content: "";
+		}
 
-     .expan {
-       color: purple;
-       z-index: 9;
-         &:hover,
-         &.hover {
-           text-decoration: underline;
-           color: #561c0a;
-         }
-       }
+		&:hover,
+		&.hover {
+			.abbr {
+				display: inline;
+				min-width: 20px;
+				z-index: 99;
+				white-space: nowrap;
+			}
+		}
 
-     .abbr {
-       font-size: 80%;
-       position: absolute;
-       line-height: 16px;
-       display: none;
-       border: 1.5px solid black;
-       border-radius: 3px;
-       padding: 5px 2px;
-       margin-top: 30px;
-       left: 0;
+		.expan {
+			color: purple;
+			z-index: 9;
 
-       @include set(box-shadow, 2px 2px 2px #7e7067);
+			&:hover,
+			&.hover {
+				text-decoration: underline;
+				color: #561c0a;
+			}
+		}
 
-         &:before {
-           content: url("../images/popup_before.png");
-           left: 15%;
-           position: absolute;
-           top: -12px;
-         }
-     }
+		.abbr {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
+			padding: 5px 2px;
+			margin-top: 30px;
+			left: 0;
 
-     .abbr,
-     .abbr * {
-       background: #e5dac4 !important;
-     }
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-     // Abbreviations and Expansions inside Orig and Reg classes
-       .orig  > .abbr {
-          font-size: 100%;
-          position: relative;
-          border: none;
-          border-radius: 0;
-          margin-top: 0;
-          padding: 0;
+			&:before {
+				content: url("../images/popup_before.png");
+				left: 15%;
+				position: absolute;
+				top: -12px;
+			}
+		}
 
-          @include set(box-shadow, 0px 0px 0px);
+		.abbr,
+		.abbr * {
+			background: #e5dac4 !important;
+		}
 
-          &:before {
-             content: none;
-          }
-       }
+		// Abbreviations and Expansions inside Orig and Reg classes
+		.orig>.abbr {
+			font-size: 100%;
+			position: relative;
+			border: none;
+			border-radius: 0;
+			margin-top: 0;
+			padding: 0;
 
-       .expan {
-          color: purple;
-          z-index: 9;
-          text-decoration: underline;
-       }
+			@include set(box-shadow, 0px 0px 0px);
 
-       .sic,
-       .orig {
-         font-size: 80%;
-         position: absolute;
-         line-height: 16px;
-         display: none;
-         border: 1.5px solid black;
-         border-radius: 3px;
+			&:before {
+				content: none;
+			}
+		}
 
-         @include set(box-shadow, 2px 2px 2px #7e7067);
+		.expan {
+			color: purple;
+			z-index: 9;
+			text-decoration: underline;
+		}
 
-         padding: 5px 8px;
-         margin-top: 30px;
+		.sic,
+		.orig {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
 
-         &:before {
-           left: 15%;
-           position: absolute;
-           top: -13px;
-         }
-       }
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-       .sic {
-       left: 3em !important;
-         &:before {
-           content: url("../images/popup_before_corr.png");
-         }
-       }
+			padding: 5px 8px;
+			margin-top: 30px;
 
-       .sic,
-       .sic * {
-         background: #f99069 !important;
-       }
+			&:before {
+				left: 15%;
+				position: absolute;
+				top: -13px;
+			}
+		}
 
-       .orig {
-         &:before {
-           content: url("../images/popup_before.png");
-         }
-       }
+		.sic {
+			left: 3em !important;
 
-       .orig,
-       .orig * {
-         background: #e5dac4 !important;
-       }
+			&:before {
+				content: url("../images/popup_before_corr.png");
+			}
+		}
 
-       .reg {
-         color: #69513a;
+		.sic,
+		.sic * {
+			background: #f99069 !important;
+		}
 
-         &:hover,
-         &.hover {
-           color: #561c0a;
-         }
-       }
+		.orig {
+			&:before {
+				content: url("../images/popup_before.png");
+			}
+		}
 
-       &:hover,
-       &.hover {
-         .orig,
-         .sic {
-           display: inline;
-           min-width: 20px;
-           text-align: center;
-           z-index: 9;
-           white-space: nowrap;
-         }
+		.orig,
+		.orig * {
+			background: #e5dac4 !important;
+		}
 
-         .sic {
-           @include set(transform, translate(-80%, 0));
-         }
+		.reg {
+			color: #69513a;
 
-         .reg {
-           text-decoration: underline;
-         }
-       }
+			&:hover,
+			&.hover {
+				color: #561c0a;
+			}
+		}
 
-       .corr {
-         color: #934d4d;
-       }
+		&:hover,
+		&.hover {
 
-       .sup {
-         line-height: 20px;
-         vertical-align: 20%;
-       }
+			.orig,
+			.sic {
+				display: inline;
+				min-width: 20px;
+				text-align: center;
+				z-index: 9;
+				white-space: nowrap;
+			}
 
-       .under {
-         line-height: 20px;
-         vertical-align: -20%;
-       }
+			.sic {
+				@include set(transform, translate(-80%, 0));
+			}
 
-     .sic {
-       display: inline-table;
+			.reg {
+				text-decoration: underline;
+			}
+		}
 
-       &:before,
-       &:after {
-         content: "";
-       }
-      }
+		.sup {
+			line-height: 20px;
+			vertical-align: 20%;
+		}
 
-       .sic {
-         font-size: 80%;
-         position: absolute;
-         line-height: 16px;
-         display: none;
-         background: #f99069;
-         border: 1.5px solid black;
-         border-radius: 3px;
+		.under {
+			line-height: 20px;
+			vertical-align: -20%;
+		}
 
-         @include set(box-shadow, 2px 2px 2px #7e7067);
+		.sic {
+			display: inline-table;
 
-         padding: 5px 8px;
-         margin-top: 30px;
+			&:before,
+			&:after {
+				content: "";
+			}
+		}
 
-         &:before {
-           content: url("../images/popup_before_corr.png");
-           left: 15%;
-           position: absolute;
-           top: -13px;
-         }
-       }
+		.sic {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			background: #f99069;
+			border: 1.5px solid black;
+			border-radius: 3px;
 
-       .corr {
-         color: #934d4d;
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-         &:hover,
-         &.hover {
-           color: #561c0a;
-         }
-       }
+			padding: 5px 8px;
+			margin-top: 30px;
 
-       &:hover,
-       &.hover {
-         .sic {
-           display: inline;
-           min-width: 20px;
-           text-align: center;
-         }
+			&:before {
+				content: url("../images/popup_before_corr.png");
+				left: 15%;
+				position: absolute;
+				top: -13px;
+			}
+		}
 
-         .corr {
-           text-decoration: underline;
-         }
-       }
-     }
+		.corr {
+			color: #934d4d;
 
-     .mapping[data-type="interpretative"],
-     .mapping[data-type="reg"],
-     .mapping[data-type="normalized"] {
-       display: inline;
-    }
+			&:hover,
+			&.hover {
+				color: #561c0a;
+			}
+		}
+
+		&:hover,
+		&.hover {
+			.sic {
+				display: inline;
+				min-width: 20px;
+				text-align: center;
+			}
+
+			.corr {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.mapping[data-type="interpretative"],
+	.mapping[data-type="reg"],
+	.mapping[data-type="normalized"] {
+		display: inline;
+	}
 
 
-   //TODO: reorder
-   .attachment {
-     border: 1px solid black;
-     padding: 5px 0px 0px 10px;
-   }
+	//TODO: reorder
+	.attachment {
+		border: 1px solid black;
+		padding: 5px 0px 0px 10px;
+	}
 
-   .ex {
-     font-style: italic;
-   }
+	.ex {
+		font-style: italic;
+	}
 
-   .lineN {
-     color: grey;
-     font-size: 0.8em;
-   }
+	.lineN {
+		color: grey;
+		font-size: 0.8em;
+	}
 
-   .resp {
-     font-weight: bold;
-   }
+	.resp {
+		font-weight: bold;
+	}
 
-   .red {
-     color: red;
-   }
+	.red {
+		color: red;
+	}
 
-   .hi {
-     &[data-rend="7init"] {
-       font-size: 140%;
-     }
+	.hi {
+		&[data-rend="7init"] {
+			font-size: 140%;
+		}
 
-     &[data-rend="init3.1"] {
-       font-size: 120%;
+		&[data-rend="init3.1"] {
+			font-size: 120%;
 
-       /*font-weight: bold;*/
-     }
+			/*font-weight: bold;*/
+		}
 
-     &[data-rend="cap"] {
-       text-transform: uppercase;
-     }
+		&[data-rend="cap"] {
+			text-transform: uppercase;
+		}
 
-     &[data-rend="double"] {
-       font-size: 120%;
-     }
-   }
+		&[data-rend="double"] {
+			font-size: 120%;
+		}
+	}
 
-   .ex {
-     font-style: italic;
-   }
+	.ex {
+		font-style: italic;
+	}
 
-   .zone {
-     margin-bottom: 5px;
-   }
+	.zone {
+		margin-bottom: 5px;
+	}
 
-   .p {
-     display: block;
-   }
+	.p {
+		display: block;
+	}
 
-   .center,
-   [rend="center"] {
-     text-align: center;
-     width: 92%;
-     display: inline-table;
-     background: #fff;
-   }
+	.center,
+	[rend="center"] {
+		text-align: center;
+		width: 92%;
+		display: inline-table;
+		background: #fff;
+	}
 
-   .right,
-   [rend="right"] {
-     text-align: right;
-     display: inline-table;
-     background: #fff;
-   }
+	.right,
+	[rend="right"] {
+		text-align: right;
+		display: inline-table;
+		background: #fff;
+	}
 
-   .left,
-   [rend="left"] {
-     display: inline-table;
-   }
-   .subst {
-      position: relative;
-      margin: 0px;
-      padding: 0px;
-   }
-   .del {
-       &:before {
-          content: "[[";
+	.left,
+	[rend="left"] {
+		display: inline-table;
+	}
 
-       }
-       &:after {
-          content: "]]";
-       }
-    }
-    .add {
-       &:before {
-          content: "|";
-       }
-       &:after {
-          content: "|";
-       }
-    }
- }
+	.subst {
+		position: relative;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.del {
+		&:before {
+			content: "[[";
+
+		}
+
+		&:after {
+			content: "]]";
+		}
+	}
+
+	.add {
+		&:before {
+			content: "|";
+		}
+
+		&:after {
+			content: "|";
+		}
+	}
+}
