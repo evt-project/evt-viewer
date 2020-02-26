@@ -77,7 +77,7 @@ angular.module('evtviewer.tabsContainer')
 		}
 
 		var toggleSubTab = function(tab, subTab) {
-			vm = this;
+			var vm = this;
 			vm.subContentOpened = tab;
 			if (subTab) {
 				vm.subTabOpened = subTab;
