@@ -1,15 +1,20 @@
-<div id="3dhop" class="tredhop" onmousedown="if (event.preventDefault) event.preventDefault()">
-	<div style="position:absolute;">
+<div id="3dhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+   <div id="tdhlg"></div>
+	<div id="toolbar" style="position:absolute;">
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('home')" title="Home" src="js-plugins/3dhop/skins/dark/home.png"/><br/>
 		<!--ZOOM-->
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('zoomin')" title="Zoom In" src="js-plugins/3dhop/skins/dark/zoomin.png"/><br/>
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('zoomout')" title="Zoom Out" src="js-plugins/3dhop/skins/dark/zoomout.png"/><br/>
 		<!--ZOOM-->
-		<!--LIGHT-->
-		<img class="viewer3dhopBtn" ng-click="actionOnViewer('light_on')" title="Disable Light Control" src="js-plugins/3dhop/skins/dark/light_on.png" style="position:absolute; visibility:hidden;"/>
-		<img class="viewer3dhopBtn" ng-click="actionOnViewer('light')" title="Enable Light Control" src="js-plugins/3dhop/skins/dark/light.png"/><br/>
-		<!--LIGHT-->
-		<!--COLOR-->
+      <!--LIGHT-->
+      <img class="viewer3dhopBtn" ng-click="actionOnViewer('lighting_off')" title="Enable Lighting" src="js-plugins/3dhop/skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('lighting')" title="Disable Lighting"  src="js-plugins/3dhop/skins/dark/lighting.png"/><br/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('light_on')" title="Disable Light Control" src="js-plugins/3dhop/skins/dark/lightcontrol_on.png" style="position:absolute; visibility:hidden;"/>
+		<img class="viewer3dhopBtn" ng-click="actionOnViewer('light')" title="Enable Light Control"  src="js-plugins/3dhop/skins/dark/lightcontrol.png"/><br/>
+      <!--LIGHT-->
+      <img class="viewer3dhopBtn" id="perspective" ng-click="actionOnViewer('perspective')" title="Perspective Camera"    src="js-plugins/3dhop/skins/dark/perspective.png"     style="position:absolute; visibility:hidden;"/>
+      <img class="viewer3dhopBtn" id="orthographic" ng-click="actionOnViewer('orthographic')" title="Orthographic Camera"   src="js-plugins/3dhop/skins/dark/orthographic.png"    /><br/>
+      <!--COLOR-->
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('color_on')" title="Model color" src="js-plugins/3dhop/skins/dark/color_on.png" style="position:absolute; visibility:hidden;"/>
 		<img class="viewer3dhopBtn" ng-click="actionOnViewer('color')" title="Solid color" src="js-plugins/3dhop/skins/dark/color.png"/><br/>
 		<!--COLOR-->

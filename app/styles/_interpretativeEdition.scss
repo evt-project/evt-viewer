@@ -1,17 +1,18 @@
-/* *************************** */
-/* INTERPRETATIVE EDITION	   */
-/* *************************** */
-
 .interpretativeEdition {
   // Abbreviations and Their Expansions
   .choice {
     position: relative;
     text-align: center;
 
-    &:before,
-    &:after {
-      content: "";
-    }
+      .expan {
+         color: #69513a;
+         z-index: 9;
+
+         &:hover,
+         &.hover {
+            color: #561c0a;
+         }
+      }
 
     &:hover,
     &.hover {
@@ -171,11 +172,38 @@
     .sic {
       display: inline-table;
 
-      &:before,
-      &:after {
-        content: "";
+         &:before,
+         &:after {
+            content: " ";
+         }
       }
-     }
+
+      .corr {
+         font-size: 80%;
+         position: absolute;
+         line-height: 16px;
+         display: none;
+         background: #f99069;
+         border: 1.5px solid black;
+         border-radius: 3px;
+
+         @include set(box-shadow, 2px 2px 2px #7e7067);
+
+         padding: 0.4%;
+         margin-top: 30px;
+
+         &:before {
+         content: url("../images/popup_before_corr.png");
+         left: 15%;
+         position: absolute;
+         top: -13px;
+         }
+      }
+
+    .under {
+      line-height: 20px;
+      vertical-align: -20%;
+    }
 
       .sic {
         font-size: 80%;
