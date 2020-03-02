@@ -131,7 +131,7 @@
                             </span>
                         </div>
                         <div ng-switch-when="xmlSource">
-                          <pre ng-if="::vm.entity._xmlSource">{{ ::vm.entity._xmlSource }}</pre>
+                          <pre ng-if="::vm.entity._xmlSource">{{ ::vm.entity._xmlSource | prettyXml}}</pre>
                           <span ng-if="::!vm.entity._xmlSource">{{ 'MESSAGES.NO_XML_SOURCE' | translate }}</span>
                         </div>
                         <div ng-switch-when="map">
