@@ -51,6 +51,18 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 #measure-output { cursor:text; -webkit-user-select:text; -webkit-touch-callout:text; -khtml-user-select:text; -moz-user-select:text; -ms-user-select:text; user-select:text; }
 #measure-box {
    position: absolute;
-   top: 490px;
+   top: 485px;
    left: 70px;
 }
+#pickpoint-box {
+   position: absolute;
+   top: 555px;
+   left: 70px;
+}
+#sections-box {
+   position: absolute;
+   top: 620px;
+   left: 70px;
+}
+
+

@@ -34,6 +34,38 @@
 		<img id="full_on" class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/3dhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
 		<img id="full"  ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/3dhop/skins/dark/full.png"/>
    </div>
+   <!--MEASURE-->
    <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>
-	<canvas id="{{ canvas }}" style="background-image: url(js-plugins/3dhop/skins/backgrounds/light.jpg);"></canvas>
+   <!--MEASURE-->
+
+   <!--POINT PICKING-->
+   <div id="pickpoint-box" ng-click="onEndPick('pickpoint-box')" class="output-box">XYZ picked point<hr/><span id="pickpoint-output" ng-click="onEndMeasure('pickpoint-output')" class="output-text" onmousedown="event.stopPropagation()">[ 0 , 0 , 0 ]</span></div>
+   <!--POINT PICKING-->
+
+   <!--SECTIONS-->
+   <div id="sections-box" ng-click="sectiontoolInit" class="output-box">
+      <table class="output-table" onmousedown="event.stopPropagation()">
+      <tr><td>Plane</td><td>Position</td><td>Flip</td></tr>
+      <tr>
+         <td><img   id="xplane_on"    title="Disable X Axis Section" src="js-plugins/3dhop/skins/icons/sectionX_on.png" onclick="sectionxSwitch()" style="position:absolute; visibility:hidden; border:1px inset;"/>
+            <img   id="xplane"       title="Enable X Axis Section"  src="js-plugins/3dhop/skins/icons/sectionX.png"  onclick="sectionxSwitch()"/><br/></td>
+         <td><input id="xplaneSlider" class="output-input"  type="range"    title="Move X Axis Section Position"/></td>
+         <td><input id="xplaneFlip"   class="output-input"  type="checkbox" title="Flip X Axis Section Direction"/></td></tr>
+      <tr>
+         <td><img   id="yplane_on"    title="Disable Y Axis Section" src="js-plugins/3dhop/skins/icons/sectionY_on.png" onclick="sectionySwitch()" style="position:absolute; visibility:hidden; border:1px inset;"/>
+            <img   id="yplane"       title="Enable Y Axis Section"  src="js-plugins/3dhop/skins/icons/sectionY.png"  onclick="sectionySwitch()"/><br/></td>
+         <td><input id="yplaneSlider" class="output-input"  type="range"    title="Move Y Axis Section Position"/></td>
+         <td><input id="yplaneFlip"   class="output-input"  type="checkbox" title="Flip Y Axis Section Direction"/></td></tr>
+      <tr>
+         <td><img   id="zplane_on"    title="Disable Z Axis Section" src="js-plugins/3dhop/skins/icons/sectionZ_on.png" onclick="sectionzSwitch()" style="position:absolute; visibility:hidden; border:1px inset;"/>
+            <img   id="zplane"       title="Enable Z Axis Section"  src="js-plugins/3dhop/skins/icons/sectionZ.png"  onclick="sectionzSwitch()"/><br/></td>
+         <td><input id="zplaneSlider" class="output-input"  type="range"    title="Move Y Axis Section Position"/></td>
+         <td><input id="zplaneFlip"   class="output-input"  type="checkbox" title="Flip Z Axis Section Direction"/></td></tr></table>
+      <table class="output-table" onmousedown="event.stopPropagation()" style="text-align:right;">
+      <tr>
+      <td>Show planes<input id="showPlane" class="output-input" type="checkbox" title="Show Section Planes" style="bottom:-3px;"/></td>
+      <td>Show edges<input  id="showBorder" class="output-input" type="checkbox" title="Show Section Edges" style="bottom:-3px;"/></td></tr></table>
+   </div>
+   <!--SECTIONS-->
+   <canvas id="{{ canvas }}" style="background-image: url(js-plugins/3dhop/skins/backgrounds/light.jpg);"></canvas>
 </div>
