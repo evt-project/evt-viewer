@@ -1,7 +1,7 @@
 /*
 3DHOP - 3D Heritage Online Presenter
 Copyright (c) 2014-2019, Visual Computing Lab, ISTI - CNR
-All rights reserved.    
+All rights reserved.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ function init3dhop() {
 			else $(this).css("opacity","1.0");
 		})
 		.mouseout(function(e) {
-			clearInterval(interval); 
+			clearInterval(interval);
 			$(this).css("opacity","0.5");
 		})
 		.mousedown(function(e) {
@@ -44,7 +44,7 @@ function init3dhop() {
 					}, 100);
 				}
 				else {
-					clearInterval(interval); 
+					clearInterval(interval);
 				}
 				$(this).css("opacity","1.0");
 				button=0;
@@ -53,12 +53,12 @@ function init3dhop() {
 		.mouseup(function(e) {
 			ismousedown = false;
 			if(e.button==button){
-				clearInterval(interval); 
+				clearInterval(interval);
 				$(this).css("opacity","0.8");
 				button=0;
 			}
 		})
-		.on('touchstart', function(e) { 
+		.on('touchstart', function(e) {
 			button=2;
 		})
 		.on('touchend', function(e) {
@@ -72,10 +72,10 @@ function init3dhop() {
 			$('#toolbar img').css("opacity","0.5");
 		})
 		.on('touchend pointerup', function(e) {
-			clearInterval(interval); 
+			clearInterval(interval);
 		})
 		.on('touchmove', function(e) {
-			clearInterval(interval); 
+			clearInterval(interval);
 			$('#toolbar img').css("opacity","0.5");
 		});
 
@@ -88,18 +88,18 @@ function init3dhop() {
 		.on('touchstart pointerdown', function(e) {
 			$('#toolbar img').css("opacity","0.5");
 		})
-		.mousedown(function(e) { 
-			$('#toolbar img').css("opacity","0.5"); 
-			if(e.preventDefault) e.preventDefault(); 
+		.mousedown(function(e) {
+			$('#toolbar img').css("opacity","0.5");
+			if(e.preventDefault) e.preventDefault();
 			if (window.getSelection && window.getSelection()!='') window.getSelection().removeAllRanges();
 			else if (document.selection && document.selection.createRange()!='') document.selection.empty();
 		});
 
-	$(document).on('MSFullscreenChange mozfullscreenchange webkitfullscreenchange', function(e) { //fullscreen handler 
+	$(document).on('MSFullscreenChange mozfullscreenchange webkitfullscreenchange', function(e) { //fullscreen handler
 		if(!document.msFullscreenElement&&!document.mozFullScreen&&!document.webkitIsFullScreen) exitFullscreen();
 	});
 
-	if (window.navigator.userAgent.indexOf('Trident/') > 0) { //IE fullscreen handler 
+	if (window.navigator.userAgent.indexOf('Trident/') > 0) { //IE fullscreen handler
 		$('#full').click(function() {enterFullscreen();});
 		$('#full_on').click(function() {exitFullscreen();});
 	}
@@ -139,12 +139,12 @@ function init3dhop() {
 function set3dhlg() {
   $('#tdhlg').html("Powered by 3DHOP</br>CNR &nbsp;&ndash;&nbsp; ISTI");
   $('#tdhlg').mouseover(function() {
-	 $('#tdhlg').animate({ 
+	 $('#tdhlg').animate({
 		height: "25px"
 	  }, "fast" );
 	 })
 	.mouseout(function() {
-	 $('#tdhlg').animate({ 
+	 $('#tdhlg').animate({
 		height: "13px"
 	  }, "slow" );
 	 });
@@ -199,7 +199,7 @@ function hotspotSwitch(on) {
 function pickpointSwitch(on) {
   if(on === undefined) on = presenter.isPickpointModeEnabled();
 
-  if(on){  
+  if(on){
     $('#pick').css("visibility", "hidden");
     $('#pick_on').css("visibility", "visible");
     $('#pickpoint-box').fadeIn().css("display","table");
@@ -219,7 +219,7 @@ function pickpointSwitch(on) {
 function measureSwitch(on) {
   if(on === undefined) on = presenter.isMeasurementToolEnabled();
 
-  if(on){  
+  if(on){
     $('#measure').css("visibility", "hidden");
     $('#measure_on').css("visibility", "visible");
     $('#measure-box').fadeIn().css("display","table");
@@ -284,7 +284,7 @@ function sectiontoolInit() {
 	// set sections value
 	presenter.setClippingPointXYZ(0.5, 0.5, 0.5);
 
-	// set sliders 
+	// set sliders
 	var xplaneSlider = $('#xplaneSlider')[0];
 	xplaneSlider.min = 0.0;
 	xplaneSlider.max = 1.0;
@@ -336,7 +336,7 @@ function sectiontoolInit() {
 			else presenter.setClippingZ(1);
 		}
 	};
-	
+
 	var planesCheck = $('#showPlane')[0];
 	planesCheck.defaultChecked = presenter.getClippingRendermode()[0];
 	planesCheck.onchange = function(){ presenter.setClippingRendermode(this.checked, presenter.getClippingRendermode()[1]); };
@@ -350,14 +350,14 @@ function sectiontoolReset() {
 	// reset sections value
 	presenter.setClippingPointXYZ(0.5, 0.5, 0.5);
 
-	// reset sliders 
+	// reset sliders
 	var xplaneSlider = $('#xplaneSlider')[0];
 	xplaneSlider.value = xplaneSlider.defaultValue;
 
 	var yplaneSlider = $('#yplaneSlider')[0];
 	yplaneSlider.value = yplaneSlider.defaultValue;
 
-	var zplaneSlider = $('#zplaneSlider')[0]; 
+	var zplaneSlider = $('#zplaneSlider')[0];
 	zplaneSlider.value = zplaneSlider.defaultValue;
 
 	// reset checkboxes
@@ -385,7 +385,7 @@ function sectionxSwitch(on) {
 	if(on){
 		$('#xplane').css("visibility", "hidden");
 		$('#xplane_on').css("visibility", "visible");
-		var xplaneFlip = $('#xplaneFlip')[0]; 
+		var xplaneFlip = $('#xplaneFlip')[0];
 		if(xplaneFlip.checked) presenter.setClippingX(-1);
 		else presenter.setClippingX(1);
 	}
@@ -471,7 +471,7 @@ function exitFullscreen() {
   else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
   else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
 
-  presenter.ui.postDrawEvent(); 
+  presenter.ui.postDrawEvent();
 }
 
 /*DEPRECATED*/
@@ -541,7 +541,7 @@ function resizeCanvas(w,h) {
 }
 
 function anchorPanels() {
-	if ($('#pickpoint-box')[0] && $('#pick')[0]) 
+	if ($('#pickpoint-box')[0] && $('#pick')[0])
 	{
 		$('#pickpoint-box').css('left', ($('#pick').position().left + $('#pick').width() + $('#toolbar').position().left + 5));
 		$('#pickpoint-box').css('top', ($('#pick').position().top + $('#toolbar').position().top));
@@ -551,7 +551,7 @@ function anchorPanels() {
 		$('#measure-box').css('left', ($('#measure').position().left + $('#measure').width() + $('#toolbar').position().left + 5));
 		$('#measure-box').css('top', ($('#measure').position().top + $('#toolbar').position().top));
 	}
-	if ($('#sections-box')[0] && $('#sections')[0]) 
+	if ($('#sections-box')[0] && $('#sections')[0])
 	{
 		$('#sections-box').css('left', ($('#sections').position().left + $('#sections').width() + $('#toolbar').position().left + 5));
 		$('#sections-box').css('top', ($('#sections').position().top + $('#toolbar').position().top));
