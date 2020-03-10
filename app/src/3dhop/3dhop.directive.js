@@ -72,13 +72,12 @@ angular.module('evtviewer.3dhop')
 
          var setup3dhop = function() {
 
-            readTextFile("config/config.json", function(text){
+            readTextFile("../../config/config.json", function(text){
                presenter = new Presenter(scope.canvas);
                var data = JSON.parse(text);
                var TDHOPTIONS=data;
-               var myname=TDHOPTIONS.tdhopViewerOptions.meshes.name;
-               var mymodel=TDHOPTIONS.tdhopViewerOptions.modelInstances.mesh;
-               var myurl=TDHOPTIONS.tdhopViewerOptions.meshes.url;
+               var myname=TDHOPTIONS.tdhopViewerOptions.name;
+               var myurl=TDHOPTIONS.tdhopViewerOptions.url;
                console.log("Caricamento JSON");
                console.log(myurl);
                presenter.setScene({
@@ -115,7 +114,18 @@ angular.module('evtviewer.3dhop')
                      radiusMode: "scene"
                   }
                });
+
+               //--MEASURE--
                presenter._onEndMeasurement = onEndMeasure;
+               //--MEASURE--
+
+               //--POINT PICKING--
+               presenter._onEndPickingPoint = onEndPick;
+               //--POINT PICKING--
+
+               //--SECTIONS--
+               sectiontoolInit();
+               //--SECTIONS--
             });
 
             readTextFile("config/hotspots.json", function(text){
@@ -1148,7 +1158,7 @@ angular.module('evtviewer.3dhop')
 					console.log(e)
             }
          }
-
+         //--MEASURE--
          function onEndMeasure(measure) {
             measure.toFixed(2) //sets the number of decimals when displaying the measure
             // depending on the model measure units, use "mm","m","km" or whatever you have
@@ -1156,6 +1166,18 @@ angular.module('evtviewer.3dhop')
             $('#measure-output').html(measure.toFixed(2) + " mm");
             //$scope.measure=(measure.toFixed(2) + " mm");
          }
+         //--MEASURE--
+
+         //--PICKPOINT--
+         function onEndPick(point) {
+            // .toFixed(2) sets the number of decimals when displaying the picked point
+            var x = point[0].toFixed(2);
+            var y = point[1].toFixed(2);
+            var z = point[2].toFixed(2);
+            $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
+         }
+         //--PICKPOINT--
+
       }
    };
 });
