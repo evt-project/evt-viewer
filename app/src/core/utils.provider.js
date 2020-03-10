@@ -135,7 +135,7 @@ angular.module('evtviewer.core')
     * @todo Decide if move to another service
     */
 	this.getCommonAncestor = function(a, b) {
-		var parents = $(a).parents().andSelf();
+		var parents = $(a).parents().addBack();
 		while (b) {
 			var ix = parents.index(b);
 			if (ix !== -1) {
