@@ -157,7 +157,7 @@ angular.module('evtviewer.dataHandler')
 
 			// remove <pb>
 			var pbs = docDOM.getElementsByTagName('pb');
-			k = 0;
+			var k = 0;
 			while (k < pbs.length) {
 				var pbNode = pbs[k];
 				pbNode.parentNode.removeChild(pbNode);
