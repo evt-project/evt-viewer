@@ -211,5 +211,16 @@
    },
    "imageNormalizationCoefficient": 1265,
 
-   "languages": ["en", "it"]
+   "languages": ["en", "it"],
+
+   "tdhopViewerOptions": {
+      "meshes": {
+         "name": "Bewcastle",
+         "url": "data/3Dmodels/multires/bewcastle.nxz"
+      },
+      "modelInstances": {
+         "number" : "Model1",
+         "mesh": "Bewcastle"
+      }
+   }
 }
