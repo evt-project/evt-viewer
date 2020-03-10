@@ -32,7 +32,8 @@
 		<!--SECTIONS-->
 		<!--FULLSCREEN-->
 		<img id="full_on" class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/3dhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="full" class="viewer3dhopBtn" ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/3dhop/skins/dark/full.png"/>
-	</div>
+		<img id="full"  ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/3dhop/skins/dark/full.png"/>
+   </div>
+   <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>
 	<canvas id="{{ canvas }}" style="background-image: url(js-plugins/3dhop/skins/backgrounds/light.jpg);"></canvas>
 </div>

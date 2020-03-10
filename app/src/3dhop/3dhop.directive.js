@@ -98,8 +98,24 @@ angular.module('evtviewer.3dhop')
                      //"Model2": {
                      //	mesh: ""
                      //}
+                  },
+                  trackball: {
+                     type : TurntablePanTrackball,
+                     trackOptions : {
+                        startDistance: 1.3,
+                        startPhi: 40.0,
+                        startTheta: 20.0,
+                        minMaxDist: [0.8, 2.5],
+                        minMaxPhi: [-180, 180],
+                        minMaxTheta: [-30.0, 70.0]
+                     }
+                  },
+                  space: {
+                     centerMode: "scene",
+                     radiusMode: "scene"
                   }
                });
+               presenter._onEndMeasurement = onEndMeasure;
             });
 
             readTextFile("config/hotspots.json", function(text){
@@ -125,26 +141,25 @@ angular.module('evtviewer.3dhop')
             });
          }
 
+         /*
+         3DHOP - 3D Heritage Online Presenter
+         Copyright (c) 2014-2019, Visual Computing Lab, ISTI - CNR
+         All rights reserved.
+
+         This program is free software: you can redistribute it and/or modify
+         it under the terms of the GNU General Public License as published by
+         the Free Software Foundation, either version 3 of the License, or
+         (at your option) any later version.
+
+         This program is distributed in the hope that it will be useful,
+         but WITHOUT ANY WARRANTY; without even the implied warranty of
+         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+         GNU General Public License for more details.
+
+         You should have received a copy of the GNU General Public License
+         along with this program.  If not, see <http://www.gnu.org/licenses/>.
+         */
          var init3dhop = function () {
-            /*
-            3DHOP - 3D Heritage Online Presenter
-            Copyright (c) 2014-2019, Visual Computing Lab, ISTI - CNR
-            All rights reserved.
-
-            This program is free software: you can redistribute it and/or modify
-            it under the terms of the GNU General Public License as published by
-            the Free Software Foundation, either version 3 of the License, or
-            (at your option) any later version.
-
-            This program is distributed in the hope that it will be useful,
-            but WITHOUT ANY WARRANTY; without even the implied warranty of
-            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-            GNU General Public License for more details.
-
-            You should have received a copy of the GNU General Public License
-            along with this program.  If not, see <http://www.gnu.org/licenses/>.
-            */
-
             //function init3dhop() {
                if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
@@ -259,7 +274,7 @@ angular.module('evtviewer.3dhop')
 
                resizeCanvas($('#3dhop').parent().width(),$('#3dhop').parent().height());
 
-               anchorPanels();
+               //anchorPanels();
 
                set3dhlg();
 
@@ -277,38 +292,6 @@ angular.module('evtviewer.3dhop')
                }, "slow" );
                });
             $('#tdhlg').click(function() { window.open('http://vcg.isti.cnr.it/3dhop/', '_blank') });
-            }
-
-            // +++ INTERFACE SWITCHING FUNCTIONS +++ //
-
-            function lightSwitch(on) {
-            if(on === undefined) on = presenter.isLightTrackballEnabled();
-
-            if(on){
-               $('#light').css("visibility", "hidden");
-               $('#light_on').css("visibility", "visible");
-               $('#lighting_off').css("visibility", "hidden");	//manage lighting combined interface
-               $('#lighting').css("visibility", "visible");	//manage lighting combined interface
-            }
-            else{
-               $('#light_on').css("visibility", "hidden");
-               $('#light').css("visibility", "visible");
-            }
-            }
-
-            function lightingSwitch(on) {
-            if(on === undefined) on = presenter.isSceneLightingEnabled();
-
-            if(on){
-               $('#lighting_off').css("visibility", "hidden");
-               $('#lighting').css("visibility", "visible");
-            }
-            else{
-               $('#lighting').css("visibility", "hidden");
-               $('#lighting_off').css("visibility", "visible");
-               $('#light_on').css("visibility", "hidden");	//manage light combined interface
-               $('#light').css("visibility", "visible");	//manage light combined interface
-            }
             }
 
             function hotspotSwitch(on) {
@@ -344,7 +327,7 @@ angular.module('evtviewer.3dhop')
             }
             }
 
-            function measureSwitch(on) {
+            /*function measureSwitch(on) {
             if(on === undefined) on = presenter.isMeasurementToolEnabled();
 
             if(on){
@@ -362,7 +345,7 @@ angular.module('evtviewer.3dhop')
                $('#measure-output').html("0.0");
                if (!presenter.isAnyMeasurementEnabled()) $('#draw-canvas').css("cursor","default");
             }
-            }
+            }*/
 
             function colorSwitch(on) {
             if(on === undefined) on = $('#color').css("visibility")=="visible";
@@ -628,7 +611,7 @@ angular.module('evtviewer.3dhop')
             function moveToolbar(l,t) {
                $('#toolbar').css('left', l);
                $('#toolbar').css('top', t);
-               anchorPanels();
+               //anchorPanels();
             }
 
             function movePickpointbox(l,t) {
@@ -668,7 +651,7 @@ angular.module('evtviewer.3dhop')
             //  else presenter._resizable = true;
             }
 
-            function anchorPanels() {
+            /*function anchorPanels() {
                if ($('#pickpoint-box')[0] && $('#pick')[0])
                {
                   $('#pickpoint-box').css('left', ($('#pick').position().left + $('#pick').width() + $('#toolbar').position().left + 5));
@@ -684,7 +667,7 @@ angular.module('evtviewer.3dhop')
                   $('#sections-box').css('left', ($('#sections').position().left + $('#sections').width() + $('#toolbar').position().left + 5));
                   $('#sections-box').css('top', ($('#sections').position().top + $('#toolbar').position().top));
                }
-            }
+            }*/
 
             // +++ INTERFACE UTILITY FUNCTIONS +++ //
 
@@ -1053,11 +1036,11 @@ angular.module('evtviewer.3dhop')
 
                // +++ INTERFACE POSITIONING FUNCTIONS +++ //
 
-               function moveToolbar(l,t) {
+               /*function moveToolbar(l,t) {
                   $('#toolbar').css('left', l);
                   $('#toolbar').css('top', t);
                   anchorPanels();
-               }
+               }*/
 
                function movePickpointbox(l,t) {
                   $('#pickpoint-box').css('left', l);
@@ -1096,7 +1079,7 @@ angular.module('evtviewer.3dhop')
                //  else presenter._resizable = true;
                }
 
-               function anchorPanels() {
+               /*function anchorPanels() {
                   if ($('#pickpoint-box')[0] && $('#pick')[0])
                   {
                      $('#pickpoint-box').css('left', ($('#pick').position().left + $('#pick').width() + $('#toolbar').position().left + 5));
@@ -1112,7 +1095,7 @@ angular.module('evtviewer.3dhop')
                      $('#sections-box').css('left', ($('#sections').position().left + $('#sections').width() + $('#toolbar').position().left + 5));
                      $('#sections-box').css('top', ($('#sections').position().top + $('#toolbar').position().top));
                   }
-               }
+               }*/
                 // +++ INTERFACE UTILITY FUNCTIONS +++ //
 
             function isIOS() {
@@ -1163,114 +1146,16 @@ angular.module('evtviewer.3dhop')
                else if(action=='move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
 				} catch (e) {
 					console.log(e)
-				}
-         }
-         function lightSwitch(status) {
-
-            if(status == 'light'){
-               $('#light').css("visibility", "hidden");
-                $('#light_off').css("visibility", "visible");
-                $('#lighting_off').css("visibility", "hidden");	//manage lighting combined interface
-                $('#lighting').css("visibility", "visible");	//manage lighting combined interface
-
-               $('#lightcontroller').css('left', ($('#light').position().left + $('#light').width() + $('#toolbar').position().left + 25));
-               $('#lightcontroller').css('top', ($('#light').position().top + $('#toolbar').position().top - 25));
-
-               presenter.enableSceneLighting('lighting_off');
-               lightingSwitch('lighting_off');
-            }
-            else{
-                $('#light_off').css("visibility", "hidden");
-                $('#light').css("visibility", "visible");
-
-                $('#lightcontroller').css('left', ($('#lightcontroller').position().left - 250));
-            }
-         }
-         function click_lightcontroller(event) {
-            var XX=0, YY=0;
-            var midpoint = [63,63];
-            var radius = 60;
-
-            var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
-            var coords = lightControllerCanvas.relMouseCoords(event);
-
-            XX = coords.x - midpoint[0];
-            YY = coords.y - midpoint[1];
-
-            // check inside circle
-            if((XX*XX + YY*YY) < ((radius-5)*(radius-5))) {
-               var lx = (XX / radius)/2.0;
-               var ly = (YY / radius)/2.0;
-
-               presenter.rotateLight(lx,-1.0*ly); 		// inverted ly
-               update_lightcontroller(lx,ly);
-
-               (event.touches) ? lightControllerCanvas.addEventListener("touchmove", drag_lightcontroller, false) : lightControllerCanvas.addEventListener("mousemove", drag_lightcontroller, false);
             }
          }
 
-         function drag_lightcontroller(event) {
-            var XX=0, YY=0;
-            var midpoint = [63,63];
-            var radius = 60;
-
-            var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
-            var coords = lightControllerCanvas.relMouseCoords(event);
-
-            XX = coords.x - midpoint[0];
-            YY = coords.y - midpoint[1];
-
-            // check inside circle
-            if((XX*XX + YY*YY) < ((radius-5)*(radius-5))) {
-               var lx = (XX / radius)/2.0;
-               var ly = (YY / radius)/2.0;
-
-               presenter.rotateLight(lx,-1.0*ly); 		// inverted ly
-               update_lightcontroller(lx,ly);
-            }
+         function onEndMeasure(measure) {
+            measure.toFixed(2) //sets the number of decimals when displaying the measure
+            // depending on the model measure units, use "mm","m","km" or whatever you have
+            //console.log(scope.measure-output);
+            $('#measure-output').html(measure.toFixed(2) + " mm");
+            //$scope.measure=(measure.toFixed(2) + " mm");
          }
-
-         function update_lightcontroller(xx,yy) {
-
-            var midpoint = [63,63];
-            var radius = 60;
-
-            var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
-            var context = lightControllerCanvas.getContext("2d");
-            context.clearRect(0, 0, lightControllerCanvas.width, lightControllerCanvas.height);
-
-            context.beginPath();
-            context.arc(midpoint[0], midpoint[1], radius, 0, 2 * Math.PI, false);
-            var grd=context.createRadialGradient(midpoint[0]+(xx*radius*2),midpoint[1]+(yy*radius*2),5,midpoint[0], midpoint[1],radius);
-            grd.addColorStop(0,"yellow");
-            grd.addColorStop(1,"black");
-            context.fillStyle = grd;
-            context.fill();
-            context.lineWidth = 3;
-            context.strokeStyle = 'black';
-            context.stroke();
-
-            context.beginPath();
-            context.rect(midpoint[0]+(xx*radius*2)-3,midpoint[1]+(yy*radius*2)-3,5,5);
-            context.lineWidth = 2;
-            context.strokeStyle = 'yellow';
-            context.stroke();
-            //presenter.ui.postDrawEvent();
-         }
-         var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
-	      lightControllerCanvas.addEventListener("touchstart", click_lightcontroller, false);
-	      lightControllerCanvas.addEventListener("mousedown", click_lightcontroller, false);
-
-	      var canvas = document.getElementById("draw-canvas");
-	      canvas.addEventListener("mouseup", function () {
-		   lightControllerCanvas.removeEventListener("mousemove", drag_lightcontroller, false);
-		   lightControllerCanvas.removeEventListener("touchmove", drag_lightcontroller, false);
-	      }, false);
-	      document.addEventListener("mouseup", function () {
-         lightControllerCanvas.removeEventListener("mousemove", drag_lightcontroller, false);
-         lightControllerCanvas.removeEventListener("touchmove", drag_lightcontroller, false);
-      }, false);
-      update_lightcontroller(-0.17,-0.17);
       }
    };
 });

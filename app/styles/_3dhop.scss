@@ -49,3 +49,8 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 /*DEPRECATED*/
 #measurebox { position:absolute; visibility:hidden; overflow:hidden; border-radius:5px; right:10; top:10; margin:0; width:105px; height:26px; cursor:default; color:#909090; text-decoration:none; text-align:center; font-family:verdana; font-style:italic; font-size:10px; line-height:13px;  -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
 #measure-output { cursor:text; -webkit-user-select:text; -webkit-touch-callout:text; -khtml-user-select:text; -moz-user-select:text; -ms-user-select:text; user-select:text; }
+#measure-box {
+   position: absolute;
+   top: 490px;
+   left: 70px;
+}
