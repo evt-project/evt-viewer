@@ -144,7 +144,13 @@ angular.module('evtviewer.core')
                                 icon     : 'mode-srcTxt',
                                 viewMode : 'srcTxt',
                                 visible  : true
-                            }],
+                            },
+                            {
+                                 label    : '3DHOP',
+                                 icon     : 'mode-3dhop',
+                                 viewMode : '3dhop',
+                                 visible  : true
+                          }],
 
 	toolHeatMap: true,
 	toolPinAppEntries: false,
@@ -239,5 +245,24 @@ angular.module('evtviewer.core')
     namedEntitiesToHandle: [],
     otherEntitiesToHandle: [],
 
-    languages: ['en', 'it']
+    languages: ['en', 'it'],
+
+    // 3DHOP
+   tdhopViewerOptions: {
+   name: "Bewcastle",
+   url: "data/3Dmodels/multires/bewcastle.nxz",
+   mesh: "Bewcastle",
+
+   toolHome: true,
+   toolZoomin: true,
+   toolZoomout: true,
+   toolLighting: true,
+   toolLightControl: true,
+   toolMeasure: true,
+   toolPickPoint: true,
+   toolPlaneSections: true,
+   toolSolidColor: true,
+   toolCamera: true,
+   toolFullScreen: true
+   }
 });

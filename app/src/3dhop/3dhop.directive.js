@@ -111,7 +111,11 @@ angular.module('evtviewer.3dhop')
                   },
                   space: {
                      centerMode: "scene",
-                     radiusMode: "scene"
+                     radiusMode: "scene",
+                     cameraFOV        : 60.0,
+			            cameraNearFar    : [0.01, 10.0],
+			            cameraType       : "perspective",
+			            sceneLighting    : true
                   }
                });
 
