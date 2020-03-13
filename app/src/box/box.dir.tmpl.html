@@ -9,10 +9,9 @@
                     'filterNotActive': vm.state.filters._totActive <= 0,
                     'ITLactive': vm.isITLactive()}">
 
-    <div
-        class="box-menu"
+    <div class="box-menu"
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'">
+        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty' && vm.type !== 'tdhop'">
 
         <evt-select
             data-id="{{::selector.id}}"
@@ -29,10 +28,22 @@
             ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
     </div>
+    <div class="box-menu"
+        data-position="top"
+        ng-if="::vm.type === 'tdhop'">
+    </div>
+
     <div
         class="box-top-box avoidBlur"
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
+    </div>
+
+    <div ng-if="::vm.type === 'tdhop'"
+         class="box-body {{vm.edition}} Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
+         style="{{vm.fontSize();}}"
+         id="box_body_{{::vm.uid}}"
+         compile="::vm.content" ng-transclude>
     </div>
 
     <div ng-if="::vm.type !== 'image'"
@@ -49,9 +60,11 @@
 
          <div ng-app="evtviewer.imageViewer" ng-controller="imageViewerCtrl" style="height:100%">
             <osd name="osdViewer"></osd>
-            <!--i class="icon icon-evt_imgtxt buttonSwitch-icon"> </i-->          
+            <!--i class="icon icon-evt_imgtxt buttonSwitch-icon"> </i-->
          </div>
     </div>
+
+
 
 
 
