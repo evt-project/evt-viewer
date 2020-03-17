@@ -201,10 +201,10 @@
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
             <!-- 3DHOP -->
-            <section id="main-container" class="viewMode" ng-switch-when="3dhop">
+            <section id="main-container" class="viewMode" ng-switch-when="tdhop">
                <box data-type="tdhop"
-                  id="tdhop">
-                  <div 3dhop data-canvas="draw-canvas" style="height: 100%"></div>
+                  id="mainTdhop">
+                  <!--div tdhop data-canvas="draw-canvas" style="height: 100%"></div-->
                </box>
                <box data-type="text"
                   data-edition="{{getCurrentEdition()}}"
@@ -719,10 +719,11 @@
       <script src="/src/search/virtualKeyboard.directive.js"></script>
       <script src="/src/search/virtualKeyboard.provider.js"></script>
 
-      <script src="/src/3dhop/3dhop.js"></script>
-      <script src="/src/3dhop/3dhop.controller.js"></script>
-      <script src="/src/3dhop/3dhop.directive.js"></script>
-      <!-- script src="/src/3dhop/3dhop.provider.js"></script -->
+      <script src="/src/tdhop/tdhop.js"></script>
+      <script src="/src/tdhop/tdhop.controller.js"></script>
+      <script src="/src/tdhop/tdhop.directive.js"></script>
+      <script src="/src/tdhop/tdhop.provider.js"></script>
+      <script src="/src/tdhop/tdhop.service.js"></script>
 
       <script src="/src/navBar/navBar.js"></script>
       <script src="/src/navBar/navBar.configuration.js"></script>

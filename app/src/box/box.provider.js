@@ -1197,6 +1197,30 @@ angular.module('evtviewer.box')
 					updateContent = function(newContent) {
 						scope.vm.content = newContent;
 					};
+               break;
+               case 'tdhop':
+                  topMenuList.buttons.push({
+                     title: '',
+                     label: '',
+                     icon: '',
+                     type: ''
+                  });
+                  topMenuList.buttons.push({
+							title: '',
+							label: '',
+							icon: '',
+							type: ''
+                  });
+
+					updateContent = function() {
+						scope.vm.isLoading = true;
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
+
+						// Main content
+							scope.vm.content = newContent;
+							scope.vm.isLoading = false;
+					};
 					break;
 			}
 

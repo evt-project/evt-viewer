@@ -67,7 +67,7 @@ function init3dhop() {
 
 	$('.output-table td:has(.output-text,.output-input)').css("border-radius", "5px").css("background-color", "rgba(125,125,125,0.25)");
 
-	$('#3dhop')
+	$('#tdhop')
 		.on('touchstart pointerdown', function(e) {
 			$('#toolbar img').css("opacity","0.5");
 		})

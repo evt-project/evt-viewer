@@ -1,31 +1,31 @@
 "use strict";
 
    var module = angular.module("evtviewer.openseadragon", ["evtviewer.imageViewer",'evtviewer.openseadragonService', "evtviewer.interface"]);
-  
+
 
    module.directive("osd", ['$timeout', 'imageViewerHandler', "evtInterface","osd", function ($timeout, imageViewerHandler, evtInterface, osd) {
       return {
-         
+
         restrict: "E",
-         
+
          scope: {
             options: "=",
             name: "=",
             tilesource: "=",
             prefixUrl: "=",
          },
-         
-       
+
+
          controller: "imageViewerCtrl",
 
          template: "<div id='osd-img' class='box-image box-body Edition noBottomMenu'></div>",
 
          transclude: true,
-        
+
          link: function (scope, element, attrs) {
 
             $timeout(function () {
-              var _options = osd.build(attrs.name); 
+              var _options = osd.build(attrs.name);
               var viewer = null;
               try{
                 viewer = new OpenSeadragon.Viewer(_options);

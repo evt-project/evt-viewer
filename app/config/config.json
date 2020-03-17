@@ -55,8 +55,8 @@
       },
       {
          "label"    : "3DHOP",
-         "icon"     : "mode-3dhop",
-         "viewMode" : "3dhop",
+         "icon"     : "mode-tdhop",
+         "viewMode" : "tdhop",
          "visible"  : true
      }
    ],
