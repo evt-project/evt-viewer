@@ -1,19 +1,25 @@
-angular.module('evtviewer.3dhop')
+s
+var module = angular.module('evtviewer.tdhop', ["evtviewer.tdhop", "evtviewer.interface"]);
 
-.directive('3dhop', function(evtAnalogue, evtInterface, $ocLazyLoad, $timeout) {
+module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $timeout, tredhop) {
 	return {
-		restrict: 'A',
+		restrict: 'AE',
 		scope: {
-			canvas: '@',
-		},
-		transclude: true,
-		controllerAs: 'vm',
-		//controller: "TreDHOPCtrl",
-		templateUrl: 'src/3dhop/3dhop.directive.tmpl.html',
+         canvas: '@',
+         measurebox:'@',
+         options: "=",
+         name: "=",
+      },
 
-		link: function (scope, element, attrs) {
+      controller: "TreDHOPCtrl",
 
-			var pluginFolder = 'js-plugins/3dhop/';
+      templateUrl: 'src/tdhop/tdhop.directive.tmpl.html',
+
+      transclude: true,
+      //template: "<div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'>",
+
+		link: function(scope, element, attrs) {
+			/*var pluginFolder = 'js-plugins/tdhop/';
          var jsFiles = [
          'helpers.js',
          'trackball_sphere.js',
@@ -30,7 +36,7 @@ angular.module('evtviewer.3dhop')
          'meshcoder_worker.js',
          //'init.js',
          'corto.js',
-			]
+         ]
 
 			var loadFiles = function(fileIndex) {
 				$ocLazyLoad.load(pluginFolder + jsFiles[fileIndex]).then(function() {
@@ -41,8 +47,8 @@ angular.module('evtviewer.3dhop')
 						initializeViewer();
 					}
 				})
-         }
-
+         }*/
+         var _options = tredhop.build(attrs.name);
          var presenter = null;
          var start=0;
          var name="";
@@ -58,7 +64,7 @@ angular.module('evtviewer.3dhop')
          var url_hs="models/singleres/sphere.ply";
          var HOTSPOTSDATA ={};
 
-         function readTextFile(file, callback) {
+         /*function readTextFile(file, callback) {
             var rawFile = new XMLHttpRequest();
             rawFile.overrideMimeType("application/json");
             rawFile.open("GET", file, true);
@@ -68,23 +74,23 @@ angular.module('evtviewer.3dhop')
                 }
             }
             rawFile.send(null);
-        }
+        }*/
 
          var setup3dhop = function() {
 
-            readTextFile("../../config/config.json", function(text){
+            //readTextFile("../../config/config.json", function(text){
                presenter = new Presenter(scope.canvas);
-               var data = JSON.parse(text);
-               var TDHOPTIONS=data;
-               var myname=TDHOPTIONS.tdhopViewerOptions.name;
-               var myurl=TDHOPTIONS.tdhopViewerOptions.url;
+               //var data = JSON.parse(text);
+               //var TDHOPTIONS=data;
+               //var myname=TDHOPTIONS.tdhopViewerOptions.name;
+               //var myurl=TDHOPTIONS.tdhopViewerOptions.url;
                console.log("Caricamento JSON");
-               console.log(myurl);
+               //console.log(myurl);
                presenter.setScene({
 
                   meshes: {
                      "Mesh" : {
-                        url: myurl
+                        url: _options.url,
                      },
                      //"Cage": {
                      //	url: "data/3Dmodels/singleres/"
@@ -130,9 +136,9 @@ angular.module('evtviewer.3dhop')
                //--SECTIONS--
                sectiontoolInit();
                //--SECTIONS--
-            });
+            //});
 
-            readTextFile("config/hotspots.json", function(text){
+            /*readTextFile("config/hotspots.json", function(text){
                var data = JSON.parse(text);
                var HOTSPOTSDATA=data;
                console.log("Caricamento HOTSPOTS");
@@ -152,7 +158,7 @@ angular.module('evtviewer.3dhop')
                };
                cont[HOTSPOTSDATA.annotations[ii].name] = newSpot;
                }
-            });
+            });*/
          }
 
          /*
@@ -224,7 +230,7 @@ angular.module('evtviewer.3dhop')
 
                $('.output-table td:has(.output-text,.output-input)').css("border-radius", "5px").css("background-color", "rgba(125,125,125,0.25)");
 
-               $('#3dhop')
+               $('#tdhop')
                   .on('touchstart pointerdown', function(e) {
                      $('#toolbar img').css("opacity","0.5");
                   })
@@ -236,7 +242,7 @@ angular.module('evtviewer.3dhop')
                      $('#toolbar img').css("opacity","0.5");
                   });
 
-               $('#3dhop:not(#draw-canvas)').on('contextmenu', function(e) { return false; });
+               $('#tdhop:not(#draw-canvas)').on('contextmenu', function(e) { return false; });
 
                $('#draw-canvas')
                   .on('contextmenu', function(e) {
@@ -271,8 +277,8 @@ angular.module('evtviewer.3dhop')
                      height = window.innerHeight;
                   }
                   else {
-                     width = $('#3dhop').parent().width();
-                     height = $('#3dhop').parent().height();
+                     width = $('#tdhop').parent().width();
+                     height = $('#tdhop').parent().height();
                   }
 
                   resizeCanvas(width,height);
@@ -286,7 +292,7 @@ angular.module('evtviewer.3dhop')
             //		window.scrollTo(x, y);
             //	});
 
-               resizeCanvas($('#3dhop').parent().width(),$('#3dhop').parent().height());
+               resizeCanvas($('#tdhop').parent().width(),$('#tdhop').parent().height());
 
                //anchorPanels();
 
@@ -305,7 +311,7 @@ angular.module('evtviewer.3dhop')
                   height: "13px"
                }, "slow" );
                });
-            $('#tdhlg').click(function() { window.open('http://vcg.isti.cnr.it/3dhop/', '_blank') });
+            $('#tdhlg').click(function() { window.open('http://vcg.isti.cnr.it/tdhop/', '_blank') });
             }
 
             function hotspotSwitch(on) {
@@ -575,7 +581,7 @@ angular.module('evtviewer.3dhop')
             //  presenter._nativeResizable = presenter._resizable;
             //  presenter._resizable = true;
 
-            var viewer = $('#3dhop')[0];
+            var viewer = $('#tdhop')[0];
             if (viewer.msRequestFullscreen) viewer.msRequestFullscreen();
             else if (viewer.mozRequestFullScreen) viewer.mozRequestFullScreen();
             else if (viewer.webkitRequestFullscreen) viewer.webkitRequestFullscreen();
@@ -652,8 +658,8 @@ angular.module('evtviewer.3dhop')
             function resizeCanvas(w,h) {
             $('#draw-canvas').attr('width', w);
             $('#draw-canvas').attr('height',h);
-            $('#3dhop').css('width', w);
-            $('#3dhop').css('height', h);
+            $('#tdhop').css('width', w);
+            $('#tdhop').css('height', h);
 
             //  if (!presenter) return;
 
@@ -702,7 +708,7 @@ angular.module('evtviewer.3dhop')
 				setup3dhop();
 			};
 
-         loadFiles(0);
+         //loadFiles(0);
 
          // +++ INTERFACE SWITCHING FUNCTIONS +++ //
 
@@ -1003,7 +1009,7 @@ angular.module('evtviewer.3dhop')
                //  presenter._nativeResizable = presenter._resizable;
                //  presenter._resizable = true;
 
-               var viewer = $('#3dhop')[0];
+               var viewer = $('#tdhop')[0];
                if (viewer.msRequestFullscreen) viewer.msRequestFullscreen();
                else if (viewer.mozRequestFullScreen) viewer.mozRequestFullScreen();
                else if (viewer.webkitRequestFullscreen) viewer.webkitRequestFullscreen();
@@ -1080,8 +1086,8 @@ angular.module('evtviewer.3dhop')
                function resizeCanvas(w,h) {
                $('#draw-canvas').attr('width', w);
                $('#draw-canvas').attr('height',h);
-               $('#3dhop').css('width', w);
-               $('#3dhop').css('height', h);
+               $('#tdhop').css('width', w);
+               $('#tdhop').css('height', h);
 
                //  if (!presenter) return;
 
@@ -1181,7 +1187,6 @@ angular.module('evtviewer.3dhop')
             $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
          }
          //--PICKPOINT--
-
       }
    };
-});
+}]);

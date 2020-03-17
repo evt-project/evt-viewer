@@ -322,8 +322,8 @@ angular.module('evtviewer.buttonSwitch')
 				case 'viscoll':
 					evtIcon = 'fa fa-stack-overflow';
                break;
-            case '3dhop':
-            case 'mode-3dhop':
+            case 'tdhop':
+            case 'mode-tdhop':
                evtIcon = 'fa fa-cube';
                break;
 			}

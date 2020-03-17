@@ -31,6 +31,15 @@
     <div class="box-menu"
         data-position="top"
         ng-if="::vm.type === 'tdhop'">
+
+        <button-switch
+            title="{{::button.title}}"
+            data-label="{{::button.label}}"
+            data-icon="{{::button.icon}}"
+            data-icon-pos="{{::button.iconPos}}"
+            data-type="{{::button.type}}"
+            ng-repeat="button in ::vm.topMenuList.buttons track by $index">
+        </button-switch>
     </div>
 
     <div
@@ -39,14 +48,7 @@
         compile="::vm.topBoxContent">
     </div>
 
-    <div ng-if="::vm.type === 'tdhop'"
-         class="box-body {{vm.edition}} Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
-         style="{{vm.fontSize();}}"
-         id="box_body_{{::vm.uid}}"
-         compile="::vm.content" ng-transclude>
-    </div>
-
-    <div ng-if="::vm.type !== 'image'"
+    <div ng-if="::vm.type !== 'image' && vm.type !== 'tdhop'"
          class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
          style="{{vm.fontSize();}}"
          id="box_body_{{::vm.uid}}"
@@ -64,9 +66,19 @@
          </div>
     </div>
 
+    <div ng-if="::vm.type === 'tdhop'"
+    class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
+    style="{{vm.fontSize();}}"
+    id="box_body_{{::vm.uid}}">
 
-
-
+    <div ng-app="evtviewer.tdhop" ng-controller="TreDHOPCtrl" style="height:100%">
+      <tredhop name="tredhopViewer">
+         <!--div tdhop data-canvas="draw-canvas" style="height: 100%"-->
+            <div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'></div>
+         <!--/div-->
+      </tredhop>
+   </div>
+   </div>
 
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>

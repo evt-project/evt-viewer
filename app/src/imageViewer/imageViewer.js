@@ -8,7 +8,7 @@
  * Module referring to viewer, intended as a single content of image
  */
 
- angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.imageViewerService']);
+angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.imageViewerService']);
 
 (function () {
    var imageModule = angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.imageViewerService']);
