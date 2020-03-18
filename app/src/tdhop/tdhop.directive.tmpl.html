@@ -1,9 +1,9 @@
-<div id="tredhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
-   <div id="tdhlg"></div>
+<!--div id='tdhop' class='box-tdhop'-->
+<div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()"><div id="tdhlg"></div>
 	<div id="toolbar" style="position:absolute;">
 		<img id="home" class="viewer3dhopBtn" ng-click="actionOnViewer('home')" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/><br/>
-		<!--ZOOM-->
-		<img id="zoomin" class="viewer3dhopBtn" ng-click="actionOnViewer('zoomin')" title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/><br/>
+		<!--ZOOM ng-click="actionOnViewer('zoomin')"-->
+		<img id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/><br/>
 		<img id="zoomout" class="viewer3dhopBtn" ng-click="actionOnViewer('zoomout')" title="Zoom Out" src="js-plugins/tdhop/skins/dark/zoomout.png"/><br/>
 		<!--ZOOM-->
       <!--LIGHT-->
@@ -67,7 +67,6 @@
       <td>Show edges<input  id="showBorder" class="output-input" type="checkbox" title="Show Section Edges" style="bottom:-3px;"/></td></tr></table>
    </div>
    <!--SECTIONS-->
-   <canvas id="{{ canvas }}" style="background-image: url(js-plugins/tdhop/skins/backgrounds/light.jpg);"></canvas>
+   <canvas id="draw-canvas" style="background-image: url(js-plugins/tdhop/skins/backgrounds/light.jpg);"></canvas>
 </div>
-</div>
-</div>
+<!--/div-->
