@@ -13,7 +13,7 @@ angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.im
 (function () {
    var imageModule = angular.module('evtviewer.imageViewer', ['evtviewer.openseadragon','evtviewer.imageViewerService']);
 
-     imageModule.controller('imageViewerCtrl', ['$scope','imageViewerModel', function ($scope,imageViewerModel) {
+     imageModule.controller('imageViewerCtrl', ['$scope','imageViewerModel', function ($scope, imageViewerModel) {
          $scope.options = imageViewerModel.getOptions();
       }]);
 })();

@@ -1,16 +1,16 @@
 (function () {
     angular.module('evtviewer.imageViewerService',['evtviewer.dataHandler'])
-    
+
     .service('imageViewerModel',function(parsedData){
         var viewerModel = this;
-      
+
         var options = {
             id: "osd-img",
             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
             tileSources:[],
-            showRotationControl: true,                
+            showRotationControl: true,
             showNavigator: true,
-            visibilityRatio: 1, 
+            visibilityRatio: 1,
             defaultZoomLevel: 1,
             panHorizontal: true,
             constrainDuringPan: true,
@@ -22,9 +22,9 @@
             navigatorWidth: "50%",
             navigatorTop:"1%",
          };
-    
+
          viewerModel.getOptions = function(){
-            
+
             var pages = parsedData.getPages();
             var lenght = pages.length;
             var p;
