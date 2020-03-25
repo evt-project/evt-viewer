@@ -32,13 +32,17 @@ angular.module('evtviewer.tdhop')
                }
             })
          }
+
          tdhop.build = function(scope) {
             var options = config.tdhopViewerOptions;
             options.id = "tdhop";
-            //return options;
+
+            return options;
             var presenter = scope.canvas;
          }
          var presenter = null;
+         var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
+         console.log("valore "+ homeSelectVisibility);
 
 
       var setup3dhop = function() {
@@ -101,13 +105,15 @@ angular.module('evtviewer.tdhop')
                   //--SECTIONS--
                   sectiontoolInit();
       }
+
       var init3dhop = function () {
+
          //function init3dhop() {
             if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
             var interval, id, ismousedown;
             var button = 0;
-
+            var toolHome=config.toolHome;
             $('#toolbar img')
                .mouseenter(function(e) {
                   id = $(this).attr('id');
@@ -148,7 +154,14 @@ angular.module('evtviewer.tdhop')
                })
                .on('touchend', function(e) {
                   button=0;
-               });
+               })
+               console.log("Configurazione tools");
+                  if(toolHome==false){
+                     id = $(this).attr('id');
+                     console.log(id);
+                     $(this).css("visibility", "hidden");
+                     console.log("home");
+                  };
 
             $('.output-table td:has(.output-text,.output-input)').css("border-radius", "5px").css("background-color", "rgba(125,125,125,0.25)");
 
@@ -633,7 +646,6 @@ angular.module('evtviewer.tdhop')
 
       function lightSwitch(on) {
          if(on === undefined) on = presenter.isLightTrackballEnabled();
-
          if(on){
             $('#light').css("visibility", "hidden");
             $('#light_on').css("visibility", "visible");
@@ -1048,6 +1060,13 @@ angular.module('evtviewer.tdhop')
          }
 
 
+         function configToolbar() {
+            console.log('Tool attivati:');
+            if(config.toolHome === true){
+               console.log("tool home attivato")
+            }
+         }
+
 
       function actionsToolbar(action) {
          console.log('action');
@@ -1070,10 +1089,7 @@ angular.module('evtviewer.tdhop')
             else if (action == 'measure' || action == 'measure_on') { presenter.enableMeasurementTool(!presenter.isMeasurementToolEnabled()); measureSwitch(); }
             //--MEASURE--
             //--POINT PICKING--
-            else if (action == 'pick' || action == 'pick_on') {
-               presenter.enablePickpointMode(!presenter.isPickpointModeEnabled());
-               pickpointSwitch();
-            }
+            else if (action == 'pick' || action == 'pick_on') { presenter.enablePickpointMode(!presenter.isPickpointModeEnabled()); pickpointSwitch();}
             //--POINT PICKING--
             //--SECTIONS--
             else if (action == 'sections' || action == 'sections_on') {

@@ -1198,18 +1198,24 @@ angular.module('evtviewer.box')
 						scope.vm.content = newContent;
 					};
                break;
+               //add by FS button switch
                case 'tdhop':
                   topMenuList.buttons.push({
-                     title: '',
-                     label: '',
-                     icon: '',
-                     type: ''
-                  });
-                  topMenuList.buttons.push({
-							title: '',
+							title: 'BUTTONS.IMAGE_TEXT_LINKING',
 							label: '',
-							icon: '',
-							type: ''
+							icon: 'itl',
+							type: 'itl'
+						});
+						topMenuList.buttons.push({
+							title: 'BUTTONS.HOTSPOTS',
+							label: '',
+							icon: 'hts',
+							type: 'hts'
+						});
+                  topMenuList.buttons.push({
+                     title: 'BUTTONS.3D',
+                     label: 'BUTTONS.OBJ',
+                     type: 'objDesc'
                   });
 
 					updateContent = function() {

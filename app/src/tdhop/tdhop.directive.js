@@ -77,34 +77,34 @@ module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $tim
             rawFile.send(null);
         }*/
 
-         var setup3dhop = function() {
+        // var setup3dhop = function() {
 
             //readTextFile("../../config/config.json", function(text){
-               presenter = new Presenter("draw-canvas");
+               //presenter = new Presenter("draw-canvas");
                //var data = JSON.parse(text);
                //var TDHOPTIONS=data;
                //var myname=TDHOPTIONS.tdhopViewerOptions.name;
                //var myurl=TDHOPTIONS.tdhopViewerOptions.url;
                //console.log("Caricamento JSON");
                //console.log(myurl);
-               presenter.setScene({
+               //presenter.setScene({
 
-                  meshes: {
-                     "Mesh" : {
-                        url: _options.url,
-                     },
+                  //meshes: {
+                     //"Mesh" : {
+                        //url: _options.url,
+                     //},
                      //"Cage": {
                      //	url: "data/3Dmodels/singleres/"
                      //}
-                  },
-                  modelInstances: {
-                     "Model1": {
-                       mesh: "Mesh"
-                     },
+                  //},
+                  //modelInstances: {
+                     //"Model1": {
+                       //mesh: "Mesh"
+                     //},
                      //"Model2": {
                      //	mesh: ""
                      //}
-                  },
+                 // },
                   /*trackball: {
                      type : TurntablePanTrackball,
                      trackOptions : {
@@ -124,18 +124,18 @@ module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $tim
 			            cameraType       : "perspective",
 			            sceneLighting    : true
                   }*/
-               });
+               //});
 
                //--MEASURE--
-               presenter._onEndMeasurement = onEndMeasure;
+               //presenter._onEndMeasurement = onEndMeasure;
                //--MEASURE--
 
                //--POINT PICKING--
-               presenter._onEndPickingPoint = onEndPick;
+               //presenter._onEndPickingPoint = onEndPick;
                //--POINT PICKING--
 
                //--SECTIONS--
-               sectiontoolInit();
+               //sectiontoolInit();
                //--SECTIONS--*/
             //});
 
@@ -160,7 +160,7 @@ module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $tim
                cont[HOTSPOTSDATA.annotations[ii].name] = newSpot;
                }
             });*/
-         }
+         //}
       }
    };
 }]);

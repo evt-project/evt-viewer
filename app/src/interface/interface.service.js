@@ -131,6 +131,7 @@ angular.module('evtviewer.interface')
         dataUrl            : '',
         logoUrl            : '',
         enableXMLdownload  : false,
+        toolHome: true,
         availableViewModes : [ ],
         availableWitnesses : [ ],
         witnessSelector    : false,
@@ -185,12 +186,13 @@ angular.module('evtviewer.interface')
                 properties.logoUrl            = config.logoUrl;
                 properties.webSite            = config.webSite;
                 properties.enableXMLdownload  = config.enableXMLdownload;
+                properties.toolHoome = config.toolHome;
                 properties.availableViewModes = config.availableViewModes;
                 properties.visCollTextUrl = config.visCollTextUrl;
                 properties.visCollStyleUrl = config.visCollStyleUrl;
                 properties.enableNavBar = angular.isDefined(config.enableNavBar) ? config.enableNavBar : state.enableNavBar;
                 state.isNavBarOpened = angular.isDefined(config.initNavBarOpened) ? config.initNavBarOpened : state.isNavBarOpened;
-                
+
                 // Setting available languages and defaults
                 evtTranslation.setLanguages(config.languages);
                 var userLangKey = evtTranslation.getUserLanguage(),
@@ -243,7 +245,7 @@ angular.module('evtviewer.interface')
                       mainInterface.updateParams($routeParams);
 
                       var promises = [];
-                      
+
                       // Parse the external Sources file, if defined (@author: CM)
                      if (config.sourcesUrl !== '') {
                         promises.push(evtCommunication.getExternalData(config.sourcesUrl));
@@ -255,7 +257,7 @@ angular.module('evtviewer.interface')
 
                       var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                       if (currentDocFirstLoad !== undefined){
-                        
+
                         // Parse critical entries
                           if (parsedData.getEncodingDetail('variantEncodingLocation') === 'internal') {
                             if (config.loadCriticalEntriesImmediately) {
@@ -284,7 +286,7 @@ angular.module('evtviewer.interface')
                                 var viscollPromises = [];
                                 if (config.visCollDataModel !== '') {
                                     viscollPromises.push(evtCommunication.getViscollDataModel(config.visCollDataModel));
-   
+
                                    // Parse Image List
                                    if (config.visCollImageList !== '') {
                                       viscollPromises.push(evtCommunication.getViscollImageList(config.visCollImageList));
@@ -301,7 +303,7 @@ angular.module('evtviewer.interface')
                                       $q.all(svgViscollPromises).then(function () {
                                          parsedData.setViscollSvgsLoaded(true);
                                       });
-      
+
                                    });
                                 }
                                 // END VISCOLL DATA IMPORT //
@@ -1044,16 +1046,16 @@ angular.module('evtviewer.interface')
 
         mainInterface.goToNextPage = function() {
             var pagesCollection = parsedData.getPages();
-    
+
             var currentPage = mainInterface.getState('currentPage');
             var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-            
+
             var currentDocument = mainInterface.getState('currentDoc');
             var newPageId = pagesCollection[currentPageIndex+1];
             if (newPageId) {
                 var newPage = pagesCollection[newPageId];
                 mainInterface.updateState('currentPage', newPageId);
-                
+
                 if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
                     mainInterface.updateState('currentDoc', newPage.docs[0]);
                 }
@@ -1074,13 +1076,13 @@ angular.module('evtviewer.interface')
 
             var currentPage = mainInterface.getState('currentPage');
             var currentPageIndex = pagesCollection[currentPage].indexInCollection;
-            
+
             var currentDocument = mainInterface.getState('currentDoc');
             var newPageId = pagesCollection[currentPageIndex-1];
             if (newPageId) {
                 var newPage = pagesCollection[newPageId];
                 mainInterface.updateState('currentPage', newPageId);
-                
+
                 if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
                     mainInterface.updateState('currentDoc', newPage.docs[0]);
                 }
@@ -1105,7 +1107,7 @@ angular.module('evtviewer.interface')
             if (newPageId) {
                 var newPage = pagesCollection[newPageId];
                 mainInterface.updateState('currentPage', newPageId);
-                
+
                 if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
                     mainInterface.updateState('currentDoc', newPage.docs[0]);
                 }
@@ -1127,7 +1129,7 @@ angular.module('evtviewer.interface')
             if (newPageId) {
                 var newPage = pagesCollection[newPageId];
                 mainInterface.updateState('currentPage', newPageId);
-                
+
                 if (newPage.docs.length > 0 && newPage.docs.indexOf(currentDocument) < 0) { // The page is not part of the document
                     mainInterface.updateState('currentDoc', newPage.docs[0]);
                 }
@@ -1307,9 +1309,9 @@ angular.module('evtviewer.interface')
             } else if (viewMode === 'collation'){
                 mainInterface.updateState('currentEdition', 'critical');
             }
-    
+
             mainInterface.updateState('currentComparingEdition', comparingEdition)
-            
+
             if ( pageId !== undefined ) {
                 mainInterface.updateState('currentPage', pageId);
             }

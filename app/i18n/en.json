@@ -51,7 +51,8 @@
 		"MS": "Manuscript description",
 		"MSD": "MS Desc",
 		"NO_VERSION_AVAILABLE": "No more versions available",
-		"NO_WITNESSES_AVAILABLE": "No more witnesses available",
+      "NO_WITNESSES_AVAILABLE": "No more witnesses available",
+      "OBJ": "3D Desc",
 		"OPEN_LIST": "Show entry in full list",
 		"PIN_REMOVE": "Remove Pin",
 		"PIN_TOGGLE": "Toggle Pin",
@@ -283,7 +284,8 @@
 		"IMAGE_TEXT": "Image Text",
 		"TEXT_TEXT": "Text Text",
 		"COLLATION": "Collation",
-		"SOURCE_TEXT": "Source Text"
+      "SOURCE_TEXT": "Source Text",
+      "3DHOP": "3D Text"
 	},
 	"VISCOLL": {
 		"SELECT_QUIRE":"Select a quire",
