@@ -6,27 +6,30 @@ angular.module('evtviewer.tdhop')
          console.log("Caricato provider");
          var pluginFolder = 'js-plugins/tdhop/';
          var jsFiles = [
+
+            'spidergl.js',
+            'jquery.js',
+            'presenter.js',
+            'nexus.js',
+            'ply.js',
             'helpers.js',
             'trackball_sphere.js',
             'trackball_turntable.js',
             'trackball_turntable_pan.js',
             'trackball_pantilt.js',
             'trackball_rail.js',
-            'spidergl.js',
-            'ply.js',
-            'presenter.js',
-            'nexus.js',
-            'jquery.js',
-            'meco.js',
-            'meshcoder_worker.js',
             'init.js',
             'corto.js',
+            'meco.js',
+            'init.js',
+            'meshcoder_worker.js',
+            //'init.js',
          ]
          var loadFiles = function(fileIndex) {
             $ocLazyLoad.load(pluginFolder + jsFiles[fileIndex]).then(function() {
                if (jsFiles[fileIndex + 1]) {
                   loadFiles(fileIndex + 1);
-                  console.log("caricato "+ jsFiles[fileIndex]);
+                  console.log("Caricato "+ jsFiles[fileIndex]);
                } else {
                   initializeViewer();
                }
@@ -42,8 +45,6 @@ angular.module('evtviewer.tdhop')
          }
          var presenter = null;
          var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
-         console.log("valore "+ homeSelectVisibility);
-
 
       var setup3dhop = function() {
          var canvas = "draw-canvas";
@@ -105,6 +106,9 @@ angular.module('evtviewer.tdhop')
                   //--SECTIONS--
                   sectiontoolInit();
       }
+
+
+
 
       var init3dhop = function () {
 
@@ -637,10 +641,10 @@ angular.module('evtviewer.tdhop')
          }
 
    }
-   var initializeViewer = function() {
-            init3dhop();
-            setup3dhop();
-         };
+
+
+
+   loadFiles(0);
 
       // +++ INTERFACE SWITCHING FUNCTIONS +++ //
 
@@ -1124,8 +1128,10 @@ angular.module('evtviewer.tdhop')
             $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
          }
          //--PICKPOINT--
-         loadFiles(0);
-         //loadFiles(0);
 
+         var initializeViewer = function() {
+            init3dhop();
+            setup3dhop();
+         };
       };
    });
