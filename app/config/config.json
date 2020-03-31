@@ -60,9 +60,9 @@
          "visible"  : true
      }
    ],
+
    "defaultEdition": "diplomatic",
    "showEditionLevelSelector": true,
-
    "availableEditionLevel": [
       {
          "value": "critical",
@@ -84,10 +84,9 @@
       }
    ],
 
-   "enableXMLdownload": true,
-
-   "initNavBarOpened": true,
+   "showDocumentSelector": false,
    "enableNavBar": false,
+   "initNavBarOpened": true,
 
    "toolPinAppEntries": true,
    "toolImageTextLinking": false,
@@ -125,20 +124,36 @@
       }
    ],
 
-   "toolHeatMap": true,
    "preferredWitness": "",
    "skipWitnesses": "",
+   "maxWitsLoadTogether": 5,
+
+   "witnessesGroups": [],
+
+   "showInlineCriticalApparatus": false,
+   "showInlineSources": false,
+   "showInlineAnalogues": false,
+   "showReadingExponent": true,
+
+   "toolHeatMap": true,
+
+   "versions": [],
 
    "listDef": "<listWit>, <listChange>",
    "versionDef": "<witness>, <change>",
    "fragmentMilestone": "<witStart>, <witEnd>",
    "lacunaMilestone": "<lacunaStart>, <lacunaEnd>",
+   "notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
+   "quoteDef": "<quote>",
+   "analogueDef": "<seg>,<ref[type=parallelPassage]>",
+
    "possibleVariantFilters": "",
    "possibleLemmaFilters": "resp",
-   "notSignificantVariant": "<orig>, <sic>, [type=orthographic]",
-   "maxWitsLoadTogether": 5,
 
-   "showDocumentSelector": false,
+
+   "variantColorLight": "",
+   "variantColorDark": "",
+   "heatmapColor": "",
    "variantColors": {
       "type": {
          "lessicographic": "rgb(108, 145, 207)",
@@ -155,29 +170,6 @@
          "unknown": "rgb(125, 125, 125)"
       }
    },
-   "variantColorLight": "",
-   "variantColorDark": "",
-   "heatmapColor": "",
-   "versions": ["rec2", "rec1", "rec3"],
-   "witnessesGroups": [
-      {
-         "groupName": "Group 1",
-         "witnesses": ["V", "P", "N", "M", "G", "C", "R"]
-      },
-      {
-         "groupName": "Group 2",
-         "witnesses": ["F", "D", "O", "W", "M5mg", "B", "U"]
-      }
-   ],
-
-   "quoteDef": "<quote>",
-   "analogueDef": "<seg>,<ref[type=parallelPassage]>",
-
-   "showReadingExponent": true,
-
-   "showInlineCriticalApparatus": false,
-   "showInlineSources": false,
-   "showInlineAnalogues": false,
 
    "defaultBibliographicStyle": "Chicago",
    "allowedBibliographicStyles": {
@@ -211,13 +203,15 @@
    },
    "imageNormalizationCoefficient": 1265,
 
-   "languages": ["en", "it"],
+   "languages": [
+      "en",
+      "it"],
 
    "toolHome": false,
 
    "tdhopViewerOptions": {
       "name": "Bewcastle",
-      "url": "data/3Dmodels/multires/bewcastle.nxz",
+      "url": "data/models/multires/bewcastle.nxz",
       "mesh": "Bewcastle",
 
       "toolHome": false,
