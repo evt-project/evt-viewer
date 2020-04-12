@@ -8,7 +8,7 @@
 		position: relative;
 		text-align: center;
 
-		&:before, 
+		&:before,
 		&:after {
 			content: "";
 		}
@@ -24,7 +24,7 @@
     	}
 
       .abbr {
-		 color: purple;		 
+		 color: purple;
 		 z-index: 9;
 
 			&:hover,
@@ -43,9 +43,9 @@
 			padding: 5px 8px;
 			margin-top: 30px;
 			left: 0;
-	
+
 			@include set(box-shadow, 2px 2px 2px #7e7067);
-	
+
 			&:before {
 				content: url("../images/popup_before.png");
 				left: 15%;
@@ -54,11 +54,11 @@
 			}
 		}
 
-		.expan, 
+		.expan,
 		.expan * {
 			background: #e5dac4 !important;
 		}
-		
+
 		// Abbreviations and Expansions inside Orig and Reg classes
 
 		.reg  > .expan, .expan > .ex {
@@ -114,7 +114,7 @@
       background: #f99069 !important;
     }
 
-	.reg, 
+	.reg,
 	.reg * {
 		background: #e5dac4 !important;
 	}
@@ -128,7 +128,7 @@
 		}
 	}
 
-	&:hover, 
+	&:hover,
 	&.hover {
 		.reg,
 		.corr {
@@ -150,20 +150,20 @@
 		  color: #561c0a;
 		}
 	}
-	
+
 	.sup {
 		line-height: 20px;
 		vertical-align: 20%;
 	}
-  
+
 	.under {
 		line-height: 20px;
 		vertical-align: -20%;
 	}
-  
+
 	.sic {
 	  display: inline-table;
-  
+
 	  &:before,
 	  &:after {
 		content: " ";
@@ -181,10 +181,10 @@
 		padding: 0.4%;
 		margin-top: 30px;
 		left:0;
-  
+
 		@include set(box-shadow, 2px 2px 2px #7e7067);
-  
-  
+
+
 		&:before {
 		  content: url("../images/popup_before_corr.png");
 		  left: 15%;
@@ -192,7 +192,7 @@
 		  top: -13px;
 		}
 	}
-	
+
 	.sic {
 		&:hover,
     	&.hover {
@@ -205,7 +205,7 @@
 		}
 	}
 }
-		
+
 	// 3.3.2 Emphasis, Foreign Words, and Unusual Language
 	// 3.3.2.2 Emphatic Words and Phrases
 	.hi {
