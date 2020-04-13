@@ -3,7 +3,7 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "data/JdeVitry_complet.xml",
+   "dataUrl": "data/VercelliBook.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
@@ -45,16 +45,16 @@
          "label": "COLLATION",
          "icon": "mode-collation",
          "viewMode": "collation",
-         "visible": true
+         "visible": false
       },
       {
          "label": "SOURCE_TEXT",
          "icon": "mode-srcTxt",
          "viewMode": "srcTxt",
-         "visible": true
+         "visible": false
       }
    ],
-   "defaultEdition": "critical",
+   "defaultEdition": "diplomatic",
    "showEditionLevelSelector": true,
 
    "availableEditionLevel": [
@@ -62,7 +62,7 @@
          "value": "critical",
          "label": "Critical",
          "title": "Critical edition",
-         "visible": true
+         "visible": false
       },
       {
          "value": "diplomatic",
@@ -169,9 +169,9 @@
 
    "showReadingExponent": true,
 
-   "showInlineCriticalApparatus": true,
-   "showInlineSources": true,
-   "showInlineAnalogues": true,
+   "showInlineCriticalApparatus": false,
+   "showInlineSources": false,
+   "showInlineAnalogues": false,
 
    "defaultBibliographicStyle": "Chicago",
    "allowedBibliographicStyles": {
