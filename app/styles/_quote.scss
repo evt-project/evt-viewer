@@ -14,7 +14,7 @@
     sup.iconbis-evt_quote-right:before {
         white-space: nowrap;
     }
-    
+
     .quote__text {
         //background-color: $quote-background-default !important;
         border-bottom: 1px dotted $base-color-dark;
@@ -31,9 +31,9 @@
         }
         .quote__text{
             border-bottom: 1px solid $base-color-dark;
-        }        
+        }
     }
-    
+
     &.highlight {
         .quote__text {
             background-color: $apparatus-label;
@@ -43,11 +43,18 @@
     //FIXME
     &.subquote {
         border-bottom: 1px dashed $base-color-dark;
-        
+
         &.noquotes {
             sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
                 display: none;
             }
         }
     }
+}
+
+evt-quote span.quote {
+   display: inline !important;
+}
+span.quote {
+   display: none !important;
 }
