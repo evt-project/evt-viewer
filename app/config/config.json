@@ -3,12 +3,12 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "data/VB-23-DOTR.xml",
+   "dataUrl": "data/VercelliBook.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
 
-   "singleImagesUrl": "data/images/single/",
+   "singleImagesUrl": "",
    "visCollTextUrl": "",
    "visCollStyleUrl": "",
    "visCollSvg": "",
@@ -33,7 +33,7 @@
          "label": "IMAGE_TEXT",
          "icon": "mode-imgTxt",
          "viewMode": "imgTxt",
-         "visible": true
+         "visible": false
       },
       {
          "label": "TEXT_TEXT",
