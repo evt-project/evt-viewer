@@ -214,9 +214,8 @@
 .icon-evt_next:before {
     content: "\f105";
 }
-.icon-evt_note span.null:before {
-    // content: "\e928";
-    content: "\2022";
+evt-popover[data-n=""] .icon-evt_note span.null:before {
+   content: "\2022";
 }
 .icon-evt_paragraph:before {
     content: "\e929";
