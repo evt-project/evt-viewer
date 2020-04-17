@@ -8,13 +8,13 @@
 		position: relative;
 		text-align: center;
 
-      &:before,
-      &:after {
+		&:before,
+		&:after {
 			content: "";
 		}
 
-      &:hover,
-      &.hover {
+		&:hover,
+		&.hover {
          .expan {
             display: inline;
             min-width: 20px;
@@ -23,14 +23,18 @@
 		   }
       }
 
-     .abbr {
-         color: purple;
-         z-index: 9;
-         text-decoration: underline;
+      .abbr {
+		 color: purple;
+       z-index: 9;
+
+         &:hover,
+         &.hover {
+            color: #561c0a;
+         }
       }
 
 		.expan {
-			font-size: 85%;
+			font-size: 80%;
 			position: absolute;
 			line-height: 16px;
 			display: none;
@@ -56,13 +60,14 @@
 		}
 
 		// Abbreviations and Expansions inside Orig and Reg classes
+
 		.reg  > .expan, .expan > .ex {
 			font-size: 100%;
 			position: relative;
 			border: none;
 			border-radius: 0;
 			margin-top: 0;
-         padding: 0;
+         	padding: 0;
 
 			@include set(box-shadow, 0px 0px 0px);
 
@@ -70,11 +75,6 @@
 				content: none;
 			}
       }
-   }
-   .mapping[data-type="diplomatic"],
-   .mapping[data-type="orig"] {
-     display: inline;
-   }
 
 	// 3.3.2 Emphasis, Foreign Words, and Unusual Language
 	// 3.3.2.2 Emphatic Words and Phrases
@@ -102,37 +102,43 @@
 
 	// 3.4.2 Regularization and Normalization
 	.choice {
-      &:hover,
-      &.hover {
+
+		&:before, &:after {
+			content: "";
+		}
+
+      &:hover, &.hover {
          .reg {
             display: inline;
             min-width: 20px;
-            z-index: 9;
+            z-index: 99;
             white-space: nowrap;
          }
          .orig {
             color: #561c0a;
             text-decoration: underline;
-            //z-index: 9;
+            z-index: 9;
          }
       }
+
 		.corr {
 			display: none;
 		}
+
       .orig {
          color: #69513a;
-         /*.sup {
+         .sup {
             line-height: 20px;
             vertical-align: 20%;
          }
+
          .under {
             line-height: 20px;
             vertical-align: -20%;
-         }*/
+         }
       }
-   }
-   //}
-	.reg {
+
+		.reg {
 			font-size: 85%;
 			position: absolute;
 			line-height: 16px;
@@ -156,11 +162,13 @@
 			span {
 				background: transparent;
 			}
-	}
+		}
 
-	.reg, .reg * {
-      background: #e5dac4 !important;
+		.reg, .reg * {
+			background: #e5dac4 !important;
+		}
    }
+}
 
 	// 3.4.3 Additions, Deletions, and Omissions
 	.add {

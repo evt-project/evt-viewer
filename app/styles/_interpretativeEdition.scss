@@ -3,222 +3,224 @@
 /* *************************** */
 
 .interpretativeEdition {
-  // Abbreviations and Expansions
-   .choice {
-      position: relative;
-      text-align: center;
+  // Abbreviations and Their Expansions
+  .choice {
+    position: relative;
+    text-align: center;
 
-      &:before,
-      &:after {
-         content: "";
-      }
+    &:before,
+    &:after {
+      content: "";
+    }
 
-      &:hover,
-      &.hover {
-         .abbr {
-            display: inline;
-            min-width: 20px;
-            z-index: 99;
-            white-space: nowrap;
-         }
-      }
-
-      .expan {
-         color: #69513a;
-         z-index: 9;
-         &:hover,
-         &.hover {
-            color: #561c0a;
-         }
-      }
-
+    &:hover, 
+    &.hover {
       .abbr {
-         font-size: 80%;
-         position: absolute;
-         line-height: 16px;
-         display: none;
-         border: 1.5px solid black;
-         border-radius: 3px;
-         padding: 5px 8px;
-         margin-top: 30px;
-         left: 0;
-
-         @include set(box-shadow, 2px 2px 2px #7e7067);
-
-         &:before {
-            content: url("../images/popup_before.png");
-            left: 15%;
-            position: absolute;
-            top: -12px;
-         }
+        display: inline;
+        min-width: 20px;
+        z-index: 99;
+        white-space: nowrap;
       }
 
-      .abbr,
-      .abbr * {
-         background: #e5dac4 !important;
-      }
+    .expan {
+      color: #69513a;
+      z-index: 9;
 
-      // Abbreviations and Expansions inside Orig and Reg classes
+        &:hover,
+        &.hover {
+          color: #561c0a;
+        }
+      }
+    }
+
+    .abbr {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
+      display: none;
+      border: 1.5px solid black;
+      border-radius: 3px;
+      padding: 5px 8px;
+      margin-top: 30px;
+      left: 0;
+
+      @include set(box-shadow, 2px 2px 2px #7e7067);
+
+        &:before {
+          content: url("../images/popup_before.png");
+          left: 15%;
+          position: absolute;
+          top: -12px;
+        }
+    }
+
+    .abbr,
+    .abbr * {
+      background: #e5dac4 !important;
+    }
+
+    // Abbreviations and Expansions inside Orig and Reg classes
 		.orig  > .abbr {
 			font-size: 100%;
 			position: relative;
 			border: none;
 			border-radius: 0;
 			margin-top: 0;
-         padding: 0;
+      padding: 0;
 
 			@include set(box-shadow, 0px 0px 0px);
 
 			&:before {
 				content: none;
 			}
-      }
-
-      .expan {
-         color: purple;
-         z-index: 9;
-         text-decoration: underline;
-      }
+		}
 	}
-
-   .mapping[data-type="interpretative"],
-   .mapping[data-type="normalized"] {
+    
+    .mapping[data-type="interpretative"],
+    .mapping[data-type="normalized"] {
       display: inline;
-   }
+    }
+  }
 
-   .choice {
-      .corr,
-      .orig {
-         font-size: 80%;
-         position: absolute;
-         line-height: 16px;
-         display: none;
-         border: 1.5px solid black;
-         border-radius: 3px;
+  .choice {
 
-         @include set(box-shadow, 2px 2px 2px #7e7067);
+    .corr,
+    .orig {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
+      display: none;
+      border: 1.5px solid black;
+      border-radius: 3px;
 
-         padding: 0.4%;
-         margin-top: 30px;
+      @include set(box-shadow, 2px 2px 2px #7e7067);
 
-         &:before {
-            left: 15%;
-            position: absolute;
-            top: -13px;
-         }
+      padding: 0.4%;
+      margin-top: 30px;
+
+      &:before {
+        left: 15%;
+        position: absolute;
+        top: -13px;
+      }
+    }
+
+    .corr {
+      &:before {
+        content: url("../images/popup_before_corr.png");
+      }
+    }
+
+    .corr,
+    .corr * {
+      background: #f99069 !important;
+    }
+
+    .orig {
+      &:before {
+        content: url("../images/popup_before.png");
+      }
+    }
+
+    .orig,
+    .orig * {
+      background: #e5dac4 !important;
+    }
+
+    .reg {
+      color: #69513a;
+
+      &:hover,
+      &.hover {
+        color: #561c0a;
+      }
+    }
+
+    &:hover,
+    &.hover {
+      .orig,
+      .corr {
+        display: inline;
+        min-width: 30px;
+        text-align: center;
+        z-index: 9;
       }
 
       .corr {
-         &:before {
-            content: url("../images/popup_before_corr.png");
-         }
-      }
-
-      .corr,
-      .corr * {
-         background: #f99069 !important;
-      }
-
-      .orig {
-         &:before {
-            content: url("../images/popup_before.png");
-         }
-      }
-
-      .orig,
-      .orig * {
-         background: #e5dac4 !important;
+        @include set(transform, translate(-80%, 0));
       }
 
       .reg {
-         color: #69513a;
-
-         &:hover,
-         &.hover {
-            color: #561c0a;
-         }
+        text-decoration: underline;
       }
+    }
+
+    .sic {
+      color: #934d4d;
+    }
+
+    .sup {
+      line-height: 20px;
+      vertical-align: 20%;
+    }
+
+    .under {
+      line-height: 20px;
+      vertical-align: -20%;
+    }
+  }
+
+  .sic {
+    display: inline-table;
+
+    &:before,
+    &:after {
+      content: " ";
+    }
+
+    .corr {
+      font-size: 80%;
+      position: absolute;
+      line-height: 16px;
+      display: none;
+      background: #f99069;
+      border: 1.5px solid black;
+      border-radius: 3px;
+
+      @include set(box-shadow, 2px 2px 2px #7e7067);
+
+      padding: 0.4%;
+      margin-top: 30px;
+
+      &:before {
+        content: url("../images/popup_before_corr.png");
+        left: 15%;
+        position: absolute;
+        top: -13px;
+      }
+    }
+
+    .sic {
+      color: #934d4d;
 
       &:hover,
       &.hover {
-         .orig,
-         .corr {
-         display: inline;
-         min-width: 30px;
-         text-align: center;
-         z-index: 9;
-         }
-
-         .corr {
-         @include set(transform, translate(-80%, 0));
-         }
-
-         .reg {
-         text-decoration: underline;
-         }
+        color: #561c0a;
       }
+    }
 
-      .sup {
-         line-height: 20px;
-         vertical-align: 20%;
-      }
-
-      .under {
-         line-height: 20px;
-         vertical-align: -20%;
-      }
-
-      .sic {
-         display: inline-table;
-
-         &:before,
-         &:after {
-            content: " ";
-         }
-      }
+    &:hover,
+    &.hover {
       .corr {
-         font-size: 80%;
-         position: absolute;
-         line-height: 16px;
-         display: none;
-         background: #f99069;
-         border: 1.5px solid black;
-         border-radius: 3px;
-
-         @include set(box-shadow, 2px 2px 2px #7e7067);
-
-         padding: 0.4%;
-         margin-top: 30px;
-
-         &:before {
-         content: url("../images/popup_before_corr.png");
-         left: 15%;
-         position: absolute;
-         top: -13px;
-         }
+        display: inline;
+        min-width: 20px;
+        text-align: center;
       }
 
       .sic {
-         color: #934d4d;
-
-         &:hover,
-         &.hover {
-         color: #561c0a;
-         }
+        text-decoration: underline;
       }
-
-      &:hover,
-      &.hover {
-         .corr {
-         display: inline;
-         min-width: 20px;
-         text-align: center;
-         }
-
-         .sic {
-         text-decoration: underline;
-         }
-      }
+    }
   }
 
   //TODO: reorder
@@ -295,4 +297,3 @@
   [rend="left"] {
     display: inline-table;
   }
-}
