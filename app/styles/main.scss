@@ -652,7 +652,7 @@ pre {
    color: #fff;
  }
  .icon-evt_note span.null {
-   background-color: #3d3232 !important;
+   background-color: maroon !important;
    padding: 0px 4px 4px 4px !important;
    opacity: 10 !important;
    border-radius: 4px !important;
@@ -672,6 +672,7 @@ evt-popover[data-n=""] .icon-evt_note span.null{
    font-size: 10px !important;
    padding: 0px 1px  !important;
    border-radius: 100px !important;
+   background-color: #4e443c;
 }
 .popover_trigger.active:hover {
    opacity: 0.5;
@@ -682,7 +683,7 @@ evt-popover[data-n=""] .icon-evt_note span.null{
 }
 .icon-evt_note span.comment{
    color: #fff;
-   background-color: #b46138 !important;
+   background-color: rgb(87, 14, 105) !important;
    padding: 0px 4px 4px 4px !important;
    opacity: 10 !important;
    border-radius: 4px !important;
@@ -693,7 +694,7 @@ evt-popover[data-n=""] .icon-evt_note span.null{
    position: relative !important;
 }
 .icon-evt_note span.critic{
-   background-color: #c3a27a !important;
+   background-color: rgb(24, 70, 155) !important;
    padding: 0px 4px 4px 4px !important;
    border-radius: 4px !important;
    opacity: 10 !important;
