@@ -649,18 +649,30 @@ pre {
 }
 /* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
 .icon-evt_note {
-   font-size: 17px !important;
    color: #fff;
-   margin-top: 10px!important;
-   text-align: center;
-   font-weight:200;
  }
-span.null {
-  font-size: 20px !important;
-  color: #263238 !important;
-  //margin-top: 10px!important;
-  text-align: center;
-  font-weight: 200;
+ .icon-evt_note span.null {
+   background-color: maroon !important;
+   padding: 0px 4px 4px 4px !important;
+   opacity: 10 !important;
+   border-radius: 4px !important;
+   vertical-align: top !important;
+   font-variant-position: normal !important;
+   font-size: 14px !important;
+   top: 4px !important;
+   position: relative !important;
+}
+evt-popover[data-n=""] .icon-evt_note span.null:before {
+   content: "";
+   padding: 0px 4px 4px 4px !important;
+   font-size: 1px !important;
+}
+evt-popover[data-n=""] .icon-evt_note span.null{
+   margin-right: 4px;
+   font-size: 10px !important;
+   padding: 0px 1px  !important;
+   border-radius: 100px !important;
+   background-color: #4e443c;
 }
 .popover_trigger.active:hover {
    opacity: 0.5;
@@ -669,25 +681,26 @@ span.null {
    color: #263238 !important;
    opacity: 10 !important;
 }
-span.comment{
-   background-color: #b46138 !important;
-   padding: 1px 4px 4px 4px !important;
+.icon-evt_note span.comment{
+   color: #fff;
+   background-color: rgb(87, 14, 105) !important;
+   padding: 0px 4px 4px 4px !important;
    opacity: 10 !important;
    border-radius: 4px !important;
    vertical-align: top !important;
    font-variant-position: normal !important;
-   font-size: 12px !important;
+   font-size: 14px !important;
    top: 4px !important;
    position: relative !important;
 }
-span.critic{
-   background-color: #c3a27a !important;
+.icon-evt_note span.critic{
+   background-color: rgb(24, 70, 155) !important;
    padding: 0px 4px 4px 4px !important;
    border-radius: 4px !important;
    opacity: 10 !important;
    vertical-align: top !important;
    font-variant-position: normal !important;
-   font-size: 12px !important;
+   font-size: 14px !important;
    top: 4px !important;
    position: relative !important;
 }
