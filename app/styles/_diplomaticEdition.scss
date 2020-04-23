@@ -40,7 +40,7 @@
 			display: none;
 			border: 1.5px solid black;
 			border-radius: 3px;
-			padding: 5px 8px;
+			padding: 5px 2px;
 			margin-top: 30px;
 			left: 0;
 
@@ -74,7 +74,12 @@
 			&:before {
 				content: none;
 			}
-      }
+	  }
+	}
+	.mapping[data-type="diplomatic"],
+	.mapping[data-type="orig"] {
+	  display: inline;
+	}
 
 	// 3.3.2 Emphasis, Foreign Words, and Unusual Language
 	// 3.3.2.2 Emphatic Words and Phrases
@@ -107,36 +112,38 @@
 			content: "";
 		}
 
-      &:hover, &.hover {
-         .reg {
-            display: inline;
-            min-width: 20px;
-            z-index: 99;
-            white-space: nowrap;
-         }
-         .orig {
-            color: #561c0a;
-            text-decoration: underline;
-            z-index: 9;
-         }
-      }
+		&:hover,
+		&.hover {
+        	.reg {
+            	display: inline;
+            	min-width: 20px;
+            	z-index: 9;
+            	white-space: nowrap;
+         	}
+         	.orig {
+            	color: #561c0a;
+            	text-decoration: underline;
+            	//z-index: 9;
+         	}
+      	}
 
 		.corr {
 			display: none;
 		}
 
-      .orig {
-         color: #69513a;
-         .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-         }
+      	.orig {
+        	color: #69513a;
+        	.sup {
+            	line-height: 20px;
+            	vertical-align: 20%;
+         	}
 
-         .under {
-            line-height: 20px;
-            vertical-align: -20%;
-         }
-      }
+         	.under {
+            	line-height: 20px;
+            	vertical-align: -20%;
+         	}
+		}
+	}
 
 		.reg {
 			font-size: 85%;
@@ -145,7 +152,7 @@
 			display: none;
 			border: 1.5px solid black;
 			border-radius: 3px;
-			padding: 5px 8px;
+			padding: 5px 2px;
 			margin-top: 30px;
 
 			@include set(box-shadow, 2px 2px 2px #7e7067);
@@ -167,8 +174,6 @@
 		.reg, .reg * {
 			background: #e5dac4 !important;
 		}
-   }
-}
 
 	// 3.4.3 Additions, Deletions, and Omissions
 	.add {
