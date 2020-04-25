@@ -60,22 +60,12 @@ Follow installation instructions at [https://brew.sh](https://brew.sh)
     ```bash
     cd evt-viewer
     ```
-3. Install grunt and bower globally (bower v. 1.8.0 is recommended)
+
+3. Install dependendencies and devDependencies
     ```bash
-    npm install -g bower
-    npm install -g grunt-cli
+    npm i
+    npm run bower-install
     ```
-4. Install dependendencies and devDependencies
-    ```bash
-    npm install
-    ```
-    ignore any WARN message, they are harmless
-    
-    ```bash
-    npm install bower
-    bower install
-    ```
-    choose the angular.js version recommended for evt-viewer.
 
 ## Start EVT
 
@@ -83,33 +73,30 @@ Before starting EVT check if you have a *data* folder inside *app* where to put 
 If you need information about the configuration file, please check the *README.md* within the *app* folder, or use the beta [EVT2-Config-Generator](http://evt.labcd.unipi.it/evt2-config/) to set your preferences and download a ready to use JSON file.
 You can also use some ready-to-use xml files and configurations we've added to https://github.com/evt-project/evt-sample-documents (EVT2js folder).
 
-To start EVT use *grunt*
+To start EVT use
 ``` bash
-grunt dev
+npm run start
 ```
 
 ### Every time you install a new package
-Stop *grunt dev* (*CTRL/CMD+C*) then:
+Stop current process (*CTRL/CMD+C*) then:
 ```bash
-bower install
-grunt dev
+npm i 
+npm run bower-install
+npm run start
 ```
 
 ### Every time you checkout to a different branch
-If you need to work on a different branch, we recommend that you stop *grunt dev* (*CTRL/CMD+C* in the bash terminal), repeat the steps of dependencies and devDependencie installations and launch again *grunt dev*:
+If you need to work on a different branch, we recommend that you stop current process (*CTRL/CMD+C* in the bash terminal), repeat the steps of dependencies and devDependencie installations and launch again :
 ```bash
-npm install
-bower install
-grunt dev
+npm i 
+npm run bower-install
+npm run start
 ```
 
 ## Generate EVT Development Documentation
 
-``` bash
-grunt docs
-```
-This will create a *devDocs* folder.
-Open the *index.html* inside this folder in a browser that allows Cross origin requests and navigate the documentation.
+[WIP]
 
 ## Troubleshooting
 
@@ -121,16 +108,17 @@ sudo apt-get install ruby-dev
 sudo gem install compass susy
 ```
 
-### In case of visualization problems
-```bash
-grunt dev --force
-```
-
 ## Build a new EVT release
 ``` bash
-grunt build
+npm run build
 ```
-This will create a *build* folder containing the built package.
+or 
+```bash
+npm run build:prod
+```
+for a minified version of the app.
+
+Both scripts will create a *build* folder containing the built package.
 Add a *data* folder with the XML files you need and open the index.html file to see your digital edition.
 NB: in this case, in order to make EVT work properly in a local environment, you need to use a browser that allows Cross origin requests.
 
