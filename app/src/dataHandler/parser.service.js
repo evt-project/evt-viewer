@@ -162,7 +162,7 @@ angular.module('evtviewer.dataHandler')
 		var newElement;
 		var skip = options.skip || '',
 			exclude = options.exclude || undefined;
-
+		var skipped = false;
 		if (element.nodeType === 3) { // Text
 			newElement = element;
 			if (newElement.textContent) {
@@ -176,6 +176,7 @@ angular.module('evtviewer.dataHandler')
 			|| element.className.indexOf('depaAnchor') >= 0
 			|| element.className.indexOf('depaContent') >= 0)) {
 			newElement = element;
+			skipped = true;
 		} else if (element.tagName !== undefined && exclude !== undefined && exclude.toLowerCase().indexOf('<' + element.tagName.toLowerCase() + '>') >= 0) {
 			newElement = document.createTextNode('');
 		} else {
@@ -304,7 +305,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 		}
-		if (element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')
+		if (skipped || element.nodeType === 3 || (newElement.innerHTML && newElement.innerHTML.replace(/\s/g, '') !== '')
 		|| (newElement.className && (newElement.className.indexOf('depaAnchor') >= 0 || newElement.className.indexOf('depaContent') >= 0))) {
 			return newElement;
 		} else {
