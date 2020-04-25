@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.config(function($routeProvider, $locationProvider, $translateProvider) {   
+.config(function($routeProvider, $locationProvider, $translateProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
         .when('/:viewMode', {
@@ -36,8 +36,8 @@ angular.module('evtviewer.interface')
             prefix: './app/i18n/',
             suffix: '.json'
         });
-        
-        $translateProvider 
+        $translateProvider.useSanitizeValueStrategy('sanitize');
+        $translateProvider
             .fallbackLanguage('en')
             .preferredLanguage('en');
 })
