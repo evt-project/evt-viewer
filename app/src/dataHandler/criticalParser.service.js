@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtCriticalParser
- * @description 
+ * @description
  * # evtCriticalParser
  * Service containing methods to parse data regarding critical edition (critical text, witness text, etc.).
  *
@@ -43,7 +43,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will parse the XML of the document and generate the text of a specified witness.
-     * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements. 
+     * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements.
      * - It will loop over critical apparatus entries (defined as <code>apparatusEntryDef</code>) and get the reading belonging to given witness.
      * - It will parse quotes and replace quotes elements with quotes text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText evtCriticalElementsParser.getQuoteText()}).
      * - It will parse analogues and replace analogues elements with analogues text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getAnalogueText evtCriticalElementsParser.getAnalogueText()}).
@@ -124,17 +124,17 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will parse the XML of the document and generate the critical text.
-     * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements. 
+     * The extracted text will be then stored into {@link evtviewer.dataHandler.parsedData parsedData} for future retriements.
      * - It will loop over critical apparatus entries (defined as <code>apparatusEntryDef</code>) and get the lemma.
      * - It will parse quotes and replace quotes elements with quotes text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getQuoteText evtCriticalElementsParser.getQuoteText()}).
      * - It will parse analogues and replace analogues elements with analogues text (retrieved with {@link evtviewer.dataHandler.evtCriticalElementsParser#getAnalogueText evtCriticalElementsParser.getAnalogueText()}).
      * - It will remove page breaks since they are not needed in a critical text.
-     * - It finally store generated XHTML into parsed data for future retrievements 
+     * - It finally store generated XHTML into parsed data for future retrievements
      * ({@link evtviewer.dataHandler.parsedData#addCriticalText addCriticalText()} and {@link evtviewer.dataHandler.parsedData#addVersionText addVersionText()}).
      *
      * @param {element} doc XML element representing the document to be parsed
      * @param {string} docID id of current document being parsed
-     * @param {string} scopeVersion version of the text that has to be parsed 
+     * @param {string} scopeVersion version of the text that has to be parsed
      *
      * @returns {promise} promise that the parser will end
      *
@@ -145,11 +145,11 @@ angular.module('evtviewer.dataHandler')
 		var deferred = $q.defer();
 		var criticalText;
 		if (origDoc !== undefined) {
-			var doc = parser.getDocToParse(origDoc);		
+			var doc = parser.getDocToParse(origDoc);
 			var docDOM = doc.getElementsByTagName('body')[0];
 			// console.log(docDOM.parentNode, docDOM.parentNode.parentNode)
 			// lemmas = docDOM.getElementsByTagName(lemmaDef.replace(/[<>]/g, ''));
-			// if (lemmas.length > 0 || 
+			// if (lemmas.length > 0 ||
 			//     (parsedData.getWitness(config.preferredWitness) !== undefined &&
 			//      parsedData.getWitness(config.preferredWitness) !== '') ) {
 
@@ -170,7 +170,7 @@ angular.module('evtviewer.dataHandler')
 			criticalText = docDOM.outerHTML;
 			// } else {
 			//     criticalText = '<span>Text not available.</span>';
-			// }   
+			// }
 		} else {
 			criticalText = '<span>Text not available.</span>';
 		}
@@ -194,10 +194,17 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parser.getDocRoot = function(doc) {
-		if (doc.tagName.toLowerCase() === 'tei') {
+		if (doc && doc.tagName && doc.tagName.toLowerCase() === 'tei') {
 			return doc;
-		} else {
+		} else if (doc && doc.parentNode) {
 			return parser.getDocRoot(doc.parentNode);
+		} else {
+			var teiEl = doc ? doc.querySelector('tei') : doc;
+			if (teiEl){
+				return parser.getDocRoot(teiEl);
+			} else {
+				return doc;
+			}
 		}
 	}
 
@@ -334,7 +341,7 @@ angular.module('evtviewer.dataHandler')
 						evtDepaParser.setInternalAppInText(appNode, entry, wit, doc);
 					} else if (entry.type === 'recensioApp') {
 						spanElement = evtCriticalElementsParser.getVersionEntryReadingText(entry, wit);
-						// Otherwise it is transformed in a evt-reading directive 
+						// Otherwise it is transformed in a evt-reading directive
 					} else {
 						spanElement = evtCriticalElementsParser.getEntryWitnessReadingText(entry, wit);
 					}
