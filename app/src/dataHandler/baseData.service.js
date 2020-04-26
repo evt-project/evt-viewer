@@ -89,7 +89,7 @@ angular.module('evtviewer.dataHandler')
     baseData.getXMLStrings = function() {
         return state.XMLStrings;
     };
-    
+
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#addXMLDocument
@@ -191,7 +191,7 @@ angular.module('evtviewer.dataHandler')
         //Parse svgs
         evtParser.parseSvgsForViscoll(svgElement, svgId);
 	};
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#addViscollDataModel
@@ -207,7 +207,7 @@ angular.module('evtviewer.dataHandler')
 		//Parse imagelist
 		evtParser.parseViscollDatamodel(xmlElement);
 	};
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#addViscollImageList
@@ -223,7 +223,7 @@ angular.module('evtviewer.dataHandler')
         //Parse imagelist
 		evtParser.parseViscollImageList(xmlElement);
 	};
-	
+
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.baseData#launchXMLParsers
@@ -240,7 +240,7 @@ angular.module('evtviewer.dataHandler')
 
         // Parse Zones
         evtPrimarySourcesParser.parseZones(docElements); //TODO: Decide if it is necessary to move this somewhere else
-       
+
          // Parse HotSpots
          evtHotSpotParser.parseHotSpots(docElements);
 
@@ -276,10 +276,10 @@ angular.module('evtviewer.dataHandler')
 
         // Parse projet info
         evtProjectInfoParser.parseProjectInfo(docElements);
-      
+
         // Parse bibliography
         evtBibliographyParser.parseBiblInfo(docElements);
-   
+
        // Parse Glyphs
        evtParser.parseGlyphs(docElements);
 
@@ -293,7 +293,7 @@ angular.module('evtviewer.dataHandler')
             evtCriticalApparatusParser.parseVersionEntries(docElements);
         }
        }
-   
+
        // Init Search
        //evtSearch.initSearch(docElements);
     };
@@ -341,7 +341,7 @@ angular.module('evtviewer.dataHandler')
                     }, function(error) {
                         var fallbackElem = element.getElementsByTagName('fallback')[0],
                             errorDialog  = evtDialog.getById('errorMsg');
-                        var errorContent = fallbackElem.innerHTML;
+                        var errorContent = fallbackElem ? fallbackElem.innerHTML : '';
                         errorContent += '<div style="text-align:center;">Warning! <br/> EVT could not work properly.</div>';
                         errorDialog.updateContent(errorContent);
                         errorDialog.setTitle(fileXpointer + ' - XI:INCLUDE ERROR');
