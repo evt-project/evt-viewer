@@ -103,6 +103,9 @@
             padding: 0;
             margin-bottom: 0;
         }
+        &.noPadding {
+            padding: 0px !important;
+        }
         &.addPadding {
             padding: 20px !important;
         }

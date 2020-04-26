@@ -231,7 +231,8 @@ angular.module('evtviewer.tabsContainer')
 							icon: listIcon,
 							name: listId,
 							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
-							scrollDisabled: true
+							scrollDisabled: true,
+							noPadding: true
 						};
 					}
 					break;
@@ -250,13 +251,14 @@ angular.module('evtviewer.tabsContainer')
 						label: 'DIALOGS.NAMED_ENTITIES',
 						name: 'entitiesLists',
 						content: '',
-						subTabs: {
-							_indexes: []
-						},
-						showSubTabs: false
-					};
-					tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
-					for (var i = 0; i < entitiesCollection._indexes.length; i++) {
+							subTabs: {
+								_indexes: []
+							},
+							showSubTabs: false,
+							noPadding: true
+						};
+						tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
+						for (var i = 0; i < entitiesCollection._indexes.length; i++) {
 						var listId = entitiesCollection._indexes[i],
 							listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
 							listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
@@ -266,7 +268,8 @@ angular.module('evtviewer.tabsContainer')
 							icon: listIcon,
 							name: listId,
 							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
-							scrollDisabled: true
+								scrollDisabled: true,
+								noPadding: true
 						};
 					}
 					tabs._indexes.push('entitiesLists');
