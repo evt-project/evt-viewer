@@ -284,7 +284,9 @@ angular.module('evtviewer.box')
 	     */
 		var updateTopBoxContent = function(newContent) {
 			var vm = this;
-			vm.topBoxContent = newContent;
+			if (vm) { 
+				vm.topBoxContent = newContent;
+			}
 		};
 		/**
 	     * @ngdoc method

@@ -194,11 +194,18 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	parser.getDocRoot = function(doc) {
-		//if (doc.tagName.toLowerCase() === 'tei') {
+		if (doc && doc.tagName && doc.tagName.toLowerCase() === 'tei') {
 			return doc;
-		//} else {
-		//	return parser.getDocRoot(doc.parentNode);
-		//}
+		} else if (doc && doc.parentNode) {
+			return parser.getDocRoot(doc.parentNode);
+		} else {
+			var teiEl = doc ? doc.querySelector('tei') : doc;
+			if (teiEl){
+				return parser.getDocRoot(teiEl);
+			} else {
+				return doc;
+			}
+		}
 	}
 
 	parser.getDocToParse = function(origDoc) {
