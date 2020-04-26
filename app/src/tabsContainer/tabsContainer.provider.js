@@ -71,7 +71,9 @@ angular.module('evtviewer.tabsContainer')
 		var toggleSubTabs = function(vm, tab) {
 			vm.tabs[tab].showSubTabs = !vm.tabs[tab].showSubTabs;
 			var icon = document.getElementById(tab + '_subTabsIcon');
-			icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
+			if (icon) {
+				icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
+			}
 		}
 
 		var toggleSubTab = function(tab, subTab) {
@@ -247,7 +249,7 @@ angular.module('evtviewer.tabsContainer')
 					
 					// ENTITIES LIST
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();
-					if (entitiesCollection._indexes.lenth > 0) {
+					if (entitiesCollection && entitiesCollection._indexes && entitiesCollection._indexes.length > 0) {
 						tabs.entitiesLists = {
 							label: 'DIALOGS.NAMED_ENTITIES',
 							name: 'entitiesLists',
