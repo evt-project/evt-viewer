@@ -105,6 +105,7 @@ angular.module('evtviewer.dataHandler')
      */
     var addXMLDocument = function(doc) {
         var deferred = $q.defer();
+        doc = doc.replace(/<!--.*-->/gm, '');
         docElements = xmlParser.parse(doc);
         if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
