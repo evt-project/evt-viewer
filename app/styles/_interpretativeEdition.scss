@@ -103,6 +103,7 @@
       }
 
       .sic {
+      left: 3em !important;
         &:before {
           content: url("../images/popup_before_corr.png");
         }

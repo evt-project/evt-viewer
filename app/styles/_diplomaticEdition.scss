@@ -81,8 +81,7 @@
       }
 
    	// 3.4 Simple Editorial Changes
-	   // 3.4.2 Regularization and Normalization
-
+      // 3.4.2 Regularization and Normalization
       .corr,
       .reg {
 			font-size: 80%;
@@ -96,7 +95,6 @@
 
          padding: 5px 8px;
          margin-top: 30px;
-         left: 50%;
 
 			&:before {
 				left: 15%;
@@ -106,6 +104,7 @@
       }
 
       .corr {
+         left: 3em !important;
          &:before {
            content: url("../images/popup_before_corr.png");
          }
@@ -144,7 +143,8 @@
                min-width: 20px;
                text-align: center;
             	z-index: 9;
-            	white-space: nowrap;
+               white-space: nowrap;
+               left: 0px;
             }
             .corr {
                @include set(transform, translate(-80%, 0));
@@ -173,7 +173,7 @@
 
          &:before,
          &:after {
-           //content: "";
+           content: "";
          }
       }
       .corr {
