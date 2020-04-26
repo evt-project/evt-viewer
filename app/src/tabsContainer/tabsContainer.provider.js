@@ -247,10 +247,11 @@ angular.module('evtviewer.tabsContainer')
 					
 					// ENTITIES LIST
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();
-					tabs.entitiesLists = {
-						label: 'DIALOGS.NAMED_ENTITIES',
-						name: 'entitiesLists',
-						content: '',
+					if (entitiesCollection._indexes.lenth > 0) {
+						tabs.entitiesLists = {
+							label: 'DIALOGS.NAMED_ENTITIES',
+							name: 'entitiesLists',
+							content: '',
 							subTabs: {
 								_indexes: []
 							},
@@ -259,20 +260,21 @@ angular.module('evtviewer.tabsContainer')
 						};
 						tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
 						for (var i = 0; i < entitiesCollection._indexes.length; i++) {
-						var listId = entitiesCollection._indexes[i],
-							listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
-							listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
-							listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
-						tabs.entitiesLists.subTabs[listId] = {
-							label: listTitle,
-							icon: listIcon,
-							name: listId,
-							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
+							var listId = entitiesCollection._indexes[i],
+								listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
+								listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
+								listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
+							tabs.entitiesLists.subTabs[listId] = {
+								label: listTitle,
+								icon: listIcon,
+								name: listId,
+								content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
 								scrollDisabled: true,
 								noPadding: true
-						};
+							};
+						}
+						tabs._indexes.push('entitiesLists');
 					}
-					tabs._indexes.push('entitiesLists');
 
 					// BIBLIOGRAPHY //
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
