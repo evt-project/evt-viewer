@@ -374,3 +374,13 @@ $critical-apparatus-entry-selected-border-color: rgb(125, 125, 125);
     text-align: center;
     vertical-align: center;
 }
+// Handle orig and reg visualization
+.criticalEdition .choice .orig {
+   display: none;
+}
+.criticalEdition .choice .reg {
+   &:before,
+   &:after {
+     content: " ";
+   }
+}
