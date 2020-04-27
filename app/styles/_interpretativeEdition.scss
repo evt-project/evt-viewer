@@ -223,6 +223,7 @@
     }
   }
 
+
   //TODO: reorder
   .attachment {
     border: 1px solid black;
@@ -297,4 +298,26 @@
   [rend="left"] {
     display: inline-table;
   }
+  .subst {
+     position: relative;
+     margin: 0px;
+     padding: 0px;
+  }
+  .del {
+      &:before {
+         content: "[[";
+
+      }
+      &:after {
+         content: "]]";
+      }
+   }
+   .add {
+      &:before {
+         content: "|";
+      }
+      &:after {
+         content: "|";
+      }
+   }
 }

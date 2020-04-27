@@ -22,7 +22,7 @@
         }
     }
 
-// TODO: Reorder and organize elements 
+// TODO: Reorder and organize elements
 // TODO: Differentiate edition specific styles and generic ones
 [data-type="hot-spot"] {
     display: none;
@@ -32,11 +32,11 @@
         font-style: italic;
     }
     .title {
-        font-weight: bold; 
+        font-weight: bold;
     }
 }
 .del {
-    text-decoration: line-through;
+    text-decoration: none;
 }
 .div {
     display: block;
@@ -82,11 +82,11 @@
 .l {
     display: inline;
     background: inherit;
-    
-    >*:last-child:after{ 
+
+    >*:last-child:after{
         //content: " ";
     }
-    
+
     &.inApparatus {
         display: inline-block;
         &::after {
@@ -279,7 +279,7 @@
 
     .handDesc, .decoDesc {
         display: block;
-        margin-bottom: 8px; 
+        margin-bottom: 8px;
     }
 
     //TODO: spaziatura MSDesc
@@ -290,13 +290,13 @@
             display: inline-block;
             white-space: pre;
         }
-        
+
     }
-    
+
     .msIdentifier {
         display: block;
         margin-bottom: 8px;
-        
+
         .settlement {
             display: block;
         }
@@ -326,7 +326,7 @@
         display: block;
         margin-top:8px;
     }
-    
+
     .quote {
         font-style: italic;
         &::before {
@@ -485,10 +485,10 @@
         }
         [data-type='sub']{
             font-weight: bold;
-            font-size: 1em;   
+            font-size: 1em;
         }
         [data-type='main']{
-            
+
             &:after{
                 content:" -";
             }
@@ -560,7 +560,7 @@
             }
         }
     }
-    .textClass{ 
+    .textClass{
         &:before{  }
     }
 }
@@ -626,7 +626,7 @@
             &:after{
             content: "]"}
             }
-        
+
 
         &[data-quantity='4']{
             &:before{
@@ -635,7 +635,7 @@
             &:after{
             content: "]"}
             }
-        
+
 
         &[data-quantity='5']{
             &:before{
@@ -644,7 +644,7 @@
             &:after{
             content: "]"}
             }
-        
+
 
         &[data-quantity='6']{
             &:before{
@@ -653,7 +653,7 @@
             &:after{
             content: "]"}
             }
-        
+
 
         &[data-quantity='7']{
             &:before{
@@ -662,7 +662,7 @@
             &:after{
             content: "]"}
             }
-        
+
 
         &[data-quantity='8']{
             &:before{
@@ -678,7 +678,7 @@
             }
             &:after{
             content: "]"}
-            }   
+            }
 
         &[data-extent]{
                 &:before{
@@ -686,5 +686,5 @@
                 }
             }
         }
-   
+
 }
