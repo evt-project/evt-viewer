@@ -26,9 +26,9 @@
       .abbr {
 		 color: purple;
        z-index: 9;
-
          &:hover,
          &.hover {
+            text-decoration: underline;
             color: #561c0a;
          }
       }

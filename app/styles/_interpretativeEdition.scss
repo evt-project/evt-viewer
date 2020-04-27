@@ -24,10 +24,11 @@
    }
 
     .expan {
-      color: #69513a;
+      color: purple;
       z-index: 9;
         &:hover,
         &.hover {
+          text-decoration: underline;
           color: #561c0a;
         }
       }
@@ -73,14 +74,7 @@
 				content: none;
 			}
       }
-
-      .expan {
-         color: purple;
-         z-index: 9;
-         text-decoration: underline;
-      }
 	}
-
     .mapping[data-type="interpretative"],
     .mapping[data-type="reg"],
     .mapping[data-type="normalized"] {
