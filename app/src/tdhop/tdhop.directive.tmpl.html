@@ -1,7 +1,7 @@
 <!--div id='tdhop' class='box-tdhop'-->
 <div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()"><div id="tdhlg"></div>
-	<div id="toolbar" style="position:absolute;">
-		<img id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/><br/>
+   <div id="toolbar" style="position:absolute;">
+      <img id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/><br/>
 		<!--ZOOM ng-click="actionOnViewer('zoomin')"-->
 		<img id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/><br/>
 		<img id="zoomout" class="viewer3dhopBtn" ng-click="actionOnViewer('zoomout')" title="Zoom Out" src="js-plugins/tdhop/skins/dark/zoomout.png"/><br/>
@@ -33,6 +33,10 @@
 		<!--FULLSCREEN-->
 		<img id="full_on" class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
 		<img id="full"  ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/>
+      <img ng-click="reloadPage();" id="model" class="viewer3dhopBtn" title="Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+      <img ng-click="actionOnViewer('fig2')" id="fig2" class="viewer3dhopBtn" title="Change 3D Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+      <img ng-click="actionOnViewer('fig1')" id="fig1" class="viewer3dhopBtn" title="Change 3D Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+
    </div>
    <!--MEASURE-->
    <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>
@@ -65,6 +69,8 @@
       <tr>
       <td>Show planes<input id="showPlane" class="output-input" type="checkbox" title="Show Section Planes" style="bottom:-3px;"/></td>
       <td>Show edges<input  id="showBorder" class="output-input" type="checkbox" title="Show Section Edges" style="bottom:-3px;"/></td></tr></table>
+   </div>
+   <div id="toolbar1" style="position:absolute; float: left;">
    </div>
    <!--SECTIONS-->
    <canvas id="draw-canvas" style="background-image: url(js-plugins/tdhop/skins/backgrounds/light.jpg);"></canvas>

@@ -57,22 +57,24 @@ angular.module('evtviewer.tdhop')
                   console.log("Caricamento canvas");
                   //console.log(myurl);
                   presenter.setScene({
-
                      meshes: {
-                        "Mesh" : {
-                           url: config.tdhopViewerOptions.url,
+                        "Mesh_1_mesh" : {
+                           //url: config.tdhopViewerOptions.url,
+                           url: "/data/models/multires/bewcastle.nxz",
                         },
-                        //"Cage": {
-                        //	url: "data/3Dmodels/singleres/"
-                        //}
+                        "Mesh_2_mesh" : {
+                            url: "/data/models/singleres/cross.ply",
+                        },
                      },
                      modelInstances: {
-                        "Model1": {
-                           mesh: "Mesh"
+                        "Model_1": {
+                           mesh: "Mesh_1_mesh",
+                           tags : ["fig1", "original"],
                         },
-                        //"Model2": {
-                        //	mesh: ""
-                        //}
+                        "Model_2": {
+                           mesh: "Mesh_2_mesh",
+                           tags : ["fig2", "original"],
+                       },
                      },
                      trackball: {
                         type : TurntablePanTrackball,
@@ -107,11 +109,7 @@ angular.module('evtviewer.tdhop')
                   sectiontoolInit();
       }
 
-
-
-
       var init3dhop = function () {
-
          //function init3dhop() {
             if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
@@ -643,9 +641,6 @@ angular.module('evtviewer.tdhop')
    }
 
 
-
-   loadFiles(0);
-
       // +++ INTERFACE SWITCHING FUNCTIONS +++ //
 
       function lightSwitch(on) {
@@ -1104,8 +1099,11 @@ angular.module('evtviewer.tdhop')
             //--FULLSCREEN--
             else if (action == 'full' || action == 'full_on') fullscreenSwitch();
             //--FULLSCREEN--
-            else if(action=='move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
-         } catch (e) {
+            //else if(action=='move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
+            else if (action == 'all') {presenter.setInstanceVisibility(HOP_ALL, true, true);}
+            else if (action == 'fig1') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
+            else if (action == 'fig2') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig2', true, true);}
+            } catch (e) {
             console.log(e)
          }
       }
@@ -1127,11 +1125,14 @@ angular.module('evtviewer.tdhop')
             var z = point[2].toFixed(2);
             $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
          }
+
          //--PICKPOINT--
+         loadFiles(0);
 
          var initializeViewer = function() {
             init3dhop();
             setup3dhop();
          };
+
       };
    });
