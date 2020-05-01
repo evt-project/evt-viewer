@@ -1,7 +1,6 @@
-s
 var module = angular.module('evtviewer.tdhop', ["evtviewer.tdhop", "evtviewer.interface"]);
 
-module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $timeout, tredhop) {
+module.directive('tredhop', ['tredhop', "evtInterface", "$timeout", function(evtInterface, $ocLazyLoad, $timeout, tredhop) {
 	return {
 		restrict: 'AE',
 		scope: {
@@ -9,17 +8,17 @@ module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $tim
          measurebox:'@',
          options: "=",
          name: "=",
-         presenter:"@",
+         presenter:"=",
       },
-
+      controllerAs: "vm",
       controller: "TreDHOPCtrl",
-
       templateUrl: 'src/tdhop/tdhop.directive.tmpl.html',
 
       transclude: true,
       //template: "<div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'>",
 
 		link: function(scope, element, attrs) {
+         $timeout(function () {
          var start=0;
          var name="";
          var myurl="";
@@ -33,6 +32,7 @@ module.directive('tredhop', ['tredhop', function(evtInterface, $ocLazyLoad, $tim
          var tipo_hs="Sphere";
          var url_hs="models/singleres/sphere.ply";
          var HOTSPOTSDATA ={};
+      }, 10);
       }
    };
 }]);

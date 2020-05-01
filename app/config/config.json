@@ -84,7 +84,7 @@
       }
    ],
 
-   "showDocumentSelector": false,
+   "showDocumentSelector": true,
    "enableNavBar": false,
    "initNavBarOpened": true,
 
@@ -209,6 +209,7 @@
 
    "toolHome": false,
 
+   "showObjectSelector": true,
    "tdhopViewerOptions": {
       "name": "Bewcastle",
       "url": "data/models/multires/bewcastle.nxz",

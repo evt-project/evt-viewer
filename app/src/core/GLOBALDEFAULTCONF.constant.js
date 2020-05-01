@@ -248,6 +248,8 @@ angular.module('evtviewer.core')
 
     languages: ['en', 'it'],
 
+   showObjectSelector: true,
+
     // 3DHOP
    tdhopViewerOptions: {
    name: "Bewcastle",
