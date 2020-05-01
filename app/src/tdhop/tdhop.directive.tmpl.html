@@ -1,42 +1,41 @@
 <!--div id='tdhop' class='box-tdhop'-->
-<div id="tredhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
-   <my-select-city></my-select-city>
+<div id="3dhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
    <div id="toolbar" style="position:absolute;">
-   <img ng-click=" actionOnViewer('fig2')" id="fig2" class="viewer3dhopBtn" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-   <img ng-click="actionOnViewer('fig1')" id="fig1" class="viewer3dhopBtn" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+   <img ng-click="actionsToolbar('fig2')" id="fig2" class="viewer3dhopBtn" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+   <img ng-click="actionsToolbar('fig1')" id="fig1" class="viewer3dhopBtn" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
       <img id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/><br/>
-		<!--ZOOM ng-click="actionOnViewer('zoomin')"-->
+		<!--ZOOM ng-click="actionsToolbar('zoomin')"-->
 		<img id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/><br/>
-		<img id="zoomout" class="viewer3dhopBtn" ng-click="actionOnViewer('zoomout')" title="Zoom Out" src="js-plugins/tdhop/skins/dark/zoomout.png"/><br/>
+		<img id="zoomout" class="viewer3dhopBtn" ng-click="actionsToolbar('zoomout')" title="Zoom Out" src="js-plugins/tdhop/skins/dark/zoomout.png"/><br/>
 		<!--ZOOM-->
       <!--LIGHT-->
-      <img id="lighting_off" class="viewer3dhopBtn" ng-click="actionOnViewer('lighting_off')" title="Enable Lighting" src="js-plugins/tdhop/skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;"/>
-		<img id="lighting" class="viewer3dhopBtn" ng-click="actionOnViewer('lighting')" title="Disable Lighting"  src="js-plugins/tdhop/skins/dark/lighting.png"/><br/>
-		<img id="light_on" class="viewer3dhopBtn" ng-click="actionOnViewer('light_on')" title="Disable Light Control" src="js-plugins/tdhop/skins/dark/lightcontrol_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="light" class="viewer3dhopBtn" ng-click="actionOnViewer('light')" title="Enable Light Control"  src="js-plugins/tdhop/skins/dark/lightcontrol.png"/><br/>
-      <!--LIGHT-->
-      <img id="perspective" class="viewer3dhopBtn"  ng-click="actionOnViewer('perspective')" title="Perspective Camera"    src="js-plugins/tdhop/skins/dark/perspective.png"     style="position:absolute; visibility:hidden;"/>
-      <img id="orthographic" class="viewer3dhopBtn"  ng-click="actionOnViewer('orthographic')" title="Orthographic Camera"   src="js-plugins/tdhop/skins/dark/orthographic.png"    /><br/>
+      <img id="lighting_off" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting_off')" title="Enable Lighting" src="js-plugins/tdhop/skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;"/>
+		<img id="lighting" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting')" title="Disable Lighting"  src="js-plugins/tdhop/skins/dark/lighting.png"/><br/>
+	   <!--<img id="light_on" class="viewer3dhopBtn" ng-click="actionsToolbar('light_on')" title="Disable Light Control" src="js-plugins/tdhop/skins/dark/lightcontrol_on.png" style="position:absolute; visibility:hidden;"/>
+		<img id="light" class="viewer3dhopBtn" ng-click="actionsToolbar('light')" title="Enable Light Control"  src="js-plugins/tdhop/skins/dark/lightcontrol.png"/><br/>
+     LIGHT-->
+      <img id="perspective" class="viewer3dhopBtn"  ng-click="actionsToolbar('perspective')" title="Perspective Camera"    src="js-plugins/tdhop/skins/dark/perspective.png"     style="position:absolute; visibility:hidden;"/>
+      <img id="orthographic" class="viewer3dhopBtn"  ng-click="actionsToolbar('orthographic')" title="Orthographic Camera"   src="js-plugins/tdhop/skins/dark/orthographic.png"    /><br/>
       <!--COLOR-->
-		<img id="color_on" class="viewer3dhopBtn" ng-click="actionOnViewer('color_on')" title="Model color" src="js-plugins/tdhop/skins/dark/color_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="color" class="viewer3dhopBtn" ng-click="actionOnViewer('color')" title="Solid color" src="js-plugins/tdhop/skins/dark/color.png"/><br/>
+		<img id="color_on" class="viewer3dhopBtn" ng-click="actionsToolbar('color_on')" title="Model color" src="js-plugins/tdhop/skins/dark/color_on.png" style="position:absolute; visibility:hidden;"/>
+		<img id="color" class="viewer3dhopBtn" ng-click="actionsToolbar('color')" title="Solid color" src="js-plugins/tdhop/skins/dark/color.png"/><br/>
 		<!--COLOR-->
 		<!--MEASURE-->
-		<img id="measure_on" class="viewer3dhopBtn" ng-click="actionOnViewer('measure_on')" title="Disable Measure Tool" src="js-plugins/tdhop/skins/dark/measure_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="measure" class="viewer3dhopBtn" ng-click="actionOnViewer('measure')" title="Enable Measure Tool" src="js-plugins/tdhop/skins/dark/measure.png"/><br/>
+		<img id="measure_on" class="viewer3dhopBtn" ng-click="actionsToolbar('measure_on')" title="Disable Measure Tool" src="js-plugins/tdhop/skins/dark/measure_on.png" style="position:absolute; visibility:hidden;"/>
+		<img id="measure" class="viewer3dhopBtn" ng-click="actionsToolbar('measure')" title="Enable Measure Tool" src="js-plugins/tdhop/skins/dark/measure.png"/><br/>
 		<!--MEASURE-->
 		<!--POINT PICKING-->
-		<img id="pick_on" class="viewer3dhopBtn" ng-click="actionOnViewer('pick_on')" title="Disable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="pick" class="viewer3dhopBtn" ng-click="actionOnViewer('pick')" title="Enable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick.png"/><br/>
+		<img id="pick_on" class="viewer3dhopBtn" ng-click="actionsToolbar('pick_on')" title="Disable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick_on.png" style="position:absolute; visibility:hidden;"/>
+		<img id="pick" class="viewer3dhopBtn" ng-click="actionsToolbar('pick')" title="Enable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick.png"/><br/>
 		<!--POINT PICKING-->
 		<!--SECTIONS-->
-		<img id="sections_on" class="viewer3dhopBtn" ng-click="actionOnViewer('sections_on')" title="Disable Plane Sections" src="js-plugins/tdhop/skins/dark/sections_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="sections" class="viewer3dhopBtn" ng-click="actionOnViewer('sections')" title="Enable Plane Sections" src="js-plugins/tdhop/skins/dark/sections.png"/><br/>
+		<img id="sections_on" class="viewer3dhopBtn" ng-click="actionsToolbar('sections_on')" title="Disable Plane Sections" src="js-plugins/tdhop/skins/dark/sections_on.png" style="position:absolute; visibility:hidden;"/>
+		<img id="sections" class="viewer3dhopBtn" ng-click="actionsToolbar('sections')" title="Enable Plane Sections" src="js-plugins/tdhop/skins/dark/sections.png"/><br/>
 		<!--SECTIONS-->
 		<!--FULLSCREEN-->
-		<img id="full_on" class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
-		<img id="full"  ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/>
-      <!--img ng-click="reloadPage(); actionOnViewer('model')" id="model" class="viewer3dhopBtn" title="Load Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
+		<img id="full_on" class="viewer3dhopBtn" ng-click="actionsToolbar('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
+		<img id="full"  ng-click="actionsToolbar('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/>
+      <!--img ng-click="reloadPage(); actionsToolbar('model')" id="model" class="viewer3dhopBtn" title="Load Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
       <div id="tdhlg"></div>
    </div>
    <!--MEASURE-->
@@ -75,3 +74,62 @@
    <canvas id="draw-canvas" style="background-image: url(js-plugins/tdhop/skins/backgrounds/light.jpg);"></canvas>
 </div>
 <!--/div-->
+<script>
+         function actionsToolbar(action) {
+            //console.log('action');
+            try {
+               if (action == 'home') presenter.resetTrackball();
+               //--ZOOM--
+               else if (action == 'zoomin') presenter.zoomIn();
+               else if (action == 'zoomout') presenter.zoomOut();
+               //--ZOOM--
+               //--LIGHT--
+               else if(action=='lighting' || action=='lighting_off') { presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch(); }
+               else if(action=='light' || action=='light_on') { presenter.enableLightTrackball(!presenter.isLightTrackballEnabled()); lightSwitch(); }
+               //--LIGHT--
+               //--COLOR--
+               else if (action == 'color' || action == 'color_on') { presenter.toggleInstanceSolidColor(HOP_ALL, true); colorSwitch(); }
+               //--COLOR--
+               else if(action=='perspective' || action=='orthographic') { presenter.toggleCameraType(); cameraSwitch(); }
+               else if(action=='hotspot'|| action=='hotspot_on') { presenter.toggleSpotVisibility(HOP_ALL, true); presenter.enableOnHover(!presenter.isOnHoverEnabled()); hotspotSwitch(); }
+               //--MEASURE--
+               else if (action == 'measure' || action == 'measure_on') { presenter.enableMeasurementTool(!presenter.isMeasurementToolEnabled()); measureSwitch(); }
+               //--MEASURE--
+               //--POINT PICKING--
+               else if (action == 'pick' || action == 'pick_on') { presenter.enablePickpointMode(!presenter.isPickpointModeEnabled()); pickpointSwitch();}
+               //--POINT PICKING--
+               //--SECTIONS--
+               else if (action == 'sections' || action == 'sections_on') {
+                  sectiontoolReset();
+                  sectiontoolSwitch();
+               }
+               //--SECTIONS--
+               //--FULLSCREEN--
+               else if (action == 'full' || action == 'full_on') fullscreenSwitch();
+               //--FULLSCREEN--
+               //else if(action=='move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
+               else if (action == 'model') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
+               else if (action == 'fig1') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
+               else if (action == 'fig2') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig2', true, true);}
+               } catch (e) {
+               console.log(e)
+            }
+         }
+         //--MEASURE--
+         function onEndMeasure(measure) {
+            measure.toFixed(2) //sets the number of decimals when displaying the measure
+            // depending on the model measure units, use "mm","m","km" or whatever you have
+            //console.log(scope.measure-output);
+            $('#measure-output').html(measure.toFixed(2) + " mm");
+            //$scope.measure=(measure.toFixed(2) + " mm");
+         }
+         //--MEASURE--
+         //--PICKPOINT--
+         function onEndPick(point) {
+            // .toFixed(2) sets the number of decimals when displaying the picked point
+            var x = point[0].toFixed(2);
+            var y = point[1].toFixed(2);
+            var z = point[2].toFixed(2);
+            $('#pickpoint-output').html("[ " + x + " , " + y + " , " + z + " ]");
+         }
+</script>

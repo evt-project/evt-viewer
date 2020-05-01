@@ -211,10 +211,16 @@
 
    "showObjectSelector": true,
    "tdhopViewerOptions": {
+      "Model_1": {
       "name": "Bewcastle",
-      "url": "data/models/multires/bewcastle.nxz",
-      "mesh": "Bewcastle",
-
+      "url": "app/data/models/multires/bewcastle.nxz",
+      "mesh": "Bewcastle"
+      },
+      "Model_2": {
+         "name": "Ruthwell",
+         "url": "app/data/models/singleres/cross.ply",
+         "mesh": "Ruthwell"
+      },
       "toolHome": false,
       "toolZoomin": true,
       "toolZoomout": true,

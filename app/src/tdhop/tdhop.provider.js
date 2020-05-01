@@ -24,13 +24,15 @@ angular.module('evtviewer.tdhop')
             'trackball_pantilt.js',
             'trackball_rail.js',
             'init.js',
+            'nexus.js',
             'corto.js',
             'meco.js',
-            'init.js',
-            //'meshcoder_worker.js',
+            'meshcoder_worker.js',
             //'init.js',
          ]
+
          var loadFiles = function(fileIndex) {
+
             $ocLazyLoad.load(pluginFolder + jsFiles[fileIndex]).then(function() {
                if (jsFiles[fileIndex + 1]) {
                   loadFiles(fileIndex + 1);
