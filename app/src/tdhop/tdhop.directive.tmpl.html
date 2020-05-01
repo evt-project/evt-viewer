@@ -1,5 +1,6 @@
 <!--div id='tdhop' class='box-tdhop'-->
-<div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+<div id="tredhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+   <my-select-city></my-select-city>
    <div id="toolbar" style="position:absolute;">
    <img ng-click=" actionOnViewer('fig2')" id="fig2" class="viewer3dhopBtn" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
    <img ng-click="actionOnViewer('fig1')" id="fig1" class="viewer3dhopBtn" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
@@ -69,8 +70,6 @@
       <tr>
       <td>Show planes<input id="showPlane" class="output-input" type="checkbox" title="Show Section Planes" style="bottom:-3px;"/></td>
       <td>Show edges<input  id="showBorder" class="output-input" type="checkbox" title="Show Section Edges" style="bottom:-3px;"/></td></tr></table>
-   </div>
-   <div id="toolbar1" style="position:absolute; float: left;">
    </div>
    <!--SECTIONS-->
    <canvas id="draw-canvas" style="background-image: url(js-plugins/tdhop/skins/backgrounds/light.jpg);"></canvas>

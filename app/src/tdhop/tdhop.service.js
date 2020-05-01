@@ -1,5 +1,4 @@
-(function () {
-   angular.module('evtviewer.tdhopService', ['evtviewer.dataHandler', '$log', 'evtviewer.interface'])
+   angular.module('evtviewer.tdhopService', [])
 
    .service('tdhopViewerModel', "$log", function($log, evtInterface){
        var tdhopModel = this;
@@ -26,4 +25,3 @@
             return options;
         };
     });
-})();
