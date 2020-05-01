@@ -67,7 +67,7 @@ function init3dhop() {
 
 	$('.output-table td:has(.output-text,.output-input)').css("border-radius", "5px").css("background-color", "rgba(125,125,125,0.25)");
 
-	$('#tdhop')
+	$('#3dhop')
 		.on('touchstart pointerdown', function(e) {
 			$('#toolbar img').css("opacity","0.5");
 		})
@@ -118,7 +118,7 @@ function init3dhop() {
 			height = $('#3dhop').parent().height();
 		}
 
-		resizeCanvas(width,height);
+		//resizeCanvas(width,height);
 
 		presenter.ui.postDrawEvent();
 	});
