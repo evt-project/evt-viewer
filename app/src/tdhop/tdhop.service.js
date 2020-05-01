@@ -1,14 +1,13 @@
 (function () {
-   angular.module('evtviewer.tdhopService', ['evtviewer.dataHandler'])
+   angular.module('evtviewer.tdhopService', ['evtviewer.dataHandler', '$log', 'evtviewer.interface'])
 
-   .service('tdhopViewerModel',function(){
+   .service('tdhopViewerModel', "$log", function($log, evtInterface){
        var tdhopModel = this;
-
        var options = {
          id: "tdhop",
-         name: "Bewcastle",
-         url: "data/3Dmodels/multires/bewcastle.nxz",
-         mesh: "Bewcastle",
+         name: "Mesh_1_mesh",
+         url: "data/models/singleres/cross.ply",
+         mesh: "Mesh_1_mesh",
 
          toolHome: true,
          toolZoomin: true,

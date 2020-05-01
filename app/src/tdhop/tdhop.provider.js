@@ -1,8 +1,9 @@
 angular.module('evtviewer.tdhop')
    .provider('tredhop', function(){
-      this.$get = function(parsedData, config, $ocLazyLoad) {
+      this.$get = function(parsedData, config, $ocLazyLoad, $log) {
          var tdhop = {};
-
+         //var vm = this;
+         var console = $log.getInstance('tredhop');
          console.log("Caricato provider");
          var pluginFolder = 'js-plugins/tdhop/';
          var jsFiles = [
@@ -22,7 +23,7 @@ angular.module('evtviewer.tdhop')
             'corto.js',
             'meco.js',
             'init.js',
-            'meshcoder_worker.js',
+            //'meshcoder_worker.js',
             //'init.js',
          ]
          var loadFiles = function(fileIndex) {
@@ -35,7 +36,6 @@ angular.module('evtviewer.tdhop')
                }
             })
          }
-
          tdhop.build = function(scope) {
             var options = config.tdhopViewerOptions;
             options.id = "tdhop";
@@ -60,10 +60,10 @@ angular.module('evtviewer.tdhop')
                      meshes: {
                         "Mesh_1_mesh" : {
                            //url: config.tdhopViewerOptions.url,
-                           url: "/data/models/multires/bewcastle.nxz",
+                           url: "/data/models/singleres/cross.ply",
                         },
                         "Mesh_2_mesh" : {
-                            url: "/data/models/singleres/cross.ply",
+                            url: "/data/models/multires/cross.nxz",
                         },
                      },
                      modelInstances: {
@@ -105,12 +105,14 @@ angular.module('evtviewer.tdhop')
                   presenter._onEndPickingPoint = onEndPick;
                   //--POINT PICKING--
 
+                  presenter.setInstanceVisibility('fig2', false, false);
+
+
                   //--SECTIONS--
                   sectiontoolInit();
       }
 
       var init3dhop = function () {
-         //function init3dhop() {
             if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
             var interval, id, ismousedown;
@@ -1100,7 +1102,7 @@ angular.module('evtviewer.tdhop')
             else if (action == 'full' || action == 'full_on') fullscreenSwitch();
             //--FULLSCREEN--
             //else if(action=='move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
-            else if (action == 'all') {presenter.setInstanceVisibility(HOP_ALL, true, true);}
+            else if (action == 'model') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
             else if (action == 'fig1') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
             else if (action == 'fig2') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig2', true, true);}
             } catch (e) {
@@ -1125,6 +1127,7 @@ angular.module('evtviewer.tdhop')
             var z = point[2].toFixed(2);
             $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
          }
+
 
          //--PICKPOINT--
          loadFiles(0);

@@ -1,6 +1,8 @@
 <!--div id='tdhop' class='box-tdhop'-->
-<div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()"><div id="tdhlg"></div>
+<div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
    <div id="toolbar" style="position:absolute;">
+   <img ng-click=" actionOnViewer('fig2')" id="fig2" class="viewer3dhopBtn" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+   <img ng-click="actionOnViewer('fig1')" id="fig1" class="viewer3dhopBtn" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
       <img id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/><br/>
 		<!--ZOOM ng-click="actionOnViewer('zoomin')"-->
 		<img id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/><br/>
@@ -33,10 +35,8 @@
 		<!--FULLSCREEN-->
 		<img id="full_on" class="viewer3dhopBtn" ng-click="actionOnViewer('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
 		<img id="full"  ng-click="actionOnViewer('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/>
-      <img ng-click="reloadPage();" id="model" class="viewer3dhopBtn" title="Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-      <img ng-click="actionOnViewer('fig2')" id="fig2" class="viewer3dhopBtn" title="Change 3D Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-      <img ng-click="actionOnViewer('fig1')" id="fig1" class="viewer3dhopBtn" title="Change 3D Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-
+      <!--img ng-click="reloadPage(); actionOnViewer('model')" id="model" class="viewer3dhopBtn" title="Load Model" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
+      <div id="tdhlg"></div>
    </div>
    <!--MEASURE-->
    <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>
