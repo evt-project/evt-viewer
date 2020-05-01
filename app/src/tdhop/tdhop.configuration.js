@@ -1,1 +1,1 @@
-var tdhopModule = angular.module('evtviewer.tdhop');
+angular.module('evtviewer.tdhop')

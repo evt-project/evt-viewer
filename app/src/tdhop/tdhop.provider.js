@@ -1,13 +1,17 @@
 angular.module('evtviewer.tdhop')
    .provider('tredhop', function(){
-      this.$get = function(parsedData, config, $ocLazyLoad, $log) {
+      var vm = this;
+      var presenter = null;
+      this.$get = function(parsedData, config, $ocLazyLoad, $log, evtInterface) {
          var tdhop = {};
-         //var vm = this;
-         var console = $log.getInstance('tredhop');
-         console.log("Caricato provider");
+         var _console = $log.getInstance('tdhop');
+
+         tdhop.build = function(scope) {
+            var options = config.tdhopViewerOptions;
+            options.id = "tdhop";
+            //return options;
          var pluginFolder = 'js-plugins/tdhop/';
          var jsFiles = [
-
             'spidergl.js',
             'jquery.js',
             'presenter.js',
@@ -36,20 +40,22 @@ angular.module('evtviewer.tdhop')
                }
             })
          }
-         tdhop.build = function(scope) {
-            var options = config.tdhopViewerOptions;
-            options.id = "tdhop";
 
-            return options;
-            var presenter = scope.canvas;
-         }
-         var presenter = null;
+
+
+         var initializeViewer = function() {
+            init3dhop();
+            setup3dhop();
+         };
+
+         loadFiles(0);
+
          var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
 
-      var setup3dhop = function() {
+      var setup3dhop = function(vm) {
          var canvas = "draw-canvas";
                //readTextFile("../../config/config.json", function(text){
-                  presenter = new Presenter("draw-canvas");
+                  presenter = new Presenter(canvas);
                   //var data = JSON.parse(text);
                   //var TDHOPTIONS=data;
                   //var myname=TDHOPTIONS.tdhopViewerOptions.name;
@@ -110,8 +116,7 @@ angular.module('evtviewer.tdhop')
 
                   //--SECTIONS--
                   sectiontoolInit();
-      }
-
+               }
       var init3dhop = function () {
             if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
@@ -1127,15 +1132,11 @@ angular.module('evtviewer.tdhop')
             var z = point[2].toFixed(2);
             $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
          }
-
-
          //--PICKPOINT--
-         loadFiles(0);
 
-         var initializeViewer = function() {
-            init3dhop();
-            setup3dhop();
-         };
-
+         var console = $log.getInstance('tdhop');
+         console.log("Caricato provider");
+      }
+         return tdhop;
       };
    });
