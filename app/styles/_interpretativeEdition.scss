@@ -22,7 +22,6 @@
         z-index: 99;
         white-space: nowrap;
       }
-   }
 
     .expan {
       color: purple;
@@ -249,18 +248,18 @@
         }
       }
     }
+   }
+}
 
     .mapping[data-type="interpretative"],
     .mapping[data-type="reg"],
     .mapping[data-type="normalized"] {
       display: inline;
-   }
+      }
 
       .sic {
         text-decoration: underline;
       }
-    }
-   }
   //TODO: reorder
   .attachment {
     border: 1px solid black;
