@@ -1,7 +1,7 @@
 /*
 3DHOP - 3D Heritage Online Presenter
 Copyright (c) 2014-2016, Visual Computing Lab, ISTI - CNR
-All rights reserved.    
+All rights reserved.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,8 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 onmessage = function(job) {
-	if(typeof(job.data) == "string") return;
-	var node = job.data.node;
+   if(typeof(job.data) == "string") return;
+   if (typeof node !== 'undefined') {
+   var node = job.data.node;
 	var signature = job.data.signature;
 	var patches = job.data.patches;
 //	var now =new Date().getTime();
@@ -36,12 +37,13 @@ onmessage = function(job) {
 //	var elapsed = new Date().getTime() - now;
 	var t = node.nface;
 //	console.log("Z Time: " + elapsed + " Size: " + size + " KT/s " + (t/(elapsed)) + " Mbps " + (8*1000*node.buffer.byteLength/elapsed)/(1<<20));
-	postMessage(node);
+   postMessage(node);
+}
 }
 
 //	actually bitstreams expects a little endian uin64 type. convert it to 2 uint32
 
-BitStream = function(array) { 
+BitStream = function(array) {
 	this.a = array;
 	for(var i = 0; i < array.length; i += 2) {
 		var s = array[i];
@@ -51,8 +53,8 @@ BitStream = function(array) {
 	this.position = 0;
 	this.bitsPending = 0;
 };
- 
-BitStream.prototype = { 
+
+BitStream.prototype = {
 	read: function(bits) {
 		var bitBuffer = 0;
 		while(bits > 0) {
@@ -71,7 +73,7 @@ BitStream.prototype = {
 			bits -= bitsConsumed;
 			bitBuffer = ((bitBuffer << bitsConsumed) | partial)>>>0;
 		}
-		return bitBuffer; 
+		return bitBuffer;
 	},
 	replace: function(bits, value) {
 		//zero last part
@@ -95,7 +97,7 @@ Stream.prototype = {
 	},
 	readUChar: function() {
 		return this.buffer[this.pos++];
-	},	
+	},
 	readInt: function() {
 		var c = this.buffer[this.pos + 3]
 		c <<= 8;
@@ -140,7 +142,7 @@ Tunstall.prototype = {
 		if(size)
 			this._decompress(compressed_data, compressed_size, data, size);
 		return data;
-	}, 
+	},
 
 	createDecodingTables: function() {
 		//read symbol,prob,symbol,prob as uchar.
@@ -150,7 +152,7 @@ Tunstall.prototype = {
 		if(n_symbols <= 1) return;
 
 		var queues = []; //array of arrays
-		var buffer = []; 
+		var buffer = [];
 
 		//initialize adding all symbols to queues
 		for(var i = 0; i < n_symbols; i++) {
@@ -178,7 +180,7 @@ Tunstall.prototype = {
 			}
 			var symbol = queues[best][0];
 			var pos = buffer.length;
-			
+
 			for(var i = 0; i < n_symbols; i++) {
 				var sym = this.probabilities[i*2];
 				var prob = this.probabilities[i*2+1]<<8;
@@ -191,7 +193,7 @@ Tunstall.prototype = {
 				buffer[pos++] = sym; //append symbol
 				queues[i].push(s);
 			}
-			table_length += (n_symbols-1)*(symbol[2] + 1) +1; 
+			table_length += (n_symbols-1)*(symbol[2] + 1) +1;
 			n_words += n_symbols -1;
 			queues[best].shift(); //remove first thing
 		}
@@ -229,7 +231,7 @@ Tunstall.prototype = {
 			var symbol = input[input_pos++];
 			var start = this.index[symbol];
 			var end = start + this.lengths[symbol];
-			for(var i = start; i < end; i++) 
+			for(var i = start; i < end; i++)
 				output[output_pos++] = this.table[i];
 		}
 
@@ -328,7 +330,7 @@ decode: function(input) {
 	}
 
 	t.stream = new Stream(input);
-	
+
 	t.stack = new Float32Array(12); //min0, min1, min2, step, tmin0, tmin1, tstep
 
 	t.stack[3] = t.stream.readInt();
@@ -385,7 +387,7 @@ decodeCoordinates: function() {
     var bitstream = t.stream.readBitStream();
 
 	var tunstall = new Tunstall;
-	var diffs = tunstall.decompress(t.stream);	
+	var diffs = tunstall.decompress(t.stream);
 
 	var hi = bitstream.read(hi_bits);
 	var lo = bitstream.read(lo_bits);
@@ -418,7 +420,7 @@ decodeCoordinates: function() {
 
 decodeFaces: function() {
 	if(!this.node.nface) return;
-	
+
 	this.vertex_count = 0;
 	var start = 0;
 	for(var p = 0; p < this.patches.length; p++) {
@@ -441,7 +443,7 @@ decodeFaces: function() {
 		for(var i = 0; i < tot; ) {
 			t_coords[i] = (t_coords[i] + stack[9])*stack[11]; i++;
 			t_coords[i] = (t_coords[i] + stack[10])*stack[11]; i++;
-		}		
+		}
 	}
 },
 
@@ -548,13 +550,13 @@ decodeColors: function() {
 		}
 	} else {
 		for(var k = 0; k < 4; k++)
-			this.colors[k] = this.decodeDiff(diffs[k][count], bitstream); 
+			this.colors[k] = this.decodeDiff(diffs[k][count], bitstream);
 		count++;
 
 		var offset = 4;
 		for(var i = 1; i < this.node.nvert; i++) {
 			for(var k = 0; k < 4; k++) {
-				var d = this.decodeDiff(diffs[k][count], bitstream); 
+				var d = this.decodeDiff(diffs[k][count], bitstream);
 				this.colors[offset] = this.colors[offset-4] + d;
 				offset ++;
 			}
@@ -719,7 +721,7 @@ decodeConnectivity: function(length, start) {
 	var tdiff_count = 0;
 	if(t.sig.texcoords) {
 		var ttunstall = new Tunstall;
-		tdiffs = ttunstall.decompress(this.stream);	
+		tdiffs = ttunstall.decompress(this.stream);
 	}
 
 	var bitstream = this.stream.readBitStream(bitstream);
@@ -771,11 +773,11 @@ decodeConnectivity: function(length, start) {
 				var diff = diffs[diff_count++];
 				var tdiff = diff && hasTexCoords? tdiffs[tdiff_count++] : 0;
 				var v = this.decodeVertex(bitstream, diff, tdiff);
-				index[k] = v; 
+				index[k] = v;
 				this.faces[faces_count++] = v;
 				stack[0] = coords[v*3];
 				stack[1] = coords[v*3+1];
-				stack[2] = coords[v*3+2]; 
+				stack[2] = coords[v*3+2];
 				if(t.sig.texcoords) {
 					stack[7] = texcoords[v*2];
 					stack[8] = texcoords[v*2+1];
@@ -786,7 +788,7 @@ decodeConnectivity: function(length, start) {
 			for(var k = 0; k < 3; k++) {
 				faceorder.push(front_count);
 				front[front_count++] = index[_next(k)];
-				front[front_count++] = index[_prev(k)]; 
+				front[front_count++] = index[_prev(k)];
 				front[front_count++] = index[k];
 				front[front_count++] = current_edge + _prev(k)*6;
 				front[front_count++] = current_edge + _next(k)*6;
@@ -798,11 +800,11 @@ decodeConnectivity: function(length, start) {
 			continue;
 		}
 		var f;
-		if(faceorder.length) 
+		if(faceorder.length)
 			f = faceorder.shift();
-		else 
+		else
 			f = delayed.pop();
-		
+
 		var edge_start = f;
 
 		if(front[edge_start + 5]) continue; //deleted
@@ -821,13 +823,13 @@ decodeConnectivity: function(length, start) {
 		var opposite = -1;
 		if(c == 0) { //VERTEX
 			//predict position based on v0, v1 and v2
-			for(var k = 0; k < 3; k++) 
+			for(var k = 0; k < 3; k++)
 				stack[k] = coords[v0*3 + k] + coords[v1*3 + k] - coords[v2*3 + k];
 
 			if(hasTexCoords)
 				for(var k = 0; k < 2; k++)
 					stack[7+k] = texcoords[v0*2 + k]  + texcoords[v1*2 + k] - texcoords[v2*2 + k];
-			
+
 			var diff = diffs[diff_count++];
 			var tdiff = diff && hasTexCoords? tdiffs[tdiff_count++] : 0;
 			opposite = this.decodeVertex(bitstream, diff, tdiff);
@@ -843,7 +845,7 @@ decodeConnectivity: function(length, start) {
 			front[front_count++] = v1;
 			front[front_count++] = prev;
 			front[front_count++] = first_edge+6;
-			front_count++; 
+			front_count++;
 //			addFront(v0, opposite, v1, prev, first_edge + 6);
 
 			faceorder.push(front_count);
@@ -851,9 +853,9 @@ decodeConnectivity: function(length, start) {
 			front[front_count++] = opposite;
 			front[front_count++] = v1;
 			front[front_count++] = v0;
-			front[front_count++] = first_edge; 
+			front[front_count++] = first_edge;
 			front[front_count++] = next;
-			front_count++; 
+			front_count++;
 //			addFront(opposite, v1, v0, first_edge, next);
 
 		} else if(c == 3) { //END
@@ -876,7 +878,7 @@ decodeConnectivity: function(length, start) {
 			front[front_count++] = v0;
 			front[front_count++] = front[prev +3];
 			front[front_count++] = next;
-			front_count++; 
+			front_count++;
 //			addFront(opposite, v1, v0, front[prev + 3], next);
 
 		} else if(c == 2) { //RIGHT
@@ -893,7 +895,7 @@ decodeConnectivity: function(length, start) {
 			front[front_count++] = v1;
 			front[front_count++] = prev;
 			front[front_count++] = front[next+4];
-			front_count++; 
+			front_count++;
 //			addFront(v0, opposite, v1, prev, front[next + 4]);
 
 		} else if(c == 5) { //DELAY
@@ -907,9 +909,9 @@ decodeConnectivity: function(length, start) {
 		totfaces--;
 	}
 },
-   
+
 decodeVertex: function(bitstream, diff, tdiff) {
-	if(diff == 0) 
+	if(diff == 0)
 		return bitstream.read(16);
 
 	var v = this.vertex_count++;
@@ -934,14 +936,14 @@ decodeDiff: function(diff, bitstream) {
 	var val;
 	if(diff == 0) {
 		return 0;
-	} 
+	}
 	val = 1<<diff;
 	val += bitstream.read(diff);
 
 
-	if(val & 0x1) 
+	if(val & 0x1)
 		val >>>= 1;
-	else 
+	else
 		val = -(val>>>1);
 
 	return val;
@@ -950,5 +952,3 @@ decodeDiff: function(diff, bitstream) {
 };
 
 var tot = 0;
-
-
