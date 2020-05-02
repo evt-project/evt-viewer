@@ -1,7 +1,6 @@
 angular.module('evtviewer.tdhop')
    .provider('evtTredhop', function(){
       var vm = this;
-      var presenter = null;
       this.$get = function(parsedData, config, $ocLazyLoad, $log, evtInterface) {
          var evtTdhop = {};
          var console = $log.getInstance('evtTredhop');
@@ -12,6 +11,7 @@ angular.module('evtviewer.tdhop')
             //return options;
          var pluginFolder = 'js-plugins/tdhop/';
          var jsFiles = [
+            'setup.js',
             'spidergl.js',
             'jquery.js',
             'presenter.js',
@@ -49,66 +49,6 @@ angular.module('evtviewer.tdhop')
          };
 
          var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
-
-      var setup3dhop = function() {
-         var canvas = "draw-canvas";
-                  presenter = new Presenter(canvas);
-                  console.log("Caricamento canvas");
-                  presenter.setScene({
-                     meshes: {
-                        "Mesh_1_mesh" : {
-                           //url: config.tdhopViewerOptions.url,
-                           url: "/data/models/singleres/cross.ply",
-                        },
-                        "Mesh_2_mesh" : {
-                            url: "/data/models/multires/cross.nxz",
-                        },
-                     },
-                     modelInstances: {
-                        "Model_1": {
-                           mesh: "Mesh_1_mesh",
-                           tags : ["fig1", "original"],
-                        },
-                        "Model_2": {
-                           mesh: "Mesh_2_mesh",
-                           tags : ["fig2", "original"],
-                       },
-                     },
-                     trackball: {
-                        type : TurntablePanTrackball,
-                        trackOptions : {
-                           startDistance: 1.3,
-                           startPhi: 40.0,
-                           startTheta: 20.0,
-                           minMaxDist: [0.8, 2.5],
-                           minMaxPhi: [-180, 180],
-                           minMaxTheta: [-30.0, 70.0]
-                        }
-                     },
-                     space: {
-                        centerMode: "scene",
-                        radiusMode: "scene",
-                        cameraFOV        : 60.0,
-                        cameraNearFar    : [0.01, 10.0],
-                        cameraType       : "perspective",
-                        sceneLighting    : true
-                     }
-                  });
-
-                  //--MEASURE--
-                  presenter._onEndMeasurement = onEndMeasure;
-                  //--MEASURE--
-
-                  //--POINT PICKING--
-                  presenter._onEndPickingPoint = onEndPick;
-                  //--POINT PICKING--
-
-                  presenter.setInstanceVisibility('fig2', false, false);
-
-
-                  //--SECTIONS--
-                  sectiontoolInit();
-               }
       var init3dhop = function () {
             if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
@@ -637,7 +577,7 @@ angular.module('evtviewer.tdhop')
             return isMobile;
          }
 
-   }
+      }
 
 
       // +++ INTERFACE SWITCHING FUNCTIONS +++ //
