@@ -76,8 +76,8 @@
     </div>
 
     <div  ng-if="::vm.type === 'tdhop'"
-    id="tredhopViewer" class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}" ng-controller="TreDHOPCtrl">
-      <evt-tredhop id='tdhop' name="tredhopViewer" style="height:100%">
+     class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}" style="padding: 0px;" ng-controller="TreDHOPCtrl">
+      <evt-tredhop id='tdhop' name="tredhopViewer">
             <!--div  class='box-tdhop box-body Edition noBottomMenu'></div-->
       </evt-tredhop>
    </div>

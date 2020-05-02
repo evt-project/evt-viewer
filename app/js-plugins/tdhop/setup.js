@@ -1,8 +1,6 @@
 var presenter = null;
 var setup3dhop = function() {
-   var canvas = "draw-canvas";
             presenter = new Presenter("draw-canvas");
-            console.log("Canvas loaded");
             presenter.setScene({
                meshes: {
                   "Mesh_1_mesh" : {
