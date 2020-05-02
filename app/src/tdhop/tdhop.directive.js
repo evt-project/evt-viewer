@@ -1,5 +1,5 @@
 angular.module('evtviewer.tdhop')
-   .directive('tredhop', ['tredhop', "evtInterface", "$timeout", function(tredhop, evtInterface, $timeout) {
+   .directive('evtTredhop', ['evtTredhop', "evtInterface", "$timeout", function(evtTredhop, evtInterface, $timeout) {
 	return {
 		restrict: 'AE',
 		scope: {
@@ -31,12 +31,12 @@ angular.module('evtviewer.tdhop')
          var url_hs="models/singleres/sphere.ply";
          var HOTSPOTSDATA ={};
          // Initialize tabs container
-         var currentTdhop = tredhop.build(scope);
+         var currentTdhop = evtTredhop.build(scope);
 
          // Garbage collection
          scope.$on('$destroy', function() {
              if (currentTdhop){
-               tredhop.destroy(currentTdhop.currentId);
+               tdhop.destroy(currentTdhop.currentId);
              }
          });
       }, 10);
