@@ -11,7 +11,7 @@
 
     <div class="box-menu"
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'">
+        ng-if="::vm.type !== 'critical_apparatus'  && vm.type !== 'empty' ||  vm.type == 'tdhop'">
 
         <evt-select
             data-id="{{::selector.id}}"

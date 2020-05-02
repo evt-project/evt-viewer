@@ -1,14 +1,84 @@
-var presenter = null;
-var setup3dhop = function() {
+var presenter = null;// start menager of arrows movement
+function step(action){
+	var my_pos = [];
+	my_pos = presenter.getTrackballPosition();
+
+	switch(action) {
+		case 'move_up'   :
+			my_pos[3]-=0.1;
+			presenter.animateToTrackballPosition(my_pos);
+			break;
+		case 'move_dawn' :
+			my_pos[3]+=0.1;
+			presenter.animateToTrackballPosition(my_pos);
+			break;
+		// Math.sin(); Math.cos();
+		case 'move_right' :
+			if(my_pos[0] == 0){
+				my_pos[2]-=0.1;
+				presenter.animateToTrackballPosition(my_pos);
+			}
+			else{
+			/*	my_pos[2]-=0.1 * Math.cos(my_pos[0]);
+				my_pos[4]-=0.1 * Math.sin(my_pos[0]);
+				presenter.animateToTrackballPosition(my_pos);
+			*/
+
+				var gr = Math.PI * my_pos[0] / 180 ; // da gradi a radianti
+				my_pos[2]-= 0.1 *  Math.cos(gr);
+				my_pos[4]+= 0.1 * Math.sin(gr);
+
+				presenter.animateToTrackballPosition(my_pos);
+			}
+			break;
+		case 'move_left' :
+			if(my_pos[0] == 0){
+				my_pos[2]+=0.1;
+				presenter.animateToTrackballPosition(my_pos);
+			}
+			else{
+				// prendo la mia misura, che dovrebbe essere in gradi e la trasformo in radianti.
+				// calcolo seno e coseno di rotH e li moltiplico per quanto volgio muovermi, poi assegno i valori
+				/*var gr = Math.PI * my_pos[0] / 180 ; // da gradi a radianti
+				var v2 = Math.cos(gr) *0.1 ;
+				var v4 = Math.sin(gr) *0.1 ;
+				var rg2 = 180 * v2 / Math.PI ; // da radianti a gradi
+				var rg4 = 180 * v4 / Math.PI ; // da radianti a gradi
+
+				my_pos[2]+= rg2;
+				my_pos[4]+= rg4;
+				*/
+				//my_pos[2]+= 0.1 * Math.cos(my_pos[0]);
+				//my_pos[4]+= 0.1 * Math.sin(my_pos[0]);
+
+				//Maaaahhh al momento questa sembra la versione migliore, funziona, non benissimo
+				// agli estremi  <-- --> comincia es. ad avicinarsi
+				// se fazzio zoom e mi muovo o muov il modello dopo che mi sono spostatoa destra e a sinistra, fa cose che un utente non si aspetta faccia
+
+				var gr = Math.PI * my_pos[0] / 180 ; // da gradi a radianti
+				my_pos[2]+= 0.1 *  Math.cos(gr);
+				my_pos[4]-= 0.1 * Math.sin(gr);
+
+				presenter.animateToTrackballPosition(my_pos);
+			}
+			break;
+	}
+}
+// end menager of arrows movement
+$('#move_right').css("opacity", "0.2");
+$('#move_left').css("opacity", "0.2");
+$('#move_up').css("opacity", "0.2");
+$('#move_dawn').css("opacity", "0.2");
+
+var setup3dhop = function(url1 , url2) {
             presenter = new Presenter("draw-canvas");
             presenter.setScene({
                meshes: {
                   "Mesh_1_mesh" : {
-                     //url: config.tdhopViewerOptions.url,
-                     url: "/data/models/singleres/cross.ply",
+                     url: url1,
                   },
                   "Mesh_2_mesh" : {
-                      url: "/data/models/multires/cross.nxz",
+                      url: url2,
                   },
                },
                modelInstances: {
@@ -63,9 +133,15 @@ function actionsToolbar(action) {
       else if (action == 'zoomin') presenter.zoomIn();
       else if (action == 'zoomout') presenter.zoomOut();
       //--ZOOM--
+      else if(action=='hotspot'|| action=='hotspot_on') { presenter.toggleSpotVisibility(HOP_ALL, true); presenter.enableOnHover(!presenter.isOnHoverEnabled()); hotspotSwitch(); }
       //--LIGHT--
-      else if(action=='lighting' || action=='lighting_off') { presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch(); }
       else if(action=='light' || action=='light_on') { presenter.enableLightTrackball(!presenter.isLightTrackballEnabled()); lightSwitch(); }
+      else if(action=='lighting' || action=='lighting_off') {
+			if (action=='lighting'){
+				lightSwitchL('light_off');
+			}
+			presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch();
+      }
       //--LIGHT--
       //--COLOR--
       else if (action == 'color' || action == 'color_on') { presenter.toggleInstanceSolidColor(HOP_ALL, true); colorSwitch(); }
@@ -87,10 +163,11 @@ function actionsToolbar(action) {
       //--FULLSCREEN--
       else if (action == 'full' || action == 'full_on') fullscreenSwitch();
       //--FULLSCREEN--
-      //else if(action=='move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
-      else if (action == 'model') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
-      else if (action == 'fig1') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig1', true, true);}
-      else if (action == 'fig2') {presenter.setInstanceVisibility(HOP_ALL, false, false); presenter.setInstanceVisibility('fig2', true, true);}
+      else if (action == 'fig1') {
+         presenter.setInstanceVisibility(HOP_ALL, false, false);
+         presenter.setInstanceVisibility('fig1', true, true);
+      }
+      else if (action == 'move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
       } catch (e) {
       console.log(e)
    }
@@ -112,3 +189,15 @@ function onEndPick(point) {
    var z = point[2].toFixed(2);
    $('#pickpoint-output').html("[ " + x + " , " + y + " , " + z + " ]");
 }
+function onPickedSpot(id) {
+   switch(id) {
+      //TO DO: handle hotspots click
+   }
+ }
+
+ function onPickedInstance(id) {
+   switch(id) {
+      //TO DO: handle hotspots click
+   }
+ }
+
