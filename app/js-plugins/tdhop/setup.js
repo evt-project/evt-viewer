@@ -1,8 +1,8 @@
-var presemter = null;
+var presenter = null;
 var setup3dhop = function() {
    var canvas = "draw-canvas";
             presenter = new Presenter("draw-canvas");
-            console.log("Caricamento canvas");
+            console.log("Canvas loaded");
             presenter.setScene({
                meshes: {
                   "Mesh_1_mesh" : {
@@ -53,7 +53,6 @@ var setup3dhop = function() {
             //--POINT PICKING--
 
             presenter.setInstanceVisibility('fig2', false, false);
-
 
             //--SECTIONS--
             sectiontoolInit();
