@@ -71,7 +71,9 @@ angular.module('evtviewer.tabsContainer')
 		var toggleSubTabs = function(vm, tab) {
 			vm.tabs[tab].showSubTabs = !vm.tabs[tab].showSubTabs;
 			var icon = document.getElementById(tab + '_subTabsIcon');
-			icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
+			if (icon) {
+				icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
+			}
 		}
 
 		var toggleSubTab = function(tab, subTab) {
@@ -231,7 +233,8 @@ angular.module('evtviewer.tabsContainer')
 							icon: listIcon,
 							name: listId,
 							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
-							scrollDisabled: true
+							scrollDisabled: true,
+							noPadding: true
 						};
 					}
 					break;
@@ -246,30 +249,34 @@ angular.module('evtviewer.tabsContainer')
 					
 					// ENTITIES LIST
 					var entitiesCollection = parsedData.getNamedEntitiesCollection();
-					tabs.entitiesLists = {
-						label: 'DIALOGS.NAMED_ENTITIES',
-						name: 'entitiesLists',
-						content: '',
-						subTabs: {
-							_indexes: []
-						},
-						showSubTabs: false
-					};
-					tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
-					for (var i = 0; i < entitiesCollection._indexes.length; i++) {
-						var listId = entitiesCollection._indexes[i],
-							listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
-							listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
-							listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
-						tabs.entitiesLists.subTabs[listId] = {
-							label: listTitle,
-							icon: listIcon,
-							name: listId,
-							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
-							scrollDisabled: true
+					if (entitiesCollection && entitiesCollection._indexes && entitiesCollection._indexes.length > 0) {
+						tabs.entitiesLists = {
+							label: 'DIALOGS.NAMED_ENTITIES',
+							name: 'entitiesLists',
+							content: '',
+							subTabs: {
+								_indexes: []
+							},
+							showSubTabs: false,
+							noPadding: true
 						};
+						tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
+						for (var i = 0; i < entitiesCollection._indexes.length; i++) {
+							var listId = entitiesCollection._indexes[i],
+								listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
+								listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
+								listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
+							tabs.entitiesLists.subTabs[listId] = {
+								label: listTitle,
+								icon: listIcon,
+								name: listId,
+								content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
+								scrollDisabled: true,
+								noPadding: true
+							};
+						}
+						tabs._indexes.push('entitiesLists');
 					}
-					tabs._indexes.push('entitiesLists');
 
 					// BIBLIOGRAPHY //
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {

@@ -38,7 +38,8 @@
             ng-repeat="tab in vm.tabs._indexes"
             ng-class="{'active' : vm.subContentOpened === tab,
                         'addPadding': tab === 'intro',
-                        'noscroll': vm.tabs[tab].scrollDisabled }"
+                        'noscroll': vm.tabs[tab].scrollDisabled,
+                        'noPadding': vm.tabs[tab].noPadding }"
             compile="vm.tabs[tab].content">
         </div>
     </div>
@@ -49,7 +50,8 @@
             id="{{'subTab_' + subTab}}"
             ng-repeat="subTab in vm.tabs[vm.subContentOpened].subTabs._indexes"
             ng-class="{'active' : vm.subTabOpened === subTab,
-                       'noscroll': vm.tabs[tab].scrollDisabled }"
+                       'noscroll': vm.tabs[vm.subContentOpened].scrollDisabled,
+                       'noPadding': vm.tabs[vm.subContentOpened].noPadding }"
             compile="vm.tabs[vm.subContentOpened].subTabs[subTab].content"></div>
     </div>
 </div>
