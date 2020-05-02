@@ -175,6 +175,7 @@
          &:after {
             content: " ";
          }
+      }
 
 
       .corr {
@@ -248,8 +249,6 @@
         }
       }
     }
-   }
-}
 
     .mapping[data-type="interpretative"],
     .mapping[data-type="reg"],
@@ -260,6 +259,7 @@
       .sic {
         text-decoration: underline;
       }
+    }
   //TODO: reorder
   .attachment {
     border: 1px solid black;
