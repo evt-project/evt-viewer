@@ -176,7 +176,7 @@
          &:after {
             content: " ";
          }
-      }
+
 
       .corr {
          font-size: 80%;
@@ -256,7 +256,11 @@
       display: inline;
    }
 
-
+      .sic {
+        text-decoration: underline;
+      }
+    }
+   }
   //TODO: reorder
   .attachment {
     border: 1px solid black;
