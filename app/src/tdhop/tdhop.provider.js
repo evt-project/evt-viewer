@@ -1,12 +1,12 @@
 angular.module('evtviewer.tdhop')
-   .provider('tredhop', function(){
+   .provider('evtTredhop', function(){
       var vm = this;
       var presenter = null;
       this.$get = function(parsedData, config, $ocLazyLoad, $log, evtInterface) {
-         var tdhop = {};
-         var _console = $log.getInstance('tdhop');
+         var evtTdhop = {};
+         var console = $log.getInstance('evtTredhop');
 
-         tdhop.build = function(scope) {
+         evtTdhop.build = function(scope) {
             var options = config.tdhopViewerOptions;
             options.id = "tdhop";
             //return options;
@@ -28,8 +28,8 @@ angular.module('evtviewer.tdhop')
             'corto.js',
             'meco.js',
             'meshcoder_worker.js',
-            //'init.js',
-         ]
+            'init.js',
+         ];
 
          var loadFiles = function(fileIndex) {
 
@@ -41,29 +41,19 @@ angular.module('evtviewer.tdhop')
                   initializeViewer();
                }
             })
-         }
-
-
+         };
 
          var initializeViewer = function() {
             init3dhop();
             setup3dhop();
          };
 
-         loadFiles(0);
-
          var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
 
-      var setup3dhop = function(vm) {
+      var setup3dhop = function() {
          var canvas = "draw-canvas";
-               //readTextFile("../../config/config.json", function(text){
                   presenter = new Presenter(canvas);
-                  //var data = JSON.parse(text);
-                  //var TDHOPTIONS=data;
-                  //var myname=TDHOPTIONS.tdhopViewerOptions.name;
-                  //var myurl=TDHOPTIONS.tdhopViewerOptions.url;
                   console.log("Caricamento canvas");
-                  //console.log(myurl);
                   presenter.setScene({
                      meshes: {
                         "Mesh_1_mesh" : {
@@ -1073,9 +1063,11 @@ angular.module('evtviewer.tdhop')
             if(config.toolHome === true){
                console.log("tool home attivato")
             }
-         }
+         };
 
+         loadFiles(0);
 
+         };
       function actionsToolbar(action) {
          console.log('action');
          try {
@@ -1115,7 +1107,7 @@ angular.module('evtviewer.tdhop')
             } catch (e) {
             console.log(e)
          }
-      }
+         };
          //--MEASURE--
          function onEndMeasure(measure) {
             measure.toFixed(2) //sets the number of decimals when displaying the measure
@@ -1134,11 +1126,6 @@ angular.module('evtviewer.tdhop')
             var z = point[2].toFixed(2);
             $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
          }
-         //--PICKPOINT--
-
-         var console = $log.getInstance('tdhop');
-         console.log("Caricato provider");
-      }
-         return tdhop;
+         return evtTdhop;
       };
    });
