@@ -3,10 +3,16 @@ angular.module('evtviewer.tdhop')
       var vm = this;
       this.$get = function(parsedData, config, $ocLazyLoad, $log, evtInterface) {
          var evtTdhop = {};
+         var url1 = null;
+         var url2 = null;
          var console = $log.getInstance('evtTredhop');
 
          evtTdhop.build = function(scope) {
+            url1 = config.tdhopViewerOptions.Model_1.path;
+            url2 = config.tdhopViewerOptions.Model_2.path;
+            console.log("valore url "+config.tdhopViewerOptions.Model_1.path);
             var options = config.tdhopViewerOptions;
+            console.log("valore url "+options);
             options.id = "tdhop";
             //return options;
          var pluginFolder = 'js-plugins/tdhop/';
@@ -47,7 +53,7 @@ angular.module('evtviewer.tdhop')
 
          var initializeViewer = function() {
             init3dhop();
-            setup3dhop();
+            setup3dhop(url1, url2);
          };
 
          var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
