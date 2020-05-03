@@ -1,4 +1,4 @@
-<div id="3dhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()" ng-controller="TreDHOPCtrl">
+<div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()" ng-controller="TreDHOPCtrl">
    <div id="toolbar">
       <div ng-if="::vm.isToolArrowsAvailable()" id="arrows">
          <div id="movement_control">
@@ -46,6 +46,7 @@
       <!--FULLSCREEN-->
       <img ng-if="::vm.isToolFullScreenAvailable()" id="full_on"  class="viewer3dhopBtn" ng-click="actionsToolbar('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
       <img ng-if="::vm.isToolFullScreenAvailable()" id="full"  class="viewer3dhopBtn" ng-click="actionsToolbar('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/><br/>
+      <!--FULLSCREEN-->
       <div ng-if="::vm.isToolLightControllerAvailable()" ng-click="actionsToolbar" id="lightcontroller">
          <canvas id="lightcontroller_canvas" width="125" height="125" />
       </div><br/>

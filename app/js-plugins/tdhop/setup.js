@@ -304,8 +304,6 @@ var setup3dhop = function(url1 , url2) {
          type : TurntablePanTrackball,
          trackOptions : {
             startDistance : 1.0,
-				minMaxDist    : [1.0, 5.0],
-				minMaxTheta   : [-10.0, 70.0]
          }
       },
       space: {

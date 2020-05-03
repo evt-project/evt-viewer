@@ -64,10 +64,6 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 }
 #lightcontroller {
    position: absolute;
-   //padding-left: 35%;
-   //padding-top: 10%;
-	//position: absolute;
-	//z-index: 1;
 	left: 110% !important;
 	top: 2% !important;
 }
@@ -83,7 +79,6 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
    padding-left: 35%;
 }
 .models {
-   width:50px; height:50px; opacity:0.5; cursor:pointer; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent;
    background-color:rgba(50, 50, 50, 0.5);
 	padding: 1%;
 	border-radius:10px;
@@ -105,7 +100,7 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
    transform: rotate(90deg);
 }
 .right{
-   right: 5%;
+
 }
 .left{
 	transform: rotate(180deg);
