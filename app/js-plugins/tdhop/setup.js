@@ -138,7 +138,7 @@ function actionsToolbar(action) {
       else if(action=='light' || action=='light_on') { presenter.enableLightTrackball(!presenter.isLightTrackballEnabled()); lightSwitch(); }
       else if(action=='lighting' || action=='lighting_off') {
 			if (action=='lighting'){
-				lightSwitchL('light_off');
+				lightSwitch('light_off');
 			}
 			presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch();
       }
@@ -167,10 +167,18 @@ function actionsToolbar(action) {
          presenter.setInstanceVisibility(HOP_ALL, false, false);
          presenter.setInstanceVisibility('fig1', true, true);
       }
+      else if (action == 'fig2') {
+         presenter.setInstanceVisibility(HOP_ALL, false, false);
+         presenter.setInstanceVisibility('fig2', true, true);
+      }
       else if (action == 'move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
       } catch (e) {
       console.log(e)
    }
+}
+var arrows = true;
+function setToolbar(tool){
+   if (tool == 'arrows') arrows = true;
 }
 //--MEASURE--
 function onEndMeasure(measure) {

@@ -207,9 +207,9 @@
       "en",
       "it"],
 
-   "toolHome": false,
 
    "showObjectSelector": true,
+
    "tdhopViewerOptions": {
       "Model_1": {
          "name": "Bewcastle",
@@ -221,16 +221,20 @@
          "path": "data/models/singleres/cross.ply",
          "mesh": "Ruthwell"
       },
-         "toolHome": false,
+         "toolHome": true,
          "toolZoomin": true,
          "toolZoomout": true,
          "toolLighting": true,
-         "toolLightControl": true,
+         "toolLightControl": false,
          "toolMeasure": true,
          "toolPickPoint": true,
-         "toolPlaneSections": true,
+         "toolPlaneSections": false,
          "toolSolidColor": true,
          "toolCamera": true,
-         "toolFullScreen": true
+         "toolHotspot": false,
+         "toolFullScreen": true,
+
+         "toolSwitchModel": true,
+         "toolArrows": true
    }
 }

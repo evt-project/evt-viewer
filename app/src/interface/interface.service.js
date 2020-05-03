@@ -186,7 +186,7 @@ angular.module('evtviewer.interface')
                 properties.logoUrl            = config.logoUrl;
                 properties.webSite            = config.webSite;
                 properties.enableXMLdownload  = config.enableXMLdownload;
-                properties.toolHoome = config.toolHome;
+                properties.toolHome = config.toolHome;
                 properties.availableViewModes = config.availableViewModes;
                 properties.visCollTextUrl = config.visCollTextUrl;
                 properties.visCollStyleUrl = config.visCollStyleUrl;
