@@ -44,4 +44,7 @@ angular.module('evtviewer.tdhop')
       this.isToolArrowsAvailable = function () {
          return config.tdhopViewerOptions.toolArrows;
       };
+      this.isToolLightControllerAvailable = function () {
+         return config.tdhopViewerOptions.toolLightController;
+      };
    }]);
