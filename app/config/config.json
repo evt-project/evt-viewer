@@ -211,30 +211,150 @@
    "showObjectSelector": true,
 
    "tdhopViewerOptions": {
+
+      "toolHome": true,
+      "toolZoomin": true,
+      "toolZoomout": true,
+      "toolLighting": true,
+      "toolLightControl": false,
+      "toolMeasure": true,
+      "toolPickPoint": true,
+      "toolPlaneSections": false,
+      "toolSolidColor": true,
+      "toolCamera": true,
+      "toolHotspot": true,
+      "toolFullScreen": true,
+      "toolSwitchModel": false,
+      "toolArrows": true,
+      "toolLightController": true,
+
       "Model_1": {
          "name": "Bewcastle",
          "path": "data/models/multires/bewcastle.nxz",
          "mesh": "Bewcastle"
       },
+
       "Model_2": {
          "name": "Ruthwell",
          "path": "data/models/singleres/cross.ply",
          "mesh": "Ruthwell"
       },
-         "toolHome": true,
-         "toolZoomin": true,
-         "toolZoomout": true,
-         "toolLighting": true,
-         "toolLightControl": false,
-         "toolMeasure": true,
-         "toolPickPoint": true,
-         "toolPlaneSections": false,
-         "toolSolidColor": true,
-         "toolCamera": true,
-         "toolHotspot": false,
-         "toolFullScreen": true,
-         "toolSwitchModel": false,
-         "toolArrows": true,
-         "toolLightController":true
+
+      "Hotspots": {
+         "type": "Sphere",
+         "path": "data/models/singleres/sphere.ply",
+         "model": "bewcastle.nxz",
+         "hotspotsdata": [
+            {
+               "name": 100,
+               "type": "point",
+               "position": [
+                  181.08,
+                  4026.27,
+                  -118.52
+               ],
+               "radius": "100",
+               "view": [
+                  0,
+                  0,
+                  293.310302734375,
+                  1979.6796875,
+                  -262.52020263671875,
+                  8614.720045911034
+               ]
+            },
+            {
+               "name": 101,
+               "type": "point",
+               "position": [
+                  351.3,
+                  3381.01,
+                  -93.12
+               ],
+               "radius": "100",
+               "view": [
+                  42.97183463481176,
+                  2.406422739549458,
+                  293.310302734375,
+                  1979.6796875,
+                  -262.52020263671875,
+                  8614.720045911034
+               ]
+            },
+            {
+               "name": 102,
+               "type": "point",
+               "position": [
+                  411.21,
+                  2797.47,
+                  -131.72
+               ],
+               "radius": "150",
+               "view": [
+                  72.88023154064075,
+                  5.500394833255906,
+                  293.310302734375,
+                  1979.6796875,
+                  -262.52020263671875,
+                  6977.923237187937
+               ]
+            },
+            {
+               "name": 103,
+               "type": "point",
+               "position": [
+                  442.61,
+                  2037.13,
+                  -364.52
+               ],
+               "radius": "500",
+               "view": [
+                  99.46547323471097,
+                  6.4171273054652245,
+                  293.310302734375,
+                  1979.6796875,
+                  -262.52020263671875,
+                  1773.6944629310901
+               ]
+            },
+            {
+               "name": 104,
+               "type": "point",
+               "position": [
+                  507.25,
+                  854.58,
+                  -452.85
+               ],
+               "radius": "50",
+               "view": [
+                  141.9789416334178,
+                  17.761691649055525,
+                  293.310302734375,
+                  1979.6796875,
+                  -262.52020263671875,
+                  15723.374677588283
+               ]
+            },
+            {
+               "name": 105,
+               "type": "point",
+               "position": [
+                  168.29,
+                  48.94,
+                  -575.27
+               ],
+               "radius": "150",
+               "view": [
+                  179.56497299399933,
+                  54.66017365548057,
+                  293.310302734375,
+                  1979.6796875,
+                  -262.52020263671875,
+                  6091.557506321472
+               ]
+            }
+         ],
+         "nextID": 106
+      }
    }
 }

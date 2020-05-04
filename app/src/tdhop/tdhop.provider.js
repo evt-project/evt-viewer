@@ -8,7 +8,11 @@ angular.module('evtviewer.tdhop')
          evtTdhop.build = function(scope) {
             var url1 = config.tdhopViewerOptions.Model_1.path;
             var url2 = config.tdhopViewerOptions.Model_2.path;
-            console.log("Check model path "+config.tdhopViewerOptions.Model_1.path);
+            var url_hs = config.tdhopViewerOptions.Hotspots.path;
+            var type = config.tdhopViewerOptions.Hotspots.type;
+            var annotations = JSON.stringify(config.tdhopViewerOptions.Hotspots.hotspotsdata);
+            console.log("Check hotspotsdata "+annotations);
+            console.log("Check model path "+url1);
             var options = config.tdhopViewerOptions;
             options.id = "tdhop";
          var pluginFolder = 'js-plugins/tdhop/';
@@ -49,18 +53,11 @@ angular.module('evtviewer.tdhop')
 
          var initializeViewer = function() {
             init3dhop();
-            setup3dhop(url1, url2);
+            setup3dhop(url1, url2, url_hs, annotations, type);
          };
 
          var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
 
-
-         function configToolbar() {
-            console.log('Tool attivati:');
-            if(config.toolHome === true){
-               console.log("tool home attivato")
-            }
-         };
 
          loadFiles(0);
          };

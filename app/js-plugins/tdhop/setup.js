@@ -9,9 +9,6 @@ var stMinT=0;
 var stMaxT=0;
 var _PanX = 0.0;
 var ANNOTATIONDATA ={};
-var tipo_hs="Sphere";
-var url_hs="models/singleres/sphere.ply";
-var HOTSPOTSDATA ={};
 
 // start menager of arrows movement
 function step(action){
@@ -124,10 +121,10 @@ function actionsToolbar(action) {
          presenter.setInstanceVisibility(HOP_ALL, false, false);
          presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
       }
+      //--FULLSCREEN--
+         else if (action== 'full' || action== 'full_on') fullscreenSwitch();
+      //--FULLSCREEN--
       else if (action == 'move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
-      //--FULLSCREEN--
-      else if (action == 'full' || action == 'full_on') fullscreenSwitch();
-      //--FULLSCREEN--
       } catch (e) {
       console.log(e)
    }
@@ -150,9 +147,18 @@ function onEndPick(point) {
    $('#pickpoint-output').html("[ " + x + " , " + y + " , " + z + " ]");
 }
 function onPickedSpot(id) {
-   switch(id) {
+   //switch(id) {
       //TO DO: handle hotspots click
-   }
+      //case 'Wing'   : alert("Wing Hotspot Clicked"); break;
+      //case 'Sphere' : alert("Basis Hotspot Clicked"); break;
+   //}
+   //mi permette di prendere ed usare la posizione del json, una volta cliccato l'hotspot.
+	for (var ii = 0; ii < annotations.length; ii++){
+		var view = annotations[ii].view;
+		if (annotations[ii].name == id){
+			presenter.animateToTrackballPosition(convertToLocal(view));
+		};
+	}
 }
 function onPickedInstance(id) {
    switch(id) {
@@ -276,8 +282,178 @@ function relMouseCoords(event){
 HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;
 // end lightControler functions
 
+// start hotspots functions convertTOGlobal/Local SPOTMAKER, per trasformare le coordinate da locali a globali.
+// Da usare per muovere il modello quando si clicca sul hotspot
+function convertToGlobal(state)
+{
+	var newstate=[];
+	// angles
+	newstate[0] = state[0];
+	newstate[1] = state[1];
+	// pan
+	newstate[2] = (state[2] / presenter.sceneRadiusInv) + presenter.sceneCenter[0];
+	newstate[3] = (state[3] / presenter.sceneRadiusInv) + presenter.sceneCenter[1];
+	newstate[4] = (state[4] / presenter.sceneRadiusInv) + presenter.sceneCenter[2];
+	//distance
+	newstate[5] = state[5] / presenter.sceneRadiusInv;
+	return newstate;
+}
+function convertToLocal(state)
+{
+	var newstate=[];
+	// angles
+	newstate[0] = state[0];
+	newstate[1] = state[1];
+	// pan
+
+	newstate[2] = (state[2] - presenter.sceneCenter[0]) * presenter.sceneRadiusInv;
+	newstate[3] = (state[3] - presenter.sceneCenter[1]) * presenter.sceneRadiusInv;
+	newstate[4] = (state[4] - presenter.sceneCenter[2]) * presenter.sceneRadiusInv;
+	//distance
+	//(state[5] * presenter.sceneRadiusInv)-(0.9* presenter.sceneRadiusInv);
+	if ((state[5] * presenter.sceneRadiusInv - 0.9) == 1.10 ) {
+		newstate[5] = state[5] * presenter.sceneRadiusInv - 0.9;
+	}else {
+		newstate[5] = (state[5] - (0.9 / presenter.sceneRadiusInv)) * presenter.sceneRadiusInv; // serve a riadattare lo zoom della croce con le impostazioni da me messe qui (rispetto a quelle di SPOTMAKER)
+		if (newstate[5] < 0) {
+			newstate[5] *= -1; //serve ad esvitare valori negativi, così quando zommo molto sembra andare
+		}
+	}
+	//newstate[5] = state[5] * presenter.sceneRadiusInv;/*start;/*state[5] * presenter.sceneRadiusInv-0.9;*/ // 1.10 questo valore nel mio caso deve essere 1.10; poiché io ho impostato questa come start. cioé la distanza a cui sta il modello
+	return newstate;								//	la moltiplicazione viene 2. io sotraggo questo 0.9, in modo da far diventare il tutto 1.10; così il modello è leggrmente più lontano, ma rimane ad una distanza adeguata
+}
+
 var presenter = null;
-var setup3dhop = function(url1 , url2) {
+
+var setup3dhop = function(url1 , url2, url_hs, type) {
+      // start manager of hotspotdata
+      var cont = {};
+      var annotations = [
+         {
+            "name": 100,
+            "type": "point",
+            "position": [
+               181.08,
+               4026.27,
+               -118.52
+            ],
+            "radius": "100",
+            "view": [
+               0,
+               0,
+               293.310302734375,
+               1979.6796875,
+               -262.52020263671875,
+               8614.720045911034
+            ]
+         },
+         {
+            "name": 101,
+            "type": "point",
+            "position": [
+               351.3,
+               3381.01,
+               -93.12
+            ],
+            "radius": "100",
+            "view": [
+               42.97183463481176,
+               2.406422739549458,
+               293.310302734375,
+               1979.6796875,
+               -262.52020263671875,
+               8614.720045911034
+            ]
+         },
+         {
+            "name": 102,
+            "type": "point",
+            "position": [
+               411.21,
+               2797.47,
+               -131.72
+            ],
+            "radius": "150",
+            "view": [
+               72.88023154064075,
+               5.500394833255906,
+               293.310302734375,
+               1979.6796875,
+               -262.52020263671875,
+               6977.923237187937
+            ]
+         },
+         {
+            "name": 103,
+            "type": "point",
+            "position": [
+               442.61,
+               2037.13,
+               -364.52
+            ],
+            "radius": "500",
+            "view": [
+               99.46547323471097,
+               6.4171273054652245,
+               293.310302734375,
+               1979.6796875,
+               -262.52020263671875,
+               1773.6944629310901
+            ]
+         },
+         {
+            "name": 104,
+            "type": "point",
+            "position": [
+               507.25,
+               854.58,
+               -452.85
+            ],
+            "radius": "50",
+            "view": [
+               141.9789416334178,
+               17.761691649055525,
+               293.310302734375,
+               1979.6796875,
+               -262.52020263671875,
+               15723.374677588283
+            ]
+         },
+         {
+            "name": 105,
+            "type": "point",
+            "position": [
+               168.29,
+               48.94,
+               -575.27
+            ],
+            "radius": "150",
+            "view": [
+               179.56497299399933,
+               54.66017365548057,
+               293.310302734375,
+               1979.6796875,
+               -262.52020263671875,
+               6091.557506321472
+            ]
+         }
+      ];
+      for (var ii = 0; ii < annotations.length; ii++){
+         var pos = annotations[ii].position;
+         var radius = annotations[ii].radius;
+         var newSpot = {
+            mesh      : type,
+            color     : [ 0.0, 0.25, 1.0 ],
+            transform : {
+               matrix:
+                  SglMat4.mul(SglMat4.translation(pos),
+                  SglMat4.scaling([radius, radius, radius]))
+               },
+         };
+         cont[annotations[ii].name] = newSpot;
+      }
+
+      // end manager of hotspotdata
    presenter = new Presenter("draw-canvas");
    presenter.setScene({
       meshes: {
@@ -286,6 +462,9 @@ var setup3dhop = function(url1 , url2) {
          },
          "Mesh_2_mesh" : {
              url: url2,
+         },
+         "Hotspot" : {
+            url: url_hs
          },
       },
       modelInstances: {
@@ -299,6 +478,19 @@ var setup3dhop = function(url1 , url2) {
             tags : ["Mesh_2_mesh", "original"],
             color: [-2.0, -2.0, -2.0]
         },
+      },
+      spots : {
+         "Hotspot" :  {
+            mesh            : "Hotspot",
+            color           : [ 0.0, 0.25, 1.0 ],
+            transform : {
+               translation :  [
+                  442.61,
+                  2037.13,
+                  -364.52],
+               scale : [50.0, 50.0, 50.0],
+               },
+         }
       },
       trackball: {
          type : TurntablePanTrackball,

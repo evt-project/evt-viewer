@@ -56,7 +56,6 @@ angular.module('evtviewer.core')
 	logoUrl: '',
 
    enableXMLdownload: true,
-   toolHome: true,
     // sourcesUrl //
     // Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.//
     sourcesUrl       : '',
