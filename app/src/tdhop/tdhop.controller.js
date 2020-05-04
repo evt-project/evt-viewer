@@ -1,7 +1,6 @@
 angular.module('evtviewer.tdhop')
    .controller('TreDHOPCtrl', ["$scope", "$route", "evtInterface", "$log", "config", function ($scope, $route, evtInterface, $log, config) {
       var vm = this;
-      //console.log(isToolAvailable);
       this.isToolHomeAvailable = function () {
          return config.tdhopViewerOptions.toolHome;
       };
