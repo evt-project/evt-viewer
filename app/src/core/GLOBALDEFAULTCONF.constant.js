@@ -55,7 +55,7 @@ angular.module('evtviewer.core')
 
 	logoUrl: '',
 
-	enableXMLdownload: true,
+   enableXMLdownload: true,
     // sourcesUrl //
     // Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.//
     sourcesUrl       : '',
@@ -144,7 +144,13 @@ angular.module('evtviewer.core')
                                 icon     : 'mode-srcTxt',
                                 viewMode : 'srcTxt',
                                 visible  : true
-                            }],
+                            },
+                            {
+                                 label    : '3DHOP',
+                                 icon     : 'mode-tdhop',
+                                 viewMode : 'tdhop',
+                                 visible  : true
+                          }],
 
 	toolHeatMap: true,
 	toolPinAppEntries: false,
@@ -239,5 +245,26 @@ angular.module('evtviewer.core')
     namedEntitiesToHandle: [],
     otherEntitiesToHandle: [],
 
-    languages: ['en', 'it']
+    languages: ['en', 'it'],
+
+   showObjectSelector: true,
+
+    // 3DHOP
+   tdhopViewerOptions: {
+   name: "Bewcastle",
+   url: "data/3Dmodels/multires/bewcastle.nxz",
+   mesh: "Bewcastle",
+
+   toolHome: true,
+   toolZoomin: true,
+   toolZoomout: true,
+   toolLighting: true,
+   toolLightControl: true,
+   toolMeasure: true,
+   toolPickPoint: true,
+   toolPlaneSections: true,
+   toolSolidColor: true,
+   toolCamera: true,
+   toolFullScreen: true
+   }
 });

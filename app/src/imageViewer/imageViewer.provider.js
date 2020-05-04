@@ -1,7 +1,7 @@
 angular.module('evtviewer.openseadragon')
      .provider('osd', function(){
 
-               
+
         this.$get = function(parsedData, config) {
             var imageViewer = {};
 
@@ -31,7 +31,7 @@ angular.module('evtviewer.openseadragon')
                      imgobj.url = source;
                      options.tileSources.push(imgobj);
                      }
-     
+
                  }
                  options.id = "osd-img";
                  return options;
@@ -42,14 +42,14 @@ angular.module('evtviewer.openseadragon')
 
         };
     });
-    
+
 //     .service('imageViewerModel',function(parsedData){
 //         var viewerModel = this;
-        
+
 //         console.log("caricato servizio  imageViewerService");
 //         console.log("#!!# con parsedData #!!#", parsedData);
 //         console.log("#!!# page di parsedData #!!#", parsedData.getPage('page1').source);
-    
+
 //         var options = {
 //             id: "osd-img",
 //             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
@@ -63,10 +63,10 @@ angular.module('evtviewer.openseadragon')
 //             //    width: 0.15,
 //             //    height: 0.45,
 //             //    className: 'nohighlight'
-//             //}],            
+//             //}],
 //             /*tileSources: ["data/bellinidzi/4-26giugno1834a.dzi", // immagini per bellini
 //                             "data/bellinidzi/4-26giugno1834b.dzi"],
-            
+
 //                             overlays: [{
 //                                 id: 'example-overlay',
 //                                 x: 0.26,
@@ -75,22 +75,22 @@ angular.module('evtviewer.openseadragon')
 //                                 height: 0.27,
 //                                 className: 'nohighlight'
 //                             }], */
-    
+
 //             //sequenceMode: true,
 //             //degrees:90,
 //             //toolbar:"toolbar-div",
-//             showRotationControl: true,                
+//             showRotationControl: true,
 //             showNavigator: true,
 //             //navigatorId: "navscroll",
 //             //visibilityRatio: 0.8,
-//             visibilityRatio: 1, 
+//             visibilityRatio: 1,
 //             defaultZoomLevel: 0.7,
 //             panHorizontal: true,
 //             constrainDuringPan: true,
 //             //minZoomLevel: 0.8,
 //             minZoomLevel: 0.5,
 //             maxZoomLevel: 2.0,
-    
+
 //             wrapVertical: false,
 //             //navigatorPosition: "ABSOLUTE",
 //             //navigatorTop: "0",
@@ -103,7 +103,7 @@ angular.module('evtviewer.openseadragon')
 //             //navigatorWidth:"6%"
 //          };
 //          // {id:"box_body_mainImage",prefixUrl:"images/",tileSources:"data/tails/scaled_70_verticale.dzi",showNavigator:!0,visibilityRatio:1,defaultZoomLevel:1,panHorizontal:!0,constrainDuringPan:!0,minZoomLevel:1,wrapVertical:!0,navigatorPosition:"ABSOLUTE",navigatorTop:"1%",navigatorLeft:"98%",navigatorHeight:"95%",navigatorWidth:"8%"}
-    
+
 //          viewerModel.getOptions = function(){
 
 //             console.log("getOpt di   imageViewerService");
@@ -111,7 +111,7 @@ angular.module('evtviewer.openseadragon')
 //             // data/test-img/vb/VB_fol_105r_big.jpg
 //             var imgobj1 = {type:"image", url:"data/test-img/vb/VB_fol_104v_big.jpg"};
 //             var imgobj2 = {type:"image", url:"data/test-img/vb/VB_fol_105r_big.jpg"};
-            
+
 //             var pages = parsedData.getPages();
 //             console.log('******pages*******: ', pages);
 //             var lenght = pages.length;
@@ -125,7 +125,7 @@ angular.module('evtviewer.openseadragon')
 //                 pp = parsedData.getPage(p);
 //                 source = pp.source;
 //                 if(source!==undefined && source!=='' && source!==' ' && source!==null){
-//                 console.log('***** pp ******', source);  
+//                 console.log('***** pp ******', source);
 //                 imgobj.url = source;
 //                 options.tileSources.push(imgobj);
 //                 }
@@ -137,12 +137,12 @@ angular.module('evtviewer.openseadragon')
 //             //parsedData.getPage('page1').source;
 //              return options;
 //          };
-    
-    
-    
-    
+
+
+
+
 //     });
-    
+
 /*
 */
 

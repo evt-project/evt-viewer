@@ -9,10 +9,9 @@
                     'filterNotActive': vm.state.filters._totActive <= 0,
                     'ITLactive': vm.isITLactive()}">
 
-    <div
-        class="box-menu"
+    <div class="box-menu"
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus' && vm.type !== 'empty'">
+        ng-if="::vm.type !== 'critical_apparatus'  && vm.type !== 'empty' ||  vm.type == 'tdhop'">
 
         <evt-select
             data-id="{{::selector.id}}"
@@ -29,13 +28,36 @@
             ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
     </div>
+    <!-- add by FS button switch
+    <div class="box-menu"
+        data-position="top"
+        ng-if="::vm.type === 'tdhop'">
+
+        <button-switch
+            title="{{::button.title}}"
+            data-label="{{::button.label}}"
+            data-icon="{{::button.icon}}"
+            data-icon-pos="{{::button.iconPos}}"
+            data-type="{{::button.type}}"
+            ng-repeat="button in ::vm.topMenuList.buttons track by $index">
+        </button-switch>
+        <evt-select
+        data-id="{{::selector.id}}"
+        data-type="{{::selector.type}}"
+        data-init="{{::selector.initValue}}"
+        data-open-up="true"
+        data-multiselect="{{::selector.multiselect}}"
+        ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
+         </evt-select>
+    </div>-->
+
     <div
         class="box-top-box avoidBlur"
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
     </div>
 
-    <div ng-if="::vm.type !== 'image'"
+    <div ng-if="::vm.type !== 'image' && vm.type !== 'tdhop'"
          class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
          style="{{vm.fontSize();}}"
          id="box_body_{{::vm.uid}}"
@@ -49,11 +71,16 @@
 
          <div ng-app="evtviewer.imageViewer" ng-controller="imageViewerCtrl" style="height:100%">
             <osd name="osdViewer"></osd>
-            <!--i class="icon icon-evt_imgtxt buttonSwitch-icon"> </i-->          
+            <!--i class="icon icon-evt_imgtxt buttonSwitch-icon"> </i-->
          </div>
     </div>
 
-
+    <div  ng-if="::vm.type === 'tdhop'"
+     class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}" style="padding: 0px;" ng-controller="TreDHOPCtrl">
+      <evt-tredhop id='tdhop' name="tredhopViewer">
+            <!--div  class='box-tdhop box-body Edition noBottomMenu'></div-->
+      </evt-tredhop>
+   </div>
 
     <!-- <div class="box-body" id="box_body_{{vm.uid}}">{{ vm.content }}</div> -->
     <div class="loading" ng-if="vm.isLoading"><i class="fa fa-spinner fa-pulse loader"></i></div>

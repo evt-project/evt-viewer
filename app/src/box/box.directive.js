@@ -55,7 +55,7 @@
  *
  * @scope
  * @param {string=} id id of box to be shown
- * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty')
+ * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty', 'tdhop')
  * @param {string=} subtype subtype of box to be shown
  * @param {string=} witness scope witness
  * @param {string=} witpage scope witness page
@@ -464,12 +464,12 @@ angular.module('evtviewer.box')
                       if (oldItem !== newItem && scope.vm.edition !== newItem) {
                          scope.vm.edition = newItem;
                          currentBox.updateContent();
-   
+
                          evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
                          $timeout(function() {
                             var currentBoxId = scope.id,
                                searchInput = evtSearchBox.getInputValue(currentBoxId);
-      
+
                             if(searchInput !== '') {
                                evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
                             }
@@ -483,12 +483,12 @@ angular.module('evtviewer.box')
                       if (oldItem !== newItem && scope.vm.edition !== newItem) {
                           scope.vm.edition = newItem;
                           currentBox.updateContent();
-                          
+
                          evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
                          $timeout(function() {
                             var currentBoxId = scope.id,
                                searchInput = evtSearchBox.getInputValue(currentBoxId);
-      
+
                             if(searchInput !== '') {
                                evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
                             }
@@ -507,16 +507,16 @@ angular.module('evtviewer.box')
                       }, 100);
                    }
                 }, true);
-                
+
                 scope.$watch(function() {
                     return evtInterface.getState('currentPage');
                 }, function(newItem, oldItem) {
                     currentBox.updateContent();
-   
+
                    $timeout(function() {
                       var currentBoxId = scope.id,
                          searchInput = evtSearchBox.getInputValue(currentBoxId);
-   
+
                       if(searchInput !== '') {
                          evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
                       }

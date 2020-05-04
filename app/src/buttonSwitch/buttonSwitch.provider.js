@@ -232,7 +232,7 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'mode-srctxt':
 					evtIcon = 'iconbis-evt_srctxt';
-					break;
+               break;
 				case 'mode-versions':
 					evtIcon = 'iconbis-evt_versions';
 					break;
@@ -321,7 +321,11 @@ angular.module('evtviewer.buttonSwitch')
 					break;
 				case 'viscoll':
 					evtIcon = 'fa fa-stack-overflow';
-					break;
+               break;
+            case 'tdhop':
+            case 'mode-tdhop':
+               evtIcon = 'fa fa-cube';
+               break;
 			}
 			return evtIcon;
 		};

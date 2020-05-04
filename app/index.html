@@ -13,23 +13,25 @@
 		<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
 		<link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css" />
 		<link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
-		<link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
 		<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
 		<!-- endbower -->
 		<!-- endbuild -->
 
-        <!-- TODO: temp -->
-        <!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
-        <!-- <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link> -->
-        <!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link> -->
-        <!-- <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link> -->
-        <!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
-        <link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css"></link>
-        <!-- endbuild -->
-
 		<!-- build:css(.tmp) styles/main.css -->
 		<link rel="stylesheet" href="styles/main.css">
+      <link rel="stylesheet" href="bower_components/keyboard/css/keyboard.css" />
+      <link rel="stylesheet" href="styles/tei.css">
 		<link rel="stylesheet" href="config/custom-style.css">
+		<!-- endbower -->
+		<!-- endbuild -->
+
+		<!-- TODO: temp -->
+		<!--<link rel="stylesheet" type="text/css" href="css/main.css"></link>-->
+		<!-- <link rel="stylesheet" type="text/css" href="css/page_data-include.css"></link> -->
+		<!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.9.0.custom.css"></link> -->
+		<!-- <link rel="stylesheet" type="text/css" href="css/ImageTextLink.css"></link> -->
+		<!-- <link rel="stylesheet" type="text/css" href="css/jquery.jqzoom.css"></link> -->
+		<link rel="stylesheet" type="text/css" href="fonts/font-awesome.min.css">
 		<!-- endbuild -->
 	</head>
 	<body ng-app="evtviewer"
@@ -197,7 +199,22 @@
 			</section>
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
-				<!-- READING TEXT -->
+            <!-- 3DHOP -->
+            <section id="main-container" class="viewMode" ng-switch-when="tdhop">
+               <box data-type="tdhop"
+                  id="mainTdhop">
+                  <!--div tdhop data-canvas="draw-canvas" style="height: 100%"></div-->
+               </box>
+               <box data-type="text"
+                  data-edition="{{getCurrentEdition()}}"
+                  id="mainText">
+         		</box>
+					<!--
+                    <box data-type="generic" id="generic">
+                        <div>Eventuale testo affiancato</div>
+                    </box>-->
+                </section>
+            <!-- READING TEXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="readingTxt">
 					<box data-type="text"
 						 data-edition="{{getCurrentEdition()}}"
@@ -474,9 +491,9 @@
       <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
       <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
       <script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
+      <script src="bower_components/oclazyload/dist/ocLazyLoad.js"></script>
       <!-- endbower -->
-      <!-- endbuild -->
-
+		<!-- endbuild -->
 		<!-- build:js({.tmp,app}) scripts/evtviewer.js -->
 		<script src="tmpl/templates.js"></script>
 		<script src="/src/evtviewer.js"></script>
@@ -513,7 +530,6 @@
       <script src="/src/dataHandler/hotspotParser.service.js"></script>
 		<script src="/src/dataHandler/glyphParser.service.js"></script>
 		<script src="/src/dataHandler/depaParser.service.js"></script>
-
       <script src="/src/dataHandler/search/objectBuilder.service.js"></script>
       <script src="/src/dataHandler/search/search.service.js"></script>
       <script src="/src/dataHandler/search/searchInterface.service.js"></script>
@@ -700,6 +716,13 @@
       <script src="/src/search/searchResults.provider.js"></script>
       <script src="/src/search/virtualKeyboard.directive.js"></script>
       <script src="/src/search/virtualKeyboard.provider.js"></script>
+
+      <script src="/src/tdhop/tdhop.js"></script>
+      <script src="/src/tdhop/tdhop.controller.js"></script>
+      <script src="/src/tdhop/tdhop.directive.js"></script>
+      <script src="/src/tdhop/tdhop.provider.js"></script>
+      <!--script src="/src/tdhop/tdhop.service.js"></script-->
+      <script src="/src/tdhop/tdhop.configuration.js"></script>
 
       <script src="/src/navBar/navBar.js"></script>
       <script src="/src/navBar/navBar.configuration.js"></script>

@@ -3,326 +3,326 @@
 /* *************************** */
 
 .interpretativeEdition {
-  // Abbreviations and Their Expansions
-  .choice {
-    position: relative;
-    text-align: center;
+   // Abbreviations and Their Expansions
+   .choice {
+     position: relative;
+     text-align: center;
 
-    &:before,
-    &:after {
-      content: "";
-    }
-
-    &:hover,
-    &.hover {
-      .abbr {
-        display: inline;
-        min-width: 20px;
-        z-index: 99;
-        white-space: nowrap;
-      }
-   }
-
-    .expan {
-      color: purple;
-      z-index: 9;
-        &:hover,
-        &.hover {
-          text-decoration: underline;
-          color: #561c0a;
-        }
-      }
-
-    .abbr {
-      font-size: 80%;
-      position: absolute;
-      line-height: 16px;
-      display: none;
-      border: 1.5px solid black;
-      border-radius: 3px;
-      padding: 5px 2px;
-      margin-top: 30px;
-      left: 0;
-
-      @include set(box-shadow, 2px 2px 2px #7e7067);
-
-        &:before {
-          content: url("../images/popup_before.png");
-          left: 15%;
-          position: absolute;
-          top: -12px;
-        }
-    }
-
-    .abbr,
-    .abbr * {
-      background: #e5dac4 !important;
-    }
-
-    // Abbreviations and Expansions inside Orig and Reg classes
-		.orig  > .abbr {
-			font-size: 100%;
-			position: relative;
-			border: none;
-			border-radius: 0;
-			margin-top: 0;
-         padding: 0;
-
-			@include set(box-shadow, 0px 0px 0px);
-
-			&:before {
-				content: none;
-			}
-      }
-
-      .expan {
-         color: purple;
-         z-index: 9;
-         text-decoration: underline;
-      }
-
-      .sic,
-      .orig {
-        font-size: 80%;
-        position: absolute;
-        line-height: 16px;
-        display: none;
-        border: 1.5px solid black;
-        border-radius: 3px;
-
-        @include set(box-shadow, 2px 2px 2px #7e7067);
-
-        padding: 5px 8px;
-        margin-top: 30px;
-
-        &:before {
-          left: 15%;
-          position: absolute;
-          top: -13px;
-        }
-      }
-
-      .sic {
-      left: 3em !important;
-        &:before {
-          content: url("../images/popup_before_corr.png");
-        }
-      }
-
-      .sic,
-      .sic * {
-        background: #f99069 !important;
-      }
-
-      .orig {
-        &:before {
-          content: url("../images/popup_before.png");
-        }
-      }
-
-      .orig,
-      .orig * {
-        background: #e5dac4 !important;
-      }
-
-      .reg {
-        color: #69513a;
-
-        &:hover,
-        &.hover {
-          color: #561c0a;
-        }
-      }
-
-      &:hover,
-      &.hover {
-        .orig,
-        .sic {
-          display: inline;
-          min-width: 20px;
-          text-align: center;
-          z-index: 9;
-          white-space: nowrap;
-        }
-
-        .sic {
-          @include set(transform, translate(-80%, 0));
-        }
-
-        .reg {
-          text-decoration: underline;
-        }
-      }
-
-      .corr {
-        color: #934d4d;
-      }
-
-      .sup {
-        line-height: 20px;
-        vertical-align: 20%;
-      }
-
-      .under {
-        line-height: 20px;
-        vertical-align: -20%;
-      }
-
-    .sic {
-      display: inline-table;
-
-      &:before,
-      &:after {
-        content: "";
-      }
+     &:before,
+     &:after {
+       content: "";
      }
 
-      .sic {
-        font-size: 80%;
-        position: absolute;
-        line-height: 16px;
-        display: none;
-        background: #f99069;
-        border: 1.5px solid black;
-        border-radius: 3px;
+     &:hover,
+     &.hover {
+       .abbr {
+         display: inline;
+         min-width: 20px;
+         z-index: 99;
+         white-space: nowrap;
+       }
+    }
 
-        @include set(box-shadow, 2px 2px 2px #7e7067);
+     .expan {
+       color: purple;
+       z-index: 9;
+         &:hover,
+         &.hover {
+           text-decoration: underline;
+           color: #561c0a;
+         }
+       }
 
-        padding: 5px 8px;
-        margin-top: 30px;
+     .abbr {
+       font-size: 80%;
+       position: absolute;
+       line-height: 16px;
+       display: none;
+       border: 1.5px solid black;
+       border-radius: 3px;
+       padding: 5px 2px;
+       margin-top: 30px;
+       left: 0;
 
-        &:before {
-          content: url("../images/popup_before_corr.png");
-          left: 15%;
-          position: absolute;
-          top: -13px;
-        }
-      }
+       @include set(box-shadow, 2px 2px 2px #7e7067);
 
-      .corr {
-        color: #934d4d;
+         &:before {
+           content: url("../images/popup_before.png");
+           left: 15%;
+           position: absolute;
+           top: -12px;
+         }
+     }
 
-        &:hover,
-        &.hover {
-          color: #561c0a;
-        }
-      }
+     .abbr,
+     .abbr * {
+       background: #e5dac4 !important;
+     }
 
-      &:hover,
-      &.hover {
-        .sic {
-          display: inline;
-          min-width: 20px;
-          text-align: center;
-        }
+     // Abbreviations and Expansions inside Orig and Reg classes
+       .orig  > .abbr {
+          font-size: 100%;
+          position: relative;
+          border: none;
+          border-radius: 0;
+          margin-top: 0;
+          padding: 0;
 
-        .corr {
+          @include set(box-shadow, 0px 0px 0px);
+
+          &:before {
+             content: none;
+          }
+       }
+
+       .expan {
+          color: purple;
+          z-index: 9;
           text-decoration: underline;
-        }
+       }
+
+       .sic,
+       .orig {
+         font-size: 80%;
+         position: absolute;
+         line-height: 16px;
+         display: none;
+         border: 1.5px solid black;
+         border-radius: 3px;
+
+         @include set(box-shadow, 2px 2px 2px #7e7067);
+
+         padding: 5px 8px;
+         margin-top: 30px;
+
+         &:before {
+           left: 15%;
+           position: absolute;
+           top: -13px;
+         }
+       }
+
+       .sic {
+       left: 3em !important;
+         &:before {
+           content: url("../images/popup_before_corr.png");
+         }
+       }
+
+       .sic,
+       .sic * {
+         background: #f99069 !important;
+       }
+
+       .orig {
+         &:before {
+           content: url("../images/popup_before.png");
+         }
+       }
+
+       .orig,
+       .orig * {
+         background: #e5dac4 !important;
+       }
+
+       .reg {
+         color: #69513a;
+
+         &:hover,
+         &.hover {
+           color: #561c0a;
+         }
+       }
+
+       &:hover,
+       &.hover {
+         .orig,
+         .sic {
+           display: inline;
+           min-width: 20px;
+           text-align: center;
+           z-index: 9;
+           white-space: nowrap;
+         }
+
+         .sic {
+           @include set(transform, translate(-80%, 0));
+         }
+
+         .reg {
+           text-decoration: underline;
+         }
+       }
+
+       .corr {
+         color: #934d4d;
+       }
+
+       .sup {
+         line-height: 20px;
+         vertical-align: 20%;
+       }
+
+       .under {
+         line-height: 20px;
+         vertical-align: -20%;
+       }
+
+     .sic {
+       display: inline-table;
+
+       &:before,
+       &:after {
+         content: "";
+       }
       }
+
+       .sic {
+         font-size: 80%;
+         position: absolute;
+         line-height: 16px;
+         display: none;
+         background: #f99069;
+         border: 1.5px solid black;
+         border-radius: 3px;
+
+         @include set(box-shadow, 2px 2px 2px #7e7067);
+
+         padding: 5px 8px;
+         margin-top: 30px;
+
+         &:before {
+           content: url("../images/popup_before_corr.png");
+           left: 15%;
+           position: absolute;
+           top: -13px;
+         }
+       }
+
+       .corr {
+         color: #934d4d;
+
+         &:hover,
+         &.hover {
+           color: #561c0a;
+         }
+       }
+
+       &:hover,
+       &.hover {
+         .sic {
+           display: inline;
+           min-width: 20px;
+           text-align: center;
+         }
+
+         .corr {
+           text-decoration: underline;
+         }
+       }
+     }
+
+     .mapping[data-type="interpretative"],
+     .mapping[data-type="reg"],
+     .mapping[data-type="normalized"] {
+       display: inline;
     }
 
-    .mapping[data-type="interpretative"],
-    .mapping[data-type="reg"],
-    .mapping[data-type="normalized"] {
-      display: inline;
+
+   //TODO: reorder
+   .attachment {
+     border: 1px solid black;
+     padding: 5px 0px 0px 10px;
    }
 
-
-  //TODO: reorder
-  .attachment {
-    border: 1px solid black;
-    padding: 5px 0px 0px 10px;
-  }
-
-  .ex {
-    font-style: italic;
-  }
-
-  .lineN {
-    color: grey;
-    font-size: 0.8em;
-  }
-
-  .resp {
-    font-weight: bold;
-  }
-
-  .red {
-    color: red;
-  }
-
-  .hi {
-    &[data-rend="7init"] {
-      font-size: 140%;
-    }
-
-    &[data-rend="init3.1"] {
-      font-size: 120%;
-
-      /*font-weight: bold;*/
-    }
-
-    &[data-rend="cap"] {
-      text-transform: uppercase;
-    }
-
-    &[data-rend="double"] {
-      font-size: 120%;
-    }
-  }
-
-  .ex {
-    font-style: italic;
-  }
-
-  .zone {
-    margin-bottom: 5px;
-  }
-
-  .p {
-    display: block;
-  }
-
-  .center,
-  [rend="center"] {
-    text-align: center;
-    width: 92%;
-    display: inline-table;
-    background: #fff;
-  }
-
-  .right,
-  [rend="right"] {
-    text-align: right;
-    display: inline-table;
-    background: #fff;
-  }
-
-  .left,
-  [rend="left"] {
-    display: inline-table;
-  }
-  .subst {
-     position: relative;
-     margin: 0px;
-     padding: 0px;
-  }
-  .del {
-      &:before {
-         content: "[[";
-
-      }
-      &:after {
-         content: "]]";
-      }
+   .ex {
+     font-style: italic;
    }
-   .add {
-      &:before {
-         content: "|";
-      }
-      &:after {
-         content: "|";
-      }
+
+   .lineN {
+     color: grey;
+     font-size: 0.8em;
    }
-}
+
+   .resp {
+     font-weight: bold;
+   }
+
+   .red {
+     color: red;
+   }
+
+   .hi {
+     &[data-rend="7init"] {
+       font-size: 140%;
+     }
+
+     &[data-rend="init3.1"] {
+       font-size: 120%;
+
+       /*font-weight: bold;*/
+     }
+
+     &[data-rend="cap"] {
+       text-transform: uppercase;
+     }
+
+     &[data-rend="double"] {
+       font-size: 120%;
+     }
+   }
+
+   .ex {
+     font-style: italic;
+   }
+
+   .zone {
+     margin-bottom: 5px;
+   }
+
+   .p {
+     display: block;
+   }
+
+   .center,
+   [rend="center"] {
+     text-align: center;
+     width: 92%;
+     display: inline-table;
+     background: #fff;
+   }
+
+   .right,
+   [rend="right"] {
+     text-align: right;
+     display: inline-table;
+     background: #fff;
+   }
+
+   .left,
+   [rend="left"] {
+     display: inline-table;
+   }
+   .subst {
+      position: relative;
+      margin: 0px;
+      padding: 0px;
+   }
+   .del {
+       &:before {
+          content: "[[";
+
+       }
+       &:after {
+          content: "]]";
+       }
+    }
+    .add {
+       &:before {
+          content: "|";
+       }
+       &:after {
+          content: "|";
+       }
+    }
+ }

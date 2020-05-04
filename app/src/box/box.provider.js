@@ -582,20 +582,6 @@ angular.module('evtviewer.box')
 						type: 'page',
 						initValue: evtInterface.getState('currentPage')
 					});
-   // Commented because related to the thumbnail button not working
-					/*topMenuList.buttons.push({
-						title: 'BUTTONS.THUMBNAILS',
-						label: 'BUTTONS.THUMBS',
-						icon: 'thumbnails',
-						type: 'thumbs'
-               });*/
-   // Commented because related to the schema button not working
-					/*topMenuList.buttons.push({
-						title: 'BUTTONS.SCHEMA',
-						label: 'BUTTONS.SCHEMA',
-						icon: 'schema',
-						type: 'schema'
-					});*/
 					if (parsedData.isITLAvailable()) {
 						topMenuList.buttons.push({
 							title: 'BUTTONS.IMAGE_TEXT_LINKING',
@@ -1196,6 +1182,42 @@ angular.module('evtviewer.box')
 					}
 					updateContent = function(newContent) {
 						scope.vm.content = newContent;
+					};
+               break;
+               //add by FS button switch
+               case 'tdhop':
+                  topMenuList.buttons.push({
+							title: 'BUTTONS.IMAGE_TEXT_LINKING',
+							label: '',
+							icon: 'itl',
+							type: 'itl'
+						});
+						topMenuList.buttons.push({
+							title: 'BUTTONS.HOTSPOTS',
+							label: '',
+							icon: 'hts',
+							type: 'hts'
+						});
+                  topMenuList.buttons.push({
+                     title: 'BUTTONS.3D',
+                     label: 'BUTTONS.OBJ',
+                     type: 'objDesc'
+                  });
+                  if ((config.showObjectSelector)) {
+                     topMenuList.selectors.push({
+                        id: 'object_' + config.tdhopViewerOptions.name,
+                        type: 'document',
+                        initValue: evtInterface.getState('currentDoc')
+                     });
+                  }
+
+					updateContent = function() {
+						scope.vm.isLoading = true;
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>', noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
+
+						// Main content
+							scope.vm.content = newContent;
+							scope.vm.isLoading = false;
 					};
 					break;
 			}
