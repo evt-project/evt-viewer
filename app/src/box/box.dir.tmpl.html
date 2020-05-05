@@ -11,7 +11,7 @@
 
     <div class="box-menu"
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus'  && vm.type !== 'empty' ||  vm.type == 'tdhop'">
+        ng-if="::vm.type !== 'critical_apparatus'  && vm.type !== 'empty' && vm.type !== 'tdhop'">
 
         <evt-select
             data-id="{{::selector.id}}"
@@ -28,10 +28,19 @@
             ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
     </div>
-    <!-- add by FS button switch
-    <div class="box-menu"
-        data-position="top"
-        ng-if="::vm.type === 'tdhop'">
+   <!-- add by FS button switch -->
+   <div class="box-menu" data-position="top" ng-if="::vm.type === 'tdhop'">
+      <div ng-controller="TreDHOPCtrl">
+         <select id="modelSelector" class="selector" ng-model="data.model">
+            <option name="modelliscegli" id={{option.id}} ng-repeat="option in data.availableOptions">{{option.name}}</option>
+         </select>
+      </div>
+     <evt-select
+         data-id="{{::selector.id}}"
+         data-type="{{::selector.type}}"
+         data-init="{{::selector.initValue}}"
+         ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
+      </evt-select>
 
         <button-switch
             title="{{::button.title}}"
@@ -41,15 +50,8 @@
             data-type="{{::button.type}}"
             ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
-        <evt-select
-        data-id="{{::selector.id}}"
-        data-type="{{::selector.type}}"
-        data-init="{{::selector.initValue}}"
-        data-open-up="true"
-        data-multiselect="{{::selector.multiselect}}"
-        ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
-         </evt-select>
-    </div>-->
+
+   </div>
 
     <div
         class="box-top-box avoidBlur"

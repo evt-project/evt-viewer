@@ -77,8 +77,9 @@ function step(action){
 	}
 }
 // end menager of arrows movement
+
 function actionsToolbar(action) {
-   //console.log('action');
+   console.log(action);
    try {
       if (action == 'home') presenter.resetTrackball();
       //--ZOOM--
@@ -113,14 +114,12 @@ function actionsToolbar(action) {
          sectiontoolSwitch();
       }
       //--SECTIONS--
-      else if (action == 'Mesh_1_mesh') {
-         presenter.setInstanceVisibility(HOP_ALL, false, false);
-         presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
-      }
-      else if (action == 'Mesh_2_mesh') {
-         presenter.setInstanceVisibility(HOP_ALL, false, false);
-         presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
-      }
+      //else if (action== 'Mesh_1_mesh') {
+      //   setModelVisibility('Mesh_1_mesh');
+      //}
+      //else if (action== 'Mesh_2_mesh') {
+      //   setModelVisibility('Mesh_2_mesh');
+      //}
       //--FULLSCREEN--
          else if (action== 'full' || action== 'full_on') fullscreenSwitch();
       //--FULLSCREEN--
@@ -165,6 +164,17 @@ function onPickedInstance(id) {
       //TO DO: handle hotspots click
    }
 }
+/*var modelControllerCanvas = document.getElementById("repeatSelect");
+function setModelVisibility(id){
+   if(id == 'Mesh_1_mesh'){
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
+	}
+	else {
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
+   }
+}*/
 function lightSwitchL(status) {
 
 	if(status == 'light'){
@@ -533,6 +543,7 @@ canvas.addEventListener("mouseup", function () {
    lightControllerCanvas.removeEventListener("mousemove", drag_lightcontroller, false);
    lightControllerCanvas.removeEventListener("touchmove", drag_lightcontroller, false);
 }, false);
+
 document.addEventListener("mouseup", function () {
    lightControllerCanvas.removeEventListener("mousemove", drag_lightcontroller, false);
    lightControllerCanvas.removeEventListener("touchmove", drag_lightcontroller, false);

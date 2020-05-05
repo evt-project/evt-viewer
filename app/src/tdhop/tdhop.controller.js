@@ -1,6 +1,16 @@
 angular.module('evtviewer.tdhop')
    .controller('TreDHOPCtrl', ["$scope", "$route", "evtInterface", "$log", "config", function ($scope, $route, evtInterface, $log, config) {
       var vm = this;
+      var modello1 = config.tdhopViewerOptions.Model_1.name;
+      var modello2 = config.tdhopViewerOptions.Model_2.name;
+      //var modello3 = config.tdhopViewerOptions.Model_3.name;
+      $scope.data = {
+         model: null,
+         availableOptions: [
+           {id: 'Mesh_1_mesh', name: modello1+" 3D Model"},
+           {id: 'Mesh_2_mesh', name: modello2+" 3D Model"},
+         ]
+      };
       this.isToolHomeAvailable = function () {
          return config.tdhopViewerOptions.toolHome;
       };
