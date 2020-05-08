@@ -1,26 +1,74 @@
-<div id="tdhop" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()" ng-controller="TreDHOPCtrl">
+<div id="tdhop" class="3dhop" onmousedown="if (event.preventDefault) event.preventDefault()" ng-controller="TreDHOPCtrl">
+   <div style="position:absolute; right:10px; top:10px; z-index:2;">
+      <!--COMPASS-->
+      <br>
+      <div style="background-color:rgba(150, 150, 150, 0.8); border-radius: 5px; font-family:verdana; font-size:15px; padding:3px;">
+      <div style="margin: 0 auto;">
+      <canvas id="compassCanvas" style="margin: 4px auto; display: block; background:#555555; width:100; height:100; border:1px solid #000000;" onclick='var currpos = presenter.getTrackballPosition(); currpos[0] = 0.0; presenter.animateToTrackballPosition(currpos);' width="100" height="100"></canvas>
+      </div>
+      <table style="border: '1'">
+       <tbody>
+         <tr><td></td><td>
+            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([180.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">North</button>
+         </td><td></td></tr>
+         <tr><td>
+            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([-90.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">East</button>
+         </td><td>
+            <button style="margin: 0 auto; display: block; cursor:hand;" onclick="presenter.animateToTrackballPosition([0.0, 90.0, -0.1, 0.0, -0.066, 2.0]);">Top</button>
+         </td><td>
+            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([90.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">West</button>
+         </td></tr>
+        <tr><td></td><td>
+            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([0.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">South</button>
+         </td><td></td></tr>
+      </tbody>
+   </table>
+   <!--input type="checkbox" style="cursor:hand;" onclick="presenter.toggleCameraType();">
+      Orthographic View-->
+   </div>
+      <!--COMPASS-->
+      <!--PREDEFINED VIEWS-- >
+      </br>
+      <div style="background-color:rgba(150, 150, 150, 0.8); border-radius: 5px; font-family:verdana; font-size:15px; padding:3px;">
+      <B>VIEWS</B></br></br>
+
+      <button style="cursor:hand; width:100%;" onclick="
+         presenter.animateToTrackballPosition([-134.06457816074385, -12.887777440509286, -0.0759087076749807, 0.3412565266806582, -0.27139426466935546, 0.2]);"><span>Occhio</span></button></br>
+
+      <button style="cursor:hand; width:100%;" onclick="
+         presenter.animateToTrackballPosition([-30.932175037195172, 21.48969026734013, -0.10514808884296216, 0.24072568682235757, 0.4103747554925059, 0.47158953820000027]);"><span>Base</span></button></br>
+
+      <button style="cursor:hand; width:100%;" onclick="
+         presenter.animateToTrackballPosition([-78.9460382691582, 23.208563652732604, -0.12881082145875608, -0.14276897621084111, -0.20041195051130686, 0.5021485402753604]);"><span>Ala</span></button></br>
+      </div>-->
+   </div>
    <div id="toolbar">
+
+      <img ng-if="::vm.isToolHomeAvailable()" id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/>
+      <!--FULLSCREEN-->
+      <img ng-if="::vm.isToolFullScreenAvailable()" id="full_on"  class="viewer3dhopBtn" ng-click="actionsToolbar('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
+      <img ng-if="::vm.isToolFullScreenAvailable()" id="full"  class="viewer3dhopBtn" ng-click="actionsToolbar('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/><br/>
+      <!--FULLSCREEN-->
       <div ng-if="::vm.isToolArrowsAvailable()" id="arrows">
          <div id="movement_control">
-            <img class="move_ dawn" id="move_dawn" title="Move Dawn" src="js-plugins/tdhop/skins/dark/arrows.png" />
-            <img class="move_ up" id="move_up" title="Move Up" src="js-plugins/tdhop/skins/dark/arrows.png" />
             <img class="move_ left" id="move_left" title="Move Leftt" src="js-plugins/tdhop/skins/dark/arrows.png" />
-            <img class="move_ right" id="move_right" title="Move Right" src="js-plugins/tdhop/skins/dark/arrows.png" />
+            <img class="move_ right" id="move_right" title="Move Right" src="js-plugins/tdhop/skins/dark/arrows.png" /><br/>
+            <img class="move_ up" id="move_up" title="Move Up" src="js-plugins/tdhop/skins/dark/arrows.png" />
+            <img class="move_ dawn" id="move_dawn" title="Move Dawn" src="js-plugins/tdhop/skins/dark/arrows.png" />
          </div>
-      </div><br/>
-      <img ng-if="::vm.isToolHomeAvailable()" id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/><br/>
-		<!--ZOOM-->
-		<img ng-if="::vm.isToolZoominAvailable()" id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/><br/>
+      </div>
+      <!--ZOOM-->
+		<img ng-if="::vm.isToolZoominAvailable()" id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/>
 		<img ng-if="::vm.isToolZoomoutAvailable()" id="zoomout" class="viewer3dhopBtn" ng-click="actionsToolbar('zoomout')" title="Zoom Out" src="js-plugins/tdhop/skins/dark/zoomout.png"/><br/>
 		<!--ZOOM-->
       <!--LIGHT-->
       <img ng-if="::vm.isToolLightingAvailable()" id="lighting_off" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting_off')" title="Enable Lighting" src="js-plugins/tdhop/skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolLightingAvailable()" id="lighting" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting')" title="Disable Lighting"  src="js-plugins/tdhop/skins/dark/lighting.png"/><br/>
+		<img ng-if="::vm.isToolLightingAvailable()" id="lighting" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting')" title="Disable Lighting"  src="js-plugins/tdhop/skins/dark/lighting.png"/>
 	   <img ng-if="::vm.isToolLightControlAvailable()" id="light_off" class="viewer3dhopBtn" ng-click="actionsToolbar('light_off')" title="Disable Light Control" src="js-plugins/tdhop/skins/dark/lightcontrol_on.png" style="position:absolute; visibility:hidden;"/>
 		<img ng-if="::vm.isToolLightControlAvailable()" id="light" class="viewer3dhopBtn" ng-click="actionsToolbar('light')" title="Enable Light Control"  src="js-plugins/tdhop/skins/dark/lightcontrol.png"/><br/>
       <!--LIGHT-->
       <img ng-if="::vm.isToolCameraAvailable()" id="perspective" class="viewer3dhopBtn"  ng-click="actionsToolbar('perspective')" title="Perspective Camera"    src="js-plugins/tdhop/skins/dark/perspective.png"     style="position:absolute; visibility:hidden;"/>
-      <img ng-if="::vm.isToolCameraAvailable()" id="orthographic" class="viewer3dhopBtn"  ng-click="actionsToolbar('orthographic')" title="Orthographic Camera"   src="js-plugins/tdhop/skins/dark/orthographic.png"    /><br/>
+      <img ng-if="::vm.isToolCameraAvailable()" id="orthographic" class="viewer3dhopBtn"  ng-click="actionsToolbar('orthographic')" title="Orthographic Camera"   src="js-plugins/tdhop/skins/dark/orthographic.png"    />
       <!--COLOR-->
 		<img ng-if="::vm.isToolSolidColorAvailable()" id="color_on" class="viewer3dhopBtn" ng-click="actionsToolbar('color_on')" title="Model color" src="js-plugins/tdhop/skins/dark/color_on.png" style="position:absolute; visibility:hidden;"/>
 		<img ng-if="::vm.isToolSolidColorAvailable()" id="color" class="viewer3dhopBtn" ng-click="actionsToolbar('color')" title="Solid color" src="js-plugins/tdhop/skins/dark/color.png"/><br/>
@@ -31,7 +79,7 @@
       <!--HOTSPOT-->
 		<!--MEASURE-->
 		<img ng-if="::vm.isToolMeasureAvailable()" id="measure_on" class="viewer3dhopBtn" ng-click="actionsToolbar('measure_on')" title="Disable Measure Tool" src="js-plugins/tdhop/skins/dark/measure_on.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolMeasureAvailable()" id="measure" class="viewer3dhopBtn" ng-click="actionsToolbar('measure')" title="Enable Measure Tool" src="js-plugins/tdhop/skins/dark/measure.png"/><br/>
+		<img ng-if="::vm.isToolMeasureAvailable()" id="measure" class="viewer3dhopBtn" ng-click="actionsToolbar('measure')" title="Enable Measure Tool" src="js-plugins/tdhop/skins/dark/measure.png"/>
 		<!--MEASURE-->
 		<!--POINT PICKING-->
 		<img ng-if="::vm.isToolPickPointAvailable()" id="pick_on" class="viewer3dhopBtn" ng-click="actionsToolbar('pick_on')" title="Disable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick_on.png" style="position:absolute; visibility:hidden;"/>
@@ -42,15 +90,23 @@
 		<img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections" class="viewer3dhopBtn" ng-click="actionsToolbar('sections')" title="Enable Plane Sections" src="js-plugins/tdhop/skins/dark/sections.png"/><br/>
       <!--SECTIONS-->
       <!--<img ng-if="::vm.isToolSwitchModelAvailable()" ng-click="actionsToolbar('Mesh_1_mesh')" id="Mesh_1_mesh" class="models" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-      <img ng-if="::vm.isToolSwitchModelAvailable()" ng-click="actionsToolbar('Mesh_2_mesh')" id="Mesh_2_mesh" class="models" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-      FULLSCREEN-->
-      <img ng-if="::vm.isToolFullScreenAvailable()" id="full_on"  class="viewer3dhopBtn" ng-click="actionsToolbar('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
-      <img ng-if="::vm.isToolFullScreenAvailable()" id="full"  class="viewer3dhopBtn" ng-click="actionsToolbar('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/><br/>
-      <!--FULLSCREEN-->
+      <img ng-if="::vm.isToolSwitchModelAvailable()" ng-click="actionsToolbar('Mesh_2_mesh')" id="Mesh_2_mesh" class="models" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
       <div ng-if="::vm.isToolLightControllerAvailable()" ng-click="actionsToolbar" id="lightcontroller">
-         <canvas id="lightcontroller_canvas" width="125" height="125" />
-      </div><br/>
+         <canvas id="lightcontroller_canvas" width="125" height="125"/>
+      </div>
    </div>
+      <!--select name="repeatSelect" id="repeatSelect" ng-model="data.model" class="viewer3dhopBtn">
+         <option
+           ng-repeat="option in data.availableOptions"
+           value="{{option.id}}"
+           ng-click={{option.name}}
+           id={{option.id}}>
+           {{option.id}}
+        </option><br/>
+       </select>
+       <img ng-click="actionsToolbar('Mesh_2_mesh')" id='Mesh_2_mesh' class="models" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
+       <img ng-click="actionsToolbar('Mesh_1_mesh')" id='Mesh_1_mesh' class="models" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
+
    <div id="tdhlg"></div>
    <!--MEASURE-->
    <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>

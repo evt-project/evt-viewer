@@ -17,11 +17,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#tdhop { position: absolute; width:100%; height:100%; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
+#tdhop { font-family: Junicode, Times, serif; position: absolute; width:100%; height:100%; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
 
-#tdhlg { position:absolute; left:2; bottom:2; width:105px; height:13px; overflow:hidden; cursor:pointer; color:#909090; text-align:center; text-decoration:none; font-family:verdana; font-style:italic; font-size:10px; line-height:13px; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
+#tdhlg { left: 85% !important; top: 95% !important; position: absolute;  width:105px; height:13px; overflow:hidden; cursor:pointer; color:#909090; text-align:center; text-decoration:none; font-family:verdana; font-style:italic; font-size:10px; line-height:13px; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
 
-#toolbar { position: absolute; left:10px; margin-top: 10px;; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
+#toolbar { position: absolute; left:10px; margin-top: 5%; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
 
 #toolbar img { margin-bottom:2px; width:50px; height:50px; opacity:0.5; cursor:pointer; -webkit-user-select:none; -webkit-touch-callout:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; touch-action:none; -ms-touch-action:none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; }
 
@@ -64,8 +64,8 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 }
 #lightcontroller {
    position: absolute;
-	left: 110% !important;
-	top: 2% !important;
+	left: 635% !important;
+	top: 110% !important;
 }
 /*
 #lightcontroller_button {
@@ -75,8 +75,9 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 */
 #arrows {
    display: block;
-   position: fixed;
-   padding-left: 35%;
+   //position: fixed;
+   //padding-left: 45%;
+   //top: 90%;
 }
 .models {
    background-color:rgba(50, 50, 50, 0.5);
@@ -104,4 +105,8 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 }
 .left{
 	transform: rotate(180deg);
+}
+#compassCanvass {
+   //margin-left: 2px;
+   font-family: Junicode, Times, serif;
 }
