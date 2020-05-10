@@ -30,16 +30,25 @@
     </div>
    <!-- add by FS button switch -->
    <div class="box-menu" data-position="top" ng-if="::vm.type === 'tdhop'">
-      <div ng-controller="TreDHOPCtrl">
-         <select id="modelSelector" class="selector" ng-model="data.model">
-            <option name="modelliscegli" id={{option.id}} ng-repeat="option in data.availableOptions">{{option.name}}</option>
-         </select>
+       <div class="dropdown selector" ng-controller="TreDHOPCtrl">
+         <!--select-->
+         <div class="dropbtn" ng-model="data.model">
+         <div>3D Model Selector</div></div>
+         <div class="open_options" ng-click="vm.toggleExpand()">
+            <i class="fa fa-sort-desc"></i>
+         </div>
+
+         <div class="dropdown-content option_container" id="modelSelector" ng-model="data.model">
+            <div class="selected" id={{option.id}} ng-click="change()" ng-repeat="option in data.availableOptions">{{option.name}}</div>
+         </div>
+
+
+         <!--select-->
       </div>
-     <evt-select
-         data-id="{{::selector.id}}"
-         data-type="{{::selector.type}}"
-         data-init="{{::selector.initValue}}"
-         ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
+      <evt-select
+            data-type="{{::selector.type}}"
+            data-init="{{::selector.initValue}}"
+            ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
       </evt-select>
 
         <button-switch

@@ -107,7 +107,7 @@ angular.module('evtviewer.dataHandler')
         var deferred = $q.defer();
         doc = doc.replace(/<!--.*-->/gm, '');
         docElements = xmlParser.parse(doc);
-        if (docElements.documentElement.nodeName === 'TEI') {
+        //if (docElements.documentElement.nodeName === 'TEI') {
             state.XMLStrings.push(doc);
             loadXIinclude(docElements).promise.then(function(){
                 state.XMLDocuments.push(docElements);
@@ -115,10 +115,10 @@ angular.module('evtviewer.dataHandler')
                 _console.log('XML TEI parsed and stored ', state.XMLDocuments);
                 deferred.resolve('success');
             });
-        } else {
-            _console.error('Something wrong with the XML');
+        //} else {
+           // _console.error('Something wrong with the XML');
             deferred.resolve('success');
-        }
+        //}
         return deferred;
     };
 

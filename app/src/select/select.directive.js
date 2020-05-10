@@ -2,7 +2,7 @@
  * @ngdoc directive
  * @module evtviewer.select
  * @name evtviewer.select.directive:evtSelect
- * @description 
+ * @description
  * # evtSelect
  * <p>Element designed upon HTML &lt;select&gt;
  * that will populate options list and handle selection according to a particular type.</p>
@@ -46,7 +46,7 @@ angular.module('evtviewer.select')
         link: function(scope, element) {
             // Initialize select
             var currentSelect = evtSelect.build(scope, scope.vm);
-            
+
             scope.vm.updateContainerPosition = function(type) {
                 var optionContainer = element.find('.option_container'),
                     selector = element.find('.selector'),
@@ -56,7 +56,7 @@ angular.module('evtviewer.select')
                 var newMarginTop;
                 //TEMP => TODO: understand why the behaviour is different
                 //if (type === 'pinned-filter') {
-                    newMarginTop = optionContainer.height() + 2; 
+                    newMarginTop = optionContainer.height() + 2;
                 //} else {
                 //    newMarginTop = optionContainer.height() + labelSelected.height();
                 //}
@@ -76,14 +76,14 @@ angular.module('evtviewer.select')
                     }
                 }
             });
-            
+
             scope.$watch(function() {
                 return scope.selectedOption;
             }, function(newItem, oldItem) {
                 if (oldItem !== newItem) {
                     currentSelect.selectOptionByValue(scope.selectedOption);
                 }
-            }, true);  
+            }, true);
 
             if (scope.type === 'witness-page') {
                 var witness = scope.$parent.vm.witness;
@@ -93,7 +93,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(witness+'-'+newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'page') {
@@ -103,7 +103,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'edition') {
@@ -113,7 +113,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'comparingEdition') {
@@ -123,7 +123,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'source') {
@@ -133,7 +133,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'document') {
@@ -143,7 +143,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'div') {
@@ -160,8 +160,8 @@ angular.module('evtviewer.select')
                         }
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
-            }            
+                }, true);
+            }
 
             if (scope.type === 'version' && evtInterface.getState('currentViewMode') === 'collation') {
                 scope.$watch(function() {
@@ -170,7 +170,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'pinned-filter') {
@@ -179,7 +179,7 @@ angular.module('evtviewer.select')
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.optionList = currentSelect.formatOptionList(newItem);
-                        var selector = element.find('.selector');                        
+                        var selector = element.find('.selector');
                         if (currentSelect.optionList.length > 0) {
                             selector.show();
                         } else {
@@ -199,14 +199,14 @@ angular.module('evtviewer.select')
                             currentSelect.updateContainerPosition(currentSelect.type);
                         });
                     }
-                }, true); 
+                }, true);
             }
 
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentSelect){
                     currentSelect.destroy();
-                }     
+                }
             });
         }
     };

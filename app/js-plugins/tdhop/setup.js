@@ -337,7 +337,7 @@ function onPageResize() {
 	presenter.ui.postDrawEvent();
 }
 
-/* COMPASS
+/* COMPASS */
 function onTrackballUpdate(trackState){
 	updateCompass(sglDegToRad(trackState[0]), sglDegToRad(trackState[1]));
 }
@@ -375,7 +375,7 @@ function updateCompass(angle, tilt) {
 
     // Restore the previous drawing state
     ctx.restore();
-}*/
+}
 
 var presenter = null;
 
@@ -594,20 +594,32 @@ var setup3dhop = function(url1 , url2, url_hs, type) {
    //--SECTIONS--
    sectiontoolInit();
 
-   setmodel();
+   //setmodel();
 
-   function setmodel() {
-      //$('#repeatSelect').html("Cambia modello");
-      $('#Mesh_1_mesh').click(function() {
-         presenter.setInstanceVisibility(HOP_ALL, false, false);
-         presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
-      });
-      $('#Mesh_2_mesh').click(function() {
-         presenter.setInstanceVisibility(HOP_ALL, false, false);
-         presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
-      });
-   }
 }
+//function setmodel() {
+   //$('#repeatSelect').html("Cambia modello");
+   var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+
+   function log(text) {
+      document.getElementById('display').innerHTML = text;
+   }
+
+   function clickSelectedOption(select) {
+     if(!is_chrome) return;
+        select.options[select.selectedIndex].click();
+   }
+   $('#Mesh_1_mesh').change(function(){
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
+      alert('prova');
+   });
+   $('#Mesh_2_mesh').change(function(){
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
+      alert('prova');
+   });
+//}
 
 var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
 lightControllerCanvas.addEventListener("touchstart", click_lightcontroller, false);
