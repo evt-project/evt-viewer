@@ -15,10 +15,6 @@ angular.module('evtviewer.tdhop')
            {id: 'Mesh_2_mesh', name: modello2+" Cross"},
          ]
       };
-      $scope.button = {
-         buttonValue: $scope.data,
-      };
-
       this.isToolHomeAvailable = function () {
          return config.tdhopViewerOptions.toolHome;
       };
