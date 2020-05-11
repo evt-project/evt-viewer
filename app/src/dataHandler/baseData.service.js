@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser, parsedData) {
+.service('baseData', function($log, $q, $http, config, xmlParser, evtParser, evtCriticalApparatusParser, evtSourcesParser, evtProjectInfoParser, evtPrimarySourcesParser, evtAnaloguesParser, evtRunesParser, evtDialog, evtBibliographyParser, evtNamedEntitiesParser, evtSearch, evtHotSpotParser, parsedData) {
     var baseData     = {},
         state        = {
             XMLDocuments: [],
@@ -130,8 +130,8 @@ angular.module('evtviewer.dataHandler')
      * @description
      * Store the external XML files and parse them (external from the main XML document)
      * @param {string} extDoc String representing the External Document to be stored and parsed
-     * @param {string} type Type of document passed [e.g. 'source', 'analogues']
-     * @author CM
+     * @param {string} type Type of document passed [e.g. 'source', 'analogues', 'runes']
+     * @author CM && FS
      */
     baseData.addXMLExtDocument = function(extDoc, type) {
         var docElements = xmlParser.parse(extDoc);
@@ -146,6 +146,9 @@ angular.module('evtviewer.dataHandler')
             } else if (type === 'analogues') {
                 evtAnaloguesParser.parseExternalAnalogues(docElements);
             }*/
+            if (type === 'runes') {
+               evtRunesParser.parseExternalRunes(docElements);
+            }
             _console.log('External Files parsed and stored', state.XMLExtDocuments);
         } catch (e) {
             _console.log('Something wrong with the supplementary XML files '+e);
@@ -271,6 +274,8 @@ angular.module('evtviewer.dataHandler')
                 evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments.analogues);
             }
         }
+        // Parse the Runes FS
+        evtRunesParser.parseRunes(docElements, state.XMLExtDocuments.runes);
         //Parse named entity
         evtNamedEntitiesParser.parseEntities(docElements);
 

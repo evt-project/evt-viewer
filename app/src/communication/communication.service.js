@@ -111,7 +111,7 @@ angular.module('evtviewer.communication')
                 // TODO: Show error in a toast (EVT can work without viscoll)
             });
     };
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.communication.evtCommunication#getViscollDataModel
@@ -129,7 +129,7 @@ angular.module('evtviewer.communication')
                 if (typeof(response.data) === 'string') {
                     _console.log('XML Data received');
                     return baseData.addViscollDataModel(response.data);
-                } 
+                }
             }, function(error) {
                 if (defaults.errorMsgs[error.status]) {
                     communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
@@ -138,7 +138,7 @@ angular.module('evtviewer.communication')
                 }
             });
     };
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.communication.evtCommunication#getViscollImageList
@@ -156,7 +156,7 @@ angular.module('evtviewer.communication')
                 if (typeof(response.data) === 'string') {
                     _console.log('XML Data received');
                     return baseData.addViscollImageList(response.data);
-                } 
+                }
             }, function(error) {
                 if (defaults.errorMsgs[error.status]) {
                     communication.err(defaults.errorMsgs[error.status].msg, url, error.status, true);
@@ -165,7 +165,7 @@ angular.module('evtviewer.communication')
                 }
             });
     };
-			
+
     /**
      * @ngdoc method
      * @name evtviewer.communication.evtCommunication#getExternalData
@@ -187,6 +187,10 @@ angular.module('evtviewer.communication')
                     }
                     else if (url === config.analoguesUrl) {
                         docType = 'analogues';
+                    }
+                    // FS
+                    else if (url === config.runesUrl) {
+                        docType = 'runes';
                     }
                     baseData.addXMLExtDocument(response.data, docType);
 

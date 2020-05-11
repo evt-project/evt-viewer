@@ -210,6 +210,10 @@ angular.module('evtviewer.interface')
                 if (config.analoguesUrl !== '') {
                         evtCommunication.getExternalData(config.analoguesUrl);
                 }
+                // Parse the external Runes file, if defined (@author: FS)
+                if (config.runesUrl !== '') {
+                  evtCommunication.getExternalData(config.runesUrl);
+                }
                 mainInterface.updateProperty('dataUrl', config.dataUrl);
                 if (config.dataUrl === '') {
                     evtCommunication.err('', '', 'dataUrlEmpty', false);
@@ -254,6 +258,10 @@ angular.module('evtviewer.interface')
                      if (config.analoguesUrl !== '') {
                          promises.push(evtCommunication.getExternalData(config.analoguesUrl));
                      }
+                     // Parse the external Runes file, if defined (@author: FS)
+                     if (config.runesUrl !== '') {
+                        promises.push(evtCommunication.getExternalData(config.runesUrl));
+                    }
 
                       var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
                       if (currentDocFirstLoad !== undefined){

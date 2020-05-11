@@ -132,12 +132,12 @@ angular.module('evtviewer.dataHandler')
 				quires: {
 					[quireId]: {
 						leaves: {
-							[leafId]: { 
-								conjoin: '', 
-								label: '', 
-								leafno: '', 
-								quire: '', 
-								value: '' 
+							[leafId]: {
+								conjoin: '',
+								label: '',
+								leafno: '',
+								quire: '',
+								value: ''
 							},
 							_indexes: [],
 							length: 0
@@ -148,11 +148,11 @@ angular.module('evtviewer.dataHandler')
 					_indexes: []
 				},
 				imglist: {
-					[imgId]: { 
-						conjoin: '', 
-						conjoinUrl: '', 
-						id: '', 
-						url: '', 
+					[imgId]: {
+						conjoin: '',
+						conjoinUrl: '',
+						id: '',
+						url: '',
 						value: ''
 					},
 					_indexes: []
@@ -718,7 +718,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getNamedEntities = function() {
 		return namedEntities;
 	}
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getNamedEntitiesCollection
@@ -964,6 +964,16 @@ angular.module('evtviewer.dataHandler')
 		_refId: {
 			_indexes: []
 		}
+   };
+   /* @author FS
+     */
+	var runesCollection = {
+		_indexes: {
+			encodingStructure: [],
+		},
+		_refId: {
+			_indexes: []
+		}
 	};
 
 	/* PAGES */
@@ -1024,7 +1034,7 @@ angular.module('evtviewer.dataHandler')
 			docs: page.docs
 		 };
 	};
-	
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getPages
@@ -1154,7 +1164,7 @@ angular.module('evtviewer.dataHandler')
 		// return images[i];
 		return {};
 	};
-	
+
 	/* SVG */
 	/**
      * @ngdoc method
@@ -1187,7 +1197,7 @@ angular.module('evtviewer.dataHandler')
 		}
 		viscollSvgCollection.svgs._indexes.push(svgId);
 	};
-	
+
 	parsedData.addViscollImageList = function(imageElement){
 		var imageId = imageElement.id;
 		viscollSvgCollection.imglist[imageId] = imageElement;
@@ -1199,14 +1209,14 @@ angular.module('evtviewer.dataHandler')
 		viscollSvgCollection.quires[quireId] = quire;
 		viscollSvgCollection.quires._indexes.push(quireId);
 	};
-	
+
 	parsedData.addViscollLeaf = function(leaf) {
 		var leafId = leaf.value;
 		var quireId = leaf.quire;
 		viscollSvgCollection.quires[quireId].leaves[leafId] = leaf;
 		viscollSvgCollection.quires[quireId].leaves._indexes.push(leafId);
 	};
-	
+
 	parsedData.setViscollSVGToLoad = function(svgList) {
 		viscollSvgCollection.svgToLoad = svgList;
 	};
@@ -1217,8 +1227,8 @@ angular.module('evtviewer.dataHandler')
 
 	parsedData.updateLeafDataInQuire = function(quireId, leaf) {
 		if (viscollSvgCollection.quires[quireId].leaves[leaf.id]) {
-			for (var attrname in leaf) { 
-				viscollSvgCollection.quires[quireId].leaves[leaf.id][attrname] = leaf[attrname]; 
+			for (var attrname in leaf) {
+				viscollSvgCollection.quires[quireId].leaves[leaf.id][attrname] = leaf[attrname];
 			}
 		}
 	};
@@ -1270,7 +1280,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getViscollSvg = function(pageId) {
 		return viscollSvgCollection[pageId];
 	};
-	
+
 	/* DOCUMENTS */
 	/**
      * @ngdoc method
@@ -2843,7 +2853,7 @@ angular.module('evtviewer.dataHandler')
 	parsedData.updateProjectInfoContent = function(newContent, type) {
 		projectInfo[type] = newContent;
 	};
- 
+
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#getProjectInfo
@@ -3428,6 +3438,11 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.getAnalogue = function(analogueId) {
 		return analoguesCollection[analogueId];
+   };
+   /* @author FS
+     */
+	parsedData.getRune = function(runeId) {
+		return runesCollection[runeId];
 	};
 
 	/**
@@ -3466,6 +3481,12 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.getAnalogues = function() {
 		return analoguesCollection;
+   };
+
+   /* @author FS
+     */
+	parsedData.getRunes = function() {
+		return runesCollection;
 	};
 
 	/**
@@ -3513,6 +3534,14 @@ angular.module('evtviewer.dataHandler')
 					}
 				}
 			}
+		}
+   };
+   /* @author FS
+     */
+	parsedData.addRune = function(entry) {
+		if (runesCollection[entry.id] === undefined) {
+			runesCollection[entry.id] = entry;
+			runesCollection._indexes.encodingStructure.push(entry.id);
 		}
 	};
 

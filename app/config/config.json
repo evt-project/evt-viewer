@@ -5,7 +5,8 @@
 
    "dataUrl": "data/VB-DOTR.xml",
    "sourcesUrl"       : "",
-   "analoguesUrl"     : "",
+   "analoguesUrl"     : "data/analogues.xml",
+   "runesUrl": "data/RC-metadata.xml",
    "sourcesTextsUrl" : "",
 
    "singleImagesUrl": "",

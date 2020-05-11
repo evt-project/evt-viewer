@@ -367,7 +367,7 @@ angular.module('evtviewer.dataHandler')
 			value: type,
 			content: doc
 		};
-		if (type !== 'analogues' && type !== 'sources') {
+		if (type !== 'analogues' && type !== 'sources' && type !== 'runes') {
 			parsedData.addSourceDocument(newExtDoc, type);
 		} else {
 			parsedData.addExternalDocument(newExtDoc, type);

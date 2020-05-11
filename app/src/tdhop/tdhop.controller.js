@@ -60,4 +60,7 @@ angular.module('evtviewer.tdhop')
       this.isToolLightControllerAvailable = function () {
          return config.tdhopViewerOptions.toolLightController;
       };
+   //}])
+   //.controller('runeCtrl',[, function (){
+
    }]);

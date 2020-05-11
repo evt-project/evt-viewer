@@ -195,8 +195,9 @@
 				</evt-dialog>
 				<evt-dialog data-type="bookmark" data-title="DIALOGS.BOOKMARK">
 					<div compile="getBookmark()"></div>
-				</evt-dialog>
-			</section>
+            </evt-dialog>
+         </section>
+
 			<section id="global-container" ng-switch="getCurrentViewMode()" ng-if="!isLoading()">
 				<!-- <div id="left-nav"><span><i class="fa fa-chevron-circle-left"></i></span></div> -->
             <!-- 3DHOP -->
@@ -205,15 +206,19 @@
                   id="mainTdhop">
                   <!--div tdhop data-canvas="draw-canvas" style="height: 100%"></div-->
                </box>
-               <box data-type="text"
+               <box data-type="rune"
+                   id="runeText"
+						 data-source={{getCurrentRuneText()}}>
+               </box>
+               <!--box data-type="text"
                   data-edition="{{getCurrentEdition()}}"
                   id="mainText">
-         		</box>
-					<!--
-                    <box data-type="generic" id="generic">
-                        <div>Eventuale testo affiancato</div>
+         		</box!->
+
+                   <!-- <box data-type="generic" id="generic">
+
                     </box>-->
-                </section>
+            </section>
             <!-- READING TEXT -->
 				<section id="main-container" class="viewMode" ng-switch-when="readingTxt">
 					<box data-type="text"
@@ -522,7 +527,8 @@
 		<script src="/src/dataHandler/criticalParser.service.js"></script>
 		<script src="/src/dataHandler/sourcesParser.service.js"></script>
 		<script src="/src/dataHandler/sourcesApparatus.service.js"></script>
-		<script src="/src/dataHandler/analoguesParser.service.js"></script>
+      <script src="/src/dataHandler/analoguesParser.service.js"></script>
+      <script src="/src/dataHandler/runesParser.service.js"></script>
 		<script src="/src/dataHandler/analoguesApparatus.service.js"></script>
 		<script src="/src/dataHandler/criticalElementsParser.service.js"></script>
 		<script src="/src/dataHandler/versionApparatus.service.js"></script>
@@ -720,9 +726,16 @@
       <script src="/src/tdhop/tdhop.js"></script>
       <script src="/src/tdhop/tdhop.controller.js"></script>
       <script src="/src/tdhop/tdhop.directive.js"></script>
+      <!--<script src="/src/tdhop/rune.directive.js"></script>-->
       <script src="/src/tdhop/tdhop.provider.js"></script>
       <!--script src="/src/tdhop/tdhop.service.js"></script-->
       <script src="/src/tdhop/tdhop.configuration.js"></script>
+
+      <script src="/src/rune/rune.js"></script>
+      <script src="/src/rune/rune.configuration.js"></script>
+      <script src="/src/rune/rune.provider.js"></script>
+      <script src="/src/rune/rune.directive.js"></script>
+
 
       <script src="/src/navBar/navBar.js"></script>
       <script src="/src/navBar/navBar.configuration.js"></script>

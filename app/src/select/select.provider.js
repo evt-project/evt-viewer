@@ -2,10 +2,10 @@
  * @ngdoc service
  * @module evtviewer.select
  * @name evtviewer.select.evtSelect
- * @description 
+ * @description
  * # evtSelect
  * This provider expands the scope of the
- * {@link evtviewer.select.directive:evtSelect evtSelect} directive 
+ * {@link evtviewer.select.directive:evtSelect evtSelect} directive
  * and stores its reference untill the directive remains instantiated.
  * It also add some modules to controller, according to <code>&lt;evt-select&gt;</code> type.
  *
@@ -37,59 +37,59 @@ angular.module('evtviewer.select')
 
 		var _console = $log.getInstance('select');
 
-		// 
+		//
 		// Select builder
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.select.evtSelect#build
 	     * @methodOf evtviewer.select.evtSelect
 	     *
 	     * @description
-	     * <p>This method will extend the scope of {@link evtviewer.select.directive:evtSelect evtSelect} directive 
+	     * <p>This method will extend the scope of {@link evtviewer.select.directive:evtSelect evtSelect} directive
 	     * according to selected configurations and parsed data.</p>
 	     * <p>According to <code>type</code> it will set the methods **callback**, **formatOptionList** and **formatOption**
 	     * and it will set the available options list.
 		 * <p>Handled types are: <ul>
-		 * <li>"**page**":<ul> 
+		 * <li>"**page**":<ul>
 		 * 		<li>option list will contain all available pages;</li>
-		 * 		<li>callback will update the current page on interface, 
+		 * 		<li>callback will update the current page on interface,
 		 * 			updating eventually the current document too.</li></ul></li>
-		 * <li>"**document**":<ul> 
+		 * <li>"**document**":<ul>
 		 * 		<li>option list will contain all available documents;</li>
-		 * 		<li>callback will update the current document on interface, 
+		 * 		<li>callback will update the current document on interface,
 		 * 			updating eventually the current page too.</li></ul></li>
-		 * <li>"**edition**":<ul> 
+		 * <li>"**edition**":<ul>
 		 * 		<li>option list will contain all available editions;</li>
 		 * 		<li>callback will update the current edition level on interface.</li></ul>/li>
 		 * <li>"**named-entities**":<ul>
-		 * 		<li>**" option list will contain all available (named) entities, 
+		 * 		<li>**" option list will contain all available (named) entities,
 		 * 		divided in "*named entitites*" and "*generic entities";</li>
-		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option 
+		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option
 		 * 			and a "*Clear*" option;</li>
 		 * 		<li>callback will (de)active the selected (named) entities type
 		 * 			in order to (de)highilight them. </li></ul>/li>
-		 * <li>"**witness**":<ul> 
+		 * <li>"**witness**":<ul>
 		 * 		<li>option list will contain all available witnesses;</li>
 		 * 		<li>callback will update the selected witnesses (and URL) in collation view mode.</li></ul>/li>
 		 * <li>"**witness-page**":<ul>
 		 * 		<li>**" option list will contain all available pages for a given witness;</li>
-		 * 		<li>callback will update current page for given witness and will eventally 
+		 * 		<li>callback will update current page for given witness and will eventally
 		 * 			scroll the main text to selected page anchor.</li></ul>/li>
 		 * <li>"**pinned-filter**"<ul>
 		 * 		<li>**" option list will contain all available pinned filters;</li>
 		 * 		<li>callback will decide which pinned elements to show;</li>
-		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option 
+		 * 		<li>it will allow multiple selection (and thus will have a "*Select All*" option
 		 * 			and a "*Clear*" option.</li></ul>/li>
-		 * <li>"**source**":<ul> 
+		 * <li>"**source**":<ul>
 		 * 		<li>option list will contain all available sources;</li>
 		 * 		<li>callback will update current source on interface.</li></ul>/li>
-		 * <li>"**version**":<ul> 
+		 * <li>"**version**":<ul>
 		 * 		<li>option list will contain all available versions;</li>
 		 * 		<li>callback will update current version on interface.</li></ul></li>
 		 * </ul></p>
 		 * <p>To see details of callback function just open the file and read.</p>
-		 * <p>You can add your own type of select, if the same select used in different places 
+		 * <p>You can add your own type of select, if the same select used in different places
 		 * should always have the same behaviour.</p>
 		 *
 		 * @param {Object} scope initial scope of the directive:
@@ -140,15 +140,15 @@ angular.module('evtviewer.select')
 		     *
 		     * @description
 		     * Callback fired when user clicks on select. It depends on select type:<ul>
-			 * <li>"**page**": it will update the current page on interface, 
+			 * <li>"**page**": it will update the current page on interface,
 			 * 			updating eventually the current document too.</li>
-			 * <li>"**document**": it will update the current document on interface, 
+			 * <li>"**document**": it will update the current document on interface,
 			 * 			updating eventually the current page too.</li>
 			 * <li>"**edition**": it will update the current edition level on interface.</li>
 			 * <li>"**named-entities**": it will (de)active the selected (named) entities type
 			 * 			in order to (de)highilight them. </li>
 			 * <li>"**witness**": it will update the selected witnesses (and URL) in collation view mode.</li>
-			 * <li>"**witness-page**": it will update current page for given witness and will eventally 
+			 * <li>"**witness-page**": it will update current page for given witness and will eventally
 			 * 			scroll the main text to selected page anchor.</li>
 			 * <li>"**pinned-filter**": it will decide which pinned elements to show;</li>
 			 * <li>"**source**": it will update current source on interface.</li>
@@ -212,7 +212,7 @@ angular.module('evtviewer.select')
 						}
 					};
 					formatOptionList = function(optionList) {
-						var formattedList = []; 
+						var formattedList = [];
 						// TODO: Handle duplicates ('_orig', '_reg')
 						for (var i = 0; i < optionList.length; i++) {
 							formattedList.push(optionList[optionList[i]]);
@@ -271,7 +271,7 @@ angular.module('evtviewer.select')
 								formattedList.push(allDivs[divId]);
 								if (parsedData.getDivs()._indexes.subDivs[divId] && parsedData.getDivs()._indexes.subDivs[divId].length > 0) {
 									formatOptionList(allDivs[divId].subDivs, formattedList, section);
-								}	
+								}
 							}
 						});
 					};
@@ -286,8 +286,8 @@ angular.module('evtviewer.select')
 				case 'edition':
 				case 'comparingEdition':
 					callback = function(oldOption, newOption) {
-						if (newOption !== undefined && 
-							(oldOption !== undefined && oldOption[0] !== undefined && 
+						if (newOption !== undefined &&
+							(oldOption !== undefined && oldOption[0] !== undefined &&
 								newOption.value !== oldOption[0].value)) {
 							vm.selectOption(newOption);
 							var stateToUpdate, oppositeStateName;
@@ -299,7 +299,7 @@ angular.module('evtviewer.select')
 								stateToUpdate = 'currentComparingEdition';
 								// change currentEdition if equal to selected
 								oppositeStateName = 'currentEdition';
-							} 
+							}
 							var oppositeState = evtInterface.getState(oppositeStateName);
 							if (oppositeState === newOption.value) {
 								evtInterface.updateState(oppositeStateName, oldOption[0].value);
@@ -603,7 +603,7 @@ angular.module('evtviewer.select')
 						return formattedOption;
 					};
 					optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
-					break;
+               break;
 				// author --> CM //
 				case 'version':
 					optionSelectedValue = initValue;
@@ -714,7 +714,7 @@ angular.module('evtviewer.select')
 
 		//
 		// Service function
-		// 
+		//
 		/**
 	     * @ngdoc method
 	     * @name evtviewer.select.evtSelect#getById
@@ -722,7 +722,7 @@ angular.module('evtviewer.select')
 	     *
 	     * @description
 	     * Get the reference of the instance of a particular <code>&lt;evt-select&gt;</code>.
-		 * 
+		 *
 		 * @param {string} currentId id of select to retrieve
 		 *
 		 * @returns {Object} reference of the instance of <code>&lt;evt-select&gt;</code> with given id
@@ -830,7 +830,7 @@ angular.module('evtviewer.select')
          *
          * @description
          * Delete the reference of the instance of a particular <code>&lt;evt-select&gt;</code>
-         * 
+         *
          * @param {string} tempId id of <code>&lt;evt-select&gt;</code> to destroy
          */
 		select.destroy = function(tempId) {

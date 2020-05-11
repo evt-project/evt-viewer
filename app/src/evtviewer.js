@@ -102,5 +102,6 @@ angular
       'evtviewer.imageViewer',
 		'evtviewer.toc',
       'ui-leaflet',
-      'evtviewer.tdhop'
+      'evtviewer.tdhop',
+      'evtviewer.rune',
   ]);

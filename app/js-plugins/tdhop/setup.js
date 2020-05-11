@@ -598,26 +598,13 @@ var setup3dhop = function(url1 , url2, url_hs, type) {
 
 }
 //function setmodel() {
-   //$('#repeatSelect').html("Cambia modello");
-   var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-
-   function log(text) {
-      document.getElementById('display').innerHTML = text;
-   }
-
-   function clickSelectedOption(select) {
-     if(!is_chrome) return;
-        select.options[select.selectedIndex].click();
-   }
    $('#Mesh_1_mesh').change(function(){
       presenter.setInstanceVisibility(HOP_ALL, false, false);
       presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
-      alert('prova');
    });
    $('#Mesh_2_mesh').change(function(){
       presenter.setInstanceVisibility(HOP_ALL, false, false);
       presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
-      alert('prova');
    });
 //}
 
