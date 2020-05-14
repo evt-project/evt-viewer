@@ -15,6 +15,7 @@
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.dataHandler.evtCriticalApparatusParser
+ * @requires evtviewer.dataHandler.evtRunesParser
  * @requires evtviewer.dataHandler.evtSourcesParser
  * @requires evtviewer.dataHandler.evtProjectInfoParser
  * @requires evtviewer.dataHandler.evtPrimarySourcesParser
@@ -146,10 +147,8 @@ angular.module('evtviewer.dataHandler')
             } else if (type === 'analogues') {
                 evtAnaloguesParser.parseExternalAnalogues(docElements);
             }*/
-            if (type === 'runes') {
-               evtRunesParser.parseExternalRunes(docElements);
-            }
             _console.log('External Files parsed and stored', state.XMLExtDocuments);
+
         } catch (e) {
             _console.log('Something wrong with the supplementary XML files '+e);
         }
@@ -274,8 +273,13 @@ angular.module('evtviewer.dataHandler')
                 evtAnaloguesParser.parseAnalogues(docElements, state.XMLExtDocuments.analogues);
             }
         }
-        // Parse the Runes FS
-        evtRunesParser.parseRunes(docElements, state.XMLExtDocuments.runes);
+        // Parse the xml file containing rune FS
+         if (config.runesUrl !== '') {
+            evtRunesParser.parseRunes(docElements);
+         } else if (config.runesUrl === '') {
+            evtRunesParser.parseRunes(state.XMLExtDocuments.runes);
+         }
+
         //Parse named entity
         evtNamedEntitiesParser.parseEntities(docElements);
 

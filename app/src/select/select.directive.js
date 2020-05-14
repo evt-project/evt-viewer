@@ -135,6 +135,16 @@ angular.module('evtviewer.select')
                     }
                 }, true);
             }
+            // author FS
+            if (scope.type === 'rune') {
+               scope.$watch(function() {
+                   return evtInterface.getState('currentRune') ;
+               }, function(newItem, oldItem) {
+                   if (oldItem !== newItem) {
+                       currentSelect.selectOptionByValue(newItem);
+                   }
+               }, true);
+           }
 
             if (scope.type === 'document') {
                 scope.$watch(function() {

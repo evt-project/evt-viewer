@@ -369,10 +369,15 @@ angular.module('evtviewer.dataHandler')
 		};
 		if (type !== 'analogues' && type !== 'sources' && type !== 'runes') {
 			parsedData.addSourceDocument(newExtDoc, type);
+      } else if (type === 'runes') {
+         parsedData.addRuneDocument(newExtDoc, type);
 		} else {
 			parsedData.addExternalDocument(newExtDoc, type);
 		}
 		console.log('## Source Documents ##', parsedData.getSourceDocuments());
+      // @author FS
+      console.log('## Rune Documents ##', parsedData.getRuneDocuments());
+
 		console.log('## External Documents ##', parsedData.getExternalDocuments());
 	};
 	/**

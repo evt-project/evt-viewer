@@ -252,9 +252,9 @@ angular.module('evtviewer.core')
 
     // 3DHOP
    tdhopViewerOptions: {
-   name: "Bewcastle",
-   url: "data/3Dmodels/multires/bewcastle.nxz",
-   mesh: "Bewcastle",
+   name: "Ruthwell",
+   url: "data/models/singleres/cross.ply",
+   mesh: "Ruthwell",
 
    toolHome: true,
    toolZoomin: true,

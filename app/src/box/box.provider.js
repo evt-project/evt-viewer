@@ -46,7 +46,7 @@ angular.module('evtviewer.box')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus) {
+	this.$get = function($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtRunesParser, evtCriticalApparatusParser, xmlParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtApparatuses, evtSourcesApparatus) {
 		var box = {},
 			collection = {},
 			list = [],
@@ -429,7 +429,8 @@ angular.module('evtviewer.box')
 		            witpage : '@',
 		            edition : '@',
 		            source : '@',
-		            version : '@'
+                  version : '@',
+                  rune: '@'
 		        };
 		 	</pre>
 		 *
@@ -1056,7 +1057,7 @@ angular.module('evtviewer.box')
 					});
 
 					updateContent = function() {
-						scope.vm.isLoading = true;
+                  scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
 							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
 
@@ -1127,7 +1128,7 @@ angular.module('evtviewer.box')
 					});
 
 					updateContent = function() {
-						scope.vm.isLoading = true;
+                  scope.vm.isLoading = true;
 						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
 							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_VERSION_NOT_AVAILABLE\' | translate:\'{ version:  "' + vm.version + '" }\' }}</span>';
 
@@ -1164,7 +1165,53 @@ angular.module('evtviewer.box')
 						}
 					};
                break;
-            //add by FS button switch
+            /* Author FS case to handle 3DHOP-info/rune text view*/
+            case 'rune':
+               topMenuList.selectors.push({
+						id: 'runes_' + currentId,
+						type: 'rune',
+						initValue: evtInterface.getState('currentRuneText')
+					});
+					updateContent = function() {
+                  scope.vm.isLoading = true;
+               		var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+							noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_RUNE_NOT_AVAILABLE\' | translate:\'{ rune:  "' + scope.vm.rune + '" }\' }}</span>';
+
+						//Main content
+						var runeObj = parsedData.getRune(scope.vm.rune),
+							newContent = runeObj ? runeObj.text : undefined;
+
+						if (!runeObj || Object.keys(runeObj.text).length === 0 || newContent === undefined) {
+
+                     var runeDoc = parsedData.getRuneDocuments().runes.content.scrollingElement.textContent;
+                     parsedData.getRuneDocument(scope.vm.rune);
+
+							if (runeDoc !== undefined) {
+								try {
+                           var promises = [];
+                           promises.push(evtRunesParser.parseRuneText(runeDoc.content).promise);
+
+									promises.push(parsedData.getRuneDocuments().runes.content.scrollingElement.promise);
+									$q.all(promises).then(function() {
+										scope.vm.content = runeDoc || noTextAvailableMsg;
+										scope.vm.isLoading = false;
+                           });
+								} catch (err) {
+									_console.log(err);
+									scope.vm.content = errorMsg;
+									scope.vm.isLoading = false;
+								}
+							} else {
+								scope.vm.content = errorMsg;
+								scope.vm.isLoading = false;
+							}
+
+						} else {
+							scope.vm.content = newContent;
+							scope.vm.isLoading = false;
+						}
+               };
+				break;
             case 'tdhop':
                topMenuList.selectors.push({
                   id: 'modelSelector',
@@ -1199,11 +1246,9 @@ angular.module('evtviewer.box')
 
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>', noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
-
 						// Main content
-							scope.vm.content = newContent;
-							scope.vm.isLoading = false;
+						scope.vm.content = newContent;
+						scope.vm.isLoading = false;
 					};
 				break;
 				default:

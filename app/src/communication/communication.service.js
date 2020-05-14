@@ -237,6 +237,37 @@ angular.module('evtviewer.communication')
             });
     };
 
+
+    /**
+     * @ngdoc method
+     * @name evtviewer.communication.evtCommunication#getRuneTextFile
+     * @methodOf evtviewer.communication.evtCommunication
+     *
+     * @description
+     * Method to access text data from an URL. Different base parsers will be launched depending on type of read file.
+     *
+     * @param {string} url file containing the edition data
+     * @param {string} id document connected to external rune file
+     * @returns {httpPromise} resolve with fetched data, or fails with error description.
+     * FS
+     */
+    communication.getRuneTextFile = function(url, id) {
+      return $http.get(url)
+      .then(function(response){
+          if (typeof(response.data) === 'string') {
+                  baseData.addXMLRuneDocument(response.data, id);
+                  _console.log('Rune XML Data received');
+              } else {
+                  // Do nothing
+              }
+          }, function(error) {
+              if (defaults.errorMsgs[error]) {
+                  communication.err(defaults.errorMsgs[error].msg, url, error, true);
+              } else {
+                  communication.err(defaults.errorMsgs['404'].msg, url , error, true);
+              }
+          });
+  };
     /**
      * @ngdoc method
      * @name evtviewer.communication.evtCommunication#getError

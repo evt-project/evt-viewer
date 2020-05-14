@@ -56,9 +56,6 @@ angular.module('evtviewer.tdhop')
             setup3dhop(url1, url2, url_hs, annotations, type);
          };
 
-         var homeSelectVisibility = config.tdhopViewerOptions.toolHome;
-
-
          loadFiles(0);
          };
 

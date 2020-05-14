@@ -386,12 +386,12 @@ angular.module('evtviewer.interface')
          } else if ($event.keyCode === 39) { // RIGHT ARROW
             if (!$scope.isVisCollOpened() && !$scope.isThumbNailsOpened()) {
                if ($event.metaKey) {
-                  evtInterface.goToLastPage();               
+                  evtInterface.goToLastPage();
                } else {
                   evtInterface.goToNextPage();
                }
             }
-         } 
+         }
 		};
 		/**
          * @ngdoc method
@@ -457,7 +457,24 @@ angular.module('evtviewer.interface')
 			return evtInterface.getState('currentSourceText') ;
 		};
 
-		//TODO: add methods for source, quote and analogue?
+      //TODO: add methods for source, quote and analogue?
+
+      /**
+         * @ngdoc method
+         * @name evtviewer.interface.controller:InterfaceCtrl#getCurrentRuneText
+         * @methodOf evtviewer.interface.controller:InterfaceCtrl
+         * @description Get the id of the rune text shown in the interface.
+         * @returns {string} id of the rune text shown in the interface
+         * @author FS
+         */
+		$scope.getCurrentRuneText = function() {
+			return evtInterface.getState('currentRuneText') ;
+      };
+
+      // Method to get available runes texts author FS
+		$scope.getAvailableRunesTexts = function() {
+			return evtInterface.getProperty('availableRunesTexts');
+		};
 
 		/**
          * @ngdoc method
@@ -642,8 +659,8 @@ angular.module('evtviewer.interface')
 		 * @description Check if navBar is opened
 		 * @returns {boolean} if is true or not
 		 */
-		 $scope.isNavBarOpened = function() { 
-			return evtInterface.getProperty('enableNavBar') && evtInterface.getState('isNavBarOpened'); 
+		 $scope.isNavBarOpened = function() {
+			return evtInterface.getProperty('enableNavBar') && evtInterface.getState('isNavBarOpened');
 		};
 		/**
 		 * @ngdoc method
@@ -665,11 +682,11 @@ angular.module('evtviewer.interface')
 		 $scope.isThumbNailsOpened = function() {
 			 return evtInterface.getState('isThumbNailsOpened');
        };
-       
+
        $scope.getThumbnails = function() {
          return parsedData.getThumbnails();
        };
-       
+
        $scope.goToPageFromThumb = function(page) {
          if (evtInterface.getState('currentPage') !== page.value) {
             evtInterface.updateState('isThumbNailsOpened', false);

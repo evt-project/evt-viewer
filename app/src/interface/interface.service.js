@@ -57,6 +57,7 @@ angular.module('evtviewer.interface')
             currentAnalogue : undefined,
             currentSource : undefined,
             currentSourceText : undefined,
+            currentRuneText : undefined,
             currentVersions : undefined,
             currentVersionEntry : undefined,
             currentVersion : undefined,
@@ -92,6 +93,7 @@ angular.module('evtviewer.interface')
         currentAnalogue    : undefined,
         currentSource      : undefined,
         currentSourceText  : undefined,
+        currentRuneText    : undefined,
         currentVersions    : undefined,
         currentVersionEntry: undefined,
         currentVersion     : undefined,
@@ -116,6 +118,7 @@ angular.module('evtviewer.interface')
             witnessSelector : false,
             namedEntitiesLists : false,
             availableSourcesTexts : [ ],
+            availableRunesTexts : [ ],
             isSourceLoading : false,
             parsedSourcesTexts : [ ],
             availableVersions : [ ],
@@ -137,8 +140,11 @@ angular.module('evtviewer.interface')
         witnessSelector    : false,
         namedEntitiesLists : false,
         availableSourcesTexts : [ ],
+        availableRunesTexts : [ ],
         isSourceLoading    : false,
+        isRuneLoading: false,
         parsedSourcesTexts : [ ],
+        parsedRunesTexts : [ ],
         availableVersions  : [ ],
         versionSelector    : false,
         tabsContainerOpenedContent: '',
@@ -334,6 +340,16 @@ angular.module('evtviewer.interface')
                                   mainInterface.updateCurrentSourceText(properties.availableSourcesTexts[0]);
                               }
 
+                              // in the 3D-rune view
+                              //autor FS
+                              var runesTexts = parsedData.getRunes()._indexes.availableTexts;
+                              if (Object.keys(runesTexts).length !== 0) {
+                                  for (var i in runesTexts) {
+                                      properties.availableRunesTexts.push(runesTexts[i].id);
+                                  }
+                                  mainInterface.updateCurrentRuneText(properties.availableRunesTexts[0]);
+                              }
+
                               // Temp | TODO: add to updateParams? //
                               // Prepare version to show as default in the versions view if there
                               // are only two versions of the text, and available versions
@@ -479,6 +495,7 @@ angular.module('evtviewer.interface')
                 currentAnalogue : undefined,
                 currentSource : undefined,
                 currentSourceText : undefined,
+                currentRuneText : undefined,
                 currentVersions : undefined,
                 currentVersionEntry : undefined,
                 currentVersion : undefined,
@@ -507,6 +524,7 @@ angular.module('evtviewer.interface')
                 witnessSelector : false,
                 namedEntitiesLists : false,
                 availableSourcesTexts : [ ],
+                availableRunesTexts : [ ],
                 isSourceLoading : false,
                 parsedSourcesTexts : [ ],
                 availableVersions : [ ],
@@ -559,6 +577,7 @@ angular.module('evtviewer.interface')
                 currentAnalogue : undefined,
                 currentSource : undefined,
                 currentSourceText : undefined,
+                currentRuneText : undefined,
                 currentVersions : undefined,
                 currentVersionEntry : undefined,
                 currentVersion : undefined,
@@ -726,6 +745,31 @@ angular.module('evtviewer.interface')
             }
             state.currentSourceText = sourceId;
         };
+
+        /**
+         * @ngdoc method
+         * @name evtviewer.interface.evtInterface#updateCurrentRuneText
+         * @methodOf evtviewer.interface.evtInterface
+         * @description Update current rune text. If text of required rune has not been parsed yet,
+         * launch {@evtviewer.communication.evtCommunication#getRuneTextFile evtCommunication.getRuneTextFile} to retrieve it.
+         * @param {string} runeId id of rune to set as current rune text
+         * @author FS
+         */
+        mainInterface.updateCurrentRuneText = function(runeId) {
+         var rune = parsedData.getRune(runeId),
+             isTextAvailable = rune !== undefined && rune._textAvailable;
+         if (isTextAvailable) {
+             var isTextParsed = (Object.keys(parsedData.getRune(runeId).text).length > 0);
+             if (!isTextParsed) {
+                 properties.isRuneLoading = !properties.isRuneLoading;
+                 evtCommunication.getRuneTextFile(config.runesTextsUrl+runeId+'.xml', runeId).then(function() {
+                     properties.isRuneLoading = !properties.isRuneLoading;
+                     properties.parsedRunesTexts.push(runeId);
+                 });
+             }
+         }
+         state.currentRuneText = runeId;
+         };
 
         // //////// //
         // VERSIONS //

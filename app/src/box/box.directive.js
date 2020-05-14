@@ -55,13 +55,14 @@
  *
  * @scope
  * @param {string=} id id of box to be shown
- * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty', 'tdhop')
+ * @param {string=} type type of box to be shown (can be 'image', 'text', 'witness', 'source', 'version', 'pinnedBoard', 'empty', 'tdhop', 'rune')
  * @param {string=} subtype subtype of box to be shown
  * @param {string=} witness scope witness
  * @param {string=} witpage scope witness page
  * @param {string=} edition scope edition
  * @param {string=} source scope source
  * @param {string=} version scope version
+ * @param {string=} rune scope rune
  *
  * @restrict E
 **/
@@ -79,7 +80,8 @@ angular.module('evtviewer.box')
             witpage : '@',
             edition : '@',
             source  : '@',
-            version : '@'
+            version : '@',
+            rune: '@',
         },
         transclude : true,
         templateUrl: 'src/box/box.dir.tmpl.html',
@@ -93,7 +95,8 @@ angular.module('evtviewer.box')
                 witPage : scope.witpage,
                 edition : scope.edition,
                 source  : scope.source,
-                version : scope.version
+                version : scope.version,
+                rune : scope.rune,
             };
 
             // Initialize box
@@ -576,6 +579,33 @@ angular.module('evtviewer.box')
                     currentBox.updateContent();
                 });
             }
+
+            /* Watchers for box of type rune. Intialize the texts, by parsing them.
+            The watcher checks if the text to parse has been loaded, then updates the content of the box with current rune text.
+            Checks if the current text has changed and then updates the content of the box.
+            author FS */
+            if (currentBox.type === 'rune') {
+               scope.$watch(function() {
+                   return evtInterface.getProperty('isRuneLoading');
+               }, function(newItem, oldItem) {
+                   if (oldItem !== newItem) {
+                       if (!newItem) {
+                           scope.vm.rune = evtInterface.getState('currentRuneText') ;
+                           currentBox.updateContent();
+                       }
+                   }
+               });
+               scope.$watch(function() {
+                   return evtInterface.getState('currentRuneText') ;
+               }, function(newItem, oldItem) {
+                   if (oldItem !== newItem) {
+                       if (evtInterface.getProperty('parsedRunesTexts').indexOf(newItem) >= 0) {
+                           scope.vm.rune = newItem;
+                           currentBox.updateContent();
+                       }
+                   }
+               });
+           }
 
             // Garbage collection
             scope.$on('$destroy', function() {

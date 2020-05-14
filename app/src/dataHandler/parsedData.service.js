@@ -240,6 +240,11 @@ angular.module('evtviewer.dataHandler')
 		length: 0
 	};
 
+   // FS
+   var runeDocsCollection = {
+		length: 0
+	};
+
 	var divsCollection = {
 		length: 0,
 		_indexes: {
@@ -384,6 +389,8 @@ angular.module('evtviewer.dataHandler')
      	</pre>
      */
 	var criticalTexts = {};
+   // FS
+   var runeTexts = {};
 	/**
      * @ngdoc property
      * @name evtviewer.dataHandler.parsedData#editionLevels
@@ -969,12 +976,10 @@ angular.module('evtviewer.dataHandler')
      */
 	var runesCollection = {
 		_indexes: {
-			encodingStructure: [],
-		},
-		_refId: {
-			_indexes: []
+			availableTexts : [],
+			correspId: {}
 		}
-	};
+		}
 
 	/* PAGES */
 	/**
@@ -1432,6 +1437,10 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getExternalDocuments = function() {
 		return externalDocsCollection;
 	};
+   // FS
+   parsedData.getRuneDocuments = function() {
+      return runeDocsCollection;
+   };
 
 	/**
      * @ngdoc method
@@ -1453,6 +1462,12 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.getExternalDocument = function(extDocId) {
 		return externalDocsCollection[extDocId];
+	};
+
+   /* @author FS
+     */
+	parsedData.getRuneDocument = function(runeDocId) {
+		return externalRunesCollection[runeDocId];
 	};
 
 	// Method to store sources XML documents
@@ -1488,6 +1503,23 @@ angular.module('evtviewer.dataHandler')
 			sourcesDocsCollection.length++;
 		}
 	};
+   /* @param {string} id Identifier of document connected to the current external rune
+   * @author FS */
+
+	parsedData.addRuneDocument = function(extDoc, id) {
+		var docId = extDoc.value;
+		if (runeDocsCollection.length === undefined) {
+			runeDocsCollection.length = 0;
+		}
+		if (extDoc.value === '') {
+			docId = extDoc.value = id;
+		}
+		if (runeDocsCollection[docId] === undefined) {
+			runeDocsCollection[runeDocsCollection.length] = docId;
+			runeDocsCollection[docId] = extDoc;
+			runeDocsCollection.length++;
+		}
+	};
 
 	/**
      * @ngdoc method
@@ -1502,6 +1534,12 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getSourceDocuments = function() {
 		return sourcesDocsCollection;
 	};
+
+   /* @author FS
+     */
+	parsedData.getRuneDocuments = function() {
+		return runeDocsCollection;
+   };
 
 	/**
      * @ngdoc method
@@ -1523,6 +1561,10 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.getSourceDocument = function(extDocId) {
 		return sourcesDocsCollection[extDocId];
+	};
+   // FS
+   parsedData.getRuneDocument = function(extDocId) {
+		return runeDocsCollection[extDocId];
 	};
 
 	// DIVS //
@@ -2014,6 +2056,10 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getCriticalTextsCollection = function() {
 		return criticalTexts;
 	};
+   // FS
+   parsedData.getRuneTextsCollection = function() {
+		return runeTexts;
+	};
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#addCriticalText
@@ -2026,6 +2072,11 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.addCriticalText = function(text, docId) {
 		criticalTexts[docId] = text;
+	};
+
+   // FS
+   parsedData.addRuneText = function(text, docId) {
+		runeTexts[docId] = text;
 	};
 
 	/**
@@ -2041,7 +2092,10 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getCriticalText = function(docId) {
 		return criticalTexts[docId];
 	};
-
+   /* FS */
+   parsedData.getRuneText = function(docId) {
+     return runeTexts[docId];
+   };
 	/**
      * @ngdoc method
      * @name evtviewer.dataHandler.parsedData#resetCriticalEntries
@@ -3371,6 +3425,11 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getSources = function() {
 		return sourcesCollection;
 	};
+   /* @author FS
+     */
+	parsedData.getRunes = function() {
+		return runesCollection;
+	};
 
 	/**
      * @ngdoc method
@@ -3403,6 +3462,11 @@ angular.module('evtviewer.dataHandler')
      */
 	parsedData.getSource = function(entryId) {
 		return sourcesCollection[entryId];
+	};
+
+   /* @author FS */
+	parsedData.getRune = function(entryId) {
+		return runesCollection[entryId];
 	};
 
 	// ///////// //
@@ -3439,11 +3503,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getAnalogue = function(analogueId) {
 		return analoguesCollection[analogueId];
    };
-   /* @author FS
-     */
-	parsedData.getRune = function(runeId) {
-		return runesCollection[runeId];
-	};
 
 	/**
      * @ngdoc method
@@ -3482,12 +3541,6 @@ angular.module('evtviewer.dataHandler')
 	parsedData.getAnalogues = function() {
 		return analoguesCollection;
    };
-
-   /* @author FS
-     */
-	parsedData.getRunes = function() {
-		return runesCollection;
-	};
 
 	/**
      * @ngdoc method
@@ -3536,14 +3589,6 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
    };
-   /* @author FS
-     */
-	parsedData.addRune = function(entry) {
-		if (runesCollection[entry.id] === undefined) {
-			runesCollection[entry.id] = entry;
-			runesCollection._indexes.encodingStructure.push(entry.id);
-		}
-	};
 
 	return parsedData;
 });

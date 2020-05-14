@@ -604,7 +604,19 @@ angular.module('evtviewer.select')
 					};
 					optionList = formatOptionList(parsedData.getSources()._indexes.availableTexts);
                break;
-				// author --> CM //
+            // author --> CM //
+            //Case added By FS
+				case 'rune':
+					callback = function(oldOption, newOption) {
+						if (newOption !== undefined) {
+							vm.selectOption(newOption);
+							evtInterface.updateCurrentRuneText(newOption.value);
+							evtInterface.updateState('currentRune', newOption.value);
+						}
+					};
+					optionList = parsedData.getRunes()._indexes.availableTexts;
+               break;
+				// author --> FS //
 				case 'version':
 					optionSelectedValue = initValue;
 					callback = function(oldOption, newOption) {
