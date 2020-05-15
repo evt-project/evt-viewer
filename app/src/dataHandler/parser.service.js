@@ -1099,6 +1099,17 @@ angular.module('evtviewer.dataHandler')
 					//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
 					parser.splitPages(pages, editionElement, newDoc.value, parser.parserProperties['defContentEdition'], newDocPages);
 				});
+      } else if (config.defaultEdition !== 'diplomatic') {
+			// Split pages works only on diplomatic/interpretative edition
+			// In critical edition, text will be splitted into pages for each witness
+			config.defaultEdition = 'facsimile';
+			var pages = parsedData.getPages();
+			var newDocPages = newDoc.pages;
+			angular.forEach(angular.element(element).find(parser.parserProperties['defContentEdition']),
+				function(editionElement) {
+					//editionElement.innerHTML = parser.splitLineBreaks(element, defContentEdition);
+					parser.splitPages(pages, editionElement, newDoc.value, parser.parserProperties['defContentEdition'], newDocPages);
+				});
 		}
 	}
 
@@ -1434,8 +1445,8 @@ angular.module('evtviewer.dataHandler')
 						var edition = editionLevel;
 						edition = edition === 'interpretative' ? 'normalized' : edition;
 						if (parser.isNestedInElem(gNode, 'abbr') || parser.isNestedInElem(gNode, 'orig')) {
-							edition = 'diplomatic';
-						}
+							edition = 'diplomatic', 'facsimile';
+                  }
 						var glyphMappingForEdition = parsedData.getGlyphMappingForEdition(ref, edition);
 						if (glyphMappingForEdition) {
 							glyphNode.appendChild(angular.element(glyphMappingForEdition.element)[0]);

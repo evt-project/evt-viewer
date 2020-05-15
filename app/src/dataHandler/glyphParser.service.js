@@ -14,7 +14,7 @@
 
 angular.module('evtviewer.dataHandler')
    .service('evtGlyph', ['parsedData', function Glyph(parsedData) {
-      
+
       /**
        * @ngdoc method
        * @name evtviewer.dataHandler.evtGlyph#getGlyph
@@ -32,10 +32,14 @@ angular.module('evtviewer.dataHandler')
          var currentGlyph = getCurrentGlyph(node),
             isRune = currentGlyph.runic,
             edition = {};
-         
+
          if(isRune) {
             edition = {
                'diplomatic': function () {
+                  return currentGlyph.runic !== undefined ? currentGlyph.runic.content : '';
+               },
+               /* Author FS */
+               'facsimile': function () {
                   return currentGlyph.runic !== undefined ? currentGlyph.runic.content : '';
                },
                'interpretative': function () {
@@ -48,16 +52,20 @@ angular.module('evtviewer.dataHandler')
                'diplomatic': function () {
                   return currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
                },
+               /* Author FS */
+               'facsimile': function () {
+                  return currentGlyph.facsimile !== undefined ? currentGlyph.facsimile.content : '';
+               },
                'interpretative': function () {
                   return currentGlyph.normalized !== undefined ? currentGlyph.normalized.content : '';
                }
             };
          }
-         
-         
+
+
          return edition[editionType]();
       };
-      
+
       /**
        * @ngdoc method
        * @name evtviewer.dataHandler.evtGlyph#getCurrentGlyph
@@ -75,7 +83,7 @@ angular.module('evtviewer.dataHandler')
          var currentGlyph,
             glyphs = parsedData.getGlyphs(),
             sRef = node.getAttribute('ref');
-         
+
          try {
             sRef = sRef.replace('#', '');
             currentGlyph = glyphs[sRef].mapping;
@@ -85,7 +93,7 @@ angular.module('evtviewer.dataHandler')
             console.log(e);
             return true;
          }
-         
+
          return currentGlyph;
       }
    }]);

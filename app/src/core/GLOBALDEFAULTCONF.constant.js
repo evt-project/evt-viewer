@@ -104,6 +104,11 @@ angular.module('evtviewer.core')
 		label: 'Interpretative',
 		title: 'Interpretative edition',
 		visible: true
+	},{
+		value: 'facsimile',
+		label: 'Facsimile',
+		title: 'Facsimile edition',
+		visible: true
 	}],
 
 	showDocumentSelector: true,

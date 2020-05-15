@@ -284,7 +284,7 @@ angular.module('evtviewer.box')
 	     */
 		var updateTopBoxContent = function(newContent) {
 			var vm = this;
-			if (vm) { 
+			if (vm) {
 				vm.topBoxContent = newContent;
 			}
 		};
@@ -912,7 +912,7 @@ angular.module('evtviewer.box')
 							scope.vm.isLoading = false;
 						}
 					};
-					break;
+               break;
 				case 'witness':
 					var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness + '-' + vm.witPage : '';
 					topMenuList.selectors.push({
