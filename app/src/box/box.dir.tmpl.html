@@ -11,7 +11,7 @@
 
     <div class="box-menu"
         data-position="top"
-        ng-if="::vm.type !== 'critical_apparatus'  && vm.type !== 'empty' ||  vm.type == 'tdhop'">
+        ng-if="::vm.type !== 'critical_apparatus'  && vm.type !== 'empty' &&  vm.type !== 'tdhop'">
 
         <evt-select
             data-id="{{::selector.id}}"
@@ -28,30 +28,25 @@
             ng-repeat="button in ::vm.topMenuList.buttons track by $index">
         </button-switch>
     </div>
-    <!-- add by FS button switch
+    <!-- Author FS -->
     <div class="box-menu"
         data-position="top"
         ng-if="::vm.type === 'tdhop'">
+    <div class="dropdown selector" ng-controller="TreDHOPCtrl">
+      <!--select-->
+      <div class="dropbtn" ng-model="data.model">
+      <div>3D Model Selector</div>
+      </div>
+      <div class="open_options" ng-click="vm.toggleExpand()">
+         <i class="fa fa-sort-desc"></i>
+      </div>
 
-        <button-switch
-            title="{{::button.title}}"
-            data-label="{{::button.label}}"
-            data-icon="{{::button.icon}}"
-            data-icon-pos="{{::button.iconPos}}"
-            data-type="{{::button.type}}"
-            ng-repeat="button in ::vm.topMenuList.buttons track by $index">
-        </button-switch>
-        <evt-select
-        data-id="{{::selector.id}}"
-        data-type="{{::selector.type}}"
-        data-init="{{::selector.initValue}}"
-        data-open-up="true"
-        data-multiselect="{{::selector.multiselect}}"
-        ng-repeat="selector in ::vm.topMenuList.selectors track by $index">
-         </evt-select>
-    </div>-->
-
-    <div
+      <div class="dropdown-content option_container" id="modelSelector" ng-model="data.model">
+         <div class="selected" id={{option.id}} ng-click="change()" ng-repeat="option in data.availableOptions">{{option.name}}</div>
+      </div>
+    </div>
+   </div>
+   <div
         class="box-top-box avoidBlur"
         ng-class="{'open': vm.state.topBoxOpened}"
         compile="::vm.topBoxContent">
