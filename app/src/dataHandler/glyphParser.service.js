@@ -38,7 +38,6 @@ angular.module('evtviewer.dataHandler')
                'diplomatic': function () {
                   return currentGlyph.runic !== undefined ? currentGlyph.runic.content : '';
                },
-               /* Author FS */
                'facsimile': function () {
                   return currentGlyph.runic !== undefined ? currentGlyph.runic.content : '';
                },
@@ -52,7 +51,6 @@ angular.module('evtviewer.dataHandler')
                'diplomatic': function () {
                   return currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
                },
-               /* Author FS */
                'facsimile': function () {
                   return currentGlyph.facsimile !== undefined ? currentGlyph.facsimile.content : '';
                },

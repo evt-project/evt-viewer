@@ -14,7 +14,6 @@ angular.module('evtviewer.core')
       getInterpretativeNodes: '//body//node()[self::lb or self::pb or self::g or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
       getInterpretativeChildNodes: './/node()[self::g or self::pb or self::text()][not(ancestor::sic or ancestor::orig or ancestor::abbr or ancestor::am)]',
 
-      /* Author FS */
       getFacsimileNodes: './/node()[self::lb or self::pb or self::g or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
       getFacsimileChildNodes: './/node()[self::g or self::pb or self::text()][not((ancestor::corr or ancestor::reg or ancestor::expan or ancestor::ex))]',
 
@@ -42,7 +41,6 @@ angular.module('evtviewer.core')
          getInterpretativeNodes: './/node()[self::ns:lb or self::ns:pb or self::ns:g or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
          getInterpretativeChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not(ancestor::ns:sic or ancestor::ns:orig or ancestor::ns:abbr or ancestor::ns:am)]',
 
-         // Author FS
          getFacsimileNodes: './/node()[self::ns:lb or self::ns:pb or self::ns:g or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
          getFacsimileChildNodes: './/node()[self::ns:g or self::ns:pb or self::text()][not((ancestor::ns:corr or ancestor::ns:reg or ancestor::ns:expan or ancestor::ns:ex))]',
 

@@ -1,5 +1,11 @@
 .facsimileEdition {
-	// Abbreviations and Expansions
+   // Abbreviations and Expansions
+   .head {
+      font-weight: bold !important;
+   }
+   .lineN {
+      display: null !important;
+   }
 	.choice {
 		position: relative;
 		text-align: center;
@@ -216,8 +222,8 @@
        }
    }
 
-   .mapping[data-type="facsimile"],
-   .mapping[data-type="diplomatic"],
+   .mapping[data-type="runic"],
+   //.mapping[data-type="diplomatic"],
    .mapping[data-type="orig"],
    .mapping[data-type="facsimile"] {
 	  display: inline;
@@ -341,11 +347,14 @@
 	//TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
 	.glyph {
 		.glyphname, .mapping {
-			display: none;
+			//display: none;
 		}
 
-		.mapping[data-type="facsimile"] {
-			//display: inline;
+		.mapping[data-type="runic"] {
+			display: inline;
+      }
+      .mapping[data-type="facsimile"] {
+			display: inline;
 		}
 	}
 
@@ -354,7 +363,7 @@
 			display: none;
 		}
 
-		.mapping[data-type="facsimile"] {
+		.mapping[data-type="diplomatic"] {
 			//display: inline;
 		}
 	}
@@ -385,12 +394,14 @@
 		border: 1px solid black;
 		padding: 5px 0px 0px 10px;
 	}
-
+.lb {
+   display: none;
 	.lineN {
 		color: grey;
-		font-size: 0.8em;
+      font-size: 0.8em;
+      display: none !important;
 	}
-
+}
 	.subst {
 		text-decoration: underline;
 	}
