@@ -634,7 +634,36 @@ angular.module('evtviewer.buttonSwitch')
 						var parentBox = scope.$parent.vm;
 						parentBox.updateState('topBoxOpened', false);
 					};
-				    break;
+                break;
+               case 'listObject':
+                  btnType = 'standAlone';
+                  callback = function() {
+                      var parentBox = scope.$parent.vm;
+                      var topBox=document.getElementsByClassName('box-top-box');
+                      topBox[0].setAttribute('id','listObject');
+                    if (parentBox.getState('topBoxOpened') && parentBox.getState('topBoxContent') === 'listObject') {
+                       parentBox.toggleTopBox();
+                    } else {
+                       var content;
+                       var currentDocument = evtInterface.getState('currentDoc');
+                       if (currentDocument) {
+                          content = parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                          scope.$parent.vm.updateTopBoxContent(content);
+                          scope.$parent.vm.toggleTopBox();
+                       }
+                       var newTopBoxContent = content || '<span class="errorMsg">{{ \'MESSAGES.GENERIC_ERROR\' | translate }}</span>';
+                       parentBox.updateTopBoxContent(newTopBoxContent);
+                       parentBox.updateState('topBoxContent', 'listObject');
+                       if (!parentBox.getState('topBoxOpened')) {
+                          parentBox.toggleTopBox();
+                       }
+                    }
+                  };
+                  fakeCallback = function() {
+                    var parentBox = scope.$parent.vm;
+                    parentBox.updateState('topBoxOpened', false);
+                 };
+               break;
 				case 'heatmap':
 					btnType = 'standAlone';
 					callback = function() {

@@ -335,7 +335,7 @@ angular.module('evtviewer.box')
                       scope.vm.state.docId = newItem;
                       scope.vm.isLoading = true;
                       currentBox.updateContent();
-                      if (scope.vm.currentType === 'text') {
+                      if (scope.vm.currentType === 'text' || scope.vm.currentType === 'textdhop' ) {
                         var docObj = parsedData.getDocument(newItem),
                             docFront = docObj ? docObj.front : undefined;
                         var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
@@ -345,6 +345,12 @@ angular.module('evtviewer.box')
                       else if (scope.vm.currentType === 'image'){
                           var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
                           scope.vm.updateTopBoxContent(msDescObj);
+                      }
+                      /* fine aggiunta*/
+                      /* aggiunta per 3DDesc*/
+                      else if (scope.vm.currentType === 'tdhop'){
+                         var objDescObj = parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                         scope.vm.updateTopBoxContent(objDescObj);
                       }
                       /* fine aggiunta*/
                   }

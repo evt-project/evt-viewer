@@ -24,9 +24,9 @@ angular.module('evtviewer.dataHandler')
        * Get the glyph of current node.
        *
        * @param {Object} currentNode the node currently selected
-       * @returns {Object} contains glyph id and its diplomatic and interpretative version.
+       * @returns {Object} contains glyph id and its diplomatic facsimile and interpretative version.
        *
-       * @author GC
+       * @author GC && FS
        */
       Glyph.prototype.getGlyph = function (node, editionType) {
          var currentGlyph = getCurrentGlyph(node),
@@ -52,7 +52,7 @@ angular.module('evtviewer.dataHandler')
                   return currentGlyph.diplomatic !== undefined ? currentGlyph.diplomatic.content : '';
                },
                'facsimile': function () {
-                  return currentGlyph.facsimile !== undefined ? currentGlyph.facsimile.content : '';
+                  return currentGlyph.runic !== undefined ? currentGlyph.runic.content : '';
                },
                'interpretative': function () {
                   return currentGlyph.normalized !== undefined ? currentGlyph.normalized.content : '';
@@ -75,7 +75,7 @@ angular.module('evtviewer.dataHandler')
        * @param {Object} node the current node
        * @returns {Object} the current glyph, that contains information about codepoint, diplomatic and interpretative version.
        *
-       * @author GC
+       * @author GC && FS
        */
       function getCurrentGlyph(node) {
          var currentGlyph,

@@ -720,8 +720,6 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
-
-
 					if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
 						if (scope.subtype === 'comparing') {
 							topMenuList.selectors.push({
@@ -737,14 +735,12 @@ angular.module('evtviewer.box')
 							});
 						}
 					}
-
 					topMenuList.buttons.push({
 						title: 'BUTTONS.INFO_ABOUT_TEXT',
 						label: 'BUTTONS.INFO',
 						icon: 'info-alt',
 						type: 'front'
-					});
-
+               });
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
@@ -764,7 +760,6 @@ angular.module('evtviewer.box')
 						});
 						appFilters = appFilters.filters;
 					}
-
 					if (config.namedEntitiesSelector) {
 						//TODO: Check if there are Named Entities available in config.namedEntitiesToHandle
 						bottomMenuList.selectors.push({
@@ -774,7 +769,6 @@ angular.module('evtviewer.box')
 							multiselect: true
 						});
 					}
-
 					state.filters = {
 						_totActive: 0
 					};
@@ -913,6 +907,281 @@ angular.module('evtviewer.box')
 						}
 					};
                break;
+               case 'textdhop':
+                  if(currentId === 'mainText' || currentId === 'mainText1') {
+                     bottomMenuList.buttons.push({
+                        title: 'Search',
+                        label: 'Search',
+                        icon: 'search',
+                        type: 'searchInternal',
+                        show: function() {
+                           return true;
+                        },
+                        disabled: function() {
+                           return true;
+                        }
+                     });
+                     bottomMenuList.buttons.push({
+                        title: 'Create index for enable search',
+                        label: 'Create index',
+                        icon: '',
+                        type: 'searchIndex',
+                        show: function() {
+                           return true;
+                        }
+                     });
+                  }
+                  else {
+                     bottomMenuList.buttons.push({
+                        title: 'Search',
+                        label: 'Search',
+                        icon: 'search',
+                        type: 'searchInternal',
+                        show: function() {
+                           return true;
+                        },
+                        disabled: function() {
+                           return true;
+                        }
+                     });
+                  }
+
+                  if ((config.showDocumentSelector && parsedData.getDocuments()._indexes.length > 0) || parsedData.getDocuments()._indexes.length > 1) {
+                     topMenuList.selectors.push({
+                        id: 'document_' + currentId,
+                        type: 'document',
+                        initValue: evtInterface.getState('currentDoc')
+                     });
+                  }
+                  if (!parsedData.isCriticalEditionAvailable()) {
+                     topMenuList.selectors.push({
+                        id: 'page_' + currentId,
+                        type: 'page',
+                        initValue: evtInterface.getState('currentPage')
+                     });
+                  } else {
+                     if (parsedData.getDivs().length > 0) {
+                        var docId = evtInterface.getState('currentDocument');
+                        var currentDiv = docId ? evtInterface.getState('currentDivs')[docId] || parsedData.getDocument(docId).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'})
+                        : parsedData.getDocument(parsedData.getDocuments()._indexes[0]).divs.find(function(id) { return parsedData.getDiv(id).section === 'body'});
+                        if (currentDiv) {
+                           topMenuList.selectors.push({
+                              id: 'div_' + currentId,
+                              type: 'div',
+                              initValue: currentDiv
+                           });
+                        }
+                     }
+                     topMenuList.buttons.push({
+                        title: 'BUTTONS.WITNESSES_LIST',
+                        label: '',
+                        icon: 'witnesses',
+                        type: 'witList'
+                     });
+                     if (evtInterface.getState('currentViewMode') === 'collation' && config.versions.length > 1 && Object.keys(parsedData.getVersionEntries()._indexes.versionWitMap > 0)) {
+                        // if (scope.vm.version === undefined || scope.vm.version === '') {
+                        //     evtInterface.updateCurrentVersion(config.versions[0]);
+                        //     scope.vm.version = evtInterface.getState('currentVersion');
+                        // }
+                        topMenuList.selectors.push({
+                           id: 'version_' + currentId,
+                           type: 'version',
+                           initValue: evtInterface.getState('currentVersion')
+                        });
+                     }
+                  }
+                  if ((config.showEditionLevelSelector && config.availableEditionLevel.length > 0) || config.availableEditionLevel.length > 1) {
+                     if (scope.subtype === 'comparing') {
+                        topMenuList.selectors.push({
+                           id: 'comparingEditionLevel_' + currentId,
+                           type: 'comparingEdition',
+                           initValue: evtInterface.getState('currentComparingEdition')
+                        });
+                     } else {
+                        topMenuList.selectors.push({
+                           id: 'editionLevel_' + currentId,
+                           type: 'edition',
+                           initValue: evtInterface.getState('currentEdition')
+                        });
+                     }
+                  }
+                  topMenuList.buttons.push({
+                     title: 'BUTTONS.INFO_ABOUT_TEXT',
+                     label: 'BUTTONS.INFO',
+                     icon: 'info-alt',
+                     type: 'front'
+                  });
+                  topMenuList.buttons.push({
+                     title: 'BUTTONS.3D',
+                     label: 'BUTTONS.OBJ',
+                     type: 'listObject'
+                  });
+                  appFilters = parsedData.getCriticalEntriesFiltersCollection();
+                  if (appFilters.forLemmas > 0) {
+                     topMenuList.buttons.push({
+                        title: 'BUTTONS.COLOR_KEY',
+                        label: '',
+                        icon: 'color-legend',
+                        type: 'colorLegend'
+                     });
+                     bottomMenuList.buttons.push({
+                        title: 'BUTTONS.FILTERS',
+                        label: 'BUTTONS.FILTERS',
+                        icon: 'filters',
+                        type: 'toggleFilterApp',
+                        show: function() {
+                           return vm.edition === 'critical';
+                        }
+                     });
+                     appFilters = appFilters.filters;
+                  }
+                  if (config.namedEntitiesSelector) {
+                     //TODO: Check if there are Named Entities available in config.namedEntitiesToHandle
+                     bottomMenuList.selectors.push({
+                        id: 'namedEntities_' + currentId,
+                        type: 'named-entities',
+                        initValue: 'NONE',
+                        multiselect: true
+                     });
+                  }
+                  state.filters = {
+                     _totActive: 0
+                  };
+                  state.filterBox = false;
+                  state.docId = evtInterface.getState('currentDoc');
+                  if (config.toolHeatMap) {
+                     bottomMenuList.buttons.push({
+                        title: 'BUTTONS.HEAT_MAP',
+                        label: 'BUTTONS.HEAT_MAP',
+                        icon: 'heatmap',
+                        type: 'heatmap',
+                        show: function() {
+                           return vm.type === 'text' && vm.edition === 'critical';
+                        }
+                     });
+                  }
+                  bottomMenuList.buttons.push({
+                     title: 'BUTTONS.FONT_CHANGE',
+                     label: '',
+                     icon: 'font-size',
+                     type: 'fontSizeTools',
+                     show: function() {
+                        return true;
+                     }
+                  });
+
+                  updateContent = function() {
+                     scope.vm.isLoading = true;
+                     var newDoc,
+                        promises = [],
+                        isITLon = evtInterface.getToolState('ITL') === 'active',
+                        errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>',
+                        noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_NOT_AVAILABLE\' | translate }}</span>';
+                     if (scope.vm.edition && scope.vm.edition === 'critical' && !vm.version) { // Critical edition
+                        newDoc = parsedData.getCriticalText(scope.vm.state.docId);
+                        if (!newDoc) {
+                           newDoc = parsedData.getDocument(scope.vm.state.docId);
+
+                           if (newDoc !== undefined) {
+                              try {
+                                 if (config.versions.length > 2) {
+                                    promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, config.versions[0]).promise);
+                                 } else {
+                                    promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId).promise);
+                                 }
+                                 $q.all(promises).then(function() {
+                                    scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
+                                    scope.vm.isLoading = false;
+                                    $timeout(function() {
+                                       evtGenericEntity.highlightActiveTypes();
+                                    });
+                                 });
+                              } catch (err) {
+                                 _console.log(err);
+                                 newContent = errorMsg;
+                                 scope.vm.isLoading = false;
+                              }
+                           }
+                        } else {
+                           scope.vm.content = newDoc || noTextAvailableMsg;
+                           scope.vm.isLoading = false;
+                           $timeout(function() {
+                              evtGenericEntity.highlightActiveTypes();
+                           });
+                        }
+                     } else if (scope.vm.edition && scope.vm.edition === 'critical' && scope.vm.version) {
+                        var currentDocId = evtInterface.getState('currentDoc');
+                        if (scope.vm.version === config.versions[0]) {
+                           newDoc = parsedData.getCriticalText(currentDocId) || undefined;
+                        } else {
+                           newDoc = parsedData.getVersionText(vm.version, currentDocId) || undefined;
+                        }
+                        if (newDoc === undefined) {
+                           newDoc = parsedData.getDocument(scope.vm.state.docId);
+                           try {
+                              promises.push(evtCriticalParser.parseCriticalText(newDoc.content, scope.vm.state.docId, scope.vm.version).promise);
+                              $q.all(promises).then(function() {
+                                 if (config.versions[0] === scope.vm.version) {
+                                    scope.vm.content = parsedData.getCriticalText(scope.vm.state.docId) || noTextAvailableMsg;
+                                 } else {
+                                    scope.vm.content = parsedData.getVersionText(vm.version, currentDocId) || noTextAvailableMsg;
+                                 }
+                                 scope.vm.isLoading = false;
+                              });
+                           } catch (err) {
+                              _console.log(err);
+                              newContent = errorMsg;
+                              scope.vm.isLoading = false;
+                           }
+                        } else {
+                           scope.vm.content = newDoc || noTextAvailableMsg;
+                           scope.vm.isLoading = false;
+                        }
+                     } else { // Other edition level
+                        // parsedData.getDocument(scope.vm.state.docId).content
+                        var currentPage = evtInterface.getState('currentPage'),
+                           currentDoc = evtInterface.getState('currentDoc'),
+                           currentEdition = scope.subtype === 'comparing' ? evtInterface.getState('currentComparingEdition') : evtInterface.getState('currentEdition');
+                        newDoc = parsedData.getPageText(currentPage, currentDoc, currentEdition);
+                        if (newDoc === undefined) {
+                           newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
+                           try {
+                              promises.push(evtParser.parseTextForEditionLevel(currentPage, currentDoc, currentEdition, newDoc).promise);
+                              $q.all(promises).then(function() {
+                                 scope.vm.content = parsedData.getPageText(currentPage, currentDoc, currentEdition) || noTextAvailableMsg;
+                                 scope.vm.isLoading = false;
+                                 if (isITLon) {
+                                    $timeout(function() {
+                                       evtImageTextLinking.prepareLines();
+                                       evtImageTextLinking.prepareZoneInImgInteractions();
+                                    });
+                                 }
+                                 $timeout(function() {
+                                    evtGenericEntity.highlightActiveTypes();
+                                 });
+                              });
+                           } catch (err) {
+                              _console.log(err);
+                              newContent = errorMsg;
+                              scope.vm.isLoading = false;
+                           }
+                        } else {
+                           scope.vm.content = newDoc || noTextAvailableMsg;
+                           scope.vm.isLoading = false;
+                           if (isITLon) {
+                              $timeout(function() {
+                                 evtImageTextLinking.prepareLines();
+                                 evtImageTextLinking.prepareZoneInImgInteractions();
+                              });
+                           }
+                           $timeout(function() {
+                              evtGenericEntity.highlightActiveTypes();
+                           });
+                        }
+                        scope.vm.isLoading = false;
+                     }
+                  };
+                  break;
 				case 'witness':
 					var witPageId = vm.witPage !== undefined && vm.witPage !== '' ? vm.witness + '-' + vm.witPage : '';
 					topMenuList.selectors.push({
@@ -1201,7 +1470,7 @@ angular.module('evtviewer.box')
                   topMenuList.buttons.push({
                      title: 'BUTTONS.3D',
                      label: 'BUTTONS.OBJ',
-                     type: 'objDesc'
+                     type: 'listObject'
                   });
                   if ((config.showObjectSelector)) {
                      topMenuList.selectors.push({
@@ -1213,7 +1482,7 @@ angular.module('evtviewer.box')
 
 					updateContent = function() {
 						scope.vm.isLoading = true;
-						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>', noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>', noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_MODEL_NOT_AVAILABLE\' | translate:\'{ MODEL:  "' + scope.vm.tdhop + '" }\' }}</span>';
 
 						// Main content
 							scope.vm.content = newContent;

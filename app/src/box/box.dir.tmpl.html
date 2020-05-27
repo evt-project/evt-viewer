@@ -52,12 +52,13 @@
         compile="::vm.topBoxContent">
     </div>
 
-    <div ng-if="::vm.type !== 'image' && vm.type !== 'tdhop'"
+    <div ng-if="::vm.type !== 'image' && vm.type !== 'tdhop' || vm.type===textdhop"
          class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
          style="{{vm.fontSize();}}"
          id="box_body_{{::vm.uid}}"
          compile="::vm.content" ng-transclude>
     </div>
+
 
     <div ng-if="::vm.type === 'image'"
          class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
@@ -70,7 +71,7 @@
          </div>
     </div>
 
-    <div  ng-if="::vm.type === 'tdhop'"
+   <div  ng-if="::vm.type === 'tdhop'"
      class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}" style="padding: 0px;" ng-controller="TreDHOPCtrl">
       <evt-tredhop id='tdhop' name="tredhopViewer">
             <!--div  class='box-tdhop box-body Edition noBottomMenu'></div-->
