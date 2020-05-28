@@ -189,3 +189,16 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
    -ms-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
+
+div.box-top-box.avoidBlur.open
+span.listObject.ng-scope
+span.object span.physDesc
+span.label-physDesc.projectInfo-sectionSubHeader.ng-binding {
+   display: none;
+}
+span.listObject.ng-scope
+span.object span.objectIdentifier
+span.objectName {
+   font-weight: bolder;
+   margin-bottom: 10px;
+}
