@@ -94,3 +94,8 @@
         background: #bedde0;
     }
 }
+.navBar-closer > span:nth-child(1){
+   .fa-caret-down {
+      transform: rotate(180deg)
+   }
+}
