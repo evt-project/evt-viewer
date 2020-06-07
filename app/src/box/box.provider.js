@@ -752,8 +752,14 @@ angular.module('evtviewer.box')
 						label: 'BUTTONS.INFO',
 						icon: 'info-alt',
 						type: 'front'
-					});
-
+               });
+               if (evtInterface.getState('currentViewMode') === 'tdhop') {
+                  topMenuList.buttons.push({
+                     title: 'BUTTONS.3D',
+                     label: 'BUTTONS.OBJ',
+                     type: 'listObject'
+                  });
+               }
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
