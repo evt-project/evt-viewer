@@ -688,3 +688,11 @@
         }
 
 }
+
+span.front.ng-scope span#div.div span.listWit span.listWit span.witness, span.front.ng-scope span.witness {
+   display: block;
+   &:after{
+      content: "."
+      }
+}
+
