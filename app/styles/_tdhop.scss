@@ -64,20 +64,9 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 }
 #lightcontroller {
    position: absolute;
-	left: 635% !important;
-	top: 85% !important;
 }
-/*
-#lightcontroller_button {
-	bottom					: 132.5;
-	left					: 0;
-}
-*/
 #arrows {
    display: block;
-   //position: fixed;
-   //padding-left: 45%;
-   //top: 90%;
 }
 .models {
    background-color:rgba(50, 50, 50, 0.5);
@@ -107,7 +96,6 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 	transform: rotate(180deg);
 }
 #compassCanvass {
-   //margin-left: 2px;
    font-family: Junicode, Times, serif;
 }
 .dropbtn {

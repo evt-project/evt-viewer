@@ -3,8 +3,7 @@ angular.module('evtviewer.tdhop')
       var vm = this;
       var model1 = config.tdhopViewerOptions.Model_1.name;
       var model2 = config.tdhopViewerOptions.Model_2.name;
-      //var modello3 = config.tdhopViewerOptions.Model_3.name;
-      $scope.change = function () {
+       $scope.change = function () {
          presenter.setInstanceVisibility(HOP_ALL, false, false);
          presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
       }

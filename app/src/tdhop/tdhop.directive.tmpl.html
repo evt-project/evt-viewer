@@ -89,24 +89,10 @@
 		<img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections_on" class="viewer3dhopBtn" ng-click="actionsToolbar('sections_on')" title="Disable Plane Sections" src="js-plugins/tdhop/skins/dark/sections_on.png" style="position:absolute; visibility:hidden;"/>
 		<img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections" class="viewer3dhopBtn" ng-click="actionsToolbar('sections')" title="Enable Plane Sections" src="js-plugins/tdhop/skins/dark/sections.png"/><br/>
       <!--SECTIONS-->
-      <!--<img ng-if="::vm.isToolSwitchModelAvailable()" ng-click="actionsToolbar('Mesh_1_mesh')" id="Mesh_1_mesh" class="models" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-      <img ng-if="::vm.isToolSwitchModelAvailable()" ng-click="actionsToolbar('Mesh_2_mesh')" id="Mesh_2_mesh" class="models" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
-      <div ng-if="::vm.isToolLightControllerAvailable()" ng-click="actionsToolbar" id="lightcontroller">
+     <div ng-if="::vm.isToolLightControllerAvailable()" ng-click="actionsToolbar" id="lightcontroller">
          <canvas id="lightcontroller_canvas" width="125" height="125"/>
       </div>
    </div>
-      <!--select name="repeatSelect" id="repeatSelect" ng-model="data.model" class="viewer3dhopBtn">
-         <option
-           ng-repeat="option in data.availableOptions"
-           value="{{option.id}}"
-           ng-click={{option.name}}
-           id={{option.id}}>
-           {{option.id}}
-        </option><br/>
-       </select>
-       <img ng-click="actionsToolbar('Mesh_2_mesh')" id='Mesh_2_mesh' class="models" title="3D Model 2" src="js-plugins/tdhop/skins/icons/models.png"/><br/>
-       <img ng-click="actionsToolbar('Mesh_1_mesh')" id='Mesh_1_mesh' class="models" title="3D Model 1" src="js-plugins/tdhop/skins/icons/models.png"/><br/-->
-
    <div id="tdhlg"></div>
    <!--MEASURE-->
    <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>

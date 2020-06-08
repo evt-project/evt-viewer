@@ -114,12 +114,6 @@ function actionsToolbar(action) {
          sectiontoolSwitch();
       }
       //--SECTIONS--
-      //else if (action== 'Mesh_1_mesh') {
-      //   setModelVisibility('Mesh_1_mesh');
-      //}
-      //else if (action== 'Mesh_2_mesh') {
-      //   setModelVisibility('Mesh_2_mesh');
-      //}
       //--FULLSCREEN--
       else if (action== 'full' || action== 'full_on') fullscreenSwitch();
       //--FULLSCREEN--
@@ -164,7 +158,7 @@ function onPickedInstance(id) {
       //TO DO: handle hotspots click
    }
 }
-/*var modelControllerCanvas = document.getElementById("repeatSelect");
+var modelControllerCanvas = document.getElementById("repeatSelect");
 function setModelVisibility(id){
    if(id == 'Mesh_1_mesh'){
       presenter.setInstanceVisibility(HOP_ALL, false, false);
@@ -174,7 +168,7 @@ function setModelVisibility(id){
       presenter.setInstanceVisibility(HOP_ALL, false, false);
       presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
    }
-}*/
+}
 function lightSwitchL(status) {
 
 	if(status == 'light'){
@@ -594,21 +588,8 @@ var setup3dhop = function(url1 , url2, url_hs, type) {
    //--SECTIONS--
    sectiontoolInit();
 
-   //setmodel();
 
 }
-//function setmodel() {
-   //$('#repeatSelect').html("Cambia modello");
-   var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-
-   function log(text) {
-      document.getElementById('display').innerHTML = text;
-   }
-
-   function clickSelectedOption(select) {
-     if(!is_chrome) return;
-        select.options[select.selectedIndex].click();
-   }
    $('#Mesh_1_mesh').change(function(){
       presenter.setInstanceVisibility(HOP_ALL, false, false);
       presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
@@ -619,7 +600,6 @@ var setup3dhop = function(url1 , url2, url_hs, type) {
       presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
       alert('prova');
    });
-//}
 
 var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
 lightControllerCanvas.addEventListener("touchstart", click_lightcontroller, false);

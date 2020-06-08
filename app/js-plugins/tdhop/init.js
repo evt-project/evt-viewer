@@ -155,7 +155,6 @@ function set3dhlg() {
 }
 
 function setmodel() {
-   //$('#repeatSelect').html("Cambia modello");
    $('#Mesh_1_mesh').click(function() {
       presenter.setInstanceVisibility(HOP_ALL, false, false);
       presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
