@@ -327,7 +327,7 @@ angular.module('evtviewer.box')
 
             }
 
-            if (currentBox.type === 'witness' || currentBox.type === 'text') {
+            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'textdhop') {
               scope.$watch(function() {
                   return evtInterface.getState('currentDoc');
               }, function(newItem, oldItem) {
@@ -347,6 +347,14 @@ angular.module('evtviewer.box')
                           scope.vm.updateTopBoxContent(msDescObj);
                       }
                       /* fine aggiunta*/
+                      /* aggiunta per 3DDesc*/
+                      else if (scope.vm.currentType === 'tdhop' || scope.vm.currentType === 'text'){
+                        var objDescObj = parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                        parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                        scope.vm.updateTopBoxContent(objDescObj);
+                     }
+                     /* fine aggiunta*/
+
                   }
               }, true);
 

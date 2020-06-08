@@ -21,7 +21,7 @@ function init3dhop() {
 	if (isIOS()) $('head').append('<meta name="viewport" content="width=device-width">'); //IOS DEVICES CHECK
 
 	var interval, id, ismousedown;
-	var button = 0;
+   var button = 0;
 
 	$('#toolbar img')
 		.mouseenter(function(e) {
@@ -48,7 +48,7 @@ function init3dhop() {
 				}
 				$(this).css("opacity","1.0");
 				button=0;
-			}
+         }
 		})
 		.mouseup(function(e) {
 			ismousedown = false;
@@ -133,7 +133,10 @@ function init3dhop() {
 
 	anchorPanels();
 
-	set3dhlg();
+   set3dhlg();
+
+   setmodel();
+
 }
 
 function set3dhlg() {
@@ -149,6 +152,17 @@ function set3dhlg() {
 	  }, "slow" );
 	 });
   $('#tdhlg').click(function() { window.open('http://vcg.isti.cnr.it/3dhop/', '_blank') });
+}
+
+function setmodel() {
+   $('#Mesh_1_mesh').click(function() {
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
+   });
+   $('#Mesh_2_mesh').click(function() {
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
+   });
 }
 
 // +++ INTERFACE SWITCHING FUNCTIONS +++ //

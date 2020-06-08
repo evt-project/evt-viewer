@@ -77,8 +77,9 @@ function step(action){
 	}
 }
 // end menager of arrows movement
+
 function actionsToolbar(action) {
-   //console.log('action');
+   console.log(action);
    try {
       if (action == 'home') presenter.resetTrackball();
       //--ZOOM--
@@ -113,16 +114,8 @@ function actionsToolbar(action) {
          sectiontoolSwitch();
       }
       //--SECTIONS--
-      else if (action == 'Mesh_1_mesh') {
-         presenter.setInstanceVisibility(HOP_ALL, false, false);
-         presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
-      }
-      else if (action == 'Mesh_2_mesh') {
-         presenter.setInstanceVisibility(HOP_ALL, false, false);
-         presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
-      }
       //--FULLSCREEN--
-         else if (action== 'full' || action== 'full_on') fullscreenSwitch();
+      else if (action== 'full' || action== 'full_on') fullscreenSwitch();
       //--FULLSCREEN--
       else if (action == 'move_up' || 'move_dawn' || 'move_right' || 'move_left') step(action);
       } catch (e) {
@@ -163,6 +156,17 @@ function onPickedSpot(id) {
 function onPickedInstance(id) {
    switch(id) {
       //TO DO: handle hotspots click
+   }
+}
+var modelControllerCanvas = document.getElementById("repeatSelect");
+function setModelVisibility(id){
+   if(id == 'Mesh_1_mesh'){
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
+	}
+	else {
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
    }
 }
 function lightSwitchL(status) {
@@ -284,8 +288,7 @@ HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;
 
 // start hotspots functions convertTOGlobal/Local SPOTMAKER, per trasformare le coordinate da locali a globali.
 // Da usare per muovere il modello quando si clicca sul hotspot
-function convertToGlobal(state)
-{
+function convertToGlobal(state) {
 	var newstate=[];
 	// angles
 	newstate[0] = state[0];
@@ -298,8 +301,7 @@ function convertToGlobal(state)
 	newstate[5] = state[5] / presenter.sceneRadiusInv;
 	return newstate;
 }
-function convertToLocal(state)
-{
+function convertToLocal(state) {
 	var newstate=[];
 	// angles
 	newstate[0] = state[0];
@@ -321,6 +323,52 @@ function convertToLocal(state)
 	}
 	//newstate[5] = state[5] * presenter.sceneRadiusInv;/*start;/*state[5] * presenter.sceneRadiusInv-0.9;*/ // 1.10 questo valore nel mio caso deve essere 1.10; poiché io ho impostato questa come start. cioé la distanza a cui sta il modello
 	return newstate;								//	la moltiplicazione viene 2. io sotraggo questo 0.9, in modo da far diventare il tutto 1.10; così il modello è leggrmente più lontano, ma rimane ad una distanza adeguata
+}
+
+// Page Resize Function
+function onPageResize() {
+	resizeCanvas($('#3dhop').parent().width(),$('#3dhop').parent().height());
+	presenter.ui.postDrawEvent();
+}
+
+/* COMPASS */
+function onTrackballUpdate(trackState){
+	updateCompass(sglDegToRad(trackState[0]), sglDegToRad(trackState[1]));
+}
+function updateCompass(angle, tilt) {
+	$('#compassCanvas').attr('width', 100);
+	$('#compassCanvas').attr('height',100);
+ 	var canv = document.getElementById("compassCanvas");
+	var ctx = canv.getContext("2d");
+	var hh = canv.height;
+	var ww = canv.width;
+
+	ctx.clearRect(0, 0, canv.width, canv.height);
+    // Save the current drawing state
+    ctx.save();
+
+    // Now move across and down half the
+    ctx.translate(ww/2.0, hh/2.0);
+
+    // Rotate around this point
+    ctx.rotate(angle);
+
+	ctx.beginPath();
+    ctx.arc(0, 0, 45, 0, 2 * Math.PI, false);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#443377';
+    ctx.stroke();
+
+	ctx.font = "28px Verdana";
+    ctx.strokeStyle = '#ff4444';
+	ctx.strokeText("N",-10,-25);
+    ctx.strokeStyle = '#ffffff';
+	ctx.strokeText("S",-10,45);
+	ctx.strokeText("E",27,10);
+	ctx.strokeText("W",-47,10);
+
+    // Restore the previous drawing state
+    ctx.restore();
 }
 
 var presenter = null;
@@ -495,17 +543,34 @@ var setup3dhop = function(url1 , url2, url_hs, type) {
       trackball: {
          type : TurntablePanTrackball,
          trackOptions : {
-            startDistance : 1.0,
+            startDistance : 2.0,
+            startPhi: -60.0,
+				startTheta: 25.0,
+				startPanY: 0.12,
+				minMaxDist: [0.2, 3.0],
+				minMaxPhi: [-180, 180],
+				minMaxTheta: [-80.0, 90.0],
+				minMaxPanX: [-0.25, 0.25],
+				minMaxPanY: [-1.0, 1.0],
+				minMaxPanZ: [-0.25, 0.25],
          }
       },
       space: {
          centerMode: "scene",
          radiusMode: "scene",
-         cameraFOV        : 60.0,
-         cameraNearFar    : [0.01, 10.0],
+         cameraFOV        : 40.0,
+         cameraNearFar    : [0.01, 5.0],
          cameraType       : "perspective",
          sceneLighting    : true
-      }
+      },
+      config : {
+			pickedpointColor    : [1.0, 0.0, 1.0],
+			measurementColor    : [0.5, 1.0, 0.5],
+			showClippingPlanes  : true,
+			showClippingBorder  : true,
+			clippingBorderSize  : 3.0,
+			clippingBorderColor : [0.0, 1.0, 1.0]
+		},
    });
 
    //--MEASURE--
@@ -522,7 +587,19 @@ var setup3dhop = function(url1 , url2, url_hs, type) {
 
    //--SECTIONS--
    sectiontoolInit();
+
+
 }
+   $('#Mesh_1_mesh').change(function(){
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_1_mesh', true, true);
+      alert('prova');
+   });
+   $('#Mesh_2_mesh').change(function(){
+      presenter.setInstanceVisibility(HOP_ALL, false, false);
+      presenter.setInstanceVisibility('Mesh_2_mesh', true, true);
+      alert('prova');
+   });
 
 var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
 lightControllerCanvas.addEventListener("touchstart", click_lightcontroller, false);
@@ -533,6 +610,7 @@ canvas.addEventListener("mouseup", function () {
    lightControllerCanvas.removeEventListener("mousemove", drag_lightcontroller, false);
    lightControllerCanvas.removeEventListener("touchmove", drag_lightcontroller, false);
 }, false);
+
 document.addEventListener("mouseup", function () {
    lightControllerCanvas.removeEventListener("mousemove", drag_lightcontroller, false);
    lightControllerCanvas.removeEventListener("touchmove", drag_lightcontroller, false);

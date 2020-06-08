@@ -284,7 +284,7 @@ angular.module('evtviewer.box')
 	     */
 		var updateTopBoxContent = function(newContent) {
 			var vm = this;
-			if (vm) { 
+			if (vm) {
 				vm.topBoxContent = newContent;
 			}
 		};
@@ -472,7 +472,8 @@ angular.module('evtviewer.box')
 		 	</pre>
 	     */
 		box.build = function(scope, vm) {
-			var currentId = vm.id || idx++,
+         var currentId = vm.id || idx++,
+            currentModel = vm.model,
 				currentType = vm.type || 'default',
             currentEdition = vm.edition,
 				topMenuList = {
@@ -532,6 +533,14 @@ angular.module('evtviewer.box')
 					icon: 'zoom-in',
 					type: 'zoomIn'
 				}]
+         };
+         var tdhopTools = {
+				tdhopBtn: [{
+					title: 'BUTTONS.ZOOM-RESET',
+					label: '',
+					icon: 'zoom-reset',
+					type: 'zoomReset'
+            }]
 			};
 
 			var scopeHelper = {};
@@ -743,8 +752,14 @@ angular.module('evtviewer.box')
 						label: 'BUTTONS.INFO',
 						icon: 'info-alt',
 						type: 'front'
-					});
-
+               });
+               if (evtInterface.getState('currentViewMode') === 'tdhop') {
+                  topMenuList.buttons.push({
+                     title: 'BUTTONS.3D',
+                     label: 'BUTTONS.OBJ',
+                     type: 'listObject'
+                  });
+               }
 					appFilters = parsedData.getCriticalEntriesFiltersCollection();
 					if (appFilters.forLemmas > 0) {
 						topMenuList.buttons.push({
@@ -1154,7 +1169,49 @@ angular.module('evtviewer.box')
 							}
 						}
 					};
-					break;
+               break;
+            //add by FS button switch
+            case 'tdhop':
+               topMenuList.selectors.push({
+                  id: 'modelSelector',
+                  type: 'generic',
+                  initValue: 'Ruthwell Cross'
+               });
+					topMenuList.buttons.push({
+						title: 'BUTTONS.IMAGE_TEXT_LINKING',
+						label: '',
+						icon: 'itl',
+						type: 'itl'
+					});
+					topMenuList.buttons.push({
+						title: 'BUTTONS.HOTSPOTS',
+						label: '',
+						icon: 'hts',
+						type: 'hts'
+					});
+					topMenuList.buttons.push({
+						title: 'BUTTONS.3D',
+						label: 'BUTTONS.OBJ',
+						type: 'objDesc'
+					});
+               if ((config.showObjectSelector)) {
+                  var selectobj = JSON.stringify(config.tdhopViewerOptions.Models);
+                  topMenuList.selectors.push({
+                     id: 'model_' + currentModel,
+                     type: 'model',
+                     initValue: selectobj
+                  });
+               }
+
+					updateContent = function() {
+						scope.vm.isLoading = true;
+						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>', noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
+
+						// Main content
+							scope.vm.content = newContent;
+							scope.vm.isLoading = false;
+					};
+				break;
 				default:
 					isLoading = false;
 					if (currentType === 'pinnedBoard') {
@@ -1184,42 +1241,6 @@ angular.module('evtviewer.box')
 						scope.vm.content = newContent;
 					};
                break;
-               //add by FS button switch
-               case 'tdhop':
-                  topMenuList.buttons.push({
-							title: 'BUTTONS.IMAGE_TEXT_LINKING',
-							label: '',
-							icon: 'itl',
-							type: 'itl'
-						});
-						topMenuList.buttons.push({
-							title: 'BUTTONS.HOTSPOTS',
-							label: '',
-							icon: 'hts',
-							type: 'hts'
-						});
-                  topMenuList.buttons.push({
-                     title: 'BUTTONS.3D',
-                     label: 'BUTTONS.OBJ',
-                     type: 'objDesc'
-                  });
-                  if ((config.showObjectSelector)) {
-                     topMenuList.selectors.push({
-                        id: 'object_' + config.tdhopViewerOptions.name,
-                        type: 'document',
-                        initValue: evtInterface.getState('currentDoc')
-                     });
-                  }
-
-					updateContent = function() {
-						scope.vm.isLoading = true;
-						var errorMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.ERROR_IN_PARSING_TEXT\' | translate }} <br /> {{ \'MESSAGES.TRY_DIFFERENT_BROWSER_OR_CONTACT_DEVS\' | translate }}</span>', noTextAvailableMsg = '<span class="alert-msg alert-msg-error">{{ \'MESSAGES.TEXT_OF_SOURCE_NOT_AVAILABLE\' | translate:\'{ source:  "' + scope.vm.source + '" }\' }}</span>';
-
-						// Main content
-							scope.vm.content = newContent;
-							scope.vm.isLoading = false;
-					};
-					break;
 			}
 
 			scopeHelper = {
