@@ -179,12 +179,12 @@ input[type=range].output-input { padding: 0; width: 125px; } .output-input::-ms-
 [data-type="3D_Desc"] span.label-physDesc.projectInfo-sectionSubHeader.ng-binding {
    display: none;
 }
-[data-type="3D_Desc"] .head[data-type="main"] {
+[data-type="3D_Desc"] .head[data-type="main"], [data-type="3D_Desc"] .head {
    font-weight: bolder;
    font-size: x-large;
    color: #a15517 !important;
 }
-[data-type="3D_Desc"] .head[data-type="main"]:hover {
+[data-type="3D_Desc"] .head[data-type="main"]:hover, [data-type="3D_Desc"] .head:hover  {
    text-decoration: underline;
 }
 [data-type="3D_Desc"] .objectName {
