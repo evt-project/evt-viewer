@@ -38,7 +38,7 @@ angular.module('evtviewer.dataHandler')
                 parser.parseOutsideMetadata(element);
                 parser.parseRevisionHistory(element);
                 parser.parseMsDescription(element);
-                parser.parselistObjectription(element);
+                parser.parselistObjectDescription(element);
         });
         console.log('## parseProjectInfo ##', parsedData.getProjectInfo());
     };
@@ -247,7 +247,7 @@ angular.module('evtviewer.dataHandler')
     };
         /**
      * @ngdoc method
-     * @name evtviewer.dataHandler.evtProjectInfoParser#parselistObjectription
+     * @name evtviewer.dataHandler.evtProjectInfoParser#parselistObjectDescription
      * @methodOf evtviewer.dataHandler.evtProjectInfoParser
      *
      * @description
@@ -257,14 +257,14 @@ angular.module('evtviewer.dataHandler')
      *
      * @author FS
      */
-    parser.parselistObjectription = function (TEI) {
+    parser.parselistObjectDescription = function (TEI) {
       var currentDocument = angular.element(TEI);
       angular.forEach(currentDocument.find(listObject.replace(/[<>]/g, '')),
           function(element) {
               var listObjectContent = evtParser.parseXMLElement(TEI, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
               parsedData.updateProjectInfoContent(listObjectContent, 'listObject');
       });
-       console.log('## parselistObjectription ##', parsedData.getProjectInfo().listObject);
+       console.log('## parselistObjectDescription ##', parsedData.getProjectInfo().listObject);
   };
     return parser;
 });
