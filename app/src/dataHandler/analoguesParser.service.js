@@ -115,20 +115,15 @@ angular.module('evtviewer.dataHandler')
 		if (elem.nodeType === 3) {
 			return;
 		} else if (elem.nodeType === 1) {
-			if (elem.attributes.length > 0) {
-				for (var i = 0; i < elem.attributes.length; i++) {
-					if (elem.attributes[i].name === 'xml:id') {
-						var attr = elem.attributes[i].value;
-						if (indexes.indexOf(attr) >= 0) {
-							var source = evtCriticalElementsParser.parseAnalogueSource(elem);
-							for (var j = 0; j < ref[attr].length; j++) {
-								var analogue = parsedData.getAnalogue(ref[attr][j]);
-								analogue.sources.push(source);
-							}
-						}
-					}
+			var attr = elem.getAttribute('xml:id');
+			if (attr && indexes.indexOf(attr) >= 0) {
+				var source = evtCriticalElementsParser.parseAnalogueSource(elem);
+				for (var j = 0; j < ref[attr].length; j++) {
+					var analogue = parsedData.getAnalogue(ref[attr][j]);
+					analogue.sources.push(source);
 				}
-			} else if (elem.childNodes.length > 0) {
+			}
+			else if (elem.childNodes.length > 0) {
 				for (var k = 0; k < elem.childNodes.length; k++) {
 					parser.handleAnalogue(elem.childNodes[k]);
 				}
