@@ -75,6 +75,15 @@ angular.module('evtviewer.select')
                         currentSelect.callback(undefined, firstOption);
                     }
                 }
+
+                if (scope.type === 'div') {
+                    var currentDoc = evtInterface.getState('currentDoc');
+                    var currentDivs = evtInterface.getState('currentDivs');
+                    var divId = currentDivs ? currentDivs[currentDoc] : undefined;
+                    if (divId) {
+                        currentSelect.selectOptionByValue(divId);
+                    }
+                }
             });
 
             scope.$watch(function() {
