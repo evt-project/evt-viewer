@@ -221,7 +221,11 @@ angular.module('evtviewer.dataHandler')
 					element.getAttribute('ref') !== undefined) { //TODO: Rivedere
 					newElement = parser.parseNamedEntity(doc, element, skip);
 				} else {
-					newElement = document.createElement('span');
+					if (element.tagName === 'div') {
+						newElement = document.createElement('div');
+					} else {
+						newElement = document.createElement('span');
+					}
 					newElement.className = element.tagName !== undefined ? element.tagName : '';
 					if (element.attributes) {
 						for (var k = 0; k < element.attributes.length; k++) {
@@ -1155,7 +1159,7 @@ angular.module('evtviewer.dataHandler')
 		if (newDiv.corresp) {
 			newDiv.corresp = newDiv.corresp.replace('#', '').split(' ');
 		}
-		newDiv.value = newDiv['xml-id'] || 'div_' + (parsedData.getDivs().length + 1);
+		newDiv.value = newDiv['xml-id'] || parser.xpath(element).substr(1) || 'div_' + (parsedData.getDivs().length + 1);
 		parser.createTitle(newDiv, 'Div');
 		var elem = angular.element(element);
 		angular.forEach(elem.children('div'), function(child) {
