@@ -51,15 +51,41 @@ angular.module('evtviewer.dataHandler')
             interpIsAvailable;
       
          availableEditionLevel.forEach(function (el) {
-            if(el.value === 'diplomatic') {
+            if (el.value === 'diplomatic') {
                diplIsAvailable = el.visible;
             }
-            if(el.value === 'interpretative') {
+            if (el.value === 'interpretative') {
                interpIsAvailable = el.visible;
             }
          });
       
          return diplIsAvailable && interpIsAvailable;
+      };
+
+      XmlDoc.prototype.isInterpEdition = function () {
+         var availableEditionLevel = config.availableEditionLevel,
+            interpIsAvailable;
+      
+         availableEditionLevel.forEach(function (el) {
+            if (el.value === 'interpretative') {
+               interpIsAvailable = el.visible;
+            }
+         });
+      
+         return interpIsAvailable;
+      };
+
+      XmlDoc.prototype.isDiplEdition = function () {
+         var availableEditionLevel = config.availableEditionLevel,
+            diplIsAvailable;
+      
+         availableEditionLevel.forEach(function (el) {
+            if (el.value === 'diplomtic') {
+               diplIsAvailable = el.visible;
+            }
+         });
+      
+         return diplIsAvailable;
       };
       
       XmlDoc.prototype.hasLbElement = function(xmlDocBody) {

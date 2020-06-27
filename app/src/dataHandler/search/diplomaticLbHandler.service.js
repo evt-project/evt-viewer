@@ -6,7 +6,8 @@ angular.module('evtviewer.dataHandler')
          DiplomaticLbHandler.prototype.getLineInfo = function(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
             var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
                diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticNodes(xmlDocDom, xmlDocBody, ns, nsResolver),
-               editionIsInterp = evtSearchDocument.isAlsoInterpEdition(),
+               editionIsInterp = evtSearchDocument.isInterpEdition(),
+               editionIsDipl = evtSearchDocument.isDiplEdition(),
                cleanedDiplomaticNodes = [],
                cleanedInterpretativeNodes = [],
                currentPage,
@@ -22,9 +23,9 @@ angular.module('evtviewer.dataHandler')
                countLine = 1,
                countDuplicateLines = 0,
                node = lbNodes.iterateNext();
-            
-            if(editionIsInterp) {
-               var interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
+            var interpretativeNodes = [];
+            if (editionIsInterp) {
+               interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeNodes(xmlDocDom, xmlDocBody, ns, nsResolver);
             }
             
             while (node !== null) {
@@ -57,21 +58,30 @@ angular.module('evtviewer.dataHandler')
                         line.lbId = node.getAttribute('xml:id');
                         
                         do {
-                           lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                           cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
+                           if (editionIsDipl) {
+                              lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                              cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
+                           } else {
+                              lineNodes.diplomatic = [];
+                              cleanedDiplomaticNodes = [];
+                           }
                            
-                           if(editionIsInterp) {
+                           if (editionIsInterp) {
                               lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
                               cleanedInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.interpretative);
+                           } else {
+                              lineNodes.interpretative = [];
+                              cleanedInterpretativeNodes = [];
                            }
-                        }
-                        while(cleanedDiplomaticNodes.length === 0 && cleanedInterpretativeNodes.length === 0 &&
-                        lineNodes.diplomatic.length !== 0 && lineNodes.interpretative.length !== 0);
+                        } while (cleanedDiplomaticNodes.length === 0 && cleanedInterpretativeNodes.length === 0 &&
+                           lineNodes.diplomatic.length !== 0 && lineNodes.interpretative.length !== 0);
                         
                         line.content = {};
-                        line.content.diplomatic = evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic');
+                        if (editionIsDipl) {
+                           line.content.diplomatic = evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic');
+                        }
                         
-                        if(editionIsInterp) {
+                        if (editionIsInterp) {
                            line.content.interpretative = evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative');
                         }
                         

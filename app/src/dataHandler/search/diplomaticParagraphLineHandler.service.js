@@ -1,10 +1,11 @@
 angular.module('evtviewer.dataHandler')
    .service('evtSearchDiplomaticParLineHandler', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'XPATH', 'Utils',
       function DiplomaticParLineHandler(evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, XPATH, Utils) {
-         
+
          DiplomaticParLineHandler.prototype.getParLineInfo = function (xmlDocDom, xmlDocBody, parLineNodes, ns, nsResolver) {
             var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
-               editionIsInterp = evtSearchDocument.isAlsoInterpEdition(),
+               editionIsInterp = evtSearchDocument.isInterpEdition(),
+               editionIsDipl = evtSearchDocument.isDiplEdition(),
                currentPage,
                currentPageId,
                pageId = 1,
@@ -12,28 +13,32 @@ angular.module('evtviewer.dataHandler')
                lineId = 1,
                documentToIndex = {},
                documentsToIndex = {},
-               
+
                node = parLineNodes.iterateNext();
-            
-            while(node !== null) {
+
+            while (node !== null) {
                var nodes = {
-                  'head': function () {},
+                  'head': function () { },
                   'pb': function () {
                      currentPage = evtSearchDocument.getCurrentPage(node) || pageId;
                      currentPageId = evtSearchDocument.getCurrentPageId(node, pageId);
                      pageId++;
                   },
                   'default': function () {
-                     var diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticChildNodes(xmlDocDom, node, ns, nsResolver);
-                     
-                     if (editionIsInterp) {
-                        var interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeChildNodes(xmlDocDom, node, ns, nsResolver);
+                     var diplomaticNodes = [];
+                     if (editionIsDipl) {
+                        diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticChildNodes(xmlDocDom, node, ns, nsResolver);
                      }
-                     
+
+                     var interpretativeNodes = []
+                     if (editionIsInterp) {
+                        interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeChildNodes(xmlDocDom, node, ns, nsResolver);
+                     }
+
                      diplomaticNodes.forEach(function (childNode) {
                         var childDiplNodes,
                            cleanedChildDiplNodes;
-                        
+
                         if (childNode.nodeName === 'pb') {
                            currentPage = evtSearchDocument.getCurrentPage(childNode);
                            currentPageId = evtSearchDocument.getCurrentPageId(childNode, pageId);
@@ -43,15 +48,15 @@ angular.module('evtviewer.dataHandler')
                               interpretativeNodes.splice(0, 1);
                            }
                         }
-                        
+
                         if (currentPage) {
                            documentToIndex.page = currentPage;
                            documentToIndex.pageId = currentPageId;
                         }
-                        
+
                         documentToIndex.xmlDocTitle = currentXmlDoc.title;
                         documentToIndex.xmlDocId = currentXmlDoc.id;
-                        
+
                         var nodeName = {
                            'p': function () {
                               documentToIndex.paragraph = evtSearchDocument.getParagraph(node, parId);
@@ -65,20 +70,23 @@ angular.module('evtviewer.dataHandler')
                            }
                         };
                         nodeName[node.nodeName]();
-                        
+
                         documentToIndex.content = {};
-                        
-                        childDiplNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, diplomaticNodes);
-                        cleanedChildDiplNodes = evtSearchDocument.removeEmptyTextNodes(childDiplNodes);
-                        if (cleanedChildDiplNodes.length === 0) {
-                           documentToIndex = {};
-                           return;
+
+                        if (editionIsDipl) {
+                           childDiplNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, diplomaticNodes);
+                           cleanedChildDiplNodes = evtSearchDocument.removeEmptyTextNodes(childDiplNodes);
+                           if (cleanedChildDiplNodes.length === 0) {
+                              documentToIndex = {};
+                              return;
+                           }
+                           documentToIndex.content.diplomatic = evtSearchDocument.getContent(cleanedChildDiplNodes, 'diplomatic');
                         }
-                        documentToIndex.content.diplomatic = evtSearchDocument.getContent(cleanedChildDiplNodes, 'diplomatic');
-                        
+
+                        var childInterpNodes = [];
                         if (editionIsInterp) {
-                           var childInterpNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, interpretativeNodes),
-                              cleanedChildInterpNodes = evtSearchDocument.removeEmptyTextNodes(childInterpNodes);
+                           childInterpNodes = evtSearchDocument.getCurrentPageNodes(xmlDocDom, interpretativeNodes);
+                           var cleanedChildInterpNodes = evtSearchDocument.removeEmptyTextNodes(childInterpNodes);
                            if (cleanedChildInterpNodes.length === 0) {
                               documentToIndex = {};
                               return;
@@ -99,5 +107,5 @@ angular.module('evtviewer.dataHandler')
             }
             return documentsToIndex;
          };
-         
+
       }]);

@@ -281,7 +281,11 @@ angular.module('evtviewer.dataHandler')
             };
          
          if(Object.keys(searchResults).length !== 0){
-            edition[currentEdition]();
+            if (edition[currentEdition]){
+               edition[currentEdition]();
+            } else {
+               alert('Error: search not available for current edition level');
+            }
          }
          
          return currentResults;
