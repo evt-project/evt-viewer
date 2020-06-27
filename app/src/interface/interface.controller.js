@@ -373,7 +373,10 @@ angular.module('evtviewer.interface')
          * @todo: Add more cases. Think about creating a dedicated directive
          */
 		$scope.handleKeydownEvent = function($event) {
-			if ($event.keyCode === 27) { // ESC
+         if ($event.target && $event.target.tagName && $event.target.tagName.toLowerCase() === 'input' && $event.target.getAttribute('type') === 'text') {
+            return;
+         }
+         if ($event.keyCode === 27) { // ESC
 				evtDialog.closeAll();
 			} else if ($event.keyCode === 37) { // LEFT ARROW
             if (!$scope.isVisCollOpened() && !$scope.isThumbNailsOpened()) {
