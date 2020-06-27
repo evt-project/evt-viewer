@@ -100,6 +100,8 @@ If you find this file difficult to read and/or change you can try out the beta [
 * `showDocumentSelector`. Select if you want to activate (`true`) or not (`false`) the document selector, which allows the user to navigate an edition composed by different documents.
 * `enableNavBar`.  Select if you want to activate (`true`) or not (`false`) the navigation bar at the bottom of the screen.
 * `initNavBarOpened`. If the navigation bar is active (see previous setting), sets its initial status: with `true` it will be shown when the edition is loaded, with `false` it will be hidden until the user decides to show it.
+* `thumbnailsButton`. Select if you want to activate (`true`) or not (`false`) the thumbnail button in the navigation bar.
+* `viscollButton`. Select if you want to activate (`true`) or not (`false`) the VisColl button in the navigation bar.
 
 #### Generic tools
 
