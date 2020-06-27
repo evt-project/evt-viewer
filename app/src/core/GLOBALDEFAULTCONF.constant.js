@@ -156,6 +156,9 @@ angular.module('evtviewer.core')
 	toolPinAppEntries: false,
 	toolImageTextLinking: true,
 
+	viscollButton: false,
+	thumbnailsButton: true,
+
 	listDef: '<listWit>, <listChange>',
 	versionDef: '<witness>, <change>',
 	fragmentMilestone: '<witStart>, <witEnd>',
