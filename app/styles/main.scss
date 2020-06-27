@@ -358,6 +358,21 @@ section > div {
     border-right: none;
     z-index: 999;
     top: $base-header-height;
+    &.noNavBar {
+        top: #{$base-header-height + $base-slider-height + 1};
+        bottom: 0;
+        border: none;
+        left: #{$mainContainer-border-width * 2};
+        @include calc(height, unquote("#{setPopupContainerFrameHeight()} - #{$mainContainer-border-width * 2} - 1px"));
+        &.thumb_cont {
+            @include calc(width, unquote("50% - #{$mainContainer-border-width * 4}"));
+        }
+        &.viscoll_cont {
+            top: #{$base-header-height + $base-slider-height};
+            @include calc(width, unquote("100% - #{$mainContainer-border-width * 3 + 1}"));
+            @include calc(height, unquote("#{setPopupContainerFrameHeight()} - 1px"));
+        }
+    }
 }
 
 

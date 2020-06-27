@@ -40,6 +40,9 @@
 
     <div ng-if="::vm.type !== 'image' && vm.type !== 'tdhop'"
          class="box-body {{vm.edition}}Edition {{vm.getNamedEntitiesActiveTypes()}} {{vm.getAdditionalClass()}}"
+         ng-class="{
+             'search-opened': vm.getState('searchBox')
+         }"
          style="{{vm.fontSize();}}"
          id="box_body_{{::vm.uid}}"
          compile="::vm.content" ng-transclude>

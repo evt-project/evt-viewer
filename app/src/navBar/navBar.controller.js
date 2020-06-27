@@ -15,7 +15,7 @@
 **/
 angular.module('evtviewer.navBar')
 
-.controller('NavbarCtrl', function($log, evtInterface) {
+.controller('NavbarCtrl', ['$log', 'evtInterface', 'config', function($log, evtInterface, config) {
     var vm = this;
     
     var _console = $log.getInstance('navBar');
@@ -23,9 +23,10 @@ angular.module('evtviewer.navBar')
     vm.showNavigator = function(){
         return !evtInterface.getState('isThumbNailsOpened') && !evtInterface.getState('isVisCollOpened');
     };
-
+    vm.config = config;
+    _console.log(config, vm.config)
     // 
     // Control function
     // 
 	// metodi vari
-});
+}]);

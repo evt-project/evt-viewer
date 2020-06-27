@@ -137,6 +137,9 @@
 
    "toolHeatMap": true,
 
+   "viscollButton": false,
+   "thumbnailsButton": true,
+
    "versions": [],
 
    "listDef": "<listWit>, <listChange>",
