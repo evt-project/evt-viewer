@@ -80,7 +80,7 @@ angular.module('evtviewer.dataHandler')
             diplIsAvailable;
       
          availableEditionLevel.forEach(function (el) {
-            if (el.value === 'diplomtic') {
+            if (el.value === 'diplomatic') {
                diplIsAvailable = el.visible;
             }
          });
