@@ -636,7 +636,7 @@ angular.module('evtviewer.buttonSwitch')
 						};
 						break;
 					case 'listObject':
-						btnType = 'standAlone';
+						btnType = 'toggler';
 						callback = function () {
 							var parentBox = scope.$parent.vm;
 							var topBox = document.getElementsByClassName('box-top-box');
