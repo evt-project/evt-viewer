@@ -595,12 +595,12 @@ angular.module('evtviewer.dataHandler')
 	parser.parseNote = function(noteNode) {
       var popoverElem = document.createElement('evt-popover');
       var popoverN = noteNode.getAttribute('n') ? noteNode.getAttribute('n') : '';
-      var popoverType = noteNode.getAttribute('type');
+      var popoverType = noteNode.getAttribute('type') || 'generic';
 		   popoverElem.setAttribute('data-trigger', 'click');
          popoverElem.setAttribute('data-tooltip', noteNode.innerHTML);
          popoverElem.setAttribute('data-n', popoverN);
          popoverElem.setAttribute("data-type", popoverType);
-         popoverElem.innerHTML='<i class="icon-evt_note">'+
+         popoverElem.innerHTML='<i class="evt_note">'+
          '<span class="'+popoverType+'">'+popoverN+'</span>'+'</i>';
 
       return popoverElem;

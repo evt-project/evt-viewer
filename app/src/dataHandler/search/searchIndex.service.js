@@ -70,7 +70,8 @@ angular.module('evtviewer.dataHandler')
       function addXmlDocTitleMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
-            token.metadata['xmlDocTitle'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].xmlDocTitle;
+            var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['xmlDocTitle'] = docParsedElsForIndexing ? docParsedElsForIndexing.xmlDocTitle : undefined;
 
             return token;
          };
@@ -83,7 +84,8 @@ angular.module('evtviewer.dataHandler')
       function addXmlDocIdMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
-            token.metadata['xmlDocId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].xmlDocId;
+            var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['xmlDocId'] = docParsedElsForIndexing ? docParsedElsForIndexing.xmlDocId : undefined;
 
             return token;
          };
@@ -95,13 +97,15 @@ angular.module('evtviewer.dataHandler')
 
       function addSectionMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
+         var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
          var pipelineFunction = function (token) {
             docIndex = builder.documentCount - 1;
-            token.metadata['sectionTitle'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].sectionTitle;
+            docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['sectionTitle'] = docParsedElsForIndexing ? docParsedElsForIndexing.sectionTitle : undefined;
             return token;
          };
 
-         if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].sectionTitle !== undefined) {
+         if (docParsedElsForIndexing && docParsedElsForIndexing.sectionTitle !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'sectionTitle');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('sectionTitle');
@@ -110,13 +114,15 @@ angular.module('evtviewer.dataHandler')
 
       function addParagraphMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
+         var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
          var pipelineFunction = function (token) {
             docIndex = builder.documentCount - 1;
-            token.metadata['paragraph'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].paragraph;
+            docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['paragraph'] = docParsedElsForIndexing ? docParsedElsForIndexing.paragraph : undefined;
             return token;
          };
 
-         if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].paragraph !== undefined) {
+         if (docParsedElsForIndexing && docParsedElsForIndexing.paragraph !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'paragraph');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('paragraph');
@@ -125,13 +131,15 @@ angular.module('evtviewer.dataHandler')
 
       function addPageMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
+         var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
          var pipelineFunction = function (token) {
-            var docIndex = builder.documentCount - 1;
-            token.metadata['page'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page;
+            docIndex = builder.documentCount - 1;
+            docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['page'] = docParsedElsForIndexing ? docParsedElsForIndexing.page : undefined;
             return token;
          };
 
-         if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page !== undefined) {
+         if (docParsedElsForIndexing && docParsedElsForIndexing.page !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'page');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('page');
@@ -140,13 +148,15 @@ angular.module('evtviewer.dataHandler')
 
       function addPageIdMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
+         var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
          var pipelineFunction = function (token) {
-            var docIndex = builder.documentCount - 1;
-            token.metadata['pageId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].pageId;
+            docIndex = builder.documentCount - 1;
+            docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['pageId'] = docParsedElsForIndexing ? docParsedElsForIndexing.pageId : undefined;
             return token;
          };
 
-         if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].page !== undefined) {
+         if (docParsedElsForIndexing && docParsedElsForIndexing.page !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'pageId');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('pageId');
@@ -155,13 +165,15 @@ angular.module('evtviewer.dataHandler')
 
       function addLineMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
+         var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
          var pipelineFunction = function (token) {
-            var docIndex = builder.documentCount - 1;
-            token.metadata['line'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].line;
+            docIndex = builder.documentCount - 1;
+            docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['line'] = docParsedElsForIndexing ? docParsedElsForIndexing.line : undefined;
             return token;
          };
 
-         if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].line !== undefined) {
+         if (docParsedElsForIndexing && docParsedElsForIndexing.line !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'line');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('line');
@@ -170,13 +182,15 @@ angular.module('evtviewer.dataHandler')
 
       function addLbIdMetadata(builder, parsedElementsForIndexing) {
          var docIndex = 0;
+         var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
          var pipelineFunction = function (token) {
-            var docIndex = builder.documentCount - 1;
-            token.metadata['lbId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lbId;
+            docIndex = builder.documentCount - 1;
+            docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['lbId'] = docParsedElsForIndexing ? docParsedElsForIndexing.lbId : undefined;
             return token;
          };
 
-         if (parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].lbId !== undefined) {
+         if (docParsedElsForIndexing && docParsedElsForIndexing.lbId !== undefined) {
             lunr.Pipeline.registerFunction(pipelineFunction, 'lbId');
             builder.pipeline.add(pipelineFunction);
             builder.metadataWhitelist.push('lbId');
@@ -186,7 +200,8 @@ angular.module('evtviewer.dataHandler')
       function addDocIdMetadata(builder, parsedElementsForIndexing) {
          var pipelineFunction = function (token) {
             var docIndex = builder.documentCount - 1;
-            token.metadata['docId'] = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]].docId;
+            var docParsedElsForIndexing = parsedElementsForIndexing[Object.keys(parsedElementsForIndexing)[docIndex]];
+            token.metadata['docId'] = docParsedElsForIndexing ? docParsedElsForIndexing.docId : undefined;
             return token;
          };
 

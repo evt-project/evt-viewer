@@ -11,7 +11,16 @@
 
 @include border-box-sizing;
 
-$large: (columns: 18, container-position: center, global-box-sizing: content-box, gutter-position: inside, gutters: 0.03, debug: (image: show));
+$large: (
+    columns: 18,
+    container-position: center,
+    global-box-sizing: content-box,
+    gutter-position: inside,
+    gutters: 0.03,
+    debug: (
+        image: show,
+    ),
+);
 
 @include layout($large);
 
@@ -54,7 +63,7 @@ body {
             color: #f5f5f5;
             font-size: 1.2rem;
             margin-left: 0.4rem;
-            opacity: .7;
+            opacity: 0.7;
             &:hover {
                 opacity: 1;
                 cursor: pointer;
@@ -80,7 +89,7 @@ footer {
 }
 
 div#global-container-ext.navbar-opened #global-container {
-   @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+    @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
 }
 
 section > div {
@@ -189,7 +198,7 @@ section > div {
 
         span.filter-value {
             display: inline-block;
-            background: #CF00FF;
+            background: #cf00ff;
             border-radius: 2px;
             font-size: 85%;
             margin: 4px;
@@ -248,10 +257,10 @@ section > div {
     padding: 10px;
     font-size: 100%;
     > button-switch {
-       &:first-child {
-          position: relative;
-          top: -1px;
-       }
+        &:first-child {
+            position: relative;
+            top: -1px;
+        }
     }
 
     button-switch {
@@ -259,7 +268,7 @@ section > div {
 
         .buttonSwitch {
             height: 0;
-            display: block!important;
+            display: block !important;
             padding: 0 3px;
             background: none;
             box-shadow: none;
@@ -279,7 +288,8 @@ section > div {
                 top: -1px;
             }
 
-            &:hover, &:hover > * {
+            &:hover,
+            &:hover > * {
                 color: $buttonSwitch-active-background-color;
             }
         }
@@ -287,7 +297,7 @@ section > div {
         &.mode-view {
             margin: 0px 1px;
 
-            &[data-icon='reading-txt'] {
+            &[data-icon="reading-txt"] {
                 margin-right: -2px;
             }
 
@@ -295,7 +305,8 @@ section > div {
                 width: auto;
                 padding: 0;
 
-                &-active, &:hover {
+                &-active,
+                &:hover {
                     .icon {
                         color: $base-color-active-background;
                     }
@@ -307,8 +318,9 @@ section > div {
                     top: 0;
                 }
 
-                .iconbis-evt_versions, .iconbis-evt_srctxt {
-                    font-size: .85em;
+                .iconbis-evt_versions,
+                .iconbis-evt_srctxt {
+                    font-size: 0.85em;
                     top: -4px;
                 }
             }
@@ -318,9 +330,9 @@ section > div {
             margin-right: 0;
         }
     }
-   .viewModeMenu {
-      display: flex;
-   }
+    .viewModeMenu {
+        display: flex;
+    }
 }
 
 .global-loading-container,
@@ -346,14 +358,14 @@ section > div {
 }
 
 .popup-container {
-	@include calc(height, unquote("#{setPopupContainerFrameHeight()}"));
-	overflow-y: auto;
-	position: absolute;
-	width: 100%;
-	left: 0;
-	bottom: $base-slider-height;
-	background-color: #607d8b;
-    border: 1px solid #FFFFFF;
+    @include calc(height, unquote("#{setPopupContainerFrameHeight()}"));
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: $base-slider-height;
+    background-color: #607d8b;
+    border: 1px solid #ffffff;
     border-left: none;
     border-right: none;
     z-index: 999;
@@ -375,12 +387,12 @@ section > div {
     }
 }
 
-
 .global-loading-container {
     display: block;
 }
 
-.viewMode, .global-loading-container {
+.viewMode,
+.global-loading-container {
     .loading {
         background: rgba(0, 0, 0, 0.1);
 
@@ -430,7 +442,8 @@ pre {
     }
 }
 
-.availableWitnesses-selector, .availableVersions-selector {
+.availableWitnesses-selector,
+.availableVersions-selector {
     position: absolute;
     z-index: 9999;
     display: block;
@@ -525,13 +538,13 @@ pre {
         height: 18px;
         width: 18px;
         border-radius: 100px;
-        border: 1px solid #4E443C;
+        border: 1px solid #4e443c;
         display: inline-block;
         margin: 0px 4px;
         position: relative;
         top: 2px;
         cursor: pointer;
-        opacity: .5;
+        opacity: 0.5;
 
         &.active {
             cursor: default;
@@ -559,11 +572,12 @@ pre {
         font-variant: small-caps;
         color: #000000;
         font-size: 90%;
-        display:block;
+        display: block;
         margin-top: 14px;
     }
 
-    &-blockLabel, &-inlineLabel {
+    &-blockLabel,
+    &-inlineLabel {
         font-variant: small-caps;
         color: #666;
         font-size: 90%;
@@ -580,7 +594,9 @@ pre {
     }
 }
 .p {
-    .projectInfo-inlineLabel { display: none; }
+    .projectInfo-inlineLabel {
+        display: none;
+    }
 }
 
 // Generic style
@@ -613,7 +629,8 @@ pre {
         opacity: 0.4;
     }
 
-    &.lineSelected, &.lineSelected.lineHover {
+    &.lineSelected,
+    &.lineSelected.lineHover {
         border: 1px solid #4c2f2f !important;
         background-color: #9c4837 !important;
         opacity: 0.5;
@@ -631,13 +648,15 @@ pre {
         }
     }
 
-    .lineHover, .lineHover:after {
+    .lineHover,
+    .lineHover:after {
         cursor: pointer;
         background-color: rgba(230, 206, 160, 0.8) !important;
         color: #000000;
     }
 
-    .lineSelected, .lineSelected:after {
+    .lineSelected,
+    .lineSelected:after {
         cursor: pointer;
         background-color: rgba(213, 177, 125, 0.9) !important;
         color: #000000;
@@ -653,73 +672,60 @@ pre {
 }
 
 .emptyText {
-    padding: 0 .4rem;
+    padding: 0 0.4rem;
     &::after {
-      content: "\00a0";
-  }
+        content: "\00a0";
+    }
 }
 
-.front [data-type='footer'] {
+.front [data-type="footer"] {
     font-size: 95%;
     padding: 10px 0;
     border-top: 1px solid;
 }
 /* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
-.icon-evt_note {
-   color: #fff;
- }
- .icon-evt_note span.null {
-   background-color: maroon !important;
-   padding: 0px 4px 4px 4px !important;
-   opacity: 10 !important;
-   border-radius: 4px !important;
-   vertical-align: top !important;
-   font-variant-position: normal !important;
-   font-size: 14px !important;
-   top: 4px !important;
-   position: relative !important;
+.evt_note {
+    color: #fff;
 }
-evt-popover[data-n=""] .icon-evt_note span.null:before {
-   content: "";
-   padding: 0px 4px 4px 4px !important;
-   font-size: 1px !important;
+.evt_note span {
+    padding: 2px 5px 2px 3px!important;
+    opacity: 10!important;
+    border-radius: 4px!important;
+    font-size: 13px!important;
+    top: -8px!important;
+    position: relative!important;
+    text-align: center;
 }
-evt-popover[data-n=""] .icon-evt_note span.null{
-   margin-right: 4px;
-   font-size: 10px !important;
-   padding: 0px 1px  !important;
-   border-radius: 100px !important;
-   background-color: #4e443c;
+.evt_note span.generic {
+    color: #fff;
+    background-color: maroon!important;
+}
+evt-popover[data-n=""] .evt_note span.generic:before {
+    content: "";
+    padding: 0px 4px 4px 4px !important;
+    font-size: 1px !important;
+}
+evt-popover[data-n=""] .evt_note span.generic {
+    margin-right: 4px;
+    font-size: 10px !important;
+    padding: 0px 1px !important;
+    border-radius: 100px !important;
+    background-color: #4e443c;
 }
 .popover_trigger.active:hover {
-   opacity: 0.5;
- }
+    opacity: 0.5;
+}
 .popover_trigger {
-   color: #263238 !important;
-   opacity: 10 !important;
+    color: #263238 !important;
+    opacity: 10 !important;
 }
-.icon-evt_note span.comment{
-   color: #fff;
-   background-color: rgb(87, 14, 105) !important;
-   padding: 0px 4px 4px 4px !important;
-   opacity: 10 !important;
-   border-radius: 4px !important;
-   vertical-align: top !important;
-   font-variant-position: normal !important;
-   font-size: 14px !important;
-   top: 4px !important;
-   position: relative !important;
+.evt_note span.comment {
+    color: #fff;
+    background-color: rgb(87, 14, 105) !important;
 }
-.icon-evt_note span.critic{
-   background-color: rgb(24, 70, 155) !important;
-   padding: 0px 4px 4px 4px !important;
-   border-radius: 4px !important;
-   opacity: 10 !important;
-   vertical-align: top !important;
-   font-variant-position: normal !important;
-   font-size: 14px !important;
-   top: 4px !important;
-   position: relative !important;
+.evt_note span.critic {
+    color: #fff;
+    background-color: rgb(24, 70, 155) !important;
 }
 
 .thumbnail {
@@ -750,7 +756,7 @@ evt-popover[data-n=""] .icon-evt_note span.null{
     &.active {
         cursor: default;
         figcaption {
-            background: rgba($base-color-active-background, .7) !important;
+            background: rgba($base-color-active-background, 0.7) !important;
             color: #000;
         }
     }

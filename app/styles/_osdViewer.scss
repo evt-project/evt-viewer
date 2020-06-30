@@ -3,85 +3,91 @@
 /* *************************** */
 
 .highlight {
-    border: 1px solid #4c2f2f;
-    background-color: #c67261;
-    opacity: 0.4;
-    filter: alpha(opacity=40);
-    /* For IE8 and earlier */
- }
- 
- .selectedHighlight {
-    filter: alpha(opacity=50);
-    border: 1px solid #4c2f2f;
-    background-color: #9c4837;
-    opacity: 0.5;
- }
- 
- .nohighlight {
-    display: none;
- }
- 
- div.hotspot {
-    filter: alpha(opacity=50);
-    border: 1px solid #4c2f2f;
-    background-color: #9c4837;
-    opacity: 0.5;
- }
- div.hotspot:hover {
-     cursor: help;
- 
-  }
- 
- a.hotspot {
-    width: 30px;
-    height: 30px;
- }
- 
- img.hotspot {
-    width: 30px !important;
-    height: 30px !important;
-    display: block !important;
- }
- 
- div.hotspot-dida {
-     background-color: #ffffff;
-     color: #000000;
-     border: 2px solid #4E443C;
-     border-radius: 2px;
-     padding: 0;
-     text-align: left;
-     box-shadow: 0px 1px 4px rgba(0,0,0,0.7);
- }
- 
- div.hotspot-dida-title {
-     height: 25px;
-     margin: 0;
-     text-align: center;
-     width: 100%;
-     background: #263238;
-     color: #fff;
-     padding: 0px 2px;
-     opacity: 1;
- }
- 
- div.hotspot-dida-body {
-     font-size: 16px;
-     height: 80%;
-     overflow-y: auto;
-     border: none !important;
-     padding: 6px !important;
- }
- 
- div#osd-img * img {
-     display: block !important;
- }
- 
- .fa-times{
-    float: right;
- }
- 
- 
- .fa-times:hover{
-    cursor: pointer;
- }
- 
+   border: 1px solid #4c2f2f;
+   background-color: #c67261;
+   opacity: 0.4;
+   filter: alpha(opacity=40);
+   /* For IE8 and earlier */
+}
+
+.selectedHighlight {
+   filter: alpha(opacity=50);
+   border: 1px solid #4c2f2f;
+   background-color: #9c4837;
+   opacity: 0.5;
+}
+
+.nohighlight {
+   display: none;
+}
+
+div.hotspot {
+   filter: alpha(opacity=50);
+   border: 1px solid #4c2f2f;
+   background-color: #9c4837;
+   opacity: 0.5;
+}
+div.hotspot:hover {
+   cursor: help;
+}
+
+a.hotspot {
+   width: 30px;
+   height: 30px;
+}
+
+img.hotspot {
+   width: 30px !important;
+   height: 30px !important;
+   display: block !important;
+}
+
+div.hotspot-dida {
+   background-color: #ffffff;
+   color: #000000;
+   border: 2px solid #4e443c;
+   border-radius: 2px;
+   padding: 0;
+   text-align: left;
+   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+div.hotspot-dida-title {
+   height: 25px;
+   margin: 0;
+   text-align: center;
+   width: 100%;
+   background: #263238;
+   color: #fff;
+   padding: 0px 2px;
+   opacity: 1;
+}
+
+div.hotspot-dida-body {
+   font-size: 16px;
+   height: 80%;
+   overflow-y: auto;
+   border: none !important;
+   padding: 6px !important;
+}
+
+div#osd-img {
+   color: $base-color-light;
+   background: #000;
+   overflow: hidden;
+   text-align: center;
+   padding: 0;
+   height: 100%;
+}
+
+div#osd-img * img {
+   display: block !important;
+}
+
+.fa-times {
+   float: right;
+}
+
+.fa-times:hover {
+   cursor: pointer;
+}

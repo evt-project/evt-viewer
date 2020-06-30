@@ -792,7 +792,7 @@ angular.module('evtviewer.dataHandler')
 					spanElement.appendChild(omitElement);
 				} else {
 					var lacunaElement = document.createElement('span');
-					lacunaElement.className = 'lacunaApp icon-evt_note';
+					lacunaElement.className = 'lacunaApp evt_note';
 					spanElement.appendChild(lacunaElement);
 				}
 
@@ -1087,7 +1087,7 @@ angular.module('evtviewer.dataHandler')
 			spanElement.setAttribute('data-type', 'lemma');
 			if (entry._lacuna) {
 				var lacunaElement = document.createElement('span');
-				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
+				lacunaElement.className = 'lacunaApp evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
 				spanElement.appendChild(lacunaElement);
 			} else if (entry.lemma && entry.lemma.indexOf('depa-lem') < 0) {
 				spanElement.setAttribute('data-reading-id', entry.lemma);
