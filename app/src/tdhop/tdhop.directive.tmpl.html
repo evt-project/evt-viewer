@@ -1,29 +1,50 @@
-<div id="tdhop" class="3dhop" onmousedown="if (event.preventDefault) event.preventDefault()" ng-controller="TreDHOPCtrl">
+<div id="tdhop" class="3dhop" onmousedown="if (event.preventDefault) event.preventDefault()"
+   ng-controller="TreDHOPCtrl">
    <div style="position:absolute; right:10px; top:10px; z-index:2;">
       <!--COMPASS-->
-      <br>
-      <div style="background-color:rgba(150, 150, 150, 0.8); border-radius: 5px; font-family:verdana; font-size:15px; padding:3px;">
-      <div style="margin: 0 auto;">
-      <canvas id="compassCanvas" style="margin: 4px auto; display: block; background:#555555; width:100; height:100; border:1px solid #000000;" onclick='var currpos = presenter.getTrackballPosition(); currpos[0] = 0.0; presenter.animateToTrackballPosition(currpos);' width="100" height="100"></canvas>
-      </div>
-      <table style="border: '1'">
-       <tbody>
-         <tr><td></td><td>
-            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([180.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">North</button>
-         </td><td></td></tr>
-         <tr><td>
-            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([-90.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">East</button>
-         </td><td>
-            <button style="margin: 0 auto; display: block; cursor:hand;" onclick="presenter.animateToTrackballPosition([0.0, 90.0, -0.1, 0.0, -0.066, 2.0]);">Top</button>
-         </td><td>
-            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([90.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">West</button>
-         </td></tr>
-        <tr><td></td><td>
-            <button style="margin: 0 auto; cursor:hand;" onclick="presenter.animateToTrackballPosition([0.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">South</button>
-         </td><td></td></tr>
-      </tbody>
-      </table>
-      <!--input type="checkbox" style="cursor:hand;" onclick="presenter.toggleCameraType();">
+      <div
+         style="background-color:rgba(150, 150, 150, 0.8); border-radius: 5px; font-family:verdana; font-size:15px; padding:3px;">
+         <div style="margin: 0 auto;">
+            <canvas id="compassCanvas"
+               style="margin: 4px auto; display: block; background:#555555; width:100; height:100; border:1px solid #000000;"
+               onclick='var currpos = presenter.getTrackballPosition(); currpos[0] = 0.0; presenter.animateToTrackballPosition(currpos);'
+               width="100" height="100"></canvas>
+         </div>
+         <table style="border: '1'">
+            <tbody>
+               <tr>
+                  <td></td>
+                  <td>
+                     <button style="margin: 0 auto; cursor:hand;"
+                        onclick="presenter.animateToTrackballPosition([180.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">{{ '3DHOP.NORTH' | translate }}</button>
+                  </td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td>
+                     <button style="margin: 0 auto; cursor:hand;"
+                        onclick="presenter.animateToTrackballPosition([-90.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">{{ '3DHOP.EAST' | translate }}</button>
+                  </td>
+                  <td>
+                     <button style="margin: 0 auto; display: block; cursor:hand;"
+                        onclick="presenter.animateToTrackballPosition([0.0, 90.0, -0.1, 0.0, -0.066, 2.0]);">{{ '3DHOP.TOP' | translate }}</button>
+                  </td>
+                  <td>
+                     <button style="margin: 0 auto; cursor:hand;"
+                        onclick="presenter.animateToTrackballPosition([90.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">{{ '3DHOP.WEST' | translate }}</button>
+                  </td>
+               </tr>
+               <tr>
+                  <td></td>
+                  <td>
+                     <button style="margin: 0 auto; cursor:hand;"
+                        onclick="presenter.animateToTrackballPosition([0.0, 0.0, 0.0, 0.12, 0.0, 3.0]);">{{ '3DHOP.SOUTH' | translate }}</button>
+                  </td>
+                  <td></td>
+               </tr>
+            </tbody>
+         </table>
+         <!--input type="checkbox" style="cursor:hand;" onclick="presenter.toggleCameraType();">
       Orthographic View-->
       </div>
       <!--COMPASS-->
@@ -44,85 +65,146 @@
    </div>
    <div id="toolbar">
 
-      <img ng-if="::vm.isToolHomeAvailable()" id="home" class="viewer3dhopBtn" title="Home" src="js-plugins/tdhop/skins/dark/home.png"/>
+      <img ng-if="::vm.isToolHomeAvailable()" id="home" class="viewer3dhopBtn" title="{{ '3DHOP.HOME' | translate }}"
+         src="js-plugins/tdhop/skins/dark/home.png" />
       <!--FULLSCREEN-->
-      <img ng-if="::vm.isToolFullScreenAvailable()" id="full_on"  class="viewer3dhopBtn" ng-click="actionsToolbar('full_on')" title="Exit Full Screen" src="js-plugins/tdhop/skins/dark/full_on.png" style="position:absolute; visibility:hidden;"/>
-      <img ng-if="::vm.isToolFullScreenAvailable()" id="full"  class="viewer3dhopBtn" ng-click="actionsToolbar('full')" title="Full Screen" src="js-plugins/tdhop/skins/dark/full.png"/><br/>
+      <img ng-if="::vm.isToolFullScreenAvailable()" id="full_on" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('full_on')" title="{{ '3DHOP.EXIT_FULL_SCREEN' | translate }}" src="js-plugins/tdhop/skins/dark/full_on.png"
+         style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolFullScreenAvailable()" id="full" class="viewer3dhopBtn" ng-click="actionsToolbar('full')"
+         title="{{ '3DHOP.FULL_SCREEN' | translate }}" src="js-plugins/tdhop/skins/dark/full.png" /><br />
       <!--FULLSCREEN-->
       <div ng-if="::vm.isToolArrowsAvailable()" id="arrows">
          <div id="movement_control">
-            <img class="move_ left" id="move_left" title="Move Leftt" src="js-plugins/tdhop/skins/dark/arrows.png" />
-            <img class="move_ right" id="move_right" title="Move Right" src="js-plugins/tdhop/skins/dark/arrows.png" /><br/>
-            <img class="move_ up" id="move_up" title="Move Up" src="js-plugins/tdhop/skins/dark/arrows.png" />
-            <img class="move_ dawn" id="move_dawn" title="Move Dawn" src="js-plugins/tdhop/skins/dark/arrows.png" />
+            <img class="move_ left" id="move_left" title="{{ '3DHOP.MOVE_LEFT' | translate }}" src="js-plugins/tdhop/skins/dark/arrows.png" />
+            <img class="move_ right" id="move_right" title="{{ '3DHOP.MOVE_RIGHT' | translate }}"
+               src="js-plugins/tdhop/skins/dark/arrows.png" /><br />
+            <img class="move_ up" id="move_up" title="{{ '3DHOP.MOVE_UP' | translate }}" src="js-plugins/tdhop/skins/dark/arrows.png" />
+            <img class="move_ dawn" id="move_dawn" title="{{ '3DHOP.MOVE_DOWN' | translate }}" src="js-plugins/tdhop/skins/dark/arrows.png" />
          </div>
       </div>
       <!--ZOOM-->
-		<img ng-if="::vm.isToolZoominAvailable()" id="zoomin" class="viewer3dhopBtn"  title="Zoom In" src="js-plugins/tdhop/skins/dark/zoomin.png"/>
-		<img ng-if="::vm.isToolZoomoutAvailable()" id="zoomout" class="viewer3dhopBtn" ng-click="actionsToolbar('zoomout')" title="Zoom Out" src="js-plugins/tdhop/skins/dark/zoomout.png"/><br/>
-		<!--ZOOM-->
+      <img ng-if="::vm.isToolZoominAvailable()" id="zoomin" class="viewer3dhopBtn" title="{{ '3DHOP.ZOOM_IN' | translate }}"
+         src="js-plugins/tdhop/skins/dark/zoomin.png" />
+      <img ng-if="::vm.isToolZoomoutAvailable()" id="zoomout" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('zoomout')" title="{{ '3DHOP.ZOOM_OUT' | translate }}" src="js-plugins/tdhop/skins/dark/zoomout.png" /><br />
+      <!--ZOOM-->
       <!--LIGHT-->
-      <img ng-if="::vm.isToolLightingAvailable()" id="lighting_off" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting_off')" title="Enable Lighting" src="js-plugins/tdhop/skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolLightingAvailable()" id="lighting" class="viewer3dhopBtn" ng-click="actionsToolbar('lighting')" title="Disable Lighting"  src="js-plugins/tdhop/skins/dark/lighting.png"/>
-	   <img ng-if="::vm.isToolLightControlAvailable()" id="light_off" class="viewer3dhopBtn" ng-click="actionsToolbar('light_off')" title="Disable Light Control" src="js-plugins/tdhop/skins/dark/lightcontrol_on.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolLightControlAvailable()" id="light" class="viewer3dhopBtn" ng-click="actionsToolbar('light')" title="Enable Light Control"  src="js-plugins/tdhop/skins/dark/lightcontrol.png"/><br/>
+      <img ng-if="::vm.isToolLightingAvailable()" id="lighting_off" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('lighting_off')" title="{{ '3DHOP.ENABLE_LIGHTING' | translate }}"
+         src="js-plugins/tdhop/skins/dark/lighting_off.png" style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolLightingAvailable()" id="lighting" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('lighting')" title="{{ '3DHOP.DISABLE_LIGHTING' | translate }}"
+         src="js-plugins/tdhop/skins/dark/lighting.png" />
+      <img ng-if="::vm.isToolLightControlAvailable()" id="light_off" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('light_off')" title="{{ '3DHOP.DISABLE_LIGHT_CONTROL' | translate }}"
+         src="js-plugins/tdhop/skins/dark/lightcontrol_on.png" style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolLightControlAvailable()" id="light" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('light')" title="{{ '3DHOP.ENABLE_LIGHT_CONTROL' | translate }}"
+         src="js-plugins/tdhop/skins/dark/lightcontrol.png" /><br />
       <!--LIGHT-->
-      <img ng-if="::vm.isToolCameraAvailable()" id="perspective" class="viewer3dhopBtn"  ng-click="actionsToolbar('perspective')" title="Perspective Camera"    src="js-plugins/tdhop/skins/dark/perspective.png"     style="position:absolute; visibility:hidden;"/>
-      <img ng-if="::vm.isToolCameraAvailable()" id="orthographic" class="viewer3dhopBtn"  ng-click="actionsToolbar('orthographic')" title="Orthographic Camera"   src="js-plugins/tdhop/skins/dark/orthographic.png"    /><br/>
+      <img ng-if="::vm.isToolCameraAvailable()" id="perspective" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('perspective')" title="{{ '3DHOP.PERSPECTIVE_CAMERA' | translate }}"
+         src="js-plugins/tdhop/skins/dark/perspective.png" style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolCameraAvailable()" id="orthographic" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('orthographic')" title="{{ '3DHOP.ORTHOGRAPHIC_CAMERA' | translate }}"
+         src="js-plugins/tdhop/skins/dark/orthographic.png" /><br />
       <!--COLOR-->
-		<img ng-if="::vm.isToolSolidColorAvailable()" id="color_on" class="viewer3dhopBtn" ng-click="actionsToolbar('color_on')" title="Model color" src="js-plugins/tdhop/skins/dark/color_on.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolSolidColorAvailable()" id="color" class="viewer3dhopBtn" ng-click="actionsToolbar('color')" title="Solid color" src="js-plugins/tdhop/skins/dark/color.png"/><br/>
+      <img ng-if="::vm.isToolSolidColorAvailable()" id="color_on" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('color_on')" title="{{ '3DHOP.MODEL_COLOR' | translate }}" src="js-plugins/tdhop/skins/dark/color_on.png"
+         style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolSolidColorAvailable()" id="color" class="viewer3dhopBtn" ng-click="actionsToolbar('color')"
+         title="{{ '3DHOP.SOLID_COLOR' | translate }}" src="js-plugins/tdhop/skins/dark/color.png" /><br />
       <!--COLOR-->
       <!--HOTSPOT-->
-      <img ng-if="::vm.isToolHotspotAvailable()" id="hotspot_on" class="viewer3dhopBtn" ng-click="actionsToolbar('hotspot_on')" title="Hide Hotspots"         src="js-plugins/tdhop/skins/dark/pin_on.png"          style="position:absolute; visibility:hidden;"/>
-      <img ng-if="::vm.isToolHotspotAvailable()" id="hotspot" class="viewer3dhopBtn"  ng-click="actionsToolbar('hotspot')" title="Show Hotspots"         src="js-plugins/tdhop/skins/dark/pin.png"             /><br/>
+      <img ng-if="::vm.isToolHotspotAvailable()" id="hotspot_on" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('hotspot_on')" title="{{ '3DHOP.HIDE_HOTSPOTS' | translate }}" src="js-plugins/tdhop/skins/dark/pin_on.png"
+         style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolHotspotAvailable()" id="hotspot" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('hotspot')" title="{{ '3DHOP.SHOW_HOTSPOTS' | translate }}" src="js-plugins/tdhop/skins/dark/pin.png" /><br />
       <!--HOTSPOT-->
-		<!--MEASURE-->
-		<img ng-if="::vm.isToolMeasureAvailable()" id="measure_on" class="viewer3dhopBtn" ng-click="actionsToolbar('measure_on')" title="Disable Measure Tool" src="js-plugins/tdhop/skins/dark/measure_on.png" style="position:absolute; visibility:hidden;"/><br/>
-		<img ng-if="::vm.isToolMeasureAvailable()" id="measure" class="viewer3dhopBtn" ng-click="actionsToolbar('measure')" title="Enable Measure Tool" src="js-plugins/tdhop/skins/dark/measure.png"/><br/>
-		<!--MEASURE-->
-		<!--POINT PICKING-->
-		<img ng-if="::vm.isToolPickPointAvailable()" id="pick_on" class="viewer3dhopBtn" ng-click="actionsToolbar('pick_on')" title="Disable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick_on.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolPickPointAvailable()" id="pick" class="viewer3dhopBtn" ng-click="actionsToolbar('pick')" title="Enable PickPoint Mode" src="js-plugins/tdhop/skins/dark/pick.png"/><br/>
-		<!--POINT PICKING-->
-		<!--SECTIONS-->
-		<img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections_on" class="viewer3dhopBtn" ng-click="actionsToolbar('sections_on')" title="Disable Plane Sections" src="js-plugins/tdhop/skins/dark/sections_on.png" style="position:absolute; visibility:hidden;"/>
-		<img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections" class="viewer3dhopBtn" ng-click="actionsToolbar('sections')" title="Enable Plane Sections" src="js-plugins/tdhop/skins/dark/sections.png"/><br/>
+      <!--MEASURE-->
+      <img ng-if="::vm.isToolMeasureAvailable()" id="measure_on" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('measure_on')" title="{{ '3DHOP.DISABLE_MEASURE_TOOL' | translate }}"
+         src="js-plugins/tdhop/skins/dark/measure_on.png" style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolMeasureAvailable()" id="measure" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('measure')" title="{{ '3DHOP.ENABLE_MEASURE_TOOL' | translate }}"
+         src="js-plugins/tdhop/skins/dark/measure.png" /><br />
+      <!--MEASURE-->
+      <!--POINT PICKING-->
+      <img ng-if="::vm.isToolPickPointAvailable()" id="pick_on" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('pick_on')" title="{{ '3DHOP.DISABLE_PICKPOINT_MODE' | translate }}"
+         src="js-plugins/tdhop/skins/dark/pick_on.png" style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolPickPointAvailable()" id="pick" class="viewer3dhopBtn" ng-click="actionsToolbar('pick')"
+         title="{{ '3DHOP.ENABLE_PICKPOINT_MODE' | translate }}" src="js-plugins/tdhop/skins/dark/pick.png" /><br />
+      <!--POINT PICKING-->
       <!--SECTIONS-->
-     <div ng-if="::vm.isToolLightControllerAvailable()" ng-click="actionsToolbar" id="lightcontroller">
-         <canvas id="lightcontroller_canvas" width="125" height="125"/>
+      <img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections_on" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('sections_on')" title="{{ '3DHOP.DISABLE_PLANE_SECTIONS' | translate }}"
+         src="js-plugins/tdhop/skins/dark/sections_on.png" style="position:absolute; visibility:hidden;" />
+      <img ng-if="::vm.isToolPlaneSectionsAvailable()" id="sections" class="viewer3dhopBtn"
+         ng-click="actionsToolbar('sections')" title="{{ '3DHOP.ENABLE_PLANE_SECTIONS' | translate }}"
+         src="js-plugins/tdhop/skins/dark/sections.png" /><br />
+      <!--SECTIONS-->
+      <div ng-if="::vm.isToolLightControllerAvailable()" ng-click="actionsToolbar" id="lightcontroller">
+         <canvas id="lightcontroller_canvas" width="125" height="125" />
       </div>
    </div>
    <div id="tdhlg"></div>
    <!--MEASURE-->
-   <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">Measured length<hr/><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text" onmousedown="event.stopPropagation()">0.0</span></div>
+   <div id="measure-box" ng-click="onEndMeasure('measure-box')" class="output-box">{{ '3DHOP.MEASURED_LENGTH' | translate }}
+      <hr /><span id="measure-output" ng-click="onEndMeasure('measure-output')" class="output-text"
+         onmousedown="event.stopPropagation()">0.0</span></div>
    <!--MEASURE-->
    <!--POINT PICKING-->
-   <div id="pickpoint-box" ng-click="onEndPick('pickpoint-box')" class="output-box">XYZ picked point<hr/><span id="pickpoint-output" ng-click="onEndMeasure('pickpoint-output')" class="output-text" onmousedown="event.stopPropagation()">[ 0 , 0 , 0 ]</span></div>
+   <div id="pickpoint-box" ng-click="onEndPick('pickpoint-box')" class="output-box">{{ '3DHOP.XYZ_PICKED_POINT' | translate }}
+      <hr /><span id="pickpoint-output" ng-click="onEndMeasure('pickpoint-output')" class="output-text"
+         onmousedown="event.stopPropagation()">[ 0 , 0 , 0 ]</span></div>
    <!--POINT PICKING-->
    <!--SECTIONS-->
    <div id="sections-box" ng-click="sectiontoolInit" class="output-box">
       <table class="output-table" onmousedown="event.stopPropagation()">
-      <tr><td>Plane</td><td>Position</td><td>Flip</td></tr>
-      <tr>
-         <td><img   id="xplane_on"    title="Disable X Axis Section" src="js-plugins/tdhop/skins/icons/sectionX_on.png" onclick="sectionxSwitch()" style="position:absolute; visibility:hidden; border:1px inset;"/>
-            <img   id="xplane"       title="Enable X Axis Section"  src="js-plugins/tdhop/skins/icons/sectionX.png"  onclick="sectionxSwitch()"/><br/></td>
-         <td><input id="xplaneSlider" class="output-input"  type="range"    title="Move X Axis Section Position"/></td>
-         <td><input id="xplaneFlip"   class="output-input"  type="checkbox" title="Flip X Axis Section Direction"/></td></tr>
-      <tr>
-         <td><img   id="yplane_on"    title="Disable Y Axis Section" src="js-plugins/tdhop/skins/icons/sectionY_on.png" onclick="sectionySwitch()" style="position:absolute; visibility:hidden; border:1px inset;"/>
-            <img   id="yplane"       title="Enable Y Axis Section"  src="js-plugins/tdhop/skins/icons/sectionY.png"  onclick="sectionySwitch()"/><br/></td>
-         <td><input id="yplaneSlider" class="output-input"  type="range"    title="Move Y Axis Section Position"/></td>
-         <td><input id="yplaneFlip"   class="output-input"  type="checkbox" title="Flip Y Axis Section Direction"/></td></tr>
-      <tr>
-         <td><img   id="zplane_on"    title="Disable Z Axis Section" src="js-plugins/tdhop/skins/icons/sectionZ_on.png" onclick="sectionzSwitch()" style="position:absolute; visibility:hidden; border:1px inset;"/>
-            <img   id="zplane"       title="Enable Z Axis Section"  src="js-plugins/tdhop/skins/icons/sectionZ.png"  onclick="sectionzSwitch()"/><br/></td>
-         <td><input id="zplaneSlider" class="output-input"  type="range"    title="Move Y Axis Section Position"/></td>
-         <td><input id="zplaneFlip"   class="output-input"  type="checkbox" title="Flip Z Axis Section Direction"/></td></tr></table>
+         <tr>
+            <td>{{ '3DHOP.PLANE' | translate }}</td>
+            <td>{{ '3DHOP.POSITION' | translate }}</td>
+            <td>{{ '3DHOP.FLIP' | translate }}</td>
+         </tr>
+         <tr>
+            <td><img id="xplane_on" title="{{ '3DHOP.DISABLE_X_AXIS_SECTION' | translate }}" src="js-plugins/tdhop/skins/icons/sectionX_on.png"
+                  onclick="sectionxSwitch()" style="position:absolute; visibility:hidden; border:1px inset;" />
+               <img id="xplane" title="{{ '3DHOP.ENABLE_X_AXIS_SECTION' | translate }}" src="js-plugins/tdhop/skins/icons/sectionX.png"
+                  onclick="sectionxSwitch()" /><br /></td>
+            <td><input id="xplaneSlider" class="output-input" type="range" title="{{ '3DHOP.MOVE_X_AXIS_SECTION_POSITION' | translate }}" /></td>
+            <td><input id="xplaneFlip" class="output-input" type="checkbox" title="{{ '3DHOP.FLIP_X_AXIS_SECTION_DIRECTION' | translate }}" />
+            </td>
+         </tr>
+         <tr>
+            <td><img id="yplane_on" title="{{ '3DHOP.DISABLE_Y_AXIS_SECTION' | translate }}" src="js-plugins/tdhop/skins/icons/sectionY_on.png"
+                  onclick="sectionySwitch()" style="position:absolute; visibility:hidden; border:1px inset;" />
+               <img id="yplane" title="{{ '3DHOP.ENABLE_Y_AXIS_SECTION' | translate }}" src="js-plugins/tdhop/skins/icons/sectionY.png"
+                  onclick="sectionySwitch()" /><br /></td>
+            <td><input id="yplaneSlider" class="output-input" type="range" title="{{ '3DHOP.MOVE_Y_AXIS_SECTION_POSITION' | translate }}" /></td>
+            <td><input id="yplaneFlip" class="output-input" type="checkbox" title="{{ '3DHOP.FLIP_Y_AXIS_SECTION_DIRECTION' | translate }}" />
+            </td>
+         </tr>
+         <tr>
+            <td><img id="zplane_on" title="{{ '3DHOP.DISABLE_Z_AXIS_SECTION' | translate }}" src="js-plugins/tdhop/skins/icons/sectionZ_on.png"
+                  onclick="sectionzSwitch()" style="position:absolute; visibility:hidden; border:1px inset;" />
+               <img id="zplane" title="{{ '3DHOP.ENABLE_Z_AXIS_SECTION' | translate }}" src="js-plugins/tdhop/skins/icons/sectionZ.png"
+                  onclick="sectionzSwitch()" /><br /></td>
+            <td><input id="zplaneSlider" class="output-input" type="range" title="{{ '3DHOP.MOVE_Z_AXIS_SECTION_POSITION' | translate }}" /></td>
+            <td><input id="zplaneFlip" class="output-input" type="checkbox" title="{{ '3DHOP.FLIP_Z_AXIS_SECTION_DIRECTION' | translate }}" />
+            </td>
+         </tr>
+      </table>
       <table class="output-table" onmousedown="event.stopPropagation()" style="text-align:right;">
-      <tr>
-      <td>Show planes<input id="showPlane" class="output-input" type="checkbox" title="Show Section Planes" style="bottom:-3px;"/></td>
-      <td>Show edges<input  id="showBorder" class="output-input" type="checkbox" title="Show Section Edges" style="bottom:-3px;"/></td></tr></table>
+         <tr>
+            <td>{{ '3DHOP.SHOW_PLANES' | translate }}<input id="showPlane" class="output-input" type="checkbox" title="{{ '3DHOP.SHOW_SECTION_PLANES' | translate }}"
+                  style="bottom:-3px;" /></td>
+            <td>{{ '3DHOP.SHOW_EDGES' | translate }}<input id="showBorder" class="output-input" type="checkbox" title="{{ '3DHOP.SHOW_SECTION_EDGES' | translate }}"
+                  style="bottom:-3px;" /></td>
+         </tr>
+      </table>
    </div>
    <canvas id="draw-canvas" style="background-image: url(js-plugins/tdhop/skins/backgrounds/light.jpg);"></canvas>
 </div>
