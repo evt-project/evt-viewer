@@ -8,9 +8,9 @@ angular.module('evtviewer.tdhop')
          evtTdhop.build = function (scope) {
             var url1 = config.tdhopViewerOptions.Model_1 ? config.tdhopViewerOptions.Model_1.path : '';
             var url2 = config.tdhopViewerOptions.Model_2 ? config.tdhopViewerOptions.Model_2.path : '';
-            var url_hs = config.tdhopViewerOptions.Hotspots.path;
-            var type = config.tdhopViewerOptions.Hotspots.type;
-            var annotations = JSON.stringify(config.tdhopViewerOptions.Hotspots.hotspotsdata);
+            var url_hs = config.tdhopViewerOptions.Hotspots ? config.tdhopViewerOptions.Hotspots.path : '';
+            var type = config.tdhopViewerOptions.Hotspots ? config.tdhopViewerOptions.Hotspots.type : undefined;
+            var annotations = config.tdhopViewerOptions.Hotspots ? JSON.stringify(config.tdhopViewerOptions.Hotspots.hotspotsdata) : [];
             console.log("Check hotspotsdata " + annotations);
             console.log("Check model path " + url1);
             var options = config.tdhopViewerOptions;
