@@ -29,7 +29,7 @@ angular.module('evtviewer.bibliography')
 .directive('evtBibliography', function(evtBibliography) { 
 	return {
 		restrict: 'E',
-      template: require('./bibliography.directive.tmpl.html'),
+        template: require('./bibliography.directive.tmpl.html'),
 		scope: {
             id   : '@'
         },
@@ -38,7 +38,7 @@ angular.module('evtviewer.bibliography')
         link: function(scope, element, attrs) { 
             // Initialize bibliography 
             var currentBibliography = evtBibliography.build(scope); 
-             
+
             // Garbage collection 
             scope.$on('$destroy', function() { 
                 if (currentBibliography){ 
