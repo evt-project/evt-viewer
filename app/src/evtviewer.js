@@ -16,7 +16,7 @@ require('../../bower_components/angular-pretty-xml/src/angular-pretty-xml.js');
 // require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
 require('../../bower_components/angular-translate/angular-translate.js');
 require('../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js');
-require('../../bower_components/ngprogress/build/ngprogress.min.js');
+
 require('../../bower_components/angularjs-slider/dist/rzslider.js');
 require('../../bower_components/angularjs-slider/dist/rzslider.css');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
