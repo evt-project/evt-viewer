@@ -18,7 +18,8 @@ require('../../bower_components/angular-translate/angular-translate.js');
 require('../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js');
 require('../../bower_components/angular-loading-bar/build/loading-bar.js');
 require('../../bower_components/ngprogress/build/ngprogress.min.js');
-// require('../../bower_components/angularjs-slider/dist/rzslider.js');
+require('../../bower_components/angularjs-slider/dist/rzslider.js');
+require('../../bower_components/angularjs-slider/dist/rzslider.css');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
 require('../../bower_components/angular-simple-logger/dist/angular-simple-logger.js');
 require('../../bower_components/leaflet/dist/leaflet-src.js');
@@ -314,7 +315,7 @@ angular.module('evtviewer', [
 	'ngSanitize',
 	'ngTouch',
 	'ngRoute',
-	// 'rzModule',
+	'rzModule',
 	'xml',
 	// 'ngXslt',
 	'prettyXml',
