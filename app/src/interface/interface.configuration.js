@@ -36,7 +36,7 @@ angular.module('evtviewer.interface')
             prefix: './app/i18n/',
             suffix: '.json'
         });
-        $translateProvider.useSanitizeValueStrategy('sanitize');
+        $translateProvider.useSanitizeValueStrategy(null);
         $translateProvider
             .fallbackLanguage('en')
             .preferredLanguage('en');
