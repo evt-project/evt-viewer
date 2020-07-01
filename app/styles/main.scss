@@ -11,7 +11,16 @@
 
 @include border-box-sizing;
 
-$large: (columns: 18, container-position: center, global-box-sizing: content-box, gutter-position: inside, gutters: 0.03, debug: (image: show));
+$large: (
+    columns: 18,
+    container-position: center,
+    global-box-sizing: content-box,
+    gutter-position: inside,
+    gutters: 0.03,
+    debug: (
+        image: show,
+    ),
+);
 
 @include layout($large);
 
@@ -54,7 +63,7 @@ body {
             color: #f5f5f5;
             font-size: 1.2rem;
             margin-left: 0.4rem;
-            opacity: .7;
+            opacity: 0.7;
             &:hover {
                 opacity: 1;
                 cursor: pointer;
@@ -79,6 +88,10 @@ footer {
     width: 100%;
 }
 
+div#global-container-ext.navbar-opened #global-container {
+    @include calc(height, unquote("#{setGlobalFrameHeightWithNavbar()} + 1px"));
+}
+
 section > div {
     height: 100%;
     display: block;
@@ -91,6 +104,7 @@ section > div {
 
 #main-container {
     @include main-frame;
+    line-height: 22px;
 
     //@include box-shadow(0px 2px 5px -3px rgba(0, 0, 0, 0.8));
     // @include set(box-shadow, 0px 2px 5px -3px rgba(0, 0, 0, 0.8));
@@ -123,10 +137,18 @@ section > div {
 @import "namedEntity.scss";
 @import "sourceSeg.scss";
 @import "versionReading.scss";
-@import "versionApparatusEntry";
-
+@import "versionApparatusEntry.scss";
+@import "navBar.scss";
+@import "visColl.scss";
+@import "searchBox.scss";
+@import "toc.scss";
 @import "diplomaticEdition.scss";
 @import "interpretativeEdition.scss";
+@import "osdViewer.scss";
+@import "collation.scss";
+@import "tei.scss";
+@import "tdhop.scss";
+@import "3DHpanels.scss";
 
 // Temporary
 .secondary-container {
@@ -176,7 +198,7 @@ section > div {
 
         span.filter-value {
             display: inline-block;
-            background: #CF00FF;
+            background: #cf00ff;
             border-radius: 2px;
             font-size: 85%;
             margin: 4px;
@@ -226,24 +248,32 @@ section > div {
 
 .globalMenu {
     width: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     position: absolute;
     right: 8px;
     top: 0px;
     height: 54px;
     padding: 10px;
     font-size: 100%;
+    > button-switch {
+        &:first-child {
+            position: relative;
+            top: -1px;
+        }
+    }
 
     button-switch {
-        margin: 0px;
+        margin: 0;
 
         .buttonSwitch {
-            height: auto;
+            height: 0;
+            display: block !important;
             padding: 0 3px;
             background: none;
             box-shadow: none;
             border-radius: 0;
-            width: 0px;
+            width: auto;
 
             &-label {
                 font-variant: small-caps;
@@ -255,10 +285,11 @@ section > div {
             &-icon {
                 color: $base-color-light;
                 font-size: 1em;
-                top: .1rem;
+                top: -1px;
             }
 
-            &:hover, &:hover > * {
+            &:hover,
+            &:hover > * {
                 color: $buttonSwitch-active-background-color;
             }
         }
@@ -266,7 +297,7 @@ section > div {
         &.mode-view {
             margin: 0px 1px;
 
-            &[data-icon='reading-txt'] {
+            &[data-icon="reading-txt"] {
                 margin-right: -2px;
             }
 
@@ -274,21 +305,23 @@ section > div {
                 width: auto;
                 padding: 0;
 
-                &-active, &:hover {
+                &-active,
+                &:hover {
                     .icon {
                         color: $base-color-active-background;
                     }
                 }
 
                 &-icon {
-                    font-size: 1.3em;
+                    font-size: 1.2em;
                     margin-right: 3px;
-                    top: 0.4rem;
+                    top: 0;
                 }
 
-                .iconbis-evt_versions, .iconbis-evt_srctxt {
-                    font-size: .9em;
-                    top: 0.1rem;
+                .iconbis-evt_versions,
+                .iconbis-evt_srctxt {
+                    font-size: 0.85em;
+                    top: -4px;
                 }
             }
         }
@@ -297,9 +330,8 @@ section > div {
             margin-right: 0;
         }
     }
-
     .viewModeMenu {
-        display: inline;
+        display: flex;
     }
 }
 
@@ -325,11 +357,42 @@ section > div {
     }
 }
 
+.popup-container {
+    @include calc(height, unquote("#{setPopupContainerFrameHeight()}"));
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: $base-slider-height;
+    background-color: #607d8b;
+    border: 1px solid #ffffff;
+    border-left: none;
+    border-right: none;
+    z-index: 999;
+    top: $base-header-height;
+    &.noNavBar {
+        top: #{$base-header-height + $base-slider-height + 1};
+        bottom: 0;
+        border: none;
+        left: #{$mainContainer-border-width * 2};
+        @include calc(height, unquote("#{setPopupContainerFrameHeight()} - #{$mainContainer-border-width * 2} - 1px"));
+        &.thumb_cont {
+            @include calc(width, unquote("50% - #{$mainContainer-border-width * 4}"));
+        }
+        &.viscoll_cont {
+            top: #{$base-header-height + $base-slider-height};
+            @include calc(width, unquote("100% - #{$mainContainer-border-width * 3 + 1}"));
+            @include calc(height, unquote("#{setPopupContainerFrameHeight()} - 1px"));
+        }
+    }
+}
+
 .global-loading-container {
     display: block;
 }
 
-.viewMode, .global-loading-container {
+.viewMode,
+.global-loading-container {
     .loading {
         background: rgba(0, 0, 0, 0.1);
 
@@ -379,7 +442,8 @@ pre {
     }
 }
 
-.availableWitnesses-selector, .availableVersions-selector {
+.availableWitnesses-selector,
+.availableVersions-selector {
     position: absolute;
     z-index: 9999;
     display: block;
@@ -463,6 +527,10 @@ pre {
                 color: #ccc;
                 cursor: default;
             }
+            a {
+                color: #444444;
+                text-decoration: none;
+            }
         }
     }
 
@@ -470,13 +538,13 @@ pre {
         height: 18px;
         width: 18px;
         border-radius: 100px;
-        border: 1px solid #4E443C;
+        border: 1px solid #4e443c;
         display: inline-block;
         margin: 0px 4px;
         position: relative;
         top: 2px;
         cursor: pointer;
-        opacity: .5;
+        opacity: 0.5;
 
         &.active {
             cursor: default;
@@ -502,13 +570,14 @@ pre {
         border-bottom: 1px dotted #666;
         margin-bottom: 5px;
         font-variant: small-caps;
-        color: #666;
+        color: #000000;
         font-size: 90%;
-        display:block;
+        display: block;
         margin-top: 14px;
     }
 
-    &-blockLabel, &-inlineLabel {
+    &-blockLabel,
+    &-inlineLabel {
         font-variant: small-caps;
         color: #666;
         font-size: 90%;
@@ -525,7 +594,9 @@ pre {
     }
 }
 .p {
-    .projectInfo-inlineLabel { display: none; }
+    .projectInfo-inlineLabel {
+        display: none;
+    }
 }
 
 // Generic style
@@ -558,7 +629,8 @@ pre {
         opacity: 0.4;
     }
 
-    &.lineSelected, &.lineSelected.lineHover {
+    &.lineSelected,
+    &.lineSelected.lineHover {
         border: 1px solid #4c2f2f !important;
         background-color: #9c4837 !important;
         opacity: 0.5;
@@ -576,13 +648,15 @@ pre {
         }
     }
 
-    .lineHover, .lineHover:after {
+    .lineHover,
+    .lineHover:after {
         cursor: pointer;
         background-color: rgba(230, 206, 160, 0.8) !important;
         color: #000000;
     }
 
-    .lineSelected, .lineSelected:after {
+    .lineSelected,
+    .lineSelected:after {
         cursor: pointer;
         background-color: rgba(213, 177, 125, 0.9) !important;
         color: #000000;
@@ -598,14 +672,92 @@ pre {
 }
 
 .emptyText {
-    padding: 0 .4rem;
+    padding: 0 0.4rem;
     &::after {
-      content: "\00a0";
-  }
+        content: "\00a0";
+    }
 }
 
-.front [data-type='footer'] {
+.front [data-type="footer"] {
     font-size: 95%;
     padding: 10px 0;
     border-top: 1px solid;
+}
+/* Critic and Comment Notes (notes with numeric and alphabetical exponent) */
+.evt_note {
+    color: #fff;
+}
+.evt_note span {
+    padding: 2px 5px 2px 3px!important;
+    opacity: 10!important;
+    border-radius: 4px!important;
+    font-size: 13px!important;
+    top: -8px!important;
+    position: relative!important;
+    text-align: center;
+}
+.evt_note span.generic {
+    color: #fff;
+    background-color: maroon!important;
+}
+evt-popover[data-n=""] .evt_note span.generic:before {
+    content: "";
+    padding: 0px 4px 4px 4px !important;
+    font-size: 1px !important;
+}
+evt-popover[data-n=""] .evt_note span.generic {
+    margin-right: 4px;
+    font-size: 10px !important;
+    padding: 0px 1px !important;
+    border-radius: 100px !important;
+    background-color: #4e443c;
+}
+.popover_trigger.active:hover {
+    opacity: 0.5;
+}
+.popover_trigger {
+    color: #263238 !important;
+    opacity: 10 !important;
+}
+.evt_note span.comment {
+    color: #fff;
+    background-color: rgb(87, 14, 105) !important;
+}
+.evt_note span.critic {
+    color: #fff;
+    background-color: rgb(24, 70, 155) !important;
+}
+
+.thumbnail {
+    display: inline-block;
+    padding: 9px 3px;
+    margin: 3px;
+    cursor: pointer;
+    img {
+        height: 150px;
+        width: 100px;
+        border: 2px solid black;
+    }
+    &.active img {
+        border-color: $base-color-active-background;
+    }
+    figcaption {
+        color: white;
+        position: relative;
+        margin-top: -52px;
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 0.7em;
+        width: 100px;
+        text-align: center;
+    }
+    &:hover figcaption {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+    &.active {
+        cursor: default;
+        figcaption {
+            background: rgba($base-color-active-background, 0.7) !important;
+            color: #000;
+        }
+    }
 }

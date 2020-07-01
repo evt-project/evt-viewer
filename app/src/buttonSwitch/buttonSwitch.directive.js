@@ -20,7 +20,7 @@
  * '*fontSizeDecrease*', '*fontSizeTools*', '*front*', '*heatmap*', '*itl*', '*mainMenu*', '*openGlobalDialogInfo*', 
  * '*openGlobalDialogWitnesses*', '*openGlobalDialogLists*', '*pin*', '*removeWit*', '*searchInEdition*', '*searchInWit*', 
  * '*share*', '*toggleInfoWit*', '*toggleFilterApp*', '*togglePinned*', '*witList*', '*toggleInfoSrc*', '*addVer*', 
- * '*removeVer*', '*cropText*'.
+ * '*removeVer*', '*cropText*', '*nextPage*'.
  * @param {string=} value value associated to button
  * @param {string=} iconPos position of icon ('left', 'right'). Default 'right'
  *
@@ -28,7 +28,7 @@
 **/
 angular.module('evtviewer.buttonSwitch')
 
-.directive('buttonSwitch', function(evtButtonSwitch, evtInterface) {
+.directive('buttonSwitch', function($rootScope, evtButtonSwitch, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -37,14 +37,23 @@ angular.module('evtviewer.buttonSwitch')
             icon  : '@',
             type  : '@',
             value : '@',
-            iconPos : '@'
+            iconPos : '@',
+            disabled: '@',
+            onBtnClicked: '&'
         },
         templateUrl: 'src/buttonSwitch/buttonSwitch.dir.tmpl.html',
         link: function(scope, element) {
             // Add attributes in vm
             scope.vm = {};
-
             var currentButton = evtButtonSwitch.build(scope, scope.vm);
+            scope.$watch(function() {
+                return scope.disabled;
+            }, function(newItem, oldItem) {
+                if (newItem !== oldItem) {
+                    scope.vm.disabled = newItem
+                }
+            });
+
             if (scope.type === 'addWit') {
                  if (evtInterface.getProperty('availableWitnesses').length === 0) {
                     scope.vm.disabled = true;
@@ -98,14 +107,41 @@ angular.module('evtviewer.buttonSwitch')
                             scope.vm.active = false;
                         }
                     // }
-                }, true); 
+                }, true);
             }
-
+            
+            var parentBoxId;
+            if (scope.type === 'search') {
+              parentBoxId = scope.$parent.id;
+              $rootScope.$broadcast('searchBtn', {parentId:parentBoxId, btn: currentButton});
+           }
+           if (scope.type === 'searchVirtualKeyboard') {
+              parentBoxId = scope.$parent.id;
+              $rootScope.$broadcast('keyboardBtn', {parentId:parentBoxId, btn: currentButton});
+           }
+            if (scope.type === 'prevPage' || scope.type === 'firstPage') {
+                scope.$watch(function() {
+                    return evtInterface.isCurrentPageFirst();
+                }, function(newItem, oldItem) {
+                    if (newItem !== oldItem) {
+                        scope.vm.disabled = newItem;
+                    }
+                }, true);
+            }
+            if (scope.type === 'nextPage' || scope.type === 'lastPage') {
+                scope.$watch(function() {
+                    return evtInterface.isCurrentPageLast();
+                }, function(newItem, oldItem) {
+                    if (newItem !== oldItem) {
+                        scope.vm.disabled = newItem;
+                    }
+                }, true);
+            }
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentButton){
                     currentButton.destroy();
-                }     
+                }
             });
         }
     };

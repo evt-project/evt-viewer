@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtCriticalElementsParser
- * @description 
+ * @description
  * # evtCriticalElementsParser
  * Service containing methods to parse data regarding critical apparatuses (critical entries, sources, analogues).
  *
@@ -35,7 +35,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * [PRIVATE] This function will parse a generic XML element inside the apparatus reading.
-     * 
+     *
      * @param {element} elem XML element to be parsed
      *
      * @returns {Object} JSON object representing the generic element
@@ -119,7 +119,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] This function will parse the XML element representing an apparatus reading
      * (<code>lem</code> or <code>rdg</code> in XML-TEI P5).
-     * 
+     *
      * @param {Object} entry JSON object representing the critical entry to which the reading belongs
      * @param {element} elem XML element to be parsed
      *
@@ -273,9 +273,9 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] This function will parse the XML element representing an apparatus reading group
      * (<code>rdgGrp</code> in XML-TEI P5).
-     * For each reading contained in the group it will call the function 
+     * For each reading contained in the group it will call the function
      * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppReading parseAppReading}
-     * 
+     *
      * @param {Object} entry JSON object representing the critical entry to which the reading belongs
      * @param {element} elem XML element to be parsed
      *
@@ -339,10 +339,10 @@ angular.module('evtviewer.dataHandler')
      * @description
      * [PRIVATE] This function will parse the XML element representing an apparatus entry or a group
      * (<code>app</code> or <code>rdgGrp</code> in XML-TEI P5).
-     * For each reading contained in the group it will call the function 
+     * For each reading contained in the group it will call the function
      * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppReading parseAppReading}
-     * 
-     * @param {element} app XML element representing the apparatus entry or group to be parsed 
+     *
+     * @param {element} app XML element representing the apparatus entry or group to be parsed
      *
      * @returns {Object} JSON object representing the apparatus entry parsed
      	<pre>
@@ -474,13 +474,13 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
      *
      * @description
-     * This method will handle (nested) apparatus entry. It will call the private function 
+     * This method will handle (nested) apparatus entry. It will call the private function
      * {@link evtviewer.dataHandler.evtCriticalApparatusParser#parseAppEntry parseAppEntry()}
      * and then perform a check on missing witnesses, calculates (and save) variance for the entry depending on different significant reading registered
      * and store it in parsed data using the function {@link evtviewer.dataHandler.parsedData#addCriticalEntry addCriticalEntry()}.
      *
-     * @param {element} app XML element representing the apparatus entry or group to be parsed 
-     * @param {string=} parentEntryId id of the parent apparatus entry in which the current one is nested 
+     * @param {element} app XML element representing the apparatus entry or group to be parsed
+     * @param {string=} parentEntryId id of the parent apparatus entry in which the current one is nested
      *
      * @returns {Object} JSON object representing the apparatus entry parsed
      	<pre>
@@ -646,7 +646,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * This method will parse an app element that encodes the differences between two or more
-     * versions of the text in a certain passage. 
+     * versions of the text in a certain passage.
      *
      * @param {element} app XML element containing the info about the variants between versions
      *
@@ -750,7 +750,7 @@ angular.module('evtviewer.dataHandler')
 				}
 			}
 			spanElement.setAttribute('data-app-id', entry.id);
-			/* 
+			/*
 			    IMPORTANT: data-app-id should be the first attribute added to the element
 			    otherwise the parser for fragmentary witnesses will not work.
 			*/
@@ -792,7 +792,7 @@ angular.module('evtviewer.dataHandler')
 					spanElement.appendChild(omitElement);
 				} else {
 					var lacunaElement = document.createElement('span');
-					lacunaElement.className = 'lacunaApp icon-evt_note';
+					lacunaElement.className = 'lacunaApp evt_note';
 					spanElement.appendChild(lacunaElement);
 				}
 
@@ -805,9 +805,9 @@ angular.module('evtviewer.dataHandler')
 				//     }
 				// }
 
-			} else if (entry.lemma) {
+			} else if (entry.lemma && entry.lemma.indexOf('depa-lem') < 0) {
 				spanElement = parser.getEntryLemmaText(entry, wit);
-			} else {
+			} else if (parsedData.getEncodingDetail('variantEncodingMethod') !== 'double-end-point') {
 				var noRdgElement = document.createElement('span');
 				noRdgElement.className = 'empty';
 				noRdgElement.setAttribute('title', 'noRdg');
@@ -1087,9 +1087,9 @@ angular.module('evtviewer.dataHandler')
 			spanElement.setAttribute('data-type', 'lemma');
 			if (entry._lacuna) {
 				var lacunaElement = document.createElement('span');
-				lacunaElement.className = 'lacunaApp icon-evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
+				lacunaElement.className = 'lacunaApp evt_note'; // TODO: DA ELIMINARE QUI IL PALLINO
 				spanElement.appendChild(lacunaElement);
-			} else if (entry.lemma !== undefined && entry.lemma !== '') {
+			} else if (entry.lemma && entry.lemma.indexOf('depa-lem') < 0) {
 				spanElement.setAttribute('data-reading-id', entry.lemma);
 				var lemmaContent = entry.content[entry.lemma].content;
 				for (var i in lemmaContent) {
@@ -1122,7 +1122,7 @@ angular.module('evtviewer.dataHandler')
 					if (spanElement !== null) {
 						spanElement.className = 'autoLemma';
 					}
-				} else {
+				} else if (parsedData.getEncodingDetail('variantEncodingMethod') !== 'double-end-point') {
 					errorElement = document.createElement('span');
 					errorElement.className = 'encodingError';
 					errorElement.setAttribute('title', 'General error');
@@ -1362,7 +1362,7 @@ angular.module('evtviewer.dataHandler')
      * @description
      * This method will parse the content and the attributes of a single entry
 	 * of the sources apparatus inside of the critical text and save it
-	* in {@link evtviewer.dataHandler.parsedData parsedData}. 
+	* in {@link evtviewer.dataHandler.parsedData parsedData}.
      *
      * @param {element} entry XML element to be parsed
      *
@@ -1377,7 +1377,7 @@ angular.module('evtviewer.dataHandler')
 					sourceId: [], //bibliographic citations inside the quote
 					sourceRefId: [], //references to bibliographic citations outside the quote
 					correspId: {}, //segments inside the source text that correspond to the quote
-					subQuotes: [], //quotes nested inside the quote                
+					subQuotes: [], //quotes nested inside the quote
 				},
 				_subQuote: false,
 				_xmlSource: ''
@@ -1396,7 +1396,7 @@ angular.module('evtviewer.dataHandler')
 				sourceId: [], //saves the id of the bibliographic citations that are inside the quote
 				sourceRefId: [], //saves the references to bibliographic citations that are outside the quote
 				correspId: {}, //saves the id of the segments inside the source text that correspond to the quote
-				subQuotes: [], //saves the id of quotes nested inside the quote                
+				subQuotes: [], //saves the id of quotes nested inside the quote
 			},
 			_subQuote: false, //boolean is the quote nested in another quote
 			_xmlSource: entry.outerHTML
@@ -1980,10 +1980,10 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
      *
      * @description
-     * [PRIVATE] This function creates a new object of type 'analogueContent' 
+     * [PRIVATE] This function creates a new object of type 'analogueContent'
      * that is added to the analogue content array
      *
-     * @param {element} elem XML element nested in an <code>AnalogueDef</code> that has to be parsed 
+     * @param {element} elem XML element nested in an <code>AnalogueDef</code> that has to be parsed
      *
      * @returns {Object} JSON object representing the analogue content
      	<pre>
@@ -2230,7 +2230,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
      *
      * @description
-     * This method will parse the an analogue element and saves 
+     * This method will parse the an analogue element and saves
      *
      * @param {element} entry XML element to be parsed
      *
@@ -2390,7 +2390,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalElementsParser
      *
      * @description
-     * [PRIVATE] This function will parse the element contained inside a source element. 
+     * [PRIVATE] This function will parse the element contained inside a source element.
      *
      * @param {element} elem XML element to be parsed
      *

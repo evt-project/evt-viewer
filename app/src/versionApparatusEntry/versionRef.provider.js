@@ -86,8 +86,9 @@ angular.module('evtviewer.versionApparatusEntry')
                      */
                     callback = function() {
                         var vm = this;
+                        var versions;
                         if (currentElId !== target && target !== config.versions[0]) {
-                            var versions = evtInterface.getState('currentVersions'),
+                            versions = evtInterface.getState('currentVersions'),
                                 scopeVersionIndex = versions.indexOf(currentElId);
                             if (versions.indexOf(target) >= 0 && versions.length > 1) {
                                 evtInterface.removeVersion(target);
@@ -96,7 +97,7 @@ angular.module('evtviewer.versionApparatusEntry')
                             if (currentViewMode !== 'versions') {
                                 evtInterface.updateState('currentViewMode', 'versions');
                             }
-                            evtInterface.updateUrl()
+                            evtInterface.updateUrl();
                             var currentVersionAppId = evtInterface.getState('currentVersionEntry') || '';
                             if (currentVersionAppId !== '') {
                                 var newBox = evtBox.getElementByValueOfParameter('version', target);
@@ -112,13 +113,13 @@ angular.module('evtviewer.versionApparatusEntry')
                             evtInterface.updateCurrentVersion(target);
                             var entry = parsedData.getVersionEntries()[evtInterface.getCurrentVersionEntry()].content;
                             var vers = Object.keys(entry);
-                            var versions = evtInterface.getState('currentVersions');
+                            versions = evtInterface.getState('currentVersions');
                             for (var i = 0; i < vers.length; i++) {
                                 if (versions.indexOf(vers[i]) < 0 && vers[i] !== config.versions[0]) {
                                     evtInterface.addVersion(vers[i]);
                                 }
                             }                            
-                            evtInterface.updateUrl()
+                            evtInterface.updateUrl();
                         }
                     };
                     break;

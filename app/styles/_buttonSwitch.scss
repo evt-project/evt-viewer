@@ -10,14 +10,18 @@ $buttonSwitch-active-background-color: $base-color-active-background;
 $buttonSwitch-active-color: $base-color-active;
 button-switch {
     margin-right: 5px;
+    display: inline-block;
 
     .buttonSwitch {
         min-height: 28px;
         min-width: 30px;
         width: auto;
+        vertical-align: middle;
 
         position: relative;
-        display: inline-block;
+        display: inline-flex!important;
+        justify-content: center;
+        align-items: center;
         overflow: visible;
         left: 0px;
 
@@ -58,20 +62,21 @@ button-switch {
         }
 
         &-label {
-            margin: 0px;
-            margin-left: 4px;
-            top: 3.5px;
-            position: relative;
+           margin: 0px;
+           margin-left: 4px;
         }
 
         &-icon {
             position: relative;
             right: 0px;
-            top: 9px;
             font-size: 1.4em;
 
             &.fa {
                 font-size: 1.1em !important;
+                top: 0px;
+                &.fa-angle-double-down {
+                    top: -4px;
+                }
             }
         }
         &.iconLeft {
@@ -85,7 +90,49 @@ button-switch {
             }
         }
     }
-
+    .buttonSwitch-disabled, &[data-disabled="true"] .buttonSwitch{
+        opacity: .5;
+        cursor: not-allowed !important;
+        &:hover {
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+    }
+    &.sliders {
+        margin-right: 0;
+        .buttonSwitch {
+            font-size: 0.5em;
+        }
+    }
+    &.navBar-opener, &.navBar-closer {
+        .buttonSwitch {
+            position: absolute;
+            right: 2px;
+            left: auto;
+            bottom: $base-slider-height;
+            background: rgba($buttonSwitch-background-color,.4);
+            &:hover {
+                background: rgba($buttonSwitch-background-color,1);
+            }
+            z-index: 999999;
+            font-size: 0.8em;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        &.inverted-color {
+            .buttonSwitch {
+                background: rgba($buttonSwitch-color,.4);
+                &:hover {
+                    background: rgba($buttonSwitch-color,1);
+                }
+            }
+        }
+    }
+    &.navBar-closer {
+        .buttonSwitch {
+            bottom: 1px;
+        }
+    }
     &.inverted-color {
         .buttonSwitch {
             color: $buttonSwitch-background-color;
@@ -109,7 +156,6 @@ button-switch {
             &-icon{
                 // color: $base-color-light;
                 font-size: 1.3em;
-                top:7px;
             }
             &-active, &:hover{
                 .icon {
@@ -131,11 +177,10 @@ button-switch {
             min-width: 22px;
             width: 22px;
             font-size: 0.7em;
-            
+
             &-icon {
                 right: 0px;
                 font-weight: bold;
-                top: 8px;
             }
         }
     }
@@ -175,7 +220,7 @@ button-switch {
         text-align: center;
         opacity: 1;
         font-weight: bold;
-        color: #000;
+        color: rgb(41, 29, 29);
         background: $buttonSwitch-active-background-color;
 
         &.buttonSwitch-disabled{
@@ -185,10 +230,9 @@ button-switch {
     .buttonSwitch-label {
         display: none;
     }
-    .buttonSwitch-icon {
-        margin-left: 8px;
-        margin: 8px 0;
-        font-size: 1.4em;
-        top: 14px;
-    }
+   .buttonSwitch-icon {
+      margin-left: 8px;
+      margin: 8px 0;
+      font-size: 1.4em;
+   }
 }

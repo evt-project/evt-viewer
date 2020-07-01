@@ -19,7 +19,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 		display: block;
 		padding: 7px;
 		padding-bottom: 4px;
-		
+
 		&:hover {
 			cursor: pointer;
 			//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
@@ -63,7 +63,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 		font-size: 85%;
 
 		border-top: 3px double $base-color-middle;
-		
+
 		// width:90%;
 		p {
 			padding: 0 10px;
@@ -106,7 +106,9 @@ $named-entities-border-color : rgb(125, 125, 125);
 			overflow-x: hidden;
 			overflow-y: auto;
 			background-color: $named-entities-background-color-darker;
-
+			&.largeMap {
+				max-height: 100%;
+			}
 		}
 
 		&-panel {
@@ -133,14 +135,14 @@ $named-entities-border-color : rgb(125, 125, 125);
 		&-text {
 			margin-left: 24px;
 			display: block;
-			
+
 			&-content {
 				display: inline-block;
 				&:first-letter {
 					text-transform: uppercase;
 				}
 
-				// 
+				//
 				// Specific TEI situations
 				//
 
@@ -189,7 +191,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 
 		&.opened, &.location-mainText {
 			display: block;
-			
+
 			> span {
 				display: block;
 			}
@@ -279,7 +281,7 @@ $named-entities-border-color : rgb(125, 125, 125);
 		}
 	}
 
-	// 
+	//
 	// Specific TEI situations
 	//
 
@@ -297,7 +299,7 @@ $placeColor: #EEF7EF;
 $placeColor-darker: #c8e6c9;
 
 $orgColor: #FFE9C9;
-$orgColor-darker: #ffb74d; 
+$orgColor-darker: #ffb74d;
 
 @mixin namedEntityColors($color-base, $color-darker) {
 	&.location-mainText, &.location-pinned {
@@ -391,20 +393,20 @@ $orgColor-darker: #ffb74d;
 .namedEntityRef {
 	color: $base-color-middle;
 	cursor: pointer;
-	
+
 	&.highlighted {
 		background: #ffc !important;
 	}
-	
+
 	&.fakeEntity {
 		cursor: default;
 	}
-	
+
 	&.active {
 		border: 1px solid #000;
 		border-bottom: 5px solid #fff;
 	}
-	
+
 	&-person, &-pers, &-persName {
 		&:hover {
 			background-color: $personColor;
@@ -523,7 +525,7 @@ $orgColor-darker: #ffb74d;
 
 [data-value="org"], [data-value="orgName"] {
 	.option-icon-label {
-		color: $orgColor-darker;    
+		color: $orgColor-darker;
 	}
 }
 

@@ -27,6 +27,15 @@ angular.module('evtviewer.reading')
     // 
     // Control function
     // 
+    var changeRangeStatus = function(property, className) {
+        angular.forEach(vm.range, function(el) {
+            if (property && el.className.indexOf(className) < 0) {
+                el.className += ' ' + className;
+            } else if (!property && el.className.indexOf(className) >= 0) {
+                el.className = el.className.replace(' ' + className, '');
+            }
+        });
+    }
     /**
      * @ngdoc method
      * @name evtviewer.reading.controller:ReadingCtrl#mouseOver
@@ -38,6 +47,9 @@ angular.module('evtviewer.reading')
      */
     this.mouseOver = function() {
         vm.over = true;
+        if (vm.overlap && vm.range) {
+            changeRangeStatus(vm.over, 'over');
+        }
     };
     /**
      * @ngdoc method
@@ -50,6 +62,9 @@ angular.module('evtviewer.reading')
      */
     this.mouseOut = function() {
         vm.over = false;
+        if (vm.overlap && vm.range) {
+            changeRangeStatus(vm.over, 'over');
+        }
     };
     /**
      * @ngdoc method
@@ -62,6 +77,9 @@ angular.module('evtviewer.reading')
      */
     this.setSelected = function() {
         vm.selected = true;
+        if (vm.overlap && vm.range) {
+            changeRangeStatus(vm.selected, 'selected');
+        }
     };
     /**
      * @ngdoc method
@@ -74,6 +92,9 @@ angular.module('evtviewer.reading')
      */
     this.unselect = function() {
         vm.selected = false;
+        if (vm.overlap && vm.range) {
+            changeRangeStatus(vm.selected, 'selected');
+        }
     };
     /**
      * @ngdoc method
@@ -215,7 +236,9 @@ angular.module('evtviewer.reading')
      * @param {event} $event click event
      */
     this.callbackClick = function($event) {
-        $event.stopPropagation();
+        if ($event) {
+            $event.stopPropagation();
+        }
         if (vm.over) {
             vm.toggleSelectAppEntries($event);
             if (!vm.isSelect() || (vm.apparatus.inline && !vm.apparatus.opened)){
@@ -283,14 +306,14 @@ angular.module('evtviewer.reading')
             app     = parsedData.getCriticalEntryById(vm.appId);
             reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
             if (reading !== undefined){
-                readingAttributes = reading.attributes || {};
-            
+                readingAttributes = parsedData.getReadingAttributes(vm.readingId, vm.appId) || {};
+                
                 filterLabels = parsedData.getCriticalEntriesFilters();
-
                 possibleFilters = $scope.$parent.vm.type === 'witness' ? possibleVariantFilters : possibleLemmaFilters;
                 if (Object.keys(readingAttributes).length > 0) {
                     var colors = '';
                     var opacity = (vm.over || vm.isSelect() || parentStatusOver) && !$scope.$parent.vm.state.topBoxOpened ? '1' : '.4';
+                    
                     for (var label in filterLabels) {
                         var filterLabel = filterLabels[label].name;
                         if (possibleFilters.indexOf(filterLabel) >= 0) {
@@ -388,11 +411,11 @@ angular.module('evtviewer.reading')
             values,
             value,
             key;
+        readingAttributes = parsedData.getReadingAttributes(vm.readingId, vm.appId) || {};
+                
         if (app !== undefined){
             reading = vm.readingId !== undefined ? app.content[vm.readingId] : app.content[app.lemma];
             if (reading !== undefined){
-                readingAttributes = reading.attributes || {};
-            
                 var filters = $scope.$parent.vm.state.filters || {};
                 var filterKeys = Object.keys(filters);
                 if (condizione === 'OR') {
@@ -407,8 +430,10 @@ angular.module('evtviewer.reading')
                                 i = 0;
                                 values = filter.values;
                                 while ( i < values.length && !match) {
-                                    value = values[values[i]].name;
-                                    match = match || readingAttributes[filterLabel] === value;
+                                    if (values[values[i]].active) {
+                                        value = values[values[i]].name;
+                                        match = match || readingAttributes[filterLabel] === value;
+                                    }
                                     i++;
                                 }
                             }

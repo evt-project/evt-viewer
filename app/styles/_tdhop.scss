@@ -1,0 +1,437 @@
+/*
+3DHOP - 3D Heritage Online Presenter
+Copyright (c) 2014-2019, Visual Computing Lab, ISTI - CNR
+All rights reserved.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#tdhop {
+   font-family: Junicode, Times, serif;
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   max-width: 100%;
+   max-height: 100%;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+#tdhlg {
+   left: 85% !important;
+   top: 95% !important;
+   position: absolute;
+   width: 105px;
+   height: 13px;
+   overflow: hidden;
+   cursor: pointer;
+   color: #909090;
+   text-align: center;
+   text-decoration: none;
+   font-family: verdana;
+   font-style: italic;
+   font-size: 10px;
+   line-height: 13px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+#toolbar {
+   position: absolute;
+   left: 10px;
+   margin-top: 10px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+#toolbar img {
+   margin-bottom: 2px;
+   width: 32px;
+   height: 32px;
+   opacity: 0.5;
+   cursor: pointer;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+.output-box {
+   position: absolute;
+   display: none;
+   border-radius: 5px;
+   margin: 0;
+   height: 48px;
+   padding: 0px 5px 2px 5px;
+   cursor: default;
+   background-color: rgba(125, 125, 125, 0.5);
+   color: #f8f8f8;
+   text-decoration: none;
+   text-align: center;
+   font-family: verdana;
+   font-style: italic;
+   font-size: 12px;
+   line-height: 20px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+.output-text {
+   padding: 0px 5px 0px 5px;
+   cursor: text;
+   -webkit-user-select: text;
+   -webkit-touch-callout: text;
+   -khtml-user-select: text;
+   -moz-user-select: text;
+   -ms-user-select: text;
+   user-select: text;
+}
+
+.output-input {
+   vertical-align: middle;
+   cursor: pointer;
+   height: 15px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+.output-table {
+   margin: 0;
+   width: 100%;
+   color: #f8f8f8;
+   text-align: center;
+   font-style: italic;
+   font-size: 12px;
+   line-height: 15px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+.output-table img {
+   height: 25px;
+   cursor: pointer;
+   background-color: rgba(125, 125, 125, 0.25);
+   border: 1px outset;
+   border-radius: 5px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+   user-drag: none;
+   -webkit-user-drag: none;
+}
+
+.output-table img:hover {
+   background-color: rgba(125, 125, 125, 0.8);
+}
+
+.output-box hr {
+   margin: 0 0 3px 0;
+   border: 0;
+   height: 1px;
+   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(225, 225, 225, 0.75), rgba(0, 0, 0, 0));
+}
+
+#draw-canvas {
+   width: 100%;
+   height: 100%;
+   background-repeat: no-repeat;
+   background-position: center top;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   outline: none;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+
+/*IE*/
+input[type="range"].output-input {
+   padding: 0;
+   width: 125px;
+}
+.output-input::-ms-tooltip {
+   display: none;
+}
+
+/*DEPRECATED*/
+#measurebox {
+   position: absolute;
+   visibility: hidden;
+   overflow: hidden;
+   border-radius: 5px;
+   right: 10;
+   top: 10;
+   margin: 0;
+   width: 105px;
+   height: 26px;
+   cursor: default;
+   color: #909090;
+   text-decoration: none;
+   text-align: center;
+   font-family: verdana;
+   font-style: italic;
+   font-size: 10px;
+   line-height: 13px;
+   -webkit-user-select: none;
+   -webkit-touch-callout: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-tap-highlight-color: transparent;
+}
+#measure-output {
+   cursor: text;
+   -webkit-user-select: text;
+   -webkit-touch-callout: text;
+   -khtml-user-select: text;
+   -moz-user-select: text;
+   -ms-user-select: text;
+   user-select: text;
+}
+#measure-box {
+   position: absolute;
+   top: 485px;
+   left: 70px;
+}
+#pickpoint-box {
+   position: absolute;
+   top: 555px;
+   left: 70px;
+}
+#sections-box {
+   position: absolute;
+   top: 620px;
+   left: 70px;
+}
+#lightcontroller {
+   position: absolute;
+}
+#arrows {
+   display: block;
+}
+.models {
+   background-color: rgba(50, 50, 50, 0.5);
+   padding: 1%;
+   border-radius: 10px;
+   box-shadow: 1px 1px 10px #f8f8f8;
+   margin-bottom: 2px;
+   margin-left: 3px;
+}
+.move_ {
+   background-color: rgba(50, 50, 50, 0.5);
+   padding: 1.5%;
+   border-radius: 6px;
+   box-shadow: 1px 1px 10px #f8f8f8;
+}
+.up {
+   transform: rotate(270deg);
+}
+.dawn {
+   transform: rotate(90deg);
+}
+.right {
+}
+.left {
+   transform: rotate(180deg);
+}
+#compassCanvass {
+   font-family: Junicode, Times, serif;
+}
+.dropbtn {
+   border-radius: 2px;
+   font-family: Junicode, Times, serif;
+   height: 28px;
+   min-width: 80px;
+   position: relative;
+   left: 0;
+   display: inline-block;
+   background: #eceff1;
+   color: #263238;
+   font-size: 1em;
+   text-align: left;
+   overflow: visible;
+   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+   padding: 3px;
+}
+
+.dropdown {
+   position: relative;
+   display: inline-block;
+   margin: 0 4px;
+   padding-right: 24px;
+}
+
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: #f1f1f1;
+   min-width: 160px;
+   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+   z-index: 1;
+   color: #263238;
+}
+
+.dropdown-content div {
+   color: black;
+   padding: 12px 18px;
+   text-decoration: none;
+   display: block;
+}
+
+.dropdown-content div:hover {
+   background-color: #263238;
+   color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+
+.dropdown:hover .dropbtn {
+}
+
+.open_options {
+   height: 28px;
+   width: 24px;
+   position: absolute;
+   right: 0;
+   top: 0;
+   opacity: 0.5;
+   border-left: 1px solid #b0bec5;
+   border-radius: 0 2px 2px 0;
+   background: #b0bec5;
+   text-align: center;
+   cursor: pointer;
+}
+.option_container {
+   display: none;
+   height: auto;
+   max-height: 170px;
+   min-width: 100%;
+   width: auto;
+   position: absolute;
+   left: 0;
+   top: 30px;
+   overflow-y: auto;
+   background: #eceff1;
+   z-index: 400;
+   -o-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+   -khtml-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+   -ms-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+[data-type="3D_Desc"] span.label-physDesc.projectInfo-sectionSubHeader.ng-binding {
+   display: none;
+}
+[data-type="3D_Desc"] .head[data-type="main"],
+[data-type="3D_Desc"] .head {
+   font-weight: bolder;
+   font-size: x-large;
+   color: #a15517 !important;
+}
+[data-type="3D_Desc"] .head[data-type="main"]:hover,
+[data-type="3D_Desc"] .head:hover {
+   text-decoration: underline;
+}
+[data-type="3D_Desc"] .objectName {
+   font-weight: bolder;
+   font-size: larger;
+   color: #c0671e !important;
+}
+[data-type="3D_Desc"] .object:hover .objectName {
+   text-decoration: underline;
+}
+[data-type="3D_Desc"] .object:hover {
+   background-color: #ececec;
+   opacity: 90%;
+   z-index: 1;
+}
+.object {
+   display: block;
+}

@@ -2,10 +2,10 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtCriticalApparatus
- * @description 
+ * @description
  * # evtCriticalApparatus
  * Service containing methods to handle the contents of critical apparatus entries (lemma, readings, etc.).
- * 
+ *
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
@@ -267,7 +267,7 @@ angular.module('evtviewer.dataHandler')
 					readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
 				} else if (reading.content[i].type === 'genericElement') {
 					readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
-					//Added by CM    
+					//Added by CM
 				} else if (reading.content[i].type === 'quote' ||
 					reading.content[i].type === 'analogue') {
 					readingText += apparatus.getCriticalElementContent(reading.content[i], scopeWit);
@@ -277,7 +277,7 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 		if (readingText === '') {
-			readingText = ' <i>omit.</i> ';
+			readingText = ' <i>om.</i> ';
 		}
 		readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
 		readingText = readingText.replace(/ xmlns="http:\/\/www\.tei-c\.org\/ns\/1\.0"/g, '');
@@ -291,7 +291,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * Retrieve the content of a particular critical element, that could be a sub apparatus, a generic element 
+     * Retrieve the content of a particular critical element, that could be a sub apparatus, a generic element
      * or a simple text string. This function can be used to generate the output of a critical apparatus entry.
      *
      * @param {Object} element JSON object representing the element to handle
@@ -302,7 +302,7 @@ angular.module('evtviewer.dataHandler')
 	apparatus.getGenericContent = function(element, scopeWit) {
 		var genericContentText;
 
-		genericContentText = '<span class="' + element.tagName + ' inApparatus">';
+		genericContentText = ' <span class="' + element.tagName + ' inApparatus">';
 		for (var i = 0; i < element.content.length; i++) {
 			if (typeof(element.content[i]) === 'string') {
 				genericContentText += element.content[i];
@@ -395,7 +395,7 @@ angular.module('evtviewer.dataHandler')
      * Retrieve the output for the list of significant readings of a particular critical apparatus entry.
      * The function will eventually tranform empty node into omission nodes,
      * will handle lacunas and fragments tags and generate a well formatted output
-     * where the reading text is follower by the list of witnesses siglas to which the reading belongs. 
+     * where the reading text is follower by the list of witnesses siglas to which the reading belongs.
      *
      * @param {Object} reading JSON object representing the reading to handle
      * @param {string} scopeWit id of witness to consider
@@ -423,7 +423,7 @@ angular.module('evtviewer.dataHandler')
 					readingText += apparatus.getSubApparatus(reading.content[i].id, scopeWit);
 				} else if (reading.content[i].type === 'genericElement') {
 					readingText += apparatus.getGenericContent(reading.content[i], scopeWit);
-					//Added by CM    
+					//Added by CM
 				} else if (reading.content[i].type === 'quote' ||
 					reading.content[i].type === 'analogue') {
 					readingText += apparatus.getCriticalElementContent(reading.content[i], scopeWit);
@@ -433,7 +433,7 @@ angular.module('evtviewer.dataHandler')
 			}
 		}
 		if (readingText === '') {
-			readingText = ' <i>omit.</i> ';
+			readingText = ' <i>om.</i> ';
 		}
 		readingText = apparatus.transformCriticalEntryLacunaMilestones(readingText);
 
@@ -468,7 +468,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} string representing the generated HTML for the critical element content
-     * 
+     *
      * @author CM
      */
 	apparatus.getCriticalElementContent = function(element, scopeWit) {
@@ -510,7 +510,7 @@ angular.module('evtviewer.dataHandler')
      * @param {Object} element JSON object representing the critical entry to handle
      *
      * @returns {string} the text of entry
-     * 
+     *
      * @author CM
      * @todo: Decide if the transformation of each text node in a span.textNode is still necessary or not.
      */
@@ -540,7 +540,7 @@ angular.module('evtviewer.dataHandler')
      * @param {string} scopeWit id of witness to consider
      *
      * @returns {string} the text of apparatus entry
-     * 
+     *
      * @author CM
      */
 	var getAppText = function(entry, scopeWit) {
@@ -563,7 +563,7 @@ angular.module('evtviewer.dataHandler')
      *
      * @description
      * Retrieve the output to show the list of witnesses to which belongs a particular reading
-     * within a particular critical apparatus entry. Each sigla will be trasformed into a 
+     * within a particular critical apparatus entry. Each sigla will be trasformed into a
      * <code>&lt;evt-witness-red&gt;</code> element.
      *
      * @param {Object} reading JSON object representing the reading to handle
@@ -629,7 +629,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * This method transform <code>lacunaStart</code> and <code>lacunaEnd</code> elements into 
+     * This method transform <code>lacunaStart</code> and <code>lacunaEnd</code> elements into
      * simple element that will inform about the start/end of a lacuna.
      *
      * @param {string} appText text of the apparatus to handle
@@ -647,7 +647,7 @@ angular.module('evtviewer.dataHandler')
      * @methodOf evtviewer.dataHandler.evtCriticalApparatus
      *
      * @description
-     * This method transform <code>witStart</code> and <code>witEnd</code> elements into simple element 
+     * This method transform <code>witStart</code> and <code>witEnd</code> elements into simple element
      * that will inform about the start/end of a fragment.
      *
      * @param {string} appText text of the apparatus to handle

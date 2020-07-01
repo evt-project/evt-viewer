@@ -2,7 +2,7 @@
  * @ngdoc service
  * @module evtviewer.dataHandler
  * @name evtviewer.dataHandler.evtProjectInfoParser
- * @description 
+ * @description
  * # evtProjectInfoParser
  * Service containing methods to parse data regarding edition header information.
  *
@@ -15,19 +15,21 @@ angular.module('evtviewer.dataHandler')
 
 .service('evtProjectInfoParser', function($q, parsedData, evtParser, xmlParser) {
     var parser = {};
-    
+
     var projectInfoDef         = '<teiHeader>',
         fileDescriptionDef     = '<fileDesc>',
         encodingDescriptionDef = '<encodingDesc>',
         textProfileDef         = '<profileDesc>',
         outsideMetadataDef     = '<xenoData>',
-        revisionHistoryDef     = '<revisionDesc>';
+        revisionHistoryDef     = '<revisionDesc>',
+        msDesc                 = '<msDesc>';
+        listObject             = '<listObject>';
 
     var skipElementsFromParser = '<evtNote>',
         skipElementsFromInfo   = '<listBibl>, <listWit>';
     parser.parseProjectInfo = function(doc){
         var currentDocument = angular.element(doc);
-        angular.forEach(currentDocument.find(projectInfoDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(projectInfoDef.replace(/[<>]/g, '')),
             function(element) {
                 parser.parseEditionReference(element);
                 parser.parseFileDescription(element);
@@ -35,8 +37,10 @@ angular.module('evtviewer.dataHandler')
                 parser.parseTextProfile(element);
                 parser.parseOutsideMetadata(element);
                 parser.parseRevisionHistory(element);
+                parser.parseMsDescription(element);
+                parser.parselistObjectDescription(element);
         });
-        //console.log('## parseProjectInfo ##', parsedData.getProjectInfo());
+        console.log('## parseProjectInfo ##', parsedData.getProjectInfo());
     };
 
     var editionStmt     = '<editionStmt>', //dichiarazione sul titolo
@@ -46,6 +50,7 @@ angular.module('evtviewer.dataHandler')
         seriesStmt      = '<seriesStmt>',
         sourceDesc      = '<sourceDesc>',
         titleStmt       = '<titleStmt>';
+
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtProjectInfoParser#parseEditionReference
@@ -83,7 +88,7 @@ angular.module('evtviewer.dataHandler')
      * The file description usually contains a full bibliographical description of the computer file itself,
      * from which a user of the text could derive a proper bibliographic citation,
      * or which a librarian or archivist could use in creating a catalogue entry
-     * recording its presence within a library or archive.  
+     * recording its presence within a library or archive.
      *
      * @param {element} teiHeader XML element representing the TEI Header to be parsed
      *
@@ -91,7 +96,7 @@ angular.module('evtviewer.dataHandler')
      */
     parser.parseFileDescription = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
-        angular.forEach(currentDocument.find(fileDescriptionDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(fileDescriptionDef.replace(/[<>]/g, '')),
             function(element) {
                 if (element.children.length > 0){
                     var fileDescContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
@@ -116,7 +121,7 @@ angular.module('evtviewer.dataHandler')
      */
     parser.parseEncodingDescription = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
-        angular.forEach(currentDocument.find(encodingDescriptionDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(encodingDescriptionDef.replace(/[<>]/g, '')),
             function(element) {
                 if (element.children.length > 0){
                     var encodingDescContent = '',
@@ -125,12 +130,34 @@ angular.module('evtviewer.dataHandler')
                         var encodingDescParsedElement = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                         encodingDescContent = encodingDescParsedElement ? encodingDescParsedElement : '';
                         encodingDescContent += '<span class="variantEncoding">{{ \'PROJECT_INFO.ENCODING_METHOD_USED\' | translate:\'{ method:  "'+variantEncodingEl.getAttribute('method')+'" }\' }}</span>';
+                        parser.parseVariantEncodingInfo(variantEncodingEl);
                     }
                     parsedData.updateProjectInfoContent(encodingDescContent, 'encodingDescription');
                 }
         });
         // console.log('## parseEncodingDescription ##', parsedData.getProjectInfo().encodingDescription);
     };
+    /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtProjectInfoParser#parseVariantEncodingInfo
+     * @methodOf evtviewer.dataHandler.evtProjectInfoParser
+     *
+     * @description
+     * This method will parse the information about the variant encoding method and location
+     * and store them into {@link evtviewer.dataHandler.parsedData parsedData} for future retrievements.
+     *
+     * @param {elem} variantEncoding XML element representing the encoding method for variants
+     *
+     * @author CM
+     */
+    parser.parseVariantEncodingInfo = function(elem) {
+        if (elem.hasAttribute('method')) {
+            parsedData.setEncodingDetail('variantEncodingMethod', elem.getAttribute('method'));
+        }
+        if (elem.hasAttribute('location')) {
+            parsedData.setEncodingDetail('variantEncodingLocation', elem.getAttribute('location'));
+        }
+    }
     /**
      * @ngdoc method
      * @name evtviewer.dataHandler.evtProjectInfoParser#parseTextProfile
@@ -149,7 +176,7 @@ angular.module('evtviewer.dataHandler')
      */
     parser.parseTextProfile = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
-        angular.forEach(currentDocument.find(textProfileDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(textProfileDef.replace(/[<>]/g, '')),
             function(element) {
                 if (element.children.length > 0){
                     var textProfileContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
@@ -175,7 +202,7 @@ angular.module('evtviewer.dataHandler')
      */
     parser.parseOutsideMetadata = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
-        angular.forEach(currentDocument.find(outsideMetadataDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(outsideMetadataDef.replace(/[<>]/g, '')),
             function(element) {
                 if (element.children.length > 0){
                     var outsideMetadataContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
@@ -201,7 +228,7 @@ angular.module('evtviewer.dataHandler')
      */
     parser.parseRevisionHistory = function(teiHeader){
         var currentDocument = angular.element(teiHeader);
-        angular.forEach(currentDocument.find(revisionHistoryDef.replace(/[<>]/g, '')), 
+        angular.forEach(currentDocument.find(revisionHistoryDef.replace(/[<>]/g, '')),
             function(element) {
                 var revisionHistoryContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
                 parsedData.updateProjectInfoContent(revisionHistoryContent, 'revisionHistory');
@@ -209,5 +236,35 @@ angular.module('evtviewer.dataHandler')
         // console.log('## parseRevisionHistory ##', parsedData.getProjectInfo().revisionHistory);
     };
 
+    parser.parseMsDescription = function (teiHeader) {
+        var currentDocument = angular.element(teiHeader);
+        angular.forEach(currentDocument.find(msDesc.replace(/[<>]/g, '')),
+            function(element) {
+                var msDescContent = evtParser.parseXMLElement(teiHeader, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
+                parsedData.updateProjectInfoContent(msDescContent, 'msDesc');
+        });
+       //  console.log('## parseMsDescription ##', parsedData.getProjectInfo().msDesc);
+    };
+        /**
+     * @ngdoc method
+     * @name evtviewer.dataHandler.evtProjectInfoParser#parselistObjectDescription
+     * @methodOf evtviewer.dataHandler.evtProjectInfoParser
+     *
+     * @description
+     * This method will parse description about the 3D Objects
+     *
+     * @param {element} teiHeader XML element representing the TEI Header to be parsed
+     *
+     * @author FS
+     */
+    parser.parselistObjectDescription = function (TEI) {
+      var currentDocument = angular.element(TEI);
+      angular.forEach(currentDocument.find(listObject.replace(/[<>]/g, '')),
+          function(element) {
+              var listObjectContent = evtParser.parseXMLElement(TEI, element, { skip: skipElementsFromParser, exclude: skipElementsFromInfo, context:'projectInfo' }).outerHTML;
+              parsedData.updateProjectInfoContent(listObjectContent, 'listObject');
+      });
+       console.log('## parselistObjectDescription ##', parsedData.getProjectInfo().listObject);
+  };
     return parser;
 });

@@ -1,224 +1,400 @@
-/* *************************** */
-/* DIPLOMATIC EDITION 		   */
-/* *************************** */
-
 .diplomaticEdition {
-    // Abbreviations and Their Expansions
-    .choice {
-        .abbr {
-            color: purple;
-        }
+	// Abbreviations and Expansions
+	.choice {
+		position: relative;
+		text-align: center;
 
-        > .expan {
-            display: none;
-        }
-    }
+		&:before,
+		&:after {
+			content: "";
+		}
 
-    // 3.3.2 Emphasis, Foreign Words, and Unusual Language
-    // 3.3.2.2 Emphatic Words and Phrases
-    .hi {
-        &[data-rend="7init"] {
-            font-size: 200%;
-            font-weight: bold;
-        }
-
-        &[data-rend="init3.1"] {
-            font-size: 180%;
-            font-weight: bold;
-        }
-
-        &[data-rend="cap"] {
-            text-transform: uppercase;
-        }
-
-        &[data-rend="double"] {
-            font-size: 120%;
-        }
-    }
-
-    // 3.4 Simple Editorial Changes
-    .choice {}
-
-    // 3.4.2 Regularization and Normalization
-    .choice {
-        position: relative;
-
-        &:before, &:after {
-            content: "";
-        }
-
-        &:hover .reg, &.hover .reg {
+		&:hover,
+		&.hover {
+         .expan {
             display: inline;
             min-width: 20px;
-            text-align: center;
             z-index: 99;
-        }
+            white-space: nowrap;
+		   }
+      }
 
-        .orig {
-            color: #69513a;
-        }
-
-        &:hover .orig, &.hover .orig {
-            color: #561c0a;
+      .abbr {
+		 color: purple;
+       z-index: 9;
+         &:hover,
+         &.hover {
             text-decoration: underline;
-            z-index: 9;
-        }
+            color: #561c0a;
+         }
+      }
 
-        .corr {
-            display: none;
-        }
-    }
+		.expan {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
+			padding: 5px 2px;
+			margin-top: 30px;
+			left: 0;
 
-    .reg {
-        font-size: 80%;
-        position: absolute;
-        line-height: 16px;
-        display: none;
-        border: 1.5px solid black;
-        border-radius: 3px;
-        padding: 0.4%;
-        margin-top: 30px;
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-        @include set(box-shadow, 2px 2px 2px #7e7067);
+			&:before {
+				content: url("../images/popup_before.png");
+				left: 15%;
+				position: absolute;
+				top: -12px;
+			}
+		}
 
-        position: absolute;
-        left: 0;
+      .expan, .expan * {
+			background: #e5dac4 !important;
+		}
 
-        &:before {
-            content: url("../images/popup_before.png");
-            left: 15%;
-            position: absolute;
-            top: -13px;
-        }
+		// Abbreviations and Expansions inside Orig and Reg classes
+		.reg  > .expan, .expan > .ex {
+			font-size: 100%;
+			position: relative;
+			border: none;
+			border-radius: 0;
+			margin-top: 0;
+         padding: 0;
 
-        span {
-            background: transparent;
-        }
-    }
+			@include set(box-shadow, 0px 0px 0px);
 
-    .reg, .reg * {
-        background: #e5dac4 !important;
-    }
+			&:before {
+				content: none;
+			}
+     }
+     .abbr {
+         color: purple;
+         z-index: 9;
+         text-decoration: underline;
+      }
 
-    .orig {
-        .sup {
-            line-height: 20px;
-            vertical-align: 20%;
-        }
+   	// 3.4 Simple Editorial Changes
+      // 3.4.2 Regularization and Normalization
+      .corr,
+      .reg {
+			font-size: 80%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
 
-        .under {
-            line-height: 20px;
-            vertical-align: -20%;
-        }
-    }
+			@include set(box-shadow, 2px 2px 2px #7e7067);
 
-    // 3.4.3 Additions, Deletions, and Omissions
-    .add {
-        background-color: rgba(0, 128, 0, 0.8);
+         padding: 5px 8px;
+         margin-top: 30px;
 
-        &[data-place='above'] {}
-    }
+			&:before {
+				left: 15%;
+				position: absolute;
+				top: -13px;
+			}
+      }
 
-    .del {
-        background-color: red;
-        text-decoration: line-through;
-    }
+      .corr {
+         left: 3em !important;
+         &:before {
+           content: url("../images/popup_before_corr.png");
+         }
+      }
 
-    // 11.3.3.1 Damage, Illegibility, and Supplied Text
-    .damage {
-        background-color: rgba(193, 193, 193, 0.7);
-    }
+      .corr,
+      .corr * {
+        background: #f99069 !important;
+      }
 
-    .supplied {
-        &[data-reason='omitted'] {}
+      .reg {
+         &:before {
+           content: url("../images/popup_before.png");
+         }
+       }
 
-        &[data-reason='illeggibile'] {}
-    }
+       .reg,
+       .reg * {
+          background: #e5dac4 !important;
+       }
 
-    //TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
-    .glyph {
-        .glyphname, .mapping {
-            display: none;
-        }
+       .orig {
+         color: #69513a;
 
-        .mapping[data-type="diplomatic"] {
-            display: inline;
-        }
-    }
+         &:hover,
+         &.hover {
+           color: #561c0a;
+         }
+       }
 
-    .char {
-        .charname, .mapping {
-            display: none;
-        }
+		&:hover,
+		&.hover {
+           .reg,
+           .corr {
+            	display: inline;
+               min-width: 20px;
+               text-align: center;
+            	z-index: 9;
+               white-space: nowrap;
+               left: 0px;
+            }
+            .corr {
+               @include set(transform, translate(-80%, 0));
+             }
 
-        .mapping[data-type="diplomatic"] {
-            display: inline;
-        }
-    }
+             .orig {
+               text-decoration: underline;
+             }
+      }
+      .sic {
+         color: #934d4d;
+       }
 
-    //TO CHECK AND REORDER
-    .center, [rend="center"] {
-        text-align: center;
-        width: 92%;
-        display: inline-table;
-        background: #FFF;
-    }
+       .sup {
+         line-height: 20px;
+         vertical-align: 20%;
+       }
 
-    .right, [rend="right"] {
-        text-align: right;
-        display: inline-table;
-        background: #FFF;
-    }
+       .under {
+         line-height: 20px;
+         vertical-align: -20%;
+       }
 
-    .left, [rend="left"] {
-        display: inline-table;
-    }
+       .corr {
+         display: inline-table;
 
-    [data-rend="red"] {
-        color: red;
-    }
+         &:before,
+         &:after {
+           content: "";
+         }
+      }
+      .corr {
+         font-size: 80%;
+         position: absolute;
+         line-height: 16px;
+         display: none;
+         background: #f99069;
+         border: 1.5px solid black;
+         border-radius: 3px;
 
-    .attachment {
-        border: 1px solid black;
-        padding: 5px 0px 0px 10px;
-    }
+         @include set(box-shadow, 2px 2px 2px #7e7067);
 
-    .lineN {
-        color: grey;
-        font-size: 0.8em;
-    }
+         padding: 5px 8px;
+         margin-top: 30px;
 
-    .subst {
-        text-decoration: underline;
-    }
+         &:before {
+           content: url("../images/popup_before_corr.png");
+           left: 15%;
+           position: absolute;
+           top: -13px;
+         }
+       }
 
-    .zone {
-        margin-bottom: 5px;
-    }
-}
+       .sic {
+         color: #934d4d;
 
-.choice_popup {
-    display: inline-table;
+         &:hover,
+         &.hover {
+           color: #561c0a;
+         }
+       }
 
-    /*white-space: nowrap;*/
-}
+       &:hover,
+       &.hover {
+         .corr {
+           display: inline;
+           min-width: 20px;
+           text-align: center;
+         }
 
-span.dipl-choice_popup:hover span.dipl-reg,
-span.dipl-choice_popup.hover span.dipl-reg {
-    display: inline;
-    min-width: 20px;
-    text-align: center;
-}
+         .sic {
+           text-decoration: underline;
+         }
+       }
+   }
 
-span.dipl-choice_popup span.dipl-orig {
-    /*color: #999966;*/
-    color: #69513a;
+	.mapping[data-type="diplomatic"],
+   .mapping[data-type="orig"],
+   .mapping[data-type="diplomatic"] {
+	  display: inline;
+	}
 
-    /*background-color: rgba(255,255,204,0.8);*/
-}
+   // 3.3.2 Emphasis, Foreign Words, and Unusual Language
+	// 3.3.2.2 Emphatic Words and Phrases
+	.hi {
+		&[data-rend="7init"] {
+			font-size: 200%;
+			font-weight: bold;
+		}
 
-span.dipl-choice_popup:hover span.dipl-orig,
-span.dipl-choice_popup.hover span.dipl-orig {
-    color: #561c0a;
-    text-decoration: underline;
+		&[data-rend="init3.1"] {
+			font-size: 180%;
+			font-weight: bold;
+		}
+
+		&[data-rend="cap"] {
+			text-transform: uppercase;
+		}
+
+		&[data-rend="double"] {
+			font-size: 120%;
+		}
+	}
+
+	// 3.4 Simple Editorial Changes
+	// 3.4.2 Regularization and Normalization
+	.choice {
+
+		&:before, &:after {
+			content: "";
+		}
+
+		&:hover,
+		&.hover {
+        	.reg {
+            	display: inline;
+            	min-width: 20px;
+            	z-index: 9;
+            	white-space: nowrap;
+         	}
+         	.orig {
+            	color: #561c0a;
+            	text-decoration: underline;
+            	//z-index: 9;
+         	}
+      	}
+
+		.corr {
+			display: none;
+		}
+
+      	.orig {
+        	color: #69513a;
+        	.sup {
+            	line-height: 20px;
+            	vertical-align: 20%;
+         	}
+
+         	.under {
+            	line-height: 20px;
+            	vertical-align: -20%;
+         	}
+		}
+	}
+
+		.reg {
+			font-size: 85%;
+			position: absolute;
+			line-height: 16px;
+			display: none;
+			border: 1.5px solid black;
+			border-radius: 3px;
+			padding: 5px 2px;
+			margin-top: 30px;
+
+			@include set(box-shadow, 2px 2px 2px #7e7067);
+
+			left: 0;
+
+			&:before {
+				content: url("../images/popup_before.png");
+				left: 15%;
+				position: absolute;
+				top: -12px;
+			}
+
+			span {
+				background: transparent;
+			}
+		}
+
+		.reg, .reg * {
+			background: #e5dac4 !important;
+		}
+
+	// 3.4.3 Additions, Deletions, and Omissions
+	.add {
+		background-color: #bdecb6;
+		&[data-place='above'] {}
+	}
+
+	.del {
+		background-color: red;
+		text-decoration: line-through;
+	}
+
+	// 11.3.3.1 Damage, Illegibility, and Supplied Text
+	.damage {
+		background-color: rgba(193, 193, 193, 0.7);
+	}
+
+	.supplied {
+		&[data-reason='omitted'] {}
+
+		&[data-reason='illeggibile'] {}
+	}
+
+	//TEMP. TODO: creare direttiva apposita per GLYPHs and CHARs
+	.glyph {
+		.glyphname, .mapping {
+			display: none;
+		}
+
+		.mapping[data-type="diplomatic"] {
+			//display: inline;
+		}
+	}
+
+	.char {
+		.charname, .mapping {
+			display: none;
+		}
+
+		.mapping[data-type="diplomatic"] {
+			//display: inline;
+		}
+	}
+
+	//TO CHECK AND REORDER
+	.center, [rend="center"] {
+		text-align: center;
+		width: 92%;
+		display: inline-table;
+		background: #FFF;
+	}
+
+	.right, [rend="right"] {
+		text-align: right;
+		display: inline-table;
+		background: #FFF;
+	}
+
+	.left, [rend="left"] {
+		display: inline-table;
+	}
+
+	[data-rend="red"] {
+		color: red;
+	}
+
+	.attachment {
+		border: 1px solid black;
+		padding: 5px 0px 0px 10px;
+	}
+
+	.lineN {
+		color: grey;
+		font-size: 0.8em;
+	}
+
+	.subst {
+		text-decoration: underline;
+	}
+
+	.zone {
+		margin-bottom: 5px;
+	}
 }

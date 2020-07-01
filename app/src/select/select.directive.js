@@ -2,7 +2,7 @@
  * @ngdoc directive
  * @module evtviewer.select
  * @name evtviewer.select.directive:evtSelect
- * @description 
+ * @description
  * # evtSelect
  * <p>Element designed upon HTML &lt;select&gt;
  * that will populate options list and handle selection according to a particular type.</p>
@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements) {
+.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -33,7 +33,12 @@ angular.module('evtviewer.select')
             type: '@',
             init: '@',
             openUp: '@',
-            multiselect: '@'
+            multiselect: '@',
+            options: '=',
+            smaller: '@',
+            emptyOption: '@',
+            selectedOption: '@',
+            onOptionSelected: '&'
         },
         templateUrl: 'src/select/select.directive.tmpl.html',
         controllerAs: 'vm',
@@ -51,7 +56,7 @@ angular.module('evtviewer.select')
                 var newMarginTop;
                 //TEMP => TODO: understand why the behaviour is different
                 //if (type === 'pinned-filter') {
-                    newMarginTop = optionContainer.height() + 2; 
+                    newMarginTop = optionContainer.height() + 2;
                 //} else {
                 //    newMarginTop = optionContainer.height() + labelSelected.height();
                 //}
@@ -66,10 +71,28 @@ angular.module('evtviewer.select')
                     if (scope.init !== undefined && scope.init !== '') {
                         currentSelect.selectOptionByValue(scope.init);
                     } else if (!scope.multiselect) {
-                        currentSelect.callback(undefined, scope.vm.optionList[0]);
+                        var firstOption = scope.vm.optionList ? scope.vm.optionList[0] : undefined;
+                        currentSelect.callback(undefined, firstOption);
+                    }
+                }
+
+                if (scope.type === 'div') {
+                    var currentDoc = evtInterface.getState('currentDoc');
+                    var currentDivs = evtInterface.getState('currentDivs');
+                    var divId = currentDivs ? currentDivs[currentDoc] : undefined;
+                    if (divId) {
+                        currentSelect.selectOptionByValue(divId);
                     }
                 }
             });
+
+            scope.$watch(function() {
+                return scope.selectedOption;
+            }, function(newItem, oldItem) {
+                if (oldItem !== newItem) {
+                    currentSelect.selectOptionByValue(scope.selectedOption);
+                }
+            }, true);
 
             if (scope.type === 'witness-page') {
                 var witness = scope.$parent.vm.witness;
@@ -79,7 +102,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(witness+'-'+newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'page') {
@@ -89,7 +112,27 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
+            }
+
+            if (scope.type === 'edition') {
+                scope.$watch(function() {
+                    return evtInterface.getState('currentEdition');
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true);
+            }
+
+            if (scope.type === 'comparingEdition') {
+                scope.$watch(function() {
+                    return evtInterface.getState('currentComparingEdition');
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true);
             }
 
             if (scope.type === 'source') {
@@ -99,7 +142,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'document') {
@@ -109,7 +152,24 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
+            }
+
+            if (scope.type === 'div') {
+                scope.$watch(function() {
+                    var currentDoc = evtInterface.getState('currentDoc');
+                    return evtInterface.getState('currentDivs')[currentDoc];
+                }, function(newItem, oldItem) {
+                    if (oldItem !== newItem) {
+                        var oldDiv = parsedData.getDiv(oldItem),
+                            newDiv = parsedData.getDiv(newItem);
+                        if (oldDiv && newDiv) {
+                            currentSelect.optionList = []
+                            currentSelect.formatOptionList(parsedData.getDivs()._indexes.main[newDiv.doc], currentSelect.optionList, newDiv.section)
+                        }
+                        currentSelect.selectOptionByValue(newItem);
+                    }
+                }, true);
             }
 
             if (scope.type === 'version' && evtInterface.getState('currentViewMode') === 'collation') {
@@ -119,7 +179,7 @@ angular.module('evtviewer.select')
                     if (oldItem !== newItem) {
                         currentSelect.selectOptionByValue(newItem);
                     }
-                }, true); 
+                }, true);
             }
 
             if (scope.type === 'pinned-filter') {
@@ -128,7 +188,7 @@ angular.module('evtviewer.select')
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
                         currentSelect.optionList = currentSelect.formatOptionList(newItem);
-                        var selector = element.find('.selector');                        
+                        var selector = element.find('.selector');
                         if (currentSelect.optionList.length > 0) {
                             selector.show();
                         } else {
@@ -148,14 +208,14 @@ angular.module('evtviewer.select')
                             currentSelect.updateContainerPosition(currentSelect.type);
                         });
                     }
-                }, true); 
+                }, true);
             }
 
             // Garbage collection
             scope.$on('$destroy', function() {
                 if (currentSelect){
                     currentSelect.destroy();
-                }     
+                }
             });
         }
     };

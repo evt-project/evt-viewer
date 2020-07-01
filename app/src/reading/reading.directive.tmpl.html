@@ -2,28 +2,29 @@
     class="reading"
     ng-mouseover="vm.toggleOverAppEntries($event);"
     ng-mouseout="vm.toggleOverAppEntries($event)"
+    ng-click="vm.callbackClick($event);"
     ng-class="{ 'selected' : vm.isSelect() && !$parent.vm.state.topBoxOpened,
                 'expansed' : (!$parent.vm.state.topBoxOpened && vm.apparatus.opened && vm.apparatus.inline),
                 'over'     : vm.over, 
                 'invisible': !vm.fitFilters(),
                 'blurred'  : $parent.vm.state.topBoxOpened}">
     <span 
+        ng-if="!vm.noText" 
         class="reading__text"
         style="{{vm.backgroundColor()}}"
         title="{{vm.attributes | translate}}"
-        ng-click="vm.callbackClick($event);"
         ng-transclude></span>
     
     <span
-        ng-if="::vm.showExponent"
+        ng-if="::vm.showExponent && vm.position !== 'start'"
+        style="{{vm.backgroundColor()}}"
         class="reading_exponent"
         ng-click="vm.callbackClick($event);"
         compile="::vm.exponent"></span>
 
     <evt-critical-apparatus-entry 
       ng-class="{'blurred': $parent.vm.state.topBoxOpened}"
-      ng-if="vm.apparatus._loaded && vm.apparatus.inline"
-      ng-show="vm.isApparatusOpened() && vm.fitFilters()"
+      ng-if="vm.apparatus._loaded && vm.apparatus.inline && vm.isApparatusOpened() && vm.fitFilters()"
       data-app-id="{{::vm.appId}}"
       data-reading-id="{{::vm.readingId}}"
       data-scope-wit="{{::vm.scopeWit}}"

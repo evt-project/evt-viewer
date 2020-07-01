@@ -68,6 +68,28 @@ angular.module('evtviewer.tabsContainer')
 			vm.subContentOpened = vm.subContentOpened !== subContentName ? subContentName : '';
 		};
 
+		var toggleSubTabs = function(vm, tab) {
+			vm.tabs[tab].showSubTabs = !vm.tabs[tab].showSubTabs;
+			var icon = document.getElementById(tab + '_subTabsIcon');
+			if (icon) {
+				icon.className = vm.tabs[tab].showSubTabs ? 'fa fa-caret-down' : 'fa fa-caret-right';
+			}
+		}
+
+		var toggleSubTab = function(tab, subTab) {
+			vm = this;
+			vm.subContentOpened = tab;
+			if (subTab) {
+				vm.subTabOpened = subTab;
+			} else if (vm.tabs[tab].subTabs) {
+					toggleSubTabs(vm, tab);
+					if (vm.tabs[tab].subTabs._indexes.indexOf(vm.subTabOpened) < 0) {
+						vm.subTabOpened = vm.tabs[tab].subTabs._indexes[0] || '';
+					}
+			} else {
+				vm.subTabOpened = '';
+			}
+		};
 		//
 		// TabsContainer builder
 		//
@@ -135,7 +157,7 @@ angular.module('evtviewer.tabsContainer')
 					var fileDescriptionContent = parsedData.getProjectInfo().fileDescription || '';
 					if (fileDescriptionContent && fileDescriptionContent !== '') {
 						tabs.fileDescription = {
-							label: 'File Description',
+							label: 'PROJECT_INFO.FILE_DESCRIPTION',
 							name: 'fileDescription',
 							content: fileDescriptionContent || noContent
 						};
@@ -146,7 +168,7 @@ angular.module('evtviewer.tabsContainer')
 					var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
 					if (encodingDescriptionContent && encodingDescriptionContent !== '') {
 						tabs.encodingDescription = {
-							label: 'Encoding Description',
+							label: 'PROJECT_INFO.ENCODING_DESCRIPTION',
 							name: 'encodingDescription',
 							content: encodingDescriptionContent || noContent
 						};
@@ -157,7 +179,7 @@ angular.module('evtviewer.tabsContainer')
 					var textProfileContent = parsedData.getProjectInfo().textProfile || '';
 					if (textProfileContent && textProfileContent !== '') {
 						tabs.textProfile = {
-							label: 'Text Profile',
+							label: 'PROJECT_INFO.TEXT_PROFILE',
 							name: 'textProfile',
 							content: textProfileContent || noContent
 						};
@@ -168,7 +190,7 @@ angular.module('evtviewer.tabsContainer')
 					var outsideMetadataContent = parsedData.getProjectInfo().outsideMetadata || '';
 					if (outsideMetadataContent && outsideMetadataContent !== '') {
 						tabs.outsideMetadata = {
-							label: 'Outside Metadata',
+							label: 'PROJECT_INFO.OUTSIDE_METADATA',
 							name: 'outsideMetadata',
 							content: outsideMetadataContent || noContent
 						};
@@ -179,7 +201,7 @@ angular.module('evtviewer.tabsContainer')
 					var revisionHistoryContent = parsedData.getProjectInfo().revisionHistory || '';
 					if (revisionHistoryContent && revisionHistoryContent !== '') {
 						tabs.revisionHistory = {
-							label: 'Revision History',
+							label: 'PROJECT_INFO.REVISION_HISTORY',
 							name: 'revisionHistory',
 							content: revisionHistoryContent || noContent
 						};
@@ -190,7 +212,7 @@ angular.module('evtviewer.tabsContainer')
 					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
 						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
 						tabs.bibliography = {
-							label: 'Bibliography',
+							label: 'PROJECT_INFO.BIBLIOGRAPHY',
 							name: 'bibliography',
 							content: bibliographyContent || noContent,
 							scrollDisabled: true
@@ -211,13 +233,151 @@ angular.module('evtviewer.tabsContainer')
 							icon: listIcon,
 							name: listId,
 							content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
-							scrollDisabled: true
+							scrollDisabled: true,
+							noPadding: true
 						};
 					}
 					break;
-			}
+				case 'toc':
+					// TOC
+					tabs.toc = {
+						label: 'TOC.TITLE',
+						name: 'toc',
+						content: '<evt-toc></evt-toc>'
+					};
+					tabs._indexes.push('toc');
+					
+					// ENTITIES LIST
+					var entitiesCollection = parsedData.getNamedEntitiesCollection();
+					if (entitiesCollection && entitiesCollection._indexes && entitiesCollection._indexes.length > 0) {
+						tabs.entitiesLists = {
+							label: 'DIALOGS.NAMED_ENTITIES',
+							name: 'entitiesLists',
+							content: '',
+							subTabs: {
+								_indexes: []
+							},
+							showSubTabs: false,
+							noPadding: true
+						};
+						tabs.entitiesLists.subTabs._indexes = entitiesCollection._indexes;
+						for (var i = 0; i < entitiesCollection._indexes.length; i++) {
+							var listId = entitiesCollection._indexes[i],
+								listIcon = entitiesCollection[listId] && entitiesCollection[listId]._icon ? entitiesCollection[listId]._icon : 'fa-list-ul',
+								listType = entitiesCollection[listId] && entitiesCollection[listId]._type ? entitiesCollection[listId]._type : listId,
+								listTitle = entitiesCollection[listId] && entitiesCollection[listId]._title ? entitiesCollection[listId]._title : listId;
+							tabs.entitiesLists.subTabs[listId] = {
+								label: listTitle,
+								icon: listIcon,
+								name: listId,
+								content: '<evt-list data-list-id="' + listId + '" data-list-type="' + listType + '"></evt-list>',
+								scrollDisabled: true,
+								noPadding: true
+							};
+						}
+						tabs._indexes.push('entitiesLists');
+					}
 
-			var subContentOpened = tabs._indexes.length > 0 ? tabs._indexes[0] : '';
+					// BIBLIOGRAPHY //
+					if (parsedData.getBibliographicRefsCollection()._indexes.length > 0) {
+						var bibliographyContent = '<evt-bibliography data-id="mainBibliography"></evt-bibliography>';
+						tabs.bibliography = {
+							label: 'PROJECT_INFO.BIBLIOGRAPHY',
+							name: 'bibliography',
+							content: bibliographyContent || noContent,
+							scrollDisabled: true
+						};
+						tabs._indexes.push('bibliography');
+					}
+					// PROJECT INFO
+					tabs.projectInfo = {
+						label: 'DIALOGS.PROJECT_INFO',
+						name: 'projectInfo',
+						content: '',
+						subTabs: {
+							_indexes: []
+						},
+						showSubTabs: false
+					}
+					// fileDescription //
+					var fileDescriptionContent = parsedData.getProjectInfo().fileDescription || '';
+					if (fileDescriptionContent && fileDescriptionContent !== '') {
+						tabs.projectInfo.subTabs.fileDescription = {
+							label: 'PROJECT_INFO.FILE_DESCRIPTION',
+							name: 'fileDescription',
+							content: fileDescriptionContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('fileDescription');
+					}
+
+					// encodingDescription //
+					var encodingDescriptionContent = parsedData.getProjectInfo().encodingDescription || '';
+					if (encodingDescriptionContent && encodingDescriptionContent !== '') {
+						tabs.projectInfo.subTabs.encodingDescription = {
+							label: 'PROJECT_INFO.ENCODING_DESCRIPTION',
+							name: 'encodingDescription',
+							content: encodingDescriptionContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('encodingDescription');
+					}
+
+					// textProfile //
+					var textProfileContent = parsedData.getProjectInfo().textProfile || '';
+					if (textProfileContent && textProfileContent !== '') {
+						tabs.projectInfo.subTabs.textProfile = {
+							label: 'PROJECT_INFO.TEXT_PROFILE',
+							name: 'textProfile',
+							content: textProfileContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('textProfile');
+					}
+
+					// outsideMetadata //
+					var outsideMetadataContent = parsedData.getProjectInfo().outsideMetadata || '';
+					if (outsideMetadataContent && outsideMetadataContent !== '') {
+						tabs.projectInfo.subTabs.outsideMetadata = {
+							label: 'PROJECT_INFO.OUTSIDE_METADATA',
+							name: 'outsideMetadata',
+							content: outsideMetadataContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('outsideMetadata');
+					}
+
+					// revisionHistory //
+					var revisionHistoryContent = parsedData.getProjectInfo().revisionHistory || '';
+					if (revisionHistoryContent && revisionHistoryContent !== '') {
+						tabs.projectInfo.subTabs.revisionHistory = {
+							label: 'PROJECT_INFO.REVISION_HISTORY',
+							name: 'revisionHistory',
+							content: revisionHistoryContent || noContent
+						};
+						tabs.projectInfo.subTabs._indexes.push('revisionHistory');
+					}
+
+					tabs._indexes.push('projectInfo');
+					break;
+
+			}
+			var content = evtInterface.getProperty('tabsContainerOpenedContent'),
+					tab = evtInterface.getProperty('tabsContainerOpenedTab'),
+					subContentOpened, subTabOpened;
+			if (content) {
+				subContentOpened = content;
+			} else if (tabs._indexes.length > 0) {
+				subContentOpened = tabs._indexes[0];
+			} else {
+				subContentOpened = '';
+			}
+			if (tab) {
+				subTabOpened = tab;
+			} else if (tabs[subContentOpened].subTabs && tabs[subContentOpened].subTabs._indexes.length > 0) {
+				subTabOpened = tabs[subContentOpened].subTabs._indexes[0];
+			} else {
+				subTabOpened = '';
+			}
+			if (subTabOpened) {
+				tabs[subContentOpened].showSubTabs = true;
+			}
 
 			scopeHelper = {
 				// expansion
@@ -229,9 +389,12 @@ angular.module('evtviewer.tabsContainer')
 
 				// model
 				subContentOpened: subContentOpened,
+				subTabOpened: subTabOpened,
 
 				// function
+				toggleSubTabs: toggleSubTabs,
 				toggleSubContent: toggleSubContent,
+				toggleSubTab: toggleSubTab,
 				destroy: destroy
 			};
 
@@ -250,7 +413,15 @@ angular.module('evtviewer.tabsContainer')
 							currentTabsContainer.subContentOpened = subContentOpenedName;
 					}
 			});
-		}
+		};
+		tabsContainer.setSubTabOpened = function(containerType, subContentOpenedName, subTab) {
+			angular.forEach(collection, function(currentTabsContainer) {
+					if (currentTabsContainer.type === containerType) {
+							currentTabsContainer.subContentOpened = subContentOpenedName;
+							currentTabsContainer.subTabOpened = subTab;
+					}
+			});
+		};
 		//
 		// Service function
 		//

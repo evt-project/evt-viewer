@@ -1,0 +1,151 @@
+/* *************************** */
+/* SEARCH BOX INTERNAL         */
+/* *************************** */
+
+.search-box.internal {
+   &.results-open {
+      @include calc(max-height, #{setInsideFrameHeight()} - 6px);
+      transition: max-height .5s;
+   }
+   button-switch {
+      margin-right: 0;
+      &[data-type="searchCaseSensitive"],
+      &[data-type="searchVirtualKeyboard"],
+      &[data-type="searchExactWord"] {
+         .buttonSwitch-active {
+            background-color: $buttonSwitch-active-background-color;
+         }
+      }
+   }
+   .buttonSwitch {
+      width: 30px;
+      @include border($mainContainer-border-width, 'right', $base-color-dark);
+      background-color: $search-buttons-background;
+      .icon-evt_close {
+         font-size: 14px;
+         font-weight: bold;
+         left: 4px;
+      }
+      &.buttonSwitch-active {
+         .icon-evt_close {
+            color: $base-color-dark;
+         }
+      }
+   }
+   .btn-left, .btn-right {
+      button-switch:first-child .buttonSwitch {
+         @include border($mainContainer-border-width, 'left', $base-color-dark);
+      }
+   }
+   .btn-left {
+      float: left;
+      button-switch[data-type='searchResultsHide'] {
+         @include border($mainContainer-border-width, left, $base-color-dark);
+      }
+   }
+   .btn-right {
+      float: right;
+      button-switch:first-child .buttonSwitch {
+         border: 0;
+      }
+      .buttonSwitch-disabled[title="Previous"] {
+         border-left: 2px solid;
+      }
+   }
+   input[type="text"] {
+      font-family: Junicode;
+      font-size: 18px;
+      height: $search-input-height;
+      width: calc(100% - 230px);
+      position: absolute;
+      top: 0.9px;
+      padding: 0 5px;
+      border: transparent;
+      &:focus {
+         outline: 0;
+      }
+   }
+   .search-results {
+      height: 95%;
+      padding: $base-padding;
+      p {
+         display: block;
+         margin-top: 0;
+      }
+      .token {
+         padding-bottom: 5px;
+      }
+      .icon {
+         cursor: pointer;
+      }
+      .icon:before {
+         content: '\25B6';
+         font-size: 12px;
+         position: relative;
+         bottom: 2px;
+         left: 3px;
+      }
+      .icon.active:before {
+         content: '\25BC';
+      }
+      .search-info {
+         text-align: center;
+         background-color: #fff;
+         position: absolute;
+         z-index: 1;
+         width: calc(100% - #{$mainContainer-border-width*8});
+         top: $search-box-height;
+         left: 0;
+         padding-top: 15px;
+         p:first-child {
+            margin-bottom: 0;
+         }
+         + .token-results {
+            padding-top: 80px;
+         }
+      }
+      .result-token,
+      .result-doc {
+         font-style: italic;
+      }
+      .result-token {
+         font-weight: bold;
+      }
+      .results-number {
+         font-size: 16px;
+         padding-left: 5px;
+      }
+      .search-result {
+         display: none;
+         margin-bottom: 30px;
+         .original-text {
+            display: block;
+            font-style: italic;
+         }
+         .resultInfo {
+            font-size: 17px;
+            background-color: $search-result-info;
+            color: $base-color-active;
+            padding: 7px;
+            position: relative;
+            top: 6px;
+            border-radius: 4px;
+         }
+         li {
+            list-style: none;
+            margin-bottom: 25px;
+            &:not(:last-child) {
+               @include border($mainContainer-border-width/2, 'bottom', $border-light);
+               padding-bottom: 25px;
+            }
+         }
+         &.open {
+            display: block;
+            padding-left: 35px;
+         }
+      }
+   }
+   .ui-keyboard-input-current {
+      @include noBoxShadow();
+   }
+}

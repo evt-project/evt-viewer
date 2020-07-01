@@ -8,7 +8,7 @@
             </span>
         </div>
         <div class="evt-list__content">
-            <div infinite-scroll="vm.loadMoreElements()" infinite-scroll-distance="2" infinite-scroll-parent="true">
+            <div class="scrollableDiv" infinite-scroll="vm.loadMoreElements()" infinite-scroll-distance="2" infinite-scroll-parent="true">
                 <evt-named-entity 
                     data-entity-id="{{::element}}" data-entity-type="{{::vm.listType}}"
                     ng-repeat="element in vm.visibleElements | orderBy ">
