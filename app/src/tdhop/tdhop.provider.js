@@ -17,9 +17,8 @@ angular.module('evtviewer.tdhop')
             options.id = "tdhop";
             var pluginFolder = 'js-plugins/tdhop/';
             var jsFiles = [
-               'setup.js',
-               'spidergl.js',
                'jquery.js',
+               'spidergl.js',
                'presenter.js',
                'nexus.js',
                'ply.js',
@@ -50,7 +49,7 @@ angular.module('evtviewer.tdhop')
                   }
                })
             };
-
+            
             var initializeViewer = function () {
                init3dhop();
                setup3dhop(url1, url2, url_hs, annotations, type);

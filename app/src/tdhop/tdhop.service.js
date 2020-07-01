@@ -1,27 +1,27 @@
-   angular.module('evtviewer.tdhop', [])
+angular.module('evtviewer.tdhop', [])
 
-   .service('tdhopViewerModel', "$log", function($log, evtInterface){
-       var tdhopModel = this;
-       var options = {
-         id: "tdhop",
-         name: "Mesh_1_mesh",
-         url: "data/models/singleres/cross.ply",
-         mesh: "Mesh_1_mesh",
+    .service('tdhopViewerModel', "$log", function ($log, evtInterface) {
+        var tdhopModel = this;
+        var options = {
+            id: "tdhop",
+            name: "Mesh_1_mesh",
+            url: "data/models/singleres/cross.ply",
+            mesh: "Mesh_1_mesh",
 
-         toolHome: true,
-         toolZoomin: true,
-         toolZoomout: true,
-         toolLighting: true,
-         toolLightControl: true,
-         toolMeasure: true,
-         toolPickPoint: true,
-         toolPlaneSections: true,
-         toolSolidColor: true,
-         toolCamera: true,
-         toolFullScreen: true
+            toolHome: true,
+            toolZoomin: true,
+            toolZoomout: true,
+            toolLighting: true,
+            toolLightControl: true,
+            toolMeasure: true,
+            toolPickPoint: true,
+            toolPlaneSections: true,
+            toolSolidColor: true,
+            toolCamera: true,
+            toolFullScreen: true
         };
 
-        tdhopModel.getOptions = function(){
+        tdhopModel.getOptions = function () {
             return options;
         };
     });

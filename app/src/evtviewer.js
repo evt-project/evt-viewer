@@ -236,11 +236,10 @@ require('./search/virtualKeyboard.directive.js');
 require('./search/virtualKeyboard.provider.js');
 
 require('./tdhop/tdhop.js');
-require('./tdhop/tdhop.configuration.js');
-require('./tdhop/tdhop.controller.js');
-require('./tdhop/tdhop.directive.js');
-require('./tdhop/tdhop.provider.js');
 require('./tdhop/tdhop.service.js');
+require('./tdhop/tdhop.provider.js');
+require('./tdhop/tdhop.directive.js');
+require('./tdhop/tdhop.controller.js');
 
 require('./navBar/navBar.js');
 require('./navBar/navBar.configuration.js');
