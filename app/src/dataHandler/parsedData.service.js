@@ -986,7 +986,7 @@ angular.module('evtviewer.dataHandler')
 				title,
 				source
 			};
-     	</pre>
+		</pre>
      * @param {string} docId Identifier of document in which the page is contained
      * @todo add attribute for the original xml reference
      */
@@ -1022,7 +1022,7 @@ angular.module('evtviewer.dataHandler')
 			image: page.image,
 			label: page.label,
 			docs: page.docs
-		 };
+		};
 	};
 	
 	/**

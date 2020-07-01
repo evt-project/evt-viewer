@@ -3,7 +3,7 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "./app/data/DOTR.xml",
+   "dataUrl": "./data/DOTR.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",
