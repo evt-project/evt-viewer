@@ -322,8 +322,10 @@ angular.module('evtviewer.reading')
                                     var filterColor = filterLabels[label].values[filter].color,
                                         filterValue = filterLabels[label].values[filter].name;
                                     if (readingAttributes[filterLabel] === filterValue){
-                                        var color = filterColor.replace('rgb', 'rgba');
-                                        colors += color.slice(0, -1)+','+opacity+'),';
+                                        if (filterColor) {
+                                            var color = filterColor.replace('rgb', 'rgba');
+                                            colors += color.slice(0, -1)+','+opacity+'),';
+                                        }
                                     }
                                 }
                             }

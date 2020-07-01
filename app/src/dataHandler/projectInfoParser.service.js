@@ -22,7 +22,7 @@ angular.module('evtviewer.dataHandler')
         textProfileDef         = '<profileDesc>',
         outsideMetadataDef     = '<xenoData>',
         revisionHistoryDef     = '<revisionDesc>',
-        msDesc                 = '<msDesc>';
+        msDesc                 = '<msDesc>',
         listObject             = '<listObject>';
 
     var skipElementsFromParser = '<evtNote>',

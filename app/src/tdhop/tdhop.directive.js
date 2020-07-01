@@ -10,7 +10,7 @@ angular.module('evtviewer.tdhop')
       },
       controllerAs: "vm",
       controller: "TreDHOPCtrl",
-      template: require('./tdhop/tdhop.directive.tmpl.html'),
+      template: require('./tdhop.directive.tmpl.html'),
 
       transclude: true,
       //template: "<div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'>",

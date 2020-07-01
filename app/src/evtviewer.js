@@ -25,8 +25,6 @@ require('../../bower_components/leaflet/dist/leaflet-src.js');
 require('../../bower_components/ui-leaflet/dist/ui-leaflet.js');
 require('../../bower_components/oclazyload/dist/ocLazyLoad.js');
 
-require('./tmpl/templates.js');
-
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 
@@ -316,7 +314,6 @@ angular.module('evtviewer', [
 	'ngResource',
 	'ngSanitize',
 	'ngTouch',
-	'templates-main',
 	'ngRoute',
 	// 'rzModule',
 	'xml',
