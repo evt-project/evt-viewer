@@ -37,7 +37,7 @@
     "load-grunt-tasks": "^0.4.0",
     "time-grunt": "^0.3.1",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.12.1"
+    "webpack-dev-server": "^3.1.11"
   },
   "engines": {
     "node": ">=0.10.0"
