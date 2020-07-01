@@ -22,6 +22,7 @@ require('../../bower_components/angularjs-slider/dist/rzslider.css');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
 require('../../bower_components/angular-simple-logger/dist/angular-simple-logger.js');
 require('../../bower_components/leaflet/dist/leaflet-src.js');
+require('../../bower_components/leaflet/dist/leaflet.css');
 require('../../bower_components/ui-leaflet/dist/ui-leaflet.js');
 require('../../bower_components/oclazyload/dist/ocLazyLoad.js');
 
