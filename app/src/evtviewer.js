@@ -2,20 +2,20 @@
 
 import '../styles/main.scss';
 
-require('../../bower_components/angular/angular.js');
+require('angular/angular.js');
+require('angular-animate/angular-animate.js');
+require('angular-cookies/angular-cookies.js');
+require('angular-messages/angular-messages.js');
+require('angular-resource/angular-resource.js');
+require('angular-route/angular-route.js');
+require('angular-sanitize/angular-sanitize.js');
+require('angular-xml/angular-xml.js');
+require('angular-touch/angular-touch.js');
 require('../../bower_components/json3/lib/json3.min.js');
-require('../../bower_components/angular-animate/angular-animate.js');
-require('../../bower_components/angular-cookies/angular-cookies.js');
-require('../../bower_components/angular-messages/angular-messages.js');
-require('../../bower_components/angular-resource/angular-resource.js');
-require('../../bower_components/angular-route/angular-route.js');
-require('../../bower_components/angular-sanitize/angular-sanitize.js');
-require('../../bower_components/angular-xml/angular-xml.js');
-require('../../bower_components/angular-touch/angular-touch.js');
 // require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
 
-require('../../bower_components/angularjs-slider/dist/rzslider.js');
-require('../../bower_components/angularjs-slider/dist/rzslider.css');
+require('angularjs-slider/dist/rzslider.js');
+require('angularjs-slider/dist/rzslider.css');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
 
 require('angular-translate/dist/angular-translate.js');
