@@ -13,12 +13,13 @@ require('../../bower_components/angular-sanitize/angular-sanitize.js');
 require('../../bower_components/angular-xml/angular-xml.js');
 require('../../bower_components/angular-touch/angular-touch.js');
 // require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
-require('../../bower_components/angular-translate/angular-translate.js');
-require('../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js');
 
 require('../../bower_components/angularjs-slider/dist/rzslider.js');
 require('../../bower_components/angularjs-slider/dist/rzslider.css');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
+
+require('angular-translate/dist/angular-translate.js');
+require('angular-translate-loader-static-files/angular-translate-loader-static-files.js');
 require('angular-pretty-xml/dist/angular-pretty-xml.js');
 require('angular-simple-logger/dist/index.js');
 require('leaflet/dist/leaflet-src.js');
@@ -272,7 +273,6 @@ require('./visColl/visColl.directive.js');
  * @requires {@link https://github.com/johngeorgewright/angular-xml xml}
  * @requires {@link https://github.com/krtnio/angular-pretty-xml prettyXml}
  * @requires {@link https://sroze.github.io/ngInfiniteScroll/documentation.html infinite-scroll}
- * @requires {@link https://angular-translate.github.io/docs/#/api pascalprecht.translate}
  * @requires {@link https://github.com/angular-slider/angularjs-slider}
  * @requires {@link https://github.com/krtnio/angular-xslt}
  * @requires evtviewer.core

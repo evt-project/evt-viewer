@@ -51,6 +51,8 @@
   "dependencies": {
     "angular-pretty-xml": "^0.1.1",
     "angular-simple-logger": "^0.1.7",
+    "angular-translate": "^2.18.2",
+    "angular-translate-loader-static-files": "^2.18.2",
     "bower": "^1.8.8",
     "leaflet": "0.7.7",
     "lunr": "^2.3.5",
