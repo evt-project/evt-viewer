@@ -6,19 +6,13 @@
  * # evtAnaloguesApparatus
  * Service containing methods to handle the contents of analogue entries.
  *
- * @requires evtviewer.core.config
- * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.dataHandler.evtParser
- * @requires evtviewer.dataHandler.evtSourcesParser
- * @requires evtviewer.dataHandler.evtCriticalApparatusParser
- * @requires evtviewer.dataHandler.evtAnaloguesParser
  * @requires evtviewer.dataHandler.evtSourcesApparatus
  *
  * @author CM
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtAnaloguesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatusParser, evtAnaloguesParser, evtSourcesApparatus) {
+.service('evtAnaloguesApparatus', ['evtSourcesApparatus', function(evtSourcesApparatus) {
 	var apparatus = {};
 	/**
      * @ngdoc method
@@ -239,4 +233,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return apparatus;
-});
+}]);

@@ -6,14 +6,12 @@
  * # evtProjectInfoParser
  * Service containing methods to parse data regarding edition header information.
  *
- * @requires $q
- * @requires xmlParser
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtProjectInfoParser', function($q, parsedData, evtParser, xmlParser) {
+.service('evtProjectInfoParser', ['parsedData', 'evtParser', function(parsedData, evtParser) {
     var parser = {};
 
     var projectInfoDef         = '<teiHeader>',
@@ -267,4 +265,4 @@ angular.module('evtviewer.dataHandler')
        console.log('## parselistObjectDescription ##', parsedData.getProjectInfo().listObject);
   };
     return parser;
-});
+}]);

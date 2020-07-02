@@ -21,7 +21,7 @@ angular.module('evtviewer.apparatuses')
 
 	var currentApparatuses = '';
 
-	this.$get = function(parsedData, evtInterface) {
+	this.$get = ['parsedData', 'evtInterface', function(parsedData, evtInterface) {
 		var apparatuses = {},
 			collection = {},
 			list = [],
@@ -243,5 +243,5 @@ angular.module('evtviewer.apparatuses')
 		};
 
 		return apparatuses;
-	};
+	}];
 });

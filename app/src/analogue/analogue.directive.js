@@ -20,7 +20,7 @@
 **/
 angular.module('evtviewer.analogue')
 
-.directive('evtAnalogue', function(evtAnalogue, evtInterface) {
+.directive('evtAnalogue', ['evtAnalogue', 'evtInterface', function(evtAnalogue, evtInterface) {
 	return {
 		restrict: 'E',
 		scope: {
@@ -46,4 +46,4 @@ angular.module('evtviewer.analogue')
 
 		}
 	};
-});
+}]);

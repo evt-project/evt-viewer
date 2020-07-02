@@ -1,19 +1,19 @@
 angular.module('evtviewer.tdhop')
-   .directive('evtTredhop', ['evtTredhop', "evtInterface", "$timeout", function (evtTredhop, evtInterface, $timeout) {
+   .directive('evtTredhop', ['evtTredhop', 'evtInterface', '$timeout', function (evtTredhop, evtInterface, $timeout) {
       return {
          restrict: 'AE',
          scope: {
             canvas: '@',
             measurebox: '@',
-            options: "=",
-            name: "=",
+            options: '=',
+            name: '=',
          },
-         controllerAs: "vm",
-         controller: "TreDHOPCtrl",
+         controllerAs: 'vm',
+         controller: 'TreDHOPCtrl',
          template: require('./tdhop.directive.tmpl.html'),
 
          transclude: true,
-         //template: "<div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'>",
+         //template: '<div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'>',
 
          link: function (scope, element, attrs) {
             $timeout(function () {

@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtNamedEntitiesParserOLD', function(parsedData, evtParser, config) {
+.service('evtNamedEntitiesParserOLD', ['parsedData', 'evtParser', function(parsedData, evtParser) {
 	/*/
 	In questo singleton sono definite 2 cose importanti: helper e listManager.
 	Gli helper servono a fare il parsing dei dati, a interrogarli/formattarli per l'output. Gli helper sono oggetti dentro un singleton, se ne possono richiedere
@@ -843,4 +843,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return parser;
-});
+}]);

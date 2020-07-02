@@ -17,7 +17,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtAnaloguesParser', function($q, evtParser, parsedData, evtCriticalElementsParser, config, xmlParser) {
+.service('evtAnaloguesParser', ['$q', 'evtParser', 'parsedData', 'evtCriticalElementsParser', 'config', function($q, evtParser, parsedData, evtCriticalElementsParser, config) {
 	//TODO
 	//Forse dovrai spostare tutti i parser degli elementi critici in un unico file :(
 	var parser = {};
@@ -179,4 +179,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return parser;
-});
+}]);

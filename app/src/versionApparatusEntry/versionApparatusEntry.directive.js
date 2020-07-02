@@ -28,7 +28,7 @@
 **/
 angular.module('evtviewer.versionApparatusEntry')
 
-.directive('evtVersionApparatusEntry', function(evtVersionApparatusEntry, evtInterface) {
+.directive('evtVersionApparatusEntry', ['evtVersionApparatusEntry', 'evtInterface', function(evtVersionApparatusEntry, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -53,4 +53,4 @@ angular.module('evtviewer.versionApparatusEntry')
             });
         }
     };
-});
+}]);

@@ -23,7 +23,7 @@ angular.module('evtviewer.toc')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, parsedData, evtInterface) {
+	this.$get = ['$log', 'parsedData', 'evtInterface', function($log, parsedData, evtInterface) {
 		var toc = {},
 			collection = {},
 			list = [],
@@ -137,6 +137,6 @@ angular.module('evtviewer.toc')
 		}
 
 		return toc;
-	};
+	}];
 
 });

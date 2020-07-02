@@ -23,7 +23,7 @@ angular.module('evtviewer.reading')
 
     var currentAppEntry = '';
 
-    this.$get = function(config, parsedData) {
+    this.$get = ['config', 'parsedData', function(config, parsedData) {
         var reading    = {},
             collection = {},
             list       = [],
@@ -312,6 +312,6 @@ angular.module('evtviewer.reading')
         };
 
         return reading;
-    };
+    }];
 
 });

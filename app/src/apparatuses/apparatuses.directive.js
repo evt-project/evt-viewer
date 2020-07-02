@@ -23,7 +23,7 @@
 **/
 angular.module('evtviewer.apparatuses')
 
-.directive('evtApparatuses', function($timeout, evtApparatuses, evtInterface, evtCriticalApparatusEntry) {
+.directive('evtApparatuses', ['$timeout', 'evtApparatuses', 'evtInterface', 'evtCriticalApparatusEntry', function($timeout, evtApparatuses, evtInterface, evtCriticalApparatusEntry) {
     return {
         restrict: 'E',
         scope: {
@@ -174,4 +174,4 @@ angular.module('evtviewer.apparatuses')
             }
         }
     };
-});
+}]);

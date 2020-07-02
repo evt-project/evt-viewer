@@ -14,7 +14,7 @@ angular.module('evtviewer.translation')
 
 })
 
-.service('evtTranslation', function(TRANSLATIONDEFAULTS, $translate) {
+.service('evtTranslation', ['TRANSLATIONDEFAULTS', '$translate', function(TRANSLATIONDEFAULTS, $translate) {
 	var translation = {},
 		defaults = TRANSLATIONDEFAULTS,
 		languages = ['en', 'it'],
@@ -118,4 +118,4 @@ angular.module('evtviewer.translation')
     };
 
 	return translation;
-});
+}]);

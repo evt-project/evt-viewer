@@ -27,7 +27,7 @@
 **/
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtCriticalApparatusEntry', function(evtCriticalApparatusEntry, parsedData, evtInterface) {
+.directive('evtCriticalApparatusEntry', ['evtCriticalApparatusEntry', 'evtInterface', function(evtCriticalApparatusEntry, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -55,4 +55,4 @@ angular.module('evtviewer.criticalApparatusEntry')
             });
         }
     };
-});
+}]);

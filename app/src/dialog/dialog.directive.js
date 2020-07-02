@@ -23,7 +23,7 @@
 **/
 angular.module('evtviewer.dialog')
 
-.directive('evtDialog', function(evtDialog,evtInterface) {
+.directive('evtDialog', ['evtDialog', function(evtDialog) {
 
     return {
         restrict: 'E',
@@ -58,4 +58,4 @@ angular.module('evtviewer.dialog')
             });
         }
     };
-});
+}]);

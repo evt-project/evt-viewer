@@ -1,6 +1,6 @@
 angular.module('evtviewer.dataHandler')
 
-.service('evtDepaParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config, xmlParser) {
+.service('evtDepaParser', ['parsedData', 'evtCriticalElementsParser', 'Utils', 'evtParser', 'config', 'xmlParser', function(parsedData, evtCriticalElementsParser, Utils, evtParser, config, xmlParser) {
   var parser = {};
 
   var apparatusEntryDef = '<app>',
@@ -206,4 +206,4 @@ angular.module('evtviewer.dataHandler')
   }
 
   return parser;
-});
+}]);

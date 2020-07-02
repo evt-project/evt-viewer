@@ -10,7 +10,7 @@
 **/
 angular.module('evtviewer.bibliography')
 
-.directive('evtScrollIf', function($timeout) {
+.directive('evtScrollIf', ['$timeout', function($timeout) {
     return function(scope, element, attrs) {
         attrs.$observe('evtScrollIf', function(value) {
             if (value === 'true') {
@@ -21,4 +21,4 @@ angular.module('evtviewer.bibliography')
             }
         });
     };
-});
+}]);

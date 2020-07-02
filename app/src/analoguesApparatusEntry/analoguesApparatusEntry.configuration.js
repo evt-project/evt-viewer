@@ -4,7 +4,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
     firstSubContentOpened : ''
 })
 
-.config(function(evtAnaloguesApparatusEntryProvider, configProvider, ANALOGUESAPPENTRY) {
+.config(['evtAnaloguesApparatusEntryProvider', 'configProvider', 'ANALOGUESAPPENTRY', function(evtAnaloguesApparatusEntryProvider, configProvider, ANALOGUESAPPENTRY) {
     var defaults = configProvider.makeDefaults('analoguesApparatusEntry', ANALOGUESAPPENTRY);
     evtAnaloguesApparatusEntryProvider.setDefaults(defaults);
-});
+}]);

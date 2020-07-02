@@ -22,7 +22,7 @@
 **/
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {
+.directive('evtWitnessRef', ['evtCriticalApparatusEntry', 'evtBox', 'parsedData', 'evtInterface', 'config', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {
 	return {
 		restrict: 'E',
 		require: '^?evtCriticalApparatusEntry',
@@ -103,4 +103,4 @@ angular.module('evtviewer.criticalApparatusEntry')
 			};
 		}
 	};
-});
+}]);

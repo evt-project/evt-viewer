@@ -23,7 +23,7 @@ angular.module('evtviewer.tabsContainer')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, parsedData, evtInterface) {
+	this.$get = ['$log', 'parsedData', 'evtInterface', function($log, parsedData, evtInterface) {
 		var tabsContainer = {},
 			collection = {},
 			list = [],
@@ -427,6 +427,6 @@ angular.module('evtviewer.tabsContainer')
 		//
 
 		return tabsContainer;
-	};
+	}];
 
 });

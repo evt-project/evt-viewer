@@ -10,7 +10,7 @@
 **/
 angular.module('evtviewer.toc')
 
-.controller('TocCtrl', function($log, evtInterface, parsedData, config) {
+.controller('TocCtrl', ['$log', 'evtInterface', 'parsedData', 'config', function($log, evtInterface, parsedData, config) {
     var _console = $log.getInstance('toc');
 
     var vm = this;
@@ -76,4 +76,4 @@ angular.module('evtviewer.toc')
     }
 
     _console.log('TocCtrl running');
-});
+}]);

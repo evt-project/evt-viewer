@@ -2,7 +2,7 @@ angular.module('evtviewer.openseadragon')
      .provider('osd', function(){
 
 
-        this.$get = function(parsedData, config) {
+        this.$get = ['parsedData', 'config', function(parsedData, config) {
             var imageViewer = {};
 
             imageViewer.test = function(param){
@@ -40,7 +40,7 @@ angular.module('evtviewer.openseadragon')
 
             return imageViewer;
 
-        };
+        }];
     });
 
 //     .service('imageViewerModel',function(parsedData){

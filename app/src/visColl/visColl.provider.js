@@ -26,7 +26,7 @@ angular.module('evtviewer.visColl')
 
     var currentAppEntry = '';
 	
-	this.$get = function($timeout, parsedData) {
+	this.$get = ['$timeout', 'parsedData', function($timeout, parsedData) {
         var visColl     = {},
             collection = {},
             list       = [],
@@ -330,5 +330,5 @@ angular.module('evtviewer.visColl')
 
         //le varie cose da far fare al provider sono da mettere qua
         return visColl;
-    };
+    }];
 });

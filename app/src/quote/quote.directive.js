@@ -21,7 +21,7 @@
 **/
 angular.module('evtviewer.quote')
 
-.directive('evtQuote', function(evtQuote, parsedData, evtInterface) {
+.directive('evtQuote', ['evtQuote', 'evtInterface', function(evtQuote, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -48,4 +48,4 @@ angular.module('evtviewer.quote')
             });
         }
     };
-});
+}]);

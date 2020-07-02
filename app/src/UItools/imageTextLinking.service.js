@@ -11,7 +11,7 @@
  **/
 angular.module('evtviewer.UItools')
 
-   .service('evtImageTextLinking', function (evtInterface, Utils, parsedData, imageViewerHandler) {
+   .service('evtImageTextLinking', ['evtInterface', 'Utils', 'parsedData', 'imageViewerHandler', function (evtInterface, Utils, parsedData, imageViewerHandler) {
       var ITLutils = {};
       const linetozoneRegExp = /lb/;
       const zonereplacedString = 'line';
@@ -445,4 +445,4 @@ angular.module('evtviewer.UItools')
       };
 
       return ITLutils;
-   });
+   }]);

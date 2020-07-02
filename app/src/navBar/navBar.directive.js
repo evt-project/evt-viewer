@@ -22,7 +22,7 @@
 **/
 angular.module('evtviewer.navBar')
 
-.directive('evtNavbar', function($timeout, evtNavbar, parsedData, evtInterface) {
+.directive('evtNavbar', ['$timeout', 'evtNavbar', 'parsedData', 'evtInterface', function($timeout, evtNavbar, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -82,4 +82,4 @@ angular.module('evtviewer.navBar')
             });
         }
     };
-});
+}]);

@@ -12,14 +12,13 @@
  * @requires evtviewer.popover.evtPopover
  * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.apparatuses.evtApparatuses
- * @requires evtviewer.box.evtBox
  * @requires evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
- * @requires evtviewer.sourcesApparatusEntry.evtSourceSeg
  * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.quote')
 
-.controller('QuoteCtrl', function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtBox, evtSourcesApparatusEntry, evtSourceSeg, parsedData) {
+.controller('QuoteCtrl', ['$log', '$scope', 'evtQuote', 'evtPopover', 'evtInterface', 'evtApparatuses', 'evtSourcesApparatusEntry', 'parsedData',
+    function($log, $scope, evtQuote, evtPopover, evtInterface, evtApparatuses, evtSourcesApparatusEntry, parsedData) {
     var vm = this;
     
     var _console = $log.getInstance('quote');
@@ -259,4 +258,4 @@ angular.module('evtviewer.quote')
     this.destroy = function() {
         evtQuote.destroy(this.uid);
     };
-});
+}]);

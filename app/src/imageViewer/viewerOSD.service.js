@@ -2,7 +2,7 @@
    var OpenSeadragon = require('openseadragon');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
-      .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler, parsedData) {
+      .service('imageViewerHandler', ['evtInterface', 'imageScrollMap', 'parsedData', function(evtInterface, imageScrollMap, parsedData) {
          var ImageNormalizationCoefficient = undefined;
          var divHotSpotToggle = false;
 
@@ -413,5 +413,5 @@
          viewerHandler.testFun = function () {
             return 'ok';
          };
-      });
+      }]);
 })();

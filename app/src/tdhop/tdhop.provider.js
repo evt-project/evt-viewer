@@ -1,7 +1,7 @@
 angular.module('evtviewer.tdhop')
    .provider('evtTredhop', function () {
       var vm = this;
-      this.$get = function (parsedData, config, $ocLazyLoad, $log, evtInterface) {
+      this.$get = ['config', '$ocLazyLoad', '$log', function (config, $ocLazyLoad, $log) {
          var evtTdhop = {};
          var console = $log.getInstance('evtTredhop');
 
@@ -62,5 +62,5 @@ angular.module('evtviewer.tdhop')
          };
 
          return evtTdhop;
-      };
+      }];
    });

@@ -711,7 +711,7 @@ angular.module('evtviewer.interface')
     * (in this case the same HTML will be used for each occurrence of glyph)
     * or if parse the glyph content deeperand use only the character needed.
    **/
-   .directive('evt-g', function (parsedData) {
+   .directive('evt-g', ['parsedData' ,function (parsedData) {
       //Ricordarsi di modificare la gestione dei glifi TEI
       return {
          restrict: 'E',
@@ -733,4 +733,4 @@ angular.module('evtviewer.interface')
             scope.content = sContent;
          }
       };
-   });
+   }]);

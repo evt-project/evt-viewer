@@ -32,7 +32,7 @@ angular.module('evtviewer.communication')
     }
 })
 
-.service('evtCommunication', function($http, $log, $q, baseData, config, evtDialog, COMMUNICATIONDEFAULTS) {
+.service('evtCommunication', ['$http', '$log', 'baseData', 'config', 'evtDialog', 'COMMUNICATIONDEFAULTS', function($http, $log, baseData, config, evtDialog, COMMUNICATIONDEFAULTS) {
     var communication = {},
         defaults      = COMMUNICATIONDEFAULTS;
 
@@ -293,4 +293,4 @@ angular.module('evtviewer.communication')
     };
 
     return communication;
-});
+}]);

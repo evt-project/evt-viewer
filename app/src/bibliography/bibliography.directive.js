@@ -26,7 +26,7 @@
 **/
 angular.module('evtviewer.bibliography')
 
-.directive('evtBibliography', function(evtBibliography) { 
+.directive('evtBibliography', ['evtBibliography', function(evtBibliography) { 
 	return {
 		restrict: 'E',
         template: require('./bibliography.directive.tmpl.html'),
@@ -47,4 +47,4 @@ angular.module('evtviewer.bibliography')
             }); 
         } 
 	};
-});
+}]);

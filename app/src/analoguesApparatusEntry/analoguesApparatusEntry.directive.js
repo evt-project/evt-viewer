@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.analoguesApparatusEntry')
 
-.directive('evtAnaloguesApparatusEntry', function(evtAnaloguesApparatusEntry, parsedData, evtInterface) {
+.directive('evtAnaloguesApparatusEntry', ['evtAnaloguesApparatusEntry', 'evtInterface', function(evtAnaloguesApparatusEntry, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -49,4 +49,4 @@ angular.module('evtviewer.analoguesApparatusEntry')
             });
         }
     };
-});
+}]);

@@ -24,14 +24,13 @@
  * @restrict E
  *
  * @requires evtviewer.sourcesApparatusEntry.evtSourcesApparatusEntry
- * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.interface.evtInterface
  * 
  * @author CM
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.directive('evtSourcesApparatusEntry', function(evtSourcesApparatusEntry, parsedData, evtInterface) {
+.directive('evtSourcesApparatusEntry', ['evtSourcesApparatusEntry', 'evtInterface', function(evtSourcesApparatusEntry, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -54,4 +53,4 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });
         }
     };
-});
+}]);

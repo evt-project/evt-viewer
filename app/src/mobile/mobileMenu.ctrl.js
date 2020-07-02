@@ -16,7 +16,7 @@ angular.module('evtviewer.mobile')
  * @property {string} view
  */
 
-.controller('MobileMenuCtrl', function($scope, mobile) {
+.controller('MobileMenuCtrl', ['$scope', 'mobile', function($scope, mobile) {
 
     var activeSection = false;
 
@@ -138,4 +138,4 @@ angular.module('evtviewer.mobile')
         $scope.showItems = !$scope.showItems;
     };
 
-});
+}]);

@@ -14,7 +14,7 @@ angular.module('evtviewer.core')
     debug: false
 })
 
-.provider('config', function(UtilsProvider, GLOBALDEFAULTCONF, BASECONFIG) {
+.provider('config', ['UtilsProvider', 'GLOBALDEFAULTCONF', 'BASECONFIG', function(UtilsProvider, GLOBALDEFAULTCONF, BASECONFIG) {
     var config = {};
 
     UtilsProvider.deepExtend(config, GLOBALDEFAULTCONF);
@@ -113,4 +113,4 @@ angular.module('evtviewer.core')
         config.extendDefault  = this.extendDefault;
         return config;
     };
-});
+}]);

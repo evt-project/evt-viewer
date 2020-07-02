@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.reading')
 
-.directive('evtReading', function(evtReading, parsedData, evtInterface) {
+.directive('evtReading', ['evtReading', 'parsedData', 'evtInterface', function(evtReading, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -73,4 +73,4 @@ angular.module('evtviewer.reading')
             });
         }
     };
-});
+}]);

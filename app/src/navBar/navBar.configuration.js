@@ -4,7 +4,7 @@ angular.module('evtviewer.navBar')
     
 })
 
-.config(function(evtNavbarProvider, configProvider, NAVBARDEFAULTS) {
+.config(['evtNavbarProvider', 'configProvider', 'NAVBARDEFAULTS', function(evtNavbarProvider, configProvider, NAVBARDEFAULTS) {
     var defaults = configProvider.makeDefaults('navBar', NAVBARDEFAULTS);
     evtNavbarProvider.setDefaults(defaults);
-});
+}]);

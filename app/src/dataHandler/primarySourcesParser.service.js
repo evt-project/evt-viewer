@@ -6,15 +6,11 @@
  * # evtPrimarySourcesParser
  * Service containing methods to parse data regarding primary source information
  *
- * @requires $q
- * @requires xmlParser
- * @requires evtviewer.core.config
- * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.dataHandler.parsedData
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtPrimarySourcesParser', function($q, xmlParser, evtParser, parsedData, config) {
+.service('evtPrimarySourcesParser', ['parsedData', function(parsedData) {
 	var parser = { };
 
 	var defSurfaceElement = 'surface',
@@ -64,4 +60,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return parser;
-});
+}]);

@@ -50,7 +50,7 @@ angular.module('evtviewer.reading')
     openTriggerEvent: 'click'
 })
 
-.config(function(evtReadingProvider, configProvider, READINGDEFAULTS) {
+.config(['evtReadingProvider', 'configProvider', 'READINGDEFAULTS', function(evtReadingProvider, configProvider, READINGDEFAULTS) {
     var defaults = configProvider.makeDefaults('reading', READINGDEFAULTS);
     evtReadingProvider.setDefaults(defaults);
-});
+}]);

@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.tabsContainer')
 
-.directive('evtTabsContainer', function(evtTabsContainer, evtInterface) {
+.directive('evtTabsContainer', ['evtTabsContainer', 'evtInterface', function(evtTabsContainer, evtInterface) {
 
     return {
         restrict: 'E',
@@ -54,7 +54,7 @@ angular.module('evtviewer.tabsContainer')
                 return evtInterface.getHomePanel();
             }, function(oldVal, newVal) {
                 if (newVal !== '') {
-                  evtTabsContainer.setSubContentOpenedByType('projectInfo', newVal);
+                    evtTabsContainer.setSubContentOpenedByType('projectInfo', newVal);
                 }
             });
 
@@ -69,4 +69,4 @@ angular.module('evtviewer.tabsContainer')
             });
         }
     };
-});
+}]);

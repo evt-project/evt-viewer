@@ -10,12 +10,11 @@
  * where the scope of the directive is extended with all the necessary properties and methods.</p>
  *
  * @requires $log
- * @requires $scope
  * @requires evtviewer.bibliography.evtBibliography
  **/
 angular.module('evtviewer.bibliography')
 
-.controller('BibliographyCtrl', function($log, $scope, evtBibliography) {
+.controller('BibliographyCtrl', ['$log', 'evtBibliography', function($log, evtBibliography) {
     var _console = $log.getInstance('BibliographyCtrl');
 
     var vm = this;
@@ -107,4 +106,4 @@ angular.module('evtviewer.bibliography')
     this.destroy = function() {
         evtBibliography.destroy(this.uid);
     };
-});
+}]);

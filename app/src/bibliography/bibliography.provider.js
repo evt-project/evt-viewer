@@ -24,7 +24,7 @@ angular.module('evtviewer.bibliography')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, config, parsedData, evtBibliographyParser, evtHighlight) {
+	this.$get = ['$log', 'config', 'parsedData', 'evtBibliographyParser', 'evtHighlight', function($log, config, parsedData, evtBibliographyParser, evtHighlight) {
 		var bibliography = {},
 			collection = {},
 			list = [],
@@ -332,6 +332,6 @@ angular.module('evtviewer.bibliography')
 		};
 
 		return bibliography;
-	};
+	}];
 
 });

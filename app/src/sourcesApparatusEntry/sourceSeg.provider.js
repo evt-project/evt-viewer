@@ -18,7 +18,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     var currentQuote = '';
 
-    this.$get = function(parsedData, evtSourcesApparatus, evtInterface) {
+    this.$get = ['parsedData', 'evtSourcesApparatus', 'evtInterface', function(parsedData, evtSourcesApparatus, evtInterface) {
         var sourceSeg = {},
             collection = {},
             list = [],
@@ -248,5 +248,5 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
 
         return sourceSeg;
-    };
+    }];
 });

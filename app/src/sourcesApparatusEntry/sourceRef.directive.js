@@ -17,7 +17,7 @@
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {
+.directive('evtSourceRef', ['evtBox', 'evtInterface', 'parsedData', 'evtSourceSeg', 'evtApparatuses', function(evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {
     return {
         restrict: 'E',
         scope: {
@@ -93,4 +93,4 @@ angular.module('evtviewer.sourcesApparatusEntry')
             };
         }
     };
-});
+}]);

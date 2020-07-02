@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.popover')
 
-.directive('evtPopover', function(evtPopover) {
+.directive('evtPopover', ['evtPopover', function(evtPopover) {
     return {
         restrict: 'E',
         scope: {
@@ -272,4 +272,4 @@ angular.module('evtviewer.popover')
             });
         }
     };
-});
+}]);

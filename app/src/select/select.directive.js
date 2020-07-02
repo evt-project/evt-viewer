@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.select')
 
-.directive('evtSelect', function($timeout, evtSelect, evtInterface, evtPinnedElements, parsedData) {
+.directive('evtSelect', ['$timeout', 'evtSelect', 'evtInterface', 'evtPinnedElements', 'parsedData', function($timeout, evtSelect, evtInterface, evtPinnedElements, parsedData) {
     return {
         restrict: 'E',
         scope: {
@@ -219,4 +219,4 @@ angular.module('evtviewer.select')
             });
         }
     };
-});
+}]);

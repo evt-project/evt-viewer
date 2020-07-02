@@ -1,7 +1,7 @@
 (function () {
     angular.module('evtviewer.imageViewerService', ['evtviewer.dataHandler'])
 
-        .service('imageViewerModel', function (parsedData) {
+        .service('imageViewerModel', ['parsedData', function (parsedData) {
             var viewerModel = this;
 
             var options = {
@@ -46,5 +46,5 @@
                 }
                 return options;
             };
-        });
+        }]);
 })();

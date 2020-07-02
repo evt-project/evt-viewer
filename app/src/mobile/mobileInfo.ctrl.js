@@ -11,7 +11,7 @@ angular.module('evtviewer.mobile')
  * @property {string} dvb
  */
 
-.controller('MobileInfoCtrl', function($scope, mobile) {
+.controller('MobileInfoCtrl', ['$scope', 'mobile', function($scope, mobile) {
 
     $scope.view = mobile.getState();
 
@@ -35,4 +35,4 @@ angular.module('evtviewer.mobile')
 
     
 
-});
+}]);

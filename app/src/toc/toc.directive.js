@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.toc')
 
-.directive('evtToc', function(evtToc, evtInterface) {
+.directive('evtToc', ['evtToc', 'evtInterface', function(evtToc, evtInterface) {
 
     return {
         restrict: 'E',
@@ -51,4 +51,4 @@ angular.module('evtviewer.toc')
             });
         }
     };
-});
+}]);

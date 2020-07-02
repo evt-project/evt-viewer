@@ -28,7 +28,7 @@
 **/
 angular.module('evtviewer.buttonSwitch')
 
-.directive('buttonSwitch', function($rootScope, evtButtonSwitch, evtInterface) {
+.directive('buttonSwitch', ['$rootScope', 'evtButtonSwitch', 'evtInterface', function($rootScope, evtButtonSwitch, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -146,4 +146,4 @@ angular.module('evtviewer.buttonSwitch')
         }
     };
     
-});
+}]);

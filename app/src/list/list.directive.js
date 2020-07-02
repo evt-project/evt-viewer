@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.list')
 
-.directive('evtList', function($timeout, evtList, parsedData, evtInterface) {
+.directive('evtList', ['evtList', 'evtInterface', function(evtList, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -72,4 +72,4 @@ angular.module('evtviewer.list')
             });
         }
     };
-});
+}]);

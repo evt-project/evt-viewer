@@ -19,7 +19,7 @@ angular.module('evtviewer.quote')
     openTriggerEvent: 'click'
 })
 
-.config(function(evtQuoteProvider, configProvider, QUOTEDEFAULTS) {
+.config(['evtQuoteProvider', 'configProvider', 'QUOTEDEFAULTS', function(evtQuoteProvider, configProvider, QUOTEDEFAULTS) {
     var defaults = configProvider.makeDefaults('quote', QUOTEDEFAULTS);
     evtQuoteProvider.setDefaults(defaults);
-});
+}]);

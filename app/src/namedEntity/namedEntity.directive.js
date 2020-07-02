@@ -26,7 +26,7 @@
 **/
 angular.module('evtviewer.namedEntity')
 
-.directive('evtNamedEntity', function(evtNamedEntity) {
+.directive('evtNamedEntity', ['evtNamedEntity', function(evtNamedEntity) {
     return {
         restrict: 'E',
         scope: {
@@ -119,4 +119,4 @@ angular.module('evtviewer.namedEntity')
             });
         }
     };
-});
+}]);

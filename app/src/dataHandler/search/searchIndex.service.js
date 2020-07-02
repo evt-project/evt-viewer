@@ -1,7 +1,7 @@
 var lunr = require('lunr');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchIndex', function Index(evtSearchDocument) {
+   .service('evtSearchIndex', ['evtSearchDocument', function Index(evtSearchDocument) {
       this.index = {};
 
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
@@ -277,4 +277,4 @@ angular.module('evtviewer.dataHandler')
          }
          return tokens;
       };
-   });
+   }]);

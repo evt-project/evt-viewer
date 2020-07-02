@@ -19,7 +19,7 @@
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.directive('evtSourceSeg', function(evtSourceSeg) {
+.directive('evtSourceSeg', ['evtSourceSeg', function(evtSourceSeg) {
     return {
         restrict: 'E',
         scope: {
@@ -44,4 +44,4 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });
         }
     };
-});
+}]);
