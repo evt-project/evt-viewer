@@ -24,7 +24,7 @@ require('../../bower_components/angular-simple-logger/dist/angular-simple-logger
 require('leaflet/dist/leaflet-src.js');
 require('leaflet/dist/leaflet.css');
 require('ui-leaflet/dist/ui-leaflet.js');
-require('../../bower_components/oclazyload/dist/ocLazyLoad.js');
+require('oclazyload/dist/ocLazyLoad.js');
 
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');

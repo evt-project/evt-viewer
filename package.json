@@ -53,6 +53,7 @@
     "leaflet": "0.7.7",
     "lunr": "^2.3.5",
     "mark.js": "^8.11.1",
+    "oclazyload": "^1.1.0",
     "openseadragon": "^2.4.1",
     "ui-leaflet": "^1.0.3",
     "virtual-keyboard": "^1.30.1"

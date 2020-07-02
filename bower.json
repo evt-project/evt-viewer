@@ -17,8 +17,7 @@
     "angular-translate-loader-static-files": "2.15.2",
     "angular-translate": "2.15.2",
     "angularjs-slider": "^6.5.1",
-    "angular-xslt": "ng-xslt#^0.2.1",
-    "oclazyload": "^1.1.0"
+    "angular-xslt": "ng-xslt#^0.2.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0",
