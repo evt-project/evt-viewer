@@ -11,7 +11,7 @@ require('angular-route/angular-route.js');
 require('angular-sanitize/angular-sanitize.js');
 require('angular-xml/angular-xml.js');
 require('angular-touch/angular-touch.js');
-require('../../bower_components/json3/lib/json3.min.js');
+
 // require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
 
 require('angularjs-slider/dist/rzslider.js');
