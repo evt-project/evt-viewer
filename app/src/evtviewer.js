@@ -11,13 +11,10 @@ require('angular-route/angular-route.js');
 require('angular-sanitize/angular-sanitize.js');
 require('angular-xml/angular-xml.js');
 require('angular-touch/angular-touch.js');
-
-// require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
-
 require('angularjs-slider/dist/rzslider.js');
 require('angularjs-slider/dist/rzslider.css');
 require('angular-xslt/dist/ng-xslt.js');
-
+require('ng-infinite-scroll/build/ng-infinite-scroll.js');
 require('angular-translate/dist/angular-translate.js');
 require('angular-translate-loader-static-files/angular-translate-loader-static-files.js');
 require('angular-pretty-xml/dist/angular-pretty-xml.js');
@@ -319,7 +316,7 @@ angular.module('evtviewer', [
 	'xml',
 	// 'ngXslt',
 	'prettyXml',
-	// 'infinite-scroll',
+	'infinite-scroll',
 	'pascalprecht.translate',
 	'oc.lazyLoad',
 	'evtviewer.core',
