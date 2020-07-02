@@ -18,6 +18,9 @@ module.exports = {
       new CopyPlugin([
          { from: 'images', to: 'images' },
          { from: 'fonts', to: 'fonts' },
+         { from: 'i18n', to: 'i18n' },
+         { from: 'config', to: 'config' },
+         { from: 'js-plugins', to: 'js-plugins' },
       ]),
       new webpack.ProvidePlugin({
          $: 'jquery',
