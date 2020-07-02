@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
   // Configurable paths for the application
   var appConfig = {
-    app: require('./bower.json').appPath || 'app',
+    app: 'app',
     dist: 'build',
     docs: '<%= yeoman.app %>/docs',
     distDocs: 'devDocs'
@@ -88,10 +88,6 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['wiredep']
-      },
       js: {
         files: ['<%= yeoman.app %>/src/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
@@ -157,10 +153,6 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
               connect.static(appConfig.app)
             ];
           }
@@ -173,10 +165,6 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect.static('test'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
               connect.static(appConfig.app)
             ];
           }
@@ -251,23 +239,11 @@ module.exports = function (grunt) {
       }
     },
 
-    // Automatically inject Bower components into the app
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
       }
-      //,
-      // TODO: temp mobile
-      // mobile: {
-      //   src: ['<%= yeoman.app %>/mobile.html'],
-      //   ignorePath:  /\.\.\//
-      // }
-      // TODO: overwrite bootstrap style in EVT css
-      // sass: {
-      //   src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-      //   ignorePath: /(\.\.\/){1,2}bower_components\//
-      // }
     },
 
     // Compiles Sass to CSS and generates necessary files if requested
@@ -279,7 +255,6 @@ module.exports = function (grunt) {
         imagesDir: '<%= yeoman.app %>/images',
         javascriptsDir: '<%= yeoman.app %>/src',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: './bower_components',
         httpImagesPath: '/images',
         httpGeneratedImagesPath: '/images/generated',
         httpFontsPath: '/styles/fonts',
@@ -484,11 +459,6 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-          dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {

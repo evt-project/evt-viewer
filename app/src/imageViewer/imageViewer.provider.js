@@ -52,7 +52,7 @@ angular.module('evtviewer.openseadragon')
 
 //         var options = {
 //             id: "osd-img",
-//             prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
+//             prefixUrl: "openseadragon/built-openseadragon/openseadragon/images/",
 //             //data/test-img/vb/VB_fol_104v_big.jpg
 //             tileSources:[] , // immagine per rotulo Alba
 //             //tileSources: "data/test-img/quamusdzi/QuamusImgManuscript.dzi", // immagine per Marocco
