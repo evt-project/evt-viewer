@@ -57,4 +57,30 @@ angular.module('evtviewer.core')
 	return function(input, all) {
 		return (!!input && input.replace) ? input.replace(/="[^"]+"/g,function($0){return $0.replace(/&lt;/g,'<').replace(/&gt;/g,'>');}) : '';
 	};
+})
+/**
+ * @ngdoc filter
+ * @module evtviewer.core
+ * @name evtviewer.core.filter:newLinesToSpaces
+ * @description 
+ * # newLinesToSpaces
+ * Transform \n to single spaces
+**/
+.filter('newLinesToSpaces', function() {
+    return function(input) {
+		return input.replace(/\n/g, ' ');
+    };
+})
+/**
+ * @ngdoc filter
+ * @module evtviewer.core
+ * @name evtviewer.core.filter:normalizeMultispaces
+ * @description 
+ * # normalizeMultispaces
+ * Transform multiple consecutive spaces to single spaces.
+**/
+.filter('normalizeMultispaces', function() {
+    return function(input) {
+		return input.replace(/\s{2,}/g, ' ');
+    };
 });

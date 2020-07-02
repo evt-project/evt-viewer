@@ -12,7 +12,6 @@ require('../../bower_components/angular-route/angular-route.js');
 require('../../bower_components/angular-sanitize/angular-sanitize.js');
 require('../../bower_components/angular-xml/angular-xml.js');
 require('../../bower_components/angular-touch/angular-touch.js');
-require('../../bower_components/angular-pretty-xml/src/angular-pretty-xml.js');
 // require('../../bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js');
 require('../../bower_components/angular-translate/angular-translate.js');
 require('../../bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js');
@@ -20,7 +19,8 @@ require('../../bower_components/angular-translate-loader-static-files/angular-tr
 require('../../bower_components/angularjs-slider/dist/rzslider.js');
 require('../../bower_components/angularjs-slider/dist/rzslider.css');
 // require('../../bower_components/angular-xslt/src/ng-xslt.js');
-require('../../bower_components/angular-simple-logger/dist/angular-simple-logger.js');
+require('angular-pretty-xml/dist/angular-pretty-xml.js');
+require('angular-simple-logger/dist/index.js');
 require('leaflet/dist/leaflet-src.js');
 require('leaflet/dist/leaflet.css');
 require('ui-leaflet/dist/ui-leaflet.js');
@@ -352,6 +352,7 @@ angular.module('evtviewer', [
 	'evtviewer.search',
 	'evtviewer.imageViewer',
 	'evtviewer.toc',
+	'nemLogging',
 	'ui-leaflet',
 	'evtviewer.tdhop'
 ]);

@@ -49,6 +49,8 @@
     "bower-install": "bower install"
   },
   "dependencies": {
+    "angular-pretty-xml": "^0.1.1",
+    "angular-simple-logger": "^0.1.7",
     "bower": "^1.8.8",
     "leaflet": "0.7.7",
     "lunr": "^2.3.5",
