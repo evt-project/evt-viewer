@@ -16,7 +16,7 @@ require('angular-touch/angular-touch.js');
 
 require('angularjs-slider/dist/rzslider.js');
 require('angularjs-slider/dist/rzslider.css');
-// require('../../bower_components/angular-xslt/src/ng-xslt.js');
+require('angular-xslt/dist/ng-xslt.js');
 
 require('angular-translate/dist/angular-translate.js');
 require('angular-translate-loader-static-files/angular-translate-loader-static-files.js');
