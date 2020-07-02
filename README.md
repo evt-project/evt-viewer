@@ -7,49 +7,7 @@ If you need to know *how to use* an EVT Release please read `USER_README.md` ins
 ## Dev Environment Prerequisites
 
 You need to preinstall NodeJS (see official documentation). 
-Everything works properly with versions up to v8.17.0 (you can use `nvm` in order to have multiple versions of node installed in your device),
-
-## Environment setup
-
-EVT has also dependencies that require ruby and ruby-compass. Below you'll see some instructions that will guide you through the installation of those dependencies. Unfortunately they cannot cover all different operating systems. Thus, if you run into problems try to google them or contact us for help.
-
-### Linux [apt baset distribution]
-The following commands assume that you are runinng a distribution with the *apt* package manager.
-
-1. Update the package database (just to be sure that everything's ok)
-    ```bash
-    sudo apt-get update
-    ```
-2. Install ruby
-    ```bash
-    sudo apt-get install ruby-compass build-essential curl
-    sudo gem install compass
-    ```
-[the last one is to do in any case to avoid CSS compilation problems]
-
-
-### Windows
-
-1. Install ruby. 
-Install the latest Ruby version at http://rubyinstaller.org/.
-*IMPORTANT: in the installer window select the "Add Ruby executables" options*
-Open a shell as administrator, then type:
-    ```bash
-    gem install compass
-    gem install susy
-    ```
-
-### OS X
-1. Install Homebrew [to do only if you haven't already installed homebrew]
-
-Follow installation instructions at [https://brew.sh](https://brew.sh)
-
-2. Install ruby
-    ```bash
-    brew install ruby
-    sudo gem update --system
-    sudo gem install compass
-    ```
+Everything works properly with versions up to v10.19.0 (you can use `nvm` in order to have multiple versions of node installed in your device),
 
 ## Starting the application
 1. Clone the repository from github
@@ -63,8 +21,11 @@ Follow installation instructions at [https://brew.sh](https://brew.sh)
 
 3. Install dependendencies and devDependencies
     ```bash
-    npm i
-    npm run bower-install
+    npm install
+    ```
+    e per sicurezza 
+    ```bash
+    npm install --only=dev
     ```
 
 ## Start EVT
@@ -81,8 +42,7 @@ npm run start
 ### Every time you install a new package
 Stop current process (*CTRL/CMD+C*) then:
 ```bash
-npm i 
-npm run bower-install
+npm i
 npm run start
 ```
 
@@ -90,23 +50,12 @@ npm run start
 If you need to work on a different branch, we recommend that you stop current process (*CTRL/CMD+C* in the bash terminal), repeat the steps of dependencies and devDependencie installations and launch again :
 ```bash
 npm i 
-npm run bower-install
 npm run start
 ```
 
 ## Generate EVT Development Documentation
 
 [WIP]
-
-## Troubleshooting
-
-### In case of CSS compilation error (especially on Linux)
-``` bash
-sudo gem install rubygems-update
-sudo update_rubygems
-sudo apt-get install ruby-dev
-sudo gem install compass susy
-```
 
 ## Build a new EVT release
 ``` bash
