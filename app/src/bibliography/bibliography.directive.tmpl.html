@@ -24,7 +24,7 @@
 	<div class="evt-bibliography__content"
 		ng-class="{'noSorter': !vm.biblSortStyleSelectVisibility && !vm.biblSortSelectVisibility }">
 		<div class="biblRef" id="{{ ::bibl }}"
-			ng-repeat="bibl in vm.biblRefsCollection._indexes | orderBy: vm.getBibliographicRefById : vm.selectedSortOrder === vm.sortOrder.DESC : vm.myComparator"
+			ng-repeat="bibl in vm.sortedBibl"
 			compile="vm.getFormattedBibl(bibl)" ng-attr-highlight="{{ vm.isEntryHighlighted(bibl) }}"
 			evt-scroll-if="{{ vm.isEntryHighlighted(bibl) }}"
 			ng-attr-pubblicationType="{{ ::vm.pubblicationType(bibl) }}">

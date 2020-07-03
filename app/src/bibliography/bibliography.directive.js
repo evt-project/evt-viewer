@@ -38,6 +38,23 @@ angular.module('evtviewer.bibliography')
         link: function(scope, element, attrs) { 
             // Initialize bibliography 
             var currentBibliography = evtBibliography.build(scope); 
+            currentBibliography.sortedBibl = currentBibliography.getSortedBibl();
+
+            scope.$watch(function() {
+                return currentBibliography.selectedSorting;
+            }, function(newItem, oldItem) {
+                if (oldItem !== newItem) {
+                    currentBibliography.sortedBibl = currentBibliography.getSortedBibl();
+                }
+            }, true);
+
+            scope.$watch(function() {
+                return currentBibliography.selectedSortOrder;
+            }, function(newItem, oldItem) {
+                if (oldItem !== newItem) {
+                    currentBibliography.sortedBibl = currentBibliography.getSortedBibl();
+                }
+            }, true);
 
             // Garbage collection 
             scope.$on('$destroy', function() { 
