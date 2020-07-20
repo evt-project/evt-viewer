@@ -19,7 +19,7 @@
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.directive('evtSourceSeg', function(evtSourceSeg) {
+.directive('evtSourceSeg', ['evtSourceSeg', function(evtSourceSeg) {
     return {
         restrict: 'E',
         scope: {
@@ -28,7 +28,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             sourceId : '@'
         },
         transclude: true,
-        templateUrl: 'src/sourcesApparatusEntry/sourceSeg.directive.tmpl.html',
+        template: require('./sourceSeg.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'sourceSegCtrl',
         link: function(scope, element, attr) {
@@ -44,4 +44,4 @@ angular.module('evtviewer.sourcesApparatusEntry')
             });
         }
     };
-});
+}]);

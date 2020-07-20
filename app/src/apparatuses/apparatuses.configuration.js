@@ -6,7 +6,7 @@ angular.module('evtviewer.apparatuses')
     appStructure : 'tabs'
 })
 
-.config(function(evtApparatusesProvider, configProvider, APPARATUSESDEFAULTS) {
+.config(['evtApparatusesProvider', 'configProvider', 'APPARATUSESDEFAULTS', function(evtApparatusesProvider, configProvider, APPARATUSESDEFAULTS) {
     var defaults = configProvider.makeDefaults('apparatuses', APPARATUSESDEFAULTS);
     evtApparatusesProvider.setDefaults(defaults);
-});
+}]);

@@ -8,7 +8,6 @@
  * {@link evtviewer.analogue.directive:evtAnalogue evtAnalogue} directive 
  * and stores its reference untill the directive remains instantiated.
  *
- * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.interface.evtInterface
  **/
 angular.module('evtviewer.analogue')
@@ -54,7 +53,7 @@ angular.module('evtviewer.analogue')
                 };
             </pre>
          */
-	this.$get = function(parsedData, evtInterface) {
+	this.$get = ['evtInterface', function(evtInterface) {
 		var analogue = {},
 			collection = {},
 			list = [],
@@ -255,5 +254,5 @@ angular.module('evtviewer.analogue')
 		};
 
 		return analogue;
-	};
+	}];
 });

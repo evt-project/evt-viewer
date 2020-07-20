@@ -35,7 +35,7 @@ angular.module('evtviewer.popover')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData, Utils) {
+    this.$get = ['$timeout', 'parsedData', 'evtNamedEntitiesParser', 'baseData', 'Utils', function($timeout, parsedData, evtNamedEntitiesParser, baseData, Utils) {
         var popoverRef    = {},
             collection = {},
             collectionByEntity = {},
@@ -361,6 +361,6 @@ angular.module('evtviewer.popover')
         };
 
         return popoverRef;
-    };
+    }];
 
 });

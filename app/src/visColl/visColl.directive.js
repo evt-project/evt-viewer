@@ -22,14 +22,14 @@
 **/
 angular.module('evtviewer.visColl')
 
-.directive('evtViscoll', function(evtViscoll, parsedData, evtInterface) {
+.directive('evtViscoll', ['evtViscoll', 'parsedData', 'evtInterface', function(evtViscoll, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
           // Insert here scope properties to be passed from HTML attributes
         },
         transclude: true,
-        templateUrl: 'src/visColl/visColl.directive.tmpl.html',
+        template: require('./visColl.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'ViscollCtrl',
         link: function(scope, element, attrs){
@@ -60,20 +60,20 @@ angular.module('evtviewer.visColl')
             }, true);
             
             scope.$watch(function () {
-               return evtInterface.getState('currentViewMode');
+                return evtInterface.getState('currentViewMode');
             }, function (newValue, oldValue) {
-               if (oldValue !== newValue) {
-                  evtInterface.updateState('isThumbNailsOpened', false);
-                  evtInterface.updateState('isVisCollOpened', false);
-               }
+                if (oldValue !== newValue) {
+                    evtInterface.updateState('isThumbNailsOpened', false);
+                    evtInterface.updateState('isVisCollOpened', false);
+                }
             }, true);
 
             // Garbage collection
             scope.$on('$destroy', function() {
-              if (currentViscoll) {
-                currentViscoll.destroy();
-              }
+                if (currentViscoll) {
+                    currentViscoll.destroy();
+                }
             });
         }
     };
-});
+}]);

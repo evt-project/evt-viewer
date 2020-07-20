@@ -1,36 +1,39 @@
-/**************/
-/* SOURCE SEG */
-/**************/
-
-/* Variables */
 $over-seg-color: #8b9aa7;
-$panel-background-color:  $base-color-light;
+$panel-background-color: $base-color-light;
 $panel-border-color: #7d7d7d;
 
 .source-seg {
-    sup.iconbis-evt_quote-left, sup.iconbis-evt_quote-right {
+
+    sup.iconbis-evt_quote-left,
+    sup.iconbis-evt_quote-right {
         font-size: 0.5em;
         color: $apparatus-label;
         margin: 0;
         padding: 0;
     }
+
     sup.iconbis-evt_quote-left:after {
         white-space: nowrap;
     }
+
     sup.iconbis-evt_quote-right:before {
         white-space: nowrap;
     }
+
     &_text {
         cursor: pointer;
         padding: 0;
         border-bottom: 1px dotted $apparatus-label;
+
         &.over {
             background-color: $apparatus-label;
         }
+
         &.selected {
             border-bottom: 1px solid $apparatus-label;
         }
     }
+
     &_panel {
         margin: 0;
         margin-bottom: 10px;
@@ -43,30 +46,32 @@ $panel-border-color: #7d7d7d;
         color: $base-color-dark;
         font-size: 90%;
         padding: 5px;
+
         &_label {
             font-size: 95%;
             font-variant: small-caps;
-            margin:0;
-            padding:0
+            margin: 0;
+            padding: 0
         }
     }
 }
+
 .quoteText {
+
     //
     &.over {
-        text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+        text-shadow: 0px 0px 1px rgba(0, 0, 0, .7);
         cursor: pointer;
     }
+
     &.selected {
         font-weight: bold;
     }
 }
 
-/**************/
-/* SOURCE REF */
-/**************/
 .source-ref {
     cursor: pointer;
+
     &_text {
         font-weight: bold;
         text-decoration: underline;

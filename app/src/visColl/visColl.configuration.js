@@ -4,7 +4,7 @@ angular.module('evtviewer.visColl')
     
 })
 
-.config(function(evtViscollProvider, configProvider, VISCOLLDEFAULTS) {
+.config(['evtViscollProvider', 'configProvider', 'VISCOLLDEFAULTS', function(evtViscollProvider, configProvider, VISCOLLDEFAULTS) {
     var defaults = configProvider.makeDefaults('visColl', VISCOLLDEFAULTS);
     evtViscollProvider.setDefaults(defaults);
-});
+}]);

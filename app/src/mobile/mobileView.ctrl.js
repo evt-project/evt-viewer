@@ -28,7 +28,7 @@ angular.module('evtviewer.mobile')
  * @property {number} currentIndex
  */
 
-.controller('MobileViewCtrl', function($scope, mobile, parsedData) {
+.controller('MobileViewCtrl', ['$scope', 'mobile', 'parsedData', function($scope, mobile, parsedData) {
 
     $scope.view = mobile.getState();
 
@@ -270,4 +270,4 @@ angular.module('evtviewer.mobile')
       $scope.currentIndex = index;
     };
 
-});
+}]);

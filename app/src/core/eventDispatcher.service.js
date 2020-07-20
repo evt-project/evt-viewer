@@ -12,7 +12,7 @@
 /*jshint -W030 */
 angular.module('evtviewer.core')
 
-.service('eventDispatcher', function($q) {
+.service('eventDispatcher', ['$q', function($q) {
 
     var eventDispatcher = {},
         events = {};
@@ -151,4 +151,4 @@ angular.module('evtviewer.core')
     };
 
     return eventDispatcher;
-});
+}]);

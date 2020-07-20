@@ -1,6 +1,6 @@
 angular.module('evtviewer.interface')
 
-.config(function($routeProvider, $locationProvider, $translateProvider) {   
+.config(['$routeProvider', '$locationProvider', '$translateProvider', function($routeProvider, $locationProvider, $translateProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
         .when('/:viewMode', {
@@ -33,20 +33,20 @@ angular.module('evtviewer.interface')
         // });
 
         $translateProvider.useStaticFilesLoader({
-            prefix: 'i18n/',
+            prefix: './i18n/',
             suffix: '.json'
         });
-        
-        $translateProvider 
+        $translateProvider.useSanitizeValueStrategy(null);
+        $translateProvider
             .fallbackLanguage('en')
             .preferredLanguage('en');
-})
+}])
 
-.run(function($injector, config) {
+.run(['$injector', 'config', function($injector, config) {
     if (config.isValid()) {
         if (config.isModuleActive('interface')) {
             var mainInterface = $injector.get('evtInterface');
             mainInterface.boot();
         }
     }
-});
+}]);

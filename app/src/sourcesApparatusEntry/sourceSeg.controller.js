@@ -10,7 +10,7 @@
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.controller('sourceSegCtrl', function(evtInterface, evtSourceSeg, evtBox, evtQuote, evtApparatuses) {
+.controller('sourceSegCtrl', ['evtSourceSeg', 'evtBox', 'evtQuote', 'evtApparatuses', function(evtSourceSeg, evtBox, evtQuote, evtApparatuses) {
     //$scope.content = {};
     var vm = this;
     /**
@@ -188,4 +188,4 @@ angular.module('evtviewer.sourcesApparatusEntry')
     this.destroy = function() {
         evtSourceSeg.destroy(this.uid);
     };
-});
+}]);

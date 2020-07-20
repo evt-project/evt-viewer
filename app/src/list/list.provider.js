@@ -33,7 +33,7 @@ angular.module('evtviewer.list')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function(parsedData, evtInterface) {
+    this.$get = ['parsedData', 'evtInterface', function(parsedData, evtInterface) {
         var collection = {},
             list       = [];
         
@@ -222,6 +222,6 @@ angular.module('evtviewer.list')
         }
 
         return list;
-    };
+    }];
 
 });

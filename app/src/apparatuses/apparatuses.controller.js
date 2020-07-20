@@ -7,14 +7,13 @@
  * This is the controller for the {@link evtviewer.apparatuses.directive:evtApparatuses evtApparatuses} directive. 
  *
  * @requires $timeout
- * @requires $scope
  * @requires evtviewer.apparatuses.evtApparatuses
  *
  * @author CM
  **/
 angular.module('evtviewer.apparatuses')
 
-.controller('apparatusesCtrl', function($timeout, evtApparatuses, $scope) {
+.controller('apparatusesCtrl', ['$timeout', 'evtApparatuses', function($timeout, evtApparatuses) {
 	var vm = this;
 
 	/**
@@ -113,16 +112,16 @@ angular.module('evtviewer.apparatuses')
      */
 	this.loadMoreElements = function() {
 		var appId = vm.currentApparatus,
-            last = vm.apparatuses[appId].visibleList.length,
-            i = 0; 
-        while (i < 5 && i < vm.apparatuses[appId].list.length) {
-            var newElement = vm.apparatuses[appId].list[last+i];
-            if (newElement && vm.apparatuses[appId].visibleList.indexOf(newElement) <= 0) {
-                vm.apparatuses[appId].visibleList.push(newElement);                    
-            }
-            i++;
-        }
-    };
+               last = vm.apparatuses[appId].visibleList.length,
+               i = 0; 
+          while (i < 5 && i < vm.apparatuses[appId].list.length) {
+               var newElement = vm.apparatuses[appId].list[last+i];
+               if (newElement && vm.apparatuses[appId].visibleList.indexOf(newElement) <= 0) {
+                    vm.apparatuses[appId].visibleList.push(newElement);                    
+               }
+               i++;
+          }
+     };
 	/**
      * @ngdoc method
      * @name evtviewer.apparatuses.controller:apparatusesCtrl#destroy
@@ -134,4 +133,4 @@ angular.module('evtviewer.apparatuses')
 	this.destroy = function() {
 		evtApparatuses.destroy(this.uid);
 	};
-});
+}]);

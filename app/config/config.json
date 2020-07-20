@@ -3,7 +3,7 @@
    "webSite": "",
    "logoUrl": "",
 
-   "dataUrl": "data/VB-DOTR.xml",
+   "dataUrl": "./data/DOTR.xml",
    "sourcesUrl"       : "",
    "analoguesUrl"     : "",
    "sourcesTextsUrl" : "",

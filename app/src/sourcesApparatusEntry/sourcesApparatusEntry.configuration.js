@@ -4,7 +4,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
     firstSubContentOpened : ''
 })
 
-.config(function(evtSourcesApparatusEntryProvider, configProvider, SOURCESAPPENTRY) {
+.config(['evtSourcesApparatusEntryProvider', 'configProvider', 'SOURCESAPPENTRY', function(evtSourcesApparatusEntryProvider, configProvider, SOURCESAPPENTRY) {
     var defaults = configProvider.makeDefaults('sourcesApparatusEntry', SOURCESAPPENTRY);
     evtSourcesApparatusEntryProvider.setDefaults(defaults);
-});
+}]);

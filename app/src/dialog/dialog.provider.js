@@ -30,7 +30,7 @@ angular.module('evtviewer.dialog')
 	 * where the scope of the directive is extended with all the necessary properties and methods
 	 * according to specific values of initial scope properties.</p>
 	 **/
-	this.$get = function($log) {
+	this.$get = ['$log', function($log) {
 		var dialog = {},
 			collection = {},
 			list = [],
@@ -308,5 +308,5 @@ angular.module('evtviewer.dialog')
 			}
 		};
 		return dialog;
-	};
+	}];
 });

@@ -17,7 +17,7 @@
 **/
 angular.module('evtviewer.sourcesApparatusEntry')
 
-.directive('evtSourceRef', function(evtSourcesApparatusEntry, evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {
+.directive('evtSourceRef', ['evtBox', 'evtInterface', 'parsedData', 'evtSourceSeg', 'evtApparatuses', function(evtBox, evtInterface, parsedData, evtSourceSeg, evtApparatuses) {
     return {
         restrict: 'E',
         scope: {
@@ -25,7 +25,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
             sourceAbbr: '@'
         },
         transclude: true,
-        templateUrl: 'src/sourcesApparatusEntry/sourceRef.directive.tmpl.html',
+        template: require('./sourceRef.directive.tmpl.html'),
         link: function(scope, element, attrs) {
 
             /**
@@ -93,4 +93,4 @@ angular.module('evtviewer.sourcesApparatusEntry')
             };
         }
     };
-});
+}]);

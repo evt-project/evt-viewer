@@ -11,7 +11,7 @@
  **/
 angular.module('evtviewer.popover')
 
-.controller('PopoverCtrl', function($log, $scope, evtPopover) {
+.controller('PopoverCtrl', ['$log', '$scope', 'evtPopover', function($log, $scope, evtPopover) {
     var vm = this;
     vm.parentRef = '.box-body';
     
@@ -150,4 +150,4 @@ angular.module('evtviewer.popover')
     this.triggerClick = function() { };
     this.resizeTooltip = function() { };
     // _console.log('PopoverCtrl running');
-});
+}]);

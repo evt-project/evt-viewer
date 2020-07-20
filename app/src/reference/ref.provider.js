@@ -20,7 +20,7 @@ angular.module('evtviewer.reference')
         defaults = _defaults;
     };
 
-    this.$get = function($log) {
+    this.$get = ['$log', function($log) {
         var reference  = {},
             collection = {},
             list       = [],
@@ -150,5 +150,5 @@ angular.module('evtviewer.reference')
         };
 
         return reference;
-    };
+    }];
 });

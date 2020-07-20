@@ -16,9 +16,7 @@ angular.module('evtviewer.mobile')
  * @property {string} buttonsOption
  */
 
-.controller('MobileSearchCtrl', function($scope, mobile, parsedData) {
-
-    
+.controller('MobileSearchCtrl', ['$scope', 'mobile', 'parsedData', function($scope, mobile, parsedData) {    
     $scope.view = mobile.getState();
 
     $scope.mockSearchLetters = parsedData.getSearchLetters();
@@ -84,4 +82,4 @@ angular.module('evtviewer.mobile')
     $scope.showResults = function() {
         $scope.listResults = !$scope.listResults;
     };
-});
+}]);

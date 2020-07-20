@@ -21,7 +21,7 @@
 **/
 angular.module('evtviewer.quote')
 
-.directive('evtQuote', function(evtQuote, parsedData, evtInterface) {
+.directive('evtQuote', ['evtQuote', 'evtInterface', function(evtQuote, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -30,7 +30,7 @@ angular.module('evtviewer.quote')
             type: '@'
         },
         transclude: true,
-        templateUrl: 'src/quote/quote.directive.tmpl.html',
+        template: require('./quote.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'QuoteCtrl',
         link: function(scope, element, attrs){
@@ -48,4 +48,4 @@ angular.module('evtviewer.quote')
             });
         }
     };
-});
+}]);

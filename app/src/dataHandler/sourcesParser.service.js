@@ -7,7 +7,6 @@
  * Service containing methods to parse data regarding sources
  *
  * @requires $q
- * @requires xmlParser
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
@@ -17,7 +16,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtSourcesParser', function($q, parsedData, evtParser, evtCriticalElementsParser, xmlParser, config) {
+.service('evtSourcesParser', ['$q', 'parsedData', 'evtParser', 'evtCriticalElementsParser', 'config', function($q, parsedData, evtParser, evtCriticalElementsParser, config) {
     var parser = {};
 
     var apparatusEntryDef = '<app>',
@@ -187,4 +186,4 @@ angular.module('evtviewer.dataHandler')
     };
 
     return parser;
-});
+}]);

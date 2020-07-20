@@ -4,7 +4,7 @@ angular.module('evtviewer.reference')
 
 })
 
-.config(function(evtRefProvider, configProvider, REFDEFAULTS) {
+.config(['evtRefProvider', 'configProvider', 'REFDEFAULTS', function(evtRefProvider, configProvider, REFDEFAULTS) {
     var defaults = configProvider.makeDefaults('ref', REFDEFAULTS);
     evtRefProvider.setDefaults(defaults);
-});
+}]);

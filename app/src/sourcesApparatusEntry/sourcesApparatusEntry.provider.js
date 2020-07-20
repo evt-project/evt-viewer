@@ -8,7 +8,6 @@
  * {@link evtviewer.sourcesApparatusEntry.directive:evtSourcesApparatusEntry evtSourcesApparatusEntry} 
  * directive and stores its reference untill the directive remains instantiated.
  *
- * @requires $log
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.sourcesApparatusEntry.evtSourcesApparatus
  * @requires evtviewer.interface.evtInterface
@@ -27,7 +26,7 @@ angular.module('evtviewer.sourcesApparatusEntry')
 
     var currentSourcesEntry = '';
     
-    this.$get = function(parsedData, evtSourcesApparatus, $log, evtInterface) {
+    this.$get = ['parsedData', 'evtSourcesApparatus', 'evtInterface', function(parsedData, evtSourcesApparatus, evtInterface) {
         var sourceEntry = {},
             collection  = {},
             list        = [],
@@ -314,5 +313,5 @@ angular.module('evtviewer.sourcesApparatusEntry')
         };
         
         return sourceEntry;
-    };
+    }];
 });

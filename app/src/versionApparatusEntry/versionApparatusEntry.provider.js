@@ -18,7 +18,7 @@ angular.module('evtviewer.versionApparatusEntry')
 
 .provider('evtVersionApparatusEntry', function() {
     
-    this.$get = function(parsedData, evtVersionApparatus, config) {
+    this.$get = ['parsedData', 'evtVersionApparatus', 'config', function(parsedData, evtVersionApparatus, config) {
         
         var versionEntry = {},
             collection = {},
@@ -137,5 +137,5 @@ angular.module('evtviewer.versionApparatusEntry')
         };
         
         return versionEntry;
-    };
+    }];
 });

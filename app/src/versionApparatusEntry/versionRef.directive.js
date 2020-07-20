@@ -23,7 +23,7 @@
 **/
 angular.module('evtviewer.versionApparatusEntry')
 
-.directive('evtVersionRef', function(evtVersionRef){
+.directive('evtVersionRef', ['evtVersionRef', function(evtVersionRef){
     return {
         restrict: 'E',
         scope: {
@@ -32,7 +32,7 @@ angular.module('evtviewer.versionApparatusEntry')
             elId : '@' 
         },
         transclude: true,
-        templateUrl : 'src/versionApparatusEntry/versionRef.directive.tmpl.html',
+        template : require('./versionRef.directive.tmpl.html'),
         link: function(scope, element, attrs) {
             scope.vm = {};
             var currentRef = evtVersionRef.build(scope);
@@ -43,4 +43,4 @@ angular.module('evtviewer.versionApparatusEntry')
             });
         }
     };
-});
+}]);

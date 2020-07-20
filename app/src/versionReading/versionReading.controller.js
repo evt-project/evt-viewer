@@ -12,13 +12,12 @@
  * @requires evtviewer.popover.evtPopover
  * @requires evtviewer.versionReading.evtVersionReading
  * @requires evtviewer.interface.evtInterface
- * @requires evtviewer.box.evtBox
  *
  * @author CM
 **/
 angular.module('evtviewer.versionReading')
 
-.controller('versionReadingCtrl', function($scope, parsedData, config, evtPopover, evtVersionReading, evtInterface, evtBox) {
+.controller('versionReadingCtrl', ['$scope', 'parsedData', 'config', 'evtPopover', 'evtVersionReading', 'evtInterface', function($scope, parsedData, config, evtPopover, evtVersionReading, evtInterface) {
     var vm = this;
     /**
      * @ngdoc method
@@ -256,4 +255,4 @@ angular.module('evtviewer.versionReading')
         evtVersionReading.destroy(tempId);
         // _console.log('vm - destroy ' + tempId);
     };
-});
+}]);

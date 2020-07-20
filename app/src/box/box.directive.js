@@ -67,558 +67,558 @@
 **/
 angular.module('evtviewer.box')
 
-.directive('box', function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox, evtVirtualKeyboard, evtButtonSwitch) {
+.directive('box', ['$timeout', 'evtBox', 'evtInterface', 'xmlParser', 'config', 'parsedData', 'evtSearchResults', 'evtSearchBox', 'evtVirtualKeyboard', 'evtButtonSwitch',
+    function($timeout, evtBox, evtInterface, xmlParser, config, parsedData, evtSearchResults, evtSearchBox, evtVirtualKeyboard, evtButtonSwitch) {
+        return {
+            restrict: 'E',
+            scope: {
+                id      : '@',
+                type    : '@',
+                subtype : '@',
+                witness : '@',
+                witpage : '@',
+                edition : '@',
+                source  : '@',
+                version : '@'
+            },
+            transclude : true,
+            template: require('./box.dir.tmpl.html'),
+            link: function(scope, element, attrs) {
+                // Add attributes in vm
+                scope.vm = {
+                    id      : scope.id,
+                    type    : scope.type,
+                    subtype : scope.subtype,
+                    witness : scope.witness,
+                    witPage : scope.witpage,
+                    edition : scope.edition,
+                    source  : scope.source,
+                    version : scope.version
+                };
 
-    return {
-        restrict: 'E',
-        scope: {
-            id      : '@',
-            type    : '@',
-            subtype : '@',
-            witness : '@',
-            witpage : '@',
-            edition : '@',
-            source  : '@',
-            version : '@'
-        },
-        transclude : true,
-        templateUrl: 'src/box/box.dir.tmpl.html',
-        link: function(scope, element, attrs) {
-            // Add attributes in vm
-            scope.vm = {
-                id      : scope.id,
-                type    : scope.type,
-                subtype : scope.subtype,
-                witness : scope.witness,
-                witPage : scope.witpage,
-                edition : scope.edition,
-                source  : scope.source,
-                version : scope.version
-            };
+                // Initialize box
+                var currentBox = evtBox.build(scope, scope.vm);
+                var boxElem = angular.element(element).find('.box')[0],
+                    boxBody,
+                    boxTopBox;
 
-            // Initialize box
-            var currentBox = evtBox.build(scope, scope.vm);
-            var boxElem = angular.element(element).find('.box')[0],
-                boxBody,
-                boxTopBox;
+                $timeout(function(){
+                    // We used $timeout to be sure that the view has been instantiated
+                    boxBody = angular.element(element).find('.box-body')[0];
+                    boxTopBox = angular.element(element).find('.box-top-box')[0];
+                    currentBox.updateContent();
 
-            $timeout(function(){
-                // We used $timeout to be sure that the view has been instantiated
-                boxBody = angular.element(element).find('.box-body')[0];
-                boxTopBox = angular.element(element).find('.box-top-box')[0];
-                currentBox.updateContent();
-
-                if (currentBox.type === 'witness' || currentBox.type === 'text') {
-                    // Scrol box to update page numbers
-                    //BIND DEPRECATED, USE ON
-                    var docViewTop = boxElem.scrollTop + 42,
-                        docViewBottom = docViewTop + angular.element(boxElem).height();
-                    var updateDiv = function() {
-                        if (currentBox.type !== 'text') {
-                            return;
-                        }
-                        var divs = angular.element(element).find('.div'),
-                            divCount = 0,
-                            divVisible = false,
-                            divId = '';
-                        while ( divCount < divs.length && !divVisible ) {
-                            divId = divs[divCount].getAttribute('id');
-
-                            var elemOffset = $('#'+divId).offset();
-                            var elemTop;
-                            if (elemOffset) {
-                                elemTop =  elemOffset.top;
+                    if (currentBox.type === 'witness' || currentBox.type === 'text') {
+                        // Scrol box to update page numbers
+                        //BIND DEPRECATED, USE ON
+                        var docViewTop = boxElem.scrollTop + 42,
+                            docViewBottom = docViewTop + angular.element(boxElem).height();
+                        var updateDiv = function() {
+                            if (currentBox.type !== 'text') {
+                                return;
                             }
-                            if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
-                                divVisible = true;
-                            } else {
-                                divCount++;
+                            var divs = angular.element(element).find('.div'),
+                                divCount = 0,
+                                divVisible = false,
+                                divId = '';
+                            while ( divCount < divs.length && !divVisible ) {
+                                divId = divs[divCount].getAttribute('id');
+
+                                var elemOffset = $('#'+divId).offset();
+                                var elemTop;
+                                if (elemOffset) {
+                                    elemTop =  elemOffset.top;
+                                }
+                                if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
+                                    divVisible = true;
+                                } else {
+                                    divCount++;
+                                }
+                            }
+                            if (divVisible && divId && parsedData.getDiv(divId) && scope.vm.state.divId !== divId) {
+                                scope.vm.state.divId = divId;
+                                evtInterface.updateDiv(parsedData.getDiv(divId).doc, divId);
+                                evtInterface.updateUrl();
                             }
                         }
-                        if (divVisible && divId && parsedData.getDiv(divId) && scope.vm.state.divId !== divId) {
-                            scope.vm.state.divId = divId;
-                            evtInterface.updateDiv(parsedData.getDiv(divId).doc, divId);
-                            evtInterface.updateUrl();
+                        var updatePage = function() {
+                            if (currentBox.type !== 'witness') {
+                                return;
+                            }
+                            var pbs = angular.element(element).find('.pb'),
+                                pbCount = 0,
+                                pbVisible = false,
+                                pbId = '';
+                            while ( pbCount < pbs.length && !pbVisible ) {
+                                pbId = pbs[pbCount].getAttribute('data-id');
+
+                                var elemOffset = $('span.pb[data-id=\''+pbId+'\']').offset();
+                                var elemTop;
+                                if (elemOffset) {
+                                    elemTop =  elemOffset.top;
+                                }
+                                if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
+                                    pbVisible = true;
+                                } else {
+                                    pbCount++;
+                                }
+                            }
+                            if (pbVisible && evtInterface.getCurrentWitnessPage(scope.witness) !== id.split('-')[1]) {
+                                evtInterface.updateWitnessPage(scope.witness, id.split('-')[1]);
+                                evtInterface.updateUrl();
+                            }
+                        }
+                        var updateParams = function() {
+                            if (parsedData.getDivs().length > 0) {
+                                updateDiv();
+                            }
+                            if (parsedData.getPages().length > 0) {
+                                updatePage();
+                            }
+                        }
+                        var timer;
+                        angular.element(boxBody).on('DOMMouseScroll mousewheel scroll', function() {
+                            if (timer) {
+                                window.clearTimeout(timer);
+                            }
+                            timer = window.setTimeout(updateParams(), 1000);
+                        });
+                        var topTimer;
+                        angular.element(boxTopBox).on('DOMMouseScroll mousewheel scroll', function() {
+                            if (topTimer) {
+                                window.clearTimeout(topTimer);
+                            }
+                            topTimer = window.setTimeout(updateParams(), 1000);
+                        });
+                    }
+
+                    if ( currentBox.type === 'witness' ) {
+                        // Align new witness to selected app entry
+                        // scope.$watch(function() {
+                        //     var witnesses = evtInterface.getState('currentWits'),
+                        //     scopeWitnessIndex = witnesses.indexOf(scope.vm.witness);
+                        //     return scopeWitnessIndex;
+                        // }, function(newItem, oldItem) {
+                        //     if (oldItem !== newItem) {
+                        //         var appId = evtInterface.getState('currentAppEntry');
+                        //         scope.vm.scrollToAppEntry(appId);
+                        //     }
+                        // }, true);
+                    }
+                    displayResult(scope, config.xsltUrl);
+                });
+
+                /* ****************** */
+                /* XSL TRANSFORMATION */
+                /* ****************** */
+                var loadXMLDoc = function(filename) {
+                    var xhttp;
+                    if (window.ActiveXObject) {
+                        xhttp = new ActiveXObject('Msxml2.XMLHTTP');
+                    } else {
+                        xhttp = new XMLHttpRequest();
+                    }
+                    xhttp.open('GET', filename, false);
+                    try {
+                        xhttp.responseType = 'msxml-document';
+                    } catch (err) {} // Helping IE11
+                    xhttp.send('');
+                    return xhttp.responseXML;
+                };
+
+                var displayResult = function(sc, xsltUrl) {
+                    if (xsltUrl !== '') {
+                        var xml = xmlParser.parse(scope.vm.content),
+                            xsl = loadXMLDoc(xsltUrl);
+                        // code for IE
+                        if (window.ActiveXObject) {
+                            var ex = xml.transformNode(xsl);
+                            scope.vm.content = ex;
+                        }
+                        // code for Chrome, Firefox, Opera, etc.
+                        else if (document.implementation && document.implementation.createDocument) {
+                            var xsltProcessor = new XSLTProcessor();
+                            xsltProcessor.importStylesheet(xsl);
+                            var resultDocument = xsltProcessor.transformToFragment(xml, document);
+                            scope.vm.content = resultDocument;
                         }
                     }
-                    var updatePage = function() {
-                        if (currentBox.type !== 'witness') {
-                            return;
-                        }
-                        var pbs = angular.element(element).find('.pb'),
-                            pbCount = 0,
-                            pbVisible = false,
-                            pbId = '';
-                        while ( pbCount < pbs.length && !pbVisible ) {
-                            pbId = pbs[pbCount].getAttribute('data-id');
+                };
+                // /////////////////////// //
+                // END XSL TRANSFORMATION  //
+                // ////////////////////// //
 
-                            var elemOffset = $('span.pb[data-id=\''+pbId+'\']').offset();
-                            var elemTop;
-                            if (elemOffset) {
-                                elemTop =  elemOffset.top;
-                            }
-                            if (elemTop && (elemTop <= docViewBottom) && (elemTop >= docViewTop)) {
-                                pbVisible = true;
-                            } else {
-                                pbCount++;
-                            }
-                        }
-                        if (pbVisible && evtInterface.getCurrentWitnessPage(scope.witness) !== id.split('-')[1]) {
-                            evtInterface.updateWitnessPage(scope.witness, id.split('-')[1]);
-                            evtInterface.updateUrl();
-                        }
-                    }
-                    var updateParams = function() {
-                        if (parsedData.getDivs().length > 0) {
-                            updateDiv();
-                        }
-                        if (parsedData.getPages().length > 0) {
-                            updatePage();
-                        }
-                    }
-                    var timer;
-                    angular.element(boxBody).on('DOMMouseScroll mousewheel scroll', function() {
-                        if (timer) {
-                            window.clearTimeout(timer);
-                        }
-                        timer = window.setTimeout(updateParams(), 1000);
-                    });
-                    var topTimer;
-                    angular.element(boxTopBox).on('DOMMouseScroll mousewheel scroll', function() {
-                        if (topTimer) {
-                            window.clearTimeout(topTimer);
-                        }
-                        topTimer = window.setTimeout(updateParams(), 1000);
-                    });
-                }
+                /**
+                 * @ngdoc method
+                 * @name evtviewer.box.controller:BoxCtrl#getTotElementsOfType
+                 * @methodOf evtviewer.box.controller:BoxCtrl
+                 *
+                 * @description
+                 * <p>Get number of instances of <code>&lt;box&gt;</code>s of a particular type.</p>
+                 * <p>This function is necessary to handle box resizings depending on numbers of boxes.</p>
+                 *
+                 * @param {string} type type of <code>&lt;box&gt;</code> to handle
+                 *
+                 * @returns {number} number of instances of <code>&lt;box&gt;</code>s of a particular type
+                 */
+                scope.vm.getTotElementsOfType = function(type){
+                    return evtBox.getListByType(type).length;
+                };
 
-                if ( currentBox.type === 'witness' ) {
-                    // Align new witness to selected app entry
+                if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
+                    /** @ngdoc method
+                     * @name evtviewer.box.controller:BoxCtrl#scrollToPage
+                     * @methodOf evtviewer.box.controller:BoxCtrl
+                     *
+                     * @description
+                     * <p>Scroll box body container to a particular page anchor.</p>
+                     * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness** and **text**.</p>
+                     *
+                     * @param {string} pageId id of page to consider during scrolling
+                     */
+                    scope.vm.scrollToPage = function(pageId) {
+                        $timeout(function(){
+                            var pbElem = $('#'+currentBox.uid).find('#pb_'+pageId);
+                            var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (pbElem.length > 0 && pbElem[0] !== undefined) {
+                                boxBody.scrollTop = pbElem[0].offsetTop-padding;
+                            }
+                        });
+                    };
+                    /** @ngdoc method
+                     * @name evtviewer.box.controller:BoxCtrl#scrollToAppEntry
+                     * @methodOf evtviewer.box.controller:BoxCtrl
+                     *
+                     * @description
+                     * <p>Scroll box body container to a particular critical apparatus entry.</p>
+                     * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness** and **text**.</p>
+                     *
+                     * @param {string} appId id of critical apparatus entry to consider during scrolling
+                     */
+                    scope.vm.scrollToAppEntry = function(appId) {
+                        $timeout(function(){
+                            var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
+                            var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (appElem.length > 0 && appElem[0] !== undefined) {
+                                boxBody.scrollTop = appElem[0].offsetTop-padding;
+                            }
+                        });
+                    };
+
+                    scope.vm.scrollToDiv = function(divId) {
+                        $timeout(function(){
+                            var divElem = $('#'+divId);
+                            var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (divElem.length > 0 && divElem[0] !== undefined) {
+                                boxBody.scrollTop = divElem[0].offsetTop-padding;
+                            }
+                        });
+                    };
+                    // Necessary for first load page/app entry alignment
+                    var pageId,
+                        currentAppId = evtInterface.getState('currentAppEntry');
+                    var currentDocument = evtInterface.getState('currentDoc');
+                    var currentDivs = evtInterface.getState('currentDivs');
+                    var currentDivId = currentDivs ? currentDivs[currentDocument] : undefined;
+                    if ( currentBox.type === 'witness' ) {
+                        pageId = scope.vm.witness+'-'+evtInterface.getCurrentWitnessPage(scope.vm.witness);
+                    } else if ( currentBox.type === 'text' ) {
+                        pageId = evtInterface.getState('currentPage');
+                    }
+                    scope.vm.scrollToPage(pageId);
+                    if (currentDivId) {
+                        scope.vm.scrollToDiv(currentDivId);
+                    }
+                    scope.vm.scrollToAppEntry(currentAppId);
+
                     // scope.$watch(function() {
-                    //     var witnesses = evtInterface.getState('currentWits'),
-                    //     scopeWitnessIndex = witnesses.indexOf(scope.vm.witness);
-                    //     return scopeWitnessIndex;
+                    //     return evtInterface.getState('currentAppEntry');
                     // }, function(newItem, oldItem) {
                     //     if (oldItem !== newItem) {
-                    //         var appId = evtInterface.getState('currentAppEntry');
-                    //         scope.vm.scrollToAppEntry(appId);
+                    //         if (evtInterface.getState('currentViewMode') === 'collation' && evtInterface.getState('currentWits').length > 0){
+                    //             scope.vm.scrollToAppEntry(newItem);
+                    //         }
                     //     }
                     // }, true);
-                }
-                displayResult(scope, config.xsltUrl);
-            });
-
-            /* ****************** */
-            /* XSL TRANSFORMATION */
-            /* ****************** */
-            var loadXMLDoc = function(filename) {
-                var xhttp;
-                if (window.ActiveXObject) {
-                    xhttp = new ActiveXObject('Msxml2.XMLHTTP');
-                } else {
-                    xhttp = new XMLHttpRequest();
-                }
-                xhttp.open('GET', filename, false);
-                try {
-                    xhttp.responseType = 'msxml-document';
-                } catch (err) {} // Helping IE11
-                xhttp.send('');
-                return xhttp.responseXML;
-            };
-
-            var displayResult = function(sc, xsltUrl) {
-                if (xsltUrl !== '') {
-                    var xml = xmlParser.parse(scope.vm.content),
-                        xsl = loadXMLDoc(xsltUrl);
-                    // code for IE
-                    if (window.ActiveXObject) {
-                        var ex = xml.transformNode(xsl);
-                        scope.vm.content = ex;
-                    }
-                    // code for Chrome, Firefox, Opera, etc.
-                    else if (document.implementation && document.implementation.createDocument) {
-                        var xsltProcessor = new XSLTProcessor();
-                        xsltProcessor.importStylesheet(xsl);
-                        var resultDocument = xsltProcessor.transformToFragment(xml, document);
-                        scope.vm.content = resultDocument;
-                    }
-                }
-            };
-            // /////////////////////// //
-            // END XSL TRANSFORMATION  //
-            // ////////////////////// //
-
-            /**
-             * @ngdoc method
-             * @name evtviewer.box.controller:BoxCtrl#getTotElementsOfType
-             * @methodOf evtviewer.box.controller:BoxCtrl
-             *
-             * @description
-             * <p>Get number of instances of <code>&lt;box&gt;</code>s of a particular type.</p>
-             * <p>This function is necessary to handle box resizings depending on numbers of boxes.</p>
-             *
-             * @param {string} type type of <code>&lt;box&gt;</code> to handle
-             *
-             * @returns {number} number of instances of <code>&lt;box&gt;</code>s of a particular type
-             */
-            scope.vm.getTotElementsOfType = function(type){
-                return evtBox.getListByType(type).length;
-            };
-
-            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
-                /** @ngdoc method
-                 * @name evtviewer.box.controller:BoxCtrl#scrollToPage
-                 * @methodOf evtviewer.box.controller:BoxCtrl
-                 *
-                 * @description
-                 * <p>Scroll box body container to a particular page anchor.</p>
-                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness** and **text**.</p>
-                 *
-                 * @param {string} pageId id of page to consider during scrolling
-                 */
-                scope.vm.scrollToPage = function(pageId) {
-                    $timeout(function(){
-                        var pbElem = $('#'+currentBox.uid).find('#pb_'+pageId);
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (pbElem.length > 0 && pbElem[0] !== undefined) {
-                            boxBody.scrollTop = pbElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-                /** @ngdoc method
-                 * @name evtviewer.box.controller:BoxCtrl#scrollToAppEntry
-                 * @methodOf evtviewer.box.controller:BoxCtrl
-                 *
-                 * @description
-                 * <p>Scroll box body container to a particular critical apparatus entry.</p>
-                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness** and **text**.</p>
-                 *
-                 * @param {string} appId id of critical apparatus entry to consider during scrolling
-                 */
-                scope.vm.scrollToAppEntry = function(appId) {
-                    $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find('[data-app-id=\''+appId+'\']');
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (appElem.length > 0 && appElem[0] !== undefined) {
-                            boxBody.scrollTop = appElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-
-                scope.vm.scrollToDiv = function(divId) {
-                    $timeout(function(){
-                        var divElem = $('#'+divId);
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (divElem.length > 0 && divElem[0] !== undefined) {
-                            boxBody.scrollTop = divElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-                // Necessary for first load page/app entry alignment
-                var pageId,
-                    currentAppId = evtInterface.getState('currentAppEntry');
-                var currentDocument = evtInterface.getState('currentDoc');
-                var currentDivs = evtInterface.getState('currentDivs');
-                var currentDivId = currentDivs ? currentDivs[currentDocument] : undefined;
-                if ( currentBox.type === 'witness' ) {
-                    pageId = scope.vm.witness+'-'+evtInterface.getCurrentWitnessPage(scope.vm.witness);
-                } else if ( currentBox.type === 'text' ) {
-                    pageId = evtInterface.getState('currentPage');
-                }
-                scope.vm.scrollToPage(pageId);
-                if (currentDivId) {
-                    scope.vm.scrollToDiv(currentDivId);
-                }
-                scope.vm.scrollToAppEntry(currentAppId);
-
-                // scope.$watch(function() {
-                //     return evtInterface.getState('currentAppEntry');
-                // }, function(newItem, oldItem) {
-                //     if (oldItem !== newItem) {
-                //         if (evtInterface.getState('currentViewMode') === 'collation' && evtInterface.getState('currentWits').length > 0){
-                //             scope.vm.scrollToAppEntry(newItem);
-                //         }
-                //     }
-                // }, true);
-                scope.$watch(function() {
-                    return evtInterface.getState('currentDivs');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem) {
-                        var currentDocument = evtInterface.getState('currentDoc');
-                        var currentDivs = newItem;
-                        var currentDivId = currentDivs ? currentDivs[currentDocument] : undefined;
-                        if (currentDivId && scope.vm.state.divId !== currentDivId) {
-                            scope.vm.state.divId = currentDivId;
-                            scope.vm.scrollToDiv(currentDivId);
-                        }
-                    }
-                }, true);
-            }
-
-            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'textdhop') {
-              scope.$watch(function() {
-                  return evtInterface.getState('currentDoc');
-              }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
-                      scope.vm.state.docId = newItem;
-                      scope.vm.isLoading = true;
-                      currentBox.updateContent();
-                      if (scope.vm.currentType === 'text') {
-                        var docObj = parsedData.getDocument(newItem),
-                            docFront = docObj ? docObj.front : undefined;
-                        var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                        scope.vm.updateTopBoxContent(content);
-                      }
-                      /* aggiunta per msDesc*/
-                      else if (scope.vm.currentType === 'image'){
-                          var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                          scope.vm.updateTopBoxContent(msDescObj);
-                      }
-                      /* fine aggiunta*/
-                      /* aggiunta per 3DDesc*/
-                      else if (scope.vm.currentType === 'tdhop' || scope.vm.currentType === 'text'){
-                        var objDescObj = parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                        parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
-                        scope.vm.updateTopBoxContent(objDescObj);
-                     }
-                     /* fine aggiunta*/
-
-                  }
-              }, true);
-
-              scope.$watch(function() {
-                  return scope.vm.state.filters._totActive;
-              }, function(newItem, oldItem) {
-                  if (oldItem !== newItem) {
-                      $timeout(function(){
-                          var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
-                          var height = angular.element(filtersActiveElem).height();
-                          var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
-                          angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
-                      });
-                  }
-              }, true);
-            }
-
-            //Added by CM
-            if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
-                /** @ngdoc method
-                 * @name evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry
-                 * @methodOf evtviewer.box.controller:BoxCtrl
-                 *
-                 * @description
-                 * <p>Scroll box body container to a particular quote.</p>
-                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
-                 *
-                 * @param {string} quoteId id of quote to consider during scrolling
-                 */
-                scope.vm.scrollToQuotesEntry = function(quoteId) {
-                    $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find('[data-quote-id=\''+quoteId+'\']');
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (appElem.length > 0 && appElem[0] !== undefined) {
-                            boxBody.scrollTop = appElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-                /** @ngdoc method
-                 * @name evtviewer.box.controller:BoxCtrl#scrollToAnaloguesEntry
-                 * @methodOf evtviewer.box.controller:BoxCtrl
-                 *
-                 * @description
-                 * <p>Scroll box body container to a particular analogue.</p>
-                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
-                 *
-                 * @param {string} analogueId id of analogue to consider during scrolling
-                 */
-                scope.vm.scrollToAnaloguesEntry = function(analogueId) {
-                    $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find('[data-analogue-id=\''+analogueId+'\']');
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (appElem.length > 0 && appElem[0] !== undefined) {
-                            boxBody.scrollTop = appElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-                /** @ngdoc method
-                 * @name evtviewer.box.controller:BoxCtrl#scrollToVersionApparatus
-                 * @methodOf evtviewer.box.controller:BoxCtrl
-                 *
-                 * @description
-                 * <p>Scroll box body container to a particular critical apparatus entry on version text.</p>
-                 * <p>If the version apparatus entry isn't visible, the box scrolls in order to show the apparatus completely.</p>
-                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
-                 *
-                 * @param {string} appId id of critical apparatus entry to consider during scrolling
-                 */
-                scope.vm.scrollToVersionApparatus = function(appId) {
-                    $timeout(function() {
-                        var appEntryElem = $('#'+currentBox.uid).find('evt-version-apparatus-entry[data-app-id=\''+appId+'\']'),
-                            padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (appEntryElem.length > 0 && appEntryElem[0] !== undefined) {
-                            var elementPosition = angular.element(appEntryElem[0]).position().top,
-                                clientHeight = appEntryElem[0].offsetParent.clientHeight,
-                                elemDiv = $('#'+currentBox.uid).find('div[class=\'version-apparatus-entry\']'),
-                                elementHeight = angular.element(elemDiv).outerHeight() || 0;
-                            if ((elementPosition + elementHeight) > clientHeight) {
-                                boxBody.scrollTop += (elementPosition - clientHeight) + elementHeight;
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentDivs');
+                    }, function(newItem, oldItem) {
+                        if (oldItem !== newItem) {
+                            var currentDocument = evtInterface.getState('currentDoc');
+                            var currentDivs = newItem;
+                            var currentDivId = currentDivs ? currentDivs[currentDocument] : undefined;
+                            if (currentDivId && scope.vm.state.divId !== currentDivId) {
+                                scope.vm.state.divId = currentDivId;
+                                scope.vm.scrollToDiv(currentDivId);
                             }
                         }
-                    });
-                };
-            }
-
-            if (currentBox.type === 'source') {
-                /** @ngdoc method
-                 * @name evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry
-                 * @methodOf evtviewer.box.controller:BoxCtrl
-                 *
-                 * @description
-                 * <p>Scroll box body container to a particular quote entry on source text.</p>
-                 * <p>This function is available only on <code>&lt;box&gt;</code>s of type **source**.</p>
-                 *
-                 * @param {string} segId id of quote entry to consider during scrolling
-                 */
-                scope.vm.scrollToQuotesEntry = function(segId) {
-                    $timeout(function(){
-                        var appElem = $('#'+currentBox.uid).find('[data-seg-id=\''+segId+'\']');
-                        var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
-                        if (appElem.length > 0 && appElem[0] !== undefined) {
-                            boxBody.scrollTop = appElem[0].offsetTop-padding;
-                        }
-                    });
-                };
-            }
-
-            //TODO: aggiungere scroll per sources view
-
-            if (currentBox.type === 'text') {
-                if (currentBox.subtype === 'comparing') {
-                  scope.$watch(function() {
-                      return evtInterface.getState('currentComparingEdition');
-                  }, function(newItem, oldItem) {
-                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                         scope.vm.edition = newItem;
-                         currentBox.updateContent();
-
-                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
-                         $timeout(function() {
-                            var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue(currentBoxId);
-
-                            if(searchInput !== '') {
-                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                            }
-                         });
-                      }
-                  }, true);
-                } else {
-                  scope.$watch(function() {
-                      return evtInterface.getState('currentEdition');
-                  }, function(newItem, oldItem) {
-                      if (oldItem !== newItem && scope.vm.edition !== newItem) {
-                          scope.vm.edition = newItem;
-                          currentBox.updateContent();
-
-                         evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
-                         $timeout(function() {
-                            var currentBoxId = scope.id,
-                               searchInput = evtSearchBox.getInputValue(currentBoxId);
-
-                            if(searchInput !== '') {
-                               evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                            }
-                         });
-                      }
-                  }, true);
+                    }, true);
                 }
 
-                scope.$watch(function () {
-                   var currentBoxId = scope.id;
-                   return evtBox.getState(currentBoxId, 'searchBox');
-                }, function (newItem, oldItem) {
-                   if (newItem === true) {
-                      $timeout(function(){
-                         $('input').trigger('focus');
-                      }, 100);
-                   }
-                }, true);
-
+                if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'textdhop') {
                 scope.$watch(function() {
-                    return evtInterface.getState('currentPage');
+                    return evtInterface.getState('currentDoc');
                 }, function(newItem, oldItem) {
-                    currentBox.updateContent();
-
-                   $timeout(function() {
-                      var currentBoxId = scope.id,
-                         searchInput = evtSearchBox.getInputValue(currentBoxId);
-
-                      if(searchInput !== '') {
-                         evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
-                      }
-                   });
-                }, true);
-            }
-
-            if (currentBox.type === 'image') {
-                scope.$watch(function() {
-                    return evtInterface.getState('currentPage');
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
-                        scope.vm.state.pageId = newItem;
+                        if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
+                        scope.vm.state.docId = newItem;
+                        scope.vm.isLoading = true;
                         currentBox.updateContent();
+                        if (scope.vm.currentType === 'text') {
+                            var docObj = parsedData.getDocument(newItem),
+                                docFront = docObj ? docObj.front : undefined;
+                            var content = docFront && docFront.parsedContent ? docFront.parsedContent : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                            scope.vm.updateTopBoxContent(content);
+                        }
+                        /* aggiunta per msDesc*/
+                        else if (scope.vm.currentType === 'image'){
+                            var msDescObj = parsedData.getProjectInfo().msDesc ? parsedData.getProjectInfo().msDesc : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                            scope.vm.updateTopBoxContent(msDescObj);
+                        }
+                        /* fine aggiunta*/
+                        /* aggiunta per 3DDesc*/
+                        else if (scope.vm.currentType === 'tdhop' || scope.vm.currentType === 'text'){
+                            var objDescObj = parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                            parsedData.getProjectInfo().listObject ? parsedData.getProjectInfo().listObject : '<div class="warningMsg">{{ \'MESSAGES.FRONT_NOT_AVAILABLE\' | translate }}</div>';
+                            scope.vm.updateTopBoxContent(objDescObj);
+                        }
+                        /* fine aggiunta*/
+
                     }
                 }, true);
-            }
 
-            //Watchers for box of type "source"//
-            //author: CM//
-            if (currentBox.type === 'source') {
-
-                //Watcher to intialize the sources texts, by parsing them.     //
-                //The watcher checks if the source to parse has been loaded,   //
-                //then updates the content of the box with current source text.//
                 scope.$watch(function() {
-                    return evtInterface.getProperty('isSourceLoading');
+                    return scope.vm.state.filters._totActive;
                 }, function(newItem, oldItem) {
                     if (oldItem !== newItem) {
-                        if (!newItem) {
-                            scope.vm.source = evtInterface.getState('currentSourceText') ;
-                            currentBox.updateContent();
-                        }
+                        $timeout(function(){
+                            var filtersActiveElem = angular.element(element).find('.filters-in-box')[0];
+                            var height = angular.element(filtersActiveElem).height();
+                            var boxBodyLastChild = angular.element(element).find('.box-body > *:last-child')[0];
+                            angular.element(boxBodyLastChild).css('margin-bottom', (height+20)+'px');
+                        });
                     }
-                });
-
-                //Watch to change the source text.                              //
-                //Checks if the current Source text has changed and then updates//
-                //the content of the box.                                       //
-                scope.$watch(function() {
-                    return evtInterface.getState('currentSourceText') ;
-                }, function(newItem, oldItem) {
-                    if (oldItem !== newItem) {
-                        if (evtInterface.getProperty('parsedSourcesTexts').indexOf(newItem) >= 0) {
-                            scope.vm.source = newItem;
-                            currentBox.updateContent();
-                        }
-                    }
-                });
-            }
-
-            if (currentBox.type === 'text' && evtInterface.getState('currentViewMode') === 'collation') {
-                scope.$watch(function() {
-                    return evtInterface.getState('currentVersion');
-                }, function (newItem, oldItem) {
-                    scope.vm.version = newItem;
-                    currentBox.updateContent();
-                });
-            }
-
-            // Garbage collection
-            scope.$on('$destroy', function() {
-                if (currentBox){
-                    currentBox.destroy();
+                }, true);
                 }
-            });
-        }
-    };
-});
+
+                //Added by CM
+                if (currentBox.type === 'witness' || currentBox.type === 'text' || currentBox.type === 'version') {
+                    /** @ngdoc method
+                     * @name evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry
+                     * @methodOf evtviewer.box.controller:BoxCtrl
+                     *
+                     * @description
+                     * <p>Scroll box body container to a particular quote.</p>
+                     * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
+                     *
+                     * @param {string} quoteId id of quote to consider during scrolling
+                     */
+                    scope.vm.scrollToQuotesEntry = function(quoteId) {
+                        $timeout(function(){
+                            var appElem = $('#'+currentBox.uid).find('[data-quote-id=\''+quoteId+'\']');
+                            var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (appElem.length > 0 && appElem[0] !== undefined) {
+                                boxBody.scrollTop = appElem[0].offsetTop-padding;
+                            }
+                        });
+                    };
+                    /** @ngdoc method
+                     * @name evtviewer.box.controller:BoxCtrl#scrollToAnaloguesEntry
+                     * @methodOf evtviewer.box.controller:BoxCtrl
+                     *
+                     * @description
+                     * <p>Scroll box body container to a particular analogue.</p>
+                     * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
+                     *
+                     * @param {string} analogueId id of analogue to consider during scrolling
+                     */
+                    scope.vm.scrollToAnaloguesEntry = function(analogueId) {
+                        $timeout(function(){
+                            var appElem = $('#'+currentBox.uid).find('[data-analogue-id=\''+analogueId+'\']');
+                            var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (appElem.length > 0 && appElem[0] !== undefined) {
+                                boxBody.scrollTop = appElem[0].offsetTop-padding;
+                            }
+                        });
+                    };
+                    /** @ngdoc method
+                     * @name evtviewer.box.controller:BoxCtrl#scrollToVersionApparatus
+                     * @methodOf evtviewer.box.controller:BoxCtrl
+                     *
+                     * @description
+                     * <p>Scroll box body container to a particular critical apparatus entry on version text.</p>
+                     * <p>If the version apparatus entry isn't visible, the box scrolls in order to show the apparatus completely.</p>
+                     * <p>This function is available only on <code>&lt;box&gt;</code>s of type **witness**, **text** and **version**.</p>
+                     *
+                     * @param {string} appId id of critical apparatus entry to consider during scrolling
+                     */
+                    scope.vm.scrollToVersionApparatus = function(appId) {
+                        $timeout(function() {
+                            var appEntryElem = $('#'+currentBox.uid).find('evt-version-apparatus-entry[data-app-id=\''+appId+'\']'),
+                                padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (appEntryElem.length > 0 && appEntryElem[0] !== undefined) {
+                                var elementPosition = angular.element(appEntryElem[0]).position().top,
+                                    clientHeight = appEntryElem[0].offsetParent.clientHeight,
+                                    elemDiv = $('#'+currentBox.uid).find('div[class=\'version-apparatus-entry\']'),
+                                    elementHeight = angular.element(elemDiv).outerHeight() || 0;
+                                if ((elementPosition + elementHeight) > clientHeight) {
+                                    boxBody.scrollTop += (elementPosition - clientHeight) + elementHeight;
+                                }
+                            }
+                        });
+                    };
+                }
+
+                if (currentBox.type === 'source') {
+                    /** @ngdoc method
+                     * @name evtviewer.box.controller:BoxCtrl#scrollToQuotesEntry
+                     * @methodOf evtviewer.box.controller:BoxCtrl
+                     *
+                     * @description
+                     * <p>Scroll box body container to a particular quote entry on source text.</p>
+                     * <p>This function is available only on <code>&lt;box&gt;</code>s of type **source**.</p>
+                     *
+                     * @param {string} segId id of quote entry to consider during scrolling
+                     */
+                    scope.vm.scrollToQuotesEntry = function(segId) {
+                        $timeout(function(){
+                            var appElem = $('#'+currentBox.uid).find('[data-seg-id=\''+segId+'\']');
+                            var padding = window.getComputedStyle(boxBody, null).getPropertyValue('padding-top').replace('px', '')*1;
+                            if (appElem.length > 0 && appElem[0] !== undefined) {
+                                boxBody.scrollTop = appElem[0].offsetTop-padding;
+                            }
+                        });
+                    };
+                }
+
+                //TODO: aggiungere scroll per sources view
+
+                if (currentBox.type === 'text') {
+                    if (currentBox.subtype === 'comparing') {
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentComparingEdition');
+                    }, function(newItem, oldItem) {
+                        if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                            scope.vm.edition = newItem;
+                            currentBox.updateContent();
+
+                            evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
+                            $timeout(function() {
+                                var currentBoxId = scope.id,
+                                searchInput = evtSearchBox.getInputValue(currentBoxId);
+
+                                if(searchInput !== '') {
+                                evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                                }
+                            });
+                        }
+                    }, true);
+                    } else {
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentEdition');
+                    }, function(newItem, oldItem) {
+                        if (oldItem !== newItem && scope.vm.edition !== newItem) {
+                            scope.vm.edition = newItem;
+                            currentBox.updateContent();
+
+                            evtVirtualKeyboard.unselectCurrentKeyboard(evtButtonSwitch, currentBox.id);
+                            $timeout(function() {
+                                var currentBoxId = scope.id,
+                                searchInput = evtSearchBox.getInputValue(currentBoxId);
+
+                                if(searchInput !== '') {
+                                evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                                }
+                            });
+                        }
+                    }, true);
+                    }
+
+                    scope.$watch(function () {
+                    var currentBoxId = scope.id;
+                    return evtBox.getState(currentBoxId, 'searchBox');
+                    }, function (newItem, oldItem) {
+                    if (newItem === true) {
+                        $timeout(function(){
+                            $('input').trigger('focus');
+                        }, 100);
+                    }
+                    }, true);
+
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentPage');
+                    }, function(newItem, oldItem) {
+                        currentBox.updateContent();
+
+                    $timeout(function() {
+                        var currentBoxId = scope.id,
+                            searchInput = evtSearchBox.getInputValue(currentBoxId);
+
+                        if(searchInput !== '') {
+                            evtSearchResults.highlightSearchResults(currentBoxId, searchInput);
+                        }
+                    });
+                    }, true);
+                }
+
+                if (currentBox.type === 'image') {
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentPage');
+                    }, function(newItem, oldItem) {
+                        if (oldItem !== newItem && scope.vm.state.docId !== newItem) {
+                            scope.vm.state.pageId = newItem;
+                            currentBox.updateContent();
+                        }
+                    }, true);
+                }
+
+                //Watchers for box of type "source"//
+                //author: CM//
+                if (currentBox.type === 'source') {
+
+                    //Watcher to intialize the sources texts, by parsing them.     //
+                    //The watcher checks if the source to parse has been loaded,   //
+                    //then updates the content of the box with current source text.//
+                    scope.$watch(function() {
+                        return evtInterface.getProperty('isSourceLoading');
+                    }, function(newItem, oldItem) {
+                        if (oldItem !== newItem) {
+                            if (!newItem) {
+                                scope.vm.source = evtInterface.getState('currentSourceText') ;
+                                currentBox.updateContent();
+                            }
+                        }
+                    });
+
+                    //Watch to change the source text.                              //
+                    //Checks if the current Source text has changed and then updates//
+                    //the content of the box.                                       //
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentSourceText') ;
+                    }, function(newItem, oldItem) {
+                        if (oldItem !== newItem) {
+                            if (evtInterface.getProperty('parsedSourcesTexts').indexOf(newItem) >= 0) {
+                                scope.vm.source = newItem;
+                                currentBox.updateContent();
+                            }
+                        }
+                    });
+                }
+
+                if (currentBox.type === 'text' && evtInterface.getState('currentViewMode') === 'collation') {
+                    scope.$watch(function() {
+                        return evtInterface.getState('currentVersion');
+                    }, function (newItem, oldItem) {
+                        scope.vm.version = newItem;
+                        currentBox.updateContent();
+                    });
+                }
+
+                // Garbage collection
+                scope.$on('$destroy', function() {
+                    if (currentBox){
+                        currentBox.destroy();
+                    }
+                });
+            }
+        };
+}]);

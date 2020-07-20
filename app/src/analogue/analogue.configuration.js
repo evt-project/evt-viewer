@@ -4,7 +4,7 @@ angular.module('evtviewer.analogue')
 
 })
 
-.config(function(evtAnalogueProvider, configProvider, ANALOGUEDEFAULTS) {
+.config(['evtAnalogueProvider', 'configProvider', 'ANALOGUEDEFAULTS', function(evtAnalogueProvider, configProvider, ANALOGUEDEFAULTS) {
     var defaults = configProvider.makeDefaults('analogue', ANALOGUEDEFAULTS);
     evtAnalogueProvider.setDefaults(defaults);
-});
+}]);

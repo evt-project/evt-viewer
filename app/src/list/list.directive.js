@@ -30,7 +30,7 @@
 **/
 angular.module('evtviewer.list')
 
-.directive('evtList', function($timeout, evtList, parsedData, evtInterface) {
+.directive('evtList', ['evtList', 'evtInterface', function(evtList, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -38,7 +38,7 @@ angular.module('evtviewer.list')
             listType: '@'
         },
         transclude: true,
-        templateUrl: 'src/list/list.dir.tmpl.html',
+        template: require('./list.dir.tmpl.html'),
         link: function(scope, element, attrs){
             // Initialize list
             scope.vm = {
@@ -72,4 +72,4 @@ angular.module('evtviewer.list')
             });
         }
     };
-});
+}]);

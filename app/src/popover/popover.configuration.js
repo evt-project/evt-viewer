@@ -83,7 +83,7 @@ angular.module('evtviewer.popover')
     openTriggerEvent: 'click'
 })
 
-.config(function(evtPopoverProvider, configProvider, POPOVERDEFAULTS) {
+.config(['evtPopoverProvider', 'configProvider', 'POPOVERDEFAULTS', function(evtPopoverProvider, configProvider, POPOVERDEFAULTS) {
     var defaults = configProvider.makeDefaults('popover', POPOVERDEFAULTS);
     evtPopoverProvider.setDefaults(defaults);
-});
+}]);

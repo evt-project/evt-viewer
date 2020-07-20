@@ -8,9 +8,7 @@
  * {@link evtviewer.quote.directive:evtQuote evtQuote} directive 
  * and stores its reference untill the directive remains instantiated.
  *
- * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.interface.evtInterface
- * @requires evtviewer.dataHandler.evtSourcesApparatus
 **/
 angular.module('evtviewer.quote')
 
@@ -24,7 +22,7 @@ angular.module('evtviewer.quote')
 
     var currentSourcesEntry = '';
 
-    this.$get = function(parsedData, evtInterface, evtSourcesApparatus) {
+    this.$get = ['evtInterface', function(evtInterface) {
         var quote = {},
             collection = {},
             list = [],
@@ -258,5 +256,5 @@ angular.module('evtviewer.quote')
         };
         
         return quote;
-    };
+    }];
 });

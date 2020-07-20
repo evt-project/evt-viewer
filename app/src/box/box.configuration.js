@@ -18,7 +18,7 @@ angular.module('evtviewer.box')
     menuClosed: false
 })
 
-.config(function(evtBoxProvider, configProvider, BOXDEFAULTS) {
+.config(['evtBoxProvider', 'configProvider', 'BOXDEFAULTS', function(evtBoxProvider, configProvider, BOXDEFAULTS) {
     var defaults = configProvider.makeDefaults('box', BOXDEFAULTS);
     evtBoxProvider.setDefaults(defaults);
-});
+}]);

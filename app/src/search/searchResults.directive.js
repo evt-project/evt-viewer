@@ -3,7 +3,7 @@ angular.module('evtviewer.search')
 .directive('evtSearchResults', ['$timeout', 'evtSearchResult', 'evtSearchBox', 'evtInterface', function($timeout, evtSearchResult, evtSearchBox, evtInterface) {
    return {
       restrict: 'E',
-      templateUrl : 'src/search/searchResults.directive.tmpl.html',
+      template: require('./searchResults.directive.tmpl.html'),
       replace     : true,
       controllerAs: 'vm',
       controller: 'SearchResultsCtrl',

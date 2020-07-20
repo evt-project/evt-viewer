@@ -14,7 +14,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtHotSpotParser', function($q, xmlParser, evtParser, parsedData, config) {
+.service('evtHotSpotParser', ['$q', 'xmlParser', 'evtParser', 'parsedData', 'config', function($q, xmlParser, evtParser, parsedData, config) {
 	var parser = { };
 
 	var defBackElement = 'back',
@@ -54,4 +54,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return parser;
-});
+}]);

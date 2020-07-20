@@ -150,7 +150,7 @@
                   <!--END MORE INFO-->
                 </div>
                 <div ng-switch-when="xmlSource">
-                    <pre>{{ ::vm.content._xmlSource | prettyXml }}</pre>
+                    <pre>{{ ::vm.content._xmlSource }}</pre>
                 </div>
                 <div ng-switch-default
                     compile="vm.content[tab]">

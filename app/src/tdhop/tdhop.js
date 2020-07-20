@@ -6,9 +6,4 @@
 **/
 angular.module('evtviewer.tdhop', []);
 
-   /*'evtviewer.tdhopService' var tdhopModule = angular.module('evtviewer.tdhop', ['evtviewer.tdhopService']);
-
-   tdhopModule.controller('TreDHOPCtrl', ['$scope','tdhopViewerModel', function ($scope, tdhopViewerModel) {
-         $scope.options = tdhopViewerModel.getOptions();
-   }]);*/
 

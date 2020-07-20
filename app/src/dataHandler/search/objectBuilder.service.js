@@ -34,14 +34,14 @@ angular.module('evtviewer.dataHandler')
          }
          
          for (var i = 1; i < arguments.length; i++) {
-            var interface = arguments[i];
-            if (interface.constructor !== evtSearchInterface.constructor) {
+            var api = arguments[i];
+            if (api.constructor !== evtSearchInterface.constructor) {
                throw new Error('Function Interface.ensureImplements expects arguments two and above to be instances of Interface.');
             }
-            interface.methods.forEach(function (method) {
+            api.methods.forEach(function (method) {
                if (!evtSearchParser.prototype[method] || typeof evtSearchParser.prototype[method] !== 'function') {
                   throw new Error('Function Interface.ensureImplements: object ' +
-                     'does not implement the ' + interface.name + ' interface. ' +
+                     'does not implement the ' + api.name + ' interface. ' +
                      'Method ' + method + ' was not found.');
                }
             });

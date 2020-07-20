@@ -50,12 +50,12 @@ angular.module('evtviewer.core')
 	},
 	// Default:
 	// <pre> configUrl: '../../config/config.json' </pre>
-	configUrl: '../../config/config.json',
-   dataUrl          : '',
+	configUrl: './config/config.json',
+	dataUrl          : '',
 
 	logoUrl: '',
 
-   enableXMLdownload: true,
+	enableXMLdownload: true,
     // sourcesUrl //
     // Url of the XML file encoding the list of all the bibliographic references for the sources apparatus.//
     sourcesUrl       : '',

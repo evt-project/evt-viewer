@@ -1,7 +1,8 @@
 (function () {
+   var OpenSeadragon = require('openseadragon');
    angular.module('evtviewer.openseadragonService', ['evtviewer.interface'])
 
-      .service('imageViewerHandler', function (evtInterface, imageScrollMap, overlayHandler, parsedData) {
+      .service('imageViewerHandler', ['evtInterface', 'imageScrollMap', 'parsedData', function(evtInterface, imageScrollMap, parsedData) {
          var ImageNormalizationCoefficient = undefined;
          var divHotSpotToggle = false;
 
@@ -32,21 +33,21 @@
          viewerHandler.openPage = function (page) {
             var pageValue = page.userData;
             var pidx = 0;
-            while(parsedData.getPages()[pidx] !== pageValue){
-               pidx = pidx+1;
-               if(pidx > parsedData.getPages().length){
-                console.error('error in open page');
-                break;
+            while (parsedData.getPages()[pidx] !== pageValue) {
+               pidx = pidx + 1;
+               if (pidx > parsedData.getPages().length) {
+                  console.error('error in open page');
+                  break;
                }
             }
             var p = pidx;
             viewerHandler.viewer.goToPage(p);
-            currPage = evtInterface.getState('currentPage');
-                     if (pageValue !== currPage) {
-                        viewerHandler.scope.$apply(function () {
-                           evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
-                        });
-                     }
+            var currPage = evtInterface.getState('currentPage');
+            if (pageValue !== currPage) {
+               viewerHandler.scope.$apply(function () {
+                  evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
+               });
+            }
          };
 
          viewerHandler.home = function () {
@@ -66,33 +67,34 @@
 
          viewerHandler.pan = function (event) {
             try {
-              
+
                if (event.immediately === undefined) {
-               var newY = event.center.y;
-               var oldY = event.eventSource.viewport._oldCenterY;
-             
-               if (viewerHandler.viewer.viewport.getZoom() === 1) {
-                  var newPage, currPage;
-                  var oldBounds = viewerHandler.viewer.viewport.getBounds();
-                  if (newY > oldY) {
-                     newPage = imageScrollMap.mapDown(event.eventSource.viewport.getBounds());
-                     currPage = evtInterface.getState('currentPage');
-                     if (newPage !== currPage) {
-                        viewerHandler.scope.$apply(function () {
-                           evtInterface.updateState('currentPage', newPage);
-                        });
-                     }
-                  } else if (newY < oldY) {
-                     newPage = imageScrollMap.mapUP(event.eventSource.viewport.getBounds());
-                     currPage = evtInterface.getState('currentPage');
-                     if (newPage !== currPage) {
-                        viewerHandler.scope.$apply(function () {
-                           evtInterface.updateState("currentPage", newPage !== '' ? newPage : currPage);
-                        });
+                  var newY = event.center.y;
+                  var oldY = event.eventSource.viewport._oldCenterY;
+
+                  if (viewerHandler.viewer.viewport.getZoom() === 1) {
+                     var newPage, currPage;
+                     var oldBounds = viewerHandler.viewer.viewport.getBounds();
+                     if (newY > oldY) {
+                        newPage = imageScrollMap.mapDown(event.eventSource.viewport.getBounds());
+                        currPage = evtInterface.getState('currentPage');
+                        if (newPage !== currPage) {
+                           viewerHandler.scope.$apply(function () {
+                              evtInterface.updateState('currentPage', newPage);
+                           });
+                        }
+                     } else if (newY < oldY) {
+                        newPage = imageScrollMap.mapUP(event.eventSource.viewport.getBounds());
+                        currPage = evtInterface.getState('currentPage');
+                        if (newPage !== currPage) {
+                           viewerHandler.scope.$apply(function () {
+                              evtInterface.updateState("currentPage", newPage !== '' ? newPage : currPage);
+                           });
+                        }
                      }
                   }
                }
-            }} catch (err) {
+            } catch (err) {
                console.error('error in pan', err);
 
             }
@@ -111,20 +113,20 @@
          viewerHandler.updateViewerPage = function (page) {
             var pageValue = page;
             var pidx = 0;
-            while(parsedData.getPages()[pidx] !== pageValue){
-               pidx = pidx+1;
-               if(pidx > parsedData.getPages().length){
-                break;
+            while (parsedData.getPages()[pidx] !== pageValue) {
+               pidx = pidx + 1;
+               if (pidx > parsedData.getPages().length) {
+                  break;
                }
             }
             var p = pidx;
             viewerHandler.viewer.goToPage(p);
-            currPage = evtInterface.getState('currentPage');
-                     if (pageValue !== currPage) {
-                        viewerHandler.scope.$apply(function () {
-                           evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
-                        });
-                     }
+            var currPage = evtInterface.getState('currentPage');
+            if (pageValue !== currPage) {
+               viewerHandler.scope.$apply(function () {
+                  evtInterface.updateState("currentPage", pageValue !== '' ? pageValue : currPage);
+               });
+            }
          };
 
          viewerHandler.highlightOverlay = function (zone) {
@@ -134,8 +136,7 @@
 
             try {
                viewerHandler.viewer.removeOverlay('line-overlay');
-            } catch (error) {
-            }
+            } catch (error) {}
             var rectObj = convertZoneToOSD(zone);
             var elt = document.createElement("div");
             elt.id = "line-overlay";
@@ -200,7 +201,7 @@
          viewerHandler.moveToZone = function (zone) {
             var oldCenter = viewerHandler.viewer.viewport.getCenter();
             var currentBounds = viewerHandler.viewer.viewport.getBounds(true);
-            var normalizedZoney = zone.uly/ImageNormalizationCoefficient;
+            var normalizedZoney = zone.uly / ImageNormalizationCoefficient;
             var newY = ((zone.uly / ImageNormalizationCoefficient) < oldCenter.y) ? oldCenter.y : zone.uly / ImageNormalizationCoefficient;
             var newCenter = new OpenSeadragon.Point(oldCenter.x, newY);
             viewerHandler.viewer.viewport.panTo(newCenter);
@@ -234,10 +235,10 @@
                hrefElt.onmouseover = function () {
                   viewerHandler.viewer.zoomPerClick = 1;
                };
-               hrefElt.onmouseout = function(){
+               hrefElt.onmouseout = function () {
                   viewerHandler.viewer.zoomPerClick = 1.5;
                };
-               hrefElt.onclick = function(){
+               hrefElt.onclick = function () {
                   showDivHotSpot(this);
                };
                hrefElts.push(hrefElt);
@@ -265,9 +266,9 @@
                var bottomRight = viewerHandler.viewer.viewport.pointFromPixel(point2);
                var DivTopLeft = 0;
                if (topLeft.x <= 0.4) {
-                   DivTopLeft = topLeft.x + (bottomRight.x - topLeft.x) + 0.050;
+                  DivTopLeft = topLeft.x + (bottomRight.x - topLeft.x) + 0.050;
                } else {
-                     DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0.1);
+                  DivTopLeft = topLeft.x - ((bottomRight.x - topLeft.x) + 0.1);
 
                }
                var rect = new OpenSeadragon.Rect(
@@ -278,30 +279,30 @@
 
                var divElt = document.createElement('div');
                divElt.id = 'div-hotspot-overlay_selected-' + elem.dataset.id;
-               divElt.className = 'hotspot-dida';        
-               
+               divElt.className = 'hotspot-dida';
+
                var divTitleElt = document.createElement('div');
-               
+
                divTitleElt.id = 'div-title-hotspot-overlay_selected-' + elem.dataset.id;
                divTitleElt.className = 'hotspot-dida-title';
                divTitleElt.innerHTML = ''
                var divCloser = document.createElement('div');
-               divCloser.className='PopupCloser';
+               divCloser.className = 'PopupCloser';
                divCloser.dataset.id = elem.dataset.id;
-               
-               divCloser.onclick = function(){
-                  viewerHandler.viewer.zoomPerClick = 1.5;      
+
+               divCloser.onclick = function () {
+                  viewerHandler.viewer.zoomPerClick = 1.5;
                   hiddenDivHotSpot(this);
                };
 
                var closeIcon = document.createElement('i');
                closeIcon.className = 'fa fa-times';
 
-               closeIcon.onmouseover = function(){
+               closeIcon.onmouseover = function () {
                   viewerHandler.viewer.zoomPerClick = 1;
                };
 
-               closeIcon.onmouseout = function(){
+               closeIcon.onmouseout = function () {
                   viewerHandler.viewer.zoomPerClick = 1.5;
                };
 
@@ -311,7 +312,7 @@
                var divBodyElt = document.createElement('div');
                divBodyElt.id = 'div-body-hotspot-overlay_selected-' + elem.dataset.id;
                divBodyElt.className = 'hotspot-dida-body';
-               
+
                divBodyElt.innerHTML = elem.dataset.content;
 
 
@@ -327,8 +328,8 @@
                divHotSpotToggle = !divHotSpotToggle;
                viewerHandler.viewer.addOverlay(OSDOverlay);
                $(OSDOverlay.element).draggable();
-               
-               
+
+
             }
             return divHotSpotToggle;
          };
@@ -357,50 +358,49 @@
             }
          };
 
-         viewerHandler.lineZone = function(zone){
+         viewerHandler.lineZone = function (zone) {
             var rectObj = convertZoneToOSD(zone);
             var elt = document.createElement("div");
-            elt.id = "line-div-overlay_"+zone.id;
-            elt.dataset['lb'] = zone.id.replace('line','lb');
+            elt.id = "line-div-overlay_" + zone.id;
+            elt.dataset['lb'] = zone.id.replace('line', 'lb');
             elt.className = "line-overlay";
 
-            elt.onmouseover = function(){
+            elt.onmouseover = function () {
                var ITLactive = evtInterface.getToolState('ITL') === 'active';
                var currentViewMode = evtInterface.getState('currentViewMode');
-               
-               if (ITLactive && currentViewMode === 'imgTxt'){
+
+               if (ITLactive && currentViewMode === 'imgTxt') {
                   this.className += ' selectedHighlight';
                   var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
-                  if(elemsInLine.length == 0){
-                     var dataLine = this.dataset['lb'].replace('reg','orig');
+                  if (elemsInLine.length == 0) {
+                     var dataLine = this.dataset['lb'].replace('reg', 'orig');
                      elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
                   }
-                  for(var i=0; i < elemsInLine.length; i++){
+                  for (var i = 0; i < elemsInLine.length; i++) {
                      elemsInLine[i].className += ' lineHover';
-                  }
-               } 
-            };
-
-            elt.onmouseout = function(){
-               var ITLactive = evtInterface.getToolState('ITL') === 'active';
-               var currentViewMode = evtInterface.getState('currentViewMode');
-               
-               if (ITLactive && currentViewMode === 'imgTxt') {
-
-                  this.className = this.className.replace(' selectedHighlight', '') || '';
-                  var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
-                  if(elemsInLine.length == 0){
-                     var dataLine = this.dataset['lb'].replace('reg','orig');
-                     elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
-                  }
-                  for(var i=0; i < elemsInLine.length; i++){
-                   elemsInLine[i].className = elemsInLine[i].className.replace(' lineHover', '') || '';
                   }
                }
             };
 
-            elt.onclick = function(){
+            elt.onmouseout = function () {
+               var ITLactive = evtInterface.getToolState('ITL') === 'active';
+               var currentViewMode = evtInterface.getState('currentViewMode');
+
+               if (ITLactive && currentViewMode === 'imgTxt') {
+
+                  this.className = this.className.replace(' selectedHighlight', '') || '';
+                  var elemsInLine = document.querySelectorAll('[data-line=\'' + this.dataset['lb'] + '\']');
+                  if (elemsInLine.length == 0) {
+                     var dataLine = this.dataset['lb'].replace('reg', 'orig');
+                     elemsInLine = document.querySelectorAll('[data-line=\'' + dataLine + '\']');
+                  }
+                  for (var i = 0; i < elemsInLine.length; i++) {
+                     elemsInLine[i].className = elemsInLine[i].className.replace(' lineHover', '') || '';
+                  }
+               }
             };
+
+            elt.onclick = function () {};
 
             viewerHandler.viewer.addOverlay({
                element: elt,
@@ -413,5 +413,5 @@
          viewerHandler.testFun = function () {
             return 'ok';
          };
-      });
+      }]);
 })();

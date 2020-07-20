@@ -8,11 +8,10 @@
  *
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.dataHandler.evtParser
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalApparatus', function(parsedData, evtParser, config) {
+.service('evtCriticalApparatus', ['parsedData', 'config', function(parsedData, config) {
 	var apparatus = {};
 
 	var skipWitnesses = config.skipWitnesses.split(',').filter(function(el) {
@@ -687,4 +686,4 @@ angular.module('evtviewer.dataHandler')
 		return appText;
 	};
 	return apparatus;
-});
+}]);

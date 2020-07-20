@@ -28,7 +28,7 @@
 **/
 angular.module('evtviewer.versionApparatusEntry')
 
-.directive('evtVersionApparatusEntry', function(evtVersionApparatusEntry, evtInterface) {
+.directive('evtVersionApparatusEntry', ['evtVersionApparatusEntry', 'evtInterface', function(evtVersionApparatusEntry, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -38,7 +38,7 @@ angular.module('evtviewer.versionApparatusEntry')
             scopeVer  : '@'
         },
         transclude: true,
-        templateUrl: 'src/versionApparatusEntry/versionApparatusEntry.directive.tmpl.html',
+        template: require('./versionApparatusEntry.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'versionApparatusEntryCtrl',
         link: function(scope, element, attrs) {
@@ -53,4 +53,4 @@ angular.module('evtviewer.versionApparatusEntry')
             });
         }
     };
-});
+}]);

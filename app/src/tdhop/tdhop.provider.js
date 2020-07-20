@@ -1,7 +1,7 @@
 angular.module('evtviewer.tdhop')
    .provider('evtTredhop', function () {
       var vm = this;
-      this.$get = function (parsedData, config, $ocLazyLoad, $log, evtInterface) {
+      this.$get = ['config', '$ocLazyLoad', '$log', function (config, $ocLazyLoad, $log) {
          var evtTdhop = {};
          var console = $log.getInstance('evtTredhop');
 
@@ -17,9 +17,8 @@ angular.module('evtviewer.tdhop')
             options.id = "tdhop";
             var pluginFolder = 'js-plugins/tdhop/';
             var jsFiles = [
-               'setup.js',
-               'spidergl.js',
                'jquery.js',
+               'spidergl.js',
                'presenter.js',
                'nexus.js',
                'ply.js',
@@ -50,7 +49,7 @@ angular.module('evtviewer.tdhop')
                   }
                })
             };
-
+            
             var initializeViewer = function () {
                init3dhop();
                setup3dhop(url1, url2, url_hs, annotations, type);
@@ -63,5 +62,5 @@ angular.module('evtviewer.tdhop')
          };
 
          return evtTdhop;
-      };
+      }];
    });

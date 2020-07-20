@@ -14,8 +14,6 @@
  * @requires $q
  * @requires evtviewer.core.config
  * @requires evtviewer.communication.evtCommunication
- * @requires evtviewer.dataHandler.evtAnaloguesParser
- * @requires evtviewer.criticalApparatusEntry.evtCriticalApparatusEntry
  * @requires evtviewer.dataHandler.evtCriticalApparatusParser
  * @requires evtviewer.dataHandler.evtCriticalParser
  * @requires evtviewer.dataHandler.parsedData
@@ -26,7 +24,8 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, evtCriticalApparatusEntry, evtAnaloguesParser, config, $routeParams, parsedData, evtReading, $q, $http) {
+.service('evtInterface', ['$rootScope', '$timeout', 'evtTranslation', 'evtCommunication', 'evtCriticalApparatusParser', 'evtCriticalParser', 'evtPinnedElements', 'config', '$routeParams', 'parsedData', 'evtReading', '$q',
+    function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, config, $routeParams, parsedData, evtReading, $q) {
     var mainInterface = {};
     /**
      * @ngdoc property
@@ -34,7 +33,7 @@ angular.module('evtviewer.interface')
      * @propertyOf evtviewer.interface.evtInterface
      * @description [Private] Internal property where information about interface state are stored.
      * Default:
-     <pre>
+        <pre>
         var state = {
             currentViewMode : undefined,
             currentDoc : undefined,
@@ -1380,7 +1379,7 @@ angular.module('evtviewer.interface')
                 }
                 if (state.currentAppEntry !== undefined && state.currentAppEntry !== '') {
                     if (searchPath !== '') {
-                      searchPath += '&';
+                        searchPath += '&';
                     }
                     searchPath += 'app='+state.currentAppEntry;
                 }
@@ -1391,4 +1390,4 @@ angular.module('evtviewer.interface')
             }
         };
     return mainInterface;
-});
+}]);

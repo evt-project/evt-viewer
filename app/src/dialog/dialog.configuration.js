@@ -4,7 +4,7 @@ angular.module('evtviewer.dialog')
 
 })
 
-.config(function(evtDialogProvider, configProvider, DIALOGDEFAULTS) {
+.config(['evtDialogProvider', 'configProvider', 'DIALOGDEFAULTS', function(evtDialogProvider, configProvider, DIALOGDEFAULTS) {
     var defaults = configProvider.makeDefaults('dialog', DIALOGDEFAULTS);
     evtDialogProvider.setDefaults(defaults);
-});
+}]);

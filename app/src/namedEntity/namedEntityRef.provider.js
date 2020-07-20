@@ -10,8 +10,6 @@
  *
  * @requires $timeout
  * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.dataHandler.evtNamedEntitiesParser
- * @requires evtviewer.dataHandler.baseData
  * @requires evtviewer.core.Utils
 **/
 angular.module('evtviewer.namedEntity')
@@ -35,7 +33,7 @@ angular.module('evtviewer.namedEntity')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function($timeout, parsedData, evtNamedEntitiesParser, baseData, Utils) {
+    this.$get = ['$timeout', 'parsedData', 'Utils', function($timeout, parsedData, Utils) {
         var namedEntityRef    = {},
             collection = {},
             collectionByEntity = {},
@@ -361,6 +359,6 @@ angular.module('evtviewer.namedEntity')
         };
 
         return namedEntityRef;
-    };
+    }];
 
 });

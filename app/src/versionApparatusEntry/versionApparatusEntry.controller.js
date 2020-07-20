@@ -17,7 +17,7 @@
 **/
 angular.module('evtviewer.versionApparatusEntry')
 
-.controller('versionApparatusEntryCtrl', function(config, evtBox, evtApparatuses, evtVersionApparatusEntry, $scope) {
+.controller('versionApparatusEntryCtrl', ['config', 'evtBox', 'evtApparatuses', 'evtVersionApparatusEntry', '$scope', function(config, evtBox, evtApparatuses, evtVersionApparatusEntry, $scope) {
     var vm = this;
     
     /**
@@ -79,4 +79,4 @@ angular.module('evtviewer.versionApparatusEntry')
         // this.$destroy();
         evtVersionApparatusEntry.destroy(tempId);
     };
-});
+}]);

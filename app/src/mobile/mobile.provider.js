@@ -11,7 +11,7 @@ angular.module('evtviewer.mobile')
         defaults = _defaults;
     };
 
-    this.$get = function($log) {
+    this.$get = ['$log', function($log) {
 
         var mobile = {};
         var _console = $log.getInstance('mobile');
@@ -68,6 +68,6 @@ angular.module('evtviewer.mobile')
         };
 
         return mobile;
-    };
+    }];
 
 });

@@ -25,7 +25,7 @@ angular.module('evtviewer.versionApparatusEntry')
      * where the scope of the directive is extended with all the necessary properties and methods
      * according to specific values of initial scope properties.</p>
      **/
-    this.$get = function(evtInterface, evtBox, parsedData, config) {
+    this.$get = ['evtInterface', 'evtBox', 'parsedData', 'config', function(evtInterface, evtBox, parsedData, config) {
         var ref = {},
             collection = {},
             list = [],
@@ -162,6 +162,6 @@ angular.module('evtviewer.versionApparatusEntry')
         };
 
         return ref;
-    };
+    }];
 
 });

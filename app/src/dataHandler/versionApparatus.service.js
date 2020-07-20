@@ -7,7 +7,6 @@
  * Service containing methods to handle the contents of alternative version of text (for double recensio support).
  *
  * @requires evtviewer.core.config
- * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtCriticalApparatus
  * @requires evtviewer.dataHandler.evtParser
  *
@@ -15,7 +14,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtVersionApparatus', function(config, parsedData, evtCriticalApparatus, evtParser) {
+.service('evtVersionApparatus', ['config', 'evtCriticalApparatus', 'evtParser', function(config, evtCriticalApparatus, evtParser) {
     var apparatus = {};
     /**
      * @ngdoc method
@@ -144,4 +143,4 @@ angular.module('evtviewer.dataHandler')
     };
 
     return apparatus;
-});
+}]);

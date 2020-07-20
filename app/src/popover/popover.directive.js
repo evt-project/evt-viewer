@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.popover')
 
-.directive('evtPopover', function(evtPopover) {
+.directive('evtPopover', ['evtPopover', function(evtPopover) {
     return {
         restrict: 'E',
         scope: {
@@ -27,7 +27,7 @@ angular.module('evtviewer.popover')
 			parentRef : '@'
         },
         transclude: true,
-        templateUrl: 'src/popover/popover.directive.tmpl.html',
+        template: require('./popover.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'PopoverCtrl',
         link: function(scope, element) {
@@ -272,4 +272,4 @@ angular.module('evtviewer.popover')
             });
         }
     };
-});
+}]);

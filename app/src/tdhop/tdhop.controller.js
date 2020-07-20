@@ -1,5 +1,5 @@
 angular.module('evtviewer.tdhop')
-   .controller('TreDHOPCtrl', ["$scope", "$route", "evtInterface", "$log", "config", function ($scope, $route, evtInterface, $log, config) {
+   .controller('TreDHOPCtrl', ['$scope', '$route', 'evtInterface', '$log', 'config', function ($scope, $route, evtInterface, $log, config) {
       var vm = this;
       var model1 = config.tdhopViewerOptions.Model_1 ? config.tdhopViewerOptions.Model_1.name : undefined;
       var model2 = config.tdhopViewerOptions.Model_2 ? config.tdhopViewerOptions.Model_2.name : undefined;
@@ -10,8 +10,8 @@ angular.module('evtviewer.tdhop')
       $scope.data = {
          model: null,
          availableOptions: [
-            { id: 'Mesh_1_mesh', name: model1 + " Cross" },
-            { id: 'Mesh_2_mesh', name: model2 + " Cross" },
+            { id: 'Mesh_1_mesh', name: model1 + ' Cross' },
+            { id: 'Mesh_2_mesh', name: model2 + ' Cross' },
          ]
       };
       $scope.button = {

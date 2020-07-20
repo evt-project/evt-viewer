@@ -6,7 +6,6 @@
  * # evtNamedEntitiesParser
  * Service containing methods to parse data regarding named entities and relations among them
  *
- * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.dataHandler.parsedData
  *
@@ -14,7 +13,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtNamedEntitiesParser', function(parsedData, evtParser, config) {
+.service('evtNamedEntitiesParser', ['parsedData', 'evtParser', function(parsedData, evtParser) {
 	var NEparser = {};
 	//TODO retrieve definitions from configurations
 	var listsMainContentDef = '<sourceDesc>';
@@ -718,4 +717,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return NEparser;
-});
+}]);

@@ -8,7 +8,7 @@
 **/
 angular.module('evtviewer.bibliography')
 
-.controller('BiblElemCtrl', function($scope, $log, parsedData, config, evtBibliographyParser) {
+.controller('BiblElemCtrl', ['$scope', '$log', 'parsedData', 'config', 'evtBibliographyParser', function($scope, $log, parsedData, config, evtBibliographyParser) {
     var _console = $log.getInstance('BiblElemCtrl');
 
     var vm = this;
@@ -38,4 +38,4 @@ angular.module('evtviewer.bibliography')
             return '';
         }
     };
-});
+}]);
