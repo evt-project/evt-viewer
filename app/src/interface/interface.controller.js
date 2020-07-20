@@ -27,6 +27,7 @@ angular.module('evtviewer.interface')
 
    .controller('InterfaceCtrl', ['$log', '$timeout', '$scope', 'evtInterface', 'evtTranslation', 'evtPinnedElements', 'evtButtonSwitch', 'evtBox', 'evtApparatuses', 'parsedData', 'evtSelect', 'evtPopover', 'evtCommunication', 'evtDialog',
       function ($log, $timeout, $scope, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
+         document.body.style = 'display: block'; // Workaround per evitare glitch pre caricamento app angular
          var _console = $log.getInstance('interface');
          /**
             * @ngdoc method
