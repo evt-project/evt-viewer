@@ -13,7 +13,6 @@ angular.module('evtviewer.tdhop')
          template: require('./tdhop.directive.tmpl.html'),
 
          transclude: true,
-         //template: '<div id='tdhop' class='box-tdhop box-body Edition noBottomMenu'>',
 
          link: function (scope, element, attrs) {
             $timeout(function () {

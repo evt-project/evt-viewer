@@ -39,7 +39,6 @@
                     pp = parsedData.getPage(p);
                     source = pp.source;
                     if (source !== undefined && source !== '' && source !== ' ' && source !== null) {
-                        console.log(source);
                         imgobj.url = source;
                         options.tileSources.push(imgobj);
                     }

@@ -41,11 +41,9 @@ angular.module('evtviewer.tdhop')
                $ocLazyLoad.load(pluginFolder + jsFiles[fileIndex]).then(function () {
                   if (jsFiles[fileIndex + 1]) {
                      loadFiles(fileIndex + 1);
-                     console.log("Load " + jsFiles[fileIndex]);
                   } else {
                      initializeViewer();
-                     console.log("Setup 3dhop viewer");
-                     console.log("Initialize 3dhop viewer");
+                     console.log("3dhop viewer setup and initialized");
                   }
                })
             };
