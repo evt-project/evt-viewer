@@ -22,9 +22,6 @@ Everything works properly with versions up to v10.19.0 (you can use `nvm` in ord
 3. Install dependendencies and devDependencies
     ```bash
     npm install
-    ```
-    e per sicurezza 
-    ```bash
     npm install --only=dev
     ```
 
