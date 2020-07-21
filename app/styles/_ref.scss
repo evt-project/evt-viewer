@@ -1,13 +1,9 @@
-/* *************************** */
-/* REFERENCE                   */
-/* *************************** */
-
 .evtRef {
     display: inline;
     text-decoration: underline;
 
     &:hover {
-    	cursor: pointer;
-    	color: #666;
+        cursor: pointer;
+        color: #666;
     }
 }

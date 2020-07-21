@@ -21,7 +21,7 @@ angular.module('evtviewer.bibliography')
             biblId : '@'
         },
         transclude: true,
-        templateUrl: 'src/bibliography/biblElem.directive.tmpl.html',
+        template: require('./biblElem.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'BiblElemCtrl'
     };

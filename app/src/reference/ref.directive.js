@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.reference')
 
-.directive('ref', function(evtRef) {
+.directive('ref', ['evtRef', function(evtRef) {
     return { //rivedere dipendenze
         restrict: 'C',
         scope: {
@@ -42,4 +42,4 @@ angular.module('evtviewer.reference')
             });
         }
     };
-});
+}]);

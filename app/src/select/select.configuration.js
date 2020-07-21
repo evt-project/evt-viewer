@@ -51,7 +51,7 @@ angular.module('evtviewer.select')
     containerMaxHeight: 170
 })
 
-.config(function(evtSelectProvider, configProvider, SELECTORDEFAULTS) {
+.config(['evtSelectProvider', 'configProvider', 'SELECTORDEFAULTS', function(evtSelectProvider, configProvider, SELECTORDEFAULTS) {
     var defaults = configProvider.makeDefaults('select', SELECTORDEFAULTS);
     evtSelectProvider.setDefaults(defaults);
-});
+}]);

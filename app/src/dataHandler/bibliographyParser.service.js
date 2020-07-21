@@ -12,8 +12,6 @@
  * The functions without parameters return the value of variables defined inside the service itself.
  * The functions with parameters, instead, will access to the fields of a particular object defined during main parsing.
  *
- * @requires $q
- * @requires xmlParser
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
@@ -22,7 +20,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtBibliographyParser', function($q, parsedData, evtParser, xmlParser, config) {
+.service('evtBibliographyParser', ['parsedData', 'evtParser', 'config', function(parsedData, evtParser, config) {
     const CHICAGO_STYLE = config.allowedBibliographicStyles.Chicago.label,
         APA_STYLE = config.allowedBibliographicStyles.APA.label,
         MLA_STYLE = config.allowedBibliographicStyles.MLA.label;
@@ -1303,4 +1301,4 @@ angular.module('evtviewer.dataHandler')
     };
 
     return parser;
-});
+}]);

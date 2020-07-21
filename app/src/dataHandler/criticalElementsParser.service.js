@@ -13,7 +13,7 @@
  **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalElementsParser', function(evtParser, parsedData, config, xmlParser) {
+.service('evtCriticalElementsParser', ['evtParser', 'parsedData', 'config', 'xmlParser', function(evtParser, parsedData, config, xmlParser) {
 	var parser = {};
 
 	var apparatusEntryDef = '<app>',
@@ -2608,4 +2608,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return parser;
-});
+}]);

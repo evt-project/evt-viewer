@@ -20,7 +20,7 @@
 **/
 angular.module('evtviewer.analogue')
 
-.directive('evtAnalogue', function(evtAnalogue, evtInterface) {
+.directive('evtAnalogue', ['evtAnalogue', 'evtInterface', function(evtAnalogue, evtInterface) {
 	return {
 		restrict: 'E',
 		scope: {
@@ -28,7 +28,7 @@ angular.module('evtviewer.analogue')
 			scopeWit: '@'
 		},
 		transclude: true,
-		templateUrl: 'src/analogue/analogue.directive.tmpl.html',
+      template: require('./analogue.directive.tmpl.html'),
 		controllerAs: 'vm',
 		controller: 'AnalogueCtrl',
 		link: function(scope, element, attrs) {
@@ -46,4 +46,4 @@ angular.module('evtviewer.analogue')
 
 		}
 	};
-});
+}]);

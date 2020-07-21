@@ -1,3 +1,5 @@
+require('virtual-keyboard');
+
 angular.module('evtviewer.search')
    .provider('evtVirtualKeyboard', function() {
       var vm = this;

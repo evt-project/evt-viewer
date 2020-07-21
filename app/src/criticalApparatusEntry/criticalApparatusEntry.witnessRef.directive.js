@@ -22,7 +22,7 @@
 **/
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtWitnessRef', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {
+.directive('evtWitnessRef', ['evtCriticalApparatusEntry', 'evtBox', 'parsedData', 'evtInterface', 'config', function(evtCriticalApparatusEntry, evtBox, parsedData, evtInterface, config) {
 	return {
 		restrict: 'E',
 		require: '^?evtCriticalApparatusEntry',
@@ -31,7 +31,7 @@ angular.module('evtviewer.criticalApparatusEntry')
 			scopeWit: '@'
 		},
 		transclude: true,
-		templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.witnessRef.directive.tmpl.html',
+      template: require('./criticalApparatusEntry.witnessRef.directive.tmpl.html'),
 		link: function(scope, element, attrs) {
 			scope.translationData = {
 				witness: scope.witness
@@ -103,4 +103,4 @@ angular.module('evtviewer.criticalApparatusEntry')
 			};
 		}
 	};
-});
+}]);

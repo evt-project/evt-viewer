@@ -4,7 +4,7 @@ angular.module('evtviewer.criticalApparatusEntry')
     firstSubContentOpened : ''
 })
 
-.config(function(evtCriticalApparatusEntryProvider, configProvider, APPENTRYDEFAULTS) {
+.config(['evtCriticalApparatusEntryProvider', 'configProvider', 'APPENTRYDEFAULTS', function(evtCriticalApparatusEntryProvider, configProvider, APPENTRYDEFAULTS) {
     var defaults = configProvider.makeDefaults('criticalApparatusEntry', APPENTRYDEFAULTS);
     evtCriticalApparatusEntryProvider.setDefaults(defaults);
-});
+}]);

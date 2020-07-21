@@ -18,7 +18,7 @@
 **/
 angular.module('evtviewer.namedEntity')
 
-.directive('evtNamedEntityRef', function(evtNamedEntityRef) {
+.directive('evtNamedEntityRef', ['evtNamedEntityRef', function(evtNamedEntityRef) {
     return {
         restrict: 'E',
         scope: {
@@ -26,7 +26,7 @@ angular.module('evtviewer.namedEntity')
             entityType : '@'
         },
         transclude: true,
-        templateUrl: 'src/namedEntity/namedEntityRef.directive.tmpl.html',
+        template: require('./namedEntityRef.directive.tmpl.html'),
         link: function(scope, element, attrs){
             // Initialize namedEntity
             scope.vm = {
@@ -253,4 +253,4 @@ angular.module('evtviewer.namedEntity')
             });
         }
     };
-});
+}]);

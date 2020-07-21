@@ -11,8 +11,8 @@
 **/
 angular.module('evtviewer.core')
 
-.config(function($compileProvider) {
-    $compileProvider.directive('compile', function($compile) {
+.config(['$compileProvider', function($compileProvider) {
+    $compileProvider.directive('compile', ['$compile', function($compile) {
         return function(scope, element, attrs) {
             scope.$watch(
                 function(scope) {
@@ -24,5 +24,5 @@ angular.module('evtviewer.core')
                     $compile(element.contents())(scope);
                 });
         };
-    });
-});
+    }]);
+}]);

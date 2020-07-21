@@ -7,7 +7,6 @@
  * Service containing methods to parse data regarding critical apparatus.
  *
  * @requires $q
- * @requires xmlParser
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.core.config
@@ -15,7 +14,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtCriticalApparatusParser', function($q, parsedData, evtParser, xmlParser, config, evtCriticalElementsParser, evtDepaParser) {
+.service('evtCriticalApparatusParser', ['$q', 'parsedData', 'evtParser', 'config', 'evtCriticalElementsParser', 'evtDepaParser', function($q, parsedData, evtParser, config, evtCriticalElementsParser, evtDepaParser) {
     var parser = {};
 
     var apparatusEntryDef     = '<app>',
@@ -510,4 +509,4 @@ angular.module('evtviewer.dataHandler')
     };
 
     return parser;
-});
+}]);

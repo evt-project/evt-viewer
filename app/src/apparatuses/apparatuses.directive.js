@@ -23,14 +23,14 @@
 **/
 angular.module('evtviewer.apparatuses')
 
-.directive('evtApparatuses', function($timeout, evtApparatuses, evtInterface, evtCriticalApparatusEntry) {
+.directive('evtApparatuses', ['$timeout', 'evtApparatuses', 'evtInterface', 'evtCriticalApparatusEntry', function($timeout, evtApparatuses, evtInterface, evtCriticalApparatusEntry) {
     return {
         restrict: 'E',
         scope: {
             currentApparatus: '@'
         },
         transclude: true,
-        templateUrl: 'src/apparatuses/apparatuses.dir.tmpl.html',
+        template: require('./apparatuses.dir.tmpl.html'),
         controllerAs: 'vm',
         controller: 'apparatusesCtrl',
         link: function(scope, element, attrs) {
@@ -174,4 +174,4 @@ angular.module('evtviewer.apparatuses')
             }
         }
     };
-});
+}]);

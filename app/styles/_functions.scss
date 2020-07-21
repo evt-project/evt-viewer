@@ -1,6 +1,3 @@
-/* *************************** */
-/* FUNCTIONS */
-
 @function setGlobalFrameHeight(){
 	@if($base-footer == false){
 		@return "100% -  #{$base-header-height + 2}";

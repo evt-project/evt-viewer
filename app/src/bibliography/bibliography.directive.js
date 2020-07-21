@@ -26,10 +26,10 @@
 **/
 angular.module('evtviewer.bibliography')
 
-.directive('evtBibliography', function(evtBibliography) { 
+.directive('evtBibliography', ['evtBibliography', function(evtBibliography) { 
 	return {
 		restrict: 'E',
-		templateUrl: 'src/bibliography/bibliography.directive.tmpl.html',
+        template: require('./bibliography.directive.tmpl.html'),
 		scope: {
             id   : '@'
         },
@@ -38,7 +38,24 @@ angular.module('evtviewer.bibliography')
         link: function(scope, element, attrs) { 
             // Initialize bibliography 
             var currentBibliography = evtBibliography.build(scope); 
-             
+            currentBibliography.sortedBibl = currentBibliography.getSortedBibl();
+
+            scope.$watch(function() {
+                return currentBibliography.selectedSorting;
+            }, function(newItem, oldItem) {
+                if (oldItem !== newItem) {
+                    currentBibliography.sortedBibl = currentBibliography.getSortedBibl();
+                }
+            }, true);
+
+            scope.$watch(function() {
+                return currentBibliography.selectedSortOrder;
+            }, function(newItem, oldItem) {
+                if (oldItem !== newItem) {
+                    currentBibliography.sortedBibl = currentBibliography.getSortedBibl();
+                }
+            }, true);
+
             // Garbage collection 
             scope.$on('$destroy', function() { 
                 if (currentBibliography){ 
@@ -47,4 +64,4 @@ angular.module('evtviewer.bibliography')
             }); 
         } 
 	};
-});
+}]);

@@ -27,6 +27,7 @@ angular.module('evtviewer.interface')
 
    .controller('InterfaceCtrl', ['$log', '$timeout', '$scope', 'evtInterface', 'evtTranslation', 'evtPinnedElements', 'evtButtonSwitch', 'evtBox', 'evtApparatuses', 'parsedData', 'evtSelect', 'evtPopover', 'evtCommunication', 'evtDialog',
       function ($log, $timeout, $scope, evtInterface, evtTranslation, evtPinnedElements, evtButtonSwitch, evtBox, evtApparatuses, parsedData, evtSelect, evtPopover, evtCommunication, evtDialog) {
+         document.body.style = 'display: block'; // Workaround per evitare glitch pre caricamento app angular
          var _console = $log.getInstance('interface');
          /**
             * @ngdoc method
@@ -711,7 +712,7 @@ angular.module('evtviewer.interface')
     * (in this case the same HTML will be used for each occurrence of glyph)
     * or if parse the glyph content deeperand use only the character needed.
    **/
-   .directive('evt-g', function (parsedData) {
+   .directive('evt-g', ['parsedData' ,function (parsedData) {
       //Ricordarsi di modificare la gestione dei glifi TEI
       return {
          restrict: 'E',
@@ -733,4 +734,4 @@ angular.module('evtviewer.interface')
             scope.content = sContent;
          }
       };
-   });
+   }]);

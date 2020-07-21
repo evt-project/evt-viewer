@@ -6,7 +6,7 @@ angular.module('evtviewer.search')
          defaults = _defaults;
       };
       
-      this.$get = function (SEARCHBOXDEFAULTS, parsedData) {
+      this.$get = ['SEARCHBOXDEFAULTS', 'parsedData', function (SEARCHBOXDEFAULTS, parsedData) {
          var searchBox = [],
             searchBoxCollection = {},
             parentBoxId,
@@ -120,5 +120,5 @@ angular.module('evtviewer.search')
          };
          
          return searchBox;
-      };
+      }];
    });

@@ -13,7 +13,7 @@
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtParser', function($q, xmlParser, parsedData, config) {
+.service('evtParser', ['$q', 'xmlParser', 'parsedData', 'config', function($q, xmlParser, parsedData, config) {
 	var parser = {};
 	var idx = 0;
    var svgs = config.visCollSvg;
@@ -1019,7 +1019,6 @@ angular.module('evtviewer.dataHandler')
 
         if (currentDocument.find('text group text').length > 0) {
             defDocElement = 'text group text';
-            checkMainFront = true;
         } else if (currentDocument.find('text').length > 0) {
             defDocElement = 'text';
         } else if (currentDocument.find('div[subtype="edition_text"]').length > 0) {
@@ -1476,4 +1475,4 @@ angular.module('evtviewer.dataHandler')
 		};
 
 	return parser;
-});
+}]);

@@ -13,9 +13,8 @@
  * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.select.evtSelect
 **/
-angular.module('evtviewer.visColl')
-
-    .controller('ViscollCtrl', function (config, $log, $scope, $filter, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
+angular.module('evtviewer.visColl').controller('ViscollCtrl', ['config', '$log', '$scope', '$filter', 'evtNavbar', 'parsedData', 'evtInterface', 'evtSelect', 'evtButtonSwitch',
+    function (config, $log, $scope, $filter, evtNavbar, parsedData, evtInterface, evtSelect, evtButtonSwitch) {
         var vm = this;
 
         var _console = $log.getInstance('visColl');
@@ -43,4 +42,4 @@ angular.module('evtviewer.visColl')
             }
         };
 
-    });
+    }]);

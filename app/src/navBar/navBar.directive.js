@@ -22,14 +22,14 @@
 **/
 angular.module('evtviewer.navBar')
 
-.directive('evtNavbar', function($timeout, evtNavbar, parsedData, evtInterface) {
+.directive('evtNavbar', ['$timeout', 'evtNavbar', 'parsedData', 'evtInterface', function($timeout, evtNavbar, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
           // Insert here scope properties to be passed from HTML attributes
         },
         transclude: true,
-        templateUrl: 'src/navBar/navBar.directive.tmpl.html',
+        template: require('./navBar.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'NavbarCtrl',
         link: function(scope, element, attrs){
@@ -82,4 +82,4 @@ angular.module('evtviewer.navBar')
             });
         }
     };
-});
+}]);

@@ -1,6 +1,9 @@
 "use strict";
 
-var module = angular.module("evtviewer.openseadragon", ["evtviewer.imageViewer", 'evtviewer.openseadragonService', "evtviewer.interface"]);
+var OpenSeadragon = require('openseadragon');
+
+var module = angular.module("evtviewer.openseadragon", ["evtviewer.imageViewer",'evtviewer.openseadragonService', "evtviewer.interface"]);
+  
 
 
 module.directive("osd", ['$timeout', 'imageViewerHandler', "evtInterface", "osd", function ($timeout, imageViewerHandler, evtInterface, osd) {

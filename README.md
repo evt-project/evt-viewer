@@ -7,49 +7,7 @@ If you need to know *how to use* an EVT Release please read `USER_README.md` ins
 ## Dev Environment Prerequisites
 
 You need to preinstall NodeJS (see official documentation). 
-Everything works properly with versions up to v8.17.0 (you can use `nvm` in order to have multiple versions of node installed in your device),
-
-## Environment setup
-
-EVT has also dependencies that require ruby and ruby-compass. Below you'll see some instructions that will guide you through the installation of those dependencies. Unfortunately they cannot cover all different operating systems. Thus, if you run into problems try to google them or contact us for help.
-
-### Linux [apt baset distribution]
-The following commands assume that you are runinng a distribution with the *apt* package manager.
-
-1. Update the package database (just to be sure that everything's ok)
-    ```bash
-    sudo apt-get update
-    ```
-2. Install ruby
-    ```bash
-    sudo apt-get install ruby-compass build-essential curl
-    sudo gem install compass
-    ```
-[the last one is to do in any case to avoid CSS compilation problems]
-
-
-### Windows
-
-1. Install ruby. 
-Install the latest Ruby version at http://rubyinstaller.org/.
-*IMPORTANT: in the installer window select the "Add Ruby executables" options*
-Open a shell as administrator, then type:
-    ```bash
-    gem install compass
-    gem install susy
-    ```
-
-### OS X
-1. Install Homebrew [to do only if you haven't already installed homebrew]
-
-Follow installation instructions at [https://brew.sh](https://brew.sh)
-
-2. Install ruby
-    ```bash
-    brew install ruby
-    sudo gem update --system
-    sudo gem install compass
-    ```
+Everything works properly with versions up to v10.19.0 (you can use `nvm` in order to have multiple versions of node installed in your device),
 
 ## Starting the application
 1. Clone the repository from github
@@ -60,22 +18,12 @@ Follow installation instructions at [https://brew.sh](https://brew.sh)
     ```bash
     cd evt-viewer
     ```
-3. Install grunt and bower globally (bower v. 1.8.0 is recommended)
-    ```bash
-    npm install -g bower
-    npm install -g grunt-cli
-    ```
-4. Install dependendencies and devDependencies
+
+3. Install dependendencies and devDependencies
     ```bash
     npm install
+    npm install --only=dev
     ```
-    ignore any WARN message, they are harmless
-    
-    ```bash
-    npm install bower
-    bower install
-    ```
-    choose the angular.js version recommended for evt-viewer.
 
 ## Start EVT
 
@@ -83,54 +31,40 @@ Before starting EVT check if you have a *data* folder inside *app* where to put 
 If you need information about the configuration file, please check the *README.md* within the *app* folder, or use the beta [EVT2-Config-Generator](http://evt.labcd.unipi.it/evt2-config/) to set your preferences and download a ready to use JSON file.
 You can also use some ready-to-use xml files and configurations we've added to https://github.com/evt-project/evt-sample-documents (EVT2js folder).
 
-To start EVT use *grunt*
+To start EVT use
 ``` bash
-grunt dev
+npm run start
 ```
 
 ### Every time you install a new package
-Stop *grunt dev* (*CTRL/CMD+C*) then:
+Stop current process (*CTRL/CMD+C*) then:
 ```bash
-bower install
-grunt dev
+npm i
+npm run start
 ```
 
 ### Every time you checkout to a different branch
-If you need to work on a different branch, we recommend that you stop *grunt dev* (*CTRL/CMD+C* in the bash terminal), repeat the steps of dependencies and devDependencie installations and launch again *grunt dev*:
+If you need to work on a different branch, we recommend that you stop current process (*CTRL/CMD+C* in the bash terminal), repeat the steps of dependencies and devDependencie installations and launch again :
 ```bash
-npm install
-bower install
-grunt dev
+npm i 
+npm run start
 ```
 
 ## Generate EVT Development Documentation
 
-``` bash
-grunt docs
-```
-This will create a *devDocs* folder.
-Open the *index.html* inside this folder in a browser that allows Cross origin requests and navigate the documentation.
-
-## Troubleshooting
-
-### In case of CSS compilation error (especially on Linux)
-``` bash
-sudo gem install rubygems-update
-sudo update_rubygems
-sudo apt-get install ruby-dev
-sudo gem install compass susy
-```
-
-### In case of visualization problems
-```bash
-grunt dev --force
-```
+[WIP]
 
 ## Build a new EVT release
 ``` bash
-grunt build
+npm run build
 ```
-This will create a *build* folder containing the built package.
+or 
+```bash
+npm run build:prod
+```
+for a minified version of the app.
+
+Both scripts will create a *build* folder containing the built package.
 Add a *data* folder with the XML files you need and open the index.html file to see your digital edition.
 NB: in this case, in order to make EVT work properly in a local environment, you need to use a browser that allows Cross origin requests.
 

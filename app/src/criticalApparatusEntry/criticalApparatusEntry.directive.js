@@ -27,7 +27,7 @@
 **/
 angular.module('evtviewer.criticalApparatusEntry')
 
-.directive('evtCriticalApparatusEntry', function(evtCriticalApparatusEntry, parsedData, evtInterface) {
+.directive('evtCriticalApparatusEntry', ['evtCriticalApparatusEntry', 'evtInterface', function(evtCriticalApparatusEntry, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -38,7 +38,7 @@ angular.module('evtviewer.criticalApparatusEntry')
             exponent    : '@'
         },
         transclude: true,
-        templateUrl: 'src/criticalApparatusEntry/criticalApparatusEntry.directive.tmpl.html',
+        template: require('./criticalApparatusEntry.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'CriticalApparatusEntryCtrl',
         link: function(scope, element, attrs){
@@ -55,4 +55,4 @@ angular.module('evtviewer.criticalApparatusEntry')
             });
         }
     };
-});
+}]);

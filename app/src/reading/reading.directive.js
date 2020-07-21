@@ -25,7 +25,7 @@
 **/
 angular.module('evtviewer.reading')
 
-.directive('evtReading', function(evtReading, parsedData, evtInterface) {
+.directive('evtReading', ['evtReading', 'parsedData', 'evtInterface', function(evtReading, parsedData, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -39,7 +39,7 @@ angular.module('evtviewer.reading')
             noText      : '@'
         },
         transclude: true,
-        templateUrl: 'src/reading/reading.directive.tmpl.html',
+        template: require('./reading.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'ReadingCtrl',
         link: function(scope, element, attrs){
@@ -73,4 +73,4 @@ angular.module('evtviewer.reading')
             });
         }
     };
-});
+}]);

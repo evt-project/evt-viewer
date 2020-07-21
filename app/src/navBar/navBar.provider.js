@@ -26,7 +26,7 @@ angular.module('evtviewer.navBar')
 
         var currentAppEntry = '';
 
-        this.$get = function (parsedData, evtInterface) {
+        this.$get = ['parsedData', 'evtInterface', function (parsedData, evtInterface) {
             var navBar = {},
                 collection = {},
                 list = [],
@@ -157,5 +157,5 @@ angular.module('evtviewer.navBar')
 
             //le varie cose da far fare al provider sono da mettere qua
             return navBar;
-        };
+        }];
     });

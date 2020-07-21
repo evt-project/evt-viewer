@@ -11,7 +11,7 @@
  **/
 angular.module('evtviewer.select')
 
-.controller('SelectCtrl', function($log, $element, $scope, evtSelect, parsedData) {    
+.controller('SelectCtrl', ['$log', '$element', '$scope', 'evtSelect', 'parsedData', function($log, $element, $scope, evtSelect, parsedData) {    
     var vm = this;
     
     var _console = $log.getInstance('select');
@@ -331,4 +331,4 @@ angular.module('evtviewer.select')
         // _console.log('vm - destroy ' + tempId);
     };
     // _console.log('SelectCtrl running');
-});
+}]);

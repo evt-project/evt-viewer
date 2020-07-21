@@ -6,16 +6,12 @@
  * # evtSourcesApparatus
  * Service containing methods to handle the contents of sources entries.
  *
- * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.dataHandler.evtParser
- * @requires evtviewer.dataHandler.evtSourcesParser
  * @requires evtviewer.dataHandler.evtCriticalApparatus
- * @requires evtviewer.dataHandler.evtCriticalApparatusParser
 **/
 angular.module('evtviewer.dataHandler')
 
-.service('evtSourcesApparatus', function(parsedData, evtParser, config, evtSourcesParser, evtCriticalApparatus, evtCriticalApparatusParser) {
+.service('evtSourcesApparatus', ['parsedData', 'evtCriticalApparatus', function(parsedData, evtCriticalApparatus) {
 	var apparatus = {};
 
 	/**
@@ -327,4 +323,4 @@ angular.module('evtviewer.dataHandler')
 	};
 
 	return apparatus;
-});
+}]);

@@ -24,7 +24,7 @@ angular.module('evtviewer.search')
       }
    })
    
-   .config(function(evtSearchBoxProvider, configProvider, SEARCHBOXDEFAULTS) {
+   .config(['evtSearchBoxProvider', 'configProvider', 'SEARCHBOXDEFAULTS', function(evtSearchBoxProvider, configProvider, SEARCHBOXDEFAULTS) {
       var defaults = configProvider.makeDefaults('search', SEARCHBOXDEFAULTS);
       evtSearchBoxProvider.setDefaults(defaults);
-   });
+   }]);

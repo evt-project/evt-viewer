@@ -23,7 +23,7 @@
 **/
 angular.module('evtviewer.dialog')
 
-.directive('evtDialog', function(evtDialog,evtInterface) {
+.directive('evtDialog', ['evtDialog', function(evtDialog) {
 
     return {
         restrict: 'E',
@@ -33,9 +33,9 @@ angular.module('evtviewer.dialog')
             title   : '@',
             opened  : '@'
         },
-        replace: true,
+        replace: false,
         transclude : true,
-        templateUrl: 'src/dialog/dialog.dir.tmpl.html',
+        template: require('./dialog.dir.tmpl.html'),
         link: function(scope, element, attrs) {
             // Add attributes in vm
             scope.vm = {
@@ -58,4 +58,4 @@ angular.module('evtviewer.dialog')
             });
         }
     };
-});
+}]);

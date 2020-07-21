@@ -1,35 +1,33 @@
-/* *************************** */
-/* NAMED ENTITY                */
-/* *************************** */
 $named-entities-background-color : $base-color-light;
 $named-entities-background-color-darker : rgb(225, 225, 225);
 $named-entities-border-color : rgb(125, 125, 125);
 
 .namedEntity {
-	display: block;
-	background: inherit;
-	font-size: 95%;
-	//padding: 5px;
+    display: block;
+    background: inherit;
+    font-size: 95%;
+    //padding: 5px;
 
-	&__icon {
-		margin-right: 5px;
-	}
+    &__icon {
+        margin-right: 5px;
+    }
 
-	&__header {
-		display: block;
-		padding: 7px;
-		padding-bottom: 4px;
+    &__header {
+        display: block;
+        padding: 7px;
+        padding-bottom: 4px;
 
-		&:hover {
-			cursor: pointer;
-			//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
-		}
-		.opener:before {
-			content: "\f0da";
-		}
-	}
+        &:hover {
+            cursor: pointer;
+            //text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+        }
 
-	&_tools{
+        .opener:before {
+            content: "\f0da";
+        }
+    }
+
+    &_tools {
         padding: 0;
         float: right;
         display: block;
@@ -38,18 +36,22 @@ $named-entities-border-color : rgb(125, 125, 125);
         right: -2px;
         background: transparent;
         text-align: center;
-        button-switch{
+
+        button-switch {
             margin-right: 0;
             font-size: 70%;
             float: right;
+
             .buttonSwitch {
                 box-shadow: none;
                 background: none;
                 border: none;
             }
-            &.active, &:hover {
+
+            &.active,
+            &:hover {
                 .buttonSwitch {
-                    @include set(box-shadow, inset 0 1px 2px 0 rgba(0,0,0,.1));
+                    @include set(box-shadow, inset 0 1px 2px 0 rgba(0, 0, 0, .1));
                     background-color: $named-entities-background-color-darker;
                     border: 1px solid $named-entities-border-color;
                 }
@@ -57,239 +59,266 @@ $named-entities-border-color : rgb(125, 125, 125);
         }
     }
 
-	&__details {
-		display: none;
-		//padding-left: 16px;
-		font-size: 85%;
+    &__details {
+        display: none;
+        //padding-left: 16px;
+        font-size: 85%;
 
-		border-top: 3px double $base-color-middle;
+        border-top: 3px double $base-color-middle;
 
-		// width:90%;
-		p {
-			padding: 0 10px;
-		}
+        // width:90%;
+        p {
+            padding: 0 10px;
+        }
 
-		&-headers {
-			z-index: 2;
-			position: relative;
-			span {
-				padding: 5px;
-				display: inline-block;
-				font-size: 90%;
-				cursor: pointer;
-				border-left: 1px solid $named-entities-background-color-darker;
-				&:first-child {
-					border-left: none;
-				}
-				&:hover {
-					//text-shadow: 0px 0px 1px rgba(0,0,0,.7);
-				}
-				&.active{
-					@include set(box-shadow, inset 0 2px 2px -1px $named-entities-border-color);
-					background-color: $named-entities-background-color-darker;
-					border-right: 1px solid $named-entities-background-color-darker;
-					&:not(:first-child) {
-						border-left: 1px solid $named-entities-background-color-darker;
-					}
-					+ span {
-						border-left: none;
-					}
-				}
-			}
-		}
+        &-headers {
+            z-index: 2;
+            position: relative;
 
-		&-panels{
-			&:not(.closed){
-				padding: 10px 15px;
-			}
-			max-height: 150px;
-			overflow-x: hidden;
-			overflow-y: auto;
-			background-color: $named-entities-background-color-darker;
-			&.largeMap {
-				max-height: 100%;
-			}
-		}
+            span {
+                padding: 5px;
+                display: inline-block;
+                font-size: 90%;
+                cursor: pointer;
+                border-left: 1px solid $named-entities-background-color-darker;
 
-		&-panel {
-			display: block;
-			ul {
-				padding-left: 10px;
-				list-style-type: none;
-				margin: 5px 0px;
-			}
-		}
+                &:first-child {
+                    border-left: none;
+                }
 
-		//For popup
-		.opener:before {
-			content: "\f0da";
-		}
-	}
+                &:hover {
+                    //text-shadow: 0px 0px 1px rgba(0,0,0,.7);
+                }
 
-	&__detail {
-		display: block;
-		&-icon {
-			float: left;
-		    margin-top: 0.1rem;
-		}
-		&-text {
-			margin-left: 24px;
-			display: block;
+                &.active {
+                    @include set(box-shadow, inset 0 2px 2px -1px $named-entities-border-color);
+                    background-color: $named-entities-background-color-darker;
+                    border-right: 1px solid $named-entities-background-color-darker;
 
-			&-content {
-				display: inline-block;
-				&:first-letter {
-					text-transform: uppercase;
-				}
+                    &:not(:first-child) {
+                        border-left: 1px solid $named-entities-background-color-darker;
+                    }
 
-				//
-				// Specific TEI situations
-				//
+                    +span {
+                        border-left: none;
+                    }
+                }
+            }
+        }
 
-				// Nested Lists
-				.place, .person, .org, .item {
-					display: list-item;
-					margin-left: 20px;
-				}
-			}
+        &-panels {
+            &:not(.closed) {
+                padding: 10px 15px;
+            }
 
-			&-attribute {
-				font-variant: small-caps;
-				font-size: 90%;
-				vertical-align: top;
-				display: inline-block;
-    			padding-top: 0.2rem;
-				&:first-letter {
-					text-transform: uppercase;
-				}
+            max-height: 150px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: $named-entities-background-color-darker;
 
-				&:first-of-type {
-					&:before {
-						//content: "(";
-					}
-				}
+            &.largeMap {
+                max-height: 100%;
+            }
+        }
 
-				&:after {
-					content: ", ";
-					vertical-align: top;
-					margin-right: 0.2em;
-				}
+        &-panel {
+            display: block;
 
-				&:last-of-type {
-					&:after {
-						content: ": ";
-						margin-right: 0;
-					}
-				}
-			}
-		}
-	}
+            ul {
+                padding-left: 10px;
+                list-style-type: none;
+                margin: 5px 0px;
+            }
+        }
 
+        //For popup
+        .opener:before {
+            content: "\f0da";
+        }
+    }
 
-	&__occurrences, &__moreInfo {
-		display: none;
+    &__detail {
+        display: block;
 
-		&.opened, &.location-mainText {
-			display: block;
+        &-icon {
+            float: left;
+            margin-top: 0.1rem;
+        }
 
-			> span {
-				display: block;
-			}
-		}
+        &-text {
+            margin-left: 24px;
+            display: block;
 
-		padding-left: 16px;
+            &-content {
+                display: inline-block;
 
-		&-toggler {
-			display: block;
-			font-variant: small-caps;
-			padding-top: 5px;
-			cursor: pointer;
+                &:first-letter {
+                    text-transform: uppercase;
+                }
 
-			&:hover {
-				text-shadow: 0px 0px 1px rgba(0,0,0,.7);
-			}
+                //
+                // Specific TEI situations
+                //
 
-		}
-	}
+                // Nested Lists
+                .place,
+                .person,
+                .org,
+                .item {
+                    display: list-item;
+                    margin-left: 20px;
+                }
+            }
+
+            &-attribute {
+                font-variant: small-caps;
+                font-size: 90%;
+                vertical-align: top;
+                display: inline-block;
+                padding-top: 0.2rem;
+
+                &:first-letter {
+                    text-transform: uppercase;
+                }
+
+                &:first-of-type {
+                    &:before {
+                        //content: "(";
+                    }
+                }
+
+                &:after {
+                    content: ", ";
+                    vertical-align: top;
+                    margin-right: 0.2em;
+                }
+
+                &:last-of-type {
+                    &:after {
+                        content: ": ";
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
 
 
-	&__occurrences {
+    &__occurrences,
+    &__moreInfo {
+        display: none;
 
-		&-occurrence {
-			border-radius: 4px;
-			padding: 3px 6px;
-			display: inline-block;
-			border: 1px solid rgba($base-color-middle, .3);
-			margin-right: 3px;
-			font-size: 85%;
-			margin-bottom: 3px;
-			display: inline-block !important;
-			cursor: pointer;
+        &.opened,
+        &.location-mainText {
+            display: block;
 
-			&:hover, &.active {
-				//text-shadow: 0px 0px 1px #000;
-				background: rgba($base-color-middle, .2);
-			}
-		}
-	}
+            >span {
+                display: block;
+            }
+        }
 
-	&.opened, &.location-mainText {
-		margin-top: 1px;
-		.namedEntity__header .opener:before {
-			content: "\f0d7";
-		}
+        padding-left: 16px;
 
-		.namedEntity__details {
-			display: block;
-		}
-	}
+        &-toggler {
+            display: block;
+            font-variant: small-caps;
+            padding-top: 5px;
+            cursor: pointer;
 
-	&__details {
-		&.moreInfoOpened {
-			.namedEntity__moreInfo  {
-				display: block;
-				&-toggler .opener:before {
-					content: "\f0d7";
-				}
-			}
-		}
+            &:hover {
+                text-shadow: 0px 0px 1px rgba(0, 0, 0, .7);
+            }
 
-		&.occurrencesOpened {
-			.namedEntity__occurrences {
-				display: block;
-				&-toggler .opener:before {
-					content: "\f0d7";
-				}
-			}
-		}
-	}
+        }
+    }
 
-	&.location-mainText {
-		border-left: 1px solid $base-color-middle;
-		border-right: 1px solid $base-color-middle;
 
-		&.opened {
-			margin-bottom: 10px;
-		}
+    &__occurrences {
 
-		.namedEntity__header {
-		 	border-top: 1px solid $base-color-middle;
-		 	cursor: default;
-		}
-		.namedEntity__details {
-			border-bottom: 1px solid $base-color-middle;
-		}
-	}
+        &-occurrence {
+            border-radius: 4px;
+            padding: 3px 6px;
+            display: inline-block;
+            border: 1px solid rgba($base-color-middle, .3);
+            margin-right: 3px;
+            font-size: 85%;
+            margin-bottom: 3px;
+            display: inline-block !important;
+            cursor: pointer;
 
-	//
-	// Specific TEI situations
-	//
+            &:hover,
+            &.active {
+                //text-shadow: 0px 0px 1px #000;
+                background: rgba($base-color-middle, .2);
+            }
+        }
+    }
 
-	// Nested Lists
-	.listplace .place, .listperson .person, .listorg .org, .list .item {
-		display: list-item;
-		margin-left: 20px;
-	}
+    &.opened,
+    &.location-mainText {
+        margin-top: 1px;
+
+        .namedEntity__header .opener:before {
+            content: "\f0d7";
+        }
+
+        .namedEntity__details {
+            display: block;
+        }
+    }
+
+    &__details {
+        &.moreInfoOpened {
+            .namedEntity__moreInfo {
+                display: block;
+
+                &-toggler .opener:before {
+                    content: "\f0d7";
+                }
+            }
+        }
+
+        &.occurrencesOpened {
+            .namedEntity__occurrences {
+                display: block;
+
+                &-toggler .opener:before {
+                    content: "\f0d7";
+                }
+            }
+        }
+    }
+
+    &.location-mainText {
+        border-left: 1px solid $base-color-middle;
+        border-right: 1px solid $base-color-middle;
+
+        &.opened {
+            margin-bottom: 10px;
+        }
+
+        .namedEntity__header {
+            border-top: 1px solid $base-color-middle;
+            cursor: default;
+        }
+
+        .namedEntity__details {
+            border-bottom: 1px solid $base-color-middle;
+        }
+    }
+
+    //
+    // Specific TEI situations
+    //
+
+    // Nested Lists
+    .listplace .place,
+    .listperson .person,
+    .listorg .org,
+    .list .item {
+        display: list-item;
+        margin-left: 20px;
+    }
 }
 
 $personColor: #FFF0F1;
@@ -302,244 +331,286 @@ $orgColor: #FFE9C9;
 $orgColor-darker: #ffb74d;
 
 @mixin namedEntityColors($color-base, $color-darker) {
-	&.location-mainText, &.location-pinned {
-		background: $color-base;
-	}
 
-	border-bottom-color: $color-darker;
+    &.location-mainText,
+    &.location-pinned {
+        background: $color-base;
+    }
 
-	> .namedEntity__details {
-		> .namedEntity__details-headers {
-			span {
-				&.active{
-					@include set(box-shadow, inset 0 2px 3px -1px rgba(0,0,0,0.4) );
-					background-color: $color-darker;
-					border-right-color: $color-darker;
-					&:not(:first-child) {
-						border-left-color: $color-darker;
-					}
-				}
-				&:hover {
-					background-color: $color-darker;
-				}
-			}
-			&:not(.closed) {
-				span {
-					margin-bottom: -3px;
-				}
-			}
-		}
+    border-bottom-color: $color-darker;
 
-		> .namedEntity__details-panels{
-			@include set(box-shadow, inset 0 2px 3px -2px rgba(0, 0, 0, 0.4));
-			background-color: $color-darker;
-		}
-	}
+    >.namedEntity__details {
+        >.namedEntity__details-headers {
+            span {
+                &.active {
+                    @include set(box-shadow, inset 0 2px 3px -1px rgba(0, 0, 0, 0.4));
+                    background-color: $color-darker;
+                    border-right-color: $color-darker;
+
+                    &:not(:first-child) {
+                        border-left-color: $color-darker;
+                    }
+                }
+
+                &:hover {
+                    background-color: $color-darker;
+                }
+            }
+
+            &:not(.closed) {
+                span {
+                    margin-bottom: -3px;
+                }
+            }
+        }
+
+        >.namedEntity__details-panels {
+            @include set(box-shadow, inset 0 2px 3px -2px rgba(0, 0, 0, 0.4));
+            background-color: $color-darker;
+        }
+    }
 
 
-	.namedEntity__occurrences {
-		&-occurrence {
-			background: rgba(255, 255, 255, 0.5);
-			border-color: $color-darker;
-			&:hover, &.active {
-				background: rgba(255, 255, 255, 1);
-			}
-		}
-	}
+    .namedEntity__occurrences {
+        &-occurrence {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: $color-darker;
+
+            &:hover,
+            &.active {
+                background: rgba(255, 255, 255, 1);
+            }
+        }
+    }
 }
 
 .namedEntity {
-	&-person, &-pers, &-persName {
-		@include namedEntityColors($personColor, $personColor-darker);
-	}
 
-	&-place, &-placeName {
-		@include namedEntityColors($placeColor, $placeColor-darker);
-	}
+    &-person,
+    &-pers,
+    &-persName {
+        @include namedEntityColors($personColor, $personColor-darker);
+    }
 
-	&-org, &-orgName {
-		@include namedEntityColors($orgColor, $orgColor-darker);
-	}
+    &-place,
+    &-placeName {
+        @include namedEntityColors($placeColor, $placeColor-darker);
+    }
+
+    &-org,
+    &-orgName {
+        @include namedEntityColors($orgColor, $orgColor-darker);
+    }
 }
 
 @mixin listColors($color) {
-	.evt-list__content {
-        > div > *:nth-child(odd) {
-		    background: rgba($color, .5);
-		}
+    .evt-list__content {
+        >div>*:nth-child(odd) {
+            background: rgba($color, .5);
+        }
 
-		> div > *:nth-child(even) {
-		     background: rgba($color, .2);
-		}
+        >div>*:nth-child(even) {
+            background: rgba($color, .2);
+        }
 
-		> div > *:hover {
-		    background: rgba($color, .4);
-		}
-		> .namedEntity.opened {
-			background: rgba($color, .5);
-		}
+        >div>*:hover {
+            background: rgba($color, .4);
+        }
+
+        >.namedEntity.opened {
+            background: rgba($color, .5);
+        }
     }
 }
+
 [data-list-type=person] {
-	@include listColors($personColor-darker);
+    @include listColors($personColor-darker);
 }
+
 [data-list-type=place] {
-	@include listColors($placeColor-darker);
+    @include listColors($placeColor-darker);
 }
+
 [data-list-type=org] {
-	@include listColors($orgColor-darker);
+    @include listColors($orgColor-darker);
 }
 
 .namedEntityRef {
-	color: $base-color-middle;
-	cursor: pointer;
+    color: $base-color-middle;
+    cursor: pointer;
 
-	&.highlighted {
-		background: #ffc !important;
-	}
+    &.highlighted {
+        background: #ffc !important;
+    }
 
-	&.fakeEntity {
-		cursor: default;
-	}
+    &.fakeEntity {
+        cursor: default;
+    }
 
-	&.active {
-		border: 1px solid #000;
-		border-bottom: 5px solid #fff;
-	}
+    &.active {
+        border: 1px solid #000;
+        border-bottom: 5px solid #fff;
+    }
 
-	&-person, &-pers, &-persName {
-		&:hover {
-			background-color: $personColor;
-		}
-		&.active {
-			background-color: $personColor;
-			border-bottom-color: $personColor;
-		}
-	}
+    &-person,
+    &-pers,
+    &-persName {
+        &:hover {
+            background-color: $personColor;
+        }
 
-	&-place, &-placeName {
-		&:hover {
-			background-color: $placeColor;
-		}
-		&.active {
-			background-color: $placeColor;
-			border-bottom-color: $placeColor;
-		}
-	}
+        &.active {
+            background-color: $personColor;
+            border-bottom-color: $personColor;
+        }
+    }
 
-	&-org, &-orgName {
-		&:hover {
-			background-color: $orgColor;
-		}
-		&.active {
-			background-color: $orgColor;
-			border-bottom-color: $orgColor;
-		}
-	}
+    &-place,
+    &-placeName {
+        &:hover {
+            background-color: $placeColor;
+        }
 
-	&__details {
-		font-size: 90%;
-		position: absolute;
-		line-height: 100%;
-		display: none;
-		background: rgba($base-color-light, .9);
-		border: 1.5px solid $base-color-dark;
-		border-radius: 3px;
-		@include set(box-shadow, 2px 2px 2px rgbs($base-color-dark, .6));
-		padding: 5px;
-		z-index: 99;
-		text-align: left;
-		cursor: text !important;
-		min-width: 30px;
-		margin-top: 10px;
+        &.active {
+            background-color: $placeColor;
+            border-bottom-color: $placeColor;
+        }
+    }
 
-		&.active {
-			display: block;
-		}
+    &-org,
+    &-orgName {
+        &:hover {
+            background-color: $orgColor;
+        }
 
-		&-before {
-			&:before {
-				@include tooltipBeforeAfter();
-				top: -10px;
-				content:"\f0d8";
-				text-shadow: 0px -3px 0px #000;
-				height:0px;
-			}
-			position: absolute;
-			top: 0;
-		}
-		&.open-up {
-			.namedEntityRef__details-before::before {
-				content:"\f0d7";
-				text-shadow: 0px 3px 0px #000;
-			}
-		}
-	}
+        &.active {
+            background-color: $orgColor;
+            border-bottom-color: $orgColor;
+        }
+    }
+
+    &__details {
+        font-size: 90%;
+        position: absolute;
+        line-height: 100%;
+        display: none;
+        background: rgba($base-color-light, .9);
+        border: 1.5px solid $base-color-dark;
+        border-radius: 3px;
+        @include set(box-shadow, 2px 2px 2px rgbs($base-color-dark, .6));
+        padding: 5px;
+        z-index: 99;
+        text-align: left;
+        cursor: text !important;
+        min-width: 30px;
+        margin-top: 10px;
+
+        &.active {
+            display: block;
+        }
+
+        &-before {
+            &:before {
+                @include tooltipBeforeAfter();
+                top: -10px;
+                content: "\f0d8";
+                text-shadow: 0px -3px 0px #000;
+                height: 0px;
+            }
+
+            position: absolute;
+            top: 0;
+        }
+
+        &.open-up {
+            .namedEntityRef__details-before::before {
+                content: "\f0d7";
+                text-shadow: 0px 3px 0px #000;
+            }
+        }
+    }
 }
 
+.person-active,
+.pers-active,
+.persName-active {
+    .namedEntityRef {
 
-.person-active, .pers-active, .persName-active {
-	.namedEntityRef {
-		&-person, &-pers, &-persName {
-			background-color: $personColor-darker;
-			&:hover:not(.active) {
-				background-color: $personColor;
-			}
-		}
-	}
+        &-person,
+        &-pers,
+        &-persName {
+            background-color: $personColor-darker;
+
+            &:hover:not(.active) {
+                background-color: $personColor;
+            }
+        }
+    }
 }
 
-.place-active, .placeName-active {
-	.namedEntityRef {
-		&-place, &-placeName {
-			background-color: $placeColor-darker;
-			&:hover:not(.active) {
-				background-color: $placeColor;
-			}
-		}
-	}
+.place-active,
+.placeName-active {
+    .namedEntityRef {
+
+        &-place,
+        &-placeName {
+            background-color: $placeColor-darker;
+
+            &:hover:not(.active) {
+                background-color: $placeColor;
+            }
+        }
+    }
 }
 
-.org-active, .orgName-active {
-	.namedEntityRef {
-		&-org, &-orgName {
-			background-color: $orgColor-darker;
-			&:hover:not(.active) {
-				background-color: $orgColor;
-			}
-		}
-	}
+.org-active,
+.orgName-active {
+    .namedEntityRef {
+
+        &-org,
+        &-orgName {
+            background-color: $orgColor-darker;
+
+            &:hover:not(.active) {
+                background-color: $orgColor;
+            }
+        }
+    }
 }
 
-[data-value="person"], [data-value="pers"], [data-value="persName"] {
-	.option-icon-label {
-		color: $personColor-darker;
-	}
+[data-value="person"],
+[data-value="pers"],
+[data-value="persName"] {
+    .option-icon-label {
+        color: $personColor-darker;
+    }
 }
 
-[data-value="place"], [data-value="placeName"] {
-	.option-icon-label {
-		color: $placeColor-darker;
-	}
+[data-value="place"],
+[data-value="placeName"] {
+    .option-icon-label {
+        color: $placeColor-darker;
+    }
 }
 
-[data-value="org"], [data-value="orgName"] {
-	.option-icon-label {
-		color: $orgColor-darker;
-	}
+[data-value="org"],
+[data-value="orgName"] {
+    .option-icon-label {
+        color: $orgColor-darker;
+    }
 }
 
 .relation-name {
-	font-weight: bold;
-	font-variant: small-caps;
+    font-weight: bold;
+    font-variant: small-caps;
 }
 
-[data-type="pinnedBoard"] .namedEntity{
-	margin-bottom: 10px;
+[data-type="pinnedBoard"] .namedEntity {
+    margin-bottom: 10px;
 
-	&_tools {
-	    position: relative;
-	    bottom: 5px;
-	    right: -7px;
-	}
+    &_tools {
+        position: relative;
+        bottom: 5px;
+        right: -7px;
+    }
 }

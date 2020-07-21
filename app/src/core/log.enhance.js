@@ -2,7 +2,7 @@
 
 angular.module('evtviewer.core')
 
-.run(function($log, config) {
+.run(['$log', 'config', function($log, config) {
     $log.enabledContexts = [];
     $log.getInstance = function(context) {
         return {
@@ -61,4 +61,4 @@ angular.module('evtviewer.core')
             logFunc.apply(null, args);
         };
     }
-});
+}]);

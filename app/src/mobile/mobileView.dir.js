@@ -10,7 +10,7 @@ angular.module('evtviewer.mobile')
         scope: {
             id: '@'
         },
-        templateUrl: 'src/mobile/mobileView.dir.tmpl.html',
+        template: require('./mobileView.dir.tmpl.html'),
         controller: 'MobileViewCtrl'
     };
 });

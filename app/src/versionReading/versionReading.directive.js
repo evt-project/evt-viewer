@@ -26,7 +26,7 @@
 **/
 angular.module('evtviewer.versionReading')
 
-.directive('evtVersionReading', function(evtVersionReading, evtInterface) {
+.directive('evtVersionReading', ['evtVersionReading', 'evtInterface', function(evtVersionReading, evtInterface) {
     return {
         restrict: 'E',
         scope: {
@@ -37,7 +37,7 @@ angular.module('evtviewer.versionReading')
             scopeVersion : '@'
         },
         transclude: true,
-        templateUrl: 'src/versionReading/versionReading.directive.tmpl.html',
+        template: require('./versionReading.directive.tmpl.html'),
         controllerAs: 'vm',
         controller: 'versionReadingCtrl',
         link: function(scope, element, attrs) {
@@ -51,4 +51,4 @@ angular.module('evtviewer.versionReading')
             });
         }
     };
-});
+}]);

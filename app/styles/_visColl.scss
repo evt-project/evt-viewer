@@ -1,15 +1,10 @@
-/* *************************** */
-
-/* VISCOLL                     */
-
-/* *************************** */
-
 .viscollContainer {
     height: 100%;
     vertical-align: top;
     width: 100%;
     max-height: 300px;
     padding-bottom: 20px;
+
     &:not(:last-child) {
         margin-bottom: 20px;
         border-bottom: 1px solid lightgray;
@@ -19,9 +14,11 @@
 .selectorViscoll {
     font-size: 0.5em;
     margin-bottom: 5px;
+
     label {
         display: block;
     }
+
     .selector {
         margin: 0;
     }
@@ -29,6 +26,7 @@
 
 .imgSelectorViscoll {
     display: block;
+
     &_empty {
         padding-top: 10px;
         font-size: 0.5em;
@@ -70,6 +68,7 @@
 
 $viscoll_first_unit_color: #ff9800;
 $viscoll_second_unit_color: #ff5722;
+
 .viscollContainer svg {
     position: relative;
     background: #396f7b;
@@ -77,60 +76,73 @@ $viscoll_second_unit_color: #ff5722;
     width: 70%;
     border-radius: 8px;
     margin-bottom: 5px;
-    >g:hover .leaf, .over_unit .leaf {
+
+    >g:hover .leaf,
+    .over_unit .leaf {
         cursor: pointer;
         stroke: $base-color-active-background;
     }
+
     .active_unit {
-		&.first_unit {
-			.leaf {
-				stroke: $viscoll_first_unit_color;
-				cursor: default;
-			}
-		}
-		&.second_unit {
-			.leaf {
-				stroke: $viscoll_second_unit_color;
-				cursor: default;
-			}
-		}
+        &.first_unit {
+            .leaf {
+                stroke: $viscoll_first_unit_color;
+                cursor: default;
+            }
+        }
+
+        &.second_unit {
+            .leaf {
+                stroke: $viscoll_second_unit_color;
+                cursor: default;
+            }
+        }
     }
 }
 
 .viscollContainer {
     .thumbnail {
-		&.first_unit img{
-			border-color: $viscoll_first_unit_color;
-		}
-		&.second_unit img{
-			border-color: $viscoll_second_unit_color;
-		}
+        &.first_unit img {
+            border-color: $viscoll_first_unit_color;
+        }
+
+        &.second_unit img {
+            border-color: $viscoll_second_unit_color;
+        }
+
         img {
             height: auto;
             width: 120px;
         }
+
         figcaption {
             width: 120px;
         }
+
         &.missing {
             cursor: not-allowed;
+
             &:hover figcaption {
                 background: rgba(0, 0, 0, 0.2) !important;
             }
         }
+
         &.notLeaf {
             // visibility: hidden;
             cursor: default;
             opacity: .3;
             border: 2px solid;
             background: lightgray;
+
             img {
                 visibility: hidden;
             }
+
             i {
                 top: 3px;
                 position: relative;
             }
+
             &:hover figcaption {
                 background: rgba(0, 0, 0, 0.2) !important;
             }

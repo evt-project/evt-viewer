@@ -1,6 +1,6 @@
 angular.module('evtviewer.openseadragonService')
 
-   .service('imageScrollMap', function (evtInterface) {
+   .service('imageScrollMap', function () {
       var key = 'yPage';
       var imageScrollMap = this;
      

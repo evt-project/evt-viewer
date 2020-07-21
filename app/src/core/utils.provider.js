@@ -28,11 +28,11 @@ angular.module('evtviewer.core')
     *
     * @returns {Object} extended JSON object
     */
-	this.deepExtend = function(destination, source) {
+	this.deepExtend = function de(destination, source) {
 		for (var property in source) {
 			if (source[property] && source[property].constructor && source[property].constructor === Object) {
 				destination[property] = destination[property] || {};
-				arguments.callee(destination[property], source[property]);
+				de(destination[property], source[property]);
 			} else {
 				destination[property] = angular.copy(source[property]);
 			}
@@ -57,11 +57,11 @@ angular.module('evtviewer.core')
     *
     * @returns {Object} extended JSON object
     */
-	this.deepExtendSkipDefault = function(destination, source) {
+	this.deepExtendSkipDefault = function de(destination, source) {
 		for (var property in source) {
 			if (source[property] && source[property].constructor && source[property].constructor === Object) {
 				destination[property] = destination[property] || {};
-				arguments.callee(destination[property], source[property]);
+				de(destination[property], source[property]);
 			} else {
 				if (property === 'dataUrl') {
 					if (source[property] !== '') {
@@ -135,7 +135,7 @@ angular.module('evtviewer.core')
     * @todo Decide if move to another service
     */
 	this.getCommonAncestor = function(a, b) {
-		var parents = $(a).parents().andSelf();
+		var parents = $(a).parents().addBack();
 		while (b) {
 			var ix = parents.index(b);
 			if (ix !== -1) {

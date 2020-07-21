@@ -1,38 +1,36 @@
-/* VIEW ====================================== */ 
- 
-@mixin baseArrow(){
+@mixin baseArrow() {
     display: block;
     position: fixed;
     top: 50%;
     opacity: 0.8;
-    color:#666;
+    color: #666;
     cursor: pointer;
     font-family: FontAwesome;
     font-size: 4em;
     font-style: normal;
     font-weight: normal;
-    text-shadow: 3px 3px 2px #000; 
+    text-shadow: 3px 3px 2px #000;
 }
 
-.baseTemplate{
+.baseTemplate {
     width: 100%;
     height: auto;
-    padding-top:2.5em;
+    padding-top: 2.5em;
     color: #FFF;
 }
 
 .fullscreen {
-    width:100%;
+    width: 100%;
     margin: 0 auto;
 }
 
 .halfscreen {
     width: 50%;
     padding: 0 0.5em;
-    float:left;    
+    float: left;
 }
 
-.slide  {
+.slide {
     max-width: 100%;
     margin: 0 auto;
 }
@@ -43,20 +41,22 @@
     color: #000;
 }
 
-.contentText, .information {
+.contentText,
+.information {
     width: 95%;
-    margin: 1em auto;        
+    margin: 1em auto;
 }
 
-.textTitle, .textPage {
+.textTitle,
+.textPage {
     float: right;
     color: #666;
     padding: 0 0.5em;
 }
 
-.prev { 
+.prev {
     @include baseArrow();
-    left:2%;
+    left: 2%;
 
     &::before {
         content: "\f104";
@@ -68,9 +68,6 @@
     right: 2%;
 
     &::before {
-        content: "\f105"; 
+        content: "\f105";
     }
 }
-  
-
-/* END VIEW ====================================== */ 

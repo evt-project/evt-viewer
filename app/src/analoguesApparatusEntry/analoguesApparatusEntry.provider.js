@@ -8,7 +8,6 @@
  * {@link evtviewer.analoguesApparatusEntry.directive:evtAnaloguesApparatusEntry evtAnaloguesApparatusEntry} 
  * directive and stores its reference untill the directive remains instantiated.
  *
- * @requires $log
  * @requires evtviewer.dataHandler.parsedData
  * @requires evtviewer.dataHandler.evtAnaloguesApparatus
  * @requires evtviewer.interface.evtInterface
@@ -25,7 +24,7 @@ angular.module('evtviewer.analoguesApparatusEntry')
 
 	var currentAnaloguesEntry = '';
 
-	this.$get = function(parsedData, $log, evtAnaloguesApparatus, evtInterface) {
+	this.$get = ['parsedData', 'evtAnaloguesApparatus', 'evtInterface', function(parsedData, evtAnaloguesApparatus, evtInterface) {
 		var analoguesAppEntry = {},
 			collection = {},
 			list = [],
@@ -316,6 +315,6 @@ angular.module('evtviewer.analoguesApparatusEntry')
 		};
 
 		return analoguesAppEntry;
-	};
+	}];
 
 });

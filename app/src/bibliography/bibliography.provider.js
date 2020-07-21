@@ -24,7 +24,7 @@ angular.module('evtviewer.bibliography')
 		defaults = _defaults;
 	};
 
-	this.$get = function($log, config, parsedData, evtBibliographyParser, evtHighlight) {
+	this.$get = ['$log', 'config', 'parsedData', 'evtBibliographyParser', 'evtHighlight', function($log, config, parsedData, evtBibliographyParser, evtHighlight) {
 		var bibliography = {},
 			collection = {},
 			list = [],
@@ -127,25 +127,25 @@ angular.module('evtviewer.bibliography')
 		 * @param {string} entryId id of bibliographic reference to handle
 		 *
 		 * @returns {Object} JSON object representing the bibliographic entry, structure as follows:
-			 <pre>
-	            var newBiblElement = {
-	                id: '',
-	                type: '',
-	                author: [],
-	                titleAnalytic: '',
-	                titleMonogr: '',
-	                editionMonogr: '',
-	                date: '',
-	                editor: [],
-	                publisher: '',
-	                pubPlace: '',
-	                biblScope: {},
-	                note: {},
-	                idno: {},
-	                outputs: {},
-	                plainText: ''
-	            };
-	        </pre>
+			<pre>
+				var newBiblElement = {
+					id: '',
+					type: '',
+					author: [],
+					titleAnalytic: '',
+					titleMonogr: '',
+					editionMonogr: '',
+					date: '',
+					editor: [],
+					publisher: '',
+					pubPlace: '',
+					biblScope: {},
+					note: {},
+					idno: {},
+					outputs: {},
+					plainText: ''
+				};
+			</pre>
 		 * For more information about this object, please see {@ evtviewer.dataHandler.evtBibliographyParser#extractInfo extractInfo}.
 		 * @author MR
 	     */
@@ -172,14 +172,14 @@ angular.module('evtviewer.bibliography')
 	     * - It finally extend the scope, stores a reference of each directive instance and returns the extended scope.</p>
 		 *
 		 * @param {Object} scope initial scope of the directive:
-		 	<pre>
+			<pre>
 				var scope = {
-		            id : '@'
-		        };
-		 	</pre>
+					id : '@'
+				};
+			</pre>
 		 *
 		 * @returns {Object} extended scope:
-		 	<pre>
+			<pre>
 				var scopeHelper = {
 					// expansion
 					uid,
@@ -199,7 +199,7 @@ angular.module('evtviewer.bibliography')
 					isEntryHighlighted,
 					getBibliographicRefById
 				};
-		 	</pre>
+			</pre>
 		 *
 		 * @author MR
 	     */
@@ -332,6 +332,6 @@ angular.module('evtviewer.bibliography')
 		};
 
 		return bibliography;
-	};
+	}];
 
 });
