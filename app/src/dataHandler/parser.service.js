@@ -703,8 +703,10 @@ angular.module('evtviewer.dataHandler')
 			//newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
 		} else if (parsedData.getEncodingDetail('lineNums')) {
 			newElement.className += ' l-indent';
+			var parsedElement = parser.parseXMLElement(doc, newElement, options);
+			newElement.innerHTML = '<span class="lineContent">' + parsedElement.outerHTML + '</span>';
 		}
-
+		
 		return newElement;
 	};
 	/**
