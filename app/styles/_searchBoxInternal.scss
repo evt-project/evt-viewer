@@ -131,6 +131,7 @@
 
       .result-token {
          font-weight: bold;
+         color: $search-result-item;
       }
 
       .results-number {
@@ -145,6 +146,9 @@
          .original-text {
             display: block;
             font-style: italic;
+            strong {
+               color: $search-result-item;
+            }
          }
 
          .resultInfo {
