@@ -1,7 +1,7 @@
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchDiplomaticLbHandler', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler',
-      function DiplomaticLbHandler(evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler){
-         
+   .service('evtSearchDiplomaticLbHandler', ['evtSearchDocument', 'evtDiplomaticEditionHandler', 'evtInterpretativeEditionHandler', 'evtParser',
+      function DiplomaticLbHandler(evtSearchDocument, evtDiplomaticEditionHandler, evtInterpretativeEditionHandler, evtParser){
+
          var countAllDocsLine = 0;
          DiplomaticLbHandler.prototype.getLineInfo = function(xmlDocDom, xmlDocBody, lbNodes, prevDocsLbNumber, ns, nsResolver) {
             var currentXmlDoc = evtSearchDocument.getCurrentXmlDoc(xmlDocDom, xmlDocBody, ns, nsResolver),
@@ -54,42 +54,39 @@ angular.module('evtviewer.dataHandler')
                         }
                         line.xmlDocTitle = currentXmlDoc.title;
                         line.xmlDocId = currentXmlDoc.id;
-                        line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line;
+                        line.docId = line.xmlDocId + '-' + line.pageId + '-' + line.line + '-line' + countLine;
                         line.lbId = node.getAttribute('xml:id');
-                        
-                        do {
-                           if (editionIsDipl) {
-                              lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                              cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
-                           } else {
-                              lineNodes.diplomatic = [];
-                              cleanedDiplomaticNodes = [];
-                           }
-                           
-                           if (editionIsInterp) {
-                              lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
-                              cleanedInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.interpretative);
-                           } else {
-                              lineNodes.interpretative = [];
-                              cleanedInterpretativeNodes = [];
-                           }
-                        } while (cleanedDiplomaticNodes.length === 0 && cleanedInterpretativeNodes.length === 0 &&
-                           lineNodes.diplomatic.length !== 0 && lineNodes.interpretative.length !== 0);
-                        
+
+                        if (editionIsDipl) {
+                           lineNodes.diplomatic = evtSearchDocument.getLineNodes(xmlDocDom, diplomaticNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                           cleanedDiplomaticNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.diplomatic);
+                        } else {
+                           lineNodes.diplomatic = [];
+                           cleanedDiplomaticNodes = [];
+                        }
+
+                        if (editionIsInterp) {
+                           lineNodes.interpretative = evtSearchDocument.getLineNodes(xmlDocDom, interpretativeNodes, prevDocsLbNumber, countLine, ns, nsResolver);
+                           cleanedInterpretativeNodes = evtSearchDocument.removeEmptyTextNodes(lineNodes.interpretative);
+                        } else {
+                           lineNodes.interpretative = [];
+                           cleanedInterpretativeNodes = [];
+                        }
+
                         line.content = {};
                         if (editionIsDipl) {
                            line.content.diplomatic = evtSearchDocument.getContent(lineNodes.diplomatic, 'diplomatic');
                         }
-                        
+
                         if (editionIsInterp) {
                            line.content.interpretative = evtSearchDocument.getContent(lineNodes.interpretative, 'interpretative');
                         }
-                        
+
                         lineId++;
                         countLine++;
                         countAllDocsLine++;
                         prevLine = line.line;
-                        
+
                         lines[line.docId] = line;
                         lineNodes = [];
                      }
