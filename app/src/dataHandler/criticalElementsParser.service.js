@@ -1858,7 +1858,7 @@ angular.module('evtviewer.dataHandler')
 				spanElement = evtParser.parseXMLElement(doc, e, {skip: ''});
 			} else {
 				spanElement = document.createElement('span');
-				spanElement.className = elem.tagName;
+				spanElement.className = elem.tagName ? elem.tagName.toLowerCase() : '';
 
 				var attribKeys = Object.keys(elem.attributes);
 				for (var key in attribKeys) {
@@ -2496,7 +2496,7 @@ angular.module('evtviewer.dataHandler')
 				spanElement = evtParser.parseXMLElement(doc, e, {skip: ''});
 			} else {
 				spanElement = document.createElement('span');
-				spanElement.className = elem.tagName;
+				spanElement.className = elem.tagName ? elem.tagName.toLowerCase() : '';;
 
 				var attribKeys = Object.keys(elem.attributes);
 				for (var key in attribKeys) {

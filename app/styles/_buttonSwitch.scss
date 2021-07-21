@@ -196,6 +196,7 @@ button-switch {
     top: 54px;
     z-index: 20;
     left: 75%;
+    transform: none !important;
     &.centered {
         left: 75%;
     }

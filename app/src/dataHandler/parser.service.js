@@ -202,7 +202,7 @@ angular.module('evtviewer.dataHandler')
 					newElement = parser.parseNote(element);
 				} else if (tagName === 'date' && (!element.childNodes || element.childNodes.length <= 0)) { //TEMP => TODO: create new directive
 					newElement = document.createElement('span');
-					newElement.className = element.tagName;
+					newElement.className = element.tagName ? element.tagName.toLowerCase() : '';;
 					var textContent = '';
 					for (var i = 0; i < element.attributes.length; i++) {
 						var attrib = element.attributes[i];
@@ -226,7 +226,7 @@ angular.module('evtviewer.dataHandler')
 					} else {
 						newElement = document.createElement('span');
 					}
-					newElement.className = element.tagName !== undefined ? element.tagName : '';
+					newElement.className = element.tagName !== undefined ? element.tagName.toLowerCase() : '';
 					if (element.attributes) {
 						for (var k = 0; k < element.attributes.length; k++) {
 							var attribK = element.attributes[k];
@@ -703,8 +703,10 @@ angular.module('evtviewer.dataHandler')
 			//newElement.insertBefore(lineNumElem, newElement.childNodes[0]);
 		} else if (parsedData.getEncodingDetail('lineNums')) {
 			newElement.className += ' l-indent';
+			var parsedElement = parser.parseXMLElement(doc, newElement, options);
+			newElement.innerHTML = '<span class="lineContent">' + parsedElement.outerHTML + '</span>';
 		}
-
+		
 		return newElement;
 	};
 	/**
