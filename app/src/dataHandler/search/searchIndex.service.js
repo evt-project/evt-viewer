@@ -1,7 +1,7 @@
 var lunr = require('lunr');
 
 angular.module('evtviewer.dataHandler')
-   .service('evtSearchIndex', ['evtSearchDocument', function Index(evtSearchDocument) {
+   .service('evtSearchIndex', ['GLOBALDEFAULTCONF', 'evtSearchDocument', function Index(GLOBALDEFAULTCONF, evtSearchDocument) {
       this.index = {};
 
       Index.prototype.createIndex = function (parsedElementsForIndexing) {
@@ -53,6 +53,14 @@ angular.module('evtviewer.dataHandler')
       };
 
       Index.prototype.getIndex = function () {
+         return this.index;
+      };
+
+      Index.prototype.loadIndex = function () {
+         var indexFileName = GLOBALDEFAULTCONF.indexFileName;
+         var serializedIndex = window.localStorage.getItem(`${indexFileName}.txt`);
+         var index = lunr.Index.load(JSON.parse(serializedIndex));
+         this.index = index;
          return this.index;
       };
 

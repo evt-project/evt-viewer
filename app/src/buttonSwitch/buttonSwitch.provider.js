@@ -39,8 +39,8 @@ angular.module('evtviewer.buttonSwitch')
 		 * where the scope of the directive is extended with all the necessary properties and methods
 		 * according to specific values of initial scope properties.</p>
 		 **/
-		this.$get = ['$q', '$log', 'config', 'baseData', 'parsedData', 'evtInterface', 'evtDialog', 'evtSelect', 'evtImageTextLinking', 'evtSourcesApparatus', 'evtBox', 'evtSearch', 'evtSearchBox', 'evtSearchResults', 'evtSearchResult', 'evtVirtualKeyboard',
-			function ($q, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard) {
+		this.$get = ['$q', '$log', 'config', 'baseData', 'parsedData', 'evtInterface', 'evtDialog', 'evtSelect', 'evtImageTextLinking', 'evtSourcesApparatus', 'evtBox', 'evtSearch', 'evtSearchBox', 'evtSearchResults', 'evtSearchResult', 'evtVirtualKeyboard', 'evtSearchIndex',
+			function ($q, $log, config, baseData, parsedData, evtInterface, evtDialog, evtSelect, evtImageTextLinking, evtSourcesApparatus, evtBox, evtSearch, evtSearchBox, evtSearchResults, evtSearchResult, evtVirtualKeyboard, evtSearchIndex) {
 				var button = {},
 					collection = {},
 					list = [],
@@ -105,6 +105,14 @@ angular.module('evtviewer.buttonSwitch')
 				var enable = function () {
 					var vm = this;
 					vm.disabled = false;
+				};
+				var show = function () {
+					var vm = this;
+					vm.hidden = false;
+				};
+				var hide = function () {
+					var vm = this;
+					vm.hidden = true;
 				};
 				/**
 				 * @ngdoc method
@@ -436,6 +444,7 @@ angular.module('evtviewer.buttonSwitch')
 						value = scope.value || '',
 						active = scope.active || false,
 						disabled = scope.disabled || false,
+						hidden = scope.hidden || false,
 						btnType = scope.btnType || '',
 						callback = function () { console.log('TODO ' + type); },
 						fakeCallback = function () { };
@@ -801,19 +810,6 @@ angular.module('evtviewer.buttonSwitch')
 							break;
 						case 'searchIndex':
 							btnType = 'standAlone';
-							disabled = (
-								function () {
-									if (evtInterface.getToolState('isDocumentIndexed') === 'true') {
-										return true;
-									}
-								})();
-							active = (
-								function () {
-									if (evtInterface.getToolState('isDocumentIndexed') === 'true') {
-										return false;
-									}
-								}
-							)();
 							function indexingInProgress() {
 								var deferred = $q.defer();
 								evtInterface.updateState('indexingInProgress', true);
@@ -822,7 +818,7 @@ angular.module('evtviewer.buttonSwitch')
 								}, 100);
 								return deferred.promise;
 							}
-							function indexingCallback() {
+							callback = function () {
 								var promise = indexingInProgress();
 								promise.then(
 									function () {
@@ -833,8 +829,9 @@ angular.module('evtviewer.buttonSwitch')
 										searchIndexBtn = button.getByType('searchIndex')[0];
 										searchIndexBtn.active = false;
 										searchIndexBtn.disable();
+										searchIndexBtn.hide();
 										evtSearch.initSearch(xmlDocDom);
-										evtInterface.setToolStatus('isDocumentIndexed', 'true');
+										evtInterface.setToolStatus('isDocumentIndexed', true);
 
 										searchToolsBtn = button.getByType('searchInternal');
 										for (var z in searchToolsBtn) {
@@ -845,15 +842,6 @@ angular.module('evtviewer.buttonSwitch')
 									}
 								);
 							}
-
-							callback = function () {
-								if (evtInterface.getToolState('isDocumentIndexed') === 'true') {
-									scope.vm.active = false;
-								}
-								else {
-									return indexingCallback();
-								}
-							};
 							break;
 						case 'searchResultsShow':
 							callback = function () {
@@ -891,14 +879,22 @@ angular.module('evtviewer.buttonSwitch')
 							btnType = 'standAlone';
 							disabled = (
 								function () {
-									if (evtInterface.getToolState('isDocumentIndexed') === 'true') {
+									if (evtInterface.getToolState('isDocumentIndexed') === true) {
 										return false;
 									}
 									else {
 										return true;
 									}
 								})();
-							var activeCallback = function () {
+							callback = function () {
+								var index = evtSearchIndex.getIndex();
+								var indexExist = Object.keys(index).length !== 0;
+								if(!indexExist) {
+									evtSearchIndex.loadIndex();
+									evtSearch.loadParsedElementsForIndexing();
+									window.localStorage.clear();
+								}
+
 								var parentBoxId = scope.$parent.id,
 									searchBoxStatus = evtBox.getState(parentBoxId, 'searchBox');
 
@@ -906,14 +902,6 @@ angular.module('evtviewer.buttonSwitch')
 								evtSearchBox.closeBox(parentBoxId, 'searchResultBox');
 								evtSearchBox.showBtn(parentBoxId, 'searchResultsShow');
 								evtSearchBox.hideBtn(parentBoxId, 'searchResultsHide');
-							};
-							callback = function () {
-								if (evtInterface.getToolState('isDocumentIndexed') === 'true') {
-									return activeCallback();
-								}
-								else {
-									scope.vm.active = false;
-								}
 							};
 							break;
 						case 'searchAdvanced':
@@ -1168,6 +1156,7 @@ angular.module('evtviewer.buttonSwitch')
 						value: value,
 						active: active,
 						disabled: disabled,
+						hidden: hidden,
 
 						btnType: btnType,
 
@@ -1180,6 +1169,8 @@ angular.module('evtviewer.buttonSwitch')
 						setActive: setActive,
 						disable: disable,
 						enable: enable,
+						show: show,
+						hide: hide,
 						destroy: destroy
 					};
 
@@ -1286,6 +1277,11 @@ angular.module('evtviewer.buttonSwitch')
 						collection[currentId].setActive(true);
 					}
 				};
+				button.hide = function (currentId) {
+					if (collection[currentId] !== 'undefined') {
+						collection[currentId].hide();
+					}
+				}
 				/**
 				 * @ngdoc method
 				 * @name evtviewer.buttonSwitch.evtButtonSwitch#destroy

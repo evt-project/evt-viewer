@@ -664,27 +664,43 @@ angular.module('evtviewer.box')
 							break;
 						case 'text':
 							if (currentId === 'mainText' || currentId === 'mainText1') {
-								bottomMenuList.buttons.push({
-									title: 'Search',
-									label: 'Search',
-									icon: 'search',
-									type: 'searchInternal',
-									show: function () {
-										return true;
-									},
-									disabled: function () {
-										return true;
-									}
-								});
-								bottomMenuList.buttons.push({
-									title: 'Create index for enable search',
-									label: 'Create index',
-									icon: '',
-									type: 'searchIndex',
-									show: function () {
-										return true;
-									}
-								});
+								if (evtInterface.getToolState('isDocumentIndexed') === false) {
+									bottomMenuList.buttons.push({
+										title: 'Search',
+										label: 'Search',
+										icon: 'search',
+										type: 'searchInternal',
+										show: function() {
+										   return true;
+										},
+										disabled: function() {
+										   return true;
+										}
+									});
+
+									bottomMenuList.buttons.push({
+										title: 'Create index for enable search',
+										label: 'Create index',
+										icon: '',
+										type: 'searchIndex',
+										show: function() {
+										   return true;
+										}
+									});
+								} else {
+									bottomMenuList.buttons.push({
+										title: 'Search',
+										label: 'Search',
+										icon: 'search',
+										type: 'searchInternal',
+										show: function() {
+										   return true;
+										},
+										disabled: function() {
+										   return false;
+										}
+									});
+								}
 							}
 							else {
 								bottomMenuList.buttons.push({

@@ -1,3 +1,7 @@
+var JSZip = require('jszip');
+var JSZipUtils = require('jszip-utils');
+var FileSaver = require('file-saver');
+
 /**
  * @ngdoc service
  * @module evtviewer.core
@@ -10,7 +14,7 @@
 /*jshint -W059 */
 angular.module('evtviewer.core')
 
-.provider('Utils', function() {
+.provider('Utils', function(GLOBALDEFAULTCONF) {
 
 	/**
     * @ngdoc method
@@ -321,7 +325,38 @@ angular.module('evtviewer.core')
      }
      return str;
    };
-   
+
+   this.compressAndSaveFile = function (fileContent, fileName) {
+      var zip = new JSZip();
+      zip.file(fileName + '.txt', fileContent);
+
+      zip.generateAsync({
+         type: 'blob',
+         compression: 'DEFLATE',
+         compressionOptions: {
+            level: 9
+         }
+      }).then(function (blob) {
+         FileSaver.saveAs(blob, fileName + '.zip');
+      }, function (err) {
+         console.log(err);
+      });
+   };
+
+   this.extractContentFromZip = function (url, fileName) {
+      var filename = fileName;
+      JSZipUtils.getBinaryContent(url, function(err, data) {
+         if(err) { console.log(err); }
+
+         JSZip.loadAsync(data).then(function (zip) {
+            zip.files[filename].async('string').then(function (fileData) {
+               window.localStorage.setItem(filename, fileData);
+               //this.localStorage.setItem(filename, fileData);
+            });
+         });
+      });
+   }
+
    this.replaceStringAt = function(string, token, replace, startPos, endPos) {
       return string.slice(0, startPos) +
          string.slice(startPos, endPos).replace(token, replace) +
@@ -333,10 +368,12 @@ angular.module('evtviewer.core')
 			deepExtend: this.deepExtend,
 			deepExtendSkipDefault: this.deepExtendSkipDefault,
 			getRandomColor: this.getRandomColor,
-         cleanText: this.cleanText,
-         cleanSpace: this.cleanSpace,
-         cleanPunctuation: this.cleanPunctuation,
-         replaceStringAt: this.replaceStringAt,
+            cleanText: this.cleanText,
+            cleanSpace: this.cleanSpace,
+            cleanPunctuation: this.cleanPunctuation,
+            compressAndSaveFile: this.compressAndSaveFile,
+            extractContentFromZip: this.extractContentFromZip,
+            replaceStringAt: this.replaceStringAt,
 			DOMutils: {
 				getElementsBetweenTree: this.getElementsBetweenTree,
 				getCommonAncestor: this.getCommonAncestor,

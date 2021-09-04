@@ -24,9 +24,12 @@
 **/
 angular.module('evtviewer.interface')
 
-.service('evtInterface', ['$rootScope', '$timeout', 'evtTranslation', 'evtCommunication', 'evtCriticalApparatusParser', 'evtCriticalParser', 'evtPinnedElements', 'config', '$routeParams', 'parsedData', 'evtReading', '$q',
-    function($rootScope, $timeout, evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, config, $routeParams, parsedData, evtReading, $q) {
-    var mainInterface = {};
+.service('evtInterface', ['$rootScope', '$timeout', '$http', 'GLOBALDEFAULTCONF', 'Utils', 'evtTranslation', 'evtCommunication', 'evtCriticalApparatusParser', 'evtCriticalParser', 'evtPinnedElements', 'config', '$routeParams', 'parsedData', 'evtReading', '$q',
+    function($rootScope, $timeout, $http, GLOBALDEFAULTCONF, Utils,evtTranslation, evtCommunication, evtCriticalApparatusParser, evtCriticalParser, evtPinnedElements, config, $routeParams, parsedData, evtReading, $q) {
+    var mainInterface = {},
+        indexFileExist = false,
+        parsedElementsFileExist = false;
+
     /**
      * @ngdoc property
      * @name evtviewer.interface.evtInterface#state
@@ -159,7 +162,9 @@ angular.module('evtviewer.interface')
      </pre>
      */
     var tools = {
-
+        isDocumentIndexed: {
+            status: false
+        }
     };
 
         /**
@@ -255,7 +260,11 @@ angular.module('evtviewer.interface')
                      }
 
                       var currentDocFirstLoad = parsedData.getDocument(state.currentDoc);
-                      if (currentDocFirstLoad !== undefined){
+                      if (currentDocFirstLoad !== undefined) {
+                        var checkIndexZip = checkIndexZipFile(),
+                            checkParsedElementsZip = checkParsedElementsZipFile();
+                        promises.push(checkIndexZip);
+                        promises.push(checkParsedElementsZip);
 
                         // Parse critical entries
                           if (parsedData.getEncodingDetail('variantEncodingLocation') === 'internal') {
@@ -279,6 +288,11 @@ angular.module('evtviewer.interface')
                           }
 
                             $q.all(promises).then(function () {
+                                if (indexFileExist && parsedElementsFileExist) {
+                                    tools.isDocumentIndexed.status = true;
+                                    Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexDocumentUrl, `${GLOBALDEFAULTCONF.indexDocumentFileName}.txt`);
+                                    Utils.extractContentFromZip(GLOBALDEFAULTCONF.indexUrl, `${GLOBALDEFAULTCONF.indexFileName}.txt`);
+                                }
                                 // /////////////////// //
                                 // VISCOLL DATA IMPORT //
                                 // Parse DataModel
@@ -1389,5 +1403,36 @@ angular.module('evtviewer.interface')
                 window.location = '#/'+viewMode+'?'+searchPath;
             }
         };
+
+        function checkIndexZipFile () {
+            var deferred = $q.defer();
+
+            $http.get(GLOBALDEFAULTCONF.indexUrl)
+                .success(function() {
+                    indexFileExist = true;
+                    deferred.resolve();
+                }).error(function() {
+                    deferred.resolve();
+                    window.alert('Per attivare la ricerca è necessario indicizzare il documento premendo Create Index');
+                });
+
+            return deferred.promise;
+        }
+
+        function checkParsedElementsZipFile () {
+            var deferred = $q.defer();
+
+            $http.get(GLOBALDEFAULTCONF.indexDocumentUrl)
+                .success(function() {
+                    parsedElementsFileExist = true;
+                    deferred.resolve();
+                }).error(function() {
+                    deferred.resolve();
+                    window.alert('Per attivare la ricerca è necessario indicizzare il documento premendo Create Index');
+                });
+
+            return deferred.promise;
+         }
+
     return mainInterface;
 }]);

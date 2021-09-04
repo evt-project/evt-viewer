@@ -48,6 +48,7 @@ button-switch {
             background: $buttonSwitch-active-background-color;
             color: $buttonSwitch-active-color;
         }
+
         &-disabled{
             opacity: .5;
             cursor: default !important;
@@ -55,6 +56,10 @@ button-switch {
                 box-shadow: none !important;
                 text-shadow: none !important;
             }
+        }
+
+        &-hidden {
+            display: none;
         }
 
         &-label {

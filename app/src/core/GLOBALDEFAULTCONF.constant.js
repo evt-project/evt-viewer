@@ -51,7 +51,11 @@ angular.module('evtviewer.core')
 	// Default:
 	// <pre> configUrl: '../../config/config.json' </pre>
 	configUrl: './config/config.json',
-	dataUrl          : '',
+	dataUrl : '',
+	indexUrl: '../../data/index.zip',
+	indexFileName: 'index',
+   	indexDocumentUrl: '../../data/parsedElements.zip',
+   	indexDocumentFileName: 'parsedElements',
 
 	logoUrl: '',
 
