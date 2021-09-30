@@ -47,6 +47,7 @@ require('./dataHandler/criticalApparatus.service.js');
 require('./dataHandler/namedEntitiesParser.service.js');
 require('./dataHandler/primarySourcesParser.service.js');
 require('./dataHandler/projectInfoParser.service.js');
+require('./dataHandler/editionLevelParser.service');
 require('./dataHandler/criticalParser.service.js');
 require('./dataHandler/sourcesParser.service.js');
 require('./dataHandler/sourcesApparatus.service.js');

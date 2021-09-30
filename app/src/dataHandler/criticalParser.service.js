@@ -31,6 +31,15 @@ angular.module('evtviewer.dataHandler')
 				return el.length !== 0;
 			});
 
+		parser.defs = {
+			apparatusEntry: apparatusEntryDef,
+			lemma: lemmaDef,
+			reading: readingDef,
+			readingGroup: readingGroupDef,
+			quote: quoteDef,
+			analogue: analogueDef,
+			skipFromBeingParsed: skipFromBeingParsed
+		};
 		// /////// //
 		// WITNESS //
 		// /////// //

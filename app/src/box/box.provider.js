@@ -13,7 +13,6 @@
  * @requires $timeout
  * @requires evtviewer.core.config
  * @requires evtviewer.dataHandler.parsedData
- * @requires evtviewer.dataHandler.evtParser
  * @requires evtviewer.dataHandler.evtCriticalParser
  * @requires evtviewer.interface.evtInterface
  * @requires evtviewer.UItools.evtImageTextLinking
@@ -43,8 +42,8 @@ angular.module('evtviewer.box')
 		 * where the scope of the directive is extended with all the necessary properties and methods
 		 * according to specific values of initial scope properties.</p>
 		 **/
-		this.$get = ['$log', '$q', '$timeout', 'config', 'parsedData', 'evtParser', 'evtCriticalParser', 'evtInterface', 'evtImageTextLinking', 'evtNamedEntityRef', 'evtGenericEntity', 'evtSourcesApparatus', 
-			function ($log, $q, $timeout, config, parsedData, evtParser, evtCriticalParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtSourcesApparatus) {
+		this.$get = ['$log', '$q', '$timeout', 'config', 'parsedData', 'evtCriticalParser', 'evtInterface', 'evtImageTextLinking', 'evtNamedEntityRef', 'evtGenericEntity', 'evtSourcesApparatus', 'evtEditionLevelParser',
+			function ($log, $q, $timeout, config, parsedData, evtCriticalParser, evtInterface, evtImageTextLinking, evtNamedEntityRef, evtGenericEntity, evtSourcesApparatus, evtEditionLevelParser) {
 				var box = {},
 					collection = {},
 					list = [],
@@ -908,7 +907,7 @@ angular.module('evtviewer.box')
 									if (newDoc === undefined) {
 										newDoc = parsedData.getPageText(currentPage, currentDoc, 'original');
 										try {
-											promises.push(evtParser.parseTextForEditionLevel(currentPage, currentDoc, currentEdition, newDoc).promise);
+											promises.push(evtEditionLevelParser.parseTextForEditionLevel(currentPage, currentDoc, currentEdition, newDoc).promise);
 											$q.all(promises).then(function () {
 												scope.vm.content = parsedData.getPageText(currentPage, currentDoc, currentEdition) || noTextAvailableMsg;
 												scope.vm.isLoading = false;
