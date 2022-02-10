@@ -23,7 +23,7 @@
     "karma-phantomjs-launcher": "~1.0.4",
     "load-grunt-tasks": "~5.0.0",
     "mini-css-extract-plugin": "^0.7.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "preprocess": "3.1.0",
     "raw-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
