@@ -25,17 +25,28 @@ angular.module('evtviewer.dataHandler')
                      pageId++;
                   },
                   'default': function () {
+                     var editionNodes = [];
                      var diplomaticNodes = [];
+                     var interpretativeNodes = []
+
                      if (editionIsDipl) {
                         diplomaticNodes = evtDiplomaticEditionHandler.getDiplomaticChildNodes(xmlDocDom, node, ns, nsResolver);
                      }
 
-                     var interpretativeNodes = []
                      if (editionIsInterp) {
                         interpretativeNodes = evtInterpretativeEditionHandler.getInterpretativeChildNodes(xmlDocDom, node, ns, nsResolver);
                      }
+                     
+                     /* TODO: Temporary fix for parsing of interpretative edition without diplomatic one.
+                        Would need a code refactoring.
+                     */
+                     if (!editionIsDipl && editionIsInterp) {
+                        editionNodes = interpretativeNodes;
+                     } else {
+                        editionNodes = diplomaticNodes;
+                     }
 
-                     diplomaticNodes.forEach(function (childNode) {
+                     editionNodes.forEach(function (childNode) {
                         var childDiplNodes,
                            cleanedChildDiplNodes;
 
