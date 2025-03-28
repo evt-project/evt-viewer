@@ -31,6 +31,7 @@
         width: 100%;
         overflow: auto;
         position: absolute;
+        overflow-y: scroll;
 
         > div  {
         	width: 100%;
@@ -50,7 +51,6 @@
 		}
 		}
 		.scrollableDiv {
-			overflow-y: scroll;
 			height: 100%;
 		}
 }
