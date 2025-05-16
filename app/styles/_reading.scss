@@ -89,7 +89,6 @@ evt-reading+evt-reading:not(.autoLemma) .reading {
         .reading_exponent {
             display: inline-block;
             position: relative;
-            left: -4px;
             bottom: 3px;
             min-width: 15px;
             min-height: 15px;
@@ -98,7 +97,6 @@ evt-reading+evt-reading:not(.autoLemma) .reading {
             border-radius: 3px;
             font-size: 0.8em;
             font-weight: bold;
-            word-spacing: -0.25em;
             vertical-align: super;
             text-align: center;
         }
