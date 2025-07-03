@@ -13,9 +13,7 @@
         class="reading__text"
         style="{{vm.backgroundColor()}}"
         title="{{vm.attributes | translate}}"
-        ng-transclude></span>
-    
-    <span
+        ng-transclude></span><span
         ng-if="::vm.showExponent && vm.position !== 'start'"
         style="{{vm.backgroundColor()}}"
         class="reading_exponent"
