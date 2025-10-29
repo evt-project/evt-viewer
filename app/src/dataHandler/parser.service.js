@@ -1455,7 +1455,7 @@ angular.module('evtviewer.dataHandler')
 				docDOM.innerHTML = docDOM.innerHTML.replace(/>[\s\r\n]*?</g, '><');
 
 				angular.forEach(docDOM.children, function(elem) {
-					var skip = '<pb>,<g>';
+					var skip = '<pb>,<g>,<cb>,';
 					elem.parentNode.replaceChild(parser.parseXMLElement(doc, elem, {
 						skip: skip
 					}), elem);
