@@ -1,24 +1,33 @@
 .ui-keyboard {
-   width: $virtual-keyboard-width;
+   // width: $virtual-keyboard-width;
+   position: absolute!important;
+   z-index: 2000!important;
    top: auto !important;
    left: 30px !important;
-   bottom: 35px;
-   padding: 10px;
-   text-align: left;
-   @include border($mainContainer-border-width, 'all', $base-color-dark);
-   background-color: $virtual-keyboard-background;
+   bottom: 35px!important;
+   padding: 10px!important;
+   text-align: left!important;
+   // @include border($mainContainer-border-width, 'all', $base-color-dark);
+   // background-color: $virtual-keyboard-background;
+   width: 325px!important;
+   border: 2px solid #263238!important;
+   background-color: #fff!important;
 
    .ui-keyboard-button {
-      margin-right: 6px;
-      margin-bottom: 3px;
-      border-radius: 2px;
-      border: 1px solid $virtual-keyboard-btn-border;
-      font-family: Junicode;
-      font-size: 15px;
-      line-height: .8em;
+      margin-right: 6px!important;
+      margin-bottom: 3px!important;
+      border-radius: 2px!important;
+      // border: 1px solid $virtual-keyboard-btn-border;
+      border: 1px solid rgb(125, 125, 125);
+      font-family: Junicode!important;
+      font-size: 15px!important;
+      line-height: .8em!important;
+      height: 2em;
+      width: 2em;
 
       &:hover {
-         box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
+         // box-shadow: 1px 2px 3px $buttonSwitch-shadow-color inset;
+         box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.4) inset;
       }
    }
 
