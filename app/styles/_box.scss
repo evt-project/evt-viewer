@@ -71,6 +71,7 @@
         top: $mainContainer-border-width;
         right: $mainContainer-border-width+1;
         left: $mainContainer-border-width+1;
+        @include calc(height, #{setInsideFrameHeight()} - ($mainContainer-border-width*2));
         @include calc(width, #{calc(100% - $mainContainer-border-width)});
 		z-index:30;
 	}

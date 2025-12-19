@@ -86,7 +86,9 @@ angular.module('evtviewer.search')
             
             event.preventDefault();
             $(event.currentTarget).addClass('selected');
-            vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
+            if (document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0]) {
+               vm.currentLineId = document.getElementsByClassName('resultInfo selected')[0].getElementsByClassName('resultLine')[0].getAttribute('id');
+            }
             goToAnchorPage();
             $(event.currentTarget).removeClass('selected');
    
