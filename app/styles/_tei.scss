@@ -309,13 +309,13 @@ div.div {
 	}
 }
 
-.msDesc {
+.msdesc {
 	::before {
 		font-weight: bold;
 	}
 
-	.handDesc,
-	.decoDesc {
+	.handdesc,
+	.decodesc {
 		display: block;
 		margin-bottom: 8px;
 	}
@@ -323,8 +323,8 @@ div.div {
 	//TODO: spaziatura MSDesc
 
 	.history,
-	.handDesc,
-	.decoDesc {
+	.handdesc,
+	.decodesc {
 		&:before {
 			content: "\a";
 			display: inline-block;
@@ -332,7 +332,7 @@ div.div {
 		}
 	}
 
-	.msIdentifier {
+	.msidentifier {
 		display: block;
 		margin-bottom: 8px;
 
@@ -349,19 +349,19 @@ div.div {
 		}
 	}
 
-	.msContents {
-		.msItem {
+	.mscontents {
+		.msitem {
 
 			.author,
 			.title,
-			.textLang,
+			.textlang,
 			.colophon {
 				display: block;
 			}
 		}
 	}
 
-	.physDesc {
+	.physdesc {
 		display: block;
 		margin-top: 8px;
 	}
