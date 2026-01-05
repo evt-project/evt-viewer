@@ -687,33 +687,56 @@ angular.module('evtviewer.dataHandler')
      * @author CDP
      */
 	NEparser.parseEntitiesOccurrences = function(docObj, refId) {
-		var doc = docObj && docObj.content ? docObj.content : undefined,
-			docHTML = doc ? doc.outerHTML : undefined,
-			pages = [];
-		if (docHTML && refId && refId !== '') {
-			var match = '<pb(.|[\r\n])*?\/>(.|[\r\n])*?(?=#' + refId + ')',
-				sRegExInput = new RegExp(match, 'ig'),
-				matches = docHTML.match(sRegExInput),
-				totMatches = matches ? matches.length : 0;
-			for (var i = 0; i < totMatches; i++) {
-				//Since JS does not support lookbehind I have to get again all <pb in match and take the last one
-				var matchOnlyPb = '<pb(.|[\r\n])*?\/>',
-					sRegExOnlyPb = new RegExp(matchOnlyPb, 'ig'),
-					pbList = matches[i].match(sRegExOnlyPb),
-					pbString = pbList && pbList.length > 0 ? pbList[pbList.length - 1] : '';
-				var pageId = getPageIdFromHTMLString(pbString);
-				if (pageId) {
-					var pageObj = parsedData.getPage(pageId);
-					pages.push({ 
-						pageId: pageId, 
-						pageLabel: pageObj ? pageObj.label : pageId,
-						docId: docObj ? docObj.value : '',
-						docLabel: docObj ? docObj.label : '' 
-					});
-				}
-			}
-		}
-		return pages;
+      var doc = docObj && docObj.content ? docObj.content : undefined,
+              docHTML = doc ? doc.outerHTML : undefined,
+              pages = [];
+      
+          if (docHTML && refId) {
+              // Regex per trovare tutte le occorrenze esatte di #refId
+              // Usiamo l'escape per evitare problemi con caratteri speciali nell'ID
+              var escapedRefId = refId.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+              var refRegex = new RegExp('#' + escapedRefId, 'g');
+              
+              var match;
+              // Eseguiamo un loop su tutte le occorrenze di #refId nel documento
+              while ((match = refRegex.exec(docHTML)) !== null) {
+                  var indexFound = match.index;
+      
+                  // Prendiamo tutto il testo dall'inizio del documento fino a questa occorrenza
+                  var textBefore = docHTML.substring(0, indexFound);
+      
+                  // Cerchiamo l'ultimo tag <pb.../> in questa porzione di testo
+                  // [\s\S] serve per includere anche i ritorni a capo
+                  var pbRegex = /<pb[\s\S]*?\/>/ig;
+                  var pbMatches = textBefore.match(pbRegex);
+      
+                  if (pbMatches && pbMatches.length > 0) {
+                      // Il tag <pb> più vicino (precedente) è l'ultimo dell'array
+                      var lastPb = pbMatches[pbMatches.length - 1];
+                      var pageId = getPageIdFromHTMLString(lastPb);
+      
+                      if (pageId) {
+                          var pageObj = parsedData.getPage(pageId);
+                          
+                          // Evitiamo duplicati se l'entità appare più volte nella stessa pagina (opzionale)
+                          // Se vuoi TUTTE le occorrenze anche se nella stessa pagina, rimuovi il controllo some()
+                          var alreadyAdded = pages.some(function(p) { 
+                              return p.pageId === pageId; 
+                          });
+      
+                          if (!alreadyAdded) {
+                              pages.push({
+                                  pageId: pageId,
+                                  pageLabel: pageObj ? pageObj.label : pageId,
+                                  docId: docObj ? docObj.value : '',
+                                  docLabel: docObj ? docObj.label : ''
+                              });
+                          }
+                      }
+                  }
+              }
+          }
+          return pages;
 	};
 
 	return NEparser;
